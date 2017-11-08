@@ -1,0 +1,32 @@
+.cn-input-container {
+  &.active {
+
+  }
+  &.error {
+
+  }
+  .cn-form-input {
+    height: 32px;
+    margin-top: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 100%;
+    &:focus {
+      outline: 0;
+    }
+    &.active {
+    }
+    &.error {
+
+    }
+  }
+  .cn-input-label {
+    margin-bottom: 5px;
+    &.active {
+      color: $cn-color-blue;
+    }
+    &.error {
+
+    }
+  }
+}

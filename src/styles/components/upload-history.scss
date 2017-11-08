@@ -1,0 +1,42 @@
+.cn-upload-history {
+  .header {
+    display: block;
+    font-size: 12px;
+    margin-bottom: 5px;
+  }
+  .upload-history-list {
+    .upload-container {
+      background-color: $cn-color-white;
+      input {
+        display: none;
+      }
+      padding: 10px;
+      border: 2px dotted darken(#f0f1f3,10);
+      min-height: 150px;
+      height: 150px;
+      overflow: hidden;
+      overflow-y: scroll;
+
+      &.active {
+        border: 2px solid darken(#f0f1f3,10);
+      }
+
+      .history-item {
+        font-size: 12px;
+        display: block;
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-bottom: 5px;
+      }
+    }
+  }
+  .upload-info {
+    margin-top: 5px;
+    font-size: 10px;
+    .info-icon {
+      margin-right: 5px;
+    }
+  }
+}

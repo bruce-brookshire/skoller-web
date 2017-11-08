@@ -1,0 +1,34 @@
+// Typography styles -------------------------
+@mixin anchor-reset {
+  text-decoration: none;
+
+  &:hover {text-decoration: none;}
+}
+
+@mixin heading-default {
+  @include reset-box-model;
+  font-family: $cn-font-family;
+  text-align: center;
+  width: 100%;
+}
+
+@mixin heading-primary {
+  @include heading-default;
+  color: $cn-color-black;
+  font-size: 1.25em;
+  font-weight: 500;
+  margin: $unit-space * 1.5 0;
+}
+
+@mixin heading-primary-large {
+  @include heading-primary;
+  font-size: 1.75 * $unit-space;
+}
+
+@mixin heading-secondary {
+  @include heading-default;
+  color: $cn-color-black;
+  font-size: 1em;
+  font-weight: 500;
+  margin: $unit-space 0;
+}

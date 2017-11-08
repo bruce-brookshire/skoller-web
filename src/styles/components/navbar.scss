@@ -1,0 +1,35 @@
+.cn-navbar {
+  background-color: $cn-color-white;
+  border-bottom-width: 2px;
+  border-color: $cn-color-blue;
+  padding: 10px 20px;
+  height: $unit-nav-height;
+  width: 100%;
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    p {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 0;
+      text-align: center;
+    }
+    span {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 200;
+      text-align: center;
+    }
+
+    .profile-img {
+      border-radius: 100%;
+      height: 3rem;
+      margin-left: 0.5rem;
+    }
+  }
+
+  .logo {
+    height: 3rem;
+  }
+}

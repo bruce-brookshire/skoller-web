@@ -1,0 +1,27 @@
+.cn-side-nav {
+  position: fixed;
+  top: $unit-nav-height;
+  bottom: 0;
+  left: 0;
+  width: $unit-side-nav-width;
+
+  ul {
+    @include reset-list;
+    li {
+      text-align: center;
+      margin-top: 3rem;
+      i {
+        color: $cn-font-color;
+        font-size: 1.3em;
+        cursor: pointer;
+        text-align: center;
+      }
+
+      &.active {
+        i {
+          color: $cn-color-blue;
+        }
+      }
+    }
+  }
+}

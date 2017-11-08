@@ -1,0 +1,175 @@
+// Composed layouts ----------------------
+@mixin center-viewport-content-container {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+}
+
+@mixin center-viewport-content-narrow {
+  max-width: 360px;
+  padding: 0 $unit-space;
+  width: 100%;
+
+  @include breakpoint(medium) {
+    padding: 0;
+  }
+}
+
+
+// Application layout containers...
+@mixin landing-layout {
+  @include center-viewport-content-container;
+  background: $white-hex;
+  color: $primary-text-color;
+}
+
+@mixin internal-layout {
+  padding: $unit-space;
+  width: 100%;
+
+  @include breakpoint(medium) {
+    margin: 0 auto $unit-space;
+    max-width: $unit-app-width;
+    padding: $unit-space 0 0;
+  }
+}
+
+@mixin internal-layout-narrow {
+  @include internal-layout;
+
+  @include breakpoint(medium) { max-width: 480px; }
+}
+
+
+// Card Layouts ----------------------
+@mixin layout-card-1up {
+  display: flex;
+  flex-direction: column;
+  padding: $unit-space 0;
+
+  .card { margin-bottom: $unit-space; }
+}
+
+@mixin layout-card-2up {
+  @include layout-card-1up;
+
+  @include breakpoint(medium) {
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    .card {
+      flex-basis: calc(50% - .5rem);
+      margin-left: $unit-space;
+
+      &:nth-child(2n-1) {margin-left: 0;}
+    }
+  }
+}
+
+
+// Grid defaults and helpers
+@mixin grid-parent {
+  display: flex;
+  flex-direction: column;
+
+  @include breakpoint(medium) {
+    flex-direction: row;
+  }
+}
+
+@mixin grid-column {
+  flex-direction: column;
+  width: 100%;
+}
+
+
+// Content Layouts ------------------
+@mixin layout-1-2-col($left-col-class, $right-col-class) {
+  @include grid-parent;
+
+  #{$left-col-class} {
+    @include grid-column;
+
+    @include breakpoint(medium) {
+      flex-basis: calc(50% - #{$unit-space});
+      margin-right: $unit-space;
+    }
+  }
+
+  #{$right-col-class} {
+    @include grid-column;
+
+    @include breakpoint(medium) {
+      flex-basis: 50%;
+    }
+  }
+}
+
+@mixin layout-1-3-col($left-col-class, $right-col-class) {
+  @include grid-parent;
+
+  #{$left-col-class} {
+    @include grid-column;
+
+    @include breakpoint(medium) {
+      flex-basis: calc(30% - #{$unit-space});
+      margin-right: $unit-space;
+    }
+  }
+
+  #{$right-col-class} {
+    @include grid-column;
+
+    @include breakpoint(medium) {
+      flex-basis: 70%;
+    }
+  }
+}
+
+
+//TODO: DELETE BELOW
+
+@mixin layout-form-2up {
+  @include layout-1-2-col('.field-column', '.field-column');
+  display: flex;
+}
+
+
+// Registration and internal forms
+@mixin registration-layout {
+  @include center-viewport-content-container;
+  justify-content: flex-start;
+  margin: 0 auto;
+  padding: 2 * $unit-space;
+  text-align: center;
+
+  @include breakpoint(medium) { max-width: 480px;}
+
+  h2 {
+    @include heading-primary-large;
+    margin-bottom: 4 * $unit-space;
+  }
+
+  .field-group {
+    @include input-text-types {
+      @include form-input-alt;
+    }
+
+    margin-bottom: $unit-space;
+  }
+
+  .section {
+    margin-bottom: 2 * $unit-space;
+
+    p { margin-bottom: .5 * $unit-space; }
+  }
+
+  .actions {
+    width: 100%;
+
+    button { @include button-invert; }
+  }
+}

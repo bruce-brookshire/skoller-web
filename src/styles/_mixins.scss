@@ -1,0 +1,17 @@
+// Reset Mixins ---------------------------------------------------------------
+@mixin reset-box-model {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+@mixin reset-list {
+  @include reset-box-model;
+  list-style: none;
+
+  li {  @include reset-box-model; }
+}
+
+@mixin reset-focus {
+  outline: 0;
+}

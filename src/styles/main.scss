@@ -1,0 +1,108 @@
+@import 'variables';            // Global variables
+@import 'mixins/breakpoint';    // Breakpoint utils lifted from Zurb
+@import 'mixins/zf-utils';
+@import 'mixins';               // Include global utility mixins
+
+@import 'mixins/layout';
+@import 'mixins/typography';
+// @import 'mixins/button';
+// @import 'mixins/icons';
+
+// Forms ----------------------------------------------------------------------
+@import 'forms/mixins/input';
+@import 'forms/input-field';
+// @import 'forms/form';
+// @import 'forms/textfield';
+
+// Components ----------------------------
+@import 'components/grid';
+@import 'components/modal';
+@import 'components/navbar';
+@import 'components/sidenav';
+@import 'components/upload-history';
+@import 'components/upload-documents';
+
+// Composed Views ------------------------
+@import 'views/myclasses.scss';
+
+
+html { box-sizing: border-box; }
+
+* {
+  box-sizing: inherit;
+
+  &::before,
+  &::after {
+    box-sizing: inherit;
+  }
+}
+
+a {
+  color: $cn-color-blue;
+  cursor: pointer;
+}
+
+body {
+  @include reset-box-model;
+  background: $cn-primary-background-color;
+  color: $cn-font-color;
+  font-family: $cn-font-family;
+}
+
+.app {
+  padding-top: $unit-nav-height;
+
+  &.public { padding-top: 0; }
+  .layout {
+    position: fixed;
+    top: $unit-nav-height;
+    bottom: 0;
+    right: 0;
+    left: $unit-side-nav-width;
+    overflow-x: scroll;
+
+    /* sticky bottom */
+    margin-bottom: -160px;
+    padding-bottom: 160px;
+  }
+}
+
+// Margins -----------------------------------
+.margin-bottom {
+  margin-bottom: $unit-space;
+}
+
+.margin-left {
+  margin-left: $unit-space;
+}
+
+.margin-right {
+  margin-right: $unit-space
+}
+
+.margin-top {
+  margin-top: $unit-space;
+}
+
+// Helpers ------------------------------------
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.vertical-align {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  &.center {
+    align-items: center;
+  }
+}
