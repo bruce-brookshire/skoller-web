@@ -14,7 +14,7 @@ const router = (
     <Route path="/" component={App}>
       <IndexRedirect to="/app"/>
       <Route path='/app' component={Layout}>
-        <IndexRedirect to="/diy"/>
+        <IndexRedirect to="/myclasses"/>
         <Route path='/myclasses' component={MyClasses}/>
 
         <Route path='/diy' component={DIYTool} />

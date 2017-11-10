@@ -24,10 +24,12 @@
   @include button;
   background-color: $cn-color-blue;
   color: $cn-color-white;
+  &:hover { background-color: lighten($cn-color-blue, 10); }
 }
 
 @mixin button-invert {
   @include button;
   background-color: $cn-color-white;
   color: $cn-color-blue;
+  &:hover { background-color: darken($cn-color-white, 10); }
 }
