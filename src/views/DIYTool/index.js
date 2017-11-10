@@ -5,7 +5,7 @@ import Assignments from '../components/ClassEditor/Assignments'
 import GradeScale from '../components/ClassEditor/GradeScale'
 import Professor from '../components/ClassEditor/Professor'
 import Weights from '../components/ClassEditor/Weights'
-import { ProgressBar, ProgressStep } from '../../components/ProgressBar';
+import {ProgressBar, ProgressStep} from '../../components/ProgressBar'
 
 const steps = [ 'Personal Info', 'Verification', 'Enroll in classes', 'Submit Syllabi' ]
 
@@ -76,8 +76,8 @@ class DIYTool extends React.Component {
             </div>
             <div>
               <ProgressBar currentStep={this.state.currentIndex}>
-                {steps.map ((step, index) => {
-                  return (<ProgressStep key={`step-${index}`} label={step} />)
+                {steps.map((step, index) => {
+                  return <ProgressStep key={`step-${index}`} label={step} />
                 })}
               </ProgressBar>
             </div>
