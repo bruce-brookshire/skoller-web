@@ -1,19 +1,19 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Input} from 'react-form-library'
+import {TextArea} from 'react-form-library'
 
-class InputField extends React.Component {
+class TextAreaField extends React.Component {
   render () {
     const {containerClassName} = this.props
     const containerClasses = ['cn-input-container']
     if (containerClassName) containerClasses.push(containerClassName)
 
     return (
-      <Input
+      <TextArea
         containerClass={containerClasses.join(' ')}
         containerActiveClass='active'
         containerErrorClass='error'
-        inputClass='cn-form-input'
+        inputClass='cn-form-textarea'
         inputActiveClass='active'
         inputErrorClass='error'
         labelClass='cn-input-label'
@@ -25,14 +25,14 @@ class InputField extends React.Component {
   }
 }
 
-InputField.propTypes = {
+TextArea.propTypes = {
   containerClassName: PropTypes.string,
   containerActiveClassName: PropTypes.string,
   containerErrorClassName: PropTypes.string,
   id: PropTypes.string,
   inputClassName: PropTypes.string,
   inputActiveClassName: PropTypes.string,
-  inputErrorClassName: PropTypes.string,
+  inputErrorClasNames: PropTypes.string,
   label: PropTypes.string,
   labelClassName: PropTypes.string,
   labelActiveClassName: PropTypes.string,
@@ -42,12 +42,13 @@ InputField.propTypes = {
   onChange: PropTypes.func.isRequired,
   onFocus: PropTypes.func,
   placeholder: PropTypes.string,
-  type: PropTypes.string,
-  value: PropTypes.oneOfType([
+  rows: PropTypes.oneOfType([
     PropTypes.string,
-    PropTypes.number,
-    PropTypes.instanceOf(Date)]
-  ).isRequired
+    PropTypes.number
+  ]),
+  value: PropTypes.oneOfType([
+    PropTypes.string
+  ]).isRequired
 }
 
-export default InputField
+export default TextAreaField

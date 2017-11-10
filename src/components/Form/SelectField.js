@@ -1,19 +1,19 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Input} from 'react-form-library'
+import {Select} from 'react-form-library'
 
-class InputField extends React.Component {
+class SelectField extends React.Component {
   render () {
     const {containerClassName} = this.props
     const containerClasses = ['cn-input-container']
     if (containerClassName) containerClasses.push(containerClassName)
 
     return (
-      <Input
+      <Select
         containerClass={containerClasses.join(' ')}
         containerActiveClass='active'
         containerErrorClass='error'
-        inputClass='cn-form-input'
+        inputClass='cn-form-select'
         inputActiveClass='active'
         inputErrorClass='error'
         labelClass='cn-input-label'
@@ -25,7 +25,7 @@ class InputField extends React.Component {
   }
 }
 
-InputField.propTypes = {
+SelectField.propTypes = {
   containerClassName: PropTypes.string,
   containerActiveClassName: PropTypes.string,
   containerErrorClassName: PropTypes.string,
@@ -38,16 +38,16 @@ InputField.propTypes = {
   labelActiveClassName: PropTypes.string,
   labelErrorClassName: PropTypes.string,
   name: PropTypes.string.isRequired,
-  onBlur: PropTypes.func,
   onChange: PropTypes.func.isRequired,
   onFocus: PropTypes.func,
+  options: PropTypes.array.isRequired,
   placeholder: PropTypes.string,
-  type: PropTypes.string,
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
-    PropTypes.instanceOf(Date)]
+    PropTypes.instanceOf(Date)],
+    PropTypes.instanceOf(Object)
   ).isRequired
 }
 
-export default InputField
+export default SelectField

@@ -8,13 +8,15 @@
   &.error {
 
   }
-  .cn-form-input {
+  .cn-form-select {
+    background-color: #fff;
     border: 0;
+    border-radius: 0px;
+    outline: 1px solid #CCCCCC;
     height: 32px;
     margin-top: 5px;
     padding-left: 10px;
     padding-right: 10px;
-    outline: 1px solid #CCCCCC;
     width: 100%;
     &:focus {
       outline: 0;

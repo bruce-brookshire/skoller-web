@@ -1,0 +1,33 @@
+@mixin button-reset {
+  @include reset-box-model;
+  border: 0;
+  font-family: $cn-font-family;
+  outline: none;
+  padding: 0;
+  text-align: center;
+  text-decoration: none;
+
+  &:hover { cursor: pointer; }
+}
+
+@mixin button {
+  @include button-reset;
+  cursor: pointer;
+  display: inline-block;
+  font-size: $primary-font-size;
+  line-height: $primary-font-size * .9;
+  padding: 0.75em 1.25em;
+  &:focus { outline: none; }
+}
+
+@mixin primary-button {
+  @include button;
+  background-color: $cn-color-blue;
+  color: $cn-color-white;
+}
+
+@mixin button-invert {
+  @include button;
+  background-color: $cn-color-white;
+  color: $cn-color-blue;
+}

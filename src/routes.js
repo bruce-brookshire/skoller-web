@@ -6,16 +6,18 @@ import Layout from './containers/Layout'
 
 import MyClasses from './views/MyClasses'
 
-import Weights from './views/ClassEditor/Weights'
+
+import DIYTool from './views/DIYTool'
 
 const router = (
   <Router history={browserHistory}>
     <Route path="/" component={App}>
       <IndexRedirect to="/app"/>
       <Route path='/app' component={Layout}>
-        <IndexRedirect to="/weights"/>
+        <IndexRedirect to="/diy"/>
         <Route path='/myclasses' component={MyClasses}/>
-        <Route path='/weights' component={Weights} />
+
+        <Route path='/diy' component={DIYTool} />
       </Route>
       <Redirect from="*" to="/"/>
     </Route>

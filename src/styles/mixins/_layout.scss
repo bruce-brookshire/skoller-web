@@ -8,6 +8,11 @@
   justify-content: center;
 }
 
+@mixin center-viewport-content-container-internal {
+  @include center-viewport-content-container;
+  height: calc(100vh - 64px)
+}
+
 @mixin center-viewport-content-narrow {
   max-width: 360px;
   padding: 0 $unit-space;

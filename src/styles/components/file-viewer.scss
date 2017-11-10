@@ -1,0 +1,11 @@
+.file-viewer{
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+  overflow-x: scroll;
+  iframe{
+    border: 0;
+    height: 100%;
+    width: 100%;
+  }
+}
