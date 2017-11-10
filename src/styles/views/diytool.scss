@@ -32,7 +32,9 @@
 
     &.cn-syllabus-section-container {
       background-color: #e8f3fd;
-      padding: 10px
+      padding: 10px;
+      height: auto;
+      min-height: calc(70vh - 64px);
     }
   }
 
