@@ -9,15 +9,15 @@ const menuItems = [
   },
   {
     icon: 'fa fa-check-circle-o',
-    path: '/home'
+    path: '/diy'
   },
   {
     icon: 'fa fa-calendar',
-    path: '/home'
+    path: '/calendar'
   },
   {
     icon: 'fa fa-sign-out',
-    path: '/home'
+    path: '/logout'
   }
 ]
 
