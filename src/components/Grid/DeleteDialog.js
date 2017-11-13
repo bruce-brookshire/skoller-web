@@ -9,8 +9,8 @@ class DeleteDialog extends React.Component {
   renderOptionButtons () {
     return (
       <div className='align-right margin-top'>
-        <button className='confirm button-box-shadow margin-top' onClick={(event) => this.props.onDelete(event)}> Yes </button>
-        <button className='close button-box-shadow margin-top margin-right' onClick={(event) => this.props.onClose(event)}>No</button>
+        <button className='confirm button margin-top' onClick={(event) => this.props.onDelete(event)}> Yes </button>
+        <button className='close button-invert margin-top margin-right' onClick={(event) => this.props.onClose(event)}>No</button>
       </div>
     )
   }

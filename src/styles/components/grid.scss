@@ -19,7 +19,14 @@ $table-col-spacing: 10px;
   border-spacing: 0px;
   font-size: 0.85rem;
   width:100%;
-  
+
+  tbody {
+    &.bordered {
+      border: 1px solid black;
+      display: block;
+    }
+  }
+
   &.striped {
     thead {
       background: $cn-color-white;
