@@ -28,7 +28,7 @@ class Grid extends React.Component {
     if (!rows || rows.length === 0) {
       return (
         <tbody>
-          <tr>
+          <tr colSpan={headers.length}>
             <td className='no-items' colSpan={headers.length}>
             There are no items to be displayed.
             </td>

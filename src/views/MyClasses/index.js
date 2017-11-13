@@ -1,6 +1,7 @@
 import React from 'react'
-import Loading from '../../components/Loading'
+import AddClass from '../components/AddClass'
 import Grid from '../../components/Grid/index'
+import Loading from '../../components/Loading'
 import Modal from '../../components/Modal/index'
 // import AddClass from '../AddClass/index'
 import UploadDocuments from './UploadDocuments'
@@ -312,11 +313,10 @@ class MyClasses extends React.Component {
         {/*userStore.loading ? <Loading /> : this.renderContent()*/}
 
         <Modal
-          title='Add a Class'
           open={this.state.openAddModal}
-          footer={<button className='close button-box-shadow margin-top' onClick={() => this.toggleAddModal()}>Close</button>}
+          onClose={this.toggleAddModal.bind(this)}
         >
-          { /* <AddClass onSubmit={this.addClass.bind(this)}/> */ }
+          <AddClass onSubmit={this.onAddClass.bind(this)} onClose={this.toggleAddModal.bind(this)}/>
         </Modal>
 
         <Modal
