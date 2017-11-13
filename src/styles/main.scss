@@ -25,6 +25,7 @@
 @import 'components/sidenav';
 @import 'components/upload-history';
 @import 'components/upload-documents';
+@import 'components/progress-bar.scss';
 
 // Composed Views ------------------------
 @import 'views/diytool.scss';
@@ -135,6 +136,11 @@ body {
 
 .center-text {
   text-align: center;
+}
+
+.horizontal-align-row {
+  display:flex;
+  flex-direction: row;
 }
 
 .vertical-align {

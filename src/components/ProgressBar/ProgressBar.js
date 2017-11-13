@@ -15,7 +15,7 @@ class ProgressBar extends React.Component {
 
   render () {
     return (
-      <div>
+      <div className='horizontal-align-row'>
         {this.getProgressSteps()}
       </div>
     )

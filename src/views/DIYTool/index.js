@@ -7,7 +7,7 @@ import Professor from '../components/ClassEditor/Professor'
 import Weights from '../components/ClassEditor/Weights'
 import {ProgressBar, ProgressStep} from '../../components/ProgressBar'
 
-const steps = [ 'Personal Info', 'Verification', 'Enroll in classes', 'Submit Syllabi' ]
+const steps = [ 'Weights Intro', 'Input Weights', 'Assignments Intro', 'Input Assignments' ]
 
 
 class DIYTool extends React.Component {
@@ -74,14 +74,16 @@ class DIYTool extends React.Component {
             <div className='space-between-vertical col-xs-12 col-md-8 col-lg-6'>
               <button className='button full-width' onClick={this.onNext.bind(this)}>Next</button>
             </div>
-            <div>
-              <ProgressBar currentStep={this.state.currentIndex}>
-                {steps.map((step, index) => {
-                  return <ProgressStep key={`step-${index}`} label={step} />
-                })}
-              </ProgressBar>
-            </div>
           </div>
+
+          <div className='row actions-container full-width margin-top margin-bottom'>
+            <ProgressBar currentStep={this.state.currentIndex}>
+              {steps.map((step, index) => {
+                return <ProgressStep key={`step-${index}`} label={step} />
+              })}
+            </ProgressBar>
+          </div>
+          
         </div>
       </div>
     )
