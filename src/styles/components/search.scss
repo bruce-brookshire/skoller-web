@@ -8,7 +8,7 @@
     align-items: center;
     justify-content: center;
     .search-input {
-      width: 80%;
+      width: 100%;
       display: inline-block;
     }
     .search-button {
@@ -16,5 +16,15 @@
       max-height: 34px;
       margin-top: 5px;
     }
+  }
+
+  .search-result {
+    // min-height: 40vh;
+    // border: 1px solid black;
+    // border-top: 0;
+    .highlight {
+      color: $cn-color-blue;
+    }
+
   }
 }

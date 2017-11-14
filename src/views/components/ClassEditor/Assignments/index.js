@@ -57,6 +57,21 @@ const assignments = [
     id: 3,
     name: 'Project 1',
     weight: weights[2]
+  },
+  {
+    id: 1,
+    name: 'Exam 1',
+    weight: weights[0]
+  },
+  {
+    id: 2,
+    name: 'Homework 1',
+    weight: weights[1]
+  },
+  {
+    id: 3,
+    name: 'Project 1',
+    weight: weights[2]
   }
 ]
 

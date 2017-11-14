@@ -23,6 +23,36 @@
   button { @content; }
 }
 
+@mixin form-element {
+  background-color: $cn-color-white;
+  border: 1px solid #CCC;
+  border-radius: $cn-border-radius;
+  height: 32px;
+  margin-top: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 100%;
+  &:focus {
+    outline: 0;
+  }
+  &.active {
+  }
+  &.error {
+
+  }
+}
+
+@mixin form-label {
+  font-size: 12px;
+  margin-bottom: 5px;
+  &.active {
+    color: $cn-color-blue;
+  }
+  &.error {
+
+  }
+}
+
 // @mixin form-input {
 //   border: 1px solid $secondary-text-color;
 //   color: $primary-text-color;

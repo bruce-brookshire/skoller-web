@@ -20,23 +20,15 @@
 
   .cn-table-grid-container {
     border: 1px solid darken(#f0f1f3,10);
-    border-radius: 3px;
+    border-radius: $cn-border-radius;
     overflow: hidden;
   }
 
   //TODO: Move out
-  .button-full-width {
-    cursor: pointer;
-    width: 100%;
-    background-color: white;
-    border: 0;
-    color: $cn-color-blue;
+  .add-button {
+    border-radius: 0;
+    font-size: 0.75em;
+    font-weight: 600;
     padding: 1em 1.5em;
-    &:focus {
-      outline: 0;
-    }
-    &:hover {
-      background-color: #eee;
-    }
   }
 }

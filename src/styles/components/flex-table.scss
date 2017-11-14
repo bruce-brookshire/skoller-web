@@ -1,0 +1,37 @@
+.cn-flex-table {
+  display: block;
+  width: 100%;
+  .cn-flex-table-row {
+    display: flex;
+    flex-direction: row;
+  }
+  .cn-flex-table-heading {
+    display: block;
+    width: 100%;
+  }
+  .cn-flex-table-body {
+    display: block;
+    .cn-flex-table-row {
+      cursor: pointer;
+    }
+  }
+  .cn-flex-table-foot {
+    display: block;
+  }
+  .cn-flex-table-cell, .cn-flex-table-head {
+    display: flex;
+    flex: 1;
+    font-size: 12px;
+  }
+  .cn-flex-table-head {
+    align-items: center;
+    font-weight: 700;
+    padding: 7px;
+  }
+  .cn-flex-table-cell {
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+  }
+}

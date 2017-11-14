@@ -43,15 +43,35 @@ class Search extends React.Component {
     const {searchResults, searching} = this.props
 
     if (searchResults && this.state.searched && !searching) {
-      const {searchResultHeaders, searchResultSelect} = this.props
+      const {emptyMessage, searchResultHeaders, searchResultSelect} = this.props
       return (
         <SearchResults
+          emptyMessage={emptyMessage}
           searchResultHeaders={searchResultHeaders}
-          searchResults={searchResults}
+          searchResults={this.mapResults(searchResults)}
           onSelect={searchResultSelect}
         />
       )
     }
+  }
+
+  mapResults (searchResults) {
+    return searchResults.map(result => {
+      Object.keys(result).forEach(key => {
+        if (key !== 'id') {
+          result[key] = this.matchText(result[key])
+        }
+      })
+      return result
+    })
+  }
+
+  matchText (text) {
+    const re = new RegExp(`^${this.state.form.searchText}(.*$)`, "i")
+    const output = re.exec(text)
+    return output && output[1]
+      ? <div><span className='highlight'>{text.substring(0, this.state.form.searchText.length)}</span><span>{output[1]}</span></div>
+      : text
   }
 
   /*
@@ -85,7 +105,6 @@ class Search extends React.Component {
             placeholder={placeholder}
             value={form.searchText}
           />
-          <button ref={(component) => { this.searchButton = component }} className='search-button button margin-left' onClick={() => this.onSearch()}>Search</button>
         </div>
 
         {this.renderSearchResults()}

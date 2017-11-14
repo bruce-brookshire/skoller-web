@@ -9,14 +9,7 @@
     margin-bottom: 5px;
   }
   button {
-    background-color: $cn-color-blue;
-    border: 0;
-    color: $cn-color-white;
-    cursor: pointer;
-    padding: 1em 1.5em;
-    &:focus {
-      outline: none;
-    }
+    font-size: 0.75em;
   }
 
   span {
