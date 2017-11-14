@@ -8,7 +8,7 @@ class ProgressStep extends React.Component {
     if (active) classes.push('active')
     return (
       <div>
-        <p><strong>{label}</strong></p>
+        <p className='progress-bar-title'><strong>{label}</strong></p>
         <div className='progress-step-bar'>&ensp;</div>
       </div>
     )
