@@ -1,5 +1,6 @@
 import React from 'react'
 import AddClass from '../components/AddClass'
+import CreateClass from '../components/CreateClass'
 import Grid from '../../components/Grid/index'
 import Loading from '../../components/Loading'
 import Modal from '../../components/Modal/index'
@@ -81,7 +82,8 @@ class MyClasses extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      openAddModal: false
+      openAddModal: false,
+      openCreateModal: true
     }
   }
 
@@ -102,7 +104,7 @@ class MyClasses extends React.Component {
             onDelete={this.onDeleteClass.bind(this)}
             deleteMessage={'Are you sure you want to drop this class?'}
           />
-          <button className='button-full-width' onClick={() => this.toggleAddModal()}>
+          <button className='button-invert full-width add-button' onClick={() => this.toggleAddModal()}>
             Add a Class
           </button>
         </div>
@@ -197,6 +199,15 @@ class MyClasses extends React.Component {
   */
   toggleAddModal () {
     this.setState({openAddModal: !this.state.openAddModal})
+  }
+
+  /*
+  * Toggle the create class modal.
+  *
+  * @return null.
+  */
+  toggleCreateModal () {
+    this.setState({openCreateModal: !this.state.openCreateModal})
   }
 
   /*
@@ -297,6 +308,28 @@ class MyClasses extends React.Component {
     return needed.length === 0
   }
 
+  renderAddClassModal () {
+    return (
+      <Modal
+        open={this.state.openAddModal}
+        onClose={this.toggleAddModal.bind(this)}
+      >
+        <AddClass onSubmit={this.onAddClass.bind(this)} onCreateClass={this.toggleCreateModal.bind(this)} onClose={this.toggleAddModal.bind(this)}/>
+      </Modal>
+    )
+  }
+
+  renderCreateClassModal () {
+    return (
+      <Modal
+        open={this.state.openCreateModal}
+        onClose={this.toggleCreateModal.bind(this)}
+      >
+        <CreateClass onSubmit={this.onAddClass.bind(this)} onClose={this.toggleCreateModal.bind(this)}/>
+      </Modal>
+    )
+  }
+
   render () {
     return (
       <div className= 'cn-my-classes-container'>
@@ -312,12 +345,8 @@ class MyClasses extends React.Component {
 
         {/*userStore.loading ? <Loading /> : this.renderContent()*/}
 
-        <Modal
-          open={this.state.openAddModal}
-          onClose={this.toggleAddModal.bind(this)}
-        >
-          <AddClass onSubmit={this.onAddClass.bind(this)} onClose={this.toggleAddModal.bind(this)}/>
-        </Modal>
+        {this.renderAddClassModal()}
+        {this.renderCreateClassModal()}
 
         <Modal
           title={this.checkIfClassesCompleted() ? 'Nice work!' : 'Are you sure?'}

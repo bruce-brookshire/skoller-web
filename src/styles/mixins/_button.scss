@@ -12,6 +12,7 @@
 
 @mixin button {
   @include button-reset;
+  border-radius: $cn-border-radius;
   cursor: pointer;
   display: inline-block;
   font-size: $primary-font-size;

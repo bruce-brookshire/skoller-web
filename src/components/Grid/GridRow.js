@@ -19,27 +19,9 @@ class GridRow extends React.Component {
   renderCaret () {
     const {disabled} = this.props
     if (!disabled) {
-      const className = this.state.collapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'
+      const className = this.state.collapsed ? 'fa fa-angle-right' : 'fa fa-angle-down'
       return (
         <td className='center-text'><i className={className}/></td>
-      )
-    }
-  }
-
-  /*
-  * Renders a checkbox for selecting data.
-  *
-  * @param [Object] rowData. Row data to be selected.
-  * @param [Number] rowIndex. Row index to be selected.
-  * @return [Component]. Table data cell with checkbox.
-  */
-  renderCheckBox (rowData, rowIndex) {
-    const {canSelect} = this.props
-    if (canSelect) {
-      return (
-        <td>
-          <input type='checkbox' onChange={event => this.props.onSelect(event, rowData)} />
-        </td>
       )
     }
   }
@@ -102,6 +84,16 @@ class GridRow extends React.Component {
   }
 
   /*
+  * Handle on click event for the row.
+  *
+  */
+  onRowClick () {
+    const {canSelect, onSelect} = this.props
+    if (canSelect && onSelect) onSelect()
+    this.toggleRow()
+  }
+
+  /*
   * Toggles the state of whether the collapsible component in the table
   * is collapsed or not.
   *
@@ -160,9 +152,8 @@ class GridRow extends React.Component {
     return (
       <tbody>
         {this.renderDeleteDialog()}
-        <tr className='data-row' onClick={() => this.toggleRow()}>
+        <tr className='data-row' onClick={this.onRowClick.bind(this)}>
           {this.renderCaret()}
-          {this.renderCheckBox(rowData, index)}
           {this.renderTableRow(rowData, index)}
           {this.renderDelete(rowData, index)}
         </tr>

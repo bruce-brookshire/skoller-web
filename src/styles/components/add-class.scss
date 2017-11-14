@@ -19,4 +19,32 @@
   .search-container {
     padding: 1px;
   }
+
+  .cn-flex-table {
+    .empty-message {
+      text-align: center;
+    }
+    .cn-flex-table-body {
+      background-color: $cn-color-white;
+      min-height: 40vh;
+      height: 40vh;
+      overflow: scroll;
+      border: 1px solid black;
+      border-radius: $cn-border-radius;
+
+      .cn-flex-table-row:nth-of-type(even) {
+        background-color: #f8f8f8;
+        &:hover {
+          background-color: darken($cn-color-white, 10)
+        }
+      }
+
+      .cn-flex-table-row:nth-of-type(odd) {
+        background-color: $cn-color-white;
+        &:hover {
+          background-color: darken($cn-color-white, 10)
+        }
+      }
+    }
+  }
 }

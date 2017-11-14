@@ -1,5 +1,5 @@
-import React from 'react';
-import Grid from '../Grid';
+import React from 'react'
+import FlexTable from '../FlexTable'
 
 class SearchResults extends React.Component {
 
@@ -48,15 +48,16 @@ class SearchResults extends React.Component {
   // }
 
   render () {
-    const {searchResultHeaders, searchResults} = this.props
+    const {emptyMessage, searchResultHeaders, searchResults} = this.props
     return (
       <div className="search-result">
-        <Grid
-          bodyClass='bordered'
+        <FlexTable
+          className='cn-add-class-grid'
           headers={searchResultHeaders}
           rows={searchResults}
           disabled={true}
           canSelect={true}
+          emptyMessage={emptyMessage}
           onSelect={this.props.onSelect}
           canDelete={false}
         />

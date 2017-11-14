@@ -9,32 +9,11 @@
 
   }
   .cn-form-select {
-    background-color: #fff;
+    @include form-element;
     border: 0;
-    border-radius: 0px;
-    outline: 1px solid #CCCCCC;
-    height: 32px;
-    margin-top: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: 100%;
-    &:focus {
-      outline: 0;
-    }
-    &.active {
-    }
-    &.error {
-
-    }
+    outline: 1px solid #CCC;
   }
   .cn-input-label {
-    font-size: 12px;
-    margin-bottom: 5px;
-    &.active {
-      color: $cn-color-blue;
-    }
-    &.error {
-
-    }
+    @include form-label;
   }
 }

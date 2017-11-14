@@ -64,7 +64,6 @@ class Grid extends React.Component {
         <thead>
           <tr >
             {disabled ? null : <th className='th-spacer'></th>}
-            {canSelect ? <th className='th-spacer'></th> : null}
             {this.renderTableHeaders()}
             {canDelete ? <th className='th-spacer'></th> : null}
           </tr>

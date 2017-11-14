@@ -90,7 +90,7 @@ class UploadDocuments extends React.Component {
             />
           </div>
           <div className='col-xs-3 vertical-align center'>
-            <button>Let ClassNav review this syllabus</button>
+            <button className='button'>Let ClassNav review this syllabus</button>
             <span className='info-2'>{'You\'ll have to wait 72 hours'}</span>
             <a className='margin-top'>Review syllabus myself</a>
             <span className='info-2'>Only takes a few minutes</span>

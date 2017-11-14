@@ -29,6 +29,34 @@ const searchResultHeaders = [
   }
 ]
 
+const class1 = {
+  courseNumber: 'ECO 230',
+  name: 'Economy of China',
+  professor: 'Sasser',
+  days: 'MWF',
+  beginTime: '10:00am',
+  classLength: 'Full semester'
+}
+
+const class2 = {
+  courseNumber: 'ECO 2019',
+  name: 'Economies of Scale',
+  professor: 'Ruben',
+  days: 'MWF',
+  beginTime: '10:00am',
+  classLength: 'Full semester'
+}
+
+const class3 = {
+  courseNumber: 'ECO 1100',
+  name: 'Economic Nativism',
+  professor: 'Twondliedo',
+  days: 'MWF',
+  beginTime: '10:00am',
+  classLength: 'Full semester'
+}
+
+// const classes = [class1, class2, class3,class1, class2, class3,class1, class2, class3, class1, class2, class3]
 const classes = []
 
 class AddClass extends React.Component {
@@ -54,15 +82,15 @@ class AddClass extends React.Component {
   * @return [Object] row. Object of formatted row data for display in grid.
   */
   mapRow (item, index) {
-    const {id, courseNumber, name, professor, professorInfo, days, beginTime, classLength} = item
+    const {id, courseNumber, name, professor, days, beginTime, classLength} = item
 
     const row = {
       id: id || '',
       courseNumber: courseNumber || '-',
       name: name || '-',
-      professor: professor || professorInfo ? this.mapProfessor(professor || professorInfo) : 'TBA',
+      professor: professor || 'TBA', //this.mapProfessor(professor) : 'TBA',
       days: days || 'TBA',
-      beginTime: beginTime ? beginTime : 'TBA',
+      beginTime: beginTime || 'TBA',
       classLength: classLength || 'TBA'
     }
 
@@ -89,15 +117,21 @@ class AddClass extends React.Component {
     return name || 'TBA'
   }
 
+  onCreateClass () {
+    this.props.onClose()
+    this.props.onCreateClass()
+  }
+
   render () {
     return (
       <div className='cn-add-class-container'>
         <div>
           <a onClick={() => this.props.onClose()} className='submit'>Done</a>
-          <h4>Add a class</h4>
+          <h4 className='cn-modal-header'>Add a class</h4>
         </div>
         <Search
           description=''
+          emptyMessage={<div className='empty-message margin-top'>{`Can't find your class? `}<a onClick={this.onCreateClass.bind(this)}>Create a new one.</a></div>}
           placeholder='Search by class name, professor last name, or class number...'
           onSearch={this.onSearch}
           searching={false}
