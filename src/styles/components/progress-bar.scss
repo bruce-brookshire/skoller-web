@@ -1,10 +1,29 @@
-.progress-step-bar{
-    background-color: #57B9E4;
+.progress-step-bar-reached{
+    background-color: $cn-color-blue;
     border-radius: 500px;
-    font-size: .5em;
+    font-size: 6px;
+}
+
+.progress-step-bar-unreached{
+    background-color: $cn-color-grey;
+    border-radius: 500px;
+    font-size: 6px;
+    // width:120%;
+    width:120px;
 }
 
 .progress-bar-title{
     margin-bottom: 7px;
     text-align: left;
+    font-size:small;
+}
+
+.progress-step-spacing{
+    margin-right: 10px;
+    margin-left: 10px;
+}
+.widen-step{
+    width: 100%;
+    margin-right:15px;
+    margin-left:15px;
 }
