@@ -1,36 +1,42 @@
 import React from 'react'
-import AutoComplete from '../../../components/AutoComplete'
+import AddProfessor from './AddProfessor'
+import ClassForm from './ClassForm'
+import SearchProfessor from './SearchProfessor'
+
+const ContentEnum = {
+  SEARCH_PROFESSOR: 0,
+  ADD_PROFESSOR: 1,
+  CLASS_FORM: 2
+}
 
 class CreateClass extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      step: 0
+      step: 0,
+      form: {}
     }
   }
 
   renderContent () {
     switch (this.state.step) {
-      case 0:
-        break
+      case ContentEnum.SEARCH_PROFESSOR:
+        return <SearchProfessor onAddProfessor={this.onAddProfessor.bind(this)} />
+      case ContentEnum.ADD_PROFESSOR:
+        return <AddProfessor onSubmit={this.onSubmitProfessor.bind(this)}/>
+      case ContentEnum.CLASS_FORM:
+        return <ClassForm professor={this.state.form.professor} />
       default:
     }
   }
 
-  renderRow (data, index, resetState) {
-    return (
-      <div className='cn-autocomplete-results' key={`result-${index}`}>
-        <span>{data.name}</span>
-      </div>
-    )
-  }
-
-  getDataSource () {
-    return []
-  }
-
   onAddProfessor () {
+    this.setState({step: ContentEnum.ADD_PROFESSOR})
+  }
 
+  onSubmitProfessor (form) {
+    const newForm = {...this.state.form, professor: form}
+    this.setState({form: newForm, step: ContentEnum.CLASS_FORM})
   }
 
   render () {
@@ -40,19 +46,7 @@ class CreateClass extends React.Component {
           <a onClick={() => this.props.onClose()} className='back'>Back to class search</a>
           <h4 className='cn-modal-header'>Create a new class</h4>
         </div>
-        <div className='row margin-top'>
-          <div className='col-xs-12 col-md-6 col-lg-4'>
-            <h5>Who teaches this class?</h5>
-
-            <AutoComplete
-              placeholder='Search for your professor...'
-              dataSource={this.getDataSource()}
-              emptyMessage={<div className='cn-autocomplete-results'>{`Can't find your professor? `}<a onClick={this.onAddProfessor.bind(this)}>Add a new one.</a></div>}
-              renderRow={this.renderRow.bind(this)}
-            />
-          </div>
-        </div>
-
+        {this.renderContent()}
       </div>
     )
   }

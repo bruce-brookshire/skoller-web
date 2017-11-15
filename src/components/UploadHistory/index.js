@@ -23,11 +23,13 @@ class UploadHistory extends React.Component {
   }
 
   render () {
-    const {info, title} = this.props
+    const {files, info, title} = this.props
+    const containerClasses = ['upload-container']
+    if (files.length > 0) containerClasses.push('has-files')
     return (
       <div className='cn-upload-history'>
         <div className='upload-history-list'>
-          <FileUpload className="upload-container">
+          <FileUpload className={containerClasses.join(' ')}>
             <span className='header center-text'>{title}</span>
             {this.renderHistory()}
           </FileUpload>

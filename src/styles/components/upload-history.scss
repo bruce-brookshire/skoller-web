@@ -21,6 +21,10 @@
         border: 2px solid darken(#f0f1f3,10);
       }
 
+      &.has-files {
+        border: 2px dotted $cn-color-blue;
+      }
+
       .history-item {
         font-size: 12px;
         display: block;
