@@ -34,10 +34,14 @@ class UploadHistory extends React.Component {
             {this.renderHistory()}
           </FileUpload>
         </div>
-        <div className='upload-info margin-top'>
-          <i className='fa fa-info-circle info-icon'/>
-          <span>{info}</span>
-        </div>
+        {
+          info
+            ? <div className='upload-info margin-top'>
+              <i className='fa fa-info-circle info-icon'/>
+              <span>{info}</span>
+            </div>
+            : null
+        }
       </div>
     )
   }

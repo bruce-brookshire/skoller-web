@@ -6,18 +6,23 @@ import Layout from './containers/Layout'
 
 import MyClasses from './views/MyClasses'
 
-
+import DIYLanding from './views/DIYTool/DIYLanding'
 import DIYTool from './views/DIYTool'
+
+import Onboard from './views/Onboard'
 
 const router = (
   <Router history={browserHistory}>
     <Route path="/" component={App}>
       <IndexRedirect to="/app"/>
+      <Route path='/onboard' component={Onboard} />
       <Route path='/app' component={Layout}>
         <IndexRedirect to="/myclasses"/>
         <Route path='/myclasses' component={MyClasses}/>
-
-        <Route path='/diy' component={DIYTool} />
+        <Route path='/diy'>
+          <IndexRoute component={DIYLanding} />
+          <Route path='/diy/tool' component={DIYTool} />
+        </Route>
       </Route>
       <Redirect from="*" to="/"/>
     </Route>

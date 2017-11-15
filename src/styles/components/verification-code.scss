@@ -1,0 +1,22 @@
+.cn-verification-code-container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+
+  .cn-verification-code-input {
+    @include form-element;
+    display: flex;
+    flex: 1;
+    height: 32px;
+    max-width: 32px;
+    margin: $unit-space;
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
