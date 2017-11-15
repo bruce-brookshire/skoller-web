@@ -77,13 +77,15 @@ class DIYTool extends React.Component {
           </div>
 
           <div className='row actions-container full-width margin-top margin-bottom'>
-            <ProgressBar currentStep={this.state.currentIndex}>
-              {steps.map((step, index) => {
-                return <ProgressStep key={`step-${index}`} label={step} />
-              })}
-            </ProgressBar>
+            <div className='space-between-vertical col-xs-12 col-md-8 col-lg-6'>
+              <ProgressBar currentStep={this.state.currentIndex}>
+                {steps.map((step, index) => {
+                  return <ProgressStep key={`step-${index}`} label={step} />
+                })}
+              </ProgressBar>
+            </div>
           </div>
-          
+
         </div>
       </div>
     )
