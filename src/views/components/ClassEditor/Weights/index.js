@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
 import {InputField} from '../../../../components/Form'
 import Grid from '../../../../components/Grid/index'
+import WeightConverter from '../../../../components/WeightConverter/index'
 
 const headers = [
   {
@@ -258,6 +259,7 @@ class Weights extends React.Component {
               </div>
             </div>
             <button className='button full-width margin-top margin-bottom' onClick={this.onSubmit.bind(this)}>Submit category weight</button>
+            <WeightConverter/>
           </form>
         </div>
       </div>
