@@ -83,7 +83,7 @@ class MyClasses extends React.Component {
     super(props)
     this.state = {
       openAddModal: false,
-      openCreateModal: true
+      openCreateModal: false
     }
   }
 

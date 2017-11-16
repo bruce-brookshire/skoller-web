@@ -1,0 +1,91 @@
+.cn-onboarding-container {
+  @include center-viewport-content-container;
+  padding: 50px;
+
+  .cn-verification-container {
+    width: 100%;
+    .img-container {
+      align-items: center;
+      display: flex;
+      @include breakpoint(medium) {
+        justify-content: flex-end;
+      }
+      @include breakpoint(small) {
+        justify-content: center;
+      }
+
+      img {
+        height: 10rem;
+      }
+    }
+    .content-container {
+      @include breakpoint(tablet) {
+        align-items: flex-start;
+      }
+      @include breakpoint(small) {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+      }
+    }
+  }
+
+  .cn-submit-syllabi-container {
+    .cn-flex-table {
+      height: 60vh;
+      overflow-y:hidden;
+      overflow-y: scroll;
+      .empty-message {
+        text-align: center;
+      }
+      .cn-flex-table-head {
+        justify-content: center;
+      }
+      .cn-flex-table-body {
+        background-color: $cn-color-white;
+        border: 1px solid darken(#f0f1f3,10);
+        border-radius: $cn-border-radius;
+
+        .cn-flex-table-row {
+          .cn-flex-table-cell {
+            justify-content: center;
+            align-items: center;
+            &:first-child {
+              justify-content: flex-start;
+              font-weight: 600;
+            }
+          }
+        }
+
+        .cn-flex-table-row:nth-of-type(odd) {
+          background-color: $cn-color-white;
+        }
+
+        .cn-flex-table-row:nth-of-type(even) {
+          background-color: $cn-color-white;
+        }
+      }
+    }
+
+    .cn-upload-history {
+      width: 100%;
+      .upload-container {
+        background-color: darken($cn-color-blue, 10);
+        border-color: $cn-color-white;
+        height: 100px;
+        max-height: 100px;
+        min-height: 100px;
+      }
+
+      .header, .history-item {
+        color: $cn-color-white;
+      }
+    }
+
+    .checkbox-label {
+      color: #d7d7d7;
+      font-weight: 400;
+      margin-left: 5px;
+    }
+  }
+}

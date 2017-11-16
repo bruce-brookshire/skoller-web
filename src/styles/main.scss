@@ -26,16 +26,21 @@
 @import 'components/grid';
 @import 'components/modal';
 @import 'components/navbar';
+@import 'components/progress-bar.scss';
 @import 'components/search';
 @import 'components/sidenav';
 @import 'components/upload-history';
 @import 'components/upload-documents';
 @import 'components/progress-bar.scss';
 @import 'components/weight-converter.scss';
+@import 'components/verification-code';
+
 
 // Composed Views ------------------------
+@import 'views/diylanding.scss';
 @import 'views/diytool.scss';
 @import 'views/myclasses.scss';
+@import 'views/onboarding.scss';
 
 
 html { box-sizing: border-box; }
@@ -138,6 +143,10 @@ body {
 
 .right {
   float: right;
+}
+
+.justify-center {
+  justify-content: center;
 }
 
 .center-text {
