@@ -1,0 +1,105 @@
+.cn-syllabus-tutorial-container {
+  @include center-viewport-content-container-internal;
+  overflow-y: scroll;
+
+  .cn-outline-container {
+    @include breakpoint(medium) {
+      border: 0;
+      position: relative;
+    }
+
+    @include breakpoint(large) {
+      border: 2px solid #a9a9a9;
+      border-radius: 10px;
+      height: calc(85vh - 64px);
+      left: 50%;
+      position: absolute;
+      transform: translateX(-50%);
+    }
+
+    .cn-tutorial-info {
+
+      .header {
+        margin: 0;
+        margin-top: 0.5em;
+        padding: 0;
+      }
+
+      .description {
+        display: block;
+        margin-top: 0.5em;
+      }
+    }
+
+    .cn-section-container {
+      background-color: lighten(#a9a9a9, 10);
+      border-radius: 10px;
+      border: 2px solid #a9a9a9;
+      height: 65%;
+      padding: 0;
+      overflow: hidden;
+      overflow-y: scroll;
+
+      >div {
+        background-color: white;
+        padding: 0.5em;
+      }
+
+      @include breakpoint(medium) {
+        position: relative;
+        width: auto;
+      }
+
+      @include breakpoint(large) {
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        transform: translateY(-50%);
+      }
+
+      &.left {
+        @include breakpoint(medium) {
+        }
+        @include breakpoint(large) {
+          float: left;
+          left: -40%;
+        }
+        @include breakpoint(xlarge) {
+          float: left;
+          left: -55%;
+        }
+      }
+
+      &.right {
+
+        @include breakpoint(medium) {
+        }
+        @include breakpoint(large) {
+          float: right;
+          right: -40%;
+        }
+
+        @include breakpoint(xlarge) {
+          float: right;
+          right: -55%;
+        }
+      }
+    }
+
+    .button-container {
+      background-color: lighten(#a9a9a9, 10);
+      margin-left: 0.5em;
+      margin-right: 0.5em;
+      width: calc(100% - 1em);
+      left: 0;
+      @include breakpoint(medium) {
+        position: relative;
+      }
+
+      @include breakpoint(large) {
+        position: absolute;
+        bottom: 5%;
+      }
+    }
+  }
+}

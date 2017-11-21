@@ -8,6 +8,7 @@ import MyClasses from './views/MyClasses'
 
 import DIYLanding from './views/DIYTool/DIYLanding'
 import DIYTool from './views/DIYTool'
+import Tutorial from './views/DIYTool/Tutorial'
 
 import Onboard from './views/Onboard'
 
@@ -21,6 +22,7 @@ const router = (
         <Route path='/myclasses' component={MyClasses}/>
         <Route path='/diy'>
           <IndexRoute component={DIYLanding} />
+          <Route path='/diy/tutorial' component={Tutorial} />
           <Route path='/diy/tool' component={DIYTool} />
         </Route>
       </Route>

@@ -126,7 +126,7 @@ class Weights extends React.Component {
             <td></td>
           </tr>
         </thead>
-        <tbody>
+        <tbody id='class-editor-weights-total'>
           <tr>
             <td style={tdStyle}></td>
             <td style={tdStyle}>Total: </td>
@@ -217,7 +217,7 @@ class Weights extends React.Component {
 
     return (
       <div className='space-between-vertical'>
-        <div className='margin-top'>
+        <div id='class-editor-weights-table' className='margin-top'>
           <Grid
             headers={headers}
             rows={this.getRows()}
@@ -228,7 +228,7 @@ class Weights extends React.Component {
         </div>
 
         <div className='margin-top'>
-          <form>
+          <form id='class-editor-weight-form'>
             <div className='row'>
               <div className='col-xs-8'>
                 <InputField
@@ -259,9 +259,9 @@ class Weights extends React.Component {
               </div>
             </div>
             <button className='button full-width margin-top margin-bottom' onClick={this.onSubmit.bind(this)}>Submit category weight</button>
-            <WeightConverter/>
           </form>
         </div>
+        <WeightConverter id='class-editor-weight-converter'/>
       </div>
     )
   }
