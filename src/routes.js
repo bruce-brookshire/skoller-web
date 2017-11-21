@@ -9,6 +9,7 @@ import MyClasses from './views/MyClasses'
 import DIYLanding from './views/DIYTool/DIYLanding'
 import DIYTool from './views/DIYTool'
 import HubLanding from './views/HubLanding'
+import Landing from './views/Landing'
 import AssignmentsTutorial from './views/SyllabusTutorial/AssignmentsTutorial'
 import WeightsTutorial from './views/SyllabusTutorial/WeightsTutorial'
 
@@ -18,6 +19,7 @@ const router = (
   <Router history={browserHistory}>
     <Route path="/" component={App}>
       <IndexRedirect to="/app"/>
+      <Route path='/landing' component={Landing} />
       <Route path='/onboard' component={Onboard} />
       <Route path='/app' component={Layout}>
         <IndexRedirect to="/myclasses"/>
