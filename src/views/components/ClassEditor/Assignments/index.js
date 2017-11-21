@@ -187,7 +187,7 @@ class Assignments extends React.Component {
 
     return (
       <div className='space-between-vertical'>
-        <div className='margin-top'>
+        <div id='class-editor-assignments-table' className='margin-top'>
           <Grid
             headers={headers}
             rows={this.getRows()}
@@ -197,7 +197,7 @@ class Assignments extends React.Component {
         </div>
 
         <div className='margin-top'>
-          <form>
+          <form id='class-editor-assignment-form'>
             <div className='row'>
               <div className='col-xs-12'>
                 <InputField

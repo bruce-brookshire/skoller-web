@@ -70,7 +70,7 @@ class DIYTool extends React.Component {
             </div>
           </div>
 
-          <div className='row actions-container full-width margin-top margin-bottom'>
+          <div className='row actions-container full-width margin-top'>
             <div className='space-between-vertical col-xs-12 col-md-8 col-lg-6'>
               <button className='button full-width' onClick={this.onNext.bind(this)}>Next</button>
             </div>

@@ -224,8 +224,8 @@ class Weights extends React.Component {
             disabled={true}
             canDelete={false}
           />
-          {this.renderTotalPercentage()}
         </div>
+          {this.renderTotalPercentage()}
 
         <div className='margin-top'>
           <form id='class-editor-weight-form'>

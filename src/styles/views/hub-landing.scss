@@ -1,0 +1,72 @@
+.cn-hub-landing-container {
+  @include breakpoint(medium) {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    height: calc(100vh - 64px);
+  }
+
+  .center-content {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .header {
+    font-weight: 400;
+    font-size: 2.5em;
+    margin: 0;
+    padding: 0;
+  }
+
+  .description {
+    font-size: 0.9em;
+    font-weight: 300;
+    margin: 0;
+    margin-top: 0.25em;
+    margin-bottom: 5em;
+    padding: 0;
+
+    align-items: center;
+    display: flex;
+    justify-content: center;
+
+    i {
+      margin-left: 5px;
+    }
+  }
+
+  .button-header {
+    display: block;
+    font-size: 0.8em;
+    font-weight: 300;
+  }
+
+   .nav-button-container {
+     display: flex;
+     flex-direction: row;
+     justify-content: center;
+     // justify-content: space-between;
+
+     .nav-button {
+       align-items: center;
+       display: flex;
+       flex-direction: column;
+       justify-content: center;
+       flex: 1;
+       height: 100%;
+
+       img {
+         margin-bottom: 5px;
+       }
+
+       span {
+         line-height: 1.25em;
+       }
+
+       &.admin {
+         background-color: $cn-color-yellow;
+       }
+     }
+   }
+
+}

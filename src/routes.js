@@ -8,7 +8,9 @@ import MyClasses from './views/MyClasses'
 
 import DIYLanding from './views/DIYTool/DIYLanding'
 import DIYTool from './views/DIYTool'
-import Tutorial from './views/DIYTool/Tutorial'
+import HubLanding from './views/HubLanding'
+import AssignmentsTutorial from './views/SyllabusTutorial/AssignmentsTutorial'
+import WeightsTutorial from './views/SyllabusTutorial/WeightsTutorial'
 
 import Onboard from './views/Onboard'
 
@@ -20,9 +22,16 @@ const router = (
       <Route path='/app' component={Layout}>
         <IndexRedirect to="/myclasses"/>
         <Route path='/myclasses' component={MyClasses}/>
+
+        <Route path='/hub'>
+          <IndexRedirect to='/hub/landing'/>
+          <Route path='/hub/landing' component={HubLanding}/>
+        </Route>
+
+        <Route path='/tutorial/assignments' component={AssignmentsTutorial} />
+        <Route path='/tutorial/weights' component={WeightsTutorial} />
         <Route path='/diy'>
           <IndexRoute component={DIYLanding} />
-          <Route path='/diy/tutorial' component={Tutorial} />
           <Route path='/diy/tool' component={DIYTool} />
         </Route>
       </Route>
