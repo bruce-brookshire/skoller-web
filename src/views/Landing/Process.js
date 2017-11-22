@@ -4,7 +4,7 @@ import React from 'react'
 class Process extends React.Component {
     render () {
       return (
-        <div>
+        <div className=''>
             <div className='row'>
                 <h3>Here's how it works</h3>
             </div>

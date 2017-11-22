@@ -4,7 +4,7 @@ import React from 'react'
 class FeatureHighlights extends React.Component {
     render () {
       return (
-        <div>
+        <div className='even-sections section-slant'>
             <h3>ClassNav answers all of the biggest questions you'll have throughout your semester.</h3>
 
             <div className='row'>

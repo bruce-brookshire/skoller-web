@@ -28,5 +28,45 @@
    }
 }
 
+.section-slant {
+  -webkit-clip-path: polygon(0 10%, 100% 0, 100% 90%, 0 100%);
+  clip-path: polygon(0 10%, 100% 0, 100% 90%, 0 100%);
+}
 
+.blue-section-text{
+  color: $cn-color-white;
+}
+
+.purpose_image{
+  width: 110%;
+  /* height: auto; */
+  z-index: -9;
+  position: relative;
+  left: -55px;
+}
+
+.section-topper{
+  margin-left: 3em;
+  font-size: 3em;
+  padding-top: 3em;
+  display: block;
+  font-weight: bold;
+}
+
+.section-tagline{
+  margin-left: 6em;
+  font-size: 1.5em;
+}
+
+// .purpose-section{
+//   background: url("./src/assets/images/landing_page/iPhones_Background.png");
+// }
+
+.even-sections{
+  background-color: $cn-color-blue;
+}
+
+.odd-section{
+  background-color: $cn-primary-background-color;
+}
 

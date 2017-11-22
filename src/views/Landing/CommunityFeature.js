@@ -4,7 +4,7 @@ import React from 'react'
 class CommunityFeature extends React.Component {
     render () {
       return (
-        <div>
+        <div className=''>
             <div className='row'>
                 <h3>Plus, a community you can't find anywhere else.</h3>
             </div>
