@@ -55,7 +55,8 @@ class Weights extends React.Component {
   */
   initializeState () {
     return {
-      form: this.initializeFormData()
+      form: this.initializeFormData(),
+      weightConverter: false
     }
   }
 
@@ -208,6 +209,10 @@ class Weights extends React.Component {
 
   }
 
+  onToggleConverter () {
+    this.setState({weightConverter: !this.state.weightConverter})
+  }
+
   render () {
     // if (weightStore.loading) {
     //   return <Loading />
@@ -261,7 +266,9 @@ class Weights extends React.Component {
             <button className='button full-width margin-top margin-bottom' onClick={this.onSubmit.bind(this)}>Submit category weight</button>
           </form>
         </div>
-        <WeightConverter id='class-editor-weight-converter'/>
+        <div className='full-width'>
+          <WeightConverter id='class-editor-weight-converter' onChange={this.onToggleConverter.bind(this)} value={this.state.weightConverter}/>
+        </div>
       </div>
     )
   }

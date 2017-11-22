@@ -1,0 +1,29 @@
+.cn-landing-container {
+  iframe {
+    height: 315px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+   }
+
+   .cn-navbar {
+     img {
+       @include breakpoint(small) {
+         display: none;
+       }
+       @include breakpoint(medium) {
+         display: inline-block;
+       }
+     }
+     .user-info {
+       @include breakpoint(small) {
+        float: none;
+        justify-content: center;
+       }
+       @include breakpoint(medium) {
+        float: right;
+        justify-content: none;
+       }
+     }
+   }
+}
