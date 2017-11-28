@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import {Router, browserHistory} from 'react-router'
 import {Provider} from 'mobx-react'
 import routes from './routes'
-const stores = {}
+import stores from './stores'
 
 const app = document.getElementById('root')
 

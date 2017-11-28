@@ -15,13 +15,17 @@ import WeightsTutorial from './views/SyllabusTutorial/WeightsTutorial'
 
 import Onboard from './views/Onboard'
 
+import actions from './actions'
+import stores from './stores'
+const {userStore} = stores
+
 const router = (
   <Router history={browserHistory}>
     <Route path="/" component={App}>
       <IndexRedirect to="/app"/>
       <Route path='/landing' component={Landing} />
       <Route path='/onboard' component={Onboard} />
-      <Route path='/app' component={Layout}>
+      <Route path='/app' component={Layout} onEnter={requireAuth}>
         <IndexRedirect to="/myclasses"/>
         <Route path='/myclasses' component={MyClasses}/>
 
@@ -37,9 +41,41 @@ const router = (
           <Route path='/diy/tool' component={DIYTool} />
         </Route>
       </Route>
+      <Route path="/logout" onEnter={logout} />
       <Redirect from="*" to="/"/>
     </Route>
   </Router>
 )
+
+/*
+* Handle strongly typed url
+*/
+function requireAuth (nextState, replaceState) {
+  if (!userStore.user) {
+    userStore.setFetchingUser(true)
+    userStore.authToken = cookie.get('skollerToken')
+    actions.auth.getUserByToken()
+      .then(() => {
+        // if (nextState.routes.findIndex(route => route.path === '/staff') !== -1 &&
+        //   !userStore.user.staff_profile && userStore.user.provider_profile) {
+        //   browserHistory.push('/provider')
+        // } else if (nextState.routes.findIndex(route => route.path === '/provider') !== -1 &&
+        //   !userStore.user.provider_profile && userStore.user.staff_profile) {
+        //   browserHistory.push('/staff')
+        // }
+        userStore.setFetchingUser(false)
+      })
+      .catch(() => {
+        browserHistory.push('/')
+        userStore.setFetchingUser(false)
+      })
+  }
+}
+
+const cookie = new Cookies()
+function logout (nextState, replaceState) {
+  cookie.remove('skollerToken')
+  replaceState(null, '/landing')
+}
 
 export default(router)
