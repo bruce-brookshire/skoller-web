@@ -1,6 +1,11 @@
 import React from 'react'
 import LoginForm from './LoginForm'
-import SignUpForm from './SignUpForm'
+import PromoSignup from './PromoSignup'
+import Purpose from './Purpose'
+import Process from './Process'
+import FeatureHighlights from './FeatureHighlights'
+import CommunityFeature from './CommunityFeature'
+import CallToAction from './CallToAction'
 
 const styles = {
   row: {
@@ -14,6 +19,8 @@ const styles = {
 class Landing extends React.Component {
   render () {
     return (
+
+      // navbar login section
       <div className='cn-landing-container'>
         <div className='cn-navbar'>
           <div className='left'>
@@ -24,16 +31,25 @@ class Landing extends React.Component {
           </div>
         </div>
 
-        <div className='row'>
-          <div className='col-xs-12 col-sm-12 col-md-6 col-lg-8 vertical-align center'>
-            <iframe src="https://www.youtube.com/embed/ENnO_5o52sE" frameborder="0" allowfullscreen></iframe>
-          </div>
-          <div className='col-xs-12 col-sm-12 col-md-6 col-lg-4 vertical-align center'>
-            <SignUpForm />
-          </div>
-        </div>
-      </div>
+        {/* start of section 1 */}
+        <PromoSignup/>
 
+        {/* start of section 2 */}
+        <Purpose/>
+
+        {/* start of section 3 */}
+        <Process/>
+
+        {/* start of section 4 */}
+        <FeatureHighlights/>
+
+        {/* start of section 5 */}
+        <CommunityFeature/>
+
+        {/* start of section 6 */}
+        <CallToAction/>
+
+      </div>
     )
   }
 }
