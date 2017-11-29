@@ -1,6 +1,6 @@
 import React from 'react'
 import SignUpForm from './SignUpForm'
-
+import Slant from '../../components/Slant'
 
 class PromoSignup extends React.Component {
   render () {
@@ -12,6 +12,7 @@ class PromoSignup extends React.Component {
         <div className='col-xs-12 col-sm-12 col-md-6 col-lg-4 vertical-align center'>
           <SignUpForm />
         </div>
+        <Slant />
       </div>
     )
   }

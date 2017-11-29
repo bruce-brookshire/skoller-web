@@ -38,10 +38,10 @@ class Landing extends React.Component {
         <FeatureHighlights/>
 
         {/* start of section 5 */}
-        <CommunityFeature/>
+        {/* <CommunityFeature/> */}
 
         {/* start of section 6 */}
-        <CallToAction/>
+        {/* <CallToAction/> */}
 
       </div>
     )

@@ -37,32 +37,40 @@
   color: $cn-color-white;
 }
 
+.white-section-taglines{
+  color: $cn-color-blue;
+}
+
 .purpose_image{
-  width: 110%;
-  /* height: auto; */
-  z-index: -9;
-  position: relative;
-  left: -55px;
+  height:50%;
+  width: 100%;
 }
 
 .section-topper{
-  margin-left: 3em;
-  font-size: 3em;
-  padding-top: 3em;
+  font-size: 2.5em;
   display: block;
   font-weight: bold;
 }
 
 .section-tagline{
-  margin-left: 6em;
   font-size: 1.5em;
 }
 
-// .purpose-section{
-//   background: url("./src/assets/images/landing_page/iPhones_Background.png");
-// }
+.slants{
+  height:10vh;
+  width:100%;
+}
 
-.even-sections{
+.section-dimensions{
+  width: 100%;
+}
+
+.section-header{
+  width: 85%;
+  margin: 0 auto;
+}
+
+.even-section{
   background-color: $cn-color-blue;
 }
 
@@ -70,3 +78,15 @@
   background-color: $cn-primary-background-color;
 }
 
+.section-padding{
+  padding: 0 5%;
+}
+
+.muted-text{
+  color: $cn-color-grey;
+  font-size: 0.95em;
+}
+.process-icon-size{
+  height:96px;
+  width:96px;
+}

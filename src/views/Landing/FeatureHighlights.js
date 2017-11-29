@@ -1,9 +1,11 @@
 import React from 'react'
+import Slant from '../../components/Slant'
 
 class FeatureHighlights extends React.Component {
   render () {
     return (
-      <div className='even-sections section-slant'>
+      <div className='even-section'>
+        
         <h3>{'ClassNav answers all of the biggest questions you\'ll have throughout your semester.'}</h3>
 
         <div className='row'>
