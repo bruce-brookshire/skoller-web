@@ -1,9 +1,10 @@
-import {authenticateUser, getUserByToken} from './auth'
+import {authenticateUser, getUserByToken, registerUser} from './auth'
 
 const actions = {
   auth: {
     authenticateUser,
-    getUserByToken
+    getUserByToken,
+    registerUser
   }
 }
 

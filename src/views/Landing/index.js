@@ -1,4 +1,6 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+import {inject, observer} from 'mobx-react'
 import LoginForm from './LoginForm'
 import PromoSignup from './PromoSignup'
 import Purpose from './Purpose'
@@ -7,15 +9,7 @@ import FeatureHighlights from './FeatureHighlights'
 import CommunityFeature from './CommunityFeature'
 import CallToAction from './CallToAction'
 
-const styles = {
-  row: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    display: 'flex'
-  }
-}
-
-
+@inject('rootStore') @observer
 class Landing extends React.Component {
   render () {
     return (
@@ -27,12 +21,12 @@ class Landing extends React.Component {
             <img className='logo' src='src/assets/images/blue-logo-full.png'></img>
           </div>
           <div className='user-info right'>
-              <LoginForm />
+            <LoginForm rootStore={this.props.rootStore}/>
           </div>
         </div>
 
         {/* start of section 1 */}
-        <PromoSignup/>
+        <PromoSignup rootStore={this.props.rootStore}/>
 
         {/* start of section 2 */}
         <Purpose/>
@@ -52,6 +46,10 @@ class Landing extends React.Component {
       </div>
     )
   }
+}
+
+Landing.PropTypes = {
+  rootStore: PropTypes.object
 }
 
 export default Landing
