@@ -12,19 +12,28 @@ class FeatureHighlights extends React.Component {
           <div className='col-xs-12 col-sm-3'>
             <h1>Filler</h1>
             <div className='speech-bubble'>          
-              <p>This is the speech bubble</p>
+              <p>{'When\'s the best weekend to go on that big road trip?'}</p>
             </div>
             <img className='highlights-images' src='src/assets/images/landing_page/Calendar@2x.png'/>
           </div>
           <div className='col-xs-12 col-sm-3'>
             <img className='highlights-images' src='src/assets/images/landing_page/Tasks@2x.png'/>
+            <div className='speech-bubble invert'>          
+              <p className='invert'>{'What\'s most important to work on today?'}</p>
+            </div>
           </div>
           <div className='col-xs-12 col-sm-3'>
             <h1>Filler</h1>
+            <div className='speech-bubble'>          
+              <p>How am I doing in all my classes?</p>
+            </div>
             <img className='highlights-images' src='src/assets/images/landing_page/Classes@2x.png'/>
           </div>
           <div className='col-xs-12 col-sm-3'>
             <img className='highlights-images' src='src/assets/images/landing_page/Tasks@2x.png'/>
+            <div className='speech-bubble invert'>          
+              <p className='invert'>What do I need to make on the rest of my assignments to get the grade I want?</p>
+            </div>
           </div>
         </div>
       </div>

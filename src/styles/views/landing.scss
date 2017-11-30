@@ -95,10 +95,14 @@
   width:90%;
 }
 
+.invert{
+  transform: scaleY(-1);
+}
+
 .speech-bubble {
   font-weight: bold;
   position: relative;
-  // padding: 50px 15px;
+  padding: 5px;
   margin: 1em 0 3em;
   border: 2px solid #fff;
   text-align: center;
@@ -152,6 +156,16 @@
   position: absolute;
   bottom: -10px;
   left: 36px;
+  width: 24px;
+  height: 15px;
+  background: $cn-color-blue;
+}
+
+.invert > :first-child:after {
+  content: "";
+  position: absolute;
+  top: -25px;
+  left: 31px;
   width: 24px;
   height: 15px;
   background: $cn-color-blue;
