@@ -26,6 +26,7 @@ class Landing extends React.Component {
         </div>
 
         {/* start of section 1 */}
+
         <PromoSignup rootStore={this.props.rootStore}/>
 
         {/* start of section 2 */}

@@ -1,0 +1,101 @@
+@mixin triangle {
+  &:before {
+    content:"";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-top: $triangle-width solid transparent;
+    border-bottom: $triangle-width solid transparent;
+  }
+
+
+}
+@mixin triangle-left {
+  @include triangle;
+   &:before {
+     right: calc(100% - 1px);
+     top: 50%;
+     transform: translateY(-50%);
+     border-right: $triangle-width*2 solid $cn-info-color;
+   }
+}
+
+@mixin triangle-right {
+  @include triangle;
+  &:before {
+    left: calc(100% - 1px);
+    top: 50%;
+    transform: translateY(-50%) rotate(180deg);
+    border-right: $triangle-width*2 solid $cn-info-color;
+  }
+}
+
+@mixin triangle-top {
+  @include triangle;
+  &:before {
+    left: 50%;
+    top: -$triangle-width*2;
+    transform: translateX(-50%) rotate(90deg);
+    border-right: $triangle-width*2 solid $cn-info-color;
+  }
+}
+
+@mixin triangle-bottom {
+  @include triangle;
+  &:before {
+    left: 50%;
+    bottom: -$triangle-width*2;
+    transform: translateX(-50%) rotate(-90deg);
+    border-right: $triangle-width*2 solid $cn-info-color;
+  }
+}
+
+@mixin triangle-warning {
+  border-right: $triangle-width*2 solid $cn-warning-color;
+}
+
+@mixin triangle-error {
+  border-right: $triangle-width*2 solid $cn-error-color;
+}
+
+///TODO: MOVE TO OWN SECTION/////
+.form-message {
+  @include breakpoint(small) {
+    &.message-bubble {
+      @include triangle-top;
+      margin-top: $triangle-width*2;
+    }
+  }
+  @include breakpoint(large) {
+    &.message-bubble {
+      @include triangle-right;
+      position: absolute;
+      left: 0%;
+      top: 25%;
+      transform: translate(calc(-100% - 14px) , -50%);
+    }
+  }
+}
+
+.message-bubble {
+  // margin-top: 1em;
+  position: relative;
+  display: inline-block;
+  padding: 15px;
+  border-radius: 5px;
+  background-color: $cn-info-color;
+  color: white;
+
+  &.warning {
+    background-color: $cn-warning-color;
+    &:before {
+      @include triangle-warning;
+    }
+  }
+  &.error {
+    background-color: $cn-error-color;
+    &:before {
+      @include triangle-error;
+    }
+  }
+}

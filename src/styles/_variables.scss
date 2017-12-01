@@ -18,6 +18,17 @@ $cn-blue-cell-background: #edf5ff;
 $cn-border-radius: 3px;
 
 
+$cn-info-color: $cn-color-blue;
+$cn-error-color: red;
+$cn-warning-color: $cn-color-pink;
+
+
+$triangle-border-width: 2px;
+$triangle-width: 7px;
+$triangle-inner-width: $triangle-width - 2px;
+
+
+
 
 // Global definition
 // of a single unit

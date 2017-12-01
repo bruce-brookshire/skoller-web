@@ -73,7 +73,7 @@ export function registerUser (form) {
 * Fetch user to set state.
 */
 export function getUserByToken () {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/token_login`, {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/token-login`, {
     method: 'POST',
     headers: {
       'Authorization': userStore.authToken,

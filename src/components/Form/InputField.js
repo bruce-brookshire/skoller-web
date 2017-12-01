@@ -2,25 +2,40 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Input} from 'react-form-library'
 
+class FormMessage extends React.Component {
+  render () {
+    const {message} = this.props
+    return (
+      <div className="form-message message-bubble error">
+        {message}
+      </div>
+    )
+  }
+}
+
 class InputField extends React.Component {
   render () {
-    const {containerClassName} = this.props
+    const {containerClassName, error} = this.props
     const containerClasses = ['cn-input-container']
     if (containerClassName) containerClasses.push(containerClassName)
 
+
     return (
-      <Input
-        containerClass={containerClasses.join(' ')}
-        containerActiveClass='active'
-        containerErrorClass='error'
-        inputClass='cn-form-input'
-        inputActiveClass='active'
-        inputErrorClass='error'
-        labelClass='cn-input-label'
-        labelActiveClass='active'
-        labelErrorClass='error'
-        {...this.props}
-      />
+      <div style={{position:'relative', textAlign: 'center'}}>
+        <Input
+          containerClass={containerClasses.join(' ')}
+          containerActiveClass='active'
+          containerErrorClass='error'
+          inputClass='cn-form-input'
+          inputActiveClass='active'
+          inputErrorClass='error'
+          labelClass='cn-input-label'
+          labelActiveClass='active'
+          labelErrorClass='error'
+          {...this.props}
+        />
+        {error ? <FormMessage message={error} /> : null}
+      </div>
     )
   }
 }

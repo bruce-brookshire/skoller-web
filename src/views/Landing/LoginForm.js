@@ -69,7 +69,7 @@ class LoginForm extends React.Component {
                   label=''
                   name='email'
                   onChange={updateProperty}
-                  placeholder='email'
+                  placeholder='Email'
                   value={form.email}
                 />
               </div>

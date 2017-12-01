@@ -27,7 +27,7 @@ const requiredFields = {
   // },
   'student.phone': {
     type: 'phone'
-  },
+  }
   // 'student.birthday': {
   //   type: 'required'
   // }
@@ -42,9 +42,19 @@ class SignUpForm extends React.Component {
     this.state = this.initializeState()
   }
 
+  componentWillMount () {
+    this.setState({loadingSchools: true})
+    actions.schools.getActiveSchools().then(data => {
+      this.setState({schools: data, loadingSchools: false})
+    }).catch(() => this.setState({loadingSchools: false}))
+  }
+
   initializeState () {
     return {
-      form: this.initializeFormData()
+      form: this.initializeFormData(),
+      schools: [],
+      emailError: null,
+      loadingSchools: false
     }
   }
 
@@ -65,7 +75,7 @@ class SignUpForm extends React.Component {
   }
 
   onSubmit () {
-    if (this.props.validateForm(this.state.form, requiredFields)) {
+    if (this.props.validateForm(this.state.form, requiredFields) && !this.state.emailError) {
       actions.auth.registerUser(this.state.form).then(() => {
         this.props.resetValidation()
         browserHistory.push('/onboard')
@@ -73,11 +83,77 @@ class SignUpForm extends React.Component {
     }
   }
 
+  onVerifyEmail () {
+    const {email} = this.state.form
+
+    if (email && this.testEmailFormat(email)) {
+      const school = this.getSchoolFromDomain(email)
+      if (!school) {
+        const emailInfo = (
+          <div>
+            <div>{'Oop! Looks like the email you entered was not a school email.'}</div>
+            <div className='margin-top'><span onClick={this.onAddMyUniversity.bind(this)} style={{borderBottom: '1px solid white', cursor: 'pointer'}}>Add my university</span></div>
+            <div className='margin-top'><span onClick={this.onSeeSchools.bind(this)} style={{borderBottom: '1px solid white', cursor: 'pointer'}}>See supported schools</span></div>
+          </div>
+        )
+        this.setState({ emailError: {type: 'info', message: emailInfo} })
+      } else {
+        this.setSchoolId(school)
+        this.setState({emailError: null})
+      }
+    } else {
+      this.setState({emailError: null})
+    }
+  }
+
+  testEmailFormat (email) {
+    const regEx = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+    return regEx.test(email)
+  }
+
+  getSchoolFromDomain (email) {
+    let schoolFromDomain = null
+    const domain = email.split('@')[1].toLowerCase()
+    for (let i = 0; i < this.state.schools.length; i++) {
+      const emailDomainIndex = this.state.schools[i].email_domains
+        .findIndex(email => email.email_domain.replace('@', '').toLowerCase() === domain.toLowerCase())
+
+      if (emailDomainIndex > -1) {
+        if (this.state.schools[i].email_domains[emailDomainIndex].is_professor_only) {
+          this.setState({
+            emailError: {
+              type: 'error',
+              message: 'Oops! Looks like you are using a professor email. Skoller is for students only.'
+            }
+          })
+        } else {
+          schoolFromDomain = this.state.schools[i]
+        }
+        i = this.state.schools.length
+      }
+    }
+    return schoolFromDomain
+  }
+
+  setSchoolId (school) {
+    let newForm = {...this.state.form}
+    newForm.student.school_id = school.id
+    this.setState({form: newForm})
+  }
+
+  onAddMyUniversity () {
+
+  }
+
+  onSeeSchools () {
+
+  }
+
   render () {
     const {form} = this.state
     const {formErrors, updateProperty} = this.props
     return (
-      <div>
+      <div id='sign-up-form'>
         <form>
           <h1>Sign up</h1>
           <div className='row'>
@@ -108,11 +184,12 @@ class SignUpForm extends React.Component {
             <div className='col-xs-12'>
               <InputField
                 containerClassName='margin-top'
-                error={formErrors.email}
+                error={formErrors.email || (this.state.emailError && this.state.emailError.message)}
                 label=''
                 name='email'
+                onBlur={this.onVerifyEmail.bind(this)}
                 onChange={updateProperty}
-                placeholder='Email'
+                placeholder='School email address'
                 value={form.email}
               />
             </div>
