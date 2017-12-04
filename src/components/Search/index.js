@@ -7,9 +7,7 @@ class Search extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      form: {
-        searchText: ''
-      },
+      searchText: '',
       searched: true
     }
   }
@@ -80,14 +78,14 @@ class Search extends React.Component {
   * @param [Event] event. On key up on an input field.
   */
   onKeyUp (event) {
-    if (event.keyCode === 13) {
-      this.searchButton.click()
-    }
+    this.timeout = setTimeout(() => {
+      if (this.timeout) clearTimeout(this.timeout)
+      this.onSearch()
+    }, 300)
   }
 
   render () {
-    const {form} = this.state
-    const {formErrors, updateProperty, description, placeholder} = this.props
+    const {description, placeholder} = this.props
 
     return (
       <div className='search-container'>
@@ -95,15 +93,12 @@ class Search extends React.Component {
         <span className='search-description'> {description} </span>
 
         <div className='search margin-top margin-bottom'>
-          <InputField
+          <input
             containerClassName='search-input'
-            error={formErrors.searchText}
-            name="searchText"
-            onBlur={() => console.log('onBlur')}
-            onChange={updateProperty}
-            onFocus={() => console.log('onFocus')}
+            onChange={(event) => { this.setState({ searchText: event.target.value }) }}
+            onKeyUp={this.onKeyUp.bind(this)}
             placeholder={placeholder}
-            value={form.searchText}
+            value={this.state.searchText}
           />
         </div>
 

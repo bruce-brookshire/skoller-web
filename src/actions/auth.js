@@ -22,8 +22,8 @@ export function authenticateUser (form) {
   })
     .then(response => parseResponse(response))
     .then(data => {
-      userStore.authToken = data.token
-      userStore.user = data
+      userStore.authToken = `Bearer ${data.token}`
+      userStore.user = data.user
       userStore.loading = false
     })
     .catch(error => {
@@ -54,8 +54,8 @@ export function registerUser (form) {
   })
     .then(response => parseResponse(response))
     .then(data => {
-      userStore.authToken = data.token
-      userStore.user = data
+      userStore.authToken = `Bearer ${data.token}`
+      userStore.user = data.user
       userStore.loading = false
     })
     .catch(error => {
@@ -73,7 +73,7 @@ export function registerUser (form) {
 * Fetch user to set state.
 */
 export function getUserByToken () {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/token-login`, {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/users/token-login`, {
     method: 'POST',
     headers: {
       'Authorization': userStore.authToken,
@@ -82,7 +82,7 @@ export function getUserByToken () {
   })
     .then(response => parseResponse(response))
     .then(data => {
-      userStore.user = data
+      userStore.user = data.user
     })
     .catch(error => {
       return Promise.reject(error)

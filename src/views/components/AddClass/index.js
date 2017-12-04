@@ -1,6 +1,7 @@
 import React from 'react'
 import Loading from '../../../components/Loading'
 import Search from '../../../components/Search'
+import actions from '../../../actions'
 
 const searchResultHeaders = [
   {
@@ -61,6 +62,9 @@ const classes = []
 
 class AddClass extends React.Component {
   onSearch (searchText) {
+    actions.classes.searchClasses(searchText).then(classes => {
+      console.log(classes)
+    }).catch(() => false)
   }
 
   /*
