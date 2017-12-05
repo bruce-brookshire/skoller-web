@@ -14,21 +14,23 @@ class DIYTool extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      currentIndex: 0,
+      currentIndex: 2,
       stepCount: 4
     }
   }
 
   renderContent () {
+    const {state} = this.props.location
+
     switch (this.state.currentIndex) {
       case 0:
         return <GradeScale />
       case 1:
         return <Professor />
       case 2:
-        return <Weights />
+        return <Weights cl={state.cl} />
       case 3:
-        return <Assignments />
+        return <Assignments cl={state.cl} />
       default:
     }
   }
@@ -46,13 +48,14 @@ class DIYTool extends React.Component {
   }
 
   render () {
+    const {state: {cl}} = this.props.location
     return (
       <div className='cn-diy-tool-container'>
         <div className='row full-width col-xs-12 col-md-10 col-lg-10'>
           <div className='row full-width'>
             <div className='cn-class-info col-xs-12'>
               <a className='back-button' onClick={this.onPrevious.bind(this)}><i className='fa fa-angle-left' /></a>
-              <h2>{'Astronomy'}</h2>
+              <h2>{cl.name}</h2>
               <a className='skip-button' onClick={() => false}><span>Skip this class</span></a>
             </div>
           </div>

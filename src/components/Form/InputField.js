@@ -21,7 +21,7 @@ class InputField extends React.Component {
 
 
     return (
-      <div style={{position:'relative', textAlign: 'center'}}>
+      <div style={{position:'relative'}}>
         <Input
           containerClass={containerClasses.join(' ')}
           containerActiveClass='active'

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
 import {InputField, SelectField} from '../../../../components/Form'
 import Grid from '../../../../components/Grid/index'
+import actions from '../../../../actions'
 
 const headers = [
   {
@@ -27,58 +28,24 @@ const headers = [
   }
 ]
 
-const weights = [
-  {
-    id: 1,
-    name: 'Exams'
-  },
-  {
-    id: 2,
-    name: 'Homework'
-  },
-  {
-    id: 3,
-    name: 'Projects'
-  }
-]
-
-const assignments = [
-  {
-    id: 1,
-    name: 'Exam 1',
-    weight: weights[0]
-  },
-  {
-    id: 2,
-    name: 'Homework 1',
-    weight: weights[1]
-  },
-  {
-    id: 3,
-    name: 'Project 1',
-    weight: weights[2]
-  },
-  {
-    id: 1,
-    name: 'Exam 1',
-    weight: weights[0]
-  },
-  {
-    id: 2,
-    name: 'Homework 1',
-    weight: weights[1]
-  },
-  {
-    id: 3,
-    name: 'Project 1',
-    weight: weights[2]
-  }
-]
-
 class Assignments extends React.Component {
   constructor (props) {
     super(props)
     this.state = this.initializeState()
+  }
+
+  /*
+  * Fetch the weights for a given class
+  */
+  componentWillMount () {
+    const {cl} = this.props
+    actions.weights.getClassWeights(cl).then((weights) => {
+      this.setState({weights})
+    }).then(() => false)
+
+    actions.assignments.getClassAssignments(cl).then((assignments) => {
+      this.setState({assignments})
+    }).then(() => false)
   }
 
   /*
@@ -88,7 +55,9 @@ class Assignments extends React.Component {
   */
   initializeState () {
     return {
-      form: this.initializeFormData()
+      assignments: [],
+      form: this.initializeFormData(),
+      weights: []
     }
   }
 
@@ -116,7 +85,7 @@ class Assignments extends React.Component {
   * @return [Array]. Array of formatted row data.
   */
   getRows () {
-    return assignments.map((item, index) =>
+    return this.state.assignments.map((item, index) =>
       this.mapRow(item, index)
     )
   }
@@ -165,20 +134,48 @@ class Assignments extends React.Component {
   }
 
   /*
+  * Determine whether the user is submiting updated assignment or a new assignment.
+  *
+  */
+  onSubmit () {
+    if (this.props.validateForm(this.state.form)) {
+      this.state.form.id ? this.onCreateAssignment() : this.onUpdateAssignment()
+    }
+  }
+
+  /*
+  * Create a new assignment
+  */
+  onCreateAssignment () {
+    actions.assignments.createAssignment(this.props.cl, this.state.form).then((assignment) => {
+      const newAssignments = this.state.assignments
+      newAssignments.push(assignment)
+      this.setState({assignments: newAssignments})
+    }).catch(() => false)
+  }
+
+  /*
+  * Update an existing assignment
+  */
+  onUpdateAssignment () {
+    actions.assignments.updateAssignment(this.props.cl, this.state.form).then((assignment) => {
+      const newAssignments = this.state.assignments
+      const index = this.state.assignments.findIndex(a => a.id === assignment.id)
+      newAssignments[index] = assignment
+      this.setState({assignments: newAssignments})
+    }).catch(() => false)
+  }
+
+  /*
   * Delete assignment.
   *
   * @param [Object] assignment. The assignment to be deleted.
   */
   onDeleteAssignment (assignment) {
-
-  }
-
-  /*
-  * Determine whether the user is submiting updated assignment or a new assignment.
-  *
-  */
-  onSubmit () {
-
+    actions.assignments.deleteAssignment(this.props.cl, assignment).then(() => {
+      const newAssignments = this.state.assignments.filter(a => a.id !== assignment.id)
+      this.setState({assignments: newAssignments})
+    }).catch(() => false)
   }
 
   render () {
@@ -205,9 +202,7 @@ class Assignments extends React.Component {
                   error={formErrors.name}
                   label="Assignment name"
                   name="name"
-                  onBlur={() => console.log('onBlur')}
                   onChange={updateProperty}
-                  onFocus={() => console.log('onFocus')}
                   placeholder="Assignment name, i.e. Exam 1"
                   value={form.name}
                 />
@@ -219,8 +214,7 @@ class Assignments extends React.Component {
                   label="Weight category"
                   name="weight"
                   onChange={updateProperty}
-                  onFocus={() => console.log('onFocus')}
-                  options={weights}
+                  options={this.state.weights}
                   placeholder="Weight category"
                   value={form.weight}
                 />
@@ -231,9 +225,7 @@ class Assignments extends React.Component {
                   error={formErrors.due_date}
                   label="Due Date"
                   name="due_date"
-                  onBlur={() => console.log('onBlur')}
                   onChange={updateProperty}
-                  onFocus={() => console.log('onFocus')}
                   placeholder="Assignment due date"
                   type='date'
                   value={form.due_date}
@@ -250,8 +242,10 @@ class Assignments extends React.Component {
 }
 
 Assignments.propTypes = {
+  cl: PropTypes.object,
   formErrors: PropTypes.object,
-  updateProperty: PropTypes.func
+  updateProperty: PropTypes.func,
+  validateForm: PropTypes.func
 }
 
 export default ValidateForm(Form(Assignments, 'form'))

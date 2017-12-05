@@ -4,6 +4,7 @@ import {Form, ValidateForm} from 'react-form-library'
 import {InputField} from '../../../../components/Form'
 import Grid from '../../../../components/Grid/index'
 import WeightConverter from '../../../../components/WeightConverter/index'
+import actions from '../../../../actions'
 
 const headers = [
   {
@@ -24,28 +25,20 @@ const headers = [
   }
 ]
 
-const weights = [
-  {
-    id: 1,
-    name: 'Star Reviews',
-    weight: 10
-  },
-  {
-    id: 2,
-    name: 'Exams',
-    weight: 20
-  },
-  {
-    id: 3,
-    name: 'Mid Term',
-    weight: 20
-  }
-]
-
 class Weights extends React.Component {
   constructor (props) {
     super(props)
     this.state = this.initializeState()
+  }
+
+  /*
+  * Fetch the weights for a given class
+  */
+  componentWillMount () {
+    const {cl} = this.props
+    actions.weights.getClassWeights(cl).then((weights) => {
+      this.setState({weights})
+    }).then(() => false)
   }
 
   /*
@@ -56,7 +49,8 @@ class Weights extends React.Component {
   initializeState () {
     return {
       form: this.initializeFormData(),
-      weightConverter: false
+      weightConverter: false,
+      weights: []
     }
   }
 
@@ -84,7 +78,7 @@ class Weights extends React.Component {
   * @return [Array]. Array of formatted row data.
   */
   getRows () {
-    return weights.map((item, index) =>
+    return this.state.weights.map((item, index) =>
       this.mapRow(item, index)
     )
   }
@@ -104,7 +98,7 @@ class Weights extends React.Component {
       delete: <div className='button-delete-x center-content' onClick={() => { this.removeWeight(item) }}><i className='fa fa-times' /></div>,
       name,
       weight: <div>{Number(weight).toFixed(2)}</div>,
-      edit: <a onClick={() => { this.setWeight(item) }}><i className='fa fa-pencil'/></a>,
+      edit: <a onClick={() => { this.setWeight(item) }}><i className='fa fa-pencil'/></a>
     }
 
     return row
@@ -146,7 +140,7 @@ class Weights extends React.Component {
   */
   getTotalWeight () {
     let totalWeight = 0
-    weights.forEach(item => {
+    this.state.weights.forEach(item => {
       totalWeight += Number(item.weight)
     })
     return totalWeight
@@ -184,7 +178,7 @@ class Weights extends React.Component {
   }
 
   /*
-  * Set form value equal to assignment in order to be edited.
+  * Set form value equal to weight in order to be edited.
   *
   * @param [Object] weight. Weight object to be edited.
   */
@@ -193,20 +187,48 @@ class Weights extends React.Component {
   }
 
   /*
-  * Delete weight.
-  *
-  * @param [Object] assignment. The weight to be deleted.
-  */
-  onDeleteWeight (weight) {
-
-  }
-
-  /*
   * Determine whether the user is submiting updated weight or a new weight.
   *
   */
   onSubmit () {
+    if (this.props.validateForm(this.state.form)) {
+      this.state.form.id ? this.onCreateWeight() : this.onUpdateWeight()
+    }
+  }
 
+  /*
+  * Create a new weight
+  */
+  onCreateWeight () {
+    actions.weights.createWeight(this.props.cl, this.state.form).then((weight) => {
+      const newWeights = this.state.weights
+      newWeights.push(weight)
+      this.setState({weights: newWeights})
+    }).catch(() => false)
+  }
+
+  /*
+  * Update an existing weight
+  */
+  onUpdateWeight () {
+    actions.weights.updateWeight(this.props.cl, this.state.form).then((weight) => {
+      const newWeights = this.state.weights
+      const index = this.state.weights.findIndex(w => w.id === weight.id)
+      newWeights[index] = weight
+      this.setState({weights: newWeights})
+    }).catch(() => false)
+  }
+
+  /*
+  * Delete weight.
+  *
+  * @param [Object] weight. The weight to be deleted.
+  */
+  onDeleteWeight (weight) {
+    actions.weights.deleteWeight(this.props.cl).then(() => {
+      const newWeights = this.state.weights.filter(w => w.id !== weight.id)
+      this.setState({weights: newWeights})
+    }).catch(() => false)
   }
 
   onToggleConverter () {
@@ -230,8 +252,7 @@ class Weights extends React.Component {
             canDelete={false}
           />
         </div>
-          {this.renderTotalPercentage()}
-
+        {this.renderTotalPercentage()}
         <div className='margin-top'>
           <form id='class-editor-weight-form'>
             <div className='row'>
@@ -241,9 +262,7 @@ class Weights extends React.Component {
                   error={formErrors.name}
                   label="Category name"
                   name="name"
-                  onBlur={() => console.log('onBlur')}
                   onChange={updateProperty}
-                  onFocus={() => console.log('onFocus')}
                   placeholder="Weight Category, i.e. Exams"
                   value={form.name}
                 />
@@ -254,9 +273,7 @@ class Weights extends React.Component {
                   error={formErrors.weight}
                   label="Weight"
                   name="weight"
-                  onBlur={() => console.log('onBlur')}
                   onChange={updateProperty}
-                  onFocus={() => console.log('onFocus')}
                   placeholder="Weight"
                   type="number"
                   value={form.weight}
@@ -275,8 +292,10 @@ class Weights extends React.Component {
 }
 
 Weights.propTypes = {
+  cl: PropTypes.object,
   formErrors: PropTypes.object,
-  updateProperty: PropTypes.func
+  updateProperty: PropTypes.func,
+  validateForm: PropTypes.func
 }
 
 export default ValidateForm(Form(Weights, 'form'))

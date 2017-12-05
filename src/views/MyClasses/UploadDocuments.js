@@ -1,6 +1,7 @@
 import 'isomorphic-fetch'
 import React from 'react'
 import PropTypes from 'prop-types'
+import {browserHistory} from 'react-router'
 import UploadHistory from '../../components/UploadHistory'
 
 class UploadDocuments extends React.Component {
@@ -63,6 +64,10 @@ class UploadDocuments extends React.Component {
 
   }
 
+  onDIY () {
+    browserHistory.push({ pathname: '/diy/tool', state: {cl: this.props.cl} })
+  }
+
   render () {
     const {cl: {status}} = this.props
     const needsSyllabus = status === 'NEEDS_SYLLABUS' || status === 'NO_FILES' || !status
@@ -92,7 +97,7 @@ class UploadDocuments extends React.Component {
           <div className='col-xs-3 vertical-align center'>
             <button className='button'>Let ClassNav review this syllabus</button>
             <span className='info-2'>{'You\'ll have to wait 72 hours'}</span>
-            <a className='margin-top'>Review syllabus myself</a>
+            <a className='margin-top' onClick={this.onDIY.bind(this)}>Review syllabus myself</a>
             <span className='info-2'>Only takes a few minutes</span>
           </div>
         </div>
