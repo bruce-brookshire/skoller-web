@@ -10,7 +10,7 @@ class PromoSignup extends React.Component {
           <iframe src="https://www.youtube.com/embed/ENnO_5o52sE" frameBorder="0" allowFullScreen></iframe>
         </div>
         <div className='col-xs-12 col-sm-12 col-md-6 col-lg-3 vertical-aligncenter'>
-          <SignUpForm />
+          <SignUpForm {...this.props}/>
         </div>
         <Slant />
       </div>

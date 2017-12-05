@@ -1,8 +1,11 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Loading from '../../../components/Loading'
 import FlexTable from '../../../components/FlexTable'
 import {Form, ValidateForm} from 'react-form-library'
 import {InputField, SelectField} from '../../../components/Form'
+import actions from '../../../actions'
+import {mapProfessor} from '../../../utilities/display'
 
 const headers = [
   {
@@ -35,35 +38,23 @@ const headers = [
   }
 ]
 
-const class1 = {
-  courseNumber: 'ECO 230',
-  name: 'Economy of China',
-  professor: 'Sasser',
-  days: 'MWF',
-  beginTime: '10:00am',
-  classLength: 'Full semester'
+const requiredFields = {
+  'number': {
+    type: 'required'
+  },
+  'name': {
+    type: 'required'
+  },
+  'meet_days': {
+    type: 'required'
+  },
+  'meet_start_time': {
+    type: 'required'
+  },
+  'meet_end_time': {
+    type: 'required'
+  }
 }
-
-const class2 = {
-  courseNumber: 'ECO 2019',
-  name: 'Economies of Scale',
-  professor: 'Ruben',
-  days: 'MWF',
-  beginTime: '10:00am',
-  classLength: 'Full semester'
-}
-
-const class3 = {
-  courseNumber: 'ECO 1100',
-  name: 'Economic Nativism',
-  professor: 'Twondliedo',
-  days: 'MWF',
-  beginTime: '10:00am',
-  classLength: 'Full semester'
-}
-
-// const classes = [class1, class2, class3,class1, class2, class3,class1, class2, class3, class1, class2, class3]
-const classes = []
 
 class ClassForm extends React.Component {
   constructor (props) {
@@ -71,27 +62,38 @@ class ClassForm extends React.Component {
     this.state = this.initializeState()
   }
 
+  /*
+  * Fetch all the classes for selected professor in order to see if class already
+  * exists.
+  */
+  componentWillMount () {
+    actions.classes.getProfessorClasses(this.props.professor).then(classes => {
+      this.setState({classes})
+    }).catch(() => false)
+  }
+
+  /*
+  * Intitialize state.
+  */
   initializeState () {
     return {
+      classes: [],
       form: this.initializeFormData()
     }
   }
 
+  /*
+  * Intitialize form data.
+  * Class form data.
+  */
   initializeFormData () {
     return {
-      class_number: '',
-      class_name: '',
-      days: '',
-      meet_time: '',
-      term_length: ''
+      number: '',
+      name: '',
+      meet_days: '',
+      meet_start_time: '',
+      meet_end_time: ''
     }
-  }
-
-  onSubmit () {
-    this.props.onSubmit()
-  }
-
-  onSearch (searchText) {
   }
 
   /*
@@ -100,7 +102,7 @@ class ClassForm extends React.Component {
   * @return [Array]. Array of formatted row data.
   */
   getRows () {
-    return classes.map((item, index) =>
+    return this.state.classes.map((item, index) =>
       this.mapRow(item, index)
     )
   }
@@ -113,16 +115,16 @@ class ClassForm extends React.Component {
   * @return [Object] row. Object of formatted row data for display in grid.
   */
   mapRow (item, index) {
-    const {id, courseNumber, name, professor, days, beginTime, classLength} = item
+    const {id, number, name, professor, meet_days, meet_start_time, length} = item
 
     const row = {
       id: id || '',
-      courseNumber: courseNumber || '-',
+      courseNumber: number || '-',
       name: name || '-',
-      professor: professor || 'TBA', //this.mapProfessor(professor) : 'TBA',
-      days: days || 'TBA',
-      beginTime: beginTime || 'TBA',
-      classLength: classLength || 'TBA',
+      professor: professor ? mapProfessor(professor) : 'TBA',
+      days: meet_days || 'TBA',
+      beginTime: meet_start_time || 'TBA',
+      classLength: length || 'TBA',
       enroll: <a onClick={() => this.onEnroll(item)}>Enroll</a>
     }
 
@@ -130,51 +132,33 @@ class ClassForm extends React.Component {
   }
 
   /*
-  * Map the professors name to the professor.
-  *
-  * @param [Object] professor. Professor object.
-  * @param [String] name. Name of professor.
+  * If does not exist, create class and enroll user in class.
   */
-  mapProfessor (professor) {
-    const {firstName, lastName} = professor
-    let name = ''
-
-    if (firstName) {
-      name = firstName
+  onSubmit () {
+    if (this.props.validateForm(this.state.form, requiredFields)) {
+      actions.classes.createClass(this.state.form).then((cl) => {
+        this.props.onSubmit(cl)
+      }).catch(() => false)
     }
-    if (lastName) {
-      name = name ? `${name} ${lastName}` : lastName
-    }
-
-    return name || 'TBA'
   }
 
-  onEnroll (course) {
-
-  }
-
-  mapProfessorName () {
-    if (this.props.professor) {
-      const {first_name, last_name} = this.props.professor
-      let name = first_name ? `${first_name} ` : ''
-      if (last_name) {
-        name=`${name}${last_name}`
-      }
-      if (!name) name = 'TBA'
-      return name
-    }
+  /*
+  * If class exists, enroll user in class.
+  */
+  onEnroll (cl) {
+    this.props.onSubmit(cl)
   }
 
   render () {
     const {form} = this.state
-    const {formErrors, updateProperty} = this.props
+    const {formErrors, professor, updateProperty} = this.props
 
     return (
       <div className='cn-add-class-container margin-top'>
         <h5>Who teaches this class?</h5>
-        <span className='info margin-bottom'>{this.mapProfessorName()}</span>
+        <span className='info margin-bottom'>{mapProfessor(professor)}</span>
         <h5>Make sure you are not creating a duplicate class!</h5>
-        <span className='info margin-bottom'>{this.mapProfessorName()} has {classes.length} classes</span>
+        <span className='info margin-bottom'>{mapProfessor(professor)} has {this.state.classes.length} classes</span>
         <FlexTable
           className='cn-add-class-grid margin-top margin-bottom'
           headers={headers}
@@ -184,78 +168,67 @@ class ClassForm extends React.Component {
           emptyMessage={<div className='empty-message margin-top'>We currently have no courses on record for that professor.</div>}
         />
         <div className='margin-top'>
-          <form>
-            <h5>Add new class</h5>
-            <div className='row'>
-              <div className='col-xs-12 col-md-2 col-lg-2'>
-                <InputField
-                  containerClassName='margin-top'
-                  error={formErrors.class_name}
-                  label='Class name'
-                  name='class_name'
-                  onBlur={() => console.log('onBlur')}
-                  onChange={updateProperty}
-                  onFocus={() => console.log('onFocus')}
-                  placeholder='Class name'
-                  value={form.class_name}
-                />
-              </div>
-              <div className='col-xs-12 col-md-2 col-lg-2'>
-                <InputField
-                  containerClassName='margin-top'
-                  error={formErrors.class_number}
-                  label='Course Number'
-                  name='class_number'
-                  onBlur={() => console.log('onBlur')}
-                  onChange={updateProperty}
-                  onFocus={() => console.log('onFocus')}
-                  placeholder='Course number'
-                  value={form.class_number}
-                />
-              </div>
-              <div className='col-xs-12 col-md-2 col-lg-2'>
-                <InputField
-                  containerClassName='margin-top'
-                  error={formErrors.meet_days}
-                  label='Meet days'
-                  name='meet_days'
-                  onBlur={() => console.log('onBlur')}
-                  onChange={updateProperty}
-                  onFocus={() => console.log('onFocus')}
-                  placeholder='Meet days'
-                  value={form.meet_days}
-                />
-              </div>
-              <div className='col-xs-12 col-md-2 col-lg-2'>
-                <InputField
-                  containerClassName='margin-top'
-                  error={formErrors.meet_time}
-                  label='Meet time'
-                  name='meet_time'
-                  onBlur={() => console.log('onBlur')}
-                  onChange={updateProperty}
-                  onFocus={() => console.log('onFocus')}
-                  placeholder='Meet time'
-                  value={form.meet_time}
-                />
-              </div>
-              <div className='col-xs-12 col-md-2 col-lg-2'>
-                <SelectField
-                  containerClassName='margin-top'
-                  error={formErrors.term_length}
-                  label='Term length'
-                  name='term_length'
-                  onChange={updateProperty}
-                  options={[{id: 0, name: 'Full semester'}, {id:1, name: 'Part semester'}]}
-                  placeholder='Term length'
-                  value={form.term_length}
-                />
-              </div>
-              <div className='col-xs-12 col-md-2 col-lg-2' style={{alignSelf: 'flex-end'}}>
-                <button className='button full-width margin-top' style={{height: '32px', padding: 0}} onClick={this.onSubmit.bind(this)}>Add class</button>
-              </div>
+          <h5>Add new class</h5>
+          <div className='row'>
+            <div className='col-xs-12 col-md-2 col-lg-2'>
+              <InputField
+                containerClassName='margin-top'
+                error={formErrors.name}
+                label='Class name'
+                name='name'
+                onChange={updateProperty}
+                placeholder='Class name'
+                value={form.name}
+              />
             </div>
-          </form>
+            <div className='col-xs-12 col-md-2 col-lg-2'>
+              <InputField
+                containerClassName='margin-top'
+                error={formErrors.number}
+                label='Course Number'
+                name='number'
+                onChange={updateProperty}
+                placeholder='Course number'
+                value={form.number}
+              />
+            </div>
+            <div className='col-xs-12 col-md-2 col-lg-2'>
+              <InputField
+                containerClassName='margin-top'
+                error={formErrors.meet_days}
+                label='Meet days'
+                name='meet_days'
+                onChange={updateProperty}
+                placeholder='Meet days'
+                value={form.meet_days}
+              />
+            </div>
+            <div className='col-xs-12 col-md-2 col-lg-2'>
+              <InputField
+                containerClassName='margin-top'
+                error={formErrors.meet_start_time}
+                label='Meet start time'
+                name='meet_start_time'
+                onChange={updateProperty}
+                placeholder='Meet start time'
+                value={form.meet_start_time}
+              />
+            </div>
+            <div className='col-xs-12 col-md-2 col-lg-2'>
+              <InputField
+                containerClassName='margin-top'
+                error={formErrors.meet_end_time}
+                label='Meet end time'
+                name='meet_end_time'
+                onChange={updateProperty}
+                placeholder='Meet end time'
+                value={form.meet_end_time}
+              />
+            </div>
+            <div className='col-xs-12 col-md-2 col-lg-2' style={{alignSelf: 'flex-end'}}>
+              <button className='button full-width margin-top' style={{height: '32px', padding: 0}} onClick={this.onSubmit.bind(this)}>Add class</button>
+            </div>
+          </div>
         </div>
       </div>
     )
@@ -263,7 +236,11 @@ class ClassForm extends React.Component {
 }
 
 ClassForm.propTypes = {
-
+  formErrors: PropTypes.object,
+  onSubmit: PropTypes.func,
+  professor: PropTypes.object,
+  updateProperty: PropTypes.func,
+  validateForm: PropTypes.func
 }
 
 export default ValidateForm(Form(ClassForm, 'form'))

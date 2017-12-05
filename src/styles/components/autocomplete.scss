@@ -7,10 +7,19 @@
     background-color: #fff;
     border: 1px solid #CCC;
     border-top: 0;
-    border-radius: $cn-border-radius;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
+    border-bottom: 0;
     font-size: 0.75em;
     padding: 10px;
+
+    &:hover {
+      background-color: darken(#fff, 10%);
+    }
+
+    &:last-child{
+      border-bottom: 1px solid #CCC;
+      border-radius: $cn-border-radius;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
   }
 }

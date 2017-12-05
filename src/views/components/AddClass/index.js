@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Loading from '../../../components/Loading'
 import Search from '../../../components/Search'
 import actions from '../../../actions'
@@ -30,40 +31,17 @@ const searchResultHeaders = [
   }
 ]
 
-const class1 = {
-  courseNumber: 'ECO 230',
-  name: 'Economy of China',
-  professor: 'Sasser',
-  days: 'MWF',
-  beginTime: '10:00am',
-  classLength: 'Full semester'
-}
-
-const class2 = {
-  courseNumber: 'ECO 2019',
-  name: 'Economies of Scale',
-  professor: 'Ruben',
-  days: 'MWF',
-  beginTime: '10:00am',
-  classLength: 'Full semester'
-}
-
-const class3 = {
-  courseNumber: 'ECO 1100',
-  name: 'Economic Nativism',
-  professor: 'Twondliedo',
-  days: 'MWF',
-  beginTime: '10:00am',
-  classLength: 'Full semester'
-}
-
-// const classes = [class1, class2, class3,class1, class2, class3,class1, class2, class3, class1, class2, class3]
-const classes = []
-
 class AddClass extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      classes: []
+    }
+  }
+
   onSearch (searchText) {
     actions.classes.searchClasses(searchText).then(classes => {
-      console.log(classes)
+      this.setState({classes})
     }).catch(() => false)
   }
 
@@ -73,7 +51,7 @@ class AddClass extends React.Component {
   * @return [Array]. Array of formatted row data.
   */
   getRows () {
-    return classes.map((item, index) =>
+    return this.state.classes.map((item, index) =>
       this.mapRow(item, index)
     )
   }
@@ -86,41 +64,24 @@ class AddClass extends React.Component {
   * @return [Object] row. Object of formatted row data for display in grid.
   */
   mapRow (item, index) {
-    const {id, courseNumber, name, professor, days, beginTime, classLength} = item
+    const {class: {id, number, name, meet_start_time, meet_days, length}, professor} = item
 
     const row = {
       id: id || '',
-      courseNumber: courseNumber || '-',
+      courseNumber: number || '-',
       name: name || '-',
-      professor: professor || 'TBA', //this.mapProfessor(professor) : 'TBA',
-      days: days || 'TBA',
-      beginTime: beginTime || 'TBA',
-      classLength: classLength || 'TBA'
+      professor: (professor && professor.name !== 'None') || 'TBA',
+      days: meet_days || 'TBA',
+      beginTime: meet_start_time || 'TBA',
+      classLength: length || 'TBA'
     }
 
     return row
   }
 
   /*
-  * Map the professors name to the professor.
-  *
-  * @param [Object] professor. Professor object.
-  * @param [String] name. Name of professor.
+  * If class doesn't exist, handle on create class.
   */
-  mapProfessor (professor) {
-    const {firstName, lastName} = professor
-    let name = ''
-
-    if (firstName) {
-      name = firstName
-    }
-    if (lastName) {
-      name = name ? `${name} ${lastName}` : lastName
-    }
-
-    return name || 'TBA'
-  }
-
   onCreateClass () {
     this.props.onClose()
     this.props.onCreateClass()
@@ -137,7 +98,7 @@ class AddClass extends React.Component {
           description=''
           emptyMessage={<div className='empty-message margin-top'>{`Can't find your class? `}<a onClick={this.onCreateClass.bind(this)}>Create a new one.</a></div>}
           placeholder='Search by class name, professor last name, or class number...'
-          onSearch={this.onSearch}
+          onSearch={(searchText) => this.onSearch(searchText)}
           searching={false}
           searchResults={this.getRows()}
           searchResultHeaders = {searchResultHeaders}
@@ -149,7 +110,9 @@ class AddClass extends React.Component {
 }
 
 AddClass.propTypes = {
-
+  onClose: PropTypes.func,
+  onCreateClass: PropTypes.func,
+  onSubmit: PropTypes.func
 }
 
 export default AddClass

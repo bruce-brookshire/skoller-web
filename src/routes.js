@@ -24,9 +24,9 @@ const router = (
     <Route path="/" component={App}>
       <IndexRedirect to="/app"/>
       <Route path='/landing' component={Landing} />
-      <Route path='/onboard' component={Onboard} />
       <Route path='/app' component={Layout} onEnter={requireAuth}>
         <IndexRedirect to="/myclasses"/>
+        <Route path='/onboard' component={Onboard} />
         <Route path='/myclasses' component={MyClasses}/>
 
         <Route path='/hub'>

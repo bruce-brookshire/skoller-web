@@ -65,10 +65,10 @@ class Search extends React.Component {
   }
 
   matchText (text) {
-    const re = new RegExp(`^${this.state.form.searchText}(.*$)`, "i")
+    const re = new RegExp(`^${this.state.searchText}(.*$)`, "i")
     const output = re.exec(text)
-    return output && output[1]
-      ? <div><span className='highlight'>{text.substring(0, this.state.form.searchText.length)}</span><span>{output[1]}</span></div>
+    return output && output[1] && text && text.length > 0
+      ? <div><span className='highlight'>{text.substring(0, this.state.searchText.length)}</span><span>{output[1]}</span></div>
       : text
   }
 
@@ -81,7 +81,7 @@ class Search extends React.Component {
     this.timeout = setTimeout(() => {
       if (this.timeout) clearTimeout(this.timeout)
       this.onSearch()
-    }, 300)
+    }, 600)
   }
 
   render () {
@@ -93,13 +93,15 @@ class Search extends React.Component {
         <span className='search-description'> {description} </span>
 
         <div className='search margin-top margin-bottom'>
-          <input
-            containerClassName='search-input'
-            onChange={(event) => { this.setState({ searchText: event.target.value }) }}
-            onKeyUp={this.onKeyUp.bind(this)}
-            placeholder={placeholder}
-            value={this.state.searchText}
-          />
+          <div className='cn-input-container full-width'>
+            <input
+              className='cn-form-input'
+              onChange={(event) => { this.setState({ searchText: event.target.value }) }}
+              onKeyUp={this.onKeyUp.bind(this)}
+              placeholder={placeholder}
+              value={this.state.searchText}
+            />
+          </div>
         </div>
 
         {this.renderSearchResults()}

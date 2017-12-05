@@ -4,6 +4,7 @@ import MyClasses from '../MyClasses'
 import SubmitSyllabi from './SubmitSyllabi'
 import Verification from './Verification'
 import {ProgressBar, ProgressStep} from '../../components/ProgressBar'
+import actions from '../../actions'
 
 const steps = [ 'Personal Info', 'Verification', 'Enroll in classes', 'Submit syllabi' ]
 
@@ -11,7 +12,7 @@ class Onboard extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      currentIndex: 0,
+      currentIndex: 1,
       stepCount: 3
     }
   }
@@ -19,18 +20,21 @@ class Onboard extends React.Component {
   renderContent () {
     switch (this.state.currentIndex) {
       case 0:
-        return <Verification/>
+        return <Verification ref={(c) => { this.verification = c }} />
       case 1:
         return <MyClasses />
       case 2:
         return <SubmitSyllabi />
-        return
       default:
     }
   }
 
   onNext () {
-    if (this.state.currentIndex !== (this.state.stepCount - 1)) {
+    if (this.state.currentIndex === 0) {
+      actions.auth.verifyPhoneNumber(this.verification.getForm()).then(() => {
+        this.setState({currentIndex: this.state.currentIndex + 1})
+      }).catch(() => false)
+    } else if (this.state.currentIndex !== (this.state.stepCount - 1)) {
       this.setState({currentIndex: this.state.currentIndex + 1})
     }
   }

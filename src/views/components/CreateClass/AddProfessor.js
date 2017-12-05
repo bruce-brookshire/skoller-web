@@ -2,6 +2,19 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
 import {InputField} from '../../../components/Form'
+import actions from '../../../actions'
+
+const requiredFields = {
+  'name_first': {
+    type: 'required'
+  },
+  'name_last': {
+    type: 'required'
+  },
+  'email': {
+    type: 'email'
+  }
+}
 
 class AddProfessor extends React.Component {
   constructor (props) {
@@ -9,22 +22,36 @@ class AddProfessor extends React.Component {
     this.state = this.initializeState()
   }
 
+  /*
+  * Intitialize state.
+  */
   initializeState () {
     return {
       form: this.initializeFormData()
     }
   }
 
+  /*
+  * Intitialize form data.
+  * Professor form data.
+  */
   initializeFormData () {
     return {
-      first_name: '',
-      last_name: '',
+      name_first: '',
+      name_last: '',
       email: ''
     }
   }
 
+  /*
+  * Create a new professor.
+  */
   onSubmit () {
-    this.props.onSubmit(this.state.form)
+    if (this.props.validateForm(this.state.form, requiredFields)) {
+      actions.professors.createProfessor(this.state.form).then((professor) => {
+        this.props.onSubmit(professor)
+      }).catch(() => false)
+    }
   }
 
   render () {
@@ -32,53 +59,45 @@ class AddProfessor extends React.Component {
     const {formErrors, updateProperty} = this.props
     return (
       <div className='margin-top'>
-        <form>
-          <h5>Who teaches this class?</h5>
-          <div className='row'>
-            <div className='col-xs-12 col-md-3 col-lg-3'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.first_name}
-                label='First name'
-                name='first_name'
-                onBlur={() => console.log('onBlur')}
-                onChange={updateProperty}
-                onFocus={() => console.log('onFocus')}
-                placeholder='First name'
-                value={form.first_name}
-              />
-            </div>
-            <div className='col-xs-12 col-md-3 col-lg-3'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.last_name}
-                label='Last name'
-                name='last_name'
-                onBlur={() => console.log('onBlur')}
-                onChange={updateProperty}
-                onFocus={() => console.log('onFocus')}
-                placeholder='Last name'
-                value={form.last_name}
-              />
-            </div>
-            <div className='col-xs-12 col-md-3 col-lg-3'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.email}
-                label='Email'
-                name='email'
-                onBlur={() => console.log('onBlur')}
-                onChange={updateProperty}
-                onFocus={() => console.log('onFocus')}
-                placeholder='University Email'
-                value={form.email}
-              />
-            </div>
-            <div className='col-xs-12 col-md-3 col-lg-3' style={{alignSelf: 'flex-end'}}>
-              <button className='button full-width margin-top' style={{height: '32px', padding: 0}} onClick={this.onSubmit.bind(this)}>Add</button>
-            </div>
+        <h5>Who teaches this class?</h5>
+        <div className='row'>
+          <div className='col-xs-12 col-md-3 col-lg-3'>
+            <InputField
+              containerClassName='margin-top'
+              error={formErrors.name_first}
+              label='First name'
+              name='name_first'
+              onChange={updateProperty}
+              placeholder='First name'
+              value={form.name_first}
+            />
           </div>
-        </form>
+          <div className='col-xs-12 col-md-3 col-lg-3'>
+            <InputField
+              containerClassName='margin-top'
+              error={formErrors.name_last}
+              label='Last name'
+              name='name_last'
+              onChange={updateProperty}
+              placeholder='Last name'
+              value={form.name_last}
+            />
+          </div>
+          <div className='col-xs-12 col-md-3 col-lg-3'>
+            <InputField
+              containerClassName='margin-top'
+              error={formErrors.email}
+              label='Email'
+              name='email'
+              onChange={updateProperty}
+              placeholder='University Email'
+              value={form.email}
+            />
+          </div>
+          <div className='col-xs-12 col-md-3 col-lg-3' style={{alignSelf: 'flex-end'}}>
+            <button className='button full-width margin-top' style={{height: '32px', padding: 0}} onClick={this.onSubmit.bind(this)}>Add</button>
+          </div>
+        </div>
       </div>
     )
   }
@@ -86,7 +105,9 @@ class AddProfessor extends React.Component {
 
 AddProfessor.propTypes = {
   formErrors: PropTypes.object,
-  updateProperty: PropTypes.func
+  onSubmit: PropTypes.func,
+  updateProperty: PropTypes.func,
+  validateForm: PropTypes.func
 }
 
 export default ValidateForm(Form(AddProfessor, 'form'))

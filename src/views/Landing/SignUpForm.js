@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {browserHistory} from 'react-router'
+import {Cookies} from 'react-cookie'
 import {inject, observer} from 'mobx-react'
 import {Form, ValidateForm} from 'react-form-library'
 import {InputField} from '../../components/Form'
@@ -39,6 +40,7 @@ const requiredFields = {
 class SignUpForm extends React.Component {
   constructor (props) {
     super(props)
+    this.cookie = new Cookies()
     this.state = this.initializeState()
   }
 
@@ -78,6 +80,8 @@ class SignUpForm extends React.Component {
     if (this.props.validateForm(this.state.form, requiredFields) && !this.state.emailError) {
       actions.auth.registerUser(this.state.form).then(() => {
         this.props.resetValidation()
+        const { userStore: { authToken } } = this.props.rootStore
+        this.cookie.set('skollerToken', authToken)
         browserHistory.push('/onboard')
       }).catch(() => false)
     }

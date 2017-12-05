@@ -11,12 +11,11 @@ var Environment = require('../../environment.js')
 * @params [Object] param. Search parameters.
 */
 export function searchClasses (param) {
-  const {user, user: {student}} = userStore
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes
-    ?school.id=${student.school_id}&professor.name=${param}&class.name=${param}&class.number=${param}`, {
+  const {user: {student: {school}}} = userStore
+  return fetch(`${Environment.SERVER_NAME}/api/v1/classes?school.id=${school.id}&class.name=${param}`, {
     method: 'GET',
     headers: {
-      'Authorization': user.authToken,
+      'Authorization': userStore.authToken,
       'Content-Type': 'application/json'
     }
   })
@@ -26,6 +25,120 @@ export function searchClasses (param) {
     })
     .catch(error => {
       showSnackbar('Error searching classes. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+
+/*
+* Get classes for students
+*
+*/
+export function getStudentClasses () {
+  const {user: {student}} = userStore
+  return fetch(`${Environment.SERVER_NAME}/api/v1/students/${student.id}/classes/`, {
+    method: 'GET',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error fetching classes. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Get classes for professor
+*
+* @param [Object] professor. Professor of class
+*/
+export function getProfessorClasses (professor) {
+  const {user: {student}} = userStore
+  return fetch(`${Environment.SERVER_NAME}/api/v1/students/${student.id}/classes/`, {
+    method: 'GET',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error fetching classes. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Enroll in class
+*
+*/
+export function enrollInClass (classId) {
+  const {user: {student}} = userStore
+  return fetch(`${Environment.SERVER_NAME}/api/v1/students/${student.id}/classes/${classId}`, {
+    method: 'POST',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error enrolling in class. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Drop class
+*/
+export function dropClass (classId) {
+  const {user: {student}} = userStore
+  return fetch(`${Environment.SERVER_NAME}/api/v1/students/${student.id}/classes/${classId}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => checkError(response))
+    .catch(error => {
+      showSnackbar('Error dropping class. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Drop class
+*/
+export function createClass (form) {
+  const {user: {student: {school}}} = userStore
+  return fetch(`${Environment.SERVER_NAME}/api/v1/periods/${school.periods[0].id}/classes`, {
+    method: 'POST',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(form)
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      console.log('error is', error)
+      showSnackbar('Error creating class. Try again.')
       return Promise.reject(error)
     })
 }

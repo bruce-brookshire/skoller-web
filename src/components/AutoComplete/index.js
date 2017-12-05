@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import AutoCompleteInput from './AutoCompleteInput'
 
 class AutoComplete extends React.Component {
@@ -10,25 +11,8 @@ class AutoComplete extends React.Component {
 
   initializeState () {
     return {
-      autoCompleteResults: [],
       autoCompleteValue: '',
       isDirty: false
-    }
-  }
-
-  updateAutoCompleteResults (value) {
-    const autoCompleteResults = this.props.dataSource.filter(data => {
-      return data.name.toLowerCase().includes(value.toLowerCase())
-    })
-    this.setState({autoCompleteValue: value, autoCompleteResults, isDirty: true})
-  }
-
-  renderAutoCompleteResults () {
-    if (this.state.isDirty && this.state.autoCompleteValue.length > 0) {
-      if (this.props.dataSource.length === 0) return this.props.emptyMessage
-      return this.props.dataSource.map((rowData, index) => {
-        return this.props.renderRow(rowData, index, this.resetState.bind(this))
-      })
     }
   }
 
@@ -40,10 +24,42 @@ class AutoComplete extends React.Component {
     return (
       <AutoCompleteInput
         {...this.props}
-        onChange={this.updateAutoCompleteResults.bind(this)}
+        onChange={(event) => { this.setState({isDirty: true, autoCompleteValue: event.target.value}) }}
+        onKeyUp={this.onKeyUp.bind(this)}
         value={this.state.autoCompleteValue}
       />
     )
+  }
+
+  renderAutoCompleteResults () {
+    if (this.state.isDirty) {
+      if (this.props.dataSource.length === 0) return this.props.emptyMessage
+      return this.props.dataSource.map((rowData, index) => {
+        return this.props.renderRow(rowData, index, this.resetState.bind(this))
+      })
+    }
+  }
+
+  /*
+  * Allow the user to filter.
+  *
+  * @param [Event] event. On key up on an input field.
+  */
+  onKeyUp (event) {
+    let self = this
+    this.timeout = setTimeout(() => {
+      if (self.timeout) clearTimeout(self.timeout)
+      self.onUpdateAutoCompleteResults(self.state.autoCompleteValue)
+    }, 600)
+  }
+
+  /*
+  * Allow the user to update auto complete results.
+  *
+  * @param [Any] value. Value for the autocomplete inut field
+  */
+  onUpdateAutoCompleteResults (value) {
+    this.props.updateAutoCompleteResults(value)
   }
 
   render () {
@@ -54,6 +70,13 @@ class AutoComplete extends React.Component {
       </div>
     )
   }
+}
+
+AutoComplete.propTypes = {
+  dataSource: PropTypes.array,
+  emptyMessage: PropTypes.any,
+  renderRow: PropTypes.func,
+  updateAutoCompleteResults: PropTypes.func
 }
 
 export default AutoComplete

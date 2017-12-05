@@ -33,7 +33,7 @@ class FlexTable extends React.Component {
 
     return rows.map((rowData, index) => {
       return (
-        <div key={`row-${index}`} className='cn-flex-table-row' onClick={this.onRowClick.bind(this)}>
+        <div key={`row-${index}`} className='cn-flex-table-row' onClick={() => this.onRowClick(rowData)}>
           {
             Object.keys(rowData).map((key,cellIndex) => {
               if (key !== 'component' && key !== 'id') {
@@ -50,9 +50,9 @@ class FlexTable extends React.Component {
   * Handle on click event for the row.
   *
   */
-  onRowClick () {
+  onRowClick (rowData) {
     const {canSelect, onSelect} = this.props
-    if (canSelect && onSelect) onSelect()
+    if (canSelect && onSelect) onSelect(rowData)
   }
 
   render () {

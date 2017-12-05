@@ -18,8 +18,8 @@ class App extends React.Component {
   }
 
   render () {
-    // const {userStore} = this.props.rootStore
-    // if (userStore.fetchingUser) return <Loading />
+    const {userStore} = this.props.rootStore
+    if (userStore.fetchingUser) return <div />
 
     return (
       <div className='app public'>

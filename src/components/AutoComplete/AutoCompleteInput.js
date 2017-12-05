@@ -19,7 +19,8 @@ class AutoCompleteInput extends React.Component {
         onClick={this.onClick}
         className='cn-autocomplete-input'
         placeholder={input.placeholder}
-        onChange={(event) => this.props.onChange(event.target.value)}
+        onChange={(event) => this.props.onChange(event)}
+        onKeyUp={(event) => this.props.onKeyUp(event)}
         value={input.value}
       />
     )
@@ -28,7 +29,8 @@ class AutoCompleteInput extends React.Component {
 
 AutoCompleteInput.propTypes = {
   icon: PropTypes.string,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  onKeyUp: PropTypes.func
 }
 
 export default AutoCompleteInput

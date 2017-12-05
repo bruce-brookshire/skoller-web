@@ -1,7 +1,9 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import AddProfessor from './AddProfessor'
 import ClassForm from './ClassForm'
 import SearchProfessor from './SearchProfessor'
+import actions from '../../../actions'
 
 const ContentEnum = {
   SEARCH_PROFESSOR: 0,
@@ -21,11 +23,11 @@ class CreateClass extends React.Component {
   renderContent () {
     switch (this.state.step) {
       case ContentEnum.SEARCH_PROFESSOR:
-        return <SearchProfessor onAddProfessor={this.onAddProfessor.bind(this)} />
+        return <SearchProfessor onAddProfessor={this.onAddProfessor.bind(this)} onProfessorSelect={this.onSubmitProfessor.bind(this)} />
       case ContentEnum.ADD_PROFESSOR:
         return <AddProfessor onSubmit={this.onSubmitProfessor.bind(this)}/>
       case ContentEnum.CLASS_FORM:
-        return <ClassForm professor={this.state.form.professor} />
+        return <ClassForm professor={this.state.form.professor} onSubmit={this.onSubmitClass.bind(this)}/>
       default:
     }
   }
@@ -34,9 +36,13 @@ class CreateClass extends React.Component {
     this.setState({step: ContentEnum.ADD_PROFESSOR})
   }
 
-  onSubmitProfessor (form) {
-    const newForm = {...this.state.form, professor: form}
+  onSubmitProfessor (professor) {
+    const newForm = {...this.state.form, professor: professor}
     this.setState({form: newForm, step: ContentEnum.CLASS_FORM})
+  }
+
+  onSubmitClass (cl) {
+    this.props.onSubmit(cl)
   }
 
   render () {
@@ -50,6 +56,11 @@ class CreateClass extends React.Component {
       </div>
     )
   }
+}
+
+CreateClass.propTypes = {
+  onClose: PropTypes.func,
+  onSubmit: PropTypes.func
 }
 
 export default CreateClass

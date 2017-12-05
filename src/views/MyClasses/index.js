@@ -14,6 +14,9 @@ import UploadDocuments from './UploadDocuments'
 // import {addClass, deleteClass} from '../../actions/classes'
 // import {convertTimeTo12HourClock} from '../../utilities/time'
 
+import actions from '../../actions'
+import {mapProfessor} from '../../utilities/display'
+
 const headers = [
   {
     field: 'courseNumber',
@@ -82,9 +85,16 @@ class MyClasses extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
+      classes: [],
       openAddModal: false,
       openCreateModal: false
     }
+  }
+
+  componentWillMount () {
+    actions.classes.getStudentClasses().then((classes) => {
+      this.setState({classes})
+    }).catch(() => false)
   }
 
   /*
@@ -119,7 +129,7 @@ class MyClasses extends React.Component {
   * @return [Array]. Array of formatted row data.
   */
   getRows () {
-    return currentClasses.map((item, index) =>
+    return this.state.classes.map((item, index) =>
       this.mapRow(item, index)
     )
   }
@@ -132,43 +142,21 @@ class MyClasses extends React.Component {
   * @return [Object] row. Object of formatted row data for display in grid.
   */
   mapRow (item, index) {
-    const { id, courseNumber, name, professor, professorInfo, days, beginTime, classLength, status } = item
+    const {id, number, name, meet_start_time, meet_days, length, professor, status} = item
 
     const row = {
       id: id || '',
-      courseNumber: courseNumber || '-',
+      courseNumber: number || '-',
       name: name || '-',
-      // professor: professor || professorInfo ? this.mapProfessor(professor || professorInfo) : 'TBA',
-      professor: professor || 'TBA',
-      days: days || 'TBA',
-      // beginTime: beginTime ? convertTimeTo12HourClock(beginTime) : 'TBA',
-      beginTime: beginTime || 'TBA',
-      classLength: classLength || 'TBA',
+      professor: professor ? mapProfessor(professor) : 'TBA',
+      days: meet_days || 'TBA',
+      beginTime: meet_start_time || 'TBA',
+      classLength: length || 'TBA',
       status: status ? this.mapStatus(status) : '-',
       component: <UploadDocuments cl={item} />
     }
 
     return row
-  }
-
-  /*
-  * Map the professors name to the professor.
-  *
-  * @param [Object] professor. Professor object.
-  * @param [String] name. Name of professor.
-  */
-  mapProfessor (professor) {
-    const {firstName, lastName} = professor
-    let name = ''
-
-    if (firstName) {
-      name = firstName
-    }
-    if (lastName) {
-      name = name ? `${name} ${lastName}` : lastName
-    }
-
-    return name || 'TBA'
   }
 
   /*
@@ -186,7 +174,7 @@ class MyClasses extends React.Component {
         return <span style={{color: 'darkgrey'}} >RECEIVED</span>
       case 'HAS_ISSUE':
         return <span style={{color: 'darkgrey'}} >RECEIVED</span>
-      case 'COMPLETED':
+      case 'Complete':
         return <span style={{color: '#00C000'}} >COMPLETED</span>
       default:
     }
@@ -217,9 +205,12 @@ class MyClasses extends React.Component {
   * @param [Object] cl. Class user would like to add.
   * @return [Object] null.
   */
-  onAddClass (event, cl) {
-    // addClass(cl.id)
-    this.toggleAddModal()
+  onAddClass (cl) {
+    actions.classes.enrollInClass(cl.id).then((c) => {
+      const newClasses = this.state.classes
+      newClasses.push(c)
+      this.setState({classes: newClasses, openAddModal: false, openCreateModal: false})
+    }).catch(() => false)
   }
 
   /*
@@ -229,7 +220,11 @@ class MyClasses extends React.Component {
   * @return [Object] null.
   */
   onDeleteClass (cl) {
-    // deleteClass(cl.id)
+    actions.classes.dropClass(cl.id).then((c) => {
+      const newClasses = this.state.classes
+      newClasses.filter(cc => cc.id !== c.id)
+      this.setState({classes: newClasses})
+    }).catch(() => false)
   }
 
   /*

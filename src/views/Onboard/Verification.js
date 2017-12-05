@@ -14,6 +14,12 @@ class Verification extends React.Component {
     this.setState({code})
   }
 
+  getForm () {
+    return {
+      verification_code: this.state.code
+    }
+  }
+
   render () {
     return (
       <div className='cn-verification-container'>

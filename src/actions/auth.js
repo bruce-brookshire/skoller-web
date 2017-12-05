@@ -88,3 +88,22 @@ export function getUserByToken () {
       return Promise.reject(error)
     })
 }
+
+/*
+* Verify users phone number
+*/
+export function verifyPhoneNumber (form) {
+  const {user: {student}} = userStore
+  return fetch(`${Environment.SERVER_NAME}/api/v1/students/${student.id}/verify`, {
+    method: 'POST',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(form)
+  })
+    .then(response => checkError(response))
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
