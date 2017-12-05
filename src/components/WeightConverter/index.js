@@ -44,7 +44,7 @@ class WeightConverter extends React.Component {
     if (this.props.value) classes.push('active')
 
     return (
-      <div className='cn-weight-converter' onClick={() => this.props.onChange()}>
+      <div id={this.props.id} className='cn-weight-converter' onClick={() => this.props.onChange()}>
         <div className='slider full-width round'>
           <div className={classes.join(' ')}/>
         </div>

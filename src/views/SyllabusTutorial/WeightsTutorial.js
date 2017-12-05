@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Tutorial from './Tutorial'
-import Weights from '../components/ClassEditor/Weights'
+import Weights from './TestWeights'
 import WeightSyllabus from './WeightSyllabus'
 
 const styles = {

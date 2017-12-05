@@ -65,7 +65,7 @@ class UploadDocuments extends React.Component {
   }
 
   onDIY () {
-    browserHistory.push({ pathname: '/diy/tool', state: {cl: this.props.cl} })
+    browserHistory.push({ pathname: '/tutorial/weights', state: {cl: this.props.cl} })
   }
 
   render () {

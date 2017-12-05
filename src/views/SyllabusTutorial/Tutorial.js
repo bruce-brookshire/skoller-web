@@ -53,7 +53,7 @@ class Tutorial extends React.Component {
   }
 
   onFinish () {
-    browserHistory.push('/diy/tool')
+    browserHistory.push({ pathname: '/diy/tool', state: {cl: this.props.location.state.cl} })
   }
 
   render () {
@@ -125,6 +125,7 @@ Tutorial.propTypes = {
   control: PropTypes.node,
   description: PropTypes.string,
   header: PropTypes.string,
+  location: PropTypes.object,
   syllabus: PropTypes.node
 }
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Tutorial from './Tutorial'
-import Assignments from '../components/ClassEditor/Assignments'
+import Assignments from './TestAssignments'
 import AssignmentSyllabus from './AssignmentSyllabus'
 
 const styles = {
