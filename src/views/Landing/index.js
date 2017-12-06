@@ -46,7 +46,7 @@ class Landing extends React.Component {
         <Availability/>
 
         {/* start of section 7 */}
-        {/* <CallToAction/> */}
+        <CallToAction/>
 
       </div>
     )
