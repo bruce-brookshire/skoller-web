@@ -24,6 +24,9 @@
 
       &.has-files {
         border: 2px dotted $cn-color-blue;
+        &.active {
+          border: 2px solid $cn-color-blue;
+        }
       }
 
       .history-item {

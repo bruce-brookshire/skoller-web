@@ -10,16 +10,11 @@ class UploadHistory extends React.Component {
         <a
           key={index}
           className='history-item'
-          onClick={(event) => {
-            this.onDownload(event, file)
-          }}
-        >{file}</a>
+          href={file.path}
+          target="_blank"
+        >{file.path}</a>
       )
     })
-  }
-
-  onDownload (event, file) {
-    event.stopPropagation()
   }
 
   render () {
@@ -29,7 +24,7 @@ class UploadHistory extends React.Component {
     return (
       <div className='cn-upload-history'>
         <div className='upload-history-list'>
-          <FileUpload className={containerClasses.join(' ')}>
+          <FileUpload className={containerClasses.join(' ')} onUpload={this.props.onUpload}>
             <span className='header center-text'>{title}</span>
             {this.renderHistory()}
           </FileUpload>
@@ -50,6 +45,7 @@ class UploadHistory extends React.Component {
 UploadHistory.propTypes = {
   files: PropTypes.array,
   info: PropTypes.string,
+  onUpload: PropTypes.func,
   title: PropTypes.string
 }
 

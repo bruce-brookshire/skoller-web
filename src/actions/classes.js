@@ -80,6 +80,7 @@ export function getProfessorClasses (professor) {
 /*
 * Enroll in class
 *
+* @param [Object] classId. The id of the class for the student to enroll in.
 */
 export function enrollInClass (classId) {
   const {user: {student}} = userStore
