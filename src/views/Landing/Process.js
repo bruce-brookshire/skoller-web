@@ -4,7 +4,8 @@ import Slant from '../../components/Slant'
 class Process extends React.Component {
   render () {
     return (
-      <div>
+      <div className='shift-up'>
+        <Slant className='no-bg white-fill'/>
         <h2 className='center-text'>{'Here\'s how it works'}</h2>
         <div className='row section-header'>
           <div className='col-xs-12 col-sm-4 center-text'>
@@ -41,7 +42,6 @@ class Process extends React.Component {
             When the syllabus process is finished, just open the app and find everything already in place.
           </h4>
         </div>
-        <Slant />
       </div>
     )
   }

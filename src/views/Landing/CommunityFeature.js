@@ -5,7 +5,7 @@ class CommunityFeature extends React.Component {
   render () {
     return (
       <div>
-        <Slant className='inverse'/>
+        <Slant className='slant-inverse'/>
         <h3 className='section-topper section-header' >Plus, a <span className='blue-text'>community</span> {'you can\'t find anywhere else.'}</h3>
         <div className='row section-header'>
           <div className='col-xs-6'>
@@ -21,7 +21,7 @@ class CommunityFeature extends React.Component {
             </p>
           </div>
         </div>
-        <Slant/>
+
       </div>
     )
   }
