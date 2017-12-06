@@ -7,6 +7,7 @@ import Purpose from './Purpose'
 import Process from './Process'
 import FeatureHighlights from './FeatureHighlights'
 import CommunityFeature from './CommunityFeature'
+import Availability from './Availability'
 import CallToAction from './CallToAction'
 
 @inject('rootStore') @observer
@@ -39,9 +40,12 @@ class Landing extends React.Component {
         <FeatureHighlights/>
 
         {/* start of section 5 */}
-        {/* <CommunityFeature/> */}
+        <CommunityFeature/>
 
         {/* start of section 6 */}
+        <Availability/>
+
+        {/* start of section 7 */}
         {/* <CallToAction/> */}
 
       </div>
