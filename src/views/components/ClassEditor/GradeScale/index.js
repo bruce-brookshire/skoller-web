@@ -154,26 +154,24 @@ class GradeScale extends React.Component {
       <div className='margin-top-2x margin-bottom-2x'>
         {this.renderCurrentGradeScale()}
         <div className='margin-top'>
-          <form>
-            <div className='row'>
-              <div className='col-xs-12'>
-                <InputField
-                  containerClassName='margin-top'
-                  error={formErrors.grade_scale}
-                  label='Grade Scale'
-                  name='grade_scale'
-                  onBlur={() => console.log('onBlur')}
-                  onChange={updateProperty}
-                  onFocus={() => console.log('onFocus')}
-                  placeholder='Grade Scale, i.e. A,90|B,80|C,70|D,60'
-                  value={form.grade_scale}
-                />
-              </div>
-              <div className='col-xs-12 margin-top margin-bottom'>
-                <button className='button full-width' onClick={() => false}>Submit gradescale</button>
-              </div>
+          <div className='row'>
+            <div className='col-xs-12'>
+              <InputField
+                containerClassName='margin-top'
+                error={formErrors.grade_scale}
+                label='Grade Scale'
+                name='grade_scale'
+                onBlur={() => console.log('onBlur')}
+                onChange={updateProperty}
+                onFocus={() => console.log('onFocus')}
+                placeholder='Grade Scale, i.e. A,90|B,80|C,70|D,60'
+                value={form.grade_scale}
+              />
             </div>
-          </form>
+            <div className='col-xs-12 margin-top margin-bottom'>
+              <button className='button full-width' onClick={() => false}>Submit gradescale</button>
+            </div>
+          </div>
         </div>
 
         <div className='margin-top'>

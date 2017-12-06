@@ -220,9 +220,8 @@ class MyClasses extends React.Component {
   * @return [Object] null.
   */
   onDeleteClass (cl) {
-    actions.classes.dropClass(cl.id).then((c) => {
-      const newClasses = this.state.classes
-      newClasses.filter(cc => cc.id !== c.id)
+    actions.classes.dropClass(cl.id).then(() => {
+      const newClasses = this.state.classes.filter(cc => cc.id !== cl.id)
       this.setState({classes: newClasses})
     }).catch(() => false)
   }

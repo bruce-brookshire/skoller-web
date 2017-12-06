@@ -28,6 +28,18 @@ const headers = [
   }
 ]
 
+const requiredFields = {
+  'name': {
+    type: 'required'
+  },
+  'weight': {
+    type: 'required'
+  },
+  'due_date': {
+    type: 'required'
+  }
+}
+
 class Assignments extends React.Component {
   constructor (props) {
     super(props)
@@ -70,12 +82,13 @@ class Assignments extends React.Component {
   */
   initializeFormData (data) {
     let formData = data || {}
-    const {id, name, weight} = formData
+    const {id, name, weight, due_date} = formData
 
     return ({
       id: id || null,
       name: name || '',
-      weight: (weight && weight.id) || ''
+      weight: (weight && weight.id) || '',
+      due_date: due_date || ''
     })
   }
 
@@ -138,8 +151,8 @@ class Assignments extends React.Component {
   *
   */
   onSubmit () {
-    if (this.props.validateForm(this.state.form)) {
-      this.state.form.id ? this.onCreateAssignment() : this.onUpdateAssignment()
+    if (this.props.validateForm(this.state.form, requiredFields)) {
+      !this.state.form.id ? this.onCreateAssignment() : this.onUpdateAssignment()
     }
   }
 
@@ -193,49 +206,46 @@ class Assignments extends React.Component {
           />
         </div>
 
-        <div className='margin-top'>
-          <form id='class-editor-assignment-form'>
-            <div className='row'>
-              <div className='col-xs-12'>
-                <InputField
-                  containerClassName='margin-top'
-                  error={formErrors.name}
-                  label="Assignment name"
-                  name="name"
-                  onChange={updateProperty}
-                  placeholder="Assignment name, i.e. Exam 1"
-                  value={form.name}
-                />
-              </div>
-              <div className='col-xs-12'>
-                <SelectField
-                  containerClassName='margin-top'
-                  error={formErrors.weight}
-                  label="Weight category"
-                  name="weight"
-                  onChange={updateProperty}
-                  options={this.state.weights}
-                  placeholder="Weight category"
-                  value={form.weight}
-                />
-              </div>
-              <div className='col-xs-12'>
-                <InputField
-                  containerClassName='margin-top'
-                  error={formErrors.due_date}
-                  label="Due Date"
-                  name="due_date"
-                  onChange={updateProperty}
-                  placeholder="Assignment due date"
-                  type='date'
-                  value={form.due_date}
-                />
-              </div>
+        <div id='class-editor-assignment-form' className='margin-top'>
+          <div className='row'>
+            <div className='col-xs-12'>
+              <InputField
+                containerClassName='margin-top'
+                error={formErrors.name}
+                label="Assignment name"
+                name="name"
+                onChange={updateProperty}
+                placeholder="Assignment name, i.e. Exam 1"
+                value={form.name}
+              />
             </div>
-            <button className='button full-width margin-top margin-bottom' onClick={this.onSubmit.bind(this)}>Submit assignment</button>
-          </form>
+            <div className='col-xs-12'>
+              <SelectField
+                containerClassName='margin-top'
+                error={formErrors.weight}
+                label="Weight category"
+                name="weight"
+                onChange={updateProperty}
+                options={this.state.weights}
+                placeholder="Weight category"
+                value={form.weight}
+              />
+            </div>
+            <div className='col-xs-12'>
+              <InputField
+                containerClassName='margin-top'
+                error={formErrors.due_date}
+                label="Due Date"
+                name="due_date"
+                onChange={updateProperty}
+                placeholder="Assignment due date"
+                type='date'
+                value={form.due_date}
+              />
+            </div>
+          </div>
+          <button className='button full-width margin-top margin-bottom' onClick={this.onSubmit.bind(this)}>Submit assignment</button>
         </div>
-
       </div>
     )
   }

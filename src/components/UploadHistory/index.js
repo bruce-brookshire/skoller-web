@@ -12,7 +12,7 @@ class UploadHistory extends React.Component {
           className='history-item'
           href={file.path}
           target="_blank"
-        >{file.path}</a>
+        >{file.name}</a>
       )
     })
   }

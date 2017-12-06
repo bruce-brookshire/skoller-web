@@ -12,7 +12,7 @@ class Onboard extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      currentIndex: 1,
+      currentIndex: 0,
       stepCount: 3
     }
   }
