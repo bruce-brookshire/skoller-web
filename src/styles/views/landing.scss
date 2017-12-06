@@ -54,6 +54,10 @@
 .section-slant {
   -webkit-clip-path: polygon(0 10%, 100% 0, 100% 90%, 0 100%);
   clip-path: polygon(0 10%, 100% 0, 100% 90%, 0 100%);
+  .inverse{
+    transform: scale(-1);
+    -webkit-transform: scale(-1);
+  }
 }
 
 .blue-section-text{
@@ -160,4 +164,26 @@
     border-right: 20px solid $cn-color-blue;
     border-bottom: 0px solid transparent;
   }
+}
+
+.twin-image-div{
+  position: relative;
+}
+.twin-image{
+  width:50%;
+}
+.twin-image-top{
+  position: absolute;
+  right: 20%;
+}
+.blue-text{
+  color: $cn-color-blue;
+}
+.paragraph-spacing{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.link-on-blue{
+  color: white;
 }

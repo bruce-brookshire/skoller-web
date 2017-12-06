@@ -1,24 +1,27 @@
 import React from 'react'
+import Slant from '../../components/Slant'
 
 class CommunityFeature extends React.Component {
   render () {
     return (
-      <div className=''>
-        <div className='row'>
-          <h3>{'Plus, a community you can\'t find anywhere else.'}</h3>
-        </div>
-        <div className='row'>
-          <div>
-            <img src='src/assets/images/landing_page/chat@2x.png'/>
-            <img src='src/assets/images/landing_page/updates@2x.png'/>
+      <div>
+        <Slant className='inverse'/>
+        <h3 className='section-topper section-header' >Plus, a <span className='blue-text'>community</span> {'you can\'t find anywhere else.'}</h3>
+        <div className='row section-header'>
+          <div className='col-xs-6'>
+            <div className='twin-image-div'>
+              <img className='twin-image' src='src/assets/images/landing_page/chat@2x.png'/>
+              <img className='twin-image twin-image-top' src='src/assets/images/landing_page/updates@2x.png'/>
+            </div>
           </div>
-          <div>
-            <p>{'As the semester goes on, your class schedules are bound to change. With ClassNav\'s Updates, you and your classmatets have nothing to worry about. When one student adjusts their schedule on ClassNav, all classmates get a notification with the option to copy or dismiss the change.'}
+          <div className='col-xs-6 paragraph-spacing'>
+            <p>As the semester goes on, your class schedules are bound to change. <span className='blue-text'>{'With ClassNav\'s Updates, you and your classmatets have nothing to worry about.'}</span> When one student adjusts their schedule on ClassNav, all classmates get a notification with the option to copy or dismiss the change.
             </p>
-            <p>{'Wanna talk to your classmates about what\'s going on in class? Our chat feature let\'s you and your classmates talk about whatever you want. You can even talk to everyone at your school by posting on the university feed.'}
+            <p>{'Wanna talk to your classmates about what\'s going on in class?'} <span className='blue-text'>{'Our chat feature let\'s you and your classmates talk about whatever you want.'}</span> You can even talk to everyone at your school by posting on the university feed.
             </p>
           </div>
         </div>
+        <Slant/>
       </div>
     )
   }
