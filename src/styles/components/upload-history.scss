@@ -27,6 +27,14 @@
         &.active {
           border: 2px solid $cn-color-blue;
         }
+        &.disabled {
+          border: 2px dotted #d7d7d7;
+        }
+      }
+
+      &.disabled {
+        background-color: #d7d7d7;
+        border: 2px dotted #d7d7d7;
       }
 
       .history-item {

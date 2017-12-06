@@ -78,6 +78,7 @@ class UploadDocuments extends React.Component {
           </div>
           <div className='col-xs-3'>
             <UploadHistory
+              disabled={!this.props.cl.is_syllabus}
               files={this.getSyllabusDocuments()}
               info='Upload your class syllabus.'
               onUpload={(file) => { this.onDocumentUpload(file, true) }}
