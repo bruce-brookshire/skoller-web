@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import MyClasses from '../MyClasses'
-import SubmitSyllabi from './SubmitSyllabi'
+import SubmitSyllabi from './SubmitSyllabi/index'
 import Verification from './Verification'
 import {ProgressBar, ProgressStep} from '../../components/ProgressBar'
 import actions from '../../actions'
