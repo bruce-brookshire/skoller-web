@@ -5,7 +5,7 @@ class CallToAction extends React.Component {
   render () {
     return (
       <div>
-        <Slant/>
+        <Slant className='slant-inverse'/>
         <div className='row'>
           <div className='col-xs-12 center-text'>
             <button 

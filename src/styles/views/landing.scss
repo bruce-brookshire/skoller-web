@@ -88,6 +88,20 @@
 .slants{
   height:10vh;
   width:100%;
+  background-color: $cn-primary-background-color;
+
+  &.slant-inverse{
+    transform: scale(-1);
+  }
+  &.no-bg{
+    background-color: transparent;
+  }
+}
+.white-fill{
+  fill:$cn-primary-background-color;
+}
+.shift-up{
+  margin-top: -10vh;
 }
 
 .section-dimensions{
@@ -186,4 +200,9 @@
 }
 .link-on-blue{
   color: white;
+}
+
+.signup-plea{
+  padding-bottom: 16px;
+  margin-bottom: 0px;
 }

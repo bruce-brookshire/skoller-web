@@ -5,7 +5,7 @@ class FeatureHighlights extends React.Component {
   render () {
     return (
       <div className='even-section'>
-        
+        <Slant/>
         <h3 className='section-topper section-header blue-section-text'>{'ClassNav answers all of the biggest questions you\'ll have throughout your semester.'}</h3>
         <div className='section-header'>
           <div className='row'>
