@@ -51,42 +51,12 @@
    }
 }
 
-.section-slant {
-  -webkit-clip-path: polygon(0 10%, 100% 0, 100% 90%, 0 100%);
-  clip-path: polygon(0 10%, 100% 0, 100% 90%, 0 100%);
-  .inverse{
-    transform: scale(-1);
-    -webkit-transform: scale(-1);
-  }
-}
+/////////////////////////////
 
-.blue-section-text{
-  color: $cn-color-white;
-}
-
-.white-section-taglines{
-  color: $cn-color-blue;
-}
-
-.purpose_image{
-  height:50%;
-  width: 100%;
-}
-
-.section-topper{
-  font-size: 2.5em;
-  display: block;
-  font-weight: bold;
-  padding: 25px 0;
-
-}
-
-.section-tagline{
-  font-size: 1.5em;
-}
+// slants
 
 .slants{
-  height:10vh;
+  height:7vh;
   width:100%;
   background-color: $cn-primary-background-color;
 
@@ -97,20 +67,71 @@
     background-color: transparent;
   }
 }
+
+.section-slant {
+  -webkit-clip-path: polygon(0 10%, 100% 0, 100% 90%, 0 100%);
+  clip-path: polygon(0 10%, 100% 0, 100% 90%, 0 100%);
+  .inverse{
+    transform: scale(-1);
+    -webkit-transform: scale(-1);
+  }
+}
+
 .white-fill{
   fill:$cn-primary-background-color;
 }
-.shift-up{
-  margin-top: -10vh;
-}
 
-.section-dimensions{
-  width: 100%;
+////////////////////////////
+
+// text
+.section-tagline{
+  font-size: 1.5em;
 }
 
 .section-header{
   width: 85%;
   margin: 0 auto;
+}
+
+.white-section-taglines{
+  color: $cn-color-blue;
+}
+
+.blue-section-text{
+  color: $cn-color-white;
+}
+
+.muted-text{
+  color: $cn-color-grey;
+  font-size: 0.95em;
+}
+
+.blue-text{
+  color: $cn-color-blue;
+}
+.paragraph-spacing{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.link-on-blue{
+  color: white;
+}
+
+///////////////////////
+
+// section scheming
+
+.section-topper{
+  font-size: 2.5em;
+  display: block;
+  font-weight: bold;
+  padding: 25px 0;
+
+}
+
+.section-dimensions{
+  width: 100%;
 }
 
 .even-section{
@@ -125,10 +146,24 @@
   padding: 0 5%;
 }
 
-.muted-text{
-  color: $cn-color-grey;
-  font-size: 0.95em;
+.signup-plea{
+  padding-bottom: 16px;
+  margin-bottom: 0px;
 }
+
+
+.shift-up{
+  margin-top: -7vh;
+}
+
+//////////////////
+
+// image sizing
+.purpose_image{
+  height:50%;
+  width: 100%;
+}
+
 .process-icon-size{
   height:96px;
   width:96px;
@@ -137,6 +172,21 @@
 .highlights-images{
   width:90%;
 }
+
+.twin-image-div{
+  position: relative;
+}
+.twin-image{
+  width:50%;
+}
+.twin-image-top{
+  position: absolute;
+  right: 20%;
+}
+
+//////////////////////
+
+// speech bubbles - cleaned **
 
 .invert{
   transform: scaleY(-1);
@@ -178,31 +228,4 @@
     border-right: 20px solid $cn-color-blue;
     border-bottom: 0px solid transparent;
   }
-}
-
-.twin-image-div{
-  position: relative;
-}
-.twin-image{
-  width:50%;
-}
-.twin-image-top{
-  position: absolute;
-  right: 20%;
-}
-.blue-text{
-  color: $cn-color-blue;
-}
-.paragraph-spacing{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-}
-.link-on-blue{
-  color: white;
-}
-
-.signup-plea{
-  padding-bottom: 16px;
-  margin-bottom: 0px;
 }
