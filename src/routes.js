@@ -26,7 +26,7 @@ const router = (
       <Route path='/landing' component={Landing} />
       <Route path='/app' component={Layout} onEnter={requireAuth}>
         <IndexRedirect to="/myclasses"/>
-        <Route path='/onboard' component={Onboard} />
+        <Route path='/onboard' component={Onboard} onEnter={authOnboard} />
         <Route path='/myclasses' component={MyClasses}/>
 
         <Route path='/hub'>
@@ -56,19 +56,26 @@ function requireAuth (nextState, replaceState) {
     userStore.authToken = cookie.get('skollerToken')
     actions.auth.getUserByToken()
       .then(() => {
-        // if (nextState.routes.findIndex(route => route.path === '/staff') !== -1 &&
-        //   !userStore.user.staff_profile && userStore.user.provider_profile) {
-        //   browserHistory.push('/provider')
-        // } else if (nextState.routes.findIndex(route => route.path === '/provider') !== -1 &&
-        //   !userStore.user.provider_profile && userStore.user.staff_profile) {
-        //   browserHistory.push('/staff')
-        // }
+        if (nextState.routes.findIndex(route => route.path === '/onboard') !== -1) {
+          authOnboard()
+        }
         userStore.setFetchingUser(false)
       })
       .catch(() => {
         browserHistory.push('/landing')
         userStore.setFetchingUser(false)
       })
+  }
+}
+
+/*
+* If the user has not been verified, allow access to onboarding.
+*/
+function authOnboard () {
+  if (userStore.user) {
+    if (!userStore.user.student || (userStore.user.student && userStore.user.student.is_verified)) {
+      // browserHistory.push('/myclasses')
+    }
   }
 }
 

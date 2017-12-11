@@ -58,6 +58,10 @@ class SubmitSyllabi extends React.Component {
   render () {
     return (
       <div className='cn-submit-syllabi-container'>
+        <div className='margin-bottom'>
+          <h2>Submit your syllabi</h2>
+          <span>The syllabus helps us set up your class.</span>
+        </div>
         <div className='cn-flex-table cn-add-class-grid'>
           <div className='cn-flex-table-row'>
             {this.renderTableHeaders()}

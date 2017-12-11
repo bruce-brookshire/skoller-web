@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import MyClasses from '../MyClasses'
+import Classes from './Classes'
 import SubmitSyllabi from './SubmitSyllabi/index'
 import Verification from './Verification'
 import {ProgressBar, ProgressStep} from '../../components/ProgressBar'
@@ -12,7 +12,7 @@ class Onboard extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      currentIndex: 0,
+      currentIndex: 1,
       stepCount: 3
     }
   }
@@ -22,7 +22,7 @@ class Onboard extends React.Component {
       case 0:
         return <Verification ref={(c) => { this.verification = c }} />
       case 1:
-        return <MyClasses />
+        return <Classes />
       case 2:
         return <SubmitSyllabi />
       default:
@@ -59,7 +59,7 @@ class Onboard extends React.Component {
           </div>
         </div>
 
-        <div className='row full-width margin-top margin-bottom justify-center'>
+        <div className='row full-width margin-top margin-bottom justify-center' style={{overflow: 'hidden', overflowY: 'scroll'}}>
           <div className='space-between-vertical col-xs-12 col-md-8 col-lg-6 margin-top margin-bottom'>
             {this.renderContent()}
           </div>

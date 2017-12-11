@@ -1,6 +1,7 @@
 .cn-onboarding-container {
   @include center-viewport-content-container;
   padding: 50px;
+  height: calc(100vh - 64px);
 
   .cn-verification-container {
     width: 100%;
