@@ -19,9 +19,8 @@ class InputField extends React.Component {
     const containerClasses = ['cn-input-container']
     if (containerClassName) containerClasses.push(containerClassName)
 
-
     return (
-      <div style={{position:'relative'}}>
+      <div className='form-element' style={{position:'relative'}}>
         <Input
           containerClass={containerClasses.join(' ')}
           containerActiveClass='active'

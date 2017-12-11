@@ -30,13 +30,10 @@ class VerificationCode extends React.Component {
     let inputs = []
     for (let i = 0; i < numberOfDigits; i++) {
       inputs.push(
-        <input
+        <VerifitcationInput
           key={`input-${i}`}
-          className='cn-verification-code-input'
-          onChange={(event) => {
-            this.onChange(event.target.value, i)
-          }}
-          maxLength={1}
+          index={i}
+          onChange={this.onChange.bind(this)}
           value={form[`input${i}`]}
         />
       )
@@ -75,3 +72,34 @@ VerificationCode.propTypes = {
 }
 
 export default VerificationCode
+
+class VerifitcationInput extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {isFocused: false}
+  }
+  render () {
+    const {index, value, onChange} = this.props
+
+    const classes = ['cn-verification-code-input']
+    if (this.state.isFocused) classes.push('active')
+
+    return (
+      <input
+        key={`input-${index}`}
+        className={classes.join(' ')}
+        onBlur={(event) => this.setState({isFocused: false})}
+        onChange={(event) => { onChange(event.target.value, index) }}
+        onFocus={(event) => this.setState({isFocused: true})}
+        maxLength={1}
+        value={value}
+      />
+    )
+  }
+}
+
+VerifitcationInput.propTypes = {
+  index: PropTypes.number,
+  onChange: PropTypes.func,
+  value: PropTypes.string
+}

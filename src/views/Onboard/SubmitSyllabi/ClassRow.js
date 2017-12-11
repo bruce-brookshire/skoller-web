@@ -23,7 +23,8 @@ class ClassRow extends React.Component {
   */
   intializeState () {
     return {
-      documents: []
+      documents: [],
+      hasSyllabus: this.props.cl.is_syllabus
     }
   }
 
@@ -55,6 +56,18 @@ class ClassRow extends React.Component {
     }).catch(() => false)
   }
 
+  /*
+  * Handle checkbox change
+  */
+  onCheckboxChange () {
+    if (this.getSyllabusDocuments().length === 0) {
+      const form = {id: this.props.cl.id, is_syllabus: !this.state.hasSyllabus}
+      actions.classes.updateClass(form).then((cl) => {
+        this.setState({hasSyllabus: !this.state.hasSyllabus})
+      }).catch(() => false)
+    }
+  }
+
   render () {
     const {cl: {name}} = this.props
     return (
@@ -63,13 +76,14 @@ class ClassRow extends React.Component {
           <div>
             <span>{name || '-'}</span>
             <div>
-              <input type='checkbox' />
+              <input type='checkbox' onChange={this.onCheckboxChange.bind(this)} checked={!this.state.hasSyllabus}/>
               <span className='checkbox-label'>{`This class doesn't have a syllabus`}</span>
             </div>
           </div>
         </div>
         <div className='cn-flex-table-cell'>
           <UploadHistory
+            disabled={!this.state.hasSyllabus}
             files={this.getSyllabusDocuments()}
             info=''
             onUpload={(file) => { this.onDocumentUpload(file, true) }}

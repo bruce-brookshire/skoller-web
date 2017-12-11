@@ -165,19 +165,14 @@ class MyClasses extends React.Component {
   * @param [String] status. Class status.
   */
   mapStatus (status) {
-    switch (status) {
-      case 'NO_FILES':
-        return <span style={{color: '#FF0000'}}> UPLOAD SYLLABUS </span>
-      case 'NEEDS_SYLLABUS':
-        return <span style={{color: '#FF0000'}}> UPLOAD SYLLABUS </span>
-      case 'IN_PROGRESS':
-        return <span style={{color: 'darkgrey'}} >RECEIVED</span>
-      case 'HAS_ISSUE':
-        return <span style={{color: 'darkgrey'}} >RECEIVED</span>
-      case 'Complete':
-        return <span style={{color: '#00C000'}} >COMPLETED</span>
-      default:
+    if (status === 'New Class' || status === 'Nees Syllabus') {
+      return <span className='cn-red' style={{color: '#FF0000'}}> UPLOAD SYLLABUS </span>
+    } else if (status === 'Weights' || status === 'Assignments' || status === 'Review' || status === 'Help') {
+      return <span style={{color: 'darkgrey'}} >RECEIVED</span>
+    } else if (status === 'Complete' || status === 'Change') {
+      return <span className='cn-green'style={{color: '#00C000'}} >COMPLETED</span>
     }
+    return status
   }
 
   /*
@@ -220,9 +215,8 @@ class MyClasses extends React.Component {
   * @return [Object] null.
   */
   onDeleteClass (cl) {
-    actions.classes.dropClass(cl.id).then((c) => {
-      const newClasses = this.state.classes
-      newClasses.filter(cc => cc.id !== c.id)
+    actions.classes.dropClass(cl.id).then(() => {
+      const newClasses = this.state.classes.filter(cc => cc.id !== cl.id)
       this.setState({classes: newClasses})
     }).catch(() => false)
   }

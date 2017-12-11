@@ -85,6 +85,25 @@
   border-radius: 5px;
   background-color: $cn-info-color;
   color: white;
+  // display: none;
+
+  &.triangle-top {
+    @include triangle-top;
+  }
+
+  &.triangle-bottom {
+    @include triangle-bottom;
+  }
+
+  &.triangle-left {
+    @include triangle-left;
+  }
+
+  &.triangle-right {
+    @include triangle-right;
+  }
+
+
 
   &.warning {
     background-color: $cn-warning-color;

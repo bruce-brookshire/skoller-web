@@ -1,6 +1,7 @@
 .cn-onboarding-container {
   @include center-viewport-content-container;
   padding: 50px;
+  height: calc(100vh - 64px);
 
   .cn-verification-container {
     width: 100%;
@@ -75,7 +76,17 @@
         height: 100px;
         max-height: 100px;
         min-height: 100px;
+
+        &.active {
+          border-color: $cn-color-white;
+        }
+
+        &.disabled {
+          background-color: #d7d7d7;
+          border-color: #d7d7d7;
+        }
       }
+
 
       .header, .history-item {
         color: $cn-color-white;

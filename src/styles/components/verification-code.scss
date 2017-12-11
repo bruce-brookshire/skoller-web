@@ -11,6 +11,10 @@
     max-width: 32px;
     margin: $unit-space;
 
+    &.active {
+      outline: 1px solid $cn-color-blue;
+    }
+    
     &:first-child {
       margin-left: 0;
     }

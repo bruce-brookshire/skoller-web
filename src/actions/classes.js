@@ -12,7 +12,7 @@ var Environment = require('../../environment.js')
 */
 export function searchClasses (param) {
   const {user: {student: {school}}} = userStore
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes?school.id=${school.id}&class.name=${param}`, {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/classes?school.id=${school.id}&class.name=${param}&class.number=${param}&professor.name=${param}&or=true`, {
     method: 'GET',
     headers: {
       'Authorization': userStore.authToken,
@@ -121,7 +121,7 @@ export function dropClass (classId) {
 }
 
 /*
-* Drop class
+* Create a new class
 */
 export function createClass (form) {
   const {user: {student: {school}}} = userStore
@@ -138,8 +138,29 @@ export function createClass (form) {
       return data
     })
     .catch(error => {
-      console.log('error is', error)
       showSnackbar('Error creating class. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Update a class
+*/
+export function updateClass (form) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${form.id}`, {
+    method: 'PUT',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(form)
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error updating class. Try again.')
       return Promise.reject(error)
     })
 }

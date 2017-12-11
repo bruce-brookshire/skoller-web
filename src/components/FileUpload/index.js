@@ -29,14 +29,15 @@ class FileUpload extends React.Component {
     const activeClass = this.state.isDragActive ? 'active' : ''
     if (this.props.className) classes.push(this.props.className)
     if (activeClass) classes.push(activeClass)
+    if (this.props.disabled) classes.push('disabled')
 
     return (
       <div
         className={classes.join(' ')}
         onClick={() => { if (!this.props.disabled) { this.onClick() } }}
-        onDragLeave={(event) => this.onDragLeave(event)}
-        onDragOver={(event) => this.onDragOver(event)}
-        onDrop={(event) => this.onDrop(event)}
+        onDragLeave={(event) => { if (!this.props.disabled) { this.onDragLeave(event) } }}
+        onDragOver={(event) => { if (!this.props.disabled) { this.onDragOver(event) } }}
+        onDrop={(event) => { if (!this.props.disabled) { this.onDrop(event) } }}
       >
         <input
           type="file"

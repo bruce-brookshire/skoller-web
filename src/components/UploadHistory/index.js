@@ -12,7 +12,7 @@ class UploadHistory extends React.Component {
           className='history-item'
           href={file.path}
           target="_blank"
-        >{file.path}</a>
+        >{file.name}</a>
       )
     })
   }
@@ -24,7 +24,7 @@ class UploadHistory extends React.Component {
     return (
       <div className='cn-upload-history'>
         <div className='upload-history-list'>
-          <FileUpload className={containerClasses.join(' ')} onUpload={this.props.onUpload}>
+          <FileUpload className={containerClasses.join(' ')} disabled={this.props.disabled} onUpload={this.props.onUpload}>
             <span className='header center-text'>{title}</span>
             {this.renderHistory()}
           </FileUpload>
@@ -43,6 +43,7 @@ class UploadHistory extends React.Component {
 }
 
 UploadHistory.propTypes = {
+  disabled: PropTypes.bool,
   files: PropTypes.array,
   info: PropTypes.string,
   onUpload: PropTypes.func,
