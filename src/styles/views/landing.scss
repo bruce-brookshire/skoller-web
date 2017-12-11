@@ -62,18 +62,10 @@
 
   &.slant-inverse{
     transform: scale(-1);
+    -webkit-transform: scale(-1);
   }
   &.no-bg{
     background-color: transparent;
-  }
-}
-
-.section-slant {
-  -webkit-clip-path: polygon(0 10%, 100% 0, 100% 90%, 0 100%);
-  clip-path: polygon(0 10%, 100% 0, 100% 90%, 0 100%);
-  .inverse{
-    transform: scale(-1);
-    -webkit-transform: scale(-1);
   }
 }
 
@@ -93,10 +85,6 @@
   margin: 0 auto;
 }
 
-.white-section-taglines{
-  color: $cn-color-blue;
-}
-
 .blue-section-text{
   color: $cn-color-white;
 }
@@ -109,11 +97,13 @@
 .blue-text{
   color: $cn-color-blue;
 }
+
 .paragraph-spacing{
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
 }
+
 .link-on-blue{
   color: white;
 }
@@ -121,6 +111,15 @@
 ///////////////////////
 
 // section scheming
+
+.form-padding{
+  width: 95%;
+  margin: 0 auto;
+}
+
+.form-button{
+  width: 98%;
+}
 
 .section-topper{
   font-size: 2.5em;
@@ -151,7 +150,6 @@
   margin-bottom: 0px;
 }
 
-
 .shift-up{
   margin-top: -7vh;
 }
@@ -179,6 +177,7 @@
 .twin-image{
   width:50%;
 }
+
 .twin-image-top{
   position: absolute;
   right: 20%;

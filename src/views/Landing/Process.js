@@ -38,7 +38,7 @@ class Process extends React.Component {
           </div>
         </div>
         <div>
-          <h4 className='center-text white-section-taglines'>
+          <h4 className='center-text blue-text'>
             When the syllabus process is finished, just open the app and find everything already in place.
           </h4>
         </div>

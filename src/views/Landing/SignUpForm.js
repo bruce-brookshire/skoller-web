@@ -158,7 +158,7 @@ class SignUpForm extends React.Component {
     const {formErrors, updateProperty} = this.props
     return (
       <div id='sign-up-form'>
-        <form>
+        <form className='form-padding'>
           <h1>Sign up</h1>
           <div className='row'>
             <div className='col-xs-6'>
@@ -222,9 +222,9 @@ class SignUpForm extends React.Component {
             </div>
           </div>
         </form>
-        <div className='col-xs-12'>
+        <div className='col-xs-12 center-text'>
           <button
-            className='button full-width margin-top margin-bottom'
+            className='button margin-top margin-bottom form-button'
             onClick={this.onSubmit.bind(this)}
           >Take me there, baby.</button>
         </div>
