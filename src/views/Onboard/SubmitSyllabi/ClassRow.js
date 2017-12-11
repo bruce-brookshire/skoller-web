@@ -68,13 +68,20 @@ class ClassRow extends React.Component {
     }
   }
 
+  renderComplete () {
+    const {cl} = this.props
+    if (cl.status !== 'New Class' && cl.status !== 'Needs Syllabus') {
+      return <i className ='fa fa-check' style={{color: '#00f000'}} />
+    }
+  }
+
   render () {
     const {cl: {name}} = this.props
     return (
       <div className='cn-flex-table-row'>
         <div className='cn-flex-table-cell'>
           <div>
-            <span>{name || '-'}</span>
+            <span>{name || '-'} {this.renderComplete()}</span>
             <div>
               <input type='checkbox' onChange={this.onCheckboxChange.bind(this)} checked={!this.state.hasSyllabus}/>
               <span className='checkbox-label'>{`This class doesn't have a syllabus`}</span>
