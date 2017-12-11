@@ -138,7 +138,6 @@ export function createClass (form) {
       return data
     })
     .catch(error => {
-      console.log('error is', error)
       showSnackbar('Error creating class. Try again.')
       return Promise.reject(error)
     })

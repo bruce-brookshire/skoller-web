@@ -6,7 +6,6 @@ import {Link} from 'react-router'
 class NavBar extends React.Component {
   render () {
     const {userStore: {user}} = this.props.rootStore
-    console.log(user)
     return (
       <div className='cn-navbar'>
         <div className='left'>

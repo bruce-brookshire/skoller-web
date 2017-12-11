@@ -161,9 +161,7 @@ class GradeScale extends React.Component {
                 error={formErrors.grade_scale}
                 label='Grade Scale'
                 name='grade_scale'
-                onBlur={() => console.log('onBlur')}
                 onChange={updateProperty}
-                onFocus={() => console.log('onFocus')}
                 placeholder='Grade Scale, i.e. A,90|B,80|C,70|D,60'
                 value={form.grade_scale}
               />

@@ -33,6 +33,10 @@ class SubmitSyllabi extends React.Component {
     }).catch(() => false)
   }
 
+  getIncompleteClassesLength () {
+    return this.state.classes.filter(cl => cl.status === 'New Class' || cl.status === 'Needs Syllabus').length
+  }
+
   /*
   * Renders the table headers.
   *
