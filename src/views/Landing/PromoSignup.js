@@ -12,7 +12,6 @@ class PromoSignup extends React.Component {
         <div className='col-xs-12 col-sm-12 col-md-6 col-lg-3 vertical-aligncenter'>
           <SignUpForm {...this.props}/>
         </div>
-        <Slant />
       </div>
     )
   }
