@@ -2,8 +2,9 @@ import {createAssignment, deleteAssignment, getClassAssignments, updateAssignmen
 import {authenticateUser, getUserByToken, registerUser, verifyPhoneNumber} from './auth'
 import {createClass, dropClass, getProfessorClasses, getStudentClasses, enrollInClass, searchClasses, updateClass} from './classes'
 import {getClassDocuments, uploadClassDocument} from './documents'
+import {getSchoolPeriods, createPeriod, updatePeriod} from './periods'
 import {createProfessor, searchProfessors} from './professors'
-import {getActiveSchools} from './schools'
+import {createSchool, getActiveSchools, getHubSchools, updateSchool} from './schools'
 import {createWeight, deleteWeight, getClassWeights, updateWeight} from './weights'
 
 const actions = {
@@ -32,12 +33,20 @@ const actions = {
     getClassDocuments,
     uploadClassDocument
   },
+  periods: {
+    createPeriod,
+    getSchoolPeriods,
+    updatePeriod
+  },
   professors: {
     createProfessor,
     searchProfessors
   },
   schools: {
-    getActiveSchools
+    createSchool,
+    getActiveSchools,
+    getHubSchools,
+    updateSchool
   },
   weights: {
     createWeight,

@@ -68,9 +68,13 @@ class ClassRow extends React.Component {
     }
   }
 
-  renderComplete () {
+  isComplete () {
     const {cl} = this.props
-    if (cl.status !== 'New Class' && cl.status !== 'Needs Syllabus') {
+    return (cl.status !== 'New Class' && cl.status !== 'Needs Syllabus')
+  }
+
+  renderComplete () {
+    if (this.isComplete()) {
       return <i className ='fa fa-check' style={{color: '#00f000'}} />
     }
   }
@@ -90,7 +94,7 @@ class ClassRow extends React.Component {
         </div>
         <div className='cn-flex-table-cell'>
           <UploadHistory
-            disabled={!this.state.hasSyllabus}
+            disabled={this.state.hasSyllabus || this.isComplete()}
             files={this.getSyllabusDocuments()}
             info=''
             onUpload={(file) => { this.onDocumentUpload(file, true) }}
@@ -99,6 +103,7 @@ class ClassRow extends React.Component {
         </div>
         <div className='cn-flex-table-cell'>
           <UploadHistory
+            disabled={this.isComplete()}
             files={this.getAdditionalDocuments()}
             info=''
             onUpload={(file) => { this.onDocumentUpload(file, false) }}

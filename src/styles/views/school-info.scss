@@ -1,0 +1,58 @@
+.cn-school-info {
+  padding: 25px;
+  .edit-header {
+    h3 {
+      display: inline-block;
+      margin-top: 0;
+      margin-bottom: 1em;
+      margin-right: 1em;
+    }
+
+  }
+  .school-info-table {
+    margin-left: 30px;
+    th {
+      text-align: left;
+      padding-right: 7px
+    }
+  }
+
+  .switch-table {
+    border: 1px solid #a0a0a0;
+    border-collapse: collapse;
+    margin-left: 30px;
+    th {
+      border-bottom: 1px solid #a0a0a0;
+      border-right: 1px solid #a0a0a0;
+      text-align: left;
+      padding-right: 7px;
+    }
+    td {
+      border-bottom: 1px solid #a0a0a0;
+      text-align: center;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+    th, td {
+      padding: 7px;
+    }
+
+    a {
+      font-size: 10px;
+    }
+  }
+
+  .switch {
+    margin-left: auto;
+    margin-right: auto;
+    background: radial-gradient(#dbe9ca 0%, #00f000 50%);
+    border-radius: $cn-border-radius;
+    height: 32px;
+    width: 32px;
+  }
+
+  .four-door-icon {
+    height: 32px;
+    width: auto;
+  }
+}

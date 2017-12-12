@@ -19,6 +19,8 @@
     background-color: rgba(255,255,255,0.9);
     max-height: 85vh;
     border-radius: 3px;
+    overflow-y: hidden;
+    overflow-y: scroll;
 
     .cn-modal-body {
       max-height: calc(100vh - (40px + 2em + 1.5em));

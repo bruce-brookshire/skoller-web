@@ -8,12 +8,15 @@ import MyClasses from './views/MyClasses'
 
 import DIYLanding from './views/DIYTool/DIYLanding'
 import DIYTool from './views/DIYTool'
-import HubLanding from './views/HubLanding'
 import Landing from './views/Landing'
 import AssignmentsTutorial from './views/SyllabusTutorial/AssignmentsTutorial'
 import WeightsTutorial from './views/SyllabusTutorial/WeightsTutorial'
 
 import Onboard from './views/Onboard'
+
+import HubLanding from './views/Hub/HubLanding'
+import HubSchools from './views/Hub/HubSchools'
+import SchoolInfo from './views/Hub/SchoolInfo'
 
 import actions from './actions'
 import stores from './stores'
@@ -32,6 +35,8 @@ const router = (
         <Route path='/hub'>
           <IndexRedirect to='/hub/landing'/>
           <Route path='/hub/landing' component={HubLanding}/>
+          <Route path='/hub/schools' component={HubSchools} />
+          <Route path='/hub/schools/school/info' component={SchoolInfo} />
         </Route>
 
         <Route path='/tutorial/assignments' component={AssignmentsTutorial} />

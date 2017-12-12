@@ -5,35 +5,13 @@ import stores from '../stores'
 const {userStore} = stores
 var Environment = require('../../environment.js')
 
-
 /*
-* Get the active schools for signup
+* Get school periods.
 *
+* @params [Object] school. School to grab the periods.
 */
-export function getActiveSchools () {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/school/list`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
-    .then(data => {
-      return data
-    })
-    .catch(error => {
-      showSnackbar('Error fetching schools. Try again.')
-      return Promise.reject(error)
-    })
-}
-
-/*
-* Grab all the schools in the system for admin.
-*
-* @params [Object] form. Login form data.
-*/
-export function getHubSchools () {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/schools/hub`, {
+export function getSchoolPeriods (school) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/schools/${school.id}/periods`, {
     method: 'GET',
     headers: {
       'Authorization': userStore.authToken,
@@ -45,18 +23,19 @@ export function getHubSchools () {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching schools. Try again.')
+      showSnackbar('Error fetching periods. Try again.')
       return Promise.reject(error)
     })
 }
 
 /*
-* Create a new school
+* Create a new period
 *
-* @params [Object] form. School form.
+* @params [Object] school. School.
+* @params [Object] form. Period form.
 */
-export function createSchool (form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/schools`, {
+export function createPeriod (school, form) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/schools/1/periods`, {
     method: 'POST',
     headers: {
       'Authorization': userStore.authToken,
@@ -69,20 +48,20 @@ export function createSchool (form) {
       return data
     })
     .catch(error => {
-      showSnackbar('Error creating school. Try again.')
+      showSnackbar('Error creating period. Try again.')
       return Promise.reject(error)
     })
 }
 
 
 /*
-* Update school
+* Update period
 *
-* @params [Object] form. School form.
+* @params [Object] form. Period form.
 */
-export function updateSchool (form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/schools/${form.id}`, {
-    method: 'PUT',
+export function updatePeriod (form) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/periods/${form.id}`, {
+    method: 'POST',
     headers: {
       'Authorization': userStore.authToken,
       'Content-Type': 'application/json'
@@ -94,7 +73,7 @@ export function updateSchool (form) {
       return data
     })
     .catch(error => {
-      showSnackbar('Error updating school. Try again.')
+      showSnackbar('Error updating period. Try again.')
       return Promise.reject(error)
     })
 }
