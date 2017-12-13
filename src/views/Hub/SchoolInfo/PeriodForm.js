@@ -66,7 +66,7 @@ class PeriodForm extends React.Component {
   * Create a new period
   */
   onCreatePeriod () {
-    actions.schools.createPeriod(this.props.school, this.state.form).then((period) => {
+    actions.periods.createPeriod(this.props.school, this.state.form).then((period) => {
       this.props.onSubmit(period)
     }).catch(() => false)
   }
@@ -75,7 +75,7 @@ class PeriodForm extends React.Component {
   * Update an existing period
   */
   onUpdatePeriod () {
-    actions.assignments.updatePeriod(this.state.form).then((period) => {
+    actions.periods.updatePeriod(this.state.form).then((period) => {
       this.props.onSubmit(period)
     }).catch(() => false)
   }
@@ -92,10 +92,10 @@ class PeriodForm extends React.Component {
               <InputField
                 containerClassName='margin-top'
                 error={formErrors.name}
-                label="School name"
+                label="Period name"
                 name="name"
                 onChange={updateProperty}
-                placeholder="School name"
+                placeholder="Period name"
                 value={form.name}
               />
             </div>
@@ -124,7 +124,7 @@ class PeriodForm extends React.Component {
               />
             </div>
           </div>
-          <button className='button full-width margin-top' onClick={this.onSubmit.bind(this)}>Submit school</button>
+          <button className='button full-width margin-top' onClick={this.onSubmit.bind(this)}>Submit period</button>
           <button className='button-invert full-width margin-top margin-bottom' onClick={() => this.props.onClose()}>Close</button>
         </div>
       </div>

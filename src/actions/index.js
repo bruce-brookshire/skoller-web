@@ -1,10 +1,10 @@
 import {createAssignment, deleteAssignment, getClassAssignments, updateAssignment} from './assignments'
-import {authenticateUser, getUserByToken, registerUser, verifyPhoneNumber} from './auth'
+import {authenticateUser, createAccount, getRoles, getUserById, getUserByToken, getUsers, registerUser, updateAccount, verifyPhoneNumber} from './auth'
 import {createClass, dropClass, getProfessorClasses, getStudentClasses, enrollInClass, searchClasses, updateClass} from './classes'
 import {getClassDocuments, uploadClassDocument} from './documents'
 import {getSchoolPeriods, createPeriod, updatePeriod} from './periods'
 import {createProfessor, searchProfessors} from './professors'
-import {createSchool, getActiveSchools, getHubSchools, updateSchool} from './schools'
+import {createSchool, getActiveSchools, getHubSchools, getSchoolById, updateSchool} from './schools'
 import {createWeight, deleteWeight, getClassWeights, updateWeight} from './weights'
 
 const actions = {
@@ -16,9 +16,14 @@ const actions = {
   },
   auth: {
     authenticateUser,
+    createAccount,
+    getRoles,
+    getUserById,
     getUserByToken,
+    getUsers,
     registerUser,
-    verifyPhoneNumber
+    verifyPhoneNumber,
+    updateAccount
   },
   classes: {
     createClass,
@@ -46,6 +51,7 @@ const actions = {
     createSchool,
     getActiveSchools,
     getHubSchools,
+    getSchoolById,
     updateSchool
   },
   weights: {

@@ -4,7 +4,7 @@ import Slant from '../../components/Slant'
 class Purpose extends React.Component {
   render () {
     return (
-      <div className='horizontal-align-row center'>
+      <div className='horizontal-align-row center page-height'>
         <div className='section-dimensions blue-section-text even-section'>
           <Slant />
           <div className="section-header">

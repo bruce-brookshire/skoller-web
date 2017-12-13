@@ -4,8 +4,8 @@ import Slant from '../../components/Slant'
 class Availability extends React.Component {
   render () {
     return (
-        <div className='even-section blue-section-text'>
-            <Slant/>
+        <div className='even-section blue-section-text page-height vertical-align'>
+            {/*<Slant className='slant-inverse'/>*/}
             <h2 className='center-text'>Now available at 10 schools and counting...</h2>
             <div className='row section-header'>
                 <div className='col-xs-12 col-sm-3 paragraph-spacing center-text'>

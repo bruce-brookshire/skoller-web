@@ -24,6 +24,7 @@
 @import 'components/add-class';
 @import 'components/autocomplete';
 @import 'components/create-class';
+@import 'components/file-tab';
 @import 'components/file-viewer';
 @import 'components/flex-table';
 @import 'components/grid';
@@ -42,6 +43,7 @@
 // Composed Views ------------------------
 @import 'views/diylanding.scss';
 @import 'views/diytool.scss';
+@import 'views/hub-accounts.scss';
 @import 'views/hub-landing.scss';
 @import 'views/hub-schools.scss';
 @import 'views/landing.scss';

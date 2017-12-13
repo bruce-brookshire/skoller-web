@@ -56,8 +56,10 @@ class SchoolDetailsForm extends React.Component {
     let formData = data || {}
     const {id, name, adr_zip, adr_state, adr_line_1, adr_city, timezone, email_domains} = formData
 
-    const student_email = ''
-    const professor_email = ''
+    const student_email = (email_domains && email_domains
+      .filter(e => !e.is_professor_only).map(e => e.email_domain ).join(', ')) || ''
+    const professor_email = (email_domains && email_domains
+      .filter(e => e.is_professor_only).map(e => e.email_domain ).join(', ')) || ''
     return ({
       id: id || '',
       name: name || '',
@@ -94,7 +96,7 @@ class SchoolDetailsForm extends React.Component {
   * Update an existing school
   */
   onUpdateSchool () {
-    actions.assignments.updateSchool(this.mapForm(this.state.form)).then((school) => {
+    actions.schools.updateSchool(this.mapForm(this.state.form)).then((school) => {
       this.props.onSubmit(school)
     }).catch(() => false)
   }

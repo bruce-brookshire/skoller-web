@@ -59,7 +59,7 @@ class LoginForm extends React.Component {
     const {formErrors, updateProperty} = this.props
     return (
       <div style={styles.row}>
-        <div className='col-xs-8'>
+        <div className='col-xs-10'>
           <form>
             <div className='row'>
               <div className='col-xs-6'>
@@ -88,7 +88,7 @@ class LoginForm extends React.Component {
             </div>
           </form>
         </div>
-        <div className='col-xs-4'>
+        <div className='col-xs-2'>
           <a
             onClick={this.onSubmit.bind(this)}
           >Login</a>

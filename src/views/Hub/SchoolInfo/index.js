@@ -15,10 +15,12 @@ class SchoolInfo extends React.Component {
 
   componentWillMount () {
     const {state} = this.props.location
-    actions.periods.getSchoolPeriods(state.school).then(periods => {
-      let period = periods.filter(period => period)[0]
-      this.setState({period})
-    })
+    if (state && state.school) {
+      actions.schools.getSchoolById(state.school).then(school => {
+        const period = school.class_periods.find(period => period.is_active)
+        this.setState({school, period})
+      })
+    }
   }
 
   intializeState () {
@@ -30,7 +32,6 @@ class SchoolInfo extends React.Component {
       period: null
     }
   }
-
 
   onEditActiveSemester () {
 
@@ -58,11 +59,11 @@ class SchoolInfo extends React.Component {
               </tr>
               <tr>
                 <th>Student email domain:</th>
-                <td>{school.email_domains && school.email_domains.filter(s => !s.is_professor_only).join(', ')}</td>
+                <td>{school.email_domains && school.email_domains.filter(e => !e.is_professor_only).map(e => e.email_domain ).join(', ')}</td>
               </tr>
               <tr>
                 <th>Prof email domain:</th>
-                <td>{school.email_domains && school.email_domains.filter(s => s.is_professor_only).join(', ')}</td>
+                <td>{school.email_domains && school.email_domains.filter(e => e.is_professor_only).map(e => e.email_domain ).join(', ')}</td>
               </tr>
               <tr>
                 <th>Time Zone:</th>

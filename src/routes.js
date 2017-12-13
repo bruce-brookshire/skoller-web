@@ -17,6 +17,8 @@ import Onboard from './views/Onboard'
 import HubLanding from './views/Hub/HubLanding'
 import HubSchools from './views/Hub/HubSchools'
 import SchoolInfo from './views/Hub/SchoolInfo'
+import Accounts from './views/Hub/Accounts'
+import AccountInfo from './views/Hub/AccountInfo'
 
 import actions from './actions'
 import stores from './stores'
@@ -37,6 +39,8 @@ const router = (
           <Route path='/hub/landing' component={HubLanding}/>
           <Route path='/hub/schools' component={HubSchools} />
           <Route path='/hub/schools/school/info' component={SchoolInfo} />
+          <Route path='/hub/accounts' component={Accounts} />
+          <Route path='/hub/accounts/account/info' component={AccountInfo} />
         </Route>
 
         <Route path='/tutorial/assignments' component={AssignmentsTutorial} />

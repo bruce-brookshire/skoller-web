@@ -5,6 +5,7 @@ import Assignments from '../components/ClassEditor/Assignments'
 import GradeScale from '../components/ClassEditor/GradeScale'
 import Professor from '../components/ClassEditor/Professor'
 import Weights from '../components/ClassEditor/Weights'
+import {FileTabs, FileTab} from '../../components/FileTab'
 import {ProgressBar, ProgressStep} from '../../components/ProgressBar'
 
 const steps = [ 'Weights Intro', 'Input Weights', 'Assignments Intro', 'Input Assignments' ]
@@ -65,11 +66,22 @@ class DIYTool extends React.Component {
               <div className='cn-section-container cn-syllabus-section-container'>
                 {this.renderContent()}
               </div>
+              <FileTabs style={{marginTop: '-7px'}}>
+                <FileTab className='active' name='Professor Info' onClick={() => false} />
+                <FileTab name='Grade Scale' onClick={() => false} />
+                <FileTab name='Weights' onClick={() => false} />
+                <FileTab name='Assignments' onClick={() => false} />
+                <FileTab name='Review' onClick={() => false} />
+              </FileTabs>
             </div>
             <div className='col-xs-12 col-md-6 col-lg-7 margin-top'>
               <div className='cn-section-container'>
                 <FileViewer source="https://classnav-syllabi-files.s3.amazonaws.com/d9af83017135b77b7a72275668fa07bd1496676167128IrelandSyllabusTYW.docx" />
               </div>
+              <FileTabs style={{marginTop: '-7px'}}>
+                <FileTab className='active' name='Syllabus' onClick={() => false} />
+                <FileTab name='Additional Doc' onClick={() => false} />
+              </FileTabs>
             </div>
           </div>
 

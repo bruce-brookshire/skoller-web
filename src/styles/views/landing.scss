@@ -1,7 +1,13 @@
 .cn-landing-container {
+
+  .page-height {
+    min-height: calc(85vh - 64px)
+  }
+
   overflow-x: hidden;
   iframe {
-    height: 315px;
+    border-radius: $cn-border-radius;
+    height: 450px;
     margin-left: auto;
     margin-right: auto;
     width: 80%;

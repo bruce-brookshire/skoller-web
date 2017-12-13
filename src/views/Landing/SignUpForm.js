@@ -156,6 +156,8 @@ class SignUpForm extends React.Component {
   render () {
     const {form} = this.state
     const {formErrors, updateProperty} = this.props
+
+    //TODO Put university name on top of the email once school if chose fa fa-building
     return (
       <div id='sign-up-form'>
         <form className='form-padding'>
@@ -226,7 +228,7 @@ class SignUpForm extends React.Component {
           <button
             className='button margin-top margin-bottom form-button'
             onClick={this.onSubmit.bind(this)}
-          >Take me there, baby.</button>
+          >Take me there.</button>
         </div>
       </div>
     )

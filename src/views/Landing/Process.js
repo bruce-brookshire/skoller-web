@@ -4,7 +4,7 @@ import Slant from '../../components/Slant'
 class Process extends React.Component {
   render () {
     return (
-      <div className='shift-up'>
+      <div className='shift-up page-height vertical-align center'>
         <Slant className='no-bg white-fill'/>
         <h2 className='center-text'>{'Here\'s how it works'}</h2>
         <div className='row section-header'>

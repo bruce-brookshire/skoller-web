@@ -51,6 +51,29 @@ export function getHubSchools () {
 }
 
 /*
+* Get school by id
+*
+* @params [Object] school. School.
+*/
+export function getSchoolById (school) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/schools/${school.id}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error fetching school. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
 * Create a new school
 *
 * @params [Object] form. School form.

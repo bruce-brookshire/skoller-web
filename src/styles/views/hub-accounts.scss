@@ -1,0 +1,42 @@
+$border-color: $cn-color-grey;
+
+.cn-accounts-container {
+  @include internal-layout;
+  padding: 25px;
+  .description {
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%);
+  }
+
+  .cn-table-grid {
+    border: 1px solid $border-color;
+    border-radius: $cn-border-radius;
+
+    thead {
+      tr th {
+        background-color: #efefef;
+        border-bottom: 1px solid $border-color;
+        border-right: 1px solid $border-color;
+        text-align: center;
+        &:last-child {
+          border-right: 0;
+        }
+      }
+    }
+
+    tbody {
+      tr td {
+        padding-left: 5px;
+        padding-right: 5px;
+        text-align: center;
+        &:nth-child(1) {
+          text-align: left;
+        }
+        &:nth-child(1), &:nth-child(2), &:nth-child(3) {
+          border-right: 1px solid $border-color;
+        }
+      }
+    }
+  }
+}

@@ -4,7 +4,7 @@ import Slant from '../../components/Slant'
 class CommunityFeature extends React.Component {
   render () {
     return (
-      <div>
+      <div className='page-height'>
         <Slant className='slant-inverse'/>
         <h3 className='section-topper section-header' >Plus, a <span className='blue-text'>community</span> {'you can\'t find anywhere else.'}</h3>
         <div className='row section-header'>

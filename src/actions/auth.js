@@ -107,3 +107,119 @@ export function verifyPhoneNumber (form) {
       return Promise.reject(error)
     })
 }
+
+
+/*
+* Get user roles.
+*/
+export function getUsers () {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/users`, {
+    method: 'GET',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error fetching users. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Get user roles.
+*
+* @param [Object] user. User to fetch
+*/
+export function getUserById (user) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/users/${user.id}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error fetching user. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Get user roles.
+*/
+export function getRoles () {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/roles`, {
+    method: 'GET',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error fetching roles. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+*  Create a user account (admin)
+*
+* @params [Object] form. User form data.
+*/
+export function createAccount (form) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/users/create`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(form)
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      if (error !== 422) {
+        showSnackbar('Error creating user. Try again.')
+      } else {
+        showSnackbar('Username already exists.')
+      }
+      return Promise.reject(error)
+    })
+}
+
+/*
+*  Update a user account (admin)
+*
+* @params [Object] form. User form data.
+*/
+export function updateAccount (form) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/users/create`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(form)
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error updating user. Try again.')
+      return Promise.reject(error)
+    })
+}

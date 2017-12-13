@@ -4,11 +4,11 @@ import Slant from '../../components/Slant'
 class CallToAction extends React.Component {
   render () {
     return (
-      <div>
+      <div >
         <Slant className='slant-inverse'/>
         <div className='row'>
           <div className='col-xs-12 center-text'>
-            <button 
+            <button
               className='button'
               >
               This is dope. Sign me up.
