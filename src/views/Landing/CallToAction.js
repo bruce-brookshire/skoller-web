@@ -30,7 +30,7 @@ class CallToAction extends React.Component {
         <div className='row'>
           <div className='col-xs-12 center-text'>
             <p>
-              <a href='http://ambassador.skoller.co'>Interested in becoming an ambassador at your school?</a>
+              <a  href='http://ambassador.skoller.co'>Interested in becoming an ambassador at your school?</a>
             </p>
           </div>
         </div>
