@@ -127,7 +127,23 @@ body {
   justify-content: space-between;
 }
 
+// Links -------------------------------------
+.non-styled-link{
+  text-decoration: none;
 
+  &:hover{
+    text-decoration: none;
+  }
+  &:visited{
+    text-decoration: none;
+  }
+}
+
+// Lists -------------------------------------
+.non-styled-list{
+  list-style:none;
+  padding: 0px;
+}
 
 // Margins -----------------------------------
 .margin-bottom {

@@ -5,7 +5,7 @@ import Slant from '../../components/Slant'
 class PromoSignup extends React.Component {
   render () {
     return (
-      <div className='row page-height'>
+      <div id='promo-signup' className='row page-height'>
         <div className='col-xs-12 col-sm-12 col-md-6 col-lg-8 vertical-align center'>
           <iframe src="https://www.youtube.com/embed/ENnO_5o52sE" frameBorder="0" allowFullScreen></iframe>
         </div>
