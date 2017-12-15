@@ -93,6 +93,11 @@ body {
     padding-bottom: 160px;
   }
 }
+
+.footer{
+  border-top: 1px solid;
+  border-top-color: $cn-color-grey;
+}
 //
 // Buttons -----------------------------------
 .button { @include primary-button; }
@@ -127,7 +132,23 @@ body {
   justify-content: space-between;
 }
 
+// Links -------------------------------------
+.non-styled-link{
+  text-decoration: none;
 
+  &:hover{
+    text-decoration: none;
+  }
+  &:visited{
+    text-decoration: none;
+  }
+}
+
+// Lists -------------------------------------
+.non-styled-list{
+  list-style:none;
+  padding: 0px;
+}
 
 // Margins -----------------------------------
 .margin-bottom {
@@ -161,6 +182,10 @@ body {
 
 .center-text {
   text-align: center;
+}
+
+.right-text {
+  text-align: right;
 }
 
 .horizontal-align-row {

@@ -6,6 +6,7 @@ import {inject, observer} from 'mobx-react'
 import {Form, ValidateForm} from 'react-form-library'
 import {InputField} from '../../components/Form'
 import actions from '../../actions'
+import Modal from '../../components/Modal'
 
 const requiredFields = {
   'email': {
@@ -56,7 +57,8 @@ class SignUpForm extends React.Component {
       form: this.initializeFormData(),
       schools: [],
       emailError: null,
-      loadingSchools: false
+      loadingSchools: false,
+      showSupportedSchools: false
     }
   }
 
@@ -100,7 +102,7 @@ class SignUpForm extends React.Component {
           <div>
             <div>{'Oop! Looks like the email you entered was not a school email.'}</div>
             <div className='margin-top'><span onClick={this.onAddMyUniversity.bind(this)} style={{borderBottom: '1px solid white', cursor: 'pointer'}}>Add my university</span></div>
-            <div className='margin-top'><span onClick={this.onSeeSchools.bind(this)} style={{borderBottom: '1px solid white', cursor: 'pointer'}}>See supported schools</span></div>
+            <div className='margin-top'><span onClick={this.toggleSupportedSchoolModal.bind(this)} style={{borderBottom: '1px solid white', cursor: 'pointer'}}>See supported schools</span></div>
           </div>
         )
         this.setState({ emailError: {type: 'info', message: emailInfo} })
@@ -149,11 +151,29 @@ class SignUpForm extends React.Component {
   }
 
   onAddMyUniversity () {
-
+    window.location.href = "mailto:support@skoller.co?Subject=Add My School";
   }
 
   onSeeSchools () {
+    return (
+      <Modal
+        open={this.state.showSupportedSchools}
+        onClose={this.toggleSupportedSchoolModal.bind(this)}
+      >
+        <h3 className='center-text'>Supported Schools</h3>
+        <p className='center-text'>These are the current universities Skoller supports.<br/>If your school is not on here, <a className='non-styled-link' href="mailto:support@skoller.co?Subject=Add My School">let us know</a>!</p>
+        <ul className='non-styled-list'>
+          {this.state.schools.map(function(school){
+              return <li key={school.name}>{school.name}</li>
+            })
+          }
+        </ul>
+      </Modal>
+    )
+  }
 
+  toggleSupportedSchoolModal () {
+    this.setState({showSupportedSchools: !this.state.showSupportedSchools})
   }
 
   render () {
@@ -233,6 +253,7 @@ class SignUpForm extends React.Component {
             onClick={this.onSubmit.bind(this)}
           >Take me there.</button>
         </div>
+        {this.onSeeSchools()}
       </div>
     )
   }

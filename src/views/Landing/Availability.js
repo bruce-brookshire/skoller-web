@@ -47,7 +47,7 @@ class Availability extends React.Component {
                     </p>
                 </div>
             </div>
-            <p className='center-text signup-plea'>{'Don\'t see your school?'} <a className="link-on-blue" href="">Let us know you want Skoller</a></p>
+            <p className='center-text signup-plea'>{'Don\'t see your school?'} <a className="link-on-blue" href="mailto:support@skoller.co?Subject=Add My School">Let us know you want Skoller</a></p>
         </div>
     )
   }
