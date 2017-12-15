@@ -13,14 +13,10 @@ const headers = [
   },
   {
     field: 'name',
-    display: 'Category'
+    display: ''
   },
   {
     field: 'weight',
-    display: <div>{'Weight'}</div>
-  },
-  {
-    field: 'edit',
     display: ''
   }
 ]
@@ -104,10 +100,9 @@ class Weights extends React.Component {
 
     const row = {
       id: id || '',
-      delete: <div className='button-delete-x center-content' onClick={() => { this.removeWeight(item) }}><i className='fa fa-times' /></div>,
+      delete: <div className='button-delete-x center-content' onClick={(event) => { event.stopPropagation(); this.onDeleteWeight(item) }}><i className='fa fa-times' /></div>,
       name,
-      weight: <div>{Number(weight).toFixed(2)}</div>,
-      edit: <a onClick={() => { this.setWeight(item) }}><i className='fa fa-pencil'/></a>
+      weight: <div style={{textAlign: 'right'}}>{Number(weight).toFixed(2)}</div>
     }
 
     return row
@@ -127,15 +122,13 @@ class Weights extends React.Component {
             <td></td>
             <td>Categories</td>
             <td>Weight</td>
-            <td></td>
           </tr>
         </thead>
         <tbody id='class-editor-weights-total'>
           <tr>
             <td style={tdStyle}></td>
-            <td style={tdStyle}>Total: </td>
-            <td style={tdStyle}>{`${this.getTotalWeight().toFixed(2)}%`}</td>
-            <td style={tdStyle}></td>
+            <td style={{...tdStyle, textAlign: 'left'}}>Total: </td>
+            <td style={{...tdStyle, textAlign: 'right'}}>{`${this.getTotalWeight().toFixed(2)}%`}</td>
           </tr>
         </tbody>
       </table>
@@ -192,7 +185,7 @@ class Weights extends React.Component {
   * @param [Object] weight. Weight object to be edited.
   */
   setWeight (weight) {
-    this.setState({form: this.initializeFormData(weight)})
+    this.setState({form: this.initializeFormData(this.state.weights.find(w => w.id === weight.id))})
   }
 
   /*
@@ -212,7 +205,7 @@ class Weights extends React.Component {
     actions.weights.createWeight(this.props.cl, this.state.form).then((weight) => {
       const newWeights = this.state.weights
       newWeights.push(weight)
-      this.setState({weights: newWeights})
+      this.setState({weights: newWeights, form: this.initializeFormData()})
     }).catch(() => false)
   }
 
@@ -224,7 +217,7 @@ class Weights extends React.Component {
       const newWeights = this.state.weights
       const index = this.state.weights.findIndex(w => w.id === weight.id)
       newWeights[index] = weight
-      this.setState({weights: newWeights})
+      this.setState({weights: newWeights, form: this.initializeFormData()})
     }).catch(() => false)
   }
 
@@ -234,9 +227,9 @@ class Weights extends React.Component {
   * @param [Object] weight. The weight to be deleted.
   */
   onDeleteWeight (weight) {
-    actions.weights.deleteWeight(this.props.cl).then(() => {
+    actions.weights.deleteWeight(weight).then(() => {
       const newWeights = this.state.weights.filter(w => w.id !== weight.id)
-      this.setState({weights: newWeights})
+      this.setState({weights: newWeights, form: this.initializeFormData()})
     }).catch(() => false)
   }
 
@@ -253,15 +246,20 @@ class Weights extends React.Component {
 
     return (
       <div className='space-between-vertical'>
-        <div id='class-editor-weights-table' className='margin-top'>
-          <Grid
-            headers={headers}
-            rows={this.getRows()}
-            disabled={true}
-            canDelete={false}
-          />
+        <div>
+          <h2>Weights for {this.props.cl.name}</h2>
+          <div id='class-editor-weights-table' className='margin-top'>
+            <Grid
+              headers={headers}
+              rows={this.getRows()}
+              disabled={true}
+              canDelete={false}
+              canSelect={true}
+              onSelect={this.setWeight.bind(this)}
+            />
+          </div>
+          {this.renderTotalPercentage()}
         </div>
-        {this.renderTotalPercentage()}
         <div id='class-editor-weight-form' className='margin-top'>
           <div className='row'>
             <div className='col-xs-8'>

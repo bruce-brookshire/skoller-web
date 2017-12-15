@@ -19,12 +19,8 @@ const headers = [
     display: 'Category'
   },
   {
-    field: 'due_date',
+    field: 'due',
     display: 'Due Date'
-  },
-  {
-    field: 'edit',
-    display: ''
   }
 ]
 
@@ -32,10 +28,10 @@ const requiredFields = {
   'name': {
     type: 'required'
   },
-  'weight': {
+  'weight_id': {
     type: 'required'
   },
-  'due_date': {
+  'due': {
     type: 'required'
   }
 }
@@ -50,11 +46,19 @@ class Assignments extends React.Component {
   * Fetch the weights for a given class
   */
   componentWillMount () {
+    this.getClassWeights()
+    this.getClassAssignments()
+  }
+
+  getClassWeights () {
     const {cl} = this.props
     actions.weights.getClassWeights(cl).then((weights) => {
       this.setState({weights})
     }).then(() => false)
+  }
 
+  getClassAssignments () {
+    const {cl} = this.props
     actions.assignments.getClassAssignments(cl).then((assignments) => {
       this.setState({assignments})
     }).then(() => false)
@@ -82,13 +86,13 @@ class Assignments extends React.Component {
   */
   initializeFormData (data) {
     let formData = data || {}
-    const {id, name, weight, due_date} = formData
+    const {id, name, weight_id, due} = formData
 
     return ({
       id: id || null,
       name: name || '',
-      weight: (weight && weight.id) || '',
-      due_date: due_date || ''
+      weight_id: weight_id || '',
+      due: due || ''
     })
   }
 
@@ -111,15 +115,14 @@ class Assignments extends React.Component {
   * @return [Object] row. Object of formatted row data for display in grid.
   */
   mapRow (item, index) {
-    const {id, name, weight, due_date} = item
+    const {id, name, weight_id, due} = item
 
     const row = {
       id: id || '',
-      delete: <div className='button-delete-x center-content' onClick={() => { this.onDeleteAssignment(item) }}><i className='fa fa-times' /></div>,
+      delete: <div className='button-delete-x center-content' onClick={(event) => { event.stopPropagation(); this.onDeleteAssignment(item) }}><i className='fa fa-times' /></div>,
       name,
-      weight: weight.name,
-      due_date: due_date ? this.mapDateToDisplay(due_date) : 'N/A',
-      edit: <a onClick={() => { this.setAssignment(item) }}><i className='fa fa-pencil'/></a>
+      weight: weight_id && this.state.weights && this.state.weights.find(w => w.id === weight_id).name,
+      due: due ? this.mapDateToDisplay(due) : 'N/A'
     }
 
     return row
@@ -143,7 +146,7 @@ class Assignments extends React.Component {
   * @param [Object] assignment. Assignment object to be edited.
   */
   setAssignment (assignment) {
-    this.setState({form: this.initializeFormData(assignment)})
+    this.setState({form: this.initializeFormData(this.state.assignments.find(a => a.id === assignment.id))})
   }
 
   /*
@@ -163,7 +166,7 @@ class Assignments extends React.Component {
     actions.assignments.createAssignment(this.props.cl, this.state.form).then((assignment) => {
       const newAssignments = this.state.assignments
       newAssignments.push(assignment)
-      this.setState({assignments: newAssignments})
+      this.setState({assignments: newAssignments, form: this.initializeFormData()})
     }).catch(() => false)
   }
 
@@ -175,7 +178,7 @@ class Assignments extends React.Component {
       const newAssignments = this.state.assignments
       const index = this.state.assignments.findIndex(a => a.id === assignment.id)
       newAssignments[index] = assignment
-      this.setState({assignments: newAssignments})
+      this.setState({assignments: newAssignments, form: this.initializeFormData()})
     }).catch(() => false)
   }
 
@@ -185,9 +188,9 @@ class Assignments extends React.Component {
   * @param [Object] assignment. The assignment to be deleted.
   */
   onDeleteAssignment (assignment) {
-    actions.assignments.deleteAssignment(this.props.cl, assignment).then(() => {
+    actions.assignments.deleteAssignment(assignment).then(() => {
       const newAssignments = this.state.assignments.filter(a => a.id !== assignment.id)
-      this.setState({assignments: newAssignments})
+      this.setState({assignments: newAssignments, form: this.initializeFormData()})
     }).catch(() => false)
   }
 
@@ -203,6 +206,8 @@ class Assignments extends React.Component {
             rows={this.getRows()}
             disabled={true}
             canDelete={false}
+            canSelect={true}
+            onSelect={this.setAssignment.bind(this)}
           />
         </div>
 
@@ -222,25 +227,25 @@ class Assignments extends React.Component {
             <div className='col-xs-12'>
               <SelectField
                 containerClassName='margin-top'
-                error={formErrors.weight}
+                error={formErrors.weight_id}
                 label="Weight category"
-                name="weight"
+                name="weight_id"
                 onChange={updateProperty}
                 options={this.state.weights}
                 placeholder="Weight category"
-                value={form.weight}
+                value={form.weight_id}
               />
             </div>
             <div className='col-xs-12'>
               <InputField
                 containerClassName='margin-top'
-                error={formErrors.due_date}
+                error={formErrors.due}
                 label="Due Date"
-                name="due_date"
+                name="due"
                 onChange={updateProperty}
                 placeholder="Assignment due date"
                 type='date'
-                value={form.due_date}
+                value={form.due}
               />
             </div>
           </div>

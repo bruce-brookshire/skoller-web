@@ -42,7 +42,7 @@ class AddClass extends React.Component {
   onSearch (searchText) {
     actions.classes.searchClasses(searchText).then(classes => {
       this.setState({classes})
-    }).catch(() => false)
+    }).catch((error) => console.log(error))
   }
 
   /*
@@ -64,7 +64,7 @@ class AddClass extends React.Component {
   * @return [Object] row. Object of formatted row data for display in grid.
   */
   mapRow (item, index) {
-    const {class: {id, number, name, meet_start_time, meet_days, length}, professor} = item
+    const {id, number, name, meet_start_time, meet_days, length, professor} = item
 
     const row = {
       id: id || '',
@@ -75,7 +75,7 @@ class AddClass extends React.Component {
       beginTime: meet_start_time || 'TBA',
       classLength: length || 'TBA'
     }
-
+    
     return row
   }
 

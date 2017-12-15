@@ -61,6 +61,8 @@ class SignUpForm extends React.Component {
   }
 
   initializeFormData () {
+    const date = new Date()
+
     return {
       email: '',
       password: '',
@@ -71,7 +73,8 @@ class SignUpForm extends React.Component {
         major: '',
         phone: '',
         birthday: '',
-        gender: ''
+        gender: '',
+        notification_time: `${7 + date.getTimeZoneOffset()}:00:00`
       }
     }
   }

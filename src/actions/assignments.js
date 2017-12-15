@@ -80,8 +80,8 @@ export function updateAssignment (cl, form) {
 /*
 * Delete an assignment
 */
-export function deleteWeight (cl, form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/assignments/${form.id}`, {
+export function deleteAssignment (form) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/class/assignments/${form.id}`, {
     method: 'DELETE',
     headers: {
       'Authorization': userStore.authToken,

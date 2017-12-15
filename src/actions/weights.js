@@ -80,7 +80,7 @@ export function updateWeight (cl, form) {
 /*
 * Delete a weight
 */
-export function deleteWeight (cl, form) {
+export function deleteWeight (form) {
   return fetch(`${Environment.SERVER_NAME}/api/v1/weights/${form.id}`, {
     method: 'DELETE',
     headers: {

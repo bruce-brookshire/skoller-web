@@ -1,6 +1,6 @@
 import {createAssignment, deleteAssignment, getClassAssignments, updateAssignment} from './assignments'
 import {authenticateUser, createAccount, getRoles, getUserById, getUserByToken, getUsers, registerUser, updateAccount, verifyPhoneNumber} from './auth'
-import {createClass, dropClass, getProfessorClasses, getStudentClasses, enrollInClass, searchClasses, updateClass} from './classes'
+import {createClass, dropClass, getProfessorClasses, getStudentClasses, enrollInClass, searchClasses, updateClass, lockClass, unlockClass} from './classes'
 import {getClassDocuments, uploadClassDocument} from './documents'
 import {getSchoolPeriods, createPeriod, updatePeriod} from './periods'
 import {createProfessor, searchProfessors} from './professors'
@@ -31,7 +31,9 @@ const actions = {
     enrollInClass,
     getProfessorClasses,
     getStudentClasses,
+    lockClass,
     searchClasses,
+    unlockClass,
     updateClass
   },
   documents: {

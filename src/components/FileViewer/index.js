@@ -11,7 +11,7 @@ class FileViewer extends React.Component {
   setUrl (file) {
     let url = encodeURI(file)
     // if it is a word doc, use gview.
-    if (this.isWordDoc(url)) {
+    if (!this.isImage(url)) {
       url = `https://docs.google.com/gview?url=${url}&embedded=true`
     }
     return url
@@ -28,11 +28,23 @@ class FileViewer extends React.Component {
     return wordDoc.test(url)
   }
 
+  /*
+  * Determine if the file type is an image.
+  *
+  * @param [String] url. Original url of the file to be displayed.
+  * @return [Boolean]. Boolean value indicating whther the document is an img.
+  */
+  isImage (url) {
+    const img = /.*\.(png|PNG|jpg|JPG|jpeg|JPEG)/g
+    return img.test(url)
+  }
+
+
   render () {
     const source = this.setUrl(this.props.source)
     return (
       <div className='file-viewer'>
-        <iframe src={source}/>
+        {this.isImage(this.props.source) ? <img src={source} /> : <iframe src={source}/> }
       </div>
     )
   }

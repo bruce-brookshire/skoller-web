@@ -88,8 +88,8 @@ class GridRow extends React.Component {
   *
   */
   onRowClick () {
-    const {canSelect, onSelect} = this.props
-    if (canSelect && onSelect) onSelect()
+    const {canSelect, onSelect, rowData} = this.props
+    if (canSelect && onSelect) onSelect(rowData)
     this.toggleRow()
   }
 

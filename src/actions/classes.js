@@ -164,3 +164,53 @@ export function updateClass (form) {
       return Promise.reject(error)
     })
 }
+
+/*
+* Lock the class for DIY
+*
+* @param [Object] cl. Class to lock
+*/
+export function lockClass (cl) {
+  const form = {
+    is_class: true
+  }
+
+  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}/lock`, {
+    method: 'POST',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(form)
+  })
+    .then(response => checkError(response))
+    .catch(error => {
+      showSnackbar('Error locking class. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Unlock the class for DIY
+*
+* @param [Object] cl. Class to unlock
+*/
+export function unlockClass (cl) {
+  const form = {
+    is_class: true
+  }
+
+  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}/unlock`, {
+    method: 'POST',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(form)
+  })
+    .then(response => checkError(response))
+    .catch(error => {
+      showSnackbar('Error unlocking class. Try again.')
+      return Promise.reject(error)
+    })
+}
