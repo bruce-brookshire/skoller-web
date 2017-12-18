@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
 import {InputField} from '../../../../components/Form'
 import Grid from '../../../../components/Grid/index'
+import actions from '../../../../actions'
 
 const headers = [
   {
@@ -60,7 +61,7 @@ class GradeScale extends React.Component {
     return {
       showAllGradeScales: false,
       gradeScales,
-      form: this.initializeFormData()
+      form: this.initializeFormData(this.props.cl)
     }
   }
 
@@ -87,7 +88,8 @@ class GradeScale extends React.Component {
   */
   renderCurrentGradeScale () {
     // const {syllabusForm: {gradeScaleSubmitted, gradeScale}} = syllabusFormStore
-    return <div className='margin-bottom'>{`Current Grade Scale: ${gradeScales[0].grade_scale}`}</div>
+    const currentGradeScale = this.props.cl.grade_scale || ''
+    return <div className='margin-bottom'>{`Current Grade Scale: ${currentGradeScale}`}</div>
   }
 
   /*
@@ -121,13 +123,6 @@ class GradeScale extends React.Component {
   }
 
   /*
-  * Submit the grade scale
-  */
-  onSumbit () {
-    this.setState(this.initializeState())
-  }
-
-  /*
   * Set form value equal to gradeScale in order to be updated.
   *
   * @param [Object] gradeScale. gradeScale object to be edited.
@@ -143,6 +138,16 @@ class GradeScale extends React.Component {
   toggleGradeScales () {
     const gs = this.state.showAllGradeScales ? gradeScales : gradeScales.concat(moreGradeScales) // note, show all will become opposite value
     this.setState({ showAllGradeScales: !this.state.showAllGradeScales, gradeScales: gs })
+  }
+
+  /*
+  * Submit the grade scale
+  */
+  onSubmit () {
+    actions.gradescales.updateGradeScale(this.props.cl, this.state.form).then((cl) => {
+      debugger
+      if (this.props.onSubmit) this.props.onSubmit(cl)
+    }).catch(() => false)
   }
 
   render () {
@@ -167,7 +172,7 @@ class GradeScale extends React.Component {
               />
             </div>
             <div className='col-xs-12 margin-top margin-bottom'>
-              <button className='button full-width' onClick={() => false}>Submit gradescale</button>
+              <button className='button full-width' onClick={this.onSubmit.bind(this)}>Submit gradescale</button>
             </div>
           </div>
         </div>

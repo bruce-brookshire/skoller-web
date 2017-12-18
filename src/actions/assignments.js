@@ -58,7 +58,7 @@ export function createAssignment (cl, form) {
 * @params [Object] form. Assignment form.
 */
 export function updateAssignment (cl, form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/assignments/${form.id}`, {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/class/assignments/${form.id}`, {
     method: 'PUT',
     headers: {
       'Authorization': userStore.authToken,

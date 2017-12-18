@@ -11,7 +11,6 @@ import actions from '../../actions'
 
 const steps = [ 'Weights Intro', 'Input Weights', 'Assignments Intro', 'Input Assignments' ]
 
-
 class DIYTool extends React.Component {
   constructor (props) {
     super(props)
@@ -20,7 +19,8 @@ class DIYTool extends React.Component {
       currentDocument: null,
       currentIndex: 2,
       stepCount: 4,
-      documents: []
+      documents: [],
+      cl: props.location.state.cl
     }
   }
 
@@ -34,39 +34,43 @@ class DIYTool extends React.Component {
   }
 
   getDocuments () {
-    const {state} = this.props.location
-    actions.documents.getClassDocuments(state.cl).then((documents) => {
+    actions.documents.getClassDocuments(this.state.cl).then((documents) => {
       documents.sort((a, b) => b.is_syllabus)
       this.setState({documents, currentDocument: (documents[0] && documents[0].path) || null})
     }).catch(() => false)
   }
 
   lockClass () {
-    const {state} = this.props.location
-    actions.classes.lockClass(state.cl).then(() => {
+    actions.classes.lockClass(this.state.cl).then(() => {
     }).catch(() => false)
   }
 
   unlockClass () {
-    const {state} = this.props.location
-    actions.classes.unlockClass(state.cl).then(() => {
+    actions.classes.unlockClass(this.state.cl).then(() => {
     }).catch(() => false)
   }
 
   renderContent () {
-    const {state} = this.props.location
-
     switch (this.state.currentIndex) {
       case 0:
         return <Professor />
       case 1:
-        return <GradeScale />
+        return <GradeScale cl={this.state.cl} onSubmit={this.updateClass.bind(this)}/>
       case 2:
-        return <Weights cl={state.cl} />
+        return <Weights cl={this.state.cl} />
       case 3:
-        return <Assignments cl={state.cl} />
+        return <Assignments cl={this.state.cl} />
       default:
     }
+  }
+
+  /*
+  * Update the class in state.
+  *
+  * @param [Object]. The class to update with
+  */
+  updateClass (cl) {
+    this.setState({cl})
   }
 
   onNext () {

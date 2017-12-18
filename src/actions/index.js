@@ -2,6 +2,7 @@ import {createAssignment, deleteAssignment, getClassAssignments, updateAssignmen
 import {authenticateUser, createAccount, getRoles, getUserById, getUserByToken, getUsers, registerUser, updateAccount, verifyPhoneNumber} from './auth'
 import {createClass, dropClass, getProfessorClasses, getStudentClasses, enrollInClass, searchClasses, updateClass, lockClass, unlockClass} from './classes'
 import {getClassDocuments, uploadClassDocument} from './documents'
+import {updateGradeScale} from './gradescales'
 import {getSchoolPeriods, createPeriod, updatePeriod} from './periods'
 import {createProfessor, searchProfessors} from './professors'
 import {createSchool, getActiveSchools, getHubSchools, getSchoolById, updateSchool} from './schools'
@@ -39,6 +40,9 @@ const actions = {
   documents: {
     getClassDocuments,
     uploadClassDocument
+  },
+  gradescales: {
+    updateGradeScale
   },
   periods: {
     createPeriod,
