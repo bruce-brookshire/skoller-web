@@ -42,7 +42,7 @@ class AddClass extends React.Component {
   onSearch (searchText) {
     actions.classes.searchClasses(searchText).then(classes => {
       this.setState({classes})
-    }).catch((error) => console.log(error))
+    }).catch(() => false)
   }
 
   /*
@@ -75,7 +75,7 @@ class AddClass extends React.Component {
       beginTime: meet_start_time || 'TBA',
       classLength: length || 'TBA'
     }
-    
+
     return row
   }
 

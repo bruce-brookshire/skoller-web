@@ -145,7 +145,6 @@ class GradeScale extends React.Component {
   */
   onSubmit () {
     actions.gradescales.updateGradeScale(this.props.cl, this.state.form).then((cl) => {
-      debugger
       if (this.props.onSubmit) this.props.onSubmit(cl)
     }).catch(() => false)
   }

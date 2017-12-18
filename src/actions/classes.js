@@ -12,7 +12,7 @@ var Environment = require('../../environment.js')
 */
 export function searchClasses (param) {
   const {user: {student: {school}}} = userStore
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes?school.id=${school.id}&class.name=${param}&class.number=${param}&professor.name=${param}&or=true`, {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/classes?school_id=${school.id}&class_name=${param}&class_number=${param}&professor_name=${param}&or=true`, {
     method: 'GET',
     headers: {
       'Authorization': userStore.authToken,

@@ -70,8 +70,7 @@ function requireAuth (nextState, replaceState) {
         }
         userStore.setFetchingUser(false)
       })
-      .catch((error) => {
-        console.log(error)
+      .catch(() => {
         browserHistory.push('/landing')
         userStore.setFetchingUser(false)
       })

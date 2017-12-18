@@ -241,9 +241,7 @@ class Weights extends React.Component {
                   error={formErrors.name}
                   label="Category name"
                   name="name"
-                  onBlur={() => console.log('onBlur')}
                   onChange={updateProperty}
-                  onFocus={() => console.log('onFocus')}
                   placeholder="Weight Category, i.e. Exams"
                   value={form.name}
                 />
@@ -254,9 +252,7 @@ class Weights extends React.Component {
                   error={formErrors.weight}
                   label="Weight"
                   name="weight"
-                  onBlur={() => console.log('onBlur')}
                   onChange={updateProperty}
-                  onFocus={() => console.log('onFocus')}
                   placeholder="Weight"
                   type="number"
                   value={form.weight}

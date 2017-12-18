@@ -205,9 +205,7 @@ class Assignments extends React.Component {
                   error={formErrors.name}
                   label="Assignment name"
                   name="name"
-                  onBlur={() => console.log('onBlur')}
                   onChange={updateProperty}
-                  onFocus={() => console.log('onFocus')}
                   placeholder="Assignment name, i.e. Exam 1"
                   value={form.name}
                 />
@@ -219,7 +217,6 @@ class Assignments extends React.Component {
                   label="Weight category"
                   name="weight"
                   onChange={updateProperty}
-                  onFocus={() => console.log('onFocus')}
                   options={weights}
                   placeholder="Weight category"
                   value={form.weight}
@@ -231,9 +228,7 @@ class Assignments extends React.Component {
                   error={formErrors.due_date}
                   label="Due Date"
                   name="due_date"
-                  onBlur={() => console.log('onBlur')}
                   onChange={updateProperty}
-                  onFocus={() => console.log('onFocus')}
                   placeholder="Assignment due date"
                   type='date'
                   value={form.due_date}
