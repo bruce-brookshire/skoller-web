@@ -17,7 +17,7 @@ class DIYTool extends React.Component {
     this.state = {
       currentDocumentIndex: 0,
       currentDocument: null,
-      currentIndex: 2,
+      currentIndex: 0,
       stepCount: 4,
       documents: [],
       cl: props.location.state.cl
@@ -53,7 +53,7 @@ class DIYTool extends React.Component {
   renderContent () {
     switch (this.state.currentIndex) {
       case 0:
-        return <Professor />
+        return <Professor cl={this.state.cl} onSubmit={this.updateClass.bind(this)}/>
       case 1:
         return <GradeScale cl={this.state.cl} onSubmit={this.updateClass.bind(this)}/>
       case 2:

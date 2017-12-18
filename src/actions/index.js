@@ -4,7 +4,8 @@ import {createClass, dropClass, getProfessorClasses, getStudentClasses, enrollIn
 import {getClassDocuments, uploadClassDocument} from './documents'
 import {updateGradeScale} from './gradescales'
 import {getSchoolPeriods, createPeriod, updatePeriod} from './periods'
-import {createProfessor, searchProfessors} from './professors'
+import {attachProfessorToClass, createProfessor, removeProfessorFromClass,
+  searchProfessors, updateProfessor} from './professors'
 import {createSchool, getActiveSchools, getHubSchools, getSchoolById, updateSchool} from './schools'
 import {createWeight, deleteWeight, getClassWeights, updateWeight} from './weights'
 
@@ -50,8 +51,11 @@ const actions = {
     updatePeriod
   },
   professors: {
+    attachProfessorToClass,
     createProfessor,
-    searchProfessors
+    removeProfessorFromClass,
+    searchProfessors,
+    updateProfessor
   },
   schools: {
     createSchool,

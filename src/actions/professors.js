@@ -53,3 +53,76 @@ export function createProfessor (form) {
       return Promise.reject(error)
     })
 }
+
+/*
+* Update professor
+*
+* @params [Object] form. Professor form.
+*/
+export function updateProfessor (form) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/professors/${form.id}`, {
+    method: 'PUT',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(form)
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error updating professor. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Attach a professor to a class
+*
+*/
+export function attachProfessorToClass (cl, professor) {
+  const form = {professor_id: professor.id}
+
+  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}`, {
+    method: 'PUT',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(form)
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error attaching professor to class. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Attach a professor to a class
+*/
+export function removeProfessorFromClass (cl) {
+  const form = {professor_id: null}
+
+  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}`, {
+    method: 'PUT',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(form)
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error removing professor from class. Try again.')
+      return Promise.reject(error)
+    })
+}

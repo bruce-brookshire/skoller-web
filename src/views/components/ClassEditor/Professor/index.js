@@ -1,15 +1,30 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
-import ProfessorTable from './ProfessorTable'
 import SearchProfessor from './SearchProfessor'
 import ProfessorForm from './ProfessorForm'
+import ProfessorInfo from './ProfessorInfo'
+import actions from '../../../../actions'
 
-const professor = null
+const ContentEnum = {
+  SEARCH_PROFESSOR: 0,
+  PROFESSOR_INFO: 1,
+  PROFESSOR_FORM: 2
+}
 
 class Professor extends React.Component {
   constructor (props) {
     super(props)
     this.state = this.initializeState()
+  }
+
+  /*
+  * If professor changes, update step accordingly.
+  */
+  componentWillReceiveProps (nextProps) {
+    if (JSON.stringify(this.props.cl.professor) !== JSON.stringify(nextProps.cl.professor)) {
+      this.setState({step: nextProps.cl.professor ? ContentEnum.PROFESSOR_INFO : ContentEnum.SEARCH_PROFESSOR})
+    }
   }
 
   /*
@@ -19,125 +34,98 @@ class Professor extends React.Component {
   */
   initializeState () {
     return {
-      showForm: !professor,
-      professor: {},
-      form: this.initializeFormData()
+      step: this.props.cl.professor ? ContentEnum.PROFESSOR_INFO : ContentEnum.SEARCH_PROFESSOR
     }
   }
 
   /*
-  * Method for intializing form data.
-  * Professor form data.
-  *
-  * @param [Object] data. initial data
-  * @return [Object]. Form object.
-  */
-  initializeFormData (data) {
-    let formData = data || {}
-    const {id, first_name, last_name, email, phone, office, availability} = formData
-
-    return ({
-      id: id || '',
-      first_name: first_name || '',
-      last_name: last_name || '',
-      email: email || '',
-      phone: phone || '',
-      office: office || '',
-      availability: availability || ''
-    })
-  }
-
-  /*
-  * Render search component or new professor component.
+  * Render content.
   *
   * @return [Component].
   */
   renderContent () {
-    if (professor) {
-      return <ProfessorTable professors={professor} onEdit={this.editProfessor.bind(this)} onDelete={this.deleteProfessor.bind(this)} />
-    } else {
-      return this.state.showForm ? <ProfessorForm form={this.state.form} formErrors={this.props.formErrors} updateProperty={this.props.updateProperty}/> : <SearchProfessor setProfessor={this.setProfessor.bind(this)} editProfessor={this.editProfessor.bind(this)} />
+    switch (this.state.step) {
+      case ContentEnum.SEARCH_PROFESSOR:
+        return <SearchProfessor onAddProfessor={this.onAddProfessor.bind(this)} onProfessorSelect={this.onProfessorSelect.bind(this)} />
+      case ContentEnum.PROFESSOR_INFO:
+        return <ProfessorInfo professor={this.props.cl.professor} onEditProfessor={this.onEditProfessor.bind(this)} onRemoveProfessor={this.onRemoveProfessor.bind(this)} />
+      case ContentEnum.PROFESSOR_FORM:
+        return <ProfessorForm cl={this.props.cl} onSubmit={this.onSubmitProfessor.bind(this)}/>
+      default:
     }
   }
 
   /*
-  * If professor has not been set, render new  professor buttons
-  *
-  * @return [Component] button. Button interface to render new professor form.
+  * If professor doesn't exist in search results, create professor.
   */
-  renderNewProfessorButton () {
-    // if (!this.state.showForm && !this.state.professor.id && !syllabusFormStore.syllabusForm.professorSubmitted) {
-    //   return <button className="margin-top align-right" onClick={() => { this.addNewProfessor() }}> New Professor </button>
-    // }
+  onAddProfessor () {
+    this.setState({step: ContentEnum.PROFESSOR_FORM})
   }
 
   /*
-  * Toggle new professor state. Controls whether new professor form is displayed or not.
-  *
+  * If user wants to edit professor info, edit professor.
   */
-  addNewProfessor () {
-    this.setState({showForm: !this.state.showForm})
+  onEditProfessor () {
+    this.setState({step: ContentEnum.PROFESSOR_FORM})
   }
 
   /*
-  * Set the professor from search results so that it can be saved.
-  *
-  * @param [Event] event. OnClick event handler from checkbox.
-  * @param [Object] professor. Professor to be saved.
+  * Remove the professor from the class.
   */
-  setProfessor (event, professor) {
-    // if professor has already been selected, prevent user from selecting another.
-    if (this.state.professor.objectId && this.state.professor.objectId !== professor.objectId) {
-      event.preventDefault()
-    } else {
-      // if professor exists, deselct professor. Else set the professor in state.
-      this.state.professor.objectId ? this.setState({professor: {}}) : this.setState({professor})
-    }
+  onRemoveProfessor () {
+    this.onRemoveProfessorFromClass()
+  }
+  /*
+  * On professor select from professor search
+  *
+  * @param [Object] professor. Professor object.
+  */
+  onProfessorSelect (professor) {
+    this.onAttachProfessorToClass(professor)
   }
 
   /*
-  * Set form value equal to professor in order to be updated.
+  * Professor submit call back
   *
-  * @param [Object] professor. Professor object to be edited.
+  * @param [Object] professor. Professor object.
   */
-  editProfessor (professor) {
-    this.setState({form: this.initializeFormData(professor), showForm: true})
+  onSubmitProfessor (professor) {
+    this.onAttachProfessorToClass(professor)
+  }
+
+  /* Attach professor to the class.
+  *
+  * @param [Object] professor. Professor object.
+  */
+  onAttachProfessorToClass (professor) {
+    actions.professors.attachProfessorToClass(this.props.cl, professor).then((cl) => {
+      if (this.props.onSubmit) this.props.onSubmit(cl)
+    }).catch(() => false)
   }
 
   /*
-  * Submit the professor. If existing professor, set. Otherwise, submit.
-  *
-  * @param [Boolean] nextSyllabus. Determine if the user wants to go to the
-  * next Syllabus or continue working the same one.
+  * Remove professor from the class.
   */
-  submitProfessor (nextSyllabus) {
-    // if (!this.state.showForm) {
-    //   setExistingProfessor(this.state.professor, nextSyllabus)
-    // } else {
-    //   const method = (this.state.form.id || this.state.form.objectId) ? 'PUT' : 'POST'
-    //   submitProfessor(method, this.state.form, nextSyllabus)
-    //   this.setState({showForm: false})
-    // }
-    //
-    // this.setState(this.initializeState())
-  }
-
-  /*
-  * Delete the professor.
-  *
-  * @param [Object] professor. Grid row object.
-  */
-  deleteProfessor (professor) {
-    // deleteProfessor(professor.id)
+  onRemoveProfessorFromClass () {
+    actions.professors.removeProfessorFromClass(this.props.cl).then((cl) => {
+      if (this.props.onSubmit) this.props.onSubmit(cl)
+    }).catch(() => false)
   }
 
   render () {
+    const {cl} = this.props
     return (
       <div>
+        <h2>Professor info for {cl.name}</h2>
         {this.renderContent()}
       </div>
     )
   }
+}
+
+Professor.propTypes = {
+  cl: PropTypes.object.isRequired,
+  onSubmit: PropTypes.func
 }
 
 export default ValidateForm(Form(Professor, 'form'))
