@@ -76,7 +76,7 @@ class SignUpForm extends React.Component {
         phone: '',
         birthday: '',
         gender: '',
-        notification_time: `${7 + date.getTimezoneOffset()}:00:00`
+        notification_time: `${7 + (date.getTimezoneOffset()/60)}:00:00`
       }
     }
   }
