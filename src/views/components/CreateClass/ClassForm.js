@@ -92,7 +92,8 @@ class ClassForm extends React.Component {
       name: '',
       meet_days: '',
       meet_start_time: '',
-      meet_end_time: ''
+      meet_end_time: '',
+      professor_id: this.props.professor.id
     }
   }
 
