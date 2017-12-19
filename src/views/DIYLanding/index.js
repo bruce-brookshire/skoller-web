@@ -4,7 +4,7 @@ import {browserHistory} from 'react-router'
 
 class DIYLanding extends React.Component {
   onNext () {
-    browserHistory.push('/diy/tool')
+    browserHistory.push('/class/syllabus_tool')
   }
   render () {
     return (

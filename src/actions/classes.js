@@ -169,12 +169,9 @@ export function updateClass (form) {
 * Lock the class for DIY
 *
 * @param [Object] cl. Class to lock
+* @param [Object] form. Optional params for class lock.
 */
-export function lockClass (cl) {
-  const form = {
-    is_class: true
-  }
-
+export function lockClass (cl, form) {
   return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}/lock`, {
     method: 'POST',
     headers: {
@@ -194,12 +191,9 @@ export function lockClass (cl) {
 * Unlock the class for DIY
 *
 * @param [Object] cl. Class to unlock
+* @param [Object] form. Optional params for class unlock.
 */
-export function unlockClass (cl) {
-  const form = {
-    is_class: true
-  }
-
+export function unlockClass (cl, form) {
   return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}/unlock`, {
     method: 'POST',
     headers: {

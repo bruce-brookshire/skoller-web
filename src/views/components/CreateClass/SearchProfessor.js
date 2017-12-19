@@ -1,9 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import {inject, observer} from 'mobx-react'
 import AutoComplete from '../../../components/AutoComplete'
 import actions from '../../../actions'
 import {mapProfessor} from '../../../utilities/display'
 
+@inject('rootStore') @observer
 class SearchProfessor extends React.Component {
   constructor (props) {
     super(props)
@@ -50,7 +52,9 @@ class SearchProfessor extends React.Component {
   * @param [String] value. Autocomplete search value
   */
   onUpdateAutoCompleteResults (value) {
-    actions.professors.searchProfessors(value).then((professors) => {
+    const {userStore: {user: {student: {school}}}} = this.props.rootStore
+
+    actions.professors.searchProfessors(value, school.periods[0].id).then((professors) => {
       this.setState({professors})
     }).catch(() => false)
   }
@@ -74,8 +78,10 @@ class SearchProfessor extends React.Component {
 }
 
 SearchProfessor.propTypes = {
-  onAddProfessor: PropTypes.func,
-  onProfessorSelect: PropTypes.func
+  cl: PropTypes.object.isRequired,
+  onAddProfessor: PropTypes.func.isRequired,
+  onProfessorSelect: PropTypes.func.isRequired,
+  rootStore: PropTypes.object
 }
 
 export default SearchProfessor

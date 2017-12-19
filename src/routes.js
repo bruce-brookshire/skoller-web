@@ -6,11 +6,12 @@ import Layout from './containers/Layout'
 
 import MyClasses from './views/MyClasses'
 
-import DIYLanding from './views/DIYTool/DIYLanding'
-import DIYTool from './views/DIYTool'
 import Landing from './views/Landing'
+import DIYLanding from './views/DIYLanding'
+
 import AssignmentsTutorial from './views/SyllabusTutorial/AssignmentsTutorial'
 import WeightsTutorial from './views/SyllabusTutorial/WeightsTutorial'
+import SyllabusTool from './views/SyllabusTool'
 
 import Onboard from './views/Onboard'
 
@@ -43,12 +44,11 @@ const router = (
           <Route path='/hub/accounts/account/info' component={AccountInfo} />
         </Route>
 
+        <Route path='/diy' component={DIYLanding} />
+        <Route path='/class/syllabus_tool' component={SyllabusTool} />
+
         <Route path='/tutorial/assignments' component={AssignmentsTutorial} />
         <Route path='/tutorial/weights' component={WeightsTutorial} />
-        <Route path='/diy'>
-          <IndexRoute component={DIYLanding} />
-          <Route path='/diy/tool' component={DIYTool} />
-        </Route>
       </Route>
       <Route path="/logout" onEnter={logout} />
       <Redirect from="*" to="/"/>

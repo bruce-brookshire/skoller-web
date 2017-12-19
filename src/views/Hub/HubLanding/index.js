@@ -1,10 +1,108 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import {inject, observer} from 'mobx-react'
 import {browserHistory} from 'react-router'
+import actions from '../../../actions'
 
+@inject('rootStore') @observer
 class HubLanding extends React.Component {
-  onNavigate(route) {
+  /*
+  * Navigate to new route.
+  *
+  * @param [String] route. Route to navigate to.
+  */
+  onNavigate (route) {
     browserHistory.push(route)
+  }
+
+  /*
+  * Fetch the next weight class for worker
+  */
+  getNextWeightClass () {
+    actions.syllabusworkers.getWeightClass().then((cl) => {
+      this.navigateToSyllabusTool(cl, 100)
+    }).catch(() => false)
+  }
+
+  /*
+  * Fetch the next assignment class for worker
+  */
+  getNextAssignmentClass () {
+    actions.syllabusworkers.getAssignmentClass().then((cl) => {
+      this.navigateToSyllabusTool(cl, 200)
+    }).catch(() => false)
+  }
+
+  /*
+  * Fetch the next review class for worker
+  */
+  getNextReviewClass () {
+    actions.syllabusworkers.getWeightClass().then((cl) => {
+      this.navigateToSyllabusTool(cl, 300)
+    }).catch(() => false)
+  }
+
+  /*
+  * Work section
+  *
+  * @param [Object] cl. The class to work.
+  * @param [Number] sectionId. The section id of the section to work.
+  */
+  navigateToSyllabusTool (cl, sectionId) {
+    browserHistory.push({
+      pathname: '/class/syllabus_tool',
+      state: {
+        cl,
+        isAdmin: this.isAdminUser(),
+        isReviewer: sectionId === 300,
+        isSW: true,
+        sectionId
+      }
+    })
+  }
+
+  /*
+  * Determine if hub user is an admin
+  */
+  isAdminUser () {
+    const {userStore: {user}} = this.props.rootStore
+    return user.roles.findIndex(role => role.id === 200) > -1
+  }
+
+  /*
+  * Render menu for admins.
+  */
+  renderAdminMenu () {
+    if (this.isAdminUser()) {
+      return (
+        <div className='margin-top margin-bottom'>
+          <span className='button-header center-text margin-top'>Admin panel</span>
+          <div className='nav-button-container row full-width'>
+
+            <div className='col-xs-12 col-sm-3 col-md- col-lg-3 margin-top'>
+              <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/schools')}>
+                <img src='/src/assets/images/icons/School.png'/>
+                <span>Schools (500)</span>
+              </button>
+            </div>
+
+            <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
+              <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/class_search')}>
+                <img src='/src/assets/images/icons/Search.png'/>
+                <span>Class Search</span>
+              </button>
+            </div>
+
+            <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
+              <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/accounts')}>
+                <img src='/src/assets/images/icons/Accounts.png'/>
+                <span>Accounts</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )
+    }
   }
 
   render () {
@@ -21,21 +119,21 @@ class HubLanding extends React.Component {
                 <div className='nav-button-container row full-width'>
 
                   <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
-                    <button className='nav-button button full-width' onClick={() => this.onNavigate('/diy/weights')}>
+                    <button className='nav-button button full-width' onClick={() => this.getNextWeightClass()}>
                       <img src='/src/assets/images/icons/Weights.png'/>
                       <span>Weights (110)</span>
                     </button>
                   </div>
 
                   <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
-                    <button className='nav-button button full-width' onClick={() => this.onNavigate('/diy/assignments')}>
+                    <button className='nav-button button full-width' onClick={() => this.getNextAssignmentClass()}>
                       <img src='/src/assets/images/icons/Assignments.png'/>
                       <span>Assigments (69)</span>
                     </button>
                   </div>
 
                   <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
-                    <button className='nav-button button full-width' onClick={() => this.onNavigate('/diy/review')}>
+                    <button className='nav-button button full-width' onClick={() => this.getNextReviewClass()}>
                       <img src='/src/assets/images/icons/Review.png'/>
                       <span>Review (420)</span>
                     </button>
@@ -49,33 +147,7 @@ class HubLanding extends React.Component {
                   </div>
                 </div>
               </div>
-
-              <div className='margin-top margin-bottom'>
-                <span className='button-header center-text margin-top'>Admin panel</span>
-                <div className='nav-button-container row full-width'>
-
-                  <div className='col-xs-12 col-sm-3 col-md- col-lg-3 margin-top'>
-                    <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/schools')}>
-                      <img src='/src/assets/images/icons/School.png'/>
-                      <span>Schools (500)</span>
-                    </button>
-                  </div>
-
-                  <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
-                    <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/class_search')}>
-                      <img src='/src/assets/images/icons/Search.png'/>
-                      <span>Class Search</span>
-                    </button>
-                  </div>
-
-                  <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
-                    <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/accounts')}>
-                      <img src='/src/assets/images/icons/Accounts.png'/>
-                      <span>Accounts</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
+              {this.renderAdminMenu()}
             </div>
           </div>
 
@@ -83,6 +155,10 @@ class HubLanding extends React.Component {
       </div>
     )
   }
+}
+
+HubLanding.propTypes = {
+  rootStore: PropTypes.object
 }
 
 export default HubLanding

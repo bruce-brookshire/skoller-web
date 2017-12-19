@@ -9,10 +9,10 @@ var Environment = require('../../environment.js')
 * Search classes by param
 *
 * @params [Object] param. Search parameters.
+* @param [Number] periodId. Id of the school period to query by.
 */
-export function searchProfessors (param) {
-  const {user: {student: {school}}} = userStore
-  return fetch(`${Environment.SERVER_NAME}/api/v1/periods/${school.periods[0].id}/professors?professor.name=${param}`, {
+export function searchProfessors (param, periodId) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/periods/${periodId}/professors?professor.name=${param}`, {
     method: 'GET',
     headers: {
       'Authorization': userStore.authToken,

@@ -53,7 +53,13 @@ class Tutorial extends React.Component {
   }
 
   onFinish () {
-    browserHistory.push({ pathname: '/diy/tool', state: {cl: this.props.location.state.cl} })
+    browserHistory.push({
+      pathname: '/class/syllabus_tool',
+      state: {
+        cl: this.props.location.state.cl,
+        isDIY: true
+      }
+    })
   }
 
   render () {

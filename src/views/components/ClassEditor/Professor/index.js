@@ -46,7 +46,7 @@ class Professor extends React.Component {
   renderContent () {
     switch (this.state.step) {
       case ContentEnum.SEARCH_PROFESSOR:
-        return <SearchProfessor onAddProfessor={this.onAddProfessor.bind(this)} onProfessorSelect={this.onProfessorSelect.bind(this)} />
+        return <SearchProfessor cl={this.props.cl} onAddProfessor={this.onAddProfessor.bind(this)} onProfessorSelect={this.onProfessorSelect.bind(this)} />
       case ContentEnum.PROFESSOR_INFO:
         return <ProfessorInfo professor={this.props.cl.professor} onEditProfessor={this.onEditProfessor.bind(this)} onRemoveProfessor={this.onRemoveProfessor.bind(this)} />
       case ContentEnum.PROFESSOR_FORM:

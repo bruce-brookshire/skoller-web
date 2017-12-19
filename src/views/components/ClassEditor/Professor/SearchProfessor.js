@@ -50,7 +50,7 @@ class SearchProfessor extends React.Component {
   * @param [String] value. Autocomplete search value
   */
   onUpdateAutoCompleteResults (value) {
-    actions.professors.searchProfessors(value).then((professors) => {
+    actions.professors.searchProfessors(value, this.props.cl.class_period_id).then((professors) => {
       this.setState({professors})
     }).catch(() => false)
   }
@@ -74,8 +74,9 @@ class SearchProfessor extends React.Component {
 }
 
 SearchProfessor.propTypes = {
-  onAddProfessor: PropTypes.func,
-  onProfessorSelect: PropTypes.func
+  cl: PropTypes.object.isRequired,
+  onAddProfessor: PropTypes.func.isRequired,
+  onProfessorSelect: PropTypes.func.isRequired
 }
 
 export default SearchProfessor

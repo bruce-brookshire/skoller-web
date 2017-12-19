@@ -7,6 +7,7 @@ import {getSchoolPeriods, createPeriod, updatePeriod} from './periods'
 import {attachProfessorToClass, createProfessor, removeProfessorFromClass,
   searchProfessors, updateProfessor} from './professors'
 import {createSchool, getActiveSchools, getHubSchools, getSchoolById, updateSchool} from './schools'
+import {getAssignmentClass, getReviewClass, getWeightClass} from './syllabusworkers'
 import {createWeight, deleteWeight, getClassWeights, updateWeight} from './weights'
 
 const actions = {
@@ -63,6 +64,11 @@ const actions = {
     getHubSchools,
     getSchoolById,
     updateSchool
+  },
+  syllabusworkers: {
+    getAssignmentClass,
+    getReviewClass,
+    getWeightClass
   },
   weights: {
     createWeight,
