@@ -176,6 +176,18 @@ class SignUpForm extends React.Component {
     this.setState({showSupportedSchools: !this.state.showSupportedSchools})
   }
 
+  renderSchool () {
+    const {form: {student: {school_id}}} = this.state
+    if (school_id) {
+      return (
+        <div className='margin-top' style={{fontSize: '11px'}}>
+          <i className='fa fa-building' />
+          <span style={{marginLeft: '5px'}}>{this.state.schools.find(school => school.id === school_id).name}</span>
+        </div>
+      )
+    }
+  }
+
   render () {
     const {form} = this.state
     const {formErrors, updateProperty} = this.props
@@ -211,8 +223,9 @@ class SignUpForm extends React.Component {
           </div>
           <div className='row'>
             <div className='col-xs-12'>
+              {this.renderSchool()}
               <InputField
-                containerClassName='margin-top'
+                containerClassName={!form.student.school_id ? 'margin-top' : ''}
                 error={formErrors.email || (this.state.emailError && this.state.emailError.message)}
                 label=''
                 name='email'
