@@ -15,7 +15,7 @@ class CallToAction extends React.Component {
   render () {
     return (
       <div >
-        <Slant className='slant-inverse'/>
+      <Slant className='slant-inverse'/>
         <div className='row'>
           <div className='col-xs-12 center-text'>
             <a href="#promo-signup">
