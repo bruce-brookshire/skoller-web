@@ -7,7 +7,7 @@ import {mapProfessor} from '../../../../utilities/display'
 class SearchProfessor extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {professors: []}
+    this.state = {professors: [], loading: false}
   }
 
   /*
@@ -50,9 +50,10 @@ class SearchProfessor extends React.Component {
   * @param [String] value. Autocomplete search value
   */
   onUpdateAutoCompleteResults (value) {
+    this.setState({loading: true})
     actions.professors.searchProfessors(value, this.props.cl.class_period_id).then((professors) => {
-      this.setState({professors})
-    }).catch(() => false)
+      this.setState({professors, loading: false})
+    }).catch(() => { this.setState({loading: false}) })
   }
 
   render () {
@@ -61,6 +62,7 @@ class SearchProfessor extends React.Component {
         <div className='col-xs-12'>
           <h5>No professor selected.</h5>
           <AutoComplete
+            className={this.state.loading ? 'loading': ''}
             dataSource={this.getDataSource()}
             emptyMessage={<div className='cn-autocomplete-results'>{`Can't find your professor? `}<a onClick={this.onAddProfessor.bind(this)}>Add a new one.</a></div>}
             updateAutoCompleteResults={this.onUpdateAutoCompleteResults.bind(this)}

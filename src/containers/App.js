@@ -26,7 +26,7 @@ class App extends React.Component {
       <div className='app public'>
         {this.props.children}
         {this.renderSnackBar()}
-        <Footer/>
+        {/* <Footer/> */}
       </div>
     )
   }

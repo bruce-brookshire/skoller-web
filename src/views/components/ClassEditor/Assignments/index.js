@@ -214,6 +214,18 @@ class Assignments extends React.Component {
         <div id='class-editor-assignment-form' className='margin-top'>
           <div className='row'>
             <div className='col-xs-12'>
+              <SelectField
+                containerClassName='margin-top'
+                error={formErrors.weight_id}
+                label="Grading category"
+                name="weight_id"
+                onChange={updateProperty}
+                options={this.state.weights}
+                placeholder="Select grading category"
+                value={form.weight_id}
+              />
+            </div>
+            <div className='col-xs-12'>
               <InputField
                 containerClassName='margin-top'
                 error={formErrors.name}
@@ -222,18 +234,6 @@ class Assignments extends React.Component {
                 onChange={updateProperty}
                 placeholder="Assignment name, i.e. Exam 1"
                 value={form.name}
-              />
-            </div>
-            <div className='col-xs-12'>
-              <SelectField
-                containerClassName='margin-top'
-                error={formErrors.weight_id}
-                label="Weight category"
-                name="weight_id"
-                onChange={updateProperty}
-                options={this.state.weights}
-                placeholder="Weight category"
-                value={form.weight_id}
               />
             </div>
             <div className='col-xs-12'>

@@ -15,7 +15,7 @@ class FormMessage extends React.Component {
 
 class InputField extends React.Component {
   render () {
-    const {containerClassName, error} = this.props
+    const {containerClassName, error, showErrorMessage} = this.props
     const containerClasses = ['cn-input-container']
     if (containerClassName) containerClasses.push(containerClassName)
 
@@ -33,7 +33,7 @@ class InputField extends React.Component {
           labelErrorClass='error'
           {...this.props}
         />
-        {error ? <FormMessage message={error} /> : null}
+        {error && showErrorMessage ? <FormMessage message={error} /> : null}
       </div>
     )
   }
@@ -56,6 +56,7 @@ InputField.propTypes = {
   onChange: PropTypes.func.isRequired,
   onFocus: PropTypes.func,
   placeholder: PropTypes.string,
+  showErrorMessage: PropTypes.bool,
   type: PropTypes.string,
   value: PropTypes.oneOfType([
     PropTypes.string,
