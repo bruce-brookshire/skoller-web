@@ -50,9 +50,8 @@ class HubLanding extends React.Component {
   */
   navigateToSyllabusTool (cl, sectionId) {
     browserHistory.push({
-      pathname: '/class/syllabus_tool',
+      pathname: `/class/${cl.id}/syllabus_tool`,
       state: {
-        cl,
         isAdmin: this.isAdminUser(),
         isReviewer: sectionId === 300,
         isSW: true,

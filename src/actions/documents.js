@@ -8,10 +8,10 @@ var Environment = require('../../environment.js')
 /*
 * Get classes for students
 *
-* @param [Object] cl. The class to get the class documents for.
+* @param [Number] classId. The class to get the class documents for.
 */
-export function getClassDocuments (cl) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}/docs`, {
+export function getClassDocuments (classId) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${classId}/docs`, {
     method: 'GET',
     headers: {
       'Authorization': userStore.authToken,

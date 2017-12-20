@@ -45,7 +45,7 @@ const router = (
         </Route>
 
         <Route path='/diy' component={DIYLanding} />
-        <Route path='/class/syllabus_tool' component={SyllabusTool} />
+        <Route path='/class/:classId/syllabus_tool' component={SyllabusTool} />
 
         <Route path='/tutorial/assignments' component={AssignmentsTutorial} />
         <Route path='/tutorial/weights' component={WeightsTutorial} />

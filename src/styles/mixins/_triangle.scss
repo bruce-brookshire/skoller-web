@@ -7,9 +7,16 @@
     border-top: $triangle-width solid transparent;
     border-bottom: $triangle-width solid transparent;
   }
-
-
 }
+
+@mixin triangle-inner {
+  &:before {
+    border-top-width: $triangle-width/2;
+    border-right-width: $triangle-width;
+    border-bottom-width: $triangle-width/2;
+  }
+}
+
 @mixin triangle-left {
   @include triangle;
    &:before {
@@ -50,6 +57,24 @@
   }
 }
 
+@mixin triangle-inner-top {
+  @include triangle-top;
+  @include triangle-inner;
+  &:before {
+    margin-top: $triangle-width;
+  }
+}
+
+@mixin triangle-inner-bottom {
+  @include triangle-bottom;
+  @include triangle-inner;
+
+  &:before {
+    margin-bottom: $triangle-width;
+  }
+}
+
+
 @mixin triangle-warning {
   border-right: $triangle-width*2 solid $cn-warning-color;
 }
@@ -89,10 +114,17 @@
 
   &.triangle-top {
     @include triangle-top;
+
+    .triangle-inner {
+      @include triangle-inner-top;
+    }
   }
 
   &.triangle-bottom {
     @include triangle-bottom;
+    .triangle-inner {
+      @include triangle-inner-bottom;
+    }
   }
 
   &.triangle-left {
@@ -102,7 +134,6 @@
   &.triangle-right {
     @include triangle-right;
   }
-
 
 
   &.warning {

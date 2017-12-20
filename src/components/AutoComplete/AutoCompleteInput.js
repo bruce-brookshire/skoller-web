@@ -14,10 +14,12 @@ class AutoCompleteInput extends React.Component {
 
   render () {
     const input = this.props
+    const classes = ['cn-autocomplete-input']
+    if (input.className) classes.push(input.className)
     return (
       <input
         onClick={this.onClick}
-        className='cn-autocomplete-input'
+        className={classes.join(' ')}
         placeholder={input.placeholder}
         onChange={(event) => this.props.onChange(event)}
         onKeyUp={(event) => this.props.onKeyUp(event)}

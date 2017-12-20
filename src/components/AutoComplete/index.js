@@ -50,7 +50,7 @@ class AutoComplete extends React.Component {
     this.timeout = setTimeout(() => {
       if (self.timeout) clearTimeout(self.timeout)
       self.onUpdateAutoCompleteResults(self.state.autoCompleteValue)
-    }, 600)
+    }, 400)
   }
 
   /*

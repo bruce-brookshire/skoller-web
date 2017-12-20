@@ -1,6 +1,14 @@
 .cn-autocomplete-container {
   .cn-autocomplete-input {
     @include form-element;
+    &.loading {
+        background-color: #ffffff;
+        background-image: url("http://loadinggif.com/images/image-selection/3.gif");
+        background-size: 16px 16px;
+        background-position: 99% center;
+        background-repeat: no-repeat;
+        // margin-right: 5px;
+    }
 
   }
   .cn-autocomplete-results {

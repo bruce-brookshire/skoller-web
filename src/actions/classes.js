@@ -29,6 +29,29 @@ export function searchClasses (param) {
     })
 }
 
+/*
+* Get class by id
+*
+* @param [Number] classId. The id of the class to get.
+*/
+export function getClassById (classId) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${classId}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error fetching class. Try again.')
+      return Promise.reject(error)
+    })
+}
+
 
 /*
 * Get classes for students
@@ -168,11 +191,11 @@ export function updateClass (form) {
 /*
 * Lock the class for DIY
 *
-* @param [Object] cl. Class to lock
+* @param [Number] classId. Class to lock
 * @param [Object] form. Optional params for class lock.
 */
-export function lockClass (cl, form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}/lock`, {
+export function lockClass (classId, form) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${classId}/lock`, {
     method: 'POST',
     headers: {
       'Authorization': userStore.authToken,
@@ -190,11 +213,11 @@ export function lockClass (cl, form) {
 /*
 * Unlock the class for DIY
 *
-* @param [Object] cl. Class to unlock
+* @param [Number] classId. Class to unlock
 * @param [Object] form. Optional params for class unlock.
 */
-export function unlockClass (cl, form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}/unlock`, {
+export function unlockClass (classId, form) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${classId}/unlock`, {
     method: 'POST',
     headers: {
       'Authorization': userStore.authToken,
