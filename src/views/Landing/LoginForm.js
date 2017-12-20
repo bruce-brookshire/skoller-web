@@ -5,6 +5,7 @@ import {Cookies} from 'react-cookie'
 import {Form, ValidateForm} from 'react-form-library'
 import {InputField} from '../../components/Form'
 import actions from '../../actions'
+import {checkIfFirstKey} from '../../utilities/object'
 
 const styles = {
   row: {
@@ -66,6 +67,7 @@ class LoginForm extends React.Component {
                 <InputField
                   containerClassName=''
                   error={formErrors.email}
+                  showErrorMessage={checkIfFirstKey(formErrors, 'email')}
                   label=''
                   name='email'
                   onChange={updateProperty}
@@ -77,6 +79,7 @@ class LoginForm extends React.Component {
                 <InputField
                   containerClassName=''
                   error={formErrors.password}
+                  showErrorMessage={checkIfFirstKey(formErrors, 'password')}
                   label=''
                   name='password'
                   onChange={updateProperty}
