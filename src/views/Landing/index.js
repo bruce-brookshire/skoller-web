@@ -19,7 +19,7 @@ class Landing extends React.Component {
       <div className='cn-landing-container'>
         <div className='cn-navbar'>
           <div className='left'>
-            <img className='logo' src='src/assets/images/blue-logo-full.png'></img>
+            <img className='logo' src='src/assets/images/logo-wide-blue@1x.png'></img>
           </div>
           <div className='user-info right'>
             <LoginForm rootStore={this.props.rootStore}/>
