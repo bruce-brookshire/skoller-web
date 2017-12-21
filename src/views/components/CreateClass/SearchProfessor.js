@@ -54,10 +54,14 @@ class SearchProfessor extends React.Component {
   onUpdateAutoCompleteResults (value) {
     const {userStore: {user: {student: {school}}}} = this.props.rootStore
 
-    this.setState({loading: true})
-    actions.professors.searchProfessors(value, school.periods[0].id).then((professors) => {
-      this.setState({professors, loading: false})
-    }).catch(() => { this.setState({loading: false}) })
+    if (value) {
+      this.setState({loading: true})
+      actions.professors.searchProfessors(value, school.periods[0].id).then((professors) => {
+        this.setState({professors, loading: false})
+      }).catch(() => { this.setState({loading: false}) })
+    } else {
+      this.setState({professors: []})
+    }
   }
 
   render () {

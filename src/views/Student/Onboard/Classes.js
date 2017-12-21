@@ -1,12 +1,12 @@
 import React from 'react'
-import AddClass from '../components/AddClass'
-import CreateClass from '../components/CreateClass'
-import Grid from '../../components/Grid/index'
-import Loading from '../../components/Loading'
-import Modal from '../../components/Modal/index'
+import AddClass from '../../components/AddClass'
+import CreateClass from '../../components/CreateClass'
+import Grid from '../../../components/Grid/index'
+import Loading from '../../../components/Loading'
+import Modal from '../../../components/Modal/index'
 
-import actions from '../../actions'
-import {mapProfessor} from '../../utilities/display'
+import actions from '../../../actions'
+import {mapProfessor} from '../../../utilities/display'
 
 const headers = [
   {
@@ -34,8 +34,8 @@ const headers = [
     display: 'Start Time'
   },
   {
-    field: 'classLength',
-    display: 'Term Length'
+    field: 'campus',
+    display: 'Campus'
   }
 ]
 
@@ -71,6 +71,7 @@ class MyClasses extends React.Component {
             rows={this.getRows()}
             canDelete={false}
             disabled={true}
+            emptyMessage='You are not enrolled in any classes.'
           />
           <button className='button-invert full-width add-button' onClick={() => this.toggleAddModal()}>
             Add a Class
@@ -99,7 +100,7 @@ class MyClasses extends React.Component {
   * @return [Object] row. Object of formatted row data for display in grid.
   */
   mapRow (item, index) {
-    const {id, number, name, meet_start_time, meet_days, length, professor} = item
+    const {id, number, name, meet_start_time, meet_days, campus, professor} = item
 
     const row = {
       id: id || '',
@@ -109,7 +110,7 @@ class MyClasses extends React.Component {
       professor: professor ? mapProfessor(professor) : 'TBA',
       days: meet_days || 'TBA',
       beginTime: meet_start_time || 'TBA',
-      classLength: length || 'TBA'
+      campus: campus || 'TBA'
     }
 
     return row
@@ -167,7 +168,12 @@ class MyClasses extends React.Component {
         open={this.state.openAddModal}
         onClose={this.toggleAddModal.bind(this)}
       >
-        <AddClass onSubmit={this.onAddClass.bind(this)} onCreateClass={this.toggleCreateModal.bind(this)} onClose={this.toggleAddModal.bind(this)}/>
+        <AddClass
+          classes={this.state.classes}
+          onSubmit={this.onAddClass.bind(this)}
+          onCreateClass={this.toggleCreateModal.bind(this)}
+          onClose={this.toggleAddModal.bind(this)}
+        />
       </Modal>
     )
   }
@@ -183,7 +189,14 @@ class MyClasses extends React.Component {
     )
   }
 
+  onNext () {
+    this.props.onNext()
+  }
+
   render () {
+    const disableButton = this.state.classes.length === 0
+    const disableClass = disableButton ? 'disabled' : ''
+
     return (
       <div className= 'cn-my-classes-container'>
         <div className='margin-bottom'>
@@ -192,6 +205,18 @@ class MyClasses extends React.Component {
         </div>
 
         {this.renderContent()}
+
+        <div className='row full-width justify-center'>
+          <div className='space-between-vertical col-xs-12 col-md-8 col-lg-6'>
+            <div style={{position: 'relative'}}>
+              <button
+                className={`button full-width margin-top margin-bottom ${disableClass}`}
+                onClick={this.onNext.bind(this)}
+                disabled={disableButton}
+              >Blam-o</button>
+            </div>
+          </div>
+        </div>
 
         {/*userStore.loading ? <Loading /> : this.renderContent()*/}
 

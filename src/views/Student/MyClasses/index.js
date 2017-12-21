@@ -1,9 +1,9 @@
 import React from 'react'
-import AddClass from '../components/AddClass'
-import CreateClass from '../components/CreateClass'
-import Grid from '../../components/Grid/index'
-import Loading from '../../components/Loading'
-import Modal from '../../components/Modal/index'
+import AddClass from '../../components/AddClass'
+import CreateClass from '../../components/CreateClass'
+import Grid from '../../../components/Grid/index'
+import Loading from '../../../components/Loading'
+import Modal from '../../../components/Modal/index'
 // import AddClass from '../AddClass/index'
 import UploadDocuments from './UploadDocuments'
 // import userStore from '../../stores/user_store'
@@ -14,8 +14,8 @@ import UploadDocuments from './UploadDocuments'
 // import {addClass, deleteClass} from '../../actions/classes'
 // import {convertTimeTo12HourClock} from '../../utilities/time'
 
-import actions from '../../actions'
-import {mapProfessor} from '../../utilities/display'
+import actions from '../../../actions'
+import {mapProfessor} from '../../../utilities/display'
 
 const headers = [
   {
@@ -39,8 +39,8 @@ const headers = [
     display: 'Start Time'
   },
   {
-    field: 'classLength',
-    display: 'Term Length'
+    field: 'campus',
+    display: 'Campus'
   },
   {
     field: 'status',
@@ -113,6 +113,7 @@ class MyClasses extends React.Component {
             canDelete={true}
             onDelete={this.onDeleteClass.bind(this)}
             deleteMessage={'Are you sure you want to drop this class?'}
+            emptyMessage='You are not enrolled in any classes.'
           />
           <button className='button-invert full-width add-button' onClick={() => this.toggleAddModal()}>
             Add a Class
@@ -142,7 +143,7 @@ class MyClasses extends React.Component {
   * @return [Object] row. Object of formatted row data for display in grid.
   */
   mapRow (item, index) {
-    const {id, number, name, meet_start_time, meet_days, length, professor, status} = item
+    const {id, number, name, meet_start_time, meet_days, campus, professor, status} = item
 
     const row = {
       id: id || '',
@@ -151,7 +152,7 @@ class MyClasses extends React.Component {
       professor: professor ? mapProfessor(professor) : 'TBA',
       days: meet_days || 'TBA',
       beginTime: meet_start_time || 'TBA',
-      classLength: length || 'TBA',
+      campus: campus || 'TBA',
       status: status ? this.mapStatus(status) : '-',
       component: <UploadDocuments cl={item} />
     }
@@ -165,12 +166,13 @@ class MyClasses extends React.Component {
   * @param [String] status. Class status.
   */
   mapStatus (status) {
-    if (status === 'New Class' || status === 'Nees Syllabus') {
-      return <span className='cn-red' style={{color: '#FF0000'}}> UPLOAD SYLLABUS </span>
-    } else if (status === 'Weights' || status === 'Assignments' || status === 'Review' || status === 'Help') {
-      return <span style={{color: 'darkgrey'}} >RECEIVED</span>
-    } else if (status === 'Complete' || status === 'Change') {
-      return <span className='cn-green'style={{color: '#00C000'}} >COMPLETED</span>
+    status = status.toLowerCase()
+    if (status === 'new class' || status === 'needs syllabus') {
+      return <span className='cn-red'> UPLOAD SYLLABUS </span>
+    } else if (status === 'weights' || status === 'assignments' || status === 'review' || status === 'Help') {
+      return <span className = 'cn-grey'>RECEIVED</span>
+    } else if (status === 'complete' || status === 'change') {
+      return <span className='cn-green' >COMPLETED</span>
     }
     return status
   }
@@ -303,7 +305,12 @@ class MyClasses extends React.Component {
         open={this.state.openAddModal}
         onClose={this.toggleAddModal.bind(this)}
       >
-        <AddClass onSubmit={this.onAddClass.bind(this)} onCreateClass={this.toggleCreateModal.bind(this)} onClose={this.toggleAddModal.bind(this)}/>
+        <AddClass
+          classes={this.state.classes}
+          onSubmit={this.onAddClass.bind(this)}
+          onCreateClass={this.toggleCreateModal.bind(this)}
+          onClose={this.toggleAddModal.bind(this)}
+        />
       </Modal>
     )
   }
@@ -325,7 +332,7 @@ class MyClasses extends React.Component {
         <div className='cn-my-classes-header margin-bottom'>
           <h2 className='left'>Classes</h2>
           <div className='right'>
-            <h4>My classes</h4>
+            <h4 className='cn-grey'>My classes</h4>
             <h4><a onClick={() => this.toggleAddModal()}>Add Class</a></h4>
           </div>
         </div>

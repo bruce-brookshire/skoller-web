@@ -23,14 +23,14 @@ class Grid extends React.Component {
   */
   renderTableBody () {
     const { disabled, canSelect, canDelete, onSelect,
-      onDelete, deleteMessage, rows, headers } = this.props
+      onDelete, deleteMessage, emptyMessage, rows, headers } = this.props
 
     if (!rows || rows.length === 0) {
       return (
         <tbody>
           <tr colSpan={headers.length}>
             <td className='no-items' colSpan={headers.length}>
-            There are no items to be displayed.
+             {emptyMessage || 'There are no items to be displayed.'}
             </td>
           </tr>
         </tbody>
@@ -79,6 +79,7 @@ Grid.propTypes = {
   canSelect: PropTypes.bool,
   deleteMessage: PropTypes.string,
   disabled: PropTypes.bool,
+  emptyMessage: PropTypes.string,
   headers: PropTypes.array,
   onDelete: PropTypes.func,
   onSelect: PropTypes.func,

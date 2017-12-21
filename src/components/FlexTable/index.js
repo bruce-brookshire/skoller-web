@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Loading from '../Loading'
 
 class FlexTable extends React.Component {
   /*
@@ -21,10 +22,9 @@ class FlexTable extends React.Component {
   * @return [Array]. Array of <GridRows/>
   */
   renderTableBody () {
-    const { disabled, canSelect, canDelete, onSelect,
-      onDelete, deleteMessage, emptyMessage, rows, headers } = this.props
+    const {disableEmptyMessage, emptyMessage, rows} = this.props
 
-    if (!rows || rows.length === 0) {
+    if ((!rows || rows.length === 0) && !disableEmptyMessage) {
       return (
         emptyMessage ||
         <div className='cn-table-cell'>There are no items to be displayed.</div>
@@ -35,7 +35,7 @@ class FlexTable extends React.Component {
       return (
         <div key={`row-${index}`} className='cn-flex-table-row' onClick={() => this.onRowClick(rowData)}>
           {
-            Object.keys(rowData).map((key,cellIndex) => {
+            Object.keys(rowData).map((key, cellIndex) => {
               if (key !== 'component' && key !== 'id') {
                 return <div key={`row-${index}-${cellIndex}`} className='cn-flex-table-cell'>{rowData[key]}</div>
               }
@@ -56,7 +56,7 @@ class FlexTable extends React.Component {
   }
 
   render () {
-    const {className, disabled, canSelect, canDelete} = this.props
+    const {className, disabled, canDelete, loading} = this.props
     const classes = ['cn-table-grid']
     if (className) classes.push(className)
 
@@ -69,7 +69,15 @@ class FlexTable extends React.Component {
           {canDelete ? <div className='cn-flex-table-head'>&amps;</div> : null}
         </div>
         <div className='cn-flex-table-body'>
-          {this.renderTableBody()}
+          {loading
+            ? <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '100%'
+              }}
+            > <Loading /> </div> : this.renderTableBody()}
         </div>
       </div>
     )
@@ -79,9 +87,16 @@ class FlexTable extends React.Component {
 FlexTable.propTypes = {
   canDelete: PropTypes.bool,
   canSelect: PropTypes.bool,
+  className: PropTypes.string,
   deleteMessage: PropTypes.string,
+  disableEmptyMessage: PropTypes.bool,
   disabled: PropTypes.bool,
+  emptyMessage: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.node
+  ]),
   headers: PropTypes.array,
+  loading: PropTypes.bool,
   onDelete: PropTypes.func,
   onSelect: PropTypes.func,
   rows: PropTypes.array

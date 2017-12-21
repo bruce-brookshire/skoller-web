@@ -21,11 +21,19 @@
   &:focus { outline: none; }
 }
 
+@mixin disabled {
+  &.disabled {
+    background-color: #d3d3d3 !important;
+    color: $cn-font-color !important;
+  }
+}
+
 @mixin primary-button {
   @include button;
   background-color: $cn-color-blue;
   color: $cn-color-white;
   &:hover { background-color: lighten($cn-color-blue, 10); }
+  @include disabled;
 }
 
 @mixin button-invert {
@@ -33,4 +41,5 @@
   background-color: $cn-color-white;
   color: $cn-color-blue;
   &:hover { background-color: darken($cn-color-white, 10); }
+  @include disabled;
 }

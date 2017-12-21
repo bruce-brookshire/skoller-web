@@ -9,7 +9,7 @@ const menuItems = [
   },
   {
     icon: 'fa fa-check-circle-o',
-    path: '/diy'
+    path: '/student/diy'
   },
   {
     icon: 'fa fa-calendar',

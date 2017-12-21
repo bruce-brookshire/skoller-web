@@ -33,7 +33,7 @@
 
   .cn-submit-syllabi-container {
     .cn-flex-table {
-      height: 60vh;
+      max-height: 60vh;
       overflow-y:hidden;
       overflow-y: scroll;
       .empty-message {
@@ -98,5 +98,16 @@
       font-weight: 400;
       margin-left: 5px;
     }
+  }
+  .message-bubble {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 80%;
+
+    @include breakpoint(large) {
+      min-width: 100%;
+    }
+
   }
 }

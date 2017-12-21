@@ -4,16 +4,17 @@ import { Router, Route, Redirect, IndexRedirect, IndexRoute, browserHistory } fr
 import App from './containers/App'
 import Layout from './containers/Layout'
 
-import MyClasses from './views/MyClasses'
 
 import Landing from './views/Landing'
-import DIYLanding from './views/DIYLanding'
+
+import DIYLanding from './views/Student/DIYLanding'
+import MyClasses from './views/Student/MyClasses'
+import Onboard from './views/Student/Onboard'
+
 
 import AssignmentsTutorial from './views/SyllabusTutorial/AssignmentsTutorial'
 import WeightsTutorial from './views/SyllabusTutorial/WeightsTutorial'
 import SyllabusTool from './views/SyllabusTool'
-
-import Onboard from './views/Onboard'
 
 import HubLanding from './views/Hub/HubLanding'
 import HubSchools from './views/Hub/HubSchools'
@@ -31,9 +32,13 @@ const router = (
       <IndexRedirect to="/app"/>
       <Route path='/landing' component={Landing} />
       <Route path='/app' component={Layout} onEnter={requireAuth}>
-        <IndexRedirect to="/myclasses"/>
-        <Route path='/onboard' component={Onboard} onEnter={authOnboard} />
-        <Route path='/myclasses' component={MyClasses}/>
+        <IndexRedirect to='/student/classes' />
+        <Route path='/student'>
+          <IndexRedirect to='/student/classes'/>
+          <Route path='/student/onboard' component={Onboard} onEnter={authOnboard} />
+          <Route path='/student/diy' component={DIYLanding} />
+          <Route path='/student/classes' component={MyClasses}/>
+        </Route>
 
         <Route path='/hub'>
           <IndexRedirect to='/hub/landing'/>
@@ -65,7 +70,7 @@ function requireAuth (nextState, replaceState) {
     userStore.authToken = cookie.get('skollerToken')
     actions.auth.getUserByToken()
       .then(() => {
-        if (nextState.routes.findIndex(route => route.path === '/onboard') !== -1) {
+        if (nextState.routes.findIndex(route => route.path === '/student/onboard') !== -1) {
           authOnboard()
         }
         userStore.setFetchingUser(false)
@@ -83,7 +88,7 @@ function requireAuth (nextState, replaceState) {
 function authOnboard () {
   if (userStore.user) {
     if (!userStore.user.student || (userStore.user.student && userStore.user.student.is_verified)) {
-      // browserHistory.push('/myclasses')
+      // browserHistory.push('/student/classes')
     }
   }
 }

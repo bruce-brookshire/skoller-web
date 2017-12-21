@@ -2,8 +2,8 @@ import 'isomorphic-fetch'
 import React from 'react'
 import PropTypes from 'prop-types'
 import ProjectFourDoor from './ProjectFourDoor'
-import UploadHistory from '../../components/UploadHistory'
-import actions from '../../actions'
+import UploadHistory from '../../../components/UploadHistory'
+import actions from '../../../actions'
 
 class UploadDocuments extends React.Component {
   constructor (props) {

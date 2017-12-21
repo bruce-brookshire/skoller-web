@@ -50,9 +50,13 @@ class LoginForm extends React.Component {
         this.props.resetValidation()
         const { userStore: { authToken , user } } = this.props.rootStore
         this.cookie.set('skollerToken', authToken)
-        user.student ? browserHistory.push('/myclasses') : browserHistory.push('/hub')
+        user.student ? browserHistory.push('/student/classes') : browserHistory.push('/hub')
       }).catch(() => false)
     }
+  }
+
+  onForgotPassword () {
+
   }
 
   render () {
@@ -87,6 +91,7 @@ class LoginForm extends React.Component {
                   type='password'
                   value={form.password}
                 />
+                <a className='right forgot-password' onClick={this.onForgotPassword.bind(this)}>Forgot password?</a>
               </div>
             </div>
           </form>

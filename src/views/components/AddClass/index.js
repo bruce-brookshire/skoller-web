@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import Loading from '../../../components/Loading'
 import Search from '../../../components/Search'
 import actions from '../../../actions'
+import {mapProfessor} from '../../../utilities/display'
 
 const searchResultHeaders = [
   {
@@ -35,14 +36,37 @@ class AddClass extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      classes: []
+      classes: [],
+      searching: false
     }
   }
 
+  /*
+  * Search for classes.
+  *
+  * @param [String] searchText. The search query for classes.
+  */
   onSearch (searchText) {
-    actions.classes.searchClasses(searchText).then(classes => {
-      this.setState({classes})
-    }).catch(() => false)
+    if (searchText) {
+      this.setState({searching: true})
+      actions.classes.searchClasses(searchText).then(classes => {
+        this.setState({classes: this.filterClasses(classes), searching: false})
+      }).catch(() => { this.setState({searching: true}) })
+    } else {
+      this.setState({classes: []})
+    }
+  }
+
+  /*
+  * Filter out the class search results with the classes the user is
+  * already enrolled in.
+  *
+  * @param [array] classes. The classes to filter with the user's classes.
+  */
+  filterClasses (classes) {
+    return classes.filter((cl) => {
+      return this.props.classes.findIndex((c) => c.id === cl.id) === -1
+    })
   }
 
   /*
@@ -70,7 +94,7 @@ class AddClass extends React.Component {
       id: id || '',
       courseNumber: number || '-',
       name: name || '-',
-      professor: (professor && professor.name !== 'None') || 'TBA',
+      professor: professor ? mapProfessor(professor) : 'TBA',
       days: meet_days || 'TBA',
       beginTime: meet_start_time || 'TBA',
       classLength: length || 'TBA'
@@ -99,7 +123,7 @@ class AddClass extends React.Component {
           emptyMessage={<div className='empty-message margin-top'>{`Can't find your class? `}<a onClick={this.onCreateClass.bind(this)}>Create a new one.</a></div>}
           placeholder='Search by class name, professor last name, or class number...'
           onSearch={(searchText) => this.onSearch(searchText)}
-          searching={false}
+          searching={this.state.searching}
           searchResults={this.getRows()}
           searchResultHeaders = {searchResultHeaders}
           searchResultSelect = {this.props.onSubmit}
@@ -110,6 +134,7 @@ class AddClass extends React.Component {
 }
 
 AddClass.propTypes = {
+  classes: PropTypes.array,
   onClose: PropTypes.func,
   onCreateClass: PropTypes.func,
   onSubmit: PropTypes.func

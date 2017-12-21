@@ -5,6 +5,14 @@ class VerificationCode extends React.Component {
   constructor (props) {
     super(props)
     this.state = this.initializeState()
+    this.inputs= []
+  }
+
+  /*
+  * Autofocus input
+  */
+  componentDidMount () {
+    this.inputs[0].input.focus()
   }
 
   initializeState () {
@@ -31,6 +39,7 @@ class VerificationCode extends React.Component {
     for (let i = 0; i < numberOfDigits; i++) {
       inputs.push(
         <VerifitcationInput
+          ref={(component) => { if (component) this.inputs[i] = component }}
           key={`input-${i}`}
           index={i}
           onChange={this.onChange.bind(this)}
@@ -43,6 +52,9 @@ class VerificationCode extends React.Component {
   }
 
   onChange (value, index) {
+    // only allow numbers
+    if (value && isNaN(value)) return
+
     const newForm = {...this.state.form}
     newForm[`input${index}`] = value
     this.setState({form: newForm})
@@ -52,8 +64,12 @@ class VerificationCode extends React.Component {
       Object.keys(newForm).forEach(key => {
         value = `${value}${newForm[key]}`
       })
-
       this.props.onChange(value)
+    }
+
+    // Programtically tab to the next input
+    if (index !== this.props.numberOfDigits - 1 && value) {
+      this.inputs[index + 1].input.focus()
     }
   }
 
@@ -86,6 +102,7 @@ class VerifitcationInput extends React.Component {
 
     return (
       <input
+        ref={(component) => { this.input = component }}
         key={`input-${index}`}
         className={classes.join(' ')}
         onBlur={(event) => this.setState({isFocused: false})}

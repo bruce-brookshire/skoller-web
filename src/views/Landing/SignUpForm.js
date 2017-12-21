@@ -180,9 +180,9 @@ class SignUpForm extends React.Component {
     const {form: {student: {school_id}}} = this.state
     if (school_id) {
       return (
-        <div className='margin-top' style={{fontSize: '11px'}}>
+        <div className='margin-top school-info'>
           <i className='fa fa-building' />
-          <span style={{marginLeft: '5px'}}>{this.state.schools.find(school => school.id === school_id).name}</span>
+          <span>{this.state.schools.find(school => school.id === school_id).name}</span>
         </div>
       )
     }
@@ -227,6 +227,7 @@ class SignUpForm extends React.Component {
               <InputField
                 containerClassName={!form.student.school_id ? 'margin-top' : ''}
                 error={formErrors.email || (this.state.emailError && this.state.emailError.message)}
+                showErrorMessage={this.state.emailError && this.state.emailError.message}
                 label=''
                 name='email'
                 onBlur={this.onVerifyEmail.bind(this)}

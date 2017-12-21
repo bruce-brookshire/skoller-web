@@ -1,7 +1,7 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import SearchResults from './SearchResults'
 import {Form, ValidateForm} from 'react-form-library'
-import {InputField} from '../Form'
 
 class Search extends React.Component {
   constructor (props) {
@@ -40,19 +40,24 @@ class Search extends React.Component {
   renderSearchResults () {
     const {searchResults, searching} = this.props
 
-    if (searchResults && this.state.searched && !searching) {
-      const {emptyMessage, searchResultHeaders, searchResultSelect} = this.props
-      return (
-        <SearchResults
-          emptyMessage={emptyMessage}
-          searchResultHeaders={searchResultHeaders}
-          searchResults={this.mapResults(searchResults)}
-          onSelect={searchResultSelect}
-        />
-      )
-    }
+    const {emptyMessage, searchResultHeaders, searchResultSelect} = this.props
+    return (
+      <SearchResults
+        emptyMessage={emptyMessage}
+        loading={searching}
+        searchResultHeaders={searchResultHeaders}
+        searchResults={this.mapResults(searchResults)}
+        disableEmptyMessage={this.state.searchText.length === 0}
+        onSelect={searchResultSelect}
+      />
+    )
   }
 
+  /*
+  * Map the search results, highlighting the text.
+  *
+  * @param [Array] searchResults. Array of search results.
+  */
   mapResults (searchResults) {
     return searchResults.map(result => {
       Object.keys(result).forEach(key => {
@@ -64,12 +69,30 @@ class Search extends React.Component {
     })
   }
 
+  /*
+  * Highlight matching text.
+  *
+  * @param [String] text. The text to highlight with the search text.
+  */
   matchText (text) {
-    const re = new RegExp(`^${this.state.searchText}(.*$)`, "i")
+    const re = new RegExp(`${this.state.searchText}(.*$)`, 'i')
     const output = re.exec(text)
-    return output && output[1] && text && text.length > 0
-      ? <div><span className='highlight'>{text.substring(0, this.state.searchText.length)}</span><span>{output[1]}</span></div>
-      : text
+
+    if (output && output.index >=0 && text && text.length > 0 && text !== 'TBA') {
+      let first = text.substring(0, output.index)
+      let middle = text.substring(output.index, this.state.searchText.length + output.index)
+      let last = text.substring(this.state.searchText.length + output.index, text.length)
+
+      return (
+        <div>
+          <span>{first}</span>
+          <span className='highlight'>{middle}</span>
+          <span>{last}</span>
+        </div>
+      )
+    }
+
+    return text
   }
 
   /*
@@ -108,6 +131,20 @@ class Search extends React.Component {
       </div>
     )
   }
+}
+
+Search.propTypes = {
+  description: PropTypes.string,
+  emptyMessage: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.node
+  ]),
+  onSearch: PropTypes.func,
+  placeholder: PropTypes.string,
+  searching: PropTypes.bool,
+  searchResults: PropTypes.array,
+  searchResultHeaders: PropTypes.array,
+  searchResultSelect: PropTypes.func
 }
 
 export default ValidateForm(Form(Search, 'form'))

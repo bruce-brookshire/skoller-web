@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import UploadHistory from '../../../components/UploadHistory'
-import actions from '../../../actions'
+import UploadHistory from '../../../../components/UploadHistory'
+import actions from '../../../../actions'
 
 class ClassRow extends React.Component {
   constructor (props) {
@@ -22,6 +22,7 @@ class ClassRow extends React.Component {
   * Initialize the state
   */
   intializeState () {
+    debugger
     return {
       documents: [],
       hasSyllabus: this.props.cl.is_syllabus
@@ -60,7 +61,7 @@ class ClassRow extends React.Component {
   * Handle checkbox change
   */
   onCheckboxChange () {
-    if (this.getSyllabusDocuments().length === 0) {
+    if (this.getSyllabusDocuments().length === 0 && !this.isComplete()) {
       const form = {id: this.props.cl.id, is_syllabus: !this.state.hasSyllabus}
       actions.classes.updateClass(form).then((cl) => {
         this.setState({hasSyllabus: !this.state.hasSyllabus})
@@ -70,7 +71,7 @@ class ClassRow extends React.Component {
 
   isComplete () {
     const {cl} = this.props
-    return (cl.status !== 'New Class' && cl.status !== 'Needs Syllabus')
+    return (cl.status && cl.status !== 'New Class' && cl.status !== 'Needs Syllabus')
   }
 
   renderComplete () {
@@ -87,7 +88,7 @@ class ClassRow extends React.Component {
           <div>
             <span>{name || '-'} {this.renderComplete()}</span>
             <div>
-              <input type='checkbox' onChange={this.onCheckboxChange.bind(this)} checked={!this.state.hasSyllabus}/>
+              <input type='checkbox' onChange={this.onCheckboxChange.bind(this)} checked={this.state.hasSyllabus}/>
               <span className='checkbox-label'>{`This class doesn't have a syllabus`}</span>
             </div>
           </div>

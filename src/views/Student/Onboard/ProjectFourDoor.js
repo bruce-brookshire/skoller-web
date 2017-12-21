@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import {browserHistory} from 'react-router'
-import actions from '../../actions'
+import actions from '../../../actions'
 
 @inject('rootStore') @observer
 class ProjectFourDoor extends React.Component {
@@ -110,7 +110,7 @@ class ProjectFourDoor extends React.Component {
   * Handle skoller
   */
   onSkoller () {
-    browserHistory.push('/myclasses')
+    browserHistory.push('/student/classes')
   }
 
   /*
