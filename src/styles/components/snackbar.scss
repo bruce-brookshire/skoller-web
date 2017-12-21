@@ -1,0 +1,36 @@
+.snackbar {
+  background-color: black;
+  border-radius: $cn-border-radius;
+  bottom: 2 * $unit-space;
+  box-shadow: 0 0 40px rgba(#000, .15);
+  color: white;
+  left: 50%;
+  margin-left: -125px;
+  min-width: 250px;
+  padding: 16px;
+  pointer-events: none;
+  position: fixed;
+  text-align: center;
+  visibility: hidden;
+  z-index: 1;
+
+  &.show {
+    // animation: snackbar-in .5s ease-out, snackbar-out .5s ease-out 2.5s;
+    visibility: visible;
+  }
+
+  &.error {
+    background-color: red;
+    color: #fff;
+  }
+
+  &.warning {
+    background-color: yellow;
+    color: black;
+  }
+
+  &.info {
+    background-color: #000;
+    color: #fff;
+  }
+}

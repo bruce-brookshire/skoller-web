@@ -4,7 +4,7 @@ import {inject, observer} from 'mobx-react'
 import {browserHistory} from 'react-router'
 import Footer from '../components/Footer'
 // import Loading from '../components/Loading'
-// import Snackbar from '../components/Snackbar'
+import Snackbar from '../components/Snackbar'
 
 @inject('rootStore') @observer
 class App extends React.Component {
@@ -14,8 +14,8 @@ class App extends React.Component {
   }
 
   renderSnackBar () {
-    // const {snackbarStore} = this.props.rootStore
-    // return <Snackbar message={snackbarStore.message} show={snackbarStore.show} type={snackbarStore.type}/>
+    const {snackbarStore} = this.props.rootStore
+    return <Snackbar message={snackbarStore.message} show={snackbarStore.show} type={snackbarStore.type}/>
   }
 
   render () {
