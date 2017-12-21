@@ -3,7 +3,7 @@ var _Environments = {
     SERVER_NAME: 'http://localhost:4000'
   },
   staging: {
-    SERVER_NAME: 'https://classnav-api-staging.herokuapp.com'
+    SERVER_NAME: 'https://api.skoller.co'
   },
   production: {
     SERVER_NAME: ''
