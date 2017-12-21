@@ -30,9 +30,9 @@ class LoginForm extends React.Component {
     this.cookie = new Cookies()
     this.state = this.initializeState()
   }
-
+  
   handleEnter (e) {
-    if(e.key == 'Enter'){
+    if (e.key == 'Enter') {
       this.onSubmit()
     }
   }
@@ -105,7 +105,7 @@ class LoginForm extends React.Component {
                   type='password'
                   value={form.password}
                   onKeyDown={(e)=>this.handleEnter(e)}
-                  
+
                 />
                 <a className='right forgot-password' onClick={this.onForgotPassword.bind(this)}>Forgot password?</a>
               </div>
