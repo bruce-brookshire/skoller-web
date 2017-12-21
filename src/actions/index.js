@@ -6,10 +6,12 @@ import {createClass, dropClass, getClassById, getProfessorClasses,
 import {createIssue, getHelpTypes} from './classhelp'
 import {getClassDocuments, uploadClassDocument} from './documents'
 import {updateGradeScale} from './gradescales'
+import {getStatuses} from './hub'
 import {getSchoolPeriods, createPeriod, updatePeriod} from './periods'
 import {attachProfessorToClass, createProfessor, removeProfessorFromClass,
   searchProfessors, updateProfessor} from './professors'
-import {createSchool, getActiveSchools, getHubSchools, getSchoolById, updateSchool} from './schools'
+import {createSchool, getActiveSchools, getHubSchools, getHubSchoolsMinified,
+  getSchoolById, updateSchool} from './schools'
 import {getAssignmentClass, getReviewClass, getWeightClass} from './syllabusworkers'
 import {createWeight, deleteWeight, getClassWeights, updateWeight} from './weights'
 
@@ -54,6 +56,9 @@ const actions = {
   gradescales: {
     updateGradeScale
   },
+  hub: {
+    getStatuses
+  },
   periods: {
     createPeriod,
     getSchoolPeriods,
@@ -70,6 +75,7 @@ const actions = {
     createSchool,
     getActiveSchools,
     getHubSchools,
+    getHubSchoolsMinified,
     getSchoolById,
     updateSchool
   },

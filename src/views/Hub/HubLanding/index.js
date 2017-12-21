@@ -2,10 +2,29 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import {browserHistory} from 'react-router'
+import Loading from '../../../components/Loading'
 import actions from '../../../actions'
 
 @inject('rootStore') @observer
 class HubLanding extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {statuses: [], schoolCount: 0, loadingStatuses: false}
+  }
+  componentWillMount () {
+    this.getStatuses()
+  }
+
+  /*
+  * Fetch the class statuses
+  */
+  getStatuses () {
+    this.setState({loadingStatuses: true})
+    actions.hub.getStatuses().then((statuses) => {
+      this.setState({statuses: statuses.statuses, schoolCount: statuses.schools, loadingStatuses: false})
+    }).catch(() => { this.setState({loadingStatuses: false}) })
+  }
+
   /*
   * Navigate to new route.
   *
@@ -81,7 +100,11 @@ class HubLanding extends React.Component {
             <div className='col-xs-12 col-sm-3 col-md- col-lg-3 margin-top'>
               <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/schools')}>
                 <img src='/src/assets/images/icons/School.png'/>
-                <span>Schools (500)</span>
+                <span>Schools (
+                  {this.state.loadingStatuses ? <Loading style={{color: 'white'}}/>
+                    : this.state.schoolCount
+                  }
+                )</span>
               </button>
             </div>
 
@@ -104,6 +127,11 @@ class HubLanding extends React.Component {
     }
   }
 
+  getStatusCount (key) {
+    const status = this.state.statuses.find(status => status.name === key)
+    return status && status.classes
+  }
+
   render () {
     return (
       <div className='cn-hub-landing-container'>
@@ -120,28 +148,44 @@ class HubLanding extends React.Component {
                   <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
                     <button className='nav-button button full-width' onClick={() => this.getNextWeightClass()}>
                       <img src='/src/assets/images/icons/Weights.png'/>
-                      <span>Weights (110)</span>
+                      <span>Weights (
+                        {this.state.loadingStatuses ? <Loading style={{color: 'white'}}/>
+                          : this.getStatusCount('Weights') || 0
+                        }
+                      )</span>
                     </button>
                   </div>
 
                   <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
                     <button className='nav-button button full-width' onClick={() => this.getNextAssignmentClass()}>
                       <img src='/src/assets/images/icons/Assignments.png'/>
-                      <span>Assigments (69)</span>
+                      <span>Assigments (
+                        {this.state.loadingStatuses ? <Loading style={{color: 'white'}} />
+                          : this.getStatusCount('Assignments') || 0
+                        }
+                      )</span>
                     </button>
                   </div>
 
                   <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
                     <button className='nav-button button full-width' onClick={() => this.getNextReviewClass()}>
                       <img src='/src/assets/images/icons/Review.png'/>
-                      <span>Review (420)</span>
+                      <span>Review (
+                        {this.state.loadingStatuses ? <Loading style={{color: 'white'}} />
+                          : this.getStatusCount('Review') || 0
+                        }
+                      )</span>
                     </button>
                   </div>
 
                   <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
                     <button className='nav-button button full-width' onClick={() => this.onNavigate('/diy/needs_help')}>
                       <img src='/src/assets/images/icons/NeedsHelp.png'/>
-                      <span>Needs Help (99999)</span>
+                      <span>Needs Help (
+                        {this.state.loadingStatuses ? <Loading style={{color: 'white'}}/>
+                          : this.getStatusCount('Help') || 0
+                        }
+                      )</span>
                     </button>
                   </div>
                 </div>
