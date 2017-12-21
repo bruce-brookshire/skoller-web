@@ -105,12 +105,14 @@ class SignUpForm extends React.Component {
             <div className='margin-top'><span onClick={this.toggleSupportedSchoolModal.bind(this)} style={{borderBottom: '1px solid white', cursor: 'pointer'}}>See supported schools</span></div>
           </div>
         )
+
         this.setState({ emailError: {type: 'info', message: emailInfo} })
       } else {
-        this.setSchoolId(school)
         this.setState({emailError: null})
       }
+      this.setSchoolId(school)
     } else {
+      this.setSchoolId()
       this.setState({emailError: null})
     }
   }
@@ -146,7 +148,7 @@ class SignUpForm extends React.Component {
 
   setSchoolId (school) {
     let newForm = {...this.state.form}
-    newForm.student.school_id = school.id
+    newForm.student.school_id = (school && school.id) || ''
     this.setState({form: newForm})
   }
 
@@ -181,7 +183,6 @@ class SignUpForm extends React.Component {
     if (school_id) {
       return (
         <div className='margin-top school-info'>
-          <i className='fa fa-building' />
           <span>{this.state.schools.find(school => school.id === school_id).name}</span>
         </div>
       )

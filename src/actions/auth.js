@@ -90,6 +90,26 @@ export function getUserByToken () {
 }
 
 /*
+* Resend the verification code.
+*/
+export function resendVerification () {
+  const {user: {student}} = userStore
+  return fetch(`${Environment.SERVER_NAME}/api/v1/students/${student.id}/resend/`, {
+    method: 'POST',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => checkError(response))
+    .then(() => { showSnackbar('Verification code resent.', 'info') })
+    .catch(error => {
+      showSnackbar('Could not send verification code. Try again later.')
+      return Promise.reject(error)
+    })
+}
+
+/*
 * Verify users phone number
 */
 export function verifyPhoneNumber (form) {
@@ -104,6 +124,7 @@ export function verifyPhoneNumber (form) {
   })
     .then(response => checkError(response))
     .catch(error => {
+      showSnackbar('Invalid verification code.')
       return Promise.reject(error)
     })
 }

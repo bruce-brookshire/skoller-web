@@ -46,6 +46,14 @@ class Verification extends React.Component {
     }).catch(() => false)
   }
 
+  /*
+  * Resend verification code to the user.
+  */
+  onResendVerification () {
+    actions.auth.resendVerification().then(() => {
+    }).catach(() => false)
+  }
+
   render () {
     const disableButton = !this.isValid()
     const disableClass = disableButton ? 'disabled' : ''
@@ -61,6 +69,7 @@ class Verification extends React.Component {
               <h1>Buzz Buzz</h1>
               <span>We sent a verification code to your phone. Enter it here, please.</span>
               <VerificationCode numberOfDigits={numberOfDigits} onChange={this.onChange.bind(this)} />
+              <a className='resend-verification' onClick={this.onResendVerification.bind(this)}>Resend verification code?</a>
             </div>
           </div>
         </div>

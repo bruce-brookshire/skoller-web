@@ -15,7 +15,7 @@ class UploadDocuments extends React.Component {
   * Fetch the documents for a class.
   */
   componentWillMount () {
-    actions.documents.getClassDocuments(this.props.cl).then(documents => {
+    actions.documents.getClassDocuments(this.props.cl.id).then(documents => {
       this.setState({documents})
     }).catch(() => false)
   }
