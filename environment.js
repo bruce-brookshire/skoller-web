@@ -6,7 +6,7 @@ var _Environments = {
     SERVER_NAME: 'https://api.skoller.co'
   },
   production: {
-    SERVER_NAME: ''
+    SERVER_NAME: 'https://api.skoller.co'
   }
 }
 
