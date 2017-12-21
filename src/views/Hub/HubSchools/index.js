@@ -42,6 +42,9 @@ class HubSchools extends React.Component {
     }
   }
 
+  /*
+  * Fetch school details for the hub.
+  */
   componentWillMount () {
     actions.schools.getHubSchools().then(schools => {
       headers[0].display = `Schools (${schools.length})`
@@ -75,15 +78,18 @@ class HubSchools extends React.Component {
       name: name ? <div onClick={() => this.onSchoolSelect(item)}><span style={{display: 'block'}}><strong>{name}</strong></span><span style={{fontSize: '10px'}}>Period</span></div> : 'TBA',
       numberOfStudents: enrollment || 0,
       fourDoor: this.mapFourDoor(is_diy_enabled, is_diy_preferred, is_auto_syllabus),
-      weights: this.renderCheck(),
-      assignments: this.renderCheck(),
-      review: this.renderCheck(),
-      help: this.renderCheck(),
+      weights: this.getCounts(classes, 'Weights') || this.renderCheck(),
+      assignments: this.getCounts(classes, 'Assignments') || this.renderCheck(),
+      review: this.getCounts(classes, 'Review') || this.renderCheck(),
+      help: this.getCounts(classes, 'Help') || this.renderCheck()
     }
 
     return row
   }
 
+  /*
+  * Render the four door status for a given school.
+  */
   mapFourDoor (is_diy_enabled, is_diy_preferred, is_auto_syllabus) {
     if (is_diy_enabled && !is_diy_preferred && is_auto_syllabus) {
       return 'Normal'
@@ -98,14 +104,36 @@ class HubSchools extends React.Component {
     }
   }
 
+  /*
+  * Get the sections counts for a given school.
+  *
+  * @param [Array] classes. The status array.
+  * @param [String] status. The status to look for.
+  */
+  getCounts (classes, status) {
+    const cl = classes.find(cl => cl.status === status)
+    return cl && cl.count
+  }
+
+
+  /*
+  * Check mark if no status count
+  *
+  */
   renderCheck () {
     return <i className='fa fa-check' style={{color: '#a9a9a9'}}/>
   }
 
+  /*
+  * On create school.
+  */
   onCreateSchool () {
     browserHistory.push('/hub/schools/school/info')
   }
-  
+
+  /*
+  * On school select.
+  */
   onSchoolSelect (school) {
     browserHistory.push({pathname: '/hub/schools/school/info', state: {school}})
   }
