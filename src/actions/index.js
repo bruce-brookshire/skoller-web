@@ -1,7 +1,7 @@
 import {createAssignment, deleteAssignment, getClassAssignments, updateAssignment} from './assignments'
-import {authenticateUser, createAccount, getRoles, getUserById, getUserByToken,
-  getUsers, registerUser, resendVerification, updateAccount,
-  verifyPhoneNumber} from './auth'
+import {authenticateUser, createAccount, forgotPassword, getRoles,
+  getUserById, getUserByToken, getUsers, registerUser, resetPassword,
+  resendVerification, updateAccount, verifyPhoneNumber} from './auth'
 import {createClass, dropClass, getClassById, getProfessorClasses,
   getStudentClasses, enrollInClass, searchClasses,
   updateClass, lockClass, unlockClass} from './classes'
@@ -31,7 +31,9 @@ const actions = {
     getUserById,
     getUserByToken,
     getUsers,
+    forgotPassword,
     registerUser,
+    resetPassword,
     resendVerification,
     verifyPhoneNumber,
     updateAccount

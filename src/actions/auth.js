@@ -129,6 +129,56 @@ export function verifyPhoneNumber (form) {
     })
 }
 
+/*
+* Forgot password. Send email to user.
+*
+* @param [Object] form. Forgot password form.
+*/
+export function forgotPassword (form) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/forgot`, {
+    method: 'POST',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(form)
+  })
+    .then(response => checkError(response))
+    .then(() => {
+      showSnackbar('An email has been sent to your email address with further instructions.', 'info')
+    })
+    .catch(error => {
+      showSnackbar('There was an error. Check your email and try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Reset password
+*
+* @params [Object] form. Reset password form data.
+*/
+export function resetPassword (form) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/reset`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(form)
+  })
+    .then(response => checkError(response))
+    .then(data => {
+      showSnackbar('Your password has been successfully reset.', 'info')
+    })
+    .catch(error => {
+      if (error === 401) {
+        showSnackbar('Your token has expired.')
+      } else {
+        showSnackbar('There was an error. Try again.')
+      }
+      return Promise.reject(error)
+    })
+}
 
 /*
 * Get user roles.
