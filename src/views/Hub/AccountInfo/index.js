@@ -72,7 +72,7 @@ class AccountInfo extends React.Component {
                 </tr>
               }
             </tbody>
-          </table> : <a onClick={this.toggleRolesForm.bind(this)}>Add details</a>
+          </table> : <a onClick={this.toggleAccountForm.bind(this)}>Add details</a>
         }
       </div>
     )

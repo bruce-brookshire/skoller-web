@@ -22,7 +22,6 @@ class ClassRow extends React.Component {
   * Initialize the state
   */
   intializeState () {
-    debugger
     return {
       documents: [],
       hasSyllabus: this.props.cl.is_syllabus

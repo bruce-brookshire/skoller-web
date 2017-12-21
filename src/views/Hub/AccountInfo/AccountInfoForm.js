@@ -64,16 +64,16 @@ class AccountInfoForm extends React.Component {
   }
 
   renderInputs () {
-    return this.state.roles.map(role => {
-      return this.renderInput(role)
+    return this.state.roles.map((role, index) => {
+      return this.renderInput(role, index)
     })
   }
 
-  renderInput (role) {
+  renderInput (role, index) {
     const isChecked = this.state.userRoles.findIndex(r => r.id === role.id) >= 0
 
     return (
-      <div>
+      <div key={index}>
         <label>
           <input type='checkbox' onChange={(event) => this.onInputChange(event.target.checked, role)} checked={isChecked} />
           {role.name}
