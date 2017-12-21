@@ -15,8 +15,7 @@ class Onboard extends React.Component {
     super(props)
     const {userStore: {user}} = props.rootStore
     this.state = {
-      // currentIndex: user.student.is_verified ? 1 : 0,
-      currentIndex: 0,
+      currentIndex: user.student.is_verified ? 1 : 0,
       stepCount: 4,
       showUploadWarning: false
     }

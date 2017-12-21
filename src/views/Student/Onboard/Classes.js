@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import AddClass from '../../components/AddClass'
 import CreateClass from '../../components/CreateClass'
 import Grid from '../../../components/Grid/index'
@@ -40,7 +41,7 @@ const headers = [
 ]
 
 
-class MyClasses extends React.Component {
+class Classes extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -50,6 +51,9 @@ class MyClasses extends React.Component {
     }
   }
 
+  /*
+  * Fetch the classes for a user.
+  */
   componentWillMount () {
     actions.classes.getStudentClasses().then((classes) => {
       this.setState({classes})
@@ -162,6 +166,9 @@ class MyClasses extends React.Component {
     }).catch(() => false)
   }
 
+  /*
+  * Render the add class modal.
+  */
   renderAddClassModal () {
     return (
       <Modal
@@ -178,6 +185,9 @@ class MyClasses extends React.Component {
     )
   }
 
+  /*
+  * Render the create class modal.
+  */
   renderCreateClassModal () {
     return (
       <Modal
@@ -189,6 +199,9 @@ class MyClasses extends React.Component {
     )
   }
 
+  /*
+  * On next.
+  */
   onNext () {
     this.props.onNext()
   }
@@ -227,4 +240,8 @@ class MyClasses extends React.Component {
   }
 }
 
-export default MyClasses
+Classes.propTypes = {
+  onNext: PropTypes.func.isRequired
+}
+
+export default Classes

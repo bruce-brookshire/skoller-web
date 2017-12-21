@@ -13,7 +13,7 @@ class ClassRow extends React.Component {
   * Fetch the documents for a class.
   */
   componentWillMount () {
-    actions.documents.getClassDocuments(this.props.cl).then(documents => {
+    actions.documents.getClassDocuments(this.props.cl.id).then(documents => {
       this.setState({documents})
     }).catch(() => false)
   }
@@ -68,11 +68,19 @@ class ClassRow extends React.Component {
     }
   }
 
+  /*
+  * Determine if the class is complete.
+  *
+  * @return [Boolean]. boolean indicating if the class is complete.
+  */
   isComplete () {
     const {cl} = this.props
     return (cl.status && cl.status !== 'New Class' && cl.status !== 'Needs Syllabus')
   }
 
+  /*
+  * If the class is complete, render a checkmark.
+  */
   renderComplete () {
     if (this.isComplete()) {
       return <i className ='fa fa-check' style={{color: '#00f000'}} />
