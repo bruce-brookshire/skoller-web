@@ -31,6 +31,20 @@ class LoginForm extends React.Component {
     this.state = this.initializeState()
   }
 
+  handleEnter (e) {
+    if(e.key == 'Enter'){
+      this.onSubmit()
+    }
+  }
+
+  componentDidMount () {
+    window.addEventListener('keydown', this.handleEnter.bind(this));
+  }
+
+  componentWillUnmount () {
+    window.removeEventListener('keydown', this.handleEnter.bind(this));
+  }
+
   initializeState () {
     return {
       form: this.initializeFormData()
@@ -63,7 +77,7 @@ class LoginForm extends React.Component {
     const {form} = this.state
     const {formErrors, updateProperty} = this.props
     return (
-      <div style={styles.row}>
+      <div style={styles.row} >
         <div className='col-xs-10'>
           <form>
             <div className='row'>
@@ -75,11 +89,11 @@ class LoginForm extends React.Component {
                   label=''
                   name='email'
                   onChange={updateProperty}
-                  placeholder='Email'
+                  placeholder='School email'
                   value={form.email}
                 />
               </div>
-              <div className='col-xs-6'>
+              <div className='col-xs-6' >
                 <InputField
                   containerClassName=''
                   error={formErrors.password}
@@ -90,6 +104,8 @@ class LoginForm extends React.Component {
                   placeholder='Password'
                   type='password'
                   value={form.password}
+                  onKeyDown={(e)=>this.handleEnter(e)}
+                  
                 />
                 <a className='right forgot-password' onClick={this.onForgotPassword.bind(this)}>Forgot password?</a>
               </div>
