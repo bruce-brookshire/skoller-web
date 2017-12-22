@@ -86,7 +86,7 @@ class Weights extends React.Component {
   */
   renderContent () {
     const {cl} = this.props
-    if ((cl.is_points && !this.state.totalPoints) || (this.state.isPoints && !this.state.totalPoints )) {
+    if (this.state.isPoints && !this.state.totalPoints) {
       return (
         <PointTotal
           cl={cl}
@@ -104,11 +104,9 @@ class Weights extends React.Component {
   */
   onChangeTotalPoints (totalPoints) {
     const {cl} = this.props
-    actions.classes.updateClass({id: cl.id, is_points: true}).then((cl) => {
-      this.setState({totalPoints})
-      // may need to update class
-      // this.props.onChange(cl)
-    }).catch(() => false)
+    this.setState({totalPoints})
+    // may need to update class
+    // this.props.onChange(cl)
   }
 
   /*
@@ -327,7 +325,11 @@ class Weights extends React.Component {
   }
 
   onToggleConverter () {
-    this.setState({isPoints: !this.state.isPoints})
+    const {cl} = this.props
+    const isPoints = !this.state.isPoints
+    actions.classes.updateClass({id: cl.id, is_points: isPoints}).then((cl) => {
+      this.setState({isPoints})
+    }).catch(() => false)
   }
 
   render () {
