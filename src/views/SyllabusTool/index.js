@@ -63,6 +63,7 @@ class SyllabusTool extends React.Component {
       currentDocumentIndex: 0,
       currentDocument: null,
       currentIndex,
+      disableNext: false,
       documents: [],
       isDIY: state.isDIY || false,
       isAdmin: state.isAdmin || false,
@@ -129,7 +130,7 @@ class SyllabusTool extends React.Component {
       const {params: {classId}} = this.props
       const form = {is_class: true}
       actions.classes.lockClass(classId, form).then(() => {
-      }).catch(() => false)
+      }).catch((error) => { if (error !== 422) browserHistory.push('/student/classes') })
     }
   }
 
@@ -196,7 +197,7 @@ class SyllabusTool extends React.Component {
       case ContentEnum.GRADE_SCALE:
         return <GradeScale cl={this.state.cl} onSubmit={this.updateClass.bind(this)}/>
       case ContentEnum.WEIGHTS:
-        return <Weights cl={this.state.cl} />
+        return <Weights cl={this.state.cl} disableNext={this.state.disableNext} toggleDisabled={this.toggleDisabled.bind(this)} />
       case ContentEnum.ASSIGNMENTS:
         return <Assignments cl={this.state.cl} />
       default:
@@ -283,7 +284,6 @@ class SyllabusTool extends React.Component {
       )
     }
   }
-
 
   /*
   * Render the skip button for DIY
@@ -379,8 +379,6 @@ class SyllabusTool extends React.Component {
     )
   }
 
-
-
   /*
   * On syllabus section done.
   */
@@ -468,8 +466,19 @@ class SyllabusTool extends React.Component {
     this.setState({openIssuesModal: !this.state.openIssuesModal})
   }
 
+  /*
+  * Disable the next button
+  *
+  * @param [Boolean] value. Boolean value to indicate if next button should be disabled
+  */
+  toggleDisabled (value) {
+    this.setState({disableNext: value})
+  }
+
   render () {
     const {cl, loadingClass, isAdmin} = this.state
+    const disabledClass = this.state.disableNext ? 'disabled' : ''
+
     if (loadingClass) return <div />
     return (
       <div className='cn-syllabus-tool-container'>
@@ -515,7 +524,11 @@ class SyllabusTool extends React.Component {
 
           <div className='row actions-container full-width margin-top'>
             <div className='space-between-vertical col-xs-12 col-md-8 col-lg-6'>
-              <button className='button full-width margin-bottom' onClick={this.onNext.bind(this)}>Next</button>
+              <button
+                className={`button full-width margin-bottom ${disabledClass}`}
+                disabled={this.state.disableNext}
+                onClick={this.onNext.bind(this)}
+              >Next</button>
             </div>
           </div>
 

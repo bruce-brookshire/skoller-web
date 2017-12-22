@@ -12,7 +12,7 @@ var Environment = require('../../environment.js')
 */
 export function searchClasses (param) {
   const {user: {student: {school}}} = userStore
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes?school_id=${school.id}&class_name=${param}&class_number=${param}&professor_name=${param}&or=true`, {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/schools/${school.id}/classes?class_name=${param}&class_number=${param}&professor_name=${param}&or=true`, {
     method: 'GET',
     headers: {
       'Authorization': userStore.authToken,
@@ -205,7 +205,7 @@ export function lockClass (classId, form) {
   })
     .then(response => checkError(response))
     .catch(error => {
-      showSnackbar('Error locking class. Try again.')
+      if (error !== 422) showSnackbar('Error locking class. Try again.')
       return Promise.reject(error)
     })
 }

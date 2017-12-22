@@ -64,7 +64,12 @@ class LoginForm extends React.Component {
         this.props.resetValidation()
         const { userStore: { authToken , user } } = this.props.rootStore
         this.cookie.set('skollerToken', authToken)
-        user.student ? browserHistory.push('/student/classes') : browserHistory.push('/hub')
+        if (user.student) {
+          user.student.is_verified ?
+            browserHistory.push('/student/classes') : browserHistory.push('/student/onboard')
+        } else {
+          browserHistory.push('/hub')
+        }
       }).catch(() => false)
     }
   }

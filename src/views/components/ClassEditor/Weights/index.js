@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
 import {InputField} from '../../../../components/Form'
 import Grid from '../../../../components/Grid/index'
+import PointTotal from './PointTotal'
 import WeightConverter from '../../../../components/WeightConverter/index'
 import actions from '../../../../actions'
 
@@ -52,9 +53,11 @@ class Weights extends React.Component {
   * @return [Object]. State object.
   */
   initializeState () {
+    const {cl} = this.props
     return {
       form: this.initializeFormData(),
-      weightConverter: false,
+      isPoints: cl.is_points,
+      totalPoints: null,
       weights: []
     }
   }
@@ -75,6 +78,91 @@ class Weights extends React.Component {
       name: name || '',
       weight: weight || ''
     })
+  }
+
+  /*
+  * Render point total input if needed.
+  * Otherwise render the table
+  */
+  renderContent () {
+    const {cl} = this.props
+    if ((cl.is_points && !this.state.totalPoints) || (this.state.isPoints && !this.state.totalPoints )) {
+      return (
+        <PointTotal
+          cl={cl}
+          onChange={this.onChangeTotalPoints.bind(this)}
+          totalPoints={this.state.totalPoints}
+        />
+      )
+    }
+
+    return this.renderWeightsContent()
+  }
+
+  /*
+  * If weights are in points, update the total points.
+  */
+  onChangeTotalPoints (totalPoints) {
+    const {cl} = this.props
+    actions.classes.updateClass({id: cl.id, is_points: true}).then((cl) => {
+      this.setState({totalPoints})
+      // may need to update class
+      // this.props.onChange(cl)
+    }).catch(() => false)
+  }
+
+  /*
+  * Render the weights and weight form.
+  */
+  renderWeightsContent () {
+    const {form} = this.state
+    const {formErrors, updateProperty} = this.props
+    return (
+      <div className='space-between-vertical'>
+        <div>
+          <div id='class-editor-weights-table' className='margin-top'>
+            <Grid
+              headers={headers}
+              rows={this.getRows()}
+              disabled={true}
+              canDelete={false}
+              canSelect={true}
+              emptyMessage="There are currently no weights for this class."
+              onSelect={this.setWeight.bind(this)}
+            />
+          </div>
+          {this.renderTotalPercentage()}
+        </div>
+        <div id='class-editor-weight-form' className='margin-top'>
+          <div className='row'>
+            <div className='col-xs-8'>
+              <InputField
+                containerClassName='margin-top'
+                error={formErrors.name}
+                label="Category name"
+                name="name"
+                onChange={updateProperty}
+                placeholder="Weight Category, i.e. Exams"
+                value={form.name}
+              />
+            </div>
+            <div className='col-xs-4'>
+              <InputField
+                containerClassName='margin-top'
+                error={formErrors.weight}
+                label="Weight"
+                name="weight"
+                onChange={updateProperty}
+                placeholder="Weight"
+                type="number"
+                value={form.weight}
+              />
+            </div>
+          </div>
+          <button className='button full-width margin-top margin-bottom' onClick={this.onSubmit.bind(this)}>Submit category weight</button>
+        </div>
+      </div>
+    )
   }
 
   /*
@@ -102,7 +190,11 @@ class Weights extends React.Component {
       id: id || '',
       delete: <div className='button-delete-x center-content' onClick={(event) => { event.stopPropagation(); this.onDeleteWeight(item) }}><i className='fa fa-times' /></div>,
       name,
-      weight: <div style={{textAlign: 'right'}}>{Number(weight).toFixed(2)}</div>
+      weight: <div style={{textAlign: 'right'}}>{
+        !this.state.isPoints
+          ? `${Number(weight).toFixed(2)}%`
+          : Number(weight)
+      }</div>
     }
 
     return row
@@ -127,12 +219,29 @@ class Weights extends React.Component {
         <tbody id='class-editor-weights-total'>
           <tr>
             <td style={tdStyle}></td>
-            <td style={{...tdStyle, textAlign: 'left'}}>Total: </td>
-            <td style={{...tdStyle, textAlign: 'right'}}>{`${this.getTotalWeight().toFixed(2)}%`}</td>
+            <td style={{...tdStyle, textAlign: 'left'}}>{!this.state.isPoints ? 'Total:' : 'Total points'}</td>
+            <td style={{...tdStyle, textAlign: 'right'}}>{
+              !this.state.isPoints
+                ? `${this.getTotalWeight().toFixed(2)}%`
+                : `${this.getTotalWeight()}/${this.state.totalPoints}`
+            }</td>
           </tr>
         </tbody>
       </table>
     )
+  }
+
+  /*
+  * Render the slider
+  */
+  renderWeightSlider () {
+    if (this.state.weights.length === 0) {
+      return (
+        <div className='full-width'>
+          <WeightConverter id='class-editor-weight-converter' onChange={this.onToggleConverter.bind(this)} value={this.state.isPoints}/>
+        </div>
+      )
+    }
   }
 
   /*
@@ -154,29 +263,13 @@ class Weights extends React.Component {
   * @param [String] weight. Optional param to check weight
   * @return [Boolean]. Truth value if the total weight percentage is within range.
   */
-  isTotalWeightSecure (weight) {
-    const totalWeight = weight || this.getTotalWeight()
-    return (totalWeight <= 101 && totalWeight >= 99)
-  }
-
-  /*
-  * Convert weight. Ensure it is a number. Calculate percentage if needed.
-  *
-  * @param [String] weight. Weight.
-  * @return [Number] num. The weight converted to a number.
-  */
-  convertWeight (weight) {
-    weight = weight.replace('%', '')
-    const numArray = weight.split('/')
-    let num
-    if (numArray.length > 2) {
-      num = 0
-    } else if (numArray.length === 2) {
-      num = Number(numArray[0]) / Number(numArray[1]) * 100
-    } else {
-      num = Number(numArray[0])
+  isTotalWeightSecure () {
+    let totalWeight = this.getTotalWeight()
+    if (this.state.isPoints) {
+      if (!this.state.totalPoints) return false
+      totalWeight = (totalWeight / this.state.totalPoints) * 100
     }
-    return num
+    return (totalWeight <= 101 && totalWeight >= 99)
   }
 
   /*
@@ -234,63 +327,25 @@ class Weights extends React.Component {
   }
 
   onToggleConverter () {
-    this.setState({weightConverter: !this.state.weightConverter})
+    this.setState({isPoints: !this.state.isPoints})
   }
 
   render () {
     // if (weightStore.loading) {
     //   return <Loading />
     // }
-    const {form} = this.state
-    const {formErrors, updateProperty} = this.props
+    let {disableNext} = this.props
+    if (!this.isTotalWeightSecure() && !disableNext) {
+      this.props.toggleDisabled(true)
+    } else if (this.isTotalWeightSecure() && disableNext) {
+      this.props.toggleDisabled(false)
+    }
 
     return (
       <div className='space-between-vertical'>
-        <div>
-          <h2>Weights for {this.props.cl.name}</h2>
-          <div id='class-editor-weights-table' className='margin-top'>
-            <Grid
-              headers={headers}
-              rows={this.getRows()}
-              disabled={true}
-              canDelete={false}
-              canSelect={true}
-              onSelect={this.setWeight.bind(this)}
-            />
-          </div>
-          {this.renderTotalPercentage()}
-        </div>
-        <div id='class-editor-weight-form' className='margin-top'>
-          <div className='row'>
-            <div className='col-xs-8'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.name}
-                label="Category name"
-                name="name"
-                onChange={updateProperty}
-                placeholder="Weight Category, i.e. Exams"
-                value={form.name}
-              />
-            </div>
-            <div className='col-xs-4'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.weight}
-                label="Weight"
-                name="weight"
-                onChange={updateProperty}
-                placeholder="Weight"
-                type="number"
-                value={form.weight}
-              />
-            </div>
-          </div>
-          <button className='button full-width margin-top margin-bottom' onClick={this.onSubmit.bind(this)}>Submit category weight</button>
-        </div>
-        <div className='full-width'>
-          <WeightConverter id='class-editor-weight-converter' onChange={this.onToggleConverter.bind(this)} value={this.state.weightConverter}/>
-        </div>
+        <h2>Weights for {this.props.cl.name}</h2>
+        {this.renderContent()}
+        {this.renderWeightSlider()}
       </div>
     )
   }

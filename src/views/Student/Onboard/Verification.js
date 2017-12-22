@@ -51,7 +51,7 @@ class Verification extends React.Component {
   */
   onResendVerification () {
     actions.auth.resendVerification().then(() => {
-    }).catach(() => false)
+    }).catch(() => false)
   }
 
   render () {

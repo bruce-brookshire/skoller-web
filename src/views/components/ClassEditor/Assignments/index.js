@@ -207,6 +207,7 @@ class Assignments extends React.Component {
             disabled={true}
             canDelete={false}
             canSelect={true}
+            emptyMessage="There are currently no assignments for this class."
             onSelect={this.setAssignment.bind(this)}
           />
         </div>
