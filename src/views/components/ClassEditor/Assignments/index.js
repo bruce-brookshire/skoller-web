@@ -62,7 +62,11 @@ class Assignments extends React.Component {
   */
   renderAssignments () {
     if (this.state.assignments.length === 0) {
-      return <span>There are currently no assignments for this class.</span>
+      return (
+        <div className='center-text margin-top'>
+          <span>There are currently no assignments for this class.</span>
+        </div>
+      )
     }
     return this.state.assignments.map((assignment, index) =>
       this.getRow(assignment, index)
@@ -155,7 +159,7 @@ class Assignments extends React.Component {
   onCreateAssignment (assignment) {
     const newAssignments = this.state.assignments
     newAssignments.push(assignment)
-    this.setState({assignments: newAssignments})
+    this.setState({assignments: newAssignments, currentAssignment: null})
   }
 
   /*
@@ -167,7 +171,7 @@ class Assignments extends React.Component {
     const newAssignments = this.state.assignments
     const index = this.state.assignments.findIndex(a => a.id === assignment.id)
     newAssignments[index] = assignment
-    this.setState({assignments: newAssignments})
+    this.setState({assignments: newAssignments, currentAssignment: null})
   }
 
   /*
@@ -178,7 +182,7 @@ class Assignments extends React.Component {
   onDeleteAssignment (assignment) {
     actions.assignments.deleteAssignment(assignment).then(() => {
       const newAssignments = this.state.assignments.filter(a => a.id !== assignment.id)
-      this.setState({assignments: newAssignments, form: this.initializeFormData()})
+      this.setState({assignments: newAssignments})
     }).catch(() => false)
   }
 

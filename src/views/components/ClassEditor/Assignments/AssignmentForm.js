@@ -50,6 +50,7 @@ class AssignmentForm extends React.Component {
   initializeState () {
     return {
       form: this.initializeFormData(),
+      loading: false,
       weights: []
     }
   }
@@ -87,20 +88,22 @@ class AssignmentForm extends React.Component {
   * Create a new assignment
   */
   onCreateAssignment () {
+    this.setState({loading: true})
     actions.assignments.createAssignment(this.props.cl, this.state.form).then((assignment) => {
       this.props.onCreateAssignment(assignment)
-      this.setState({form: this.initializeFormData()})
-    }).catch(() => false)
+      this.setState({form: this.initializeFormData(), loading: false})
+    }).catch(() => { this.setState({loading: false}) })
   }
 
   /*
   * Update an existing assignment
   */
   onUpdateAssignment () {
+    this.setState({loading: true})
     actions.assignments.updateAssignment(this.props.cl, this.state.form).then((assignment) => {
       this.props.onUpdateAssignment(assignment)
-      this.setState({form: this.initializeFormData()})
-    }).catch(() => false)
+      this.setState({form: this.initializeFormData(), loading: false})
+    }).catch(() => { this.setState({loading: false}) })
   }
 
   render () {
@@ -146,7 +149,14 @@ class AssignmentForm extends React.Component {
             />
           </div>
         </div>
-        <button className='button full-width margin-top margin-bottom' onClick={this.onSubmit.bind(this)}>Submit assignment</button>
+        <button
+          className='button full-width margin-top margin-bottom'
+          disabled={this.state.loading}
+          onClick={this.onSubmit.bind(this)}
+        >
+          Submit assignment
+          {this.state.loading ? <Loading style={{color: 'white', marginLeft: '0.5em'}} /> : null}
+        </button>
       </div>
     )
   }

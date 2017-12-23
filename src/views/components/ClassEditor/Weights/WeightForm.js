@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
 import {InputField} from '../../../../components/Form'
+import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
 
 const requiredFields = {
@@ -36,7 +37,8 @@ class WeightForm extends React.Component {
   initializeState () {
     const {weight} = this.props
     return {
-      form: this.initializeFormData(weight)
+      form: this.initializeFormData(weight),
+      loading: false
     }
   }
 
@@ -72,25 +74,28 @@ class WeightForm extends React.Component {
   * Create a new weight
   */
   onCreateWeight () {
+    this.setState({loading: true})
     actions.weights.createWeight(this.props.cl, this.state.form).then((weight) => {
       this.props.onCreateWeight(weight)
-      this.setState({form: this.initializeFormData()})
-    }).catch(() => false)
+      this.setState({form: this.initializeFormData(), loading: false})
+    }).catch(() => { this.setState({loading: false}) })
   }
 
   /*
   * Update an existing weight
   */
   onUpdateWeight () {
+    this.setState({loading: true})
     actions.weights.updateWeight(this.props.cl, this.state.form).then((weight) => {
       this.props.onUpdateWeight(weight)
-      this.setState({form: this.initializeFormData()})
-    }).catch(() => false)
+      this.setState({form: this.initializeFormData(), loading: false})
+    }).catch(() => { this.setState({loading: false}) })
   }
 
   render () {
     const {form} = this.state
     const {formErrors, updateProperty} = this.props
+
     return (
       <div id='class-editor-weight-form' className='margin-top'>
         <div className='row'>
@@ -118,7 +123,14 @@ class WeightForm extends React.Component {
             />
           </div>
         </div>
-        <button className='button full-width margin-top margin-bottom' onClick={this.onSubmit.bind(this)}>Submit category weight</button>
+        <button
+          className='button full-width margin-top margin-bottom'
+          disabled={this.state.loading}
+          onClick={this.onSubmit.bind(this)}
+        >
+          Submit category weight
+          {this.state.loading ? <Loading style={{color: 'white', marginLeft: '0.5em'}} /> : null}
+        </button>
       </div>
     )
   }

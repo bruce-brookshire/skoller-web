@@ -79,7 +79,9 @@ class Weights extends React.Component {
   */
   renderWeights () {
     if (this.state.weights.length === 0) {
-      return <span>There are currently no weights for this class.</span>
+      return <div className='center-text margin-top'>
+        <span>There are currently no weights for this class.</span>
+      </div>
     }
     return this.state.weights.map((weight, index) =>
       this.getRow(weight, index)
@@ -229,7 +231,7 @@ class Weights extends React.Component {
   onCreateWeight (weight) {
     const newWeights = this.state.weights
     newWeights.push(weight)
-    this.setState({weights: newWeights})
+    this.setState({weights: newWeights, currentWeight: null})
   }
 
   /*
@@ -241,7 +243,7 @@ class Weights extends React.Component {
     const newWeights = this.state.weights
     const index = this.state.weights.findIndex(w => w.id === weight.id)
     newWeights[index] = weight
-    this.setState({weights: newWeights})
+    this.setState({weights: newWeights, currentWeight: null})
   }
 
   /*
@@ -252,7 +254,7 @@ class Weights extends React.Component {
   onDeleteWeight (weight) {
     actions.weights.deleteWeight(weight).then(() => {
       const newWeights = this.state.weights.filter(w => w.id !== weight.id)
-      this.setState({weights: newWeights, form: this.initializeFormData()})
+      this.setState({weights: newWeights})
     }).catch(() => false)
   }
 
