@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
 import {InputField} from '../../../../components/Form'
 import Grid from '../../../../components/Grid/index'
+import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
 
 const headers = [
@@ -61,7 +62,8 @@ class GradeScale extends React.Component {
     return {
       showAllGradeScales: false,
       gradeScales,
-      form: this.initializeFormData(this.props.cl)
+      form: this.initializeFormData(this.props.cl),
+      loading: false
     }
   }
 
@@ -144,9 +146,11 @@ class GradeScale extends React.Component {
   * Submit the grade scale
   */
   onSubmit () {
+    this.setState({loading: true})
     actions.gradescales.updateGradeScale(this.props.cl, this.state.form).then((cl) => {
       if (this.props.onSubmit) this.props.onSubmit(cl)
-    }).catch(() => false)
+      this.setState({loading: false})
+    }).catch(() => { this.setState({loading: false}) })
   }
 
   render () {
@@ -171,7 +175,14 @@ class GradeScale extends React.Component {
               />
             </div>
             <div className='col-xs-12 margin-top margin-bottom'>
-              <button className='button full-width' onClick={this.onSubmit.bind(this)}>Submit gradescale</button>
+              <button
+                className='button full-width'
+                disabled={this.state.loading}
+                onClick={this.onSubmit.bind(this)}
+              >
+                Submit gradescale
+                {this.state.loading ? <Loading style={{color: 'white', marginLeft: '0.5em'}} /> : null}
+              </button>
             </div>
           </div>
         </div>
@@ -191,7 +202,9 @@ class GradeScale extends React.Component {
 }
 
 GradeScale.propTypes = {
+  cl: PropTypes.object,
   formErrors: PropTypes.object,
+  onSubmit: PropTypes.func,
   updateProperty: PropTypes.func
 }
 

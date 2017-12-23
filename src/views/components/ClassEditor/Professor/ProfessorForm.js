@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
 import {InputField} from '../../../../components/Form'
+import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
 
 const requiredFields = {
@@ -21,7 +22,8 @@ class ProfessorForm extends React.Component {
   */
   initializeState () {
     return {
-      form: this.initializeFormData(this.props.cl.professor)
+      form: this.initializeFormData(this.props.cl.professor),
+      loading: false
     }
   }
 
@@ -61,19 +63,22 @@ class ProfessorForm extends React.Component {
   * Create a new professor
   */
   onCreateProfessor () {
+    this.setState({loading: true})
     actions.professors.createProfessor(this.state.form).then((professor) => {
       this.props.onSubmit(professor)
-    }).catch(() => false)
+      this.setState({loading: false})
+    }).catch(() => { this.setState({loading: false}) })
   }
 
   /*
   * Update an existing professor
   */
   onUpdateProfessor () {
+    this.setState({loading: true})
     actions.professors.updateProfessor(this.state.form).then((professor) => {
       this.props.onSubmit(professor)
-      this.setState({form: this.initializeFormData(professor)})
-    }).catch(() => false)
+      this.setState({form: this.initializeFormData(professor), loading: false})
+    }).catch(() => { this.setState({loading: false}) })
   }
 
   render () {
@@ -138,7 +143,12 @@ class ProfessorForm extends React.Component {
         />
         <button
           className='button full-width margin-top margin-bottom'
-          onClick={this.onSubmit.bind(this)}>Submit professor</button>
+          disabled={this.state.loading}
+          onClick={this.onSubmit.bind(this)}
+        >
+          Submit professor
+          {this.state.loading ? <Loading style={{color: 'white', marginLeft: '0.5em'}} /> : null}
+        </button>
       </div>
     )
   }
