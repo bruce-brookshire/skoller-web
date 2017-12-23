@@ -1,0 +1,39 @@
+.class-editor-table {
+  background-color: white;
+  border: 2px solid #a0a0a0;
+  border-radius: $cn-border-radius;
+  height: 60%;
+  display: flex;
+  flex-direction: column;
+
+  .table-row {
+    cursor: pointer;
+    padding: 0.5em;
+    &:hover {
+      background-color: darken(white, 10%);
+    }
+
+    &.active {
+      background-color: #b0d3fb;
+    }
+  }
+
+  #class-editor-weights-table {
+    flex: 9;
+    overflow-y: scroll;
+  }
+
+  #class-weights-total {
+    border-top: 2px solid #a0a0a0;
+    flex: 1;
+    padding: 0.5em;
+  }
+
+  #class-editor-assignments-table {
+    overflow-y: scroll;
+
+    .desctiption {
+      font-size: 11px;
+    }
+  }
+}

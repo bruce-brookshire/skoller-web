@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Form, ValidateForm} from 'react-form-library'
-import {InputField, SelectField} from '../../../../components/Form'
+import AssignmentForm from './AssignmentForm'
 import Grid from '../../../../components/Grid/index'
 import actions from '../../../../actions'
 
@@ -24,17 +23,6 @@ const headers = [
   }
 ]
 
-const requiredFields = {
-  'name': {
-    type: 'required'
-  },
-  'weight_id': {
-    type: 'required'
-  },
-  'due': {
-    type: 'required'
-  }
-}
 
 class Assignments extends React.Component {
   constructor (props) {
@@ -46,21 +34,13 @@ class Assignments extends React.Component {
   * Fetch the weights for a given class
   */
   componentWillMount () {
-    this.getClassWeights()
-    this.getClassAssignments()
-  }
-
-  getClassWeights () {
-    const {cl} = this.props
-    actions.weights.getClassWeights(cl).then((weights) => {
-      this.setState({weights})
-    }).then(() => false)
-  }
-
-  getClassAssignments () {
     const {cl} = this.props
     actions.assignments.getClassAssignments(cl).then((assignments) => {
       this.setState({assignments})
+    }).then(() => false)
+
+    actions.weights.getClassWeights(cl).then((weights) => {
+      this.setState({weights})
     }).then(() => false)
   }
 
@@ -72,38 +52,20 @@ class Assignments extends React.Component {
   initializeState () {
     return {
       assignments: [],
-      form: this.initializeFormData(),
+      currentAssignment: null,
       weights: []
     }
   }
 
   /*
-  * Method for intializing form data.
-  * Assignment form data.
-  *
-  * @param [Object] data. initial data
-  * @return [Object]. Form object.
+  * Render the assignments for a given class.
   */
-  initializeFormData (data) {
-    let formData = data || {}
-    const {id, name, weight_id, due} = formData
-
-    return ({
-      id: id || null,
-      name: name || '',
-      weight_id: weight_id || '',
-      due: due || ''
-    })
-  }
-
-  /*
-  * Row data to be passed to the grid
-  *
-  * @return [Array]. Array of formatted row data.
-  */
-  getRows () {
-    return this.state.assignments.map((item, index) =>
-      this.mapRow(item, index)
+  renderAssignments () {
+    if (this.state.assignments.length === 0) {
+      return <span>There are currently no assignments for this class.</span>
+    }
+    return this.state.assignments.map((assignment, index) =>
+      this.getRow(assignment, index)
     )
   }
 
@@ -112,32 +74,67 @@ class Assignments extends React.Component {
   *
   * @param [Object] item. Row data to be formatted.
   * @param [Number] index. Index of row data.
-  * @return [Object] row. Object of formatted row data for display in grid.
   */
-  mapRow (item, index) {
+  getRow (item, index) {
     const {id, name, weight_id, due} = item
+    const {currentAssignment} = this.state
 
-    const row = {
-      id: id || '',
-      delete: <div className='button-delete-x center-content' onClick={(event) => { event.stopPropagation(); this.onDeleteAssignment(item) }}><i className='fa fa-times' /></div>,
-      name,
-      weight: weight_id && this.state.weights && this.state.weights.find(w => w.id === weight_id).name,
-      due: due ? this.mapDateToDisplay(due) : 'N/A'
-    }
+    const activeClass = (currentAssignment && currentAssignment.id) === id
+      ? 'active' : ''
 
-    return row
+    return (
+      <div
+        className={`row table-row ${activeClass}`}
+        key={`assignment-${index}`}
+        onClick={() => this.onSelectAssignment(item)}
+      >
+        <div className='col-xs-1'>
+          <div
+            className='button-delete-x center-content'
+            onClick={(event) => {
+              event.stopPropagation()
+              this.onDeleteAssignment(item)
+            }}><i className='fa fa-times' />
+          </div>
+        </div>
+        <div className='col-xs-9'>
+          <div><span>{name}</span></div>
+          <div>
+            <span className='desctiption'>{weight_id && this.state.weights &&
+              this.state.weights.find(w => w.id === weight_id).name || 'N/A'}
+            </span>
+          </div>
+        </div>
+        <div className='col-xs-2 right-text'>
+          <span>{due ? this.mapAssignmentDate(due) : 'N/A'}</span>
+        </div>
+      </div>
+    )
   }
 
   /*
-  * Map date to display
-  *
-  * @param [String] date. Date the assignment is due.
-  * @return [String]. mapped date to diplay.
+  * Render assignment form.
   */
-  mapDateToDisplay (date) {
-    // const d = date.substring(0, 10).split('-')
-    // return `${d[1]}/${d[2]}/${d[0]}`
-    return date
+  renderAssignmentForm () {
+    return (
+      <AssignmentForm
+        assignment={this.state.currentAssignment}
+        cl={this.props.cl}
+        onCreateAssignment={this.onCreateAssignment.bind(this)}
+        onUpdateAssignment={this.onUpdateAssignment.bind(this)}
+      />
+    )
+  }
+
+  /*
+  * Map the assignment dateParts
+  *
+  * @param [String] date. YYYY-MM-DD
+  * @return [String]. MM/DD
+  */
+  mapAssignmentDate (date) {
+    const dateParts = date.split('-')
+    return `${dateParts[1]}/${dateParts[2]}`
   }
 
   /*
@@ -145,41 +142,32 @@ class Assignments extends React.Component {
   *
   * @param [Object] assignment. Assignment object to be edited.
   */
-  setAssignment (assignment) {
-    this.setState({form: this.initializeFormData(this.state.assignments.find(a => a.id === assignment.id))})
+  onSelectAssignment (assignment) {
+    this.setState({currentAssignment: assignment})
   }
 
+
   /*
-  * Determine whether the user is submiting updated assignment or a new assignment.
+  * On create assignment, push assignment onto array
   *
+  * @param [Object] assignment. Assignment.
   */
-  onSubmit () {
-    if (this.props.validateForm(this.state.form, requiredFields)) {
-      !this.state.form.id ? this.onCreateAssignment() : this.onUpdateAssignment()
-    }
+  onCreateAssignment (assignment) {
+    const newAssignments = this.state.assignments
+    newAssignments.push(assignment)
+    this.setState({assignments: newAssignments})
   }
 
   /*
-  * Create a new assignment
+  * On update assignment, replace existing assignment with the new assignment.
+  *
+  * @param [Object] assignment. Assignment.
   */
-  onCreateAssignment () {
-    actions.assignments.createAssignment(this.props.cl, this.state.form).then((assignment) => {
-      const newAssignments = this.state.assignments
-      newAssignments.push(assignment)
-      this.setState({assignments: newAssignments, form: this.initializeFormData()})
-    }).catch(() => false)
-  }
-
-  /*
-  * Update an existing assignment
-  */
-  onUpdateAssignment () {
-    actions.assignments.updateAssignment(this.props.cl, this.state.form).then((assignment) => {
-      const newAssignments = this.state.assignments
-      const index = this.state.assignments.findIndex(a => a.id === assignment.id)
-      newAssignments[index] = assignment
-      this.setState({assignments: newAssignments, form: this.initializeFormData()})
-    }).catch(() => false)
+  onUpdateAssignment (assignment) {
+    const newAssignments = this.state.assignments
+    const index = this.state.assignments.findIndex(a => a.id === assignment.id)
+    newAssignments[index] = assignment
+    this.setState({assignments: newAssignments})
   }
 
   /*
@@ -195,73 +183,21 @@ class Assignments extends React.Component {
   }
 
   render () {
-    const {form} = this.state
-    const {formErrors, updateProperty} = this.props
-
     return (
       <div className='space-between-vertical'>
-        <div id='class-editor-assignments-table' className='margin-top'>
-          <Grid
-            headers={headers}
-            rows={this.getRows()}
-            disabled={true}
-            canDelete={false}
-            canSelect={true}
-            emptyMessage="There are currently no assignments for this class."
-            onSelect={this.setAssignment.bind(this)}
-          />
-        </div>
-
-        <div id='class-editor-assignment-form' className='margin-top'>
-          <div className='row'>
-            <div className='col-xs-12'>
-              <SelectField
-                containerClassName='margin-top'
-                error={formErrors.weight_id}
-                label="Grading category"
-                name="weight_id"
-                onChange={updateProperty}
-                options={this.state.weights}
-                placeholder="Select grading category"
-                value={form.weight_id}
-              />
-            </div>
-            <div className='col-xs-12'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.name}
-                label="Assignment name"
-                name="name"
-                onChange={updateProperty}
-                placeholder="Assignment name, i.e. Exam 1"
-                value={form.name}
-              />
-            </div>
-            <div className='col-xs-12'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.due}
-                label="Due Date"
-                name="due"
-                onChange={updateProperty}
-                placeholder="Assignment due date"
-                type='date'
-                value={form.due}
-              />
-            </div>
+        <div className='class-editor-table'>
+          <div id='class-editor-assignments-table'>
+            {this.renderAssignments()}
           </div>
-          <button className='button full-width margin-top margin-bottom' onClick={this.onSubmit.bind(this)}>Submit assignment</button>
         </div>
+        {this.renderAssignmentForm()}
       </div>
     )
   }
 }
 
 Assignments.propTypes = {
-  cl: PropTypes.object,
-  formErrors: PropTypes.object,
-  updateProperty: PropTypes.func,
-  validateForm: PropTypes.func
+  cl: PropTypes.object
 }
 
-export default ValidateForm(Form(Assignments, 'form'))
+export default Assignments

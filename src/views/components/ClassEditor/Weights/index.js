@@ -1,35 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Form, ValidateForm} from 'react-form-library'
-import {InputField} from '../../../../components/Form'
-import Grid from '../../../../components/Grid/index'
 import PointTotal from './PointTotal'
 import WeightConverter from '../../../../components/WeightConverter/index'
+import WeightForm from './WeightForm'
 import actions from '../../../../actions'
-
-const headers = [
-  {
-    field: 'delete',
-    display: ''
-  },
-  {
-    field: 'name',
-    display: ''
-  },
-  {
-    field: 'weight',
-    display: ''
-  }
-]
-
-const requiredFields = {
-  'name': {
-    type: 'required'
-  },
-  'weight': {
-    type: 'required'
-  }
-}
 
 class Weights extends React.Component {
   constructor (props) {
@@ -55,29 +29,11 @@ class Weights extends React.Component {
   initializeState () {
     const {cl} = this.props
     return {
-      form: this.initializeFormData(),
+      currentWeight: null,
       isPoints: cl.is_points,
       totalPoints: null,
       weights: []
     }
-  }
-
-  /*
-  * Method for intializing form data.
-  * Weight form data.
-  *
-  * @param [Object] data. initial data
-  * @return [Object]. Form object.
-  */
-  initializeFormData (data) {
-    let formData = data || {}
-    const {id, name, weight} = formData
-
-    return ({
-      id: id || null,
-      name: name || '',
-      weight: weight || ''
-    })
   }
 
   /*
@@ -100,77 +56,33 @@ class Weights extends React.Component {
   }
 
   /*
-  * If weights are in points, update the total points.
-  */
-  onChangeTotalPoints (totalPoints) {
-    const {cl} = this.props
-    this.setState({totalPoints})
-    // may need to update class
-    // this.props.onChange(cl)
-  }
-
-  /*
   * Render the weights and weight form.
   */
   renderWeightsContent () {
-    const {form} = this.state
-    const {formErrors, updateProperty} = this.props
     return (
       <div className='space-between-vertical'>
-        <div>
-          <div id='class-editor-weights-table' className='margin-top'>
-            <Grid
-              headers={headers}
-              rows={this.getRows()}
-              disabled={true}
-              canDelete={false}
-              canSelect={true}
-              emptyMessage="There are currently no weights for this class."
-              onSelect={this.setWeight.bind(this)}
-            />
+        <div className='class-editor-table'>
+          <div id='class-editor-weights-table' className=''>
+            {this.renderWeights()}
           </div>
-          {this.renderTotalPercentage()}
-        </div>
-        <div id='class-editor-weight-form' className='margin-top'>
-          <div className='row'>
-            <div className='col-xs-8'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.name}
-                label="Category name"
-                name="name"
-                onChange={updateProperty}
-                placeholder="Weight Category, i.e. Exams"
-                value={form.name}
-              />
-            </div>
-            <div className='col-xs-4'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.weight}
-                label="Weight"
-                name="weight"
-                onChange={updateProperty}
-                placeholder="Weight"
-                type="number"
-                value={form.weight}
-              />
-            </div>
+          <div id='class-weights-total'>
+            {this.renderTotalPercentage()}
           </div>
-          <button className='button full-width margin-top margin-bottom' onClick={this.onSubmit.bind(this)}>Submit category weight</button>
         </div>
+        {this.renderWeightForm()}
       </div>
     )
   }
 
   /*
-  * Row data to be passed to the grid
-  *
-  * @return [Array]. Array of formatted row data.
+  * Render the weights for a given class.
   */
-  getRows () {
-    return this.state.weights.map((item, index) =>
-      this.mapRow(item, index)
+  renderWeights () {
+    if (this.state.weights.length === 0) {
+      return <span>There are currently no weights for this class.</span>
+    }
+    return this.state.weights.map((weight, index) =>
+      this.getRow(weight, index)
     )
   }
 
@@ -179,53 +91,72 @@ class Weights extends React.Component {
   *
   * @param [Object] item. Row data to be formatted.
   * @param [Number] index. Index of row data.
-  * @return [Object] row. Object of formatted row data for display in grid.
   */
-  mapRow (item, index) {
+  getRow (item, index) {
     const {id, name, weight} = item
+    const {currentWeight} = this.state
 
-    const row = {
-      id: id || '',
-      delete: <div className='button-delete-x center-content' onClick={(event) => { event.stopPropagation(); this.onDeleteWeight(item) }}><i className='fa fa-times' /></div>,
-      name,
-      weight: <div style={{textAlign: 'right'}}>{
-        !this.state.isPoints
-          ? `${Number(weight).toFixed(2)}%`
-          : Number(weight)
-      }</div>
-    }
+    const activeClass = (currentWeight && currentWeight.id) === id
+      ? 'active' : ''
 
-    return row
+    return (
+      <div
+        className={`row table-row ${activeClass}`}
+        key={`weight-${index}`}
+        onClick={() => this.onSelectWeight(item)}
+      >
+        <div className='col-xs-1'>
+          <div
+            className='button-delete-x center-content'
+            onClick={(event) => {
+              event.stopPropagation()
+              this.onDeleteWeight(item)
+            }}><i className='fa fa-times' />
+          </div>
+        </div>
+        <div className='col-xs-9'>
+          <span>{name}</span>
+        </div>
+        <div className='col-xs-2 right-text'>
+          <span>{weight}{!this.state.isPoints ? '%' : ''}</span>
+        </div>
+      </div>
+    )
+  }
+
+  /*
+  * Render weight form.
+  */
+  renderWeightForm () {
+    return (
+      <WeightForm
+        cl={this.props.cl}
+        onCreateWeight={this.onCreateWeight.bind(this)}
+        onUpdateWeight={this.onUpdateWeight.bind(this)}
+        weight={this.state.currentWeight}
+      />
+    )
   }
 
   /*
   * Render total percentage
   *
-  * @return [Component]. Table row conisiting of running total of .
   */
   renderTotalPercentage () {
-    const tdStyle = {borderTop: '1px solid black', paddingTop: '10px'}
     return (
-      <table className='cn-table-grid' style={{marginTop: '-14px'}}>
-        <thead style={{opacity: 0}}>
-          <tr>
-            <td></td>
-            <td>Categories</td>
-            <td>Weight</td>
-          </tr>
-        </thead>
-        <tbody id='class-editor-weights-total'>
-          <tr>
-            <td style={tdStyle}></td>
-            <td style={{...tdStyle, textAlign: 'left'}}>{!this.state.isPoints ? 'Total:' : 'Total points'}</td>
-            <td style={{...tdStyle, textAlign: 'right'}}>{
+      <div className='row'>
+        <div className='col-xs-9'>
+          <span>{!this.state.isPoints ? 'Total:' : 'Total points'}</span>
+        </div>
+        <div className='col-xs-3 right-text'>
+          <span>
+            {
               !this.state.isPoints
                 ? `${this.getTotalWeight().toFixed(2)}%`
                 : `${this.getTotalWeight()}/${this.state.totalPoints}`
-            }</td>
-          </tr>
-        </tbody>
-      </table>
+            }</span>
+        </div>
+      </div>
     )
   }
 
@@ -275,41 +206,42 @@ class Weights extends React.Component {
   *
   * @param [Object] weight. Weight object to be edited.
   */
-  setWeight (weight) {
-    this.setState({form: this.initializeFormData(this.state.weights.find(w => w.id === weight.id))})
+  onSelectWeight (weight) {
+    this.setState({currentWeight: weight})
   }
 
   /*
-  * Determine whether the user is submiting updated weight or a new weight.
+  * Toggle the weights from percentages to points or vice versa.
+  */
+  onToggleConverter () {
+    const {cl} = this.props
+    const isPoints = !this.state.isPoints
+    actions.classes.updateClass({id: cl.id, is_points: isPoints}).then((cl) => {
+      this.setState({isPoints})
+    }).catch(() => false)
+  }
+
+  /*
+  * On create weight, push weight onto array
   *
+  * @param [Object] weight. Weight.
   */
-  onSubmit () {
-    if (this.props.validateForm(this.state.form, requiredFields)) {
-      !this.state.form.id ? this.onCreateWeight() : this.onUpdateWeight()
-    }
+  onCreateWeight (weight) {
+    const newWeights = this.state.weights
+    newWeights.push(weight)
+    this.setState({weights: newWeights})
   }
 
   /*
-  * Create a new weight
+  * On update weight, replace existing weight with the new weight.
+  *
+  * @param [Object] weight. Weight.
   */
-  onCreateWeight () {
-    actions.weights.createWeight(this.props.cl, this.state.form).then((weight) => {
-      const newWeights = this.state.weights
-      newWeights.push(weight)
-      this.setState({weights: newWeights, form: this.initializeFormData()})
-    }).catch(() => false)
-  }
-
-  /*
-  * Update an existing weight
-  */
-  onUpdateWeight () {
-    actions.weights.updateWeight(this.props.cl, this.state.form).then((weight) => {
-      const newWeights = this.state.weights
-      const index = this.state.weights.findIndex(w => w.id === weight.id)
-      newWeights[index] = weight
-      this.setState({weights: newWeights, form: this.initializeFormData()})
-    }).catch(() => false)
+  onUpdateWeight (weight) {
+    const newWeights = this.state.weights
+    const index = this.state.weights.findIndex(w => w.id === weight.id)
+    newWeights[index] = weight
+    this.setState({weights: newWeights})
   }
 
   /*
@@ -324,18 +256,16 @@ class Weights extends React.Component {
     }).catch(() => false)
   }
 
-  onToggleConverter () {
-    const {cl} = this.props
-    const isPoints = !this.state.isPoints
-    actions.classes.updateClass({id: cl.id, is_points: isPoints}).then((cl) => {
-      this.setState({isPoints})
-    }).catch(() => false)
+  /*
+  * If weights are in points, update the total points.
+  * Call back from PointTotal.
+  */
+  onChangeTotalPoints (totalPoints) {
+    this.setState({totalPoints})
   }
 
   render () {
-    // if (weightStore.loading) {
-    //   return <Loading />
-    // }
+    // Disable the parents submit button if weights are not secure.
     let {disableNext} = this.props
     if (!this.isTotalWeightSecure() && !disableNext) {
       this.props.toggleDisabled(true)
@@ -355,9 +285,8 @@ class Weights extends React.Component {
 
 Weights.propTypes = {
   cl: PropTypes.object,
-  formErrors: PropTypes.object,
-  updateProperty: PropTypes.func,
-  validateForm: PropTypes.func
+  disableNext: PropTypes.bool,
+  toggleDisabled: PropTypes.func
 }
 
-export default ValidateForm(Form(Weights, 'form'))
+export default Weights

@@ -23,6 +23,7 @@
 // Components ----------------------------
 @import 'components/add-class';
 @import 'components/autocomplete';
+@import 'components/class-editor-table.scss';
 @import 'components/create-class';
 @import 'components/file-tab';
 @import 'components/file-viewer';
@@ -155,7 +156,10 @@ body {
   list-style:none;
   padding: 0px;
 }
-
+// Cursor -----------------------------------
+.cursor {
+  cursor: pointer;
+}
 // Colors ------------------------------------
 .cn-red {
   color: red;
