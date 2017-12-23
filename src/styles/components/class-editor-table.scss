@@ -6,6 +6,17 @@
   display: flex;
   flex-direction: column;
 
+  &.view-only {
+    height: 100%;
+    .table-row {
+      cursor: auto;
+      &:hover {
+        background-color: white;
+      }
+    }
+
+  }
+
   .table-row {
     cursor: pointer;
     padding: 0.5em;

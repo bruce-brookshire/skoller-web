@@ -18,8 +18,7 @@ const ContentEnum = {
   PROFESSOR: 0,
   GRADE_SCALE: 1,
   WEIGHTS: 2,
-  ASSIGNMENTS: 3,
-  REVIEW: 4
+  ASSIGNMENTS: 3
 }
 
 class SyllabusTool extends React.Component {
@@ -72,7 +71,7 @@ class SyllabusTool extends React.Component {
       loadingClass: false,
       openIssuesModal: false,
       sectionId: state.sectionId || null,
-      stepCount: 5
+      stepCount: 4
     }
   }
 
@@ -92,7 +91,7 @@ class SyllabusTool extends React.Component {
           currentIndex = ContentEnum.ASSIGNMENTS
           break
         case 300:
-          currentIndex = ContentEnum.REVIEW
+          currentIndex = ContentEnum.WEIGHTS
           break
         default:
           break
@@ -191,15 +190,16 @@ class SyllabusTool extends React.Component {
   * Render the syllabus section content.
   */
   renderContent () {
+    const {isReviewer} = this.state
     switch (this.state.currentIndex) {
       case ContentEnum.PROFESSOR:
         return <Professor cl={this.state.cl} onSubmit={this.updateClass.bind(this)}/>
       case ContentEnum.GRADE_SCALE:
         return <GradeScale cl={this.state.cl} onSubmit={this.updateClass.bind(this)}/>
       case ContentEnum.WEIGHTS:
-        return <Weights cl={this.state.cl} disableNext={this.state.disableNext} toggleDisabled={this.toggleDisabled.bind(this)} />
+        return <Weights cl={this.state.cl} isReview={true} disableNext={this.state.disableNext} toggleDisabled={this.toggleDisabled.bind(this)} />
       case ContentEnum.ASSIGNMENTS:
-        return <Assignments cl={this.state.cl} />
+        return <Assignments cl={this.state.cl} isReview={true} />
       default:
     }
   }
@@ -221,7 +221,6 @@ class SyllabusTool extends React.Component {
           }
           <FileTab name='Weights' onClick={() => this.setState({currentIndex: 2})} />
           <FileTab name='Assignments' onClick={() => this.setState({currentIndex: 3})} />
-          <FileTab name='Review' onClick={() => this.setState({currentIndex: 4})} />
         </FileTabs>
       )
     }

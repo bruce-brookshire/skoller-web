@@ -1,28 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import AssignmentForm from './AssignmentForm'
-import Grid from '../../../../components/Grid/index'
 import actions from '../../../../actions'
-
-const headers = [
-  {
-    field: 'delete',
-    display: ''
-  },
-  {
-    field: 'name',
-    display: 'Assignment'
-  },
-  {
-    field: 'weight',
-    display: 'Category'
-  },
-  {
-    field: 'due',
-    display: 'Due Date'
-  }
-]
-
 
 class Assignments extends React.Component {
   constructor (props) {
@@ -50,9 +29,11 @@ class Assignments extends React.Component {
   * @return [Object]. State object.
   */
   initializeState () {
+    const {isReview} = this.props
     return {
       assignments: [],
       currentAssignment: null,
+      viewOnly: isReview,
       weights: []
     }
   }
@@ -81,7 +62,7 @@ class Assignments extends React.Component {
   */
   getRow (item, index) {
     const {id, name, weight_id, due} = item
-    const {currentAssignment} = this.state
+    const {currentAssignment, viewOnly} = this.state
 
     const activeClass = (currentAssignment && currentAssignment.id) === id
       ? 'active' : ''
@@ -90,18 +71,23 @@ class Assignments extends React.Component {
       <div
         className={`row table-row ${activeClass}`}
         key={`assignment-${index}`}
-        onClick={() => this.onSelectAssignment(item)}
+        onClick={() => {
+          if (viewOnly) return
+          this.onSelectAssignment(item)
+        }}
       >
-        <div className='col-xs-1'>
-          <div
-            className='button-delete-x center-content'
-            onClick={(event) => {
-              event.stopPropagation()
-              this.onDeleteAssignment(item)
-            }}><i className='fa fa-times' />
+        {!viewOnly &&
+          <div className='col-xs-1'>
+            <div
+              className='button-delete-x center-content'
+              onClick={(event) => {
+                event.stopPropagation()
+                this.onDeleteAssignment(item)
+              }}><i className='fa fa-times' />
+            </div>
           </div>
-        </div>
-        <div className='col-xs-9'>
+        }
+        <div className={!viewOnly ? 'col-xs-9' : 'col-xs-10'}>
           <div><span>{name}</span></div>
           <div>
             <span className='desctiption'>{weight_id && this.state.weights &&
@@ -187,21 +173,25 @@ class Assignments extends React.Component {
   }
 
   render () {
+    const {viewOnly} = this.state
     return (
       <div className='space-between-vertical'>
-        <div className='class-editor-table'>
+        {viewOnly && <h2>Assignments for {this.props.cl.name}</h2>}
+        {viewOnly && <a className='right-text' style={{marginBottom: '5px'}} onClick={() => this.setState({viewOnly: false}) }>edit</a>}
+        <div className={`class-editor-table ${viewOnly ? 'view-only' : ''}`} >
           <div id='class-editor-assignments-table'>
             {this.renderAssignments()}
           </div>
         </div>
-        {this.renderAssignmentForm()}
+        {!viewOnly && this.renderAssignmentForm()}
       </div>
     )
   }
 }
 
 Assignments.propTypes = {
-  cl: PropTypes.object
+  cl: PropTypes.object,
+  isReview: PropTypes.bool
 }
 
 export default Assignments

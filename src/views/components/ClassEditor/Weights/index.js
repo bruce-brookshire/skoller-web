@@ -27,12 +27,13 @@ class Weights extends React.Component {
   * @return [Object]. State object.
   */
   initializeState () {
-    const {cl} = this.props
+    const {cl, isReview} = this.props
     return {
       currentWeight: null,
       isPoints: cl.is_points,
       totalPoints: null,
-      weights: []
+      weights: [],
+      viewOnly: isReview
     }
   }
 
@@ -42,7 +43,8 @@ class Weights extends React.Component {
   */
   renderContent () {
     const {cl} = this.props
-    if (this.state.isPoints && !this.state.totalPoints) {
+    const {isPoints, totalPoints, viewOnly} = this.state
+    if (isPoints && !totalPoints && !viewOnly) {
       return (
         <PointTotal
           cl={cl}
@@ -59,9 +61,10 @@ class Weights extends React.Component {
   * Render the weights and weight form.
   */
   renderWeightsContent () {
+    const {viewOnly} = this.state
     return (
       <div className='space-between-vertical'>
-        <div className='class-editor-table'>
+        <div className={`class-editor-table ${viewOnly ? 'view-only' : ''}`}>
           <div id='class-editor-weights-table' className=''>
             {this.renderWeights()}
           </div>
@@ -69,7 +72,7 @@ class Weights extends React.Component {
             {this.renderTotalPercentage()}
           </div>
         </div>
-        {this.renderWeightForm()}
+        {!viewOnly && this.renderWeightForm()}
       </div>
     )
   }
@@ -96,7 +99,7 @@ class Weights extends React.Component {
   */
   getRow (item, index) {
     const {id, name, weight} = item
-    const {currentWeight} = this.state
+    const {currentWeight, viewOnly} = this.state
 
     const activeClass = (currentWeight && currentWeight.id) === id
       ? 'active' : ''
@@ -105,18 +108,23 @@ class Weights extends React.Component {
       <div
         className={`row table-row ${activeClass}`}
         key={`weight-${index}`}
-        onClick={() => this.onSelectWeight(item)}
+        onClick={() => {
+          if (viewOnly) return
+          this.onSelectWeight(item)
+        }}
       >
-        <div className='col-xs-1'>
-          <div
-            className='button-delete-x center-content'
-            onClick={(event) => {
-              event.stopPropagation()
-              this.onDeleteWeight(item)
-            }}><i className='fa fa-times' />
+        {!viewOnly &&
+          <div className='col-xs-1'>
+            <div
+              className='button-delete-x center-content'
+              onClick={(event) => {
+                event.stopPropagation()
+                this.onDeleteWeight(item)
+              }}><i className='fa fa-times' />
+            </div>
           </div>
-        </div>
-        <div className='col-xs-9'>
+        }
+        <div className={viewOnly ? 'col-xs-10' : 'col-xs-9'}>
           <span>{name}</span>
         </div>
         <div className='col-xs-2 right-text'>
@@ -125,6 +133,7 @@ class Weights extends React.Component {
       </div>
     )
   }
+
 
   /*
   * Render weight form.
@@ -145,6 +154,10 @@ class Weights extends React.Component {
   *
   */
   renderTotalPercentage () {
+    const total = this.getTotalWeight()
+    const totalPoints = this.state.viewOnly ?
+      total / total * 100 : `${this.getTotalWeight()}/${this.state.totalPoints}`
+
     return (
       <div className='row'>
         <div className='col-xs-9'>
@@ -154,8 +167,8 @@ class Weights extends React.Component {
           <span>
             {
               !this.state.isPoints
-                ? `${this.getTotalWeight().toFixed(2)}%`
-                : `${this.getTotalWeight()}/${this.state.totalPoints}`
+                ? `${total.toFixed(2)}%`
+                : totalPoints
             }</span>
         </div>
       </div>
@@ -268,18 +281,21 @@ class Weights extends React.Component {
 
   render () {
     // Disable the parents submit button if weights are not secure.
-    let {disableNext} = this.props
-    if (!this.isTotalWeightSecure() && !disableNext) {
-      this.props.toggleDisabled(true)
-    } else if (this.isTotalWeightSecure() && disableNext) {
-      this.props.toggleDisabled(false)
-    }
+    // let {disableNext} = this.props
+    // if (!this.isTotalWeightSecure() && !disableNext) {
+    //   this.props.toggleDisabled(true)
+    // } else if (this.isTotalWeightSecure() && disableNext) {
+    //   this.props.toggleDisabled(false)
+    // }
+
+    const {viewOnly} = this.state
 
     return (
       <div className='space-between-vertical'>
-        <h2>Weights for {this.props.cl.name}</h2>
+        {viewOnly && <h2>Weights for {this.props.cl.name}</h2>}
+        {viewOnly && <a className='right-text' style={{marginBottom: '5px'}} onClick={() => this.setState({viewOnly: false}) }>edit</a>}
         {this.renderContent()}
-        {this.renderWeightSlider()}
+        {!viewOnly && this.renderWeightSlider()}
       </div>
     )
   }
@@ -288,6 +304,7 @@ class Weights extends React.Component {
 Weights.propTypes = {
   cl: PropTypes.object,
   disableNext: PropTypes.bool,
+  isReview: PropTypes.bool,
   toggleDisabled: PropTypes.func
 }
 
