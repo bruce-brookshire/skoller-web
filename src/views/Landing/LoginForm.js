@@ -65,8 +65,15 @@ class LoginForm extends React.Component {
         const { userStore: { authToken , user } } = this.props.rootStore
         this.cookie.set('skollerToken', authToken)
         if (user.student) {
-          user.student.is_verified ?
-            browserHistory.push('/student/classes') : browserHistory.push('/student/onboard')
+          if (user.student.is_verified) {
+            actions.classes.getStudentClasses().then((classes) => {
+              classes.length > 0
+                ? browserHistory.push('/student/classes')
+                : browserHistory.push('/student/onboard')
+            }).catch(() => false)
+          } else {
+            browserHistory.push('/student/onboard')
+          }
         } else {
           browserHistory.push('/hub')
         }

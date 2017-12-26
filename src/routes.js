@@ -4,7 +4,6 @@ import { Router, Route, Redirect, IndexRedirect, IndexRoute, browserHistory } fr
 import App from './containers/App'
 import Layout from './containers/Layout'
 
-
 import Landing from './views/Landing'
 import ForgotPassword from './views/ForgotPassword'
 import ResetPassword from './views/ResetPassword'
@@ -12,7 +11,6 @@ import ResetPassword from './views/ResetPassword'
 import DIYLanding from './views/Student/DIYLanding'
 import MyClasses from './views/Student/MyClasses'
 import Onboard from './views/Student/Onboard'
-
 
 import AssignmentsTutorial from './views/SyllabusTutorial/AssignmentsTutorial'
 import WeightsTutorial from './views/SyllabusTutorial/WeightsTutorial'
@@ -75,16 +73,41 @@ function requireAuth (nextState, replaceState) {
     userStore.setFetchingUser(true)
     userStore.authToken = cookie.get('skollerToken')
     actions.auth.getUserByToken()
-      .then(() => {
-        if (nextState.routes.findIndex(route => route.path === '/student/onboard') !== -1) {
-          authOnboard()
-        }
-        userStore.setFetchingUser(false)
+      .then((user) => {
+        
+        authenticateStudent(user).then(() => {
+          if (nextState.routes.findIndex(route => route.path === '/student/onboard') !== -1) {
+            authOnboard()
+            userStore.setFetchingUser(false)
+          }
+        }).catch(() => { userStore.setFetchingUser(false) })
+
+        // if (nextState.routes.findIndex(route => route.path === '/student/onboard') !== -1) {
+        //   authOnboard()
+        // }
+        // userStore.setFetchingUser(false)
       })
       .catch(() => {
         browserHistory.push('/landing')
         userStore.setFetchingUser(false)
       })
+  }
+}
+
+/*
+* Check to see if a users classes is 0 or if they are unverfied.
+*/
+function authenticateStudent (user) {
+  if (user.student) {
+    if (user.student.is_verified) {
+      return actions.classes.getStudentClasses().then((classes) => {
+        if (classes.length === 0) browserHistory.push('/student/onboard')
+      }).catch(() => false)
+    } else {
+      return new Promise((resolve, reject) => {
+        resolve(browserHistory.push('/student/onboard'))
+      })
+    }
   }
 }
 

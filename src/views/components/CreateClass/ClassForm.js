@@ -178,7 +178,7 @@ class ClassForm extends React.Component {
                 label='Class name'
                 name='name'
                 onChange={updateProperty}
-                placeholder='Class name'
+                placeholder='i.e. Math 101'
                 value={form.name}
               />
             </div>
@@ -189,7 +189,7 @@ class ClassForm extends React.Component {
                 label='Course Number'
                 name='number'
                 onChange={updateProperty}
-                placeholder='Course number'
+                placeholder='i.e. MTH 1002.01'
                 value={form.number}
               />
             </div>
@@ -200,7 +200,7 @@ class ClassForm extends React.Component {
                 label='Meet days'
                 name='meet_days'
                 onChange={updateProperty}
-                placeholder='Meet days'
+                placeholder='i.e. MWF'
                 value={form.meet_days}
               />
             </div>
@@ -211,7 +211,7 @@ class ClassForm extends React.Component {
                 label='Meet start time'
                 name='meet_start_time'
                 onChange={updateProperty}
-                placeholder='Meet start time'
+                placeholder='i.e. 9:00am'
                 value={form.meet_start_time}
               />
             </div>
@@ -222,7 +222,7 @@ class ClassForm extends React.Component {
                 label='Meet end time'
                 name='meet_end_time'
                 onChange={updateProperty}
-                placeholder='Meet end time'
+                placeholder='i.e. 10:00am'
                 value={form.meet_end_time}
               />
             </div>

@@ -83,6 +83,7 @@ export function getUserByToken () {
     .then(response => parseResponse(response))
     .then(data => {
       userStore.user = data.user
+      return data
     })
     .catch(error => {
       return Promise.reject(error)

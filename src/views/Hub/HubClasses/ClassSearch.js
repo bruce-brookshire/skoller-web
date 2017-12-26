@@ -67,7 +67,7 @@ class ClassSearch extends React.Component {
         return (
           <SelectField
             name='searchValue'
-            label='Search value'
+            label='Select status'
             options={this.getStatusOptions()}
             onChange={this.onChangeSearchValue.bind(this)}
             value={this.state.searchValue}
@@ -77,7 +77,7 @@ class ClassSearch extends React.Component {
         return (
           <InputField
             name='searchValue'
-            label='Search Value'
+            label='Contains'
             onChange={this.onChangeSearchValue.bind(this)}
             placeholder='Search value'
             value={this.state.searchValue}
@@ -140,7 +140,7 @@ class ClassSearch extends React.Component {
           <div className='col-xs-12 col-sm-3 margin-top'>
             <SelectField
               name='searchField'
-              label='Search field'
+              label='Search by'
               options={this.getSearchFieldOptions()}
               onChange={this.onChangeSearchField.bind(this)}
               value={this.state.searchField}
