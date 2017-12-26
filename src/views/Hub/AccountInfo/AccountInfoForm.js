@@ -32,7 +32,7 @@ class AccountInfoForm extends React.Component {
   intializeState () {
     let userRoles = []
     if (this.props.user && this.props.user.roles) userRoles = this.props.user.roles
-    if (this.props.user.student) userRoles.push({id: 100, name: 'Student'})
+    if (this.props.user && this.props.user.student) userRoles.push({id: 100, name: 'Student'})
     return {
       roles: [],
       schools: [],
