@@ -7,14 +7,6 @@ import {InputField} from '../../components/Form'
 import actions from '../../actions'
 import {checkIfFirstKey} from '../../utilities/object'
 
-const styles = {
-  row: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    display: 'flex'
-  }
-}
-
 const requiredFields = {
   'email': {
     type: 'required'
@@ -82,7 +74,7 @@ class LoginForm extends React.Component {
     const {form} = this.state
     const {formErrors, updateProperty} = this.props
     return (
-      <div style={styles.row} >
+      <div className="form-login">
         <div className='col-xs-10'>
           <form>
             <div className='row'>
@@ -110,7 +102,6 @@ class LoginForm extends React.Component {
                   type='password'
                   value={form.password}
                   onKeyDown={(e)=>this.handleEnter(e)}
-
                 />
                 <a className='right forgot-password' onClick={this.onForgotPassword.bind(this)}>Forgot password?</a>
               </div>
@@ -118,9 +109,7 @@ class LoginForm extends React.Component {
           </form>
         </div>
         <div className='col-xs-2'>
-          <a
-            onClick={this.onSubmit.bind(this)}
-          >Login</a>
+          <a onClick={this.onSubmit.bind(this)}>Login</a>
         </div>
       </div>
     )

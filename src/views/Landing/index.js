@@ -18,16 +18,11 @@ class Landing extends React.Component {
       // navbar login section
       <div className='cn-landing-container'>
         <div className='cn-navbar'>
-          <div className='left'>
-            <img className='logo' src='src/assets/images/logo-wide-blue@1x.png'></img>
-          </div>
-          <div className='user-info right'>
-            <LoginForm rootStore={this.props.rootStore}/>
-          </div>
+          <img className='logo' src='src/assets/images/logo-wide-blue@1x.png'></img>
+          <LoginForm rootStore={this.props.rootStore}/>
         </div>
 
         {/* start of section 1 */}
-
         <PromoSignup rootStore={this.props.rootStore}/>
 
         {/* start of section 2 */}

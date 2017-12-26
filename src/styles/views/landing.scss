@@ -1,10 +1,8 @@
 .cn-landing-container {
-
   .page-height {
     min-height: calc(65vh - 64px)
   }
 
-  overflow-x: hidden;
   iframe {
     border-radius: $cn-border-radius;
     height: calc(55vh - 64px);
@@ -13,115 +11,111 @@
     width: 80%;
    }
 
-   .cn-navbar {
-     img {
-       @include breakpoint(small) {
-         display: none;
-       }
-       @include breakpoint(medium) {
-         display: inline-block;
-       }
-     }
-     .user-info {
-       @include breakpoint(small) {
-        float: none;
-        justify-content: center;
-       }
-       @include breakpoint(medium) {
-        float: right;
-        justify-content: none;
-       }
-     }
-   }
+  .cn-navbar {
+    img {
+      display: none;
 
-   #sign-up-form {
-     .facebook-button {
-       @include button;
-       align-items: center;
-       border: 1px solid #CCC;
-       background-color: white;
-       display: flex;
-       justify-content: center;
+      @include breakpoint(medium) {
+        display: inline-block;
+      }
+    }
 
-       i {
-         color: #3b5998;
-         font-size: 1em;
-         margin-right: 0.5em;
-       }
+    // deprecate
+    .form-login {
+      align-items: center;
+      display: flex;
+      float: none;
+      justify-content: center;
 
-       span {
-         font-size: 0.75em;
-         color: grey;
-       }
-     }
-     .school-info {
-       font-size: 11px;
-       span {
-         // margin-left: 5px;
-       }
-     }
-   }
+      @include breakpoint(medium) {
+       float: right;
+       justify-content: none;
+      }
+    }
+  }
 
-   .forgot-password {
-     font-size: 11px;
-     margin-top: 1px;
-   }
+  #sign-up-form {
+    .facebook-button {
+      @include button;
+      align-items: center;
+      background-color: white;
+      border: 1px solid #CCC;
+      display: flex;
+      justify-content: center;
+
+      i {
+        color: #3b5998;
+        font-size: 1em;
+        margin-right: 0.5em;
+      }
+
+      span {
+        font-size: 0.75em;
+        color: grey;
+      }
+    }
+
+    .school-info {
+      font-size: 11px;
+    }
+  }
+
+  .forgot-password {
+    font-size: 11px;
+    margin-top: 1px;
+  }
 }
 
-/////////////////////////////
-
 // slants
-
 .slants{
-  height:7vh;
-  width:100%;
   background-color: $cn-primary-background-color;
+  height: 7vh;
+  width: 100%;
 
   &.slant-inverse{
     transform: scale(-1);
-    -webkit-transform: scale(-1);
   }
+
   &.no-bg{
     background-color: transparent;
   }
 }
 
 .white-fill{
-  fill:$cn-primary-background-color;
+  fill: $cn-primary-background-color;
 }
 
-////////////////////////////
 
 // text
-.section-tagline{
+.section-tagline {
   font-size: 1.5em;
 }
 
-.section-header{
+.section-header {
   width: 85%;
   margin: 0 auto;
 }
 
-.blue-section-text{
+.blue-section-text {
   color: $cn-color-white;
 }
 
-.muted-text{
+.muted-text {
   color: $cn-color-grey;
   font-size: 0.95em;
 }
 
-.blue-text{
+.blue-text {
   color: $cn-color-blue;
 }
 
-.paragraph-spacing{
+.paragraph-spacing {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
 }
 
-.link-on-blue{
+.link-on-blue {
   color: white;
 }
 
@@ -129,16 +123,16 @@
 
 // section scheming
 
-.form-padding{
+.form-padding {
   width: 95%;
   margin: 0 auto;
 }
 
-.form-button{
+.form-button {
   width: 98%;
 }
 
-.section-topper{
+.section-topper {
   font-size: 2.5em;
   display: block;
   font-weight: bold;
@@ -146,65 +140,63 @@
 
 }
 
-.section-dimensions{
+.section-dimensions {
   width: 100%;
 }
 
-.even-section{
+.even-section {
   background-color: $cn-color-blue;
 }
 
-.odd-section{
+.odd-section {
   background-color: $cn-primary-background-color;
 }
 
-.section-padding{
+.section-padding {
   padding: 0 5%;
 }
 
-.signup-plea{
+.signup-plea {
   padding-bottom: 16px;
   margin-bottom: 0px;
 }
 
-.shift-up{
+.shift-up {
   margin-top: -7vh;
 }
 
 //////////////////
 
 // image sizing
-.purpose_image{
-  height:50%;
+.purpose_image {
+  height: 50%;
   width: 100%;
 }
 
-.process-icon-size{
+.process-icon-size {
   height:96px;
   width:96px;
 }
 
-.highlights-images{
+.highlights-images {
   width:90%;
 }
 
-.twin-image-div{
+.twin-image-div {
   position: relative;
 }
-.twin-image{
+.twin-image {
   width:50%;
 }
 
-.twin-image-top{
+.twin-image-top {
   position: absolute;
   right: 20%;
 }
 
-//////////////////////
-
 // speech bubbles - cleaned **
 
-.invert{
+.invert {
   transform: scaleY(-1);
 }
 
@@ -218,8 +210,9 @@
   border: solid white;
   background: $cn-color-blue;
   margin: 10px 0;
+
   &:before {
-    content:"";
+    content: "";
     position: absolute;
     right: 100%;
     bottom: -26px;
@@ -231,17 +224,20 @@
     border-right: 26px solid white;
     border-bottom: 0px solid transparent;
   }
-  .triangle-inner:before {
-    content:"";
-    position: absolute;
-    right: 100%;
-    bottom: -20px;
-    left: 17px;
-    width: 0;
-    height: 0;
-    transform: rotate(-90deg);
-    border-top: 20px solid transparent;
-    border-right: 20px solid $cn-color-blue;
-    border-bottom: 0px solid transparent;
+
+  .triangle-inner {
+    &:before {
+      content: "";
+      position: absolute;
+      right: 100%;
+      bottom: -20px;
+      left: 17px;
+      width: 0;
+      height: 0;
+      transform: rotate(-90deg);
+      border-top: 20px solid transparent;
+      border-right: 20px solid $cn-color-blue;
+      border-bottom: 0px solid transparent;
+    }
   }
 }
