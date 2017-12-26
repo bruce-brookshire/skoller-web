@@ -26,10 +26,12 @@ class AssignmentForm extends React.Component {
   * Fetch the weights to populate weight select.
   */
   componentWillMount () {
-    const {cl} = this.props
-    actions.weights.getClassWeights(cl).then((weights) => {
-      this.setState({weights})
-    }).then(() => false)
+    const {cl, disabled} = this.props
+    if (!disabled) {
+      actions.weights.getClassWeights(cl).then((weights) => {
+        this.setState({weights})
+      }).then(() => false)
+    }
   }
 
   /*
@@ -165,6 +167,7 @@ class AssignmentForm extends React.Component {
 AssignmentForm.propTypes = {
   assignment: PropTypes.object,
   cl: PropTypes.object,
+  disabled: PropTypes.bool,
   formErrors: PropTypes.object,
   onCreateAssignment: PropTypes.func.isRequired,
   onUpdateAssignment: PropTypes.func.isRequired,

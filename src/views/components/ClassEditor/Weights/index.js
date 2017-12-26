@@ -15,10 +15,12 @@ class Weights extends React.Component {
   * Fetch the weights for a given class
   */
   componentWillMount () {
-    const {cl} = this.props
-    actions.weights.getClassWeights(cl).then((weights) => {
-      this.setState({weights})
-    }).then(() => false)
+    const {cl, disabled} = this.props
+    if (!disabled) {
+      actions.weights.getClassWeights(cl).then((weights) => {
+        this.setState({weights})
+      }).then(() => false)
+    }
   }
 
   /*
@@ -27,12 +29,12 @@ class Weights extends React.Component {
   * @return [Object]. State object.
   */
   initializeState () {
-    const {cl, isReview} = this.props
+    const {cl, isReview, weights} = this.props
     return {
       currentWeight: null,
       isPoints: cl.is_points,
       totalPoints: null,
-      weights: [],
+      weights: weights || [],
       viewOnly: isReview
     }
   }
@@ -43,8 +45,8 @@ class Weights extends React.Component {
   */
   renderContent () {
     const {cl} = this.props
-    const {isPoints, totalPoints, viewOnly} = this.state
-    if (isPoints && !totalPoints && !viewOnly) {
+    const {isPoints, totalPoints, viewOnly, disabled} = this.state
+    if (isPoints && !totalPoints && !viewOnly && !disabled) {
       return (
         <PointTotal
           cl={cl}
@@ -81,12 +83,13 @@ class Weights extends React.Component {
   * Render the weights for a given class.
   */
   renderWeights () {
-    if (this.state.weights.length === 0) {
+    const weights = this.state.weights
+    if (weights.length === 0) {
       return <div className='center-text margin-top'>
         <span>There are currently no weights for this class.</span>
       </div>
     }
-    return this.state.weights.map((weight, index) =>
+    return weights.map((weight, index) =>
       this.getRow(weight, index)
     )
   }
@@ -100,6 +103,7 @@ class Weights extends React.Component {
   getRow (item, index) {
     const {id, name, weight} = item
     const {currentWeight, viewOnly} = this.state
+    const {disabled} = this.props
 
     const activeClass = (currentWeight && currentWeight.id) === id
       ? 'active' : ''
@@ -109,7 +113,7 @@ class Weights extends React.Component {
         className={`row table-row ${activeClass}`}
         key={`weight-${index}`}
         onClick={() => {
-          if (viewOnly) return
+          if (viewOnly || disabled) return
           this.onSelectWeight(item)
         }}
       >
@@ -119,6 +123,7 @@ class Weights extends React.Component {
               className='button-delete-x center-content'
               onClick={(event) => {
                 event.stopPropagation()
+                if (disabled) return
                 this.onDeleteWeight(item)
               }}><i className='fa fa-times' />
             </div>
@@ -133,7 +138,6 @@ class Weights extends React.Component {
       </div>
     )
   }
-
 
   /*
   * Render weight form.
@@ -159,7 +163,7 @@ class Weights extends React.Component {
       total / total * 100 : `${this.getTotalWeight()}/${this.state.totalPoints}`
 
     return (
-      <div className='row'>
+      <div id='class-editor-weights-total' className='row'>
         <div className='col-xs-9'>
           <span>{!this.state.isPoints ? 'Total:' : 'Total points'}</span>
         </div>
@@ -303,9 +307,11 @@ class Weights extends React.Component {
 
 Weights.propTypes = {
   cl: PropTypes.object,
+  disabled: PropTypes.bool,
   disableNext: PropTypes.bool,
   isReview: PropTypes.bool,
-  toggleDisabled: PropTypes.func
+  toggleDisabled: PropTypes.func,
+  weights: PropTypes.array
 }
 
 export default Weights

@@ -13,14 +13,16 @@ class Assignments extends React.Component {
   * Fetch the weights for a given class
   */
   componentWillMount () {
-    const {cl} = this.props
-    actions.assignments.getClassAssignments(cl).then((assignments) => {
-      this.setState({assignments})
-    }).then(() => false)
+    const {cl, disabled} = this.props
+    if (!disabled) {
+      actions.assignments.getClassAssignments(cl).then((assignments) => {
+        this.setState({assignments})
+      }).then(() => false)
 
-    actions.weights.getClassWeights(cl).then((weights) => {
-      this.setState({weights})
-    }).then(() => false)
+      actions.weights.getClassWeights(cl).then((weights) => {
+        this.setState({weights})
+      }).then(() => false)
+    }
   }
 
   /*
@@ -29,12 +31,12 @@ class Assignments extends React.Component {
   * @return [Object]. State object.
   */
   initializeState () {
-    const {isReview} = this.props
+    const {isReview, assignments, weights} = this.props
     return {
-      assignments: [],
+      assignments: assignments || [],
       currentAssignment: null,
       viewOnly: isReview,
-      weights: []
+      weights: weights || []
     }
   }
 
@@ -42,14 +44,15 @@ class Assignments extends React.Component {
   * Render the assignments for a given class.
   */
   renderAssignments () {
-    if (this.state.assignments.length === 0) {
+    const assignments = this.state.assignments
+    if (assignments.length === 0) {
       return (
         <div className='center-text margin-top'>
           <span>There are currently no assignments for this class.</span>
         </div>
       )
     }
-    return this.state.assignments.map((assignment, index) =>
+    return assignments.map((assignment, index) =>
       this.getRow(assignment, index)
     )
   }
@@ -63,6 +66,7 @@ class Assignments extends React.Component {
   getRow (item, index) {
     const {id, name, weight_id, due} = item
     const {currentAssignment, viewOnly} = this.state
+    const {disabled} = this.props
 
     const activeClass = (currentAssignment && currentAssignment.id) === id
       ? 'active' : ''
@@ -72,7 +76,7 @@ class Assignments extends React.Component {
         className={`row table-row ${activeClass}`}
         key={`assignment-${index}`}
         onClick={() => {
-          if (viewOnly) return
+          if (viewOnly || disabled) return
           this.onSelectAssignment(item)
         }}
       >
@@ -82,6 +86,7 @@ class Assignments extends React.Component {
               className='button-delete-x center-content'
               onClick={(event) => {
                 event.stopPropagation()
+                if (disabled) return
                 this.onDeleteAssignment(item)
               }}><i className='fa fa-times' />
             </div>
@@ -110,6 +115,7 @@ class Assignments extends React.Component {
       <AssignmentForm
         assignment={this.state.currentAssignment}
         cl={this.props.cl}
+        disabled={this.props.disabled}
         onCreateAssignment={this.onCreateAssignment.bind(this)}
         onUpdateAssignment={this.onUpdateAssignment.bind(this)}
       />
@@ -135,7 +141,6 @@ class Assignments extends React.Component {
   onSelectAssignment (assignment) {
     this.setState({currentAssignment: assignment})
   }
-
 
   /*
   * On create assignment, push assignment onto array
@@ -190,8 +195,11 @@ class Assignments extends React.Component {
 }
 
 Assignments.propTypes = {
+  assignments: PropTypes.array,
   cl: PropTypes.object,
-  isReview: PropTypes.bool
+  disabled: PropTypes.bool,
+  isReview: PropTypes.bool,
+  weights: PropTypes.array
 }
 
 export default Assignments
