@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import Tutorial from './Tutorial'
 import Weights from './TestWeights'
 import WeightSyllabus from './WeightSyllabus'
@@ -155,10 +154,6 @@ class WeightsTutorial extends React.Component {
       />
     )
   }
-}
-
-WeightsTutorial.propTypes = {
-
 }
 
 export default WeightsTutorial

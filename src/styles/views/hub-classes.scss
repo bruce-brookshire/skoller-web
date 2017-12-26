@@ -1,0 +1,42 @@
+$border-color: $cn-color-grey;
+
+.cn-classes-container {
+  padding: 25px;
+  .description {
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%);
+  }
+
+  .cn-table-grid {
+    border: 1px solid $border-color;
+    border-radius: $cn-border-radius;
+
+    thead {
+      tr th {
+        background-color: #efefef;
+        border-bottom: 1px solid $border-color;
+        border-right: 1px solid $border-color;
+        text-align: center;
+        &:last-child {
+          border-right: 0;
+        }
+      }
+    }
+
+    tbody {
+      tr td {
+        border-right: 1px solid $border-color;
+        padding-left: 5px;
+        padding-right: 5px;
+        text-align: center;
+        &:nth-child(1) {
+          text-align: left;
+        }
+        &:last-child {
+          border-right: 0;
+        }
+      }
+    }
+  }
+}

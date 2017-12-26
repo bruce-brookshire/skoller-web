@@ -109,7 +109,7 @@ class HubLanding extends React.Component {
             </div>
 
             <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
-              <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/class_search')}>
+              <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/classes')}>
                 <img src='/src/assets/images/icons/Search.png'/>
                 <span>Class Search</span>
               </button>

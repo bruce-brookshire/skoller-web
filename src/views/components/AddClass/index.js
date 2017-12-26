@@ -49,7 +49,7 @@ class AddClass extends React.Component {
   onSearch (searchText) {
     if (searchText) {
       this.setState({searching: true})
-      actions.classes.searchClasses(searchText).then(classes => {
+      actions.classes.searchStudentClasses(searchText).then(classes => {
         this.setState({classes: this.filterClasses(classes), searching: false})
       }).catch(() => { this.setState({searching: true}) })
     } else {

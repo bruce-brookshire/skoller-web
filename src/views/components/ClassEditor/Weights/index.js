@@ -183,7 +183,7 @@ class Weights extends React.Component {
   * Render the slider
   */
   renderWeightSlider () {
-    if (this.state.weights.length === 0) {
+    if (this.state.weights.length === 0 || this.props.disabled) {
       return (
         <div className='full-width'>
           <WeightConverter id='class-editor-weight-converter' onChange={this.onToggleConverter.bind(this)} value={this.state.isPoints}/>

@@ -20,6 +20,7 @@ import SyllabusTool from './views/SyllabusTool'
 
 import HubLanding from './views/Hub/HubLanding'
 import HubSchools from './views/Hub/HubSchools'
+import HubClasses from './views/Hub/HubClasses'
 import SchoolInfo from './views/Hub/SchoolInfo'
 import Accounts from './views/Hub/Accounts'
 import AccountInfo from './views/Hub/AccountInfo'
@@ -49,6 +50,7 @@ const router = (
           <Route path='/hub/landing' component={HubLanding}/>
           <Route path='/hub/schools' component={HubSchools} />
           <Route path='/hub/schools/school/info' component={SchoolInfo} />
+          <Route path='/hub/classes' component={HubClasses} />
           <Route path='/hub/accounts' component={Accounts} />
           <Route path='/hub/accounts/account/info' component={AccountInfo} />
         </Route>

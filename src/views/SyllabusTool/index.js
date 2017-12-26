@@ -125,7 +125,7 @@ class SyllabusTool extends React.Component {
   * Lock the class for DIY.
   */
   lockClass () {
-    if (this.state.isDIY) {
+    if (this.state.isDIY || (this.state.isAdmin)) {
       const {params: {classId}} = this.props
       const form = {is_class: true}
       actions.classes.lockClass(classId, form).then(() => {
@@ -138,7 +138,7 @@ class SyllabusTool extends React.Component {
   */
   unlockClass () {
     const {params: {classId}} = this.props
-    const form = this.state.isDIY ?
+    const form = (this.state.isDIY || this.state.isAdmin) ?
       {is_class: true} : {class_lock_section_id: this.state.sectionId}
 
     actions.classes.unlockClass(classId, form).then(() => {
@@ -378,6 +378,14 @@ class SyllabusTool extends React.Component {
     )
   }
 
+  renderButtonText () {
+    const {isDIY, isReviewer, isAdmin, isSW} = this.state
+    let text = ''
+    if (isAdmin && !isSW) text = 'Done'
+    else text = 'Next'
+    return text
+  }
+
   /*
   * On syllabus section done.
   */
@@ -386,6 +394,9 @@ class SyllabusTool extends React.Component {
 
     if (isDIY) {
       this.handleDIYNext()
+    } else if (isAdmin && !isSW) {
+      //Came from class search
+      browserHistory.push('/hub/classes')
     } else if (isAdmin || isSW) {
       this.unlockSWLock()
     }
@@ -527,7 +538,7 @@ class SyllabusTool extends React.Component {
                 className={`button full-width margin-bottom ${disabledClass}`}
                 disabled={this.state.disableNext}
                 onClick={this.onNext.bind(this)}
-              >Next</button>
+              >{this.renderButtonText()}</button>
             </div>
           </div>
 

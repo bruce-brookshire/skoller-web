@@ -8,9 +8,32 @@ var Environment = require('../../environment.js')
 /*
 * Search classes by param
 *
+* @params [Object] queryString. Search parameters.
+*/
+export function searchClasses (queryString) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/classes?${queryString}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error searching classes. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Search classes by param
+*
 * @params [Object] param. Search parameters.
 */
-export function searchClasses (param) {
+export function searchStudentClasses (param) {
   const {user: {student: {school}}} = userStore
   return fetch(`${Environment.SERVER_NAME}/api/v1/schools/${school.id}/classes?class_name=${param}&class_number=${param}&professor_name=${param}&or=true`, {
     method: 'GET',
