@@ -33,6 +33,13 @@ class AccountInfo extends React.Component {
 
   }
 
+  getUserRoles () {
+    const {user} = this.state
+    let roles = (user.roles && user.roles.map(role => role.name).join(', ')) || []
+    if (user.student) roles.push('Student')
+    return roles
+  }
+
   renderAccountDetails () {
     const {user} = this.state
 
@@ -51,7 +58,7 @@ class AccountInfo extends React.Component {
               </tr>
               <tr>
                 <th className='cn-flex-table-cell'>Roles:</th>
-                <td className='cn-flex-table-cell'>{user.roles && user.roles.map(role => role.name).join(', ')}</td>
+                <td className='cn-flex-table-cell'>{this.getUserRoles()}</td>
               </tr>
               {user.student &&
                 <tr>
@@ -84,7 +91,7 @@ class AccountInfo extends React.Component {
         open={this.state.openAccountForm}
         onClose={this.toggleAccountForm.bind(this)}
       >
-        <AccountInfoForm user={this.state.user} onSubmit={this} onClose={this.toggleAccountForm.bind(this)} />
+        <AccountInfoForm user={this.state.user} onSubmit={this.onDetailsSumbit.bind(this)} onClose={this.toggleAccountForm.bind(this)} />
       </Modal>
     )
   }

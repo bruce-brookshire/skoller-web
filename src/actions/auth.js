@@ -254,6 +254,7 @@ export function createAccount (form) {
   return fetch(`${Environment.SERVER_NAME}/api/v1/users/create`, {
     method: 'POST',
     headers: {
+      'Authorization': userStore.authToken,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(form)
@@ -278,9 +279,11 @@ export function createAccount (form) {
 * @params [Object] form. User form data.
 */
 export function updateAccount (form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/users/create`, {
+  console.log(JSON.stringify(form))
+  return fetch(`${Environment.SERVER_NAME}/api/v1/users/${form.id}`, {
     method: 'PUT',
     headers: {
+      'Authorization': userStore.authToken,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(form)
