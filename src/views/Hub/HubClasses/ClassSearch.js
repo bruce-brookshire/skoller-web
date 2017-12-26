@@ -122,6 +122,9 @@ class ClassSearch extends React.Component {
   }
 
   render () {
+    let disabled = !(this.state.schoolId || (this.state.searchField && this.state.searchValue))
+    if (this.state.searchField && !this.state.searchValue) disabled = true
+    const disabledClass = disabled ? 'disabled' : ''
     return (
       <div>
         <div className='row'>
@@ -148,7 +151,8 @@ class ClassSearch extends React.Component {
           </div>
           <div className='col-xs-12 col-sm-3 margin-top vertical-align' style={{justifyContent: 'flex-end'}}>
             <button
-              className='button full-width'
+              className={`button full-width ${disabledClass}`}
+              disabled={disabled}
               onClick={this.onSearch.bind(this)}
             > Search </button>
           </div>
