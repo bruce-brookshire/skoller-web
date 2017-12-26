@@ -57,11 +57,6 @@ class HubClasses extends React.Component {
   }
 
   /*
-  * Fetch school details for the hub.
-  */
-  componentWillMount () {
-    this.getClasses()
-  }
 
   /*
   * Get the classes for class search
@@ -170,6 +165,7 @@ class HubClasses extends React.Component {
           disabled={true}
           canDelete={false}
           canSelect={true}
+          emptyMessage={'Search for classes using the controls above.'}
           onSelect={this.onEditClass.bind(this)}
         />
       </div>
