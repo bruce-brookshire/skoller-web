@@ -25,7 +25,7 @@ class ClassSearch extends React.Component {
     }).catch(() => false)
 
     actions.hub.getStatuses().then((statuses) => {
-      this.setState({statuses})
+      this.setState({statuses: statuses.statuses})
     }).catch(() => false)
   }
 
@@ -56,7 +56,7 @@ class ClassSearch extends React.Component {
   * Populate status drop down.
   */
   getStatusOptions () {
-    return this.statuses.map(status => {
+    return this.state.statuses.map(status => {
       return {value: status.id, name: status.name}
     })
   }
@@ -97,7 +97,7 @@ class ClassSearch extends React.Component {
   * Update the field to query classes.
   */
   onChangeSearchField (name, value) {
-    this.setState({searchField: value, searchValue: null})
+    this.setState({searchField: value, searchValue: ''})
   }
 
   /*
