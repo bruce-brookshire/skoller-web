@@ -1,5 +1,5 @@
-$h2-size: 3.5em;
-$h2-size-sm: 2.5rem;
+$h2-size: 3em;
+$h2-size-sm: 2.25rem;
 
 @mixin row {
   display: flex;
@@ -30,7 +30,7 @@ $h2-size-sm: 2.5rem;
   }
 
   .section-header {
-    line-height: 1;
+    line-height: 1.25;
     margin-bottom: 2rem;
     max-width: 1440px;
     padding: 0 2rem;
@@ -46,7 +46,8 @@ $h2-size-sm: 2.5rem;
 
     @include breakpoint(large) {
       text-align: left;
-      line-height: .75;
+      line-height: 1;
+      max-width: 1000px;
     }
   }
 }
@@ -141,6 +142,12 @@ $h2-size-sm: 2.5rem;
         max-width: 60%;
       }
     }
+  }
+
+  .section-features {
+    @include section-marketing;
+    @include slant;
+    background: $cn-color-blue;
   }
 
   .cn-navbar {

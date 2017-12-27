@@ -1,6 +1,10 @@
 import React from 'react'
 
 class Process extends React.Component {
+
+  /**
+   * @TODO Refactor out helper classes
+   */
   render () {
     return (
       <div className='section-process'>
