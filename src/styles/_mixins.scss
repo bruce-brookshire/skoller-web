@@ -15,3 +15,20 @@
 @mixin reset-focus {
   outline: 0;
 }
+
+// Embed iframes that are truly responsive
+@mixin fluid-width-embed {
+  height: 0;
+  padding: 0 0 35.7% 0;
+  position: relative;
+
+  embed,
+  iframe,
+  object {
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+}
