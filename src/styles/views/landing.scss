@@ -1,13 +1,19 @@
 $h2-size: 3.5em;
+$h2-size-sm: 2.5rem;
 
 @mixin row {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   margin: 2rem auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
   width: 100%;
 
   @include breakpoint(medium) {
+    flex-direction: row;
     max-width: 96%;
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 
@@ -16,29 +22,79 @@ $h2-size: 3.5em;
   margin-bottom: 4rem;
 }
 
+@mixin section-marketing {
+  padding: 4rem 0;
 
-.cn-landing-container {
   h2 {
-    font-size: $h2-size;
-    margin: 0;
-    padding: 0;
+    color: $cn-color-white;
   }
 
-  .container-promo-signup {
-    @include row;
-    @include landing-row;
+  .section-header {
+    line-height: 1;
+    margin-bottom: 2rem;
+    max-width: 1440px;
+    padding: 0 2rem;
+    text-align: center;
+    width: 100%;
 
-    .video {
-      @include fluid-width-embed;
-      border-radius: $cn-border-radius;
-      overflow: hidden;
-      width: 80%;
+    .muted {
+      display: inline-block;
+      font-size: .6em;
+      font-weight: 300;
+      width: 100%;
     }
 
-    .container-form-register {
-      @include breakpoint(medium) {
-        padding-left: 3rem;
-      }
+    @include breakpoint(large) {
+      text-align: left;
+      line-height: .75;
+    }
+  }
+}
+
+@mixin slant {
+  position: relative;
+  z-index: 1;
+
+  &::before {
+    background: inherit;
+    top: -4rem;
+    content: '';
+    display: block;
+    height: 4rem;
+    left: 0;
+    position: absolute;
+    right: 0;
+    transform: skewY(-3.25deg);
+    transform-origin: 100%;
+    z-index: -1;
+  }
+}
+
+
+// Styles ------------------------
+.cn-landing-container {
+  h2 {
+    font-size: $h2-size-sm;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+
+    @include breakpoint(medium) {
+      font-size: $h2-size;
+      text-align: left;
+    }
+  }
+
+  .section-purpose {
+    @include section-marketing;
+    @include slant;
+    background: $cn-color-blue;
+    margin-top: 4rem;
+    padding: 0;
+
+    @include breakpoint(medium) {
+      margin-top: 8rem;
+      padding-top: 4rem;
     }
   }
 
@@ -64,6 +120,35 @@ $h2-size: 3.5em;
       }
     }
   }
+
+  .container-promo-signup {
+    @include row;
+    @include landing-row;
+    padding: 0 1rem;
+
+    .video {
+      @include fluid-width-embed;
+      border-radius: $cn-border-radius;
+      margin-bottom: 2rem;
+      overflow: hidden;
+      width: 100%;
+
+      @include breakpoint(large) {
+        margin-bottom: 0;
+        width: 80%;
+      }
+    }
+
+    .container-form-register {
+      margin-bottom: 2rem;
+
+      @include breakpoint(large) {
+        margin-bottom: 0;
+        padding-left: 3rem;
+      }
+    }
+  }
+
 
   #sign-up-form {
     .facebook-button {
@@ -98,38 +183,38 @@ $h2-size: 3.5em;
 }
 
 // slants
-.slants{
-  background-color: $cn-primary-background-color;
-  height: 7vh;
-  width: 100%;
+// .slants{
+//   background-color: $cn-primary-background-color;
+//   height: 7vh;
+//   width: 100%;
+//
+//   &.slant-inverse{
+//     transform: scale(-1);
+//   }
+//
+//   &.no-bg{
+//     background-color: transparent;
+//   }
+// }
 
-  &.slant-inverse{
-    transform: scale(-1);
-  }
-
-  &.no-bg{
-    background-color: transparent;
-  }
-}
-
-.white-fill{
-  fill: $cn-primary-background-color;
-}
+// .white-fill{
+//   fill: $cn-primary-background-color;
+// }
 
 
 // text
-.section-tagline {
-  font-size: 1.5em;
-}
+// .section-tagline {
+//   font-size: 1.5em;
+// }
 
-.section-header {
-  width: 85%;
-  margin: 0 auto;
-}
+// .section-header {
+//   width: 85%;
+//   margin: 0 auto;
+// }
 
-.blue-section-text {
-  color: $cn-color-white;
-}
+// .blue-section-text {
+//   color: $cn-color-white;
+// }
 
 .muted-text {
   color: $cn-color-grey;
@@ -192,17 +277,25 @@ $h2-size: 3.5em;
   margin-bottom: 0px;
 }
 
-.shift-up {
-  margin-top: -7vh;
-}
+// .shift-up {
+//   margin-top: -7vh;
+// }
 
 //////////////////
 
 // image sizing
-.purpose_image {
-  height: 50%;
-  width: 100%;
+.marketing-img {
+  overflow: hidden;
+  position: relative;
+
+  img {
+    display: block;
+    height: auto;
+    margin: 0 -7.5%;
+    width: 115%;
+  }
 }
+
 
 .process-icon-size {
   height:96px;
