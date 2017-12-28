@@ -119,6 +119,7 @@ $h2-size-sm: 1.75em;
 
     .section-header {
       @include breakpoint(medium) {
+        font-size: 3.5em;
         line-height: .75;
       }
     }
