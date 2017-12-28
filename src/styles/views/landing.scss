@@ -189,6 +189,11 @@ $h2-size-sm: 1.75em;
     color: $cn-color-white;
     text-align: center;
 
+    a {
+      @include anchor-text;
+      @include anchor-text-invert;
+    }
+
     .section-header {
       @include section-header-alt;
       color: $cn-color-white;
@@ -322,8 +327,6 @@ $h2-size-sm: 1.75em;
   width: 98%;
 }
 
-//////////////////
-
 // image sizing
 .marketing-img {
   overflow: hidden;
@@ -336,7 +339,6 @@ $h2-size-sm: 1.75em;
     width: 115%;
   }
 }
-
 
 .process-icon-size {
   height:96px;
