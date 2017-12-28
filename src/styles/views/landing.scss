@@ -71,6 +71,16 @@ $h2-size-sm: 1.75em;
   }
 }
 
+@mixin section-header-alt {
+  text-align: center;
+  font-size: 2.5em;
+  margin: 0 auto 0;
+
+  @include breakpoint(medium) {
+    margin-bottom: 4rem;
+  }
+}
+
 
 // Styles ------------------------
 .cn-landing-container {
@@ -114,14 +124,8 @@ $h2-size-sm: 1.75em;
     }
 
     .section-header {
+      @include section-header-alt;
       color: $cn-font-color;
-      text-align: center;
-      font-size: 2.5em;
-      margin: 0 auto 0;
-
-      @include breakpoint(medium) {
-        margin-bottom: 4rem;
-      }
     }
 
     .process-list {
@@ -176,6 +180,35 @@ $h2-size-sm: 1.75em;
     .row { margin: 0 2rem; }
 
     p { font-size: 1.25em; }
+  }
+
+  .section-availability {
+    @include section-marketing;
+    @include slant;
+    background: $cn-color-blue;
+    color: $cn-color-white;
+    text-align: center;
+
+    .section-header {
+      @include section-header-alt;
+      color: $cn-color-white;
+
+      @include breakpoint(large) {
+        margin-bottom: 2rem;
+      }
+    }
+
+    .list {
+      @include unstyled-list;
+      @include col-list;
+      margin-bottom: 4rem;
+
+      li {
+        font-size: 1.5em;
+        font-weight: 200;
+        margin: 1rem 0;
+      }
+    }
   }
 
   .cn-navbar {
@@ -300,27 +333,6 @@ $h2-size-sm: 1.75em;
 .section-dimensions {
   width: 100%;
 }
-
-.even-section {
-  background-color: $cn-color-blue;
-}
-
-.odd-section {
-  background-color: $cn-primary-background-color;
-}
-
-.section-padding {
-  padding: 0 5%;
-}
-
-.signup-plea {
-  padding-bottom: 16px;
-  margin-bottom: 0px;
-}
-
-// .shift-up {
-//   margin-top: -7vh;
-// }
 
 //////////////////
 
