@@ -198,7 +198,42 @@ $h2-size-sm: 1.75em;
 
     .row { margin: 0 2rem; }
 
-    p { font-size: 1.25em; }
+
+    .copy {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+
+      @include breakpoint(medium) {
+        padding-left: 4rem;
+      }
+
+      p {
+        flex: 1;
+        font-size: 1.25em;
+
+        &:first-child {
+          margin-top: 2rem;
+
+          @include breakpoint(medium) {
+            margin-top: 5rem;
+          }
+        }
+      }
+    }
+
+    .twin-image {
+      position: relative;
+
+      img {
+        width: 70%;
+
+        &:last-child {
+          position: absolute;
+          right: 0;
+        }
+      }
+    }
   }
 
   .section-availability {
@@ -380,18 +415,6 @@ $h2-size-sm: 1.75em;
 .process-icon-size {
   height:96px;
   width:96px;
-}
-
-.twin-image-div {
-  position: relative;
-}
-.twin-image {
-  width:50%;
-}
-
-.twin-image-top {
-  position: absolute;
-  right: 20%;
 }
 
 .speech-bubble {
