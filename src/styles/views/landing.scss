@@ -59,6 +59,7 @@ $h2-size-sm: 1.75em;
 @mixin slant {
   position: relative;
   z-index: 1;
+  filter: drop-shadow(0 0 3px rgba(0, 0, 0, .3));
 
   &::before {
     background: inherit;
@@ -69,7 +70,7 @@ $h2-size-sm: 1.75em;
     left: 0;
     position: absolute;
     right: 0;
-    top: 1px;
+    top: .5px;
     transform: translate(0, -100%);
     z-index: -1;
   }
@@ -105,6 +106,7 @@ $h2-size-sm: 1.75em;
     @include section-marketing;
     @include slant;
     background: $cn-color-blue;
+    filter: none;
     margin-top: 4rem;
     padding: 4rem 0 0;
 
@@ -261,6 +263,17 @@ $h2-size-sm: 1.75em;
     background: $cn-color-blue;
     color: $cn-color-white;
     text-align: center;
+    position: relative;
+
+    &::after {
+      box-shadow: 0 0 10px red;
+      content: '';
+      display: block;
+      height: 1px;
+      position: absolute;
+      top: 0;
+      z-index: 1000;
+    }
 
     a {
       @include anchor-text;
