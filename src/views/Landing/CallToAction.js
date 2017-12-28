@@ -5,12 +5,12 @@ class CallToAction extends React.Component {
     return (
       <div className="section-cta">
         <ul className="actions">
-          <li>
+          <li className="action">
             <a className="button" href="#promo-signup">
               This is dope. Sign me up.
             </a>
           </li>
-          <li>
+          <li className="action">
             <a href='http://ambassador.skoller.co'>
               Interested in becoming an ambassador at your school?
             </a>

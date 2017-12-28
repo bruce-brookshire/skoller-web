@@ -25,9 +25,7 @@ $h2-size-sm: 1.75em;
 @mixin section-marketing {
   padding: 4rem 0;
 
-  h2 {
-    color: $cn-color-white;
-  }
+  h2 { color: $cn-color-white; }
 
   .section-header {
     line-height: 1.25;
@@ -81,9 +79,10 @@ $h2-size-sm: 1.75em;
   }
 }
 
-
 // Styles ------------------------
 .cn-landing-container {
+  overflow-x: hidden;
+
   h2 {
     font-size: $h2-size-sm;
     margin: 0;
