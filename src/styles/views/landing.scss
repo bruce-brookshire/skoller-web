@@ -219,7 +219,7 @@ $h2-size-sm: 1.75em;
     .list {
       @include unstyled-list;
       @include col-list;
-      margin-bottom: 4rem;
+      margin: 0 auto 4rem;
 
       li {
         font-size: 1.5em;
