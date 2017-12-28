@@ -392,7 +392,13 @@ class AccountInfoForm extends React.Component {
                 label={!form.student.school_id ? 'Email' : ''}
                 name='email'
                 onBlur={this.onVerifyEmail.bind(this)}
-                onChange={updateProperty}
+                onChange={(name, value) => {
+                  // Have to reset fields of study.
+                  const form = {...this.state.form}
+                  form.email = value
+                  form.student.fields_of_study = []
+                  this.setState({form, fieldsOfStudy: []})
+                }}
                 placeholder='Email'
                 value={form.email}
               />
