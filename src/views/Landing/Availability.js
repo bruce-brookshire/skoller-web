@@ -18,17 +18,17 @@ class Availability extends React.Component {
 
     return (
       <div className='section-availability'>
-        <h2 className='section-header'>
-          Now available at 10 schools and counting&hellip;
-        </h2>
-        <div className='row'>
+        <div className="content">
+          <h2 className='section-header'>
+            Now available at 10 schools and counting&hellip;
+          </h2>
           <ul className="list">
             {universityList.map((u, idx) => {
               return <li key={idx}>{u}</li>
             })}
           </ul>
+          <p>Don't see your school? <a href="mailto:support@skoller.co?Subject=Add My School">Let us know you want Skoller</a></p>
         </div>
-        <p>Don't see your school? <a href="mailto:support@skoller.co?Subject=Add My School">Let us know you want Skoller</a></p>
       </div>
     )
   }
