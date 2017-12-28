@@ -50,7 +50,9 @@ class LoginForm extends React.Component {
     }
   }
 
-  onSubmit () {
+  onSubmit (event) {
+    event.preventDefault()
+
     if (this.props.validateForm(this.state.form, requiredFields)) {
       actions.auth.authenticateUser(this.state.form).then(() => {
         this.props.resetValidation()
@@ -76,7 +78,7 @@ class LoginForm extends React.Component {
     return (
       <div className="form-login">
         <div className='col-xs-10'>
-          <form>
+          <form onClick={this.onSubmit.bind(this)}>
             <div className='row'>
               <div className='col-xs-6'>
                 <InputField
@@ -106,10 +108,8 @@ class LoginForm extends React.Component {
                 <a className='right forgot-password' onClick={this.onForgotPassword.bind(this)}>Forgot password?</a>
               </div>
             </div>
+            <button type="submit" className="button">Login</button>
           </form>
-        </div>
-        <div className='col-xs-2'>
-          <a onClick={this.onSubmit.bind(this)}>Login</a>
         </div>
       </div>
     )
