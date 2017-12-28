@@ -17,11 +17,23 @@ const requiredFields = {
 }
 
 class LoginForm extends React.Component {
+
+  static propTypes = {
+    formErrors: PropTypes.object,
+    resetValidation: PropTypes.func,
+    rootStore: PropTypes.object,
+    updateProperty: PropTypes.func,
+    validateForm: PropTypes.func
+  }
+
+
   constructor (props) {
     super(props)
+
     this.cookie = new Cookies()
     this.state = this.initializeState()
   }
+
 
   handleEnter (e) {
     if (e.key == 'Enter') {
@@ -29,13 +41,16 @@ class LoginForm extends React.Component {
     }
   }
 
+
   componentDidMount () {
     window.addEventListener('keydown', this.handleEnter.bind(this));
   }
 
+
   componentWillUnmount () {
     window.removeEventListener('keydown', this.handleEnter.bind(this));
   }
+
 
   initializeState () {
     return {
@@ -43,12 +58,14 @@ class LoginForm extends React.Component {
     }
   }
 
+
   initializeFormData () {
     return {
       email: '',
       password: ''
     }
   }
+
 
   onSubmit (event) {
     event.preventDefault()
@@ -68,60 +85,51 @@ class LoginForm extends React.Component {
     }
   }
 
+
   onForgotPassword () {
     browserHistory.push('/forgot_password')
   }
 
+
   render () {
     const {form} = this.state
     const {formErrors, updateProperty} = this.props
+
     return (
-      <div className="form-login">
-        <div className='col-xs-10'>
-          <form onClick={this.onSubmit.bind(this)}>
-            <div className='row'>
-              <div className='col-xs-6'>
-                <InputField
-                  containerClassName=''
-                  error={formErrors.email}
-                  showErrorMessage={checkIfFirstKey(formErrors, 'email')}
-                  label=''
-                  name='email'
-                  onChange={updateProperty}
-                  placeholder='School email'
-                  value={form.email}
-                />
-              </div>
-              <div className='col-xs-6' >
-                <InputField
-                  containerClassName=''
-                  error={formErrors.password}
-                  showErrorMessage={checkIfFirstKey(formErrors, 'password')}
-                  label=''
-                  name='password'
-                  onChange={updateProperty}
-                  placeholder='Password'
-                  type='password'
-                  value={form.password}
-                  onKeyDown={(e)=>this.handleEnter(e)}
-                />
-                <a className='right forgot-password' onClick={this.onForgotPassword.bind(this)}>Forgot password?</a>
-              </div>
-            </div>
-            <button type="submit" className="button">Login</button>
-          </form>
-        </div>
-      </div>
+      <form className="form-login" onClick={this.onSubmit.bind(this)}>
+          <div className='form-control'>
+            <InputField
+              containerClassName=''
+              error={formErrors.email}
+              showErrorMessage={checkIfFirstKey(formErrors, 'email')}
+              label=''
+              name='email'
+              onChange={updateProperty}
+              placeholder='School email'
+              value={form.email}
+            />
+          </div>
+
+          <div className='form-control' >
+            <InputField
+              containerClassName=''
+              error={formErrors.password}
+              showErrorMessage={checkIfFirstKey(formErrors, 'password')}
+              label=''
+              name='password'
+              onChange={updateProperty}
+              placeholder='Password'
+              type='password'
+              value={form.password}
+              onKeyDown={(e)=>this.handleEnter(e)}
+            />
+            <a className='right forgot-password' onClick={this.onForgotPassword.bind(this)}>Forgot password?</a>
+          </div>
+
+          <button type="submit" className="button">Login</button>
+      </form>
     )
   }
-}
-
-LoginForm.propTypes = {
-  formErrors: PropTypes.object,
-  resetValidation: PropTypes.func,
-  rootStore: PropTypes.object,
-  updateProperty: PropTypes.func,
-  validateForm: PropTypes.func
 }
 
 export default ValidateForm(Form(LoginForm, 'form'))

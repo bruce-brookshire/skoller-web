@@ -339,25 +339,69 @@ $h2-size-sm: 1.75em;
   }
 
   .cn-navbar {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+
+    @include breakpoint(medium) {
+      flex-direction: row;
+    }
+
+    h1 {
+      @include reset-box-model;
+      flex: 1;
+    }
+
     .logo {
-      display: none;
+      display: block;
+      height: auto;
+      margin: 1.25rem auto;
+      width: 60%;
 
       @include breakpoint(medium) {
         display: inline-block;
         height: 2.5rem;
+        margin: .5rem 0;
+        width: auto;
       }
     }
 
-    // deprecate
     .form-login {
-      align-items: center;
       display: flex;
-      float: none;
-      justify-content: center;
+      flex-direction: column;
+      margin: 0 0 1rem 0;
 
       @include breakpoint(medium) {
-       float: right;
-       justify-content: none;
+        flex-direction: row;
+        margin: .5rem 0 0 0;
+        justify-content: flex-end;
+      }
+
+      .form-control {
+        margin-bottom: .5rem;
+
+        @include breakpoint(medium) {
+          margin-right: .5rem;
+        }
+
+        input {
+          margin-top: 0;
+        }
+      }
+
+      .button {
+        height: 2rem;
+        padding: .5rem 1rem;
+        line-height: 1;
+      }
+
+      .forgot-password {
+        font-size: .7em;
+        margin-top: .25em;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
   }
@@ -412,11 +456,6 @@ $h2-size-sm: 1.75em;
     }
 
     .school-info { font-size: 11px; }
-  }
-
-  .forgot-password {
-    font-size: 11px;
-    margin-top: 1px;
   }
 }
 
