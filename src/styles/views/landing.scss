@@ -182,7 +182,7 @@ $h2-size-sm: 1.75em;
       @include breakpoint(medium) {
         font-size: 1.5em;
         margin: 4rem auto;
-        max-width: 60%;
+        max-width: 570px;
       }
     }
   }
@@ -388,7 +388,6 @@ $h2-size-sm: 1.75em;
       }
     }
   }
-
 
   #sign-up-form {
     .facebook-button {
