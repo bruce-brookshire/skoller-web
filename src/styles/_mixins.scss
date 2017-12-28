@@ -37,6 +37,10 @@
   padding: 0 0 56.25% 0;
   position: relative;
 
+  @include breakpoint(medium) {
+    padding: 0 0 46.25% 0;
+  }
+
   @include breakpoint(large) {
     padding: 0 0 35.7% 0;
   }
