@@ -420,25 +420,9 @@ $h2-size-sm: 1.75em;
   }
 }
 
-.muted-text {
-  color: $cn-color-grey;
-}
+.muted-text { color: $cn-color-grey; }
 
-.blue-text {
-  color: $cn-color-blue;
-}
-
-.paragraph-spacing {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-}
-
-.link-on-blue {
-  color: white;
-}
-
-// section scheming
+.blue-text { color: $cn-color-blue; }
 
 .form-padding {
   width: 95%;
@@ -447,11 +431,6 @@ $h2-size-sm: 1.75em;
 
 .form-button {
   width: 98%;
-}
-
-.process-icon-size {
-  height:96px;
-  width:96px;
 }
 
 .speech-bubble {

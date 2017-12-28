@@ -12,7 +12,7 @@ class Process extends React.Component {
           <h2 className="section-header">Here's how it works</h2>
           <ul className='row process-list'>
             <li className='col-xs-12 col-sm-4 center-text'>
-              <img className='process-icon-size' src='src/assets/images/landing_page/step_one.png'/>
+              <img width="96" height="96" alt="Create an account" src='src/assets/images/landing_page/step_one.png'/>
               <h3>
                 1. Create and account
               </h3>
@@ -21,7 +21,7 @@ class Process extends React.Component {
               </p>
             </li>
             <li className='col-xs-12 col-sm-4 center-text'>
-              <img className='process-icon-size' src='src/assets/images/landing_page/step_two.png'/>
+              <img width="96" height="96" alt="Upload your syllabi" src='src/assets/images/landing_page/step_two.png'/>
               <h3>
                 2. Upload your syllabi
               </h3>
@@ -30,7 +30,7 @@ class Process extends React.Component {
               </p>
             </li>
             <li className='col-xs-12 col-sm-4 center-text'>
-              <img className='process-icon-size' src='src/assets/images/landing_page/step_three.png'/>
+              <img width="96" height="96" alt="Relax!" src='src/assets/images/landing_page/step_three.png'/>
               <h3>
                 3. Relax
               </h3>
