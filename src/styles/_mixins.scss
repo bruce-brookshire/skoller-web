@@ -36,3 +36,28 @@
     width: 100%;
   }
 }
+
+// List helpers and mixins
+// TODO this might not be in the most logical place
+@mixin unstyled-list {
+  list-style: none;
+  padding: 0;
+}
+
+@mixin col-list {
+  display: flex;
+  flex-wrap: wrap;
+
+  li {
+    box-sizing: border-box;
+    flex: 1 0 100%;
+  }
+
+  @include breakpoint(medium) {
+    li { flex: 1 0 50%; }
+  }
+
+  @include breakpoint(large) {
+    li { flex: 1 0 33%; }
+  }
+}
