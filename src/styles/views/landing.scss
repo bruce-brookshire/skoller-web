@@ -78,10 +78,11 @@ $h2-size-sm: 1.75em;
 
 @mixin section-header-alt {
   text-align: center;
-  font-size: 2.5em;
-  margin: 0 auto 0;
+  font-size: $h2-size-sm;
+  margin: 0 auto 2rem;
 
   @include breakpoint(medium) {
+    font-size: 2.5em;
     margin-bottom: 4rem;
   }
 }
@@ -295,9 +296,14 @@ $h2-size-sm: 1.75em;
       margin: 0 auto 4rem;
 
       li {
-        font-size: 1.5em;
+        font-size: 1.25em;
         font-weight: 200;
-        margin: 1rem 0;
+        margin: .25rem 0;
+
+        @include breakpoint(medium) {
+          font-size: 1.5em;
+          margin: 1rem 0;
+        }
       }
     }
   }
