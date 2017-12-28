@@ -27,7 +27,7 @@ $h2-size-sm: 1.75em;
 
   h2 { color: $cn-color-white; }
 
-  .content {
+  & > .content {
     margin: 0 auto;
     max-width: 1440px;
     width: 100%;
@@ -108,6 +108,25 @@ $h2-size-sm: 1.75em;
     margin-top: 4rem;
     padding: 4rem 0 0;
 
+    .section-header { line-height: .75; }
+
+    .marketing-img {
+      overflow: hidden;
+      position: relative;
+
+      img {
+        display: block;
+        height: auto;
+        margin: 0 -7.5%;
+        width: 115%;
+
+        @include breakpoint(xxlarge) {
+          margin: 0 auto;
+          max-width: 1600px;
+        }
+      }
+    }
+
     @include breakpoint(medium) {
       margin-top: 8rem;
       padding-top: 4rem;
@@ -140,7 +159,7 @@ $h2-size-sm: 1.75em;
       padding: 0;
     }
 
-    .content {
+    .copy {
       color: $cn-color-blue;
       font-size: 1.25em;
       font-weight: bold;
@@ -397,19 +416,6 @@ $h2-size-sm: 1.75em;
 
 .form-button {
   width: 98%;
-}
-
-// image sizing
-.marketing-img {
-  overflow: hidden;
-  position: relative;
-
-  img {
-    display: block;
-    height: auto;
-    margin: 0 -7.5%;
-    width: 115%;
-  }
 }
 
 .process-icon-size {
