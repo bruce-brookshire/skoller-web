@@ -58,15 +58,15 @@ $h2-size-sm: 2.25rem;
 
   &::before {
     background: inherit;
-    top: -4rem;
+    clip-path: polygon(100% 0, 0 100%, 100% 100%);
     content: '';
     display: block;
     height: 4rem;
     left: 0;
     position: absolute;
     right: 0;
-    transform: skewY(-3.25deg);
-    transform-origin: 100%;
+    top: 0;
+    transform: translate(0, -100%);
     z-index: -1;
   }
 }
