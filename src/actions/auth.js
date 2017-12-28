@@ -280,8 +280,7 @@ export function createAccount (form) {
 * @params [Object] form. User form data.
 */
 export function updateAccount (form) {
-  console.log(JSON.stringify(form))
-  return fetch(`${Environment.SERVER_NAME}/api/v1/users/${form.id}`, {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/users/${form.id}/update`, {
     method: 'PUT',
     headers: {
       'Authorization': userStore.authToken,

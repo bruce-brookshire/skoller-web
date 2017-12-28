@@ -28,6 +28,29 @@ export function getActiveSchools () {
 }
 
 /*
+* Get fields of study.
+*
+* @param [Number] schoolId. Id of the school.
+* @param [query] string. Query the fields of study.
+*/
+export function getFieldsOfStudy (schoolId, query) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/schools/${schoolId}/fields-of-study/list?field_name=${query}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error fetching schools. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
 * Get minified counts
 */
 export function getHubSchoolsMinified () {

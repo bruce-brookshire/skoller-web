@@ -4,7 +4,7 @@ import {browserHistory} from 'react-router'
 import {Cookies} from 'react-cookie'
 import {inject, observer} from 'mobx-react'
 import {Form, ValidateForm} from 'react-form-library'
-import {InputField} from '../../components/Form'
+import {InputField, MultiselectField} from '../../components/Form'
 import actions from '../../actions'
 import Modal from '../../components/Modal'
 
@@ -55,9 +55,11 @@ class SignUpForm extends React.Component {
   initializeState () {
     return {
       form: this.initializeFormData(),
+      fieldsOfStudy: [],
       schools: [],
       emailError: null,
       loadingSchools: false,
+      loadingFOS: false,
       showSupportedSchools: false
     }
   }
@@ -72,7 +74,7 @@ class SignUpForm extends React.Component {
         name_first: '',
         name_last: '',
         school_id: '',
-        major: '',
+        fields_of_study: [],
         phone: '',
         birthday: '',
         gender: '',
@@ -82,14 +84,21 @@ class SignUpForm extends React.Component {
   }
 
   onSubmit () {
-    if (this.props.validateForm(this.state.form, requiredFields) && !this.state.emailError) {
-      actions.auth.registerUser(this.state.form).then(() => {
+    const form = this.mapForm()
+    if (this.props.validateForm(form, requiredFields) && !this.state.emailError) {
+      actions.auth.registerUser(form).then(() => {
         this.props.resetValidation()
         const { userStore: { authToken } } = this.props.rootStore
         this.cookie.set('skollerToken', authToken)
         browserHistory.push('/student/onboard')
       }).catch(() => false)
     }
+  }
+
+  mapForm () {
+    let newForm = JSON.parse(JSON.stringify(this.state.form))
+    newForm.student.fields_of_study = newForm.student.fields_of_study.map(f => f.value || f.id)
+    return newForm
   }
 
   onVerifyEmail () {
@@ -182,18 +191,42 @@ class SignUpForm extends React.Component {
     const {form: {student: {school_id}}} = this.state
     if (school_id) {
       return (
-        <div className='margin-top school-info'>
+        <div className='school-info cn-blue'>
           <span>{this.state.schools.find(school => school.id === school_id).name}</span>
         </div>
       )
     }
   }
 
+  /*
+  * Update fields of study.
+  *
+  * @param [String] value. Autocomplete input value.
+  */
+  updateFOSOptions (value) {
+    const {form: {student: {school_id}}} = this.state
+    if (school_id) {
+      this.setState({loadingFOS: true})
+      actions.schools.getFieldsOfStudy(school_id, value).then((fieldsOfStudy) => {
+        this.setState({fieldsOfStudy, loadingFOS: false})
+      }).catch(() => { this.setState({loadingFOS: false}) })
+    }
+  }
+
+  /*
+  * Map the Field of study options
+  */
+  getFOSOptions () {
+    const {fieldsOfStudy, form} = this.state
+    return fieldsOfStudy.filter(f =>
+      form.student.fields_of_study.findIndex(ff => ff.value === f.id) === -1)
+      .map(f => { return { value: f.id, name: f.field } })
+  }
+
   render () {
     const {form} = this.state
     const {formErrors, updateProperty} = this.props
 
-    //TODO Put university name on top of the email once school if chose fa fa-building
     return (
       <div id='sign-up-form'>
         <form className='form-padding'>
@@ -232,7 +265,13 @@ class SignUpForm extends React.Component {
                 label=''
                 name='email'
                 onBlur={this.onVerifyEmail.bind(this)}
-                onChange={updateProperty}
+                onChange={(name, value) => {
+                  // Have to reset fields of study.
+                  const form = {...this.state.form}
+                  form.email = value
+                  form.student.fields_of_study = []
+                  this.setState({form, fieldsOfStudy: []})
+                }}
                 placeholder='School email address'
                 value={form.email}
               />
@@ -258,6 +297,29 @@ class SignUpForm extends React.Component {
                 onChange={updateProperty}
                 placeholder='Phone number'
                 value={form.student.phone}
+              />
+            </div>
+            <div className='col-xs-12'>
+              <MultiselectField
+                containerClassName='margin-top'
+                label=''
+                loading={this.state.loadingFOS}
+                name='student.fields_of_study'
+                onAdd={(name, value) => {
+                  let newValue = form.student.fields_of_study
+                  newValue.push(value)
+                  updateProperty('student.fields_of_study', newValue)
+                  this.setState({fieldsOfStudy: []})
+                }}
+                onDelete={(name, value) => {
+                  let newValue = form.student.fields_of_study
+                    .filter(f => f.value !== value.value)
+                  updateProperty('student.fields_of_study', newValue)
+                }}
+                onUpdateOptions={this.updateFOSOptions.bind(this)}
+                options={this.getFOSOptions()}
+                placeholder={'Select your majors...'}
+                value={form.student.fields_of_study}
               />
             </div>
           </div>

@@ -34,9 +34,14 @@ class AutoComplete extends React.Component {
   renderAutoCompleteResults () {
     if (this.state.isDirty) {
       if (this.props.dataSource.length === 0) return this.props.emptyMessage
-      return this.props.dataSource.map((rowData, index) => {
-        return this.props.renderRow(rowData, index, this.resetState.bind(this))
-      })
+      return (
+        <div className='cn-autocomplete-results-container'>
+          {this.props.dataSource.map((rowData, index) => {
+            return this.props.renderRow(rowData, index, this.resetState.bind(this))
+          })
+          }
+        </div>
+      )
     }
   }
 

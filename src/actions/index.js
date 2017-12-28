@@ -12,8 +12,8 @@ import {getStatuses} from './hub'
 import {getSchoolPeriods, createPeriod, updatePeriod} from './periods'
 import {attachProfessorToClass, createProfessor, removeProfessorFromClass,
   searchProfessors, updateProfessor} from './professors'
-import {createSchool, getActiveSchools, getHubSchools, getHubSchoolsMinified,
-  getSchoolById, updateSchool} from './schools'
+import {createSchool, getActiveSchools, getFieldsOfStudy, getHubSchools,
+  getHubSchoolsMinified, getSchoolById, updateSchool} from './schools'
 import {getAssignmentClass, getReviewClass, getWeightClass} from './syllabusworkers'
 import {createWeight, deleteWeight, getClassWeights, updateWeight} from './weights'
 
@@ -80,6 +80,7 @@ const actions = {
   schools: {
     createSchool,
     getActiveSchools,
+    getFieldsOfStudy,
     getHubSchools,
     getHubSchoolsMinified,
     getSchoolById,

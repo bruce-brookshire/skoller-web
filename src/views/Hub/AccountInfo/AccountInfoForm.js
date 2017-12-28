@@ -1,11 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import FlexTable from '../../../components/FlexTable'
 import {Form, ValidateForm} from 'react-form-library'
-import {InputField, SelectField} from '../../../components/Form'
+import {InputField, MultiselectField} from '../../../components/Form'
 import Loading from '../../../components/Loading'
-import Modal from '../../../components/Modal'
-import UploadHistory from '../../../components/UploadHistory'
 import actions from '../../../actions'
 
 class AccountInfoForm extends React.Component {
@@ -36,8 +33,10 @@ class AccountInfoForm extends React.Component {
     return {
       roles: [],
       schools: [],
+      fieldsOfStudy: [],
       emailError: null,
       loadingSchools: false,
+      loadingFOS: false,
       loadingRoles: false,
       userRoles,
       form: this.initializeFormData(this.props.user)
@@ -62,6 +61,7 @@ class AccountInfoForm extends React.Component {
     let name_last = ''
     let name_first = ''
     let school_id = ''
+    let fields_of_study = []
 
     if (formData.student) {
       studentId = formData.student.id
@@ -69,6 +69,12 @@ class AccountInfoForm extends React.Component {
       name_first = formData.student.name_first
       name_last = formData.student.name_last,
       school_id = formData.student.school.id
+      fields_of_study = formData.student.fields_of_study.map(f => {
+        return {
+          value: f.id,
+          name: f.field
+        }
+      })
     }
 
     return {
@@ -81,6 +87,7 @@ class AccountInfoForm extends React.Component {
         name_first: name_first || '',
         name_last: name_last || '',
         school_id: school_id || '',
+        fields_of_study: fields_of_study || [],
         notification_time: `${7 + (date.getTimezoneOffset()/60)}:00:00`
       }
     }
@@ -301,15 +308,41 @@ class AccountInfoForm extends React.Component {
   * @return [Object] form. Mapped account form.
   */
   mapForm (f) {
-    let form = {...f}
+    let form = JSON.parse(JSON.stringify(f))
     if (!this.hasStudentRole()) {
       delete form.student
       form.roles = this.state.userRoles.map(role => role.id)
     } else {
       form.roles = this.state.userRoles
-        .filter(role=> role.id !== 100).map(role => role.id)
+        .filter(role => role.id !== 100).map(role => role.id)
+      form.student.fields_of_study = form.student.fields_of_study.map(f => f.value)
     }
     return form
+  }
+
+  /*
+  * Update fields of study.
+  *
+  * @param [String] value. Autocomplete input value.
+  */
+  updateFOSOptions (value) {
+    const {form: {student: {school_id}}} = this.state
+    if (school_id) {
+      this.setState({loadingFOS: true})
+      actions.schools.getFieldsOfStudy(school_id, value).then((fieldsOfStudy) => {
+        this.setState({fieldsOfStudy, loadingFOS: false})
+      }).catch(() => { this.setState({loadingFOS: false}) })
+    }
+  }
+
+  /*
+  * Map the Field of study options
+  */
+  getFOSOptions () {
+    const {fieldsOfStudy, form} = this.state
+    return fieldsOfStudy.filter(f =>
+      form.student.fields_of_study.findIndex(ff => ff.value === f.id) === -1)
+      .map(f => { return { value: f.id, name: f.field } })
   }
 
   render () {
@@ -388,6 +421,31 @@ class AccountInfoForm extends React.Component {
                   onChange={updateProperty}
                   placeholder="Phone number"
                   value={form.student.phone}
+                />
+              </div>
+            }
+            { this.hasStudentRole() &&
+              <div className='col-xs-12'>
+                <MultiselectField
+                  containerClassName='margin-top'
+                  label=''
+                  loading={this.state.loadingFOS}
+                  name='student.fields_of_study'
+                  onAdd={(name, value) => {
+                    let newValue = form.student.fields_of_study
+                    newValue.push(value)
+                    updateProperty('student.fields_of_study', newValue)
+                    this.setState({fieldsOfStudy: []})
+                  }}
+                  onDelete={(name, value) => {
+                    let newValue = form.student.fields_of_study
+                      .filter(f => f.value !== value.value)
+                    updateProperty('student.fields_of_study', newValue)
+                  }}
+                  onUpdateOptions={this.updateFOSOptions.bind(this)}
+                  options={this.getFOSOptions()}
+                  placeholder={'Select the majors...'}
+                  value={form.student.fields_of_study}
                 />
               </div>
             }

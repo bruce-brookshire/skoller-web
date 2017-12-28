@@ -35,9 +35,11 @@ class AccountInfo extends React.Component {
 
   getUserRoles () {
     const {user} = this.state
-    let roles = (user.roles && user.roles.map(role => role.name).join(', ')) || []
-    if (user.student) roles.push('Student')
-    return roles
+    let roles = (user.roles && user.roles.map(role => role.name)) || []
+    if (user.student && roles.findIndex(r => r.toLowerCase() === 'student') === -1) {
+      roles.push('Student')
+    }
+    return roles.join(', ')
   }
 
   renderAccountDetails () {
