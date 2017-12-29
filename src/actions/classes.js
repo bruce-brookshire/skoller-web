@@ -276,7 +276,7 @@ export function unlockClass (classId, form) {
   })
     .then(response => checkError(response))
     .catch(error => {
-      showSnackbar('Error unlocking class. Try again.')
+      // showSnackbar('Error unlocking class. Try again.')
       return Promise.reject(error)
     })
 }
