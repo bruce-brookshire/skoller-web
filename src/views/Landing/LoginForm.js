@@ -7,14 +7,6 @@ import {InputField} from '../../components/Form'
 import actions from '../../actions'
 import {checkIfFirstKey} from '../../utilities/object'
 
-const styles = {
-  row: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    display: 'flex'
-  }
-}
-
 const requiredFields = {
   'email': {
     type: 'required'
@@ -25,11 +17,23 @@ const requiredFields = {
 }
 
 class LoginForm extends React.Component {
+
+  static propTypes = {
+    formErrors: PropTypes.object,
+    resetValidation: PropTypes.func,
+    rootStore: PropTypes.object,
+    updateProperty: PropTypes.func,
+    validateForm: PropTypes.func
+  }
+
+
   constructor (props) {
     super(props)
+
     this.cookie = new Cookies()
     this.state = this.initializeState()
   }
+
 
   handleEnter (e) {
     if (e.key == 'Enter') {
@@ -37,19 +41,23 @@ class LoginForm extends React.Component {
     }
   }
 
+
   componentDidMount () {
     window.addEventListener('keydown', this.handleEnter.bind(this));
   }
 
+
   componentWillUnmount () {
     window.removeEventListener('keydown', this.handleEnter.bind(this));
   }
+
 
   initializeState () {
     return {
       form: this.initializeFormData()
     }
   }
+
 
   initializeFormData () {
     return {
@@ -58,7 +66,10 @@ class LoginForm extends React.Component {
     }
   }
 
-  onSubmit () {
+
+  onSubmit (event) {
+    event.preventDefault()
+
     if (this.props.validateForm(this.state.form, requiredFields)) {
       actions.auth.authenticateUser(this.state.form).then(() => {
         this.props.resetValidation()
@@ -81,65 +92,51 @@ class LoginForm extends React.Component {
     }
   }
 
+
   onForgotPassword () {
     browserHistory.push('/forgot_password')
   }
 
+
   render () {
     const {form} = this.state
     const {formErrors, updateProperty} = this.props
-    return (
-      <div style={styles.row} >
-        <div className='col-xs-10'>
-          <form>
-            <div className='row'>
-              <div className='col-xs-6'>
-                <InputField
-                  containerClassName=''
-                  error={formErrors.email}
-                  showErrorMessage={checkIfFirstKey(formErrors, 'email')}
-                  label=''
-                  name='email'
-                  onChange={updateProperty}
-                  placeholder='School email'
-                  value={form.email}
-                />
-              </div>
-              <div className='col-xs-6' >
-                <InputField
-                  containerClassName=''
-                  error={formErrors.password}
-                  showErrorMessage={checkIfFirstKey(formErrors, 'password')}
-                  label=''
-                  name='password'
-                  onChange={updateProperty}
-                  placeholder='Password'
-                  type='password'
-                  value={form.password}
-                  onKeyDown={(e)=>this.handleEnter(e)}
 
-                />
-                <a className='right forgot-password' onClick={this.onForgotPassword.bind(this)}>Forgot password?</a>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div className='col-xs-2'>
-          <a
-            onClick={this.onSubmit.bind(this)}
-          >Login</a>
-        </div>
-      </div>
+    return (
+      <form className="form-login" onClick={this.onSubmit.bind(this)}>
+          <div className='form-control'>
+            <InputField
+              containerClassName=''
+              error={formErrors.email}
+              showErrorMessage={checkIfFirstKey(formErrors, 'email')}
+              label=''
+              name='email'
+              onChange={updateProperty}
+              placeholder='School email'
+              value={form.email}
+            />
+          </div>
+
+          <div className='form-control' >
+            <InputField
+              containerClassName=''
+              error={formErrors.password}
+              showErrorMessage={checkIfFirstKey(formErrors, 'password')}
+              label=''
+              name='password'
+              onChange={updateProperty}
+              placeholder='Password'
+              type='password'
+              value={form.password}
+              onKeyDown={(e)=>this.handleEnter(e)}
+            />
+            <a className='right forgot-password' onClick={this.onForgotPassword.bind(this)}>Forgot password?</a>
+          </div>
+
+          <button type="submit" className="button">Login</button>
+      </form>
     )
   }
-}
-
-LoginForm.propTypes = {
-  formErrors: PropTypes.object,
-  resetValidation: PropTypes.func,
-  rootStore: PropTypes.object,
-  updateProperty: PropTypes.func,
-  validateForm: PropTypes.func
 }
 
 export default ValidateForm(Form(LoginForm, 'form'))

@@ -1,57 +1,35 @@
 import React from 'react'
-import Slant from '../../components/Slant'
 
 class Availability extends React.Component {
+
   render () {
+    const universityList = [
+      'Auburn University',
+      'University of Arkansas',
+      'Texas A&M',
+      'University of Georgia',
+      'University of South Carolina',
+      'Ole Miss',
+      'University of Kentucky',
+      'University of Tennessee',
+      'University of Alabama',
+      'University of Oklahoma'
+    ]
+
     return (
-        <div className='even-section blue-section-text vertical-align'>
-            <Slant className='slant'/>
-            <div className='page-height vertical-align center'>
-                <h2 className='center-text'>Now available at 10 schools and counting...</h2>
-                <div className='row section-header'>
-                    <div className='col-xs-12 col-sm-3 paragraph-spacing center-text'>
-                        <p>
-                            Auburn University
-                        </p>
-                        <p>
-                            University of Arkansas
-                        </p>
-                    </div>
-                    <div className='col-xs-12 col-sm-3 paragraph-spacing center-text'>
-                        <p>
-                            {'Texas A&M'}
-                        </p>
-                        <p>
-                            University of Georgia
-                        </p>
-                        <p>
-                            University of South Carolina
-                        </p>
-                    </div>
-                    <div className='col-xs-12 col-sm-3 paragraph-spacing center-text'>
-                        <p>
-                            Ole Miss
-                        </p>
-                        <p>
-                            University of Kentucky
-                        </p>
-                        <p>
-                            University of Tennessee
-                        </p>
-                    </div>
-                    <div className='col-xs-12 col-sm-3 paragraph-spacing center-text'>
-                        <p>
-                            University of Alabama
-                        </p>
-                        <p>
-                            University of Oklahoma
-                        </p>
-                    </div>
-                </div>
-                <p className='center-text signup-plea'>{'Don\'t see your school?'} <a className="link-on-blue" href="mailto:support@skoller.co?Subject=Add My School">Let us know you want Skoller</a></p>
-            </div>
-            {/* <Slant className='slant-inverse'/> */}
+      <div className='section-availability'>
+        <div className="content">
+          <h2 className='section-header'>
+            Now available at 10 schools and counting&hellip;
+          </h2>
+          <ul className="list">
+            {universityList.map((u, idx) => {
+              return <li key={idx}>{u}</li>
+            })}
+          </ul>
+          <p>Don't see your school? <a href="mailto:support@skoller.co?Subject=Add My School">Let us know you want Skoller</a></p>
         </div>
+      </div>
     )
   }
 }

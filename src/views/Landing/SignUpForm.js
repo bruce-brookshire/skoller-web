@@ -230,7 +230,7 @@ class SignUpForm extends React.Component {
     return (
       <div id='sign-up-form'>
         <form className='form-padding'>
-          <h1>Sign up</h1>
+          <h2>Sign up</h2>
           <div className='row'>
             <div className='col-xs-6'>
               <InputField

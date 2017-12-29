@@ -15,3 +15,68 @@
 @mixin reset-focus {
   outline: 0;
 }
+
+// Hypertext link mixin
+@mixin anchor-text {
+  color: $cn-color-blue;
+  text-decoration: underline;
+
+  &:focus,
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+@mixin anchor-text-invert {
+  color: $cn-color-white;
+}
+
+// Embed iframes that are truly responsive
+@mixin fluid-width-embed {
+  height: 0;
+  padding: 0 0 56.25% 0;
+  position: relative;
+
+  @include breakpoint(medium) {
+    padding: 0 0 46.25% 0;
+  }
+
+  @include breakpoint(large) {
+    padding: 0 0 35.7% 0;
+  }
+
+  embed,
+  iframe,
+  object {
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+}
+
+// List helpers and mixins
+// TODO this might not be in the most logical place
+@mixin unstyled-list {
+  list-style: none;
+  padding: 0;
+}
+
+@mixin col-list {
+  display: flex;
+  flex-wrap: wrap;
+
+  li {
+    box-sizing: border-box;
+    flex: 1 0 100%;
+  }
+
+  @include breakpoint(medium) {
+    li { flex: 1 0 50%; }
+  }
+
+  @include breakpoint(large) {
+    li { flex: 1 0 33%; }
+  }
+}
