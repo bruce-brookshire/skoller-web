@@ -181,7 +181,7 @@ class Assignments extends React.Component {
     const {viewOnly} = this.state
     return (
       <div className='space-between-vertical'>
-        {viewOnly && <h2>Assignments for {this.props.cl.name}</h2>}
+        <h5 style={{marginTop: '-0.25em', marginBottom: '0.5em'}}>Edit Assignments</h5>
         {viewOnly && <a className='right-text' style={{marginBottom: '5px'}} onClick={() => this.setState({viewOnly: false}) }>edit</a>}
         <div className={`class-editor-table ${viewOnly ? 'view-only' : ''}`} >
           <div id='class-editor-assignments-table'>

@@ -296,7 +296,7 @@ class Weights extends React.Component {
 
     return (
       <div className='space-between-vertical'>
-        {viewOnly && <h2>Weights for {this.props.cl.name}</h2>}
+        <h5 style={{marginTop: '-0.25em', marginBottom: '0.5em'}}>Edit weights</h5>
         {viewOnly && <a className='right-text' style={{marginBottom: '5px'}} onClick={() => this.setState({viewOnly: false}) }>edit</a>}
         {this.renderContent()}
         {!viewOnly && this.renderWeightSlider()}
