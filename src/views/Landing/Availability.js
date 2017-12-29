@@ -7,20 +7,25 @@ class Availability extends React.Component {
       'Auburn University',
       'University of Arkansas',
       'Texas A&M',
-      'University of Georgia',
+      'Clemson University',
       'University of South Carolina',
       'Ole Miss',
       'University of Kentucky',
       'University of Tennessee',
       'University of Alabama',
-      'University of Oklahoma'
+      'University of Oklahoma',
+      'Belmont University',
+      'Samford University',
+      'Vanderbilt University',
+      'Tennessee Tech University',
+      ''
     ]
 
     return (
       <div className='section-availability'>
         <div className="content">
           <h2 className='section-header'>
-            Now available at 10 schools and counting&hellip;
+            Now available at 14 schools and counting&hellip;
           </h2>
           <ul className="list">
             {universityList.map((u, idx) => {

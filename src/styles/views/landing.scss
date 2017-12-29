@@ -9,76 +9,12 @@ $h2-size-sm: 1.75em;
   padding-right: 1rem;
   width: 100%;
 
-  overflow-x: hidden;
-  iframe {
-    border-radius: $cn-border-radius;
-    height: calc(55vh - 64px);
-    margin-left: auto;
-    margin-right: auto;
-    width: 80%;
-   }
-
-   .cn-navbar {
-     img {
-       @include breakpoint(small) {
-         display: none;
-       }
-       @include breakpoint(medium) {
-         display: inline-block;
-       }
-     }
-     .user-info {
-       @include breakpoint(small) {
-        float: none;
-        justify-content: center;
-       }
-       @include breakpoint(medium) {
-        float: right;
-        justify-content: none;
-       }
-     }
-   }
-
-   #sign-up-form {
-     .facebook-button {
-       @include button;
-       align-items: center;
-       border: 1px solid #CCC;
-       background-color: white;
-       display: flex;
-       justify-content: center;
-
-       i {
-         color: #3b5998;
-         font-size: 1em;
-         margin-right: 0.5em;
-       }
-
-       span {
-         font-size: 0.75em;
-         color: grey;
-       }
-     }
-     .school-info {
-       margin-top: 0.5em;
-       font-size: 11px;
-       span {
-         // margin-left: 5px;
-       }
-     }
-   }
-
-   .forgot-password {
-     font-size: 11px;
-     margin-top: 1px;
-   }
-}
-
-@include breakpoint(medium) {
-  flex-direction: row;
-  max-width: 96%;
-  padding-left: 0;
-  padding-right: 0;
+  @include breakpoint(medium) {
+    flex-direction: row;
+    max-width: 96%;
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 
 @mixin landing-row {

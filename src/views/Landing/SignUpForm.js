@@ -191,7 +191,7 @@ class SignUpForm extends React.Component {
     const {form: {student: {school_id}}} = this.state
     if (school_id) {
       return (
-        <div className='school-info cn-blue'>
+        <div className='school-info cn-blue' style={{marginTop: '0.5em'}}>
           <span>{this.state.schools.find(school => school.id === school_id).name}</span>
         </div>
       )

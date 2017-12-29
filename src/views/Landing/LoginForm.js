@@ -70,6 +70,8 @@ class LoginForm extends React.Component {
   onSubmit (event) {
     event.preventDefault()
 
+    debugger
+
     if (this.props.validateForm(this.state.form, requiredFields)) {
       actions.auth.authenticateUser(this.state.form).then(() => {
         this.props.resetValidation()
@@ -104,36 +106,36 @@ class LoginForm extends React.Component {
 
     return (
       <form className="form-login" onClick={this.onSubmit.bind(this)}>
-          <div className='form-control'>
-            <InputField
-              containerClassName=''
-              error={formErrors.email}
-              showErrorMessage={checkIfFirstKey(formErrors, 'email')}
-              label=''
-              name='email'
-              onChange={updateProperty}
-              placeholder='School email'
-              value={form.email}
-            />
-          </div>
+        <div className='form-control'>
+          <InputField
+            containerClassName=''
+            error={formErrors.email}
+            showErrorMessage={checkIfFirstKey(formErrors, 'email')}
+            label=''
+            name='email'
+            onChange={updateProperty}
+            placeholder='School email'
+            value={form.email}
+          />
+        </div>
 
-          <div className='form-control' >
-            <InputField
-              containerClassName=''
-              error={formErrors.password}
-              showErrorMessage={checkIfFirstKey(formErrors, 'password')}
-              label=''
-              name='password'
-              onChange={updateProperty}
-              placeholder='Password'
-              type='password'
-              value={form.password}
-              onKeyDown={(e)=>this.handleEnter(e)}
-            />
-            <a className='right forgot-password' onClick={this.onForgotPassword.bind(this)}>Forgot password?</a>
-          </div>
+        <div className='form-control' >
+          <InputField
+            containerClassName=''
+            error={formErrors.password}
+            showErrorMessage={checkIfFirstKey(formErrors, 'password')}
+            label=''
+            name='password'
+            onChange={updateProperty}
+            placeholder='Password'
+            type='password'
+            value={form.password}
+            onKeyDown={(e) =>this.handleEnter(e)}
+          />
+          <a className='right forgot-password' onClick={this.onForgotPassword.bind(this)}>Forgot password?</a>
+        </div>
 
-          <button type="submit" className="button">Login</button>
+        <button type="submit" className="button">Login</button>
       </form>
     )
   }
