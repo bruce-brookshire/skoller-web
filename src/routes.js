@@ -74,12 +74,11 @@ function requireAuth (nextState, replaceState) {
     userStore.authToken = cookie.get('skollerToken')
     actions.auth.getUserByToken()
       .then((user) => {
-        
         authenticateStudent(user).then(() => {
           if (nextState.routes.findIndex(route => route.path === '/student/onboard') !== -1) {
             authOnboard()
-            userStore.setFetchingUser(false)
           }
+          userStore.setFetchingUser(false)
         }).catch(() => { userStore.setFetchingUser(false) })
 
         // if (nextState.routes.findIndex(route => route.path === '/student/onboard') !== -1) {
@@ -109,6 +108,9 @@ function authenticateStudent (user) {
       })
     }
   }
+  return new Promise((resolve, reject) => {
+    resolve()
+  })
 }
 
 /*

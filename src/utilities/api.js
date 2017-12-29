@@ -24,7 +24,7 @@ export const checkError = (response) => {
 * @return [Object] response. Http response from server.
 */
 export const parseResponse = (response) => {
-  if (response.status >= 200 && response.status < 300) {
+  if (response.status >= 200 && response.status < 300 && response.status !== 204) {
     return response.json()
   } else {
     // if (response.status === 401) logout()

@@ -4,7 +4,7 @@ import {authenticateUser, createAccount, forgotPassword, getRoles,
   resendVerification, updateAccount, verifyPhoneNumber} from './auth'
 import {createClass, dropClass, getClassById, getProfessorClasses,
   getStudentClasses, enrollInClass, searchClasses, searchStudentClasses,
-  updateClass, lockClass, unlockClass} from './classes'
+  updateClass, lockClass, unlockClass, updateClassStatus} from './classes'
 import {createIssue, getHelpTypes} from './classhelp'
 import {getClassDocuments, uploadClassDocument} from './documents'
 import {updateGradeScale} from './gradescales'
@@ -14,7 +14,7 @@ import {attachProfessorToClass, createProfessor, removeProfessorFromClass,
   searchProfessors, updateProfessor} from './professors'
 import {createSchool, getActiveSchools, getFieldsOfStudy, getHubSchools,
   getHubSchoolsMinified, getSchoolById, updateSchool} from './schools'
-import {getAssignmentClass, getReviewClass, getWeightClass} from './syllabusworkers'
+import {getNextClass} from './syllabusworkers'
 import {createWeight, deleteWeight, getClassWeights, updateWeight} from './weights'
 
 const actions = {
@@ -49,7 +49,8 @@ const actions = {
     searchClasses,
     searchStudentClasses,
     unlockClass,
-    updateClass
+    updateClass,
+    updateClassStatus
   },
   classhelp: {
     createIssue,
@@ -87,9 +88,7 @@ const actions = {
     updateSchool
   },
   syllabusworkers: {
-    getAssignmentClass,
-    getReviewClass,
-    getWeightClass
+    getNextClass
   },
   weights: {
     createWeight,

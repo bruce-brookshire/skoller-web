@@ -37,27 +37,9 @@ class HubLanding extends React.Component {
   /*
   * Fetch the next weight class for worker
   */
-  getNextWeightClass () {
-    actions.syllabusworkers.getWeightClass().then((cl) => {
-      this.navigateToSyllabusTool(cl, 100)
-    }).catch(() => false)
-  }
-
-  /*
-  * Fetch the next assignment class for worker
-  */
-  getNextAssignmentClass () {
-    actions.syllabusworkers.getAssignmentClass().then((cl) => {
-      this.navigateToSyllabusTool(cl, 200)
-    }).catch(() => false)
-  }
-
-  /*
-  * Fetch the next review class for worker
-  */
-  getNextReviewClass () {
-    actions.syllabusworkers.getWeightClass().then((cl) => {
-      this.navigateToSyllabusTool(cl, 300)
+  getNextClass (sectionName, sectionId) {
+    actions.syllabusworkers.getNextClass(sectionName).then((cl) => {
+      this.navigateToSyllabusTool(cl, sectionId)
     }).catch(() => false)
   }
 
@@ -146,7 +128,7 @@ class HubLanding extends React.Component {
                 <div className='nav-button-container row full-width'>
 
                   <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
-                    <button className='nav-button button full-width' onClick={() => this.getNextWeightClass()}>
+                    <button className='nav-button button full-width' onClick={() => this.getNextClass('weights', 100)}>
                       <img src='/src/assets/images/icons/Weights.png'/>
                       <span>Weights (
                         {this.state.loadingStatuses ? <Loading style={{color: 'white'}}/>
@@ -157,7 +139,7 @@ class HubLanding extends React.Component {
                   </div>
 
                   <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
-                    <button className='nav-button button full-width' onClick={() => this.getNextAssignmentClass()}>
+                    <button className='nav-button button full-width' onClick={() => this.getNextClass('assignments', 200)}>
                       <img src='/src/assets/images/icons/Assignments.png'/>
                       <span>Assigments (
                         {this.state.loadingStatuses ? <Loading style={{color: 'white'}} />
@@ -168,7 +150,7 @@ class HubLanding extends React.Component {
                   </div>
 
                   <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
-                    <button className='nav-button button full-width' onClick={() => this.getNextReviewClass()}>
+                    <button className='nav-button button full-width' onClick={() => this.getNextClass('reviews', 300)}>
                       <img src='/src/assets/images/icons/Review.png'/>
                       <span>Review (
                         {this.state.loadingStatuses ? <Loading style={{color: 'white'}} />

@@ -175,6 +175,13 @@ body {
   color: #00C000;
 }
 
+.cn-green-background {
+  background-color: #00C000;
+  &:hover {
+    background-color: lighten(#00C000, 5%);
+  }
+}
+
 .cn-grey {
   color: #9f9f9f;
 }

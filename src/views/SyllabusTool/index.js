@@ -2,10 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {browserHistory} from 'react-router'
 import Assignments from '../components/ClassEditor/Assignments'
-import GradeScale from '../components/ClassEditor/GradeScale'
 import FileViewer from '../../components/FileViewer'
+import GradeScale from '../components/ClassEditor/GradeScale'
 import IssuesModal from './IssuesModal'
+import Loading from '../../components/Loading'
 import Professor from '../components/ClassEditor/Professor'
+import StatusForm from './StatusForm'
 import Weights from '../components/ClassEditor/Weights'
 import {FileTabs, FileTab} from '../../components/FileTab'
 import {ProgressBar, ProgressStep} from '../../components/ProgressBar'
@@ -64,6 +66,7 @@ class SyllabusTool extends React.Component {
       currentIndex,
       disableNext: false,
       documents: [],
+      gettingClass: false,
       isDIY: state.isDIY || false,
       isAdmin: state.isAdmin || false,
       isReviewer: state.isReviewer || false,
@@ -71,7 +74,8 @@ class SyllabusTool extends React.Component {
       loadingClass: false,
       openIssuesModal: false,
       sectionId: state.sectionId || null,
-      stepCount: 4
+      stepCount: 4,
+      submiting: false
     }
   }
 
@@ -81,7 +85,7 @@ class SyllabusTool extends React.Component {
   initializeCurrentIndex () {
     const {state} = this.props.location
     let currentIndex = ContentEnum.WEIGHTS
-    if (state.isAdmin) currentIndex = ContentEnum.PROFESSOR
+    if (state.isAdmin && !state.isSW) currentIndex = ContentEnum.PROFESSOR
     if (state.sectionId) {
       switch (state.sectionId) {
         case 100:
@@ -108,7 +112,7 @@ class SyllabusTool extends React.Component {
     this.setState({loadingClass: true})
     actions.classes.getClassById(classId).then((cl) => {
       this.setState({cl, loadingClass: false})
-    }).catch(() => { this.setState({loadingClass: false}) })
+    }).catch((error) => { this.setState({loadingClass: false}) })
   }
   /*
   * Fetch the documnets for a class.
@@ -122,29 +126,45 @@ class SyllabusTool extends React.Component {
   }
 
   /*
-  * Lock the class for DIY.
+  * Lock the class for DIY or admin who are not working as SW.
   */
   lockClass () {
-    if (this.state.isDIY || (this.state.isAdmin)) {
+    if (this.state.isDIY || (this.state.isAdmin && !this.state.isSW)) {
       const {params: {classId}} = this.props
       const form = {is_class: true}
       actions.classes.lockClass(classId, form).then(() => {
-      }).catch((error) => { if (error !== 422) browserHistory.push('/student/classes') })
+      }).catch((error) => {
+        if (error === 409 && this.state.isDIY) {
+          browserHistory.push('/student/classes')
+        }
+      })
     }
   }
 
   /*
-  * Unlock the the class.
+  * Unlock the the class when not complete.
   */
   unlockClass () {
     const {params: {classId}} = this.props
-    const form = (this.state.isDIY || this.state.isAdmin) ?
+    const form = (this.state.isDIY || (this.state.isAdmin && !this.state.isSW)) ?
       {is_class: true} : {class_lock_section_id: this.state.sectionId}
 
     actions.classes.unlockClass(classId, form).then(() => {
     }).catch(() => false)
   }
 
+  /*
+  * Unlock and complete for diy
+  */
+  unlockDIYLock () {
+    const {params: {classId}} = this.props
+    const form = {is_class: true, is_completed: true}
+    this.setState({submitting: true})
+    actions.classes.unlockClass(classId, form).then(() => {
+      browserHistory.push('/student/classes')
+      this.setState({submitting: false})
+    }).catch(() => { this.setState({submitting: false}) })
+  }
 
   /*
   * Unlock the class for syllabus worker.
@@ -153,9 +173,11 @@ class SyllabusTool extends React.Component {
     const {params: {classId}} = this.props
     const form = {class_lock_section_id: this.state.sectionId, is_completed: true}
 
+    this.setState({submitting: true})
     actions.classes.unlockClass(classId, form).then(() => {
       this.handleSWNext()
-    }).catch(() => { browserHistory.push('/hub/landing') })
+      this.setState({submitting: false})
+    }).catch(() => { this.setState({submitting: false}); browserHistory.push('/hub/landing') })
   }
 
   /*
@@ -197,9 +219,9 @@ class SyllabusTool extends React.Component {
       case ContentEnum.GRADE_SCALE:
         return <GradeScale cl={this.state.cl} onSubmit={this.updateClass.bind(this)}/>
       case ContentEnum.WEIGHTS:
-        return <Weights cl={this.state.cl} isReview={true} disableNext={this.state.disableNext} toggleDisabled={this.toggleDisabled.bind(this)} />
+        return <Weights cl={this.state.cl} isReview={isReviewer} disableNext={this.state.disableNext} toggleDisabled={this.toggleDisabled.bind(this)} />
       case ContentEnum.ASSIGNMENTS:
-        return <Assignments cl={this.state.cl} isReview={true} />
+        return <Assignments cl={this.state.cl} isReview={isReviewer} />
       default:
     }
   }
@@ -209,20 +231,25 @@ class SyllabusTool extends React.Component {
   * Render for syllabus workers and admin. Not for DIY.
   */
   renderSectionTabs () {
-    const {isReviewer, isAdmin} = this.state
-    if (isReviewer || isAdmin) {
-      return (
-        <FileTabs style={{marginLeft: '7px', marginRight: '7px'}} currentIndex={this.state.currentIndex}>
-          { isAdmin &&
+    const {isReviewer, isAdmin, isSW} = this.state
+    if (isReviewer || (isAdmin && !isSW)) {
+      if (isReviewer) {
+        return (
+          <FileTabs style={{marginLeft: '7px', marginRight: '7px'}} currentIndex={this.state.currentIndex-2}>
+            <FileTab name='Weights' onClick={() => this.setState({currentIndex: 2})} />
+            <FileTab name='Assignments' onClick={() => this.setState({currentIndex: 3})} />
+          </FileTabs>
+        )
+      } else {
+        return (
+          <FileTabs style={{marginLeft: '7px', marginRight: '7px'}} currentIndex={this.state.currentIndex}>
             <FileTab name='Professor Info' onClick={() => this.setState({currentIndex: 0})} />
-          }
-          { isAdmin &&
             <FileTab name='Grade Scale' onClick={() => this.setState({currentIndex: 1})} />
-          }
-          <FileTab name='Weights' onClick={() => this.setState({currentIndex: 2})} />
-          <FileTab name='Assignments' onClick={() => this.setState({currentIndex: 3})} />
-        </FileTabs>
-      )
+            <FileTab name='Weights' onClick={() => this.setState({currentIndex: 2})} />
+            <FileTab name='Assignments' onClick={() => this.setState({currentIndex: 3})} />
+          </FileTabs>
+        )
+      }
     }
   }
 
@@ -351,9 +378,9 @@ class SyllabusTool extends React.Component {
   * Render having issues for admin and SW
   */
   renderHavingIssues () {
-    const {isAdmin} = this.state
+    const {isAdmin, isSW} = this.state
 
-    if (isAdmin) {
+    if (isAdmin || isSW) {
       return (
         <a
           className='right cn-red'
@@ -378,10 +405,29 @@ class SyllabusTool extends React.Component {
     )
   }
 
+  /*
+  * Render the status form of the class for the admin to update.
+  */
+  renderStatusForm () {
+    if (this.state.isAdmin && !this.state.isSW) {
+      return (
+        <div className='row actions-container full-width'>
+          <div className='col-xs-12 col-md-8 col-lg-6'>
+            <StatusForm cl={this.state.cl}/>
+          </div>
+        </div>
+      )
+    }
+  }
+
+  /*
+  * Render the button text dependent on worker.
+  */
   renderButtonText () {
     const {isDIY, isReviewer, isAdmin, isSW} = this.state
     let text = ''
-    if (isAdmin && !isSW) text = 'Done'
+    if ((isReviewer || isDIY) && this.state.currentIndex === ContentEnum.ASSIGNMENTS) text = 'Everything looks good. Submit info and continue'
+    else if (isAdmin && !isSW) text = 'Done'
     else text = 'Next'
     return text
   }
@@ -395,19 +441,27 @@ class SyllabusTool extends React.Component {
     if (isDIY) {
       this.handleDIYNext()
     } else if (isAdmin && !isSW) {
-      //Came from class search
       browserHistory.push('/hub/classes')
     } else if (isAdmin || isSW) {
-      this.unlockSWLock()
+      if (isReviewer && this.state.currentIndex !== (this.state.stepCount - 1)) {
+        this.setState({currentIndex: this.state.currentIndex + 1})
+      } else {
+        this.unlockSWLock()
+      }
     }
   }
 
+  /*
+  * On DIY next
+  * If DIY is done, complete class.
+  */
   handleDIYNext () {
     if (this.state.currentIndex !== (this.state.stepCount - 1)) {
       this.setState({currentIndex: this.state.currentIndex + 1})
+    } else {
+      this.unlockDIYLock()
     }
   }
-
 
   /*
   * Get the next class with an open syllabus section for syllabus
@@ -415,52 +469,23 @@ class SyllabusTool extends React.Component {
   */
   handleSWNext () {
     const {sectionId} = this.state
-    switch (sectionId) {
-      case 100:
-        this.getNextWeightClass()
-        break
-      case 200:
-        this.getNextAssignmentClass()
-        break
-      case 300:
-        this.getNextReviewClass()
-        break
-      default:
-        break
-    }
+    let sectionName = sectionId === 100 ? 'weights' : sectionId === 200 ?
+      'assignments' : 'reviews'
+    this.onGetNextClass(sectionName)
   }
 
   /*
-  * Fetch the next weight class for worker
+  * Fetch the next class for SW.
+  *
+  * @param [String] sectionName. Name of the section SW is working on.
   */
-  getNextWeightClass () {
-    actions.syllabusworkers.getWeightClass().then((cl) => {
+  getNextClass (sectionName) {
+    this.setState({gettingClass: true})
+    actions.syllabusworkers.getNextClass(sectionName).then((cl) => {
       const {state} = this.props.location
       browserHistory.push({ pathname: `/class/${cl.id}/syllabus_tool`, state: {...state} })
       this.intializeComponent()
-    }).catch(() => false)
-  }
-
-  /*
-  * Fetch the next assignment class for worker
-  */
-  getNextAssignmentClass () {
-    actions.syllabusworkers.getAssignmentClass().then((cl) => {
-      const {state} = this.props.location
-      browserHistory.push({ pathname: `/class/${cl.id}/syllabus_tool`, state: {...state} })
-      this.intializeComponent()
-    }).catch(() => false)
-  }
-
-  /*
-  * Fetch the next review class for worker
-  */
-  getNextReviewClass () {
-    actions.syllabusworkers.getWeightClass().then((cl) => {
-      const {state} = this.props.location
-      browserHistory.push({ pathname: `/class/${cl.id}/syllabus_tool`, state: {...state} })
-      this.intializeComponent()
-    }).catch(() => false)
+    }).catch(() => { this.setState({gettingClass: false}) })
   }
 
   /*
@@ -486,10 +511,15 @@ class SyllabusTool extends React.Component {
   }
 
   render () {
-    const {cl, loadingClass, isAdmin} = this.state
-    const disabledClass = this.state.disableNext ? 'disabled' : ''
+    const {cl, disableNext, loadingClass, isAdmin,
+      isReviewer, isDIY, currentIndex, gettingClass, submitting} = this.state
 
-    if (loadingClass) return <div />
+    const disableButton = disableNext || gettingClass || submitting
+    const disabledClass = disableButton ? 'disabled' : ''
+    const completeClass = ((isReviewer || isDIY) &&
+      currentIndex === ContentEnum.ASSIGNMENTS) ? 'cn-green-background' : ''
+
+    if (loadingClass) return <Loading />
     return (
       <div className='cn-syllabus-tool-container'>
         <div className='row full-width col-xs-12 col-md-10 col-lg-10'>
@@ -502,7 +532,6 @@ class SyllabusTool extends React.Component {
                 <div className='header'>
                   {this.renderClassIssue()}
                   <h2>{cl && cl.name}</h2>
-                  {}
                   {isAdmin && <div className='margin-left'>
                     <i className='fa fa-wrench cn-red' style={{cursor: 'pointer'}} onClick={() => false} />
                   </div>}
@@ -532,11 +561,13 @@ class SyllabusTool extends React.Component {
             </div>
           </div>
 
+          {this.renderStatusForm()}
+
           <div className='row actions-container full-width margin-top'>
             <div className='space-between-vertical col-xs-12 col-md-8 col-lg-6'>
               <button
-                className={`button full-width margin-bottom ${disabledClass}`}
-                disabled={this.state.disableNext}
+                className={`button full-width margin-bottom ${completeClass} ${disabledClass}`}
+                disabled={disableButton}
                 onClick={this.onNext.bind(this)}
               >{this.renderButtonText()}</button>
             </div>

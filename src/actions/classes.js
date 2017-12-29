@@ -212,6 +212,32 @@ export function updateClass (form) {
 }
 
 /*
+* Update a class status
+*
+* @param [Object] cl. Class to update.
+* @param [Object] form. Class status form.
+*/
+export function updateClassStatus (cl, form) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}/statuses`, {
+    method: 'PUT',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(form)
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      showSnackbar('Class status updated.', 'info')
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error updating class status. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
 * Lock the class for DIY
 *
 * @param [Number] classId. Class to lock
