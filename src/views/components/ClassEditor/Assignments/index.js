@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import AssignmentForm from './AssignmentForm'
+import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
 import {convertUTCDatetimeToDateString} from '../../../../utilities/time'
 
@@ -16,13 +17,15 @@ class Assignments extends React.Component {
   componentWillMount () {
     const {cl, disabled} = this.props
     if (!disabled) {
+      this.setState({loadingAssignments: true})
       actions.assignments.getClassAssignments(cl).then((assignments) => {
-        this.setState({assignments})
-      }).then(() => false)
+        this.setState({assignments, loadingAssignments: false})
+      }).then(() => { this.setState({loadingAssignments: false}) })
 
+      this.setState({loadingWeights: true})
       actions.weights.getClassWeights(cl).then((weights) => {
-        this.setState({weights})
-      }).then(() => false)
+        this.setState({weights, loadingWeights: false})
+      }).then(() => { this.setState({loadingWeights: false}) })
     }
   }
 
@@ -36,6 +39,8 @@ class Assignments extends React.Component {
     return {
       assignments: assignments || [],
       currentAssignment: null,
+      loadingAssignments: false,
+      loadingWeights: false,
       viewOnly: isReview,
       weights: weights || []
     }
@@ -181,7 +186,8 @@ class Assignments extends React.Component {
   }
 
   render () {
-    const {viewOnly} = this.state
+    const {viewOnly, loadingAssignments, loadingWeights} = this.state
+    if (loadingAssignments || loadingWeights) return <Loading />
     return (
       <div className='space-between-vertical'>
         <h5 style={{marginTop: '-0.25em', marginBottom: '0.5em'}}>Edit Assignments</h5>

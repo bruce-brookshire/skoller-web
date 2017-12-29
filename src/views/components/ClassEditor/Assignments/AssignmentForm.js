@@ -71,7 +71,7 @@ class AssignmentForm extends React.Component {
     return ({
       id: id || null,
       name: name || '',
-      weight_id: weight_id || null,
+      weight_id: weight_id || '',
       due: due || ''
     })
   }

@@ -196,7 +196,7 @@ class SyllabusTool extends React.Component {
     const {isDIY, cl: {school}} = this.state
     if (!isDIY) {
       return (
-        <div>
+        <div className='full-width'>
           <div className='left'>
             <a onClick={() => browserHistory.push('/hub/landing')}>Back to homepage</a>
           </div>
@@ -437,7 +437,7 @@ class SyllabusTool extends React.Component {
   */
   onNext () {
     const {isDIY, isReviewer, isAdmin, isSW} = this.state
-    
+
     if (isDIY) {
       this.handleDIYNext()
     } else if (isAdmin && !isSW) {
