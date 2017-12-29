@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import AutoComplete from '../AutoComplete'
+import {matchText} from '../../utilities/display'
 
 class MultiselectField extends React.Component {
   constructor (props) {
@@ -18,7 +19,10 @@ class MultiselectField extends React.Component {
         key={index}
         onClick={() => this.onSelect(data)}
       >
-        <span>{data.name}</span>
+        {this.autoComplete ?
+          matchText(data.name, this.autoComplete.getSearchText())
+          : data.name
+        }
       </div>
     )
   }
@@ -56,7 +60,10 @@ class MultiselectField extends React.Component {
           key={index}
           className='cursor'
           onClick={() => this.onDelete(value)}
-        >{value.name}{index !== this.props.value.length -1 ? ', ' : ''}</span>
+        >
+          {value.name}
+          {index !== this.props.value.length - 1 ? ', ' : ''}
+        </span>
       )
     })
   }
@@ -76,7 +83,7 @@ class MultiselectField extends React.Component {
         }
         <div>
           <AutoComplete
-            ref={(component) => { this.autoComplete = component }}
+            ref={(component) => { if (component) { this.autoComplete = component } }}
             className={loading ? 'loading': ''}
             dataSource={options}
             emptyMessage={emptyMessage}

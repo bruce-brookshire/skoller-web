@@ -20,11 +20,17 @@ class AutoComplete extends React.Component {
     this.setState(this.initializeState())
   }
 
+  getSearchText () {
+    return this.state.autoCompleteValue
+  }
+
   renderInput () {
     return (
       <AutoCompleteInput
         {...this.props}
-        onChange={(event) => { this.setState({isDirty: true, autoCompleteValue: event.target.value}) }}
+        onChange={(event) => {
+          this.setState({isDirty: true, autoCompleteValue: event.target.value})
+        }}
         onKeyUp={this.onKeyUp.bind(this)}
         value={this.state.autoCompleteValue}
       />

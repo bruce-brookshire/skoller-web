@@ -161,7 +161,7 @@ class AccountInfoForm extends React.Component {
     const {form: {student: {school_id}}} = this.state
     if (school_id) {
       return (
-        <div className='margin-top school-info' style={{fontSize: 11}}>
+        <div className='margin-top school-info cn-blue' style={{fontSize: 11}}>
           <span>{this.state.schools.find(school => school.id === school_id).name}</span>
         </div>
       )
@@ -326,12 +326,16 @@ class AccountInfoForm extends React.Component {
   * @param [String] value. Autocomplete input value.
   */
   updateFOSOptions (value) {
-    const {form: {student: {school_id}}} = this.state
-    if (school_id) {
-      this.setState({loadingFOS: true})
-      actions.schools.getFieldsOfStudy(school_id, value).then((fieldsOfStudy) => {
-        this.setState({fieldsOfStudy, loadingFOS: false})
-      }).catch(() => { this.setState({loadingFOS: false}) })
+    if (value.length > 0) {
+      const {form: {student: {school_id}}} = this.state
+      if (school_id) {
+        this.setState({loadingFOS: true})
+        actions.schools.getFieldsOfStudy(school_id, value).then((fieldsOfStudy) => {
+          this.setState({fieldsOfStudy, loadingFOS: false})
+        }).catch(() => { this.setState({loadingFOS: false}) })
+      }
+    } else {
+      this.setState({fieldsOfStudy: [ ]})
     }
   }
 

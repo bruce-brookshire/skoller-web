@@ -20,13 +20,23 @@ class ClassSearch extends React.Component {
   * Fetch data to poplate drop downs.
   */
   componentWillMount () {
+    const {state} = this.props.location
     actions.schools.getHubSchoolsMinified().then((schools) => {
       this.setState({schools})
     }).catch(() => false)
 
     actions.hub.getStatuses().then((statuses) => {
       this.setState({statuses: statuses.statuses})
+      if (state && state.needsHelp) this.intitializeParams()
     }).catch(() => false)
+  }
+
+  intitializeParams () {
+    const {state} = this.props.location
+    if (state && state.needsHelp) {
+      this.setState({searchField: 'class_status', searchValue: 600})
+      this.onSearch()
+    }
   }
 
   /*
