@@ -124,7 +124,7 @@ class WeightForm extends React.Component {
           </div>
         </div>
         <button
-          className='button full-width margin-top margin-bottom'
+          className='button full-width margin-top'
           disabled={this.state.loading}
           onClick={this.onSubmit.bind(this)}
         >

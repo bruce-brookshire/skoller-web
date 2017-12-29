@@ -198,7 +198,7 @@ class Weights extends React.Component {
   renderWeightSlider () {
     if (this.state.weights.length === 0 || this.props.disabled) {
       return (
-        <div className='full-width'>
+        <div className='full-width margin-top'>
           <WeightConverter id='class-editor-weight-converter' onChange={this.onToggleConverter.bind(this)} value={this.state.isPoints}/>
         </div>
       )
@@ -303,7 +303,7 @@ class Weights extends React.Component {
 
     return (
       <div className='space-between-vertical'>
-        <h5 style={{marginTop: '-0.25em', marginBottom: '0.5em'}}>Edit weights</h5>
+        <h5 style={{marginTop: '0.25em', marginBottom: '0.5em'}}>Edit weights</h5>
         {viewOnly && <a className='right-text' style={{marginBottom: '5px'}} onClick={() => this.setState({viewOnly: false}) }>edit</a>}
         {this.renderContent()}
         {!viewOnly && this.renderWeightSlider()}

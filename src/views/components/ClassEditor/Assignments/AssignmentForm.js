@@ -68,7 +68,7 @@ class AssignmentForm extends React.Component {
     let formData = data || {}
     const {id, name, weight_id, due} = formData
     const {cl} = this.props
-    
+
     return ({
       id: id || null,
       name: name || '',
@@ -145,6 +145,7 @@ class AssignmentForm extends React.Component {
           </div>
           <div className='col-xs-12'>
             <InputField
+              style={{marginTop: '0em'}}
               containerClassName='margin-top'
               error={formErrors.name}
               label='Assignment name'
@@ -156,6 +157,7 @@ class AssignmentForm extends React.Component {
           </div>
           <div className='col-xs-12'>
             <InputField
+              style={{marginTop: '0.25em'}}
               containerClassName='margin-top'
               error={formErrors.due}
               label='Due Date'
@@ -169,7 +171,7 @@ class AssignmentForm extends React.Component {
           </div>
         </div>
         <button
-          className='button full-width margin-top margin-bottom'
+          className='button full-width margin-top'
           disabled={this.state.loading}
           onClick={this.onSubmit.bind(this)}
         >

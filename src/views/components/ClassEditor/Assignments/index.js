@@ -99,7 +99,7 @@ class Assignments extends React.Component {
           </div>
         }
         <div className={!viewOnly ? 'col-xs-9' : 'col-xs-10'}>
-          <div><span>{name}</span></div>
+          <div className='bold'><span>{name}</span></div>
           <div>
             <span className='desctiption'>{weight_id && this.state.weights &&
               this.state.weights.find(w => w.id === weight_id).name || 'N/A'}
@@ -190,7 +190,7 @@ class Assignments extends React.Component {
     if (loadingAssignments || loadingWeights) return <Loading />
     return (
       <div className='space-between-vertical'>
-        <h5 style={{marginTop: '-0.25em', marginBottom: '0.5em'}}>Edit Assignments</h5>
+        <h5 style={{marginTop: '0.25em', marginBottom: '0.5em'}}>Edit Assignments</h5>
         {viewOnly && <a className='right-text' style={{marginBottom: '5px'}} onClick={() => this.setState({viewOnly: false}) }>edit</a>}
         <div className={`class-editor-table ${viewOnly ? 'view-only' : ''}`} >
           <div id='class-editor-assignments-table'>

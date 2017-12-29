@@ -15,10 +15,9 @@
   border-radius: $cn-border-radius;
   cursor: pointer;
   display: inline-block;
-  font-size: 1.15em;
+  font-size: 1em;
   font-weight: 400;
-  line-height: .75;
-  padding: 1em 1em .75em;
+  padding: .5em .5em 0.25em;
 
   &:focus { outline: none; }
 }

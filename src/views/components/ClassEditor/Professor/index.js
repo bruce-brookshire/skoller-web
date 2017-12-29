@@ -115,7 +115,7 @@ class Professor extends React.Component {
   render () {
     return (
       <div>
-        <h5 style={{marginTop: '-0.25em', marginBottom: '0.5em'}}>Edit professor</h5>
+        <h5 style={{marginTop: '0.25em', marginBottom: '0.5em'}}>Edit professor</h5>
         {this.renderContent()}
       </div>
     )

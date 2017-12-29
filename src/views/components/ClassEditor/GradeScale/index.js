@@ -160,7 +160,7 @@ class GradeScale extends React.Component {
 
     return (
       <div className='margin-top-2x margin-bottom-2x'>
-        <h5 style={{marginTop: '-0.25em', marginBottom: '0.5em'}}>Edit gradescale</h5>
+        <h5 style={{marginTop: '0.25em', marginBottom: '0.5em'}}>Edit gradescale</h5>
         {this.renderCurrentGradeScale()}
         <div className='margin-top'>
           <div className='row'>
