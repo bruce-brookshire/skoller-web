@@ -1,14 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import * as moment from 'moment-timezone'
 import {Form, ValidateForm} from 'react-form-library'
 import {InputField, SelectField} from '../../../../components/Form'
+import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
+import {convertLocalDateToUTC} from '../../../../utilities/time'
 
 const requiredFields = {
   'name': {
-    type: 'required'
-  },
-  'weight_id': {
     type: 'required'
   },
   'due': {
@@ -71,7 +71,7 @@ class AssignmentForm extends React.Component {
     return ({
       id: id || null,
       name: name || '',
-      weight_id: weight_id || '',
+      weight_id: weight_id || null,
       due: due || ''
     })
   }
@@ -81,17 +81,23 @@ class AssignmentForm extends React.Component {
   *
   */
   onSubmit () {
+    if (this.state.weights.length > 0) {
+      requiredFields.weight_id = {
+        type: 'required'
+      }
+    }
     if (this.props.validateForm(this.state.form, requiredFields)) {
-      !this.state.form.id ? this.onCreateAssignment() : this.onUpdateAssignment()
+      const form = this.mapForm(this.state.form)
+      !form.id ? this.onCreateAssignment(form) : this.onUpdateAssignment(form)
     }
   }
 
   /*
   * Create a new assignment
   */
-  onCreateAssignment () {
+  onCreateAssignment (form) {
     this.setState({loading: true})
-    actions.assignments.createAssignment(this.props.cl, this.state.form).then((assignment) => {
+    actions.assignments.createAssignment(this.props.cl, form).then((assignment) => {
       this.props.onCreateAssignment(assignment)
       this.setState({form: this.initializeFormData(), loading: false})
     }).catch(() => { this.setState({loading: false}) })
@@ -100,12 +106,22 @@ class AssignmentForm extends React.Component {
   /*
   * Update an existing assignment
   */
-  onUpdateAssignment () {
+  onUpdateAssignment (form) {
     this.setState({loading: true})
-    actions.assignments.updateAssignment(this.props.cl, this.state.form).then((assignment) => {
+    actions.assignments.updateAssignment(this.props.cl, form).then((assignment) => {
       this.props.onUpdateAssignment(assignment)
       this.setState({form: this.initializeFormData(), loading: false})
     }).catch(() => { this.setState({loading: false}) })
+  }
+
+  /*
+  * Map the form
+  */
+  mapForm () {
+    const {cl} = this.props
+    let newForm = {...this.state.form}
+    newForm.due = convertLocalDateToUTC(this.state.form.due, cl.school.timezone)
+    return newForm
   }
 
   render () {
@@ -118,11 +134,11 @@ class AssignmentForm extends React.Component {
             <SelectField
               containerClassName='margin-top'
               error={formErrors.weight_id}
-              label="Grading category"
-              name="weight_id"
+              label='Grading category'
+              name='weight_id'
               onChange={updateProperty}
               options={this.state.weights}
-              placeholder="Select grading category"
+              placeholder='Select grading category'
               value={form.weight_id}
             />
           </div>
@@ -130,10 +146,10 @@ class AssignmentForm extends React.Component {
             <InputField
               containerClassName='margin-top'
               error={formErrors.name}
-              label="Assignment name"
-              name="name"
+              label='Assignment name'
+              name='name'
               onChange={updateProperty}
-              placeholder="Assignment name, i.e. Exam 1"
+              placeholder='Assignment name, i.e. Exam 1'
               value={form.name}
             />
           </div>
@@ -141,11 +157,11 @@ class AssignmentForm extends React.Component {
             <InputField
               containerClassName='margin-top'
               error={formErrors.due}
-              label="Due Date"
+              label='Due Date'
 
-              name="due"
+              name='due'
               onChange={updateProperty}
-              placeholder="Assignment due date"
+              placeholder='Assignment due date'
               type='date'
               value={form.due}
             />

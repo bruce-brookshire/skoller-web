@@ -6,11 +6,13 @@
 
   }
   &.error {
-
   }
   .cn-form-select {
     @include form-element;
     border: 0;
+    &.error {
+      border: 1px solid red;
+    }
   }
   .cn-input-label {
     @include form-label;

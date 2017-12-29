@@ -437,7 +437,7 @@ class SyllabusTool extends React.Component {
   */
   onNext () {
     const {isDIY, isReviewer, isAdmin, isSW} = this.state
-
+    
     if (isDIY) {
       this.handleDIYNext()
     } else if (isAdmin && !isSW) {

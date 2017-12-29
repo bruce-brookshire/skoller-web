@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import AssignmentForm from './AssignmentForm'
 import actions from '../../../../actions'
+import {convertUTCDatetimeToDateString} from '../../../../utilities/time'
 
 class Assignments extends React.Component {
   constructor (props) {
@@ -129,7 +130,9 @@ class Assignments extends React.Component {
   * @return [String]. MM/DD
   */
   mapAssignmentDate (date) {
-    const dateParts = date.split('-')
+    const {cl} = this.props
+    const datePretty = convertUTCDatetimeToDateString(date, cl.school.timezone)
+    const dateParts = datePretty.split('-')
     return `${dateParts[1]}/${dateParts[2]}`
   }
 
