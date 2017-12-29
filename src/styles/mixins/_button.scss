@@ -15,9 +15,11 @@
   border-radius: $cn-border-radius;
   cursor: pointer;
   display: inline-block;
-  font-size: $primary-font-size;
-  line-height: $primary-font-size * .9;
-  padding: 0.75em 1.25em;
+  font-size: 1.15em;
+  font-weight: bold;
+  line-height: .75;
+  padding: 1em 1em .75em;
+
   &:focus { outline: none; }
 }
 
@@ -42,4 +44,9 @@
   color: $cn-color-blue;
   &:hover { background-color: darken($cn-color-white, 10); }
   @include disabled;
+}
+
+@mixin button-lg {
+  font-size: 1.5em;
+  padding: 1.25em 1em 1em;
 }
