@@ -5,7 +5,7 @@ import {Form, ValidateForm} from 'react-form-library'
 import {InputField, SelectField} from '../../../../components/Form'
 import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
-import {convertLocalDateToUTC} from '../../../../utilities/time'
+import {convertLocalDateToUTC, convertUTCDatetimeToDateString} from '../../../../utilities/time'
 
 const requiredFields = {
   'name': {
@@ -67,12 +67,13 @@ class AssignmentForm extends React.Component {
   initializeFormData (data) {
     let formData = data || {}
     const {id, name, weight_id, due} = formData
-
+    const {cl} = this.props
+    
     return ({
       id: id || null,
       name: name || '',
       weight_id: weight_id || '',
-      due: due || ''
+      due: due ? convertUTCDatetimeToDateString(due, cl.school.timezone) : ''
     })
   }
 
