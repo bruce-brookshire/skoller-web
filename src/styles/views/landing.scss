@@ -411,6 +411,10 @@ $h2-size-sm: 1.75em;
     @include landing-row;
     padding: 0 1rem;
 
+    @include breakpoint(medium) {
+      max-width: 1440px;
+    }
+
     .video {
       @include fluid-width-embed;
       border-radius: $cn-border-radius;

@@ -61,6 +61,15 @@ class HubLanding extends React.Component {
     })
   }
 
+  onNeedsHelp () {
+    browserHistory.push({
+      pathname: '/hub/classes',
+      state: {
+        needsHelp: true
+      }
+    })
+  }
+
   /*
   * Determine if hub user is an admin
   */
@@ -74,10 +83,11 @@ class HubLanding extends React.Component {
   */
   renderAdminMenu () {
     if (this.isAdminUser()) {
+      const helpCount = this.getStatusCount('Help') || 0
       return (
         <div className='margin-top margin-bottom'>
           <span className='button-header center-text margin-top'>Admin panel</span>
-          <div className='nav-button-container row full-width'>
+          <div className='nav-button-container row full-width' style={{alignItems: 'flex-end'}}>
 
             <div className='col-xs-12 col-sm-3 col-md- col-lg-3 margin-top'>
               <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/schools')}>
@@ -91,6 +101,7 @@ class HubLanding extends React.Component {
             </div>
 
             <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
+              {helpCount > 0 && <a onClick={this.onNeedsHelp.bind(this)} className='cn-red needs-help'>Needs Help: {helpCount}</a>}
               <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/classes')}>
                 <img src='/src/assets/images/icons/Search.png'/>
                 <span>Class Search</span>
@@ -115,6 +126,14 @@ class HubLanding extends React.Component {
   }
 
   render () {
+    const weightCount = this.getStatusCount('Weights') || 0
+    const assignmentCount = this.getStatusCount('Assignments') || 0
+    const reviewCount = this.getStatusCount('Review') || 0
+
+    const disableWeights = weightCount === 0
+    const disableAssignments = assignmentCount === 0
+    const disableReviews = reviewCount === 0
+
     return (
       <div className='cn-hub-landing-container'>
         <div className='full-width'>
@@ -128,44 +147,45 @@ class HubLanding extends React.Component {
                 <div className='nav-button-container row full-width'>
 
                   <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
-                    <button className='nav-button button full-width' onClick={() => this.getNextClass('weights', 100)}>
+                    <button
+                      className={`nav-button button full-width ${disableWeights ? 'disabled' : ''}`}
+                      disabled={disableWeights}
+                      onClick={() => this.getNextClass('weights', 100)}
+                    >
                       <img src='/src/assets/images/icons/Weights.png'/>
                       <span>Weights (
                         {this.state.loadingStatuses ? <Loading style={{color: 'white'}}/>
-                          : this.getStatusCount('Weights') || 0
+                          : weightCount
                         }
                       )</span>
                     </button>
                   </div>
 
                   <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
-                    <button className='nav-button button full-width' onClick={() => this.getNextClass('assignments', 200)}>
+                    <button
+                      className={`nav-button button full-width ${disableAssignments ? 'disabled' : ''}`}
+                      disabled={disableAssignments}
+                      onClick={() => this.getNextClass('assignments', 200)}
+                    >
                       <img src='/src/assets/images/icons/Assignments.png'/>
                       <span>Assigments (
                         {this.state.loadingStatuses ? <Loading style={{color: 'white'}} />
-                          : this.getStatusCount('Assignments') || 0
+                          : assignmentCount
                         }
                       )</span>
                     </button>
                   </div>
 
                   <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
-                    <button className='nav-button button full-width' onClick={() => this.getNextClass('reviews', 300)}>
+                    <button
+                      className={`nav-button button full-width ${disableReviews ? 'disabled' : ''}`}
+                      disabled={disableReviews}
+                      onClick={() => this.getNextClass('reviews', 300)}
+                    >
                       <img src='/src/assets/images/icons/Review.png'/>
                       <span>Review (
                         {this.state.loadingStatuses ? <Loading style={{color: 'white'}} />
-                          : this.getStatusCount('Review') || 0
-                        }
-                      )</span>
-                    </button>
-                  </div>
-
-                  <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
-                    <button className='nav-button button full-width' onClick={() => this.onNavigate('/diy/needs_help')}>
-                      <img src='/src/assets/images/icons/NeedsHelp.png'/>
-                      <span>Needs Help (
-                        {this.state.loadingStatuses ? <Loading style={{color: 'white'}}/>
-                          : this.getStatusCount('Help') || 0
+                          : reviewCount
                         }
                       )</span>
                     </button>

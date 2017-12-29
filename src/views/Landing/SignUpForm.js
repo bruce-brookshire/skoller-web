@@ -2,11 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {browserHistory} from 'react-router'
 import {Cookies} from 'react-cookie'
-import {inject, observer} from 'mobx-react'
 import {Form, ValidateForm} from 'react-form-library'
 import {InputField, MultiselectField} from '../../components/Form'
-import actions from '../../actions'
 import Modal from '../../components/Modal'
+import actions from '../../actions'
+import {matchText} from '../../utilities/display'
 
 const requiredFields = {
   'email': {
@@ -162,7 +162,7 @@ class SignUpForm extends React.Component {
   }
 
   onAddMyUniversity () {
-    window.location.href = "mailto:support@skoller.co?Subject=Add My School";
+    window.location.href = 'mailto:support@skoller.co?Subject=Add My School'
   }
 
   onSeeSchools () {
@@ -174,9 +174,9 @@ class SignUpForm extends React.Component {
         <h3 className='center-text'>Supported Schools</h3>
         <p className='center-text'>These are the current universities Skoller supports.<br/>If your school is not on here, <a className='non-styled-link' href="mailto:support@skoller.co?Subject=Add My School">let us know</a>!</p>
         <ul className='non-styled-list'>
-          {this.state.schools.map(function(school){
-              return <li key={school.name}>{school.name}</li>
-            })
+          {this.state.schools.map(function (school) {
+            return <li key={school.name}>{school.name}</li>
+          })
           }
         </ul>
       </Modal>
@@ -204,12 +204,16 @@ class SignUpForm extends React.Component {
   * @param [String] value. Autocomplete input value.
   */
   updateFOSOptions (value) {
-    const {form: {student: {school_id}}} = this.state
-    if (school_id) {
-      this.setState({loadingFOS: true})
-      actions.schools.getFieldsOfStudy(school_id, value).then((fieldsOfStudy) => {
-        this.setState({fieldsOfStudy, loadingFOS: false})
-      }).catch(() => { this.setState({loadingFOS: false}) })
+    if (value.length > 0) {
+      const {form: {student: {school_id}}} = this.state
+      if (school_id) {
+        this.setState({loadingFOS: true})
+        actions.schools.getFieldsOfStudy(school_id, value).then((fieldsOfStudy) => {
+          this.setState({fieldsOfStudy, loadingFOS: false})
+        }).catch(() => { this.setState({loadingFOS: false}) })
+      }
+    } else {
+      this.setState({fieldsOfStudy: [ ]})
     }
   }
 
@@ -219,8 +223,8 @@ class SignUpForm extends React.Component {
   getFOSOptions () {
     const {fieldsOfStudy, form} = this.state
     return fieldsOfStudy.filter(f =>
-      form.student.fields_of_study.findIndex(ff => ff.value === f.id) === -1)
-      .map(f => { return { value: f.id, name: f.field } })
+      form.student.fields_of_study.findIndex((ff) => ff.value === f.id) === -1)
+      .map((f) => { return { value: f.id, name: f.field } })
   }
 
   render () {

@@ -116,7 +116,6 @@ class HubClasses extends React.Component {
   * @param [String] status. Class status.
   */
   mapStatus (status) {
-    debugger
     if (status)
       status = status.toLowerCase()
     if (status === 'new class' || status === 'needs syllabus') {
@@ -154,7 +153,7 @@ class HubClasses extends React.Component {
       <div className='cn-classes-container'>
         <div className='margin-bottom'>
           <h2 className='center-text' style={{marginBottom: 0}}>Class Search</h2>
-          <ClassSearch onSearch={this.getClasses.bind(this)}/>
+          <ClassSearch {...this.props} onSearch={this.getClasses.bind(this)}/>
           <div className='margin-top'>
             <a onClick={this.onCreateClass.bind(this)}>Create new class </a>
             <span className='description'>Manage classes from this page</span>
