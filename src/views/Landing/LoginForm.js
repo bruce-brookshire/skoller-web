@@ -70,8 +70,6 @@ class LoginForm extends React.Component {
   onSubmit (event) {
     event.preventDefault()
 
-    debugger
-
     if (this.props.validateForm(this.state.form, requiredFields)) {
       actions.auth.authenticateUser(this.state.form).then(() => {
         this.props.resetValidation()
@@ -105,7 +103,7 @@ class LoginForm extends React.Component {
     const {formErrors, updateProperty} = this.props
 
     return (
-      <form className="form-login" onClick={this.onSubmit.bind(this)}>
+      <form className="form-login" onSubmit={this.onSubmit.bind(this)}>
         <div className='form-control'>
           <InputField
             containerClassName=''
