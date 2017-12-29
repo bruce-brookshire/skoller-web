@@ -33,10 +33,10 @@ export function searchProfessors (param, periodId) {
 * Create a new professor
 *
 * @params [Object] form. Professor form.
+* @param [Number] periodId. Id of period.
 */
-export function createProfessor (form) {
-  const {user: {student: {school}}} = userStore
-  return fetch(`${Environment.SERVER_NAME}/api/v1/periods/${school.periods[0].id}/professors`, {
+export function createProfessor (form, periodId) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/periods/${periodId}/professors`, {
     method: 'POST',
     headers: {
       'Authorization': userStore.authToken,

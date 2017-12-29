@@ -24,6 +24,19 @@ class Weights extends React.Component {
   }
 
   /*
+  * Disable next.
+  */
+  componentDidUpdate () {
+    // Disable the parents submit button if weights are not secure.
+    let {disableNext} = this.props
+    if (!this.isTotalWeightSecure() && !disableNext) {
+      this.props.toggleDisabled(true)
+    } else if (this.isTotalWeightSecure() && disableNext) {
+      this.props.toggleDisabled(false)
+    }
+  }
+
+  /*
   * Method for intializing the state.
   *
   * @return [Object]. State object.
@@ -283,15 +296,9 @@ class Weights extends React.Component {
     this.setState({totalPoints})
   }
 
-  render () {
-    // Disable the parents submit button if weights are not secure.
-    // let {disableNext} = this.props
-    // if (!this.isTotalWeightSecure() && !disableNext) {
-    //   this.props.toggleDisabled(true)
-    // } else if (this.isTotalWeightSecure() && disableNext) {
-    //   this.props.toggleDisabled(false)
-    // }
 
+
+  render () {
     const {viewOnly} = this.state
 
     return (

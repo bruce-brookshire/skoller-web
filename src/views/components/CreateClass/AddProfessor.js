@@ -48,7 +48,9 @@ class AddProfessor extends React.Component {
   */
   onSubmit () {
     if (this.props.validateForm(this.state.form, requiredFields)) {
-      actions.professors.createProfessor(this.state.form).then((professor) => {
+      const {userStore: {user: {student: {school}}}} = this.props.rootStore
+
+      actions.professors.createProfessor(this.state.form, school.periods[0].id).then((professor) => {
         this.props.onSubmit(professor)
       }).catch(() => false)
     }

@@ -18,16 +18,13 @@ class Landing extends React.Component {
       // navbar login section
       <div className='cn-landing-container'>
         <div className='cn-navbar'>
-          <div className='left'>
-            <img className='logo' src='src/assets/images/logo-wide-blue@1x.png'></img>
-          </div>
-          <div className='user-info right'>
-            <LoginForm rootStore={this.props.rootStore}/>
-          </div>
+          <h1>
+            <img alt="Skoller" className='logo' src='src/assets/images/logo-wide-blue@1x.png'></img>
+          </h1>
+          <LoginForm rootStore={this.props.rootStore}/>
         </div>
 
         {/* start of section 1 */}
-
         <PromoSignup rootStore={this.props.rootStore}/>
 
         {/* start of section 2 */}
@@ -47,6 +44,15 @@ class Landing extends React.Component {
 
         {/* start of section 7 */}
         <CallToAction/>
+
+        <footer className="site-footer">
+          <span className="copyright">
+            Copyright &copy; ClassNav, LLC {}. All rights reserved.
+          </span>
+          <span className="support">
+            Need help? <a href="mailto:support@skoller.com">Contact us.</a>
+          </span>
+        </footer>
 
       </div>
     )

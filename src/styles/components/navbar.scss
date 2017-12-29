@@ -1,21 +1,21 @@
 .cn-navbar {
   background-color: $cn-color-white;
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-  border-color: $cn-color-blue;
-  padding: 10px 20px;
+  border-bottom: 2px solid $cn-color-blue;
   height: $unit-nav-height;
+  padding: 10px 20px;
   width: 100%;
 
   .user-info {
-    display: flex;
     align-items: center;
+    display: flex;
+
     p {
       font-size: 1rem;
       font-weight: 600;
       margin: 0;
       text-align: center;
     }
+
     span {
       display: block;
       font-size: 0.75rem;
