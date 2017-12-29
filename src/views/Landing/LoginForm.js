@@ -17,7 +17,6 @@ const requiredFields = {
 }
 
 class LoginForm extends React.Component {
-
   static propTypes = {
     formErrors: PropTypes.object,
     resetValidation: PropTypes.func,
@@ -26,38 +25,20 @@ class LoginForm extends React.Component {
     validateForm: PropTypes.func
   }
 
-
   constructor (props) {
     super(props)
-
     this.cookie = new Cookies()
     this.state = this.initializeState()
   }
 
-
-  handleEnter (e) {
-    if (e.key == 'Enter') {
-      this.onSubmit()
-    }
-  }
-
-
-  componentDidMount () {
-    window.addEventListener('keydown', this.handleEnter.bind(this));
-  }
-
-
-  componentWillUnmount () {
-    window.removeEventListener('keydown', this.handleEnter.bind(this));
-  }
-
-
+  /*
+  * Initialize state
+  */
   initializeState () {
     return {
       form: this.initializeFormData()
     }
   }
-
 
   initializeFormData () {
     return {
@@ -66,16 +47,13 @@ class LoginForm extends React.Component {
     }
   }
 
-
   onSubmit (event) {
     event.preventDefault()
-
-    debugger
 
     if (this.props.validateForm(this.state.form, requiredFields)) {
       actions.auth.authenticateUser(this.state.form).then(() => {
         this.props.resetValidation()
-        const { userStore: { authToken , user } } = this.props.rootStore
+        const { userStore: { authToken, user } } = this.props.rootStore
         this.cookie.set('skollerToken', authToken)
         if (user.student) {
           if (user.student.is_verified) {
@@ -94,18 +72,16 @@ class LoginForm extends React.Component {
     }
   }
 
-
   onForgotPassword () {
     browserHistory.push('/forgot_password')
   }
-
 
   render () {
     const {form} = this.state
     const {formErrors, updateProperty} = this.props
 
     return (
-      <form className="form-login" onClick={this.onSubmit.bind(this)}>
+      <form className="form-login" onSubmit={this.onSubmit.bind(this)}>
         <div className='form-control'>
           <InputField
             containerClassName=''
@@ -130,7 +106,6 @@ class LoginForm extends React.Component {
             placeholder='Password'
             type='password'
             value={form.password}
-            onKeyDown={(e) =>this.handleEnter(e)}
           />
           <a className='right forgot-password' onClick={this.onForgotPassword.bind(this)}>Forgot password?</a>
         </div>

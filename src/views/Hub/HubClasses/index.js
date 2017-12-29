@@ -116,7 +116,6 @@ class HubClasses extends React.Component {
   * @param [String] status. Class status.
   */
   mapStatus (status) {
-    debugger
     if (status)
       status = status.toLowerCase()
     if (status === 'new class' || status === 'needs syllabus') {
