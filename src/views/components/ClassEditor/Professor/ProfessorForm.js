@@ -64,7 +64,7 @@ class ProfessorForm extends React.Component {
   */
   onCreateProfessor () {
     this.setState({loading: true})
-    actions.professors.createProfessor(this.state.form).then((professor) => {
+    actions.professors.createProfessor(this.state.form, this.props.cl.class_period_id).then((professor) => {
       this.props.onSubmit(professor)
       this.setState({loading: false})
     }).catch(() => { this.setState({loading: false}) })
