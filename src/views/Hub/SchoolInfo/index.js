@@ -1,8 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import FlexTable from '../../../components/FlexTable'
+import ClassUploadInfo from './ClassUploadInfo'
 import Modal from '../../../components/Modal'
 import PeriodForm from './PeriodForm'
+import SemesterDetails from './SemesterDetails'
+import SchoolDetails from './SchoolDetails'
 import SchoolDetailsForm from './SchoolDetailsForm'
 import UploadHistory from '../../../components/UploadHistory'
 import actions from '../../../actions'
@@ -26,6 +29,9 @@ class SchoolInfo extends React.Component {
   initializeState () {
     const {state} = this.props.location
     return {
+      completedClassCount: 0,
+      erroredClasses: [],
+      openClassModal: false,
       openDetailsForm: false,
       openPeriodForm: false,
       school: (state && state.school) || null,
@@ -37,73 +43,30 @@ class SchoolInfo extends React.Component {
 
   }
 
+  /*
+  * Render the school details
+  */
   renderSchoolDetails () {
     const {school} = this.state
-
     return (
-      <div>
-        <div className='edit-header'>
-          <h3>1. School Details</h3>
-          <a onClick={this.toggleDetailsForm.bind(this)}>Edit</a>
-        </div>
-        {school ?
-          <table className='school-info-table'>
-            <tbody>
-              <tr>
-                <th className='cn-flex-table-cell'>School:</th>
-                <td className='cn-flex-table-cell'>{school.name}</td>
-              </tr>
-              <tr>
-                <th>Address:</th>
-                <td>{school.adr_line_1}, {school.adr_city} {school.adr_state} {school.adr_zip}</td>
-              </tr>
-              <tr>
-                <th>Student email domain:</th>
-                <td>{school.email_domains && school.email_domains.filter(e => !e.is_professor_only).map(e => e.email_domain ).join(', ')}</td>
-              </tr>
-              <tr>
-                <th>Prof email domain:</th>
-                <td>{school.email_domains && school.email_domains.filter(e => e.is_professor_only).map(e => e.email_domain ).join(', ')}</td>
-              </tr>
-              <tr>
-                <th>Time Zone:</th>
-                <td>{school.timezone}</td>
-              </tr>
-            </tbody>
-          </table> : <a onClick={this.toggleDetailsForm.bind(this)}>Add details</a>
-        }
-      </div>
+      <SchoolDetails
+        onEdit={this.toggleDetailsForm.bind(this)}
+        school={school}
+      />
     )
   }
 
+  /*
+  * Render Semeter details
+  */
   renderActiveSemester () {
-    const {period} = this.state
+    const {period, school} = this.state
     return (
-      <div>
-        <div className='edit-header'>
-          <h3>2. Active Semester</h3>
-          <a onClick={this.togglePeriodForm.bind(this)}>Edit</a>
-        </div>
-
-        {period ?
-          <table className='school-info-table'>
-            <tbody>
-              <tr>
-                <th>Semester Name:</th>
-                <td>{period.name}</td>
-              </tr>
-              <tr>
-                <th>Start Date:</th>
-                <td>{period.start_date}</td>
-              </tr>
-              <tr>
-                <th>End Date:</th>
-                <td>{period.end_date}</td>
-              </tr>
-            </tbody>
-          </table> : <a onClick={this.togglePeriodForm.bind(this)}>Add details</a>
-        }
-      </div>
+      <SemesterDetails
+        period={period}
+        school={school}
+        onEdit={this.togglePeriodForm.bind(this)}
+      />
     )
   }
 
@@ -201,6 +164,63 @@ class SchoolInfo extends React.Component {
     this.setState({openPeriodForm: !this.state.openPeriodForm})
   }
 
+  onUploadFOS () {
+
+  }
+
+  /*
+  * On upload class csv, show results of upload.
+  *
+  * @param [File] file. File to be uploaded.
+  */
+  onUploadClasses (file) {
+    actions.documents.uploadClassCsv(this.state.period.id, file).then((classes) => {
+      const erroredClasses = classes.filter(cl => {
+        let error = cl.errors
+        if (error && cl.errors.class) {
+          error = cl.errors.class.findIndex(e =>
+            e.toLowerCase() === 'has already been taken') === -1
+        }
+        return error
+      })
+      const completedClassCount = classes.length - erroredClasses.length
+      this.setState({erroredClasses, completedClassCount, openClassModal: true })
+    })
+  }
+
+  /*
+  * Render the class upload results modal.
+  */
+  renderClassUploadModal () {
+    const {openClassModal, erroredClasses, completedClassCount} = this.state
+    return (
+      <Modal
+        open={openClassModal}
+        onClose={this.toggleClassUploadModal.bind(this)}
+      >
+        <div>
+          <ClassUploadInfo
+            erroredClasses={erroredClasses}
+            completedClassCount={completedClassCount}
+          />
+          <div className='row'>
+            <button
+              className='button-invert full-width margin-top margin-bottom'
+              onClick={this.toggleClassUploadModal.bind(this)}
+            > Close </button>
+          </div>
+        </div>
+      </Modal>
+    )
+  }
+
+  /*
+  * Toggle the class upload results modal.
+  */
+  toggleClassUploadModal () {
+    this.setState({openClassModal: !this.state.openClassModal})
+  }
+
   render () {
     return (
       <div className='cn-school-info'>
@@ -213,42 +233,35 @@ class SchoolInfo extends React.Component {
             {this.renderActiveSemester()}
           </div>
           <div className='col-xs-12 col-md-3 margin-top'>
-            <h3>3. Import professors</h3>
+            <h3>3. Import fields of study</h3>
             <UploadHistory
-              disabled={false}
-              files={[]}
-              info='Upload professor csv.'
-              onUpload={(file) => {  }}
-              title='Professors'
-            />
-          </div>
-          <div className='col-xs-12 col-md-3 margin-top'>
-            <h3>4. Import fields of study</h3>
-            <UploadHistory
+              allow='text/csv'
               disabled={false}
               files={[]}
               info='Upload fields of study csv.'
-              onUpload={(file) => {  }}
+              onUpload={(file) => { this.onUploadFOS(file) }}
               title='Fields of Study'
             />
           </div>
           <div className='col-xs-12 col-md-3 margin-top'>
-            <h3>5. Import classes</h3>
+            <h3>4. Import classes</h3>
             <UploadHistory
+              allow='text/csv'
               disabled={false}
               files={[]}
               info='Upload classes csv.'
-              onUpload={(file) => {  }}
+              onUpload={(file) => { this.onUploadClasses(file) }}
               title='Classes'
             />
           </div>
           <div className='col-xs-12 col-md-3 margin-top'>
-            <h3>6. Class Settings</h3>
+            <h3>5. Class Settings</h3>
             {this.renderSchoolSettings()}
           </div>
         </div>
         {this.renderDetailsFormModal()}
         {this.renderPeriodFormModal()}
+        {this.renderClassUploadModal()}
       </div>
     )
   }

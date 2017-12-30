@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
 import {InputField, SelectField} from '../../../components/Form'
 import actions from '../../../actions'
+import {convertUTCDatetimeToDateString, convertLocalDateToUTC} from '../../../utilities/time'
 
 const requiredFields = {
   'name': {
@@ -43,12 +44,13 @@ class PeriodForm extends React.Component {
   initializeFormData (data) {
     let formData = data || {}
     const {id, name, start_date, end_date} = formData
+    const {school} = this.props
 
     return ({
       id: id || '',
       name: name || '',
-      start_date: start_date || '',
-      end_date: end_date || ''
+      start_date: start_date ? convertUTCDatetimeToDateString(start_date, school.timezone) : '',
+      end_date: end_date ? convertUTCDatetimeToDateString(end_date, school.timezone) : ''
     })
   }
 
@@ -58,15 +60,26 @@ class PeriodForm extends React.Component {
   */
   onSubmit () {
     if (this.props.validateForm(this.state.form, requiredFields)) {
-      !this.state.form.id ? this.onCreatePeriod() : this.onUpdatePeriod()
+      const form = this.mapForm()
+      !form.id ? this.onCreatePeriod(form) : this.onUpdatePeriod(form)
     }
+  }
+
+  /*
+  * Map form.
+  */
+  mapForm () {
+    let form = {...this.state.form}
+    form.start_date = convertLocalDateToUTC(this.state.form.start_date, school.timezone)
+    form.end_date = convertLocalDateToUTC(this.state.form.end_date, school.timezone)
+    return form
   }
 
   /*
   * Create a new period
   */
-  onCreatePeriod () {
-    actions.periods.createPeriod(this.props.school, this.state.form).then((period) => {
+  onCreatePeriod (form) {
+    actions.periods.createPeriod(this.props.school, form).then((period) => {
       this.props.onSubmit(period)
     }).catch(() => false)
   }
@@ -74,8 +87,8 @@ class PeriodForm extends React.Component {
   /*
   * Update an existing period
   */
-  onUpdatePeriod () {
-    actions.periods.updatePeriod(this.state.form).then((period) => {
+  onUpdatePeriod (form) {
+    actions.periods.updatePeriod(form).then((period) => {
       this.props.onSubmit(period)
     }).catch(() => false)
   }
