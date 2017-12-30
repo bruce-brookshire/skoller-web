@@ -69,6 +69,7 @@ class PeriodForm extends React.Component {
   * Map form.
   */
   mapForm () {
+    const {school} = this.props
     let form = {...this.state.form}
     form.start_date = convertLocalDateToUTC(this.state.form.start_date, school.timezone)
     form.end_date = convertLocalDateToUTC(this.state.form.end_date, school.timezone)
