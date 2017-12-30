@@ -4,17 +4,17 @@ import {browserHistory} from 'react-router'
 
 const menuItems = [
   {
-    icon: 'fa fa-book',
+    icon: 'fa fa-home',
     path: '/'
   },
-  {
-    icon: 'fa fa-check-circle-o',
-    path: '/student/diy'
-  },
-  {
-    icon: 'fa fa-calendar',
-    path: '/calendar'
-  },
+  // {
+  //   icon: 'fa fa-check-circle-o',
+  //   path: '/student/diy'
+  // },
+  // {
+  //   icon: 'fa fa-calendar',
+  //   path: '/calendar'
+  // },
   {
     icon: 'fa fa-sign-out',
     path: '/logout'
@@ -66,13 +66,12 @@ Menu.propTypes = {
 export default Menu
 
 class MenuItem extends React.Component {
+
   render () {
     const {menuItem: {icon}} = this.props
     return (
       <div className='menu-item'>
-        <a
-          onClick={() => this.props.onClick()}
-        >
+        <a onClick={() => this.props.onClick()}>
           <i className={`${icon}`}/>
         </a>
       </div>
