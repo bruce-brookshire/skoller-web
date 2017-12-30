@@ -6,7 +6,8 @@ import {createClass, dropClass, getClassById, getProfessorClasses,
   getStudentClasses, enrollInClass, searchClasses, searchStudentClasses,
   updateClass, lockClass, unlockClass, updateClassStatus} from './classes'
 import {createIssue, getHelpTypes, resolveIssue} from './classhelp'
-import {getClassDocuments, uploadClassCsv, uploadClassDocument} from './documents'
+import {getClassDocuments, uploadClassCsv, uploadClassDocument,
+  uploadFOSCsv} from './documents'
 import {updateGradeScale} from './gradescales'
 import {getStatuses} from './hub'
 import {getSchoolPeriods, createPeriod, updatePeriod} from './periods'
@@ -61,7 +62,8 @@ const actions = {
   documents: {
     getClassDocuments,
     uploadClassCsv,
-    uploadClassDocument
+    uploadClassDocument,
+    uploadFOSCsv
   },
   gradescales: {
     updateGradeScale

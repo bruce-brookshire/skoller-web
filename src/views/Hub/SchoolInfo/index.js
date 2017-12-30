@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import FlexTable from '../../../components/FlexTable'
 import ClassUploadInfo from './ClassUploadInfo'
+import FOSUploadInfo from './FOSUploadInfo'
 import Modal from '../../../components/Modal'
 import PeriodForm from './PeriodForm'
 import SemesterDetails from './SemesterDetails'
@@ -30,8 +31,11 @@ class SchoolInfo extends React.Component {
     const {state} = this.props.location
     return {
       completedClassCount: 0,
+      completedFOSCount: 0,
       erroredClasses: [],
+      erroredFOS: [],
       openClassModal: false,
+      openFOSModal: false,
       openDetailsForm: false,
       openPeriodForm: false,
       school: (state && state.school) || null,
@@ -120,6 +124,9 @@ class SchoolInfo extends React.Component {
     )
   }
 
+  /*
+  * Render school details form.
+  */
   renderDetailsFormModal () {
     return (
       <Modal
@@ -131,6 +138,9 @@ class SchoolInfo extends React.Component {
     )
   }
 
+  /*
+  * Render semester details form
+  */
   renderPeriodFormModal () {
     return (
       <Modal
@@ -156,16 +166,24 @@ class SchoolInfo extends React.Component {
     this.setState({ period, openPeriodForm: false })
   }
 
-  toggleDetailsForm () {
-    this.setState({openDetailsForm: !this.state.openDetailsForm})
-  }
-
-  togglePeriodForm () {
-    this.setState({openPeriodForm: !this.state.openPeriodForm})
-  }
-
-  onUploadFOS () {
-
+  /*
+  * On upload class fos, show results of upload.
+  *
+  * @param [File] file. File to be uploaded.
+  */
+  onUploadFOS (file) {
+    actions.documents.uploadFOSCsv(this.state.school.id, file).then((fos) => {
+      const erroredFOS = fos.filter(f => {
+        let error = f.errors
+        if (error && f.errors.school_field) {
+          error = f.errors.school_field.findIndex(e =>
+            e.toLowerCase() === 'has already been taken') === -1
+        }
+        return error
+      })
+      const completedFOSCount = fos.length - erroredFOS.length
+      this.setState({ erroredFOS, completedFOSCount, openFOSModal: true })
+    })
   }
 
   /*
@@ -186,6 +204,32 @@ class SchoolInfo extends React.Component {
       const completedClassCount = classes.length - erroredClasses.length
       this.setState({erroredClasses, completedClassCount, openClassModal: true })
     })
+  }
+
+  /*
+  * Render the fos upload modal
+  */
+  renderFOSUploadModal () {
+    const {openFOSModal, erroredFOS, completedFOSCount} = this.state
+    return (
+      <Modal
+        open={openFOSModal}
+        onClose={this.toggleFOSUploadModal.bind(this)}
+      >
+        <div>
+          <FOSUploadInfo
+            erroredFOS={erroredFOS}
+            completedFOSCount={completedFOSCount}
+          />
+          <div className='row'>
+            <button
+              className='button-invert full-width margin-top margin-bottom'
+              onClick={this.toggleFOSUploadModal.bind(this)}
+            > Close </button>
+          </div>
+        </div>
+      </Modal>
+    )
   }
 
   /*
@@ -219,6 +263,27 @@ class SchoolInfo extends React.Component {
   */
   toggleClassUploadModal () {
     this.setState({openClassModal: !this.state.openClassModal})
+  }
+
+  /*
+  * Toggle schools details modal.
+  */
+  toggleDetailsForm () {
+    this.setState({openDetailsForm: !this.state.openDetailsForm})
+  }
+
+  /*
+  * Toggle schools period modal.
+  */
+  togglePeriodForm () {
+    this.setState({openPeriodForm: !this.state.openPeriodForm})
+  }
+
+  /*
+  * Toggle fos modal.
+  */
+  toggleFOSUploadModal () {
+    this.setState({openFOSModal: !this.state.openFOSModal})
   }
 
   render () {
@@ -262,6 +327,7 @@ class SchoolInfo extends React.Component {
         {this.renderDetailsFormModal()}
         {this.renderPeriodFormModal()}
         {this.renderClassUploadModal()}
+        {this.renderFOSUploadModal()}
       </div>
     )
   }
