@@ -43,7 +43,7 @@ class NavBar extends React.Component {
     return (
       <div className='cn-navbar'>
         <div className='left'>
-          <img className='logo' src='src/assets/images/blue-logo-full.png'></img>
+          <img alt="Skoller" className='logo' src='/src/assets/images/logo-wide-blue@1x.png' />
         </div>
         <div className='user-info right'>
           <div className='left'>
