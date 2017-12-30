@@ -51,10 +51,18 @@ class SchoolInfo extends React.Component {
 
 
   handleFourDateStateChange() {
+    const values = Object.values(this.fourDoorStatesDef)
     const states = Object.keys(this.fourDoorStatesDef)
     const curState = this.getFourDoorState()
     const currIdx = states.findIndex( s => s === curState )
     const nextIdx = currIdx + 1 > states.length - 1 ? 0 : currIdx + 1
+
+    const { school } = this.state
+    school.is_diy_enabled = values[nextIdx][0]
+    school.is_diy_preferred = values[nextIdx][1]
+    school.is_auto_syllabus = values[nextIdx][2]
+
+    this.setState({ school: school })
   }
 
   getFourDoorState() {
@@ -76,12 +84,30 @@ class SchoolInfo extends React.Component {
 
 
   renderFourDoorSelect() {
+    let sImg = 'default'
+    let dImg = 'default'
+
+    switch(this.getFourDoorState()) {
+      case 'diy_preferred_sw':
+        sImg = 'default'
+        dImg = 'on'
+        break;
+      case 'sw':
+        sImg = 'on'
+        dImg = 'off'
+        break;
+      case 'diy':
+        sImg = 'off'
+        dImg = 'on'
+        break;
+    }
+
     return (
       <a onClick={this.handleFourDateStateChange.bind(this)}
          style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
 
-        <img className='four-door-icon margin-right' src='/src/assets/images/four_door/skoller_default.png' />
-        <img className='four-door-icon' src='/src/assets/images/four_door/diy_default.png' />
+        <img className='four-door-icon margin-right' src={`/src/assets/images/four_door/skoller_${sImg}.png`} />
+        <img className='four-door-icon' src={`/src/assets/images/four_door/diy_${dImg}.png`} />
       </a>
     )
   }
