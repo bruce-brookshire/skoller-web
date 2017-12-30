@@ -5,6 +5,7 @@ import ClassUploadInfo from './ClassUploadInfo'
 import Modal from '../../../components/Modal'
 import PeriodForm from './PeriodForm'
 import SemesterDetails from './SemesterDetails'
+import { updateSchool } from '../../../actions/schools'
 import SchoolDetails from './SchoolDetails'
 import SchoolDetailsForm from './SchoolDetailsForm'
 import UploadHistory from '../../../components/UploadHistory'
@@ -62,7 +63,11 @@ class SchoolInfo extends React.Component {
     school.is_diy_preferred = values[nextIdx][1]
     school.is_auto_syllabus = values[nextIdx][2]
 
-    this.setState({ school: school })
+    updateSchool(school).then((res) => {
+      this.setState({ school: school })
+    }).catch(() => {
+      alert('An unknown error occurred...')
+    })
   }
 
   getFourDoorState() {
