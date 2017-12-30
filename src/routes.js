@@ -34,7 +34,7 @@ const router = (
       <Route path='/landing' component={Landing} />
       <Route path='/forgot_password' component={ForgotPassword} />
       <Route path='/reset_password/:token' component={ResetPassword} />
-       <Route path='/app' component={Layout} onEnter={requireAuth}>
+      <Route path='/app' component={Layout} onEnter={requireAuth}>
         <IndexRedirect to='/student/classes' />
         <Route path='/student'>
           <IndexRedirect to='/student/classes'/>
