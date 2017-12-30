@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 class FOSUploadInfo extends React.Component {
-  renderErroredClasses () {
+  renderErroredFOS () {
     const {erroredFOS} = this.props
     if (erroredFOS.length > 0) {
       return (
@@ -31,7 +31,7 @@ class FOSUploadInfo extends React.Component {
     const {completedFOSCount, erroredFOS} = this.props
     return (
       <div>
-        <h5>Class Upload</h5>
+        <h5>Fields of Study Upload</h5>
         <p className='cn-green'>Completed: {completedFOSCount}</p>
         <p className='cn-red'>Errored: {erroredFOS.length}</p>
         {this.renderErroredFOS()}
