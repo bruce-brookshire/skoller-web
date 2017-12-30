@@ -493,7 +493,7 @@ class SyllabusTool extends React.Component {
     const {sectionId} = this.state
     let sectionName = sectionId === 100 ? 'weights' : sectionId === 200 ?
       'assignments' : 'reviews'
-    this.onGetNextClass(sectionName)
+    this.getNextClass(sectionName)
   }
 
   /*
