@@ -5,7 +5,7 @@ import {browserHistory} from 'react-router'
 const menuItems = [
   {
     icon: 'fa fa-home',
-    path: '/'
+    path: '/hub/landing'
   },
   // {
   //   icon: 'fa fa-check-circle-o',
