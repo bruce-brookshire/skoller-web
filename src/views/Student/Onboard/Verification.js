@@ -63,7 +63,7 @@ class Verification extends React.Component {
         <div className='cn-verification-container'>
           <div className='row'>
             <div className='col-xs-12 col-sm-4 img-container'>
-              <img className='right center-vertical' src='src/assets/images/buzz_buzz.png' />
+              <img className='right center-vertical' src='/src/assets/images/buzz_buzz.png' />
             </div>
             <div className='col-xs-12 col-sm-8 content-container'>
               <h1>Buzz Buzz</h1>
