@@ -368,7 +368,7 @@ class SyllabusTool extends React.Component {
     if (needsHelp && !isDIY) {
       return (
         <div className='issue-icon-container' onClick={this.toggleIssuesModal.bind(this)}>
-          <div className='message-bubble triangle-bottom'>
+          <div className='message-bubble triangle-top'>
             {helpRequests[0].note}
             <div className='triangle-inner' />
           </div>

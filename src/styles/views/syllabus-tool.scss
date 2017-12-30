@@ -31,38 +31,42 @@
         .issue-icon-container {
           position: relative;
           text-align: center;
+          z-index: 100;
+
           .message-bubble {
-            z-index: 100000;
             background-color: white;
+            border: 1px solid black;
             color: black;
             display: none;
-            position: absolute;
-            top: 0;
-            margin-left: -0.5em;
             left: 50%;
-            transform: translate(-50%, -110%);
-            border: 1px solid black;
-            // margin-top: -7px*2;
-            &.triangle-bottom {
+            margin-left: -0.5em;
+            position: absolute;
+            bottom: 0;
+            transform: translate(-50%, 100%);
+            width: 300px;
+
+            &.triangle-top {
               &::before {
-                border-top: 7px solid transparent;
-                border-right: 7px solid black;
-                border-bottom: 7px solid transparent;
-                margin-bottom: 3px;
+                margin-top: 4px;
+                border-right: 6px solid black;
               }
             }
 
-            .triangle-inner:before {
-              border-top: 6px solid transparent;
-              border-right: 6px solid white;
-              border-bottom: 6px solid transparent;
-              margin-bottom: 6px;
+            .triangle-inner{
+              &::before {
+                border-top: 6px solid transparent;
+                border-right: 6px solid white;
+                border-bottom: 6px solid transparent;
+                margin-bottom: 6px;
+              }
             }
           }
 
           &:hover {
+            cursor: pointer;
+
             .message-bubble {
-              display: inline-block;
+              display: block;
             }
           }
         }
