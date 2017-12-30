@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
 import {InputField, SelectField} from '../../../components/Form'
 import actions from '../../../actions'
+import {timezoneOptions} from '../../../utilities/time'
 
 const requiredFields = {
   'name': {
@@ -204,13 +205,14 @@ class SchoolDetailsForm extends React.Component {
               />
             </div>
             <div className='col-xs-12'>
-              <InputField
+              <SelectField
                 containerClassName='margin-top'
                 error={formErrors.timezone}
                 label="School timezone"
                 name="timezone"
                 onChange={updateProperty}
-                placeholder="School timezone"
+                options={timezoneOptions}
+                placeholder="Select timezone"
                 value={form.timezone}
               />
             </div>

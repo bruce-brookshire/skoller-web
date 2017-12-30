@@ -1,5 +1,14 @@
 import * as moment from 'moment-timezone'
 
+/*  Update these as mapTimezone updates */
+export const timezoneOptions = [
+  {name: 'AKDT/AKST', value: 'AKDT'},
+  {name: 'CDT/CST', value: 'CDT'},
+  {name: 'EDT/EST', value: 'EDT'},
+  {name: 'HDT/HST', value: 'HDT'},
+  {name: 'MDT/MST', value: 'MDT'},
+  {name: 'PDT/PST', value: 'PDT'}
+]
 // call on load
 initalizeTimezoneData()
 
