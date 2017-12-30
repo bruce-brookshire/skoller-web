@@ -171,6 +171,14 @@ body {
   color: red;
 }
 
+.cn-red-background {
+  background-color: red;
+  &:hover {
+    background-color: lighten(red, 15%);
+  }
+}
+
+
 .cn-green {
   color: #00C000;
 }

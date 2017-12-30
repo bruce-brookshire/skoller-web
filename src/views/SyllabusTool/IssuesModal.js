@@ -3,11 +3,10 @@ import PropTypes from 'prop-types'
 import Modal from '../../components/Modal'
 import actions from '../../actions'
 
-
 class IssuesModal extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {value: '', note: '', helpTypes: [] }
+    this.state = { value: '', note: '', helpTypes: [] }
   }
 
   /*
@@ -17,6 +16,46 @@ class IssuesModal extends React.Component {
     actions.classhelp.getHelpTypes().then(helpTypes => {
       this.setState({helpTypes})
     }).catch(() => false)
+  }
+
+  /*
+  * Render the form if no issue.
+  */
+  renderForm () {
+    return (
+      <div>
+        {this.renderCheckboxes()}
+
+        {this.state.value === 400
+          ? <div className='cn-input-container margin-top'>
+            <textarea
+              style={{height: '64px'}}
+              className='cn-form-textarea'
+              onChange={(event) => { this.setState({note: event.target.value}) }}
+              placeholder="Descrive the issue(s) here."
+              rows={5}
+            />
+          </div> : null
+
+        }
+
+        <button className='button full-width margin-top cn-red-background' onClick={this.onSubmit.bind(this)}>Submit</button>
+      </div>
+    )
+  }
+
+  /*
+  * Render the issue if issue exitsts.
+  */
+  renderDescription () {
+    const {cl} = this.props
+    const helpTicket = this.getOpenHelpTickets()[0]
+    return (
+      <div>
+        <span>{helpTicket.note}</span>
+        <button className='button full-width margin-top' onClick={() => this.onResolve(helpTicket)}>Resolve</button>
+      </div>
+    )
   }
 
   /*
@@ -63,33 +102,45 @@ class IssuesModal extends React.Component {
       actions.classhelp.createIssue(cl, value, form).then((cl) => {
         this.props.onSubmit(cl)
         this.props.onClose()
+        this.setState({value: '', note: ''})
       }).catch(() => false)
     }
   }
 
+  /*
+  * Resolve the help tickets.
+  */
+  onResolve (helpTicket) {
+    const {cl} = this.props
+    actions.classhelp.resolveIssue(helpTicket.id).then((helpTicket) => {
+      let helpTickets = cl.help_requests
+      const index = helpTickets.findIndex(h => h.id === helpTicket.id)
+      helpTickets[index] = helpTicket
+      let newCl = {...cl}
+      newCl.help_requests = helpTickets
+      this.props.onSubmit(newCl)
+      this.props.onClose()
+      this.setState({value: '', note: ''})
+    }).catch(() => false)
+  }
+
+  /*
+  * Get the open help tickets.
+  */
+  getOpenHelpTickets () {
+    const {cl} = this.props
+    return cl.help_requests.filter(h => !h.is_completed)
+  }
+
   render () {
+    const {cl} = this.props
     return (
       <Modal
         open={this.props.open}
         onClose={() => this.props.onClose()}
       >
         <div>
-          {this.renderCheckboxes()}
-
-          {this.state.value === 400
-            ? <div className='cn-input-container margin-top'>
-              <textarea
-                style={{height: '64px'}}
-                className='cn-form-textarea'
-                onChange={(event) => { this.setState({note: event.target.value}) }}
-                placeholder="Descrive the issue(s) here."
-                rows={5}
-              />
-            </div> : null
-
-          }
-
-          <button className='button full-width margin-top' style={{background: 'red'}} onClick={this.onSubmit.bind(this)}>Submit</button>
+          {this.getOpenHelpTickets().length === 0 ? this.renderForm() : this.renderDescription()}
           <button className='button-invert close full-width margin-top margin-bottom' onClick={() => this.props.onClose()}>Close</button>
         </div>
       </Modal>

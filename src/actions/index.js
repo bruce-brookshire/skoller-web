@@ -5,7 +5,7 @@ import {authenticateUser, createAccount, forgotPassword, getRoles,
 import {createClass, dropClass, getClassById, getProfessorClasses,
   getStudentClasses, enrollInClass, searchClasses, searchStudentClasses,
   updateClass, lockClass, unlockClass, updateClassStatus} from './classes'
-import {createIssue, getHelpTypes} from './classhelp'
+import {createIssue, getHelpTypes, resolveIssue} from './classhelp'
 import {getClassDocuments, uploadClassDocument} from './documents'
 import {updateGradeScale} from './gradescales'
 import {getStatuses} from './hub'
@@ -54,7 +54,8 @@ const actions = {
   },
   classhelp: {
     createIssue,
-    getHelpTypes
+    getHelpTypes,
+    resolveIssue
   },
   documents: {
     getClassDocuments,

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import {InputField, SelectField} from '../../../components/Form'
 import actions from '../../../actions'
 
-
 class ClassSearch extends React.Component {
   constructor (props) {
     super(props)

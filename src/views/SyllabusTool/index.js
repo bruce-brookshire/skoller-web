@@ -112,7 +112,7 @@ class SyllabusTool extends React.Component {
     this.setState({loadingClass: true})
     actions.classes.getClassById(classId).then((cl) => {
       this.setState({cl, loadingClass: false})
-    }).catch((error) => { this.setState({loadingClass: false}) })
+    }).catch((error) => {  this.setState({loadingClass: false}) })
   }
   /*
   * Fetch the documnets for a class.
@@ -360,12 +360,13 @@ class SyllabusTool extends React.Component {
 
   renderClassIssue () {
     const {cl, isDIY} = this.state
-    const needsHelp = cl.help_requests.length > 0
+    const helpRequests = cl.help_requests.filter(h => !h.is_completed)
+    const needsHelp = helpRequests.length > 0
     if (needsHelp && !isDIY) {
       return (
-        <div className='issue-icon-container'>
+        <div className='issue-icon-container' onClick={this.toggleIssuesModal.bind(this)}>
           <div className='message-bubble triangle-bottom'>
-            {cl.help_requests[0].note}
+            {helpRequests[0].note}
             <div className='triangle-inner' />
           </div>
           <i className='fa fa-exclamation-triangle cn-red margin-right' />
