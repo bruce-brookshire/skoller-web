@@ -16,3 +16,15 @@
     @include form-label;
   }
 }
+
+.info-button {
+  span {
+    // display: none;
+  }
+
+  &:hover {
+    span {
+      display: inline-block;
+    }
+  }
+}

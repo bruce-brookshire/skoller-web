@@ -107,11 +107,24 @@ class SchoolDetailsForm extends React.Component {
     }).catch(() => { this.setState({loading: false}) })
   }
 
+  /*
+  * Map commma delimated email domains.
+  */
   mapForm (f) {
     const form = {...f}
     form.email_domains = []
-    form.email_domains.push({email_domain: form.student_email, is_professor_only: false})
-    if (form.professor_email) form.email_domains.push({email_domain: form.professor_email, is_professor_only: true})
+    let emailDomains = form.student_email.replace(' ', '').split(',').map(emailDomain => {
+      return {email_domain: emailDomain, is_professor_only: false}
+    })
+    if (form.professor_email) {
+      const professorEmails = form.professor_email.replace(' ', '').split(',').map(emailDomain => {
+        return {email_domain: emailDomain, is_professor_only: true}
+      })
+      emailDomains = emailDomains.concat(professorEmails)
+    }
+    form.email_domains = emailDomains
+    // form.email_domains.push({email_domain: form.student_email, is_professor_only: false})
+    // if (form.professor_email) form.email_domains.push({email_domain: form.professor_email, is_professor_only: true})
     delete form.student_email
     delete form.professor_email
     return form
@@ -192,6 +205,7 @@ class SchoolDetailsForm extends React.Component {
                 placeholder="Student email"
                 value={form.student_email}
               />
+              <InfoButton message='Email domains are comma delimated and start with @' />
             </div>
             <div className='col-xs-12'>
               <InputField
@@ -203,6 +217,7 @@ class SchoolDetailsForm extends React.Component {
                 placeholder="Professor email"
                 value={form.professor_email}
               />
+              <InfoButton message='Email domains are comma delimated and start with @' />
             </div>
             <div className='col-xs-12'>
               <SelectField
@@ -236,3 +251,15 @@ SchoolDetailsForm.propTypes = {
 }
 
 export default ValidateForm(Form(SchoolDetailsForm, 'form'))
+
+
+class InfoButton extends React.Component {
+  render () {
+    return (
+      <div className='info-button' style={{fontSize: '10px', paddingLeft: '2px', paddingTop: '5px'}}>
+        <i className='fa fa-info-circle' style={{marginRight: '2px'}} />
+        <span>{this.props.message}</span>
+      </div>
+    )
+  }
+}
