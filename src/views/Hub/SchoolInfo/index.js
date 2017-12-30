@@ -13,6 +13,16 @@ import actions from '../../../actions'
 class SchoolInfo extends React.Component {
   constructor (props) {
     super(props)
+
+    // Boolean lists enabled as follows:
+    // is_diy_enabled, is_diy_preferred, is_auto_syllabus
+    this.fourDoorStatesDef = {
+      diy_sw: [true, false, true],
+      diy_preferred_sw: [true, true, true],
+      sw: [false, false, true],
+      diy: [true, true, false]
+    }
+
     this.state = this.initializeState()
   }
 
@@ -39,15 +49,56 @@ class SchoolInfo extends React.Component {
     }
   }
 
+
+  handleFourDateStateChange() {
+    const states = Object.keys(this.fourDoorStatesDef)
+    const curState = this.getFourDoorState()
+    const currIdx = states.findIndex( s => s === curState )
+    const nextIdx = currIdx + 1 > states.length - 1 ? 0 : currIdx + 1
+  }
+
+  getFourDoorState() {
+    if (this.state && !this.state.school) return null
+
+    const statesDef = this.fourDoorStatesDef
+    const { is_diy_enabled, is_diy_preferred, is_auto_syllabus } = this.state.school
+    const curState = [is_diy_enabled, is_diy_preferred, is_auto_syllabus]
+    const comp = JSON.stringify(curState)
+    const curIdx = Object.values(statesDef).findIndex( (b)=> comp === JSON.stringify(b) )
+
+    return Object.keys(statesDef)[curIdx]
+  }
+
+
   onEditActiveSemester () {
 
   }
+
+
+  renderFourDoorSelect() {
+    return (
+      <a onClick={this.handleFourDateStateChange.bind(this)}
+         style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+
+        <img className='four-door-icon margin-right' src='/src/assets/images/four_door/skoller_default.png' />
+        <img className='four-door-icon' src='/src/assets/images/four_door/diy_default.png' />
+      </a>
+    )
+  }
+
 
   /*
   * Render the school details
   */
   renderSchoolDetails () {
-    const {school} = this.state
+    const { school } = this.state
+
+    console.log('school', school)
+
+    // is_auto_syllabus : true
+    // is_diy_enabled : true
+    // is_diy_preferred : false
+
     return (
       <SchoolDetails
         onEdit={this.toggleDetailsForm.bind(this)}
@@ -71,6 +122,9 @@ class SchoolInfo extends React.Component {
   }
 
   renderSchoolSettings () {
+
+
+
     return (
       <div>
         <table className='switch-table'>
@@ -81,12 +135,7 @@ class SchoolInfo extends React.Component {
             </tr>
             <tr>
               <th>4 Door:</th>
-              <td>
-                <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-                  <img className='four-door-icon margin-right' src='/src/assets/images/four_door/skoller_default.png'></img>
-                  <img className='four-door-icon' src='/src/assets/images/four_door/diy_default.png'></img>
-                </div>
-              </td>
+              <td>{this.renderFourDoorSelect()}</td>
             </tr>
             <tr>
               <th>Weights:</th>
