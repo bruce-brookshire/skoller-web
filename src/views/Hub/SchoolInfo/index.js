@@ -95,32 +95,38 @@ class SchoolInfo extends React.Component {
   renderFourDoorSelect() {
     let sImg = 'default'
     let dImg = 'default'
+    let label = 'Normal'
 
     switch(this.getFourDoorState()) {
       case 'diy_preferred_sw':
         sImg = 'default'
         dImg = 'on'
-        break;
+        label='DIY Preferred'
+
+        break
       case 'sw':
         sImg = 'on'
         dImg = 'off'
-        break;
+        label='SW only'
+        break
       case 'diy':
         sImg = 'off'
         dImg = 'on'
-        break;
+        label='DIY only'
+        break
     }
 
     return (
-      <a onClick={this.handleFourDateStateChange.bind(this)}
-         style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-
-        <img className='four-door-icon margin-right' src={`/src/assets/images/four_door/skoller_${sImg}.png`} />
-        <img className='four-door-icon' src={`/src/assets/images/four_door/diy_${dImg}.png`} />
-      </a>
+      <div>
+        {label}
+        <a onClick={this.handleFourDateStateChange.bind(this)}
+           style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+          <img className='four-door-icon margin-right' src={`/src/assets/images/four_door/skoller_${sImg}.png`} />
+          <img className='four-door-icon' src={`/src/assets/images/four_door/diy_${dImg}.png`} />
+        </a>
+      </div>
     )
   }
-
 
   /*
   * Render the school details
@@ -157,9 +163,6 @@ class SchoolInfo extends React.Component {
   }
 
   renderSchoolSettings () {
-
-
-
     return (
       <div>
         <table className='switch-table'>
