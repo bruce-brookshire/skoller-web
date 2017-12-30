@@ -1,5 +1,5 @@
 import React from 'react'
-import {Cookies} from 'react-cookie'
+import { Cookies } from 'react-cookie'
 import { Router, Route, Redirect, IndexRedirect, IndexRoute, browserHistory } from 'react-router'
 import App from './containers/App'
 import Layout from './containers/Layout'
