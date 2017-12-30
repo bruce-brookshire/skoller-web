@@ -2,6 +2,20 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 class FileViewer extends React.Component {
+
+  static propTypes = {
+    source: PropTypes.string
+  }
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      rotate: 0
+    }
+  }
+
+
   /*
   * Set the url of the file.
   *
@@ -10,12 +24,15 @@ class FileViewer extends React.Component {
   */
   setUrl (file) {
     let url = encodeURI(file)
+
     // if it is a word doc, use gview.
     if (!this.isImage(url)) {
       url = `https://docs.google.com/gview?url=${url}&embedded=true`
     }
+
     return url
   }
+
 
   /*
   * Determine if the file type is a word doc.
@@ -25,8 +42,10 @@ class FileViewer extends React.Component {
   */
   isWordDoc (url) {
     const wordDoc = /.*\.(doc|DOC|docx|DOCX|docm|DOCM)/g
+
     return wordDoc.test(url)
   }
+
 
   /*
   * Determine if the file type is an image.
@@ -36,22 +55,48 @@ class FileViewer extends React.Component {
   */
   isImage (url) {
     const img = /.*\.(png|PNG|jpg|JPG|jpeg|JPEG)/g
+
     return img.test(url)
   }
 
 
+  /**
+   * Rotate the image/doc in the file viewer
+   *
+   * @param {SyntheticEvent} event
+   */
+  handleRotateFile(event) {
+    event.preventDefault()
+
+    let { rotate } = this.state
+
+    this.setState({ rotate: rotate >= 270 ? 0 : rotate + 90 })
+  }
+
+
+  /**
+   * Render...
+   *
+   * @return {JSX}
+   */
   render () {
-    const source = this.setUrl(this.props.source)
+    const fileProps = {
+      src: this.setUrl(this.props.source),
+      style: {
+        transform: `rotate(${this.state.rotate}deg)`
+      }
+    }
+
     return (
-      <div className='file-viewer'>
-        {this.isImage(this.props.source) ? <img src={source} /> : <iframe src={source}/> }
+      <div className="file-viewer">
+        {this.isImage(this.props.source) ? <img {...fileProps} /> : <iframe {...fileProps} /> }
+
+        <button onClick={this.handleRotateFile.bind(this)} className="action">
+          <i className="fa fa-refresh" />
+        </button>
       </div>
     )
   }
-}
-
-FileViewer.propTypes = {
-  source: PropTypes.string
 }
 
 export default FileViewer
