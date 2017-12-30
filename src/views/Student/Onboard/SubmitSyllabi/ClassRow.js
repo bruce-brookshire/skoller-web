@@ -6,7 +6,7 @@ import actions from '../../../../actions'
 class ClassRow extends React.Component {
   constructor (props) {
     super(props)
-    this.state = this.intializeState()
+    this.state = this.initializeState()
   }
 
   /*
@@ -21,7 +21,7 @@ class ClassRow extends React.Component {
   /*
   * Initialize the state
   */
-  intializeState () {
+  initializeState () {
     return {
       documents: [],
       hasSyllabus: this.props.cl.is_syllabus

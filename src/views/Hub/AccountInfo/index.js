@@ -9,7 +9,7 @@ import actions from '../../../actions'
 class AccountInfo extends React.Component {
   constructor (props) {
     super(props)
-    this.state = this.intializeState()
+    this.state = this.initializeState()
   }
 
   componentWillMount () {
@@ -21,7 +21,7 @@ class AccountInfo extends React.Component {
     }
   }
 
-  intializeState () {
+  initializeState () {
     const {state} = this.props.location
     return {
       openAccountForm: false,

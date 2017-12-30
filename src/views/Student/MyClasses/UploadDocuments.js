@@ -8,7 +8,7 @@ import actions from '../../../actions'
 class UploadDocuments extends React.Component {
   constructor (props) {
     super(props)
-    this.state = this.intializeState()
+    this.state = this.initializeState()
   }
 
   /*
@@ -23,7 +23,7 @@ class UploadDocuments extends React.Component {
   /*
   * Initialize the state
   */
-  intializeState () {
+  initializeState () {
     return {
       documents: []
     }

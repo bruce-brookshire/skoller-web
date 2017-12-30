@@ -2,10 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {browserHistory} from 'react-router'
 import Assignments from '../components/ClassEditor/Assignments'
+import ClassForm from './ClassForm'
 import FileViewer from '../../components/FileViewer'
 import GradeScale from '../components/ClassEditor/GradeScale'
 import IssuesModal from './IssuesModal'
 import Loading from '../../components/Loading'
+import Modal from '../../components/Modal'
 import Professor from '../components/ClassEditor/Professor'
 import StatusForm from './StatusForm'
 import Weights from '../components/ClassEditor/Weights'
@@ -72,6 +74,7 @@ class SyllabusTool extends React.Component {
       isReviewer: state.isReviewer || false,
       isSW: state.isSW || false,
       loadingClass: false,
+      openEditClassModal: false,
       openIssuesModal: false,
       sectionId: state.sectionId || null,
       stepCount: 4,
@@ -407,6 +410,24 @@ class SyllabusTool extends React.Component {
   }
 
   /*
+  * Render the editclass modal.
+  */
+  renderEditClassModal () {
+    return (
+      <Modal
+        open={this.state.openEditClassModal}
+        onClose={this.toggleEditClassModal.bind(this)}
+      >
+        <ClassForm
+          cl={this.state.cl}
+          onClose={this.toggleEditClassModal.bind(this)}
+          onSubmit={this.updateClass.bind(this)}
+        />
+      </Modal>
+    )
+  }
+
+  /*
   * Render the status form of the class for the admin to update.
   */
   renderStatusForm () {
@@ -498,8 +519,18 @@ class SyllabusTool extends React.Component {
     }
   }
 
+  /*
+  * Toggle the issues modal.
+  */
   toggleIssuesModal () {
     this.setState({openIssuesModal: !this.state.openIssuesModal})
+  }
+
+  /*
+  * Toggle the edit class modal.
+  */
+  toggleEditClassModal () {
+    this.setState({openEditClassModal: !this.state.openEditClassModal})
   }
 
   /*
@@ -534,8 +565,12 @@ class SyllabusTool extends React.Component {
                   {this.renderClassIssue()}
                   <h2>{cl && cl.name}</h2>
                   {isAdmin && <div className='margin-left'>
-                    <i className='fa fa-wrench cn-red' style={{cursor: 'pointer'}} onClick={() => false} />
+                    <i className='fa fa-pencil cn-blue cursor' onClick={this.toggleEditClassModal.bind(this)} />
                   </div>}
+                  {isAdmin && <div className='margin-left'>
+                    <i className='fa fa-wrench cn-red cursor' onClick={() => false} />
+                  </div>}
+
                 </div>
                 {this.renderClassDetails()}
               </div>
@@ -578,6 +613,7 @@ class SyllabusTool extends React.Component {
 
         </div>
         {this.renderIssuesModal()}
+        {this.renderEditClassModal()}
       </div>
     )
   }

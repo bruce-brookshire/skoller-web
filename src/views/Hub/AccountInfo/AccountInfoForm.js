@@ -8,7 +8,7 @@ import actions from '../../../actions'
 class AccountInfoForm extends React.Component {
   constructor (props) {
     super(props)
-    this.state = this.intializeState()
+    this.state = this.initializeState()
   }
 
   componentWillMount () {
@@ -26,7 +26,7 @@ class AccountInfoForm extends React.Component {
   /*
   * Intialize state
   */
-  intializeState () {
+  initializeState () {
     let userRoles = []
     if (this.props.user && this.props.user.roles) userRoles = this.props.user.roles
     if (this.props.user && this.props.user.student) userRoles.push({id: 100, name: 'Student'})

@@ -10,7 +10,7 @@ import actions from '../../../actions'
 class SchoolInfo extends React.Component {
   constructor (props) {
     super(props)
-    this.state = this.intializeState()
+    this.state = this.initializeState()
   }
 
   componentWillMount () {
@@ -23,7 +23,7 @@ class SchoolInfo extends React.Component {
     }
   }
 
-  intializeState () {
+  initializeState () {
     const {state} = this.props.location
     return {
       openDetailsForm: false,
