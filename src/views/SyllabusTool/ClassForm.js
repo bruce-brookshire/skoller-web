@@ -4,6 +4,7 @@ import {Form, ValidateForm} from 'react-form-library'
 import {InputField} from '../../components/Form'
 import Modal from '../../components/Modal'
 import actions from '../../actions'
+import {convertUTCDatetimeToDateString, convertLocalDateToUTC} from '../../utilities/time'
 
 const requiredFields = {
   'name': {
@@ -12,16 +13,10 @@ const requiredFields = {
   'number': {
     type: 'required'
   },
-  'campus': {
+  'class_start': {
     type: 'required'
   },
-  'meet_start_time': {
-    type: 'required'
-  },
-  'meet_end_time': {
-    type: 'required'
-  },
-  'meet_days': {
+  'class_end': {
     type: 'required'
   }
 }
@@ -48,19 +43,30 @@ class ClassForm extends React.Component {
       name,
       number,
       campus,
+      class_start,
+      class_end,
+      crn,
       meet_start_time,
       meet_end_time,
-      meet_days
+      meet_days,
+      location,
+      type,
+      school
     }} = this.props
 
     return {
       id: id || '',
       name: name || '',
       number: number || '',
+      class_start: class_start ? convertUTCDatetimeToDateString(class_start, school.timezone) : '',
+      class_end: class_end ? convertUTCDatetimeToDateString(class_end, school.timezone) : '',
+      crn: crn || '',
       campus: campus || '',
       meet_start_time: meet_start_time || '',
       meet_end_time: meet_end_time || '',
-      meet_days: meet_days || ''
+      meet_days: meet_days || '',
+      location: location || '',
+      type: type || '',
     }
   }
 
@@ -69,18 +75,30 @@ class ClassForm extends React.Component {
   */
   onSubmit (event) {
     event.preventDefault()
-    
+
     if (this.props.validateForm(this.state.form, requiredFields)) {
-      !this.state.form.id ? this.onCreateClass() : this.onUpdateClass()
+      const form = this.mapForm(this.state.form)
+      !form.id ? this.onCreateClass(form) : this.onUpdateClass(form)
     }
+  }
+
+  /*
+  * Map form
+  */
+  mapForm() {
+    const {cl} = this.props
+    let form = {...this.state.form}
+    form.class_start = convertLocalDateToUTC(this.state.form.class_start, cl.school.timezone)
+    form.class_end = convertLocalDateToUTC(this.state.form.class_end, cl.school.timezone)
+    return form
   }
 
   /*
   * Create class.
   */
-  onCreateClass () {
+  onCreateClass (form) {
     this.setState({loading: true})
-    actions.classes.createClass(this.state.form).then((cl) => {
+    actions.classes.createClass(form).then((cl) => {
       this.props.onSubmit(cl)
       this.props.onClose()
       this.setState({loading: false})
@@ -90,9 +108,9 @@ class ClassForm extends React.Component {
   /*
   * Update class.
   */
-  onUpdateClass () {
+  onUpdateClass (form) {
     this.setState({loading: true})
-    actions.classes.updateClass(this.state.form).then((cl) => {
+    actions.classes.updateClass(form).then((cl) => {
       this.props.onSubmit(cl)
       this.props.onClose()
       this.setState({loading: false})
@@ -127,6 +145,41 @@ class ClassForm extends React.Component {
               onChange={updateProperty}
               placeholder="i.e. MTH 1002.01"
               value={form.number}
+            />
+          </div>
+          <div className='col-xs-12'>
+            <InputField
+              containerClassName='margin-top'
+              error={formErrors.class_start}
+              label="Class start"
+              name="class_start"
+              onChange={updateProperty}
+              placeholder="Class start"
+              type='date'
+              value={form.class_start}
+            />
+          </div>
+          <div className='col-xs-12'>
+            <InputField
+              containerClassName='margin-top'
+              error={formErrors.class_end}
+              label="Class end"
+              name="class_end"
+              onChange={updateProperty}
+              placeholder="Class end"
+              type='date'
+              value={form.class_end}
+            />
+          </div>
+          <div className='col-xs-12'>
+            <InputField
+              containerClassName='margin-top'
+              error={formErrors.crn}
+              label="Class crn"
+              name="crn"
+              onChange={updateProperty}
+              placeholder="i.e. 48427"
+              value={form.crn}
             />
           </div>
           <div className='col-xs-12'>
@@ -171,6 +224,28 @@ class ClassForm extends React.Component {
               onChange={updateProperty}
               placeholder="i.e. 9:00am"
               value={form.meet_end_time}
+            />
+          </div>
+          <div className='col-xs-12'>
+            <InputField
+              containerClassName='margin-top'
+              error={formErrors.location}
+              label="Location"
+              name="location"
+              onChange={updateProperty}
+              placeholder="Location"
+              value={form.location}
+            />
+          </div>
+          <div className='col-xs-12'>
+            <InputField
+              containerClassName='margin-top'
+              error={formErrors.type}
+              label="Class type"
+              name="location"
+              onChange={updateProperty}
+              placeholder="i.e. Lecture"
+              value={form.type}
             />
           </div>
           <div className='col-xs-12'>
