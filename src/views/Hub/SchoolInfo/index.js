@@ -107,7 +107,7 @@ class SchoolInfo extends React.Component {
       case 'sw':
         sImg = 'on'
         dImg = 'off'
-        label='SW only'
+        label='Skoller only'
         break
       case 'diy':
         sImg = 'off'

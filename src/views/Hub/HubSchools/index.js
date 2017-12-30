@@ -94,11 +94,11 @@ class HubSchools extends React.Component {
     if (is_diy_enabled && !is_diy_preferred && is_auto_syllabus) {
       return 'Normal'
     } else if (is_diy_enabled && is_diy_preferred && is_auto_syllabus) {
-      return 'Inverted'
+      return 'DIY Preferred'
     } else if (!is_diy_enabled && !is_diy_preferred && is_auto_syllabus) {
-      return 'Compass'
+      return 'Skoller only'
     } else if (is_diy_enabled && is_diy_preferred && !is_auto_syllabus) {
-      return 'DIY'
+      return 'DIY only'
     } else {
       return 'Normal'
     }
