@@ -261,7 +261,7 @@ class MyClasses extends React.Component {
     return (
       <div className='cn-content-message full-size margin-top margin-bottom'>
         <i className='fa fa-check-circle' style={{fontSize: '1em', color: '#00FF00'}} />
-        <span className='margin-left'>{`Congratulations! You and your classmates have done all you can do. ${inProgessMessage} Be sure to download our iOS app today, if you have not already, to recieve the full ClassNav experience and enjoy college like you never have before! `}</span>
+        <span className='margin-left'>{`Congratulations! You and your classmates have done all you can do. ${inProgessMessage} Be sure to download our iOS app today, if you have not already, to recieve the full Skoller experience and enjoy college like you never have before! `}</span>
       </div>
     )
   }

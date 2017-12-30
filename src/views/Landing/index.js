@@ -47,7 +47,7 @@ class Landing extends React.Component {
 
         <footer className="site-footer">
           <span className="copyright">
-            Copyright &copy; ClassNav, LLC {}. All rights reserved.
+            Copyright &copy; Skoller, LLC {}. All rights reserved.
           </span>
           <span className="support">
             Need help? <a href="mailto:support@skoller.com">Contact us.</a>

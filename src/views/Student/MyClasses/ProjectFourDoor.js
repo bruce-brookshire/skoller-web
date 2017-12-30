@@ -54,7 +54,7 @@ class ProjectFourDoor extends React.Component {
     return (
       <div className='center-text'>
         <h2>All done!</h2>
-        <span className='info-2'>Hang tight while ClassNav reviews your syllabus for you</span>
+        <span className='info-2'>Hang tight while Skoller reviews your syllabus for you</span>
       </div>
     )
   }

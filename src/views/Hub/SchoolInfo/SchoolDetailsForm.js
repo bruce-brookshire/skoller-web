@@ -41,7 +41,8 @@ class SchoolDetailsForm extends React.Component {
   */
   initializeState () {
     return {
-      form: this.initializeFormData(this.props.school)
+      form: this.initializeFormData(this.props.school),
+      loading: false
     }
   }
 
@@ -87,18 +88,22 @@ class SchoolDetailsForm extends React.Component {
   * Create a new school
   */
   onCreateSchool () {
+    this.setState({loading: true})
     actions.schools.createSchool(this.mapForm(this.state.form)).then((school) => {
       this.props.onSubmit(school)
-    }).catch(() => false)
+      this.setState({loading: false})
+    }).catch(() => { this.setState({loading: false}) })
   }
 
   /*
   * Update an existing school
   */
   onUpdateSchool () {
+    this.setState({loading: true})
     actions.schools.updateSchool(this.mapForm(this.state.form)).then((school) => {
       this.props.onSubmit(school)
-    }).catch(() => false)
+      this.setState({loading: false})
+    }).catch(() => { this.setState({loading: false}) })
   }
 
   mapForm (f) {
@@ -112,8 +117,10 @@ class SchoolDetailsForm extends React.Component {
   }
 
   render () {
-    const {form} = this.state
+    const {form, loading} = this.state
     const {formErrors, updateProperty} = this.props
+
+    const disabledClass = loading ? 'disabled' : ''
 
     return (
       <div>
@@ -208,7 +215,10 @@ class SchoolDetailsForm extends React.Component {
               />
             </div>
           </div>
-          <button className='button full-width margin-top' onClick={this.onSubmit.bind(this)}>Submit school</button>
+          <button
+            className={`button full-width margin-top ${disabledClass}`}
+            disabled={this.state.loading}
+            onClick={this.onSubmit.bind(this)}>Submit school</button>
           <button className='button-invert full-width margin-top margin-bottom' onClick={() => this.props.onClose()}>Close</button>
         </div>
       </div>
