@@ -4,6 +4,7 @@ import {Link} from 'react-router'
 
 @inject('rootStore') @observer
 class NavBar extends React.Component {
+
   getName () {
     const {userStore: {user}} = this.props.rootStore
     if (user.student) {
@@ -38,6 +39,21 @@ class NavBar extends React.Component {
     }
   }
 
+  determineProfileLogo () {
+    const {userStore: {user}} = this.props.rootStore
+    if (user.avatar != null){
+      return true
+    }
+    else {
+      return false
+    }
+  }
+
+  getInitials () {
+    const {userStore: {user}} = this.props.rootStore
+    return user.student.name_first[0].toUpperCase() + user.student.name_last[0].toUpperCase()
+  }
+
   render () {
     const {userStore: {user}} = this.props.rootStore
     return (
@@ -51,7 +67,7 @@ class NavBar extends React.Component {
             <span>{this.getDescription()}</span>
           </div>
           <div className='right'>
-            <img className='profile-img' src='https://www.biography.com/.image/c_fill%2Ccs_srgb%2Cg_face%2Ch_300%2Cq_80%2Cw_300/MTE5NDg0MDU0NTIzODQwMDE1/steven-jobs-9354805-2-402.jpg'/>
+            {this.determineProfileLogo() ? <img className='profile-img' src={this.user.avatar}/> : <div className='profile-img vertical-align profile-initials'>{this.getInitials()}</div>}
           </div>
         </div>
       </div>
