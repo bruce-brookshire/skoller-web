@@ -38,6 +38,7 @@ class AccountInfoForm extends React.Component {
       loadingSchools: false,
       loadingFOS: false,
       loadingRoles: false,
+      rolesError: '',
       userRoles,
       form: this.initializeFormData(this.props.user)
     }
@@ -140,7 +141,7 @@ class AccountInfoForm extends React.Component {
   * Remove role from user.
   */
   onRemoveRole (role) {
-    if (role.id === 100 && this.props.user.student) return
+    if (role.id === 100 && this.props.user && this.props.user.student) return
     const newRoles = this.state.userRoles.filter(r => r.id !== role.id)
     this.setState({userRoles: newRoles})
   }
@@ -278,6 +279,13 @@ class AccountInfoForm extends React.Component {
       }
     }
 
+    if (this.state.userRoles.length === 0) {
+      this.setState({rolesError: 'User needs at least one role.'})
+      return
+    } else {
+      this.setState({rolesError: ''})
+    }
+
     if (this.props.validateForm(this.state.form, requiredFields) && !this.state.emailError) {
       !this.state.form.id ? this.onCreateUser() : this.onUpdateUser()
     }
@@ -358,6 +366,11 @@ class AccountInfoForm extends React.Component {
       <div>
         <h3> Account Roles </h3>
         {this.renderInputs()}
+        {this.state.rolesError &&
+          <div className='cn-red' style={{fontSize: '11px', marginTop: '0.5em'}}>
+            <i className='fa fa-info-circle' /><span style={{marginLeft: '2px'}}>{this.state.rolesError}</span>
+          </div>
+        }
         <h3> Account Information </h3>
         <div>
           <div className='row'>

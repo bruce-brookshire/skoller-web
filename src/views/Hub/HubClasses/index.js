@@ -2,6 +2,7 @@ import React from 'react'
 import {browserHistory} from 'react-router'
 import ClassSearch from './ClassSearch'
 import Grid from '../../../components/Grid'
+import Loading from '../../../components/Loading'
 import actions from '../../../actions'
 import {mapProfessor} from '../../../utilities/display'
 
@@ -52,7 +53,8 @@ class HubClasses extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      classes: []
+      classes: [],
+      loading: false
     }
   }
 
@@ -64,9 +66,10 @@ class HubClasses extends React.Component {
   * @param [String] queryString. String to query classes.
   */
   getClasses (queryString) {
+    this.setState({loading: true})
     actions.classes.searchClasses(queryString).then(classes => {
-      this.setState({classes})
-    }).catch(() => false)
+      this.setState({classes, loading: false})
+    }).catch(() => { this.setState({loading: false}) })
   }
 
   /*
@@ -153,22 +156,24 @@ class HubClasses extends React.Component {
       <div className='cn-classes-container'>
         <div className='margin-bottom'>
           <h2 className='center-text' style={{marginBottom: 0}}>Class Search</h2>
-          <ClassSearch {...this.props} onSearch={this.getClasses.bind(this)}/>
+          <ClassSearch {...this.props} loading={this.state.loading} onSearch={this.getClasses.bind(this)}/>
           <div className='margin-top'>
             <a onClick={this.onCreateClass.bind(this)}>Create new class </a>
             <span className='description'>Manage classes from this page</span>
           </div>
         </div>
-        <Grid
-          className='cn-classes-table'
-          headers={headers}
-          rows={this.getRows()}
-          disabled={true}
-          canDelete={false}
-          canSelect={true}
-          emptyMessage={'Search for classes using the controls above.'}
-          onSelect={this.onEditClass.bind(this)}
-        />
+        {this.state.loading ? <div className='center-text'><Loading /></div> :
+          <Grid
+            className='cn-classes-table'
+            headers={headers}
+            rows={this.getRows()}
+            disabled={true}
+            canDelete={false}
+            canSelect={true}
+            emptyMessage={'Search for classes using the controls above.'}
+            onSelect={this.onEditClass.bind(this)}
+          />
+        }
       </div>
     )
   }

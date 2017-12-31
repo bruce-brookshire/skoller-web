@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {InputField, SelectField} from '../../../components/Form'
+import Loading from '../../../components/Loading'
 import actions from '../../../actions'
 
 class ClassSearch extends React.Component {
@@ -163,7 +164,9 @@ class ClassSearch extends React.Component {
               className={`button full-width ${disabledClass}`}
               disabled={disabled}
               onClick={this.onSearch.bind(this)}
-            > Search </button>
+            > Search
+              {this.props.loading ? <Loading style={{color: 'white', marginLeft: '0.5em'}} /> : null}
+            </button>
           </div>
         </div>
       </div>

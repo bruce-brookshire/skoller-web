@@ -239,17 +239,17 @@ class SyllabusTool extends React.Component {
       if (isReviewer) {
         return (
           <FileTabs style={{marginLeft: '7px', marginRight: '7px'}} currentIndex={this.state.currentIndex-2}>
-            <FileTab name='Weights' onClick={() => this.setState({currentIndex: 2})} />
-            <FileTab name='Assignments' onClick={() => this.setState({currentIndex: 3})} />
+            <FileTab className='flex' name='Weights' onClick={() => this.setState({currentIndex: 2})} />
+            <FileTab className='flex' name='Assignments' onClick={() => this.setState({currentIndex: 3})} />
           </FileTabs>
         )
       } else {
         return (
           <FileTabs style={{marginLeft: '7px', marginRight: '7px'}} currentIndex={this.state.currentIndex}>
-            <FileTab name='Professor Info' onClick={() => this.setState({currentIndex: 0})} />
-            <FileTab name='Grade Scale' onClick={() => this.setState({currentIndex: 1})} />
-            <FileTab name='Weights' onClick={() => this.setState({currentIndex: 2})} />
-            <FileTab name='Assignments' onClick={() => this.setState({currentIndex: 3})} />
+            <FileTab className='flex' name='Professor Info' onClick={() => this.setState({currentIndex: 0})} />
+            <FileTab className='flex' name='Grade Scale' onClick={() => this.setState({currentIndex: 1})} />
+            <FileTab className='flex' name='Weights' onClick={() => this.setState({currentIndex: 2})} />
+            <FileTab className='flex' name='Assignments' onClick={() => this.setState({currentIndex: 3})} />
           </FileTabs>
         )
       }
@@ -582,13 +582,13 @@ class SyllabusTool extends React.Component {
           </div>
 
           <div className='row full-width'>
-            <div className='col-xs-12 col-md-4 col-lg-3 margin-top'>
+            <div className='col-xs-12 col-md-6 col-lg-5 margin-top'>
               <div className='cn-section-container cn-syllabus-section-container'>
                 {this.renderContent()}
               </div>
               {this.renderSectionTabs()}
             </div>
-            <div className='col-xs-12 col-md-8 col-lg-9 margin-top'>
+            <div className='col-xs-12 col-md-6 col-lg-7 margin-top'>
               <div className='cn-section-container'>
                 {this.state.currentDocument && <FileViewer source={this.state.currentDocument} /> }
               </div>
