@@ -3,6 +3,10 @@
   position: relative;
   width: 100%;
 
+  &.is-image {
+    overflow: auto;
+  }
+
   iframe {
     border: 0;
     height: 100%;
@@ -10,12 +14,12 @@
   }
 
   img {
-    height: 100%;
-    width: auto;
+    height: auto;
+    width: 100%;
   }
 
   .action {
-    position: absolute;
+    display: none;
     bottom: 1rem;
     right: 1rem;
     z-index: 10;

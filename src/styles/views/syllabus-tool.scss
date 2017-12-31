@@ -15,6 +15,7 @@
       display: flex;
       flex-direction: column;
       margin: 0px auto;
+
       .header {
         align-items: center;
         display: flex;
@@ -75,6 +76,7 @@
       .class-details {
         display: flex;
         flex-direction: row;
+
         span {
           font-size: 11px;
           margin-left: 0.25em;
@@ -85,25 +87,23 @@
       .back-button {
         font-size: 2em;
       }
+
       .skip-button {
         font-size: 0.75em;
         font-style: italic;
       }
     }
   }
+
   .cn-section-container {
     border-radius: 10px;
     border: 2px solid #a9a9a9;
     height: calc(70vh - 64px);
     overflow: hidden;
-    overflow-x: scroll;
-    overflow-y: scroll;
 
     &.cn-syllabus-section-container {
       background-color: #e8f3fd;
       padding: 0.5em;
-      // height: auto;
-      // height: calc(75vh - 64px);
     }
   }
 
