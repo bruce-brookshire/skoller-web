@@ -159,16 +159,17 @@ export function forgotPassword (form) {
 *
 * @params [Object] form. Reset password form data.
 */
-export function resetPassword (form) {
+export function resetPassword (form, token) {
   return fetch(`${Environment.SERVER_NAME}/api/v1/reset`, {
     method: 'POST',
     headers: {
+      'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(form)
   })
     .then(response => checkError(response))
-    .then(data => {
+    .then(() => {
       showSnackbar('Your password has been successfully reset.', 'info')
     })
     .catch(error => {
