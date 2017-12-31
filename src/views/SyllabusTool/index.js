@@ -554,7 +554,7 @@ class SyllabusTool extends React.Component {
     if (loadingClass) return <Loading />
     return (
       <div className='cn-syllabus-tool-container'>
-        <div className='row full-width col-xs-12 col-md-10 col-lg-10'>
+        <div className='row full-width col-xs-12'>
           <div className='row full-width'>
             {this.renderSWControls()}
             <div className='cn-class-info col-xs-12'>
@@ -582,13 +582,13 @@ class SyllabusTool extends React.Component {
           </div>
 
           <div className='row full-width'>
-            <div className='col-xs-12 col-md-6 col-lg-5 margin-top'>
+            <div className='col-xs-12 col-md-4 col-lg-3 margin-top'>
               <div className='cn-section-container cn-syllabus-section-container'>
                 {this.renderContent()}
               </div>
               {this.renderSectionTabs()}
             </div>
-            <div className='col-xs-12 col-md-6 col-lg-7 margin-top'>
+            <div className='col-xs-12 col-md-8 col-lg-9 margin-top'>
               <div className='cn-section-container'>
                 {this.state.currentDocument && <FileViewer source={this.state.currentDocument} /> }
               </div>
