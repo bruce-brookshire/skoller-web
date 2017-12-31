@@ -26,11 +26,24 @@ class FileViewer extends React.Component {
     let url = encodeURI(file)
 
     // if it is a word doc, use gview.
-    if (!this.isImage(url)) {
+    if (this.isWordDoc(url)) {
       url = `https://docs.google.com/gview?url=${url}&embedded=true`
     }
 
     return url
+  }
+
+
+  /*
+  * Determine if the file type is a PDF.
+  *
+  * @param [String] url. Original url of the file to be displayed.
+  * @return [Boolean]. Boolean value indicating whther the document is a PDF
+  */
+  isPDF(url) {
+    const pdf = /.*\.(pdf)/ig
+
+    return pdf.test(url)
   }
 
 
@@ -41,7 +54,7 @@ class FileViewer extends React.Component {
   * @return [Boolean]. Boolean value indicating whther the document is a word doc.
   */
   isWordDoc (url) {
-    const wordDoc = /.*\.(doc|DOC|docx|DOCX|docm|DOCM)/g
+    const wordDoc = /.*\.(doc|docx|docm)/ig
 
     return wordDoc.test(url)
   }
@@ -54,7 +67,7 @@ class FileViewer extends React.Component {
   * @return [Boolean]. Boolean value indicating whther the document is an img.
   */
   isImage (url) {
-    const img = /.*\.(png|PNG|jpg|JPG|jpeg|JPEG)/g
+    const img = /.*\.(png|jpg|jpeg)/ig
 
     return img.test(url)
   }
@@ -80,20 +93,32 @@ class FileViewer extends React.Component {
    * @return {JSX}
    */
   render () {
+    const { source } = this.props
+
     const fileProps = {
-      src: this.setUrl(this.props.source),
+      src: this.setUrl(source),
       style: {
         transform: `rotate(${this.state.rotate}deg)`
       }
     }
 
+    const classArr = [
+      'file-viewer',
+      this.isPDF(source) ? 'is-pdf' : null,
+      this.isImage(source) ? 'is-image' : null,
+      this.isWordDoc(source) ? 'is-doc' : null
+    ].filter(c => c)
+
     return (
-      <div className="file-viewer">
+      <div className={classArr.join(' ')}>
         {this.isImage(this.props.source) ? <img {...fileProps} /> : <iframe {...fileProps} /> }
 
-        <button onClick={this.handleRotateFile.bind(this)} className="action">
-          <i className="fa fa-refresh" />
-        </button>
+        {this.isImage(this.props.source)
+          ? <button onClick={this.handleRotateFile.bind(this)} className="action">
+              <i className="fa fa-refresh" />
+            </button>
+          : null
+        }
       </div>
     )
   }
