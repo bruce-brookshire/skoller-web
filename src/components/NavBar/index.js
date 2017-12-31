@@ -49,9 +49,21 @@ class NavBar extends React.Component {
     }
   }
 
+  mapRoles (r){
+    return r.name
+  }
+
   getInitials () {
     const {userStore: {user}} = this.props.rootStore
-    return user.student.name_first[0].toUpperCase() + user.student.name_last[0].toUpperCase()
+    var role_names = user.roles.map(this.mapRoles);
+    console.log(role_names)
+    if (role_names.indexOf("Admin") != -1){
+      return 'AD'
+    } else if (role_names.indexOf("Syllabi Worker") != -1) {
+      return 'SW'
+    } else if (role_names.indexOf("Student") != -1){
+      return user.student.name_first[0].toUpperCase() + user.student.name_last[0].toUpperCase()
+    }
   }
 
   render () {
