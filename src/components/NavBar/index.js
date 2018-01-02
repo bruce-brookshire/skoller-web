@@ -56,7 +56,6 @@ class NavBar extends React.Component {
   getInitials () {
     const {userStore: {user}} = this.props.rootStore
     var role_names = user.roles.map(this.mapRoles);
-    console.log(role_names)
     if (role_names.indexOf("Admin") != -1){
       return 'AD'
     } else if (role_names.indexOf("Syllabus Worker") != -1) {
