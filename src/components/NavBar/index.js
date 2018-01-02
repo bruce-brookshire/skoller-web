@@ -41,7 +41,7 @@ class NavBar extends React.Component {
 
   getInitials () {
     const {userStore: {user}} = this.props.rootStore
-    var roleNames = user.roles.map((r) => r.name)
+    const roleNames = user.roles.map((r) => r.name)
     if (roleNames.indexOf('Admin') !== -1) {
       return 'AD'
     } else if (roleNames.indexOf('Syllabus Worker') !== -1) {
@@ -49,8 +49,8 @@ class NavBar extends React.Component {
     } else if (roleNames.indexOf('Student') !== -1) {
       if (user.student.name_first && user.student.name_last) {
         return user.student.name_first[0].toUpperCase() + user.student.name_last[0].toUpperCase()
-      } else if (user.student.name_first.length >= 2)
-        return user.student.name_first.substring(0,2).toUpperCase()
+      } else if (user.student.name_first.length >= 2) {
+        return user.student.name_first.substring(0, 2).toUpperCase()
       } else {
         return 'ST'
       }

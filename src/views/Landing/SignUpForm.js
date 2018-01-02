@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {browserHistory} from 'react-router'
 import {Cookies} from 'react-cookie'
 import {Form, ValidateForm} from 'react-form-library'
-import {InputField, MultiselectField} from '../../components/Form'
+import {InputField, MultiselectField, TimePickerField} from '../../components/Form'
 import Modal from '../../components/Modal'
 import actions from '../../actions'
 import {matchText} from '../../utilities/display'
@@ -236,6 +236,16 @@ class SignUpForm extends React.Component {
         <form className='form-padding'>
           <h2>Sign up</h2>
           <div className='row'>
+            <div className='col-xs-12'>
+              <TimePickerField
+                containerClassName='margin-top'
+                label='Start date'
+                name='start_date'
+                onChange={updateProperty}
+                placeholder='Start date'
+                value={form.start_date}
+              />
+            </div>
             <div className='col-xs-6'>
               <InputField
                 containerClassName='margin-top'
