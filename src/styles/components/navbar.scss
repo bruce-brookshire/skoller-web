@@ -26,7 +26,17 @@
     .profile-img {
       border-radius: 100%;
       height: 3rem;
+      min-width: 3rem;
+      max-width: 3rem;
       margin-left: 0.5rem;
+
+      &.profile-initials {
+        padding-top: 5px;
+        font-size: 1.5em;
+        background-color: $cn-color-blue;
+        color: $cn-color-white;
+        text-align: center;
+      }
     }
   }
 
