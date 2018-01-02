@@ -8,6 +8,7 @@ import Modal from '../../../components/Modal/index'
 
 import actions from '../../../actions'
 import {mapProfessor} from '../../../utilities/display'
+import {mapTimeToDisplay} from '../../../utilities/time'
 
 const headers = [
   {
@@ -113,7 +114,7 @@ class Classes extends React.Component {
       name: name || '-',
       professor: professor ? mapProfessor(professor) : 'TBA',
       days: meet_days || 'TBA',
-      beginTime: meet_start_time || 'TBA',
+      beginTime: meet_start_time ? mapTimeToDisplay(meet_start_time) : 'TBA',
       campus: campus || 'TBA'
     }
 

@@ -5,6 +5,7 @@ import Grid from '../../../components/Grid'
 import Loading from '../../../components/Loading'
 import actions from '../../../actions'
 import {mapProfessor} from '../../../utilities/display'
+import {mapTimeToDisplay} from '../../../utilities/time'
 
 const headers = [
   {
@@ -102,7 +103,7 @@ class HubClasses extends React.Component {
       enrollment: enrolled || 0,
       professor: professor ? mapProfessor(professor) : 'TBA',
       days: meet_days || 'TBA',
-      beginTime: meet_start_time || 'TBA',
+      beginTime: meet_start_time ? mapTimeToDisplay(meet_start_time) : 'TBA',
       length: length || 'TBA',
       campus: campus || 'TBA',
       status: status ? this.mapStatus(status) : '-'

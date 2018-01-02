@@ -1,10 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
-import {InputField} from '../../components/Form'
+import {InputField, TimeInputField} from '../../components/Form'
 import Modal from '../../components/Modal'
 import actions from '../../actions'
-import {convertUTCDatetimeToDateString, convertLocalDateToUTC} from '../../utilities/time'
+import {convertUTCDatetimeToDateString, convertLocalDateToUTC,
+  mapTimeStringToInput} from '../../utilities/time'
 
 const requiredFields = {
   'name': {
@@ -62,8 +63,8 @@ class ClassForm extends React.Component {
       class_end: class_end ? convertUTCDatetimeToDateString(class_end, school.timezone) : '',
       crn: crn || '',
       campus: campus || '',
-      meet_start_time: meet_start_time || '',
-      meet_end_time: meet_end_time || '',
+      meet_start_time: meet_start_time ? mapTimeStringToInput(meet_start_time) : 'TBA',
+      meet_end_time: meet_end_time ? mapTimeStringToInput(meet_end_time) : 'TBA',
       meet_days: meet_days || '',
       location: location || '',
       type: type || '',
@@ -205,7 +206,7 @@ class ClassForm extends React.Component {
             />
           </div>
           <div className='col-xs-12'>
-            <InputField
+            <TimeInputField
               containerClassName='margin-top'
               error={formErrors.meet_start_time}
               label="Start time"
@@ -216,7 +217,7 @@ class ClassForm extends React.Component {
             />
           </div>
           <div className='col-xs-12'>
-            <InputField
+            <TimeInputField
               containerClassName='margin-top'
               error={formErrors.meet_end_time}
               label="End time"

@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import {inject, observer} from 'mobx-react'
 import AddProfessor from './AddProfessor'
 import ClassForm from './ClassForm'
 import SearchProfessor from './SearchProfessor'
@@ -11,6 +12,7 @@ const ContentEnum = {
   CLASS_FORM: 2
 }
 
+@inject ('rootStore') @observer
 class CreateClass extends React.Component {
   constructor (props) {
     super(props)
@@ -25,7 +27,8 @@ class CreateClass extends React.Component {
       case ContentEnum.SEARCH_PROFESSOR:
         return <SearchProfessor onAddProfessor={this.onAddProfessor.bind(this)} onProfessorSelect={this.onSubmitProfessor.bind(this)} />
       case ContentEnum.ADD_PROFESSOR:
-        return <AddProfessor onSubmit={this.onSubmitProfessor.bind(this)}/>
+        const {userStore: {user: {student: {school}}}} = this.props.rootStore
+        return <AddProfessor onSubmit={this.onSubmitProfessor.bind(this)} school={school}/>
       case ContentEnum.CLASS_FORM:
         return <ClassForm professor={this.state.form.professor} onSubmit={this.onSubmitClass.bind(this)}/>
       default:
@@ -60,7 +63,8 @@ class CreateClass extends React.Component {
 
 CreateClass.propTypes = {
   onClose: PropTypes.func,
-  onSubmit: PropTypes.func
+  onSubmit: PropTypes.func,
+  rootStore: PropTypes.object
 }
 
 export default CreateClass
