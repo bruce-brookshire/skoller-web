@@ -49,7 +49,7 @@ class NavBar extends React.Component {
     } else if (roleNames.indexOf('Student') !== -1) {
       if (user.student.name_first && user.student.name_last) {
         return user.student.name_first[0].toUpperCase() + user.student.name_last[0].toUpperCase()
-      } else if (user.student.name_first.length >= 2)
+      } else if (user.student.name_first.length >= 2) {
         return user.student.name_first.substring(0,2).toUpperCase()
       } else {
         return 'ST'
