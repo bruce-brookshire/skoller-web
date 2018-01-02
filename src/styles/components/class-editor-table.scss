@@ -2,7 +2,7 @@
   background-color: white;
   border: 2px solid #a0a0a0;
   border-radius: $cn-border-radius;
-  height: 60%;
+  min-height: 175px;
   display: flex;
   flex-direction: column;
 
@@ -41,7 +41,6 @@
 
   #class-weights-total {
     border-top: 2px solid #a0a0a0;
-    flex: 1;
     padding: 0.5em;
   }
 

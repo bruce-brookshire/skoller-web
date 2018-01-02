@@ -61,11 +61,14 @@ class Weights extends React.Component {
     const {isPoints, totalPoints, viewOnly, disabled} = this.state
     if (isPoints && !totalPoints && !viewOnly && !disabled) {
       return (
-        <PointTotal
-          cl={cl}
-          onChange={this.onChangeTotalPoints.bind(this)}
-          totalPoints={this.state.totalPoints}
-        />
+        <div style={{display: 'flex', flex: '1', flexDirection: 'column', justifyContent: 'space-evenly'}}>
+          <PointTotal
+            cl={cl}
+            onChange={this.onChangeTotalPoints.bind(this)}
+            totalPoints={this.state.totalPoints}
+          />
+          {!viewOnly && this.renderWeightSlider()}
+        </div>
       )
     }
 
@@ -78,7 +81,7 @@ class Weights extends React.Component {
   renderWeightsContent () {
     const {viewOnly} = this.state
     return (
-      <div className='space-between-vertical'>
+      <div style={{display: 'flex', flex: '1', flexDirection: 'column'}}>
         <div className={`class-editor-table ${viewOnly ? 'view-only' : ''}`}>
           <div id='class-editor-weights-table' className=''>
             {this.renderWeights()}
@@ -88,6 +91,7 @@ class Weights extends React.Component {
           </div>
         </div>
         {!viewOnly && this.renderWeightForm()}
+        {!viewOnly && this.renderWeightSlider()}
       </div>
     )
   }
@@ -198,7 +202,7 @@ class Weights extends React.Component {
   renderWeightSlider () {
     if (this.state.weights.length === 0 || this.props.disabled) {
       return (
-        <div className='full-width margin-top'>
+        <div className='margin-top'>
           <WeightConverter id='class-editor-weight-converter' onChange={this.onToggleConverter.bind(this)} value={this.state.isPoints}/>
         </div>
       )
@@ -302,11 +306,10 @@ class Weights extends React.Component {
     const {viewOnly} = this.state
 
     return (
-      <div className='space-between-vertical'>
+      <div style={{display: 'flex', flex: '1', flexDirection: 'column'}}>
         <h5 style={{marginTop: '0.25em', marginBottom: '0.5em'}}>Edit weights</h5>
         {viewOnly && <a className='right-text' style={{marginBottom: '5px'}} onClick={() => this.setState({viewOnly: false}) }>edit</a>}
         {this.renderContent()}
-        {!viewOnly && this.renderWeightSlider()}
       </div>
     )
   }

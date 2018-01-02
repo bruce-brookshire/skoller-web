@@ -41,7 +41,7 @@ class Assignments extends React.Component {
     return (
       <Assignment
         assignments={assignments}
-        cl= {{}}
+        cl= {{school: {timezone: 'CDT'}}}
         disabled={true}
         weights={weights}
       />

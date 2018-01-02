@@ -115,13 +115,6 @@ class Tutorial extends React.Component {
             </div>
           </div>
         </div>
-        <div className='progress-bar-container margin-top margin-bottom full-width col-xs-12 col-md-6 col-lg-6'>
-          <ProgressBar currentStep={this.state.currentIndex}>
-            {progressSteps.map((step, index) => {
-              return <ProgressStep key={`step-${index}`} label={step} />
-            })}
-          </ProgressBar>
-        </div>
       </div>
     )
   }

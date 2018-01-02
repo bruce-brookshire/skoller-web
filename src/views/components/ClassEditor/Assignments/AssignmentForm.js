@@ -172,6 +172,7 @@ class AssignmentForm extends React.Component {
         </div>
         <button
           className='button full-width margin-top'
+          style={{marginBottom: '0.5em'}}
           disabled={this.state.loading}
           onClick={this.onSubmit.bind(this)}
         >

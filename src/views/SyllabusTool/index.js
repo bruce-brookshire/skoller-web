@@ -199,11 +199,11 @@ class SyllabusTool extends React.Component {
     const {isDIY, cl: {school}} = this.state
     if (!isDIY) {
       return (
-        <div className='full-width'>
-          <div className='left'>
+        <div className='cn-sw-controls'>
+          <div>
             <a onClick={() => browserHistory.push('/hub/landing')}>Back to homepage</a>
           </div>
-          <div className='right'>
+          <div>
             <div>{school && school.name}</div>
           </div>
         </div>
@@ -286,14 +286,12 @@ class SyllabusTool extends React.Component {
     const {isDIY} = this.state
     if (isDIY) {
       return (
-        <div className='row actions-container full-width margin-top margin-bottom'>
-          <div className='space-between-vertical col-xs-12 col-md-8 col-lg-6'>
-            <ProgressBar currentStep={this.state.currentIndex}>
-              {steps.map((step, index) => {
-                return <ProgressStep key={`step-${index}`} label={step} />
-              })}
-            </ProgressBar>
-          </div>
+        <div className='margin-bottom'>
+          <ProgressBar currentStep={this.state.currentIndex}>
+            {steps.map((step, index) => {
+              return <ProgressStep key={`step-${index}`} label={step} />
+            })}
+          </ProgressBar>
         </div>
       )
     }
@@ -387,8 +385,7 @@ class SyllabusTool extends React.Component {
     if (isAdmin || isSW) {
       return (
         <a
-          className='right cn-red'
-          style={{color: 'red'}}
+          className='having-issues cn-red'
           onClick={this.toggleIssuesModal.bind(this)}
         >Having issues?</a>
       )
@@ -433,10 +430,8 @@ class SyllabusTool extends React.Component {
   renderStatusForm () {
     if (this.state.isAdmin && !this.state.isSW) {
       return (
-        <div className='row actions-container full-width'>
-          <div className='col-xs-12 col-md-8 col-lg-6'>
-            <StatusForm cl={this.state.cl}/>
-          </div>
+        <div className='cn-status-form'>
+          <StatusForm cl={this.state.cl}/>
         </div>
       )
     }
@@ -554,64 +549,64 @@ class SyllabusTool extends React.Component {
     if (loadingClass) return <Loading />
     return (
       <div className='cn-syllabus-tool-container'>
-        <div className='row full-width col-xs-12'>
-          <div className='row full-width'>
-            {this.renderSWControls()}
-            <div className='cn-class-info col-xs-12'>
-              {this.renderBackButton()}
 
-              <div className='header-container'>
-                <div className='header'>
-                  {this.renderClassIssue()}
-                  <h2>{cl && cl.name}</h2>
-                  {isAdmin && <div className='margin-left'>
-                    <i className='fa fa-pencil cn-blue cursor' onClick={this.toggleEditClassModal.bind(this)} />
-                  </div>}
-                  {isAdmin && <div className='margin-left'>
-                    <i className='fa fa-wrench cn-red cursor' onClick={() => false} />
-                  </div>}
+        <div className='cn-header-container'>
+          {this.renderSWControls()}
+          <div className='cn-class-info col-xs-12'>
+            {this.renderBackButton()}
 
-                </div>
-                {this.renderClassDetails()}
+            <div className='header-container'>
+              <div className='header'>
+                {this.renderClassIssue()}
+                <h2>{cl && cl.name}</h2>
+                {isAdmin && <div className='margin-left'>
+                  <i className='fa fa-pencil cn-blue cursor' onClick={this.toggleEditClassModal.bind(this)} />
+                </div>}
+                {isAdmin && <div className='margin-left'>
+                  <i className='fa fa-wrench cn-red cursor' onClick={() => false} />
+                </div>}
+
               </div>
-              <div>
-                {this.renderSkipButton()}
-                {this.renderEnrollment()}
-              </div>
+              {this.renderClassDetails()}
+            </div>
+            <div>
+              {this.renderSkipButton()}
+              {this.renderEnrollment()}
             </div>
           </div>
+        </div>
 
-          <div className='row full-width'>
-            <div className='col-xs-12 col-md-6 col-lg-5 margin-top'>
-              <div className='cn-section-container cn-syllabus-section-container'>
-                {this.renderContent()}
-              </div>
-              {this.renderSectionTabs()}
+        <div className='cn-body-container'>
+
+          <div className='cn-section-container cn-control-panel'>
+            <div className='cn-section-control'>
+              {this.renderContent()}
             </div>
-            <div className='col-xs-12 col-md-6 col-lg-7 margin-top'>
-              <div className='cn-section-container'>
-                {this.state.currentDocument && <FileViewer source={this.state.currentDocument} /> }
-              </div>
-              {this.renderDocumentTabs()}
-              {this.renderHavingIssues()}
-            </div>
+            {this.renderSectionTabs()}
           </div>
 
-          {this.renderStatusForm()}
-
-          <div className='row actions-container full-width margin-top'>
-            <div className='space-between-vertical col-xs-12 col-md-8 col-lg-6'>
-              <button
-                className={`button full-width margin-bottom ${completeClass} ${disabledClass}`}
-                disabled={disableButton}
-                onClick={this.onNext.bind(this)}
-              >{this.renderButtonText()}</button>
+          <div className='cn-section-container cn-file-panel'>
+            <div className='cn-section-control'>
+              {this.state.currentDocument && <FileViewer source={this.state.currentDocument} /> }
             </div>
+            {this.renderDocumentTabs()}
+            {this.renderHavingIssues()}
           </div>
-
-          {this.renderProgressBar()}
 
         </div>
+
+        <div className='cn-footer-container'>
+          {this.renderStatusForm()}
+
+          <button
+            className={`button margin-top margin-bottom ${completeClass} ${disabledClass}`}
+            disabled={disableButton}
+            onClick={this.onNext.bind(this)}
+          >{this.renderButtonText()}</button>
+
+          {this.renderProgressBar()}
+        </div>
+
         {this.renderIssuesModal()}
         {this.renderEditClassModal()}
       </div>

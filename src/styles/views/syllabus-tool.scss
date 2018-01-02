@@ -1,115 +1,198 @@
 .cn-syllabus-tool-container {
-  @include center-viewport-content-container-internal;
-  overflow-y: scroll;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 100%;
 
-  .cn-class-info {
-    align-items: center;
+  @include breakpoint(medium) {
+    height: 100%;
+  }
+
+  .cn-header-container {
     display: flex;
-    justify-content: space-between;
-    padding-left: 5px;
-    padding-right: 5px;
+    flex-direction: column;
 
-    .header-container {
-      align-items: center;
-      justify-content: center;
+    @include breakpoint(medium) {
+      flex: 0.5;
+    }
+
+    .cn-sw-controls {
       display: flex;
-      flex-direction: column;
-      margin: 0px auto;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 5px;
+    }
 
-      .header {
+    .cn-class-info {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      padding-left: 5px;
+      padding-right: 5px;
+
+      .header-container {
         align-items: center;
-        display: flex;
-        flex-direction: row;
         justify-content: center;
+        display: flex;
+        flex-direction: column;
         margin: 0px auto;
 
-        h2 {
-          display: inline-block;
-          padding: 0px;
-          margin: 0px;
-        }
+        .header {
+          align-items: center;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          margin: 0px auto;
 
-        .issue-icon-container {
-          position: relative;
-          text-align: center;
-          z-index: 100;
-
-          .message-bubble {
-            background-color: white;
-            border: 1px solid black;
-            color: black;
-            display: none;
-            left: 50%;
-            margin-left: -0.5em;
-            position: absolute;
-            bottom: 0;
-            transform: translate(-50%, 100%);
-            width: 300px;
-
-            &.triangle-top {
-              &::before {
-                margin-top: 4px;
-                border-right: 6px solid black;
-              }
-            }
-
-            .triangle-inner{
-              &::before {
-                border-top: 6px solid transparent;
-                border-right: 6px solid white;
-                border-bottom: 6px solid transparent;
-                margin-bottom: 6px;
-              }
-            }
+          h2 {
+            display: inline-block;
+            padding: 0px;
+            margin: 0px;
           }
 
-          &:hover {
-            cursor: pointer;
+          .issue-icon-container {
+            position: relative;
+            text-align: center;
+            z-index: 100;
 
             .message-bubble {
-              display: block;
+              background-color: white;
+              border: 1px solid black;
+              color: black;
+              display: none;
+              left: 50%;
+              margin-left: -0.5em;
+              position: absolute;
+              bottom: 0;
+              transform: translate(-50%, 100%);
+              width: 300px;
+
+              &.triangle-top {
+                &::before {
+                  margin-top: 4px;
+                  border-right: 6px solid black;
+                }
+              }
+
+              .triangle-inner{
+                &::before {
+                  border-top: 6px solid transparent;
+                  border-right: 6px solid white;
+                  border-bottom: 6px solid transparent;
+                  margin-bottom: 6px;
+                }
+              }
+            }
+
+            &:hover {
+              cursor: pointer;
+
+              .message-bubble {
+                display: block;
+              }
             }
           }
         }
+
+        .class-details {
+          display: flex;
+          flex-direction: row;
+
+          span {
+            font-size: 11px;
+            margin-left: 0.25em;
+            margin-right: 0.25em;
+          }
+        }
+
+        .back-button {
+          font-size: 2em;
+        }
+
+        .skip-button {
+          font-size: 0.75em;
+          font-style: italic;
+        }
       }
+    }
+  }
 
-      .class-details {
-        display: flex;
-        flex-direction: row;
+  .cn-body-container {
+    display: flex;
+    flex-direction: column;
 
-        span {
-          font-size: 11px;
-          margin-left: 0.25em;
-          margin-right: 0.25em;
+    @include breakpoint(medium) {
+      flex-direction: row;
+      flex: 3.5;
+    }
+
+    .cn-section-container {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      padding: 1em;
+
+      &.cn-control-panel {
+        .cn-section-control {
+          background-color: #e8f3fd;
+          overflow-y: scroll;
+          padding: 1em;
+        }
+        @include breakpoint(medium) {
+          flex: 1;
+        }
+        @include breakpoint(large) {
+          flex: 0.42;
         }
       }
 
-      .back-button {
-        font-size: 2em;
+      &.cn-file-panel {
+        position: relative;
+        .cn-section-control {
+          height: 300px;
+        }
+
+        .having-issues {
+          position: absolute;
+          bottom: 0;
+          right: 1em;
+        }
+
+        @include breakpoint(medium) {
+          flex: 1;
+        }
+        @include breakpoint(large) {
+          flex: 0.58;
+        }
       }
 
-      .skip-button {
-        font-size: 0.75em;
-        font-style: italic;
+      .cn-section-control {
+        border-radius: 10px;
+        border: 2px solid #a9a9a9;
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        overflow: hidden;
       }
     }
   }
 
-  .cn-section-container {
-    border-radius: 10px;
-    border: 2px solid #a9a9a9;
-    height: calc(70vh - 64px);
-    overflow: hidden;
-
-    &.cn-syllabus-section-container {
-      background-color: #e8f3fd;
-      padding: 0.5em;
-      overflow-x: scroll;
-      overflow-y: scroll;
-    }
-  }
-
-  .actions-container {
+  .cn-footer-container {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
+    padding: 0 1em;
+
+    .cn-status-form, button {
+      min-width: 100%;
+      @include breakpoint(medium) {
+        min-width: 50%;
+      }
+    }
+
+    @include breakpoint(medium) {
+      flex: 1;
+    }
   }
 }

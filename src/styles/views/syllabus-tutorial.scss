@@ -1,7 +1,8 @@
 .cn-syllabus-tutorial-container {
+  height: 100%;
+  overflow-y: scroll;
   @include breakpoint(large) {
     @include center-viewport-content-container-internal;
-    overflow-y: scroll;
   }
 
   .cn-outline-container {
@@ -13,7 +14,7 @@
     @include breakpoint(large) {
       border: 2px solid #a9a9a9;
       border-radius: 10px;
-      height: calc(80vh - 64px);
+      height: calc(80% - 64px);
       left: 50%;
       position: absolute;
       transform: translateX(-50%);
@@ -37,16 +38,9 @@
         display: block;
         margin-left: auto;
         margin-right: auto;
-
-        @include breakpoint(small) {
-          margin-top: 1em;
-          width: 100%;
-        }
-
-        @include breakpoint(medium) {
-          margin-top: 1em;
-          width: 100%;
-        }
+        margin-top: 1em;
+        margin-bottom: 1em;
+        width: 100%;
 
         @include breakpoint(large) {
           margin-top: -0.75em;
@@ -59,7 +53,7 @@
       background-color: lighten(#a9a9a9, 10);
       border-radius: 10px;
       border: 2px solid #a9a9a9;
-      height: calc(50vh - 64px);
+      height: calc(70% - 64px);
       padding: 0;
       overflow: hidden;
       overflow-y: scroll;
@@ -76,7 +70,7 @@
 
       @include breakpoint(large) {
         position: absolute;
-        top: 50%;
+        top: 52%;
         width: 100%;
         transform: translateY(-50%);
       }
@@ -114,17 +108,19 @@
       background-color: lighten(#a9a9a9, 10);
       margin-left: 0.5em;
       margin-right: 0.5em;
+      margin-bottom: 1em;
       width: calc(100% - 1em);
       left: 0;
-      min-height: calc(1.25em + 14.8px);
+      min-height: calc(1.8em);
 
       @include breakpoint(medium) {
         position: relative;
       }
 
       @include breakpoint(large) {
+        margin-bottom: 0;
         position: absolute;
-        bottom: 5%;
+        bottom: 2%;
       }
     }
   }
