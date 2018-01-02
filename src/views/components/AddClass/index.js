@@ -4,6 +4,7 @@ import Loading from '../../../components/Loading'
 import Search from '../../../components/Search'
 import actions from '../../../actions'
 import {mapProfessor} from '../../../utilities/display'
+import {mapTimeToDisplay} from '../../../utilities/time'
 
 const searchResultHeaders = [
   {
@@ -96,7 +97,7 @@ class AddClass extends React.Component {
       name: name || '-',
       professor: professor ? mapProfessor(professor) : 'TBA',
       days: meet_days || 'TBA',
-      beginTime: meet_start_time || 'TBA',
+      beginTime: meet_start_time ? mapTimeToDisplay(meet_start_time) : 'TBA',
       classLength: length || 'TBA'
     }
 

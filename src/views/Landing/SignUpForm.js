@@ -236,16 +236,6 @@ class SignUpForm extends React.Component {
         <form className='form-padding'>
           <h2>Sign up</h2>
           <div className='row'>
-            <div className='col-xs-12'>
-              <TimePickerField
-                containerClassName='margin-top'
-                label='Start date'
-                name='start_date'
-                onChange={updateProperty}
-                placeholder='Start date'
-                value={form.start_date}
-              />
-            </div>
             <div className='col-xs-6'>
               <InputField
                 containerClassName='margin-top'

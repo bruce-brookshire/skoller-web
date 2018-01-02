@@ -3,9 +3,10 @@ import PropTypes from 'prop-types'
 import Loading from '../../../components/Loading'
 import FlexTable from '../../../components/FlexTable'
 import {Form, ValidateForm} from 'react-form-library'
-import {InputField, SelectField} from '../../../components/Form'
+import {InputField, TimeInputField} from '../../../components/Form'
 import actions from '../../../actions'
 import {mapProfessor} from '../../../utilities/display'
+import {mapTimeToDisplay} from '../../../utilities/time'
 
 const headers = [
   {
@@ -124,7 +125,7 @@ class ClassForm extends React.Component {
       name: name || '-',
       professor: professor ? mapProfessor(professor) : 'TBA',
       days: meet_days || 'TBA',
-      beginTime: meet_start_time || 'TBA',
+      beginTime: meet_start_time ? mapTimeToDisplay(meet_start_time) : 'TBA',
       classLength: length || 'TBA',
       enroll: <a onClick={() => this.onEnroll(item)}>Enroll</a>
     }
@@ -205,7 +206,7 @@ class ClassForm extends React.Component {
               />
             </div>
             <div className='col-xs-12 col-md-2 col-lg-2'>
-              <InputField
+              <TimeInputField
                 containerClassName='margin-top'
                 error={formErrors.meet_start_time}
                 label='Meet start time'
@@ -216,7 +217,7 @@ class ClassForm extends React.Component {
               />
             </div>
             <div className='col-xs-12 col-md-2 col-lg-2'>
-              <InputField
+              <TimeInputField
                 containerClassName='margin-top'
                 error={formErrors.meet_end_time}
                 label='Meet end time'

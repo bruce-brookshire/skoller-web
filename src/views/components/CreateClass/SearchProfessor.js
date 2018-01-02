@@ -84,7 +84,6 @@ class SearchProfessor extends React.Component {
 }
 
 SearchProfessor.propTypes = {
-  cl: PropTypes.object.isRequired,
   onAddProfessor: PropTypes.func.isRequired,
   onProfessorSelect: PropTypes.func.isRequired,
   rootStore: PropTypes.object

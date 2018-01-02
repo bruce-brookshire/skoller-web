@@ -15,6 +15,7 @@ import {FileTabs, FileTab} from '../../components/FileTab'
 import {ProgressBar, ProgressStep} from '../../components/ProgressBar'
 import actions from '../../actions'
 import {mapProfessor} from '../../utilities/display'
+import {mapTimeToDisplay} from '../../utilities/time'
 
 const steps = [ 'Weights Intro', 'Input Weights', 'Assignments Intro', 'Input Assignments' ]
 
@@ -353,7 +354,7 @@ class SyllabusTool extends React.Component {
         <div className='class-details'>
           <span>{number}</span>
           <span>{professor && mapProfessor(professor)}</span>
-          <span>{meet_days}: {meet_start_time}</span>
+          <span>{meet_days}: {meet_start_time ? mapTimeToDisplay(meet_start_time) : 'TBA'}</span>
         </div>
       )
     }
