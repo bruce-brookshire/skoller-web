@@ -7,6 +7,8 @@ import {InputField, MultiselectField, TimePickerField} from '../../components/Fo
 import Modal from '../../components/Modal'
 import actions from '../../actions'
 import {matchText} from '../../utilities/display'
+import {maskPhoneNumber} from '../../utilities/phoneMask'
+
 
 const requiredFields = {
   'email': {
@@ -298,7 +300,9 @@ class SignUpForm extends React.Component {
                 error={formErrors.student && formErrors.student.phone}
                 label=''
                 name='student.phone'
-                onChange={updateProperty}
+                onChange={(number,value)=> {
+                  updateProperty('student.phone',maskPhoneNumber(form.student.phone,value))
+                }}
                 placeholder='Phone number'
                 value={form.student.phone}
               />
