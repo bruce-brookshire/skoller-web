@@ -68,7 +68,7 @@ class Classes extends React.Component {
   */
   renderContent () {
     return (
-      <div>
+      <div className='cn-body margin-top'>
         <div className='cn-table-grid-container'>
           <Grid
             className='striped'
@@ -212,23 +212,22 @@ class Classes extends React.Component {
     const disableClass = disableButton ? 'disabled' : ''
 
     return (
-      <div className= 'cn-my-classes-container'>
-        <div className='margin-bottom'>
+      <div className='cn-my-classes-container cn-container'>
+        <div className='cn-header'>
           <h2>Classes</h2>
-          <span>Enroll in your classes for this semester.</span>
+          <span>Join your classmates for this semester.</span>
         </div>
 
         {this.renderContent()}
 
-        <div className='row full-width justify-center'>
-          <div className='space-between-vertical col-xs-12 col-md-8 col-lg-6'>
-            <div style={{position: 'relative'}}>
-              <button
-                className={`button full-width margin-top margin-bottom ${disableClass}`}
-                onClick={this.onNext.bind(this)}
-                disabled={disableButton}
-              >Blam-o</button>
-            </div>
+
+        <div className='cn-footer margin-bottom'>
+          <div style={{position: 'relative'}}>
+            <button
+              className={`button full-width margin-top ${disableClass}`}
+              onClick={this.onNext.bind(this)}
+              disabled={disableButton}
+            >Blam-o</button>
           </div>
         </div>
 

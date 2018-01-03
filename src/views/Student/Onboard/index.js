@@ -50,21 +50,17 @@ class Onboard extends React.Component {
       <div className='cn-onboarding-container'>
 
         { this.state.currentIndex !== this.state.stepCount - 1
-          ? <div className='row full-width justify-center'>
-            <div className='space-between-vertical col-xs-12 col-md-8 col-lg-6'>
-              <ProgressBar currentStep={this.state.currentIndex + 1}>
-                {steps.map((step, index) => {
-                  return <ProgressStep key={`step-${index}`} label={step} />
-                })}
-              </ProgressBar>
-            </div>
+          ? <div className='full-width' style={{display: 'flex', flex: 1}}>
+            <ProgressBar currentStep={this.state.currentIndex + 1}>
+              {steps.map((step, index) => {
+                return <ProgressStep key={`step-${index}`} label={step} />
+              })}
+            </ProgressBar>
           </div> : null
         }
 
-        <div className='row full-width margin-top margin-bottom justify-center' style={{overflow: 'hidden', overflowY: 'scroll'}}>
-          <div className='space-between-vertical col-xs-12 col-md-8 col-lg-6 margin-top margin-bottom'>
-            {this.renderContent()}
-          </div>
+        <div className='full-width' style={{display: 'flex', flex: 5}}>
+          {this.renderContent()}
         </div>
 
       </div>

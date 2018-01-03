@@ -126,7 +126,7 @@ class ProjectFourDoor extends React.Component {
 
   render () {
     return (
-      <div>
+      <div className='cn-container'>
         <h1><i className="em em-boom"/> BOOM</h1>
         <p>Your account is all set up and ready to go!</p>
         <p><strong>{this.getIncompleteClassesLength()} of your classes are waiting for the syllabi information to be inputted into Skoller.</strong></p>

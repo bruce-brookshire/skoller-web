@@ -59,7 +59,7 @@ class Verification extends React.Component {
     const disableClass = disableButton ? 'disabled' : ''
 
     return (
-      <div>
+      <div className='vertical-align' style={{margin: '0 auto'}}>
         <div className='cn-verification-container'>
           <div className='row'>
             <div className='col-xs-12 col-sm-4 img-container'>

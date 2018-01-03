@@ -111,23 +111,25 @@ class SubmitSyllabi extends React.Component {
 
   render () {
     return (
-      <div>
-        <div className='cn-submit-syllabi-container'>
-          <div className='margin-bottom'>
+      <div className='cn-container'>
+        <div className='cn-submit-syllabi-container cn-header'>
+          <div>
             <h2>Submit your syllabi</h2>
             <span>The syllabus helps us set up your class.</span>
           </div>
-          <div className='cn-flex-table cn-add-class-grid'>
-            <div className='cn-flex-table-row'>
-              {this.renderTableHeaders()}
-            </div>
-            <div className='cn-flex-table-body'>
-              {this.renderTableBody()}
+
+          <div className='cn-body margin-top'>
+            <div className='cn-flex-table cn-add-class-grid'>
+              <div className='cn-flex-table-row'>
+                {this.renderTableHeaders()}
+              </div>
+              <div className='cn-flex-table-body'>
+                {this.renderTableBody()}
+              </div>
             </div>
           </div>
-        </div>
-        <div className='row full-width justify-center'>
-          <div className='space-between-vertical col-xs-12 col-md-8 col-lg-6'>
+
+          <div className='cn-footer margin-bottom'>
             <div style={{position: 'relative'}}>
               <button
                 className={`button full-width margin-top margin-bottom`}

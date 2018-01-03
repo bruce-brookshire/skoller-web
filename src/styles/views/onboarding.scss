@@ -2,6 +2,44 @@
   @include center-viewport-content-container;
   padding: 50px;
   height: calc(100vh - 64px);
+  width: 100%;
+  @include breakpoint(large) {
+    width: 70%;
+    margin: 0 auto;
+  }
+
+  .cn-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    .cn-header {
+      display: flex;
+      flex-direction: column;
+      // flex: 0;
+
+      h2 {
+        margin-bottom: 0;
+      }
+    }
+
+    .cn-body {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow-y: scroll;
+
+      .cn-table-grid-container {
+        overflow-y: scroll;
+      }
+    }
+
+    .cn-footer {
+      display: flex;
+      flex-direction: column;
+      flex: 0;
+    }
+  }
 
   .cn-verification-container {
     width: 100%;
