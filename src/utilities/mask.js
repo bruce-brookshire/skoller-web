@@ -6,7 +6,7 @@
 * @return [String] formatedPhoneNumber. The masked phone number.
 */
 export function maskPhoneNumber (oldPhoneNumber, newPhoneNumber) {
-  const newNumber = newPhoneNumber.replace(' ', '')
+  const newNumber = newPhoneNumber.replace(/[^\d-]/g, '')
   if (newNumber.length > 12) return oldPhoneNumber
   let formatedPhoneNumber = newNumber
   if (newNumber.length > oldPhoneNumber.length) {
