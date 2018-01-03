@@ -1,10 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {browserHistory} from 'react-router'
-import {ProgressBar, ProgressStep} from '../../components/ProgressBar'
 import Joyride from 'react-joyride'
-
-const progressSteps = [ 'Weights Intro', 'Input Weights', 'Assignments Intro', 'Input Assignments' ]
 
 class Tutorial extends React.Component {
   constructor (props) {
@@ -16,6 +13,9 @@ class Tutorial extends React.Component {
           <p>{description}</p>
           <button onClick={() => {
             this.joyride.next()
+            /* Only here becuase weights tutroail changes the array of weights dependent
+             on step. If tutorial changes. Remove this code and isTutorial prop! */
+            if (this.props.updateStep) this.props.updateStep(this.state.stepCount + 1)
             this.setState({stepCount: this.state.stepCount + 1})
           }} className='button'>Next</button>
         </div>

@@ -142,15 +142,27 @@ const steps = [
 ]
 
 class WeightsTutorial extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {step: 0}
+  }
+
+  /* Only here becuase weights tutroail changes the array of weights dependent
+   on step. If tutorial changes. Remove this code and isTutorial prop! */
+  updateStep (step) {
+    this.setState({step})
+  }
+
   render () {
     return (
       <Tutorial
         {...this.props}
-        control={<Weights />}
+        control={<Weights useMin={this.state.step < 7} />}
         description='For Skoller to work, we need to grab the assignment weights for each class. Look at this example...'
         header='Weights'
         steps={steps}
         syllabus={<WeightSyllabus />}
+        updateStep={this.updateStep.bind(this)}
       />
     )
   }

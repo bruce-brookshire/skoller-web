@@ -23,16 +23,26 @@ class Weights extends React.Component {
     }
   }
 
+  componentWillReceiveProps (nextProps) {
+    /* Only here becuase weights tutroail changes the array of weights dependent
+     on step. If tutorial changes. Remove this code and isTutorial prop! */
+    if (nextProps.isTutorial && nextProps.weights.length !== this.state.weights.length) {
+      this.setState({weights: nextProps.weights})
+    }
+  }
+
   /*
   * Disable next.
   */
   componentDidUpdate () {
     // Disable the parents submit button if weights are not secure.
-    let {disableNext} = this.props
-    if (!this.isTotalWeightSecure() && !disableNext) {
-      this.props.toggleDisabled(true)
-    } else if (this.isTotalWeightSecure() && disableNext) {
-      this.props.toggleDisabled(false)
+    if (this.props.toggleDisabled) {
+      let {disableNext} = this.props
+      if (!this.isTotalWeightSecure() && !disableNext) {
+        this.props.toggleDisabled(true)
+      } else if (this.isTotalWeightSecure() && disableNext) {
+        this.props.toggleDisabled(false)
+      }
     }
   }
 
@@ -42,7 +52,7 @@ class Weights extends React.Component {
   * @return [Object]. State object.
   */
   initializeState () {
-    const {cl, isReview, weights} = this.props
+    const {cl, isReview, weights, isTutorial} = this.props
     return {
       currentWeight: null,
       isPoints: cl.is_points,
