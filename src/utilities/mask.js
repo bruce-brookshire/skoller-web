@@ -1,0 +1,35 @@
+/*
+* Mask phone number
+*
+* @param [String] oldPhoneNumber. The previous user input.
+* @param [String] newPhoneNumber. The new user input.
+* @return [String] formatedPhoneNumber. The masked phone number.
+*/
+export function maskPhoneNumber (oldPhoneNumber, newPhoneNumber) {
+  const newNumber = newPhoneNumber.replace(' ', '')
+  if (newNumber.length > 12) return oldPhoneNumber
+  let formatedPhoneNumber = newNumber
+  if (newNumber.length > oldPhoneNumber.length) {
+    switch (newNumber.length) {
+      case 3:
+        formatedPhoneNumber = newNumber + '-'
+        break
+      case 4:
+        if (newNumber[3] !== '-') {
+          formatedPhoneNumber = `${newNumber.slice(0, 3)}-${newNumber[3]}`
+        }
+        break
+      case 7:
+        formatedPhoneNumber = newNumber + '-'
+        break
+      case 8:
+        if (newNumber[7] !== '-') {
+          formatedPhoneNumber = `${newNumber.slice(0, 7)}-${newNumber[7]}`
+        }
+        break
+      default:
+        break
+    }
+  }
+  return formatedPhoneNumber
+}

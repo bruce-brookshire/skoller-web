@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import {browserHistory} from 'react-router'
 import {Cookies} from 'react-cookie'
 import {Form, ValidateForm} from 'react-form-library'
-import {InputField, MultiselectField, TimePickerField} from '../../components/Form'
+import {InputField, MultiselectField} from '../../components/Form'
 import Modal from '../../components/Modal'
 import actions from '../../actions'
-import {matchText} from '../../utilities/display'
+import {maskPhoneNumber} from '../../utilities/mask'
 
 const requiredFields = {
   'email': {
@@ -78,7 +78,7 @@ class SignUpForm extends React.Component {
         phone: '',
         birthday: '',
         gender: '',
-        notification_time: `${7 + (date.getTimezoneOffset()/60)}:00:00`
+        notification_time: `${7 + (date.getTimezoneOffset() / 60)}:00:00`
       }
     }
   }
@@ -98,6 +98,7 @@ class SignUpForm extends React.Component {
   mapForm () {
     let newForm = JSON.parse(JSON.stringify(this.state.form))
     newForm.student.fields_of_study = newForm.student.fields_of_study.map(f => f.value || f.id)
+    newForm.student.phone = newForm.student.phone.replace(/-/g, '')
     return newForm
   }
 
@@ -298,7 +299,9 @@ class SignUpForm extends React.Component {
                 error={formErrors.student && formErrors.student.phone}
                 label=''
                 name='student.phone'
-                onChange={updateProperty}
+                onChange={(name, value) => {
+                  updateProperty(name, maskPhoneNumber(form.student.phone, value))
+                }}
                 placeholder='Phone number'
                 value={form.student.phone}
               />
