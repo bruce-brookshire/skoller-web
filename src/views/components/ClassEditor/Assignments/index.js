@@ -58,7 +58,12 @@ class Assignments extends React.Component {
         </div>
       )
     }
-    return assignments.map((assignment, index) =>
+    //sort by due date.
+    return assignments.sort((a, b) => {
+      let d = new Date(a.due)
+      let d1 = new Date(b.due)
+      return d.getTime() > d1.getTime()
+    }).map((assignment, index) =>
       this.getRow(assignment, index)
     )
   }
