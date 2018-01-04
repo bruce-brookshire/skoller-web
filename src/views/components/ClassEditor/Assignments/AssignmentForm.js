@@ -6,13 +6,16 @@ import {InputField, SelectField} from '../../../../components/Form'
 import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
 import {convertLocalDateToUTC, convertUTCDatetimeToDateString} from '../../../../utilities/time'
-
+import {maskAssignmentDate} from '../../../../utilities/mask'
 const requiredFields = {
   'name': {
     type: 'required'
   },
   'due': {
-    type: 'required'
+    validate: (value) => { return value.length === 5 }
+  },
+  'year_due': {
+    validate: (value) => { return `${value}`.length === 4 }
   }
 }
 
@@ -69,11 +72,17 @@ class AssignmentForm extends React.Component {
     const {id, name, weight_id, due} = formData
     const {cl} = this.props
 
+    const due_date = due ?
+      convertUTCDatetimeToDateString(due, cl.school.timezone) : ''
+
+    const date = new Date()
+
     return ({
       id: id || null,
       name: name || '',
       weight_id: weight_id || '',
-      due: due ? convertUTCDatetimeToDateString(due, cl.school.timezone) : ''
+      due: due_date ? this.mapAssignmentDate(due_date) : '',
+      year_due: due_date ? due_date.split('-')[0] : date.getFullYear()
     })
   }
 
@@ -100,6 +109,7 @@ class AssignmentForm extends React.Component {
     this.setState({loading: true})
     actions.assignments.createAssignment(this.props.cl, form).then((assignment) => {
       this.props.onCreateAssignment(assignment)
+      this.props.resetValidation()
       this.setState({form: this.initializeFormData(), loading: false})
     }).catch(() => { this.setState({loading: false}) })
   }
@@ -111,6 +121,7 @@ class AssignmentForm extends React.Component {
     this.setState({loading: true})
     actions.assignments.updateAssignment(this.props.cl, form).then((assignment) => {
       this.props.onUpdateAssignment(assignment)
+      this.props.resetValidation()
       this.setState({form: this.initializeFormData(), loading: false})
     }).catch(() => { this.setState({loading: false}) })
   }
@@ -121,8 +132,21 @@ class AssignmentForm extends React.Component {
   mapForm () {
     const {cl} = this.props
     let newForm = {...this.state.form}
-    newForm.due = convertLocalDateToUTC(this.state.form.due, cl.school.timezone)
+    let due = newForm.due.split('/')
+    due = `${newForm.year_due}-${due[0]}-${due[1]}`
+    newForm.due = convertLocalDateToUTC(due, cl.school.timezone)
     return newForm
+  }
+
+  /*
+  * Map the assignment dateParts
+  *
+  * @param [String] date. YYYY-MM-DD
+  * @return [String]. MM/DD
+  */
+  mapAssignmentDate (date) {
+    const dateParts = date.split('-')
+    return `${dateParts[1]}/${dateParts[2]}`
   }
 
   render () {
@@ -157,7 +181,7 @@ class AssignmentForm extends React.Component {
               value={form.name}
             />
           </div>
-          <div className='col-xs-12'>
+          <div className='col-xs-8'>
             <InputField
               style={{marginTop: '0.25em'}}
               containerClassName='margin-top'
@@ -165,10 +189,23 @@ class AssignmentForm extends React.Component {
               info={'Be sure not to add assignments that are missing precise due dates. Those assignments can be added through the app when the due date has been set.'}
               label='Due Date'
               name='due'
-              onChange={updateProperty}
-              placeholder='Assignment due date'
-              type='date'
+              onChange={(name, value) => {
+                updateProperty(name, maskAssignmentDate(form.due, value))
+              }}
+              placeholder='MM/DD'
               value={form.due}
+            />
+          </div>
+          <div className='col-xs-4'>
+            <InputField
+              containerClassName='margin-top'
+              error={formErrors.year_due}
+              label='Year due'
+              name='year_due'
+              onChange={updateProperty}
+              placeholder='Year'
+              type='number'
+              value={form.year_due}
             />
           </div>
         </div>

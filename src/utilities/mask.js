@@ -33,3 +33,32 @@ export function maskPhoneNumber (oldPhoneNumber, newPhoneNumber) {
   }
   return formatedPhoneNumber
 }
+
+/*
+* Mask assignment date
+*
+* @param [String] oldDate. The previous user input.
+* @param [String] newDate. The new user input.
+* @return [String] formattedDate. The masked phone number.
+*/
+export function maskAssignmentDate (oldDate, newDate) {
+  const date = newDate.replace(/[^\d/]/g, '')
+  debugger
+  if (date.length > 5) return oldDate
+  let formattedDate = date
+  if (date.length > oldDate.length) {
+    switch (date.length) {
+      case 2:
+        formattedDate = date + '/'
+        break
+      case 3:
+        if (date[2] !== '/') {
+          formattedDate = `${date.slice(0, 2)}/${date[2]}`
+        }
+        break
+      default:
+        break
+    }
+  }
+  return formattedDate
+}
