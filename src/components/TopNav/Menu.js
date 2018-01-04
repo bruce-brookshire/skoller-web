@@ -4,6 +4,7 @@ import {browserHistory} from 'react-router'
 
 const menuItems = [
   {
+    admin: true,
     path: '/hub/landing',
     text: 'Back to homepage'
   },
@@ -16,6 +17,7 @@ const menuItems = [
   //   path: '/calendar'
   // },
   {
+    admin: false,
     path: '/logout',
     text: 'Logout'
   }
@@ -24,7 +26,10 @@ const menuItems = [
 class Menu extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {activePath: '/'}
+
+    browserHistory.listen((location) => {
+      this.state = {activePath: location.pathname}
+    })
   }
 
   renderMenuItems (menuItems, subIndex = 0) {
@@ -37,6 +42,8 @@ class Menu extends React.Component {
                 <MenuItem
                   menuItem={menuItem}
                   onClick={() => this.onMenuItemClick(menuItem)}
+                  rootStore={this.props.rootStore}
+                  currentPath={this.state.activePath}
                 />
               </li>
             )
@@ -66,15 +73,28 @@ export default Menu
 
 class MenuItem extends React.Component {
 
+  constructor (props) {
+    super(props)
+  }
+
+  isAdmin () {
+    const {userStore: {user}} = this.props.rootStore
+    return user.roles.findIndex(r => r.name.toLowerCase() === 'admin') > -1
+  }
+
   render () {
     const {menuItem: {icon}} = this.props
-    return (
-      <div className={`menu-item`}>
-        <a onClick={() => this.props.onClick()}>
-          {this.props.menuItem.text}
-        </a>
-      </div>
-    )
+    if((this.props.menuItem.admin && this.isAdmin()) || !this.props.menuItem.admin){
+      return (
+        <div className={`menu-item`}>
+          <a onClick={() => this.props.onClick()}>
+            {this.props.menuItem.text}
+          </a>
+        </div>
+      )
+    }else{
+      return null
+    }
   }
 }
 
