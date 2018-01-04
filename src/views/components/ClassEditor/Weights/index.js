@@ -116,7 +116,10 @@ class Weights extends React.Component {
         <span>There are currently no weights for this class.</span>
       </div>
     }
-    return weights.map((weight, index) =>
+    // sort weights by created at
+    return weights.sort((a, b) => {
+      return a.inserted_at > b.inserted_at
+    }).map((weight, index) =>
       this.getRow(weight, index)
     )
   }
