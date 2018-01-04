@@ -189,8 +189,7 @@ class Weights extends React.Component {
   */
   renderTotalPercentage () {
     const total = this.getTotalWeight()
-    const totalPoints = this.state.viewOnly ?
-      total / total * 100 : `${this.getTotalWeight()}/${this.state.totalPoints}`
+    const totalPoints = this.state.viewOnly ? total : `${total}/${this.state.totalPoints}`
 
     return (
       <div id='class-editor-weights-total' className='row'>
