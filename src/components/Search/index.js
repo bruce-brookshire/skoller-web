@@ -59,9 +59,12 @@ class Search extends React.Component {
   * @param [Array] searchResults. Array of search results.
   */
   mapResults (searchResults) {
+    const {searchExcluded} = this.props
     return searchResults.map(result => {
       Object.keys(result).forEach(key => {
-        if (key !== 'id') {
+        console.log(searchExcluded,key)
+        const allowedSearch = searchExcluded == undefined || searchExcluded.length == 0 || searchExcluded.indexOf(key) == -1
+        if (key !== 'id' && allowedSearch) {
           result[key] = this.matchText(result[key])
         }
       })
