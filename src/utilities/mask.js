@@ -1,3 +1,16 @@
+
+/*
+* Mask date
+*
+* @param [String] year. The year input.
+* @param [String] month. The month input.
+* @param [String] day. The day input.
+* @return [String] formatedDate. The masked date in YYYY-MM-DD format.
+*/
+export function maskDate (year, month, day) {
+  return `${year}-${month}-${day}`
+}
+
 /*
 * Mask phone number
 *

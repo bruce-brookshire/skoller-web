@@ -99,6 +99,9 @@ class InputInfoField extends React.Component {
             placeholder={input.placeholder}
             type={input.type}
             value={input.value}
+            disabled={input.disabled}
+            max={input.max}
+            min={input.min}
           />
         </div>
         {error && showErrorMessage ? <FormMessage message={error} /> : null}
@@ -111,6 +114,7 @@ InputInfoField.propTypes = {
   containerClass: PropTypes.string,
   containerActiveClass: PropTypes.string,
   containerErrorClass: PropTypes.string,
+  disabled: PropTypes.bool,
   id: PropTypes.string,
   inputClass: PropTypes.string,
   inputActiveClass: PropTypes.string,
@@ -119,6 +123,8 @@ InputInfoField.propTypes = {
   labelClass: PropTypes.string,
   labelActiveClass: PropTypes.string,
   labelErrorClass: PropTypes.string,
+  max: PropTypes.number,
+  min: PropTypes.number,
   name: PropTypes.string.isRequired,
   onBlur: PropTypes.func,
   onChange: PropTypes.func.isRequired,

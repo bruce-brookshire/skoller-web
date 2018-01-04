@@ -6,12 +6,19 @@ import {InputField, SelectField} from '../../../../components/Form'
 import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
 import {convertLocalDateToUTC, convertUTCDatetimeToDateString} from '../../../../utilities/time'
+import {maskDate} from '../../../../utilities/mask'
 
 const requiredFields = {
   'name': {
     type: 'required'
   },
-  'due': {
+  'due_day': {
+    type: 'required'
+  },
+  'due_month': {
+    type: 'required'
+  },
+  'due_year': {
     type: 'required'
   }
 }
@@ -68,12 +75,17 @@ class AssignmentForm extends React.Component {
     let formData = data || {}
     const {id, name, weight_id, due} = formData
     const {cl} = this.props
+    const full_due = due ? convertUTCDatetimeToDateString(due, cl.school.timezone) : ''
+    const parsed_date = full_due.split('-')
 
     return ({
       id: id || null,
       name: name || '',
       weight_id: weight_id || '',
-      due: due ? convertUTCDatetimeToDateString(due, cl.school.timezone) : ''
+      due: full_due,
+      due_year: parsed_date.length == 3 ? parsed_date[0] : (new Date().getFullYear()),
+      due_month: parsed_date.length == 3 ? parsed_date[1] : '',
+      due_day: parsed_date.length == 3 ? parsed_date[2] : '',
     })
   }
 
@@ -113,6 +125,34 @@ class AssignmentForm extends React.Component {
       this.props.onUpdateAssignment(assignment)
       this.setState({form: this.initializeFormData(), loading: false})
     }).catch(() => { this.setState({loading: false}) })
+  }
+
+  /*
+  * Returns the number of days in a given month/year combination
+  */
+  daysInMonth(month,year) {
+    if(month && year){
+      return new Date(year, month, 0).getDate();
+    }else if(month){
+      return new Date((new Date).getFullYear(), month, 0).getDate();
+    }else{
+      return 31
+    }
+  }
+
+  /*
+  * Format months/day numbers to have leading zeros where needed and not exceed limit
+  */
+  formatNum (num,limit) {
+    if(parseInt(num) > limit || parseInt(num) < 1){
+      return ''
+    }else if(num.length > 2 && num[0] == '0'){
+      return num.substr(1)
+    }else if(num.length < 2 && num[0] != '0' && num != ''){
+      return '0'+num
+    }else{
+      return num
+    }
   }
 
   /*
@@ -157,18 +197,66 @@ class AssignmentForm extends React.Component {
               value={form.name}
             />
           </div>
-          <div className='col-xs-12'>
+          <InputField
+            onChange={(name, value) => {}}
+            name='form.due'
+            type='hidden'
+            value={form.due}
+          />
+          <div className='col-xs-4'>
             <InputField
-              style={{marginTop: '0.25em'}}
               containerClassName='margin-top'
-              error={formErrors.due}
               info={'Be sure not to add assignments that are missing precise due dates. Those assignments can be added through the app when the due date has been set.'}
+              error={formErrors.due_month}
               label='Due Date'
-              name='due'
-              onChange={updateProperty}
-              placeholder='Assignment due date'
-              type='date'
-              value={form.due}
+              name='form.due_month'
+              onChange={(name, value) => {
+                var newForm = this.state.form
+                newForm['due_month'] = this.formatNum(value,12)
+                this.setState({form:newForm})
+                updateProperty('due', maskDate(form.due_year,form.due_month,form.due_day))
+              }}
+              placeholder='Month'
+              type='number'
+              value={form.due_month}
+              min={1}
+              max={12}
+            />
+          </div>
+          <div className='col-xs-4'>
+            <InputField
+              containerClassName='margin-top--large'
+              error={formErrors.due_day}
+              name='form.due_day'
+              onChange={(name, value) => {
+                var newForm = this.state.form
+                newForm['due_day'] = this.formatNum(value,this.daysInMonth(form.due_month,form.due_year))
+                this.setState({form:newForm})
+                updateProperty('due', maskDate(form.due_year,form.due_month,form.due_day))
+              }}
+              placeholder='Day'
+              type='number'
+              value={form.due_day}
+              min={1}
+              max={31}
+            />
+          </div>
+          <div className='col-xs-4'>
+            <InputField
+              containerClassName='margin-top--large'
+              error={formErrors.due_year}
+              name='form.due_year'
+              onChange={(name, value) => {
+                var newForm = this.state.form
+                newForm['due_year'] = value
+                this.setState({form:newForm})
+                updateProperty('due', maskDate(form.due_year,form.due_month,form.due_day))
+              }}
+              placeholder='Year'
+              type='number'
+              value={this.state.form.due_year}
+              max={2050}
+              min={2000}
             />
           </div>
         </div>
