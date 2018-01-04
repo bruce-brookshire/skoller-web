@@ -6,12 +6,16 @@ import {InputField, SelectField} from '../../../../components/Form'
 import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
 import {convertLocalDateToUTC, convertUTCDatetimeToDateString} from '../../../../utilities/time'
+import {maskDate} from '../../../../utilities/mask'
 
 const requiredFields = {
   'name': {
     type: 'required'
   },
-  'due': {
+  'due_day': {
+    type: 'required'
+  },
+  'due_month': {
     type: 'required'
   }
 }
@@ -68,12 +72,17 @@ class AssignmentForm extends React.Component {
     let formData = data || {}
     const {id, name, weight_id, due} = formData
     const {cl} = this.props
+    const full_due = due ? convertUTCDatetimeToDateString(due, cl.school.timezone) : ''
+    const parsed_date = new Date(full_due)
 
     return ({
       id: id || null,
       name: name || '',
       weight_id: weight_id || '',
-      due: due ? convertUTCDatetimeToDateString(due, cl.school.timezone) : ''
+      due: full_due,
+      due_year: parsed_date.getFullYear() ? parsed_date.getFullYear() : (new Date().getFullYear()),
+      due_month: parsed_date.getMonth() ? parsed_date.getMonth()+1 : '',
+      due_day: parsed_date.getDate() ? parsed_date.getDate() : '',
     })
   }
 
@@ -157,18 +166,60 @@ class AssignmentForm extends React.Component {
               value={form.name}
             />
           </div>
-          <div className='col-xs-12'>
+          <InputField
+            onChange={(name, value) => {}}
+            name='form.due'
+            type='hidden'
+            value={form.due}
+          />
+          <div className='col-xs-4'>
             <InputField
-              style={{marginTop: '0.25em'}}
               containerClassName='margin-top'
-              error={formErrors.due}
               info={'Be sure not to add assignments that are missing precise due dates. Those assignments can be added through the app when the due date has been set.'}
+              error={formErrors.due_month}
               label='Due Date'
-              name='due'
-              onChange={updateProperty}
-              placeholder='Assignment due date'
-              type='date'
-              value={form.due}
+              name='form.due_month'
+              onChange={(name, value) => {
+                var newForm = this.state.form
+                newForm['due_month'] = value.length < 2 ? ('0'+value) : value
+                this.setState({form:newForm})
+                updateProperty('due', maskDate(form.due_year,form.due_month,form.due_day))
+              }}
+              placeholder='Month'
+              type='number'
+              value={form.due_month}
+              min={1}
+              max={12}
+            />
+          </div>
+          <div className='col-xs-4'>
+            <InputField
+              containerClassName='margin-top--large'
+              info={'Be sure not to add assignments that are missing precise due dates. Those assignments can be added through the app when the due date has been set.'}
+              error={formErrors.due_day}
+              name='form.due_day'
+              onChange={(name, value) => {
+                var newForm = this.state.form
+                newForm['due_day'] = value.length < 2 ? ('0'+value) : value
+                this.setState({form:newForm})
+                updateProperty('due', maskDate(form.due_year,form.due_month,form.due_day))
+              }}
+              placeholder='Day'
+              type='number'
+              value={form.due_day}
+              min={1}
+              max={31}
+            />
+          </div>
+          <div className='col-xs-4'>
+            <InputField
+              containerClassName='margin-top--large'
+              error={formErrors.due_year}
+              name='form.due_year'
+              onChange={(name, value) => {}}
+              type='number'
+              value={this.state.form.due_year}
+              disabled={true}
             />
           </div>
         </div>
