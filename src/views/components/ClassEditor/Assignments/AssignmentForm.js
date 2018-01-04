@@ -135,6 +135,7 @@ class AssignmentForm extends React.Component {
             <SelectField
               containerClassName='margin-top'
               error={formErrors.weight_id}
+              info={'The assignments added will appear for everyone in the class. Be sure to only add graded assignments that apply to all classmates.'}
               label='Grading category'
               name='weight_id'
               onChange={updateProperty}
@@ -148,6 +149,7 @@ class AssignmentForm extends React.Component {
               style={{marginTop: '0em'}}
               containerClassName='margin-top'
               error={formErrors.name}
+              info={'Be sure to add the assignment name exactly how it appears in the syllabus. Hint: use copy and paste to minimize typ-o\'s'}
               label='Assignment name'
               name='name'
               onChange={updateProperty}
@@ -160,8 +162,8 @@ class AssignmentForm extends React.Component {
               style={{marginTop: '0.25em'}}
               containerClassName='margin-top'
               error={formErrors.due}
+              info={'Be sure not to add assignments that are missing precise due dates. Those assignments can be added through the app when the due date has been set.'}
               label='Due Date'
-
               name='due'
               onChange={updateProperty}
               placeholder='Assignment due date'

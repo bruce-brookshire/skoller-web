@@ -15,16 +15,56 @@
   .cn-input-label {
     @include form-label;
   }
-}
 
-.info-button {
-  span {
-    // display: none;
-  }
+  .cn-info-container {
+    position: relative;
+    text-align: center;
+    z-index: 100;
+    display: inline-block;
 
-  &:hover {
-    span {
-      display: inline-block;
+    i {
+      font-size: 12px;
+      color: #4a4a4a;
+      margin-left: 5px;
+    }
+
+    .message-bubble {
+      background-color: white;
+      border: 1px solid black;
+      color: black;
+      display: none;
+      left: 0%;
+      margin-left: -2px;
+      position: absolute;
+      bottom: 0;
+      transform: translate(0%, -22px);
+      width: 300px;
+
+      &.triangle-bottom {
+        &::before {
+          left: 12px;
+          margin-bottom: 4px;
+          border-right: 6px solid black;
+        }
+      }
+
+      .triangle-inner{
+        &::before {
+          left: 12px;
+          border-top: 6px solid transparent;
+          border-right: 6px solid white;
+          border-bottom: 6px solid transparent;
+          margin-bottom: 6px;
+        }
+      }
+    }
+
+    &:hover {
+      cursor: pointer;
+
+      .message-bubble {
+        display: block;
+      }
     }
   }
 }
