@@ -1,42 +1,110 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {TextArea} from 'react-form-library'
 
-class TextAreaField extends React.Component {
+class TextArea extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {isFocused: false}
+  }
+
+  onBlur () {
+    this.setState({isFocused: false})
+    if (this.props.onBlur) this.props.onBlur()
+  }
+
+  onChange (event) {
+    this.props.onChange(event.target.name, event.target.value)
+  }
+
+  onFocus () {
+    this.setState({isFocused: true})
+    if (this.props.onFocus) this.props.onFocus()
+  }
+
+  renderInfo () {
+    if (this.props.info) {
+      return (
+        <div className='cn-info-container'>
+          <div className='message-bubble triangle-bottom'>
+            {this.props.info}
+            <div className='triangle-inner' />
+          </div>
+          <i className='fa fa-info-circle'/>
+        </div>
+      )
+    }
+  }
+
+
   render () {
-    const {containerClassName} = this.props
     const containerClasses = ['cn-input-container']
-    if (containerClassName) containerClasses.push(containerClassName)
+    const labelClasses = ['cn-input-label']
+    const inputClasses = ['cn-form-input']
 
+    const {containerClassName, labelClassName, inputClassName,
+      containerActiveClassName, labelActiveClassName, inputActiveClassName,
+      containerErrorClassName, labelErrorClassName, inputErrorClassName,
+      id, label, error, message, showErrorMessage
+    } = this.props
+
+    if (containerClassName) containerClasses.push(containerClassName)
+    if (labelClassName) labelClasses.push(labelClassName)
+    if (inputClassName) inputClasses.push(inputClassName)
+
+    if (this.state.isFocused) {
+      containerClasses.push('active')
+      labelClasses.push('active')
+      inputClasses.push('active')
+      if (containerActiveClassName) containerClasses.push(containerActiveClassName)
+      if (labelActiveClassName) labelClasses.push(labelActiveClassName)
+      if (inputActiveClassName) inputClasses.push(inputActiveClassName)
+    }
+
+    if (this.props.error) {
+      containerClasses.push('error')
+      labelClasses.push('error')
+      inputClasses.push('error')
+      if (containerErrorClassName) containerClasses.push(containerErrorClassName)
+      if (labelErrorClassName) labelClasses.push(labelErrorClassName)
+      if (inputErrorClassName) inputClasses.push(inputErrorClassName)
+    }
+
+    const input = this.props
     return (
-      <TextArea
-        containerClass={containerClasses.join(' ')}
-        containerActiveClass='active'
-        containerErrorClass='error'
-        inputClass='cn-form-textarea'
-        inputActiveClass='active'
-        inputErrorClass='error'
-        labelClass='cn-input-label'
-        labelActiveClass='active'
-        labelErrorClass='error'
-        {...this.props}
-      />
+      <div className={containerClasses.join(' ')}>
+        {label
+          ? <label className={labelClasses.join(' ')} htmlFor={id}>
+            {label} {this.renderInfo()}
+          </label> : null
+        }
+        <textarea
+          className={inputClasses.join(' ')}
+          id={input.id}
+          name={input.name}
+          onBlur={this.onBlur.bind(this)}
+          onChange={this.onChange.bind(this)}
+          onFocus={this.onFocus.bind(this)}
+          placeholder={input.placeholder}
+          rows={input.rows}
+          value={input.value}
+        />
+      </div>
     )
   }
 }
 
 TextArea.propTypes = {
-  containerClassName: PropTypes.string,
-  containerActiveClassName: PropTypes.string,
-  containerErrorClassName: PropTypes.string,
+  containerClass: PropTypes.string,
+  containerActiveClass: PropTypes.string,
+  containerErrorClass: PropTypes.string,
   id: PropTypes.string,
-  inputClassName: PropTypes.string,
-  inputActiveClassName: PropTypes.string,
-  inputErrorClasNames: PropTypes.string,
+  inputClass: PropTypes.string,
+  inputActiveClass: PropTypes.string,
+  inputErrorClass: PropTypes.string,
   label: PropTypes.string,
-  labelClassName: PropTypes.string,
-  labelActiveClassName: PropTypes.string,
-  labelErrorClassName: PropTypes.string,
+  labelClass: PropTypes.string,
+  labelActiveClass: PropTypes.string,
+  labelErrorClass: PropTypes.string,
   name: PropTypes.string.isRequired,
   onBlur: PropTypes.func,
   onChange: PropTypes.func.isRequired,
@@ -51,4 +119,4 @@ TextArea.propTypes = {
   ]).isRequired
 }
 
-export default TextAreaField
+export default TextArea

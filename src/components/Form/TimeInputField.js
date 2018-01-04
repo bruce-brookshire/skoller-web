@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Input} from 'react-form-library'
+import InputField from './InputField'
 
 class FormMessage extends React.Component {
   render () {
@@ -25,16 +25,7 @@ class TimePickerField extends React.Component {
 
     return (
       <div className='form-element' style={{position:'relative'}}>
-        <Input
-          containerClass={containerClasses.join(' ')}
-          containerActiveClass='active'
-          containerErrorClass='error'
-          inputClass='cn-form-input'
-          inputActiveClass='active'
-          inputErrorClass='error'
-          labelClass='cn-input-label'
-          labelActiveClass='active'
-          labelErrorClass='error'
+        <InputField
           type='time'
           {...this.props}
           onChange={this.onChange.bind(this)}
