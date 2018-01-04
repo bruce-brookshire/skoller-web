@@ -331,9 +331,12 @@ class MyClasses extends React.Component {
     return (
       <div className= 'cn-my-classes-container'>
         <div className='cn-my-classes-header margin-bottom'>
-          <h2 className='left'>Classes</h2>
+          <div className='left'>
+            <h2>My classes</h2><br/>
+            <span>From this page, you can enroll in your classes, upload syllabi, and check other class details.</span>
+          </div>
+
           <div className='right'>
-            <h4 className='cn-grey'>My classes</h4>
             <h4><a onClick={() => this.toggleAddModal()}>Add Class</a></h4>
           </div>
         </div>

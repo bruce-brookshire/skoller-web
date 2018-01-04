@@ -1,15 +1,19 @@
-.cn-side-nav {
+.cn-top-nav {
+  padding: 0 20px;
   position: fixed;
   top: $unit-nav-height;
-  bottom: 0;
   left: 0;
-  width: $unit-side-nav-width;
+  width: 100%;
 
   ul {
     @include reset-list;
+    align-items: center;
+    display: flex;
+    height: $unit-top-nav-height;
+    justify-content: space-between;
     li {
+      padding: 5px;
       text-align: center;
-      margin-top: 3rem;
       i {
         color: $cn-font-color;
         font-size: 1.3em;

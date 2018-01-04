@@ -34,7 +34,7 @@
 @import 'components/navbar';
 @import 'components/progress-bar.scss';
 @import 'components/search';
-@import 'components/sidenav';
+@import 'components/topnav';
 @import 'components/snackbar';
 @import 'components/upload-history';
 @import 'components/upload-documents';
@@ -87,10 +87,10 @@ body {
   &.public { padding-top: 0; }
   .layout {
     position: fixed;
-    top: $unit-nav-height;
+    top: $unit-nav-height+$unit-top-nav-height;
     bottom: 0;
     right: 0;
-    left: $unit-side-nav-width;
+    left: 0;
     overflow-x: scroll;
 
     /* sticky bottom */

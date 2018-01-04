@@ -202,9 +202,6 @@ class SyllabusTool extends React.Component {
       return (
         <div className='cn-sw-controls'>
           <div>
-            <a onClick={() => browserHistory.push('/hub/landing')}>Back to homepage</a>
-          </div>
-          <div>
             <div>{school && school.name}</div>
           </div>
         </div>

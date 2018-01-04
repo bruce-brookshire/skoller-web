@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import {browserHistory} from 'react-router'
 
 const menuItems = [
-  // {
-  //   icon: 'fa fa-home',
-  //   path: '/hub/landing'
-  // },
+  {
+    path: '/hub/landing',
+    text: 'Back to homepage'
+  },
   // {
   //   icon: 'fa fa-check-circle-o',
   //   path: '/student/diy'
@@ -16,8 +16,8 @@ const menuItems = [
   //   path: '/calendar'
   // },
   {
-    icon: 'fa fa-sign-out',
-    path: '/logout'
+    path: '/logout',
+    text: 'Logout'
   }
 ]
 
@@ -32,9 +32,8 @@ class Menu extends React.Component {
       <ul>
         {
           menuItems.map((menuItem, index) => {
-            const activeClass = this.state.activePath === menuItem.path ? 'active' : ''
             return (
-              <li key={`item${subIndex}-${index}`} className={`${activeClass}`}>
+              <li key={`item${subIndex}-${index}`}>
                 <MenuItem
                   menuItem={menuItem}
                   onClick={() => this.onMenuItemClick(menuItem)}
@@ -70,9 +69,9 @@ class MenuItem extends React.Component {
   render () {
     const {menuItem: {icon}} = this.props
     return (
-      <div className='menu-item'>
+      <div className={`menu-item`}>
         <a onClick={() => this.props.onClick()}>
-          <i className={`${icon}`}/>
+          {this.props.menuItem.text}
         </a>
       </div>
     )
