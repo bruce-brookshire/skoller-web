@@ -15,10 +15,12 @@ class Weights extends React.Component {
   * Fetch the weights for a given class
   */
   componentWillMount () {
-    const {cl, disabled} = this.props
+    const {cl, disabled, isReview} = this.props
     if (!disabled) {
       actions.weights.getClassWeights(cl).then((weights) => {
-        this.setState({weights})
+        // if in review, set
+        const noWeights = (cl.status.id === 500 && weights.length === 0)
+        this.setState({weights, noWeights})
       }).then(() => false)
     }
   }
@@ -38,7 +40,9 @@ class Weights extends React.Component {
     // Disable the parents submit button if weights are not secure.
     if (this.props.toggleDisabled && !this.state.viewOnly) {
       let {disableNext} = this.props
-      if (!this.isTotalWeightSecure() && !disableNext) {
+      if (!disableNext && this.state.noWeights) {
+      }
+      else if (!this.isTotalWeightSecure() && !disableNext) {
         this.props.toggleDisabled(true)
       } else if (this.isTotalWeightSecure() && disableNext) {
         this.props.toggleDisabled(false)
@@ -56,6 +60,7 @@ class Weights extends React.Component {
     return {
       currentWeight: null,
       isPoints: cl.is_points,
+      noWeights: null,
       totalPoints: null,
       weights: weights || [],
       viewOnly: isReview
@@ -100,6 +105,7 @@ class Weights extends React.Component {
             {this.renderTotalPercentage()}
           </div>
         </div>
+        {!viewOnly && this.renderWeightsCheckbox()}
         {!viewOnly && this.renderWeightForm()}
         {!viewOnly && this.renderWeightSlider()}
       </div>
@@ -209,6 +215,27 @@ class Weights extends React.Component {
   }
 
   /*
+  * Render the checkbox for weights.
+  */
+  renderWeightsCheckbox () {
+    if (this.state.weights.length === 0) {
+      return (
+        <label style={{marginTop: '2px'}}>
+          <input
+            onChange={(event) => {
+              console.log(this.props)
+              this.props.toggleDisabled(!event.target.checked)
+              this.setState({noWeights: event.target.checked})
+            }}
+            type='checkbox'
+            checked={this.state.noWeights}
+          /> Weights were not provided on the syllabus.
+        </label>
+      )
+    }
+  }
+
+  /*
   * Render the slider
   */
   renderWeightSlider () {
@@ -277,7 +304,7 @@ class Weights extends React.Component {
   onCreateWeight (weight) {
     const newWeights = this.state.weights
     newWeights.push(weight)
-    this.setState({weights: newWeights, currentWeight: null})
+    this.setState({weights: newWeights, currentWeight: null, noWeights: false})
   }
 
   /*
