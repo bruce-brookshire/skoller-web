@@ -128,6 +128,19 @@ class AssignmentForm extends React.Component {
   }
 
   /*
+  * Returns the number of days in a given month/year combination
+  */
+  daysInMonth(month,year) {
+    if(month && year){
+      return new Date(year, month, 0).getDate();
+    }else if(month){
+      return new Date((new Date).getFullYear(), month, 0).getDate();
+    }else{
+      return 31
+    }
+  }
+
+  /*
   * Format months/day numbers to have leading zeros where needed and not exceed limit
   */
   formatNum (num,limit) {
@@ -217,7 +230,7 @@ class AssignmentForm extends React.Component {
               name='form.due_day'
               onChange={(name, value) => {
                 var newForm = this.state.form
-                newForm['due_day'] = this.formatNum(value,31)
+                newForm['due_day'] = this.formatNum(value,this.daysInMonth(form.due_month,form.due_year))
                 this.setState({form:newForm})
                 updateProperty('due', maskDate(form.due_year,form.due_month,form.due_day))
               }}
