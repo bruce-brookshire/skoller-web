@@ -38,7 +38,7 @@
   @include breakpoint(medium) {
     margin: 0 auto $unit-space;
     max-width: $unit-app-width;
-    padding: $unit-space 0 0;
+    padding: $unit-space $unit-space 0 0;
   }
 }
 

@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import {browserHistory} from 'react-router'
 
 const menuItems = [
-  {
-    icon: 'fa fa-home',
-    path: '/hub/landing'
-  },
+  // {
+  //   icon: 'fa fa-home',
+  //   path: '/hub/landing'
+  // },
   // {
   //   icon: 'fa fa-check-circle-o',
   //   path: '/student/diy'
