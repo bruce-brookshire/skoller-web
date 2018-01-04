@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import * as moment from 'moment-timezone'
 import {Form, ValidateForm} from 'react-form-library'
 import {InputField, SelectField} from '../../../../components/Form'
 import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
 import {convertLocalDateToUTC, convertUTCDatetimeToDateString} from '../../../../utilities/time'
 import {maskAssignmentDate} from '../../../../utilities/mask'
+
 const requiredFields = {
   'name': {
     type: 'required'

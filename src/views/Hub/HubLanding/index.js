@@ -154,7 +154,7 @@ class HubLanding extends React.Component {
                     >
                       <img src='/src/assets/images/icons/Weights.png'/>
                       <span>Weights (
-                        {this.state.loadingStatuses ? <Loading style={{color: 'white'}}/>
+                        {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}}/>
                           : weightCount
                         }
                       )</span>
@@ -169,7 +169,7 @@ class HubLanding extends React.Component {
                     >
                       <img src='/src/assets/images/icons/Assignments.png'/>
                       <span>Assigments (
-                        {this.state.loadingStatuses ? <Loading style={{color: 'white'}} />
+                        {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
                           : assignmentCount
                         }
                       )</span>
@@ -184,7 +184,7 @@ class HubLanding extends React.Component {
                     >
                       <img src='/src/assets/images/icons/Review.png'/>
                       <span>Review (
-                        {this.state.loadingStatuses ? <Loading style={{color: 'white'}} />
+                        {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
                           : reviewCount
                         }
                       )</span>
