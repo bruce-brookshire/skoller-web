@@ -36,7 +36,7 @@ class Weights extends React.Component {
   */
   componentDidUpdate () {
     // Disable the parents submit button if weights are not secure.
-    if (this.props.toggleDisabled) {
+    if (this.props.toggleDisabled && !this.state.viewOnly) {
       let {disableNext} = this.props
       if (!this.isTotalWeightSecure() && !disableNext) {
         this.props.toggleDisabled(true)
@@ -311,8 +311,6 @@ class Weights extends React.Component {
   onChangeTotalPoints (totalPoints) {
     this.setState({totalPoints})
   }
-
-
 
   render () {
     const {viewOnly} = this.state
