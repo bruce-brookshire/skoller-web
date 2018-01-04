@@ -213,7 +213,6 @@ class AssignmentForm extends React.Component {
           <div className='col-xs-4'>
             <InputField
               containerClassName='margin-top--large'
-              info={'Be sure not to add assignments that are missing precise due dates. Those assignments can be added through the app when the due date has been set.'}
               error={formErrors.due_day}
               name='form.due_day'
               onChange={(name, value) => {
