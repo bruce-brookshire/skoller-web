@@ -99,6 +99,7 @@ class InputInfoField extends React.Component {
             placeholder={input.placeholder}
             type={input.type}
             value={input.value}
+            disabled={input.disabled}
           />
         </div>
         {error && showErrorMessage ? <FormMessage message={error} /> : null}
@@ -111,6 +112,7 @@ InputInfoField.propTypes = {
   containerClass: PropTypes.string,
   containerActiveClass: PropTypes.string,
   containerErrorClass: PropTypes.string,
+  disabled: PropTypes.bool,
   id: PropTypes.string,
   inputClass: PropTypes.string,
   inputActiveClass: PropTypes.string,

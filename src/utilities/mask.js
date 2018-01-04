@@ -43,7 +43,6 @@ export function maskPhoneNumber (oldPhoneNumber, newPhoneNumber) {
 */
 export function maskAssignmentDate (oldDate, newDate) {
   const date = newDate.replace(/[^\d/]/g, '')
-  debugger
   if (date.length > 5) return oldDate
   let formattedDate = date
   if (date.length > oldDate.length) {

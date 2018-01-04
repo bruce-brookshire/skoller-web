@@ -206,6 +206,7 @@ class AssignmentForm extends React.Component {
               placeholder='Year'
               type='number'
               value={form.year_due}
+              disabled={true}
             />
           </div>
         </div>
