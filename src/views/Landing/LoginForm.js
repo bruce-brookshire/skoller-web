@@ -88,7 +88,7 @@ class LoginForm extends React.Component {
           <InputField
             containerClassName=''
             error={formErrors.email}
-            showErrorMessage={checkIfFirstKey(formErrors, 'email')}
+            showErrorMessage={checkIfFirstKey(formErrors, 'email') && false}
             label=''
             name='email'
             onChange={updateProperty}
@@ -101,7 +101,7 @@ class LoginForm extends React.Component {
           <InputField
             containerClassName=''
             error={formErrors.password}
-            showErrorMessage={checkIfFirstKey(formErrors, 'password')}
+            showErrorMessage={checkIfFirstKey(formErrors, 'password') && false}
             label=''
             name='password'
             onChange={updateProperty}
