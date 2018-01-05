@@ -1,11 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {browserHistory} from 'react-router'
+import {inject, observer} from 'mobx-react'
 
 const menuItems = [
   {
-    icon: 'fa fa-home',
-    path: '/hub/landing'
+    admin: true,
+    path: '/hub/landing',
+    text: 'Back to homepage'
   },
   // {
   //   icon: 'fa fa-check-circle-o',
@@ -16,15 +18,17 @@ const menuItems = [
   //   path: '/calendar'
   // },
   {
-    icon: 'fa fa-sign-out',
-    path: '/logout'
+    admin: false,
+    path: '/logout',
+    text: 'Log out'
   }
 ]
 
 class Menu extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {activePath: '/'}
+
+    this.state = {activePath: window.location.pathname}
   }
 
   renderMenuItems (menuItems, subIndex = 0) {
@@ -32,12 +36,12 @@ class Menu extends React.Component {
       <ul>
         {
           menuItems.map((menuItem, index) => {
-            const activeClass = this.state.activePath === menuItem.path ? 'active' : ''
             return (
-              <li key={`item${subIndex}-${index}`} className={`${activeClass}`}>
+              <li key={`item${subIndex}-${index}`}>
                 <MenuItem
                   menuItem={menuItem}
                   onClick={() => this.onMenuItemClick(menuItem)}
+                  currentPath={this.state.activePath}
                 />
               </li>
             )
@@ -65,17 +69,28 @@ Menu.propTypes = {
 
 export default Menu
 
+@inject('rootStore') @observer
 class MenuItem extends React.Component {
+
+  constructor (props) {
+    super(props)
+  }
 
   render () {
     const {menuItem: {icon}} = this.props
-    return (
-      <div className='menu-item'>
-        <a onClick={() => this.props.onClick()}>
-          <i className={`${icon}`}/>
-        </a>
-      </div>
-    )
+    const currentPath = window.location.pathname
+    const adminAccessible = this.props.menuItem.admin && !this.props.rootStore.userStore.isStudent()
+    if((adminAccessible || !this.props.menuItem.admin) && currentPath != this.props.menuItem.path){
+      return (
+        <div className={`menu-item`}>
+          <a onClick={() => this.props.onClick()}>
+            {this.props.menuItem.text}
+          </a>
+        </div>
+      )
+    }else{
+      return null
+    }
   }
 }
 

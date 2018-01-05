@@ -13,6 +13,14 @@ class UserStore {
   setFetchingUser (bool) {
     this.fetchingUser = bool
   }
+
+  isAdmin () {
+    return this.user.roles.findIndex(r => r.name.toLowerCase() === 'admin') > -1
+  }
+
+  isStudent () {
+    return this.user.roles.findIndex(r => r.name.toLowerCase() === 'student') > -1
+  }
 }
 
 const userStore = new UserStore()

@@ -2,18 +2,18 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Menu from './Menu'
 
-class SideNav extends React.Component {
+class TopNav extends React.Component {
   render () {
     return (
-      <div className='cn-side-nav'>
+      <div className='cn-top-nav'>
         <Menu {...this.props} />
       </div>
     )
   }
 }
 
-SideNav.propTypes = {
+TopNav.propTypes = {
   rootStore: PropTypes.object
 }
 
-export default SideNav
+export default TopNav
