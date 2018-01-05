@@ -11,7 +11,7 @@ class Layout extends React.Component {
     return (
       <div>
         <NavBar />
-        <TopNav rootStore={this.props.rootStore}/>
+        <TopNav />
         <div className='layout'>
           {this.props.children}
         </div>

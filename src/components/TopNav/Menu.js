@@ -43,7 +43,6 @@ class Menu extends React.Component {
                 <MenuItem
                   menuItem={menuItem}
                   onClick={() => this.onMenuItemClick(menuItem)}
-                  rootStore={this.props.rootStore}
                   currentPath={this.state.activePath}
                 />
               </li>
