@@ -60,17 +60,17 @@ class SubmitSyllabi extends React.Component {
   */
   renderClassOrderByIncomplete () {
     // the only way I can think of sort so that the incomplete classes are at the top is to create two different arrays and merge later
-    // as conventional sort can't really achieve this. 
-    // i first filter to get an array of just the incomplete classes and map them. 
+    // as conventional sort can't really achieve this.
+    // i first filter to get an array of just the incomplete classes and map them.
     // if you just map, you get undefined holes. causing errors and duplication
-    
+
     // i first get an array of incomplete classes
-    const incompleteArray = this.state.classes.filter(cl => cl.status.name === 'New Class' || cl.status.name === 'Needs Syllabus').map((cl,index) => {return cl})
+    const incompleteArray = this.state.classes.filter(cl => cl.status.name === 'New Class' || cl.status.name === 'Needs Syllabus').map((cl, index) => { return cl })
 
     // then get an array of complete classes
-    const completeArray = this.state.classes.filter(cl => cl.status.name !== 'New Class' && cl.status.name !== 'Needs Syllabus').map((cl,index) => {return cl})
+    const completeArray = this.state.classes.filter(cl => cl.status.name !== 'New Class' && cl.status.name !== 'Needs Syllabus').map((cl, index) => { return cl })
 
-    // then merge them together 
+    // then merge them together
     return incompleteArray.concat(completeArray)
   }
 

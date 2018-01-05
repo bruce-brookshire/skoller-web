@@ -121,7 +121,7 @@ class ProjectFourDoor extends React.Component {
   }
 
   getIncompleteClassesLength () {
-    return this.state.classes.filter(cl => !cl.is_complete).length
+    return this.state.classes.filter(cl => cl.status.name === 'Weights').length
   }
 
   render () {
