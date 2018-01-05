@@ -116,8 +116,8 @@
     .cn-upload-history {
       width: 100%;
       .upload-container {
-        background-color: darken($cn-color-blue, 10);
-        border-color: $cn-color-white;
+        background-color: $cn-color-white;
+        border-color: $cn-color-blue;
         height: 100px;
         max-height: 100px;
         min-height: 100px;
@@ -135,6 +135,9 @@
 
       .header, .history-item {
         color: $cn-color-white;
+        &.active{
+          color: $cn-color-blue;
+        }
       }
     }
 

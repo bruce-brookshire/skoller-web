@@ -19,6 +19,7 @@
       overflow-y: scroll;
 
       &.active {
+        background-color: white;
         border: 2px solid darken(#f0f1f3,10);
       }
 
