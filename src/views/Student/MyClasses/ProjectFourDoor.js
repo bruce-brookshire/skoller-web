@@ -68,6 +68,35 @@ class ProjectFourDoor extends React.Component {
     )
   }
 
+  renderMessages () {
+    const {cl: {status: {name}}} = this.props
+
+    let message = ''
+    if (name === 'New Class' || name === 'Needs Syllabus') {
+      message = 'Upload your syllabus.'
+    } else if (name === 'Assignments' || name === 'Review' || name === 'Help') {
+      message = 'Hang tight. Skoller is working on this syllabus right now.'
+    } else if (name === 'Complete' || name === 'Change') {
+      message = 'All done! You and your classmates are good to go.'
+    }
+
+    return (
+      <div className='center-text'>
+        <span>{message}</span>
+      </div>
+    )
+  }
+
+  /*
+  * Determine if the class is in weights to render Project4Door.
+  *
+  * @return [Boolean]. boolean indicating if the class is in weights
+  */
+  isWeights () {
+    const {cl} = this.props
+    return (cl.status && cl.status.name === 'Weights')
+  }
+
   /*
   * Handle user DIY.
   */
@@ -76,11 +105,12 @@ class ProjectFourDoor extends React.Component {
   }
 
   render () {
-    return this.renderContent()
+    return this.isWeights() ? this.renderContent() : this.renderMessages()
   }
 }
 
 ProjectFourDoor.propTypes = {
+  cl: PropTypes.object,
   rootStore: PropTypes.object
 }
 

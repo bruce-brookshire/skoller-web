@@ -133,9 +133,6 @@ class SchoolInfo extends React.Component {
   */
   renderSchoolDetails () {
     const { school } = this.state
-
-    console.log('school', school)
-
     // is_auto_syllabus : true
     // is_diy_enabled : true
     // is_diy_preferred : false

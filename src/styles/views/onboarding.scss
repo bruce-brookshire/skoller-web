@@ -117,10 +117,13 @@
       width: 100%;
       .upload-container {
         background-color: $cn-color-white;
-        border-color: $cn-color-blue;
+        border-color: #a0a0a0;
         height: 100px;
         max-height: 100px;
         min-height: 100px;
+        span {
+          color: #a0a0a0;
+        }
 
         &.active {
           border-color: $cn-color-white;
