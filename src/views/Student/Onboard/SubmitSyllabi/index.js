@@ -58,17 +58,37 @@ class SubmitSyllabi extends React.Component {
   *
   * @return [Array]. Array of <ClassRows/>
   */
+  // renderClassOrderByIncomplete () {
+  //   // find all the incomplete classes first
+  //   // console.log(this.state.classes)
+  //   // console.log(this.state.classes.filter(cl => cl.status.name === 'New Class' || cl.status.name === 'Needs Syllabus'))
+  //   const incompleteArray = this.state.classes.filter(cl => cl.status.name === 'New Class' || cl.status.name === 'Needs Syllabus')
+  //   // console.log(incompleteArray)
+  //   // find all the complete classes next
+  //   const completeArray = this.state.classes.filter(cl => cl.status.name !== 'New Class' || cl.status.name !== 'Needs Syllabus')
+  //   console.log(completeArray)
+  //   // combine them to get the correct order of incomplete then complete
+  //   return incompleteArray.concat(completeArray)
+  // }
+
   renderTableBody () {
-    return this.state.classes.map((cl, index) => {
+    console.log(this.state.classes)
+    this.state.classes.map((cl, index) => {
       return <ClassRow key={`row-${index}`} cl={cl} />
     })
+    // ;
+    // console.log(this.renderClassOrderByIncomplete())
+    // this.renderClassOrderByIncomplete().map((cl, index) => {
+    //   return <ClassRow key={`row-${index}`} cl={cl} />
+    // })
   }
 
   /*
   * Get the number of classes that are incomplete
   */
   getIncompleteClassesLength () {
-    return this.state.classes.filter(cl => cl.status === 'New Class' || cl.status === 'Needs Syllabus').length
+    // console.log(this.state.classes)
+    return this.state.classes.filter(cl => cl.status.name === 'New Class' || cl.status.name === 'Needs Syllabus').length
   }
 
   /*
@@ -116,6 +136,7 @@ class SubmitSyllabi extends React.Component {
           <div>
             <h2>Submit your syllabi</h2>
             <span>The syllabus helps us set up your class.</span>
+            <p className='red-text center-text'>Skoller needs a syllabus for {this.getIncompleteClassesLength()} of your classes</p>
           </div>
 
           <div className='cn-body margin-top'>
