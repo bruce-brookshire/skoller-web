@@ -57,11 +57,20 @@ class UploadDocuments extends React.Component {
     }).catch(() => false)
   }
 
+  /*
+  * Determine if the class is complete.
+  *
+  * @return [Boolean]. boolean indicating if the class is complete.
+  */
+  isComplete () {
+    const {cl} = this.props
+    return (cl.status && cl.status.name !== 'New Class' && cl.status.name !== 'Needs Syllabus')
+  }
+
 
   render () {
     const {cl: {status}} = this.props
     const needsSyllabus = status === 'NEEDS_SYLLABUS' || status === 'NO_FILES' || !status
-    const fullWidthClass = !needsSyllabus ? 'full-width' : ''
 
     return (
       <div className='cn-upload-documents-container'>
@@ -72,11 +81,14 @@ class UploadDocuments extends React.Component {
           </div>
           <div className='col-xs-3'>
             <UploadHistory
-              disabled={this.props.cl.is_syllabus}
+              disabled={this.isComplete()}
               files={this.getSyllabusDocuments()}
               info='Upload your class syllabus.'
               onUpload={(file) => { this.onDocumentUpload(file, true) }}
-              title='Main syllabus'
+              title={this.isComplete()
+                ? 'The syllabus for this class has already been submitted.'
+                : 'Drop syllabus here'
+              }
             />
           </div>
           <div className='col-xs-3'>

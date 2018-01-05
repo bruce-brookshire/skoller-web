@@ -223,7 +223,6 @@ class Weights extends React.Component {
         <label style={{marginTop: '2px'}}>
           <input
             onChange={(event) => {
-              console.log(this.props)
               this.props.toggleDisabled(!event.target.checked)
               this.setState({noWeights: event.target.checked})
             }}

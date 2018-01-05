@@ -4,15 +4,7 @@ import CreateClass from '../../components/CreateClass'
 import Grid from '../../../components/Grid/index'
 import Loading from '../../../components/Loading'
 import Modal from '../../../components/Modal/index'
-// import AddClass from '../AddClass/index'
 import UploadDocuments from './UploadDocuments'
-// import userStore from '../../stores/user_store'
-// import classStore from '../../stores/class_store'
-// import {toJS} from 'mobx'
-// import {observer} from 'mobx-react'
-// import {logoutUser} from '../../actions/auth'
-// import {addClass, deleteClass} from '../../actions/classes'
-// import {convertTimeTo12HourClock} from '../../utilities/time'
 
 import actions from '../../../actions'
 import {mapProfessor} from '../../../utilities/display'
@@ -46,39 +38,6 @@ const headers = [
   {
     field: 'status',
     display: 'Syllabus Status'
-  }
-]
-
-const currentClasses = [
-  {
-    id: 0,
-    courseNumber: 'CLA 3323',
-    name: 'Intro to Classes',
-    professor: 'Dursley',
-    days: 'MWF',
-    beginTime: '11:00am',
-    classLength: 'Full semester',
-    status: 'COMPLETED'
-  },
-  {
-    id: 1,
-    courseNumber: 'ECO 1280',
-    name: 'Microeconomics',
-    professor: 'Dursley',
-    days: 'MWF',
-    beginTime: '11:00am',
-    classLength: 'Full semester',
-    status: 'IN_PROGRESS'
-  },
-  {
-    id: 2,
-    courseNumber: 'AST 3000',
-    name: 'Astronomy',
-    professor: 'Dursley',
-    days: 'MWF',
-    beginTime: '11:00am',
-    classLength: 'Full semester',
-    status: 'NEEDS_SYLLABUS'
   }
 ]
 
@@ -120,7 +79,6 @@ class MyClasses extends React.Component {
             Add a Class
           </button>
         </div>
-        {/*this.renderIncompleteMessage()*/}
       </div>
     )
   }
@@ -169,11 +127,11 @@ class MyClasses extends React.Component {
   mapStatus (status) {
     status = status.name.toLowerCase()
     if (status === 'new class' || status === 'needs syllabus') {
-      return <span className='cn-red'> UPLOAD SYLLABUS </span>
-    } else if (status === 'weights' || status === 'assignments' || status === 'review' || status === 'Help') {
-      return <span className = 'cn-grey'>RECEIVED</span>
+      return <span className='cn-red'> Upload Syllabus </span>
+    } else if (status === 'weights' || status === 'assignments' || status === 'review' || status === 'help') {
+      return <span style={{color: '#a0a0a0'}}>In Review</span>
     } else if (status === 'complete' || status === 'change') {
-      return <span className='cn-green' >COMPLETED</span>
+      return <span className='cn-green' >Complete</span>
     }
     return status
   }
@@ -225,81 +183,8 @@ class MyClasses extends React.Component {
   }
 
   /*
-  * Method for toggling the state of this is done modal.
-  *
-  * @return null.
+  * Render the add class modal.
   */
-  toggleIsDoneModal () {
-    this.setState({openIsDoneModal: !this.state.openIsDoneModal})
-  }
-
-  /*
-  * Render complete modal buttons.
-  *
-  * @return [Component]. Option buttons for user when they finish.
-  */
-  renderIsDondeModalButtons () {
-    return (
-      <div className='modal-buttons-container'>
-        <div className='modal-buttons'>
-          <button className='close button-box-shadow margin-top' onClick={() => this.toggleIsDoneModal()}>Close</button>
-          <button className='margin-top' onClick={() =>  false /*logoutUser()*/}>Logout</button>
-        </div>
-      </div>
-    )
-  }
-
-  /*
-  * Render complete message in 'done' modal. If the user has classes in progress, let them know
-  * they will be texted.
-  *
-  * @retuns [Component]. Done message.
-  */
-  renderCompleteMessage () {
-    const classesInProgress = currentClasses.findIndex(cl => cl.status !== 'COMPLETED')
-    const inProgessMessage = classesInProgress ? 'We will send you a text shortly when all your classes are ready.' : ''
-
-    return (
-      <div className='cn-content-message full-size margin-top margin-bottom'>
-        <i className='fa fa-check-circle' style={{fontSize: '1em', color: '#00FF00'}} />
-        <span className='margin-left'>{`Congratulations! You and your classmates have done all you can do. ${inProgessMessage} Be sure to download our iOS app today, if you have not already, to recieve the full Skoller experience and enjoy college like you never have before! `}</span>
-      </div>
-    )
-  }
-
-  /*
-  * Render incomplete meesage to user
-  *
-  *
-  * @param [Boolean] forModal. Boolean value indicating if the message is to be
-  * displayed in the complte modal.
-  * @return [Component]. Message info.
-  */
-
-  renderIncompleteMessage (forModal) {
-    if (!this.checkIfClassesCompleted()) {
-      const needed = currentClasses.filter(cl => cl.status === 'NO_FILES' || cl.status === 'NEEDS_SYLLABUS' || !cl.status)
-      const fullSizeClass = forModal ? 'full-size' : ''
-
-      return (
-        <div className={`cn-content-message ${fullSizeClass} margin-top margin-bottom`}>
-          <i className='fa fa-exclamation-triangle' style={{fontSize: '1em', color: 'red'}} />
-          <span className='margin-left'>{`We still need a syllabus for (${needed.length}) of your classes.`}</span>
-        </div>
-      )
-    }
-  }
-
-  /*
-  * Returns whether all classes have syllabi.
-  *
-  * @return [Boolean]. Boolean value indicating whether all classes have syllabi.
-  */
-  checkIfClassesCompleted () {
-    const needed = currentClasses.filter(cl => cl.status === 'NO_FILES' || cl.status === 'NEEDS_SYLLABUS' || !cl.status)
-    return needed.length === 0
-  }
-
   renderAddClassModal () {
     return (
       <Modal
@@ -316,6 +201,9 @@ class MyClasses extends React.Component {
     )
   }
 
+  /*
+  * Render the create class modal.
+  */
   renderCreateClassModal () {
     return (
       <Modal
@@ -342,19 +230,8 @@ class MyClasses extends React.Component {
         </div>
 
         {this.renderContent()}
-
-        {/*userStore.loading ? <Loading /> : this.renderContent()*/}
-
         {this.renderAddClassModal()}
         {this.renderCreateClassModal()}
-
-        <Modal
-          title={this.checkIfClassesCompleted() ? 'Nice work!' : 'Are you sure?'}
-          open={this.state.openIsDoneModal}
-          footer={this.renderIsDondeModalButtons()}
-        >
-          {this.checkIfClassesCompleted() ? this.renderCompleteMessage() : this.renderIncompleteMessage(true)}
-        </Modal>
       </div>
     )
   }

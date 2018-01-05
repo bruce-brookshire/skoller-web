@@ -74,6 +74,9 @@
   }
 
   .cn-submit-syllabi-container {
+    .red-text{
+      color:red;
+    }
     .cn-flex-table {
       max-height: 60vh;
       overflow-y:hidden;
@@ -113,11 +116,14 @@
     .cn-upload-history {
       width: 100%;
       .upload-container {
-        background-color: darken($cn-color-blue, 10);
-        border-color: $cn-color-white;
+        background-color: $cn-color-white;
+        border-color: #a0a0a0;
         height: 100px;
         max-height: 100px;
         min-height: 100px;
+        span {
+          color: #a0a0a0;
+        }
 
         &.active {
           border-color: $cn-color-white;
@@ -132,6 +138,9 @@
 
       .header, .history-item {
         color: $cn-color-white;
+        &.active{
+          color: $cn-color-blue;
+        }
       }
     }
 
