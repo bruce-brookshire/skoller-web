@@ -101,7 +101,8 @@ class ProjectFourDoor extends React.Component {
   * Handle user DIY.
   */
   onDIY () {
-    browserHistory.push({ pathname: '/tutorial/weights', state: {cl: this.props.cl} })
+    const {cl} = this.props
+    browserHistory.push(`/class/${cl.id}/syllabus_tool/tutorial/weights`)
   }
 
   render () {

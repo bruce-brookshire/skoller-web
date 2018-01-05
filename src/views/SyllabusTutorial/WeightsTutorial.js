@@ -160,6 +160,7 @@ class WeightsTutorial extends React.Component {
         control={<Weights useMin={this.state.step < 7} />}
         description='For Skoller to work, we need to grab the assignment weights for each class. Look at this example...'
         header='Weights'
+        sectionId={100}
         steps={steps}
         syllabus={<WeightSyllabus />}
         updateStep={this.updateStep.bind(this)}

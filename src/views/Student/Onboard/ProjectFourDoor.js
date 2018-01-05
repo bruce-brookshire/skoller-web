@@ -117,7 +117,8 @@ class ProjectFourDoor extends React.Component {
   * Handle user DIY.
   */
   onDIY () {
-    browserHistory.push({ pathname: '/tutorial/weights', state: {cl: this.props.cl} })
+    const index = this.state.classes.findIndex(cl => cl.status.name === 'Weights')
+    browserHistory.push(`/class/${this.state.classes[index].id}/syllabus_tool/tutorial/weights`)
   }
 
   getIncompleteClassesLength () {

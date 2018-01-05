@@ -56,8 +56,8 @@ const router = (
         <Route path='/diy' component={DIYLanding} />
         <Route path='/class/:classId/syllabus_tool' component={SyllabusTool} />
 
-        <Route path='/tutorial/assignments' component={AssignmentsTutorial} />
-        <Route path='/tutorial/weights' component={WeightsTutorial} />
+        <Route path='/class/:classId/syllabus_tool/tutorial/assignments' component={AssignmentsTutorial} />
+        <Route path='/class/:classId/syllabus_tool/tutorial/weights' component={WeightsTutorial} />
       </Route>
       <Route path="/logout" onEnter={logout} />
       <Redirect from="*" to="/"/>

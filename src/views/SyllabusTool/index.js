@@ -471,8 +471,9 @@ class SyllabusTool extends React.Component {
   * If DIY is done, complete class.
   */
   handleDIYNext () {
-    if (this.state.currentIndex !== (this.state.stepCount - 1)) {
-      this.setState({currentIndex: this.state.currentIndex + 1})
+    if (this.state.sectionId === 100) {
+      const {cl} = this.state
+      browserHistory.push(`/class/${cl.id}/syllabus_tool/tutorial/assignments`)
     } else {
       this.unlockDIYLock()
     }

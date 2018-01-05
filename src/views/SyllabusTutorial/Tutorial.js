@@ -53,11 +53,13 @@ class Tutorial extends React.Component {
   }
 
   onFinish () {
-    const {cl} = this.props.location.state
+    const {params: {classId}} = this.props
+
     browserHistory.push({
-      pathname: `/class/${cl.id}/syllabus_tool`,
+      pathname: `/class/${classId}/syllabus_tool`,
       state: {
-        isDIY: true
+        isDIY: true,
+        sectionId: this.props.sectionId
       }
     })
   }

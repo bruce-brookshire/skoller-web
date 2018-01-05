@@ -129,6 +129,7 @@ class AssignmentsTutorial extends React.Component {
         control={<Assignments />}
         description='For Skoller to work, we need to grab the assignments for each class. Look at this example...'
         header='Assignments'
+        sectionId={200}
         steps={steps}
         syllabus={<AssignmentSyllabus />}
       />
