@@ -12,7 +12,8 @@ class AutoComplete extends React.Component {
   initializeState () {
     return {
       autoCompleteValue: '',
-      isDirty: false
+      isDirty: false,
+      newSearch: true
     }
   }
 
@@ -39,7 +40,11 @@ class AutoComplete extends React.Component {
 
   renderAutoCompleteResults () {
     if (this.state.isDirty) {
-      if (this.props.dataSource.length === 0) return this.props.emptyMessage
+      const loading = this.state.newSearch || this.props.className == 'loading'
+      const blank = this.state.autoCompleteValue == ''
+      if (this.props.dataSource.length === 0 && !loading && !blank) {
+        return this.props.emptyMessage
+      }
       return (
         <div className='cn-autocomplete-results-container'>
           {this.props.dataSource.map((rowData, index) => {
@@ -61,6 +66,7 @@ class AutoComplete extends React.Component {
     this.timeout = setTimeout(() => {
       if (self.timeout) clearTimeout(self.timeout)
       self.onUpdateAutoCompleteResults(self.state.autoCompleteValue)
+      this.setState({newSearch:false})
     }, 400)
   }
 

@@ -8,7 +8,7 @@ class Search extends React.Component {
     super(props)
     this.state = {
       searchText: '',
-      searched: true
+      searched: false
     }
   }
 
@@ -28,8 +28,9 @@ class Search extends React.Component {
   * @return null.
   */
   onSearch () {
-    this.props.onSearch(this.state.searchText)
-    this.setState({searched: true})
+    const text = this.state.searchText
+    this.props.onSearch(text)
+    this.setState({searched: text != ''})
   }
 
   /*
@@ -47,7 +48,7 @@ class Search extends React.Component {
         loading={searching}
         searchResultHeaders={searchResultHeaders}
         searchResults={this.mapResults(searchResults)}
-        disableEmptyMessage={this.state.searchText.length === 0}
+        disableEmptyMessage={this.state.searchText.length === 0 || !this.state.searched}
         onSelect={searchResultSelect}
       />
     )
@@ -59,9 +60,11 @@ class Search extends React.Component {
   * @param [Array] searchResults. Array of search results.
   */
   mapResults (searchResults) {
+    const {searchExcluded} = this.props
     return searchResults.map(result => {
       Object.keys(result).forEach(key => {
-        if (key !== 'id') {
+        const allowedSearch = searchExcluded == undefined || searchExcluded.length == 0 || searchExcluded.indexOf(key) == -1
+        if (key !== 'id' && allowedSearch) {
           result[key] = this.matchText(result[key])
         }
       })

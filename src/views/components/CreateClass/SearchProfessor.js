@@ -72,7 +72,13 @@ class SearchProfessor extends React.Component {
           <AutoComplete
             className={this.state.loading ? 'loading': ''}
             dataSource={this.getDataSource()}
-            emptyMessage={<div className='cn-autocomplete-result'>{`Can't find your professor? `}<a onClick={this.onAddProfessor.bind(this)}>Add a new one.</a></div>}
+            emptyMessage={
+              <div className='cn-autocomplete-results-container'>
+                <div className='cn-autocomplete-result'>{`Can\'t find your professor? `}
+                  <a onClick={this.onAddProfessor.bind(this)}>Add a new one.</a>
+                </div>
+              </div>
+            }
             updateAutoCompleteResults={this.onUpdateAutoCompleteResults.bind(this)}
             placeholder='Search for your professor...'
             renderRow={this.renderRow.bind(this)}

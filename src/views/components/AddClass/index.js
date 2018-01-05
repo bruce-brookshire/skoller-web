@@ -125,6 +125,7 @@ class AddClass extends React.Component {
           placeholder='Search by class name, professor last name, or class number...'
           onSearch={(searchText) => this.onSearch(searchText)}
           searching={this.state.searching}
+          searchExcluded={['days','beginTime','classLength']}
           searchResults={this.getRows()}
           searchResultHeaders = {searchResultHeaders}
           searchResultSelect = {this.props.onSubmit}
