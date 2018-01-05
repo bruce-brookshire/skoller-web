@@ -20,7 +20,7 @@ const menuItems = [
   {
     admin: false,
     path: '/logout',
-    text: 'Logout'
+    text: 'Log out'
   }
 ]
 
