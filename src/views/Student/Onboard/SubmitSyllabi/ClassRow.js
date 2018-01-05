@@ -24,7 +24,7 @@ class ClassRow extends React.Component {
   initializeState () {
     return {
       documents: [],
-      hasSyllabus: this.props.cl.is_syllabus
+      hasSyllabus: !this.props.cl.is_syllabus
     }
   }
 
@@ -54,6 +54,7 @@ class ClassRow extends React.Component {
       newDocuments.push(document)
       this.setState({documents: newDocuments})
     }).catch(() => false)
+    this.isComplete()
   }
 
   /*
@@ -75,7 +76,7 @@ class ClassRow extends React.Component {
   */
   isComplete () {
     const {cl} = this.props
-    return (cl.status && cl.status !== 'New Class' && cl.status !== 'Needs Syllabus')
+    return (cl.status && cl.status.name !== 'New Class' && cl.status.name !== 'Needs Syllabus')
   }
 
   /*
@@ -94,10 +95,14 @@ class ClassRow extends React.Component {
         <div className='cn-flex-table-cell'>
           <div>
             <span>{name || '-'} {this.renderComplete()}</span>
-            <div>
+            {
+              this.isComplete() !== true ? <div>
               <input type='checkbox' onChange={this.onCheckboxChange.bind(this)} checked={this.state.hasSyllabus}/>
               <span className='checkbox-label'>{`This class doesn't have a syllabus`}</span>
-            </div>
+              </div>
+              : <span></span>
+            }
+
           </div>
         </div>
         <div className='cn-flex-table-cell'>
@@ -106,12 +111,12 @@ class ClassRow extends React.Component {
             files={this.getSyllabusDocuments()}
             info=''
             onUpload={(file) => { this.onDocumentUpload(file, true) }}
-            title='Drop syllabus here'
+            title={this.isComplete() ? 'The syllabus for this class has already been submitted.' : 'Drop syllabus here'}
           />
         </div>
         <div className='cn-flex-table-cell'>
           <UploadHistory
-            disabled={this.isComplete()}
+            disabled={!this.isComplete()}
             files={this.getAdditionalDocuments()}
             info=''
             onUpload={(file) => { this.onDocumentUpload(file, false) }}

@@ -58,8 +58,24 @@ class SubmitSyllabi extends React.Component {
   *
   * @return [Array]. Array of <ClassRows/>
   */
+  renderClassOrderByIncomplete () {
+    // the only way I can think of sort so that the incomplete classes are at the top is to create two different arrays and merge later
+    // as conventional sort can't really achieve this. 
+    // i first filter to get an array of just the incomplete classes and map them. 
+    // if you just map, you get undefined holes. causing errors and duplication
+    
+    // i first get an array of incomplete classes
+    const incompleteArray = this.state.classes.filter(cl => cl.status.name === 'New Class' || cl.status.name === 'Needs Syllabus').map((cl,index) => {return cl})
+
+    // then get an array of complete classes
+    const completeArray = this.state.classes.filter(cl => cl.status.name !== 'New Class' && cl.status.name !== 'Needs Syllabus').map((cl,index) => {return cl})
+
+    // then merge them together 
+    return incompleteArray.concat(completeArray)
+  }
+
   renderTableBody () {
-    return this.state.classes.map((cl, index) => {
+    return this.renderClassOrderByIncomplete().map((cl, index) => {
       return <ClassRow key={`row-${index}`} cl={cl} />
     })
   }
@@ -68,7 +84,7 @@ class SubmitSyllabi extends React.Component {
   * Get the number of classes that are incomplete
   */
   getIncompleteClassesLength () {
-    return this.state.classes.filter(cl => cl.status === 'New Class' || cl.status === 'Needs Syllabus').length
+    return this.state.classes.filter(cl => cl.status.name === 'New Class' || cl.status.name === 'Needs Syllabus').length
   }
 
   /*
@@ -116,6 +132,7 @@ class SubmitSyllabi extends React.Component {
           <div>
             <h2>Submit your syllabi</h2>
             <span>The syllabus helps us set up your class.</span>
+            <p className='red-text center-text'>Skoller needs a syllabus for {this.getIncompleteClassesLength()} of your classes</p>
           </div>
 
           <div className='cn-body margin-top'>
