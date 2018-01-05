@@ -316,13 +316,15 @@ class SyllabusTool extends React.Component {
   renderSkipButton () {
     const {isDIY} = this.state
 
-    if (isDIY) {
-      return (
-        <a className='skip-button' onClick={() => false}>
-          <span>Skip this class</span>
-        </a>
-      )
-    }
+    {/* TODO Put this back in
+      if (isDIY) {
+        return (
+          <a className='skip-button' onClick={() => false}>
+            <span>Skip this class</span>
+          </a>
+        )
+      }
+    */}
   }
 
   /*
