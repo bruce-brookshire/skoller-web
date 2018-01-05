@@ -28,9 +28,7 @@ class Menu extends React.Component {
   constructor (props) {
     super(props)
 
-    browserHistory.listen((location) => {
-      this.state = {activePath: location.pathname}
-    })
+    this.state = {activePath: window.location.pathname}
   }
 
   renderMenuItems (menuItems, subIndex = 0) {
