@@ -88,12 +88,17 @@ class ClassForm extends React.Component {
   * Class form data.
   */
   initializeFormData () {
+    const {school: {periods}} = this.props
+    const period = periods.find(p => p.is_active)
+
     return {
       number: '',
       name: '',
       meet_days: '',
       meet_start_time: '',
       meet_end_time: '',
+      class_start: period ? period.start_date : '',
+      class_end: period ? period.end_date : '',
       professor_id: this.props.professor.id
     }
   }
@@ -241,6 +246,7 @@ ClassForm.propTypes = {
   formErrors: PropTypes.object,
   onSubmit: PropTypes.func,
   professor: PropTypes.object,
+  school: PropTypes.object,
   updateProperty: PropTypes.func,
   validateForm: PropTypes.func
 }

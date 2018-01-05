@@ -23,14 +23,14 @@ class CreateClass extends React.Component {
   }
 
   renderContent () {
+    const {userStore: {user: {student: {school}}}} = this.props.rootStore
     switch (this.state.step) {
       case ContentEnum.SEARCH_PROFESSOR:
         return <SearchProfessor onAddProfessor={this.onAddProfessor.bind(this)} onProfessorSelect={this.onSubmitProfessor.bind(this)} />
       case ContentEnum.ADD_PROFESSOR:
-        const {userStore: {user: {student: {school}}}} = this.props.rootStore
         return <AddProfessor onSubmit={this.onSubmitProfessor.bind(this)} school={school}/>
       case ContentEnum.CLASS_FORM:
-        return <ClassForm professor={this.state.form.professor} onSubmit={this.onSubmitClass.bind(this)}/>
+        return <ClassForm professor={this.state.form.professor} onSubmit={this.onSubmitClass.bind(this)} school={school}/>
       default:
     }
   }
