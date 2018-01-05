@@ -120,7 +120,7 @@ class ClassRow extends React.Component {
             files={this.getAdditionalDocuments()}
             info=''
             onUpload={(file) => { this.onDocumentUpload(file, false) }}
-            title={this.isComplete() ? 'The syllabus for this class has already been submitted.' : 'Drop additional docs here'}
+            title='Drop additional docs here'
           />
         </div>
       </div>
