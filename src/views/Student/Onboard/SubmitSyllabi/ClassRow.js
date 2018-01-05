@@ -54,6 +54,7 @@ class ClassRow extends React.Component {
       newDocuments.push(document)
       this.setState({documents: newDocuments})
     }).catch(() => false)
+    this.isComplete()
   }
 
   /*
@@ -115,7 +116,7 @@ class ClassRow extends React.Component {
         </div>
         <div className='cn-flex-table-cell'>
           <UploadHistory
-            disabled={this.isComplete()}
+            disabled={!this.isComplete()}
             files={this.getAdditionalDocuments()}
             info=''
             onUpload={(file) => { this.onDocumentUpload(file, false) }}

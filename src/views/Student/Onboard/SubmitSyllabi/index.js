@@ -58,36 +58,32 @@ class SubmitSyllabi extends React.Component {
   *
   * @return [Array]. Array of <ClassRows/>
   */
-  // renderClassOrderByIncomplete () {
-  //   // find all the incomplete classes first
-  //   // console.log(this.state.classes)
-  //   // console.log(this.state.classes.filter(cl => cl.status.name === 'New Class' || cl.status.name === 'Needs Syllabus'))
-  //   const incompleteArray = this.state.classes.filter(cl => cl.status.name === 'New Class' || cl.status.name === 'Needs Syllabus')
-  //   // console.log(incompleteArray)
-  //   // find all the complete classes next
-  //   const completeArray = this.state.classes.filter(cl => cl.status.name !== 'New Class' || cl.status.name !== 'Needs Syllabus')
-  //   console.log(completeArray)
-  //   // combine them to get the correct order of incomplete then complete
-  //   return incompleteArray.concat(completeArray)
-  // }
+  renderClassOrderByIncomplete () {
+    // the only way I can think of sort so that the incomplete classes are at the top is to create two different arrays and merge later
+    // as conventional sort can't really achieve this. 
+    // i first filter to get an array of just the incomplete classes and map them. 
+    // if you just map, you get undefined holes. causing errors and duplication
+    
+    // i first get an array of incomplete classes
+    const incompleteArray = this.state.classes.filter(cl => cl.status.name === 'New Class' || cl.status.name === 'Needs Syllabus').map((cl,index) => {return cl})
+
+    // then get an array of complete classes
+    const completeArray = this.state.classes.filter(cl => cl.status.name !== 'New Class' && cl.status.name !== 'Needs Syllabus').map((cl,index) => {return cl})
+
+    // then merge them together 
+    return incompleteArray.concat(completeArray)
+  }
 
   renderTableBody () {
-    console.log(this.state.classes)
-    this.state.classes.map((cl, index) => {
+    return this.renderClassOrderByIncomplete().map((cl, index) => {
       return <ClassRow key={`row-${index}`} cl={cl} />
     })
-    // ;
-    // console.log(this.renderClassOrderByIncomplete())
-    // this.renderClassOrderByIncomplete().map((cl, index) => {
-    //   return <ClassRow key={`row-${index}`} cl={cl} />
-    // })
   }
 
   /*
   * Get the number of classes that are incomplete
   */
   getIncompleteClassesLength () {
-    // console.log(this.state.classes)
     return this.state.classes.filter(cl => cl.status.name === 'New Class' || cl.status.name === 'Needs Syllabus').length
   }
 
