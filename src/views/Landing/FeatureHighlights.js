@@ -34,7 +34,7 @@ class FeatureHighlights extends React.Component {
               <img src='src/assets/images/landing_page/Classes@2x.png'/>
             </div>
             <div className='feature'>
-              <img src='src/assets/images/landing_page/Tasks@2x.png'/>
+              <img src='src/assets/images/landing_page/Assignments@2x.png' style={{width: '65%',transform: 'rotate(18deg) translateX(30%) translateY(-5%)'}}/>
               <div className='speech-bubble'>
                 <p>What do I need to make on the rest of my assignments to get the grade I want?</p>
                 <div className="triangle"></div>
