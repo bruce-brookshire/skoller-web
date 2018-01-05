@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {browserHistory} from 'react-router'
+import {inject, observer} from 'mobx-react'
 
 const menuItems = [
   {
@@ -71,20 +72,18 @@ Menu.propTypes = {
 
 export default Menu
 
+@inject('rootStore') @observer
 class MenuItem extends React.Component {
 
   constructor (props) {
     super(props)
   }
 
-  isAdmin () {
-    const {userStore: {user}} = this.props.rootStore
-    return user.roles.findIndex(r => r.name.toLowerCase() === 'admin') > -1
-  }
-
   render () {
     const {menuItem: {icon}} = this.props
-    if((this.props.menuItem.admin && this.isAdmin()) || !this.props.menuItem.admin){
+    const currentPath = window.location.pathname
+    const adminAccessible = this.props.menuItem.admin && !this.props.rootStore.userStore.isStudent()
+    if((adminAccessible || !this.props.menuItem.admin) && currentPath != this.props.menuItem.path){
       return (
         <div className={`menu-item`}>
           <a onClick={() => this.props.onClick()}>
