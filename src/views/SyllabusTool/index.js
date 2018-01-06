@@ -53,6 +53,7 @@ class SyllabusTool extends React.Component {
   intializeComponent () {
     this.getClass()
     this.getDocuments()
+    this.getLocks()
     this.lockClass()
   }
 
@@ -75,6 +76,7 @@ class SyllabusTool extends React.Component {
       isReviewer: state.isReviewer || false,
       isSW: state.isSW || false,
       loadingClass: false,
+      locks: [],
       openEditClassModal: false,
       openIssuesModal: false,
       sectionId: state.sectionId || null,
@@ -126,6 +128,13 @@ class SyllabusTool extends React.Component {
     actions.documents.getClassDocuments(classId).then((documents) => {
       documents.sort((a, b) => b.is_syllabus)
       this.setState({documents, currentDocument: (documents[0] && documents[0].path) || null})
+    }).catch(() => false)
+  }
+
+  getLocks () {
+    const {params: {classId}} = this.props
+    actions.classes.getLocks(classId).then((locks) => {
+      this.setState({locks})
     }).catch(() => false)
   }
 
@@ -538,6 +547,25 @@ class SyllabusTool extends React.Component {
     this.setState({disableNext: value})
   }
 
+  tagWorker () {
+    let lock = null
+    if (this.state.currentIndex === ContentEnum.WEIGHTS) {
+      lock = this.state.locks.find(lock => lock.class_lock_section.id === 100)
+    } else if (this.state.currentIndex === ContentEnum.ASSIGNMENTS) {
+      lock = this.state.locks.find(lock => lock.class_lock_section.id === 200)
+    }
+    const email = lock ? lock.user.email : null
+
+    if (email) {
+      return (
+        <div className='margin-left' style={{position: 'absolute', marginTop: '-1.2em'}}>
+          <i className='fa fa-user' />
+          <span style={{marginLeft: '2px'}}>{email}</span>
+        </div>
+      )
+    }
+  }
+
   render () {
     const {cl, disableNext, loadingClass, isAdmin,
       isReviewer, isDIY, currentIndex, gettingClass, submitting} = this.state
@@ -580,6 +608,7 @@ class SyllabusTool extends React.Component {
         <div className='cn-body-container'>
 
           <div className='cn-section-container cn-control-panel'>
+            {this.tagWorker()}
             <div className='cn-section-control'>
               {this.renderContent()}
             </div>
