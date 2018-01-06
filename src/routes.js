@@ -74,16 +74,13 @@ function requireAuth (nextState, replaceState) {
     userStore.authToken = cookie.get('skollerToken')
     actions.auth.getUserByToken()
       .then((user) => {
-        // authenticateStudent(user).then(() => {
-        if (nextState.routes.findIndex(route => route.path === '/student/onboard') !== -1) {
-          authOnboard()
-        }
-        //   userStore.setFetchingUser(false)
-        // }).catch((error) => {debugger; userStore.setFetchingUser(false) })
+        authenticateStudent(user.user).then(() => {
+          if (nextState.routes.findIndex(route => route.path === '/student/onboard') !== -1) {
+            authOnboard()
+          }
+          userStore.setFetchingUser(false)
+        }).catch((error) => { userStore.setFetchingUser(false) })
 
-        // if (nextState.routes.findIndex(route => route.path === '/student/onboard') !== -1) {
-        //   authOnboard()
-        // }
         userStore.setFetchingUser(false)
       })
       .catch((error) => {
@@ -94,7 +91,8 @@ function requireAuth (nextState, replaceState) {
 }
 
 /*
-* Check to see if a users classes is 0 or if they are unverfied.
+* Check to see if a users classes is 0 or if they are unverfied. If so send them
+* to the onboarding page.
 */
 function authenticateStudent (user) {
   if (user.student) {
@@ -118,8 +116,8 @@ function authenticateStudent (user) {
 */
 function authOnboard () {
   if (userStore.user) {
-    if (!userStore.user.student || (userStore.user.student && userStore.user.student.is_verified)) {
-      // browserHistory.push('/student/classes')
+    if (!userStore.user.student) {
+      browserHistory.push('/student/classes')
     }
   }
 }
