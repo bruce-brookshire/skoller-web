@@ -40,7 +40,7 @@ class Onboard extends React.Component {
   }
 
   onPrevious () {
-    if (this.state.currentIndex !== 0) {
+    if (this.state.currentIndex !== 0 && !(this.state.currentIndex === 1 && userStore.user.is_verified)) {
       this.setState({currentIndex: this.state.currentIndex - 1})
     }
   }
