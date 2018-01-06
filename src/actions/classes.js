@@ -280,3 +280,26 @@ export function unlockClass (classId, form) {
       return Promise.reject(error)
     })
 }
+
+/*
+* Get the class locks
+*
+* @param [Number] classId. Class to unlock
+*/
+export function getLocks (classId) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${classId}/locks`, {
+    method: 'GET',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      // showSnackbar('Error unlocking class. Try again.')
+      return Promise.reject(error)
+    })
+}
