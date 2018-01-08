@@ -64,9 +64,9 @@ class UploadDocuments extends React.Component {
   */
   isComplete () {
     const {cl} = this.props
-    return (cl.status && cl.status.name !== 'New Class' && cl.status.name !== 'Needs Syllabus')
+    return (cl.status && cl.status.name !== 'New Class' && cl.status.name !== 'Needs Syllabus') ||
+    this.getSyllabusDocuments().length > 0
   }
-
 
   render () {
     const {cl: {status}} = this.props
