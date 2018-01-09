@@ -60,9 +60,7 @@ class Assignments extends React.Component {
     }
     //sort by due date.
     return assignments.sort((a, b) => {
-      let d = new Date(a.due)
-      let d1 = new Date(b.due)
-      return d.getTime() > d1.getTime()
+      return a.inserted_at > b.inserted_at
     }).map((assignment, index) =>
       this.getRow(assignment, index)
     )
