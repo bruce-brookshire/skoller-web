@@ -35,7 +35,7 @@ class FileUpload extends React.Component {
     return (
       <div
         className={classes.join(' ')}
-        onClick={() => { if (!this.props.disabled) { this.onClick() } }}
+        onClick={(e) => { if (!this.props.disabled && !e.target.classList.contains('fa-trash')) { this.onClick() } }}
         onDragLeave={(event) => { if (!this.props.disabled) { this.onDragLeave(event) } }}
         onDragOver={(event) => { if (!this.props.disabled) { this.onDragOver(event) } }}
         onDrop={(event) => { if (!this.props.disabled) { this.onDrop(event) } }}
