@@ -52,9 +52,41 @@ class MyClasses extends React.Component {
   }
 
   componentWillMount () {
+    this.updateClasses()
+  }
+
+  updateClasses() {
     actions.classes.getStudentClasses().then((classes) => {
       this.setState({classes})
     }).catch(() => false)
+  }
+
+  updateClass(cl) {
+    actions.classes.getClassById(cl.id).then(cl => {
+  		const index = this.state.classes.findIndex(c => c.id === cl.id)
+  		const newClasses = this.state.classes
+  		newClasses[index] = cl
+  		this.setState({classes: newClasses})
+  	}).catch(() => false)
+  }
+
+  numberOfClassesNeedingSyllabus(){
+    return this.state.classes.filter((item, index) => {
+      return item.status.name == 'Needs Syllabus'
+    }).length
+  }
+
+  renderNeedsSyllabusInfo(){
+    let num = this.numberOfClassesNeedingSyllabus()
+    if(num > 0){
+      return(
+        <div className='needs-syllabus-info margin-bottom center-text cn-red'>
+          {`Skoller needs a syllabus for ${num} of your classes.`}
+        </div>
+      )
+    }else{
+      return null
+    }
   }
 
   /*
@@ -113,7 +145,7 @@ class MyClasses extends React.Component {
       beginTime: meet_start_time ? mapTimeToDisplay(meet_start_time) : 'TBA',
       campus: campus || 'TBA',
       status: status ? this.mapStatus(status) : '-',
-      component: <UploadDocuments cl={item} />
+      component: <UploadDocuments cl={item} onUpdateClass={(cl) => {this.updateClass(cl)}}/>
     }
 
     return row
@@ -228,6 +260,8 @@ class MyClasses extends React.Component {
             <h4><a onClick={() => this.toggleAddModal()}>Add Class</a></h4>
           </div>
         </div>
+
+        {this.renderNeedsSyllabusInfo()}
 
         {this.renderContent()}
         {this.renderAddClassModal()}

@@ -4,17 +4,28 @@ import FileUpload from '../FileUpload'
 
 class UploadHistory extends React.Component {
   renderHistory () {
-    const {files} = this.props
-    return files.map((file, index) => {
-      return (
-        <a
-          key={index}
-          className='history-item'
-          href={file.path}
-          target="_blank"
-        >{file.name}</a>
-      )
-    })
+    const {files,unsavedDocuments} = this.props
+    if(files && files.length > 0){
+      return files.map((file, index) => {
+        return (
+          <a
+            key={index}
+            className='history-item'
+            href={file.path}
+            target="_blank"
+          >{file.name}</a>
+        )
+      })
+    }else if(unsavedDocuments && unsavedDocuments.length > 0){
+      return unsavedDocuments.map((file, index) => {
+        return (
+          <div key={index}>
+            <div style={{display:'inline-block', marginRight: '5px'}}>{file.name}</div>
+            <button onClick={() => {this.props.onDeleteDocument(index)}} className='fa fa-trash cn-red'></button>
+          </div>
+        )
+      })
+    }
   }
 
   render () {
@@ -46,8 +57,10 @@ UploadHistory.propTypes = {
   allow: PropTypes.string,
   disabled: PropTypes.bool,
   files: PropTypes.array,
+  unsavedDocuments: PropTypes.array,
   info: PropTypes.string,
   onUpload: PropTypes.func,
+  onDeleteDocument: PropTypes.func,
   title: PropTypes.string
 }
 
