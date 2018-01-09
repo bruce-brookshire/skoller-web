@@ -512,6 +512,7 @@ class SyllabusTool extends React.Component {
       const {state} = this.props.location
       browserHistory.push({ pathname: `/class/${cl.id}/syllabus_tool`, state: {...state} })
       this.intializeComponent()
+      this.setState({gettingClass: false})
     }).catch(() => { this.setState({gettingClass: false}) })
   }
 
