@@ -62,9 +62,12 @@ class ClassRow extends React.Component {
   */
   onCheckboxChange () {
     if (this.getSyllabusDocuments().length === 0 && !this.isComplete()) {
-      const form = {id: this.props.cl.id, is_syllabus: !this.state.hasSyllabus}
+      const form = {id: this.props.cl.id, is_syllabus: this.state.hasSyllabus}
       actions.classes.updateClass(form).then((cl) => {
+        // set local state
         this.setState({hasSyllabus: !this.state.hasSyllabus})
+        // update the classes arr of parent component
+        this.props.onClassUpdate(cl)
       }).catch(() => false)
     }
   }

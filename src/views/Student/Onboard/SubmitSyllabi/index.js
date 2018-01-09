@@ -43,6 +43,18 @@ class SubmitSyllabi extends React.Component {
   }
 
   /*
+  * Update the given class in the 'classes' array of this.state.
+  */
+  refreshClass (cl) {
+    actions.classes.getClassById(cl.id).then(cl => {
+  		const index = this.state.classes.findIndex(c => c.id === cl.id)
+  		const newClasses = this.state.classes
+  		newClasses[index] = cl
+  		this.setState({classes: newClasses})
+  	}).catch(() => false)
+  }
+
+  /*
   * Renders the table headers.
   *
   * @return [Array]. Array of <div/>
@@ -76,7 +88,7 @@ class SubmitSyllabi extends React.Component {
 
   renderTableBody () {
     return this.renderClassOrderByIncomplete().map((cl, index) => {
-      return <ClassRow key={`row-${index}`} cl={cl} />
+      return <ClassRow key={`row-${index}`} cl={cl} onClassUpdate={(c) => { this.refreshClass(c) }}/>
     })
   }
 
@@ -84,7 +96,7 @@ class SubmitSyllabi extends React.Component {
   * Get the number of classes that are incomplete
   */
   getIncompleteClassesLength () {
-    return this.state.classes.filter(cl => cl.status.name === 'New Class' || cl.status.name === 'Needs Syllabus').length
+    return this.state.classes.filter(cl =>  (cl.status.name === 'New Class' || cl.status.name === 'Needs Syllabus') && cl.is_syllabus).length
   }
 
   /*
@@ -151,7 +163,7 @@ class SubmitSyllabi extends React.Component {
               <button
                 className={`button full-width margin-top margin-bottom`}
                 onClick={this.onNext.bind(this)}
-              >UpLoAd sYlLaBi</button>
+              >Upload Syllabi</button>
               {this.renderUploadWarningMessage()}
             </div>
           </div>
