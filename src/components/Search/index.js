@@ -104,10 +104,10 @@ class Search extends React.Component {
   * @param [Event] event. On key up on an input field.
   */
   onKeyUp (event) {
+    if (this.timeout) clearTimeout(this.timeout)
     this.timeout = setTimeout(() => {
-      if (this.timeout) clearTimeout(this.timeout)
       this.onSearch()
-    }, 600)
+    }, 800)
   }
 
   render () {
