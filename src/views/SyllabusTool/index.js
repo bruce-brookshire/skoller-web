@@ -51,6 +51,7 @@ class SyllabusTool extends React.Component {
   * Intialize the component
   */
   intializeComponent () {
+    this.setState(this.initializeState())
     this.getClass()
     this.getDocuments()
     this.getLocks()
@@ -75,7 +76,7 @@ class SyllabusTool extends React.Component {
       isAdmin: state.isAdmin || false,
       isReviewer: state.isReviewer || false,
       isSW: state.isSW || false,
-      loadingClass: false,
+      loadingClass: true,
       locks: [],
       openEditClassModal: false,
       openIssuesModal: false,
@@ -115,7 +116,6 @@ class SyllabusTool extends React.Component {
   */
   getClass () {
     const {params: {classId}} = this.props
-    this.setState({loadingClass: true})
     actions.classes.getClassById(classId).then((cl) => {
       this.setState({cl, loadingClass: false})
     }).catch((error) => {  this.setState({loadingClass: false}) })
