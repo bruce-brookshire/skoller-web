@@ -61,12 +61,19 @@ class MyClasses extends React.Component {
     }).catch(() => false)
   }
 
+  updateClass(cl) {
+    actions.classes.getClassById(cl.id).then(cl => {
+  		const index = this.state.classes.findIndex(c => c.id === cl.id)
+  		const newClasses = this.state.classes
+  		newClasses[index] = cl
+  		this.setState({classes: newClasses})
+  	}).catch(() => false)
+  }
+
   numberOfClassesNeedingSyllabus(){
-    let num = 0
-    this.state.classes.map((item, index) => {
-      if(item.status.name == 'Needs Syllabus'){num++}
-    })
-    return num
+    return this.state.classes.filter((item, index) => {
+      return item.status.name == 'Needs Syllabus'
+    }).length
   }
 
   renderNeedsSyllabusInfo(){
@@ -74,7 +81,7 @@ class MyClasses extends React.Component {
     if(num > 0){
       return(
         <div className='needs-syllabus-info margin-bottom center-text cn-red'>
-          {'Skoller needs a syllabus for '+num.toString()+' of your classes.'}
+          {`Skoller needs a syllabus for ${num} of your classes.`}
         </div>
       )
     }else{
@@ -138,7 +145,7 @@ class MyClasses extends React.Component {
       beginTime: meet_start_time ? mapTimeToDisplay(meet_start_time) : 'TBA',
       campus: campus || 'TBA',
       status: status ? this.mapStatus(status) : '-',
-      component: <UploadDocuments cl={item} onClassesNeedUpdate={() => {this.updateClasses()}}/>
+      component: <UploadDocuments cl={item} onUpdateClass={(cl) => {this.updateClass(cl)}}/>
     }
 
     return row

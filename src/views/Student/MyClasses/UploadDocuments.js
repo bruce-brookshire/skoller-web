@@ -80,8 +80,8 @@ class UploadDocuments extends React.Component {
       let unsavedAdditionalNew = this.state.unsavedAdditionalDocs
       isSyllabus ? unsavedSyllabiNew.splice(idx,1) : unsavedAdditionalNew.splice(idx,1)
       this.setState({documents: newDocuments,unsavedSyllabusDocs:unsavedSyllabiNew,unsavedAdditionalDocs:unsavedAdditionalNew})
-      // Refresh Class List
-      this.props.onClassesNeedUpdate()
+      // Refresh Class State
+      this.props.onUpdateClass(this.props.cl)
     }).catch(() => false)
   }
 
@@ -158,25 +158,25 @@ class UploadDocuments extends React.Component {
             <UploadHistory
               disabled={this.isComplete() || this.state.unsavedSyllabusDocs.length > 0}
               files={this.getSyllabusDocuments()}
-              unsavedSyllabi={this.state.unsavedSyllabusDocs}
+              unsavedDocuments={this.state.unsavedSyllabusDocs}
               info='Upload your class syllabus.'
               onUpload={(file) => { this.onUpload(file,true) }}
               title={this.isComplete()
                 ? 'The syllabus for this class has already been submitted.'
                 : (this.state.unsavedSyllabusDocs.length == 0 ? 'Drop syllabus here' : '')
               }
-              onDeleteSyllabus={(ind) => {this.deleteSyllabus(ind)}}
+              onDeleteDocument={(ind) => {this.deleteSyllabus(ind)}}
             />
           </div>
           <div className='col-xs-3'>
             <UploadHistory
               disabled={this.isComplete() || this.state.unsavedSyllabusDocs.length == 0}
               files={this.getAdditionalDocuments()}
-              unsavedAdditional={this.state.unsavedAdditionalDocs}
+              unsavedDocuments={this.state.unsavedAdditionalDocs}
               info='If assignment schedules or grading info are provided, drop them here.'
               onUpload={(file) => { this.onUpload(file,false) }}
               title='Drop any additional documents (optional)'
-              onDeleteAdditional={(ind) => {this.deleteAdditional(ind)}}
+              onDeleteDocument={(ind) => {this.deleteAdditional(ind)}}
             />
           </div>
           <div className='col-xs-3 vertical-align center'>
