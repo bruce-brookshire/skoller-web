@@ -25,7 +25,9 @@ class UploadDocuments extends React.Component {
   */
   initializeState () {
     return {
-      documents: []
+      documents: [],
+      unsavedAdditionalDocs: [],
+      unsavedSyllabusDocs: [],
     }
   }
 
@@ -44,17 +46,90 @@ class UploadDocuments extends React.Component {
   }
 
   /*
-  * Handle file upload.
+  * Save ref to unsaved upload.
   *
   * @param [Object] file. File uploaded
   * @param [Boolean] isSyllabus. Boolean indicating if the file is a syllabus upload.
   */
-  onDocumentUpload (file, isSyllabus) {
+  onUpload(file,isSyllabus){
+    if(isSyllabus){
+      let newSyllabi = this.state.unsavedSyllabusDocs
+      newSyllabi.push(file)
+      this.setState({unsavedSyllabusDocs: newSyllabi})
+    }else{
+      let newAddtl = this.state.unsavedAdditionalDocs
+      newAddtl.push(file)
+      this.setState({unsavedAdditionalDocs: newAddtl})
+    }
+  }
+
+  /*
+  * Handle file upload.
+  *
+  * @param [Object] file. File uploaded
+  * @param [Integer] idx. Index of the file being uploaded to be removed from unsaved array
+  * @param [Boolean] isSyllabus. Boolean indicating if the file is a syllabus upload.
+  */
+  uploadDocument (file, idx, isSyllabus) {
     actions.documents.uploadClassDocument(this.props.cl, file, isSyllabus).then((document) => {
+      // Saved Docs
       let newDocuments = this.state.documents
       newDocuments.push(document)
-      this.setState({documents: newDocuments})
+      // Unsaved Docs
+      let unsavedSyllabiNew = this.state.unsavedSyllabusDocs
+      let unsavedAdditionalNew = this.state.unsavedAdditionalDocs
+      isSyllabus ? unsavedSyllabiNew.splice(idx,1) : unsavedAdditionalNew.splice(idx,1)
+      this.setState({documents: newDocuments,unsavedSyllabusDocs:unsavedSyllabiNew,unsavedAdditionalDocs:unsavedAdditionalNew})
+      // Refresh Class List
+      this.props.onClassesNeedUpdate()
     }).catch(() => false)
+  }
+
+  /*
+  * Loops through existing unsaved docs and saves them.
+  *
+  * @return [Boolean]. boolean indicating if the upload was successful.
+  */
+  uploadDocuments () {
+    // syllabus files
+    this.state.unsavedSyllabusDocs.map((file, idx) => {
+      this.uploadDocument(file,idx,true)
+    })
+    // addtl. files
+    this.state.unsavedAdditionalDocs.map((file, idx) => {
+      this.uploadDocument(file,idx,false)
+    })
+  }
+
+  /*
+  * Removes a doc from the unsaved syllabus arr
+  *
+  * @return [Boolean]. boolean indicating if the deletion was successful.
+  */
+  deleteSyllabus (ind) {
+    let newArr = this.state.unsavedSyllabusDocs
+    newArr.splice(ind,1)
+    let newAddtlArr = this.state.unsavedAdditionalDocs
+    if(newArr.length == 0){
+      newAddtlArr = []
+    }
+    this.setState({
+      unsavedSyllabusDocs: newArr,
+      unsavedAdditionalDocs: newAddtlArr,
+    })
+  }
+
+  /*
+  * Removes a doc from the unsaved additional docs arr
+  *
+  * @return [Boolean]. boolean indicating if the deletion was successful.
+  */
+  deleteAdditional (ind) {
+    let newArr = this.state.unsavedAdditionalDocs
+    newArr.splice(ind,1)
+    this.setState({
+      unsavedAdditionalDocs: newArr
+    })
   }
 
   /*
@@ -81,26 +156,35 @@ class UploadDocuments extends React.Component {
           </div>
           <div className='col-xs-3'>
             <UploadHistory
-              disabled={this.isComplete()}
+              disabled={this.isComplete() || this.state.unsavedSyllabusDocs.length > 0}
               files={this.getSyllabusDocuments()}
+              unsavedSyllabi={this.state.unsavedSyllabusDocs}
               info='Upload your class syllabus.'
-              onUpload={(file) => { this.onDocumentUpload(file, true) }}
+              onUpload={(file) => { this.onUpload(file,true) }}
               title={this.isComplete()
                 ? 'The syllabus for this class has already been submitted.'
-                : 'Drop syllabus here'
+                : (this.state.unsavedSyllabusDocs.length == 0 ? 'Drop syllabus here' : '')
               }
+              onDeleteSyllabus={(ind) => {this.deleteSyllabus(ind)}}
             />
           </div>
           <div className='col-xs-3'>
             <UploadHistory
+              disabled={this.isComplete() || this.state.unsavedSyllabusDocs.length == 0}
               files={this.getAdditionalDocuments()}
+              unsavedAdditional={this.state.unsavedAdditionalDocs}
               info='If assignment schedules or grading info are provided, drop them here.'
-              onUpload={(file) => { this.onDocumentUpload(file, false) }}
+              onUpload={(file) => { this.onUpload(file,false) }}
               title='Drop any additional documents (optional)'
+              onDeleteAdditional={(ind) => {this.deleteAdditional(ind)}}
             />
           </div>
           <div className='col-xs-3 vertical-align center'>
-            <ProjectFourDoor cl={this.props.cl} />
+            <ProjectFourDoor cl={this.props.cl}
+              onSubmit={() => { this.uploadDocuments() }}
+              unsavedSyllabi={this.state.unsavedSyllabusDocs}
+              unsavedAdditional={this.state.unsavedAdditionalDocs}
+              />
           </div>
         </div>
       </div>

@@ -8,8 +8,11 @@ class ProjectFourDoor extends React.Component {
   renderContent () {
     const {userStore: {user: {student: {school: {is_diy_enabled, is_diy_preferred, is_auto_syllabus}}}}} = this.props.rootStore
 
+    // needs syllabus
+    if (this.needsSyllabus()) {
+      return this.renderNeedsSyllabus()
     // normal
-    if (is_diy_enabled && !is_diy_preferred && is_auto_syllabus) {
+    }else if (is_diy_enabled && !is_diy_preferred && is_auto_syllabus) {
       return this.renderNormal()
     }
     // inverted
@@ -68,6 +71,17 @@ class ProjectFourDoor extends React.Component {
     )
   }
 
+  renderNeedsSyllabus(){
+    return (
+      <div className='center-text'>
+        <span>Upload your syllabus.</span>
+        <button className={`button full-width margin-top ${this.props.unsavedSyllabi && this.props.unsavedSyllabi.length > 0 ? '' : 'disabled'}`}
+                disabled={!(this.props.unsavedSyllabi && this.props.unsavedSyllabi.length > 0)}
+                onClick={() => { this.props.onSubmit() }}>Submit</button>
+      </div>
+    )
+  }
+
   renderMessages () {
     const {cl: {status: {name}}} = this.props
 
@@ -79,7 +93,6 @@ class ProjectFourDoor extends React.Component {
     } else if (name === 'Complete' || name === 'Change') {
       message = 'All done! You and your classmates are good to go.'
     }
-
     return (
       <div className='center-text'>
         <span>{message}</span>
@@ -98,6 +111,16 @@ class ProjectFourDoor extends React.Component {
   }
 
   /*
+  * Determine if the class is in 'needs syllabus' state to render Project4Door.
+  *
+  * @return [Boolean]. boolean indicating if the class is in needs syllabus
+  */
+  needsSyllabus () {
+    const {cl} = this.props
+    return (cl.status && cl.status.name === 'Needs Syllabus')
+  }
+
+  /*
   * Handle user DIY.
   */
   onDIY () {
@@ -106,7 +129,7 @@ class ProjectFourDoor extends React.Component {
   }
 
   render () {
-    return this.isWeights() ? this.renderContent() : this.renderMessages()
+    return this.isWeights() || this.needsSyllabus() ? this.renderContent() : this.renderMessages()
   }
 }
 
