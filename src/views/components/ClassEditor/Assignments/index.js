@@ -189,11 +189,11 @@ class Assignments extends React.Component {
   }
 
   render () {
-    const {viewOnly, loadingAssignments, loadingWeights} = this.state
+    const {viewOnly, loadingAssignments, loadingWeights, assignments} = this.state
     if (loadingAssignments || loadingWeights) return <Loading />
     return (
       <div className='space-between-vertical'>
-        <h5 style={{marginTop: '0.25em', marginBottom: '0.5em'}}>{viewOnly ? 'Edit' : 'Add'} Assignments</h5>
+        <h5 style={{marginTop: '0.25em', marginBottom: '0.5em'}}>{viewOnly ? 'Edit' : 'Add'} Assignments ({assignments.length})</h5>
         {viewOnly && <a className='right-text' style={{marginBottom: '5px'}} onClick={() => this.setState({viewOnly: false}) }>edit</a>}
         <div className={`class-editor-table ${viewOnly ? 'view-only' : ''}`} >
           <div id='class-editor-assignments-table'>
