@@ -7,6 +7,7 @@ import {InputField, TimeInputField} from '../../../components/Form'
 import actions from '../../../actions'
 import {mapProfessor} from '../../../utilities/display'
 import {mapTimeToDisplay} from '../../../utilities/time'
+import {maskTime} from '../../../utilities/mask'
 
 const headers = [
   {
@@ -144,16 +145,15 @@ class ClassForm extends React.Component {
   }
 
   formatTime(time) {
-    if(time.length >= 8){
-      return time
-    }else{
-      if(time.length == 5){
-        return this.formatTime(time + ":00")
-      }
-      else{ 
-        return time
+    let hour = time.slice(0, 2);
+    if(time.endsWith('pm')) {
+      hour = parseInt(hour) + 12
+    } else {
+      if (time.startsWith("12")) {
+        hour = "00"
       }
     }
+    return hour + time.slice(2, 5) + ':00'
   }
 
   /*
@@ -235,7 +235,9 @@ class ClassForm extends React.Component {
                 error={formErrors.meet_start_time}
                 label='Meet start time'
                 name='meet_start_time'
-                onChange={updateProperty}
+                onChange={(name, value) => {
+                  updateProperty(name, maskTime(form.meet_start_time, value))
+                }}
                 placeholder='i.e. 9:00am'
                 value={form.meet_start_time}
               />
@@ -246,7 +248,9 @@ class ClassForm extends React.Component {
                 error={formErrors.meet_end_time}
                 label='Meet end time'
                 name='meet_end_time'
-                onChange={updateProperty}
+                onChange={(name, value) => {
+                  updateProperty(name, maskTime(form.meet_end_time, value))
+                }}
                 placeholder='i.e. 10:00am'
                 value={form.meet_end_time}
               />
