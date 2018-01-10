@@ -152,7 +152,6 @@ class ClassForm extends React.Component {
     } else if (time.endsWith('am') && time.startsWith('12')) {
       hour = '00'
     }
-    console.log(hour + time.slice(2, 5) + ':00')
     return hour + time.slice(2, 5) + ':00'
   }
 
