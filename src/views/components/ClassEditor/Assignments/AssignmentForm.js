@@ -32,6 +32,9 @@ class AssignmentForm extends React.Component {
     const {cl, disabled} = this.props
     if (!disabled) {
       actions.weights.getClassWeights(cl).then((weights) => {
+        weights = weights.sort((a, b) => {
+          return a.inserted_at > b.inserted_at
+        })
         this.setState({weights})
       }).then(() => false)
     }
