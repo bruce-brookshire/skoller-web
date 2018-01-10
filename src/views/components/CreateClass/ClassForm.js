@@ -145,14 +145,14 @@ class ClassForm extends React.Component {
   }
 
   formatTime(time) {
+    if (time.length == 5) return time + ':00'
     let hour = time.slice(0, 2);
-    if(time.endsWith('pm')) {
+    if(time.endsWith('pm') && !time.startsWith('12')) {
       hour = parseInt(hour) + 12
-    } else {
-      if (time.startsWith("12")) {
-        hour = "00"
-      }
+    } else if (time.endsWith('am') && time.startsWith('12')) {
+      hour = '00'
     }
+    console.log(hour + time.slice(2, 5) + ':00')
     return hour + time.slice(2, 5) + ':00'
   }
 
