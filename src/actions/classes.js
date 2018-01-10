@@ -106,7 +106,7 @@ export function getStudentClasses () {
 */
 export function getProfessorClasses (professor) {
   const {user: {student: {school}}} = userStore
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes?school_id=${school.id}&professor_name=${professor.name_last}`, {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/classes?school_id=${school.id}&professor_id=${professor.id}`, {
     method: 'GET',
     headers: {
       'Authorization': userStore.authToken,
