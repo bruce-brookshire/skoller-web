@@ -14,9 +14,6 @@ class FormMessage extends React.Component {
 }
 
 class TimePickerField extends React.Component {
-  onChange (name, value) {
-    this.props.onChange(name, `${value}:00`)
-  }
 
   render () {
     const {containerClassName, error, showErrorMessage} = this.props
@@ -28,7 +25,6 @@ class TimePickerField extends React.Component {
         <InputField
           type='time'
           {...this.props}
-          onChange={this.onChange.bind(this)}
         />
         {error && showErrorMessage ? <FormMessage message={error} /> : null}
       </div>

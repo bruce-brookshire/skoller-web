@@ -138,11 +138,30 @@ class ClassForm extends React.Component {
     return row
   }
 
+  mapTimes() {
+    this.state.form.meet_start_time = this.formatTime(this.state.form.meet_start_time)
+    this.state.form.meet_end_time = this.formatTime(this.state.form.meet_end_time)
+  }
+
+  formatTime(time) {
+    if(time.length >= 8){
+      return time
+    }else{
+      if(time.length == 5){
+        return this.formatTime(time + ":00")
+      }
+      else{ 
+        return time
+      }
+    }
+  }
+
   /*
   * If does not exist, create class and enroll user in class.
   */
   onSubmit () {
     if (this.props.validateForm(this.state.form, requiredFields)) {
+      this.mapTimes()
       actions.classes.createClass(this.state.form).then((cl) => {
         this.props.onSubmit(cl)
       }).catch(() => false)
