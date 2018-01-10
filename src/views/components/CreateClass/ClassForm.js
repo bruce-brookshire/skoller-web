@@ -7,6 +7,7 @@ import {InputField, TimeInputField} from '../../../components/Form'
 import actions from '../../../actions'
 import {mapProfessor} from '../../../utilities/display'
 import {mapTimeToDisplay} from '../../../utilities/time'
+import {maskTime} from '../../../utilities/mask'
 
 const headers = [
   {
@@ -138,11 +139,29 @@ class ClassForm extends React.Component {
     return row
   }
 
+  mapTimes() {
+    this.state.form.meet_start_time = this.formatTime(this.state.form.meet_start_time)
+    this.state.form.meet_end_time = this.formatTime(this.state.form.meet_end_time)
+  }
+
+  formatTime(time) {
+    if (time.length == 5) return time + ':00'
+    let hour = time.slice(0, 2);
+    if(time.endsWith('pm') && !time.startsWith('12')) {
+      hour = parseInt(hour) + 12
+    } else if (time.endsWith('am') && time.startsWith('12')) {
+      hour = '00'
+    }
+    console.log(hour + time.slice(2, 5) + ':00')
+    return hour + time.slice(2, 5) + ':00'
+  }
+
   /*
   * If does not exist, create class and enroll user in class.
   */
   onSubmit () {
     if (this.props.validateForm(this.state.form, requiredFields)) {
+      this.mapTimes()
       actions.classes.createClass(this.state.form).then((cl) => {
         this.props.onSubmit(cl)
       }).catch(() => false)
@@ -216,7 +235,9 @@ class ClassForm extends React.Component {
                 error={formErrors.meet_start_time}
                 label='Meet start time'
                 name='meet_start_time'
-                onChange={updateProperty}
+                onChange={(name, value) => {
+                  updateProperty(name, maskTime(form.meet_start_time, value))
+                }}
                 placeholder='i.e. 9:00am'
                 value={form.meet_start_time}
               />
@@ -227,7 +248,9 @@ class ClassForm extends React.Component {
                 error={formErrors.meet_end_time}
                 label='Meet end time'
                 name='meet_end_time'
-                onChange={updateProperty}
+                onChange={(name, value) => {
+                  updateProperty(name, maskTime(form.meet_end_time, value))
+                }}
                 placeholder='i.e. 10:00am'
                 value={form.meet_end_time}
               />

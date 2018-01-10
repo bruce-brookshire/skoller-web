@@ -34,6 +34,43 @@ export function maskPhoneNumber (oldPhoneNumber, newPhoneNumber) {
   return formatedPhoneNumber
 }
 
+export function maskTime(oldTime, newTime) {
+  const time = newTime.replace(/[^\d:](am|pm)/g, '')
+  if (time.length > 7) return oldTime
+  let formattedTime = time.toLowerCase()
+  if (formattedTime.length > oldTime.length) {
+    switch (formattedTime.length) {
+      case 1:
+        if (formattedTime[0] != '0' && formattedTime[0] != '1') {
+          formattedTime = '0' + formattedTime;
+        }
+        break
+      case 2:
+        if (formattedTime[0] == '1' && (formattedTime[1] != '0' && formattedTime[1] != '1' && formattedTime[1] != '2')){
+          formattedTime = '0' + formattedTime;
+        } else {
+          formattedTime = formattedTime + ':'
+          break
+        }
+      case 3:
+        if (formattedTime[2] != ':') {
+          formattedTime = `${formattedTime.slice(0, 2)}:${formattedTime[2]}`
+        }
+        break
+      case 5:
+        if(formattedTime[4] == 'a' || formattedTime[4] == 'p') {
+          formattedTime = '0' + formattedTime;
+        }
+      default:
+        break
+    }
+    if (formattedTime[3] == ':') {
+      formattedTime = `${formattedTime.slice(0, 2)}:${formattedTime[2]}${formattedTime.slice(4, formattedTime.length)}`
+    }
+  }
+  return formattedTime
+}
+
 /*
 * Mask assignment date
 *
