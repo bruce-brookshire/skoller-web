@@ -42,18 +42,30 @@ class SubmitSyllabi extends React.Component {
   * Fetch the classes for a student.
   */
   componentWillMount () {
+    this.loadClasses()
+  }
+
+  /*
+  * Creates blank unsaved docs object
+  */
+  defaultUnsavedDocs(classes){
+    let unsavedDocs = {}
+    classes.forEach((item) => {
+      unsavedDocs[item.id] = {}
+      unsavedDocs[item.id]['additional'] = []
+      unsavedDocs[item.id]['syllabus'] = []
+    })
+    return unsavedDocs
+  }
+
+  /*
+  * Retrieves all of a student's classes and appropriately instantiates state
+  */
+  loadClasses() {
     actions.classes.getStudentClasses().then((classes) => {
-      // // Create obj of unsaved docs for holding all unsaved documents for all classes
-      let unsavedDocs = {}
-      classes.forEach((item) => {
-        unsavedDocs[item.id] = {}
-        unsavedDocs[item.id]['additional'] = []
-        unsavedDocs[item.id]['syllabus'] = []
-      })
-      // Save state
       this.setState({
         classes: classes,
-        unsavedDocs: unsavedDocs,
+        unsavedDocs: this.defaultUnsavedDocs(classes),
       })
     }).catch(() => false)
   }
@@ -173,6 +185,15 @@ class SubmitSyllabi extends React.Component {
   }
 
   /*
+  * Returns whether or not there are currently any unsaved docs
+  */
+  hasUnsavedDocuments () {
+    return Object.keys(this.state.unsavedDocs).filter((clId) =>  {
+      this.state.unsavedDocs[clId]['syllabus'].length > 0 || this.state.unsavedDocs[clId]['additional'].length > 0
+    }).length > 0
+  }
+
+  /*
   * Render upload warning.
   */
   renderUploadWarningMessage () {
@@ -199,6 +220,38 @@ class SubmitSyllabi extends React.Component {
     }
   }
 
+  renderNeedsSyllabusInfo(){
+    let incomplete = this.getIncompleteClassesLength()
+    if(incomplete > 0){
+      return(
+        <p className='red-text center-text'>
+        Skoller needs a syllabus for {incomplete} of your classes
+        </p>
+      )
+    }else{
+      return(
+        <p className='cn-green center-text'>
+        We have already received the syllabi for your classes
+        </p>
+      )
+    }
+  }
+
+  renderSubmitButton(){
+    let incomplete = this.getIncompleteClassesLength()
+    return (
+      <button
+        className={`button full-width margin-top margin-bottom`}
+        onClick={this.onNext.bind(this)}>
+        {(incomplete == 0 && !this.hasUnsavedDocuments()) ? 'Next' : 'Upload Syllabi'}
+      </button>
+    )
+  }
+
+
+  /*
+  * Handle whether to show an error or move on
+  */
   handleWarning(){
     if (this.getIncompleteClassesLength() > 0) {
       this.setState({showUploadWarning: true})
@@ -208,10 +261,35 @@ class SubmitSyllabi extends React.Component {
   }
 
   /*
+  * Upload all unsaved documents for every class
+  */
+  uploadUnsavedDocuments(cb){
+    // Loop over all unsaved docs
+    let idx = 0
+    Object.keys(this.state.unsavedDocs).forEach((classId) => {
+      let docs = this.state.unsavedDocs[classId]
+      // Loop over syllabus docs for class (really there should only be one)
+      docs['syllabus'].forEach((doc) => {
+        // Upload Syllabus doc
+        actions.documents.uploadClassDocument({id: classId}, doc, true).then((document) => {}).catch(() => false)
+        // If that was successfull, upload the additional docs
+        docs['additional'].forEach((doc) => {
+          actions.documents.uploadClassDocument({id: classId}, doc, false).then((document) => {}).catch(() => false)
+        })
+      })
+      // If this is the last one, initiate the callback
+      idx == (Object.keys(this.state.unsavedDocs).length-1) ? cb() : idx++
+    })
+  }
+
+  /*
   * Handle on next.
   */
   onNext () {
-    this.handleWarning()
+    this.uploadUnsavedDocuments(() => {
+      this.loadClasses()
+      this.handleWarning()
+    })
   }
 
   render () {
@@ -221,12 +299,12 @@ class SubmitSyllabi extends React.Component {
           <div>
             <h2>Submit your syllabi</h2>
             <span>The syllabus helps us set up your class.</span>
-            <p className='red-text center-text'>Skoller needs a syllabus for {this.getIncompleteClassesLength()} of your classes</p>
+            {this.renderNeedsSyllabusInfo()}
           </div>
 
           <div className='cn-body margin-top'>
             <div className='cn-flex-table cn-add-class-grid'>
-              <div className='cn-flex-table-row'>
+              <div className='cn-flex-table-row fixed'>
                 {this.renderTableHeaders()}
               </div>
               <div className='cn-flex-table-body'>
@@ -237,10 +315,7 @@ class SubmitSyllabi extends React.Component {
 
           <div className='cn-footer margin-bottom'>
             <div style={{position: 'relative'}}>
-              <button
-                className={`button full-width margin-top margin-bottom`}
-                onClick={this.onNext.bind(this)}
-              >Upload Syllabi</button>
+              {this.renderSubmitButton()}
               {this.renderUploadWarningMessage()}
             </div>
           </div>

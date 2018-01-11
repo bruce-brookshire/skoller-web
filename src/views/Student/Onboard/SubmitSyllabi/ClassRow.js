@@ -96,7 +96,7 @@ class ClassRow extends React.Component {
         </div>
         <div className='cn-flex-table-cell'>
           <UploadHistory
-            disabled={this.isComplete() || !this.state.hasSyllabus || (this.state.unsavedSyllabusDocs && this.state.unsavedSyllabusDocs.length > 0)}
+            disabled={this.isComplete() || !this.state.hasSyllabus || (this.props.unsavedSyllabusDocs && this.props.unsavedSyllabusDocs.length > 0)}
             files={this.getSyllabusDocuments()}
             info=''
             onDeleteDocument={(ind) => {this.props.onDocumentDelete(this.props.cl,ind,true)}}
