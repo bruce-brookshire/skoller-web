@@ -51,7 +51,7 @@ class Landing extends React.Component {
             Copyright &copy; Skoller, LLC {}. All rights reserved.
           </span>
           <span className="privacypolicy">
-            <a onClick={()=>{ browserHistory.push('/privacypolicy') }}>Privacy policy.</a>
+            <a onClick={()=>{ browserHistory.push('/privacypolicy');window.scrollTo(0, 0); }}>Privacy policy.</a>
           </span>
           <span className="support">
             Need help? <a href="mailto:support@skoller.com">Contact us.</a>
