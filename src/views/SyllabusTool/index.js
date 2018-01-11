@@ -573,6 +573,23 @@ class SyllabusTool extends React.Component {
     this.setState({disableNext: value})
   }
 
+  tagUploader () {
+    const {documents, currentDocumentIndex, isAdmin} = this.state
+    if(isAdmin) {
+      let document = documents[currentDocumentIndex]
+      const email = document.user ? document.user.email : null
+
+      if (email) {
+        return (
+          <div className='margin-right' style={{position: 'absolute', marginTop: '-1.2em', alignSelf: 'right'}}>
+            <i className='fa fa-user' />
+            <span style={{marginRight: '2px'}}>{email}</span>
+          </div>
+        )
+      }
+    }
+  }
+
   tagWorker () {
     let lock = null
     if (this.state.currentIndex === ContentEnum.WEIGHTS) {
@@ -640,6 +657,7 @@ class SyllabusTool extends React.Component {
           </div>
 
           <div className='cn-section-container cn-file-panel'>
+            {this.tagUploader()}
             <div className='cn-section-control'>
               {this.state.currentDocument && <FileViewer source={this.state.currentDocument} /> }
             </div>
