@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import ClassRow from './ClassRow'
 import actions from '../../../../actions'
+import {deepClone} from '../../../../utilities/object'
 
 const headers = [
   {
@@ -30,7 +31,11 @@ const styles = {
 class SubmitSyllabi extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {classes: [], showUploadWarning: false}
+    this.state = {
+      classes: [],
+      showUploadWarning: false,
+      unsavedDocs: {},
+    }
   }
 
   /*
@@ -38,20 +43,19 @@ class SubmitSyllabi extends React.Component {
   */
   componentWillMount () {
     actions.classes.getStudentClasses().then((classes) => {
-      this.setState({classes})
+      // // Create obj of unsaved docs for holding all unsaved documents for all classes
+      let unsavedDocs = {}
+      classes.forEach((item) => {
+        unsavedDocs[item.id] = {}
+        unsavedDocs[item.id]['additional'] = []
+        unsavedDocs[item.id]['syllabus'] = []
+      })
+      // Save state
+      this.setState({
+        classes: classes,
+        unsavedDocs: unsavedDocs,
+      })
     }).catch(() => false)
-  }
-
-  /*
-  * Update the given class in the 'classes' array of this.state.
-  */
-  refreshClass (cl) {
-    actions.classes.getClassById(cl.id).then(cl => {
-  		const index = this.state.classes.findIndex(c => c.id === cl.id)
-  		const newClasses = this.state.classes
-  		newClasses[index] = cl
-  		this.setState({classes: newClasses})
-  	}).catch(() => false)
   }
 
   /*
@@ -86,9 +90,78 @@ class SubmitSyllabi extends React.Component {
     return incompleteArray.concat(completeArray)
   }
 
+  /*
+  * Add to unsaved documents arrays.
+  *
+  * @param [Object] cl. The class it is for
+  * @param [Object] file. File uploaded
+  * @param [Boolean] isSyllabus. Boolean indicating if the file is a syllabus upload.
+  */
+  onDocumentAdd(cl,file,isSyllabus){
+    let unsavedDocsCopy = deepClone(this.state.unsavedDocs)
+    unsavedDocsCopy[cl.id][isSyllabus ? 'syllabus' : 'additional'].push(file)
+    this.setState({
+      unsavedDocs: unsavedDocsCopy,
+    })
+  }
+
+  /*
+  * Remove from unsaved documents arrays.
+  *
+  * @param [Object] cl. The class it is for
+  * @param [Integer] idx. Index of the file being uploaded to be removed from unsaved array
+  * @param [Boolean] isSyllabus. Boolean indicating if the file is a syllabus upload.
+  */
+  onDocumentDelete(cl,idx,isSyllabus){
+    let unsavedDocsCopy = deepClone(this.state.unsavedDocs)
+    unsavedDocsCopy[cl.id][isSyllabus ? 'syllabus' : 'additional'].splice(idx,1)
+    // If they just deleted the last syllabus doc, have to remove any existing additional docs
+    unsavedDocsCopy[cl.id]['syllabus'].length == 0 && isSyllabus ? unsavedDocsCopy[cl.id]['additional'] = [] : null
+    this.setState({
+      unsavedDocs: unsavedDocsCopy,
+    })
+  }
+
+  /*
+  * Remove all unsaved documents for a given class
+  *
+  * @param [Object] cl. The class it is for
+  */
+  onDocumentsDelete(cl){
+    let unsavedDocsCopy = deepClone(this.state.unsavedDocs)
+    unsavedDocsCopy[cl.id]['syllabus'] = []
+    unsavedDocsCopy[cl.id]['additional'] = []
+    this.setState({
+      unsavedDocs: unsavedDocsCopy,
+    })
+  }
+
+  /*
+  * Update the given class in the 'classes' array of this.state.
+  */
+  refreshClass (cl) {
+    actions.classes.getClassById(cl.id).then(cl => {
+      const index = this.state.classes.findIndex(c => c.id === cl.id)
+      const newClasses = this.state.classes
+      newClasses[index] = cl
+      this.setState({classes: newClasses})
+    }).catch(() => false)
+  }
+
   renderTableBody () {
     return this.renderClassOrderByIncomplete().map((cl, index) => {
-      return <ClassRow key={`row-${index}`} cl={cl} onClassUpdate={(c) => { this.refreshClass(c) }}/>
+      return (
+        <ClassRow
+          key={`row-${index}`}
+          cl={cl}
+          onDocumentAdd={this.onDocumentAdd.bind(this)}
+          onDocumentDelete={this.onDocumentDelete.bind(this)}
+          onDocumentsDelete={this.onDocumentsDelete.bind(this)}
+          onUpdateClass={(c) => { this.refreshClass(c) }}
+          unsavedAdditionalDocs={this.state.unsavedDocs[cl.id] ? this.state.unsavedDocs[cl.id]['additional'] : []}
+          unsavedSyllabusDocs={this.state.unsavedDocs[cl.id] ? this.state.unsavedDocs[cl.id]['syllabus'] : []}
+        />
+      )
     })
   }
 
@@ -126,15 +199,19 @@ class SubmitSyllabi extends React.Component {
     }
   }
 
-  /*
-  * Handle on next.
-  */
-  onNext () {
+  handleWarning(){
     if (this.getIncompleteClassesLength() > 0) {
       this.setState({showUploadWarning: true})
     } else {
       this.props.onNext()
     }
+  }
+
+  /*
+  * Handle on next.
+  */
+  onNext () {
+    this.handleWarning()
   }
 
   render () {
@@ -174,7 +251,7 @@ class SubmitSyllabi extends React.Component {
 }
 
 SubmitSyllabi.propTypes = {
-  onNext: PropTypes.object
+  onNext: PropTypes.func
 }
 
 export default SubmitSyllabi
