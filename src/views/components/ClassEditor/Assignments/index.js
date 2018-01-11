@@ -42,7 +42,8 @@ class Assignments extends React.Component {
       loadingAssignments: false,
       loadingWeights: false,
       viewOnly: isReview,
-      weights: weights || []
+      weights: weights || [],
+      prevWeight: null
     }
   }
 
@@ -127,6 +128,7 @@ class Assignments extends React.Component {
         disabled={this.props.disabled}
         onCreateAssignment={this.onCreateAssignment.bind(this)}
         onUpdateAssignment={this.onUpdateAssignment.bind(this)}
+        prevWeight={this.state.prevWeight}
       />
     )
   }
@@ -161,7 +163,8 @@ class Assignments extends React.Component {
   onCreateAssignment (assignment) {
     const newAssignments = this.state.assignments
     newAssignments.push(assignment)
-    this.setState({assignments: newAssignments, currentAssignment: null})
+    this.setState({assignments: newAssignments, currentAssignment: null, prevWeight: assignment.weight_id})
+    this.sectionControl.scrollTop = this.sectionControl.scrollHeight
   }
 
   /*
@@ -189,14 +192,14 @@ class Assignments extends React.Component {
   }
 
   render () {
-    const {viewOnly, loadingAssignments, loadingWeights} = this.state
+    const {viewOnly, loadingAssignments, loadingWeights, assignments} = this.state
     if (loadingAssignments || loadingWeights) return <Loading />
     return (
       <div className='space-between-vertical'>
-        <h5 style={{marginTop: '0.25em', marginBottom: '0.5em'}}>Edit Assignments</h5>
+        <h5 style={{marginTop: '0.25em', marginBottom: '0.5em'}}>{viewOnly ? 'Edit' : 'Add'} Assignments ({assignments.length})</h5>
         {viewOnly && <a className='right-text' style={{marginBottom: '5px'}} onClick={() => this.setState({viewOnly: false}) }>edit</a>}
         <div className={`class-editor-table ${viewOnly ? 'view-only' : ''}`} >
-          <div id='class-editor-assignments-table'>
+          <div id='class-editor-assignments-table' ref={(field) => { this.sectionControl = field; }}>
             {this.renderAssignments()}
           </div>
         </div>

@@ -458,6 +458,31 @@ class SyllabusTool extends React.Component {
     return text
   }
 
+  renderWrench () {
+    const {isAdmin, cl} = this.state
+    if (isAdmin && !cl.is_editable) {
+      return (
+        <div className='margin-left'>
+          <i className='fa fa-wrench cn-red cursor' onClick={this.toggleWrench.bind(this)} />
+        </div>
+      )
+    }
+    else if (isAdmin && cl.is_editable) {
+      return (
+        <div className='margin-left'>
+          <i className='fa fa-wrench cn-grey cursor' onClick={this.toggleWrench.bind(this)} />
+        </div>
+      )
+    }
+  }
+
+  toggleWrench () {
+    const {cl} = this.state
+    actions.classes.updateClass({id: cl.id, is_editable: !cl.is_editable}).then((cl) => {
+      this.setState({cl})
+    }).catch(() => false)
+  }
+
   /*
   * On syllabus section done.
   */
@@ -548,6 +573,23 @@ class SyllabusTool extends React.Component {
     this.setState({disableNext: value})
   }
 
+  tagUploader () {
+    const {documents, currentDocumentIndex, isAdmin} = this.state
+    if(isAdmin) {
+      let document = documents[currentDocumentIndex]
+      const email = document.user ? document.user.email : null
+
+      if (email) {
+        return (
+          <div className='margin-right' style={{position: 'absolute', marginTop: '-1.2em', alignSelf: 'flex-end'}}>
+            <i className='fa fa-user' />
+            <span style={{marginRight: '2px'}}>{email}</span>
+          </div>
+        )
+      }
+    }
+  }
+
   tagWorker () {
     let lock = null
     if (this.state.currentIndex === ContentEnum.WEIGHTS) {
@@ -592,9 +634,7 @@ class SyllabusTool extends React.Component {
                 {isAdmin && <div className='margin-left'>
                   <i className='fa fa-pencil cn-blue cursor' onClick={this.toggleEditClassModal.bind(this)} />
                 </div>}
-                {isAdmin && <div className='margin-left'>
-                  <i className='fa fa-wrench cn-red cursor' onClick={() => false} />
-                </div>}
+                {this.renderWrench()}
 
               </div>
               {this.renderClassDetails()}
@@ -617,6 +657,7 @@ class SyllabusTool extends React.Component {
           </div>
 
           <div className='cn-section-container cn-file-panel'>
+            {this.tagUploader()}
             <div className='cn-section-control'>
               {this.state.currentDocument && <FileViewer source={this.state.currentDocument} /> }
             </div>
