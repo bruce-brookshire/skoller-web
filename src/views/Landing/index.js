@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import {browserHistory} from 'react-router'
 import {inject, observer} from 'mobx-react'
 import LoginForm from './LoginForm'
 import PromoSignup from './PromoSignup'
@@ -48,6 +49,9 @@ class Landing extends React.Component {
         <footer className="site-footer">
           <span className="copyright">
             Copyright &copy; Skoller, LLC {}. All rights reserved.
+          </span>
+          <span className="privacypolicy">
+            <a onClick={()=>{ browserHistory.push('/privacypolicy');window.scrollTo(0, 0); }}>Privacy policy.</a>
           </span>
           <span className="support">
             Need help? <a href="mailto:support@skoller.com">Contact us.</a>

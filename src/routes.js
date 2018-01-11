@@ -6,6 +6,7 @@ import Layout from './containers/Layout'
 
 import Landing from './views/Landing'
 import ForgotPassword from './views/ForgotPassword'
+import PrivacyPolicy from './views/PrivacyPolicy'
 import ResetPassword from './views/ResetPassword'
 
 import DIYLanding from './views/Student/DIYLanding'
@@ -34,6 +35,7 @@ const router = (
       <Route path='/landing' component={Landing} />
       <Route path='/forgot_password' component={ForgotPassword} />
       <Route path='/reset_password/:token' component={ResetPassword} />
+      <Route path='/privacypolicy' component={PrivacyPolicy} />
       <Route path='/app' component={Layout} onEnter={requireAuth}>
         <IndexRedirect to='/student/classes' />
         <Route path='/student'>

@@ -1,0 +1,16 @@
+.cn-privacy-policy-container {
+
+  .privacy-policy-logo {
+    height: 5rem;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .privacy-policy-content {
+    padding: 2rem;
+    .privacy-policy-section {
+      margin: 1rem 0;
+    }
+  }
+}
