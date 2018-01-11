@@ -275,6 +275,7 @@ class SyllabusTool extends React.Component {
               <FileTab
                 key={index}
                 name={document.name}
+                removable={this.state.isAdmin}
                 onClick={() =>
                   this.setState({currentDocument: document.path, currentDocumentIndex: index})
                 }
