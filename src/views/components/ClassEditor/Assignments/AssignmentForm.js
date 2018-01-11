@@ -32,6 +32,9 @@ class AssignmentForm extends React.Component {
     const {cl, disabled} = this.props
     if (!disabled) {
       actions.weights.getClassWeights(cl).then((weights) => {
+        weights = weights.sort((a, b) => {
+          return a.inserted_at > b.inserted_at
+        })
         this.setState({weights})
       }).then(() => false)
     }
@@ -70,7 +73,7 @@ class AssignmentForm extends React.Component {
   initializeFormData (data) {
     let formData = data || {}
     const {id, name, weight_id, due} = formData
-    const {cl} = this.props
+    const {cl, prevWeight} = this.props
 
     const due_date = due ?
       convertUTCDatetimeToDateString(due, cl.school.timezone) : ''
@@ -80,7 +83,7 @@ class AssignmentForm extends React.Component {
     return ({
       id: id || null,
       name: name || '',
-      weight_id: weight_id || '',
+      weight_id: weight_id || prevWeight || '',
       due: due_date ? this.mapAssignmentDate(due_date) : '',
       year_due: due_date ? due_date.split('-')[0] : date.getFullYear()
     })

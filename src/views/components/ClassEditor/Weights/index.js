@@ -98,7 +98,7 @@ class Weights extends React.Component {
     return (
       <div style={{display: 'flex', flex: '1', flexDirection: 'column'}}>
         <div className={`class-editor-table ${viewOnly ? 'view-only' : ''}`}>
-          <div id='class-editor-weights-table' className=''>
+          <div id='class-editor-weights-table' className='' ref={(field) => { this.sectionControl = field; }}>
             {this.renderWeights()}
           </div>
           <div id='class-weights-total'>
@@ -304,6 +304,7 @@ class Weights extends React.Component {
     const newWeights = this.state.weights
     newWeights.push(weight)
     this.setState({weights: newWeights, currentWeight: null, noWeights: false})
+    this.sectionControl.scrollTop = this.sectionControl.scrollHeight
   }
 
   /*
@@ -343,7 +344,7 @@ class Weights extends React.Component {
 
     return (
       <div style={{display: 'flex', flex: '1', flexDirection: 'column'}}>
-        <h5 style={{marginTop: '0.25em', marginBottom: '0.5em'}}>Edit weights</h5>
+        <h5 style={{marginTop: '0.25em', marginBottom: '0.5em'}}>{viewOnly ? 'Edit' : 'Add'} weights</h5>
         {viewOnly && <a className='right-text' style={{marginBottom: '5px'}} onClick={() => this.setState({viewOnly: false}) }>edit</a>}
         {this.renderContent()}
       </div>
