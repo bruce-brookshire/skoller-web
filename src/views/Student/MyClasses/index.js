@@ -143,7 +143,7 @@ class MyClasses extends React.Component {
       professor: professor ? mapProfessor(professor) : 'TBA',
       days: meet_days || 'TBA',
       beginTime: meet_start_time ? mapTimeToDisplay(meet_start_time) : 'TBA',
-      campus: campus || 'TBA',
+      campus: campus || '',
       status: status ? this.mapStatus(status) : '-',
       component: <UploadDocuments cl={item} onUpdateClass={(cl) => {this.updateClass(cl)}}/>
     }
