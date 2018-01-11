@@ -164,6 +164,7 @@ class Assignments extends React.Component {
     const newAssignments = this.state.assignments
     newAssignments.push(assignment)
     this.setState({assignments: newAssignments, currentAssignment: null, prevWeight: assignment.weight_id})
+    this.sectionControl.scrollTop = this.sectionControl.scrollHeight
   }
 
   /*
@@ -198,7 +199,7 @@ class Assignments extends React.Component {
         <h5 style={{marginTop: '0.25em', marginBottom: '0.5em'}}>{viewOnly ? 'Edit' : 'Add'} Assignments ({assignments.length})</h5>
         {viewOnly && <a className='right-text' style={{marginBottom: '5px'}} onClick={() => this.setState({viewOnly: false}) }>edit</a>}
         <div className={`class-editor-table ${viewOnly ? 'view-only' : ''}`} >
-          <div id='class-editor-assignments-table'>
+          <div id='class-editor-assignments-table' ref={(field) => { this.sectionControl = field; }}>
             {this.renderAssignments()}
           </div>
         </div>
