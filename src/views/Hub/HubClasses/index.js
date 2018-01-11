@@ -105,7 +105,7 @@ class HubClasses extends React.Component {
       days: meet_days || 'TBA',
       beginTime: meet_start_time ? mapTimeToDisplay(meet_start_time) : 'TBA',
       length: length || 'TBA',
-      campus: campus || 'TBA',
+      campus: campus || '',
       status: status ? this.mapStatus(status) : '-'
     }
 
