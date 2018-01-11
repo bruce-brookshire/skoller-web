@@ -581,7 +581,7 @@ class SyllabusTool extends React.Component {
 
       if (email) {
         return (
-          <div className='margin-right' style={{position: 'absolute', marginTop: '-1.2em', alignSelf: 'right'}}>
+          <div className='margin-right' style={{position: 'absolute', marginTop: '-1.2em', alignSelf: 'flex-end'}}>
             <i className='fa fa-user' />
             <span style={{marginRight: '2px'}}>{email}</span>
           </div>
