@@ -463,17 +463,24 @@ class SyllabusTool extends React.Component {
     if (isAdmin && !cl.is_editable) {
       return (
         <div className='margin-left'>
-          <i className='fa fa-wrench cn-red cursor' onClick={() => false} />
+          <i className='fa fa-wrench cn-red cursor' onClick={this.toggleWrench.bind(this)} />
         </div>
       )
     }
     else if (isAdmin && cl.is_editable) {
       return (
         <div className='margin-left'>
-          <i className='fa fa-wrench cn-grey cursor' onClick={() => false} />
+          <i className='fa fa-wrench cn-grey cursor' onClick={this.toggleWrench.bind(this)} />
         </div>
       )
     }
+  }
+
+  toggleWrench () {
+    const {cl} = this.state
+    actions.classes.updateClass({id: cl.id, is_editable: !cl.is_editable}).then((cl) => {
+      this.setState({cl})
+    }).catch(() => false)
   }
 
   /*
