@@ -42,7 +42,8 @@ class Assignments extends React.Component {
       loadingAssignments: false,
       loadingWeights: false,
       viewOnly: isReview,
-      weights: weights || []
+      weights: weights || [],
+      prevWeight: null
     }
   }
 
@@ -127,6 +128,7 @@ class Assignments extends React.Component {
         disabled={this.props.disabled}
         onCreateAssignment={this.onCreateAssignment.bind(this)}
         onUpdateAssignment={this.onUpdateAssignment.bind(this)}
+        prevWeight={this.state.prevWeight}
       />
     )
   }
@@ -161,7 +163,7 @@ class Assignments extends React.Component {
   onCreateAssignment (assignment) {
     const newAssignments = this.state.assignments
     newAssignments.push(assignment)
-    this.setState({assignments: newAssignments, currentAssignment: null})
+    this.setState({assignments: newAssignments, currentAssignment: null, prevWeight: assignment.weight_id})
   }
 
   /*
