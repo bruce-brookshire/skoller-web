@@ -297,7 +297,6 @@ class SubmitSyllabi extends React.Component {
   * Handle on next.
   */
   onNext () {
-    console.log(this.hasUnsavedDocuments())
     if(this.hasUnsavedDocuments()){
       this.uploadUnsavedDocuments().then((res) => {
         // Need to wait a second to make sure the uploads altered each class' 'state'
@@ -305,7 +304,7 @@ class SubmitSyllabi extends React.Component {
           this.loadClasses().then((res2) => {
             this.handleWarning()
           })
-        },2000)
+        },1000)
       })
     }else{
       this.handleWarning()
