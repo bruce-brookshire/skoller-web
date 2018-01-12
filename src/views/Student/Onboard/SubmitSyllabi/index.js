@@ -71,18 +71,6 @@ class SubmitSyllabi extends React.Component {
   }
 
   /*
-  * Update the given class in the 'classes' array of this.state.
-  */
-  refreshClass (cl) {
-    actions.classes.getClassById(cl.id).then(cl => {
-  		const index = this.state.classes.findIndex(c => c.id === cl.id)
-  		const newClasses = this.state.classes
-  		newClasses[index] = cl
-  		this.setState({classes: newClasses})
-  	}).catch(() => false)
-  }
-
-  /*
   * Renders the table headers.
   *
   * @return [Array]. Array of <div/>
