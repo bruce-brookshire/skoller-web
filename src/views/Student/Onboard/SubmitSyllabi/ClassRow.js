@@ -24,7 +24,7 @@ class ClassRow extends React.Component {
   initializeState () {
     return {
       documents: [],
-      hasSyllabus: !this.props.cl.is_syllabus
+      hasSyllabus: this.props.cl.is_syllabus
     }
   }
 
@@ -43,28 +43,17 @@ class ClassRow extends React.Component {
   }
 
   /*
-  * Handle file upload.
-  *
-  * @param [Object] file. File uploaded
-  * @param [Boolean] isSyllabus. Boolean indicating if the file is a syllabus upload.
-  */
-  onDocumentUpload (file, isSyllabus) {
-    actions.documents.uploadClassDocument(this.props.cl, file, isSyllabus).then((document) => {
-      let newDocuments = this.state.documents
-      newDocuments.push(document)
-      this.setState({documents: newDocuments})
-    }).catch(() => false)
-    this.isComplete()
-  }
-
-  /*
   * Handle checkbox change
   */
   onCheckboxChange () {
     if (this.getSyllabusDocuments().length === 0 && !this.isComplete()) {
-      const form = {id: this.props.cl.id, is_syllabus: !this.state.hasSyllabus}
+      const form = {id: this.props.cl.id, is_syllabus: this.state.hasSyllabus}
       actions.classes.updateClass(form).then((cl) => {
+        // set local state
         this.setState({hasSyllabus: !this.state.hasSyllabus})
+        !this.state.hasSyllabus ? this.props.onDocumentsDelete(this.props.cl) : null
+        // update the classes arr of parent component
+        this.props.onUpdateClass(cl)
       }).catch(() => false)
     }
   }
@@ -98,30 +87,33 @@ class ClassRow extends React.Component {
             <span>{name || '-'} {this.renderComplete()}</span>
             {
               this.isComplete() !== true ? <div>
-              <input type='checkbox' onChange={this.onCheckboxChange.bind(this)} checked={this.state.hasSyllabus}/>
+              <input type='checkbox' onChange={this.onCheckboxChange.bind(this)} checked={!this.state.hasSyllabus}/>
               <span className='checkbox-label'>{`This class doesn't have a syllabus`}</span>
               </div>
               : <span></span>
             }
-
           </div>
         </div>
         <div className='cn-flex-table-cell'>
           <UploadHistory
-            disabled={this.state.hasSyllabus || this.isComplete()}
+            disabled={this.isComplete() || !this.state.hasSyllabus || (this.props.unsavedSyllabusDocs && this.props.unsavedSyllabusDocs.length > 0)}
             files={this.getSyllabusDocuments()}
             info=''
-            onUpload={(file) => { this.onDocumentUpload(file, true) }}
+            onDeleteDocument={(ind) => {this.props.onDocumentDelete(this.props.cl,ind,true)}}
+            onUpload={(file) => { this.props.onDocumentAdd(this.props.cl,file,true) }}
             title={this.isComplete() ? 'The syllabus for this class has already been submitted.' : 'Drop syllabus here'}
+            unsavedDocuments={this.props.unsavedSyllabusDocs}
           />
         </div>
         <div className='cn-flex-table-cell'>
           <UploadHistory
-            disabled={!this.isComplete()}
+            disabled={this.isComplete() || (this.props.unsavedSyllabusDocs && this.props.unsavedSyllabusDocs.length == 0)}
             files={this.getAdditionalDocuments()}
             info=''
-            onUpload={(file) => { this.onDocumentUpload(file, false) }}
+            onDeleteDocument={(ind) => {this.props.onDocumentDelete(this.props.cl,ind,false)}}
+            onUpload={(file) => { this.props.onDocumentAdd(this.props.cl,file,false) }}
             title='Drop additional docs here'
+            unsavedDocuments={this.props.unsavedAdditionalDocs}
           />
         </div>
       </div>
@@ -130,7 +122,11 @@ class ClassRow extends React.Component {
 }
 
 ClassRow.propTypes = {
-  cl: PropTypes.object
+  cl: PropTypes.object,
+  onDocumentAdd: PropTypes.func,
+  onDocumentDelete: PropTypes.func,
+  unsavedAdditionalDocs: PropTypes.array,
+  unsavedSyllabusDocs: PropTypes.array,
 }
 
 export default ClassRow

@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import ClassRow from './ClassRow'
 import actions from '../../../../actions'
+import {deepClone} from '../../../../utilities/object'
 
 const headers = [
   {
@@ -30,16 +31,43 @@ const styles = {
 class SubmitSyllabi extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {classes: [], showUploadWarning: false}
+    this.state = {
+      classes: [],
+      showUploadWarning: false,
+      unsavedDocs: {},
+    }
   }
 
   /*
   * Fetch the classes for a student.
   */
   componentWillMount () {
-    actions.classes.getStudentClasses().then((classes) => {
-      this.setState({classes})
-    }).catch(() => false)
+    this.loadClasses()
+  }
+
+  /*
+  * Creates blank unsaved docs object
+  */
+  defaultUnsavedDocs(classes){
+    let unsavedDocs = {}
+    classes.forEach((item) => {
+      unsavedDocs[item.id] = {}
+      unsavedDocs[item.id]['additional'] = []
+      unsavedDocs[item.id]['syllabus'] = []
+    })
+    return unsavedDocs
+  }
+
+  /*
+  * Retrieves all of a student's classes and appropriately instantiates state
+  */
+  loadClasses() {
+    return actions.classes.getStudentClasses().then((classes) => {
+      this.setState({
+        classes: classes,
+        unsavedDocs: this.defaultUnsavedDocs(classes),
+      })
+    })
   }
 
   /*
@@ -74,9 +102,78 @@ class SubmitSyllabi extends React.Component {
     return incompleteArray.concat(completeArray)
   }
 
+  /*
+  * Add to unsaved documents arrays.
+  *
+  * @param [Object] cl. The class it is for
+  * @param [Object] file. File uploaded
+  * @param [Boolean] isSyllabus. Boolean indicating if the file is a syllabus upload.
+  */
+  onDocumentAdd(cl,file,isSyllabus){
+    let unsavedDocsCopy = deepClone(this.state.unsavedDocs)
+    unsavedDocsCopy[cl.id][isSyllabus ? 'syllabus' : 'additional'].push(file)
+    this.setState({
+      unsavedDocs: unsavedDocsCopy,
+    })
+  }
+
+  /*
+  * Remove from unsaved documents arrays.
+  *
+  * @param [Object] cl. The class it is for
+  * @param [Integer] idx. Index of the file being uploaded to be removed from unsaved array
+  * @param [Boolean] isSyllabus. Boolean indicating if the file is a syllabus upload.
+  */
+  onDocumentDelete(cl,idx,isSyllabus){
+    let unsavedDocsCopy = deepClone(this.state.unsavedDocs)
+    unsavedDocsCopy[cl.id][isSyllabus ? 'syllabus' : 'additional'].splice(idx,1)
+    // If they just deleted the last syllabus doc, have to remove any existing additional docs
+    unsavedDocsCopy[cl.id]['syllabus'].length == 0 && isSyllabus ? unsavedDocsCopy[cl.id]['additional'] = [] : null
+    this.setState({
+      unsavedDocs: unsavedDocsCopy,
+    })
+  }
+
+  /*
+  * Remove all unsaved documents for a given class
+  *
+  * @param [Object] cl. The class it is for
+  */
+  onDocumentsDelete(cl){
+    let unsavedDocsCopy = deepClone(this.state.unsavedDocs)
+    unsavedDocsCopy[cl.id]['syllabus'] = []
+    unsavedDocsCopy[cl.id]['additional'] = []
+    this.setState({
+      unsavedDocs: unsavedDocsCopy,
+    })
+  }
+
+  /*
+  * Update the given class in the 'classes' array of this.state.
+  */
+  refreshClass (cl) {
+    actions.classes.getClassById(cl.id).then(cl => {
+      const index = this.state.classes.findIndex(c => c.id === cl.id)
+      const newClasses = this.state.classes
+      newClasses[index] = cl
+      this.setState({classes: newClasses})
+    }).catch(() => false)
+  }
+
   renderTableBody () {
     return this.renderClassOrderByIncomplete().map((cl, index) => {
-      return <ClassRow key={`row-${index}`} cl={cl} />
+      return (
+        <ClassRow
+          key={`row-${index}`}
+          cl={cl}
+          onDocumentAdd={this.onDocumentAdd.bind(this)}
+          onDocumentDelete={this.onDocumentDelete.bind(this)}
+          onDocumentsDelete={this.onDocumentsDelete.bind(this)}
+          onUpdateClass={(c) => { this.refreshClass(c) }}
+          unsavedAdditionalDocs={this.state.unsavedDocs[cl.id] ? this.state.unsavedDocs[cl.id]['additional'] : []}
+          unsavedSyllabusDocs={this.state.unsavedDocs[cl.id] ? this.state.unsavedDocs[cl.id]['syllabus'] : []}
+        />
+      )
     })
   }
 
@@ -84,7 +181,18 @@ class SubmitSyllabi extends React.Component {
   * Get the number of classes that are incomplete
   */
   getIncompleteClassesLength () {
-    return this.state.classes.filter(cl => cl.status.name === 'New Class' || cl.status.name === 'Needs Syllabus').length
+    return this.state.classes.filter(cl =>  (cl.status.name === 'New Class' || cl.status.name === 'Needs Syllabus') && cl.is_syllabus).length
+  }
+
+  /*
+  * Returns whether or not there are currently any unsaved docs
+  */
+  hasUnsavedDocuments () {
+    return Object.keys(this.state.unsavedDocs).filter((clId) =>  {
+      let unsavedSyllabi = this.state.unsavedDocs[clId]['syllabus']
+      let unsavedAdditional = this.state.unsavedDocs[clId]['additional']
+      return unsavedSyllabi.length > 0 || unsavedAdditional.length > 0
+    }).length
   }
 
   /*
@@ -114,14 +222,92 @@ class SubmitSyllabi extends React.Component {
     }
   }
 
+  renderNeedsSyllabusInfo(){
+    let incomplete = this.getIncompleteClassesLength()
+    if(incomplete > 0){
+      return(
+        <p className='red-text center-text'>
+        Skoller needs a syllabus for {incomplete} of your classes
+        </p>
+      )
+    }else{
+      return(
+        <p className='cn-green center-text'>
+        We have already received the syllabi for your classes
+        </p>
+      )
+    }
+  }
+
+  renderSubmitButton(){
+    let incomplete = this.getIncompleteClassesLength()
+    return (
+      <button
+        className={`button full-width margin-top margin-bottom`}
+        onClick={this.onNext.bind(this)}>
+        {(incomplete == 0 && !this.hasUnsavedDocuments()) ? 'Next' : 'Upload Syllabi'}
+      </button>
+    )
+  }
+
+
   /*
-  * Handle on next.
+  * Handle whether to show an error or move on
   */
-  onNext () {
+  handleWarning(){
     if (this.getIncompleteClassesLength() > 0) {
       this.setState({showUploadWarning: true})
     } else {
       this.props.onNext()
+    }
+  }
+
+  /*
+  * Creates Promises array for all a given classes syllabus docs
+  */
+  allSyllabusDocPromises(classId){
+    let docs = this.state.unsavedDocs[classId]
+    let arr = docs['syllabus'].map((doc, index) => {
+      return actions.documents.uploadClassDocument({id: classId}, doc, true)
+    })
+    return Promise.all(arr)
+  }
+
+  /*
+  * Creates Promises array for all a given classes additional docs
+  */
+  allAdditionalDocPromises(classId){
+    let docs = this.state.unsavedDocs[classId]
+    let arr = docs['additional'].map((doc, index) => {
+      return actions.documents.uploadClassDocument({id: classId}, doc, false)
+    })
+    return Promise.all(arr)
+  }
+
+  /*
+  * Upload all unsaved documents for every class
+  */
+  uploadUnsavedDocuments(){
+    return Promise.all(Object.keys(this.state.unsavedDocs).map((classId) => {
+      return [this.allSyllabusDocPromises(classId),this.allAdditionalDocPromises(classId)]
+    }))
+  }
+
+  /*
+  * Handle on next.
+  */
+  onNext () {
+    if(this.hasUnsavedDocuments()){
+      this.uploadUnsavedDocuments().then((res) => {
+        // Need to wait a second to make sure the uploads altered each class' 'state'
+        setTimeout(() => {
+          this.loadClasses().then((res2) => {
+            this.handleWarning()
+          })
+        },1000)
+      })
+    }else{
+      this.handleWarning()
     }
   }
 
@@ -132,12 +318,12 @@ class SubmitSyllabi extends React.Component {
           <div>
             <h2>Submit your syllabi</h2>
             <span>The syllabus helps us set up your class.</span>
-            <p className='red-text center-text'>Skoller needs a syllabus for {this.getIncompleteClassesLength()} of your classes</p>
+            {this.renderNeedsSyllabusInfo()}
           </div>
 
           <div className='cn-body margin-top'>
             <div className='cn-flex-table cn-add-class-grid'>
-              <div className='cn-flex-table-row'>
+              <div className='cn-flex-table-row fixed'>
                 {this.renderTableHeaders()}
               </div>
               <div className='cn-flex-table-body'>
@@ -148,10 +334,7 @@ class SubmitSyllabi extends React.Component {
 
           <div className='cn-footer margin-bottom'>
             <div style={{position: 'relative'}}>
-              <button
-                className={`button full-width margin-top margin-bottom`}
-                onClick={this.onNext.bind(this)}
-              >UpLoAd sYlLaBi</button>
+              {this.renderSubmitButton()}
               {this.renderUploadWarningMessage()}
             </div>
           </div>
@@ -162,7 +345,7 @@ class SubmitSyllabi extends React.Component {
 }
 
 SubmitSyllabi.propTypes = {
-  onNext: PropTypes.object
+  onNext: PropTypes.func
 }
 
 export default SubmitSyllabi
