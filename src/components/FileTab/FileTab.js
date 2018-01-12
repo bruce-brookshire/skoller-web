@@ -5,7 +5,7 @@ class FileTab extends React.Component {
 
   renderRemoveBtn(){
     if(this.props.removable){
-      return (<button className='fa fa-times'></button>)
+      return (<button className='fa fa-times' onClick={() => this.props.onDelete()}></button>)
     }else{
       return null
     }
@@ -29,6 +29,7 @@ FileTab.propTypes = {
   className: PropTypes.string,
   name: PropTypes.string,
   onClick: PropTypes.func,
+  onDelete: PropTypes.func,
   removable: PropTypes.bool,
 }
 

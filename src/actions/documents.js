@@ -61,7 +61,7 @@ export function uploadClassDocument (cl, file, isSyllabus = false) {
 * Delete the given file for a class
 *
 * @param [Object] cl. The class to remove the document from.
-* @param [Object] filename. The name of the file to be removed.
+* @param [Object] doc. The document to be deleted
 */
 export function deleteClassDocument (cl, doc) {
   return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}/docs/${doc.id}`, {
@@ -70,8 +70,9 @@ export function deleteClassDocument (cl, doc) {
       'Authorization': userStore.authToken
     },
   })
-    .then(response => parseResponse(response))
+    .then(response => {checkError(response)})
     .then(data => {
+      showSnackbar('Class document deleted.', 'info')
       return data
     })
     .catch(error => {
