@@ -62,12 +62,12 @@ class SubmitSyllabi extends React.Component {
   * Retrieves all of a student's classes and appropriately instantiates state
   */
   loadClasses() {
-    actions.classes.getStudentClasses().then((classes) => {
+    return actions.classes.getStudentClasses().then((classes) => {
       this.setState({
         classes: classes,
         unsavedDocs: this.defaultUnsavedDocs(classes),
       })
-    }).catch(() => false)
+    })
   }
 
   /*
@@ -189,8 +189,10 @@ class SubmitSyllabi extends React.Component {
   */
   hasUnsavedDocuments () {
     return Object.keys(this.state.unsavedDocs).filter((clId) =>  {
-      this.state.unsavedDocs[clId]['syllabus'].length > 0 || this.state.unsavedDocs[clId]['additional'].length > 0
-    }).length > 0
+      let unsavedSyllabi = this.state.unsavedDocs[clId]['syllabus']
+      let unsavedAdditional = this.state.unsavedDocs[clId]['additional']
+      return unsavedSyllabi.length > 0 || unsavedAdditional.length > 0
+    }).length
   }
 
   /*
@@ -261,35 +263,53 @@ class SubmitSyllabi extends React.Component {
   }
 
   /*
+  * Creates Promises array for all a given classes syllabus docs
+  */
+  allSyllabusDocPromises(classId){
+    let docs = this.state.unsavedDocs[classId]
+    let arr = docs['syllabus'].map((doc, index) => {
+      return actions.documents.uploadClassDocument({id: classId}, doc, true)
+    })
+    return Promise.all(arr)
+  }
+
+  /*
+  * Creates Promises array for all a given classes additional docs
+  */
+  allAdditionalDocPromises(classId){
+    let docs = this.state.unsavedDocs[classId]
+    let arr = docs['additional'].map((doc, index) => {
+      return actions.documents.uploadClassDocument({id: classId}, doc, false)
+    })
+    return Promise.all(arr)
+  }
+
+  /*
   * Upload all unsaved documents for every class
   */
-  uploadUnsavedDocuments(cb){
-    // Loop over all unsaved docs
-    let idx = 0
-    Object.keys(this.state.unsavedDocs).forEach((classId) => {
-      let docs = this.state.unsavedDocs[classId]
-      // Loop over syllabus docs for class (really there should only be one)
-      docs['syllabus'].forEach((doc) => {
-        // Upload Syllabus doc
-        actions.documents.uploadClassDocument({id: classId}, doc, true).then((document) => {}).catch(() => false)
-        // If that was successfull, upload the additional docs
-        docs['additional'].forEach((doc) => {
-          actions.documents.uploadClassDocument({id: classId}, doc, false).then((document) => {}).catch(() => false)
-        })
-      })
-      // If this is the last one, initiate the callback
-      idx == (Object.keys(this.state.unsavedDocs).length-1) ? cb() : idx++
-    })
+  uploadUnsavedDocuments(){
+    return Promise.all(Object.keys(this.state.unsavedDocs).map((classId) => {
+      return [this.allSyllabusDocPromises(classId),this.allAdditionalDocPromises(classId)]
+    }))
   }
 
   /*
   * Handle on next.
   */
   onNext () {
-    this.uploadUnsavedDocuments(() => {
-      this.loadClasses()
+    console.log(this.hasUnsavedDocuments())
+    if(this.hasUnsavedDocuments()){
+      this.uploadUnsavedDocuments().then((res) => {
+        // Need to wait a second to make sure the uploads altered each class' 'state'
+        setTimeout(() => {
+          this.loadClasses().then((res2) => {
+            this.handleWarning()
+          })
+        },2000)
+      })
+    }else{
       this.handleWarning()
-    })
+    }
   }
 
   render () {
