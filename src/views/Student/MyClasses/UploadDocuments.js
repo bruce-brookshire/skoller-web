@@ -170,7 +170,7 @@ class UploadDocuments extends React.Component {
           </div>
           <div className='col-xs-3'>
             <UploadHistory
-              disabled={this.isComplete() || (this.props.unsavedSyllabusDocs && this.state.unsavedSyllabusDocs.length == 0)}
+              disabled={this.isComplete() || (this.state.unsavedSyllabusDocs && this.state.unsavedSyllabusDocs.length == 0)}
               files={this.getAdditionalDocuments()}
               unsavedDocuments={this.state.unsavedAdditionalDocs}
               info='If assignment schedules or grading info are provided, drop them here.'
