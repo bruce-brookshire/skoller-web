@@ -304,7 +304,7 @@ class SubmitSyllabi extends React.Component {
           this.loadClasses().then((res2) => {
             this.handleWarning()
           })
-        },1000)
+        },2000)
       })
     }else{
       this.handleWarning()
