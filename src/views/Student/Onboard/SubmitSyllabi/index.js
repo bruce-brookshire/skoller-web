@@ -268,7 +268,6 @@ class SubmitSyllabi extends React.Component {
   allSyllabusDocPromises(classId){
     let docs = this.state.unsavedDocs[classId]
     let arr = docs['syllabus'].map((doc, index) => {
-      console.log(index)
       return actions.documents.uploadClassDocument({id: classId}, doc, true).then(data => {
         if(data.class){
           const index = this.state.classes.findIndex(c => c.id === data.class.id)
@@ -307,8 +306,8 @@ class SubmitSyllabi extends React.Component {
   onNext () {
     if(this.hasUnsavedDocuments()){
       this.uploadUnsavedDocuments().then(values => {
-        this.handleWarning()
-      })
+        this.props.onNext()
+      }).catch(() => this.handleWarning())
     }else{
       this.handleWarning()
     }
