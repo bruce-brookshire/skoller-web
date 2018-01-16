@@ -236,11 +236,7 @@ class SyllabusTool extends React.Component {
     const {cl} = navbarStore
     if (!navbarStore.isDIY && cl) {
       return (
-        <div className='cn-sw-controls'>
-          <div>
-            <div>{cl.school && cl.school.name}</div>
-          </div>
-        </div>
+          <div className='margin-right'>{cl.school && cl.school.name}</div>
       )
     }
   }
@@ -558,7 +554,7 @@ class SyllabusTool extends React.Component {
 
       if (email) {
         return (
-          <div className='margin-right' style={{position: 'absolute', marginTop: '-1.2em', alignSelf: 'flex-end'}}>
+          <div className='margin-right right'>
             <i className='fa fa-user' />
             <span style={{marginRight: '2px'}}>{email}</span>
           </div>
@@ -578,7 +574,7 @@ class SyllabusTool extends React.Component {
 
     if (email) {
       return (
-        <div className='margin-left' style={{position: 'absolute', marginTop: '-1.2em'}}>
+        <div>
           <i className='fa fa-user' />
           <span style={{marginLeft: '2px'}}>{email}</span>
         </div>
@@ -599,19 +595,15 @@ class SyllabusTool extends React.Component {
     return (
       <div className='cn-syllabus-tool-container'>
 
-        <div className='cn-header-container'>
-          {this.renderSWControls()}
-          {this.renderBackButton()}
-          {this.renderSkipButton()}
-          <div>
-            {this.renderEnrollment()}
-          </div>
-        </div>
-
         <div className='cn-body-container'>
 
           <div className='cn-section-container cn-control-panel'>
-            {this.tagWorker()}
+            <div className='cn-section-header'>
+              {this.renderSWControls()}
+              {this.renderBackButton()}
+              {this.renderSkipButton()}
+              {this.tagWorker()}
+            </div>
             <div className='cn-section-control'>
               {this.renderContent()}
             </div>
@@ -619,7 +611,9 @@ class SyllabusTool extends React.Component {
           </div>
 
           <div className='cn-section-container cn-file-panel'>
-            {this.tagUploader()}
+            <div className='cn-section-header'>
+              {this.tagUploader()}
+            </div>
             <div className='cn-section-control'>
               {this.state.currentDocument && <FileViewer source={this.state.currentDocument} /> }
             </div>
@@ -633,6 +627,7 @@ class SyllabusTool extends React.Component {
           
           {this.renderStatusForm()}
 
+          {this.renderEnrollment()}
           <button
             className={`button margin-top margin-bottom ${completeClass} ${disabledClass}`}
             disabled={disableButton}
