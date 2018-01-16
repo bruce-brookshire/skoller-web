@@ -58,6 +58,30 @@ export function uploadClassDocument (cl, file, isSyllabus = false) {
 }
 
 /*
+* Delete the given file for a class
+*
+* @param [Object] cl. The class to remove the document from.
+* @param [Object] doc. The document to be deleted
+*/
+export function deleteClassDocument (cl, doc) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}/docs/${doc.id}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': userStore.authToken
+    },
+  })
+    .then(response => {checkError(response)})
+    .then(data => {
+      showSnackbar('Class document deleted.', 'info')
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error deleting file. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
 * Upload a csv import for classes for a school period.
 *
 * @param [Number] periodId. The period to upload the csv for.
