@@ -14,7 +14,7 @@ class Process extends React.Component {
             <li className='col-xs-12 col-sm-4 center-text'>
               <img width="96" height="96" alt="Create an account" src='src/assets/images/landing_page/step_one.png'/>
               <h3>
-                1. Create and account
+                1. Create an account
               </h3>
               <p className='muted-text'>
                 Create an account using your school email and select your classes.
