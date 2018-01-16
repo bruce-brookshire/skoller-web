@@ -41,6 +41,20 @@
         @include breakpoint(large) {
           flex: 0.42;
         }
+        .cn-section-footer {
+          padding: 0 1em;
+      
+          .cn-status-form, button {
+            min-width: 100%;
+            @include breakpoint(medium) {
+              min-width: 50%;
+            }
+          }
+      
+          @include breakpoint(medium) {
+            flex: 1;
+          }
+        }
       }
 
       &.cn-file-panel {
@@ -79,25 +93,6 @@
         flex-direction: column;
         overflow: hidden;
       }
-    }
-  }
-
-  .cn-footer-container {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0 1em;
-
-    .cn-status-form, button {
-      min-width: 100%;
-      @include breakpoint(medium) {
-        min-width: 50%;
-      }
-    }
-
-    @include breakpoint(medium) {
-      flex: 1;
     }
   }
 }

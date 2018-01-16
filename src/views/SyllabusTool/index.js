@@ -369,7 +369,7 @@ class SyllabusTool extends React.Component {
     const {cl} = navbarStore
     if (isAdmin && cl) {
       return (
-        <div>
+        <div className='col-xs-2'>
           <span style={{marginRight: '5px'}}>{cl.enrollment || 0}</span>
           <i className='fa fa-user' />
         </div>
@@ -608,6 +608,20 @@ class SyllabusTool extends React.Component {
               {this.renderContent()}
             </div>
             {this.renderSectionTabs()}
+            <div className='cn-footer-container'>
+              {this.renderStatusForm()}
+
+              <div className='row margin-top middle-xs'>
+                {this.renderEnrollment()}
+                <button
+                  className={`button col-xs-10 ${completeClass} ${disabledClass}`}
+                  disabled={disableButton}
+                  onClick={this.onNext.bind(this)}
+                >{this.renderButtonText()}</button>
+              </div>
+
+              {this.renderProgressBar()}
+            </div>
           </div>
 
           <div className='cn-section-container cn-file-panel'>
@@ -621,20 +635,6 @@ class SyllabusTool extends React.Component {
             {this.renderHavingIssues()}
           </div>
 
-        </div>
-
-        <div className='cn-footer-container'>
-          
-          {this.renderStatusForm()}
-
-          {this.renderEnrollment()}
-          <button
-            className={`button margin-top margin-bottom ${completeClass} ${disabledClass}`}
-            disabled={disableButton}
-            onClick={this.onNext.bind(this)}
-          >{this.renderButtonText()}</button>
-
-          {this.renderProgressBar()}
         </div>
 
         {navbarStore.cl && this.renderIssuesModal()}
