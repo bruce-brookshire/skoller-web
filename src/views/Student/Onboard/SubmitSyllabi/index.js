@@ -311,6 +311,57 @@ class SubmitSyllabi extends React.Component {
     }
   }
 
+  /*
+  * Creates Promises array for all a given classes syllabus docs
+  */
+  allSyllabusDocPromises(classId){
+    let docs = this.state.unsavedDocs[classId]
+    let arr = docs['syllabus'].map((doc, index) => {
+      return actions.documents.uploadClassDocument({id: classId}, doc, true).then(data => {
+        console.log(data)
+      })
+    })
+    return Promise.all(arr)
+  }
+
+  /*
+  * Creates Promises array for all a given classes additional docs
+  */
+  allAdditionalDocPromises(classId){
+    let docs = this.state.unsavedDocs[classId]
+    let arr = docs['additional'].map((doc, index) => {
+      return actions.documents.uploadClassDocument({id: classId}, doc, false)
+    })
+    return Promise.all(arr)
+  }
+
+  /*
+  * Upload all unsaved documents for every class
+  */
+  uploadUnsavedDocuments(){
+    return Promise.all(Object.keys(this.state.unsavedDocs).map((classId) => {
+      return [this.allSyllabusDocPromises(classId),this.allAdditionalDocPromises(classId)]
+    }))
+  }
+
+  /*
+  * Handle on next.
+  */
+  onNext () {
+    if(this.hasUnsavedDocuments()){
+      this.uploadUnsavedDocuments().then((res) => {
+        // Need to wait a second to make sure the uploads altered each class' 'state'
+        setTimeout(() => {
+          this.loadClasses().then((res2) => {
+            this.handleWarning()
+          })
+        },1000)
+      })
+    }else{
+      this.handleWarning()
+    }
+  }
+
   render () {
     return (
       <div className='cn-container'>
