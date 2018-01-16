@@ -506,7 +506,6 @@ class SyllabusTool extends React.Component {
     actions.syllabusworkers.getNextClass(sectionName).then((cl) => {
       const {state} = this.props.location
       browserHistory.push({ pathname: `/class/${cl.id}/syllabus_tool`, state: {...state} })
-      console.log(state)
       this.intializeComponent()
       this.setState({gettingClass: false})
     }).catch(() => { this.setState({gettingClass: false}) })
@@ -643,7 +642,7 @@ class SyllabusTool extends React.Component {
           {this.renderProgressBar()}
         </div>
 
-        {this.renderIssuesModal()}
+        {navbarStore.cl && this.renderIssuesModal()}
         {this.renderEditClassModal()}
       </div>
     )
