@@ -74,8 +74,8 @@ class HubLanding extends React.Component {
   * Determine if hub user is an admin
   */
   isAdminUser () {
-    const {userStore: {user}} = this.props.rootStore
-    return user.roles.findIndex(role => role.id === 200) > -1
+    const {userStore} = this.props.rootStore
+    return userStore.isAdmin()
   }
 
   /*

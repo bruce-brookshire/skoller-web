@@ -1,6 +1,7 @@
 import React from 'react'
 import {inject, observer} from 'mobx-react'
 import {Link} from 'react-router'
+import ClassInfo from './ClassInfo'
 
 @inject('rootStore') @observer
 class NavBar extends React.Component {
@@ -57,14 +58,32 @@ class NavBar extends React.Component {
     }
   }
 
+  renderClassInfo () {
+    const {userStore: {user}, navbarStore: {cl, isDIY, toggleEditCl, toggleIssues, toggleWrench}} = this.props.rootStore
+    const admin = this.props.rootStore.userStore.isAdmin()
+    if (cl) {
+      return (
+        <ClassInfo cl={cl} 
+          isAdmin={admin}
+          isDIY={isDIY} 
+          onEdit={toggleEditCl}
+          toggleIssues={toggleIssues}
+          toggleWrench={toggleWrench} />
+      )
+    }
+  }
+
   render () {
-    const {userStore: {user}} = this.props.rootStore
+    const {userStore: {user}, navbarStore: {cl}} = this.props.rootStore
     return (
       <div className='cn-navbar'>
-        <div className='left'>
+        <div>
           <img alt="Skoller" className='logo' src='/src/assets/images/logo-wide-blue@1x.png' />
         </div>
-        <div className='user-info right'>
+        <div className='class-info'>
+          {this.renderClassInfo()}
+        </div>
+        <div className='user-info'>
           <div className='left'>
             <p>{this.getName()}</p>
             <span>{this.getDescription()}</span>

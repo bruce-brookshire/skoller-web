@@ -3,7 +3,11 @@ import { extendObservable } from 'mobx'
 class NavBarStore {
   constructor () {
     extendObservable(this, {
-      cl: null
+      cl: null,
+      isDIY: false,
+      toggleEditCl: null,
+      toggleWrench: null,
+      toggleIssues: null
     })
   }
 }

@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import {inject, observer} from 'mobx-react'
 import {browserHistory} from 'react-router'
 import Assignments from '../components/ClassEditor/Assignments'
 import ClassForm from './ClassForm'
@@ -14,7 +15,9 @@ import Weights from '../components/ClassEditor/Weights'
 import {FileTabs, FileTab} from '../../components/FileTab'
 import {ProgressBar, ProgressStep} from '../../components/ProgressBar'
 import actions from '../../actions'
-import ClassInfo from './ClassInfo'
+import stores from '../../stores'
+
+const {navbarStore} = stores
 
 const steps = [ 'Weights Intro', 'Input Weights', 'Assignments Intro', 'Input Assignments' ]
 
@@ -25,9 +28,13 @@ const ContentEnum = {
   ASSIGNMENTS: 3
 }
 
+@inject('rootStore') @observer
 class SyllabusTool extends React.Component {
   constructor (props) {
     super(props)
+    navbarStore.toggleEditCl = this.toggleEditClassModal.bind(this)
+    navbarStore.toggleWrench = this.toggleWrench.bind(this)
+    navbarStore.toggleIssues = this.toggleIssuesModal.bind(this)
     this.state = this.initializeState()
   }
 
@@ -43,6 +50,11 @@ class SyllabusTool extends React.Component {
   * Unlock the class on component will mount
   */
   componentWillUnmount () {
+    navbarStore.cl = null
+    navbarStore.isDIY = false
+    navbarStore.toggleEditCl = null
+    navbarStore.toggleWrench = null
+    navbarStore.toggleIssues = null
     this.unlockClass()
   }
 
@@ -50,7 +62,7 @@ class SyllabusTool extends React.Component {
   * Deletes the provided document and removes it from the documents array in state
   */
   deleteDocument(doc,idx){
-    actions.documents.deleteClassDocument(this.state.cl,doc).then(() => {
+    actions.documents.deleteClassDocument(navbarStore.cl,doc).then(() => {
       let newDocs = this.state.documents
       newDocs.splice(idx,1)
       this.setState({
@@ -78,15 +90,15 @@ class SyllabusTool extends React.Component {
   initializeState () {
     const {state} = this.props.location
     const currentIndex = this.initializeCurrentIndex()
+    navbarStore.cl = null
+    navbarStore.isDIY = state.isDIY || false
     return {
-      cl: null,
       currentDocumentIndex: 0,
       currentDocument: null,
       currentIndex,
       disableNext: false,
       documents: [],
       gettingClass: false,
-      isDIY: state.isDIY || false,
       isAdmin: state.isAdmin || false,
       isReviewer: state.isReviewer || false,
       isSW: state.isSW || false,
@@ -131,7 +143,8 @@ class SyllabusTool extends React.Component {
   getClass () {
     const {params: {classId}} = this.props
     actions.classes.getClassById(classId).then((cl) => {
-      this.setState({cl, loadingClass: false})
+      navbarStore.cl = cl
+      this.setState({loadingClass: false})
     }).catch((error) => {  this.setState({loadingClass: false}) })
   }
   /*
@@ -156,12 +169,12 @@ class SyllabusTool extends React.Component {
   * Lock the class for DIY or admin who are not working as SW.
   */
   lockClass () {
-    if (this.state.isDIY || (this.state.isAdmin && !this.state.isSW)) {
+    if (navbarStore.isDIY || (this.state.isAdmin && !this.state.isSW)) {
       const {params: {classId}} = this.props
       const form = {is_class: true}
       actions.classes.lockClass(classId, form).then(() => {
       }).catch((error) => {
-        if (error === 409 && this.state.isDIY) {
+        if (error === 409 && navbarStore.isDIY) {
           browserHistory.push('/student/classes')
         }
       })
@@ -173,7 +186,7 @@ class SyllabusTool extends React.Component {
   */
   unlockClass () {
     const {params: {classId}} = this.props
-    const form = (this.state.isDIY || (this.state.isAdmin && !this.state.isSW)) ?
+    const form = (navbarStore.isDIY || (this.state.isAdmin && !this.state.isSW)) ?
       {is_class: true} : {class_lock_section_id: this.state.sectionId}
 
     actions.classes.unlockClass(classId, form).then(() => {
@@ -213,19 +226,19 @@ class SyllabusTool extends React.Component {
   * @param [Object]. The class to update with
   */
   updateClass (cl) {
-    this.setState({cl})
+    navbarStore.cl = cl
   }
 
   /*
   * Render the controls for the syllabi worker or admin.
   */
   renderSWControls () {
-    const {isDIY, cl: {school}} = this.state
-    if (!isDIY) {
+    const {cl} = navbarStore
+    if (!navbarStore.isDIY && cl) {
       return (
         <div className='cn-sw-controls'>
           <div>
-            <div>{school && school.name}</div>
+            <div>{cl.school && cl.school.name}</div>
           </div>
         </div>
       )
@@ -239,13 +252,13 @@ class SyllabusTool extends React.Component {
     const {isReviewer} = this.state
     switch (this.state.currentIndex) {
       case ContentEnum.PROFESSOR:
-        return <Professor cl={this.state.cl} onSubmit={this.updateClass.bind(this)}/>
+        return <Professor cl={navbarStore.cl} onSubmit={this.updateClass.bind(this)}/>
       case ContentEnum.GRADE_SCALE:
-        return <GradeScale cl={this.state.cl} onSubmit={this.updateClass.bind(this)}/>
+        return <GradeScale cl={navbarStore.cl} onSubmit={this.updateClass.bind(this)}/>
       case ContentEnum.WEIGHTS:
-        return <Weights cl={this.state.cl} isReview={isReviewer} disableNext={this.state.disableNext} toggleDisabled={this.toggleDisabled.bind(this)} />
+        return <Weights cl={navbarStore.cl} isReview={isReviewer} disableNext={this.state.disableNext} toggleDisabled={this.toggleDisabled.bind(this)} />
       case ContentEnum.ASSIGNMENTS:
-        return <Assignments cl={this.state.cl} isReview={isReviewer} />
+        return <Assignments cl={navbarStore.cl} isReview={isReviewer} />
       default:
     }
   }
@@ -309,8 +322,7 @@ class SyllabusTool extends React.Component {
   * Render the progress bar for DIY.
   */
   renderProgressBar () {
-    const {isDIY} = this.state
-    if (isDIY) {
+    if (navbarStore.isDIY) {
       return (
         <div className='margin-bottom'>
           <ProgressBar currentStep={this.state.currentIndex}>
@@ -327,9 +339,9 @@ class SyllabusTool extends React.Component {
   * Render the back button to tab between syllabus sections
   */
   renderBackButton () {
-    const {currentIndex, isDIY} = this.state
+    const {currentIndex} = this.state
 
-    if (currentIndex > ContentEnum.WEIGHTS && isDIY) {
+    if (currentIndex > ContentEnum.WEIGHTS && navbarStore.isDIY) {
       return (
         <a className='back-button' onClick={this.onPrevious.bind(this)}>
           <i className='fa fa-angle-left' />
@@ -342,10 +354,8 @@ class SyllabusTool extends React.Component {
   * Render the skip button for DIY
   */
   renderSkipButton () {
-    const {isDIY} = this.state
-
     {/* TODO Put this back in
-      if (isDIY) {
+      if (navbarStore.isDIY) {
         return (
           <a className='skip-button' onClick={() => false}>
             <span>Skip this class</span>
@@ -359,8 +369,9 @@ class SyllabusTool extends React.Component {
   * Render the enrollment count for admin.
   */
   renderEnrollment () {
-    const {isAdmin, cl} = this.state
-    if (isAdmin) {
+    const {isAdmin} = this.state
+    const {cl} = navbarStore
+    if (isAdmin && cl) {
       return (
         <div>
           <span style={{marginRight: '5px'}}>{cl.enrollment || 0}</span>
@@ -392,7 +403,7 @@ class SyllabusTool extends React.Component {
   renderIssuesModal () {
     return (
       <IssuesModal
-        cl={this.state.cl}
+        cl={navbarStore.cl}
         open={this.state.openIssuesModal}
         onClose={this.toggleIssuesModal.bind(this)}
         onSubmit={this.updateClass.bind(this)}
@@ -410,7 +421,7 @@ class SyllabusTool extends React.Component {
         onClose={this.toggleEditClassModal.bind(this)}
       >
         <ClassForm
-          cl={this.state.cl}
+          cl={navbarStore.cl}
           onClose={this.toggleEditClassModal.bind(this)}
           onSubmit={this.updateClass.bind(this)}
         />
@@ -425,7 +436,7 @@ class SyllabusTool extends React.Component {
     if (this.state.isAdmin && !this.state.isSW) {
       return (
         <div className='cn-status-form'>
-          <StatusForm cl={this.state.cl}/>
+          <StatusForm cl={navbarStore.cl}/>
         </div>
       )
     }
@@ -435,9 +446,9 @@ class SyllabusTool extends React.Component {
   * Render the button text dependent on worker.
   */
   renderButtonText () {
-    const {isDIY, isReviewer, isAdmin, isSW} = this.state
+    const {isReviewer, isAdmin, isSW} = this.state
     let text = ''
-    if ((isReviewer || isDIY) && this.state.currentIndex === ContentEnum.ASSIGNMENTS) text = 'Everything looks good. Submit info and continue'
+    if ((isReviewer || navbarStore.isDIY) && this.state.currentIndex === ContentEnum.ASSIGNMENTS) text = 'Everything looks good. Submit info and continue'
     else if (isAdmin && !isSW) text = 'Done'
     else text = 'Next'
     return text
@@ -447,9 +458,9 @@ class SyllabusTool extends React.Component {
   * On syllabus section done.
   */
   onNext () {
-    const {isDIY, isReviewer, isAdmin, isSW} = this.state
+    const {isReviewer, isAdmin, isSW} = this.state
 
-    if (isDIY) {
+    if (navbarStore.isDIY) {
       this.handleDIYNext()
     } else if (isAdmin && !isSW) {
       browserHistory.push('/hub/classes')
@@ -468,8 +479,7 @@ class SyllabusTool extends React.Component {
   */
   handleDIYNext () {
     if (this.state.sectionId === 100) {
-      const {cl} = this.state
-      browserHistory.push(`/class/${cl.id}/syllabus_tool/tutorial/assignments`)
+      browserHistory.push(`/class/${navbarStore.cl.id}/syllabus_tool/tutorial/assignments`)
     } else {
       this.unlockDIYLock()
     }
@@ -496,6 +506,7 @@ class SyllabusTool extends React.Component {
     actions.syllabusworkers.getNextClass(sectionName).then((cl) => {
       const {state} = this.props.location
       browserHistory.push({ pathname: `/class/${cl.id}/syllabus_tool`, state: {...state} })
+      console.log(state)
       this.intializeComponent()
       this.setState({gettingClass: false})
     }).catch(() => { this.setState({gettingClass: false}) })
@@ -525,9 +536,9 @@ class SyllabusTool extends React.Component {
   }
 
   toggleWrench () {
-    const {cl} = this.state
+    const {cl} = navbarStore
     actions.classes.updateClass({id: cl.id, is_editable: !cl.is_editable}).then((cl) => {
-      this.setState({cl})
+      navbarStore.cl = cl
     }).catch(() => false)
   }
 
@@ -577,12 +588,12 @@ class SyllabusTool extends React.Component {
   }
 
   render () {
-    const {cl, disableNext, loadingClass, isAdmin,
-      isReviewer, isDIY, currentIndex, gettingClass, submitting} = this.state
+    const {disableNext, loadingClass, isAdmin,
+      isReviewer, currentIndex, gettingClass, submitting} = this.state
 
     const disableButton = disableNext || gettingClass || submitting
     const disabledClass = disableButton ? 'disabled' : ''
-    const completeClass = ((isReviewer || isDIY) &&
+    const completeClass = ((isReviewer || navbarStore.isDIY) &&
       currentIndex === ContentEnum.ASSIGNMENTS) ? 'cn-green-background' : ''
 
     if (loadingClass) return <Loading />
@@ -596,12 +607,6 @@ class SyllabusTool extends React.Component {
           <div>
             {this.renderEnrollment()}
           </div>
-          <ClassInfo cl={this.state.cl} 
-            isAdmin={this.state.isAdmin}
-            isDIY={this.state.isDIY} 
-            onEdit={this.toggleEditClassModal.bind(this)}
-            toggleIssues={this.toggleIssuesModal.bind(this)}
-            toggleWrench={this.toggleWrench.bind(this)} />
         </div>
 
         <div className='cn-body-container'>

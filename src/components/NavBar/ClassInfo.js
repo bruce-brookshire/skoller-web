@@ -5,15 +5,15 @@ import {mapTimeToDisplay} from '../../utilities/time'
 
 class ClassInfo extends React.Component {
   renderWrench () {
-    const {isAdmin, cl} = this.props
-    if (isAdmin && !cl.is_editable) {
+    const {isAdmin, cl: {is_editable}} = this.props
+    if (isAdmin && !is_editable) {
       return (
         <div className='margin-left'>
           <i className='fa fa-wrench cn-red cursor' onClick={() => this.props.toggleWrench()} />
         </div>
       )
     }
-    else if (isAdmin && cl.is_editable) {
+    else if (isAdmin && is_editable) {
       return (
         <div className='margin-left'>
           <i className='fa fa-wrench cn-grey cursor' onClick={() => this.props.toggleWrench()} />
@@ -58,7 +58,6 @@ class ClassInfo extends React.Component {
 
   render () {
     return (
-      <div className='cn-class-info col-xs-12'>
         <div className='header-container'>
           <div className='header'>
             {this.renderClassIssue()}
@@ -67,11 +66,9 @@ class ClassInfo extends React.Component {
             <i className='fa fa-pencil cn-blue cursor' onClick={() => this.props.onEdit()} />
           </div>}
           {this.renderWrench()}
-
         </div>
         {this.renderClassDetails()}
       </div>
-    </div>
     )
   }
 }
