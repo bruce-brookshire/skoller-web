@@ -2,6 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 class FileTab extends React.Component {
+
+  renderRemoveBtn(){
+    if(this.props.removable){
+      return (<button className='fa fa-times' onClick={() => this.props.onDelete()}></button>)
+    }else{
+      return null
+    }
+  }
+
   render () {
     let classes = ['cn-file-tab']
     if (this.props.className) classes.push(this.props.className)
@@ -9,6 +18,7 @@ class FileTab extends React.Component {
     return (
       <div className={classes.join(' ')} onClick={() => this.props.onClick()}>
         <span>{this.props.name}</span>
+        {this.renderRemoveBtn()}
       </div>
     )
   }
@@ -18,7 +28,9 @@ FileTab.propTypes = {
   active: PropTypes.bool,
   className: PropTypes.string,
   name: PropTypes.string,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  onDelete: PropTypes.func,
+  removable: PropTypes.bool,
 }
 
 export default FileTab

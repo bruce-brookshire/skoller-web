@@ -47,6 +47,21 @@ class SyllabusTool extends React.Component {
   }
 
   /*
+  * Deletes the provided document and removes it from the documents array in state
+  */
+  deleteDocument(doc,idx){
+    actions.documents.deleteClassDocument(this.state.cl,doc).then(() => {
+      let newDocs = this.state.documents
+      newDocs.splice(idx,1)
+      this.setState({
+        documents: newDocs,
+        currentDocumentIndex: 0,
+        currentDocument: null,
+      })
+    }).catch(() => false)
+  }
+
+  /*
   * Intialize the component
   */
   intializeComponent () {
@@ -120,7 +135,7 @@ class SyllabusTool extends React.Component {
     }).catch((error) => {  this.setState({loadingClass: false}) })
   }
   /*
-  * Fetch the documnets for a class.
+  * Fetch the documents for a class.
   */
   getDocuments () {
     const {params: {classId}} = this.props
@@ -274,9 +289,14 @@ class SyllabusTool extends React.Component {
               <FileTab
                 key={index}
                 name={document.name}
+                removable={this.state.isAdmin}
                 onClick={() =>
                   this.setState({currentDocument: document.path, currentDocumentIndex: index})
                 }
+                onDelete={() => {
+                  let result = window.confirm('Are you sure you want to delete this document?')
+                  if(result) this.deleteDocument(document,index)
+                }}
               />
             )
           })
@@ -522,8 +542,8 @@ class SyllabusTool extends React.Component {
 
   tagUploader () {
     const {documents, currentDocumentIndex, isAdmin} = this.state
-    if(isAdmin) {
-      let document = documents[currentDocumentIndex]
+    let document = documents[currentDocumentIndex]
+    if(isAdmin && document) {
       const email = document.user ? document.user.email : null
 
       if (email) {
