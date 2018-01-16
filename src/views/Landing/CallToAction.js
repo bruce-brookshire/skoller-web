@@ -11,7 +11,7 @@ class CallToAction extends React.Component {
             </a>
           </li>
           <li className="action">
-            <a href='http://ambassador.skoller.co'>
+            <a href='https://docs.google.com/forms/d/1lgXeLjNEbrFeQ6YWJw-q-Ou6BKY8TSaOpGyUkAkNWKY/edit'>
               Interested in becoming an ambassador at your school?
             </a>
           </li>
