@@ -13,6 +13,16 @@ import CallToAction from './CallToAction'
 
 @inject('rootStore') @observer
 class Landing extends React.Component {
+
+  componentDidMount () {
+    document.head.insertAdjacentHTML( 'beforeEnd', '<meta name="apple-itunes-app" id="app-meta-tag" content="app-id=1314782490">' )
+  }
+
+  componentWillUnmount() {
+    let el = document.getElementById('app-meta-tag')
+    el.remove()
+   }
+
   render () {
     return (
 
