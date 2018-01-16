@@ -14,8 +14,7 @@ import Weights from '../components/ClassEditor/Weights'
 import {FileTabs, FileTab} from '../../components/FileTab'
 import {ProgressBar, ProgressStep} from '../../components/ProgressBar'
 import actions from '../../actions'
-import {mapProfessor} from '../../utilities/display'
-import {mapTimeToDisplay} from '../../utilities/time'
+import ClassInfo from './ClassInfo'
 
 const steps = [ 'Weights Intro', 'Input Weights', 'Assignments Intro', 'Input Assignments' ]
 
@@ -352,40 +351,6 @@ class SyllabusTool extends React.Component {
   }
 
   /*
-  * Render the class details for non DIY
-  */
-  renderClassDetails () {
-    const {cl: {number, professor, meet_days, meet_start_time}, isDIY} = this.state
-
-    if (!isDIY) {
-      return (
-        <div className='class-details'>
-          <span>{number}</span>
-          <span>{professor && mapProfessor(professor)}</span>
-          <span>{meet_days}: {meet_start_time ? mapTimeToDisplay(meet_start_time) : 'TBA'}</span>
-        </div>
-      )
-    }
-  }
-
-  renderClassIssue () {
-    const {cl, isDIY} = this.state
-    const helpRequests = cl.help_requests.filter(h => !h.is_completed)
-    const needsHelp = helpRequests.length > 0
-    if (needsHelp && !isDIY) {
-      return (
-        <div className='issue-icon-container' onClick={this.toggleIssuesModal.bind(this)}>
-          <div className='message-bubble triangle-top'>
-            {helpRequests[0].note}
-            <div className='triangle-inner' />
-          </div>
-          <i className='fa fa-exclamation-triangle cn-red margin-right' />
-        </div>
-      )
-    }
-  }
-
-  /*
   * Render having issues for admin and SW
   */
   renderHavingIssues () {
@@ -456,31 +421,6 @@ class SyllabusTool extends React.Component {
     else if (isAdmin && !isSW) text = 'Done'
     else text = 'Next'
     return text
-  }
-
-  renderWrench () {
-    const {isAdmin, cl} = this.state
-    if (isAdmin && !cl.is_editable) {
-      return (
-        <div className='margin-left'>
-          <i className='fa fa-wrench cn-red cursor' onClick={this.toggleWrench.bind(this)} />
-        </div>
-      )
-    }
-    else if (isAdmin && cl.is_editable) {
-      return (
-        <div className='margin-left'>
-          <i className='fa fa-wrench cn-grey cursor' onClick={this.toggleWrench.bind(this)} />
-        </div>
-      )
-    }
-  }
-
-  toggleWrench () {
-    const {cl} = this.state
-    actions.classes.updateClass({id: cl.id, is_editable: !cl.is_editable}).then((cl) => {
-      this.setState({cl})
-    }).catch(() => false)
   }
 
   /*
@@ -564,6 +504,13 @@ class SyllabusTool extends React.Component {
     this.setState({openEditClassModal: !this.state.openEditClassModal})
   }
 
+  toggleWrench () {
+    const {cl} = this.state
+    actions.classes.updateClass({id: cl.id, is_editable: !cl.is_editable}).then((cl) => {
+      this.setState({cl})
+    }).catch(() => false)
+  }
+
   /*
   * Disable the next button
   *
@@ -624,26 +571,17 @@ class SyllabusTool extends React.Component {
 
         <div className='cn-header-container'>
           {this.renderSWControls()}
-          <div className='cn-class-info col-xs-12'>
-            {this.renderBackButton()}
-
-            <div className='header-container'>
-              <div className='header'>
-                {this.renderClassIssue()}
-                <h2>{cl && cl.name}</h2>
-                {isAdmin && <div className='margin-left'>
-                  <i className='fa fa-pencil cn-blue cursor' onClick={this.toggleEditClassModal.bind(this)} />
-                </div>}
-                {this.renderWrench()}
-
-              </div>
-              {this.renderClassDetails()}
-            </div>
-            <div>
-              {this.renderSkipButton()}
-              {this.renderEnrollment()}
-            </div>
+          {this.renderBackButton()}
+          {this.renderSkipButton()}
+          <div>
+            {this.renderEnrollment()}
           </div>
+          <ClassInfo cl={this.state.cl} 
+            isAdmin={this.state.isAdmin}
+            isDIY={this.state.isDIY} 
+            onEdit={this.toggleEditClassModal.bind(this)}
+            toggleIssues={this.toggleIssuesModal.bind(this)}
+            toggleWrench={this.toggleWrench.bind(this)} />
         </div>
 
         <div className='cn-body-container'>
@@ -668,6 +606,7 @@ class SyllabusTool extends React.Component {
         </div>
 
         <div className='cn-footer-container'>
+          
           {this.renderStatusForm()}
 
           <button
