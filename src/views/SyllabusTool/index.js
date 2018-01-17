@@ -369,7 +369,7 @@ class SyllabusTool extends React.Component {
     const {cl} = navbarStore
     if (isAdmin && cl) {
       return (
-        <div className='col-xs-2'>
+        <div className='col-xs-2' style={{flex: '0 1 auto'}}>
           <span style={{marginRight: '5px'}}>{cl.enrollment || 0}</span>
           <i className='fa fa-user' />
         </div>
@@ -611,10 +611,11 @@ class SyllabusTool extends React.Component {
             <div className='cn-footer-container'>
               {this.renderStatusForm()}
 
-              <div className='row margin-top middle-xs'>
+              <div className='horizontal-align-row margin-top margin-right margin-left middle-xs center-xs'>
                 {this.renderEnrollment()}
                 <button
-                  className={`button col-xs-10 ${completeClass} ${disabledClass}`}
+                  className={`button col-xs-12 ${completeClass} ${disabledClass}`}
+                  style={{flex: '100 1 auto'}}
                   disabled={disableButton}
                   onClick={this.onNext.bind(this)}
                 >{this.renderButtonText()}</button>
