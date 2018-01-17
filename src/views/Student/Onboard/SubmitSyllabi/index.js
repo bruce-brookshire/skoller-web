@@ -268,13 +268,17 @@ class SubmitSyllabi extends React.Component {
   allSyllabusDocPromises(classId){
     let docs = this.state.unsavedDocs[classId]
     let arr = docs['syllabus'].map((doc, index) => {
-      return actions.documents.uploadClassDocument({id: classId}, doc, true).then(data => {
-        if(data.class){
-          const index = this.state.classes.findIndex(c => c.id === data.class.id)
-          const newClasses = this.state.classes
-          newClasses[index] = data.class
-          this.setState({classes: newClasses})
-        }
+      return new Promise((resolve,reject) => {
+        actions.documents.uploadClassDocument({id: classId}, doc, true).then(data => {
+          // Update the class in state once uploaded
+          if(data.class){
+            const index = this.state.classes.findIndex(c => c.id === data.class.id)
+            const newClasses = this.state.classes
+            newClasses[index] = data.class
+            this.setState({classes: newClasses})
+          }
+          resolve(data)
+        }).catch(() => reject())
       })
     })
     return Promise.all(arr)
@@ -286,7 +290,11 @@ class SubmitSyllabi extends React.Component {
   allAdditionalDocPromises(classId){
     let docs = this.state.unsavedDocs[classId]
     let arr = docs['additional'].map((doc, index) => {
-      return actions.documents.uploadClassDocument({id: classId}, doc, false)
+      return new Promise((resolve,reject) => {
+        actions.documents.uploadClassDocument({id: classId}, doc, false).then(data => {
+          resolve(data)
+        }).catch(() => reject())
+      })
     })
     return Promise.all(arr)
   }
@@ -295,9 +303,16 @@ class SubmitSyllabi extends React.Component {
   * Upload all unsaved documents for every class
   */
   uploadUnsavedDocuments(){
-    return Promise.all(Object.keys(this.state.unsavedDocs).map((classId) => {
-      return [this.allSyllabusDocPromises(classId),this.allAdditionalDocPromises(classId)]
-    }))
+    let arr = Object.keys(this.state.unsavedDocs).map((classId) => {
+      return new Promise((resolve,reject) => {
+        this.allSyllabusDocPromises(classId).then((values) => {
+          this.allAdditionalDocPromises(classId).then((values2) => {
+            resolve(values)
+          })
+        })
+      })
+    })
+    return Promise.all(arr)
   }
 
   /*
