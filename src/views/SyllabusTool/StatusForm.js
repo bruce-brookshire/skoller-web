@@ -67,7 +67,7 @@ class StatusForm extends React.Component {
     if (this.state.loading) return <Loading />
     return (
       <div className='row'>
-        <div className='col-xs-6 margin-top'>
+        <div className='col-xs-6'>
           <SelectField
             error={formErrors.class_status_id}
             label="Class Status"
@@ -80,7 +80,7 @@ class StatusForm extends React.Component {
             value={form.class_status_id}
           />
         </div>
-        <div className='col-xs-6 margin-top' style={{alignSelf: 'flex-end'}}>
+        <div className='col-xs-6' style={{alignSelf: 'flex-end'}}>
           <button
             className='button full-width'
             onClick={this.onSubmit.bind(this)}

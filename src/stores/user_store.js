@@ -15,7 +15,7 @@ class UserStore {
   }
 
   isAdmin () {
-    return this.user.roles.findIndex(r => r.name.toLowerCase() === 'admin') > -1
+    return this.user.roles.findIndex(role => role.id === 200) > -1
   }
 
   isStudent () {
