@@ -33,6 +33,7 @@ class SubmitSyllabi extends React.Component {
     super(props)
     this.state = {
       classes: [],
+      loading: false,
       showUploadWarning: false,
       unsavedDocs: {},
     }
@@ -245,7 +246,10 @@ class SubmitSyllabi extends React.Component {
       <button
         className={`button full-width margin-top margin-bottom`}
         onClick={this.onNext.bind(this)}>
-        {(incomplete == 0 && !this.hasUnsavedDocuments()) ? 'Next' : 'Upload Syllabi'}
+        {
+          (incomplete == 0 && !this.hasUnsavedDocuments()) ? 'Next' :
+          (this.state.loading ? (<i className='fa fa-spin fa-circle-o-notch'></i>) : 'Upload Syllabi')
+        }
       </button>
     )
   }
@@ -320,7 +324,9 @@ class SubmitSyllabi extends React.Component {
   */
   onNext () {
     if(this.hasUnsavedDocuments()){
+      this.setState({loading:true})
       this.uploadUnsavedDocuments().then(values => {
+        this.setState({loading:false})
         this.props.onNext()
       }).catch(() => this.handleWarning())
     }else{
