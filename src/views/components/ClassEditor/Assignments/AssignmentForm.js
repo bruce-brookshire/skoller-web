@@ -189,7 +189,7 @@ class AssignmentForm extends React.Component {
               style={{marginTop: '0.25em'}}
               containerClassName='margin-top'
               error={formErrors.due}
-              info={'Be sure not to add assignments that are missing precise due dates. Those assignments can be added through the app when the due date has been set.'}
+              info={`If a precise due date has not been provided for this assignment, please do not guess! Select the box that says 'due date is not provided' and the submit assignment. The due date can be added through the app at a later date.`}
               label='Due Date'
               name='due'
               onChange={(name, value) => {
