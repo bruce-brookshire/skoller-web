@@ -42,17 +42,17 @@
           flex: 0.42;
         }
         .cn-section-footer {
-          padding: 0 1em;
-      
+          display: flex;
+          flex-direction: column;
+          
           .cn-status-form, button {
             min-width: 100%;
             @include breakpoint(medium) {
               min-width: 50%;
             }
           }
-      
-          @include breakpoint(medium) {
-            flex: 1;
+          .having-issues {
+            float: right;
           }
         }
       }
@@ -69,12 +69,6 @@
         
         .cn-section-control {
           height: 300px;
-        }
-
-        .having-issues {
-          position: absolute;
-          bottom: 0;
-          right: 1em;
         }
 
         @include breakpoint(medium) {

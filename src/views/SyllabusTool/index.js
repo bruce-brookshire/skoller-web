@@ -369,7 +369,7 @@ class SyllabusTool extends React.Component {
     const {cl} = navbarStore
     if (isAdmin && cl) {
       return (
-        <div className='col-xs-2' style={{flex: '0 1 auto'}}>
+        <div className='left'>
           <span style={{marginRight: '5px'}}>{cl.enrollment || 0}</span>
           <i className='fa fa-user' />
         </div>
@@ -381,16 +381,12 @@ class SyllabusTool extends React.Component {
   * Render having issues for admin and SW
   */
   renderHavingIssues () {
-    const {isAdmin, isSW} = this.state
-
-    if (isAdmin || isSW) {
-      return (
+    return (
         <a
           className='having-issues cn-red'
           onClick={this.toggleIssuesModal.bind(this)}
         >Having issues?</a>
-      )
-    }
+    )
   }
 
   /*
@@ -608,11 +604,13 @@ class SyllabusTool extends React.Component {
               {this.renderContent()}
             </div>
             {this.renderSectionTabs()}
-            <div className='cn-footer-container'>
-              {this.renderStatusForm()}
-
-              <div className='horizontal-align-row margin-top margin-right margin-left middle-xs center-xs'>
+            <div className='cn-section-footer'>
+              <div>
                 {this.renderEnrollment()}
+                {this.renderHavingIssues()}
+              </div>
+              {this.renderStatusForm()}
+              <div className='horizontal-align-row margin-top margin-right margin-left middle-xs center-xs'>
                 <button
                   className={`button col-xs-12 ${completeClass} ${disabledClass}`}
                   style={{flex: '100 1 auto'}}
@@ -633,7 +631,6 @@ class SyllabusTool extends React.Component {
               {this.state.currentDocument && <FileViewer source={this.state.currentDocument} /> }
             </div>
             {this.renderDocumentTabs()}
-            {this.renderHavingIssues()}
           </div>
 
         </div>
