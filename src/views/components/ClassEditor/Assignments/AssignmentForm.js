@@ -168,6 +168,32 @@ class AssignmentForm extends React.Component {
     this.setState({due_null: this.refs.due_null.checked})
   }
 
+  renderWeightDropDown () {
+    const {form} = this.state
+    const {formErrors, updateProperty} = this.props
+    if (this.state.weights.length == 0){
+      form.weight_id = null
+      return (
+        <div className='margin-top'>This class does not have any weights</div>
+      )
+    }
+    else {
+      return (
+        <SelectField
+          containerClassName='margin-top'
+          error={formErrors.weight_id}
+          info={'The assignments added will appear for everyone in the class. Be sure to only add graded assignments that apply to all classmates.'}
+          label='Grading category'
+          name='weight_id'
+          onChange={updateProperty}
+          options={this.state.weights}
+          placeholder='Select grading category'
+          value={form.weight_id}
+        />
+      )
+    }
+  }
+
   render () {
     const {form} = this.state
     const {formErrors, updateProperty} = this.props
@@ -175,17 +201,7 @@ class AssignmentForm extends React.Component {
       <div id='class-editor-assignment-form'>
         <div className='row'>
           <div className='col-xs-12'>
-            <SelectField
-              containerClassName='margin-top'
-              error={formErrors.weight_id}
-              info={'The assignments added will appear for everyone in the class. Be sure to only add graded assignments that apply to all classmates.'}
-              label='Grading category'
-              name='weight_id'
-              onChange={updateProperty}
-              options={this.state.weights}
-              placeholder='Select grading category'
-              value={form.weight_id}
-            />
+            {this.renderWeightDropDown()}
           </div>
           <div className='col-xs-12'>
             <InputField
