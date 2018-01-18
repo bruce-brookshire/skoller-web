@@ -73,7 +73,7 @@ class ProjectFourDoor extends React.Component {
 
   renderNeedsSyllabus(){
     let hasUnsavedSyllabi = this.props.unsavedSyllabi && this.props.unsavedSyllabi.length > 0
-    let spanText = hasUnsavedSyllabi ? 'Double check to make sure you are submitting the correct file(s).' : 'Upload your syllabus.'
+    let spanText = hasUnsavedSyllabi ? 'Double check to make sure you\'re submitting the correct file(s).' : 'Upload your syllabus.'
     return (
       <div className='center-text'>
         <span>{spanText}</span>
