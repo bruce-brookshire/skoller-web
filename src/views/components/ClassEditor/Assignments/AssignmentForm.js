@@ -58,6 +58,7 @@ class AssignmentForm extends React.Component {
   initializeState () {
     return {
       form: this.initializeFormData(),
+      due_null: false,
       loading: false,
       weights: []
     }
@@ -99,6 +100,9 @@ class AssignmentForm extends React.Component {
         type: 'required'
       }
     }
+    if (this.state.due_null) {
+      requiredFields.due = {}
+    }
     if (this.props.validateForm(this.state.form, requiredFields)) {
       const form = this.mapForm(this.state.form)
       !form.id ? this.onCreateAssignment(form) : this.onUpdateAssignment(form)
@@ -113,7 +117,7 @@ class AssignmentForm extends React.Component {
     actions.assignments.createAssignment(this.props.cl, form).then((assignment) => {
       this.props.onCreateAssignment(assignment)
       this.props.resetValidation()
-      this.setState({form: this.initializeFormData(), loading: false})
+      this.setState({form: this.initializeFormData(), loading: false, due_null: false})
     }).catch(() => { this.setState({loading: false}) })
   }
 
@@ -125,7 +129,7 @@ class AssignmentForm extends React.Component {
     actions.assignments.updateAssignment(this.props.cl, form).then((assignment) => {
       this.props.onUpdateAssignment(assignment)
       this.props.resetValidation()
-      this.setState({form: this.initializeFormData(), loading: false})
+      this.setState({form: this.initializeFormData(), loading: false, due_null: false})
     }).catch(() => { this.setState({loading: false}) })
   }
 
@@ -133,12 +137,20 @@ class AssignmentForm extends React.Component {
   * Map the form
   */
   mapForm () {
-    const {cl} = this.props
-    let newForm = {...this.state.form}
-    let due = newForm.due.split('/')
-    due = `${newForm.year_due}-${due[0]}-${due[1]}`
-    newForm.due = convertLocalDateToUTC(due, cl.school.timezone)
-    return newForm
+    if (!this.state.due_null) {
+      const {cl} = this.props
+      let newForm = {...this.state.form}
+      let due = newForm.due.split('/')
+      due = `${newForm.year_due}-${due[0]}-${due[1]}`
+      newForm.due = convertLocalDateToUTC(due, cl.school.timezone)
+      return newForm
+    }
+    else {
+      const {cl} = this.props
+      let newForm = {...this.state.form}
+      newForm.due = null
+      return newForm
+    }
   }
 
   /*
@@ -150,6 +162,10 @@ class AssignmentForm extends React.Component {
   mapAssignmentDate (date) {
     const dateParts = date.split('-')
     return `${dateParts[1]}/${dateParts[2]}`
+  }
+
+  handleChange () {
+    this.setState({due_null: this.refs.due_null.checked})
   }
 
   render () {
@@ -197,6 +213,7 @@ class AssignmentForm extends React.Component {
               }}
               placeholder='MM/DD'
               value={form.due}
+              disabled={this.state.due_null == true}
             />
           </div>
           <div className='col-xs-4'>
@@ -210,6 +227,16 @@ class AssignmentForm extends React.Component {
               type='number'
               value={form.year_due}
               disabled={true}
+            />
+          </div>
+          <div>
+            <label htmlFor="due_null">Due date is not provided</label>
+            <input 
+              type="checkbox" 
+              ref="due_null" 
+              name="due_null"
+              defaultChecked={this.state.due_null}
+              onChange={this.handleChange.bind(this)}
             />
           </div>
         </div>
