@@ -247,7 +247,7 @@ class AssignmentForm extends React.Component {
           </div>
           <div className='col-xs-4'>
             <div className='form-element'>
-              <div className='cn-input-container margin-top'>
+              <div className='cn-input-container margin-top center-xs'>
                 <label htmlFor="due_null" className='cn-input-label'>Due date is not provided</label>
                 <input 
                   className='cn-form-input'
