@@ -4,6 +4,14 @@
   .cn-flex-table-row {
     display: flex;
     flex-direction: row;
+    &.fixed {
+      margin-top: -1.5rem;
+      position: fixed;
+      width: calc(100% - 100px);
+      @include breakpoint(large) {
+        width: calc(70% - 100px);
+      }
+    }
   }
   .cn-flex-table-heading {
     display: block;
