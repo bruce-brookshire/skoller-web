@@ -216,7 +216,7 @@ class AssignmentForm extends React.Component {
               value={form.name}
             />
           </div>
-          <div className='col-xs-8'>
+          <div className='col-xs-4'>
             <InputField
               style={{marginTop: '0.25em'}}
               containerClassName='margin-top'
@@ -245,15 +245,21 @@ class AssignmentForm extends React.Component {
               disabled={true}
             />
           </div>
-          <div>
-            <label htmlFor="due_null">Due date is not provided</label>
-            <input 
-              type="checkbox" 
-              ref="due_null" 
-              name="due_null"
-              defaultChecked={this.state.due_null}
-              onChange={this.handleChange.bind(this)}
-            />
+          <div className='col-xs-4'>
+            <div className='form-element'>
+              <div className='cn-input-container margin-top'>
+                <label htmlFor="due_null" className='cn-input-label'>Due date is not provided</label>
+                <input 
+                  className='cn-form-input'
+                  tabIndex="-1"
+                  type="checkbox" 
+                  ref="due_null" 
+                  name="due_null"
+                  defaultChecked={this.state.due_null}
+                  onChange={this.handleChange.bind(this)}
+                />
+              </div>
+            </div>
           </div>
         </div>
         <button
