@@ -149,6 +149,7 @@ class UploadDocuments extends React.Component {
 
     return (
       <div className='cn-upload-documents-container'>
+        <h4 className='center-text' style={{marginBottom:'-10px',marginTop: '15px'}}>{this.props.cl.name}</h4>
         <div className='row'>
           <div className='col-xs-3 vertical-align'>
             <h4>Finish up this class.</h4>
