@@ -4,6 +4,8 @@ import {browserHistory} from 'react-router'
 import {inject, observer} from 'mobx-react'
 
 import DocumentMeta from 'react-document-meta';
+import SmartBanner from 'react-smartbanner';
+import '../../../node_modules/react-smartbanner/src/styles/style.scss';
 
 import LoginForm from './LoginForm'
 import PromoSignup from './PromoSignup'
@@ -31,6 +33,7 @@ class Landing extends React.Component {
 
     return (
       <DocumentMeta {...meta}>
+        <SmartBanner title={'Skoller'}></SmartBanner>
         <div className='cn-landing-container'>
           <div className='cn-navbar'>
             <h1>
