@@ -72,11 +72,13 @@ class ProjectFourDoor extends React.Component {
   }
 
   renderNeedsSyllabus(){
+    let hasUnsavedSyllabi = this.props.unsavedSyllabi && this.props.unsavedSyllabi.length > 0
+    let spanText = hasUnsavedSyllabi ? 'Double check to make sure you\'re submitting the correct file(s).' : 'Upload your syllabus.'
     return (
       <div className='center-text'>
-        <span>Upload your syllabus.</span>
-        <button className={`button full-width margin-top ${this.props.unsavedSyllabi && this.props.unsavedSyllabi.length > 0 ? '' : 'disabled'}`}
-                disabled={!(this.props.unsavedSyllabi && this.props.unsavedSyllabi.length > 0)}
+        <span>{spanText}</span>
+        <button className={`button full-width margin-top ${hasUnsavedSyllabi ? '' : 'disabled'}`}
+                disabled={!hasUnsavedSyllabi}
                 onClick={() => { this.props.onSubmit() }}>Submit</button>
       </div>
     )
