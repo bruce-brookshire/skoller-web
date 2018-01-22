@@ -78,6 +78,14 @@ class ClassRow extends React.Component {
     }
   }
 
+  renderDuplicateFileMessage(){
+    if(this.props.duplicate){
+      return (<h5 style={{color:'red',marginTop:'5px',marginBottom:'5px'}}>{this.props.duplicate} has already been added</h5>)
+    }else {
+      return null
+    }
+  }
+
   render () {
     const {cl: {name}} = this.props
     return (
@@ -85,6 +93,7 @@ class ClassRow extends React.Component {
         <div className='cn-flex-table-cell'>
           <div>
             <span>{name || '-'} {this.renderComplete()}</span>
+            {this.renderDuplicateFileMessage()}
             {
               this.isComplete() !== true ? <div>
               <input type='checkbox' onChange={this.onCheckboxChange.bind(this)} checked={!this.state.hasSyllabus}/>
