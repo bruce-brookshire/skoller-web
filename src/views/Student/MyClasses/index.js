@@ -38,6 +38,10 @@ const headers = [
   {
     field: 'status',
     display: 'Syllabus Status'
+  },
+  {
+    field: 'enrollment',
+    display: 'Enrollment'
   }
 ]
 
@@ -134,7 +138,7 @@ class MyClasses extends React.Component {
   * @return [Object] row. Object of formatted row data for display in grid.
   */
   mapRow (item, index) {
-    const {id, number, name, meet_start_time, meet_days, campus, professor, status} = item
+    const {id, number, name, meet_start_time, meet_days, campus, professor, status, enrollment} = item
 
     const row = {
       id: id || '',
@@ -145,6 +149,7 @@ class MyClasses extends React.Component {
       beginTime: meet_start_time ? mapTimeToDisplay(meet_start_time) : 'TBA',
       campus: campus || '',
       status: status ? this.mapStatus(status) : '-',
+      enrollment: enrollment || 0,
       component: <UploadDocuments cl={item} onUpdateClass={(cl) => {this.updateClass(cl)}}/>
     }
 
