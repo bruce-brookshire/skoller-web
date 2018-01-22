@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import {browserHistory} from 'react-router'
 import FlexTable from '../../../components/FlexTable'
 import Modal from '../../../components/Modal'
 import AccountInfoForm from './AccountInfoForm'
@@ -112,6 +113,15 @@ class AccountInfo extends React.Component {
     this.setState({openAccountForm: !this.state.openAccountForm})
   }
 
+  onClassSelect(cl) {
+    browserHistory.push({
+      pathname: `/class/${cl.id}/syllabus_tool`,
+      state: {
+        isAdmin: true
+      }
+    })
+  }
+
   render () {
     return (
       <div className='cn-school-info'>
@@ -128,6 +138,7 @@ class AccountInfo extends React.Component {
                 classes={this.state.classes}
                 disabled={true}
                 onDelete={null}
+                onSelect={this.onClassSelect.bind(this)}
                 deleteMessage=""
                 emptyMessage="This student has no classes."
                 onUpdate={null}

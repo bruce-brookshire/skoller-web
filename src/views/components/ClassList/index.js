@@ -96,6 +96,10 @@ class ClassList extends React.Component {
     return status
   }
 
+  onClassSelect(cl) {
+    if (this.props.onSelect) this.props.onSelect(cl)
+  }
+
   render () {
     return (
       <Grid
@@ -104,7 +108,9 @@ class ClassList extends React.Component {
         rows={this.getRows()}
         disabled={this.props.disabled}
         canDelete={this.props.onDelete ? true : false}
+        canSelect={this.props.onSelect ? true: false}
         onDelete={this.props.onDelete ? this.props.onDelete() : null}
+        onSelect={this.onClassSelect.bind(this)}
         deleteMessage={this.props.deleteMessage}
         emptyMessage={this.props.emptyMessage}
     />
@@ -118,7 +124,8 @@ ClassList.propTypes = {
   onDelete: PropTypes.func,
   deleteMessage: PropTypes.string,
   emptyMessage: PropTypes.string,
-  onUpdate: PropTypes.func
+  onUpdate: PropTypes.func,
+  onSelect: PropTypes.func
 }
 
 export default ClassList
