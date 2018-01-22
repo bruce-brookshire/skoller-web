@@ -65,6 +65,7 @@ class MyClasses extends React.Component {
         <div className='cn-table-grid-container'>
           <ClassList
             classes={this.state.classes}
+            disabled={false}
             onDelete={() => this.onDeleteClass.bind(this)}
             deleteMessage={'Are you sure you want to drop this class?'}
             emptyMessage='You are not enrolled in any classes.'

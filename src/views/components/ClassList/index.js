@@ -73,7 +73,7 @@ class ClassList extends React.Component {
       campus: campus || '',
       status: status ? this.mapStatus(status) : '-',
       enrollment: enrollment || 0,
-      component: <UploadDocuments cl={item} onUpdateClass={(cl) => {this.props.onUpdate(cl)}}/>
+      component: this.props.onUpdate ? <UploadDocuments cl={item} onUpdateClass={(cl) => {this.props.onUpdate(cl)}}/> : null
     }
 
     return row
@@ -102,8 +102,9 @@ class ClassList extends React.Component {
         className='striped'
         headers={headers}
         rows={this.getRows()}
-        canDelete={true}
-        onDelete={this.props.onDelete()}
+        disabled={this.props.disabled}
+        canDelete={this.props.onDelete ? true : false}
+        onDelete={this.props.onDelete ? this.props.onDelete() : null}
         deleteMessage={this.props.deleteMessage}
         emptyMessage={this.props.emptyMessage}
     />
@@ -113,6 +114,7 @@ class ClassList extends React.Component {
 
 ClassList.propTypes = {
   classes: PropTypes.array,
+  disabled: PropTypes.bool,
   onDelete: PropTypes.func,
   deleteMessage: PropTypes.string,
   emptyMessage: PropTypes.string,
