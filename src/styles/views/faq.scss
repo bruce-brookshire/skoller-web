@@ -1,0 +1,22 @@
+.cn-faq-container {
+
+  .faq-logo {
+    height: 5rem;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .faq-content {
+    padding: 1.5rem 2rem;
+    .faq-section {
+      margin: 1rem 0;
+      ol {
+        li {
+          margin-bottom: 20px;
+          margin-top: 20px;
+        }
+      }
+    }
+  }
+}
