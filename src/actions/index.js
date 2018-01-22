@@ -3,7 +3,7 @@ import {authenticateUser, createAccount, forgotPassword, getRoles,
   getUserById, getUserByToken, getUsers, registerUser, resetPassword,
   resendVerification, updateAccount, verifyPhoneNumber} from './auth'
 import {createClass, dropClass, getClassById, getLocks, getProfessorClasses,
-  getStudentClasses, enrollInClass, searchClasses, searchStudentClasses,
+  getStudentClasses, getStudentClassesById, enrollInClass, searchClasses, searchStudentClasses,
   updateClass, lockClass, unlockClass, updateClassStatus} from './classes'
 import {createIssue, getHelpTypes, resolveIssue} from './classhelp'
 import {getClassDocuments, uploadClassCsv, uploadClassDocument, deleteClassDocument,
@@ -48,6 +48,7 @@ const actions = {
     getLocks,
     getProfessorClasses,
     getStudentClasses,
+    getStudentClassesById,
     lockClass,
     searchClasses,
     searchStudentClasses,

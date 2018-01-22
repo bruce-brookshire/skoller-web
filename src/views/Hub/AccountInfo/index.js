@@ -5,6 +5,7 @@ import Modal from '../../../components/Modal'
 import AccountInfoForm from './AccountInfoForm'
 import UploadHistory from '../../../components/UploadHistory'
 import actions from '../../../actions'
+import ClassList from '../../components/ClassList'
 
 class AccountInfo extends React.Component {
   constructor (props) {
@@ -19,18 +20,20 @@ class AccountInfo extends React.Component {
         this.setState({user})
       }).catch(() => false)
     }
+    if(this.state.user && this.state.user.student) {
+      actions.classes.getStudentClassesById(this.state.user.student.id).then(classes => {
+        this.setState({classes: classes})
+      }).catch(() => false)
+    }
   }
 
   initializeState () {
     const {state} = this.props.location
     return {
+      classes: [],
       openAccountForm: false,
       user: (state && state.user) || null
     }
-  }
-
-  onEditActiveSemester () {
-
   }
 
   getUserRoles () {
@@ -116,6 +119,20 @@ class AccountInfo extends React.Component {
         <div className='row'>
           <div className='col-xs-12 col-md-6 margin-top'>
             {this.renderAccountDetails()}
+          </div>
+        </div>
+        <div className="row center-md center-lg">
+          <div className='col-xs-12 col-md-9 col-lg-6 margin-top'>
+            {this.state.user.student &&
+              <ClassList 
+                classes={this.state.classes}
+                disabled={true}
+                onDelete={null}
+                deleteMessage=""
+                emptyMessage="This student has no classes."
+                onUpdate={null}
+              />
+            }
           </div>
         </div>
         {this.renderAccountFormModal()}

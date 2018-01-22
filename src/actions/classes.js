@@ -82,7 +82,15 @@ export function getClassById (classId) {
 */
 export function getStudentClasses () {
   const {user: {student}} = userStore
-  return fetch(`${Environment.SERVER_NAME}/api/v1/students/${student.id}/classes/`, {
+  return getStudentClassesById(student.id)
+}
+
+/*
+* Get classes for students by student id
+*
+*/
+export function getStudentClassesById (studentId) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/students/${studentId}/classes/`, {
     method: 'GET',
     headers: {
       'Authorization': userStore.authToken,

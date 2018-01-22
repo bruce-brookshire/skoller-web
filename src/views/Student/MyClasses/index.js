@@ -1,45 +1,10 @@
 import React from 'react'
 import AddClass from '../../components/AddClass'
 import CreateClass from '../../components/CreateClass'
-import Grid from '../../../components/Grid/index'
 import Loading from '../../../components/Loading'
 import Modal from '../../../components/Modal/index'
-import UploadDocuments from './UploadDocuments'
-
+import ClassList from '../../components/ClassList'
 import actions from '../../../actions'
-import {mapProfessor} from '../../../utilities/display'
-import {mapTimeToDisplay} from '../../../utilities/time'
-
-const headers = [
-  {
-    field: 'courseNumber',
-    display: 'Class Number'
-  },
-  {
-    field: 'name',
-    display: 'Class Name'
-  },
-  {
-    field: 'professor',
-    display: 'Professor'
-  },
-  {
-    field: 'days',
-    display: 'Days'
-  },
-  {
-    field: 'beginTime',
-    display: 'Start Time'
-  },
-  {
-    field: 'campus',
-    display: 'Campus'
-  },
-  {
-    field: 'status',
-    display: 'Syllabus Status'
-  }
-]
 
 class MyClasses extends React.Component {
   constructor (props) {
@@ -98,14 +63,13 @@ class MyClasses extends React.Component {
     return (
       <div>
         <div className='cn-table-grid-container'>
-          <Grid
-            className='striped'
-            headers={headers}
-            rows={this.getRows()}
-            canDelete={true}
-            onDelete={this.onDeleteClass.bind(this)}
+          <ClassList
+            classes={this.state.classes}
+            disabled={false}
+            onDelete={() => this.onDeleteClass.bind(this)}
             deleteMessage={'Are you sure you want to drop this class?'}
             emptyMessage='You are not enrolled in any classes.'
+            onUpdate={(cl) => this.updateClass(cl)}
           />
           <button className='button-invert full-width add-button' onClick={() => this.toggleAddModal()}>
             Add a Class
@@ -114,60 +78,7 @@ class MyClasses extends React.Component {
       </div>
     )
   }
-
-  /*
-  * Row data to be passed to the grid
-  *
-  * @return [Array]. Array of formatted row data.
-  */
-  getRows () {
-    return this.state.classes.map((item, index) =>
-      this.mapRow(item, index)
-    )
-  }
-
-  /*
-  * Formats row data to be passed to the grid for display
-  *
-  * @param [Object] item. Row data to be formatted.
-  * @param [Number] index. Index of row data.
-  * @return [Object] row. Object of formatted row data for display in grid.
-  */
-  mapRow (item, index) {
-    const {id, number, name, meet_start_time, meet_days, campus, professor, status} = item
-
-    const row = {
-      id: id || '',
-      courseNumber: number || '-',
-      name: name || '-',
-      professor: professor ? mapProfessor(professor) : 'TBA',
-      days: meet_days || 'TBA',
-      beginTime: meet_start_time ? mapTimeToDisplay(meet_start_time) : 'TBA',
-      campus: campus || '',
-      status: status ? this.mapStatus(status) : '-',
-      component: <UploadDocuments cl={item} onUpdateClass={(cl) => {this.updateClass(cl)}}/>
-    }
-
-    return row
-  }
-
-  /*
-  * Map the class status to ui
-  *
-  * @param [String] status. Class status.
-  */
-  mapStatus (status) {
-    status = status.name.toLowerCase()
-    if (status === 'new class' || status === 'needs syllabus') {
-      return <span className='cn-red'> Upload Syllabus </span>
-    } else if (status === 'weights' || status === 'assignments' || status === 'review' || status === 'help') {
-      return <span style={{color: '#a0a0a0'}}>In Review</span>
-    } else if (status === 'complete' || status === 'change') {
-      return <span className='cn-green' >Complete</span>
-    }
-    return status
-  }
-
+  
   /*
   * Toggle the add class modal.
   *
