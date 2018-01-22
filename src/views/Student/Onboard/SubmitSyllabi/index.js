@@ -244,7 +244,7 @@ class SubmitSyllabi extends React.Component {
     let incomplete = this.getIncompleteClassesLength()
     return (
       <button
-        className={`button full-width margin-top margin-bottom`}
+        className={`button full-width margin-top margin-bottom ${this.state.loading ? 'disabled' : ''}`}
         onClick={this.onNext.bind(this)}>
         {
           (incomplete == 0 && !this.hasUnsavedDocuments()) ? 'Next' :

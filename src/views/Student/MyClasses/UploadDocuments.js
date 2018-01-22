@@ -28,6 +28,7 @@ class UploadDocuments extends React.Component {
       documents: [],
       unsavedAdditionalDocs: [],
       unsavedSyllabusDocs: [],
+      uploading: false,
     }
   }
 
@@ -79,7 +80,12 @@ class UploadDocuments extends React.Component {
       let unsavedSyllabiNew = this.state.unsavedSyllabusDocs
       let unsavedAdditionalNew = this.state.unsavedAdditionalDocs
       isSyllabus ? unsavedSyllabiNew.splice(idx,1) : unsavedAdditionalNew.splice(idx,1)
-      this.setState({documents: newDocuments,unsavedSyllabusDocs:unsavedSyllabiNew,unsavedAdditionalDocs:unsavedAdditionalNew})
+      this.setState({
+        documents: newDocuments,
+        unsavedSyllabusDocs:unsavedSyllabiNew,
+        unsavedAdditionalDocs:unsavedAdditionalNew,
+        uploading: !(unsavedSyllabiNew.length == 0 && unsavedAdditionalNew.length == 0)
+      })
       // Refresh Class State
       this.props.onUpdateClass(this.props.cl)
     }).catch(() => false)
@@ -91,6 +97,7 @@ class UploadDocuments extends React.Component {
   * @return [Boolean]. boolean indicating if the upload was successful.
   */
   uploadDocuments () {
+    this.setState({uploading:true})
     // syllabus files
     this.state.unsavedSyllabusDocs.map((file, idx) => {
       this.uploadDocument(file,idx,true)
@@ -185,6 +192,7 @@ class UploadDocuments extends React.Component {
               onSubmit={() => { this.uploadDocuments() }}
               unsavedSyllabi={this.state.unsavedSyllabusDocs}
               unsavedAdditional={this.state.unsavedAdditionalDocs}
+              uploading={this.state.uploading}
               />
           </div>
         </div>
