@@ -114,7 +114,7 @@ class HubLanding extends React.Component {
       const helpCount = this.getStatusCount('Help') || 0
       return (
         <div className='margin-top margin-bottom'>
-          <span className='button-header center-text margin-top'>Admin panel</span>
+          <span className='button-header center-text'>Admin panel</span>
           <div className='nav-button-container row full-width' style={{alignItems: 'flex-end'}}>
 
             <div className='col-xs-12 col-sm-3 col-md- col-lg-3 margin-top'>
@@ -160,8 +160,8 @@ class HubLanding extends React.Component {
     const disableMaint = maintCount === 0
 
     return (
-      <div className='margin-top'>
-        <span className='button-header center-text margin-top'>Classes in the shop</span>
+      <div>
+        <span className='button-header center-text'>Classes in the shop</span>
         <div className='nav-button-container row full-width'>
           {(this.isChangeReqUser() || this.isAdminUser()) && <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
             <button
@@ -215,8 +215,8 @@ class HubLanding extends React.Component {
               <h1 className='header'>Welcome to <strong>the Hub.</strong></h1>
               <p className='description margin-top'>Where the syllabus magic happens <i className="em em-crystal_ball"></i></p>
 
-              <div className='margin-top'>
-                <span className='button-header center-text margin-top'>What's in action?</span>
+              <div>
+                <span className='button-header center-text'>What's in action?</span>
                 <div className='nav-button-container row full-width'>
 
                   <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
