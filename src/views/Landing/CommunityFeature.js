@@ -1,5 +1,4 @@
 import React from 'react'
-import {browserHistory} from 'react-router'
 
 class CommunityFeature extends React.Component {
   render () {
@@ -25,9 +24,6 @@ class CommunityFeature extends React.Component {
                 <span className='blue-text'>{'Our chat feature let\'s you and your classmates talk about whatever you want. '}</span>
                 You can even talk to everyone at your school by posting on the university feed.
               </p>
-            </div>
-            <div className='col-xs-12 center-text'>
-              <a className='button' onClick={()=>{ browserHistory.push('/faq');window.scrollTo(0, 0); }}>Check out more details</a>
             </div>
           </div>
         </div>
