@@ -9,7 +9,7 @@ import {createIssue, getHelpTypes, resolveIssue} from './classhelp'
 import {getClassDocuments, uploadClassCsv, uploadClassDocument, deleteClassDocument,
   uploadFOSCsv} from './documents'
 import {updateGradeScale} from './gradescales'
-import {getStatuses} from './hub'
+import {getStatuses, getStatusesHub} from './hub'
 import {getSchoolPeriods, createPeriod, updatePeriod} from './periods'
 import {attachProfessorToClass, createProfessor, removeProfessorFromClass,
   searchProfessors, updateProfessor} from './professors'
@@ -72,7 +72,8 @@ const actions = {
     updateGradeScale
   },
   hub: {
-    getStatuses
+    getStatuses,
+    getStatusesHub
   },
   periods: {
     createPeriod,
