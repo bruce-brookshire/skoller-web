@@ -155,7 +155,7 @@ class HubLanding extends React.Component {
         <div className='nav-button-container row full-width'>
           <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
             <button
-              className={`nav-button button full-width ${disableChange ? 'disabled' : ''}`}
+              className={`nav-button maint button full-width ${disableChange ? 'disabled' : ''}`}
               disabled={disableChange}
               onClick={this.onNeedsChange.bind(this)}
             >
@@ -169,7 +169,7 @@ class HubLanding extends React.Component {
           </div>
           <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
             <button
-              className={`nav-button button full-width ${disableMaint ? 'disabled' : ''}`}
+              className={`nav-button maint button full-width ${disableMaint ? 'disabled' : ''}`}
               disabled={disableMaint}
               onClick={this.onNeedsMaint.bind(this)}
             >

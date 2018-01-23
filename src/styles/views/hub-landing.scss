@@ -66,6 +66,10 @@
        &.admin {
          background-color: $cn-color-yellow;
        }
+
+       &.maint {
+        background-color: $cn-color-red;
+      }
      }
    }
 
