@@ -167,7 +167,7 @@ class HubLanding extends React.Component {
               )</span>
             </button>
           </div>
-          <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
+          {this.isAdminUser() && <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
             <button
               className={`nav-button maint button full-width ${disableMaint ? 'disabled' : ''}`}
               disabled={disableMaint}
@@ -180,7 +180,7 @@ class HubLanding extends React.Component {
                 }
               )</span>
             </button>
-          </div>
+          </div>}
         </div>
       </div>
     )
