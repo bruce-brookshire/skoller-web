@@ -163,7 +163,7 @@ class HubLanding extends React.Component {
       <div className='margin-top'>
         <span className='button-header center-text margin-top'>Classes in the shop</span>
         <div className='nav-button-container row full-width'>
-          {this.isChangeReqUser() && <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
+          {(this.isChangeReqUser() || this.isAdminUser()) && <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
             <button
               className={`nav-button maint button full-width ${disableChange ? 'disabled' : ''}`}
               disabled={disableChange}
@@ -264,7 +264,7 @@ class HubLanding extends React.Component {
                     </button>
                   </div>
 
-                  {this.isHelpReqUser() && <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
+                  {(this.isAdminUser() || this.isHelpReqUser()) && <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
                     <button
                       className={`nav-button button full-width ${disableHelp ? 'disabled' : ''}`}
                       disabled={disableHelp}
