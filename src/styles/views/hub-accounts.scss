@@ -1,7 +1,6 @@
 $border-color: $cn-color-grey;
 
 .cn-accounts-container {
-  @include internal-layout;
   padding: 25px;
   .description {
     left: 50%;

@@ -1,5 +1,6 @@
 import React from 'react'
 import {browserHistory} from 'react-router'
+import AccountSearch from './AccountSearch'
 import Grid from '../../../components/Grid'
 import actions from '../../../actions'
 
@@ -18,6 +19,7 @@ class Accounts extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
+      loading: false,
       users: []
     }
   }
@@ -25,9 +27,10 @@ class Accounts extends React.Component {
   /*
   * Get users
   */
-  componentWillMount () {
-    actions.auth.getUsers().then(users => {
-      this.setState({users})
+  getAccounts(queryString){
+    this.setState({loading: true})
+    actions.auth.getUsers(queryString).then(users => {
+      this.setState({users, loading: false})
     }).catch(() => false)
   }
 
@@ -55,7 +58,7 @@ class Accounts extends React.Component {
     const row = {
       id: id || '',
       email: email ? <div onClick={() => this.onAccountSelect(item)}><span>{email}</span></div> : '',
-      isAcitve: <a>Active</a>
+      isActive: <a>Active</a>
     }
 
     return row
@@ -73,7 +76,8 @@ class Accounts extends React.Component {
     return (
       <div className='cn-accounts-container'>
         <div className='margin-bottom'>
-          <h2 className='center-text'>Accounts</h2>
+          <h2 className='center-text' style={{marginBottom: 0}}>Search Accounts</h2>
+          <AccountSearch {...this.props} loading={this.state.loading} onSearch={this.getAccounts.bind(this)}/>
           <div>
             <a onClick={this.onCreateAccount.bind(this)}>Create new account</a>
             <span className='description'>Manage user account details from this page</span>
@@ -81,6 +85,7 @@ class Accounts extends React.Component {
         </div>
         <Grid
           className='cn-accounts-table'
+          emptyMessage={'Search for accounts using the controls above.'}
           headers={headers}
           rows={this.getRows()}
           disabled={true}
