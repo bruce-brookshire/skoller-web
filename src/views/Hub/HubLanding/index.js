@@ -141,6 +141,13 @@ class HubLanding extends React.Component {
                 <span>Accounts</span>
               </button>
             </div>
+
+            <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
+              <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/accounts')}>
+                <img src='/src/assets/images/icons/analytics.png'/>
+                <span>Analytics</span>
+              </button>
+            </div>
           </div>
         </div>
       )
