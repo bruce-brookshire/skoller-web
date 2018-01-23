@@ -57,7 +57,7 @@ class AccountSearch extends React.Component {
             label='Select School'
             options={this.getSchoolOptions()}
             onChange={this.onChangeSchools.bind(this)}
-            value={this.state.school_id}
+            value={this.state.schoolId}
           />
         </div>
       )
@@ -118,7 +118,7 @@ class AccountSearch extends React.Component {
   * Update the suspended state to query accounts.
   */
   onChangeSuspended (name, value) {
-    this.setState({suspended: !this.state.suspended})
+    this.setState({suspended: value})
   }
 
   /*
@@ -137,13 +137,18 @@ class AccountSearch extends React.Component {
     if (this.validSearch()) {
       let params = ''
       if (this.state.schoolId && this.state.searchValue != '') {
-        params = `is_suspended=${this.state.suspended}&school_id=${this.state.schoolId}&account_type=${this.state.accountType}&email=${this.state.searchValue}`
+        params = `school_id=${this.state.schoolId}&account_type=${this.state.accountType}&email=${this.state.searchValue}`
       } else if (this.state.schoolId && this.state.searchValue == '') {
-        params = `is_suspended=${this.state.suspended}&school_id=${this.state.schoolId}&account_type=${this.state.accountType}`
-      } else if (this.state.searchValue != '') {
-        params = `is_suspended=${this.state.suspended}&account_type=${this.state.accountType}&email=${this.state.searchValue}`
+        params = `school_id=${this.state.schoolId}&account_type=${this.state.accountType}`
+      } else if (this.state.searchValue != ''){
+        params = `account_type=${this.state.accountType}&email=${this.state.searchValue}`
+      } else {
+        params = `account_type=${this.state.accountType}`
       }
-      if(this.state.accountType == 100){
+      if(this.state.accountType != 200){
+        params += `&is_suspended=${this.state.suspended}`
+      }
+      if(this.state.accountType == 100 && this.state.searchValue != ''){
         params += `&user_name=${this.state.searchValue}`
         params += `&or=${true}`
       }
@@ -152,7 +157,8 @@ class AccountSearch extends React.Component {
   }
 
   render () {
-    const disabledClass = this.validSearch() ? '' : 'disabled'
+    const valid = this.validSearch()
+    const disabledClass = valid ? '' : 'disabled'
     return (
       <div className='margin-bottom'>
         <div className='row'>
@@ -173,7 +179,7 @@ class AccountSearch extends React.Component {
           <div className={`col-xs-12 col-sm-${this.state.accountType == 100 ? '3' : '4'} margin-top vertical-align`}>
             <button
               className={`button full-width ${disabledClass}`}
-              disabled={this.validSearch()}
+              disabled={!valid}
               onClick={this.onSearch.bind(this)}>
               Search
               {this.props.loading ? <Loading style={{color: 'white', marginLeft: '0.5em'}} /> : null}

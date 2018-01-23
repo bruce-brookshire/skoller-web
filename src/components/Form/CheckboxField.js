@@ -13,7 +13,7 @@ class CheckboxField extends React.Component {
   }
 
   onChange (event) {
-    this.props.onChange(event.target.name, event.target.value)
+    this.props.onChange(event.target.name, event.target.checked)
   }
 
   onFocus () {

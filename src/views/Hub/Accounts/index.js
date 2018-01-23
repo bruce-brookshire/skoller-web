@@ -6,12 +6,28 @@ import actions from '../../../actions'
 
 const headers = [
   {
+    field: 'type',
+    display: 'Type'
+  },
+  {
+    field: 'firstName',
+    display: 'First Name'
+  },
+  {
+    field: 'lastName',
+    display: 'Last Name'
+  },
+  {
+    field: 'school',
+    display: 'School'
+  },
+  {
     field: 'email',
     display: 'Email'
   },
   {
-    field: 'isActive',
-    display: 'Active'
+    field: 'status',
+    display: 'Status'
   }
 ]
 
@@ -53,12 +69,16 @@ class Accounts extends React.Component {
   * @return [Object] row. Object of formatted row data for display in grid.
   */
   mapRow (item, index) {
-    const {id, email, is_active} = item
+    const {id, email, is_active, roles, student} = item
 
     const row = {
       id: id || '',
+      type: roles[0] ? (<div><span>{roles[0].name}</span></div>) : (<div><span>-</span></div>),
+      firstName: student ? (<div><span>{student.name_first}</span></div>) : (<div><span>-</span></div>),
+      lastName: student ? (<div><span>{student.name_last}</span></div>) : (<div><span>-</span></div>),
+      school: student && student.school ? (<div><span>{student.school.name}</span></div>) : (<div><span>-</span></div>),
       email: email ? <div onClick={() => this.onAccountSelect(item)}><span>{email}</span></div> : '',
-      isActive: <a>Active</a>
+      status: is_active ? (<a>Active</a>) : (<a className='cn-red'>Suspended</a>),
     }
 
     return row
