@@ -37,8 +37,9 @@
 
   .button-header {
     display: block;
-    font-size: 0.8em;
+    font-size: 1.3em;
     font-weight: 300;
+    margin-top: 2rem;
   }
 
    .nav-button-container {
@@ -46,12 +47,6 @@
      flex-direction: row;
      justify-content: center;
      // justify-content: space-between;
-
-     .needs-help {
-       display: block;
-       font-size: 11px;
-       margin-bottom: 0.5em;
-     }
 
      .nav-button {
        align-items: center;
@@ -72,6 +67,10 @@
        &.admin {
          background-color: $cn-color-yellow;
        }
+
+       &.maint {
+        background-color: $cn-color-red;
+      }
      }
    }
 

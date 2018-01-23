@@ -27,15 +27,23 @@ class ClassSearch extends React.Component {
 
     actions.hub.getStatuses().then((statuses) => {
       this.setState({statuses: statuses.statuses})
-      if (state && state.needsHelp) this.intitializeParams()
+      if (state && (state.needsHelp || state.needsChange || state.needsMaint)) this.intitializeParams()
     }).catch(() => false)
   }
 
   intitializeParams () {
     const {state} = this.props.location
-    if (state && state.needsHelp) {
-      this.setState({searchField: 'class_status', searchValue: 600})
-      this.onSearch()
+    if (state) {
+      if (state.needsHelp) {
+        this.setState({searchField: 'class_status', searchValue: 600})
+        this.onSearch()
+      } else if (state.needsChange) {
+        this.setState({searchField: 'class_status', searchValue: 800})
+        this.onSearch()
+      } else if (state.needsMaint) {
+        this.setState({searchField: 'class_maint', searchValue: true})
+        this.onSearch()
+      }
     }
   }
 
