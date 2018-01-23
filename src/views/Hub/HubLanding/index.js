@@ -96,6 +96,16 @@ class HubLanding extends React.Component {
     return userStore.isAdmin()
   }
 
+  isChangeReqUser () {
+    const {userStore} = this.props.rootStore
+    return userStore.isChangeReq()
+  }
+
+  isHelpReqUser () {
+    const {userStore} = this.props.rootStore
+    return userStore.isHelpReq()
+  }
+
   /*
   * Render menu for admins.
   */
@@ -153,7 +163,7 @@ class HubLanding extends React.Component {
       <div className='margin-top'>
         <span className='button-header center-text margin-top'>Classes in the shop</span>
         <div className='nav-button-container row full-width'>
-          <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
+          {this.isChangeReqUser() && <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
             <button
               className={`nav-button maint button full-width ${disableChange ? 'disabled' : ''}`}
               disabled={disableChange}
@@ -166,7 +176,7 @@ class HubLanding extends React.Component {
                 }
               )</span>
             </button>
-          </div>
+          </div>}
           {this.isAdminUser() && <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
             <button
               className={`nav-button maint button full-width ${disableMaint ? 'disabled' : ''}`}
@@ -254,7 +264,7 @@ class HubLanding extends React.Component {
                     </button>
                   </div>
 
-                  <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
+                  {this.isHelpReqUser() && <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
                     <button
                       className={`nav-button button full-width ${disableHelp ? 'disabled' : ''}`}
                       disabled={disableHelp}
@@ -267,10 +277,10 @@ class HubLanding extends React.Component {
                         }
                       )</span>
                     </button>
-                  </div>
+                  </div>}
                 </div>
               </div>
-              {this.renderMaintMenu()}
+              {(this.isChangeReqUser() || this.isAdminUser()) && this.renderMaintMenu()}
               {this.renderAdminMenu()}
             </div>
           </div>
