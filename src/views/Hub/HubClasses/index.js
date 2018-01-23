@@ -128,6 +128,8 @@ class HubClasses extends React.Component {
       return <span className = 'cn-grey'>RECEIVED</span>
     } else if (status === 'help') {
       return <span className='cn-red'> NEEDS HELPS</span>
+    } else if (status === 'change') {
+      return <span className='cn-red'> CHANGE REQ</span>
     } else if (status === 'complete' || status === 'change') {
       return <span className='cn-green' >COMPLETED</span>
     }
