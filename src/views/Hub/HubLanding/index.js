@@ -20,7 +20,7 @@ class HubLanding extends React.Component {
   */
   getStatuses () {
     this.setState({loadingStatuses: true})
-    actions.hub.getStatuses().then((statuses) => {
+    actions.hub.getStatusesHub().then((statuses) => {
       this.setState({statuses: statuses.statuses, schoolCount: statuses.schools, loadingStatuses: false})
     }).catch(() => { this.setState({loadingStatuses: false}) })
   }
