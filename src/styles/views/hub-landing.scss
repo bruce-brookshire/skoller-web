@@ -52,9 +52,10 @@
        align-items: center;
        display: flex;
        flex-direction: column;
-       justify-content: center;
+       justify-content: flex-end;
        flex: 1;
        height: 100%;
+       min-height: 66px;
 
        img {
          margin-bottom: 5px;
