@@ -22,6 +22,19 @@ class ClassInfo extends React.Component {
     }
   }
 
+  renderChangeRequest () {
+    const {cl} = this.props
+    const changeRequests = cl.change_requests.filter(c => !c.is_completed)
+    const needsChange = changeRequests.length > 0
+    if (needsChange) {
+      return (
+        <div className='change-request-icon-container'>
+          <i className='fa fa-refresh cn-red margin-right' />
+        </div>
+      )
+    }
+  }
+
   renderClassIssue () {
     const {cl, isDIY} = this.props
     const helpRequests = cl.help_requests.filter(h => !h.is_completed)
@@ -60,6 +73,7 @@ class ClassInfo extends React.Component {
     return (
         <div className='header-container'>
           <div className='header'>
+            {this.renderChangeRequest()}
             {this.renderClassIssue()}
             <h2>{this.props.cl && this.props.cl.name}</h2>
             {this.props.isAdmin && <div className='margin-left'>

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import {browserHistory} from 'react-router'
 import Assignments from '../components/ClassEditor/Assignments'
+import ChangeRequestForm from './ChangeRequestForm'
 import ClassForm from './ClassForm'
 import FileViewer from '../../components/FileViewer'
 import GradeScale from '../components/ClassEditor/GradeScale'
@@ -104,6 +105,7 @@ class SyllabusTool extends React.Component {
       isSW: state.isSW || false,
       loadingClass: true,
       locks: [],
+      madeClassChange: false,
       openEditClassModal: false,
       openIssuesModal: false,
       sectionId: state.sectionId || null,
@@ -234,6 +236,7 @@ class SyllabusTool extends React.Component {
   */
   updateClass (cl) {
     navbarStore.cl = cl
+    this.setState({madeClassChange: true})
   }
 
   /*
@@ -393,6 +396,18 @@ class SyllabusTool extends React.Component {
           className='having-issues cn-red'
           onClick={this.toggleIssuesModal.bind(this)}
         >Having issues?</a>
+    )
+  }
+
+  /*
+  * Render the change form.
+  */
+  renderChangeRequestForm () {
+    return (
+      <ChangeRequestForm
+        cl={navbarStore.cl}
+        madeClassChange={this.state.madeClassChange}>
+      </ChangeRequestForm>
     )
   }
 
@@ -611,6 +626,7 @@ class SyllabusTool extends React.Component {
               {this.renderContent()}
             </div>
             {this.renderSectionTabs()}
+            {navbarStore.cl && this.renderChangeRequestForm()}
             <div className='cn-section-footer'>
               <div>
                 {this.renderEnrollment()}

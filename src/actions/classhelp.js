@@ -68,3 +68,24 @@ export function resolveIssue (helpId) {
       return Promise.reject(error)
     })
 }
+
+/*
+* Resolve change request
+*/
+export function resolveChangeRequest (changeRequestId) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/changes/${changeRequestId}/`, {
+    method: 'POST',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error resolving change request. Try again.')
+      return Promise.reject(error)
+    })
+}

@@ -63,9 +63,9 @@ class NavBar extends React.Component {
     const admin = this.props.rootStore.userStore.isAdmin()
     if (cl) {
       return (
-        <ClassInfo cl={cl} 
+        <ClassInfo cl={cl}
           isAdmin={admin}
-          isDIY={isDIY} 
+          isDIY={isDIY}
           onEdit={toggleEditCl}
           toggleIssues={toggleIssues}
           toggleWrench={toggleWrench} />
