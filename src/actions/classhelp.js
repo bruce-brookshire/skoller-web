@@ -73,7 +73,7 @@ export function resolveIssue (helpId) {
 * Resolve change request
 */
 export function resolveChangeRequest (changeRequestId) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/changes/${changeRequestId}/`, {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/changes/${changeRequestId}/complete`, {
     method: 'POST',
     headers: {
       'Authorization': userStore.authToken,

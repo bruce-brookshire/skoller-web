@@ -28,15 +28,13 @@ class ChangeRequestForm extends React.Component {
   *
   */
   onSubmit () {
-    const {cl, madeClassChange} = this.props
+    const {cl} = this.props
     let changeRequest = this.getOpenChangeRequests()[0]
-    if (madeClassChange) {
-      actions.classhelp.resolveChangeRequest(changeRequest.id).then((res) => {
-        actions.classes.getClassById(cl.id).then((newCL) => {
-          navbarStore.cl = newCL
-        }).catch(() => false)
+    actions.classhelp.resolveChangeRequest(changeRequest.id).then((res) => {
+      actions.classes.getClassById(cl.id).then((newCL) => {
+        navbarStore.cl = newCL
       }).catch(() => false)
-    }
+    }).catch(() => false)
   }
 
   renderTitle(){
@@ -56,7 +54,7 @@ class ChangeRequestForm extends React.Component {
   renderChangeRequestFields(fields){
     return fields.map((field, index) => {
       return (
-        <div className='change-request-field row'>
+        <div className='change-request-field row' key={index}>
           <em className='col-xs-6'>{field.name}</em>
           <span className='col-xs-6'>{field.value}</span>
         </div>
@@ -114,7 +112,6 @@ class ChangeRequestForm extends React.Component {
 
 ChangeRequestForm.propTypes = {
   cl: PropTypes.object.isRequired,
-  onSubmit: PropTypes.func.isRequired,
 }
 
 export default ChangeRequestForm

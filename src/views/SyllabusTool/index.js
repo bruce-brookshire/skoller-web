@@ -105,7 +105,6 @@ class SyllabusTool extends React.Component {
       isSW: state.isSW || false,
       loadingClass: true,
       locks: [],
-      madeClassChange: false,
       openEditClassModal: false,
       openIssuesModal: false,
       sectionId: state.sectionId || null,
@@ -236,7 +235,6 @@ class SyllabusTool extends React.Component {
   */
   updateClass (cl) {
     navbarStore.cl = cl
-    this.setState({madeClassChange: true})
   }
 
   /*
@@ -405,8 +403,7 @@ class SyllabusTool extends React.Component {
   renderChangeRequestForm () {
     return (
       <ChangeRequestForm
-        cl={navbarStore.cl}
-        madeClassChange={this.state.madeClassChange}>
+        cl={navbarStore.cl}>
       </ChangeRequestForm>
     )
   }
