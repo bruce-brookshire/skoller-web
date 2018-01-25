@@ -54,12 +54,10 @@ class Faq extends React.Component {
                 </li>
                 <li>
                   <strong>Can my professor use Skoller?</strong><br/>
-                  <em>No. This is one of the main aspects that makes Skoller unique and
-                  a win-win for professors and students.
-                  Skoller’s approach eliminates the constant challenge professors face in being heavily engaged
-                  in keeping class schedules and grades up-to-date.
-                  We are combining syllabus information with the power of crowdsourcing to make staying on top of class
-                  information easier for everyone.</em>
+                  <em>No. This is one aspect that makes Skoller unique and a win-win for professors and students.
+                  Skoller eliminates the constant challenge professors face of having to keep class schedules
+                  and everyone’s grades up-to-date. We are combining syllabus information with the power of
+                  crowdsourcing to make staying on top of class information easier for everyone.</em>
                 </li>
                 <li>
                   <strong>Is Skoller provided by my university?</strong><br/>
@@ -68,8 +66,9 @@ class Faq extends React.Component {
                 <li>
                   <strong>Do I have to input my own grades?</strong><br/>
                   <em>Yes. This allows you to input your grades into a pre-weighted calculator
-                  that will generate your exact average in the class. No longer do you have to wait
-                  on your professor to use Blackboard/Canvas to see where you stand in your classes.</em>
+                  that will generate your exact average in the class.
+                  With Skoller, you don’t have to wait on your professor to use Blackboard/Canvas
+                  to see where you stand in your classes.</em>
                 </li>
                 <li>
                   <strong>If one of my classmates updates his/her schedule, does mine automatically update too?</strong><br/>
@@ -78,9 +77,9 @@ class Faq extends React.Component {
                 </li>
                 <li>
                   <strong>Do schedule updates ever ‘auto-update’ for an entire class?</strong><br/>
-                  <em>Yes. Skoller keeps score of copies vs dismisses for each change.
-                  When the score reaches a very promising threshold,
-                  we auto-update the schedule for students who have not yet responded to the change.</em>
+                  <em>Yes. Skoller keeps score of copies versus dismisses for each change.
+                  When the score reaches a critical threshold, we auto-update the schedule for students
+                  who have not yet responded to the change.</em>
                 </li>
               </ol>
             </div>
