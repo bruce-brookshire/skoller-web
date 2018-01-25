@@ -33,6 +33,8 @@ class SubmitSyllabi extends React.Component {
     super(props)
     this.state = {
       classes: [],
+      duplicateFile: false,
+      duplicateFileClassId: false,
       loading: false,
       showUploadWarning: false,
       unsavedDocs: {},
@@ -104,6 +106,20 @@ class SubmitSyllabi extends React.Component {
   }
 
   /*
+  * Determines if the given class already has the given file
+  *
+  * @param [Object] cl. The class to look in
+  * @param [Object] newFile. The new file
+  */
+  isDuplicateFile(cl,newFile){
+    let unsavedDocsCopy = deepClone(this.state.unsavedDocs)
+    let combined = unsavedDocsCopy[cl.id]['syllabus'].concat(unsavedDocsCopy[cl.id]['additional'])
+    let filtered = combined.filter(item => item != undefined)
+    let names = filtered.map(file => file.name)
+    return names.indexOf(newFile.name) > -1 ? newFile.name : false
+  }
+
+  /*
   * Add to unsaved documents arrays.
   *
   * @param [Object] cl. The class it is for
@@ -111,11 +127,19 @@ class SubmitSyllabi extends React.Component {
   * @param [Boolean] isSyllabus. Boolean indicating if the file is a syllabus upload.
   */
   onDocumentAdd(cl,file,isSyllabus){
-    let unsavedDocsCopy = deepClone(this.state.unsavedDocs)
-    unsavedDocsCopy[cl.id][isSyllabus ? 'syllabus' : 'additional'].push(file)
-    this.setState({
-      unsavedDocs: unsavedDocsCopy,
-    })
+    let duplicate = this.isDuplicateFile(cl,file)
+    if(duplicate){
+      this.setState({duplicateFile: duplicate,duplicateFileClassId: cl.id})
+      setTimeout(() => {
+        this.setState({duplicateFile: false,duplicateFileClassId: false})
+      },2000)
+    }else{
+      let unsavedDocsCopy = deepClone(this.state.unsavedDocs)
+      unsavedDocsCopy[cl.id][isSyllabus ? 'syllabus' : 'additional'].push(file)
+      this.setState({
+        unsavedDocs: unsavedDocsCopy,
+      })
+    }
   }
 
   /*
@@ -167,6 +191,7 @@ class SubmitSyllabi extends React.Component {
         <ClassRow
           key={`row-${index}`}
           cl={cl}
+          duplicate={this.state.duplicateFile && this.state.duplicateFileClassId && this.state.duplicateFileClassId == cl.id ? this.state.duplicateFile : false}
           onDocumentAdd={this.onDocumentAdd.bind(this)}
           onDocumentDelete={this.onDocumentDelete.bind(this)}
           onDocumentsDelete={this.onDocumentsDelete.bind(this)}
@@ -244,7 +269,7 @@ class SubmitSyllabi extends React.Component {
     let incomplete = this.getIncompleteClassesLength()
     return (
       <button
-        className={`button full-width margin-top margin-bottom`}
+        className={`button full-width margin-top margin-bottom ${this.state.loading ? 'disabled' : ''}`}
         onClick={this.onNext.bind(this)}>
         {
           (incomplete == 0 && !this.hasUnsavedDocuments()) ? 'Next' :

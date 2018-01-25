@@ -77,9 +77,9 @@ class ProjectFourDoor extends React.Component {
     return (
       <div className='center-text'>
         <span>{spanText}</span>
-        <button className={`button full-width margin-top ${hasUnsavedSyllabi ? '' : 'disabled'}`}
-                disabled={!hasUnsavedSyllabi}
-                onClick={() => { this.props.onSubmit() }}>Submit</button>
+        <button className={`button full-width margin-top ${hasUnsavedSyllabi && !this.props.uploading ? '' : 'disabled'}`}
+                disabled={!hasUnsavedSyllabi || this.props.uploading}
+                onClick={() => { this.props.onSubmit() }}>{this.props.uploading ? (<i className='fa fa-circle-o-notch fa-spin'></i>) : 'Submit'}</button>
       </div>
     )
   }

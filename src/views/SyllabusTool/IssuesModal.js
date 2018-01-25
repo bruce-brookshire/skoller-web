@@ -32,7 +32,7 @@ class IssuesModal extends React.Component {
               style={{height: '64px'}}
               className='cn-form-textarea'
               onChange={(event) => { this.setState({note: event.target.value}) }}
-              placeholder="Descrive the issue(s) here."
+              placeholder="Describe the issue(s) here."
               rows={5}
             />
           </div> : null

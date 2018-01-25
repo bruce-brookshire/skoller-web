@@ -70,12 +70,40 @@ class HubLanding extends React.Component {
     })
   }
 
+  onNeedsChange () {
+    browserHistory.push({
+      pathname: '/hub/classes',
+      state: {
+        needsChange: true
+      }
+    })
+  }
+
+  onNeedsMaint () {
+    browserHistory.push({
+      pathname: '/hub/classes',
+      state: {
+        needsMaint: true
+      }
+    })
+  }
+
   /*
   * Determine if hub user is an admin
   */
   isAdminUser () {
     const {userStore} = this.props.rootStore
     return userStore.isAdmin()
+  }
+
+  isChangeReqUser () {
+    const {userStore} = this.props.rootStore
+    return userStore.isChangeReq()
+  }
+
+  isHelpReqUser () {
+    const {userStore} = this.props.rootStore
+    return userStore.isHelpReq()
   }
 
   /*
@@ -86,7 +114,7 @@ class HubLanding extends React.Component {
       const helpCount = this.getStatusCount('Help') || 0
       return (
         <div className='margin-top margin-bottom'>
-          <span className='button-header center-text margin-top'>Admin panel</span>
+          <span className='button-header center-text'>Admin panel</span>
           <div className='nav-button-container row full-width' style={{alignItems: 'flex-end'}}>
 
             <div className='col-xs-12 col-sm-3 col-md- col-lg-3 margin-top'>
@@ -101,7 +129,6 @@ class HubLanding extends React.Component {
             </div>
 
             <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
-              {helpCount > 0 && <a onClick={this.onNeedsHelp.bind(this)} className='cn-red needs-help'>Needs Help: {helpCount}</a>}
               <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/classes')}>
                 <img src='/src/assets/images/icons/Search.png'/>
                 <span>Class Search</span>
@@ -112,6 +139,13 @@ class HubLanding extends React.Component {
               <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/accounts')}>
                 <img src='/src/assets/images/icons/Accounts.png'/>
                 <span>Accounts</span>
+              </button>
+            </div>
+
+            <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
+              <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/accounts')}>
+                <img src='/src/assets/images/icons/analytics.png'/>
+                <span>Analytics</span>
               </button>
             </div>
           </div>
@@ -125,14 +159,60 @@ class HubLanding extends React.Component {
     return status && status.classes
   }
 
+  renderMaintMenu () {
+    const changeCount = this.getStatusCount('Change') || 0
+    const maintCount = this.getStatusCount('Under Maintenance') || 0
+
+    const disableChange = changeCount === 0
+    const disableMaint = maintCount === 0
+
+    return (
+      <div>
+        <span className='button-header center-text'>Classes in the shop</span>
+        <div className='nav-button-container row full-width'>
+          {(this.isChangeReqUser() || this.isAdminUser()) && <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
+            <button
+              className={`nav-button maint button full-width ${disableChange ? 'disabled' : ''}`}
+              disabled={disableChange}
+              onClick={this.onNeedsChange.bind(this)}
+            >
+              <img src='/src/assets/images/icons/change_requests.png'/>
+              <span>Change Request (
+                {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
+                  : changeCount
+                }
+              )</span>
+            </button>
+          </div>}
+          {this.isAdminUser() && <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
+            <button
+              className={`nav-button maint button full-width ${disableMaint ? 'disabled' : ''}`}
+              disabled={disableMaint}
+              onClick={this.onNeedsMaint.bind(this)}
+            >
+              <img src='/src/assets/images/icons/repair.png'/>
+              <span>Under Maintenance (
+                {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
+                  : maintCount
+                }
+              )</span>
+            </button>
+          </div>}
+        </div>
+      </div>
+    )
+  }
+
   render () {
     const weightCount = this.getStatusCount('Weights') || 0
     const assignmentCount = this.getStatusCount('Assignments') || 0
     const reviewCount = this.getStatusCount('Review') || 0
+    const helpCount = this.getStatusCount('Help') || 0
 
     const disableWeights = weightCount === 0
     const disableAssignments = assignmentCount === 0
     const disableReviews = reviewCount === 0
+    const disableHelp = helpCount === 0
 
     return (
       <div className='cn-hub-landing-container'>
@@ -142,8 +222,8 @@ class HubLanding extends React.Component {
               <h1 className='header'>Welcome to <strong>the Hub.</strong></h1>
               <p className='description margin-top'>Where the syllabus magic happens <i className="em em-crystal_ball"></i></p>
 
-              <div className='margin-top'>
-                <span className='button-header center-text margin-top'>What do you want to work on?</span>
+              <div>
+                <span className='button-header center-text'>What's in action?</span>
                 <div className='nav-button-container row full-width'>
 
                   <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
@@ -190,8 +270,24 @@ class HubLanding extends React.Component {
                       )</span>
                     </button>
                   </div>
+
+                  {(this.isAdminUser() || this.isHelpReqUser()) && <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
+                    <button
+                      className={`nav-button button full-width ${disableHelp ? 'disabled' : ''}`}
+                      disabled={disableHelp}
+                      onClick={this.onNeedsHelp.bind(this)}
+                    >
+                      <img src='/src/assets/images/icons/NeedsHelp.png'/>
+                      <span>Help Needed (
+                        {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
+                          : helpCount
+                        }
+                      )</span>
+                    </button>
+                  </div>}
                 </div>
               </div>
+              {(this.isChangeReqUser() || this.isAdminUser()) && this.renderMaintMenu()}
               {this.renderAdminMenu()}
             </div>
           </div>

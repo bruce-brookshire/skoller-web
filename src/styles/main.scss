@@ -14,6 +14,7 @@
 
 // Forms ----------------------------------------------------------------------
 @import 'forms/mixins/input';
+@import 'forms/checkbox-field';
 @import 'forms/input-field';
 @import 'forms/multiselect-field';
 @import 'forms/select-field';
@@ -45,6 +46,7 @@
 
 // Composed Views ------------------------
 @import 'views/diylanding.scss';
+@import 'views/faq.scss';
 @import 'views/forgot-password.scss';
 @import 'views/hub-accounts.scss';
 @import 'views/hub-classes.scss';

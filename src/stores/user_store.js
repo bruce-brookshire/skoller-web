@@ -18,6 +18,14 @@ class UserStore {
     return this.user.roles.findIndex(role => role.id === 200) > -1
   }
 
+  isChangeReq () {
+    return this.user.roles.findIndex(role => role.id === 400) > -1
+  }
+
+  isHelpReq () {
+    return this.user.roles.findIndex(role => role.id === 500) > -1
+  }
+
   isStudent () {
     return this.user.roles.findIndex(r => r.name.toLowerCase() === 'student') > -1
   }
