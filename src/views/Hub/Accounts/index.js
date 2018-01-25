@@ -77,7 +77,7 @@ class Accounts extends React.Component {
       firstName: student ? (<div><span>{student.name_first}</span></div>) : (<div><span>-</span></div>),
       lastName: student ? (<div><span>{student.name_last}</span></div>) : (<div><span>-</span></div>),
       school: student && student.school ? (<div><span>{student.school.name}</span></div>) : (<div><span>-</span></div>),
-      email: email ? <div onClick={() => this.onAccountSelect(item)}><span>{email}</span></div> : '',
+      email: email ? <div><span>{email}</span></div> : '',
       status: is_active ? (<a>Active</a>) : (<a className='cn-red'>Suspended</a>),
     }
 
@@ -89,7 +89,7 @@ class Accounts extends React.Component {
   }
 
   onAccountSelect (user) {
-    browserHistory.push({pathname: '/hub/accounts/account/info', state: {user}})
+    browserHistory.push({pathname: '/hub/accounts/account/info', state: {user: {id: user.id}}})
   }
 
   render () {
@@ -111,6 +111,8 @@ class Accounts extends React.Component {
           rows={this.getRows()}
           disabled={true}
           canDelete={false}
+          canSelect={true}
+          onSelect={this.onAccountSelect.bind(this)}
         />
       </div>
     )
