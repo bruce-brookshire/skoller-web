@@ -101,6 +101,7 @@ class Accounts extends React.Component {
           <div>
             <a onClick={this.onCreateAccount.bind(this)}>Create new account</a>
             <span className='description'>Manage user account details from this page</span>
+            <span className='total-results'>Total Results: {this.state.users.length}</span>
           </div>
         </div>
         <Grid

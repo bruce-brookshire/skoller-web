@@ -7,7 +7,9 @@ $border-color: $cn-color-grey;
     position: absolute;
     transform: translateX(-50%);
   }
-
+  .total-results {
+    float: right;
+  }
   .cn-table-grid {
     border: 1px solid $border-color;
     border-radius: $cn-border-radius;
