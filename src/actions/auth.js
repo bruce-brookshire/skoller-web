@@ -185,8 +185,8 @@ export function resetPassword (form, token) {
 /*
 * Get user roles.
 */
-export function getUsers () {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/users`, {
+export function getUsers (queryString = false) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/users${queryString ? ('?'+queryString) : ''}`, {
     method: 'GET',
     headers: {
       'Authorization': userStore.authToken,
