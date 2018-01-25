@@ -73,12 +73,12 @@ class Accounts extends React.Component {
 
     const row = {
       id: id || '',
-      type: roles[0] ? (<div><span>{roles[0].name}</span></div>) : (<div><span>-</span></div>),
-      firstName: student ? (<div><span>{student.name_first}</span></div>) : (<div><span>-</span></div>),
-      lastName: student ? (<div><span>{student.name_last}</span></div>) : (<div><span>-</span></div>),
-      school: student && student.school ? (<div><span>{student.school.name}</span></div>) : (<div><span>-</span></div>),
-      email: email ? <div><span>{email}</span></div> : '',
-      status: is_active ? (<a>Active</a>) : (<a className='cn-red'>Suspended</a>),
+      type: roles[0] ? (<div onClick={() => { this.onAccountSelect(item) }}><span>{roles[0].name}</span></div>) : (<div><span>-</span></div>),
+      firstName: student ? (<div onClick={() => { this.onAccountSelect(item) }}><span>{student.name_first}</span></div>) : (<div><span>-</span></div>),
+      lastName: student ? (<div onClick={() => { this.onAccountSelect(item) }}><span>{student.name_last}</span></div>) : (<div><span>-</span></div>),
+      school: student && student.school ? (<div onClick={() => { this.onAccountSelect(item) }}><span>{student.school.name}</span></div>) : (<div><span>-</span></div>),
+      email: email ? <div onClick={() => { this.onAccountSelect(item) }}><span>{email}</span></div> : '',
+      status: is_active ? (<a onClick={() => { this.onAccountSelect(item) }}>Active</a>) : (<a className='cn-red'>Suspended</a>),
     }
 
     return row
@@ -89,7 +89,7 @@ class Accounts extends React.Component {
   }
 
   onAccountSelect (user) {
-    browserHistory.push({pathname: '/hub/accounts/account/info', state: {user: {id: user.id}}})
+    browserHistory.push({pathname: '/hub/accounts/account/info', state: {user}})
   }
 
   render () {
@@ -111,8 +111,6 @@ class Accounts extends React.Component {
           rows={this.getRows()}
           disabled={true}
           canDelete={false}
-          canSelect={true}
-          onSelect={this.onAccountSelect.bind(this)}
         />
       </div>
     )
