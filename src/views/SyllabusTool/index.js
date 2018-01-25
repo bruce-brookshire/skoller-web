@@ -138,6 +138,13 @@ class SyllabusTool extends React.Component {
   }
 
   /*
+  * Determine if class is in "Change Request" status
+  */
+  isChangeRequest(){
+    return navbarStore.cl && navbarStore.cl.status && navbarStore.cl.status.name == 'Change' ? true : false
+  }
+
+  /*
   * Fetch the class by id.
   */
   getClass () {
@@ -425,7 +432,7 @@ class SyllabusTool extends React.Component {
   * Render the status form of the class for the admin to update.
   */
   renderStatusForm () {
-    if (this.state.isAdmin && !this.state.isSW) {
+    if (this.state.isAdmin && !this.state.isSW && !this.isChangeRequest()) {
       return (
         <div className='cn-status-form'>
           <StatusForm cl={navbarStore.cl}/>
