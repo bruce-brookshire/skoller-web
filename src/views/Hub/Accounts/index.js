@@ -1,16 +1,33 @@
 import React from 'react'
 import {browserHistory} from 'react-router'
+import AccountSearch from './AccountSearch'
 import Grid from '../../../components/Grid'
 import actions from '../../../actions'
 
 const headers = [
   {
+    field: 'type',
+    display: 'Type'
+  },
+  {
+    field: 'firstName',
+    display: 'First Name'
+  },
+  {
+    field: 'lastName',
+    display: 'Last Name'
+  },
+  {
+    field: 'school',
+    display: 'School'
+  },
+  {
     field: 'email',
     display: 'Email'
   },
   {
-    field: 'isActive',
-    display: 'Active'
+    field: 'status',
+    display: 'Status'
   }
 ]
 
@@ -18,6 +35,7 @@ class Accounts extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
+      loading: false,
       users: []
     }
   }
@@ -25,9 +43,10 @@ class Accounts extends React.Component {
   /*
   * Get users
   */
-  componentWillMount () {
-    actions.auth.getUsers().then(users => {
-      this.setState({users})
+  getAccounts(queryString){
+    this.setState({loading: true})
+    actions.auth.getUsers(queryString).then(users => {
+      this.setState({users, loading: false})
     }).catch(() => false)
   }
 
@@ -50,12 +69,16 @@ class Accounts extends React.Component {
   * @return [Object] row. Object of formatted row data for display in grid.
   */
   mapRow (item, index) {
-    const {id, email, is_active} = item
+    const {id, email, is_active, roles, student} = item
 
     const row = {
       id: id || '',
+      type: roles[0] ? (<div><span>{roles[0].name}</span></div>) : (<div><span>-</span></div>),
+      firstName: student ? (<div><span>{student.name_first}</span></div>) : (<div><span>-</span></div>),
+      lastName: student ? (<div><span>{student.name_last}</span></div>) : (<div><span>-</span></div>),
+      school: student && student.school ? (<div><span>{student.school.name}</span></div>) : (<div><span>-</span></div>),
       email: email ? <div onClick={() => this.onAccountSelect(item)}><span>{email}</span></div> : '',
-      isAcitve: <a>Active</a>
+      status: is_active ? (<a>Active</a>) : (<a className='cn-red'>Suspended</a>),
     }
 
     return row
@@ -73,14 +96,17 @@ class Accounts extends React.Component {
     return (
       <div className='cn-accounts-container'>
         <div className='margin-bottom'>
-          <h2 className='center-text'>Accounts</h2>
+          <h2 className='center-text' style={{marginBottom: 0}}>Search Accounts</h2>
+          <AccountSearch {...this.props} loading={this.state.loading} onSearch={this.getAccounts.bind(this)}/>
           <div>
             <a onClick={this.onCreateAccount.bind(this)}>Create new account</a>
             <span className='description'>Manage user account details from this page</span>
+            <span className='total-results'>Total Results: {this.state.users.length}</span>
           </div>
         </div>
         <Grid
           className='cn-accounts-table'
+          emptyMessage={'Search for accounts using the controls above.'}
           headers={headers}
           rows={this.getRows()}
           disabled={true}
