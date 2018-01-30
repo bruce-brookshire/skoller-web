@@ -5,7 +5,8 @@ import {authenticateUser, createAccount, forgotPassword, getRoles,
 import {createClass, dropClass, getClassById, getLocks, getProfessorClasses,
   getStudentClasses, getStudentClassesById, enrollInClass, searchClasses, searchStudentClasses,
   updateClass, lockClass, unlockClass, updateClassStatus} from './classes'
-import {createIssue, getHelpTypes, resolveIssue, resolveChangeRequest} from './classhelp'
+import {createIssue, getHelpTypes, resolveIssue, getRequestTypes, resolveChangeRequest, createStudentRequest,
+        resolveStudentRequest} from './classhelp'
 import {getClassDocuments, uploadClassCsv, uploadClassDocument, deleteClassDocument,
   uploadFOSCsv} from './documents'
 import {updateGradeScale} from './gradescales'
@@ -60,7 +61,10 @@ const actions = {
     createIssue,
     getHelpTypes,
     resolveIssue,
-    resolveChangeRequest
+    getRequestTypes,
+    resolveChangeRequest,
+    createStudentRequest,
+    resolveStudentRequest
   },
   documents: {
     getClassDocuments,

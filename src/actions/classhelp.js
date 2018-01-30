@@ -70,10 +70,31 @@ export function resolveIssue (helpId) {
 }
 
 /*
+* Get request types
+*/
+export function getRequestTypes () {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/class-student-request-types`, {
+    method: 'GET',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error fetching request types. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
 * Resolve change request
 */
-export function resolveChangeRequest (changeRequestId) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/changes/${changeRequestId}/complete`, {
+export function resolveChangeRequest (requestId) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/changes/${requestId}/complete`, {
     method: 'POST',
     headers: {
       'Authorization': userStore.authToken,
@@ -86,6 +107,55 @@ export function resolveChangeRequest (changeRequestId) {
     })
     .catch(error => {
       showSnackbar('Error resolving change request. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Create student request
+*/
+export function createStudentRequest (requestTypeId,data) {
+  let form = new FormData()
+  let ind = 0
+  data['notes'] ? form.append('notes', data['notes']) : null
+  data['files'] ? data['files'].forEach(file => {
+    form.append(('files['+ind.toString()+']'), file)
+    ind++
+  } ) : null
+  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/1/student-request/${requestTypeId}`, {
+    method: 'POST',
+    headers: {
+      'Authorization': userStore.authToken,
+    },
+    body: form,
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error creating student request. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Resolve student request
+*/
+export function resolveStudentRequest (requestId) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/student-requests/${requestId}/complete`, {
+    method: 'POST',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error resolving student request. Try again.')
       return Promise.reject(error)
     })
 }

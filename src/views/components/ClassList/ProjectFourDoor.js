@@ -10,6 +10,7 @@ class ProjectFourDoor extends React.Component {
     super(props)
     this.state = {
       openStudentRequestModal: false,
+      studentModalError: null,
     }
   }
 
@@ -20,7 +21,7 @@ class ProjectFourDoor extends React.Component {
   */
   isComplete () {
     const {cl} = this.props
-    return (cl.status && cl.status.name === 'Complete')
+    return (cl.status && (cl.status.name === 'Complete' || cl.status.name === 'Change'))
   }
 
   /*
@@ -52,13 +53,58 @@ class ProjectFourDoor extends React.Component {
   }
 
   /*
+  * Determine if the class is in review status (able to request help)
+  *
+  * @return [Boolean]. boolean indicating if the class is in review
+  */
+  inReview(){
+    const {cl} = this.props
+    return (cl.status && (cl.status.name === 'Assignments' || cl.status.name === 'Review' || cl.status.name === 'Help'))
+  }
+
+  /*
   * Toggle the student request modal.
   *
   * @return null.
   */
   toggleStudentRequestModal () {
-    console.log(this.state.openStudentRequestModal)
     this.setState({openStudentRequestModal: !this.state.openStudentRequestModal})
+  }
+
+  /*
+  * Run when the modal errors out
+  *
+  * @return null.
+  */
+  onStudentRequestModalError(){
+    this.setState({
+      studentModalMessageShowing: true,
+      studentModalError: true,
+      openStudentRequestModal: false,
+    })
+    setTimeout(() => {
+      this.setState({
+        studentModalMessageShowing: false,
+      })
+    },3000)
+  }
+
+  /*
+  * Run when the modal change is successful
+  *
+  * @return null.
+  */
+  onStudentRequestModalSuccess(){
+    this.setState({
+      studentModalMessageShowing: true,
+      studentModalError: false,
+      openStudentRequestModal: false,
+    })
+    setTimeout(() => {
+      this.setState({
+        studentModalMessageShowing: false,
+      })
+    },3000)
   }
 
   renderContent () {
@@ -67,7 +113,10 @@ class ProjectFourDoor extends React.Component {
     // needs syllabus
     if (this.needsSyllabus()) {
       return this.renderNeedsSyllabus()
-    // complete
+    // in review
+  }else if (this.inReview()) {
+      return this.renderInReview()
+    // normal
     }else if (this.isComplete()) {
       return this.renderComplete()
     // normal
@@ -143,6 +192,26 @@ class ProjectFourDoor extends React.Component {
     )
   }
 
+  renderInReview(){
+    const {cl} = this.props
+    return (
+      <div>
+        <div className='center-text'>
+          <span>Hang tight. Skoller is working on this syllabus right now.</span><br/><br/>
+          <a onClick={() => {this.toggleStudentRequestModal()}}>Need assistance?</a>
+        </div>
+        {this.renderRequestModalMessage()}
+        <StudentRequestModal
+          open={this.state.openStudentRequestModal}
+          onClose={() => this.toggleStudentRequestModal.bind(this)}
+          onError={() => {this.onStudentRequestModalError()}}
+          onSuccess={() => {this.onStudentRequestModalSuccess()}}
+          cl={this.props.cl}>
+        </StudentRequestModal>
+      </div>
+    )
+  }
+
   renderComplete(){
     return (
       <div>
@@ -150,9 +219,13 @@ class ProjectFourDoor extends React.Component {
           <span>All done! You and your classmates are good to go.</span><br/><br/>
           <a onClick={() => {this.toggleStudentRequestModal()}}>Need assistance?</a>
         </div>
+        {this.renderRequestModalMessage()}
         <StudentRequestModal
           open={this.state.openStudentRequestModal}
-          onClose={() => this.toggleStudentRequestModal.bind(this)}>
+          onClose={() => this.toggleStudentRequestModal.bind(this)}
+          onError={() => {this.onStudentRequestModalError()}}
+          onSuccess={() => {this.onStudentRequestModalSuccess()}}
+          cl={this.props.cl}>
         </StudentRequestModal>
       </div>
     )
@@ -164,8 +237,6 @@ class ProjectFourDoor extends React.Component {
     let message = ''
     if (name === 'New Class' || name === 'Needs Syllabus') {
       message = 'Upload your syllabus.'
-    } else if (name === 'Assignments' || name === 'Review' || name === 'Help') {
-      message = 'Hang tight. Skoller is working on this syllabus right now.'
     } else if (name === 'Complete' || name === 'Change') {
       message = 'All done! You and your classmates are good to go.'
     }
@@ -176,8 +247,20 @@ class ProjectFourDoor extends React.Component {
     )
   }
 
+  renderRequestModalMessage(){
+    if(this.state.studentModalMessageShowing){
+      return(
+        <div className='center-text request-modal-message'>
+          {this.state.studentModalError ? 'Error creating request.' : 'Your request has been received. Thank you!'}
+        </div>
+      )
+    }else{
+      return null
+    }
+  }
+
   render () {
-    return this.isWeights() || this.needsSyllabus() || this.isComplete() ? this.renderContent() : this.renderMessages()
+    return this.isWeights() || this.needsSyllabus() || this.isComplete() || this.inReview() ? this.renderContent() : this.renderMessages()
   }
 }
 

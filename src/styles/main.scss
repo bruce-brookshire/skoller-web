@@ -37,6 +37,7 @@
 @import 'components/search';
 @import 'components/topnav';
 @import 'components/snackbar';
+@import 'components/student-request-modal';
 @import 'components/upload-history';
 @import 'components/upload-documents';
 @import 'components/progress-bar.scss';
@@ -253,4 +254,8 @@ body {
 
 .underline {
   text-decoration: underline;
+}
+
+.relative {
+  position: relative;
 }
