@@ -182,6 +182,14 @@ body {
   }
 }
 
+.cn-red-background-alt {
+  background-color: red !important;
+  color: white;
+  &:hover {
+    background-color: lighten(red, 15%) !important;
+  }
+}
+
 
 .cn-green {
   color: #00C000;

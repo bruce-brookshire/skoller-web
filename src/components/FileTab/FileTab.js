@@ -15,6 +15,7 @@ class FileTab extends React.Component {
     let classes = ['cn-file-tab']
     if (this.props.className) classes.push(this.props.className)
     if (this.props.active) classes.push('active')
+    if (this.props.changed) classes.push('cn-red-background-alt')
     return (
       <div className={classes.join(' ')} onClick={() => this.props.onClick()}>
         <span>{this.props.name}</span>
@@ -26,6 +27,7 @@ class FileTab extends React.Component {
 
 FileTab.propTypes = {
   active: PropTypes.bool,
+  changed: PropTypes.bool,
   className: PropTypes.string,
   name: PropTypes.string,
   onClick: PropTypes.func,

@@ -79,7 +79,7 @@ class StudentRequestModal extends React.Component {
   onSubmit(){
     let data = {}
     this.state.step2Val instanceof Array ? (data['files'] = this.state.step2Val) : (data['notes'] = this.state.step2Val)
-    actions.classhelp.createStudentRequest(this.state.step1Val,data).then((res) => {
+    actions.classhelp.createStudentRequest(this.props.cl.id,this.state.step1Val,data).then((res) => {
       res ? this.props.onSuccess() : this.props.onError()
       this.setState({step1Val: null,step2Val: null})
     })

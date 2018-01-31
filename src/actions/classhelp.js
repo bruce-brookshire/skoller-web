@@ -114,7 +114,7 @@ export function resolveChangeRequest (requestId) {
 /*
 * Create student request
 */
-export function createStudentRequest (requestTypeId,data) {
+export function createStudentRequest (classId,requestTypeId,data) {
   let form = new FormData()
   let ind = 0
   data['notes'] ? form.append('notes', data['notes']) : null
@@ -122,7 +122,7 @@ export function createStudentRequest (requestTypeId,data) {
     form.append(('files['+ind.toString()+']'), file)
     ind++
   } ) : null
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/1/student-request/${requestTypeId}`, {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${classId}/student-request/${requestTypeId}`, {
     method: 'POST',
     headers: {
       'Authorization': userStore.authToken,

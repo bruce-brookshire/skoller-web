@@ -3,10 +3,11 @@ import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import {browserHistory} from 'react-router'
 import Assignments from '../components/ClassEditor/Assignments'
-import ChangeRequestForm from './ChangeRequestForm'
+import StudentRequestForm from './StudentRequestForm'
 import ClassForm from './ClassForm'
 import FileViewer from '../../components/FileViewer'
 import GradeScale from '../components/ClassEditor/GradeScale'
+import DocumentsDeletedModal from './DocumentsDeletedModal'
 import IssuesModal from './IssuesModal'
 import Loading from '../../components/Loading'
 import Modal from '../../components/Modal'
@@ -36,6 +37,7 @@ class SyllabusTool extends React.Component {
     navbarStore.toggleEditCl = this.toggleEditClassModal.bind(this)
     navbarStore.toggleWrench = this.toggleWrench.bind(this)
     navbarStore.toggleIssues = this.toggleIssuesModal.bind(this)
+    navbarStore.toggleStudentRequest = this.toggleStudentRequest.bind(this)
     this.state = this.initializeState()
   }
 
@@ -56,6 +58,7 @@ class SyllabusTool extends React.Component {
     navbarStore.toggleEditCl = null
     navbarStore.toggleWrench = null
     navbarStore.toggleIssues = null
+    navbarStore.toggleStudentRequest = null
     this.unlockClass()
   }
 
@@ -71,6 +74,10 @@ class SyllabusTool extends React.Component {
         currentDocumentIndex: 0,
         currentDocument: null,
       })
+      // Show status change modal if all files deleted
+      if(this.state.documents.length == 0){
+
+      }
     }).catch(() => false)
   }
 
@@ -105,8 +112,10 @@ class SyllabusTool extends React.Component {
       isSW: state.isSW || false,
       loadingClass: true,
       locks: [],
+      openDocumentsDeletedModal: true,
       openEditClassModal: false,
       openIssuesModal: false,
+      openStudentRequest: false,
       sectionId: state.sectionId || null,
       stepCount: 4,
       submiting: false
@@ -295,6 +304,35 @@ class SyllabusTool extends React.Component {
   }
 
   /*
+  * Gets array of all new doc ids
+  */
+  allNewDocs(){
+    if(navbarStore.cl && navbarStore.cl.student_requests && navbarStore.cl.student_requests.length > 0){
+      let sr = navbarStore.cl.student_requests
+      let arr = []
+      sr.forEach((r) => {r.docs && r.docs.length > 0 ? arr.push(r.docs.map((d) => d.id)) : null})
+      return [].concat(...arr)
+    }else{
+      return []
+    }
+  }
+
+  /*
+  * Determines if the document originates from a student request
+  */
+  isNewDoc(doc){
+    return this.allNewDocs().indexOf(doc.id) > -1
+  }
+
+  /*
+  * Determines if the class has any new docs
+  */
+  hasNewDoc(){
+    let newDocs = this.allNewDocs()
+    return this.state.documents.filter((d) => newDocs.indexOf(d.id) > -1).length > 0
+  }
+
+  /*
   * Render the document tabs for the user to tab between documents.
   */
   renderDocumentTabs () {
@@ -307,6 +345,7 @@ class SyllabusTool extends React.Component {
                 key={index}
                 name={document.name}
                 removable={this.state.isAdmin}
+                changed={this.isNewDoc(document)}
                 onClick={() =>
                   this.setState({currentDocument: document.path, currentDocumentIndex: index})
                 }
@@ -398,13 +437,27 @@ class SyllabusTool extends React.Component {
   }
 
   /*
-  * Render the change form.
+  * Render the student request form.
   */
-  renderChangeRequestForm () {
+  renderStudentRequestForm () {
     return (
-      <ChangeRequestForm
+      <StudentRequestForm
         cl={navbarStore.cl}>
-      </ChangeRequestForm>
+      </StudentRequestForm>
+    )
+  }
+
+  /*
+  * Render the all documents deleted modal.
+  */
+  renderDocumentsDeletedModal () {
+    return (
+      <DocumentsDeletedModal
+        cl={navbarStore.cl}
+        open={this.state.openDocumentsDeletedModal}
+        onClose={this.toggleDocumentsDeletedModal.bind(this)}
+        onSubmit={this.updateClass.bind(this)}
+      />
     )
   }
 
@@ -532,6 +585,13 @@ class SyllabusTool extends React.Component {
   }
 
   /*
+  * Toggle the documents deleted modal.
+  */
+  toggleDocumentsDeletedModal () {
+    this.setState({openDocumentsDeletedModal: !this.state.openDocumentsDeletedModal})
+  }
+
+  /*
   * Toggle the issues modal.
   */
   toggleIssuesModal () {
@@ -550,6 +610,10 @@ class SyllabusTool extends React.Component {
     actions.classes.updateClass({id: cl.id, is_editable: !cl.is_editable}).then((cl) => {
       navbarStore.cl = cl
     }).catch(() => false)
+  }
+
+  toggleStudentRequest(){
+    this.setState({openStudentRequest: !this.state.openStudentRequest})
   }
 
   /*
@@ -623,7 +687,7 @@ class SyllabusTool extends React.Component {
               {this.renderContent()}
             </div>
             {this.renderSectionTabs()}
-            {navbarStore.cl && this.renderChangeRequestForm()}
+            {navbarStore.cl && this.renderStudentRequestForm()}
             <div className='cn-section-footer'>
               <div>
                 {this.renderEnrollment()}
@@ -656,6 +720,7 @@ class SyllabusTool extends React.Component {
         </div>
 
         {navbarStore.cl && this.renderIssuesModal()}
+        {navbarStore.cl && this.renderDocumentsDeletedModal()}
         {this.renderEditClassModal()}
       </div>
     )
