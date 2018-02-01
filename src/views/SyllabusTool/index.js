@@ -464,7 +464,10 @@ class SyllabusTool extends React.Component {
         cl={navbarStore.cl}
         open={this.state.openDocumentsDeletedModal}
         onClose={this.toggleDocumentsDeletedModal.bind(this)}
-        onSubmit={(cl) => {this.toggleDocumentsDeletedModal();this.updateClass(cl)} }
+        onSubmit={(cl) => {
+          this.updateClass(cl)
+          this.toggleDocumentsDeletedModal()
+        }}
       />
     )
   }
