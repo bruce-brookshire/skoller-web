@@ -172,7 +172,6 @@ class IssuesModal extends React.Component {
   resolveStudentRequest(req){
     const {cl} = this.props
     actions.classhelp.resolveStudentRequest(req.id).then((res) => {
-      console.log('resolve',this.state.resolveValue)
       if(this.state.resolveValue){
         // If the resolution requires a status change, make that happen
         actions.classes.updateClassStatus(cl,this.state.form).then((cl) => {
@@ -191,9 +190,9 @@ class IssuesModal extends React.Component {
         actions.classes.getClassById(cl.id).then((cl) => {
           this.props.onSubmit(cl)
           this.props.onClose()
-        }).catch((err) => console.log(err))
+        }).catch(() => false)
       }
-    }).catch((err) => console.log(err))
+    }).catch(() => false)
   }
 
   resolveStandardHelpTicket(helpTicket){
