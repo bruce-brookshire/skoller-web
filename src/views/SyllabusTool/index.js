@@ -108,6 +108,8 @@ class SyllabusTool extends React.Component {
       documents: [],
       gettingClass: false,
       isAdmin: state.isAdmin || false,
+      isChangeReq: state.isChangeReq || false,
+      isHelpReq: state.isHelpReq || false,
       isReviewer: state.isReviewer || false,
       isSW: state.isSW || false,
       loadingClass: true,
@@ -281,8 +283,8 @@ class SyllabusTool extends React.Component {
   * Render for syllabus workers and admin. Not for DIY.
   */
   renderSectionTabs () {
-    const {isReviewer, isAdmin, isSW} = this.state
-    if (isReviewer || (isAdmin && !isSW)) {
+    const {isReviewer, isAdmin, isSW, isChangeReq, isHelpReq} = this.state
+    if (isReviewer || (isAdmin && !isSW) || (isChangeReq || isHelpReq)) {
       if (isReviewer) {
         return (
           <FileTabs style={{marginLeft: '7px', marginRight: '7px'}} currentIndex={this.state.currentIndex-2}>
@@ -353,7 +355,7 @@ class SyllabusTool extends React.Component {
               <FileTab
                 key={index}
                 name={document.name}
-                removable={this.state.isAdmin}
+                removable={this.state.isAdmin || this.state.isChangeReq}
                 changed={this.isNewDoc(document)}
                 onClick={() =>
                   this.setState({currentDocument: document.path, currentDocumentIndex: index})
@@ -532,10 +534,10 @@ class SyllabusTool extends React.Component {
   * Render the button text dependent on worker.
   */
   renderButtonText () {
-    const {isReviewer, isAdmin, isSW} = this.state
+    const {isReviewer, isAdmin, isSW, isChangeReq, isHelpReq} = this.state
     let text = ''
     if ((isReviewer || navbarStore.isDIY) && this.state.currentIndex === ContentEnum.ASSIGNMENTS) text = 'Everything looks good. Submit info and continue'
-    else if (isAdmin && !isSW) text = 'Done'
+    else if ((isAdmin && !isSW) || (isChangeReq || isHelpReq)) text = 'Done'
     else text = 'Next'
     return text
   }

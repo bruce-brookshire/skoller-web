@@ -153,6 +153,8 @@ class HubClasses extends React.Component {
       state: {
         isAdmin: this.isAdminUser(),
         isSW: this.isSW(),
+        isChangeReq: this.isChangeReq(),
+        isHelpReq: this.isHelpReq()
       }
     })
   }
@@ -165,6 +167,16 @@ class HubClasses extends React.Component {
   isSW () {
     const {userStore} = this.props.rootStore
     return userStore.isSW()
+  }
+
+  isHelpReq () {
+    const {userStore} = this.props.rootStore
+    return userStore.isHelpReq()
+  }
+
+  isChangeReq() {
+    const {userStore} = this.props.rootStore
+    return userStore.isChangeReq()
   }
 
   render () {
