@@ -9,6 +9,7 @@ import FileViewer from '../../components/FileViewer'
 import GradeScale from '../components/ClassEditor/GradeScale'
 import DocumentsDeletedModal from './DocumentsDeletedModal'
 import IssuesModal from './IssuesModal'
+import RequestResolvedModal from './RequestResolvedModal'
 import Loading from '../../components/Loading'
 import Modal from '../../components/Modal'
 import Professor from '../components/ClassEditor/Professor'
@@ -37,7 +38,7 @@ class SyllabusTool extends React.Component {
     navbarStore.toggleEditCl = this.toggleEditClassModal.bind(this)
     navbarStore.toggleWrench = this.toggleWrench.bind(this)
     navbarStore.toggleIssues = this.toggleIssuesModal.bind(this)
-    navbarStore.toggleStudentRequest = this.toggleStudentRequest.bind(this)
+    navbarStore.toggleRequestResolved = this.toggleRequestResolvedModal.bind(this)
     this.state = this.initializeState()
   }
 
@@ -58,7 +59,7 @@ class SyllabusTool extends React.Component {
     navbarStore.toggleEditCl = null
     navbarStore.toggleWrench = null
     navbarStore.toggleIssues = null
-    navbarStore.toggleStudentRequest = null
+    navbarStore.toggleRequestResolved = null
     this.unlockClass()
   }
 
@@ -115,7 +116,7 @@ class SyllabusTool extends React.Component {
       openDocumentsDeletedModal: false,
       openEditClassModal: false,
       openIssuesModal: false,
-      openStudentRequest: false,
+      openRequestResolvedModal: false,
       sectionId: state.sectionId || null,
       stepCount: 4,
       submiting: false
@@ -304,11 +305,18 @@ class SyllabusTool extends React.Component {
   }
 
   /*
+  * Gets array of all student requests yet to be completed
+  */
+  openStudentRequests(){
+    return navbarStore.cl.student_requests.filter(c => !c.is_completed)
+  }
+
+  /*
   * Gets array of all new doc ids
   */
   allNewDocs(){
     if(navbarStore.cl && navbarStore.cl.student_requests && navbarStore.cl.student_requests.length > 0){
-      let sr = navbarStore.cl.student_requests
+      let sr = this.openStudentRequests()
       let arr = []
       sr.forEach((r) => {r.docs && r.docs.length > 0 ? arr.push(r.docs.map((d) => d.id)) : null})
       return [].concat(...arr)
@@ -476,6 +484,26 @@ class SyllabusTool extends React.Component {
   }
 
   /*
+  * Render the issues resolved modal.
+  */
+  renderRequestResolvedModal() {
+    let openRequests = this.openStudentRequests()
+    return (
+      <RequestResolvedModal
+        cl={navbarStore.cl}
+        open={this.state.openRequestResolvedModal}
+        lastRequest={openRequests.length == 1}
+        onClose={this.toggleRequestResolvedModal.bind(this)}
+        onSubmit={(cl) => {
+          this.updateClass(cl)
+          this.toggleRequestResolvedModal()
+        }}
+        request={openRequests[0]}
+      />
+    )
+  }
+
+  /*
   * Render the editclass modal.
   */
   renderEditClassModal () {
@@ -599,6 +627,13 @@ class SyllabusTool extends React.Component {
   }
 
   /*
+  * Toggle the issues resolved modal.
+  */
+  toggleRequestResolvedModal () {
+    this.setState({openRequestResolvedModal: !this.state.openRequestResolvedModal})
+  }
+
+  /*
   * Toggle the edit class modal.
   */
   toggleEditClassModal () {
@@ -610,10 +645,6 @@ class SyllabusTool extends React.Component {
     actions.classes.updateClass({id: cl.id, is_editable: !cl.is_editable}).then((cl) => {
       navbarStore.cl = cl
     }).catch(() => false)
-  }
-
-  toggleStudentRequest(){
-    this.setState({openStudentRequest: !this.state.openStudentRequest})
   }
 
   /*
@@ -720,6 +751,7 @@ class SyllabusTool extends React.Component {
         </div>
 
         {navbarStore.cl && this.renderIssuesModal()}
+        {navbarStore.cl && this.renderRequestResolvedModal()}
         {navbarStore.cl && this.renderDocumentsDeletedModal()}
         {this.renderEditClassModal()}
       </div>

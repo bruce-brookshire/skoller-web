@@ -33,19 +33,6 @@ class StudentRequestForm extends React.Component {
     return cl.student_requests.filter(c => !c.is_completed)
   }
 
-  /*
-  * Handle request resolution submission
-  *
-  */
-  onSubmit () {
-    const {cl} = this.props
-    actions.classhelp.resolveStudentRequest(this.state.studentRequests[0].id).then((res) => {
-      actions.classes.getClassById(cl.id).then((newCL) => {
-        navbarStore.cl = newCL
-      }).catch(() => false)
-    }).catch(() => false)
-  }
-
   renderTitle(){
     return (
       <h5 className='student-request-title' style={{margin: '0.5em 0'}}>

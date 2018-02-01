@@ -8,7 +8,7 @@ class NavBarStore {
       toggleEditCl: null,
       toggleWrench: null,
       toggleIssues: null,
-      toggleStudentRequest: null
+      toggleRequestResolved: null,
     })
   }
 }

@@ -28,9 +28,9 @@ class ClassInfo extends React.Component {
     const needsChange = studentRequests.length > 0
     if (needsChange) {
       return (
-        <div className='issue-icon-container' onClick={() => this.props.toggleStudentRequest()}>
+        <div className='issue-icon-container' onClick={() => this.props.toggleRequestResolved()}>
           <div className='message-bubble triangle-top'>
-            {studentRequests[0].note ? studentRequests[0].note : studentRequests[0].change_type.name}
+            {studentRequests[0].notes ? studentRequests[0].notes : studentRequests[0].change_type.name}
             <div className='triangle-inner' />
           </div>
           <i className='fa fa-refresh cn-red margin-right' />
@@ -97,7 +97,7 @@ ClassInfo.propTypes = {
   isDIY: PropTypes.bool,
   onEdit: PropTypes.func,
   toggleIssues: PropTypes.func,
-  toggleStudentRequest: PropTypes.func,
+  toggleRequestResolved: PropTypes.func,
   toggleWrench: PropTypes.func
 }
 
