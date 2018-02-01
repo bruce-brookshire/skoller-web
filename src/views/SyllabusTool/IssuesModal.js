@@ -169,29 +169,35 @@ class IssuesModal extends React.Component {
     }
   }
 
-  /*
-  * Resolve the help tickets.
-  */
-  onResolve (helpTicket) {
-    const {cl} = this.props
-    if(helpTicket.hasOwnProperty('notes')){
-      actions.classhelp.resolveStudentRequest(helpTicket.id).then((res) => {
-        if(this.state.resolveValue){
-          actions.classes.updateClassStatus(cl,this.state.form).then((cl) => {
-            this.props.onSubmit(cl)
-            this.props.onClose()
-            this.setState({resolveValue: null})
-            browserHistory.push('/hub/landing')
-          }).catch(() => false)
-        }else{
-          actions.classes.getClassById(cl.id).then((cl) => {
-            this.props.onSubmit(cl)
-            this.props.onClose()
-          }).catch(() => false)
-        }
-      }).catch(() => false)
-    }else{
-      actions.classhelp.resolveIssue(helpTicket.id).then((helpTicket) => {
+  resolveStudentRequest(req){
+    actions.classhelp.resolveStudentRequest(req.id).then((res) => {
+      if(this.state.resolveValue){
+        // If the resolution requires a status change, make that happen
+        actions.classes.updateClassStatus(cl,this.state.form).then((cl) => {
+          this.props.onSubmit(cl)
+          this.props.onClose()
+          this.setState({resolveValue: null})
+          browserHistory.push('/hub/landing')
+        }).catch(() => false)
+      // The resolution did  not require a change to status, update the class
+      }else{
+        actions.classes.getClassById(cl.id).then((cl) => {
+          this.props.onSubmit(cl)
+          this.props.onClose()
+        }).catch(() => false)
+      }
+    }).catch(() => false)
+  }
+
+  resolveStandardHelpTicket(helpTicket){
+    actions.classhelp.resolveIssue(helpTicket.id).then((helpTicket) => {
+      if(this.state.resolveValue){
+        actions.classes.updateClassStatus(cl,this.state.form).then((cl) => {
+          this.props.onSubmit(cl)
+          this.props.onClose()
+          this.setState({value: '', note: '',resolveValue: null})
+        })
+      }else{
         let helpTickets = cl.help_requests
         const index = helpTickets.findIndex(h => h.id === helpTicket.id)
         helpTickets[index] = helpTicket
@@ -199,8 +205,22 @@ class IssuesModal extends React.Component {
         newCl.help_requests = helpTickets
         this.props.onSubmit(newCl)
         this.props.onClose()
-        this.setState({value: '', note: ''})
-      }).catch(() => false)
+        this.setState({value: '', note: '',resolveValue: null})
+      }
+    }).catch(() => false)
+  }
+
+  /*
+  * Resolve the help tickets.
+  */
+  onResolve (helpTicket) {
+    const {cl} = this.props
+    // If it has the 'notes' property this is really a 'student_request' but we treat it like a help request
+    if(helpTicket.hasOwnProperty('notes')){
+      this.resolveStudentRequest(helpTicket)
+    // Otherwise this is a standard help request that we resolve like any other issue
+    }else{
+      this.resolveStandardHelpTicket(helpTicket)
     }
   }
 

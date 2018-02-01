@@ -8,68 +8,6 @@ import actions from '../../actions'
 class RequestResolvedModal extends React.Component {
   constructor (props) {
     super(props)
-    this.options = ['Weights','Assignments','Review']
-    this.state = this.initializeState()
-  }
-
-  componentWillMount () {
-    actions.hub.getStatuses().then(statuses => {
-      this.setState({statuses: statuses.statuses, loading: false})
-    }).catch(() => { this.setState({loading: false}) })
-  }
-
-  /*
-  * Intitialize state
-  */
-  initializeState () {
-    return {
-      form: this.initializeFormData(),
-      loading: false,
-      statuses: [],
-      value: null
-    }
-  }
-
-  /*
-  * Intitialize form data.
-  * Status form data.
-  */
-  initializeFormData () {
-    const {cl} = this.props
-    return {
-      class_status_id: (cl.status && cl.status.id) || ''
-    }
-  }
-
-  getStatus(statusKey){
-    let arr = this.state.statuses.filter((s) => {
-      return s.name == statusKey
-    })
-    return arr[0]
-  }
-
-  /*
-  * Handle checkbox change.
-  */
-  onCheckboxChange (name,checked,value) {
-    let formCopy = this.state.form
-    if (checked && value == 'Weights') {
-      let status = this.getStatus(value)
-      formCopy.class_status_id = status.id
-      this.setState({form:formCopy,value: value})
-    } else if (checked && value == 'Assignments'){
-      let status = this.getStatus(value)
-      formCopy.class_status_id = status.id
-      this.setState({form:formCopy,value: value})
-    } else if (checked && value == 'Review') {
-      let status = this.getStatus(value)
-      formCopy.class_status_id = status.id
-      this.setState({form:formCopy,value: value})
-    } else if (checked && value == 'No Change Needed') {
-      this.setState({form:formCopy,value: value})
-    } else {
-      this.setState({value: null})
-    }
   }
 
   onResolve(){
@@ -80,31 +18,6 @@ class RequestResolvedModal extends React.Component {
         if(!this.props.request){ browserHistory.push('/hub/landing') }
       }).catch(() => false)
     }).catch(() => false)
-  }
-
-  renderFormOptions(){
-    let ind = 0
-    return this.options.map((opt) => {
-      ind++
-      return (
-        <CheckboxField
-        checked={this.state.val === opt}
-        value={this.state.val === opt}
-        label={opt}
-        name='issue_resolved_modal'
-        onChange={(name,checked) => this.onCheckboxChange(name,checked,opt)}
-        key={ind}/>
-      )
-    })
-  }
-
-  renderForm(){
-    return (
-      <div>
-        <h4 className="center-text">Fix the issue? If so, select the status this class needs to be changed to.</h4>
-        {this.renderFormOptions()}
-      </div>
-    )
   }
 
   renderContent(){
