@@ -37,6 +37,7 @@
 @import 'components/search';
 @import 'components/topnav';
 @import 'components/snackbar';
+@import 'components/student-request-modal';
 @import 'components/upload-history';
 @import 'components/upload-documents';
 @import 'components/progress-bar.scss';
@@ -181,6 +182,14 @@ body {
   }
 }
 
+.cn-red-background-alt {
+  background-color: red !important;
+  color: white;
+  &:hover {
+    background-color: lighten(red, 15%) !important;
+  }
+}
+
 
 .cn-green {
   color: #00C000;
@@ -249,4 +258,12 @@ body {
   &.center {
     align-items: center;
   }
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.relative {
+  position: relative;
 }
