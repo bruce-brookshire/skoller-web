@@ -78,13 +78,13 @@ class RequestResolvedModal extends React.Component {
       if(this.state.value == 'No Change Needed'){
         actions.classes.getClassById(cl.id).then((cl) => {
           this.props.onSubmit(cl)
-        }).catch((err) => console.log(err))
+        }).catch(() => false)
       }else{
         actions.classes.updateClassStatus(cl, this.state.form).then((cl) => {
           this.props.onSubmit(cl)
-        }).catch((err) => console.log(err))
+        }).catch(() => false)
       }
-    }).catch((err) => console.log(err))
+    }).catch(() => false)
   }
 
   onResolve(){
@@ -92,8 +92,8 @@ class RequestResolvedModal extends React.Component {
     actions.classhelp.resolveStudentRequest(this.props.request.id).then((res) => {
       actions.classes.getClassById(cl.id).then((cl) => {
         this.props.onSubmit(cl)
-      }).catch((err) => console.log(err))
-    }).catch((err) => console.log(err))
+      }).catch(() => false)
+    }).catch(() => false)
   }
 
   renderFormOptions(){

@@ -75,8 +75,8 @@ class SyllabusTool extends React.Component {
         currentDocumentIndex: 0,
         currentDocument: null,
       })
-      // Show documents deleted modal if all files deleted
-      if(this.state.documents.length == 0){
+      // Show documents deleted modal if all files deleted and not in "Complete" or "Change" status
+      if(this.state.documents.length == 0 && navbarStore.cl.status.name != 'Complete' && navbarStore.cl.status.name != 'Change'){
         this.toggleDocumentsDeletedModal()
       }
     }).catch(() => false)

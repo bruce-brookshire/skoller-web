@@ -2,6 +2,7 @@ import React from 'react'
 import {browserHistory} from 'react-router'
 import PropTypes from 'prop-types'
 import actions from '../../../actions'
+import Loading from '../../../components/Loading'
 import Modal from '../../../components/Modal/index'
 import {CheckboxField, TextAreaField} from '../../../components/Form'
 import UploadHistory from '../../../components/UploadHistory'
@@ -11,6 +12,7 @@ class StudentRequestModal extends React.Component {
     super(props)
 
     this.state = {
+      loading: false,
       options: [],
       step1Val: null,
       step2Val: null,
@@ -79,9 +81,10 @@ class StudentRequestModal extends React.Component {
   onSubmit(){
     let data = {}
     this.state.step2Val instanceof Array ? (data['files'] = this.state.step2Val) : (data['notes'] = this.state.step2Val)
+    this.setState({loading:true})
     actions.classhelp.createStudentRequest(this.props.cl.id,this.state.step1Val,data).then((res) => {
       res ? this.props.onSuccess() : this.props.onError()
-      this.setState({step1Val: null,step2Val: null})
+      this.setState({loading:false,step1Val: null,step2Val: null})
     })
   }
 
@@ -176,7 +179,8 @@ class StudentRequestModal extends React.Component {
         {this.renderContent()}
         <button
           className={`button full-width margin-top ${this.state.step1Val && this.state.step2Val && this.state.step2Val.length != 0 ? '' : 'disabled'}`}
-          onClick={() => { this.onSubmit() }}>Submit
+          onClick={() => { this.onSubmit() }}>
+          {this.state.loading ? (<Loading style={{color: 'white'}} />) : 'Submit' }
         </button>
       </Modal>
     )

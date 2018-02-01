@@ -7,9 +7,9 @@
 }
 
 .request-modal-message {
-  background: $cn-color-green;
+  background: white;
   border-radius: 5px;
-  color: white;
+  color: $cn-font-color;
   left: 50%;
   padding: 40px;
   position: absolute;
