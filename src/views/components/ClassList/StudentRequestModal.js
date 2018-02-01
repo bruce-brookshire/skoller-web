@@ -20,6 +20,7 @@ class StudentRequestModal extends React.Component {
   }
 
   componentDidMount () {
+    console.log(actions.classhelp)
     // Get possible option values on load
     actions.classhelp.getRequestTypes().then((res) => {
       this.setState({

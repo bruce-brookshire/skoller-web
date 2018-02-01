@@ -59,7 +59,7 @@ class ProjectFourDoor extends React.Component {
   */
   inReview(){
     const {cl} = this.props
-    return (cl.status && (cl.status.name === 'Assignments' || cl.status.name === 'Review' || cl.status.name === 'Help'))
+    return (cl.status && (cl.status.name === 'Assignments' || cl.status.name === 'Weights' || cl.status.name === 'Review' || cl.status.name === 'Help'))
   }
 
   /*
@@ -110,17 +110,20 @@ class ProjectFourDoor extends React.Component {
   renderContent () {
     const {userStore: {user: {student: {school: {is_diy_enabled, is_diy_preferred, is_auto_syllabus}}}}} = this.props.rootStore
 
-    // needs syllabus
-    if (this.needsSyllabus()) {
-      return this.renderNeedsSyllabus()
     // in review
-  }else if (this.inReview()) {
+    if (this.inReview()) {
       return this.renderInReview()
-    // normal
-    }else if (this.isComplete()) {
+    // complete
+    }
+    else if (this.isComplete()) {
       return this.renderComplete()
+    // needs syllabus
+    }
+    else if (this.needsSyllabus()) {
+      return this.renderNeedsSyllabus()
     // normal
-    }else if (is_diy_enabled && !is_diy_preferred && is_auto_syllabus) {
+    }
+    else if (is_diy_enabled && !is_diy_preferred && is_auto_syllabus) {
       return this.renderNormal()
     }
     // inverted

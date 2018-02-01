@@ -6,14 +6,6 @@ class StudentRequestForm extends React.Component {
   constructor (props) {
     super(props)
 
-    this.testData = [
-      {name:'Name',value:'John Kevin Moulton'},
-      {name:'Phone',value:'979-845-4953'},
-      {name:'Email',value:'jflkejw@tamu.edu'},
-      {name:'Office Location',value:'THOM 102B'},
-      {name:'Office Hours',value:'W 3:30-5, 8-8:30'},
-    ]
-
     this.state = {
       studentRequests: null
     }

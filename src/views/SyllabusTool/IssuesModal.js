@@ -1,12 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Modal from '../../components/Modal'
+import {CheckboxField} from '../../components/Form'
+import {browserHistory} from 'react-router'
 import actions from '../../actions'
 
 class IssuesModal extends React.Component {
   constructor (props) {
     super(props)
-    this.state = { value: '', note: '', helpTypes: [] }
+    this.options = ['Weights','Assignments','Review']
+    this.state = { value: '', note: '', helpTypes: [], form: {}, resolveValue: null, statuses: [] }
   }
 
   /*
@@ -16,6 +19,79 @@ class IssuesModal extends React.Component {
     actions.classhelp.getHelpTypes().then(helpTypes => {
       this.setState({helpTypes})
     }).catch(() => false)
+    actions.hub.getStatuses().then(statuses => {
+      this.setState({statuses: statuses.statuses})
+    }).catch(() => false)
+  }
+
+  getStatus(statusKey){
+    let arr = this.state.statuses.filter((s) => {
+      return s.name == statusKey
+    })
+    return arr[0]
+  }
+
+  /*
+  * Handle resolve checkbox change.
+  */
+  onResolveCheckboxChange (name,checked,value) {
+    let formCopy = this.state.form
+    if (checked && value == 'Weights') {
+      let status = this.getStatus(value)
+      formCopy.class_status_id = status.id
+      this.setState({form:formCopy,resolveValue: value})
+    } else if (checked && value == 'Assignments'){
+      let status = this.getStatus(value)
+      formCopy.class_status_id = status.id
+      this.setState({form:formCopy,resolveValue: value})
+    } else if (checked && value == 'Review') {
+      let status = this.getStatus(value)
+      formCopy.class_status_id = status.id
+      this.setState({form:formCopy,resolveValue: value})
+    } else if (checked && value == 'No Change Needed') {
+      this.setState({form:formCopy,resolveValue: value})
+    } else {
+      this.setState({resolveValue: null})
+    }
+  }
+
+  /*
+  * Resolve form options
+  */
+  renderResolveFormOptions(){
+    let ind = 0
+    return this.options.map((opt) => {
+      ind++
+      return (
+        <CheckboxField
+        checked={this.state.resolveValue === opt}
+        value={this.state.resolveValue === opt}
+        label={opt}
+        name='issue_resolved_modal'
+        onChange={(name,checked) => this.onResolveCheckboxChange(name,checked,opt)}
+        key={ind}/>
+      )
+    })
+  }
+
+  /*
+  * Resolve form
+  */
+  renderResolveForm(){
+    const openTickets = this.getOpenHelpTickets()
+    const helpTicket = openTickets[0]
+    return (
+      <div>
+        <h4 className="center-text">{helpTicket.note ? helpTicket.note : (helpTicket.notes ? helpTicket.notes : helpTicket.change_type.name)}</h4>
+        {openTickets.length == 1 ? (
+          <div>
+            <h5 className="center-text">Fix the issue? If so, select the status this class needs to be changed to.</h5>
+            {this.renderResolveFormOptions()}
+          </div>
+        ) : null}
+        <button className='button full-width margin-top' onClick={() => this.onResolve(helpTicket)}>Resolve</button>
+      </div>
+    )
   }
 
   /*
@@ -40,20 +116,6 @@ class IssuesModal extends React.Component {
         }
 
         <button className='button full-width margin-top cn-red-background' onClick={this.onSubmit.bind(this)}>Submit</button>
-      </div>
-    )
-  }
-
-  /*
-  * Render the issue if issue exitsts.
-  */
-  renderDescription () {
-    const {cl} = this.props
-    const helpTicket = this.getOpenHelpTickets()[0]
-    return (
-      <div>
-        <span>{helpTicket.note}</span>
-        <button className='button full-width margin-top' onClick={() => this.onResolve(helpTicket)}>Resolve</button>
       </div>
     )
   }
@@ -112,16 +174,34 @@ class IssuesModal extends React.Component {
   */
   onResolve (helpTicket) {
     const {cl} = this.props
-    actions.classhelp.resolveIssue(helpTicket.id).then((helpTicket) => {
-      let helpTickets = cl.help_requests
-      const index = helpTickets.findIndex(h => h.id === helpTicket.id)
-      helpTickets[index] = helpTicket
-      let newCl = {...cl}
-      newCl.help_requests = helpTickets
-      this.props.onSubmit(newCl)
-      this.props.onClose()
-      this.setState({value: '', note: ''})
-    }).catch(() => false)
+    if(helpTicket.hasOwnProperty('notes')){
+      actions.classhelp.resolveStudentRequest(helpTicket.id).then((res) => {
+        if(this.state.resolveValue){
+          actions.classes.updateClassStatus(cl,this.state.form).then((cl) => {
+            this.props.onSubmit(cl)
+            this.props.onClose()
+            this.setState({resolveValue: null})
+            browserHistory.push('/hub/landing')
+          }).catch(() => false)
+        }else{
+          actions.classes.getClassById(cl.id).then((cl) => {
+            this.props.onSubmit(cl)
+            this.props.onClose()
+          }).catch(() => false)
+        }
+      }).catch(() => false)
+    }else{
+      actions.classhelp.resolveIssue(helpTicket.id).then((helpTicket) => {
+        let helpTickets = cl.help_requests
+        const index = helpTickets.findIndex(h => h.id === helpTicket.id)
+        helpTickets[index] = helpTicket
+        let newCl = {...cl}
+        newCl.help_requests = helpTickets
+        this.props.onSubmit(newCl)
+        this.props.onClose()
+        this.setState({value: '', note: ''})
+      }).catch(() => false)
+    }
   }
 
   /*
@@ -129,7 +209,9 @@ class IssuesModal extends React.Component {
   */
   getOpenHelpTickets () {
     const {cl} = this.props
-    return cl.help_requests.filter(h => !h.is_completed)
+    let hr = cl.help_requests.filter(h => !h.is_completed)
+    let sr = cl.student_requests.filter(h => !h.is_completed)
+    return hr.concat(sr)
   }
 
   render () {
@@ -140,27 +222,9 @@ class IssuesModal extends React.Component {
         onClose={() => this.props.onClose()}
       >
         <div>
-          {this.getOpenHelpTickets().length === 0 ? this.renderForm() : this.renderDescription()}
-          <button className='button-invert close full-width margin-top margin-bottom' onClick={() => this.props.onClose()}>Close</button>
+          {this.getOpenHelpTickets().length === 0 ? this.renderForm() : this.renderResolveForm()}
         </div>
       </Modal>
-    )
-  }
-}
-
-class CheckboxField extends React.Component {
-  render () {
-    const {checked, label, onChange,} = this.props
-    return (
-      <label>
-        <input
-          className='margin-right'
-          checked={checked}
-          onChange={(event) => onChange(event)}
-          type='checkbox'
-        />
-        {label}
-      </label>
     )
   }
 }

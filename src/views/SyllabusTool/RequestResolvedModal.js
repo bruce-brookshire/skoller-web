@@ -1,4 +1,5 @@
 import React from 'react'
+import {browserHistory} from 'react-router'
 import PropTypes from 'prop-types'
 import Modal from '../../components/Modal'
 import {CheckboxField, TextAreaField} from '../../components/Form'
@@ -12,7 +13,6 @@ class RequestResolvedModal extends React.Component {
   }
 
   componentWillMount () {
-    if(this.props.cl.status.name == 'Change'){this.options.push('No Change Needed')}
     actions.hub.getStatuses().then(statuses => {
       this.setState({statuses: statuses.statuses, loading: false})
     }).catch(() => { this.setState({loading: false}) })
@@ -72,26 +72,12 @@ class RequestResolvedModal extends React.Component {
     }
   }
 
-  onSubmit(){
-    const {cl} = this.props
-    actions.classhelp.resolveStudentRequest(this.props.request.id).then((res) => {
-      if(this.state.value == 'No Change Needed'){
-        actions.classes.getClassById(cl.id).then((cl) => {
-          this.props.onSubmit(cl)
-        }).catch(() => false)
-      }else{
-        actions.classes.updateClassStatus(cl, this.state.form).then((cl) => {
-          this.props.onSubmit(cl)
-        }).catch(() => false)
-      }
-    }).catch(() => false)
-  }
-
   onResolve(){
     const {cl} = this.props
     actions.classhelp.resolveStudentRequest(this.props.request.id).then((res) => {
       actions.classes.getClassById(cl.id).then((cl) => {
         this.props.onSubmit(cl)
+        if(!this.props.request){ browserHistory.push('/hub/landing') }
       }).catch(() => false)
     }).catch(() => false)
   }
@@ -122,17 +108,7 @@ class RequestResolvedModal extends React.Component {
   }
 
   renderContent(){
-    if(this.props.lastRequest){
-      return (
-        <div>
-          {this.renderForm()}
-          <button
-            className={`button full-width margin-top ${this.state.value ? '' : 'disabled'}`}
-            onClick={() => { this.onSubmit() }}>Submit
-          </button>
-        </div>
-      )
-    }else if(this.props.request){
+    if(this.props.request){
       return (
         <div>
           {this.props.request.notes ? (<h4 className="center-text">{this.props.request.notes}</h4>) : null}
@@ -165,7 +141,6 @@ RequestResolvedModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   open: PropTypes.bool,
-  lastRequest: PropTypes.bool,
   request: PropTypes.object,
 }
 

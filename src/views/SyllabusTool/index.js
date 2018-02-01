@@ -481,7 +481,9 @@ class SyllabusTool extends React.Component {
         cl={navbarStore.cl}
         open={this.state.openIssuesModal}
         onClose={this.toggleIssuesModal.bind(this)}
-        onSubmit={this.updateClass.bind(this)}
+        onSubmit={(cl) => {
+          this.updateClass(cl)
+        }}
       />
     )
   }
@@ -495,7 +497,6 @@ class SyllabusTool extends React.Component {
       <RequestResolvedModal
         cl={navbarStore.cl}
         open={this.state.openRequestResolvedModal}
-        lastRequest={openRequests.length == 1}
         onClose={this.toggleRequestResolvedModal.bind(this)}
         onSubmit={(cl) => {
           this.updateClass(cl)
@@ -726,15 +727,6 @@ class SyllabusTool extends React.Component {
               <div>
                 {this.renderEnrollment()}
                 {this.renderHavingIssues()}
-              </div>
-              {this.renderStatusForm()}
-              <div className='horizontal-align-row margin-top margin-right margin-left middle-xs center-xs'>
-                <button
-                  className={`button col-xs-12 ${completeClass} ${disabledClass}`}
-                  style={{flex: '100 1 auto'}}
-                  disabled={disableButton}
-                  onClick={this.onNext.bind(this)}
-                >{this.renderButtonText()}</button>
               </div>
 
               {this.renderProgressBar()}
