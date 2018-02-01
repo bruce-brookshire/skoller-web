@@ -177,7 +177,12 @@ class IssuesModal extends React.Component {
           this.props.onSubmit(cl)
           this.props.onClose()
           this.setState({resolveValue: null})
-          browserHistory.push('/hub/landing')
+          browserHistory.push({
+            pathname: '/hub/classes',
+            state: {
+              needsHelp: true
+            }
+          })
         }).catch(() => false)
       // The resolution did  not require a change to status, update the class
       }else{

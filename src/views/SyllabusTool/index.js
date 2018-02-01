@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import {browserHistory} from 'react-router'
 import Assignments from '../components/ClassEditor/Assignments'
-import StudentRequestForm from './StudentRequestForm'
 import ClassForm from './ClassForm'
 import FileViewer from '../../components/FileViewer'
 import GradeScale from '../components/ClassEditor/GradeScale'
@@ -308,7 +307,9 @@ class SyllabusTool extends React.Component {
   * Gets array of all student requests yet to be completed
   */
   openStudentRequests(){
-    return navbarStore.cl.student_requests.filter(c => !c.is_completed)
+    const sr = navbarStore.cl.student_requests.filter(c => !c.is_completed)
+    const cr = navbarStore.cl.change_requests.filter(c => !c.is_completed)
+    return sr.concat(cr)
   }
 
   /*
@@ -441,17 +442,6 @@ class SyllabusTool extends React.Component {
           className='having-issues cn-red'
           onClick={this.toggleIssuesModal.bind(this)}
         >Having issues?</a>
-    )
-  }
-
-  /*
-  * Render the student request form.
-  */
-  renderStudentRequestForm () {
-    return (
-      <StudentRequestForm
-        cl={navbarStore.cl}>
-      </StudentRequestForm>
     )
   }
 
@@ -722,7 +712,6 @@ class SyllabusTool extends React.Component {
               {this.renderContent()}
             </div>
             {this.renderSectionTabs()}
-            {navbarStore.cl && this.renderStudentRequestForm()}
             <div className='cn-section-footer'>
               <div>
                 {this.renderEnrollment()}

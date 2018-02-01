@@ -5,15 +5,12 @@ import actions from '../../actions'
 class StudentRequestForm extends React.Component {
   constructor (props) {
     super(props)
-
-    this.state = {
-      studentRequests: null
-    }
   }
 
   componentWillMount () {
+    const open = this.getOpenStudentRequests()
     this.setState({
-      studentRequests: this.getOpenStudentRequests()
+      studentRequests: open
     })
   }
 
@@ -22,26 +19,33 @@ class StudentRequestForm extends React.Component {
   */
   getOpenStudentRequests () {
     const {cl} = this.props
-    return cl.student_requests.filter(c => !c.is_completed)
+    const sr = cl.student_requests.filter(c => !c.is_completed)
+    const cr = cl.change_requests.filter(c => !c.is_completed)
+    return sr.concat(cr)
   }
 
   renderTitle(){
     return (
       <h5 className='student-request-title' style={{margin: '0.5em 0'}}>
         <span className='student-request-type'>Student Request</span>
-        {this.state.studentRequests[0] && this.state.studentRequests[0].user ? (<span className='student-request-user'> from {this.state.studentRequests[0].user.name}</span>) : null}
+        {this.state.studentRequests[0] && this.state.studentRequests[0].user.name ? (<span className='student-request-user'> from {this.state.studentRequests[0].user.name}</span>) : null}
       </h5>
     )
   }
 
   renderStudentRequestFields(fields){
-    return fields.map((field, index) => {
-      return (
-        <div className='student-request-field row' key={index}>
-          <em className='col-xs-6'>{field.name}</em>
-          <span className='col-xs-6'>{field.value}</span>
-        </div>
-      )
+    return Object.keys(fields).map((field, index) => {
+      let val = fields[field]
+      let formattedField = field.replace(/_/g,' ')
+      let finalFormat = formattedField.charAt(0).toUpperCase() + formattedField.slice(1)
+      if(val && field != 'id'){
+        return (
+          <div className='student-request-field row' key={index}>
+            <em className='col-xs-6'>{finalFormat}</em>
+            <span className='col-xs-6'>{val}</span>
+          </div>
+        )
+      }
     })
   }
 
