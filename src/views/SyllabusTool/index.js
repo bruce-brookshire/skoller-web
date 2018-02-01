@@ -74,9 +74,9 @@ class SyllabusTool extends React.Component {
         currentDocumentIndex: 0,
         currentDocument: null,
       })
-      // Show status change modal if all files deleted
+      // Show documents deleted modal if all files deleted
       if(this.state.documents.length == 0){
-
+        this.toggleDocumentsDeletedModal()
       }
     }).catch(() => false)
   }
@@ -112,7 +112,7 @@ class SyllabusTool extends React.Component {
       isSW: state.isSW || false,
       loadingClass: true,
       locks: [],
-      openDocumentsDeletedModal: true,
+      openDocumentsDeletedModal: false,
       openEditClassModal: false,
       openIssuesModal: false,
       openStudentRequest: false,
@@ -456,7 +456,7 @@ class SyllabusTool extends React.Component {
         cl={navbarStore.cl}
         open={this.state.openDocumentsDeletedModal}
         onClose={this.toggleDocumentsDeletedModal.bind(this)}
-        onSubmit={this.updateClass.bind(this)}
+        onSubmit={(cl) => {this.toggleDocumentsDeletedModal();this.updateClass(cl)} }
       />
     )
   }
