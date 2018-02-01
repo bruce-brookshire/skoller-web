@@ -6,6 +6,7 @@ import Loading from '../../../components/Loading'
 import actions from '../../../actions'
 import {mapProfessor} from '../../../utilities/display'
 import {mapTimeToDisplay} from '../../../utilities/time'
+import {inject, observer} from 'mobx-react'
 
 const headers = [
   {
@@ -50,6 +51,7 @@ const headers = [
   }
 ]
 
+@inject('rootStore') @observer
 class HubClasses extends React.Component {
   constructor (props) {
     super(props)
@@ -149,9 +151,20 @@ class HubClasses extends React.Component {
     browserHistory.push({
       pathname: `/class/${cl.id}/syllabus_tool`,
       state: {
-        isAdmin: true
+        isAdmin: this.isAdminUser(),
+        isSW: this.isSW(),
       }
     })
+  }
+
+  isAdminUser () {
+    const {userStore} = this.props.rootStore
+    return userStore.isAdmin()
+  }
+
+  isSW () {
+    const {userStore} = this.props.rootStore
+    return userStore.isSW()
   }
 
   render () {
