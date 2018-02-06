@@ -77,6 +77,15 @@ class ClassInfo extends React.Component {
     }
   }
 
+  renderApproval() {
+    const {cl} = this.props
+    return (
+      <div className='margin-left'>
+        <i className='fa fa-thumbs-o-up cn-blue cursor' onClick={() => this.props.approveClass(cl)} />
+      </div>
+    )
+  }
+
   render () {
     return (
         <div className='header-container'>
@@ -85,8 +94,9 @@ class ClassInfo extends React.Component {
             {this.renderClassIssue()}
             <h2>{this.props.cl && this.props.cl.name}</h2>
             {this.props.isAdmin && <div className='margin-left'>
-            <i className='fa fa-pencil cn-blue cursor' onClick={() => this.props.onEdit()} />
-          </div>}
+              <i className='fa fa-pencil cn-blue cursor' onClick={() => this.props.onEdit()} />
+            </div>}
+            {this.props.isAdmin && this.props.cl.status.name == 'New Class' && this.renderApproval()}
           {this.renderWrench()}
         </div>
         {this.renderClassDetails()}
@@ -96,6 +106,7 @@ class ClassInfo extends React.Component {
 }
 
 ClassInfo.propTypes = {
+  approveClass: PropTypes.func,
   cl: PropTypes.object.isRequired,
   isAdmin: PropTypes.bool,
   isDIY: PropTypes.bool,

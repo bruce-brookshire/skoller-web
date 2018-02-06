@@ -220,6 +220,30 @@ export function updateClass (form) {
 }
 
 /*
+* Approve class
+*
+* @param [Object] cl. Class to approve.
+*/
+export function approveClass (cl) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}/approve`, {
+    method: 'POST',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    },
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      showSnackbar('Class approved.', 'info')
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error approving class. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
 * Update a class status
 *
 * @param [Object] cl. Class to update.

@@ -76,6 +76,31 @@ class HubClasses extends React.Component {
   }
 
   /*
+  * Get the classes for class search when 'New Class' status
+  * This is different from getClasses as it requires two db queries to get all the records
+  *
+  * @param [String] queryString. String to query classes.
+  */
+  getApprovalClasses (queryString) {
+    this.setState({loading: true})
+    // Get Approvals
+    actions.classes.searchClasses(queryString).then(approvalClasses => {
+      let idx = 1
+      this.setState({classes: approvalClasses, loading: false})
+      // Get all the approval's professor classes
+      approvalClasses.forEach((c) => {
+        let professorQueryString = `professor_id=${c.professor.id}`
+        actions.classes.searchClasses(professorQueryString).then(professorClasses => {
+          let newArr = this.state.classes
+          professorClasses.forEach((pc) => { if(pc.status != 'New Class') newArr.splice(idx,0,pc) })
+          this.setState({classes: newArr})
+        })
+        idx++
+      })
+    }).catch(() => { this.setState({loading: false}) })
+  }
+
+  /*
   * Row data to be passed to the grid
   *
   * @return [Array]. Array of formatted row data.
@@ -124,8 +149,10 @@ class HubClasses extends React.Component {
   mapStatus (status) {
     if (status)
       status = status.toLowerCase()
-    if (status === 'new class' || status === 'needs syllabus') {
-      return <span className='cn-red'> UPLOAD SYLLABUS </span>
+    if (status === 'new class') {
+      return <span className='cn-red'>NEEDS APPROVAL</span>
+    } else if (status === 'needs syllabus') {
+      return <span className='cn-red'>UPLOAD SYLLABUS</span>
     } else if (status === 'weights' || status === 'assignments' || status === 'review') {
       return <span className = 'cn-grey'>RECEIVED</span>
     } else if (status === 'help') {
@@ -179,17 +206,51 @@ class HubClasses extends React.Component {
     return userStore.isChangeReq()
   }
 
+  getHeaderText(state) {
+    if(state.needsHelp){
+      return 'Classes in review that need help'
+    }else if (state.needsChange){
+      return 'Completed classes with a change request'
+    }else if (state.needsMaint){
+      return 'Classes currently under maintenance'
+    }else if (state.needsApproval){
+      return 'Classes that need to be approved'
+    }
+  }
+
+  renderHeader() {
+    const {state} = this.props.location
+    // If the class is in any of these states, don't show the search bar
+    const boole = state && (state.needsHelp || state.needsChange || state.needsMaint || state.needsApproval)
+    return boole ? (
+      <div className='margin-bottom'>
+        <h2 className='center-text' style={{marginBottom: 0}}>{this.getHeaderText(state)}</h2>
+        <ClassSearch {...this.props} loading={this.state.loading}
+                      onApprovalsSearch={this.getApprovalClasses.bind(this)}
+                      onSearch={this.getClasses.bind(this)} hidden={true}/>
+        <div className='margin-top'>
+          <span className='total right'>Total results: {this.state.classes.length}</span>
+        </div>
+      </div>
+    ) : (
+      <div className='margin-bottom'>
+        <h2 className='center-text' style={{marginBottom: 0}}>Class Search</h2>
+        <ClassSearch {...this.props} loading={this.state.loading}
+                    onApprovalsSearch={this.getApprovalClasses.bind(this)}
+                    onSearch={this.getClasses.bind(this)}/>
+        <div className='margin-top'>
+          <a onClick={this.onCreateClass.bind(this)}>Create new class </a>
+          <span className='description'>Manage classes from this page</span>
+          <span className='total right'>Total results: {this.state.classes.length}</span>
+        </div>
+      </div>
+    )
+  }
+
   render () {
     return (
       <div className='cn-classes-container'>
-        <div className='margin-bottom'>
-          <h2 className='center-text' style={{marginBottom: 0}}>Class Search</h2>
-          <ClassSearch {...this.props} loading={this.state.loading} onSearch={this.getClasses.bind(this)}/>
-          <div className='margin-top'>
-            <a onClick={this.onCreateClass.bind(this)}>Create new class </a>
-            <span className='description'>Manage classes from this page</span>
-          </div>
-        </div>
+        {this.renderHeader()}
         {this.state.loading ? <div className='center-text'><Loading /></div> :
           <Grid
             className='cn-classes-table'
