@@ -139,7 +139,7 @@ class ClassSearch extends React.Component {
       } else if (this.state.searchField && this.state.searchValue) {
         params = `${this.state.searchField}=${this.state.searchValue}`
       }
-      this.props.onSearch(params)
+      this.state.searchField == 'class_status' && this.state.searchValue == 100 ? this.props.onApprovalsSearch(params) : this.props.onSearch(params)
     }
   }
 
@@ -147,7 +147,7 @@ class ClassSearch extends React.Component {
     let disabled = !(this.state.schoolId || (this.state.searchField && this.state.searchValue))
     if (this.state.searchField && !this.state.searchValue) disabled = true
     const disabledClass = disabled ? 'disabled' : ''
-    return (
+    return this.props.hidden ? null : (
       <div>
         <div className='row'>
           <div className='col-xs-12 col-sm-3 margin-top'>
