@@ -8,7 +8,7 @@ import actions from '../../../../actions'
 
 const headers = [
   {
-    field: 'user',
+    field: 'userLink',
     display: 'User'
   },
   {
@@ -27,6 +27,10 @@ class Chat extends React.Component {
     this.state = this.initializeState()
   }
 
+  componentWillMount () {
+    this.initPosts()
+  }
+
   /*
   * Method for intializing the state.
   *
@@ -39,8 +43,30 @@ class Chat extends React.Component {
     }
   }
 
-  onAccountSelect (user) {
-    browserHistory.push({pathname: '/hub/accounts/account/info', state: {user}})
+  /*
+  * Get all posts for the class and populate state with them
+  */
+  initPosts() {
+    actions.chat.getClassPosts(this.props.cl).then((posts) => {
+      this.setState({posts})
+    })
+  }
+
+  /*
+  * Navigate to the account info page on clicking a user's account
+  */
+  onAccountSelect(data) {
+    browserHistory.push({pathname: '/hub/accounts/account/info', state: {data.user}})
+  }
+
+
+  /*
+  * Deletes the given post from the class and updates the posts on success
+  */
+  onDeletePost(data) {
+    actions.chat.deleteClassPost(this.props.cl,data.post).then((cl) => {
+      this.initPosts()
+    })
   }
 
   /*
@@ -77,11 +103,13 @@ class Chat extends React.Component {
     const row = {
       id: id || '',
       actions: <a onClick={() => { this.onDeletePost(item) }}><i className='fa fa-trash cn-red'/></a>,
-      user: this.userLink(item),
+      userLink: this.userLink(item),
       content: item.post ? item.post : '',
+      user: item.user,
+      post: item,
     }
 
-    return {}
+    return row
   }
 
   render () {
@@ -90,6 +118,10 @@ class Chat extends React.Component {
         <Grid
           headers={headers}
           rows={this.getRows()}
+          canDelete={true}
+          canSelect={true}
+          onDelete={this.onDeletePost.bind(this)}
+          onSelect={this.onAccountSelect.bind(this)}
         />
       </div>
     )
