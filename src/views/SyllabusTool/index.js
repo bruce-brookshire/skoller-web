@@ -649,7 +649,7 @@ class SyllabusTool extends React.Component {
   * Approve the given class
   */
   approveClass (cl) {
-    actions.syllabusworkers.approveClass(cl).then((cl) => {
+    actions.classes.approveClass(cl).then((cl) => {
       this.updateClass(cl)
     })
   }
