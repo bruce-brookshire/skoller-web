@@ -9,6 +9,8 @@ import GradeScale from '../components/ClassEditor/GradeScale'
 import DocumentsDeletedModal from './DocumentsDeletedModal'
 import IssuesModal from './IssuesModal'
 import RequestResolvedModal from './RequestResolvedModal'
+import HelpNeededInfo from './HelpNeededInfo'
+import StudentRequestInfo from './StudentRequestInfo'
 import Loading from '../../components/Loading'
 import Modal from '../../components/Modal'
 import Professor from '../components/ClassEditor/Professor'
@@ -154,6 +156,13 @@ class SyllabusTool extends React.Component {
   */
   isChangeRequest(){
     return navbarStore.cl && navbarStore.cl.status && navbarStore.cl.status.name == 'Change' ? true : false
+  }
+
+  /*
+  * Determine if class is in "Help" status
+  */
+  isHelpNeeded(){
+    return navbarStore.cl && navbarStore.cl.status && navbarStore.cl.status.name == 'Help' ? true : false
   }
 
   /*
@@ -543,6 +552,32 @@ class SyllabusTool extends React.Component {
   }
 
   /*
+  * Render the student request info
+  */
+  renderStudentRequest() {
+    if ((this.state.isAdmin || this.state.isSW) && this.isChangeRequest()) {
+      return (
+        <div className='cn-status-form'>
+          <StudentRequestInfo cl={navbarStore.cl}/>
+        </div>
+      )
+    }
+  }
+
+  /*
+  * Render the help needed info
+  */
+  renderHelpNeeded() {
+    if ((this.state.isAdmin || this.state.isSW) && this.isHelpNeeded()) {
+      return (
+        <div className='cn-status-form'>
+          <HelpNeededInfo cl={navbarStore.cl}/>
+        </div>
+      )
+    }
+  }
+
+  /*
   * On syllabus section done.
   */
   onNext () {
@@ -716,6 +751,8 @@ class SyllabusTool extends React.Component {
             {this.renderSectionTabs()}
             <div className='cn-section-footer'>
               <div>
+                {this.renderStudentRequest()}
+                {this.renderHelpNeeded()}
                 {this.renderEnrollment()}
                 {this.renderHavingIssues()}
               </div>

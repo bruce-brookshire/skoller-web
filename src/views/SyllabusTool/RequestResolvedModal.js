@@ -3,7 +3,6 @@ import {browserHistory} from 'react-router'
 import PropTypes from 'prop-types'
 import Modal from '../../components/Modal'
 import {CheckboxField, TextAreaField} from '../../components/Form'
-import StudentRequestForm from './StudentRequestForm'
 import actions from '../../actions'
 
 class RequestResolvedModal extends React.Component {
@@ -55,15 +54,21 @@ class RequestResolvedModal extends React.Component {
     }
   }
 
+  onCancel(){
+    this.props.onClose()
+  }
+
   renderContent(){
     if(this.props.request){
       return (
         <div>
-          {this.props.request.notes ? (<h4 className="center-text">{this.props.request.notes}</h4>) : (this.props.request.hasOwnProperty('note') ? <StudentRequestForm cl={this.props.cl}/> : null)}
-          {this.props.request.change_type.name ? (<h5 className="center-text">Change Type: {this.props.request.change_type.name}</h5>) : null}
           <button
-            className={`button full-width margin-top`}
+            className={`button full-width`}
             onClick={() => { this.onResolve() }}>Resolve
+          </button>
+          <button
+            className={`button-invert full-width margin-top`}
+            onClick={() => { this.onCancel() }}>Cancel
           </button>
         </div>
       )

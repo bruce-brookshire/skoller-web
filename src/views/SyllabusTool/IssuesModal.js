@@ -90,6 +90,10 @@ class IssuesModal extends React.Component {
           </div>
         ) : null}
         <button className='button full-width margin-top' onClick={() => this.onResolve(helpTicket)}>Resolve</button>
+        <button
+          className={`button-invert full-width margin-top`}
+          onClick={() => { this.onCancel() }}>Cancel
+        </button>
       </div>
     )
   }
@@ -116,6 +120,10 @@ class IssuesModal extends React.Component {
         }
 
         <button className='button full-width margin-top cn-red-background' onClick={this.onSubmit.bind(this)}>Submit</button>
+        <button
+          className={`button-invert full-width margin-top`}
+          onClick={() => { this.onCancel() }}>Cancel
+        </button>
       </div>
     )
   }
@@ -228,6 +236,13 @@ class IssuesModal extends React.Component {
     }else{
       this.resolveStandardHelpTicket(helpTicket)
     }
+  }
+
+  /*
+  * Cancel resolution
+  */
+  onCancel(){
+    this.props.onClose()
   }
 
   /*

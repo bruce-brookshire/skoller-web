@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import actions from '../../actions'
 
-class StudentRequestForm extends React.Component {
+class StudentRequestInfo extends React.Component {
   constructor (props) {
     super(props)
   }
@@ -26,9 +26,10 @@ class StudentRequestForm extends React.Component {
 
   renderTitle(){
     return (
-      <h5 className='student-request-title' style={{margin: '0.5em 0'}}>
-        <span className='student-request-type'>Student Request</span>
+      <h5 className='student-request-title center-text' style={{margin: '0.5em 0'}}>
+        <span className='student-request-type'>Student Request</span><br/>
         {this.state.studentRequests[0] && this.state.studentRequests[0].user.name ? (<span className='student-request-user'> from {this.state.studentRequests[0].user.name}</span>) : null}
+        <span>Change Type: {this.state.studentRequests[0].change_type.name}</span><br/>
       </h5>
     )
   }
@@ -76,8 +77,8 @@ class StudentRequestForm extends React.Component {
   }
 }
 
-StudentRequestForm.propTypes = {
+StudentRequestInfo.propTypes = {
   cl: PropTypes.object.isRequired,
 }
 
-export default StudentRequestForm
+export default StudentRequestInfo
