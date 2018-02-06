@@ -28,8 +28,7 @@ class StudentRequestInfo extends React.Component {
     return (
       <h5 className='student-request-title center-text' style={{margin: '0.5em 0'}}>
         <span className='student-request-type'>Student Request</span><br/>
-        {this.state.studentRequests[0] && this.state.studentRequests[0].user.name ? (<span className='student-request-user'> from {this.state.studentRequests[0].user.name}</span>) : null}
-        <span>Change Type: {this.state.studentRequests[0].change_type.name}</span><br/>
+        <span>{this.state.studentRequests[0].change_type.name}</span><br/>
       </h5>
     )
   }
@@ -62,15 +61,17 @@ class StudentRequestInfo extends React.Component {
 
   render () {
     const {cl} = this.props
-    if(this.state.studentRequests && this.state.studentRequests[0] && this.state.studentRequests[0].data){
+    if(this.state.studentRequests && this.state.studentRequests[0]){
       return (
         <div className='cn-section-control' style={{margin: '10px 0',maxHeight: '12em'}}>
           {this.renderTitle()}
-          <div className='row'>
-            <div className='col-xs-12'>
-              {this.renderContent()}
+          {this.state.studentRequests[0].data ? (
+            <div className='row'>
+              <div className='col-xs-12'>
+                {this.renderContent()}
+              </div>
             </div>
-          </div>
+          ) : null}
         </div>
       )
     } else { return null }
