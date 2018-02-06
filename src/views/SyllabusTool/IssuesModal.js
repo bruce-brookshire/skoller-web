@@ -138,7 +138,7 @@ class IssuesModal extends React.Component {
           <CheckboxField
             checked={this.state.value === helpType.id}
             label={helpType.name}
-            onChange={(event) => this.onCheckboxChange(event, helpType.id)}
+            onChange={(name,checked) => this.onCheckboxChange(name,checked,helpType.id)}
           />
         </div>
       )
@@ -151,8 +151,8 @@ class IssuesModal extends React.Component {
   * @param [Event] event. The onchange event for checkbox input.
   * @param [String] value. The label value of the checkbox.
   */
-  onCheckboxChange (event, value) {
-    if (event.target.checked) {
+  onCheckboxChange (name, checked, value) {
+    if (checked) {
       this.setState({value, other: ''})
     } else {
       this.setState({value: '', other: ''})
@@ -263,7 +263,7 @@ class IssuesModal extends React.Component {
         onClose={() => this.props.onClose()}
       >
         <div>
-          {this.getOpenHelpTickets().length === 0 ? this.renderForm() : this.renderResolveForm()}
+          {this.props.isSW ? this.renderForm() : this.renderResolveForm()}
         </div>
       </Modal>
     )
@@ -274,7 +274,8 @@ IssuesModal.propTypes = {
   cl: PropTypes.object.isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  open: PropTypes.bool
+  open: PropTypes.bool,
+  isSW: PropTypes.bool,
 }
 
 export default IssuesModal

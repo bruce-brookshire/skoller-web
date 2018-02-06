@@ -480,10 +480,12 @@ class SyllabusTool extends React.Component {
     return (
       <IssuesModal
         cl={navbarStore.cl}
+        isSW={this.state.isSW}
         open={this.state.openIssuesModal}
         onClose={this.toggleIssuesModal.bind(this)}
         onSubmit={(cl) => {
           this.updateClass(cl)
+          if(this.state.isSW){this.handleSWNext()}
         }}
       />
     )
