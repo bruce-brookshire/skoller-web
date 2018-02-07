@@ -7,7 +7,9 @@ class NavBarStore {
       isDIY: false,
       toggleEditCl: null,
       toggleWrench: null,
-      toggleIssues: null
+      toggleIssues: null,
+      toggleHelpResolved: null,
+      toggleRequestResolved: null,
     })
   }
 }

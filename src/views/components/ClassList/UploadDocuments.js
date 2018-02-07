@@ -182,7 +182,7 @@ class UploadDocuments extends React.Component {
       <div className='cn-upload-documents-container'>
         <h4 className='center-text' style={{marginBottom:'-10px',marginTop: '15px'}}>{this.props.cl.name}</h4>
         {this.renderDuplicateFileMessage()}
-        <div className='row'>
+        <div className='row relative'>
           <div className='col-xs-3 vertical-align'>
             <h4>Finish up this class.</h4>
             <span className='info-1'>Upload documents and review syllabi.</span>

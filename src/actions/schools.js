@@ -54,7 +54,7 @@ export function getFieldsOfStudy (schoolId, query) {
 * Get minified counts
 */
 export function getHubSchoolsMinified () {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/schools`, {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/school/list`, {
     method: 'GET',
     headers: {
       'Authorization': userStore.authToken,

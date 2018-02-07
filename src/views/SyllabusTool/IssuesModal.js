@@ -52,7 +52,6 @@ class IssuesModal extends React.Component {
     const helpTicket = this.getOpenHelpTickets()[0]
     return (
       <div>
-        <span>{helpTicket.note}</span>
         <button className='button full-width margin-top' onClick={() => this.onResolve(helpTicket)}>Resolve</button>
       </div>
     )

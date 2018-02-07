@@ -6,7 +6,12 @@ import Assignments from '../components/ClassEditor/Assignments'
 import ClassForm from './ClassForm'
 import FileViewer from '../../components/FileViewer'
 import GradeScale from '../components/ClassEditor/GradeScale'
+import DocumentsDeletedModal from './DocumentsDeletedModal'
+import HelpResolvedModal from './HelpResolvedModal'
 import IssuesModal from './IssuesModal'
+import RequestResolvedModal from './RequestResolvedModal'
+import HelpNeededInfo from './HelpNeededInfo'
+import StudentRequestInfo from './StudentRequestInfo'
 import Loading from '../../components/Loading'
 import Modal from '../../components/Modal'
 import Professor from '../components/ClassEditor/Professor'
@@ -35,6 +40,8 @@ class SyllabusTool extends React.Component {
     navbarStore.toggleEditCl = this.toggleEditClassModal.bind(this)
     navbarStore.toggleWrench = this.toggleWrench.bind(this)
     navbarStore.toggleIssues = this.toggleIssuesModal.bind(this)
+    navbarStore.toggleHelpResolved = this.toggleHelpResolvedModal.bind(this)
+    navbarStore.toggleRequestResolved = this.toggleRequestResolvedModal.bind(this)
     this.state = this.initializeState()
   }
 
@@ -55,6 +62,8 @@ class SyllabusTool extends React.Component {
     navbarStore.toggleEditCl = null
     navbarStore.toggleWrench = null
     navbarStore.toggleIssues = null
+    navbarStore.toggleHelpResolved = null
+    navbarStore.toggleRequestResolved = null
     this.unlockClass()
   }
 
@@ -70,6 +79,10 @@ class SyllabusTool extends React.Component {
         currentDocumentIndex: 0,
         currentDocument: null,
       })
+      // Show documents deleted modal if all files deleted and not in "Complete" or "Change" status
+      if(this.state.documents.length == 0 && navbarStore.cl.status.name != 'Complete' && navbarStore.cl.status.name != 'Change'){
+        this.toggleDocumentsDeletedModal()
+      }
     }).catch(() => false)
   }
 
@@ -100,12 +113,17 @@ class SyllabusTool extends React.Component {
       documents: [],
       gettingClass: false,
       isAdmin: state.isAdmin || false,
+      isChangeReq: state.isChangeReq || false,
+      isHelpReq: state.isHelpReq || false,
       isReviewer: state.isReviewer || false,
       isSW: state.isSW || false,
       loadingClass: true,
       locks: [],
+      openDocumentsDeletedModal: false,
       openEditClassModal: false,
+      openHelpResolvedModal: false,
       openIssuesModal: false,
+      openRequestResolvedModal: false,
       sectionId: state.sectionId || null,
       stepCount: 4,
       submiting: false
@@ -135,6 +153,20 @@ class SyllabusTool extends React.Component {
       }
     }
     return currentIndex
+  }
+
+  /*
+  * Determine if class is in "Change Request" status
+  */
+  isChangeRequest(){
+    return navbarStore.cl && navbarStore.cl.status && navbarStore.cl.status.name == 'Change' ? true : false
+  }
+
+  /*
+  * Determine if class is in "Help" status
+  */
+  isHelpNeeded(){
+    return navbarStore.cl && navbarStore.cl.status && navbarStore.cl.status.name == 'Help' ? true : false
   }
 
   /*
@@ -264,8 +296,8 @@ class SyllabusTool extends React.Component {
   * Render for syllabus workers and admin. Not for DIY.
   */
   renderSectionTabs () {
-    const {isReviewer, isAdmin, isSW} = this.state
-    if (isReviewer || (isAdmin && !isSW)) {
+    const {isReviewer, isAdmin, isSW, isChangeReq, isHelpReq} = this.state
+    if (isReviewer || (isAdmin && !isSW) || (isChangeReq || isHelpReq)) {
       if (isReviewer) {
         return (
           <FileTabs style={{marginLeft: '7px', marginRight: '7px'}} currentIndex={this.state.currentIndex-2}>
@@ -287,6 +319,44 @@ class SyllabusTool extends React.Component {
   }
 
   /*
+  * Gets array of all student requests yet to be completed
+  */
+  openStudentRequests(){
+    const sr = navbarStore.cl.student_requests.filter(c => !c.is_completed)
+    const cr = navbarStore.cl.change_requests.filter(c => !c.is_completed)
+    return sr.concat(cr)
+  }
+
+  /*
+  * Gets array of all new doc ids
+  */
+  allNewDocs(){
+    if(navbarStore.cl && navbarStore.cl.student_requests && navbarStore.cl.student_requests.length > 0){
+      let sr = this.openStudentRequests()
+      let arr = []
+      sr.forEach((r) => {r.docs && r.docs.length > 0 ? arr.push(r.docs.map((d) => d.id)) : null})
+      return [].concat(...arr)
+    }else{
+      return []
+    }
+  }
+
+  /*
+  * Determines if the document originates from a student request
+  */
+  isNewDoc(doc){
+    return this.allNewDocs().indexOf(doc.id) > -1
+  }
+
+  /*
+  * Determines if the class has any new docs
+  */
+  hasNewDoc(){
+    let newDocs = this.allNewDocs()
+    return this.state.documents.filter((d) => newDocs.indexOf(d.id) > -1).length > 0
+  }
+
+  /*
   * Render the document tabs for the user to tab between documents.
   */
   renderDocumentTabs () {
@@ -298,7 +368,8 @@ class SyllabusTool extends React.Component {
               <FileTab
                 key={index}
                 name={document.name}
-                removable={this.state.isAdmin}
+                removable={this.state.isAdmin || this.state.isChangeReq}
+                changed={this.isNewDoc(document)}
                 onClick={() =>
                   this.setState({currentDocument: document.path, currentDocumentIndex: index})
                 }
@@ -390,6 +461,23 @@ class SyllabusTool extends React.Component {
   }
 
   /*
+  * Render the all documents deleted modal.
+  */
+  renderDocumentsDeletedModal () {
+    return (
+      <DocumentsDeletedModal
+        cl={navbarStore.cl}
+        open={this.state.openDocumentsDeletedModal}
+        onClose={this.toggleDocumentsDeletedModal.bind(this)}
+        onSubmit={(cl) => {
+          this.updateClass(cl)
+          this.toggleDocumentsDeletedModal()
+        }}
+      />
+    )
+  }
+
+  /*
   * Render the having issues modal.
   */
   renderIssuesModal () {
@@ -398,7 +486,45 @@ class SyllabusTool extends React.Component {
         cl={navbarStore.cl}
         open={this.state.openIssuesModal}
         onClose={this.toggleIssuesModal.bind(this)}
-        onSubmit={this.updateClass.bind(this)}
+        onSubmit={(cl) => {
+          this.updateClass(cl)
+          this.unlockSWLock()
+        }}
+      />
+    )
+  }
+
+  /*
+  * Render the issues resolved modal.
+  */
+  renderRequestResolvedModal() {
+    let openRequests = this.openStudentRequests()
+    return (
+      <RequestResolvedModal
+        cl={navbarStore.cl}
+        open={this.state.openRequestResolvedModal}
+        onClose={this.toggleRequestResolvedModal.bind(this)}
+        onSubmit={(cl) => {
+          this.updateClass(cl)
+          this.toggleRequestResolvedModal()
+        }}
+        request={openRequests[0]}
+      />
+    )
+  }
+
+  /*
+  * Render the help needed info
+  */
+  renderHelpResolvedModal() {
+    return (
+      <HelpResolvedModal
+        cl={navbarStore.cl}
+        open={this.state.openHelpResolvedModal}
+        onClose={this.toggleHelpResolvedModal.bind(this)}
+        onSubmit={(cl) => {
+          this.updateClass(cl)
+        }}
       />
     )
   }
@@ -425,7 +551,7 @@ class SyllabusTool extends React.Component {
   * Render the status form of the class for the admin to update.
   */
   renderStatusForm () {
-    if (this.state.isAdmin && !this.state.isSW) {
+    if (this.state.isAdmin && !this.state.isSW && !this.isChangeRequest()) {
       return (
         <div className='cn-status-form'>
           <StatusForm cl={navbarStore.cl}/>
@@ -438,12 +564,38 @@ class SyllabusTool extends React.Component {
   * Render the button text dependent on worker.
   */
   renderButtonText () {
-    const {isReviewer, isAdmin, isSW} = this.state
+    const {isReviewer, isAdmin, isSW, isChangeReq, isHelpReq} = this.state
     let text = ''
     if ((isReviewer || navbarStore.isDIY) && this.state.currentIndex === ContentEnum.ASSIGNMENTS) text = 'Everything looks good. Submit info and continue'
-    else if (isAdmin && !isSW) text = 'Done'
+    else if ((isAdmin && !isSW) || (isChangeReq || isHelpReq)) text = 'Done'
     else text = 'Next'
     return text
+  }
+
+  /*
+  * Render the student request info
+  */
+  renderStudentRequest() {
+    if ((this.state.isAdmin || this.state.isSW) && this.isChangeRequest()) {
+      return (
+        <div className='cn-status-form'>
+          <StudentRequestInfo cl={navbarStore.cl}/>
+        </div>
+      )
+    }
+  }
+
+  /*
+  * Render the help needed info
+  */
+  renderHelpNeeded() {
+    if ((this.state.isAdmin || this.state.isSW) && this.isHelpNeeded()) {
+      return (
+        <div className='cn-status-form'>
+          <HelpNeededInfo cl={navbarStore.cl}/>
+        </div>
+      )
+    }
   }
 
   /*
@@ -513,10 +665,31 @@ class SyllabusTool extends React.Component {
   }
 
   /*
+  * Toggle the documents deleted modal.
+  */
+  toggleDocumentsDeletedModal () {
+    this.setState({openDocumentsDeletedModal: !this.state.openDocumentsDeletedModal})
+  }
+
+  /*
   * Toggle the issues modal.
   */
   toggleIssuesModal () {
     this.setState({openIssuesModal: !this.state.openIssuesModal})
+  }
+
+  /*
+  * Toggle the issues resolved modal.
+  */
+  toggleHelpResolvedModal () {
+    this.setState({openHelpResolvedModal: !this.state.openHelpResolvedModal})
+  }
+
+  /*
+  * Toggle the issues resolved modal.
+  */
+  toggleRequestResolvedModal () {
+    this.setState({openRequestResolvedModal: !this.state.openRequestResolvedModal})
   }
 
   /*
@@ -606,17 +779,10 @@ class SyllabusTool extends React.Component {
             {this.renderSectionTabs()}
             <div className='cn-section-footer'>
               <div>
+                {this.renderStudentRequest()}
+                {this.renderHelpNeeded()}
                 {this.renderEnrollment()}
-                {this.renderHavingIssues()}
-              </div>
-              {this.renderStatusForm()}
-              <div className='horizontal-align-row margin-top margin-right margin-left middle-xs center-xs'>
-                <button
-                  className={`button col-xs-12 ${completeClass} ${disabledClass}`}
-                  style={{flex: '100 1 auto'}}
-                  disabled={disableButton}
-                  onClick={this.onNext.bind(this)}
-                >{this.renderButtonText()}</button>
+                {!this.isChangeRequest() && !this.isHelpNeeded() && this.renderHavingIssues()}
               </div>
 
               {this.renderProgressBar()}
@@ -636,6 +802,9 @@ class SyllabusTool extends React.Component {
         </div>
 
         {navbarStore.cl && this.renderIssuesModal()}
+        {navbarStore.cl && this.renderHelpResolvedModal()}
+        {navbarStore.cl && this.renderRequestResolvedModal()}
+        {navbarStore.cl && this.renderDocumentsDeletedModal()}
         {this.renderEditClassModal()}
       </div>
     )
