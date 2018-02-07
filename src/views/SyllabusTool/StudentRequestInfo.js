@@ -29,6 +29,7 @@ class StudentRequestInfo extends React.Component {
       <h5 className='student-request-title center-text' style={{margin: '0.5em 0'}}>
         <span className='student-request-type'>Student Request</span><br/>
         <span>{this.state.studentRequests[0].change_type.name}</span><br/>
+        <span>{this.state.studentRequests[0].notes ? `Note: ${this.state.studentRequests[0].notes}` : ''}</span><br/>
       </h5>
     )
   }

@@ -1,13 +1,30 @@
 import React from 'react'
 import {browserHistory} from 'react-router'
+import {inject, observer} from 'mobx-react'
 import PropTypes from 'prop-types'
 import Modal from '../../components/Modal'
 import {CheckboxField, TextAreaField} from '../../components/Form'
 import actions from '../../actions'
+import stores from '../../stores'
 
+@inject('rootStore') @observer
 class RequestResolvedModal extends React.Component {
   constructor (props) {
     super(props)
+  }
+
+  isSW () {
+    const {userStore} = stores
+    return userStore.isSW()
+  }
+
+  navigateToNeedsChange() {
+    browserHistory.push({
+      pathname: '/hub/classes',
+      state: {
+        needsChange: true
+      }
+    })
   }
 
   resolveChangeRequest(){
@@ -16,12 +33,7 @@ class RequestResolvedModal extends React.Component {
       actions.classes.getClassById(cl.id).then((cl) => {
         this.props.onSubmit(cl)
         if(!this.props.request){
-          browserHistory.push({
-            pathname: '/hub/classes',
-            state: {
-              needsChange: true
-            }
-          })
+          this.navigateToNeedsChange()
         }
       }).catch(() => false)
     }).catch(() => false)
@@ -33,12 +45,7 @@ class RequestResolvedModal extends React.Component {
       actions.classes.getClassById(cl.id).then((cl) => {
         this.props.onSubmit(cl)
         if(!this.props.request){
-          browserHistory.push({
-            pathname: '/hub/classes',
-            state: {
-              needsChange: true
-            }
-          })
+          this.navigateToNeedsChange()
         }
       }).catch(() => false)
     }).catch(() => false)

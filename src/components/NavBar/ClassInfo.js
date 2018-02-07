@@ -41,7 +41,7 @@ class ClassInfo extends React.Component {
     }
   }
 
-  renderClassIssue () {
+  renderHelpRequest () {
     const {cl, isDIY} = this.props
     const studentRequests = cl.student_requests.filter(h => !h.is_completed)
     const helpRequests = cl.help_requests.filter(h => !h.is_completed)
@@ -49,7 +49,7 @@ class ClassInfo extends React.Component {
     const needsHelp = allRequests.length > 0 && cl.status.name != 'Complete' && cl.status.name != 'Change'
     if (needsHelp && !isDIY) {
       return (
-        <div className='issue-icon-container' onClick={() => this.props.toggleIssues()}>
+        <div className='issue-icon-container' onClick={() => this.props.toggleHelpResolved()}>
           <div className='message-bubble triangle-top'>
             {allRequests[0].note ? allRequests[0].note : (allRequests[0].notes ? allRequests[0].notes : allRequests[0].change_type.name)}
             <div className='triangle-inner' />
@@ -82,7 +82,7 @@ class ClassInfo extends React.Component {
         <div className='header-container'>
           <div className='header'>
             {this.renderChangeRequest()}
-            {this.renderClassIssue()}
+            {this.renderHelpRequest()}
             <h2>{this.props.cl && this.props.cl.name}</h2>
             {this.props.isAdmin && <div className='margin-left'>
             <i className='fa fa-pencil cn-blue cursor' onClick={() => this.props.onEdit()} />
@@ -101,6 +101,7 @@ ClassInfo.propTypes = {
   isDIY: PropTypes.bool,
   onEdit: PropTypes.func,
   toggleIssues: PropTypes.func,
+  toggleHelpResolved: PropTypes.func,
   toggleRequestResolved: PropTypes.func,
   toggleWrench: PropTypes.func
 }

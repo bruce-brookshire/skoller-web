@@ -7,6 +7,7 @@ import ClassForm from './ClassForm'
 import FileViewer from '../../components/FileViewer'
 import GradeScale from '../components/ClassEditor/GradeScale'
 import DocumentsDeletedModal from './DocumentsDeletedModal'
+import HelpResolvedModal from './HelpResolvedModal'
 import IssuesModal from './IssuesModal'
 import RequestResolvedModal from './RequestResolvedModal'
 import HelpNeededInfo from './HelpNeededInfo'
@@ -39,6 +40,7 @@ class SyllabusTool extends React.Component {
     navbarStore.toggleEditCl = this.toggleEditClassModal.bind(this)
     navbarStore.toggleWrench = this.toggleWrench.bind(this)
     navbarStore.toggleIssues = this.toggleIssuesModal.bind(this)
+    navbarStore.toggleHelpResolved = this.toggleHelpResolvedModal.bind(this)
     navbarStore.toggleRequestResolved = this.toggleRequestResolvedModal.bind(this)
     this.state = this.initializeState()
   }
@@ -60,6 +62,7 @@ class SyllabusTool extends React.Component {
     navbarStore.toggleEditCl = null
     navbarStore.toggleWrench = null
     navbarStore.toggleIssues = null
+    navbarStore.toggleHelpResolved = null
     navbarStore.toggleRequestResolved = null
     this.unlockClass()
   }
@@ -118,6 +121,7 @@ class SyllabusTool extends React.Component {
       locks: [],
       openDocumentsDeletedModal: false,
       openEditClassModal: false,
+      openHelpResolvedModal: false,
       openIssuesModal: false,
       openRequestResolvedModal: false,
       sectionId: state.sectionId || null,
@@ -480,12 +484,11 @@ class SyllabusTool extends React.Component {
     return (
       <IssuesModal
         cl={navbarStore.cl}
-        isSW={this.state.isSW}
         open={this.state.openIssuesModal}
         onClose={this.toggleIssuesModal.bind(this)}
         onSubmit={(cl) => {
           this.updateClass(cl)
-          if(this.state.isSW){this.handleSWNext()}
+          this.unlockSWLock()
         }}
       />
     )
@@ -506,6 +509,22 @@ class SyllabusTool extends React.Component {
           this.toggleRequestResolvedModal()
         }}
         request={openRequests[0]}
+      />
+    )
+  }
+
+  /*
+  * Render the help needed info
+  */
+  renderHelpResolvedModal() {
+    return (
+      <HelpResolvedModal
+        cl={navbarStore.cl}
+        open={this.state.openHelpResolvedModal}
+        onClose={this.toggleHelpResolvedModal.bind(this)}
+        onSubmit={(cl) => {
+          this.updateClass(cl)
+        }}
       />
     )
   }
@@ -662,6 +681,13 @@ class SyllabusTool extends React.Component {
   /*
   * Toggle the issues resolved modal.
   */
+  toggleHelpResolvedModal () {
+    this.setState({openHelpResolvedModal: !this.state.openHelpResolvedModal})
+  }
+
+  /*
+  * Toggle the issues resolved modal.
+  */
   toggleRequestResolvedModal () {
     this.setState({openRequestResolvedModal: !this.state.openRequestResolvedModal})
   }
@@ -756,7 +782,7 @@ class SyllabusTool extends React.Component {
                 {this.renderStudentRequest()}
                 {this.renderHelpNeeded()}
                 {this.renderEnrollment()}
-                {this.renderHavingIssues()}
+                {!this.isChangeRequest() && !this.isHelpNeeded() && this.renderHavingIssues()}
               </div>
 
               {this.renderProgressBar()}
@@ -776,6 +802,7 @@ class SyllabusTool extends React.Component {
         </div>
 
         {navbarStore.cl && this.renderIssuesModal()}
+        {navbarStore.cl && this.renderHelpResolvedModal()}
         {navbarStore.cl && this.renderRequestResolvedModal()}
         {navbarStore.cl && this.renderDocumentsDeletedModal()}
         {this.renderEditClassModal()}
