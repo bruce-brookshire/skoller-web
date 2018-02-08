@@ -76,31 +76,6 @@ class HubClasses extends React.Component {
   }
 
   /*
-  * Get the classes for class search when 'New Class' status
-  * This is different from getClasses as it requires two db queries to get all the records
-  *
-  * @param [String] queryString. String to query classes.
-  */
-  getApprovalClasses (queryString) {
-    this.setState({loading: true})
-    // Get Approvals
-    actions.classes.searchClasses(queryString).then(approvalClasses => {
-      let idx = 1
-      this.setState({classes: approvalClasses, loading: false})
-      // Get all the approval's professor classes
-      approvalClasses.forEach((c) => {
-        let professorQueryString = `professor_id=${c.professor.id}`
-        actions.classes.searchClasses(professorQueryString).then(professorClasses => {
-          let newArr = this.state.classes
-          professorClasses.forEach((pc) => { if(pc.status != 'New Class') newArr.splice(idx,0,pc) })
-          this.setState({classes: newArr})
-        })
-        idx++
-      })
-    }).catch(() => { this.setState({loading: false}) })
-  }
-
-  /*
   * Row data to be passed to the grid
   *
   * @return [Array]. Array of formatted row data.
@@ -175,15 +150,25 @@ class HubClasses extends React.Component {
   * @param [Object] cl. Class to edit.
   */
   onEditClass (cl) {
-    browserHistory.push({
-      pathname: `/class/${cl.id}/syllabus_tool`,
-      state: {
-        isAdmin: this.isAdminUser(),
-        isSW: this.isSW(),
-        isChangeReq: this.isChangeReq(),
-        isHelpReq: this.isHelpReq()
-      }
-    })
+    if(cl.status && cl.status.props && cl.status.props.children == 'NEEDS APPROVAL'){
+      browserHistory.push({
+        pathname: `/class/${cl.id}/approvals`,
+        state: {
+          isAdmin: this.isAdminUser(),
+          isSW: this.isSW(),
+        }
+      })
+    }else{
+      browserHistory.push({
+        pathname: `/class/${cl.id}/syllabus_tool`,
+        state: {
+          isAdmin: this.isAdminUser(),
+          isSW: this.isSW(),
+          isChangeReq: this.isChangeReq(),
+          isHelpReq: this.isHelpReq()
+        }
+      })
+    }
   }
 
   isAdminUser () {
@@ -226,7 +211,6 @@ class HubClasses extends React.Component {
       <div className='margin-bottom'>
         <h2 className='center-text' style={{marginBottom: 0}}>{this.getHeaderText(state)}</h2>
         <ClassSearch {...this.props} loading={this.state.loading}
-                      onApprovalsSearch={this.getApprovalClasses.bind(this)}
                       onSearch={this.getClasses.bind(this)} hidden={true}/>
         <div className='margin-top'>
           <span className='total right'>Total results: {this.state.classes.length}</span>
@@ -236,7 +220,6 @@ class HubClasses extends React.Component {
       <div className='margin-bottom'>
         <h2 className='center-text' style={{marginBottom: 0}}>Class Search</h2>
         <ClassSearch {...this.props} loading={this.state.loading}
-                    onApprovalsSearch={this.getApprovalClasses.bind(this)}
                     onSearch={this.getClasses.bind(this)}/>
         <div className='margin-top'>
           <a onClick={this.onCreateClass.bind(this)}>Create new class </a>
