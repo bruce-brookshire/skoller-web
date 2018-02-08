@@ -356,6 +356,24 @@ class SyllabusTool extends React.Component {
     return this.state.documents.filter((d) => newDocs.indexOf(d.id) > -1).length > 0
   }
 
+  navigateToHelpNeeded() {
+    browserHistory.push({
+      pathname: '/hub/classes',
+      state: {
+        needsHelp: true
+      }
+    })
+  }
+
+  navigateToNeedsChange() {
+    browserHistory.push({
+      pathname: '/hub/classes',
+      state: {
+        needsChange: true
+      }
+    })
+  }
+
   /*
   * Render the document tabs for the user to tab between documents.
   */
@@ -470,8 +488,10 @@ class SyllabusTool extends React.Component {
         open={this.state.openDocumentsDeletedModal}
         onClose={this.toggleDocumentsDeletedModal.bind(this)}
         onSubmit={(cl) => {
+          let isChange = navbarStore.cl ? navbarStore.cl.status.name == 'Change' : false
+          let isHelp = navbarStore.cl ? navbarStore.cl.status.name == 'Help' : false
           this.updateClass(cl)
-          this.toggleDocumentsDeletedModal()
+          isChange ? this.navigateToNeedsChange() : (isHelp ? this.navigateToHelpNeeded() : this.unlockSWLock())
         }}
       />
     )
@@ -506,7 +526,6 @@ class SyllabusTool extends React.Component {
         onClose={this.toggleRequestResolvedModal.bind(this)}
         onSubmit={(cl) => {
           this.updateClass(cl)
-          this.toggleRequestResolvedModal()
         }}
         request={openRequests[0]}
       />
@@ -792,7 +811,7 @@ class SyllabusTool extends React.Component {
                   onClick={this.onNext.bind(this)}
                 >{this.renderButtonText()}</button>
               </div>}
-                
+
               {this.renderProgressBar()}
             </div>
           </div>
