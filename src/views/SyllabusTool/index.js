@@ -784,7 +784,15 @@ class SyllabusTool extends React.Component {
                 {this.renderEnrollment()}
                 {!this.isChangeRequest() && !this.isHelpNeeded() && this.renderHavingIssues()}
               </div>
-
+              {!this.isChangeRequest() && !this.isHelpNeeded() && <div className='horizontal-align-row margin-top margin-right margin-left middle-xs center-xs'>
+                <button
+                  className={`button col-xs-12 ${completeClass} ${disabledClass}`}
+                  style={{flex: '100 1 auto'}}
+                  disabled={disableButton}
+                  onClick={this.onNext.bind(this)}
+                >{this.renderButtonText()}</button>
+              </div>}
+                
               {this.renderProgressBar()}
             </div>
           </div>
