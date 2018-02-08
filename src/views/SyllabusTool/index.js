@@ -760,7 +760,7 @@ class SyllabusTool extends React.Component {
     const completeClass = ((isReviewer || navbarStore.isDIY) &&
       currentIndex === ContentEnum.ASSIGNMENTS) ? 'cn-green-background' : ''
 
-    if (loadingClass) return <Loading />
+    if (loadingClass || navbarStore.cl == null) return <Loading />
     return (
       <div className='cn-syllabus-tool-container'>
 
