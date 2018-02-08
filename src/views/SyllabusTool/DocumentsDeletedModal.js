@@ -82,8 +82,8 @@ class DocumentsDeletedModal extends React.Component {
       ind++
       return (
         <CheckboxField
-        checked={this.state.val === opt}
-        value={this.state.val === opt}
+        checked={this.state.value === opt}
+        value={this.state.value === opt}
         label={opt}
         name='deleted_documents_modal'
         onChange={(name,checked) => this.onCheckboxChange(name,checked,opt)}
