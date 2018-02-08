@@ -15,16 +15,19 @@ class ProfessorInfo extends React.Component {
           <p style={{fontSize: '12px'}}>{office_location || 'Office location missing.'}</p>
           <p style={{fontSize: '12px'}}>{office_availability || 'Office hours missing'}</p>
         </div>
-        <div>
-          <a style={{float: 'left', color: 'red'}} onClick={() => this.props.onRemoveProfessor()}>remove professor</a>
-          <a style={{float: 'right'}} onClick={() => this.props.onEditProfessor()}>edit professor info </a>
-        </div>
+        {this.props.disableEdit ? null : (
+          <div>
+            <a style={{float: 'left', color: 'red'}} onClick={() => this.props.onRemoveProfessor()}>remove professor</a>
+            <a style={{float: 'right'}} onClick={() => this.props.onEditProfessor()}>edit professor info </a>
+          </div>
+        )}
       </div>
     )
   }
 }
 
 ProfessorInfo.propTypes = {
+  disableEdit: PropTypes.bool,
   onEditProfessor: PropTypes.func.isRequired,
   onRemoveProfessor: PropTypes.func.isRequired,
   professor: PropTypes.object.isRequired
