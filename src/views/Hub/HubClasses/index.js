@@ -87,16 +87,6 @@ class HubClasses extends React.Component {
     actions.classes.searchClasses(queryString).then(approvalClasses => {
       let idx = 1
       this.setState({classes: approvalClasses, loading: false})
-      // Get all the approval's professor classes
-      approvalClasses.forEach((c) => {
-        let professorQueryString = `professor_id=${c.professor.id}`
-        actions.classes.searchClasses(professorQueryString).then(professorClasses => {
-          let newArr = this.state.classes
-          professorClasses.forEach((pc) => { if(pc.status != 'New Class') newArr.splice(idx,0,pc) })
-          this.setState({classes: newArr})
-        })
-        idx++
-      })
     }).catch(() => { this.setState({loading: false}) })
   }
 
@@ -236,6 +226,7 @@ class HubClasses extends React.Component {
       <div className='margin-bottom'>
         <h2 className='center-text' style={{marginBottom: 0}}>{this.getHeaderText(state)}</h2>
         <ClassSearch {...this.props} loading={this.state.loading}
+                      onApprovalsSearch={this.getApprovalClasses.bind(this)}
                       onSearch={this.getClasses.bind(this)} hidden={true}/>
         <div className='margin-top'>
           <span className='total right'>Total results: {this.state.classes.length}</span>
