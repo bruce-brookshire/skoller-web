@@ -100,16 +100,6 @@ class ClassApproval extends React.Component {
   ////////////////////////////
 
   /*
-  * Approve the given class
-  */
-  approveClass (cl) {
-    actions.classes.approveClass(cl).then((cl) => {
-      navbarStore.cl = cl
-      this.navigateToNeedsApproval()
-    })
-  }
-
-  /*
   * Fetch the class by id.
   */
   getClasses () {
@@ -129,7 +119,27 @@ class ClassApproval extends React.Component {
     actions.documents.getProfessorClasses(professor,school).then((classes) => {
       let filteredClasses = classes.filter((c) => c.id != navbarStore.cl.id)
       this.setState({loadingProfessorClasses: false,professorClasses:filteredClasses})
-    }).catch(() => false)
+    }).catch(() => { this.setState({loadingClass: false}) })
+  }
+
+  /*
+  * Approve the given class
+  */
+  onApprove (cl) {
+    actions.classes.approveClass(cl).then((cl) => {
+      navbarStore.cl = cl
+      this.navigateToNeedsApproval()
+    })
+  }
+
+  /*
+  * Reject the given class
+  */
+  onDeny() {
+    actions.classes.deleteClass(cl).then((cl) => {
+      navbarStore.cl = null
+      this.navigateToNeedsApproval()
+    })
   }
 
   ////////////////////////////
@@ -239,7 +249,7 @@ class ClassApproval extends React.Component {
 
   renderClassInfo() {
     return navbarStore.cl ? (
-      <div style={{border:'2px solid rgb(160, 160, 160)',borderRadius:'5px',padding: '25px'}}>
+      <div style={{background:'#e8f3fd',border:'2px solid rgb(160, 160, 160)',borderRadius:'5px',padding: '25px'}}>
         <FlexTable
           className='cn-add-class-grid margin-top margin-bottom'
           headers={headers}
@@ -258,6 +268,16 @@ class ClassApproval extends React.Component {
         <div className='col-xs-12 col-sm-6'>
           <h6>Class Info</h6>
           {this.renderClassInfo()}
+          <button
+            className='button full-width margin-top'
+            onClick={() => this.onApprove(navbarStore.cl)}>
+            Approve
+          </button>
+          <button
+            className='button-invert full-width margin-top'
+            onClick={() => this.onDeny(navbarStore.cl)}>
+            Deny
+          </button>
         </div>
         <div className='col-xs-12 col-sm-6'>
           {this.renderProfessorInfo()}
