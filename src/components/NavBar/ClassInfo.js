@@ -96,6 +96,7 @@ class ClassInfo extends React.Component {
 }
 
 ClassInfo.propTypes = {
+  approveClass: PropTypes.func,
   cl: PropTypes.object.isRequired,
   isAdmin: PropTypes.bool,
   isDIY: PropTypes.bool,

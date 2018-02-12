@@ -76,6 +76,31 @@ class HubClasses extends React.Component {
   }
 
   /*
+  * Get the classes for class search when 'New Class' status
+  * This is different from getClasses as it requires two db queries to get all the records
+  *
+  * @param [String] queryString. String to query classes.
+  */
+  getApprovalClasses (queryString) {
+    this.setState({loading: true})
+    // Get Approvals
+    actions.classes.searchClasses(queryString).then(approvalClasses => {
+      let idx = 1
+      this.setState({classes: approvalClasses, loading: false})
+      // Get all the approval's professor classes
+      approvalClasses.forEach((c) => {
+        let professorQueryString = `professor_id=${c.professor.id}`
+        actions.classes.searchClasses(professorQueryString).then(professorClasses => {
+          let newArr = this.state.classes
+          professorClasses.forEach((pc) => { if(pc.status != 'New Class') newArr.splice(idx,0,pc) })
+          this.setState({classes: newArr})
+        })
+        idx++
+      })
+    }).catch(() => { this.setState({loading: false}) })
+  }
+
+  /*
   * Row data to be passed to the grid
   *
   * @return [Array]. Array of formatted row data.

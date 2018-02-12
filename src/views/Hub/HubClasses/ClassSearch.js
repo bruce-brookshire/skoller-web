@@ -139,7 +139,7 @@ class ClassSearch extends React.Component {
       } else if (this.state.searchField && this.state.searchValue) {
         params = `${this.state.searchField}=${this.state.searchValue}`
       }
-      this.props.onSearch(params)
+      this.state.searchField == 'class_status' && this.state.searchValue == 100 ? this.props.onApprovalsSearch(params) : this.props.onSearch(params)
     }
   }
 

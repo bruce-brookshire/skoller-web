@@ -37,6 +37,7 @@ const ContentEnum = {
 class SyllabusTool extends React.Component {
   constructor (props) {
     super(props)
+    navbarStore.approveClass = this.approveClass.bind(this)
     navbarStore.toggleEditCl = this.toggleEditClassModal.bind(this)
     navbarStore.toggleWrench = this.toggleWrench.bind(this)
     navbarStore.toggleIssues = this.toggleIssuesModal.bind(this)
@@ -59,6 +60,7 @@ class SyllabusTool extends React.Component {
   componentWillUnmount () {
     navbarStore.cl = null
     navbarStore.isDIY = false
+    navbarStore.approveClass = null
     navbarStore.toggleEditCl = null
     navbarStore.toggleWrench = null
     navbarStore.toggleIssues = null
@@ -681,6 +683,15 @@ class SyllabusTool extends React.Component {
     if (this.state.currentIndex > ContentEnum.WEIGHTS) {
       this.setState({currentIndex: this.state.currentIndex - 1})
     }
+  }
+
+  /*
+  * Approve the given class
+  */
+  approveClass (cl) {
+    actions.classes.approveClass(cl).then((cl) => {
+      this.updateClass(cl)
+    })
   }
 
   /*
