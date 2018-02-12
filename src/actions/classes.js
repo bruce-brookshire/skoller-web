@@ -198,6 +198,28 @@ export function createClass (form) {
 }
 
 /*
+* Delete a new class
+*/
+export function deleteClass (cl) {
+  const {user: {student: {school}}} = userStore
+  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error deleting class. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
 * Update a class
 */
 export function updateClass (form) {
