@@ -247,7 +247,7 @@ export function updateClass (form) {
 * @param [Object] cl. Class to approve.
 */
 export function approveClass (cl) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}/confirm`, {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}/approve`, {
     method: 'POST',
     headers: {
       'Authorization': userStore.authToken,
