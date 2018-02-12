@@ -68,6 +68,7 @@ class ClassApproval extends React.Component {
   }
 
   componentWillUnmount () {
+    navbarStore.cl = null
   }
 
   /*
@@ -169,7 +170,6 @@ class ClassApproval extends React.Component {
   getRows () {
     if(navbarStore.cl){
       let fields = this.classFields()
-      console.log(fields)
       return fields.map((item,index) => {
         return this.mapRow(item, index)
       })
