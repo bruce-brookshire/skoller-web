@@ -75,7 +75,7 @@ class ClassApproval extends React.Component {
   */
   intializeComponent () {
     this.setState(this.initializeState())
-    this.getClasses()
+    this.getClass()
   }
 
   /*
@@ -102,7 +102,7 @@ class ClassApproval extends React.Component {
   /*
   * Fetch the class by id.
   */
-  getClasses () {
+  getClass () {
     const {params: {classId}} = this.props
     actions.classes.getClassById(classId).then((cl) => {
       navbarStore.cl = cl
