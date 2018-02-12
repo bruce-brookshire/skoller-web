@@ -136,7 +136,7 @@ class ClassApproval extends React.Component {
   /*
   * Reject the given class
   */
-  onDeny() {
+  onDeny(cl) {
     actions.classes.deleteClass(cl).then((cl) => {
       navbarStore.cl = null
       this.navigateToNeedsApproval()

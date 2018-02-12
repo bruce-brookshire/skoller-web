@@ -201,7 +201,6 @@ export function createClass (form) {
 * Delete a new class
 */
 export function deleteClass (cl) {
-  const {user: {student: {school}}} = userStore
   return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}`, {
     method: 'DELETE',
     headers: {
