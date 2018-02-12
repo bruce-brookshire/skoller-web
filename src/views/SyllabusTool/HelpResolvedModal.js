@@ -99,7 +99,7 @@ class HelpResolvedModal extends React.Component {
     return (
       <div>
         <h4 className="center-text">{helpTicket.note ? helpTicket.note : (helpTicket.notes ? helpTicket.notes : helpTicket.change_type.name)}</h4>
-        {openTickets.length == 1 ? (
+        {helpTicket ? (
           <div>
             <h5 className="center-text">Fix the issue? If so, select the status this class needs to be changed to.</h5>
             {this.renderFormOptions()}
