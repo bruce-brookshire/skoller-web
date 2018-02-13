@@ -113,8 +113,7 @@ export function getStudentClassesById (studentId) {
 * @param [Object] professor. Professor of class
 */
 export function getProfessorClasses (professor,professorSchool=null) {
-  const {user: {student: {school}}} = userStore
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes?school=${professorSchool && professorSchool.id ? professorSchool.id : school.id}&professor_id=${professor.id}`, {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/classes?school=${professorSchool.id}&professor_id=${professor.id}`, {
     method: 'GET',
     headers: {
       'Authorization': userStore.authToken,
@@ -260,6 +259,30 @@ export function approveClass (cl) {
     })
     .catch(error => {
       showSnackbar('Error approving class. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Deny class
+*
+* @param [Object] cl. Class to deny.
+*/
+export function denyClass (cl) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}/deny`, {
+    method: 'POST',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    },
+  })
+    .then(response => checkError(response))
+    .then(data => {
+      showSnackbar('Class rejected.', 'info')
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error rejecting class. Try again.')
       return Promise.reject(error)
     })
 }

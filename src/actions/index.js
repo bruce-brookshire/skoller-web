@@ -4,7 +4,7 @@ import {authenticateUser, createAccount, forgotPassword, getRoles,
   resendVerification, updateAccount, verifyPhoneNumber} from './auth'
 import {createClass, deleteClass, dropClass, getClassById, getLocks, getProfessorClasses,
   getStudentClasses, getStudentClassesById, enrollInClass, searchClasses, searchStudentClasses,
-  updateClass, lockClass, unlockClass, approveClass, updateClassStatus} from './classes'
+  updateClass, lockClass, unlockClass, approveClass, denyClass, updateClassStatus} from './classes'
 import {createIssue, getHelpTypes, resolveIssue, getRequestTypes, resolveChangeRequest, createStudentRequest,
         resolveStudentRequest} from './classhelp'
 import {getClassDocuments, uploadClassCsv, uploadClassDocument, deleteClassDocument,
@@ -44,6 +44,7 @@ const actions = {
   classes: {
     approveClass,
     deleteClass,
+    denyClass,
     createClass,
     dropClass,
     enrollInClass,

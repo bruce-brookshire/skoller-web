@@ -108,7 +108,7 @@ class ClassApproval extends React.Component {
     actions.classes.getClassById(classId).then((cl) => {
       navbarStore.cl = cl
       this.setState({loadingClass: false})
-      // // Get this professor's other classes (if professor exists)
+      // Get this professor's other classes
       cl.professor && cl.school ? this.getProfessorClasses(cl.professor,cl.school) : null
     }).catch((error) => {  this.setState({loadingClass: false}) })
   }
@@ -117,7 +117,7 @@ class ClassApproval extends React.Component {
   * Fetch the rest of the classes for this professor
   */
   getProfessorClasses (professor,school) {
-    actions.documents.getProfessorClasses(professor,school).then((classes) => {
+    actions.classes.getProfessorClasses(professor,school).then((classes) => {
       let filteredClasses = classes.filter((c) => c.id != navbarStore.cl.id)
       this.setState({loadingProfessorClasses: false,professorClasses:filteredClasses})
     }).catch(() => { this.setState({loadingClass: false}) })
@@ -137,7 +137,7 @@ class ClassApproval extends React.Component {
   * Reject the given class
   */
   onDeny(cl) {
-    actions.classes.deleteClass(cl).then((cl) => {
+    actions.classes.denyClass(cl).then((cl) => {
       navbarStore.cl = null
       this.navigateToNeedsApproval()
     })
@@ -244,7 +244,20 @@ class ClassApproval extends React.Component {
   ////////////////////////////
 
   renderActions() {
-    return null
+    return (
+      <div>
+        <button
+          className='button full-width margin-top'
+          onClick={() => this.onApprove(navbarStore.cl)}>
+          Approve
+        </button>
+        <button
+          className='button-invert full-width margin-top'
+          onClick={() => this.onDeny(navbarStore.cl)}>
+          Deny
+        </button>
+      </div>
+    )
   }
 
   renderClassInfo() {
@@ -266,18 +279,9 @@ class ClassApproval extends React.Component {
     return  (
       <div className='cn-body-content row' style={{paddingLeft: '25px', paddingRight: '25px'}}>
         <div className='col-xs-12 col-sm-6'>
-          <h6>Class Info</h6>
+          <h5>Class Info</h5>
           {this.renderClassInfo()}
-          <button
-            className='button full-width margin-top'
-            onClick={() => this.onApprove(navbarStore.cl)}>
-            Approve
-          </button>
-          <button
-            className='button-invert full-width margin-top'
-            onClick={() => this.onDeny(navbarStore.cl)}>
-            Deny
-          </button>
+          {this.renderActions()}
         </div>
         <div className='col-xs-12 col-sm-6'>
           {this.renderProfessorInfo()}
@@ -293,25 +297,28 @@ class ClassApproval extends React.Component {
 
   renderProfessorClassesTable() {
     return this.state.professorClasses.length > 0 ? (
-      <FlexTable
-        className='cn-add-class-grid margin-top margin-bottom'
-        headers={headers}
-        rows={this.getProfessorClassesRows()}
-        disabled={true}
-        canSelect={false}
-        emptyMessage={<div className='empty-message margin-top'>We currently have no courses on record for that professor.</div>}
-      />
+      <div className='professor-classes'>
+        <h5>Professor Classes</h5>
+        <FlexTable
+          className='cn-add-class-grid margin-top margin-bottom'
+          headers={professorClassesHeaders}
+          rows={this.getProfessorClassesRows()}
+          disabled={true}
+          canSelect={false}
+          emptyMessage={<div className='empty-message margin-top'>We currently have no courses on record for that professor.</div>}
+        />
+      </div>
     ) : (<h5>No other classes in the system for this professor</h5>)
   }
 
   renderProfessorInfo() {
     return navbarStore.cl && navbarStore.cl.professor ? (
       <div>
-        <h6>Professor Info</h6>
+        <h5>Professor Info</h5>
         <ProfessorInfo disableEdit={true}
                        professor={navbarStore.cl.professor}
-                       onEditProfessor={() => console.log('edit')}
-                       onRemoveProfessor={() => console.log('remove')} />
+                       onEditProfessor={() => null}
+                       onRemoveProfessor={() => null} />
       </div>
     ) : (<h5>Could not get professor info</h5>)
   }
@@ -325,9 +332,6 @@ class ClassApproval extends React.Component {
           </div>
           <div className='cn-body-control'>
             {this.renderContent()}
-          </div>
-          <div className='cn-body-footer'>
-            {this.renderActions()}
           </div>
         </div>
       </div>
