@@ -31,6 +31,10 @@ const headers = [
   {
     field: 'help',
     display: 'Help'
+  },
+  {
+    field: 'complete',
+    display: 'Complete'
   }
 ]
 
@@ -48,6 +52,12 @@ class HubSchools extends React.Component {
   componentWillMount () {
     actions.schools.getHubSchools().then(schools => {
       headers[0].display = `Schools (${schools.length})`
+      headers[1].display = `# of students (${this.getTotal(schools,'Students')})`
+      headers[3].display = `Weights (${this.getTotal(schools,'Weights')})`
+      headers[4].display = `Assignments (${this.getTotal(schools,'Assignments')})`
+      headers[5].display = `Review (${this.getTotal(schools,'Review')})`
+      headers[6].display = `Help (${this.getTotal(schools,'Help')})`
+      headers[7].display = `Complete (${this.getTotal(schools,'Complete')})`
       this.setState({schools})
     }).catch(() => false)
   }
@@ -81,7 +91,8 @@ class HubSchools extends React.Component {
       weights: this.getCounts(classes, 'Weights') || this.renderCheck(),
       assignments: this.getCounts(classes, 'Assignments') || this.renderCheck(),
       review: this.getCounts(classes, 'Review') || this.renderCheck(),
-      help: this.getCounts(classes, 'Help') || this.renderCheck()
+      help: this.getCounts(classes, 'Help') || this.renderCheck(),
+      complete: this.getCounts(classes, 'Complete') || this.renderCheck(),
     }
 
     return row
@@ -115,6 +126,15 @@ class HubSchools extends React.Component {
     return cl && cl.count
   }
 
+  getTotal(schools,type) {
+    if(type == 'Students'){
+      const total = schools.map(s => s.enrollment).reduce((a, b) => a + b, 0)
+      return total
+    }else{
+      const total = schools.map(s => this.getCounts(s.classes,type) || 0).reduce((a, b) => a + b, 0)
+      return total
+    }
+  }
 
   /*
   * Check mark if no status count
