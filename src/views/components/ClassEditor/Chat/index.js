@@ -82,8 +82,8 @@ class Chat extends React.Component {
         return a.inserted_at > b.inserted_at
       }).map((c) => {
         return (
-          <div className='post-comment'>
-            <Post post={c} type={'comment'} key={c.id} onDelete={() => this.onDeleteComment(c)}/>
+          <div className='post-comment' key={`comment${c.id}`}>
+            <Post post={c} type={'comment'} onDelete={() => this.onDeleteComment(c)}/>
             <div className='post-replies'>
               {this.renderReplies(c)}
             </div>
@@ -101,8 +101,8 @@ class Chat extends React.Component {
       return a.inserted_at > b.inserted_at
     }).map((p) => {
       return (
-        <div className='posts-container'>
-          <Post post={p} type={'post'} key={p.id} onDelete={() => this.onDeletePost(p)}/>
+        <div className='posts-container' key={`post${p.id}`}>
+          <Post post={p} type={'post'} onDelete={() => this.onDeletePost(p)}/>
           <div className='post-comments'>
             {this.renderComments(p)}
           </div>
@@ -120,8 +120,8 @@ class Chat extends React.Component {
         return a.inserted_at > b.inserted_at
       }).map((r) => {
         return (
-          <div className='post-reply'>
-            <Post post={r} type={'reply'} key={r.id} onDelete={() => this.onDeleteReply(r)}/>
+          <div className='post-reply' key={`reply${r.id}`}>
+            <Post post={r} type={'reply'} onDelete={() => this.onDeleteReply(r)}/>
             {this.renderReplies(r)}
           </div>
         )
