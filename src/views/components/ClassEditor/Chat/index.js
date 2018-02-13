@@ -6,20 +6,7 @@ import Grid from '../../../../components/Grid/index'
 import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
 
-const headers = [
-  {
-    field: 'userLink',
-    display: 'User'
-  },
-  {
-    field: 'content',
-    display: 'Content'
-  },
-  {
-    field: 'actions',
-    display: 'Actions'
-  },
-]
+import Post from './Post'
 
 class Chat extends React.Component {
   constructor (props) {
@@ -55,74 +42,73 @@ class Chat extends React.Component {
   /*
   * Navigate to the account info page on clicking a user's account
   */
-  onAccountSelect(data) {
-    browserHistory.push({pathname: '/hub/accounts/account/info', state: {data.user}})
+  onAccountSelect(user) {
+    browserHistory.push({pathname: '/hub/accounts/account/info', state: {user}})
   }
-
 
   /*
   * Deletes the given post from the class and updates the posts on success
   */
-  onDeletePost(data) {
-    actions.chat.deleteClassPost(this.props.cl,data.post).then((cl) => {
+  onDeletePost(post) {
+    actions.chat.deleteClassPost(this.props.cl,post).then((cl) => {
       this.initPosts()
     })
   }
 
   /*
-  * Row data to be passed to the grid
-  *
-  * @return [Array]. Array of formatted row data.
+  * Renders comments for the given post
   */
-  getRows () {
-    return this.state.posts.map((item, index) =>
-      this.mapRow(item, index)
-    )
+  renderComments(post) {
+    if(post && post.comments && post.comments.length > 0){
+      return post.comments.map((c) => {
+        return (
+          <div className='post-comment'>
+            <Post post={c} type={'comment'} key={c.id}/>
+            <div className='post-replies'>
+              {this.renderReplies(c)}
+            </div>
+          </div>
+        )
+      })
+    }else{ return null }
   }
 
   /*
-  * Contructs <a> link to user account page
-  * @return [Object]. user content
+  * Renders posts from the array held in state
   */
-  userLink(post) {
-    return post.user ? (
-      <a onClick={() => { this.onAccountSelect(post.user) }}>{`${item.user.name_first} ${item.user.name_last}`}</a>
-    ) : '-'
+  renderPosts() {
+    return this.state.posts.map((p) => {
+      return (
+        <div className='posts-container'>
+          <Post post={p} type={'post'} key={p.id}/>
+          <div className='post-comments'>
+            {this.renderComments(p)}
+          </div>
+        </div>
+      )
+    })
   }
 
   /*
-  * Formats row data to be passed to the grid for display
-  *
-  * @param [Object] item. Row data to be formatted.
-  * @param [Number] index. Index of row data.
-  * @return [Object] row. Object of formatted row data for display in grid.
+  * Renders replies for the given comment
   */
-  mapRow (item, index) {
-    const { id } = item
-
-    const row = {
-      id: id || '',
-      actions: <a onClick={() => { this.onDeletePost(item) }}><i className='fa fa-trash cn-red'/></a>,
-      userLink: this.userLink(item),
-      content: item.post ? item.post : '',
-      user: item.user,
-      post: item,
-    }
-
-    return row
+  renderReplies(comment) {
+    if(comment && comment.replies && comment.replies.length > 0){
+      return comment.replies.map((r) => {
+        return (
+          <div className='post-reply'>
+            <Post post={r} type={'reply'} key={r.id}/>
+            {this.renderReplies(r)}
+          </div>
+        )
+      })
+    }else{ return null }
   }
 
   render () {
     return (
-      <div className='margin-top-2x margin-bottom-2x'>
-        <Grid
-          headers={headers}
-          rows={this.getRows()}
-          canDelete={true}
-          canSelect={true}
-          onDelete={this.onDeletePost.bind(this)}
-          onSelect={this.onAccountSelect.bind(this)}
-        />
+      <div className='chat margin-top-2x margin-bottom-2x'>
+        {this.renderPosts()}
       </div>
     )
   }
