@@ -129,10 +129,21 @@ class Chat extends React.Component {
     }else{ return null }
   }
 
+  /*
+  * Renders content if there are no posts
+  */
+  renderNoPosts() {
+    return (
+      <h5 className='center-text'>Currently, there are no posts for this class.</h5>
+    )
+  }
+
   render () {
     return (
       <div className='chat margin-top-2x margin-bottom-2x'>
-        {this.renderPosts()}
+        {this.state.posts.length > 0 ? (
+          this.renderPosts()
+        ) : this.renderNoPosts()}
       </div>
     )
   }
