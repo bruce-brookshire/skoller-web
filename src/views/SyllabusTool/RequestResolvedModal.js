@@ -69,13 +69,14 @@ class RequestResolvedModal extends React.Component {
     if(this.props.request){
       return (
         <div>
+          <h5 className="center-text">Did you fix the change request?</h5>
           <button
             className={`button full-width`}
-            onClick={() => { this.onResolve() }}>Resolve
+            onClick={() => { this.onResolve() }}>Yes (email will be sent to student regarding the fix)
           </button>
           <button
             className={`button-invert full-width margin-top`}
-            onClick={() => { this.onCancel() }}>Cancel
+            onClick={() => { this.onCancel() }}>No, cancel
           </button>
         </div>
       )

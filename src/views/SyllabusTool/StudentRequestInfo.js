@@ -26,11 +26,18 @@ class StudentRequestInfo extends React.Component {
 
   renderTitle(){
     return (
-      <h5 className='student-request-title center-text' style={{margin: '0.5em 0'}}>
-        <span className='student-request-type'>Student Request</span><br/>
-        <span>{this.state.studentRequests[0].change_type.name}</span><br/>
-        <span>{this.state.studentRequests[0].notes ? `Note: ${this.state.studentRequests[0].notes}` : ''}</span><br/>
-      </h5>
+      <div className='student-request-title center-text' style={{margin: '0.5em 0'}}>
+        {this.state.studentRequests[0].user && this.state.studentRequests[0].user.email ? (
+          <h5 style={{margin: '2px'}}>{this.state.studentRequests[0].user.email}</h5>
+        ) : null}
+        <h6 className='student-request-type' style={{margin: '2px'}}>Student Request</h6>
+        {this.state.studentRequests[0].change_type && this.state.studentRequests[0].change_type.name ? (
+          <h6 style={{margin: '2px'}}>{this.state.studentRequests[0].change_type.name}</h6>
+        ) : null}
+        {this.state.studentRequests[0].notes ? (
+          <h6 style={{margin: '2px'}}>{`Note: ${this.state.studentRequests[0].notes}`}</h6>
+        ) : null}
+      </div>
     )
   }
 
