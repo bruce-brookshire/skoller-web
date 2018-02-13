@@ -85,8 +85,8 @@ class ClassInfo extends React.Component {
             {this.renderHelpRequest()}
             <h2>{this.props.cl && this.props.cl.name}</h2>
             {this.props.isAdmin && <div className='margin-left'>
-            <i className='fa fa-pencil cn-blue cursor' onClick={() => this.props.onEdit()} />
-          </div>}
+              <i className='fa fa-pencil cn-blue cursor' onClick={() => this.props.onEdit()} />
+            </div>}
           {this.renderWrench()}
         </div>
         {this.renderClassDetails()}

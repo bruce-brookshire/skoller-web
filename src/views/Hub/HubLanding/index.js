@@ -70,6 +70,15 @@ class HubLanding extends React.Component {
     })
   }
 
+  onNeedsApproval () {
+    browserHistory.push({
+      pathname: '/hub/classes',
+      state: {
+        needsApproval: true
+      }
+    })
+  }
+
   onNeedsChange () {
     browserHistory.push({
       pathname: '/hub/classes',
@@ -160,9 +169,11 @@ class HubLanding extends React.Component {
   }
 
   renderMaintMenu () {
+    const approvalCount = this.getStatusCount('New Class') || 0
     const changeCount = this.getStatusCount('Change') || 0
     const maintCount = this.getStatusCount('Under Maintenance') || 0
 
+    const disableApproval = approvalCount === 0
     const disableChange = changeCount === 0
     const disableMaint = maintCount === 0
 
@@ -194,6 +205,21 @@ class HubLanding extends React.Component {
               <span>Under Maintenance (
                 {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
                   : maintCount
+                }
+              )</span>
+            </button>
+          </div>}
+
+          {this.isAdminUser() && <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
+            <button
+              className={`nav-button maint button full-width ${disableApproval ? 'disabled' : ''}`}
+              disabled={disableApproval}
+              onClick={this.onNeedsApproval.bind(this)}
+            >
+              <i className='fa fa-thumbs-o-up' style={{color:'#FEFEFE',fontSize:'1.9rem'}}></i>
+              <span>Needs Approval (
+                {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
+                  : approvalCount
                 }
               )</span>
             </button>

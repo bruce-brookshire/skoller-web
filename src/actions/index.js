@@ -2,9 +2,9 @@ import {createAssignment, deleteAssignment, getClassAssignments, updateAssignmen
 import {authenticateUser, createAccount, forgotPassword, getRoles,
   getUserById, getUserByToken, getUsers, registerUser, resetPassword,
   resendVerification, updateAccount, verifyPhoneNumber} from './auth'
-import {createClass, dropClass, getClassById, getLocks, getProfessorClasses,
+import {createClass, deleteClass, dropClass, getClassById, getLocks, getProfessorClasses,
   getStudentClasses, getStudentClassesById, enrollInClass, searchClasses, searchStudentClasses,
-  updateClass, lockClass, unlockClass, updateClassStatus} from './classes'
+  updateClass, lockClass, unlockClass, approveClass, denyClass, updateClassStatus} from './classes'
 import {createIssue, getHelpTypes, resolveIssue, getRequestTypes, resolveChangeRequest, createStudentRequest,
         resolveStudentRequest} from './classhelp'
 import {getClassDocuments, uploadClassCsv, uploadClassDocument, deleteClassDocument,
@@ -42,6 +42,9 @@ const actions = {
     updateAccount
   },
   classes: {
+    approveClass,
+    deleteClass,
+    denyClass,
     createClass,
     dropClass,
     enrollInClass,

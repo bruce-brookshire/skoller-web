@@ -112,9 +112,8 @@ export function getStudentClassesById (studentId) {
 *
 * @param [Object] professor. Professor of class
 */
-export function getProfessorClasses (professor) {
-  const {user: {student: {school}}} = userStore
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes?school=${school.id}&professor_id=${professor.id}`, {
+export function getProfessorClasses (professor,professorSchool=null) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/classes?school=${professorSchool.id}&professor_id=${professor.id}`, {
     method: 'GET',
     headers: {
       'Authorization': userStore.authToken,
@@ -198,6 +197,27 @@ export function createClass (form) {
 }
 
 /*
+* Delete a new class
+*/
+export function deleteClass (cl) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error deleting class. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
 * Update a class
 */
 export function updateClass (form) {
@@ -215,6 +235,54 @@ export function updateClass (form) {
     })
     .catch(error => {
       showSnackbar('Error updating class. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Approve class
+*
+* @param [Object] cl. Class to approve.
+*/
+export function approveClass (cl) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}/approve`, {
+    method: 'POST',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    },
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      showSnackbar('Class approved.', 'info')
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error approving class. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Deny class
+*
+* @param [Object] cl. Class to deny.
+*/
+export function denyClass (cl) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}/deny`, {
+    method: 'POST',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    },
+  })
+    .then(response => checkError(response))
+    .then(data => {
+      showSnackbar('Class rejected.', 'info')
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error rejecting class. Try again.')
       return Promise.reject(error)
     })
 }
