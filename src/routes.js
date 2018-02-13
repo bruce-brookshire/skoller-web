@@ -25,6 +25,7 @@ import HubClasses from './views/Hub/HubClasses'
 import SchoolInfo from './views/Hub/SchoolInfo'
 import Accounts from './views/Hub/Accounts'
 import AccountInfo from './views/Hub/AccountInfo'
+import Analytics from './views/Hub/Analytics'
 
 import actions from './actions'
 import stores from './stores'
@@ -56,6 +57,7 @@ const router = (
           <Route path='/hub/classes' component={HubClasses} />
           <Route path='/hub/accounts' component={Accounts} />
           <Route path='/hub/accounts/account/info' component={AccountInfo} />
+          <Route path='/hub/analytics' component={Analytics} />
         </Route>
 
         <Route path='/diy' component={DIYLanding} />
