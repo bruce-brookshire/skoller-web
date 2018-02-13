@@ -45,8 +45,9 @@ export function deleteClassPost (cl,post) {
       'Content-Type': 'application/json'
     }
   })
-    .then(response => parseResponse(response))
+    .then(response => checkError(response))
     .then(data => {
+      showSnackbar('Class post deleted.', 'info')
       return data
     })
     .catch(error => {
@@ -129,8 +130,9 @@ export function unlikePost (cl,post,like) {
       'Content-Type': 'application/json'
     }
   })
-    .then(response => parseResponse(response))
+    .then(response => checkError(response))
     .then(data => {
+      showSnackbar('Class post unliked.', 'info')
       return data
     })
     .catch(error => {
@@ -192,7 +194,7 @@ export function createClassComment (cl,post,form) {
 /*
 * Delete a comment from the given class
 */
-export function deleteClassComment (cl,post,comment) {
+export function deleteClassComment (cl,comment) {
   return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}/comments/${comment.id}`, {
     method: 'DELETE',
     headers: {
@@ -200,8 +202,9 @@ export function deleteClassComment (cl,post,comment) {
       'Content-Type': 'application/json'
     }
   })
-    .then(response => parseResponse(response))
+    .then(response => checkError(response))
     .then(data => {
+      showSnackbar('Class comment deleted.', 'info')
       return data
     })
     .catch(error => {
@@ -242,8 +245,9 @@ export function unlikeComment (cl,comment,like) {
       'Content-Type': 'application/json'
     }
   })
-    .then(response => parseResponse(response))
+    .then(response => checkError(response))
     .then(data => {
+      showSnackbar('Class comment unliked.', 'info')
       return data
     })
     .catch(error => {
@@ -314,8 +318,9 @@ export function deleteClassReply (cl,reply) {
       'Content-Type': 'application/json'
     }
   })
-    .then(response => parseResponse(response))
+    .then(response => checkError(response))
     .then(data => {
+      showSnackbar('Class reply deleted.', 'info')
       return data
     })
     .catch(error => {
@@ -356,8 +361,9 @@ export function unlikeReply (cl,reply,like) {
       'Content-Type': 'application/json'
     }
   })
-    .then(response => parseResponse(response))
+    .then(response => checkError(response))
     .then(data => {
+      showSnackbar('Class reply unliked.', 'info')
       return data
     })
     .catch(error => {

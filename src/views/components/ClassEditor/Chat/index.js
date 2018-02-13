@@ -47,6 +47,15 @@ class Chat extends React.Component {
   }
 
   /*
+  * Deletes the given comment from the class and updates the posts on success
+  */
+  onDeleteComment(comment) {
+    actions.chat.deleteClassComment(this.props.cl,comment).then((cl) => {
+      this.initPosts()
+    })
+  }
+
+  /*
   * Deletes the given post from the class and updates the posts on success
   */
   onDeletePost(post) {
@@ -56,14 +65,25 @@ class Chat extends React.Component {
   }
 
   /*
+  * Deletes the given comment from the class and updates the posts on success
+  */
+  onDeleteReply(reply) {
+    actions.chat.deleteClassReply(this.props.cl,reply).then((cl) => {
+      this.initPosts()
+    })
+  }
+
+  /*
   * Renders comments for the given post
   */
   renderComments(post) {
     if(post && post.comments && post.comments.length > 0){
-      return post.comments.map((c) => {
+      return post.comments.sort((a, b) => {
+        return a.inserted_at > b.inserted_at
+      }).map((c) => {
         return (
           <div className='post-comment'>
-            <Post post={c} type={'comment'} key={c.id}/>
+            <Post post={c} type={'comment'} key={c.id} onDelete={() => this.onDeleteComment(c)}/>
             <div className='post-replies'>
               {this.renderReplies(c)}
             </div>
@@ -77,10 +97,12 @@ class Chat extends React.Component {
   * Renders posts from the array held in state
   */
   renderPosts() {
-    return this.state.posts.map((p) => {
+    return this.state.posts.sort((a, b) => {
+      return a.inserted_at > b.inserted_at
+    }).map((p) => {
       return (
         <div className='posts-container'>
-          <Post post={p} type={'post'} key={p.id}/>
+          <Post post={p} type={'post'} key={p.id} onDelete={() => this.onDeletePost(p)}/>
           <div className='post-comments'>
             {this.renderComments(p)}
           </div>
@@ -94,10 +116,12 @@ class Chat extends React.Component {
   */
   renderReplies(comment) {
     if(comment && comment.replies && comment.replies.length > 0){
-      return comment.replies.map((r) => {
+      return comment.replies.sort((a, b) => {
+        return a.inserted_at > b.inserted_at
+      }).map((r) => {
         return (
           <div className='post-reply'>
-            <Post post={r} type={'reply'} key={r.id}/>
+            <Post post={r} type={'reply'} key={r.id} onDelete={() => this.onDeleteReply(r)}/>
             {this.renderReplies(r)}
           </div>
         )
