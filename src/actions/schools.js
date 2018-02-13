@@ -5,6 +5,27 @@ import stores from '../stores'
 const {userStore} = stores
 var Environment = require('../../environment.js')
 
+/*
+* Get the all schools for signup
+*
+*/
+export function getAllSchools () {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/schools`, {
+    method: 'GET',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error fetching schools. Try again.')
+      return Promise.reject(error)
+    })
+}
 
 /*
 * Get the active schools for signup

@@ -18,7 +18,7 @@ import {sendNeedsSyllabusNotification} from './notifications'
 import {getSchoolPeriods, createPeriod, updatePeriod} from './periods'
 import {attachProfessorToClass, createProfessor, removeProfessorFromClass,
   searchProfessors, updateProfessor} from './professors'
-import {createSchool, getActiveSchools, getFieldsOfStudy, getHubSchools,
+import {createSchool, getAllSchools, getActiveSchools, getFieldsOfStudy, getHubSchools,
   getHubSchoolsMinified, getSchoolById, updateSchool} from './schools'
 import {showSnackbar} from './snackbar'
 import {getNextClass} from './syllabusworkers'
@@ -123,6 +123,7 @@ const actions = {
   },
   schools: {
     createSchool,
+    getAllSchools,
     getActiveSchools,
     getFieldsOfStudy,
     getHubSchools,
