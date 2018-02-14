@@ -101,6 +101,7 @@ class Analytics extends React.Component {
   }
 
   renderSelectCategory() {
+<<<<<<< HEAD
     return (
       <div className='select-category-container col-xs-4'>
         <h3 className='center-text cn-blue'>Select Custom Category</h3>
@@ -114,6 +115,13 @@ class Analytics extends React.Component {
         <h3 className='center-text cn-blue'>Select Date Range</h3>
       </div>
     )
+=======
+    return null
+  }
+
+  renderSelectDates() {
+    return null
+>>>>>>> 462a2bab6432bc95fb4bca056fcb80695b96cdfc
   }
 
   renderGeneralResults() {
