@@ -17,6 +17,8 @@ const {navbarStore} = stores
 class Analytics extends React.Component {
   constructor (props) {
     super(props)
+    this.categories = ['Advertising','Syllabi Processing','Assignment Info','Updates','Chat','Notifications',
+                      'Grade Entry','Reviews and More']
     this.state = this.initializeState()
   }
 
@@ -99,11 +101,19 @@ class Analytics extends React.Component {
   }
 
   renderSelectCategory() {
-    return null
+    return (
+      <div className='select-category-container col-xs-4'>
+        <h3 className='center-text cn-blue'>Select Custom Category</h3>
+      </div>
+    )
   }
 
   renderSelectDates() {
-    return null
+    return (
+      <div className='select-category-container col-xs-4'>
+        <h3 className='center-text cn-blue'>Select Date Range</h3>
+      </div>
+    )
   }
 
   renderGeneralResults() {
@@ -118,7 +128,7 @@ class Analytics extends React.Component {
     return (
       <div className='cn-analytics-container'>
         <h2 className='center-text'>Skoller Analytics</h2>
-        <div classname='analytics-filters row'>
+        <div className='analytics-filters row'>
           {this.renderSelectAudience()}
           {this.renderSelectDates()}
           {this.renderSelectCategory()}
