@@ -1,4 +1,19 @@
 
 .cn-analytics-container {
   padding: 10px 50px;
+
+  .analytics-section {
+    padding: 15px;
+  }
+  .general-field-info-icon {
+    background: $cn-color-white;
+    border: 1px solid $cn-color-blue;
+    border-radius: 50%;
+    color: $cn-color-blue;
+    height: 25px;
+    margin-right: 5px;
+    padding: 5px;
+    text-align: center;
+    width: 25px;
+  }
 }

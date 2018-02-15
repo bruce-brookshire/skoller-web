@@ -3,6 +3,14 @@ import PropTypes from 'prop-types'
 import InputField from './InputField'
 
 class DateRangeField extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      max: null,
+      min: null,
+      isFocused: false
+    }
+  }
 
   onBlur () {
     this.setState({isFocused: false})
@@ -10,7 +18,16 @@ class DateRangeField extends React.Component {
   }
 
   onChange (event) {
-    this.props.onChange(event.target.name, event.target.value)
+    let name = event.target.name
+    let value = {}
+    if (name === 'min_date'){
+    	value = {min: event.target.value, max: this.state.max}
+    	this.setState({min: event.target.value})
+    } else {
+    	value = {min: this.state.min, max: event.target.value}
+    	this.setState({max: event.target.value})
+    }
+    this.props.onChange(name, value)
   }
 
   onFocus () {
@@ -21,7 +38,7 @@ class DateRangeField extends React.Component {
   render () {
     const containerClasses = ['cn-input-container']
     const labelClasses = ['cn-input-label']
-    const inputClasses = ['cn-form-input']
+    const inputClasses = ['cn-form-input','cn-date-range-input']
 
     const {containerClassName, labelClassName, inputClassName,
       containerActiveClassName, labelActiveClassName, inputActiveClassName,
@@ -59,18 +76,30 @@ class DateRangeField extends React.Component {
             {label} {this.renderInfo()}
           </label> : null
         }
-        <input
-          className={inputClasses.join(' ')}
-          id={input.id}
-          name={input.name}
-          onBlur={this.onBlur.bind(this)}
-          onChange={this.onChange.bind(this)}
-          onFocus={this.onFocus.bind(this)}
-          placeholder={input.placeholder}
-          rows={input.rows}
-          type='date'
-          value={input.value}
-        />
+        <div className='cn-date-range-fields row'>
+          <input
+            className={inputClasses.join(' ')}
+            id={input.id}
+            name='min_date'
+            onBlur={this.onBlur.bind(this)}
+            onChange={this.onChange.bind(this)}
+            onFocus={this.onFocus.bind(this)}
+            placeholder={'Start'}
+            type='date'
+            value={input.value.min}
+          />
+          <input
+            className={inputClasses.join(' ')}
+            id={input.id}
+            name='max_date'
+            onBlur={this.onBlur.bind(this)}
+            onChange={this.onChange.bind(this)}
+            onFocus={this.onFocus.bind(this)}
+            placeholder={'End'}
+            type='date'
+            value={input.value.max}
+          />
+        </div>
       </div>
     )
   }
@@ -98,4 +127,4 @@ DateRangeField.propTypes = {
   ]).isRequired
 }
 
-export default TimePickerField
+export default DateRangeField
