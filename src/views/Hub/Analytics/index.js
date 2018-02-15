@@ -57,7 +57,6 @@ class Analytics extends React.Component {
       loading: false,
       maxDate: null,
       minDate: null,
-      queryString: '',
       schools: [],
     }
   }
@@ -188,15 +187,32 @@ class Analytics extends React.Component {
     )
   }
 
+  renderCustomResultsContent() {
+    switch (this.state.category) {
+      case 'Advertising':
+        return <Advertising audience={this.state.audience} max={this.state.maxDate} min={this.state.minDate}/>
+      case 'Syllabi Processing':
+        return <SyllabiProcessing audience={this.state.audience} max={this.state.maxDate} min={this.state.minDate}/>
+      case 'Assignment Info':
+        return <AssignmentInfo audience={this.state.audience} max={this.state.maxDate} min={this.state.minDate}/>
+      case 'Updates':
+        return <Updates audience={this.state.audience} max={this.state.maxDate} min={this.state.minDate}/>
+      case 'Chat':
+        return <ChatAnalytics audience={this.state.audience} max={this.state.maxDate} min={this.state.minDate}/>
+      case 'Notifications':
+        return <Notifications audience={this.state.audience} max={this.state.maxDate} min={this.state.minDate}/>
+      case 'Grade Entry':
+        return <GradeEntry audience={this.state.audience} max={this.state.maxDate} min={this.state.minDate}/>
+      case 'Reviews and More':
+        return <Reviews audience={this.state.audience} max={this.state.maxDate} min={this.state.minDate}/>
+      default:
+    }
+  }
+
   renderCustomResults() {
     return (
       <div className='col-xs-12 col-sm-7'>
         <h3 className='center-text cn-blue full-width'>Custom</h3>
-        <ul style={{listStyle:'none'}}>
-          {this.state.audience ? this.renderGeneralResultFields() : (
-            <h5 className='center-text'>Please select an audience to view its stats</h5>
-          )}
-        </ul>
       </div>
     )
   }
