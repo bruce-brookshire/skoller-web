@@ -150,7 +150,7 @@ class HubClasses extends React.Component {
   * @param [Object] cl. Class to edit.
   */
   onEditClass (cl) {
-    if(cl.status && cl.status.props && cl.status.props.children == 'NEEDS APPROVAL'){
+    if(cl && this.isNew(cl)){
       browserHistory.push({
         pathname: `/class/${cl.id}/approvals`,
         state: {
@@ -189,6 +189,11 @@ class HubClasses extends React.Component {
   isChangeReq() {
     const {userStore} = this.props.rootStore
     return userStore.isChangeReq()
+  }
+
+  isNew(cl) {
+    let found = this.state.classes.find((c) => c.id == cl.id)
+    if(found){return found.is_new_class}else{return false}
   }
 
   getHeaderText(state) {
