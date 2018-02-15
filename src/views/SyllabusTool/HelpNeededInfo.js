@@ -26,10 +26,13 @@ class HelpNeededInfo extends React.Component {
 
   renderTitle(){
     return (
-      <h5 className='help-request-title center-text' style={{margin: '0.5em 0'}}>
-        <span className='help-request-type'>Help Needed</span><br/>
-        <span>{this.state.helpRequests[0].hasOwnProperty('help_type') ? this.state.helpRequests[0].help_type.name : this.state.helpRequests[0].change_type.name}</span><br/>
-      </h5>
+      <div className='help-request-title center-text' style={{margin: '0.5em 0'}}>
+        {this.state.helpRequests[0].user && this.state.helpRequests[0].user.email ? (
+          <h5 style={{margin: '2px'}}>{this.state.helpRequests[0].user.email}</h5>
+        ) : null}
+        <h6 className='help-request-type' style={{margin: '2px'}}>Help Needed</h6>
+        <h6 style={{margin: '2px'}}>{this.state.helpRequests[0].hasOwnProperty('help_type') ? this.state.helpRequests[0].help_type.name : this.state.helpRequests[0].change_type.name}</h6>
+      </div>
     )
   }
 
