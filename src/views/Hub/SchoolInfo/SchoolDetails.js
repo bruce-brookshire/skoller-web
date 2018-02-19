@@ -13,6 +13,10 @@ class SchoolDetails extends React.Component {
             <td className='cn-flex-table-cell'>{school.name}</td>
           </tr>
           <tr>
+            <th>Script Code:</th>
+            <td>{school.short_name}</td>
+          </tr>
+          <tr>
             <th>Address:</th>
             <td>{school.adr_line_1}, {school.adr_city} {school.adr_state} {school.adr_zip}</td>
           </tr>
