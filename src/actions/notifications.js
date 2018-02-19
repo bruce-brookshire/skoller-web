@@ -8,7 +8,7 @@ var Environment = require('../../environment.js')
 /*
 * Send 'Needs Syllabus' notification
 */
-export function sendNeedsSyllabusNotification (cl) {
+export function sendNeedsSyllabusNotification () {
   return fetch(`${Environment.SERVER_NAME}/api/v1/notifications/syllabus-needed`, {
     method: 'POST',
     headers: {
@@ -22,7 +22,25 @@ export function sendNeedsSyllabusNotification (cl) {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching weights. Try again.')
+      showSnackbar('Error sending notification. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Get Notification Logs
+*/
+export function getNotificationLogs () {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/notifications/`, {
+    method: 'GET',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => parseResponse(response))
+    .catch(error => {
+      showSnackbar('Error getting logs. Try again.')
       return Promise.reject(error)
     })
 }
