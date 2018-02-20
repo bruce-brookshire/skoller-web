@@ -56,7 +56,7 @@ class SchoolDetailsForm extends React.Component {
   */
   initializeFormData (data) {
     let formData = data || {}
-    const {id, name, adr_zip, adr_state, adr_line_1, adr_city, timezone, email_domains} = formData
+    const {id, name, adr_zip, adr_state, adr_line_1, adr_city, timezone, email_domains, short_name} = formData
 
     const student_email = (email_domains && email_domains
       .filter(e => !e.is_professor_only).map(e => e.email_domain ).join(', ')) || ''
@@ -71,7 +71,8 @@ class SchoolDetailsForm extends React.Component {
       adr_city: adr_city || '',
       timezone: timezone || '',
       student_email: student_email || '',
-      professor_email: professor_email || ''
+      professor_email: professor_email || '',
+      short_name: short_name || ''
     })
   }
 
@@ -149,6 +150,17 @@ class SchoolDetailsForm extends React.Component {
                 onChange={updateProperty}
                 placeholder="School name"
                 value={form.name}
+              />
+            </div>
+            <div className='col-xs-12'>
+              <InputField
+                containerClassName='margin-top'
+                error={formErrors.short_name}
+                label="Script Code"
+                name="short_name"
+                onChange={updateProperty}
+                placeholder="Script Code"
+                value={form.short_name}
               />
             </div>
             <div className='col-xs-12'>
