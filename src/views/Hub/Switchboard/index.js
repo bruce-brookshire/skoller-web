@@ -81,7 +81,7 @@ class Switchboard extends React.Component {
             <h3 className='cn-blue center-text'>History</h3>
             {this.state.loading ? <div className='center-text'><Loading /></div> :
               <Grid
-                className='cn-log-grid'
+                className='striped'
                 headers={headers}
                 rows={this.getRows()}
                 disabled={true}
