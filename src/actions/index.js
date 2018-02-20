@@ -14,7 +14,7 @@ import {getClassDocuments, uploadClassCsv, uploadClassDocument, deleteClassDocum
   uploadFOSCsv} from './documents'
 import {updateGradeScale} from './gradescales'
 import {getStatuses, getStatusesHub} from './hub'
-import {sendNeedsSyllabusNotification} from './notifications'
+import {sendNeedsSyllabusNotification, getNotificationLogs} from './notifications'
 import {getSchoolPeriods, createPeriod, updatePeriod} from './periods'
 import {attachProfessorToClass, createProfessor, removeProfessorFromClass,
   searchProfessors, updateProfessor} from './professors'
@@ -108,6 +108,7 @@ const actions = {
   },
   notifications: {
     sendNeedsSyllabusNotification,
+    getNotificationLogs
   },
   periods: {
     createPeriod,
