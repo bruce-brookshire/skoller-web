@@ -60,7 +60,7 @@ class Switchboard extends React.Component {
 
   getRows () {
     return this.state.logs.sort((a, b) => {
-      return a.inserted_at > b.inserted_at
+      return a.inserted_at < b.inserted_at
     }).map((item, index) =>
       this.mapRow(item, index)
     )
