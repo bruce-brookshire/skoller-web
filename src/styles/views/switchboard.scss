@@ -1,4 +1,12 @@
 
 .cn-switchboard-container {
   padding: 10px 50px;
+  .cn-switchboard-section-small {
+    flex-grow: 1;
+    padding: 10px;
+  }
+  .cn-switchboard-section-large {
+    flex-grow: 3;
+    padding: 10px;
+  }
 }

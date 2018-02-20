@@ -70,14 +70,14 @@ class Switchboard extends React.Component {
     return (
       <div className='cn-switchboard-container'>
         <h2 className='center-text'>Switchboard</h2>
-        <div className='content horizontal-align-row'>
-          <div className='col-lg-3 col-sm-12'>
-            <h3 className='cn-blue center-text'>Notifications</h3>
+        <div className='horizontal-align-row center-text'>
+          <div className='cn-switchboard-section-small'>
+            <h3 className='cn-blue'>Notifications</h3>
             <button className='button' onClick={() => this.send()}>
               Send 'Needs Syllabus' Notification
             </button>
           </div>
-          <div className='col-lg-9 col-sm-12'>
+          <div className='cn-switchboard-section-large'>
             <h3 className='cn-blue center-text'>History</h3>
             {this.state.loading ? <div className='center-text'><Loading /></div> :
               <Grid
@@ -91,7 +91,7 @@ class Switchboard extends React.Component {
               />
             }
           </div>
-          
+
         </div>
       </div>
     )
