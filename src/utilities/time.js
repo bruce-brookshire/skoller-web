@@ -55,7 +55,7 @@ export function convertUTCDatetimeToDateString(dateTime, tzAbbr) {
 */
 export function convertUTCDatetimeToDateTimeString(dateTime, tzAbbr) {
   const tz = mapTimezone(tzAbbr)
-  const d = moment.tz(dateTime, tz).parseZone().format("MMM Do YYYY h:mm a")
+  const d = moment.tz(dateTime, tz).parseZone().format("ddd, MMM Do YYYY [at] h:mm a")
   return d
 }
 
