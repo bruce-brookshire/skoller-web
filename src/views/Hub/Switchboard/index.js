@@ -1,7 +1,7 @@
 import React from 'react'
 import {browserHistory} from 'react-router'
 import actions from '../../../actions'
-import {convertUTCDatetimeToDateString} from '../../../utilities/time'
+import {convertUTCDatetimeToDateTimeString} from '../../../utilities/time'
 import Loading from '../../../components/Loading'
 import Grid from '../../../components/Grid'
 
@@ -52,7 +52,7 @@ class Switchboard extends React.Component {
       notification_category: notification_category || 'N/A',
       affected_users: affected_users || 0,
       inserted_at: inserted_at ?
-        convertUTCDatetimeToDateString(inserted_at, 'CST') : ''
+        convertUTCDatetimeToDateTimeString(inserted_at, 'CST') : ''
     }
     console.log(row)
     return row
