@@ -329,7 +329,14 @@ $h2-size-sm: 1.75em;
     .actions {
       @include unstyled-list;
 
-      .button { @include button-lg; }
+      .button { 
+        display: none;
+
+        @include breakpoint(medium) {
+          display: inline-block;
+          @include button-lg; 
+        }
+      }
 
       li {
         margin-bottom: 2rem;
