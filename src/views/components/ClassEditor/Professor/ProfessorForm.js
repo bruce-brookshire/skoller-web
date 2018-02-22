@@ -4,6 +4,7 @@ import {Form, ValidateForm} from 'react-form-library'
 import {InputField} from '../../../../components/Form'
 import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
+import {maskPhoneNumber} from '../../../../utilities/mask'
 
 const requiredFields = {
   'name_last': {
@@ -118,9 +119,10 @@ class ProfessorForm extends React.Component {
           error={formErrors.phone}
           label='Phone Number'
           name='phone'
-          onChange={updateProperty}
+          onChange={(name, value) => {
+                updateProperty(name, maskPhoneNumber(form.phone, value))
+              }}
           placeholder='Phone Number'
-          type='number'
           value={form.phone}
         />
         <InputField
