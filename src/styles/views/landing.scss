@@ -339,11 +339,12 @@ $h2-size-sm: 1.75em;
   }
 
   .cn-navbar {
-    display: flex;
+    display: none;
     flex-direction: column;
     height: auto;
 
     @include breakpoint(medium) {
+      display: flex;
       flex-direction: row;
     }
 
