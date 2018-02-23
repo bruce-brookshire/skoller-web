@@ -28,6 +28,29 @@ export function sendNeedsSyllabusNotification () {
 }
 
 /*
+* Send custom notification
+*/
+export function sendCustomNotification (form) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/notifications/custom`, {
+    method: 'POST',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(form)
+  })
+    .then(response => checkError(response))
+    .then(data => {
+      showSnackbar('Successfully sent notification.','info')
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error sending notification. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
 * Get Notification Logs
 */
 export function getNotificationLogs () {

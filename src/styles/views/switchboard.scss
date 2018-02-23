@@ -4,9 +4,14 @@
   .cn-switchboard-section-small {
     flex-grow: 1;
     padding: 10px;
+    flex-direction: column;
   }
   .cn-switchboard-section-large {
     flex-grow: 3;
     padding: 10px;
+  }
+
+  .cn-char-count {
+    float: right;
   }
 }
