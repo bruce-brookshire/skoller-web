@@ -25,7 +25,8 @@ class CustomNotificationForm extends React.Component {
   initializeState () {
     return {
       form: this.initializeFormData(),
-      loading: false
+      loading: false,
+      chars: 150
     }
   }
 
@@ -59,8 +60,18 @@ class CustomNotificationForm extends React.Component {
     }).catch(() => { this.setState({loading: false}) })
   }
 
+  updateCharCount (oldMsg, newMsg) {
+    if (newMsg.length > 150) {
+      return oldMsg;
+    }
+    else {
+      this.setState({chars: 150 - newMsg.length})
+      return newMsg
+    }
+  }
+
   render () {
-    const {form} = this.state
+    const {form, chars} = this.state
     const {formErrors, updateProperty} = this.props
 
     return (
@@ -72,10 +83,13 @@ class CustomNotificationForm extends React.Component {
               error={formErrors.message}
               label="Message"
               name="message"
-              onChange={updateProperty}
-              placeholder="👀 👀"
+              onChange={(name, value) => {
+                updateProperty(name, this.updateCharCount(form.message, value))
+              }}
+              placeholder="Custom message (max 150 characters)"
               value={form.message}
             />
+            {chars}
           </div>
           <div className='col-xs-12'>
             <InputField
@@ -84,7 +98,8 @@ class CustomNotificationForm extends React.Component {
               label="Verify Password"
               name="password"
               onChange={updateProperty}
-              placeholder="password"
+              placeholder="Enter your admin password"
+              type='password'
               value={form.password}
             />
           </div>
