@@ -89,7 +89,7 @@ class CustomNotificationForm extends React.Component {
               placeholder="Custom message (max 150 characters)"
               value={form.message}
             />
-            {chars}
+            <div className='cn-char-count'>{chars}</div>
           </div>
           <div className='col-xs-12'>
             <InputField
