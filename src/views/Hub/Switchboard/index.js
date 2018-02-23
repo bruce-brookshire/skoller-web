@@ -4,6 +4,8 @@ import actions from '../../../actions'
 import {convertUTCDatetimeToDateTimeString} from '../../../utilities/time'
 import Loading from '../../../components/Loading'
 import Grid from '../../../components/Grid'
+import Modal from '../../../components/Modal'
+import CustomNotificationForm from './CustomNotificationForm'
 
 const headers = [
   {
@@ -17,6 +19,10 @@ const headers = [
   {
     field: 'inserted_at',
     display: 'Sent'
+  },
+  {
+    field: 'msg',
+    display: 'Message'
   }
 ]
 
@@ -25,7 +31,8 @@ class Switchboard extends React.Component {
     super(props)
     this.state = {
       logs: [],
-      loading: false
+      loading: false,
+      openCustomNotificationModal: false,
     }
   }
 
@@ -46,15 +53,15 @@ class Switchboard extends React.Component {
   }
 
   mapRow (item, index) {
-    const {notification_category, affected_users, inserted_at} = item
+    const {notification_category, affected_users, inserted_at, msg} = item
 
     const row = {
       notification_category: notification_category || 'N/A',
       affected_users: affected_users || 0,
       inserted_at: inserted_at ?
-        convertUTCDatetimeToDateTimeString(inserted_at, 'CST') : ''
+        convertUTCDatetimeToDateTimeString(inserted_at, 'CST') : '',
+      msg: msg || ''
     }
-    console.log(row)
     return row
   }
 
@@ -66,6 +73,31 @@ class Switchboard extends React.Component {
     )
   }
 
+  /*
+  * Toggle the custom notification modal.
+  */
+  toggleCustomNotificationModal () {
+    this.setState({openCustomNotificationModal: !this.state.openCustomNotificationModal})
+  }
+
+  /*
+  * Render the custom notification modal.
+  */
+  renderCustomNotificationModal () {
+    return (
+      <Modal
+        open={this.state.openCustomNotificationModal}
+        onClose={this.toggleCustomNotificationModal.bind(this)}
+      >
+        <CustomNotificationForm 
+          onClose={this.toggleCustomNotificationModal.bind(this)}
+          onSubmit={this.initializeComponent.bind(this)}
+        /> 
+      </Modal>
+    )
+  }
+
+
   render () {
     return (
       <div className='cn-switchboard-container'>
@@ -73,9 +105,16 @@ class Switchboard extends React.Component {
         <div className='horizontal-align-row center-text'>
           <div className='cn-switchboard-section-small'>
             <h3 className='cn-blue'>Notifications</h3>
-            <button className='button' onClick={() => this.send()}>
-              Send 'Needs Syllabus' Notification
-            </button>
+            <div>
+              <button className='button' onClick={() => this.send()}>
+                Send 'Needs Syllabus' Notification
+              </button>
+            </div>
+            <div>
+              <button className='button margin-top' onClick={() => this.toggleCustomNotificationModal()}>
+                Send Custom Notification
+              </button>
+            </div>
           </div>
           <div className='cn-switchboard-section-large'>
             <h3 className='cn-blue center-text'>History</h3>
@@ -91,8 +130,8 @@ class Switchboard extends React.Component {
               />
             }
           </div>
-
         </div>
+        {this.renderCustomNotificationModal()}
       </div>
     )
   }
