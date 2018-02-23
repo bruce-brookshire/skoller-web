@@ -87,10 +87,10 @@ class Switchboard extends React.Component {
     return (
       <Modal
         open={this.state.openCustomNotificationModal}
-        onClose={this.toggleCustomNotificationModal.bind(this)}
+        onClose={() => this.setState({openCustomNotificationModal: false})}
       >
         <CustomNotificationForm 
-          onClose={this.toggleCustomNotificationModal.bind(this)}
+          onClose={() => this.setState({openCustomNotificationModal: false})}
           onSubmit={this.initializeComponent.bind(this)}
         /> 
       </Modal>
@@ -111,7 +111,7 @@ class Switchboard extends React.Component {
               </button>
             </div>
             <div>
-              <button className='button margin-top' onClick={() => this.toggleCustomNotificationModal()}>
+              <button className='button margin-top' onClick={() => this.setState({openCustomNotificationModal: true}) }>
                 Send Custom Notification
               </button>
             </div>
