@@ -27,7 +27,7 @@ class ClassSearch extends React.Component {
 
     actions.hub.getStatuses().then((statuses) => {
       this.setState({statuses: statuses.statuses})
-      if (state && (state.needsHelp || state.needsChange || state.needsMaint)) this.intitializeParams()
+      if (state && (state.needsHelp || state.needsChange || state.needsMaint || state.needsApproval)) this.intitializeParams()
     }).catch(() => false)
   }
 
@@ -42,6 +42,9 @@ class ClassSearch extends React.Component {
         this.onSearch()
       } else if (state.needsMaint) {
         this.setState({searchField: 'class_maint', searchValue: true})
+        this.onSearch()
+      } else if (state.needsApproval) {
+        this.setState({searchField: 'class_status', searchValue: 100})
         this.onSearch()
       }
     }
@@ -144,7 +147,7 @@ class ClassSearch extends React.Component {
     let disabled = !(this.state.schoolId || (this.state.searchField && this.state.searchValue))
     if (this.state.searchField && !this.state.searchValue) disabled = true
     const disabledClass = disabled ? 'disabled' : ''
-    return (
+    return this.props.hidden ? null : (
       <div>
         <div className='row'>
           <div className='col-xs-12 col-sm-3 margin-top'>

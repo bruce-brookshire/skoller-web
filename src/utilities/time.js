@@ -47,6 +47,19 @@ export function convertUTCDatetimeToDateString(dateTime, tzAbbr) {
 }
 
 /*
+* Convert utc date time to local datetime
+*
+* @param [Date] dateTime. Date time. YYYY-MM-DDTHH:MM:ss
+* @param [String] tzAbbr. Abbreviation of timezone, i.e. PST
+* @param [String] YYYY-MM-DD
+*/
+export function convertUTCDatetimeToDateTimeString(dateTime, tzAbbr) {
+  const tz = mapTimezone(tzAbbr)
+  const d = moment.tz(dateTime, tz).parseZone().format("ddd, MMM Do YYYY [at] h:mm a")
+  return d
+}
+
+/*
 * Convert local date to utc time.
 *
 * @param [String] dateString. The datestring to convert. YYYY-MM-DD

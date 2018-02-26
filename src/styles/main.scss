@@ -25,6 +25,7 @@
 // Components ----------------------------
 @import 'components/add-class';
 @import 'components/autocomplete';
+@import 'components/chat';
 @import 'components/class-editor-table.scss';
 @import 'components/create-class';
 @import 'components/file-tab';
@@ -46,6 +47,7 @@
 
 
 // Composed Views ------------------------
+@import 'views/class-approval.scss';
 @import 'views/diylanding.scss';
 @import 'views/faq.scss';
 @import 'views/forgot-password.scss';
@@ -58,6 +60,7 @@
 @import 'views/onboarding.scss';
 @import 'views/privacy-policy.scss';
 @import 'views/school-info.scss';
+@import 'views/switchboard.scss';
 @import 'views/syllabus-tool.scss';
 @import 'views/syllabus-tutorial.scss';
 

@@ -17,6 +17,7 @@ import Onboard from './views/Student/Onboard'
 import AssignmentsTutorial from './views/SyllabusTutorial/AssignmentsTutorial'
 import WeightsTutorial from './views/SyllabusTutorial/WeightsTutorial'
 import SyllabusTool from './views/SyllabusTool'
+import ClassApproval from './views/ClassApproval'
 
 import HubLanding from './views/Hub/HubLanding'
 import HubSchools from './views/Hub/HubSchools'
@@ -24,6 +25,7 @@ import HubClasses from './views/Hub/HubClasses'
 import SchoolInfo from './views/Hub/SchoolInfo'
 import Accounts from './views/Hub/Accounts'
 import AccountInfo from './views/Hub/AccountInfo'
+import Switchboard from './views/Hub/Switchboard'
 
 import actions from './actions'
 import stores from './stores'
@@ -55,6 +57,7 @@ const router = (
           <Route path='/hub/classes' component={HubClasses} />
           <Route path='/hub/accounts' component={Accounts} />
           <Route path='/hub/accounts/account/info' component={AccountInfo} />
+          <Route path='/hub/switchboard' component={Switchboard} />
         </Route>
 
         <Route path='/diy' component={DIYLanding} />
@@ -62,6 +65,8 @@ const router = (
 
         <Route path='/class/:classId/syllabus_tool/tutorial/assignments' component={AssignmentsTutorial} />
         <Route path='/class/:classId/syllabus_tool/tutorial/weights' component={WeightsTutorial} />
+
+        <Route path='/class/:classId/approvals' component={ClassApproval} />
       </Route>
       <Route path="/logout" onEnter={logout} />
       <Redirect from="*" to="/"/>

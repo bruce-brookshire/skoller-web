@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import {browserHistory} from 'react-router'
 import Assignments from '../components/ClassEditor/Assignments'
+import Chat from '../components/ClassEditor/Chat'
 import ClassForm from './ClassForm'
 import FileViewer from '../../components/FileViewer'
 import GradeScale from '../components/ClassEditor/GradeScale'
@@ -30,7 +31,8 @@ const ContentEnum = {
   PROFESSOR: 0,
   GRADE_SCALE: 1,
   WEIGHTS: 2,
-  ASSIGNMENTS: 3
+  ASSIGNMENTS: 3,
+  CHAT: 4,
 }
 
 @inject('rootStore') @observer
@@ -287,6 +289,8 @@ class SyllabusTool extends React.Component {
         return <Weights cl={navbarStore.cl} isReview={isReviewer} disableNext={this.state.disableNext} toggleDisabled={this.toggleDisabled.bind(this)} />
       case ContentEnum.ASSIGNMENTS:
         return <Assignments cl={navbarStore.cl} isReview={isReviewer} />
+      case ContentEnum.CHAT:
+        return <Chat cl={navbarStore.cl} />
       default:
     }
   }
@@ -312,6 +316,7 @@ class SyllabusTool extends React.Component {
             <FileTab className='flex' name='Grade Scale' onClick={() => this.setState({currentIndex: 1})} />
             <FileTab className='flex' name='Weights' onClick={() => this.setState({currentIndex: 2})} />
             <FileTab className='flex' name='Assignments' onClick={() => this.setState({currentIndex: 3})} />
+            <FileTab className='flex' name='Chat' onClick={() => this.setState({currentIndex: 4})} />
           </FileTabs>
         )
       }

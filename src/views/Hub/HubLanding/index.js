@@ -70,6 +70,15 @@ class HubLanding extends React.Component {
     })
   }
 
+  onNeedsApproval () {
+    browserHistory.push({
+      pathname: '/hub/classes',
+      state: {
+        needsApproval: true
+      }
+    })
+  }
+
   onNeedsChange () {
     browserHistory.push({
       pathname: '/hub/classes',
@@ -117,7 +126,7 @@ class HubLanding extends React.Component {
           <span className='button-header center-text'>Admin panel</span>
           <div className='nav-button-container row full-width' style={{alignItems: 'flex-end'}}>
 
-            <div className='col-xs-12 col-sm-3 col-md- col-lg-3 margin-top'>
+            <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 margin-top'>
               <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/schools')}>
                 <img src='/src/assets/images/icons/School.png'/>
                 <span>Schools (
@@ -128,24 +137,31 @@ class HubLanding extends React.Component {
               </button>
             </div>
 
-            <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
+            <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 margin-top'>
               <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/classes')}>
                 <img src='/src/assets/images/icons/Search.png'/>
                 <span>Class Search</span>
               </button>
             </div>
 
-            <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
+            <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 margin-top'>
               <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/accounts')}>
                 <img src='/src/assets/images/icons/Accounts.png'/>
                 <span>Accounts</span>
               </button>
             </div>
 
-            <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
+            <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 margin-top'>
               <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/accounts')}>
                 <img src='/src/assets/images/icons/analytics.png'/>
                 <span>Analytics</span>
+              </button>
+            </div>
+
+            <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 margin-top'>
+              <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/switchboard')}>
+                <i className='fa fa-toggle-on' style={{color:'#FEFEFE',fontSize:'1.9rem'}}></i>
+                <span>Switchboard</span>
               </button>
             </div>
           </div>
@@ -160,9 +176,11 @@ class HubLanding extends React.Component {
   }
 
   renderMaintMenu () {
+    const approvalCount = this.getStatusCount('New Class') || 0
     const changeCount = this.getStatusCount('Change') || 0
     const maintCount = this.getStatusCount('Under Maintenance') || 0
 
+    const disableApproval = approvalCount === 0
     const disableChange = changeCount === 0
     const disableMaint = maintCount === 0
 
@@ -194,6 +212,21 @@ class HubLanding extends React.Component {
               <span>Under Maintenance (
                 {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
                   : maintCount
+                }
+              )</span>
+            </button>
+          </div>}
+
+          {this.isAdminUser() && <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
+            <button
+              className={`nav-button maint button full-width ${disableApproval ? 'disabled' : ''}`}
+              disabled={disableApproval}
+              onClick={this.onNeedsApproval.bind(this)}
+            >
+              <i className='fa fa-thumbs-o-up' style={{color:'#FEFEFE',fontSize:'1.9rem'}}></i>
+              <span>Needs Approval (
+                {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
+                  : approvalCount
                 }
               )</span>
             </button>
