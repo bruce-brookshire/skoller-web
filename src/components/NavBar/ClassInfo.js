@@ -22,6 +22,24 @@ class ClassInfo extends React.Component {
     }
   }
 
+  renderChatEnabled () {
+    const {isAdmin, cl: {is_chat_enabled}} = this.props
+    if (isAdmin && !is_chat_enabled) {
+      return (
+        <div className='margin-left'>
+          <i className='fa fa-comment-o cn-grey cursor' onClick={() => this.props.toggleChat()} />
+        </div>
+      )
+    }
+    else if (isAdmin && is_chat_enabled) {
+      return (
+        <div className='margin-left'>
+          <i className='fa fa-comment cn-blue cursor' onClick={() => this.props.toggleChat()} />
+        </div>
+      )
+    }
+  }
+
   renderChangeRequest () {
     const {cl} = this.props
     const studentRequests = cl.student_requests.filter(c => !c.is_completed)
@@ -88,6 +106,7 @@ class ClassInfo extends React.Component {
               <i className='fa fa-pencil cn-blue cursor' onClick={() => this.props.onEdit()} />
             </div>}
           {this.renderWrench()}
+          {this.renderChatEnabled()}
         </div>
         {this.renderClassDetails()}
       </div>
@@ -103,7 +122,8 @@ ClassInfo.propTypes = {
   toggleIssues: PropTypes.func,
   toggleHelpResolved: PropTypes.func,
   toggleRequestResolved: PropTypes.func,
-  toggleWrench: PropTypes.func
+  toggleWrench: PropTypes.func,
+  toggleChat: PropTypes.func
 }
 
 export default ClassInfo

@@ -8,6 +8,7 @@ class NavBarStore {
       toggleEditCl: null,
       toggleWrench: null,
       toggleIssues: null,
+      toggleChat: null,
       toggleHelpResolved: null,
       toggleRequestResolved: null,
     })
