@@ -86,9 +86,23 @@ class SchoolInfo extends React.Component {
     return Object.keys(statesDef)[curIdx]
   }
 
+  handleChatStateChange() {
+    const {id, is_chat_enabled} = this.state.school
+    actions.schools.updateSchool({id: id, is_chat_enabled: !is_chat_enabled}).then((school) => {
+      this.setState({school: school})
+    }).catch(() => { this.setState({loading: false}) })
+  }
 
-  onEditActiveSemester () {
-
+  renderChatEnabled () {
+    const { is_chat_enabled } = this.state.school
+    return (
+      <div>
+        <a onClick={this.handleChatStateChange.bind(this)}>
+          {is_chat_enabled && <i className="fa fa-comment fa-2x cn-blue"></i>}
+          {!is_chat_enabled && <i className="fa fa-comment-o fa-2x cn-blue"></i>}
+        </a>
+      </div>
+    )
   }
 
 
@@ -197,6 +211,10 @@ class SchoolInfo extends React.Component {
                   <img className='four-door-icon' src='/src/assets/images/four_door/skoller_default.png'></img>
                 </div>
               </td>
+            </tr>
+            <tr>
+              <th>Chat:</th>
+              <td>{this.renderChatEnabled()}</td>
             </tr>
           </tbody>
         </table>
