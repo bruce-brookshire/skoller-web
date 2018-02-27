@@ -59,7 +59,7 @@ class NavBar extends React.Component {
   }
 
   renderClassInfo () {
-    const {userStore: {user}, navbarStore: {cl, isDIY, toggleEditCl, toggleIssues, toggleHelpResolved, toggleRequestResolved, toggleWrench}} = this.props.rootStore
+    const {userStore: {user}, navbarStore: {cl, isDIY, toggleEditCl, toggleIssues, toggleHelpResolved, toggleRequestResolved, toggleWrench, toggleChat}} = this.props.rootStore
     const admin = this.props.rootStore.userStore.isAdmin()
     if (cl) {
       return (
@@ -70,7 +70,8 @@ class NavBar extends React.Component {
           toggleIssues={toggleIssues}
           toggleHelpResolved={toggleHelpResolved}
           toggleRequestResolved={toggleRequestResolved}
-          toggleWrench={toggleWrench} />
+          toggleWrench={toggleWrench}
+          toggleChat={toggleChat} />
       )
     }
   }

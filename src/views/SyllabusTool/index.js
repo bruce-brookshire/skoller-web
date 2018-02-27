@@ -41,6 +41,7 @@ class SyllabusTool extends React.Component {
     super(props)
     navbarStore.toggleEditCl = this.toggleEditClassModal.bind(this)
     navbarStore.toggleWrench = this.toggleWrench.bind(this)
+    navbarStore.toggleChat = this.toggleChat.bind(this)
     navbarStore.toggleIssues = this.toggleIssuesModal.bind(this)
     navbarStore.toggleHelpResolved = this.toggleHelpResolvedModal.bind(this)
     navbarStore.toggleRequestResolved = this.toggleRequestResolvedModal.bind(this)
@@ -63,6 +64,7 @@ class SyllabusTool extends React.Component {
     navbarStore.isDIY = false
     navbarStore.toggleEditCl = null
     navbarStore.toggleWrench = null
+    navbarStore.toggleChat = null
     navbarStore.toggleIssues = null
     navbarStore.toggleHelpResolved = null
     navbarStore.toggleRequestResolved = null
@@ -721,6 +723,13 @@ class SyllabusTool extends React.Component {
   */
   toggleEditClassModal () {
     this.setState({openEditClassModal: !this.state.openEditClassModal})
+  }
+
+  toggleChat () {
+    const {cl} = navbarStore
+    actions.classes.updateClass({id: cl.id, is_chat_enabled: !cl.is_chat_enabled}).then((cl) => {
+      navbarStore.cl = cl
+    }).catch(() => false)
   }
 
   toggleWrench () {
