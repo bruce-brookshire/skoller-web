@@ -6,8 +6,8 @@ class DateRangeField extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      max: null,
-      min: null,
+      max: '',
+      min: '',
       isFocused: false
     }
   }

@@ -1,4 +1,5 @@
 import {createAssignment, deleteAssignment, getClassAssignments, updateAssignment} from './assignments'
+import {getAnalytics} from './analytics'
 import {authenticateUser, createAccount, forgotPassword, getRoles,
   getUserById, getUserByToken, getUsers, registerUser, resetPassword,
   resendVerification, updateAccount, verifyPhoneNumber} from './auth'
@@ -25,6 +26,9 @@ import {getNextClass} from './syllabusworkers'
 import {createWeight, deleteWeight, getClassWeights, updateWeight} from './weights'
 
 const actions = {
+  analytics: {
+    getAnalytics
+  },
   assignments: {
     createAssignment,
     deleteAssignment,

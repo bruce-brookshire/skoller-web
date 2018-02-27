@@ -52,12 +52,13 @@ class Analytics extends React.Component {
     const {state} = this.props.location
     navbarStore.cl = null
     return {
-      audience: null,
+      audience: 'allSchools',
       category: 'Advertising',
       loading: false,
-      maxDate: null,
-      minDate: null,
+      maxDate: '',
+      minDate: '',
       schools: [],
+      data: null
     }
   }
 
@@ -75,6 +76,18 @@ class Analytics extends React.Component {
     }).catch(() => false)
   }
 
+  getAnalytics(minDate, maxDate, audience) {
+    if (minDate && maxDate && minDate != '' && maxDate != '') {
+      let queryString = `date_start=${minDate}&date_end=${maxDate}`
+      if (audience != 'allSchools') {
+        queryString = queryString + `&school_id=${audience}`
+      }
+      actions.analytics.getAnalytics(queryString).then((data) => {
+        this.setState({data: data})
+      })
+    }
+  }
+
   ////////////////////////////
   ///////// METHODS //////////
   ////////////////////////////
@@ -90,6 +103,18 @@ class Analytics extends React.Component {
       arr.push({value: school.id, name: school.name})
     })
     return arr
+  }
+
+  updateAudience(value) {
+    const {minDate, maxDate} = this.state
+    this.setState({audience: value})
+    this.getAnalytics(minDate, maxDate, value)
+  }
+
+  updateDates(value) {
+    const {audience} = this.state
+    this.setState({maxDate: value.max, minDate: value.min})
+    this.getAnalytics(value.min, value.max, audience)
   }
 
   ////////////////////////////
@@ -112,7 +137,7 @@ class Analytics extends React.Component {
         <SelectField
           label=""
           name="select_audience"
-          onChange={(name,value) => this.setState({audience: value})}
+          onChange={(name,value) => this.updateAudience(value)}
           options={this.selectAudienceOptions()}
           value={this.state.audience}
         />
@@ -153,9 +178,10 @@ class Analytics extends React.Component {
         <DateRangeField
           label=""
           onChange={(name,value) => {
-            this.setState({maxDate: value.max, minDate: value.min})
+            this.updateDates(value)
           }}
           value={{max:this.state.maxDate,min:this.state.minDate}}
+          name="dates"
         />
         {this.state.maxDate && this.state.minDate ? this.renderDaysInRange() : null}
       </div>
