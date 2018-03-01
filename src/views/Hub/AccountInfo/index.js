@@ -133,8 +133,8 @@ class AccountInfo extends React.Component {
         </div>
         <div className="row center-md center-lg">
           <div className='col-xs-12 col-md-9 col-lg-6 margin-top'>
-            {this.state.user.student &&
-              <ClassList 
+            {this.state.user && this.state.user.student &&
+              <ClassList
                 classes={this.state.classes}
                 disabled={true}
                 onDelete={null}
