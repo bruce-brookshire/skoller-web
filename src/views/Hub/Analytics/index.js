@@ -12,6 +12,14 @@ import {mapProfessor} from '../../../utilities/display'
 import {mapTimeToDisplay} from '../../../utilities/time'
 import actions from '../../../actions'
 import stores from '../../../stores'
+import Advertising from './Advertising' 
+import AssignmentInfo from './AssignmentInfo'
+import ChatAnalytics from './ChatAnalytics'
+import GradeEntry from './GradeEntry'
+import Notifications from './Notifications'
+import Reviews from './Reviews'
+import SyllabiProcessing from './SyllabiProcessing'
+import Updates from './Updates'
 
 const {navbarStore} = stores
 
@@ -218,7 +226,8 @@ class Analytics extends React.Component {
       case 'Advertising':
         return <Advertising audience={this.state.audience} max={this.state.maxDate} min={this.state.minDate}/>
       case 'Syllabi Processing':
-        return <SyllabiProcessing audience={this.state.audience} max={this.state.maxDate} min={this.state.minDate}/>
+        // return <SyllabiProcessing audience={this.state.audience} max={this.state.maxDate} min={this.state.minDate}/>
+        return <SyllabiProcessing data={this.state.data.class}/>
       case 'Assignment Info':
         return <AssignmentInfo audience={this.state.audience} max={this.state.maxDate} min={this.state.minDate}/>
       case 'Updates':
@@ -239,6 +248,7 @@ class Analytics extends React.Component {
     return (
       <div className='col-xs-12 col-sm-7'>
         <h3 className='center-text cn-blue full-width'>Custom</h3>
+        {this.state.data && this.renderCustomResultsContent()}
       </div>
     )
   }
