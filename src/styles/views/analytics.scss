@@ -16,4 +16,19 @@
     text-align: center;
     width: 25px;
   }
+
+  .cn-analytics-list {
+    display: flex;
+    flex-direction: column;
+
+    .cn-analytics-label {
+      float: left;
+      width: 33%;
+    }
+
+    .cn-analytics-sub-label {
+      float: left;
+      width: 25%;
+    }
+  }
 }
