@@ -36,51 +36,51 @@ class SyllabiProcessing extends React.Component {
   ///////////////////////////
 
   render () {
-    const {data} = this.props
+    const cl = this.props.data.class
     return (
       <div>
         <div className="cn-analytics-list">
           <div>
             <span className="cn-analytics-label"><strong>Classes available: </strong></span>
-            <span>{data.class_count}</span>
+            <span>{cl.class_count}</span>
           </div>
           <div>
             <span className="cn-analytics-label"><strong>Classes with enrollment: </strong></span>
-            <span>{data.enrollment}</span>
+            <span>{cl.enrollment}</span>
           </div>
           <div>
             <span className="cn-analytics-label"><strong>Classes with syllabi submitted: </strong></span>
-            <span>{data.class_syllabus_count} ({(data.class_syllabus_count / data.class_count) * 100} %)</span>
+            <span>{cl.class_syllabus_count} ({(cl.class_syllabus_count / cl.class_count) * 100} %)</span>
           </div>
           <div>
             <span className="cn-analytics-label"><strong>Completed classes: </strong></span>
-            <span>{data.completed_class} </span><span className="cn-red">({data.class_in_review} in review)</span>
+            <span>{cl.completed_class} </span><span className="cn-red">({cl.class_in_review} in review)</span>
             <ul>
               <li>
                 <span className="cn-analytics-sub-label"><strong>Completed by Skoller: </strong></span>
-                <span>{data.completed_by_skoller} ({(data.completed_by_skoller / data.completed_class) * 100} %)</span>
+                <span>{cl.completed_by_skoller} ({(cl.completed_by_skoller / cl.completed_class) * 100} %)</span>
               </li>
               <li>
                 <span className="cn-analytics-sub-label"><strong>Completed by DIY: </strong></span>
-                <span>{data.completed_by_diy} ({(data.completed_by_diy / data.completed_class) * 100} %)</span>
+                <span>{cl.completed_by_diy} ({(cl.completed_by_diy / cl.completed_class) * 100} %)</span>
               </li>
             </ul>
           </div>
           <div>
             <span className="cn-analytics-label"><strong>Communities: </strong></span>
-            <span>{data.communitites} ({(data.communitites / data.enrollment) * 100} %)</span>
+            <span>{cl.communitites} ({(cl.communitites / cl.enrollment) * 100} %)</span>
           </div>
           <div>
             <span className="cn-analytics-label"><strong>Student created classes: </strong></span>
-            <span>{data.student_created_classes} ({(data.student_created_classes / data.class_count) * 100} %)</span>
+            <span>{cl.student_created_classes} ({(cl.student_created_classes / cl.class_count) * 100} %)</span>
           </div>
           <div>
             <span className="cn-analytics-label"><strong>Classes with multiple files: </strong></span>
-            <span>{data.classes_multiple_files} ({(data.classes_multiple_files / data.class_syllabus_count) * 100} %)</span>
+            <span>{cl.classes_multiple_files} ({(cl.classes_multiple_files / cl.class_syllabus_count) * 100} %)</span>
           </div>
           <div>
             <span className="cn-analytics-label"><strong>Classes per student (avg.): </strong></span>
-            <span>{data.avg_classes}</span>
+            <span>{cl.avg_classes}</span>
           </div>
         </div>
       </div>
@@ -89,9 +89,7 @@ class SyllabiProcessing extends React.Component {
 }
 
 SyllabiProcessing.propTypes = {
-  data: PropTypes.object.isRequired,
-  max: PropTypes.string,
-  min: PropTypes.string,
+  data: PropTypes.object.isRequired
 }
 
 export default SyllabiProcessing

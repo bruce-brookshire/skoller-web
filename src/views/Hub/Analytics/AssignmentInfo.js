@@ -17,7 +17,6 @@ class AssignmentInfo extends React.Component {
   /////////////////////////
 
   componentWillMount () {
-    this.getData()
   }
 
   componentWillUnmount () {
@@ -28,23 +27,8 @@ class AssignmentInfo extends React.Component {
   */
   initializeState () {
     return {
-      loading: false,
+      loading: false
     }
-  }
-
-  ////////////////////////////
-  ///////// ACTIONS //////////
-  ////////////////////////////
-
-  /*
-  * Get analytics data
-  */
-  getData () {
-    console.log('get data')
-    // this.setState({loading:true})
-    // actions.schools.getAllSchools().then(schools => {
-      // this.setState({schools,loading:false})
-    // }).catch(() => false)
   }
 
   ///////////////////////////
@@ -52,19 +36,52 @@ class AssignmentInfo extends React.Component {
   ///////////////////////////
 
   render () {
+    const {assignment} = this.props.data
+    const cl = this.props.data.class
     return (
-      null
+      <div>
+        <div className="cn-analytics-list">
+          <div>
+            <span className="cn-analytics-label"><strong>Assignment Count: </strong></span>
+            <span>{assignment.assign_count}</span>
+            <ul>
+              <li>
+                <span className="cn-analytics-sub-label"><strong>Skoller: </strong></span>
+                <span>{assignment.skoller_assign_count} ({(assignment.skoller_assign_count / assignment.assign_count) * 100} %)</span>
+              </li>
+              <li>
+                <span className="cn-analytics-sub-label"><strong>Students: </strong></span>
+                <span>{assignment.student_assign_count} ({(assignment.student_assign_count / assignment.assign_count) * 100} %)</span>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <span className="cn-analytics-label"><strong>Skoller assignments per class: </strong></span>
+            <span>{assignment.skoller_assign_count / cl.completed_class}</span>
+          </div>
+          <div>
+            <span className="cn-analytics-label"><strong>Assignments created by Skoller with due dates: </strong></span>
+            <span>{assignment.assign_due_date_count}</span>
+          </div>
+          <div>
+            <span className="cn-analytics-label"><strong># of assignments per student: </strong></span>
+            <span>{assignment.assign_per_student}</span>
+          </div>
+        </div>
+      </div>
     )
   }
+
+  // Assignments created by Skoller with due dates: 
+  // # of assignments per student: 37 
+
+  // assign_per_student	6
+  // assign_due_date_count	6
+  // assign_count	6
 }
 
 AssignmentInfo.propTypes = {
-  audience: PropTypes.oneOfType([
-              PropTypes.string,
-              PropTypes.number,
-            ]).isRequired,
-  max: PropTypes.string,
-  min: PropTypes.string,
+  data: PropTypes.object.isRequired
 }
 
 export default AssignmentInfo
