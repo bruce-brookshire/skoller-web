@@ -163,7 +163,7 @@ class SignUpForm extends React.Component {
   }
 
   onAddMyUniversity () {
-    window.location.href = 'mailto:support@skoller.co?Subject=Add My School'
+    window.location.href = 'mailto:support@skoller.co?Subject=Add My School - ' + this.state.form.email
   }
 
   onSeeSchools () {
