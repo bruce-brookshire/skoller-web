@@ -4,6 +4,23 @@ import Loading from '../../../components/Loading'
 import {inject, observer} from 'mobx-react'
 import {browserHistory} from 'react-router'
 import actions from '../../../actions'
+import {convertUTCTimeToTimeString} from '../../../utilities/time'
+import Grid from '../../../components/Grid/index'
+
+const headers = [
+  {
+    field: 'time',
+    display: 'Time'
+  },
+  {
+    field: 'timezone',
+    display: 'Timezone'
+  },
+  {
+    field: 'count',
+    display: 'Count'
+  }
+]
 
 @inject('rootStore') @observer
 class Notifications extends React.Component {
@@ -17,7 +34,6 @@ class Notifications extends React.Component {
   /////////////////////////
 
   componentWillMount () {
-    this.getData()
   }
 
   componentWillUnmount () {
@@ -32,39 +48,67 @@ class Notifications extends React.Component {
     }
   }
 
-  ////////////////////////////
-  ///////// ACTIONS //////////
-  ////////////////////////////
-
-  /*
-  * Get analytics data
-  */
-  getData () {
-    console.log('get data')
-    // this.setState({loading:true})
-    // actions.schools.getAllSchools().then(schools => {
-      // this.setState({schools,loading:false})
-    // }).catch(() => false)
-  }
-
   ///////////////////////////
   ///////// RENDER //////////
   ///////////////////////////
 
+  getRows () {
+    return this.props.data.notifications.common_times.map((item, index) =>
+      this.mapRow(item, index)
+    )
+  }
+
+  mapRow (item, index) {
+    const { timezone, notification_time, count } = item
+
+    const row = {
+      notification_time: convertUTCTimeToTimeString(notification_time, timezone),
+      timezone: timezone || '',
+      count: count || 0
+    }
+
+    return row
+  }
+
   render () {
+    const {notifications} = this.props.data
     return (
-      null
+      <div>
+        <div className="cn-analytics-list">
+          <div>
+            <span className="cn-analytics-label"><strong>Notifications Enabled: </strong></span>
+            <span>{notifications.notifications_enabled} ({notifications.notifications_enabled / notifications.students * 100}%)</span>
+          </div>
+          <div>
+            <span className="cn-analytics-label"><strong>Average times: </strong></span>
+            <div className="cn-analytics-sub-label">
+              <Grid
+                headers={headers}
+                rows={this.getRows()}
+                disabled={true}
+              />
+            </div>
+          </div>
+          <div>
+            <span className="cn-analytics-label"><strong>Average days out: </strong></span>
+            <span>{notifications.avg_days_out} days before</span>
+          </div>
+          <div>
+            <span className="cn-analytics-label"><strong>Semester projection (this period): </strong></span>
+            <span>{notifications.estimated_reminders_period}</span>
+          </div>
+          <div>
+            <span className="cn-analytics-label"><strong>Semester projection (this semester): </strong></span>
+            <span>{notifications.estimated_reminders}</span>
+          </div>
+        </div>
+      </div>
     )
   }
 }
 
 Notifications.propTypes = {
-  audience: PropTypes.oneOfType([
-              PropTypes.string,
-              PropTypes.number,
-            ]).isRequired,
-  max: PropTypes.string,
-  min: PropTypes.string,
+  data: PropTypes.object.isRequired
 }
 
 export default Notifications
