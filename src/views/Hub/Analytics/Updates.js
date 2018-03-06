@@ -67,7 +67,22 @@ class Updates extends React.Component {
   getRows() {
     return this.props.data.mod.map((item, index) =>
       this.mapRow(item, index)
-    )
+    ).concat(this.addTotals())
+  }
+
+  addTotals() {
+    const {mod} = this.props.data
+
+    const row = [{
+      type: "Totals",
+      manualChanges: mod.reduce((reducer, item) => reducer + item.count, 0),
+      private: mod.reduce((reducer, item) => reducer + item.count_private, 0),
+      copies: mod.reduce((reducer, item) => reducer + item.manual_copies, 0),
+      dismisses: mod.reduce((reducer, item) => reducer + item.manual_dismiss, 0),
+      autoCopies: "N/A"
+    }]
+    
+    return row
   }
 
   mapRow (item, index) {
