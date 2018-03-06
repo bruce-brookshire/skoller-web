@@ -71,13 +71,6 @@ class AssignmentInfo extends React.Component {
       </div>
     )
   }
-
-  // Assignments created by Skoller with due dates: 
-  // # of assignments per student: 37 
-
-  // assign_per_student	6
-  // assign_due_date_count	6
-  // assign_count	6
 }
 
 AssignmentInfo.propTypes = {
