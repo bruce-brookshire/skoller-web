@@ -13,6 +13,10 @@ export function mapProfessor (professor) {
   return name
 }
 
+export function roundToTwo (val) {
+  return +(Math.round(val + "e+2")  + "e-2");
+}
+
 /*
 * Highlight matching text.
 *

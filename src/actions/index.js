@@ -1,4 +1,5 @@
 import {createAssignment, deleteAssignment, getClassAssignments, updateAssignment} from './assignments'
+import {getAnalytics} from './analytics'
 import {authenticateUser, createAccount, forgotPassword, getRoles,
   getUserById, getUserByToken, getUsers, registerUser, resetPassword,
   resendVerification, updateAccount, verifyPhoneNumber} from './auth'
@@ -18,13 +19,16 @@ import {sendNeedsSyllabusNotification, getNotificationLogs, sendCustomNotificati
 import {getSchoolPeriods, createPeriod, updatePeriod} from './periods'
 import {attachProfessorToClass, createProfessor, removeProfessorFromClass,
   searchProfessors, updateProfessor} from './professors'
-import {createSchool, getActiveSchools, getFieldsOfStudy, getHubSchools,
+import {createSchool, getAllSchools, getActiveSchools, getFieldsOfStudy, getHubSchools,
   getHubSchoolsMinified, getSchoolById, updateSchool} from './schools'
 import {showSnackbar} from './snackbar'
 import {getNextClass} from './syllabusworkers'
 import {createWeight, deleteWeight, getClassWeights, updateWeight} from './weights'
 
 const actions = {
+  analytics: {
+    getAnalytics
+  },
   assignments: {
     createAssignment,
     deleteAssignment,
@@ -125,6 +129,7 @@ const actions = {
   },
   schools: {
     createSchool,
+    getAllSchools,
     getActiveSchools,
     getFieldsOfStudy,
     getHubSchools,
