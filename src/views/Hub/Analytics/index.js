@@ -254,7 +254,7 @@ class Analytics extends React.Component {
   renderCustomResults() {
     return (
       <div className='col-xs-12 col-sm-7'>
-        <h3 className='center-text cn-blue full-width'>Custom</h3>
+        {this.state.category ? this.renderSearchCategory() : null}
         {this.state.data && this.renderCustomResultsContent()}
       </div>
     )
@@ -262,9 +262,9 @@ class Analytics extends React.Component {
 
   renderSearchCategory(){
     return (
-      <h4 className='center-text' style={{marginBottom: '1px',marginTop: '15px'}}>
+      <h3 className='center-text cn-blue full-width'>
         {this.state.category}
-      </h4>
+      </h3>
     )
   }
 
@@ -289,7 +289,6 @@ class Analytics extends React.Component {
         </div>
         <hr/>
         <div>
-          {this.state.category ? this.renderSearchCategory() : null}
           {this.state.audience ? this.renderSearchAudience() : null}
         </div>
         <div className='analytics-results row'>
