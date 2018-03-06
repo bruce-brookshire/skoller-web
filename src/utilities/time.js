@@ -47,7 +47,6 @@ export function convertUTCDatetimeToDateString(dateTime, tzAbbr) {
 }
 
 /*
-<<<<<<< HEAD
 * Convert utc date time to local datetime
 *
 * @param [Date] dateTime. Date time. YYYY-MM-DDTHH:MM:ss
