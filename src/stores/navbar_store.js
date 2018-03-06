@@ -10,6 +10,7 @@ class NavBarStore {
       toggleIssues: null,
       toggleHelpResolved: null,
       toggleRequestResolved: null,
+      title: null
     })
   }
 }

@@ -43,6 +43,7 @@ class Analytics extends React.Component {
   }
 
   componentWillUnmount () {
+    navbarStore.title = ""
   }
 
   /*
@@ -59,6 +60,7 @@ class Analytics extends React.Component {
   initializeState () {
     const {state} = this.props.location
     navbarStore.cl = null
+    navbarStore.title = "Skoller Analytics"
     return {
       audience: 'allSchools',
       category: 'Advertising',
@@ -280,9 +282,6 @@ class Analytics extends React.Component {
   render () {
     return (
       <div className='cn-analytics-container'>
-        <div>
-          <h2 className='center-text' style={{marginBottom: '5px',marginTop: '5px'}}>Skoller Analytics</h2>
-        </div>
         <div className='analytics-filters row'>
           {this.renderSelectAudience()}
           {this.renderSelectDates()}
