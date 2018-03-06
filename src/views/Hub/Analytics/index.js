@@ -9,7 +9,7 @@ import ProfessorInfo from '../../components/ClassEditor/Professor/ProfessorInfo'
 import {inject, observer} from 'mobx-react'
 import {browserHistory} from 'react-router'
 import {mapProfessor} from '../../../utilities/display'
-import {mapTimeToDisplay} from '../../../utilities/time'
+import {mapTimeToDisplay, formatDate} from '../../../utilities/time'
 import actions from '../../../actions'
 import stores from '../../../stores'
 import Advertising from './Advertising' 
@@ -273,7 +273,7 @@ class Analytics extends React.Component {
       <h5 className='center-text' style={{marginBottom: '1px',marginTop: '1px'}}>
         {this.getAudienceName()}
         {this.state.minDate && this.state.maxDate ? (
-          <span>{` (${this.state.minDate} through ${this.state.maxDate})`}</span>
+          <span>{` (${formatDate(this.state.minDate)} through ${formatDate(this.state.maxDate)})`}</span>
         ) : null}
       </h5>
     )

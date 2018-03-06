@@ -1,4 +1,4 @@
-import * as moment from 'moment-timezone'
+import moment from 'moment-timezone'
 
 /*  Update these as mapTimezone updates */
 export const timezoneOptions = [
@@ -69,6 +69,10 @@ export function convertLocalDateToUTC (dateString, tzAbbr) {
   const tz = mapTimezone(tzAbbr)
   const d = moment.tz(dateString, tz).format()
   return d
+}
+
+export function formatDate(dateString) {
+  return moment(dateString, "YYYY-MM-DD").format("MMMM Do")
 }
 
 /*
