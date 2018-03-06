@@ -9,7 +9,7 @@ import ProfessorInfo from '../../components/ClassEditor/Professor/ProfessorInfo'
 import {inject, observer} from 'mobx-react'
 import {browserHistory} from 'react-router'
 import {mapProfessor} from '../../../utilities/display'
-import {mapTimeToDisplay} from '../../../utilities/time'
+import {mapTimeToDisplay, formatDate} from '../../../utilities/time'
 import actions from '../../../actions'
 import stores from '../../../stores'
 import Advertising from './Advertising' 
@@ -43,6 +43,7 @@ class Analytics extends React.Component {
   }
 
   componentWillUnmount () {
+    navbarStore.title = ""
   }
 
   /*
@@ -59,6 +60,7 @@ class Analytics extends React.Component {
   initializeState () {
     const {state} = this.props.location
     navbarStore.cl = null
+    navbarStore.title = "Skoller Analytics"
     return {
       audience: 'allSchools',
       category: 'Advertising',
@@ -252,7 +254,7 @@ class Analytics extends React.Component {
   renderCustomResults() {
     return (
       <div className='col-xs-12 col-sm-7'>
-        <h3 className='center-text cn-blue full-width'>Custom</h3>
+        {this.state.category ? this.renderSearchCategory() : null}
         {this.state.data && this.renderCustomResultsContent()}
       </div>
     )
@@ -260,9 +262,9 @@ class Analytics extends React.Component {
 
   renderSearchCategory(){
     return (
-      <h4 className='center-text' style={{marginBottom: '1px',marginTop: '15px'}}>
+      <h3 className='center-text cn-blue full-width'>
         {this.state.category}
-      </h4>
+      </h3>
     )
   }
 
@@ -271,7 +273,7 @@ class Analytics extends React.Component {
       <h5 className='center-text' style={{marginBottom: '1px',marginTop: '1px'}}>
         {this.getAudienceName()}
         {this.state.minDate && this.state.maxDate ? (
-          <span>{` (${this.state.minDate} through ${this.state.maxDate})`}</span>
+          <span>{` (${formatDate(this.state.minDate)} through ${formatDate(this.state.maxDate)})`}</span>
         ) : null}
       </h5>
     )
@@ -280,9 +282,6 @@ class Analytics extends React.Component {
   render () {
     return (
       <div className='cn-analytics-container'>
-        <div>
-          <h2 className='center-text' style={{marginBottom: '5px',marginTop: '5px'}}>Skoller Analytics</h2>
-        </div>
         <div className='analytics-filters row'>
           {this.renderSelectAudience()}
           {this.renderSelectDates()}
@@ -290,7 +289,6 @@ class Analytics extends React.Component {
         </div>
         <hr/>
         <div>
-          {this.state.category ? this.renderSearchCategory() : null}
           {this.state.audience ? this.renderSearchAudience() : null}
         </div>
         <div className='analytics-results row'>

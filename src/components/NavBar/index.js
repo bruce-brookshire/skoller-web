@@ -77,13 +77,14 @@ class NavBar extends React.Component {
   }
 
   render () {
-    const {userStore: {user}, navbarStore: {cl}} = this.props.rootStore
+    const {userStore: {user}, navbarStore: {cl, title}} = this.props.rootStore
     return (
       <div className='cn-navbar'>
         <div>
           <img alt="Skoller" className='logo' src='/src/assets/images/logo-wide-blue@1x.png' />
         </div>
         <div className='class-info'>
+          {title && <h2>{title}</h2>}
           {this.renderClassInfo()}
         </div>
         <div className='user-info'>
