@@ -241,7 +241,8 @@ class Analytics extends React.Component {
         // return <Notifications audience={this.state.audience} max={this.state.maxDate} min={this.state.minDate}/>
         return <Notifications data={this.state.data}/>
       case 'Grade Entry':
-        return <GradeEntry audience={this.state.audience} max={this.state.maxDate} min={this.state.minDate}/>
+        // return <GradeEntry audience={this.state.audience} max={this.state.maxDate} min={this.state.minDate}/>
+        return <GradeEntry data={this.state.data}/>
       case 'Reviews and More':
         return <Reviews audience={this.state.audience} max={this.state.maxDate} min={this.state.minDate}/>
       default:

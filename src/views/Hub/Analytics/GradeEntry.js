@@ -4,6 +4,7 @@ import Loading from '../../../components/Loading'
 import {inject, observer} from 'mobx-react'
 import {browserHistory} from 'react-router'
 import actions from '../../../actions'
+import {roundToTwo} from '../../../utilities/display'
 
 @inject('rootStore') @observer
 class GradeEntry extends React.Component {
@@ -17,7 +18,6 @@ class GradeEntry extends React.Component {
   /////////////////////////
 
   componentWillMount () {
-    this.getData()
   }
 
   componentWillUnmount () {
@@ -32,39 +32,31 @@ class GradeEntry extends React.Component {
     }
   }
 
-  ////////////////////////////
-  ///////// ACTIONS //////////
-  ////////////////////////////
-
-  /*
-  * Get analytics data
-  */
-  getData () {
-    console.log('get data')
-    // this.setState({loading:true})
-    // actions.schools.getAllSchools().then(schools => {
-      // this.setState({schools,loading:false})
-    // }).catch(() => false)
-  }
-
   ///////////////////////////
   ///////// RENDER //////////
   ///////////////////////////
 
   render () {
+    const {grades} = this.props.data
     return (
-      null
+      <div>
+        <div className="cn-analytics-list">
+          <div>
+            <span className="cn-analytics-label"><strong>Grades entered: </strong></span>
+            <span>{grades.grades_entered}</span>
+          </div>
+          <div>
+            <span className="cn-analytics-label"><strong>Participation Rate: </strong></span>
+            <span>{roundToTwo(grades.student_classes_with_grades / grades.student_classes * 100)}%</span>
+          </div>
+        </div>
+      </div>
     )
   }
 }
 
 GradeEntry.propTypes = {
-  audience: PropTypes.oneOfType([
-              PropTypes.string,
-              PropTypes.number,
-            ]).isRequired,
-  max: PropTypes.string,
-  min: PropTypes.string,
+  data: PropTypes.object.isRequired
 }
 
 export default GradeEntry

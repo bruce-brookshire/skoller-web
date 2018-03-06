@@ -6,6 +6,7 @@ import {browserHistory} from 'react-router'
 import actions from '../../../actions'
 import {convertUTCTimeToTimeString} from '../../../utilities/time'
 import Grid from '../../../components/Grid/index'
+import {roundToTwo} from '../../../utilities/display'
 
 const headers = [
   {
@@ -91,15 +92,15 @@ class Notifications extends React.Component {
           </div>
           <div>
             <span className="cn-analytics-label"><strong>Average days out: </strong></span>
-            <span>{notifications.avg_days_out} days before</span>
+            <span>{roundToTwo(notifications.avg_days_out)} days before</span>
           </div>
           <div>
             <span className="cn-analytics-label"><strong>Semester projection (this period): </strong></span>
-            <span>{notifications.estimated_reminders_period}</span>
+            <span>{roundToTwo(notifications.estimated_reminders_period)}</span>
           </div>
           <div>
             <span className="cn-analytics-label"><strong>Semester projection (this semester): </strong></span>
-            <span>{notifications.estimated_reminders}</span>
+            <span>{roundToTwo(notifications.estimated_reminders)}</span>
           </div>
         </div>
       </div>

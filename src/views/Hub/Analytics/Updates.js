@@ -5,6 +5,7 @@ import {inject, observer} from 'mobx-react'
 import {browserHistory} from 'react-router'
 import actions from '../../../actions'
 import Grid from '../../../components/Grid/index'
+import {roundToTwo} from '../../../utilities/display'
 
 const headers = [
   {
@@ -77,11 +78,11 @@ class Updates extends React.Component {
 
     const row = {
       type: type || '',
-      manualChanges: <div>{count}<br />{`(${percent_mods}% of total mods)`}</div>,
+      manualChanges: <div>{count}<br />{`(${roundToTwo(percent_mods)}% of total mods)`}</div>,
       private: count_private || 0,
-      copies: <div>{manual_copies}<br />{`(${manual_copies / manual_total * 100}%)`}</div>,
-      dismisses: <div>{manual_dismiss}<br />{`(${manual_dismiss / manual_total * 100}%)`}</div>,
-      autoCopies: <div>{count == 0 ? 0 : auto_updates / count * 100}% reached threshold</div> 
+      copies: <div>{manual_copies}<br />{`(${roundToTwo(manual_copies / manual_total * 100)}%)`}</div>,
+      dismisses: <div>{manual_dismiss}<br />{`(${roundToTwo(manual_dismiss / manual_total * 100)}%)`}</div>,
+      autoCopies: <div>{count == 0 ? 0 : roundToTwo(auto_updates / count * 100)}% reached threshold</div> 
     }
 
     return row

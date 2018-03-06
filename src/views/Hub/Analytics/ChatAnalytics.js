@@ -4,6 +4,7 @@ import Loading from '../../../components/Loading'
 import {inject, observer} from 'mobx-react'
 import {browserHistory} from 'react-router'
 import actions from '../../../actions'
+import {roundToTwo} from '../../../utilities/display'
 
 @inject('rootStore') @observer
 class ChatAnalytics extends React.Component {
@@ -47,11 +48,11 @@ class ChatAnalytics extends React.Component {
           </div>
           <div>
             <span className="cn-analytics-label"><strong>Classes that have chatted: </strong></span>
-            <span>{chat.chat_classes} ({chat.chat_classes / cl.completed_class * 100}%)</span>
+            <span>{chat.chat_classes} ({roundToTwo(chat.chat_classes / cl.completed_class * 100)}%)</span>
           </div>
           <div>
             <span className="cn-analytics-label"><strong>Total class posts: </strong></span>
-            <span>{chat.chat_post_count} ({chat.chat_post_count / cl.completed_class} per active class)</span>
+            <span>{chat.chat_post_count} ({roundToTwo(chat.chat_post_count / cl.completed_class)} per active class)</span>
           </div>
           <div>
             <span className="cn-analytics-label"><strong>Highest chat class:  </strong></span>
