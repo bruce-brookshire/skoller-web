@@ -93,7 +93,7 @@ class Updates extends React.Component {
         <Grid
           headers={headers}
           rows={this.getRows()}
-          disabled={true} 
+          disabled={true}
         />
       </div>
     )

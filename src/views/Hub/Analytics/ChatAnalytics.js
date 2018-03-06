@@ -17,7 +17,6 @@ class ChatAnalytics extends React.Component {
   /////////////////////////
 
   componentWillMount () {
-    this.getData()
   }
 
   componentWillUnmount () {
@@ -32,39 +31,44 @@ class ChatAnalytics extends React.Component {
     }
   }
 
-  ////////////////////////////
-  ///////// ACTIONS //////////
-  ////////////////////////////
-
-  /*
-  * Get analytics data
-  */
-  getData () {
-    console.log('get data')
-    // this.setState({loading:true})
-    // actions.schools.getAllSchools().then(schools => {
-      // this.setState({schools,loading:false})
-    // }).catch(() => false)
-  }
-
   ///////////////////////////
   ///////// RENDER //////////
   ///////////////////////////
 
   render () {
+    const cl = this.props.data.class
+    const {chat} = this.props.data
     return (
-      null
+      <div>
+        <div className="cn-analytics-list">
+          <div>
+            <span className="cn-analytics-label"><strong>Total classes completed: </strong></span>
+            <span>{cl.completed_class}</span>
+          </div>
+          <div>
+            <span className="cn-analytics-label"><strong>Classes that have chatted: </strong></span>
+            <span>{chat.chat_classes} ({chat.chat_classes / cl.completed_class * 100}%)</span>
+          </div>
+          <div>
+            <span className="cn-analytics-label"><strong>Total class posts: </strong></span>
+            <span>{chat.chat_post_count} ({chat.chat_post_count / cl.completed_class} per active class)</span>
+          </div>
+          <div>
+            <span className="cn-analytics-label"><strong>Highest chat class:  </strong></span>
+            <span>{chat.max_chat_activity.class_name} {chat.max_chat_activity.count} posts</span>
+          </div>
+          <div>
+            <span className="cn-analytics-label"><strong>Total students participating: </strong></span>
+            <span>{chat.participating_students}</span>
+          </div>
+        </div>
+      </div>
     )
   }
 }
 
 ChatAnalytics.propTypes = {
-  audience: PropTypes.oneOfType([
-              PropTypes.string,
-              PropTypes.number,
-            ]).isRequired,
-  max: PropTypes.string,
-  min: PropTypes.string,
+  data: PropTypes.object.isRequired
 }
 
 export default ChatAnalytics
