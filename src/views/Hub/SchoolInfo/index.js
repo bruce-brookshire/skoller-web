@@ -87,19 +87,22 @@ class SchoolInfo extends React.Component {
   }
 
   handleChatStateChange() {
-    const {id, is_chat_enabled} = this.state.school
-    actions.schools.updateSchool({id: id, is_chat_enabled: !is_chat_enabled}).then((school) => {
-      this.setState({school: school})
-    }).catch(() => { this.setState({loading: false}) })
+    if (this.state.school){
+      const {id, is_chat_enabled} = this.state.school
+      actions.schools.updateSchool({id: id, is_chat_enabled: !is_chat_enabled}).then((school) => {
+        this.setState({school: school})
+      }).catch(() => { this.setState({loading: false}) })
+    }
   }
 
   renderChatEnabled () {
-    const { is_chat_enabled } = this.state.school
+    const { school } = this.state
+
     return (
       <div>
         <a onClick={this.handleChatStateChange.bind(this)}>
-          {is_chat_enabled && <i className="fa fa-comment fa-2x cn-blue"></i>}
-          {!is_chat_enabled && <i className="fa fa-comment-o fa-2x cn-blue"></i>}
+          {(school && !school.is_chat_enabled) && <i className="fa fa-comment-o fa-2x cn-blue"></i>}
+          {(school == null || school.is_chat_enabled) && <i className="fa fa-comment fa-2x cn-blue"></i>}
         </a>
       </div>
     )
