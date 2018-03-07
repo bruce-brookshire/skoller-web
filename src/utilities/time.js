@@ -59,8 +59,8 @@ export function convertUTCDatetimeToDateTimeString(dateTime, tzAbbr) {
   return d
 }
 
-
-/* Convert utc time to local time
+/*
+* Convert utc time to local time
 *
 * @param [Date] dateTime. Date time. HH:MM:ss.SSSSSS
 * @param [String] tzAbbr. Abbreviation of timezone, i.e. PST
