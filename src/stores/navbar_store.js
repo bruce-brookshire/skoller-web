@@ -11,6 +11,7 @@ class NavBarStore {
       toggleChat: null,
       toggleHelpResolved: null,
       toggleRequestResolved: null,
+      title: null
     })
   }
 }

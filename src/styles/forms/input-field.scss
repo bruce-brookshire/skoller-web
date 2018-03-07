@@ -16,6 +16,14 @@
     @include form-label;
   }
 
+  .cn-date-range-fields {
+    flex: 1;
+    flex-direction: row;
+    input:first-child {
+      margin-bottom: 5px;
+    }
+  }
+
   .cn-info-container {
     position: relative;
     text-align: center;
@@ -66,5 +74,16 @@
         display: block;
       }
     }
+  }
+
+  // Fix to show placeholder for date fields
+  input[type="date"]:before {
+    content: attr(placeholder) !important;
+    color: #aaa;
+    margin-right: 0.5em;
+  }
+  input[type="date"]:focus:before,
+  input[type="date"]:valid:before {
+    content: "";
   }
 }
