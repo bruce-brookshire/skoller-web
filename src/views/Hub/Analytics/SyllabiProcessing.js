@@ -41,19 +41,19 @@ class SyllabiProcessing extends React.Component {
     return (
       <div>
         <div className="cn-analytics-list">
-          <div>
+          <div className="cn-analytics-item">
             <span className="cn-analytics-label"><strong>Classes available: </strong></span>
             <span>{cl.class_count}</span>
           </div>
-          <div>
+          <div className="cn-analytics-item">
             <span className="cn-analytics-label"><strong>Classes with enrollment: </strong></span>
             <span>{cl.enrollment}</span>
           </div>
-          <div>
+          <div className="cn-analytics-item">
             <span className="cn-analytics-label"><strong>Enrolled classes with syllabi submitted: </strong></span>
             <span>{cl.enrolled_class_syllabus_count} ({roundToTwo(cl.enrolled_class_syllabus_count / cl.enrollment * 100)} %)</span>
           </div>
-          <div>
+          <div className="cn-analytics-item">
             <span className="cn-analytics-label"><strong>Completed classes: </strong></span>
             <span>{cl.completed_class} </span><span className="cn-red">({cl.class_in_review} in review)</span>
             <ul>
@@ -67,19 +67,19 @@ class SyllabiProcessing extends React.Component {
               </li>
             </ul>
           </div>
-          <div>
+          <div className="cn-analytics-item">
             <span className="cn-analytics-label"><strong>Communities: </strong></span>
             <span>{cl.communitites} ({roundToTwo(cl.communitites / cl.enrollment * 100)} %)</span>
           </div>
-          <div>
+          <div className="cn-analytics-item">
             <span className="cn-analytics-label"><strong>Student created classes: </strong></span>
             <span>{cl.student_created_classes} ({roundToTwo(cl.student_created_classes / cl.class_count * 100)} %)</span>
           </div>
-          <div>
+          <div className="cn-analytics-item">
             <span className="cn-analytics-label"><strong>Classes with multiple files: </strong></span>
             <span>{cl.classes_multiple_files} ({roundToTwo(cl.classes_multiple_files / cl.enrollment * 100)} %)</span>
           </div>
-          <div>
+          <div className="cn-analytics-item">
             <span className="cn-analytics-label"><strong>Classes per student (avg.): </strong></span>
             <span>{roundToTwo(cl.avg_classes)}</span>
           </div>

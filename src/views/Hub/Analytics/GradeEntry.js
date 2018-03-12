@@ -41,11 +41,11 @@ class GradeEntry extends React.Component {
     return (
       <div>
         <div className="cn-analytics-list">
-          <div>
+          <div className="cn-analytics-item">
             <span className="cn-analytics-label"><strong>Grades entered: </strong></span>
             <span>{grades.grades_entered}</span>
           </div>
-          <div>
+          <div className="cn-analytics-item">
             <span className="cn-analytics-label"><strong>Participation Rate: </strong></span>
             <span>{roundToTwo(grades.student_classes_with_grades / grades.student_classes * 100)}%</span>
           </div>
