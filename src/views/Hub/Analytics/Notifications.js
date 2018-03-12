@@ -76,11 +76,11 @@ class Notifications extends React.Component {
     return (
       <div>
         <div className="cn-analytics-list">
-          <div>
+          <div className="cn-analytics-item">
             <span className="cn-analytics-label"><strong>Notifications Enabled: </strong></span>
             <span>{notifications.notifications_enabled} ({notifications.notifications_enabled / notifications.students * 100}%)</span>
           </div>
-          <div>
+          <div className="cn-analytics-item">
             <span className="cn-analytics-label"><strong>Average times: </strong></span>
             <div className="cn-analytics-sub-label">
               <Grid
@@ -90,15 +90,15 @@ class Notifications extends React.Component {
               />
             </div>
           </div>
-          <div>
+          <div className="cn-analytics-item">
             <span className="cn-analytics-label"><strong>Average days out: </strong></span>
             <span>{roundToTwo(notifications.avg_days_out)} days before</span>
           </div>
-          <div>
+          <div className="cn-analytics-item">
             <span className="cn-analytics-label"><strong>Semester projection (this period): </strong></span>
             <span>{roundToTwo(notifications.estimated_reminders_period)}</span>
           </div>
-          <div>
+          <div className="cn-analytics-item">
             <span className="cn-analytics-label"><strong>Semester projection (this semester): </strong></span>
             <span>{roundToTwo(notifications.estimated_reminders)}</span>
           </div>

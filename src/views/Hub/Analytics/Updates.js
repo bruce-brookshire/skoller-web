@@ -110,6 +110,7 @@ class Updates extends React.Component {
           headers={headers}
           rows={this.getRows()}
           disabled={true}
+          className="striped"
         />
       </div>
     )
