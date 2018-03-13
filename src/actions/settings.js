@@ -27,6 +27,27 @@ export function getAutoUpdateInfo () {
 }
 
 /*
+* Get auto update metrics and settings
+*/
+export function forecastAutoUpdateInfo (queryString) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/auto-updates` + queryString, {
+    method: 'GET',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error fetching analytics. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
 * Update auto update metrics and settings
 */
 export function updateAutoUpdateInfo (form) {
