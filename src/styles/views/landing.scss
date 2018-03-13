@@ -150,8 +150,8 @@ $h2-size-sm: 1.75em;
   .section-process {
     @include section-marketing;
     @include slant;
-    background: $cn-primary-background-color;
-
+    background: $cn-color-white;
+    
     @include breakpoint(medium) {
       padding-top: 5rem;
     }
@@ -225,7 +225,7 @@ $h2-size-sm: 1.75em;
   .section-community-feature {
     @include section-marketing;
     @include slant;
-    background: $cn-primary-background-color;
+    background: $cn-color-white;
 
     .section-header { color: $cn-font-color; }
 
@@ -322,7 +322,7 @@ $h2-size-sm: 1.75em;
   .section-people-talking {
     @include section-marketing;
     @include slant;
-    background: $cn-primary-background-color;
+    background: $cn-color-white;
     text-align: center;
     position: relative;
 
