@@ -52,8 +52,8 @@ class AutoUpdate extends React.Component {
   initializeFormData() {
     return {
       auto_upd_enroll_thresh: this.findSetting("auto_upd_enroll_thresh"),
-      auto_upd_response_thresh: this.findSetting("auto_upd_response_thresh"),
-      auto_upd_approval_thresh: this.findSetting("auto_upd_approval_thresh")
+      auto_upd_response_thresh: this.findSetting("auto_upd_response_thresh") * 100,
+      auto_upd_approval_thresh: this.findSetting("auto_upd_approval_thresh") * 100
     }
   }
 
@@ -86,7 +86,7 @@ class AutoUpdate extends React.Component {
     Object.keys(form).forEach((k) => {
       let obj = {
         name: k,
-        value: form[k]
+        value: k == "auto_upd_response_thresh" || k == "auto_upd_approval_thresh" ? (form[k] / 100).toString() : form[k]
       }
       array.push(obj)
     })
@@ -155,7 +155,7 @@ class AutoUpdate extends React.Component {
                   error={formErrors.auto_upd_response_thresh}
                   name="auto_upd_response_thresh"
                   onChange={updateProperty}
-                  value={form.auto_upd_response_thresh * 100} />%
+                  value={form.auto_upd_response_thresh} />%
                 </div>
                 {this.renderPercentage(metrics.actual_metrics.shared_mods, metrics.max_metrics.shared_mods)}&nbsp;
                 <span>
@@ -172,7 +172,7 @@ class AutoUpdate extends React.Component {
                     error={formErrors.auto_upd_approval_thresh}
                     name="auto_upd_approval_thresh"
                     onChange={updateProperty}
-                    value={form.auto_upd_approval_thresh * 100} />%
+                    value={form.auto_upd_approval_thresh} />%
                 </div>
                 {this.renderPercentage(metrics.actual_metrics.responded_mods, metrics.max_metrics.responded_mods)}&nbsp;
                 <span>
