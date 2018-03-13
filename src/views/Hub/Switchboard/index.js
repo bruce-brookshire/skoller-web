@@ -33,13 +33,17 @@ class Switchboard extends React.Component {
       logs: [],
       loading: false,
       openCustomNotificationModal: false,
+      autoUpdateData: []
     }
   }
 
   initializeComponent() {
     this.setState({loading: true})
     actions.notifications.getNotificationLogs().then((logs) => {
-      this.setState({logs, loading: false})
+      this.setState({logs})
+    }).catch(() => false)
+    actions.settings.getAutoUpdateInfo().then((autoUpdateData) => {
+      this.setState({autoUpdateData, loading: false})
     }).catch(() => false)
   }
 
@@ -97,6 +101,20 @@ class Switchboard extends React.Component {
     )
   }
 
+  findSetting (key) {
+    return this.state.autoUpdateData.settings.find(x => x.name == key).value
+  }
+
+  renderAutoUpdateSettings () {
+    return (
+      <div>
+        <h3 className='cn-blue'>Auto Updates</h3>
+        <p>Enrollment is {this.findSetting("auto_upd_enroll_thresh")} or more</p>
+        <p>{this.findSetting("auto_upd_response_thresh") * 100}% or more responded to the update</p>
+        <p>{this.findSetting("auto_upd_approval_thresh") * 100}% or more responses were copies</p>
+      </div>
+    )
+  }
 
   render () {
     return (
@@ -115,6 +133,8 @@ class Switchboard extends React.Component {
                 Send Custom Notification
               </button>
             </div>
+            {this.state.loading ? <div className='center-text'><Loading /></div> :
+               this.renderAutoUpdateSettings()}
           </div>
           <div className='cn-switchboard-section-large'>
             <h3 className='cn-blue center-text'>History</h3>
