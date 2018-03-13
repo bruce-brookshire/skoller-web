@@ -334,6 +334,19 @@ $h2-size-sm: 1.75em;
         margin-bottom: 2rem;
       }
     }
+
+    .list {
+      @include unstyled-list;
+      padding-top: $unit-space;
+
+      li {
+        margin-bottom: 2rem;
+
+        .people-talking-img {
+          width: 250px;
+        }
+      }
+    }
   }
 
   .section-cta {
