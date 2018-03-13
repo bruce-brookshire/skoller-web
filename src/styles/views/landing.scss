@@ -319,6 +319,23 @@ $h2-size-sm: 1.75em;
     }
   }
 
+  .section-people-talking {
+    @include section-marketing;
+    @include slant;
+    background: $cn-primary-background-color;
+    text-align: center;
+    position: relative;
+
+    .section-header {
+      @include section-header-alt;
+      color: $cn-font-color;
+
+      @include breakpoint(large) {
+        margin-bottom: 2rem;
+      }
+    }
+  }
+
   .section-cta {
     @include section-marketing;
     @include slant;

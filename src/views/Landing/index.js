@@ -15,6 +15,7 @@ import FeatureHighlights from './FeatureHighlights'
 import CommunityFeature from './CommunityFeature'
 import Availability from './Availability'
 import CallToAction from './CallToAction'
+import PeopleTalking from './PeopleTalking'
 
 @inject('rootStore') @observer
 class Landing extends React.Component {
@@ -59,6 +60,9 @@ class Landing extends React.Component {
         <Availability/>
 
         {/* start of section 7 */}
+        <PeopleTalking/>
+
+        {/* start of section 8 */}
         <CallToAction/>
 
         <footer className="site-footer">
