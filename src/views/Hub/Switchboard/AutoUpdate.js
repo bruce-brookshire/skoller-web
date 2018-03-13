@@ -1,0 +1,152 @@
+import React from 'react'
+import PropTypes from 'prop-types'
+import {Form, ValidateForm} from 'react-form-library'
+import {InputField} from '../../../components/Form'
+import actions from '../../../actions'
+
+const requiredFields = {
+
+}
+
+class AutoUpdate extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = this.initializeState()
+  }
+  
+  initializeState () {
+    return {
+      form: this.initializeFormData(),
+      loading: false
+    }
+  }
+
+  initializeFormData() {
+    return {
+      auto_upd_enroll_thresh: this.findSetting("auto_upd_enroll_thresh"),
+      auto_upd_response_thresh: this.findSetting("auto_upd_response_thresh"),
+      auto_upd_approval_thresh: this.findSetting("auto_upd_approval_thresh")
+    }
+  }
+
+  forecast () {
+    console.log("forecast")
+  }
+
+  findSetting (key) {
+    return this.props.data.settings.find(x => x.name == key).value
+  }
+
+  /*
+  * On submit post notification
+  */
+  onSubmit (event) {
+    event.preventDefault()
+
+    if (this.props.validateForm(this.state.form, requiredFields)) {
+      this.props.onSubmit()
+      this.props.onClose()
+    }
+  }
+
+  renderPercentage(item1, item2) {
+    return (
+      <div>
+        {(item1 / item2) * 100}% ({item1} out of {item2})
+      </div>
+    )
+  }
+
+  render () {
+    const {form} = this.state
+    const {formErrors, updateProperty} = this.props
+    const {metrics} = this.props.data
+
+    return (
+      <div>
+        <h1 className='cn-auto-update-header'>Auto Update Dashboard</h1>
+        <form onSubmit={this.onSubmit.bind(this)}>
+          <div className='row'>
+            <div className='col-xs-12'>
+              <div className='cn-auto-update-row'>
+                <div className='cn-auto-update-row-title'><strong><u>Level 1: Enrollment</u></strong></div>
+                <InputField
+                  containerClassName='cn-auto-update-input'
+                  error={formErrors.auto_upd_enroll_thresh}
+                  name="auto_upd_enroll_thresh"
+                  onChange={updateProperty}
+                  value={form.auto_upd_enroll_thresh} />&nbsp;
+                {this.renderPercentage(metrics.actual_metrics.eligible_communities, metrics.max_metrics.eligible_communities)}&nbsp;
+                <span>
+                  of <u><i>eligible communities</i></u> have enrollment that qualifies for auto-updates.
+                </span>
+              </div>
+            </div>
+            <div className='col-xs-12'>
+              <div className='cn-auto-update-row'>
+                <div className='cn-auto-update-row-title'><strong><u>Level 2: Response</u></strong></div>
+                <InputField
+                  containerClassName='cn-auto-update-input'
+                  error={formErrors.auto_upd_response_thresh}
+                  name="auto_upd_response_thresh"
+                  onChange={updateProperty}
+                  value={form.auto_upd_response_thresh} />&nbsp;
+                {this.renderPercentage(metrics.actual_metrics.shared_mods, metrics.max_metrics.shared_mods)}&nbsp;
+                <span>
+                  of <u><i>shared mods</i></u> pass the response threshold.
+                </span>
+              </div>
+            </div>
+            <div className='col-xs-12'>
+              <div className='cn-auto-update-row'>
+                <div className='cn-auto-update-row-title'><strong><u>Level 3: Copies</u></strong></div>
+                <InputField
+                  containerClassName='cn-auto-update-input'
+                  error={formErrors.auto_upd_approval_thresh}
+                  name="auto_upd_approval_thresh"
+                  onChange={updateProperty}
+                  value={form.auto_upd_approval_thresh} />&nbsp;
+                {this.renderPercentage(metrics.actual_metrics.responded_mods, metrics.max_metrics.responded_mods)}&nbsp;
+                <span>
+                  of <u><i>responded mods</i></u> pass the copies threshold.
+                </span>
+              </div>
+            </div>
+            <div className='col-xs-12'>
+              <h3 className="center-text">Summary</h3>
+              <div className="cn-auto-update-summary">
+                {this.renderPercentage(metrics.summary, metrics.max_metrics.shared_mods)}&nbsp;
+                  <span>
+                    of shared mods in eligible communities reach auto update.
+                  </span>
+              </div>
+            </div>
+            <div className='col-xs-12'>
+              <button
+                className={`button`}
+                disabled={this.state.loading}
+                onClick={() => this.forecast()}
+              >Forecast</button>
+              <button
+                className={`button`}
+                disabled={this.state.loading}
+                type="submit"
+              >Update</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    )
+  }
+}
+
+AutoUpdate.propTypes = {
+  data: PropTypes.object,
+  formErrors: PropTypes.object,
+  updateProperty: PropTypes.func,
+  onClose: PropTypes.func,
+  onSubmit: PropTypes.func,
+  validateForm: PropTypes.func
+}
+
+export default ValidateForm(Form(AutoUpdate, 'form'))
