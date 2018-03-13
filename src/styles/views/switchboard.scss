@@ -33,6 +33,17 @@
 .cn-auto-update-summary {
   @extend .cn-auto-update-row;
   justify-content: center;
+
+  .button {
+    margin-top: $unit-space;
+    width: 33%;
+  }
+}
+
+.cn-auto-update-table {
+  margin: 0 auto;
+  padding-left: $unit-space;
+  width: 50%;
 }
 
 .cn-auto-update-row {

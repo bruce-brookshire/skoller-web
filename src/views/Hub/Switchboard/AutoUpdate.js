@@ -3,10 +3,38 @@ import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
 import {InputField} from '../../../components/Form'
 import actions from '../../../actions'
+import Grid from '../../../components/Grid'
 
 const requiredFields = {
-
+  'auto_upd_enroll_thresh': {
+    type: 'required'
+  },
+  'auto_upd_response_thresh': {
+    type: 'required'
+  },
+  'auto_upd_approval_thresh': {
+    type: 'required'
+  }
 }
+
+const headers = [
+  {
+    field: 'creators',
+    display: 'Creators'
+  },
+  {
+    field: 'followers',
+    display: 'Followers'
+  },
+  {
+    field: 'pending',
+    display: 'Pending'
+  },
+  {
+    field: 'joyriders',
+    display: 'Joyriders'
+  }
+]
 
 class AutoUpdate extends React.Component {
   constructor (props) {
@@ -35,6 +63,19 @@ class AutoUpdate extends React.Component {
 
   findSetting (key) {
     return this.props.data.settings.find(x => x.name == key).value
+  }
+
+  getRows () {
+    const {people} = this.props.data
+
+    const row = [{
+      creators: people.creators,
+      followers: people.followers,
+      pending: people.pending,
+      joyriders: people.joyriders
+    }]
+
+    return row
   }
 
   /*
@@ -122,16 +163,27 @@ class AutoUpdate extends React.Component {
               </div>
             </div>
             <div className='col-xs-12'>
-              <button
-                className={`button`}
-                disabled={this.state.loading}
-                onClick={() => this.forecast()}
-              >Forecast</button>
-              <button
-                className={`button`}
-                disabled={this.state.loading}
-                type="submit"
-              >Update</button>
+              <Grid
+                className='cn-auto-update-table'
+                headers={headers}
+                rows={this.getRows()}
+                disabled={true}
+                canDelete={false}
+              />
+            </div>
+            <div className='col-xs-12'>
+              <div className='cn-auto-update-summary'>
+                <button
+                  className={`button margin-right`}
+                  disabled={this.state.loading}
+                  onClick={() => this.forecast()}
+                >Forecast</button>
+                <button
+                  className={`button`}
+                  disabled={this.state.loading}
+                  type="submit"
+                >Update</button>
+              </div>
             </div>
           </div>
         </form>
