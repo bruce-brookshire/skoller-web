@@ -111,12 +111,14 @@ class AutoUpdate extends React.Component {
             <div className='col-xs-12'>
               <div className='cn-auto-update-row'>
                 <div className='cn-auto-update-row-title'><strong><u>Level 1: Enrollment</u></strong></div>
-                <InputField
-                  containerClassName='cn-auto-update-input'
-                  error={formErrors.auto_upd_enroll_thresh}
-                  name="auto_upd_enroll_thresh"
-                  onChange={updateProperty}
-                  value={form.auto_upd_enroll_thresh} />&nbsp;
+                <div className='cn-auto-update-row-input'>
+                  <InputField
+                    containerClassName='cn-auto-update-input'
+                    error={formErrors.auto_upd_enroll_thresh}
+                    name="auto_upd_enroll_thresh"
+                    onChange={updateProperty}
+                    value={form.auto_upd_enroll_thresh} />
+                </div>
                 {this.renderPercentage(metrics.actual_metrics.eligible_communities, metrics.max_metrics.eligible_communities)}&nbsp;
                 <span>
                   of <u><i>eligible communities</i></u> have enrollment that qualifies for auto-updates.
@@ -126,12 +128,14 @@ class AutoUpdate extends React.Component {
             <div className='col-xs-12'>
               <div className='cn-auto-update-row'>
                 <div className='cn-auto-update-row-title'><strong><u>Level 2: Response</u></strong></div>
+                <div className='cn-auto-update-row-input'>
                 <InputField
                   containerClassName='cn-auto-update-input'
                   error={formErrors.auto_upd_response_thresh}
                   name="auto_upd_response_thresh"
                   onChange={updateProperty}
-                  value={form.auto_upd_response_thresh} />&nbsp;
+                  value={form.auto_upd_response_thresh * 100} />%
+                </div>
                 {this.renderPercentage(metrics.actual_metrics.shared_mods, metrics.max_metrics.shared_mods)}&nbsp;
                 <span>
                   of <u><i>shared mods</i></u> pass the response threshold.
@@ -141,12 +145,14 @@ class AutoUpdate extends React.Component {
             <div className='col-xs-12'>
               <div className='cn-auto-update-row'>
                 <div className='cn-auto-update-row-title'><strong><u>Level 3: Copies</u></strong></div>
-                <InputField
-                  containerClassName='cn-auto-update-input'
-                  error={formErrors.auto_upd_approval_thresh}
-                  name="auto_upd_approval_thresh"
-                  onChange={updateProperty}
-                  value={form.auto_upd_approval_thresh} />&nbsp;
+                <div className='cn-auto-update-row-input'>
+                  <InputField
+                    containerClassName='cn-auto-update-input'
+                    error={formErrors.auto_upd_approval_thresh}
+                    name="auto_upd_approval_thresh"
+                    onChange={updateProperty}
+                    value={form.auto_upd_approval_thresh * 100} />%
+                </div>
                 {this.renderPercentage(metrics.actual_metrics.responded_mods, metrics.max_metrics.responded_mods)}&nbsp;
                 <span>
                   of <u><i>responded mods</i></u> pass the copies threshold.

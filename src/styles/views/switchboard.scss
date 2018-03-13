@@ -56,7 +56,13 @@
     flex-basis: 150px;
   }
 
+  .cn-auto-update-row-input {
+    display: flex;
+    align-items: baseline;
+    flex-basis: 60px;
+  }
+
   .cn-auto-update-input {
-    width: 50px;
+    width: 40px;
   }
 }
