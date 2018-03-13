@@ -78,6 +78,22 @@ class AutoUpdate extends React.Component {
     return row
   }
 
+  mapFormData() {
+    const {form} = this.state;
+
+    let array = []
+
+    Object.keys(form).forEach((k) => {
+      let obj = {
+        name: k,
+        value: form[k]
+      }
+      array.push(obj)
+    })
+
+    return array;
+  }
+
   /*
   * On submit post notification
   */
@@ -85,8 +101,13 @@ class AutoUpdate extends React.Component {
     event.preventDefault()
 
     if (this.props.validateForm(this.state.form, requiredFields)) {
-      this.props.onSubmit()
-      this.props.onClose()
+
+      const data = this.mapFormData()
+      
+      actions.settings.updateAutoUpdateInfo(data).then(() => {
+        this.props.onSubmit()
+        this.props.onClose()
+      }).catch(() => false)
     }
   }
 

@@ -25,3 +25,27 @@ export function getAutoUpdateInfo () {
       return Promise.reject(error)
     })
 }
+
+/*
+* Update auto update metrics and settings
+*/
+export function updateAutoUpdateInfo (form) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/auto-updates/`, {
+    method: 'PUT',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      settings: form
+    })
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error fetching analytics. Try again.')
+      return Promise.reject(error)
+    })
+}
