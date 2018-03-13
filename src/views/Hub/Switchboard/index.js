@@ -107,7 +107,6 @@ class Switchboard extends React.Component {
       >
         <AutoUpdate 
           data={this.state.autoUpdateData}
-          onClose={() => this.setState({openAutoUpdateModal: false})}
           onSubmit={this.initializeComponent.bind(this)}
         /> 
       </Modal>

@@ -106,7 +106,7 @@ class AutoUpdate extends React.Component {
       
       actions.settings.updateAutoUpdateInfo(data).then(() => {
         this.props.onSubmit()
-        this.props.onClose()
+        this.initializeFormData()
       }).catch(() => false)
     }
   }
@@ -223,7 +223,6 @@ AutoUpdate.propTypes = {
   data: PropTypes.object,
   formErrors: PropTypes.object,
   updateProperty: PropTypes.func,
-  onClose: PropTypes.func,
   onSubmit: PropTypes.func,
   validateForm: PropTypes.func
 }
