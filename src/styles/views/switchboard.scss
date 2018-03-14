@@ -5,6 +5,16 @@
     flex-grow: 1;
     padding: 10px;
     flex-direction: column;
+    display: flex;
+    align-items: center;
+
+    .auto-update {
+      border: 1px solid black;
+      background-color: $cn-color-white;
+      padding-left: $unit-space;
+      padding-right: $unit-space;
+      padding-bottom: $unit-space;
+    }
   }
   .cn-switchboard-section-large {
     flex-grow: 3;
@@ -13,5 +23,46 @@
 
   .cn-char-count {
     float: right;
+  }
+}
+.cn-auto-update-header {
+  text-align: center;
+  color: $cn-color-blue;
+}
+
+.cn-auto-update-summary {
+  @extend .cn-auto-update-row;
+  justify-content: center;
+
+  .button {
+    margin-top: $unit-space;
+    width: 33%;
+  }
+}
+
+.cn-auto-update-table {
+  margin: 0 auto;
+  padding-left: $unit-space;
+  width: 50%;
+}
+
+.cn-auto-update-row {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: $unit-space;
+
+  .cn-auto-update-row-title {
+    font-weight: bold;
+    flex-basis: 150px;
+  }
+
+  .cn-auto-update-row-input {
+    display: flex;
+    align-items: baseline;
+    flex-basis: 60px;
+  }
+
+  .cn-auto-update-input {
+    width: 40px;
   }
 }
