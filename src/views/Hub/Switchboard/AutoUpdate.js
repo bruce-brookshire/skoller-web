@@ -46,7 +46,8 @@ class AutoUpdate extends React.Component {
     return {
       form: this.initializeFormData(),
       loading: false,
-      people: this.props.data.people
+      people: this.props.data.people,
+      metrics: this.props.data.metrics
     }
   }
 
@@ -66,7 +67,7 @@ class AutoUpdate extends React.Component {
 
     this.setState({loading: true})
     actions.settings.forecastAutoUpdateInfo(queryString).then((data) => {
-      this.setState({people: data.people, loading: false})
+      this.setState({people: data.people, metrics: data.metrics, loading: false})
     }).catch(() => false)
   }
 
@@ -131,7 +132,7 @@ class AutoUpdate extends React.Component {
   render () {
     const {form} = this.state
     const {formErrors, updateProperty} = this.props
-    const {metrics} = this.props.data
+    const {metrics} = this.state
 
     return (
       <div>
