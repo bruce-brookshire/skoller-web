@@ -208,7 +208,7 @@ class AutoUpdate extends React.Component {
               <div className="cn-auto-update-summary">
                 {this.renderPercentage(metrics.summary, metrics.max_metrics.responded_mods)}&nbsp;
                   <span>
-                    of responded mods in eligible communities reach auto update.
+                    of mods in communities reach auto-update.
                   </span>
               </div>
             </div>
