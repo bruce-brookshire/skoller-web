@@ -30,7 +30,7 @@ export function getAutoUpdateInfo () {
 * Get auto update metrics and settings
 */
 export function forecastAutoUpdateInfo (queryString) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/auto-updates` + queryString, {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/auto-updates/forecast?` + queryString, {
     method: 'GET',
     headers: {
       'Authorization': userStore.authToken,

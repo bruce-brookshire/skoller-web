@@ -45,7 +45,8 @@ class AutoUpdate extends React.Component {
   initializeState () {
     return {
       form: this.initializeFormData(),
-      loading: false
+      loading: false,
+      people: this.props.data.people
     }
   }
 
@@ -58,7 +59,15 @@ class AutoUpdate extends React.Component {
   }
 
   forecast () {
-    console.log("forecast")
+    const {form} = this.state
+    let queryString =`auto_upd_approval_thresh=${form.auto_upd_approval_thresh / 100}` + 
+    `&auto_upd_response_thresh=${form.auto_upd_response_thresh / 100}` + 
+    `&auto_upd_enroll_thresh=${form.auto_upd_enroll_thresh}` 
+
+    this.setState({loading: true})
+    actions.settings.forecastAutoUpdateInfo(queryString).then((data) => {
+      this.setState({people: data.people, loading: false})
+    }).catch(() => false)
   }
 
   findSetting (key) {
@@ -66,7 +75,7 @@ class AutoUpdate extends React.Component {
   }
 
   getRows () {
-    const {people} = this.props.data
+    const {people} = this.state
 
     const row = [{
       creators: people.creators,
@@ -204,6 +213,7 @@ class AutoUpdate extends React.Component {
                   className={`button margin-right`}
                   disabled={this.state.loading}
                   onClick={() => this.forecast()}
+                  type="button"
                 >Forecast</button>
                 <button
                   className={`button`}
