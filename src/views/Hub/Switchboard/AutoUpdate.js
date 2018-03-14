@@ -123,7 +123,7 @@ class AutoUpdate extends React.Component {
   }
 
   maskPercentage (oldNum, newNum) {
-    if (newNum > 100 || newNum <= 0) return oldNum
+    if ((newNum > 100 || newNum <= 0) && newNum != "") return oldNum
 
     if (newNum.indexOf('.') != -1) return oldNum
 
@@ -208,7 +208,7 @@ class AutoUpdate extends React.Component {
               <div className="cn-auto-update-summary">
                 {this.renderPercentage(metrics.summary, metrics.max_metrics.responded_mods)}&nbsp;
                   <span>
-                    of responded mods in eligible communities reach auto update.
+                    of mods in communities reach auto-update.
                   </span>
               </div>
             </div>
