@@ -4,6 +4,7 @@ import {Form, ValidateForm} from 'react-form-library'
 import {InputField} from '../../../components/Form'
 import actions from '../../../actions'
 import Grid from '../../../components/Grid'
+import {roundToTwo} from '../../../utilities/display'
 
 const requiredFields = {
   'auto_upd_enroll_thresh': {
@@ -121,10 +122,18 @@ class AutoUpdate extends React.Component {
     }
   }
 
+  maskPercentage (oldNum, newNum) {
+    if (newNum > 100 || newNum <= 0) return oldNum
+
+    if (newNum.indexOf('.') != -1) return oldNum
+
+    return newNum
+  }
+
   renderPercentage(item1, item2) {
     return (
       <div>
-        {(item1 / item2) * 100}% ({item1} out of {item2})
+        {roundToTwo((item1 / item2) * 100)}% ({item1} out of {item2})
       </div>
     )
   }
@@ -164,7 +173,9 @@ class AutoUpdate extends React.Component {
                   containerClassName='cn-auto-update-input'
                   error={formErrors.auto_upd_response_thresh}
                   name="auto_upd_response_thresh"
-                  onChange={updateProperty}
+                  onChange={(name, value) => {
+                    updateProperty(name, this.maskPercentage(form.auto_upd_response_thresh, value))
+                  }}
                   value={form.auto_upd_response_thresh} />%
                 </div>
                 {this.renderPercentage(metrics.actual_metrics.shared_mods, metrics.max_metrics.shared_mods)}&nbsp;
@@ -181,7 +192,9 @@ class AutoUpdate extends React.Component {
                     containerClassName='cn-auto-update-input'
                     error={formErrors.auto_upd_approval_thresh}
                     name="auto_upd_approval_thresh"
-                    onChange={updateProperty}
+                    onChange={(name, value) => {
+                      updateProperty(name, this.maskPercentage(form.auto_upd_approval_thresh, value))
+                    }}
                     value={form.auto_upd_approval_thresh} />%
                 </div>
                 {this.renderPercentage(metrics.actual_metrics.responded_mods, metrics.max_metrics.responded_mods)}&nbsp;
@@ -193,9 +206,9 @@ class AutoUpdate extends React.Component {
             <div className='col-xs-12'>
               <h3 className="center-text">Summary</h3>
               <div className="cn-auto-update-summary">
-                {this.renderPercentage(metrics.summary, metrics.max_metrics.shared_mods)}&nbsp;
+                {this.renderPercentage(metrics.summary, metrics.max_metrics.responded_mods)}&nbsp;
                   <span>
-                    of shared mods in eligible communities reach auto update.
+                    of responded mods in eligible communities reach auto update.
                   </span>
               </div>
             </div>
