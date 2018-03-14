@@ -123,7 +123,7 @@ class AutoUpdate extends React.Component {
   }
 
   maskPercentage (oldNum, newNum) {
-    if (newNum > 100 || newNum <= 0) return oldNum
+    if ((newNum > 100 || newNum <= 0) && newNum != "") return oldNum
 
     if (newNum.indexOf('.') != -1) return oldNum
 
