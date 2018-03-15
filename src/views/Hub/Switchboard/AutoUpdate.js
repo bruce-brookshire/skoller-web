@@ -55,8 +55,8 @@ class AutoUpdate extends React.Component {
   initializeFormData() {
     return {
       auto_upd_enroll_thresh: this.findSetting("auto_upd_enroll_thresh"),
-      auto_upd_response_thresh: this.findSetting("auto_upd_response_thresh") * 100,
-      auto_upd_approval_thresh: this.findSetting("auto_upd_approval_thresh") * 100
+      auto_upd_response_thresh: Math.round(this.findSetting("auto_upd_response_thresh") * 100),
+      auto_upd_approval_thresh: Math.round(this.findSetting("auto_upd_approval_thresh") * 100)
     }
   }
 
