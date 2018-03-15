@@ -7,6 +7,8 @@ import Grid from '../../../components/Grid'
 import Modal from '../../../components/Modal'
 import CustomNotificationForm from './CustomNotificationForm'
 import AutoUpdate from './AutoUpdate'
+import stores from '../../../stores'
+import {inject, observer} from 'mobx-react'
 
 const headers = [
   {
@@ -27,6 +29,9 @@ const headers = [
   }
 ]
 
+const {navbarStore} = stores
+
+@inject('rootStore') @observer
 class Switchboard extends React.Component {
   constructor (props) {
     super(props)
@@ -50,7 +55,12 @@ class Switchboard extends React.Component {
   }
 
   componentWillMount () {
+    navbarStore.title = "Switchboard"
     this.initializeComponent()
+  }
+
+  componentWillUnmount () {
+    navbarStore.title = ""
   }
 
   send() {
@@ -132,7 +142,6 @@ class Switchboard extends React.Component {
   render () {
     return (
       <div className='cn-switchboard-container'>
-        <h2 className='center-text'>Switchboard</h2>
         <div className='horizontal-align-row center-text'>
           <div className='cn-switchboard-section-small'>
             <h3 className='cn-blue'>Notifications</h3>
