@@ -1,6 +1,6 @@
 {
   "name": "classnav-web",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "This is the project for the classnav web application.",
   "main": "./src/index.js",
   "scripts": {

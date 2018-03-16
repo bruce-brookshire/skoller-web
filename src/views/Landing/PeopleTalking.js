@@ -14,6 +14,11 @@ class PeopleTalking extends React.Component {
         img: 'src/assets/images/landing_page/hustler_bw.png',
         hoverImg: 'src/assets/images/landing_page/hustler_color.png',
         url: 'http://vanderbilthustler.com/featured/new-app-aims-to-crowdsource-the-classroom.html'
+      },
+      {
+        img: 'src/assets/images/landing_page/belmont_bw.png',
+        hoverImg: 'src/assets/images/landing_page/belmont_color.png',
+        url: 'http://news.belmont.edu/alumni-create-app-to-crowdsource-the-classroom/'
       }
     ]
 
