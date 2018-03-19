@@ -90,8 +90,25 @@ class GradeScale extends React.Component {
   */
   renderCurrentGradeScale () {
     // const {syllabusForm: {gradeScaleSubmitted, gradeScale}} = syllabusFormStore
-    const currentGradeScale = this.props.cl.grade_scale || ''
-    return <div className='margin-bottom'>{`Current Grade Scale: ${currentGradeScale}`}</div>
+    const currentGradeScale = this.props.cl.grade_scale_map || '{}'
+
+    let rows = [];
+    for (let key in currentGradeScale) {
+        rows.push({grade: key, value: currentGradeScale[key]});
+    }
+    rows = rows.sort((a, b) => {
+      return a.grade > b.grade ? 1 : -1
+    })
+    return (
+      <div className="current-grade-scale">
+        <div className='margin-bottom'>Current Grade Scale</div>
+        <ul className="grade-scale-list">
+          {rows.map((u, idx) => {
+            return <li>{u.grade}: {u.value}</li>
+          })}
+        </ul>
+      </div>
+    )
   }
 
   /*
@@ -159,7 +176,7 @@ class GradeScale extends React.Component {
     const gradeScalesText = this.state.showAllGradeScales ? 'Show Less Grade Scales' : 'Show More Grade Scales'
 
     return (
-      <div className='margin-top-2x margin-bottom-2x'>
+      <div id="class-editor-grade-scale" className='margin-top-2x margin-bottom-2x'>
         <h5 style={{marginTop: '0.25em', marginBottom: '0.5em'}}>Edit gradescale</h5>
         {this.renderCurrentGradeScale()}
         <div className='margin-top'>

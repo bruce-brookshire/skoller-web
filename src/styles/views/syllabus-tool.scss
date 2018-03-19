@@ -89,4 +89,8 @@
       }
     }
   }
+
+  .grade-scale-list {
+    @include unstyled-list;
+  }
 }
