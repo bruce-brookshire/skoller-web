@@ -83,16 +83,12 @@ class GradeScale extends React.Component {
     })
   }
 
-  mapGradeScale(gradeScale) {
-    const newGradeScale = gradeScale || '{}'
-    
-    let rows = [];
-    for (let key in newGradeScale) {
-        rows.push({grade: key, value: parseFloat(newGradeScale[key])});
-    }
-    return rows.sort((a, b) => {
-      return a.grade > b.grade ? 1 : -1
-    })
+  renderGradeScale(grade_scale) {
+    return <ul className="grade-scale-list">
+      {Object.keys(grade_scale).sort((a,b) => {
+        return parseFloat(grade_scale[a]) < parseFloat(grade_scale[b]) ? 1 : -1
+      }).map((key, idx) => <li key={idx}>{key}: {grade_scale[key]}</li>)}
+    </ul>
   }
 
   /*
@@ -101,15 +97,10 @@ class GradeScale extends React.Component {
   * @return [Component] div. Current grade scale.
   */
   renderCurrentGradeScale () {
-    
     return (
       <div className="current-grade-scale">
         <div className='margin-bottom'>Current Grade Scale</div>
-        <ul className="grade-scale-list">
-          {this.mapGradeScale(this.props.cl.grade_scale_map).map((u, idx) => {
-            return <li key={idx}>{u.grade}: {u.value}</li>
-          })}
-        </ul>
+        {this.renderGradeScale(this.props.cl.grade_scale_map)}
       </div>
     )
   }
