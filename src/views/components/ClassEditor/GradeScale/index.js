@@ -83,28 +83,31 @@ class GradeScale extends React.Component {
     })
   }
 
+  mapGradeScale(gradeScale) {
+    const newGradeScale = gradeScale || '{}'
+    
+    let rows = [];
+    for (let key in newGradeScale) {
+        rows.push({grade: key, value: parseFloat(newGradeScale[key])});
+    }
+    return rows.sort((a, b) => {
+      return a.grade > b.grade ? 1 : -1
+    })
+  }
+
   /*
   * Render the current gradeScale
   *
   * @return [Component] div. Current grade scale.
   */
   renderCurrentGradeScale () {
-    // const {syllabusForm: {gradeScaleSubmitted, gradeScale}} = syllabusFormStore
-    const currentGradeScale = this.props.cl.grade_scale_map || '{}'
-
-    let rows = [];
-    for (let key in currentGradeScale) {
-        rows.push({grade: key, value: currentGradeScale[key]});
-    }
-    rows = rows.sort((a, b) => {
-      return a.grade > b.grade ? 1 : -1
-    })
+    
     return (
       <div className="current-grade-scale">
         <div className='margin-bottom'>Current Grade Scale</div>
         <ul className="grade-scale-list">
-          {rows.map((u, idx) => {
-            return <li>{u.grade}: {u.value}</li>
+          {this.mapGradeScale(this.props.cl.grade_scale_map).map((u, idx) => {
+            return <li key={idx}>{u.grade}: {u.value}</li>
           })}
         </ul>
       </div>
