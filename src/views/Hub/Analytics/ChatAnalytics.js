@@ -42,23 +42,23 @@ class ChatAnalytics extends React.Component {
     return (
       <div>
         <div className="cn-analytics-list">
-          <div>
+          <div className="cn-analytics-item">
             <span className="cn-analytics-label"><strong>Total classes completed: </strong></span>
             <span>{cl.completed_class}</span>
           </div>
-          <div>
+          <div className="cn-analytics-item">
             <span className="cn-analytics-label"><strong>Classes that have chatted: </strong></span>
             <span>{chat.chat_classes} ({roundToTwo(chat.chat_classes / cl.completed_class * 100)}%)</span>
           </div>
-          <div>
+          <div className="cn-analytics-item">
             <span className="cn-analytics-label"><strong>Total class posts: </strong></span>
             <span>{chat.chat_post_count} ({roundToTwo(chat.chat_post_count / cl.completed_class)} per active class)</span>
           </div>
-          <div>
+          <div className="cn-analytics-item">
             <span className="cn-analytics-label"><strong>Highest chat class:  </strong></span>
             <span>{chat.max_chat_activity.class_name} {chat.max_chat_activity.count} posts</span>
           </div>
-          <div>
+          <div className="cn-analytics-item">
             <span className="cn-analytics-label"><strong>Total students participating: </strong></span>
             <span>{chat.participating_students}</span>
           </div>

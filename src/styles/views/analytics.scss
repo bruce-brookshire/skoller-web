@@ -21,6 +21,13 @@
     display: flex;
     flex-direction: column;
 
+    .cn-analytics-item:nth-of-type(even) {
+        background: #edf5ff;
+    }
+    .cn-analytics-item:nth-of-type(odd) {
+        background: #fff;
+    }
+
     .cn-analytics-label {
       float: left;
       width: 33%;
