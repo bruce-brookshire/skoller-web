@@ -62,25 +62,24 @@ class GradeScale extends React.Component {
     return {
       showAllGradeScales: false,
       gradeScales,
-      form: this.initializeFormData(this.props.cl),
-      loading: false
+      form: {
+        grade: '',
+        min: ''
+      },
+      loading: false,
+      currentGradeScale: this.props.cl.grade_scale_map || ''
     }
   }
 
-  /*
-  * Method for intializing form data.
-  * GradeScale form data.
-  *
-  * @param [Object] data. initial data
-  * @return [Object]. Form object.
-  */
-  initializeFormData (data) {
-    let formData = data || {}
-    const {grade_scale} = formData
-
-    return ({
-      grade_scale: grade_scale || ''
-    })
+  onDeleteGS (key) {
+    this.setState({loading: true})
+    let newGradeScale = this.state.currentGradeScale;
+    delete newGradeScale[key];
+    this.setState({currentGradeScale: newGradeScale})
+    actions.gradescales.updateGradeScale(this.props.cl, {grade_scale: newGradeScale}).then((cl) => {
+      if (this.props.onSubmit) this.props.onSubmit(cl)
+      this.setState({loading: false})
+    }).catch(() => { this.setState({loading: false}) })
   }
 
   renderGradeScale(grade_scale) {
@@ -102,6 +101,7 @@ class GradeScale extends React.Component {
   */
   renderCurrentGradeScale () {
     const {grade_scale_map} = this.props.cl
+
     return (
       <div className="current-grade-scale-container">Current Grade Scale
         <div className="current-grade-scale">
@@ -115,7 +115,6 @@ class GradeScale extends React.Component {
                       className='button-delete-x'
                       onClick={(event) => {
                         event.stopPropagation()
-                        if (disabled) return
                         this.onDeleteGS(key)
                       }}><i className='fa fa-times' />
                     </div>
@@ -128,11 +127,13 @@ class GradeScale extends React.Component {
               )}
           </ul>
         </div>
+        {this.renderForm()}
       </div>
     )
   }
 
   renderOtherGradeScales () {
+    const gradeScalesText = this.state.showAllGradeScales ? 'Show Less Grade Scales' : 'Show More Grade Scales'
     return ( 
       <div className="other-common-scales-container">Other common scales
         <div className="other-common-scales">
@@ -140,6 +141,43 @@ class GradeScale extends React.Component {
             this.renderGradeScale(item.grade_scale)
           )}
         </div>
+        <a style={{display: 'block', cursor: 'pointer'}} className='margin-top' onClick={() => this.toggleGradeScales()}> {gradeScalesText} </a>
+      </div>
+    )
+  }
+
+  renderForm() {
+    const {form} = this.state
+    const {formErrors, updateProperty} = this.props
+    return (
+      <div className="grade-scale-form">
+        <div className="grade-scale-form-inputs">
+          <InputField
+                containerClassName='margin-top'
+                error={formErrors.grade}
+                label='Grade'
+                name='grade'
+                onChange={updateProperty}
+                value={form.grade}
+              />
+
+          <InputField
+            containerClassName='margin-top'
+            error={formErrors.grade}
+            label='Min'
+            name='min'
+            onChange={updateProperty}
+            value={form.min}
+          />
+        </div>
+        <button
+          className='button full-width margin-top'
+          disabled={this.state.loading}
+          onClick={this.onSubmit.bind(this)}
+        >
+          Submit
+          {this.state.loading ? <Loading style={{color: 'white', marginLeft: '0.5em'}} /> : null}
+        </button>
       </div>
     )
   }
@@ -180,7 +218,7 @@ class GradeScale extends React.Component {
   * @param [Object] gradeScale. gradeScale object to be edited.
   */
   setGradeScale (gradeScale) {
-    this.setState({form: this.initializeFormData(gradeScale)})
+    this.setState({currentGradeScale: gradeScale || ''})
   }
 
   /*
@@ -197,16 +235,17 @@ class GradeScale extends React.Component {
   */
   onSubmit () {
     this.setState({loading: true})
-    actions.gradescales.updateGradeScale(this.props.cl, this.state.form).then((cl) => {
+    let newGradeScale = this.state.currentGradeScale;
+    newGradeScale[this.state.form.grade] = this.state.form.min;
+    this.setState({currentGradeScale: newGradeScale})
+    actions.gradescales.updateGradeScale(this.props.cl, {grade_scale: newGradeScale}).then((cl) => {
       if (this.props.onSubmit) this.props.onSubmit(cl)
       this.setState({loading: false})
     }).catch(() => { this.setState({loading: false}) })
   }
 
   render () {
-    const {form} = this.state
-    const {formErrors, updateProperty} = this.props
-    const gradeScalesText = this.state.showAllGradeScales ? 'Show Less Grade Scales' : 'Show More Grade Scales'
+    
 
     return (
       <div id="class-editor-grade-scale" className='margin-top-2x margin-bottom-2x'>
@@ -215,33 +254,6 @@ class GradeScale extends React.Component {
           {this.renderCurrentGradeScale()}
           {this.renderOtherGradeScales()}
         </div>
-        <div className='margin-top'>
-          <div className='row'>
-            <div className='col-xs-12'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.grade_scale}
-                label='Grade Scale'
-                name='grade_scale'
-                onChange={updateProperty}
-                placeholder='Grade Scale, i.e. A,90|B,80|C,70|D,60'
-                value={form.grade_scale}
-              />
-            </div>
-            <div className='col-xs-12 margin-top margin-bottom'>
-              <button
-                className='button full-width'
-                disabled={this.state.loading}
-                onClick={this.onSubmit.bind(this)}
-              >
-                Submit gradescale
-                {this.state.loading ? <Loading style={{color: 'white', marginLeft: '0.5em'}} /> : null}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <a style={{display: 'block', cursor: 'pointer'}} className='margin-top' onClick={() => this.toggleGradeScales()}> {gradeScalesText} </a>
       </div>
     )
   }

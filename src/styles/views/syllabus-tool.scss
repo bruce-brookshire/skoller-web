@@ -107,7 +107,7 @@
           .grade-row {
             margin: $unit-space / 4 $unit-space / 2 0 $unit-space / 2;
             display: flex;
-            justify-content: flex-start;
+            justify-content: center;
 
             .delete-x {
               align-self: flex-start;
@@ -119,6 +119,16 @@
               justify-content: space-around;
               flex-basis: 75px;
             }
+          }
+        }
+      }
+      .grade-scale-form {
+        .grade-scale-form-inputs {
+          display: flex;
+          justify-content: space-around;
+
+          input {
+            width: 50px;
           }
         }
       }
