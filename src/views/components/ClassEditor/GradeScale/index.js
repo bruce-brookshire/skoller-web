@@ -20,30 +20,30 @@ const headers = [
 const gradeScales = [
   {
     id: 1,
-    grade_scale: 'A,90|B,80|C,70|D,60'
+    grade_scale: {'A': '90', 'B': '80', 'C': '70', 'D': '60'}
   },
   {
     id: 2,
-    grade_scale: 'A,93|A-,90|B+,87|B,83|B-,80|C+,77|C,73|C-,70|D,60'
+    grade_scale: {'A': '93','A-': '90','B+': '87','B': '83','B-': '80','C+': '77','C': '73','C-': '70','D': '60'}
   },
   {
     id: 3,
-    grade_scale: 'A,93|A-,90|B+,87|B,83|B-,80|C+,77|C,73|C-,70|D+,67|D,63|D-,60'
+    grade_scale: {'A': '93','A-': '90','B+': '87','B': '83','B-': '80','C+': '77','C': '73','C-': '70','D+': '67','D': '63','D-': '60'}
   }
 ]
 
 const moreGradeScales = [
   {
     id: 4,
-    grade_scale: 'A,92.5|A-,89.5|B+,86.5|B,82.5|B-,79.5|C+,76.5|C,72.5|C-,69.5|D+,66.5|D,62.5|D-,59.5'
+    grade_scale: {'A':'92.5','A-':'89.5','B+':'86.5','B':'82.5','B-':'79.5','C+':'76.5','C':'72.5','C-':'69.5','D+':'66.5','D':'62.5','D-':'59.5'}
   },
   {
     id: 5,
-    grade_scale: 'Pass,50'
+    grade_scale: {'Pass': '50'}
   },
   {
     id: 6,
-    grade_scale: 'A,92|A-,90|B+,88|B,82|B-,80|C+,78|C,72|C-,70|D+,68|D,62|D-,60'
+    grade_scale: {'A':'92','A-':'90','B+':'88','B':'82','B-':'80','C+':'78','C':'72','C-':'70','D+':'68','D':'62','D-':'60'}
   }
 ]
 
@@ -87,7 +87,11 @@ class GradeScale extends React.Component {
     return <ul className="grade-scale-list">
       {Object.keys(grade_scale).sort((a,b) => {
         return parseFloat(grade_scale[a]) < parseFloat(grade_scale[b]) ? 1 : -1
-      }).map((key, idx) => <li key={idx}>{key}: {grade_scale[key]}</li>)}
+      }).map((key, idx) => 
+        <li key={idx} className="grade-row">
+          <div className="grade-key">{key}</div><div className="grade-min">{grade_scale[key]}</div>
+        </li>
+      )}
     </ul>
   }
 
@@ -97,10 +101,32 @@ class GradeScale extends React.Component {
   * @return [Component] div. Current grade scale.
   */
   renderCurrentGradeScale () {
+    const {grade_scale_map} = this.props.cl
     return (
-      <div className="current-grade-scale">
-        <div className='margin-bottom'>Current Grade Scale</div>
-        {this.renderGradeScale(this.props.cl.grade_scale_map)}
+      <div className="current-grade-scale-container">Current Grade Scale
+        <div className="current-grade-scale">
+          <ul className="grade-scale-list">
+            {Object.keys(grade_scale_map).sort((a,b) => {
+              return parseFloat(grade_scale_map[a]) < parseFloat(grade_scale_map[b]) ? 1 : -1
+              }).map((key, idx) => 
+                <li key={idx} className="grade-row">
+                  <div className="grade-key">{key}</div><div className="grade-min">{grade_scale_map[key]}</div>
+                </li>
+              )}
+          </ul>
+        </div>
+      </div>
+    )
+  }
+
+  renderOtherGradeScales () {
+    return ( 
+      <div className="other-common-scales-container">Other common scales
+        <div className="other-common-scales">
+          {this.state.gradeScales.map((item, index) =>
+            this.renderGradeScale(item.grade_scale)
+          )}
+        </div>
       </div>
     )
   }
@@ -129,7 +155,7 @@ class GradeScale extends React.Component {
     const row = {
       id: id || '',
       select: <a onClick={() => { this.setGradeScale(item) }}><i className='fa fa-pencil'/></a>,
-      gradeScale: <div>{grade_scale}</div>
+      gradeScale: this.renderGradeScale(grade_scale)
     }
 
     return row
@@ -172,7 +198,10 @@ class GradeScale extends React.Component {
     return (
       <div id="class-editor-grade-scale" className='margin-top-2x margin-bottom-2x'>
         <h5 style={{marginTop: '0.25em', marginBottom: '0.5em'}}>Edit gradescale</h5>
-        {this.renderCurrentGradeScale()}
+        <div className="grade-scales">
+          {this.renderCurrentGradeScale()}
+          {this.renderOtherGradeScales()}
+        </div>
         <div className='margin-top'>
           <div className='row'>
             <div className='col-xs-12'>
@@ -197,14 +226,6 @@ class GradeScale extends React.Component {
               </button>
             </div>
           </div>
-        </div>
-
-        <div className='margin-top'>
-          <Grid
-            headers={headers}
-            rows={this.getRows()}
-            disabled={true}
-          />
         </div>
 
         <a style={{display: 'block', cursor: 'pointer'}} className='margin-top' onClick={() => this.toggleGradeScales()}> {gradeScalesText} </a>
