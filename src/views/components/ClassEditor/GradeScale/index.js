@@ -91,6 +91,16 @@ class GradeScale extends React.Component {
           <div className="grade-key">{key}</div><div className="grade-min">{grade_scale[key]}</div>
         </li>
       )}
+      <li className="adopt-button">
+        <button
+          className='button full-width margin-top'
+          disabled={this.state.loading}
+          onClick={() => { this.setGradeScale(grade_scale) }}
+        >
+          Adopt
+          {this.state.loading ? <Loading style={{color: 'white', marginLeft: '0.5em'}} /> : null}
+        </button>
+      </li>
     </ul>
   }
 
@@ -183,42 +193,17 @@ class GradeScale extends React.Component {
   }
 
   /*
-  * Row data to be passed to the grid
-  *
-  * @return [Array]. Array of formatted row data.
-  */
-  getRows () {
-    return this.state.gradeScales.map((item, index) =>
-      this.mapRow(item, index)
-    )
-  }
-
-  /*
-  * Formats row data to be passed to the grid for display
-  *
-  * @param [Object] item. Row data to be formatted.
-  * @param [Number] index. Index of row data.
-  * @return [Object] row. Object of formatted row data for display in grid.
-  */
-  mapRow (item, index) {
-    const { id, grade_scale } = item
-
-    const row = {
-      id: id || '',
-      select: <a onClick={() => { this.setGradeScale(item) }}><i className='fa fa-pencil'/></a>,
-      gradeScale: this.renderGradeScale(grade_scale)
-    }
-
-    return row
-  }
-
-  /*
   * Set form value equal to gradeScale in order to be updated.
   *
   * @param [Object] gradeScale. gradeScale object to be edited.
   */
   setGradeScale (gradeScale) {
+    this.setState({loading: true})
     this.setState({currentGradeScale: gradeScale || ''})
+    actions.gradescales.updateGradeScale(this.props.cl, {grade_scale: gradeScale}).then((cl) => {
+      if (this.props.onSubmit) this.props.onSubmit(cl)
+      this.setState({loading: false})
+    }).catch(() => { this.setState({loading: false}) })
   }
 
   /*
@@ -245,8 +230,6 @@ class GradeScale extends React.Component {
   }
 
   render () {
-    
-
     return (
       <div id="class-editor-grade-scale" className='margin-top-2x margin-bottom-2x'>
         <h5 style={{marginTop: '0.25em', marginBottom: '0.5em'}}>Edit gradescale</h5>

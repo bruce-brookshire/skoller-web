@@ -153,6 +153,19 @@
       border: 2px solid #a9a9a9;
       background-color: $cn-color-white;
       flex-basis: 75px;
+      position: relative;
+
+      .adopt-button {
+        margin-top: calc(2em + 5px);
+
+        .button {
+          @include button;
+          width: 80%;
+          position: absolute;
+          bottom: 5px;
+          left:10%;
+        }
+      }
       
       .grade-row {
         margin: $unit-space / 4 $unit-space / 2 0 $unit-space / 2;
