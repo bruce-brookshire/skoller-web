@@ -105,12 +105,25 @@ class GradeScale extends React.Component {
     return (
       <div className="current-grade-scale-container">Current Grade Scale
         <div className="current-grade-scale">
-          <ul className="grade-scale-list">
+          <ul className="current-grade-scale-list">
             {Object.keys(grade_scale_map).sort((a,b) => {
               return parseFloat(grade_scale_map[a]) < parseFloat(grade_scale_map[b]) ? 1 : -1
               }).map((key, idx) => 
                 <li key={idx} className="grade-row">
-                  <div className="grade-key">{key}</div><div className="grade-min">{grade_scale_map[key]}</div>
+                  <div className="delete-x">
+                    <div
+                      className='button-delete-x'
+                      onClick={(event) => {
+                        event.stopPropagation()
+                        if (disabled) return
+                        this.onDeleteGS(key)
+                      }}><i className='fa fa-times' />
+                    </div>
+                  </div>
+                  <div className="grade">
+                    <div className="grade-key">{key}</div>
+                    <div className="grade-min">{grade_scale_map[key]}</div>
+                  </div>
                 </li>
               )}
           </ul>

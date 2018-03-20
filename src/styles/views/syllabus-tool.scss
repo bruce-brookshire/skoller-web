@@ -95,9 +95,32 @@
     justify-content: space-around;
 
     .current-grade-scale-container{
+      text-align: center;
       flex-grow: 1;
       .current-grade-scale {
-        display: flex;
+        .current-grade-scale-list {
+          @include unstyled-list;
+          border-radius: 10px;
+          border: 2px solid #a9a9a9;
+          background-color: $cn-color-white;
+
+          .grade-row {
+            margin: $unit-space / 4 $unit-space / 2 0 $unit-space / 2;
+            display: flex;
+            justify-content: flex-start;
+
+            .delete-x {
+              align-self: flex-start;
+              flex-basis: 25px;
+            }
+
+            .grade {
+              display: flex;
+              justify-content: space-around;
+              flex-basis: 75px;
+            }
+          }
+        }
       }
     }
 
@@ -119,7 +142,7 @@
       border-radius: 10px;
       border: 2px solid #a9a9a9;
       background-color: $cn-color-white;
-      flex-basis: 75px;;
+      flex-basis: 75px;
       
       .grade-row {
         margin: $unit-space / 4 $unit-space / 2 0 $unit-space / 2;
