@@ -13,6 +13,10 @@ class SemesterDetails extends React.Component {
             <td>{period.name}</td>
           </tr>
           <tr>
+            <th>Enroll Date:</th>
+            <td>{period.enroll_date ? convertUTCDatetimeToDateString(period.enroll_date, school.timezone) : ''}</td>
+          </tr>
+          <tr>
             <th>Start Date:</th>
             <td>{period.start_date ? convertUTCDatetimeToDateString(period.start_date, school.timezone) : ''}</td>
           </tr>
@@ -30,7 +34,7 @@ class SemesterDetails extends React.Component {
     return (
       <div>
         <div className='edit-header'>
-          <h3>2. Active Semester</h3>
+          <h3>{this.props.header}</h3>
           <a onClick={() => onEdit()}>Edit</a>
         </div>
 
@@ -45,7 +49,8 @@ class SemesterDetails extends React.Component {
 SemesterDetails.propTypes = {
   onEdit: PropTypes.func,
   school: PropTypes.object,
-  period: PropTypes.object
+  period: PropTypes.object,
+  header: PropTypes.string
 }
 
 export default SemesterDetails

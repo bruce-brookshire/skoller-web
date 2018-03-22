@@ -43,12 +43,13 @@ class PeriodForm extends React.Component {
   */
   initializeFormData (data) {
     let formData = data || {}
-    const {id, name, start_date, end_date} = formData
+    const {id, name, start_date, end_date, enroll_date} = formData
     const {school} = this.props
 
     return ({
       id: id || '',
       name: name || '',
+      enroll_date: enroll_date ? convertUTCDatetimeToDateString(enroll_date, school.timezone) : '',
       start_date: start_date ? convertUTCDatetimeToDateString(start_date, school.timezone) : '',
       end_date: end_date ? convertUTCDatetimeToDateString(end_date, school.timezone) : ''
     })
@@ -71,6 +72,7 @@ class PeriodForm extends React.Component {
   mapForm () {
     const {school} = this.props
     let form = {...this.state.form}
+    form.enroll_date = convertLocalDateToUTC(this.state.form.enroll_date, school.timezone)
     form.start_date = convertLocalDateToUTC(this.state.form.start_date, school.timezone)
     form.end_date = convertLocalDateToUTC(this.state.form.end_date, school.timezone)
     return form
@@ -111,6 +113,18 @@ class PeriodForm extends React.Component {
                 onChange={updateProperty}
                 placeholder="Period name"
                 value={form.name}
+              />
+            </div>
+            <div className='col-xs-12'>
+              <InputField
+                containerClassName='margin-top'
+                error={formErrors.enroll_date}
+                label="Enroll date"
+                name="enroll_date"
+                onChange={updateProperty}
+                placeholder="Enroll date"
+                type='date'
+                value={form.enroll_date}
               />
             </div>
             <div className='col-xs-12'>
