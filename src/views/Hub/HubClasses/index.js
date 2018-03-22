@@ -48,6 +48,10 @@ const headers = [
   {
     field: 'status',
     display: 'Status'
+  },
+  {
+    field: 'active',
+    display: 'Active'
   }
 ]
 
@@ -95,7 +99,7 @@ class HubClasses extends React.Component {
   */
   mapRow (item, index) {
     const {id, school, number, name, enrolled, meet_start_time,
-      meet_days, length, campus, professor, status} = item
+      meet_days, length, campus, professor, status, current_period} = item
 
     const row = {
       id: id || '',
@@ -108,7 +112,8 @@ class HubClasses extends React.Component {
       beginTime: meet_start_time ? mapTimeToDisplay(meet_start_time) : 'TBA',
       length: length || 'TBA',
       campus: campus || '',
-      status: status ? this.mapStatus(status) : '-'
+      status: status ? this.mapStatus(status) : '-',
+      active: current_period ? 'Yes' : 'No'
     }
 
     return row
