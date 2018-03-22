@@ -11,7 +11,12 @@ import SchoolDetails from './SchoolDetails'
 import SchoolDetailsForm from './SchoolDetailsForm'
 import UploadHistory from '../../../components/UploadHistory'
 import actions from '../../../actions'
+import {inject, observer} from 'mobx-react'
+import stores from '../../../stores'
 
+const {navbarStore} = stores
+
+@inject('rootStore') @observer
 class SchoolInfo extends React.Component {
   constructor (props) {
     super(props)
@@ -29,17 +34,28 @@ class SchoolInfo extends React.Component {
   }
 
   componentWillMount () {
+    this.initializeComponent();
+  }
+
+  componentWillUnmount () {
+    navbarStore.title = ""
+  }
+
+  initializeComponent() {
     const {state} = this.props.location
     if (state && state.school) {
       actions.schools.getSchoolById(state.school).then(school => {
         const period = school.class_periods.find(period => period.is_active)
-        this.setState({school, period})
+        const nextPeriod = school.class_periods.find(period => new Date(period.enroll_date) <= new Date() && !period.is_active && new Date(period.end_date) >= new Date())
+        this.setState({school, period, nextPeriod})
       })
     }
   }
 
   initializeState () {
     const {state} = this.props.location
+    navbarStore.cl = null
+    navbarStore.title = "School Info"
     return {
       completedClassCount: 0,
       completedFOSCount: 0,
@@ -49,6 +65,7 @@ class SchoolInfo extends React.Component {
       openFOSModal: false,
       openDetailsForm: false,
       openPeriodForm: false,
+      openNextPeriodForm: false,
       school: (state && state.school) || null,
       period: null
     }
@@ -169,9 +186,25 @@ class SchoolInfo extends React.Component {
     const {period, school} = this.state
     return (
       <SemesterDetails
+        header="2. Active Semester"
         period={period}
         school={school}
         onEdit={this.togglePeriodForm.bind(this)}
+      />
+    )
+  }
+
+  /*
+  * Render Semeter details
+  */
+  renderNextSemester () {
+    const {nextPeriod, school} = this.state
+    return (
+      <SemesterDetails
+        header="Next Semester"
+        period={nextPeriod}
+        school={school}
+        onEdit={this.toggleNextPeriodForm.bind(this)}
       />
     )
   }
@@ -254,6 +287,20 @@ class SchoolInfo extends React.Component {
   }
 
   /*
+  * Render semester details form
+  */
+  renderNextPeriodFormModal () {
+    return (
+      <Modal
+        open={this.state.openNextPeriodForm}
+        onClose={this.toggleNextPeriodForm.bind(this)}
+      >
+        <PeriodForm school={this.state.school} period={this.state.nextPeriod} onSubmit={this.onPeriodSumbit.bind(this)} onClose={this.toggleNextPeriodForm.bind(this)} />
+      </Modal>
+    )
+  }
+
+  /*
   * Call back on school detail form submission.
   */
   onDetailsSumbit (school) {
@@ -263,8 +310,10 @@ class SchoolInfo extends React.Component {
   /*
   * Call back on school period form submission.
   */
-  onPeriodSumbit (period) {
-    this.setState({ period, openPeriodForm: false })
+  onPeriodSumbit () {
+    this.setState({openPeriodForm: false})
+    this.setState({openNextPeriodForm: false})
+    this.initializeComponent()
   }
 
   /*
@@ -381,6 +430,13 @@ class SchoolInfo extends React.Component {
   }
 
   /*
+  * Toggle schools future period modal.
+  */
+  toggleNextPeriodForm () {
+    this.setState({openNextPeriodForm: !this.state.openNextPeriodForm})
+  }
+
+  /*
   * Toggle fos modal.
   */
   toggleFOSUploadModal () {
@@ -390,13 +446,15 @@ class SchoolInfo extends React.Component {
   render () {
     return (
       <div className='cn-school-info'>
-        <h2 className='center-text'>School Info</h2>
         <div className='row'>
           <div className='col-xs-12 col-md-6 margin-top'>
             {this.renderSchoolDetails()}
           </div>
-          <div className='col-xs-12 col-md-6 margin-top'>
+          <div className='col-xs-12 col-md-3 margin-top'>
             {this.renderActiveSemester()}
+          </div>
+          <div className='col-xs-12 col-md-3 margin-top'>
+            {this.renderNextSemester()}
           </div>
           <div className='col-xs-12 col-md-3 margin-top'>
             <h3>3. Import fields of study</h3>
@@ -427,6 +485,7 @@ class SchoolInfo extends React.Component {
         </div>
         {this.renderDetailsFormModal()}
         {this.renderPeriodFormModal()}
+        {this.renderNextPeriodFormModal()}
         {this.renderClassUploadModal()}
         {this.renderFOSUploadModal()}
       </div>
