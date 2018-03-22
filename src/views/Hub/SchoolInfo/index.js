@@ -11,7 +11,12 @@ import SchoolDetails from './SchoolDetails'
 import SchoolDetailsForm from './SchoolDetailsForm'
 import UploadHistory from '../../../components/UploadHistory'
 import actions from '../../../actions'
+import {inject, observer} from 'mobx-react'
+import stores from '../../../stores'
 
+const {navbarStore} = stores
+
+@inject('rootStore') @observer
 class SchoolInfo extends React.Component {
   constructor (props) {
     super(props)
@@ -32,6 +37,10 @@ class SchoolInfo extends React.Component {
     this.initializeComponent();
   }
 
+  componentWillUnmount () {
+    navbarStore.title = ""
+  }
+
   initializeComponent() {
     const {state} = this.props.location
     if (state && state.school) {
@@ -45,6 +54,8 @@ class SchoolInfo extends React.Component {
 
   initializeState () {
     const {state} = this.props.location
+    navbarStore.cl = null
+    navbarStore.title = "School Info"
     return {
       completedClassCount: 0,
       completedFOSCount: 0,
@@ -432,7 +443,6 @@ class SchoolInfo extends React.Component {
   render () {
     return (
       <div className='cn-school-info'>
-        <h2 className='center-text'>School Info</h2>
         <div className='row'>
           <div className='col-xs-12 col-md-6 margin-top'>
             {this.renderSchoolDetails()}
