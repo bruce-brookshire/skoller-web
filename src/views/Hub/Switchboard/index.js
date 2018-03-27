@@ -141,6 +141,7 @@ class Switchboard extends React.Component {
         <MinVerUpdate 
           data={this.state.minAppVersionData}
           onSubmit={this.initializeComponent.bind(this)}
+          onClose={() => this.setState({openVersionUpdateModal: false})}
         /> 
       </Modal>
     )
@@ -169,9 +170,13 @@ class Switchboard extends React.Component {
   renderMinVersionSettings () {
     return (
       <div className='min-ver margin-top'>
-        <h3 className='cn-blue'>Minimum App Version </h3><a onClick={() => this.setState({openVersionUpdateModal: true})}>Edit</a>
-        <p>iOS Version: {this.findMinVerSetting("min_ios_version")}</p>
-        <p>Android Version: {this.findMinVerSetting("min_android_version")}</p>
+        <div className='min-ver-header'> 
+          <h3 className='cn-blue'>Minimum App Version </h3><a className="margin-left" onClick={() => this.setState({openVersionUpdateModal: true})}>Edit</a>
+        </div>
+        <div>
+          <p>iOS Version: {this.findMinVerSetting("min_ios_version")}</p>
+          <p>Android Version: {this.findMinVerSetting("min_android_version")}</p>
+        </div>
       </div>
     )
   }

@@ -68,6 +68,11 @@
 }
 
 .min-ver {
+  .min-ver-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-around;
+  }
   .list {
     @include unstyled-list;
   }
