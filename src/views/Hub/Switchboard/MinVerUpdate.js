@@ -81,9 +81,9 @@ class AutoUpdate extends React.Component {
           <div className='row'>
             <div className='col-xs-12'>
               <div className='cn-min-ver-row'>
-                <div className='cn-min-ver-row-title'><strong><u>iOS Version</u></strong></div>
                 <div className='cn-min-ver-row-input'>
                   <InputField
+                    label="iOS Version"
                     error={formErrors.min_ios_version}
                     name="min_ios_version"
                     onChange={updateProperty}
@@ -93,9 +93,10 @@ class AutoUpdate extends React.Component {
             </div>
             <div className='col-xs-12'>
               <div className='cn-min-ver-row'>
-                <div className='cn-min-ver-row-title'><strong><u>Android Version</u></strong></div>
                 <div className='cn-min-ver-row-input'>
                   <InputField
+                    containerClassName="margin-top"
+                    label="Android Version"
                     error={formErrors.min_android_version}
                     name="min_android_version"
                     onChange={updateProperty}
