@@ -8,6 +8,10 @@ import {mapTimeToDisplay} from '../../../utilities/time'
 
 const searchResultHeaders = [
   {
+    field: 'classPeriodName',
+    display: 'Period Name'
+  },
+  {
     field: 'courseNumber',
     display: 'Class Number'
   },
@@ -89,10 +93,11 @@ class AddClass extends React.Component {
   * @return [Object] row. Object of formatted row data for display in grid.
   */
   mapRow (item, index) {
-    const {id, number, name, meet_start_time, meet_days, length, professor} = item
+    const {id, number, name, meet_start_time, meet_days, length, professor, class_period_name} = item
 
     const row = {
       id: id || '',
+      classPeriodName: class_period_name || '',
       courseNumber: number || '-',
       name: name || '-',
       professor: professor ? mapProfessor(professor) : 'TBA',

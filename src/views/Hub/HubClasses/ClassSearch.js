@@ -139,6 +139,7 @@ class ClassSearch extends React.Component {
       } else if (this.state.searchField && this.state.searchValue) {
         params = `${this.state.searchField}=${this.state.searchValue}`
       }
+      params += `&enrollable_period=true`
       this.props.onSearch(params)
     }
   }
