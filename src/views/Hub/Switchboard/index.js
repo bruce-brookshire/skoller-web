@@ -40,7 +40,8 @@ class Switchboard extends React.Component {
       loading: false,
       openCustomNotificationModal: false,
       openAutoUpdateModal: false,
-      autoUpdateData: []
+      autoUpdateData: [],
+      minAppVerisionData: []
     }
   }
 
@@ -48,6 +49,9 @@ class Switchboard extends React.Component {
     this.setState({loading: true})
     actions.notifications.getNotificationLogs().then((logs) => {
       this.setState({logs})
+    }).catch(() => false)
+    actions.settings.getMinVersionInfo().then((minAppVerisionData) => {
+      this.setState({minAppVerisionData})
     }).catch(() => false)
     actions.settings.getAutoUpdateInfo().then((autoUpdateData) => {
       this.setState({autoUpdateData, loading: false})
@@ -139,6 +143,20 @@ class Switchboard extends React.Component {
     )
   }
 
+  renderMinVersionSettings () {
+    const {minAppVerisionData} = this.state
+    return (
+      <div className='min-ver margin-top'>
+        <h3 className='cn-blue'>Minimum App Version</h3>
+        <ul className="list">
+            {minAppVerisionData.map((u, idx) => {
+              return <li key={u.name}>{u.name}: {u.value}</li>
+            })}
+        </ul>
+      </div>
+    )
+  }
+
   render () {
     return (
       <div className='cn-switchboard-container'>
@@ -158,6 +176,10 @@ class Switchboard extends React.Component {
             <div className="cn-switchboard-section-item">
               {this.state.loading ? <div className='center-text'><Loading /></div> :
                 this.renderAutoUpdateSettings()}
+            </div>
+            <div className="cn-switchboard-section-item">
+              {this.state.loading ? <div className='center-text'><Loading /></div> :
+                this.renderMinVersionSettings()}
             </div>
           </div>
           <div className='cn-switchboard-section-large'>

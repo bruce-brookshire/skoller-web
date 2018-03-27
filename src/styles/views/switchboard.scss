@@ -66,3 +66,9 @@
     width: 40px;
   }
 }
+
+.min-ver {
+  .list {
+    @include unstyled-list;
+  }
+}

@@ -29,6 +29,27 @@ export function getAutoUpdateInfo () {
 /*
 * Get auto update metrics and settings
 */
+export function getMinVersionInfo () {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/min-version`, {
+    method: 'GET',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error fetching analytics. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Get auto update metrics and settings
+*/
 export function forecastAutoUpdateInfo (queryString) {
   return fetch(`${Environment.SERVER_NAME}/api/v1/auto-updates/forecast?` + queryString, {
     method: 'GET',
