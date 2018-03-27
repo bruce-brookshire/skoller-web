@@ -7,6 +7,7 @@ import Grid from '../../../components/Grid'
 import Modal from '../../../components/Modal'
 import CustomNotificationForm from './CustomNotificationForm'
 import AutoUpdate from './AutoUpdate'
+import MinVerUpdate from './MinVerUpdate'
 import stores from '../../../stores'
 import {inject, observer} from 'mobx-react'
 
@@ -40,8 +41,9 @@ class Switchboard extends React.Component {
       loading: false,
       openCustomNotificationModal: false,
       openAutoUpdateModal: false,
+      openVersionUpdateModal: false,
       autoUpdateData: [],
-      minAppVerisionData: []
+      minAppVersionData: []
     }
   }
 
@@ -50,8 +52,8 @@ class Switchboard extends React.Component {
     actions.notifications.getNotificationLogs().then((logs) => {
       this.setState({logs})
     }).catch(() => false)
-    actions.settings.getMinVersionInfo().then((minAppVerisionData) => {
-      this.setState({minAppVerisionData})
+    actions.settings.getMinVersionInfo().then((minAppVersionData) => {
+      this.setState({minAppVersionData})
     }).catch(() => false)
     actions.settings.getAutoUpdateInfo().then((autoUpdateData) => {
       this.setState({autoUpdateData, loading: false})
@@ -127,32 +129,49 @@ class Switchboard extends React.Component {
     )
   }
 
-  findSetting (key) {
+  /*
+  * Render the version update modal.
+  */
+  renderVersionUpdateModal () {
+    return (
+      <Modal
+        open={this.state.openVersionUpdateModal}
+        onClose={() => this.setState({openVersionUpdateModal: false})}
+      >
+        <MinVerUpdate 
+          data={this.state.minAppVersionData}
+          onSubmit={this.initializeComponent.bind(this)}
+        /> 
+      </Modal>
+    )
+  }
+
+  findAutoUpdateSetting (key) {
     return this.state.autoUpdateData.settings.find(x => x.name == key).value
+  }
+
+  findMinVerSetting (key) {
+    return this.state.minAppVersionData.find(x => x.name == key).value
   }
 
   renderAutoUpdateSettings () {
     return (
       <div className='auto-update margin-top'>
         <h3 className='cn-blue'>Auto Updates</h3>
-        <p>Enrollment is {this.findSetting("auto_upd_enroll_thresh")} or more</p>
-        <p>{Math.round(this.findSetting("auto_upd_response_thresh") * 100)}% or more responded to the update</p>
-        <p>{Math.round(this.findSetting("auto_upd_approval_thresh") * 100)}% or more responses were copies</p>
+        <p>Enrollment is {this.findAutoUpdateSetting("auto_upd_enroll_thresh")} or more</p>
+        <p>{Math.round(this.findAutoUpdateSetting("auto_upd_response_thresh") * 100)}% or more responded to the update</p>
+        <p>{Math.round(this.findAutoUpdateSetting("auto_upd_approval_thresh") * 100)}% or more responses were copies</p>
         <a className="cn-blue" onClick={() => this.setState({openAutoUpdateModal: true})}>See details</a>
       </div>
     )
   }
 
   renderMinVersionSettings () {
-    const {minAppVerisionData} = this.state
     return (
       <div className='min-ver margin-top'>
-        <h3 className='cn-blue'>Minimum App Version</h3>
-        <ul className="list">
-            {minAppVerisionData.map((u, idx) => {
-              return <li key={u.name}>{u.name}: {u.value}</li>
-            })}
-        </ul>
+        <h3 className='cn-blue'>Minimum App Version </h3><a onClick={() => this.setState({openVersionUpdateModal: true})}>Edit</a>
+        <p>iOS Version: {this.findMinVerSetting("min_ios_version")}</p>
+        <p>Android Version: {this.findMinVerSetting("min_android_version")}</p>
       </div>
     )
   }
@@ -199,6 +218,7 @@ class Switchboard extends React.Component {
         </div>
         {this.renderCustomNotificationModal()}
         {this.renderAutoUpdateModal()}
+        {this.renderVersionUpdateModal()}
       </div>
     )
   }

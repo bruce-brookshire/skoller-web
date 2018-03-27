@@ -21,7 +21,7 @@ import {attachProfessorToClass, createProfessor, removeProfessorFromClass,
   searchProfessors, updateProfessor} from './professors'
 import {createSchool, getAllSchools, getActiveSchools, getFieldsOfStudy, getHubSchools,
   getHubSchoolsMinified, getSchoolById, updateSchool} from './schools'
-import {getAutoUpdateInfo, updateAutoUpdateInfo, forecastAutoUpdateInfo, getMinVersionInfo} from './settings'
+import {getAutoUpdateInfo, updateAutoUpdateInfo, forecastAutoUpdateInfo, getMinVersionInfo, updateMinVer} from './settings'
 import {showSnackbar} from './snackbar'
 import {getNextClass} from './syllabusworkers'
 import {createWeight, deleteWeight, getClassWeights, updateWeight} from './weights'
@@ -142,7 +142,8 @@ const actions = {
     getAutoUpdateInfo,
     updateAutoUpdateInfo,
     forecastAutoUpdateInfo,
-    getMinVersionInfo
+    getMinVersionInfo,
+    updateMinVer
   },
   snackbar: {
     showSnackbar

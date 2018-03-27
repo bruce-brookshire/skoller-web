@@ -91,3 +91,27 @@ export function updateAutoUpdateInfo (form) {
       return Promise.reject(error)
     })
 }
+
+/*
+* Update min ver settings
+*/
+export function updateMinVer (form) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/min-version/`, {
+    method: 'PUT',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      settings: form
+    })
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error fetching analytics. Try again.')
+      return Promise.reject(error)
+    })
+}
