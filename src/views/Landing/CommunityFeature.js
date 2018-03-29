@@ -5,7 +5,7 @@ class CommunityFeature extends React.Component {
     return (
       <div className='section-community-feature'>
         <div className="content">
-          <h2 className='section-header'>Plus, a <span className='blue-text'>community</span> you can't find anywhere else.</h2>
+          <h2 className='section-header'>Plus, a <span className='blue-text'>community</span> you can&apos;t find anywhere else.</h2>
           <div className='row'>
             <div className='col-xs-12 col-sm-6'>
               <div className='twin-image'>
