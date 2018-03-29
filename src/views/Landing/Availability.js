@@ -1,7 +1,6 @@
 import React from 'react'
 
 class Availability extends React.Component {
-
   render () {
     const universityList = [
       'Auburn University',
@@ -29,10 +28,10 @@ class Availability extends React.Component {
           </h2>
           <ul className="list">
             {universityList.map((u, idx) => {
-              return <li key={idx}>{u}</li>
+              return <li key={u}>{u}</li>
             })}
           </ul>
-          <p>Don't see your school? <a href="mailto:support@skoller.co?Subject=Add My School">Let us know you want Skoller</a></p>
+          <p>Don&apos;t see your school? <a href="mailto:support@skoller.co?Subject=Add My School">Let us know you want Skoller</a></p>
         </div>
       </div>
     )

@@ -17,8 +17,8 @@ class CallToAction extends React.Component {
             </a>
           </li>
           <li className="action">
-            <a onClick={()=>{ browserHistory.push('/faq');window.scrollTo(0, 0); }} style={{textDecoration:'underline'}}>
-              Want to learn more? Check out our FAQ's.
+            <a onClick={() => { browserHistory.push('/faq'); window.scrollTo(0, 0) }} style={{textDecoration: 'underline'}}>
+              Want to learn more? Check out our FAQ&apos;s.
             </a>
           </li>
         </ul>
