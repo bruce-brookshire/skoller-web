@@ -18,7 +18,7 @@ export function sendNeedsSyllabusNotification () {
   })
     .then(response => checkError(response))
     .then(data => {
-      showSnackbar('Successfully sent notification.','info')
+      showSnackbar('Successfully sent notification.', 'info')
       return data
     })
     .catch(error => {
@@ -41,7 +41,7 @@ export function sendCustomNotification (form) {
   })
     .then(response => checkError(response))
     .then(data => {
-      showSnackbar('Successfully sent notification.','info')
+      showSnackbar('Successfully sent notification.', 'info')
       return data
     })
     .catch(error => {
@@ -55,6 +55,24 @@ export function sendCustomNotification (form) {
 */
 export function getNotificationLogs () {
   return fetch(`${Environment.SERVER_NAME}/api/v1/notifications/`, {
+    method: 'GET',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => parseResponse(response))
+    .catch(error => {
+      showSnackbar('Error getting logs. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Get Assignment reminder messages
+*/
+export function getAssignmentReminders () {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/reminder-messages/`, {
     method: 'GET',
     headers: {
       'Authorization': userStore.authToken,

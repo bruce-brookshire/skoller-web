@@ -1,32 +1,13 @@
 import React from 'react'
 import actions from '../../../actions'
-import {convertUTCDatetimeToDateTimeString} from '../../../utilities/time'
 import Loading from '../../../components/Loading'
-import Grid from '../../../components/Grid'
 import Modal from '../../../components/Modal'
 import CustomNotificationForm from './CustomNotificationForm'
 import AutoUpdate from './AutoUpdate'
 import stores from '../../../stores'
 import {inject, observer} from 'mobx-react'
-
-const headers = [
-  {
-    field: 'notification_category',
-    display: 'Category'
-  },
-  {
-    field: 'affected_users',
-    display: 'Num. Users'
-  },
-  {
-    field: 'inserted_at',
-    display: 'Sent'
-  },
-  {
-    field: 'msg',
-    display: 'Message'
-  }
-]
+import NotificationHistory from './NotificationHistory'
+import AssignmentReminders from './AssignmentReminders'
 
 const {navbarStore} = stores
 
@@ -39,7 +20,8 @@ class Switchboard extends React.Component {
       loading: false,
       openCustomNotificationModal: false,
       openAutoUpdateModal: false,
-      autoUpdateData: []
+      autoUpdateData: [],
+      reminders: []
     }
   }
 
@@ -47,6 +29,9 @@ class Switchboard extends React.Component {
     this.setState({loading: true})
     actions.notifications.getNotificationLogs().then((logs) => {
       this.setState({logs})
+    }).catch(() => false)
+    actions.notifications.getAssignmentReminders().then((reminders) => {
+      this.setState({reminders})
     }).catch(() => false)
     actions.settings.getAutoUpdateInfo().then((autoUpdateData) => {
       this.setState({autoUpdateData, loading: false})
@@ -65,27 +50,6 @@ class Switchboard extends React.Component {
   send () {
     actions.notifications.sendNeedsSyllabusNotification((r) => console.log(r))
     this.initializeComponent()
-  }
-
-  mapRow (item, index) {
-    const {notification_category, affected_users, inserted_at, msg} = item
-
-    const row = {
-      notification_category: notification_category || 'N/A',
-      affected_users: affected_users || 0,
-      inserted_at: inserted_at
-        ? convertUTCDatetimeToDateTimeString(inserted_at, 'CST') : '',
-      msg: msg || ''
-    }
-    return row
-  }
-
-  getRows () {
-    return this.state.logs.sort((a, b) => {
-      return a.inserted_at < b.inserted_at ? 1 : -1
-    }).map((item, index) =>
-      this.mapRow(item, index)
-    )
   }
 
   /*
@@ -162,15 +126,11 @@ class Switchboard extends React.Component {
           <div className='cn-switchboard-section-large'>
             <h3 className='cn-blue center-text'>History</h3>
             {this.state.loading ? <div className='center-text'><Loading /></div>
-              : <div className='cn-log-table'><Grid
-                className='striped'
-                headers={headers}
-                rows={this.getRows()}
-                disabled={true}
-                canDelete={false}
-                canSelect={false}
-                emptyMessage={'No notifications have been sent.'}
-              /></div>
+              : <NotificationHistory logs={this.state.logs} />
+            }
+            <h3 className='cn-blue center-text'>Assignment Reminders</h3>
+            {this.state.loading ? <div className='center-text'><Loading /></div>
+              : <AssignmentReminders reminders={this.state.reminders} />
             }
           </div>
         </div>

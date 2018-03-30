@@ -10,12 +10,13 @@ import {createClass, deleteClass, dropClass, getClassById, getLocks, getProfesso
   getStudentClasses, getStudentClassesById, enrollInClass, searchClasses, searchStudentClasses,
   updateClass, lockClass, unlockClass, approveClass, denyClass, updateClassStatus} from './classes'
 import {createIssue, getHelpTypes, resolveIssue, getRequestTypes, resolveChangeRequest, createStudentRequest,
-        resolveStudentRequest} from './classhelp'
+  resolveStudentRequest} from './classhelp'
 import {getClassDocuments, uploadClassCsv, uploadClassDocument, deleteClassDocument,
   uploadFOSCsv} from './documents'
 import {updateGradeScale} from './gradescales'
 import {getStatuses, getStatusesHub} from './hub'
-import {sendNeedsSyllabusNotification, getNotificationLogs, sendCustomNotification} from './notifications'
+import {sendNeedsSyllabusNotification, getNotificationLogs, sendCustomNotification,
+  getAssignmentReminders} from './notifications'
 import {getSchoolPeriods, createPeriod, updatePeriod} from './periods'
 import {attachProfessorToClass, createProfessor, removeProfessorFromClass,
   searchProfessors, updateProfessor} from './professors'
@@ -114,7 +115,8 @@ const actions = {
   notifications: {
     sendNeedsSyllabusNotification,
     getNotificationLogs,
-    sendCustomNotification
+    sendCustomNotification,
+    getAssignmentReminders
   },
   periods: {
     createPeriod,
