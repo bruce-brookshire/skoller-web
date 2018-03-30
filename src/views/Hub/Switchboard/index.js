@@ -1,5 +1,4 @@
 import React from 'react'
-import {browserHistory} from 'react-router'
 import actions from '../../../actions'
 import {convertUTCDatetimeToDateTimeString} from '../../../utilities/time'
 import Loading from '../../../components/Loading'
@@ -44,7 +43,7 @@ class Switchboard extends React.Component {
     }
   }
 
-  initializeComponent() {
+  initializeComponent () {
     this.setState({loading: true})
     actions.notifications.getNotificationLogs().then((logs) => {
       this.setState({logs})
@@ -55,15 +54,15 @@ class Switchboard extends React.Component {
   }
 
   componentWillMount () {
-    navbarStore.title = "Switchboard"
+    navbarStore.title = 'Switchboard'
     this.initializeComponent()
   }
 
   componentWillUnmount () {
-    navbarStore.title = ""
+    navbarStore.title = ''
   }
 
-  send() {
+  send () {
     actions.notifications.sendNeedsSyllabusNotification((r) => console.log(r))
     this.initializeComponent()
   }
@@ -74,8 +73,8 @@ class Switchboard extends React.Component {
     const row = {
       notification_category: notification_category || 'N/A',
       affected_users: affected_users || 0,
-      inserted_at: inserted_at ?
-        convertUTCDatetimeToDateTimeString(inserted_at, 'CST') : '',
+      inserted_at: inserted_at
+        ? convertUTCDatetimeToDateTimeString(inserted_at, 'CST') : '',
       msg: msg || ''
     }
     return row
@@ -98,10 +97,10 @@ class Switchboard extends React.Component {
         open={this.state.openCustomNotificationModal}
         onClose={() => this.setState({openCustomNotificationModal: false})}
       >
-        <CustomNotificationForm 
+        <CustomNotificationForm
           onClose={() => this.setState({openCustomNotificationModal: false})}
           onSubmit={this.initializeComponent.bind(this)}
-        /> 
+        />
       </Modal>
     )
   }
@@ -115,25 +114,25 @@ class Switchboard extends React.Component {
         open={this.state.openAutoUpdateModal}
         onClose={() => this.setState({openAutoUpdateModal: false})}
       >
-        <AutoUpdate 
+        <AutoUpdate
           data={this.state.autoUpdateData}
           onSubmit={this.initializeComponent.bind(this)}
-        /> 
+        />
       </Modal>
     )
   }
 
   findSetting (key) {
-    return this.state.autoUpdateData.settings.find(x => x.name == key).value
+    return this.state.autoUpdateData.settings.find(x => x.name === key).value
   }
 
   renderAutoUpdateSettings () {
     return (
       <div className='auto-update margin-top'>
         <h3 className='cn-blue'>Auto Updates</h3>
-        <p>Enrollment is {this.findSetting("auto_upd_enroll_thresh")} or more</p>
-        <p>{Math.round(this.findSetting("auto_upd_response_thresh") * 100)}% or more responded to the update</p>
-        <p>{Math.round(this.findSetting("auto_upd_approval_thresh") * 100)}% or more responses were copies</p>
+        <p>Enrollment is {this.findSetting('auto_upd_enroll_thresh')} or more</p>
+        <p>{Math.round(this.findSetting('auto_upd_response_thresh') * 100)}% or more responded to the update</p>
+        <p>{Math.round(this.findSetting('auto_upd_approval_thresh') * 100)}% or more responses were copies</p>
         <a className="cn-blue" onClick={() => this.setState({openAutoUpdateModal: true})}>See details</a>
       </div>
     )
@@ -147,7 +146,7 @@ class Switchboard extends React.Component {
             <h3 className='cn-blue'>Notifications</h3>
             <div className="cn-switchboard-section-item">
               <button className='button' onClick={() => this.send()}>
-                Send 'Needs Syllabus' Notification
+                Send &apos;Needs Syllabus&apos; Notification
               </button>
             </div>
             <div className="cn-switchboard-section-item">
@@ -156,14 +155,14 @@ class Switchboard extends React.Component {
               </button>
             </div>
             <div className="cn-switchboard-section-item">
-              {this.state.loading ? <div className='center-text'><Loading /></div> :
-                this.renderAutoUpdateSettings()}
+              {this.state.loading ? <div className='center-text'><Loading /></div>
+                : this.renderAutoUpdateSettings()}
             </div>
           </div>
           <div className='cn-switchboard-section-large'>
             <h3 className='cn-blue center-text'>History</h3>
-            {this.state.loading ? <div className='center-text'><Loading /></div> :
-              <Grid
+            {this.state.loading ? <div className='center-text'><Loading /></div>
+              : <Grid
                 className='striped'
                 headers={headers}
                 rows={this.getRows()}
