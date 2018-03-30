@@ -8,6 +8,7 @@ import stores from '../../../stores'
 import {inject, observer} from 'mobx-react'
 import NotificationHistory from './NotificationHistory'
 import AssignmentReminders from './AssignmentReminders'
+import AssignmentReminderForm from './AssignmentReminderForm'
 
 const {navbarStore} = stores
 
@@ -30,9 +31,7 @@ class Switchboard extends React.Component {
     actions.notifications.getNotificationLogs().then((logs) => {
       this.setState({logs})
     }).catch(() => false)
-    actions.notifications.getAssignmentReminders().then((reminders) => {
-      this.setState({reminders})
-    }).catch(() => false)
+    this.getReminders()
     actions.settings.getAutoUpdateInfo().then((autoUpdateData) => {
       this.setState({autoUpdateData, loading: false})
     }).catch(() => false)
@@ -50,6 +49,13 @@ class Switchboard extends React.Component {
   send () {
     actions.notifications.sendNeedsSyllabusNotification((r) => console.log(r))
     this.initializeComponent()
+  }
+
+  getReminders () {
+    console.log("I'm here!")
+    actions.notifications.getAssignmentReminders().then((reminders) => {
+      this.setState({reminders})
+    }).catch(() => false)
   }
 
   /*
@@ -148,6 +154,9 @@ class Switchboard extends React.Component {
                 onDelete={() => this.onDeleteReminder.bind(this)}
               />
             }
+            <AssignmentReminderForm
+              onSubmit={() => this.getReminders.bind(this)}
+            />
           </div>
         </div>
         {this.renderCustomNotificationModal()}

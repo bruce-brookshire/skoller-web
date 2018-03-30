@@ -103,3 +103,26 @@ export function deleteAssignmentReminders (form) {
       return Promise.reject(error)
     })
 }
+
+/*
+* Send custom notification
+*/
+export function addReminderNotification (form) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/reminder-messages`, {
+    method: 'POST',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    },
+    body: '{"reminder_message": ' + JSON.stringify(form) + '}'
+  })
+    .then(response => checkError(response))
+    .then(data => {
+      showSnackbar('Successfully added reminder.', 'info')
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error adding reminder. Try again.')
+      return Promise.reject(error)
+    })
+}
