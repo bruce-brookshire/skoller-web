@@ -162,7 +162,7 @@ class Switchboard extends React.Component {
           <div className='cn-switchboard-section-large'>
             <h3 className='cn-blue center-text'>History</h3>
             {this.state.loading ? <div className='center-text'><Loading /></div>
-              : <Grid
+              : <div className='cn-log-table'><Grid
                 className='striped'
                 headers={headers}
                 rows={this.getRows()}
@@ -170,7 +170,7 @@ class Switchboard extends React.Component {
                 canDelete={false}
                 canSelect={false}
                 emptyMessage={'No notifications have been sent.'}
-              />
+              /></div>
             }
           </div>
         </div>
