@@ -1,6 +1,5 @@
 import React from 'react'
 import SignUpForm from './SignUpForm'
-import Slant from '../../components/Slant'
 
 class PromoSignup extends React.Component {
   render () {

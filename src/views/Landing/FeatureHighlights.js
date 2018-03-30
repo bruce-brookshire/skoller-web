@@ -9,7 +9,7 @@ class FeatureHighlights extends React.Component {
       <div className='section-features'>
         <div className="content">
           <h2 className='section-header'>
-            Skoller answers all of the biggest questions you'll have throughout your semester.
+            Skoller answers all of the biggest questions you&apos;ll have throughout your semester.
           </h2>
           <div className='row features'>
             <div className='feature'>
@@ -34,7 +34,7 @@ class FeatureHighlights extends React.Component {
               <img src='src/assets/images/landing_page/Classes@2x.png'/>
             </div>
             <div className='feature'>
-              <img src='src/assets/images/landing_page/Assignments@2x.png' style={{width: '65%',transform: 'rotate(18deg) translateX(30%) translateY(-5%)'}}/>
+              <img src='src/assets/images/landing_page/Assignments@2x.png' style={{width: '65%', transform: 'rotate(18deg) translateX(30%) translateY(-5%)'}}/>
               <div className='speech-bubble'>
                 <p>What do I need to make on the rest of my assignments to get the grade I want?</p>
                 <div className="triangle"></div>
