@@ -41,7 +41,6 @@ const headers = [
 ]
 
 class ClassList extends React.Component {
-
   /*
   * Row data to be passed to the grid
   *
@@ -73,7 +72,7 @@ class ClassList extends React.Component {
       campus: campus || '',
       status: status ? this.mapStatus(status) : '-',
       enrollment: enrollment || 0,
-      component: this.props.onUpdate ? <UploadDocuments cl={item} onUpdateClass={(cl) => {this.props.onUpdate(cl)}}/> : null
+      component: this.props.onUpdate ? <UploadDocuments cl={item} onUpdateClass={(cl) => { this.props.onUpdate(cl) }}/> : null
     }
 
     return row
@@ -96,7 +95,7 @@ class ClassList extends React.Component {
     return status
   }
 
-  onClassSelect(cl) {
+  onClassSelect (cl) {
     if (this.props.onSelect) this.props.onSelect(cl)
   }
 
@@ -107,13 +106,13 @@ class ClassList extends React.Component {
         headers={headers}
         rows={this.getRows()}
         disabled={this.props.disabled}
-        canDelete={this.props.onDelete ? true : false}
-        canSelect={this.props.onSelect ? true: false}
+        canDelete={this.props.onDelete}
+        canSelect={this.props.onSelect}
         onDelete={this.props.onDelete ? this.props.onDelete() : null}
         onSelect={this.onClassSelect.bind(this)}
         deleteMessage={this.props.deleteMessage}
         emptyMessage={this.props.emptyMessage}
-    />
+      />
     )
   }
 }
