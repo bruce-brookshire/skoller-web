@@ -102,6 +102,19 @@ class Switchboard extends React.Component {
     )
   }
 
+  /*
+  * Method for deleting a message.
+  *
+  * @param [Object] message
+  * @return [Object] null.
+  */
+  onDeleteReminder (item) {
+    actions.notifications.deleteAssignmentReminders(item).then(() => {
+      const newReminders = this.state.reminders.filter(cc => cc.id !== item.id)
+      this.setState({reminders: newReminders})
+    }).catch(() => false)
+  }
+
   render () {
     return (
       <div className='cn-switchboard-container'>
@@ -130,7 +143,10 @@ class Switchboard extends React.Component {
             }
             <h3 className='cn-blue center-text'>Assignment Reminders</h3>
             {this.state.loading ? <div className='center-text'><Loading /></div>
-              : <AssignmentReminders reminders={this.state.reminders} />
+              : <AssignmentReminders
+                reminders={this.state.reminders}
+                onDelete={() => this.onDeleteReminder.bind(this)}
+              />
             }
           </div>
         </div>

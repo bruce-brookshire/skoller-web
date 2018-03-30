@@ -19,9 +19,10 @@ const headers = [
 
 class AssignmentReminders extends React.Component {
   mapRow (item, index) {
-    const {message, is_plural, is_today} = item
+    const {message, is_plural, is_today, id} = item
 
     const row = {
+      id: id,
       message: message,
       is_plural: is_plural ? 'Yes' : 'No',
       is_today: is_today ? 'Yes' : 'No'
@@ -44,16 +45,19 @@ class AssignmentReminders extends React.Component {
           headers={headers}
           rows={this.getRows()}
           disabled={true}
-          canDelete={false}
+          canDelete={true}
           canSelect={false}
           emptyMessage={'No reminder messages exist yet.'}
+          deleteMessage={''}
+          onDelete={this.props.onDelete ? this.props.onDelete() : null}
         />
       </div>
     )
   }
 }
 AssignmentReminders.PropTypes = {
-  reminders: PropTypes.array.isRequired
+  reminders: PropTypes.array.isRequired,
+  onDelete: PropTypes.func
 }
 
 export default AssignmentReminders

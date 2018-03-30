@@ -81,7 +81,25 @@ export function getAssignmentReminders () {
   })
     .then(response => parseResponse(response))
     .catch(error => {
-      showSnackbar('Error getting logs. Try again.')
+      showSnackbar('Error getting messages. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Delete an assignment
+*/
+export function deleteAssignmentReminders (form) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/reminder-messages/${form.id}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => checkError(response))
+    .catch(error => {
+      showSnackbar('Error deleting message. Try again.')
       return Promise.reject(error)
     })
 }

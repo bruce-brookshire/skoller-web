@@ -16,7 +16,7 @@ import {getClassDocuments, uploadClassCsv, uploadClassDocument, deleteClassDocum
 import {updateGradeScale} from './gradescales'
 import {getStatuses, getStatusesHub} from './hub'
 import {sendNeedsSyllabusNotification, getNotificationLogs, sendCustomNotification,
-  getAssignmentReminders} from './notifications'
+  getAssignmentReminders, deleteAssignmentReminders} from './notifications'
 import {getSchoolPeriods, createPeriod, updatePeriod} from './periods'
 import {attachProfessorToClass, createProfessor, removeProfessorFromClass,
   searchProfessors, updateProfessor} from './professors'
@@ -116,7 +116,8 @@ const actions = {
     sendNeedsSyllabusNotification,
     getNotificationLogs,
     sendCustomNotification,
-    getAssignmentReminders
+    getAssignmentReminders,
+    deleteAssignmentReminders
   },
   periods: {
     createPeriod,
