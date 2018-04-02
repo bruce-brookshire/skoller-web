@@ -76,7 +76,6 @@ export function updateAssignment (cl, form) {
     })
 }
 
-
 /*
 * Delete an assignment
 */

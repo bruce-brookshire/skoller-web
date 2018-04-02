@@ -1,7 +1,6 @@
 import React from 'react'
 import AddClass from '../../components/AddClass'
 import CreateClass from '../../components/CreateClass'
-import Loading from '../../../components/Loading'
 import Modal from '../../../components/Modal/index'
 import ClassList from '../../components/ClassList'
 import actions from '../../../actions'
@@ -20,36 +19,36 @@ class MyClasses extends React.Component {
     this.updateClasses()
   }
 
-  updateClasses() {
+  updateClasses () {
     actions.classes.getStudentClasses().then((classes) => {
       this.setState({classes})
     }).catch(() => false)
   }
 
-  updateClass(cl) {
+  updateClass (cl) {
     actions.classes.getClassById(cl.id).then(cl => {
-  		const index = this.state.classes.findIndex(c => c.id === cl.id)
-  		const newClasses = this.state.classes
-  		newClasses[index] = cl
-  		this.setState({classes: newClasses})
-  	}).catch(() => false)
+      const index = this.state.classes.findIndex(c => c.id === cl.id)
+      const newClasses = this.state.classes
+      newClasses[index] = cl
+      this.setState({classes: newClasses})
+    }).catch(() => false)
   }
 
-  numberOfClassesNeedingSyllabus(){
+  numberOfClassesNeedingSyllabus () {
     return this.state.classes.filter((item, index) => {
-      return item.status.name == 'Needs Syllabus'
+      return item.status.name === 'Needs Syllabus'
     }).length
   }
 
-  renderNeedsSyllabusInfo(){
+  renderNeedsSyllabusInfo () {
     let num = this.numberOfClassesNeedingSyllabus()
-    if(num > 0){
-      return(
+    if (num > 0) {
+      return (
         <div className='needs-syllabus-info margin-bottom center-text cn-red'>
           {`Skoller needs a syllabus for ${num} of your classes.`}
         </div>
       )
-    }else{
+    } else {
       return null
     }
   }
@@ -78,7 +77,7 @@ class MyClasses extends React.Component {
       </div>
     )
   }
-  
+
   /*
   * Toggle the add class modal.
   *

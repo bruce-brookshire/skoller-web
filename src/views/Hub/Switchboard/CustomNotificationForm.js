@@ -30,7 +30,7 @@ class CustomNotificationForm extends React.Component {
     }
   }
 
-  initializeFormData() {
+  initializeFormData () {
     return {
       password: '',
       message: ''
@@ -62,9 +62,8 @@ class CustomNotificationForm extends React.Component {
 
   updateCharCount (oldMsg, newMsg) {
     if (newMsg.length > 150) {
-      return oldMsg;
-    }
-    else {
+      return oldMsg
+    } else {
       this.setState({chars: 150 - newMsg.length})
       return newMsg
     }
