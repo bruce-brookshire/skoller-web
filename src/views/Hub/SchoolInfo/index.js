@@ -34,14 +34,14 @@ class SchoolInfo extends React.Component {
   }
 
   componentWillMount () {
-    this.initializeComponent();
+    this.initializeComponent()
   }
 
   componentWillUnmount () {
-    navbarStore.title = ""
+    navbarStore.title = ''
   }
 
-  initializeComponent() {
+  initializeComponent () {
     const {state} = this.props.location
     if (state && state.school) {
       actions.schools.getSchoolById(state.school).then(school => {
@@ -55,7 +55,7 @@ class SchoolInfo extends React.Component {
   initializeState () {
     const {state} = this.props.location
     navbarStore.cl = null
-    navbarStore.title = "School Info"
+    navbarStore.title = 'School Info'
     return {
       completedClassCount: 0,
       completedFOSCount: 0,
@@ -71,12 +71,11 @@ class SchoolInfo extends React.Component {
     }
   }
 
-
-  handleFourDateStateChange() {
+  handleFourDateStateChange () {
     const values = Object.values(this.fourDoorStatesDef)
     const states = Object.keys(this.fourDoorStatesDef)
     const curState = this.getFourDoorState()
-    const currIdx = states.findIndex( s => s === curState )
+    const currIdx = states.findIndex(s => s === curState)
     const nextIdx = currIdx + 1 > states.length - 1 ? 0 : currIdx + 1
 
     const { school } = this.state
@@ -91,14 +90,14 @@ class SchoolInfo extends React.Component {
     })
   }
 
-  getFourDoorState() {
+  getFourDoorState () {
     if (this.state && !this.state.school) return null
 
     const statesDef = this.fourDoorStatesDef
     const { is_diy_enabled, is_diy_preferred, is_auto_syllabus } = this.state.school
     const curState = [is_diy_enabled, is_diy_preferred, is_auto_syllabus]
     const comp = JSON.stringify(curState)
-    const curIdx = Object.values(statesDef).findIndex( (b)=> comp === JSON.stringify(b) )
+    const curIdx = Object.values(statesDef).findIndex((b) => comp === JSON.stringify(b))
 
     return Object.keys(statesDef)[curIdx]
   }
@@ -122,28 +121,27 @@ class SchoolInfo extends React.Component {
     )
   }
 
-
-  renderFourDoorSelect() {
+  renderFourDoorSelect () {
     let sImg = 'default'
     let dImg = 'default'
     let label = 'Normal'
 
-    switch(this.getFourDoorState()) {
+    switch (this.getFourDoorState()) {
       case 'diy_preferred_sw':
         sImg = 'default'
         dImg = 'on'
-        label='DIY Preferred'
+        label = 'DIY Preferred'
 
         break
       case 'sw':
         sImg = 'on'
         dImg = 'off'
-        label='Skoller only'
+        label = 'Skoller only'
         break
       case 'diy':
         sImg = 'off'
         dImg = 'on'
-        label='DIY only'
+        label = 'DIY only'
         break
     }
 
@@ -151,7 +149,7 @@ class SchoolInfo extends React.Component {
       <div>
         {label}
         <a onClick={this.handleFourDateStateChange.bind(this)}
-           style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+          style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
           <img className='four-door-icon margin-right' src={`/src/assets/images/four_door/skoller_${sImg}.png`} />
           <img className='four-door-icon' src={`/src/assets/images/four_door/diy_${dImg}.png`} />
         </a>
@@ -180,12 +178,11 @@ class SchoolInfo extends React.Component {
   * Render Semeter details
   */
   renderActiveSemester () {
-    const {period, school} = this.state
+    const {period} = this.state
     return (
       <SemesterDetails
         header="2. Active Semester"
         period={period}
-        school={school}
         onEdit={this.togglePeriodForm.bind(this)}
       />
     )
@@ -195,12 +192,11 @@ class SchoolInfo extends React.Component {
   * Render Semeter details
   */
   renderNextSemester () {
-    const {nextPeriod, school} = this.state
+    const {nextPeriod} = this.state
     return (
       <SemesterDetails
         header="Next Semester"
         period={nextPeriod}
-        school={school}
         onEdit={this.toggleNextPeriodForm.bind(this)}
       />
     )
@@ -349,7 +345,7 @@ class SchoolInfo extends React.Component {
         return error
       })
       const completedClassCount = classes.length - erroredClasses.length
-      this.setState({erroredClasses, completedClassCount, openClassModal: true })
+      this.setState({erroredClasses, completedClassCount, openClassModal: true})
     })
   }
 

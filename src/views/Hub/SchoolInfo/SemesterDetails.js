@@ -1,28 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {convertUTCDatetimeToDateString} from '../../../utilities/time'
 
 class SemesterDetails extends React.Component {
   renderSemesterTable () {
-    const {school, period} = this.props
+    const {period} = this.props
     return (
       <table className='school-info-table'>
         <tbody>
           <tr>
             <th>Semester Name:</th>
             <td>{period.name}</td>
-          </tr>
-          <tr>
-            <th>Enroll Date:</th>
-            <td>{period.enroll_date ? convertUTCDatetimeToDateString(period.enroll_date, school.timezone) : ''}</td>
-          </tr>
-          <tr>
-            <th>Start Date:</th>
-            <td>{period.start_date ? convertUTCDatetimeToDateString(period.start_date, school.timezone) : ''}</td>
-          </tr>
-          <tr>
-            <th>End Date:</th>
-            <td>{period.end_date ? convertUTCDatetimeToDateString(period.end_date, school.timezone) : ''}</td>
           </tr>
         </tbody>
       </table>
