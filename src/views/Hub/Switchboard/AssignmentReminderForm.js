@@ -37,11 +37,11 @@ class AssignmentReminderForm extends React.Component {
   * On submit post notification
   */
   onSubmit (event) {
-    console.log(this.state)
     event.preventDefault()
 
     if (this.props.validateForm(this.state.form, requiredFields)) {
       this.addReminderNotification(this.state.form)
+      this.setState(this.initializeState())
     }
   }
 
@@ -49,7 +49,7 @@ class AssignmentReminderForm extends React.Component {
   * Send notification.
   */
   addReminderNotification (form) {
-    actions.notifications.addReminderNotification(form).then(() => {
+    actions.notifications.addReminderNotification(form).then((reminder) => {
       this.props.onSubmit()
     }).catch(() => false)
   }

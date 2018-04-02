@@ -31,7 +31,9 @@ class Switchboard extends React.Component {
     actions.notifications.getNotificationLogs().then((logs) => {
       this.setState({logs})
     }).catch(() => false)
-    this.getReminders()
+    actions.notifications.getAssignmentReminders().then((reminders) => {
+      this.setState({reminders})
+    }).catch(() => false)
     actions.settings.getAutoUpdateInfo().then((autoUpdateData) => {
       this.setState({autoUpdateData, loading: false})
     }).catch(() => false)
@@ -51,8 +53,7 @@ class Switchboard extends React.Component {
     this.initializeComponent()
   }
 
-  getReminders () {
-    console.log("I'm here!")
+  onSubmitReminder () {
     actions.notifications.getAssignmentReminders().then((reminders) => {
       this.setState({reminders})
     }).catch(() => false)
@@ -155,7 +156,7 @@ class Switchboard extends React.Component {
               />
             }
             <AssignmentReminderForm
-              onSubmit={() => this.getReminders.bind(this)}
+              onSubmit={this.onSubmitReminder.bind(this)}
             />
           </div>
         </div>
