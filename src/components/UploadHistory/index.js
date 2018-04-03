@@ -4,8 +4,8 @@ import FileUpload from '../FileUpload'
 
 class UploadHistory extends React.Component {
   renderHistory () {
-    const {files,unsavedDocuments} = this.props
-    if(files && files.length > 0){
+    const {files, unsavedDocuments} = this.props
+    if (files && files.length > 0) {
       return files.map((file, index) => {
         return (
           <a
@@ -16,12 +16,12 @@ class UploadHistory extends React.Component {
           >{file.name}</a>
         )
       })
-    }else if(unsavedDocuments && unsavedDocuments.length > 0){
+    } else if (unsavedDocuments && unsavedDocuments.length > 0) {
       return unsavedDocuments.map((file, index) => {
         return (
           <div key={index}>
-            <div style={{display:'inline-block', marginRight: '5px'}}>{file.name}</div>
-            <button onClick={() => {this.props.onDeleteDocument(index)}} className='fa fa-trash cn-red'></button>
+            <div style={{display: 'inline-block', marginRight: '5px'}}>{file.name}</div>
+            <button onClick={() => { this.props.onDeleteDocument(index) }} className='fa fa-trash cn-red'></button>
           </div>
         )
       })
