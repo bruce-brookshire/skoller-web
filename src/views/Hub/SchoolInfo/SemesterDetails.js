@@ -39,8 +39,6 @@ class SemesterDetails extends React.Component {
   * @param [File] file. File to be uploaded.
   */
   onUploadClasses (id, file) {
-    console.log(id)
-    console.log(file)
     actions.documents.uploadClassCsv(id, file).then((classes) => {
       const erroredClasses = classes.filter(cl => {
         let error = cl.errors
