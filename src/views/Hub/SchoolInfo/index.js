@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import FlexTable from '../../../components/FlexTable'
-import ClassUploadInfo from './ClassUploadInfo'
 import FOSUploadInfo from './FOSUploadInfo'
 import Modal from '../../../components/Modal'
 import PeriodForm from './PeriodForm'
@@ -34,20 +33,19 @@ class SchoolInfo extends React.Component {
   }
 
   componentWillMount () {
-    this.initializeComponent();
+    this.initializeComponent()
   }
 
   componentWillUnmount () {
-    navbarStore.title = ""
+    navbarStore.title = ''
   }
 
-  initializeComponent() {
+  initializeComponent () {
     const {state} = this.props.location
     if (state && state.school) {
       actions.schools.getSchoolById(state.school).then(school => {
-        const period = school.class_periods.find(period => period.is_active)
-        const nextPeriod = school.class_periods.find(period => new Date(period.enroll_date) <= new Date() && !period.is_active && new Date(period.end_date) >= new Date())
-        this.setState({school, period, nextPeriod})
+        const periods = school.class_periods
+        this.setState({school, periods})
       })
     }
   }
@@ -55,28 +53,23 @@ class SchoolInfo extends React.Component {
   initializeState () {
     const {state} = this.props.location
     navbarStore.cl = null
-    navbarStore.title = "School Info"
+    navbarStore.title = 'School Info'
     return {
-      completedClassCount: 0,
       completedFOSCount: 0,
-      erroredClasses: [],
       erroredFOS: [],
-      openClassModal: false,
       openFOSModal: false,
       openDetailsForm: false,
       openPeriodForm: false,
-      openNextPeriodForm: false,
       school: (state && state.school) || null,
-      period: null
+      periods: []
     }
   }
 
-
-  handleFourDateStateChange() {
+  handleFourDateStateChange () {
     const values = Object.values(this.fourDoorStatesDef)
     const states = Object.keys(this.fourDoorStatesDef)
     const curState = this.getFourDoorState()
-    const currIdx = states.findIndex( s => s === curState )
+    const currIdx = states.findIndex(s => s === curState)
     const nextIdx = currIdx + 1 > states.length - 1 ? 0 : currIdx + 1
 
     const { school } = this.state
@@ -91,20 +84,20 @@ class SchoolInfo extends React.Component {
     })
   }
 
-  getFourDoorState() {
+  getFourDoorState () {
     if (this.state && !this.state.school) return null
 
     const statesDef = this.fourDoorStatesDef
     const { is_diy_enabled, is_diy_preferred, is_auto_syllabus } = this.state.school
     const curState = [is_diy_enabled, is_diy_preferred, is_auto_syllabus]
     const comp = JSON.stringify(curState)
-    const curIdx = Object.values(statesDef).findIndex( (b)=> comp === JSON.stringify(b) )
+    const curIdx = Object.values(statesDef).findIndex((b) => comp === JSON.stringify(b))
 
     return Object.keys(statesDef)[curIdx]
   }
 
-  handleChatStateChange() {
-    if (this.state.school){
+  handleChatStateChange () {
+    if (this.state.school) {
       const {id, is_chat_enabled} = this.state.school
       actions.schools.updateSchool({id: id, is_chat_enabled: !is_chat_enabled}).then((school) => {
         this.setState({school: school})
@@ -125,28 +118,27 @@ class SchoolInfo extends React.Component {
     )
   }
 
-
-  renderFourDoorSelect() {
+  renderFourDoorSelect () {
     let sImg = 'default'
     let dImg = 'default'
     let label = 'Normal'
 
-    switch(this.getFourDoorState()) {
+    switch (this.getFourDoorState()) {
       case 'diy_preferred_sw':
         sImg = 'default'
         dImg = 'on'
-        label='DIY Preferred'
+        label = 'DIY Preferred'
 
         break
       case 'sw':
         sImg = 'on'
         dImg = 'off'
-        label='Skoller only'
+        label = 'Skoller only'
         break
       case 'diy':
         sImg = 'off'
         dImg = 'on'
-        label='DIY only'
+        label = 'DIY only'
         break
     }
 
@@ -154,7 +146,7 @@ class SchoolInfo extends React.Component {
       <div>
         {label}
         <a onClick={this.handleFourDateStateChange.bind(this)}
-           style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+          style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
           <img className='four-door-icon margin-right' src={`/src/assets/images/four_door/skoller_${sImg}.png`} />
           <img className='four-door-icon' src={`/src/assets/images/four_door/diy_${dImg}.png`} />
         </a>
@@ -182,29 +174,13 @@ class SchoolInfo extends React.Component {
   /*
   * Render Semeter details
   */
-  renderActiveSemester () {
-    const {period, school} = this.state
+  renderPeriod () {
+    const {periods} = this.state
     return (
       <SemesterDetails
-        header="2. Active Semester"
-        period={period}
-        school={school}
+        header="2. Semesters"
+        periods={periods}
         onEdit={this.togglePeriodForm.bind(this)}
-      />
-    )
-  }
-
-  /*
-  * Render Semeter details
-  */
-  renderNextSemester () {
-    const {nextPeriod, school} = this.state
-    return (
-      <SemesterDetails
-        header="Next Semester"
-        period={nextPeriod}
-        school={school}
-        onEdit={this.toggleNextPeriodForm.bind(this)}
       />
     )
   }
@@ -281,21 +257,12 @@ class SchoolInfo extends React.Component {
         open={this.state.openPeriodForm}
         onClose={this.togglePeriodForm.bind(this)}
       >
-        <PeriodForm school={this.state.school} period={this.state.period} onSubmit={this.onPeriodSumbit.bind(this)} onClose={this.togglePeriodForm.bind(this)} />
-      </Modal>
-    )
-  }
-
-  /*
-  * Render semester details form
-  */
-  renderNextPeriodFormModal () {
-    return (
-      <Modal
-        open={this.state.openNextPeriodForm}
-        onClose={this.toggleNextPeriodForm.bind(this)}
-      >
-        <PeriodForm school={this.state.school} period={this.state.nextPeriod} onSubmit={this.onPeriodSumbit.bind(this)} onClose={this.toggleNextPeriodForm.bind(this)} />
+        <PeriodForm
+          school={this.state.school}
+          periods={this.state.periods}
+          onSubmit={this.onPeriodSumbit.bind(this)}
+          onClose={this.togglePeriodForm.bind(this)}
+        />
       </Modal>
     )
   }
@@ -310,9 +277,8 @@ class SchoolInfo extends React.Component {
   /*
   * Call back on school period form submission.
   */
-  onPeriodSumbit () {
+  onPeriodSumbit (period) {
     this.setState({openPeriodForm: false})
-    this.setState({openNextPeriodForm: false})
     this.initializeComponent()
   }
 
@@ -333,26 +299,6 @@ class SchoolInfo extends React.Component {
       })
       const completedFOSCount = fos.length - erroredFOS.length
       this.setState({ erroredFOS, completedFOSCount, openFOSModal: true })
-    })
-  }
-
-  /*
-  * On upload class csv, show results of upload.
-  *
-  * @param [File] file. File to be uploaded.
-  */
-  onUploadClasses (file) {
-    actions.documents.uploadClassCsv(this.state.period.id, file).then((classes) => {
-      const erroredClasses = classes.filter(cl => {
-        let error = cl.errors
-        if (error && cl.errors.class) {
-          error = cl.errors.class.findIndex(e =>
-            e.toLowerCase() === 'has already been taken') === -1
-        }
-        return error
-      })
-      const completedClassCount = classes.length - erroredClasses.length
-      this.setState({erroredClasses, completedClassCount, openClassModal: true })
     })
   }
 
@@ -383,39 +329,6 @@ class SchoolInfo extends React.Component {
   }
 
   /*
-  * Render the class upload results modal.
-  */
-  renderClassUploadModal () {
-    const {openClassModal, erroredClasses, completedClassCount} = this.state
-    return (
-      <Modal
-        open={openClassModal}
-        onClose={this.toggleClassUploadModal.bind(this)}
-      >
-        <div>
-          <ClassUploadInfo
-            erroredClasses={erroredClasses}
-            completedClassCount={completedClassCount}
-          />
-          <div className='row'>
-            <button
-              className='button-invert full-width margin-top margin-bottom'
-              onClick={this.toggleClassUploadModal.bind(this)}
-            > Close </button>
-          </div>
-        </div>
-      </Modal>
-    )
-  }
-
-  /*
-  * Toggle the class upload results modal.
-  */
-  toggleClassUploadModal () {
-    this.setState({openClassModal: !this.state.openClassModal})
-  }
-
-  /*
   * Toggle schools details modal.
   */
   toggleDetailsForm () {
@@ -427,13 +340,6 @@ class SchoolInfo extends React.Component {
   */
   togglePeriodForm () {
     this.setState({openPeriodForm: !this.state.openPeriodForm})
-  }
-
-  /*
-  * Toggle schools future period modal.
-  */
-  toggleNextPeriodForm () {
-    this.setState({openNextPeriodForm: !this.state.openNextPeriodForm})
   }
 
   /*
@@ -450,13 +356,7 @@ class SchoolInfo extends React.Component {
           <div className='col-xs-12 col-md-6 margin-top'>
             {this.renderSchoolDetails()}
           </div>
-          <div className='col-xs-12 col-md-3 margin-top'>
-            {this.renderActiveSemester()}
-          </div>
-          <div className='col-xs-12 col-md-3 margin-top'>
-            {this.renderNextSemester()}
-          </div>
-          <div className='col-xs-12 col-md-3 margin-top'>
+          <div className='col-xs-12 col-md-6 margin-top'>
             <h3>3. Import fields of study</h3>
             <UploadHistory
               allow='text/csv'
@@ -467,16 +367,8 @@ class SchoolInfo extends React.Component {
               title='Fields of Study'
             />
           </div>
-          <div className='col-xs-12 col-md-3 margin-top'>
-            <h3>4. Import classes</h3>
-            <UploadHistory
-              allow='text/csv'
-              disabled={false}
-              files={[]}
-              info='Upload classes csv.'
-              onUpload={(file) => { this.onUploadClasses(file) }}
-              title='Classes'
-            />
+          <div className='col-xs-12 col-md-6 margin-top'>
+            {this.renderPeriod()}
           </div>
           <div className='col-xs-12 col-md-3 margin-top'>
             <h3>5. Class Settings</h3>
@@ -485,8 +377,6 @@ class SchoolInfo extends React.Component {
         </div>
         {this.renderDetailsFormModal()}
         {this.renderPeriodFormModal()}
-        {this.renderNextPeriodFormModal()}
-        {this.renderClassUploadModal()}
         {this.renderFOSUploadModal()}
       </div>
     )

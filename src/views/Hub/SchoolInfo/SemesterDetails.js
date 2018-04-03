@@ -1,46 +1,148 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {convertUTCDatetimeToDateString} from '../../../utilities/time'
+import Grid from '../../../components/Grid'
+import {convertUTCDatetimeToDateTimeString} from '../../../utilities/time'
+import UploadHistory from '../../../components/UploadHistory'
+import actions from '../../../actions'
+import ClassUploadInfo from './ClassUploadInfo'
+import Modal from '../../../components/Modal'
+
+const headers = [
+  {
+    field: 'name',
+    display: 'Name'
+  },
+  {
+    field: 'inserted_at',
+    display: 'Created'
+  }
+]
 
 class SemesterDetails extends React.Component {
+  constructor (props) {
+    super(props)
+
+    this.state = this.initializeState()
+  }
+
+  initializeState () {
+    return {
+      erroredClasses: [],
+      completedClassCount: 0,
+      openClassModal: false
+    }
+  }
+
+  /*
+  * On upload class csv, show results of upload.
+  *
+  * @param [File] file. File to be uploaded.
+  */
+  onUploadClasses (id, file) {
+    actions.documents.uploadClassCsv(id, file).then((classes) => {
+      const erroredClasses = classes.filter(cl => {
+        let error = cl.errors
+        if (error && cl.errors.class) {
+          error = cl.errors.class.findIndex(e =>
+            e.toLowerCase() === 'has already been taken') === -1
+        }
+        return error
+      })
+      const completedClassCount = classes.length - erroredClasses.length
+      this.setState({erroredClasses, completedClassCount, openClassModal: true})
+    })
+  }
+
+  mapRow (item, index) {
+    const {id, name, inserted_at} = item
+    const row = {
+      id: id,
+      name: name || '',
+      inserted_at: inserted_at
+        ? convertUTCDatetimeToDateTimeString(inserted_at, 'CST') : '',
+      component: <div className='col-xs-12 col-md-6 margin-top'>
+        <h3>Import classes</h3>
+        <UploadHistory
+          allow='text/csv'
+          disabled={false}
+          files={[]}
+          info='Upload classes csv.'
+          onUpload={(file) => { this.onUploadClasses(id, file) }}
+          title='Classes'
+        />
+      </div>
+    }
+    return row
+  }
+
+  getRows () {
+    const {periods} = this.props
+    return periods.sort((a, b) => {
+      return a.inserted_at < b.inserted_at ? 1 : -1
+    }).map((item, index) =>
+      this.mapRow(item, index)
+    )
+  }
+
   renderSemesterTable () {
-    const {school, period} = this.props
     return (
-      <table className='school-info-table'>
-        <tbody>
-          <tr>
-            <th>Semester Name:</th>
-            <td>{period.name}</td>
-          </tr>
-          <tr>
-            <th>Enroll Date:</th>
-            <td>{period.enroll_date ? convertUTCDatetimeToDateString(period.enroll_date, school.timezone) : ''}</td>
-          </tr>
-          <tr>
-            <th>Start Date:</th>
-            <td>{period.start_date ? convertUTCDatetimeToDateString(period.start_date, school.timezone) : ''}</td>
-          </tr>
-          <tr>
-            <th>End Date:</th>
-            <td>{period.end_date ? convertUTCDatetimeToDateString(period.end_date, school.timezone) : ''}</td>
-          </tr>
-        </tbody>
-      </table>
+      <Grid
+        className='striped'
+        headers={headers}
+        rows={this.getRows()}
+        disabled={true}
+        canDelete={false}
+        canSelect={false}
+        emptyMessage={'No semesters yet.'} />
+    )
+  }
+
+  /*
+  * Toggle the class upload results modal.
+  */
+  toggleClassUploadModal () {
+    this.setState({openClassModal: !this.state.openClassModal})
+  }
+
+  /*
+  * Render the class upload results modal.
+  */
+  renderClassUploadModal () {
+    const {openClassModal, erroredClasses, completedClassCount} = this.state
+    return (
+      <Modal
+        open={openClassModal}
+        onClose={this.toggleClassUploadModal.bind(this)}
+      >
+        <div>
+          <ClassUploadInfo
+            erroredClasses={erroredClasses}
+            completedClassCount={completedClassCount}
+          />
+          <div className='row'>
+            <button
+              className='button-invert full-width margin-top margin-bottom'
+              onClick={this.toggleClassUploadModal.bind(this)}
+            > Close </button>
+          </div>
+        </div>
+      </Modal>
     )
   }
 
   render () {
-    const {period, onEdit} = this.props
+    const {periods, onEdit, header} = this.props
     return (
       <div>
-        <div className='edit-header'>
+        {header ? <div className='edit-header'>
           <h3>{this.props.header}</h3>
-          <a onClick={() => onEdit()}>Edit</a>
-        </div>
+          {onEdit ? <a onClick={() => onEdit()}>Edit</a> : ''}
+        </div> : ''}
 
-        {period ? this.renderSemesterTable()
-          : <a onClick={() => onEdit()}>Add details</a>
+        {periods ? this.renderSemesterTable()
+          : onEdit ? <a onClick={() => onEdit()}>Add details</a> : ''
         }
+        {this.renderClassUploadModal()}
       </div>
     )
   }
@@ -49,7 +151,7 @@ class SemesterDetails extends React.Component {
 SemesterDetails.propTypes = {
   onEdit: PropTypes.func,
   school: PropTypes.object,
-  period: PropTypes.object,
+  periods: PropTypes.array,
   header: PropTypes.string
 }
 
