@@ -15,6 +15,14 @@ const headers = [
   {
     field: 'inserted_at',
     display: 'Created'
+  },
+  {
+    field: 'student_count',
+    display: 'Students'
+  },
+  {
+    field: 'class_count',
+    display: 'Classes'
   }
 ]
 
@@ -54,12 +62,14 @@ class SemesterDetails extends React.Component {
   }
 
   mapRow (item, index) {
-    const {id, name, inserted_at} = item
+    const {id, name, inserted_at, student_count, class_count} = item
     const row = {
       id: id,
       name: name || '',
       inserted_at: inserted_at
         ? convertUTCDatetimeToDateTimeString(inserted_at, 'CST') : '',
+      student_count: student_count || 0,
+      class_count: class_count || 0,
       component: <div className='col-xs-12 col-md-6 margin-top'>
         <h3>Import classes</h3>
         <UploadHistory
