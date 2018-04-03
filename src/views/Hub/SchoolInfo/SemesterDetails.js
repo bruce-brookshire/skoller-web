@@ -58,6 +58,7 @@ class SemesterDetails extends React.Component {
       })
       const completedClassCount = classes.length - erroredClasses.length
       this.setState({erroredClasses, completedClassCount, openClassModal: true})
+      this.props.onUpload()
     })
   }
 
@@ -70,7 +71,7 @@ class SemesterDetails extends React.Component {
         ? convertUTCDatetimeToDateTimeString(inserted_at, 'CST') : '',
       student_count: student_count || 0,
       class_count: class_count || 0,
-      component: <div className='col-xs-12 col-md-6 margin-top'>
+      component: this.props.onUpload ? <div className='col-xs-12 col-md-6 margin-top'>
         <h3>Import classes</h3>
         <UploadHistory
           allow='text/csv'
@@ -80,7 +81,7 @@ class SemesterDetails extends React.Component {
           onUpload={(file) => { this.onUploadClasses(id, file) }}
           title='Classes'
         />
-      </div>
+      </div> : ''
     }
     return row
   }
@@ -162,7 +163,8 @@ SemesterDetails.propTypes = {
   onEdit: PropTypes.func,
   school: PropTypes.object,
   periods: PropTypes.array,
-  header: PropTypes.string
+  header: PropTypes.string,
+  onUpload: PropTypes.func
 }
 
 export default SemesterDetails
