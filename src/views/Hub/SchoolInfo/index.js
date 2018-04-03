@@ -181,6 +181,7 @@ class SchoolInfo extends React.Component {
         header="2. Semesters"
         periods={periods}
         onEdit={this.togglePeriodForm.bind(this)}
+        onUpload={this.initializeComponent.bind(this)}
       />
     )
   }
