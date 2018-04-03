@@ -134,9 +134,9 @@ class Switchboard extends React.Component {
     return (
       <div className='auto-update margin-top'>
         <h3 className='cn-blue'>Auto Updates</h3>
-        <p>Enrollment is {this.findSetting('auto_upd_enroll_thresh')} or more</p>
-        <p>{Math.round(this.findSetting('auto_upd_response_thresh') * 100)}% or more responded to the update</p>
-        <p>{Math.round(this.findSetting('auto_upd_approval_thresh') * 100)}% or more responses were copies</p>
+        <p>Enrollment is {this.findAutoUpdateSetting('auto_upd_enroll_thresh')} or more</p>
+        <p>{Math.round(this.findAutoUpdateSetting('auto_upd_response_thresh') * 100)}% or more responded to the update</p>
+        <p>{Math.round(this.findAutoUpdateSetting('auto_upd_approval_thresh') * 100)}% or more responses were copies</p>
         <a className="cn-blue" onClick={() => this.setState({openAutoUpdateModal: true})}>See details</a>
       </div>
     )
