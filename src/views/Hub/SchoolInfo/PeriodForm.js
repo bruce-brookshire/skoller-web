@@ -1,18 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
-import {InputField, SelectField} from '../../../components/Form'
+import {InputField} from '../../../components/Form'
 import actions from '../../../actions'
-import {convertUTCDatetimeToDateString, convertLocalDateToUTC} from '../../../utilities/time'
+import {convertLocalDateToUTC} from '../../../utilities/time'
+import SemesterDetails from './SemesterDetails'
 
 const requiredFields = {
   'name': {
-    type: 'required'
-  },
-  'start_date': {
-    type: 'required'
-  },
-  'end_date': {
     type: 'required'
   }
 }
@@ -43,15 +38,11 @@ class PeriodForm extends React.Component {
   */
   initializeFormData (data) {
     let formData = data || {}
-    const {id, name, start_date, end_date, enroll_date} = formData
-    const {school} = this.props
+    const {id, name} = formData
 
     return ({
       id: id || '',
-      name: name || '',
-      enroll_date: enroll_date ? convertUTCDatetimeToDateString(enroll_date, school.timezone) : '',
-      start_date: start_date ? convertUTCDatetimeToDateString(start_date, school.timezone) : '',
-      end_date: end_date ? convertUTCDatetimeToDateString(end_date, school.timezone) : ''
+      name: name || ''
     })
   }
 
@@ -61,21 +52,9 @@ class PeriodForm extends React.Component {
   */
   onSubmit () {
     if (this.props.validateForm(this.state.form, requiredFields)) {
-      const form = this.mapForm()
+      const {form} = this.state
       !form.id ? this.onCreatePeriod(form) : this.onUpdatePeriod(form)
     }
-  }
-
-  /*
-  * Map form.
-  */
-  mapForm () {
-    const {school} = this.props
-    let form = {...this.state.form}
-    form.enroll_date = convertLocalDateToUTC(this.state.form.enroll_date, school.timezone)
-    form.start_date = convertLocalDateToUTC(this.state.form.start_date, school.timezone)
-    form.end_date = convertLocalDateToUTC(this.state.form.end_date, school.timezone)
-    return form
   }
 
   /*
@@ -98,62 +77,38 @@ class PeriodForm extends React.Component {
 
   render () {
     const {form} = this.state
-    const {formErrors, updateProperty} = this.props
+    const {formErrors, updateProperty, period} = this.props
 
     return (
       <div>
         <div className='margin-top'>
           <div className='row'>
             <div className='col-xs-12'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.name}
-                label="Period name"
-                name="name"
-                onChange={updateProperty}
-                placeholder="Period name"
-                value={form.name}
-              />
-            </div>
-            <div className='col-xs-12'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.enroll_date}
-                label="Enroll date"
-                name="enroll_date"
-                onChange={updateProperty}
-                placeholder="Enroll date"
-                type='date'
-                value={form.enroll_date}
-              />
-            </div>
-            <div className='col-xs-12'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.start_date}
-                label="Start date"
-                name="start_date"
-                onChange={updateProperty}
-                placeholder="Start date"
-                type='date'
-                value={form.start_date}
-              />
-            </div>
-            <div className='col-xs-12'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.end_date}
-                label="End date"
-                name="end_date"
-                onChange={updateProperty}
-                placeholder="End date"
-                type='date'
-                value={form.end_date}
+              <SemesterDetails
+                period={period}
               />
             </div>
           </div>
-          <button className='button full-width margin-top' onClick={this.onSubmit.bind(this)}>Submit period</button>
-          <button className='button-invert full-width margin-top margin-bottom' onClick={() => this.props.onClose()}>Close</button>
+          <form onSubmit={this.onSubmit.bind(this)}>
+            <div className='row align-center justify-center margin-top'>
+              <div className='col-xs-12 col-md-8'>
+                <InputField
+                  error={formErrors.name}
+                  name="name"
+                  onChange={updateProperty}
+                  placeholder="Semester name"
+                  value={form.name}
+                />
+              </div>
+              <div className='col-xs-12 col-md-4'>
+                <button
+                  className={`button full-width`}
+                  type="submit"
+                >Add</button>
+              </div>
+            </div>
+          </form>
+          <button className='button-invert full-width margin-top' onClick={() => this.props.onClose()}>Close</button>
         </div>
       </div>
     )
@@ -164,7 +119,10 @@ PeriodForm.propTypes = {
   formErrors: PropTypes.object,
   school: PropTypes.object,
   updateProperty: PropTypes.func,
-  validateForm: PropTypes.func
+  validateForm: PropTypes.func,
+  onClose: PropTypes.func,
+  onSubmit: PropTypes.func,
+  period: PropTypes.array
 }
 
 export default ValidateForm(Form(PeriodForm, 'form'))

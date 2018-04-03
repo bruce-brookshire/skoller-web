@@ -45,9 +45,8 @@ class SchoolInfo extends React.Component {
     const {state} = this.props.location
     if (state && state.school) {
       actions.schools.getSchoolById(state.school).then(school => {
-        const period = school.class_periods.find(period => period.is_active)
-        const nextPeriod = school.class_periods.find(period => new Date(period.enroll_date) <= new Date() && !period.is_active && new Date(period.end_date) >= new Date())
-        this.setState({school, period, nextPeriod})
+        const period = school.class_periods
+        this.setState({school, period})
       })
     }
   }
@@ -65,7 +64,6 @@ class SchoolInfo extends React.Component {
       openFOSModal: false,
       openDetailsForm: false,
       openPeriodForm: false,
-      openNextPeriodForm: false,
       school: (state && state.school) || null,
       period: null
     }
@@ -102,7 +100,7 @@ class SchoolInfo extends React.Component {
     return Object.keys(statesDef)[curIdx]
   }
 
-  handleChatStateChange() {
+  handleChatStateChange () {
     const {id, is_chat_enabled} = this.state.school
     actions.schools.updateSchool({id: id, is_chat_enabled: !is_chat_enabled}).then((school) => {
       this.setState({school: school})
@@ -177,27 +175,13 @@ class SchoolInfo extends React.Component {
   /*
   * Render Semeter details
   */
-  renderActiveSemester () {
+  renderPeriod () {
     const {period} = this.state
     return (
       <SemesterDetails
-        header="2. Active Semester"
+        header="2. Semesters"
         period={period}
         onEdit={this.togglePeriodForm.bind(this)}
-      />
-    )
-  }
-
-  /*
-  * Render Semeter details
-  */
-  renderNextSemester () {
-    const {nextPeriod} = this.state
-    return (
-      <SemesterDetails
-        header="Next Semester"
-        period={nextPeriod}
-        onEdit={this.toggleNextPeriodForm.bind(this)}
       />
     )
   }
@@ -280,20 +264,6 @@ class SchoolInfo extends React.Component {
   }
 
   /*
-  * Render semester details form
-  */
-  renderNextPeriodFormModal () {
-    return (
-      <Modal
-        open={this.state.openNextPeriodForm}
-        onClose={this.toggleNextPeriodForm.bind(this)}
-      >
-        <PeriodForm school={this.state.school} period={this.state.nextPeriod} onSubmit={this.onPeriodSumbit.bind(this)} onClose={this.toggleNextPeriodForm.bind(this)} />
-      </Modal>
-    )
-  }
-
-  /*
   * Call back on school detail form submission.
   */
   onDetailsSumbit (school) {
@@ -305,7 +275,6 @@ class SchoolInfo extends React.Component {
   */
   onPeriodSumbit () {
     this.setState({openPeriodForm: false})
-    this.setState({openNextPeriodForm: false})
     this.initializeComponent()
   }
 
@@ -423,13 +392,6 @@ class SchoolInfo extends React.Component {
   }
 
   /*
-  * Toggle schools future period modal.
-  */
-  toggleNextPeriodForm () {
-    this.setState({openNextPeriodForm: !this.state.openNextPeriodForm})
-  }
-
-  /*
   * Toggle fos modal.
   */
   toggleFOSUploadModal () {
@@ -443,11 +405,8 @@ class SchoolInfo extends React.Component {
           <div className='col-xs-12 col-md-6 margin-top'>
             {this.renderSchoolDetails()}
           </div>
-          <div className='col-xs-12 col-md-3 margin-top'>
-            {this.renderActiveSemester()}
-          </div>
-          <div className='col-xs-12 col-md-3 margin-top'>
-            {this.renderNextSemester()}
+          <div className='col-xs-12 col-md-6 margin-top'>
+            {this.renderPeriod()}
           </div>
           <div className='col-xs-12 col-md-3 margin-top'>
             <h3>3. Import fields of study</h3>
@@ -478,7 +437,6 @@ class SchoolInfo extends React.Component {
         </div>
         {this.renderDetailsFormModal()}
         {this.renderPeriodFormModal()}
-        {this.renderNextPeriodFormModal()}
         {this.renderClassUploadModal()}
         {this.renderFOSUploadModal()}
       </div>
