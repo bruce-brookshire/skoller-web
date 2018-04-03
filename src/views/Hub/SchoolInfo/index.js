@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import FlexTable from '../../../components/FlexTable'
-import ClassUploadInfo from './ClassUploadInfo'
 import FOSUploadInfo from './FOSUploadInfo'
 import Modal from '../../../components/Modal'
 import PeriodForm from './PeriodForm'
@@ -56,11 +55,8 @@ class SchoolInfo extends React.Component {
     navbarStore.cl = null
     navbarStore.title = 'School Info'
     return {
-      completedClassCount: 0,
       completedFOSCount: 0,
-      erroredClasses: [],
       erroredFOS: [],
-      openClassModal: false,
       openFOSModal: false,
       openDetailsForm: false,
       openPeriodForm: false,
@@ -304,26 +300,6 @@ class SchoolInfo extends React.Component {
   }
 
   /*
-  * On upload class csv, show results of upload.
-  *
-  * @param [File] file. File to be uploaded.
-  */
-  onUploadClasses (file) {
-    actions.documents.uploadClassCsv(this.state.period.id, file).then((classes) => {
-      const erroredClasses = classes.filter(cl => {
-        let error = cl.errors
-        if (error && cl.errors.class) {
-          error = cl.errors.class.findIndex(e =>
-            e.toLowerCase() === 'has already been taken') === -1
-        }
-        return error
-      })
-      const completedClassCount = classes.length - erroredClasses.length
-      this.setState({erroredClasses, completedClassCount, openClassModal: true})
-    })
-  }
-
-  /*
   * Render the fos upload modal
   */
   renderFOSUploadModal () {
@@ -347,39 +323,6 @@ class SchoolInfo extends React.Component {
         </div>
       </Modal>
     )
-  }
-
-  /*
-  * Render the class upload results modal.
-  */
-  renderClassUploadModal () {
-    const {openClassModal, erroredClasses, completedClassCount} = this.state
-    return (
-      <Modal
-        open={openClassModal}
-        onClose={this.toggleClassUploadModal.bind(this)}
-      >
-        <div>
-          <ClassUploadInfo
-            erroredClasses={erroredClasses}
-            completedClassCount={completedClassCount}
-          />
-          <div className='row'>
-            <button
-              className='button-invert full-width margin-top margin-bottom'
-              onClick={this.toggleClassUploadModal.bind(this)}
-            > Close </button>
-          </div>
-        </div>
-      </Modal>
-    )
-  }
-
-  /*
-  * Toggle the class upload results modal.
-  */
-  toggleClassUploadModal () {
-    this.setState({openClassModal: !this.state.openClassModal})
   }
 
   /*
@@ -411,9 +354,6 @@ class SchoolInfo extends React.Component {
             {this.renderSchoolDetails()}
           </div>
           <div className='col-xs-12 col-md-6 margin-top'>
-            {this.renderPeriod()}
-          </div>
-          <div className='col-xs-12 col-md-3 margin-top'>
             <h3>3. Import fields of study</h3>
             <UploadHistory
               allow='text/csv'
@@ -424,16 +364,8 @@ class SchoolInfo extends React.Component {
               title='Fields of Study'
             />
           </div>
-          <div className='col-xs-12 col-md-3 margin-top'>
-            <h3>4. Import classes</h3>
-            <UploadHistory
-              allow='text/csv'
-              disabled={false}
-              files={[]}
-              info='Upload classes csv.'
-              onUpload={(file) => { this.onUploadClasses(file) }}
-              title='Classes'
-            />
+          <div className='col-xs-12 col-md-6 margin-top'>
+            {this.renderPeriod()}
           </div>
           <div className='col-xs-12 col-md-3 margin-top'>
             <h3>5. Class Settings</h3>
@@ -442,7 +374,6 @@ class SchoolInfo extends React.Component {
         </div>
         {this.renderDetailsFormModal()}
         {this.renderPeriodFormModal()}
-        {this.renderClassUploadModal()}
         {this.renderFOSUploadModal()}
       </div>
     )
