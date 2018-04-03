@@ -45,8 +45,8 @@ class SchoolInfo extends React.Component {
     const {state} = this.props.location
     if (state && state.school) {
       actions.schools.getSchoolById(state.school).then(school => {
-        const period = school.class_periods
-        this.setState({school, period})
+        const periods = school.class_periods
+        this.setState({school, periods})
       })
     }
   }
@@ -65,7 +65,7 @@ class SchoolInfo extends React.Component {
       openDetailsForm: false,
       openPeriodForm: false,
       school: (state && state.school) || null,
-      period: null
+      periods: []
     }
   }
 
@@ -176,11 +176,11 @@ class SchoolInfo extends React.Component {
   * Render Semeter details
   */
   renderPeriod () {
-    const {period} = this.state
+    const {periods} = this.state
     return (
       <SemesterDetails
         header="2. Semesters"
-        period={period}
+        periods={periods}
         onEdit={this.togglePeriodForm.bind(this)}
       />
     )
@@ -258,7 +258,12 @@ class SchoolInfo extends React.Component {
         open={this.state.openPeriodForm}
         onClose={this.togglePeriodForm.bind(this)}
       >
-        <PeriodForm school={this.state.school} period={this.state.period} onSubmit={this.onPeriodSumbit.bind(this)} onClose={this.togglePeriodForm.bind(this)} />
+        <PeriodForm
+          school={this.state.school}
+          periods={this.state.periods}
+          onSubmit={this.onPeriodSumbit.bind(this)}
+          onClose={this.togglePeriodForm.bind(this)}
+        />
       </Modal>
     )
   }
@@ -273,7 +278,7 @@ class SchoolInfo extends React.Component {
   /*
   * Call back on school period form submission.
   */
-  onPeriodSumbit () {
+  onPeriodSumbit (period) {
     this.setState({openPeriodForm: false})
     this.initializeComponent()
   }

@@ -27,8 +27,8 @@ class SemesterDetails extends React.Component {
   }
 
   getRows () {
-    const {period} = this.props
-    return period.sort((a, b) => {
+    const {periods} = this.props
+    return periods.sort((a, b) => {
       return a.inserted_at < b.inserted_at ? 1 : -1
     }).map((item, index) =>
       this.mapRow(item, index)
@@ -49,7 +49,7 @@ class SemesterDetails extends React.Component {
   }
 
   render () {
-    const {period, onEdit, header} = this.props
+    const {periods, onEdit, header} = this.props
     return (
       <div>
         {header ? <div className='edit-header'>
@@ -57,7 +57,7 @@ class SemesterDetails extends React.Component {
           {onEdit ? <a onClick={() => onEdit()}>Edit</a> : ''}
         </div> : ''}
 
-        {period ? this.renderSemesterTable()
+        {periods ? this.renderSemesterTable()
           : onEdit ? <a onClick={() => onEdit()}>Add details</a> : ''
         }
       </div>
@@ -68,7 +68,7 @@ class SemesterDetails extends React.Component {
 SemesterDetails.propTypes = {
   onEdit: PropTypes.func,
   school: PropTypes.object,
-  period: PropTypes.array,
+  periods: PropTypes.array,
   header: PropTypes.string
 }
 
