@@ -1,11 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {InputField, CheckboxField} from '../../../components/Form'
+import {InputField, CheckboxField, SelectField} from '../../../components/Form'
 import {Form, ValidateForm} from 'react-form-library'
 import actions from '../../../actions'
 
 const requiredFields = {
   'message': {
+    type: 'required'
+  },
+  'assignment_reminder_notification_topic_id': {
     type: 'required'
   }
 }
@@ -21,6 +24,7 @@ class AssignmentReminderForm extends React.Component {
   */
   initializeState () {
     return {
+      topics: [],
       form: this.initializeFormData()
     }
   }
@@ -28,9 +32,15 @@ class AssignmentReminderForm extends React.Component {
   initializeFormData () {
     return {
       message: '',
-      is_today: false,
+      assignment_reminder_notification_topic_id: null,
       is_plural: false
     }
+  }
+
+  componentWillMount () {
+    actions.notifications.getAssignmentReminderTopics().then((topics) => {
+      this.setState({topics})
+    }).catch(() => false)
   }
 
   /*
@@ -72,13 +82,14 @@ class AssignmentReminderForm extends React.Component {
             />
           </div>
           <div className='col-xs-4 col-md-2'>
-            <CheckboxField
+            <SelectField
               containerClassName='margin-top'
-              error={formErrors.is_today}
-              label="Today?"
-              name="is_today"
+              error={formErrors.assignment_reminder_notification_topic_id}
+              placeholder="Tell me when?"
+              name="assignment_reminder_notification_topic_id"
               onChange={updateProperty}
-              value={form.is_today}
+              value={form.assignment_reminder_notification_topic_id}
+              options={this.state.topics}
             />
           </div>
           <div className='col-xs-4 col-md-2'>

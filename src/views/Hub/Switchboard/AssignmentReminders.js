@@ -12,20 +12,20 @@ const headers = [
     display: 'Plural?'
   },
   {
-    field: 'is_today',
-    display: 'Today?'
+    field: 'type',
+    display: 'Type'
   }
 ]
 
 class AssignmentReminders extends React.Component {
   mapRow (item, index) {
-    const {message, is_plural, is_today, id} = item
+    const {message, is_plural, topic, id} = item
 
     const row = {
       id: id,
       message: message,
       is_plural: is_plural ? 'Yes' : 'No',
-      is_today: is_today ? 'Yes' : 'No'
+      type: topic && topic.name ? topic.name : ''
     }
     return row
   }
