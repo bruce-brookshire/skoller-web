@@ -87,6 +87,24 @@ export function getAssignmentReminders () {
 }
 
 /*
+* Get Assignment reminder message topics
+*/
+export function getAssignmentReminderTopics () {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/reminder-messages/topics`, {
+    method: 'GET',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => parseResponse(response))
+    .catch(error => {
+      showSnackbar('Error getting messages. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
 * Delete an assignment
 */
 export function deleteAssignmentReminders (form) {
