@@ -77,7 +77,7 @@ class AssignmentReminderForm extends React.Component {
               error={formErrors.message}
               name="message"
               onChange={updateProperty}
-              placeholder="Custom message. Use [num] to insert assign number"
+              placeholder="Custom message. Use [num] to insert assign number and [days] for future reminders."
               value={form.message}
             />
           </div>
