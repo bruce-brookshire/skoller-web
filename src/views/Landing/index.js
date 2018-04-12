@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 import {browserHistory} from 'react-router'
 import {inject, observer} from 'mobx-react'
 
-import DocumentMeta from 'react-document-meta';
-import SmartBanner from 'react-smartbanner';
-import '../../../node_modules/react-smartbanner/src/styles/style.scss';
+import DocumentMeta from 'react-document-meta'
+import SmartBanner from 'react-smartbanner'
+import '../../../node_modules/react-smartbanner/src/styles/style.scss'
 
 import LoginForm from './LoginForm'
 import PromoSignup from './PromoSignup'
@@ -19,18 +19,16 @@ import PeopleTalking from './PeopleTalking'
 
 @inject('rootStore') @observer
 class Landing extends React.Component {
-
   render () {
-
     const meta = {
       title: 'Skoller',
       meta: {
         name: {
           'apple-itunes-app': 'app-id=1314782490'
-        },
+        }
       },
       extend: true
-    };
+    }
 
     return (
       <div className='cn-landing-container'>
@@ -45,32 +43,32 @@ class Landing extends React.Component {
         <PromoSignup rootStore={this.props.rootStore}/>
 
         {/* start of section 2 */}
-        <Purpose/>
+        {/* <Purpose/> */}
 
         {/* start of section 3 */}
-        <Process/>
+        {/* <Process/> */}
 
         {/* start of section 4 */}
-        <FeatureHighlights/>
+        {/* <FeatureHighlights/> */}
 
         {/* start of section 5 */}
-        <CommunityFeature/>
+        {/* <CommunityFeature/> */}
 
         {/* start of section 6 */}
-        <Availability/>
+        {/* <Availability/> */}
 
         {/* start of section 7 */}
-        <PeopleTalking/>
+        {/* <PeopleTalking/> */}
 
         {/* start of section 8 */}
-        <CallToAction/>
+        {/* <CallToAction/> */}
 
         <footer className="site-footer">
           <span className="copyright">
             Copyright &copy; Skoller, LLC {}. All rights reserved.
           </span>
           <span className="privacypolicy">
-            <a onClick={()=>{ browserHistory.push('/privacypolicy');window.scrollTo(0, 0); }}>Privacy policy.</a>
+            <a onClick={() => { browserHistory.push('/privacypolicy'); window.scrollTo(0, 0) }}>Privacy policy.</a>
           </span>
           <span className="support">
             Need help? <a href="mailto:support@skoller.com">Contact us.</a>

@@ -445,11 +445,12 @@ $h2-size-sm: 1.75em;
 
   .container-promo-signup {
     @include row;
-    @include landing-row;
     align-items: center;
     padding: 0 1rem;
     width: 95%;
+    display: hidden;
     @include breakpoint(medium) {
+      display: flex;
       max-width: 1440px;
     }
 
