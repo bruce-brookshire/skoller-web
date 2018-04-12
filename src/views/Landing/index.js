@@ -78,16 +78,16 @@ class Landing extends React.Component {
         <footer className="site-footer">
           <div className='footer-content'>
             <div className='footer-link'>
-              Become an ambassador
+              <a className='non-styled-link' href='https://docs.google.com/forms/d/1lgXeLjNEbrFeQ6YWJw-q-Ou6BKY8TSaOpGyUkAkNWKY/edit'>Become an ambassador</a>
             </div>
             <div className='footer-link'>
               What people are saying about us
             </div>
             <div className='footer-link'>
-              <a onClick={() => { browserHistory.push('/privacypolicy'); window.scrollTo(0, 0) }}>Privacy policy.</a>
+              <a className='non-styled-link' onClick={() => { browserHistory.push('/privacypolicy'); window.scrollTo(0, 0) }}>Privacy policy.</a>
             </div>
             <div className='footer-link'>
-              <a href="mailto:support@skoller.com">Contact us.</a>
+              <a className='non-styled-link' href="mailto:support@skoller.com">Contact us.</a>
             </div>
             <div className='footer-link'>
               Skoller, Inc. &copy; 2018
