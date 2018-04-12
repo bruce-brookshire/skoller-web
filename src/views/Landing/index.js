@@ -10,6 +10,7 @@ import '../../../node_modules/react-smartbanner/src/styles/style.scss'
 import LandingNav from '../components/LandingNav'
 import Signup from './Signup'
 import LandingMessage from './LandingMessage'
+import LandingFooter from '../components/LandingFooter'
 
 import Availability from './Availability'
 
@@ -50,25 +51,7 @@ class Landing extends React.Component {
         {/* start of section 7 */}
         {/* <PeopleTalking/> */}
 
-        <footer className="site-footer">
-          <div className='footer-content'>
-            <div className='footer-link'>
-              <a className='non-styled-link' href='https://docs.google.com/forms/d/1lgXeLjNEbrFeQ6YWJw-q-Ou6BKY8TSaOpGyUkAkNWKY/edit'>Become an ambassador</a>
-            </div>
-            <div className='footer-link'>
-              What people are saying about us
-            </div>
-            <div className='footer-link'>
-              <a className='non-styled-link' onClick={() => { browserHistory.push('/privacypolicy'); window.scrollTo(0, 0) }}>Privacy policy.</a>
-            </div>
-            <div className='footer-link'>
-              <a className='non-styled-link' href="mailto:support@skoller.com">Contact us.</a>
-            </div>
-            <div className='footer-link'>
-              Skoller, Inc. &copy; 2018
-            </div>
-          </div>
-        </footer>
+        <LandingFooter />
 
       </div>
     )

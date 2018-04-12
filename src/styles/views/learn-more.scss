@@ -61,6 +61,7 @@
 .cn-learn-more-container {
   overflow-x: hidden;
   height: 100%;
+  @include landing-nav-parent();
 
   .cn-learn-more-content {
     margin: 2rem auto;

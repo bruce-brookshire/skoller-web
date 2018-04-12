@@ -1,0 +1,49 @@
+@mixin landing-nav-parent {
+  padding-bottom: 300px;
+  position: relative;
+
+  @include breakpoint(medium) {
+    padding-bottom: 69px;
+  }
+}
+
+.cn-landing-footer {
+  background: $cn-color-white;
+  color: $cn-color-grey;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  font-size: 1em;
+  padding: 1rem;
+  text-align: center;
+  z-index: 1;
+  height: 300px;
+
+  @include breakpoint(medium) {
+    height: 69px;
+    text-align: left;
+  }
+
+  .footer-content {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+
+    @include breakpoint(medium) {
+      flex-direction: row;
+      width: 100%;
+      max-width: 1000px;
+      align-items: center;
+    }
+
+    .footer-link {
+      margin-top: 10px;
+      @include breakpoint(medium) {
+        margin: 0;
+      }
+    }
+  }
+}

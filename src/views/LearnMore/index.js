@@ -6,6 +6,7 @@ import Process from './Process'
 import FeatureHighlights from './FeatureHighlights'
 import CommunityFeature from './CommunityFeature'
 import CallToAction from './CallToAction'
+import LandingFooter from '../components/LandingFooter'
 
 @inject('rootStore') @observer
 class LearnMore extends React.Component {
@@ -23,6 +24,7 @@ class LearnMore extends React.Component {
         <FeatureHighlights/>
         <CommunityFeature/>
         <CallToAction/>
+        <LandingFooter />
       </div>
     )
   }
