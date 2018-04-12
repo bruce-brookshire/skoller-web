@@ -14,8 +14,6 @@ import LandingFooter from '../components/LandingFooter'
 
 import Availability from './Availability'
 
-import PeopleTalking from './PeopleTalking'
-
 @inject('rootStore') @observer
 class Landing extends React.Component {
   render () {
@@ -47,9 +45,6 @@ class Landing extends React.Component {
 
         {/* start of section 6 */}
         {/* <Availability/> */}
-
-        {/* start of section 7 */}
-        {/* <PeopleTalking/> */}
 
         <LandingFooter />
 

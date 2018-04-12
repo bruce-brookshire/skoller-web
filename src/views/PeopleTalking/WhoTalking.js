@@ -1,7 +1,7 @@
 import React from 'react'
 import HoverImage from '../../components/Image/HoverImage'
 
-class PeopleTalking extends React.Component {
+class WhoTalking extends React.Component {
 
   render () {
     const peopleList = [
@@ -25,9 +25,6 @@ class PeopleTalking extends React.Component {
     return (
       <div className='section-people-talking'>
         <div className="content">
-          <h2 className='section-header'>
-            What people are saying about us
-          </h2>
           <ul className="list">
             {peopleList.map((u, idx) => {
               return <li key={idx}><a href={u.url}><HoverImage className='people-talking-img' img={u.img} hoverImg={u.hoverImg}/></a></li>
@@ -38,4 +35,4 @@ class PeopleTalking extends React.Component {
     )
   }
 }
-export default PeopleTalking
+export default WhoTalking

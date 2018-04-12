@@ -17,66 +17,6 @@ $h2-size-sm: 36px;
   }
 }
 
-@mixin section-marketing {
-  padding: 4rem 0;
-
-  h2 { color: $cn-color-white; }
-
-  & > .content {
-    margin: 0 auto;
-    max-width: 1440px;
-    width: 100%;
-  }
-
-  .section-header {
-    line-height: 1.25;
-    margin-bottom: 2rem;
-    max-width: 1440px;
-    padding: 0 2rem;
-    text-align: center;
-    width: 100%;
-
-    .muted {
-      margin-left: .25em;
-      display: inline;
-      font-size: .85em;
-      font-weight: 300;
-      width: 100%;
-
-      @include breakpoint(medium) {
-        display: inline-block;
-        font-size: .6em;
-      }
-    }
-
-    @include breakpoint(large) {
-      text-align: left;
-      line-height: 1;
-      max-width: 1020px;
-    }
-  }
-}
-
-@mixin slant {
-  position: relative;
-  z-index: 1;
-  filter: drop-shadow(0 0 3px rgba(0, 0, 0, .3));
-
-  &::before {
-    background: inherit;
-    clip-path: polygon(100% 0, 0 100%, 100% 100%);
-    content: '';
-    display: block;
-    height: 4rem;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: .5px;
-    transform: translate(0, -100%);
-    z-index: -1;
-  }
-}
-
 @mixin section-header-alt {
   text-align: center;
   font-size: $h2-size-sm;
@@ -273,36 +213,6 @@ $h2-size-sm: 36px;
         @include breakpoint(medium) {
           font-size: 1.5em;
           margin: 1rem 0;
-        }
-      }
-    }
-  }
-
-  .section-people-talking {
-    @include section-marketing;
-    @include slant;
-    background: $cn-color-white;
-    text-align: center;
-    position: relative;
-
-    .section-header {
-      @include section-header-alt;
-      color: $cn-font-color;
-
-      @include breakpoint(large) {
-        margin-bottom: 2rem;
-      }
-    }
-
-    .list {
-      @include unstyled-list;
-      padding-top: $unit-space;
-
-      li {
-        margin-bottom: 2rem;
-
-        .people-talking-img {
-          width: 250px;
         }
       }
     }

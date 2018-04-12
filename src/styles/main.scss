@@ -48,7 +48,9 @@
 
 
 // Composed Views ------------------------
+@import 'views/mixins/landing.scss';
 @import 'views/analytics.scss';
+@import 'views/call-to-action.scss';
 @import 'views/class-approval.scss';
 @import 'views/diylanding.scss';
 @import 'views/faq.scss';
@@ -63,6 +65,7 @@
 @import 'views/learn-more.scss';
 @import 'views/myclasses.scss';
 @import 'views/onboarding.scss';
+@import 'views/people-talking.scss';
 @import 'views/privacy-policy.scss';
 @import 'views/school-info.scss';
 @import 'views/switchboard.scss';
