@@ -102,6 +102,28 @@ $h2-size-sm: 1.75em;
 
     .container-landing-message {
       flex-grow: 1;
+
+      .landing-message {
+        @include unstyled-list;
+
+        .message-break {
+          display: flex;
+          margin-left: 15px;
+        }
+
+        .message-row {
+          display: flex;
+          align-items: center;
+
+          .cn-person {
+            width: 50px;
+          }
+
+          .cn-matilda {
+            width: 69px;
+          }
+        }
+      }
     }
 
     .container-promo-signup {
