@@ -9,6 +9,7 @@ import '../../../node_modules/react-smartbanner/src/styles/style.scss'
 
 import LoginForm from './LoginForm'
 import PromoSignup from './PromoSignup'
+import LandingMessage from './LandingMessage'
 import Purpose from './Purpose'
 import Process from './Process'
 import FeatureHighlights from './FeatureHighlights'
@@ -41,7 +42,7 @@ class Landing extends React.Component {
 
         {/* start of section 1 */}
         <div className='cn-landing-content'>
-          <PromoSignup rootStore={this.props.rootStore}/>
+          <LandingMessage rootStore={this.props.rootStore}/>
           <PromoSignup rootStore={this.props.rootStore}/>
         </div>
 

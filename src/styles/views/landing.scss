@@ -114,6 +114,35 @@ $h2-size-sm: 1.75em;
         flex-grow: 1;
         max-width: 1440px;
       }
+
+      #sign-up-form {
+        background-color: $cn-color-white;
+        border-radius: 8px;
+        box-shadow: 0px 15px 35px 0px rgba(0, 0, 0, 0.07);
+        box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.1);
+        
+        .facebook-button {
+          @include button;
+          align-items: center;
+          background-color: white;
+          border: 1px solid #CCC;
+          display: flex;
+          justify-content: center;
+    
+          i {
+            color: #3b5998;
+            font-size: 1em;
+            margin-right: 0.5em;
+          }
+    
+          span {
+            font-size: .75em;
+            color: grey;
+          }
+        }
+    
+        .school-info { font-size: 11px; }
+      }
   
       // .video {
       //   @include fluid-width-embed;
@@ -154,38 +183,6 @@ $h2-size-sm: 1.75em;
       @include breakpoint(medium) {
         font-size: $h2-size;
         text-align: left;
-      }
-    }
-
-    #sign-up-form-container {
-
-      #sign-up-form {
-        background-color: $cn-color-white;
-        border-radius: 8px;
-        box-shadow: 0px 15px 35px 0px rgba(0, 0, 0, 0.07);
-        box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.1);
-        
-        .facebook-button {
-          @include button;
-          align-items: center;
-          background-color: white;
-          border: 1px solid #CCC;
-          display: flex;
-          justify-content: center;
-    
-          i {
-            color: #3b5998;
-            font-size: 1em;
-            margin-right: 0.5em;
-          }
-    
-          span {
-            font-size: .75em;
-            color: grey;
-          }
-        }
-    
-        .school-info { font-size: 11px; }
       }
     }
   }
