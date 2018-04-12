@@ -96,6 +96,7 @@ $h2-size-sm: 36px;
 // Styles ------------------------
 .cn-landing-container {
   overflow-x: hidden;
+  height: 100%;
 
   .cn-landing-content-wrapper{
     margin: 0 auto;
@@ -589,22 +590,34 @@ $h2-size-sm: 36px;
   .site-footer {
     background: $cn-color-white;
     color: $cn-color-grey;
-    display: flex;
-    flex-direction: column;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
     font-size: .75em;
     padding: .5rem 1rem .25rem;
-    position: relative;
     text-align: center;
     z-index: 1;
 
     @include breakpoint(medium) {
-      flex-direction: row;
+      
       font-size: 1em;
       text-align: left;
     }
 
-    .copyright { flex: 1; }
-    .privacypolicy { margin-right: 1rem; }
+    .footer-content {
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+
+      @include breakpoint(medium) {
+        flex-direction: row;
+        width: 100%;
+        max-width: 1000px;
+      }
+
+      .copyright { flex: 1; }
+      .privacypolicy { margin-right: 1rem; }
+    }
   }
 }
 
