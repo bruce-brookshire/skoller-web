@@ -25,6 +25,14 @@ class AutoComplete extends React.Component {
     return this.state.autoCompleteValue
   }
 
+  onBlur () {
+    if (this.props.onBlur) this.props.onBlur()
+  }
+
+  onFocus () {
+    if (this.props.onFocus) this.props.onFocus()
+  }
+
   renderInput () {
     return (
       <AutoCompleteInput
@@ -34,6 +42,8 @@ class AutoComplete extends React.Component {
         }}
         onKeyUp={this.onKeyUp.bind(this)}
         value={this.state.autoCompleteValue}
+        onBlur={this.onBlur.bind(this)}
+        onFocus={this.onFocus.bind(this)}
       />
     )
   }
@@ -93,7 +103,9 @@ AutoComplete.propTypes = {
   dataSource: PropTypes.array,
   emptyMessage: PropTypes.any,
   renderRow: PropTypes.func,
-  updateAutoCompleteResults: PropTypes.func
+  updateAutoCompleteResults: PropTypes.func,
+  onBlur: PropTypes.func,
+  onFocus: PropTypes.func
 }
 
 export default AutoComplete

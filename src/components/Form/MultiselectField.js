@@ -6,7 +6,7 @@ import {matchText} from '../../utilities/display'
 class MultiselectField extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {professors: [], loading: false}
+    this.state = {professors: [], loading: false, isFocused: false}
   }
 
   /*
@@ -33,6 +33,14 @@ class MultiselectField extends React.Component {
   onSelect (data) {
     this.props.onAdd(this.props.name, data)
     this.autoComplete.resetState()
+  }
+
+  onBlur () {
+    this.setState({isFocused: false})
+  }
+
+  onFocus () {
+    this.setState({isFocused: true})
   }
 
   /*
@@ -69,13 +77,23 @@ class MultiselectField extends React.Component {
   }
 
   render () {
-    const {containerClassName, emptyMessage, loading, options, placeholder, value} = this.props
+    const {containerClassName, emptyMessage, loading, options, placeholder, value, label} = this.props
 
     const containerClasses = ['cn-input-container']
+    const labelClasses = ['cn-input-label']
     if (containerClassName) containerClasses.push(containerClassName)
+
+    if (this.state.isFocused) {
+      labelClasses.push('active')
+    }
 
     return (
       <div className={containerClasses.join(' ')}>
+        {label
+          ? <label className={labelClasses.join(' ')}>
+            {label}
+          </label> : null
+        }
         {value.length > 0 &&
           <div className='description cn-blue'>
             {this.mapValue()}
@@ -90,6 +108,8 @@ class MultiselectField extends React.Component {
             updateAutoCompleteResults={this.onUpdateAutoCompleteResults.bind(this)}
             placeholder={placeholder}
             renderRow={this.renderRow.bind(this)}
+            onBlur={this.onBlur.bind(this)}
+            onFocus={this.onFocus.bind(this)}
           />
         </div>
       </div>
@@ -110,6 +130,7 @@ MultiselectField.propTypes = {
   onUpdateOptions: PropTypes.func,
   options: PropTypes.array.isRequired,
   placeholder: PropTypes.string,
+  label: PropTypes.string,
   value: PropTypes.array
 }
 

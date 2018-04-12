@@ -129,43 +129,14 @@ $h2-size-sm: 1.75em;
     .container-promo-signup {
       align-items: center;
       padding: 0 1rem;
-      width: 95%;
       display: hidden;
       @include breakpoint(medium) {
         display: flex;
         flex-grow: 1;
         max-width: 1440px;
+        min-height: 100%;
       }
 
-      #sign-up-form {
-        background-color: $cn-color-white;
-        border-radius: 8px;
-        box-shadow: 0px 15px 35px 0px rgba(0, 0, 0, 0.07);
-        box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.1);
-        
-        .facebook-button {
-          @include button;
-          align-items: center;
-          background-color: white;
-          border: 1px solid #CCC;
-          display: flex;
-          justify-content: center;
-    
-          i {
-            color: #3b5998;
-            font-size: 1em;
-            margin-right: 0.5em;
-          }
-    
-          span {
-            font-size: .75em;
-            color: grey;
-          }
-        }
-    
-        .school-info { font-size: 11px; }
-      }
-  
       // .video {
       //   @include fluid-width-embed;
       //   border-radius: $cn-border-radius;
@@ -183,6 +154,7 @@ $h2-size-sm: 1.75em;
         display: none;
         flex-direction: column;
         justify-content: center;
+        align-items: center;
   
         @include breakpoint(medium) {
           display: flex;
@@ -190,8 +162,39 @@ $h2-size-sm: 1.75em;
   
         @include breakpoint(large) {
           margin-bottom: 0;
-          padding-left: 3rem;
+          height: 100%;
         }
+
+        #sign-up-form {
+          background-color: $cn-color-white;
+          border-radius: 8px;
+          box-shadow: 0px 15px 35px 0px rgba(0, 0, 0, 0.07);
+          box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.1);
+          min-height: 100%;
+          
+          .facebook-button {
+            @include button;
+            align-items: center;
+            background-color: white;
+            border: 1px solid #CCC;
+            display: flex;
+            justify-content: center;
+      
+            i {
+              color: #3b5998;
+              font-size: 1em;
+              margin-right: 0.5em;
+            }
+      
+            span {
+              font-size: .75em;
+              color: grey;
+            }
+          }
+      
+          .school-info { font-size: 11px; }
+        }
+    
       }
     }
 
@@ -572,6 +575,7 @@ $h2-size-sm: 1.75em;
 .form-padding {
   width: 95%;
   margin: 0 auto;
+  margin-top: 2rem;
 }
 
 .form-button {
