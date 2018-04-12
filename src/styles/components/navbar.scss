@@ -1,4 +1,4 @@
-.cn-navbar {
+@mixin navbar {
   background-color: $cn-color-white;
   border-bottom: 2px solid $cn-color-blue;
   height: $unit-nav-height;
@@ -6,6 +6,10 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
+}
+
+.cn-navbar {
+  @include navbar();
 
   .class-info {
     align-items: center;

@@ -7,7 +7,7 @@ import DocumentMeta from 'react-document-meta'
 import SmartBanner from 'react-smartbanner'
 import '../../../node_modules/react-smartbanner/src/styles/style.scss'
 
-import LoginForm from './LoginForm'
+import LandingNav from '../components/LandingNav'
 import PromoSignup from './PromoSignup'
 import LandingMessage from './LandingMessage'
 import Purpose from './Purpose'
@@ -33,14 +33,7 @@ class Landing extends React.Component {
 
     return (
       <div className='cn-landing-container'>
-        <div className='cn-navbar'>
-          <div className='cn-navbar-content'>
-            <h1>
-              <img alt="Skoller" className='logo' src='src/assets/images/logo-wide-blue@1x.png' />
-            </h1>
-            <LoginForm rootStore={this.props.rootStore}/>
-          </div>
-        </div>
+        <LandingNav rootStore={this.props.rootStore}/>
 
         {/* start of section 1 */}
         <div className='cn-landing-content-wrapper'>
@@ -50,7 +43,7 @@ class Landing extends React.Component {
           </div>
 
           <div className='cn-learn-more'>
-            When one person is keeping up, everyone is keeping up. Learn more.
+            When one person is keeping up, everyone is keeping up. <a className='non-styled-link' onClick={() => { browserHistory.push('/learn-more'); window.scrollTo(0, 0) }}>Learn more</a>.
           </div>
         </div>
 
