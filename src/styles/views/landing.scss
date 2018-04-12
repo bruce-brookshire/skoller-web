@@ -97,8 +97,12 @@ $h2-size-sm: 36px;
 .cn-landing-container {
   overflow-x: hidden;
   height: 100%;
-  padding-bottom: 90px;
+  padding-bottom: 335px;
   position: relative;
+
+  @include breakpoint(medium) {
+    padding-bottom: 90px;
+  }
 
   .cn-landing-content-wrapper{
     margin: 0 auto;
@@ -595,15 +599,14 @@ $h2-size-sm: 36px;
     position: absolute;
     bottom: 0;
     width: 100%;
-    font-size: .75em;
+    font-size: 1em;
     padding: 1rem;
     text-align: center;
     z-index: 1;
-    height: 69px;
+    height: 300px;
 
     @include breakpoint(medium) {
-      
-      font-size: 1em;
+      height: 69px;
       text-align: left;
     }
 
@@ -620,6 +623,13 @@ $h2-size-sm: 36px;
         width: 100%;
         max-width: 1000px;
         align-items: center;
+      }
+
+      .footer-link {
+        margin-top: 10px;
+        @include breakpoint(medium) {
+          margin: 0;
+        }
       }
     }
   }
