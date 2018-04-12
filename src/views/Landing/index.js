@@ -77,18 +77,21 @@ class Landing extends React.Component {
 
         <footer className="site-footer">
           <div className='footer-content'>
-            {/* <div className='footer-link'>
+            <div className='footer-link'>
               Become an ambassador
-            </div> */}
-            <span className="copyright">
-              Copyright &copy; Skoller, LLC {}. All rights reserved.
-            </span>
-            <span className="privacypolicy">
+            </div>
+            <div className='footer-link'>
+              What people are saying about us
+            </div>
+            <div className='footer-link'>
               <a onClick={() => { browserHistory.push('/privacypolicy'); window.scrollTo(0, 0) }}>Privacy policy.</a>
-            </span>
-            <span className="support">
-              Need help? <a href="mailto:support@skoller.com">Contact us.</a>
-            </span>
+            </div>
+            <div className='footer-link'>
+              <a href="mailto:support@skoller.com">Contact us.</a>
+            </div>
+            {/* <span className="copyright">
+              Copyright &copy; Skoller, LLC {}. All rights reserved.
+            </span> */}
           </div>
         </footer>
 
