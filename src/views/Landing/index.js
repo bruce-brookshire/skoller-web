@@ -34,16 +34,20 @@ class Landing extends React.Component {
     return (
       <div className='cn-landing-container'>
         <div className='cn-navbar'>
-          <h1>
-            <img alt="Skoller" className='logo' src='src/assets/images/logo-wide-blue@1x.png' />
-          </h1>
-          <LoginForm rootStore={this.props.rootStore}/>
+          <div className='cn-navbar-content'>
+            <h1>
+              <img alt="Skoller" className='logo' src='src/assets/images/logo-wide-blue@1x.png' />
+            </h1>
+            <LoginForm rootStore={this.props.rootStore}/>
+          </div>
         </div>
 
         {/* start of section 1 */}
-        <div className='cn-landing-content'>
-          <LandingMessage rootStore={this.props.rootStore}/>
-          <PromoSignup rootStore={this.props.rootStore}/>
+        <div className='cn-landing-content-wrapper'>
+          <div className='cn-landing-content'>
+            <LandingMessage rootStore={this.props.rootStore}/>
+            <PromoSignup rootStore={this.props.rootStore}/>
+          </div>
         </div>
 
         {/* start of section 2 */}
