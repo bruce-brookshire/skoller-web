@@ -1,6 +1,6 @@
 import React from 'react'
 
-class PromoSignup extends React.Component {
+class LandingMessage extends React.Component {
   render () {
     return (
       <div className='container-landing-message'>
@@ -36,4 +36,4 @@ class PromoSignup extends React.Component {
   }
 }
 
-export default PromoSignup
+export default LandingMessage
