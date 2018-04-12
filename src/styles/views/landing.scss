@@ -97,15 +97,96 @@ $h2-size-sm: 1.75em;
 .cn-landing-container {
   overflow-x: hidden;
 
-  h2 {
-    font-size: $h2-size-sm;
-    margin: 0;
-    padding: 0;
-    text-align: center;
+  .cn-landing-content{
+    @include row;
 
-    @include breakpoint(medium) {
-      font-size: $h2-size;
-      text-align: left;
+    .container-landing-message {
+      flex-grow: 1;
+    }
+
+    .container-promo-signup {
+      align-items: center;
+      padding: 0 1rem;
+      width: 95%;
+      display: hidden;
+      @include breakpoint(medium) {
+        display: flex;
+        flex-grow: 1;
+        max-width: 1440px;
+      }
+  
+      // .video {
+      //   @include fluid-width-embed;
+      //   border-radius: $cn-border-radius;
+      //   margin-bottom: 2rem;
+      //   overflow: hidden;
+      //   width: 100%;
+  
+      //   @include breakpoint(large) {
+      //     margin-bottom: 0;
+      //     width: 80%;
+      //   }
+      // }
+  
+      .container-form-register {
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+  
+        @include breakpoint(medium) {
+          display: flex;
+        }
+  
+        @include breakpoint(large) {
+          margin-bottom: 0;
+          padding-left: 3rem;
+        }
+      }
+    }
+
+
+    h2 {
+      font-size: $h2-size-sm;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+
+      @include breakpoint(medium) {
+        font-size: $h2-size;
+        text-align: left;
+      }
+    }
+
+    #sign-up-form-container {
+
+      #sign-up-form {
+        background-color: $cn-color-white;
+        border-radius: 8px;
+        box-shadow: 0px 15px 35px 0px rgba(0, 0, 0, 0.07);
+        box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.1);
+        
+        .facebook-button {
+          @include button;
+          align-items: center;
+          background-color: white;
+          border: 1px solid #CCC;
+          display: flex;
+          justify-content: center;
+    
+          i {
+            color: #3b5998;
+            font-size: 1em;
+            margin-right: 0.5em;
+          }
+    
+          span {
+            font-size: .75em;
+            color: grey;
+          }
+        }
+    
+        .school-info { font-size: 11px; }
+      }
     }
   }
 
@@ -441,70 +522,6 @@ $h2-size-sm: 1.75em;
         }
       }
     }
-  }
-
-  .container-promo-signup {
-    @include row;
-    align-items: center;
-    padding: 0 1rem;
-    width: 95%;
-    display: hidden;
-    @include breakpoint(medium) {
-      display: flex;
-      max-width: 1440px;
-    }
-
-    .video {
-      @include fluid-width-embed;
-      border-radius: $cn-border-radius;
-      margin-bottom: 2rem;
-      overflow: hidden;
-      width: 100%;
-
-      @include breakpoint(large) {
-        margin-bottom: 0;
-        width: 80%;
-      }
-    }
-
-    .container-form-register {
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-
-      @include breakpoint(medium) {
-        display: flex;
-      }
-
-      @include breakpoint(large) {
-        margin-bottom: 0;
-        padding-left: 3rem;
-      }
-    }
-  }
-
-  #sign-up-form {
-    .facebook-button {
-      @include button;
-      align-items: center;
-      background-color: white;
-      border: 1px solid #CCC;
-      display: flex;
-      justify-content: center;
-
-      i {
-        color: #3b5998;
-        font-size: 1em;
-        margin-right: 0.5em;
-      }
-
-      span {
-        font-size: .75em;
-        color: grey;
-      }
-    }
-
-    .school-info { font-size: 11px; }
   }
 
   .site-footer {

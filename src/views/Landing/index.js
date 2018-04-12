@@ -40,7 +40,10 @@ class Landing extends React.Component {
         </div>
 
         {/* start of section 1 */}
-        <PromoSignup rootStore={this.props.rootStore}/>
+        <div className='cn-landing-content'>
+          <PromoSignup rootStore={this.props.rootStore}/>
+          <PromoSignup rootStore={this.props.rootStore}/>
+        </div>
 
         {/* start of section 2 */}
         {/* <Purpose/> */}

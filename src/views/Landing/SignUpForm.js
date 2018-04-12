@@ -233,111 +233,113 @@ class SignUpForm extends React.Component {
     const {formErrors, updateProperty} = this.props
 
     return (
-      <div id='sign-up-form'>
-        <form className='form-padding'>
-          <h2>Sign up</h2>
-          <div className='row'>
-            <div className='col-xs-6'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.student && formErrors.student.name_first}
-                label=''
-                name='student.name_first'
-                onChange={updateProperty}
-                placeholder='First name'
-                value={form.student.name_first}
-              />
+      <div id='sign-up-form-container'>
+        <div id='sign-up-form'>
+          <form className='form-padding'>
+            <h2>Sign up</h2>
+            <div className='row'>
+              <div className='col-xs-6'>
+                <InputField
+                  containerClassName='margin-top'
+                  error={formErrors.student && formErrors.student.name_first}
+                  label=''
+                  name='student.name_first'
+                  onChange={updateProperty}
+                  placeholder='First name'
+                  value={form.student.name_first}
+                />
+              </div>
+              <div className='col-xs-6'>
+                <InputField
+                  containerClassName='margin-top'
+                  error={formErrors.student && formErrors.student.name_last}
+                  label=''
+                  name='student.name_last'
+                  onChange={updateProperty}
+                  placeholder='Last name'
+                  value={form.student.name_last}
+                />
+              </div>
             </div>
-            <div className='col-xs-6'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.student && formErrors.student.name_last}
-                label=''
-                name='student.name_last'
-                onChange={updateProperty}
-                placeholder='Last name'
-                value={form.student.name_last}
-              />
+            <div className='row'>
+              <div className='col-xs-12'>
+                {this.renderSchool()}
+                <InputField
+                  containerClassName={!form.student.school_id ? 'margin-top' : ''}
+                  error={formErrors.email || (this.state.emailError && this.state.emailError.message)}
+                  showErrorMessage={this.state.emailError && this.state.emailError.message}
+                  label=''
+                  name='email'
+                  onBlur={this.onVerifyEmail.bind(this)}
+                  onChange={(name, value) => {
+                    // Have to reset fields of study.
+                    const form = {...this.state.form}
+                    form.email = value
+                    form.student.fields_of_study = []
+                    this.setState({form, fieldsOfStudy: []})
+                  }}
+                  placeholder='School email address'
+                  value={form.email}
+                />
+              </div>
+              <div className='col-xs-12'>
+                <InputField
+                  containerClassName='margin-top'
+                  error={formErrors.password}
+                  label=''
+                  name='password'
+                  onChange={updateProperty}
+                  placeholder='Password'
+                  type='password'
+                  value={form.password}
+                />
+              </div>
+              <div className='col-xs-12'>
+                <InputField
+                  containerClassName='margin-top'
+                  error={formErrors.student && formErrors.student.phone}
+                  label=''
+                  name='student.phone'
+                  onChange={(name, value) => {
+                    updateProperty(name, maskPhoneNumber(form.student.phone, value))
+                  }}
+                  placeholder='Phone number'
+                  value={form.student.phone}
+                />
+              </div>
+              <div className='col-xs-12'>
+                <MultiselectField
+                  containerClassName='margin-top'
+                  label=''
+                  loading={this.state.loadingFOS}
+                  name='student.fields_of_study'
+                  onAdd={(name, value) => {
+                    let newValue = form.student.fields_of_study
+                    newValue.push(value)
+                    updateProperty('student.fields_of_study', newValue)
+                    this.setState({fieldsOfStudy: []})
+                  }}
+                  onDelete={(name, value) => {
+                    let newValue = form.student.fields_of_study
+                      .filter(f => f.value !== value.value)
+                    updateProperty('student.fields_of_study', newValue)
+                  }}
+                  onUpdateOptions={this.updateFOSOptions.bind(this)}
+                  options={this.getFOSOptions()}
+                  placeholder={'Select your majors...'}
+                  value={form.student.fields_of_study}
+                />
+              </div>
             </div>
+          </form>
+          <div className='col-xs-12 center-text'>
+            <button
+              className='button margin-top margin-bottom form-button'
+              onClick={this.onSubmit.bind(this)}
+            >Take me there.</button>
           </div>
-          <div className='row'>
-            <div className='col-xs-12'>
-              {this.renderSchool()}
-              <InputField
-                containerClassName={!form.student.school_id ? 'margin-top' : ''}
-                error={formErrors.email || (this.state.emailError && this.state.emailError.message)}
-                showErrorMessage={this.state.emailError && this.state.emailError.message}
-                label=''
-                name='email'
-                onBlur={this.onVerifyEmail.bind(this)}
-                onChange={(name, value) => {
-                  // Have to reset fields of study.
-                  const form = {...this.state.form}
-                  form.email = value
-                  form.student.fields_of_study = []
-                  this.setState({form, fieldsOfStudy: []})
-                }}
-                placeholder='School email address'
-                value={form.email}
-              />
-            </div>
-            <div className='col-xs-12'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.password}
-                label=''
-                name='password'
-                onChange={updateProperty}
-                placeholder='Password'
-                type='password'
-                value={form.password}
-              />
-            </div>
-            <div className='col-xs-12'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.student && formErrors.student.phone}
-                label=''
-                name='student.phone'
-                onChange={(name, value) => {
-                  updateProperty(name, maskPhoneNumber(form.student.phone, value))
-                }}
-                placeholder='Phone number'
-                value={form.student.phone}
-              />
-            </div>
-            <div className='col-xs-12'>
-              <MultiselectField
-                containerClassName='margin-top'
-                label=''
-                loading={this.state.loadingFOS}
-                name='student.fields_of_study'
-                onAdd={(name, value) => {
-                  let newValue = form.student.fields_of_study
-                  newValue.push(value)
-                  updateProperty('student.fields_of_study', newValue)
-                  this.setState({fieldsOfStudy: []})
-                }}
-                onDelete={(name, value) => {
-                  let newValue = form.student.fields_of_study
-                    .filter(f => f.value !== value.value)
-                  updateProperty('student.fields_of_study', newValue)
-                }}
-                onUpdateOptions={this.updateFOSOptions.bind(this)}
-                options={this.getFOSOptions()}
-                placeholder={'Select your majors...'}
-                value={form.student.fields_of_study}
-              />
-            </div>
-          </div>
-        </form>
-        <div className='col-xs-12 center-text'>
-          <button
-            className='button margin-top margin-bottom form-button'
-            onClick={this.onSubmit.bind(this)}
-          >Take me there.</button>
+          {this.onSeeSchools()}
         </div>
-        {this.onSeeSchools()}
       </div>
     )
   }
