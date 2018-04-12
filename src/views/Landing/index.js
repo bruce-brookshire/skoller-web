@@ -48,6 +48,10 @@ class Landing extends React.Component {
             <LandingMessage rootStore={this.props.rootStore}/>
             <PromoSignup rootStore={this.props.rootStore}/>
           </div>
+
+          <div className='cn-learn-more'>
+            When one person is keeping up, everyone is keeping up. Learn more.
+          </div>
         </div>
 
         {/* start of section 2 */}

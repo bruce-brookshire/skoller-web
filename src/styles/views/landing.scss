@@ -104,6 +104,19 @@ $h2-size-sm: 36px;
       width: 100%;
       max-width: 1000px;
     }
+
+    .cn-learn-more {
+      font-size: 24px;
+      font-weight: 300;
+      margin: 0 auto;
+      text-align: center;
+      width: 90%;
+
+      @include breakpoint(medium) {
+        width: 363px;
+      }
+      
+    }
   
     .cn-landing-content{
       @include row;
