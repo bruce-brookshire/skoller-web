@@ -77,6 +77,9 @@ class Landing extends React.Component {
 
         <footer className="site-footer">
           <div className='footer-content'>
+            {/* <div className='footer-link'>
+              Become an ambassador
+            </div> */}
             <span className="copyright">
               Copyright &copy; Skoller, LLC {}. All rights reserved.
             </span>
