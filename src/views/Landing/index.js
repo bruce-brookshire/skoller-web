@@ -89,9 +89,9 @@ class Landing extends React.Component {
             <div className='footer-link'>
               <a href="mailto:support@skoller.com">Contact us.</a>
             </div>
-            {/* <span className="copyright">
-              Copyright &copy; Skoller, LLC {}. All rights reserved.
-            </span> */}
+            <div className='footer-link'>
+              Skoller, Inc. &copy; 2018
+            </div>
           </div>
         </footer>
 
