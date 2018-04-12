@@ -12,8 +12,6 @@ import Signup from './Signup'
 import LandingMessage from './LandingMessage'
 import LandingFooter from '../components/LandingFooter'
 
-import Availability from './Availability'
-
 @inject('rootStore') @observer
 class Landing extends React.Component {
   render () {
