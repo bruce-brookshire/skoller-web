@@ -8,14 +8,11 @@ import SmartBanner from 'react-smartbanner'
 import '../../../node_modules/react-smartbanner/src/styles/style.scss'
 
 import LandingNav from '../components/LandingNav'
-import PromoSignup from './PromoSignup'
+import Signup from './Signup'
 import LandingMessage from './LandingMessage'
-import Purpose from './Purpose'
-import Process from './Process'
-import FeatureHighlights from './FeatureHighlights'
-import CommunityFeature from './CommunityFeature'
+
 import Availability from './Availability'
-import CallToAction from './CallToAction'
+
 import PeopleTalking from './PeopleTalking'
 
 @inject('rootStore') @observer
@@ -39,7 +36,7 @@ class Landing extends React.Component {
         <div className='cn-landing-content-wrapper'>
           <div className='cn-landing-content'>
             <LandingMessage rootStore={this.props.rootStore}/>
-            <PromoSignup rootStore={this.props.rootStore}/>
+            <Signup rootStore={this.props.rootStore}/>
           </div>
 
           <div className='cn-learn-more'>
@@ -47,26 +44,11 @@ class Landing extends React.Component {
           </div>
         </div>
 
-        {/* start of section 2 */}
-        {/* <Purpose/> */}
-
-        {/* start of section 3 */}
-        {/* <Process/> */}
-
-        {/* start of section 4 */}
-        {/* <FeatureHighlights/> */}
-
-        {/* start of section 5 */}
-        {/* <CommunityFeature/> */}
-
         {/* start of section 6 */}
         {/* <Availability/> */}
 
         {/* start of section 7 */}
         {/* <PeopleTalking/> */}
-
-        {/* start of section 8 */}
-        {/* <CallToAction/> */}
 
         <footer className="site-footer">
           <div className='footer-content'>
