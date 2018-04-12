@@ -8,7 +8,7 @@ class LandingMessage extends React.Component {
         <ul className='landing-message'>
           <li className='message-row'>
             <div className='cn-person'>
-              <img style={{width: '50px'}} src='src/assets/images/landing_page/dudley.png' />
+              <img style={{width: '55px'}} src='src/assets/images/landing_page/dudley.png' />
             </div>
             Reminders for every assignment
           </li>
@@ -26,7 +26,7 @@ class LandingMessage extends React.Component {
           </li>
           <li className='message-row'>
             <div className='cn-person'>
-              <img style={{width: '50px'}} src='src/assets/images/landing_page/peggy.png' />
+              <img style={{width: '45px'}} src='src/assets/images/landing_page/peggy.png' />
             </div>
             Private and student-powered
           </li>
