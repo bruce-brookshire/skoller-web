@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 import {browserHistory} from 'react-router'
 import {Cookies} from 'react-cookie'
 import {Form, ValidateForm} from 'react-form-library'
-import {InputField} from '../../components/Form'
-import actions from '../../actions'
-import {checkIfFirstKey} from '../../utilities/object'
+import {InputField} from '../../../components/Form'
+import actions from '../../../actions'
+import {checkIfFirstKey} from '../../../utilities/object'
 
 const requiredFields = {
   'email': {

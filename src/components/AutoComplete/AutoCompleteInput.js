@@ -12,6 +12,14 @@ class AutoCompleteInput extends React.Component {
     e.nativeEvent.stopImmediatePropagation()
   }
 
+  onBlur () {
+    if (this.props.onBlur) this.props.onBlur()
+  }
+
+  onFocus () {
+    if (this.props.onFocus) this.props.onFocus()
+  }
+
   render () {
     const input = this.props
     const classes = ['cn-autocomplete-input']
@@ -21,6 +29,8 @@ class AutoCompleteInput extends React.Component {
         onClick={this.onClick}
         className={classes.join(' ')}
         placeholder={input.placeholder}
+        onBlur={this.onBlur.bind(this)}
+        onFocus={this.onFocus.bind(this)}
         onChange={(event) => this.props.onChange(event)}
         onKeyUp={(event) => this.props.onKeyUp(event)}
         value={input.value}
@@ -32,7 +42,9 @@ class AutoCompleteInput extends React.Component {
 AutoCompleteInput.propTypes = {
   icon: PropTypes.string,
   onChange: PropTypes.func,
-  onKeyUp: PropTypes.func
+  onKeyUp: PropTypes.func,
+  onBlur: PropTypes.func,
+  onFocus: PropTypes.func
 }
 
 export default AutoCompleteInput

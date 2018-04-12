@@ -1,0 +1,92 @@
+.cn-people-talking-container {
+  overflow-x: hidden;
+  height: 100%;
+  @include landing-nav-parent();
+
+  .cn-people-talking-content {
+    margin-top: 2em;
+    padding: 2rem auto;
+
+    .cn-people-talking-who {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+      padding-top: $unit-space * 2;
+      margin: 0 auto;
+
+      @include breakpoint(medium) {
+        width: 100%;
+        max-width: 1000px;
+        flex-direction: row;
+      }
+
+      .video {
+        @include fluid-width-embed;
+        border-radius: $cn-border-radius;
+        overflow: hidden;
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      .section-people-talking {
+        text-align: center;
+        position: relative;
+        width: 100%;
+    
+        .section-header {
+          @include section-header-alt;
+          color: $cn-font-color;
+    
+          @include breakpoint(large) {
+            margin-bottom: 2rem;
+          }
+        }
+    
+        .list {
+          @include unstyled-list;
+          padding-top: $unit-space;
+    
+          li {
+            margin-bottom: 2rem;
+    
+            .people-talking-img {
+              width: 250px;
+            }
+          }
+        }
+      }
+    }
+
+    .testimonials {
+      @include section-marketing;
+      @include slant;
+      margin-top: 4rem;
+      padding-top: 4rem;
+      background: $cn-color-blue;
+      color: $cn-color-white;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      align-items: center;
+
+      .testimonial {
+        flex-basis: 33%;
+        margin-bottom: $unit-space;
+      }
+    }
+  }
+
+  h2 {
+    font-size: 36px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-weight: bold;
+
+    @include breakpoint(medium) {
+      font-size: 36px;
+    }
+  }
+}

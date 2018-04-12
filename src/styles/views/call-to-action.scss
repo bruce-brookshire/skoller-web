@@ -1,0 +1,25 @@
+.section-cta {
+  @include section-marketing;
+  @include slant;
+  background: $cn-primary-background-color;
+  padding: 2rem;
+  text-align: center;
+
+  .actions {
+    @include unstyled-list;
+
+    .button { 
+      display: none;
+
+      @include breakpoint(medium) {
+        display: inline-block;
+        @include button-lg; 
+      }
+    }
+
+    li {
+      margin-bottom: 2rem;
+      width: 100%;
+    }
+  }
+}

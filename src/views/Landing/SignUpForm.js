@@ -241,7 +241,7 @@ class SignUpForm extends React.Component {
               <InputField
                 containerClassName='margin-top'
                 error={formErrors.student && formErrors.student.name_first}
-                label=''
+                label='First name'
                 name='student.name_first'
                 onChange={updateProperty}
                 placeholder='First name'
@@ -252,7 +252,7 @@ class SignUpForm extends React.Component {
               <InputField
                 containerClassName='margin-top'
                 error={formErrors.student && formErrors.student.name_last}
-                label=''
+                label='Last name'
                 name='student.name_last'
                 onChange={updateProperty}
                 placeholder='Last name'
@@ -267,7 +267,7 @@ class SignUpForm extends React.Component {
                 containerClassName={!form.student.school_id ? 'margin-top' : ''}
                 error={formErrors.email || (this.state.emailError && this.state.emailError.message)}
                 showErrorMessage={this.state.emailError && this.state.emailError.message}
-                label=''
+                label='Email'
                 name='email'
                 onBlur={this.onVerifyEmail.bind(this)}
                 onChange={(name, value) => {
@@ -277,7 +277,7 @@ class SignUpForm extends React.Component {
                   form.student.fields_of_study = []
                   this.setState({form, fieldsOfStudy: []})
                 }}
-                placeholder='School email address'
+                placeholder='Email'
                 value={form.email}
               />
             </div>
@@ -285,7 +285,7 @@ class SignUpForm extends React.Component {
               <InputField
                 containerClassName='margin-top'
                 error={formErrors.password}
-                label=''
+                label='Password'
                 name='password'
                 onChange={updateProperty}
                 placeholder='Password'
@@ -297,19 +297,19 @@ class SignUpForm extends React.Component {
               <InputField
                 containerClassName='margin-top'
                 error={formErrors.student && formErrors.student.phone}
-                label=''
+                label='Phone'
                 name='student.phone'
                 onChange={(name, value) => {
                   updateProperty(name, maskPhoneNumber(form.student.phone, value))
                 }}
-                placeholder='Phone number'
+                placeholder='Phone'
                 value={form.student.phone}
               />
             </div>
             <div className='col-xs-12'>
               <MultiselectField
                 containerClassName='margin-top'
-                label=''
+                label='Majors'
                 loading={this.state.loadingFOS}
                 name='student.fields_of_study'
                 onAdd={(name, value) => {
