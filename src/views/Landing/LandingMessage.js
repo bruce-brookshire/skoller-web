@@ -13,7 +13,7 @@ class LandingMessage extends React.Component {
             Reminders for every assignment
           </li>
           <li className='message-break'>
-            <img src='src/assets/images/landing_page/squiggle1.png' />
+            <img style={{height: '50px'}} src='src/assets/images/landing_page/squiggle1@3x.png' />
           </li>
           <li className='message-row'>
             <div className='cn-person'>
@@ -22,7 +22,7 @@ class LandingMessage extends React.Component {
             Chat with all your classmates
           </li>
           <li className='message-break'>
-            <img src='src/assets/images/landing_page/squiggle2.png' />
+            <img style={{height: '50px'}} src='src/assets/images/landing_page/squiggle2@3x.png' />
           </li>
           <li className='message-row'>
             <div className='cn-person'>
