@@ -267,7 +267,7 @@ class SignUpForm extends React.Component {
                 containerClassName={!form.student.school_id ? 'margin-top' : ''}
                 error={formErrors.email || (this.state.emailError && this.state.emailError.message)}
                 showErrorMessage={this.state.emailError && this.state.emailError.message}
-                label='Email'
+                label='School email'
                 name='email'
                 onBlur={this.onVerifyEmail.bind(this)}
                 onChange={(name, value) => {
@@ -277,7 +277,7 @@ class SignUpForm extends React.Component {
                   form.student.fields_of_study = []
                   this.setState({form, fieldsOfStudy: []})
                 }}
-                placeholder='Email'
+                placeholder='School email'
                 value={form.email}
               />
             </div>

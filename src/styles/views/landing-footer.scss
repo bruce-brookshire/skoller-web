@@ -1,6 +1,7 @@
 @mixin landing-nav-parent {
   padding-bottom: 300px;
   position: relative;
+  min-height: 100vh;
 
   @include breakpoint(medium) {
     padding-bottom: 69px;
