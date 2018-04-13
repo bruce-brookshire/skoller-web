@@ -33,16 +33,11 @@
 
 // Embed iframes that are truly responsive
 @mixin fluid-width-embed {
-  padding: 0 0 46.25vw 0;
   position: relative;
-
-  @include breakpoint(medium) {
-    padding: 0 0 28.25vw 0;
-  }
-
-  @include breakpoint(large) {
-    padding: 0 0 27.7vw 0;
-  }
+  padding-bottom: 56.25%; /*16:9*/
+  padding-top: 30px; 
+  height: 0; 
+  overflow: hidden;
 
   embed,
   iframe,

@@ -14,6 +14,7 @@
       align-items: center;
       padding-top: $unit-space * 2;
       margin: 0 auto;
+      width: 100%;
 
       @include breakpoint(medium) {
         width: 100%;
@@ -21,12 +22,14 @@
         flex-direction: row;
       }
 
-      .video {
-        @include fluid-width-embed;
-        border-radius: $cn-border-radius;
-        overflow: hidden;
+      .video-wrapper {
+        height: 100%;
         width: 100%;
-        margin: 0 auto;
+
+        .video {
+          @include fluid-width-embed;
+          border-radius: $cn-border-radius;
+        } 
       }
 
       .section-people-talking {

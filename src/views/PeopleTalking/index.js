@@ -14,8 +14,10 @@ class PeopleTalking extends React.Component {
         <div className='cn-people-talking-content'>
           <h2 className='center-text'>Here&apos;s what people are saying about us</h2>
           <div className='cn-people-talking-who'>
-            <div className='video'>
-              <iframe src="https://www.youtube.com/embed/7RYLsLhkjFc" frameBorder="0" allowFullScreen></iframe>
+            <div className='video-wrapper'>
+              <div className='video'>
+                <iframe src="https://www.youtube.com/embed/7RYLsLhkjFc" frameBorder="0" allowFullScreen></iframe>
+              </div>
             </div>
             <WhoTalking />
           </div>
