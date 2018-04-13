@@ -235,7 +235,7 @@ class SignUpForm extends React.Component {
     return (
       <div id='sign-up-form'>
         <form className='form-padding'>
-          <h2>Sign up</h2>
+          <h2>Sign up <small className='sub-header'>(it&apos;s free!)</small></h2>
           <div className='row'>
             <div className='col-xs-6'>
               <InputField

@@ -13,10 +13,10 @@ class LandingFooter extends React.Component {
             <a className='non-styled-link' onClick={() => { browserHistory.push('/what-people-say'); window.scrollTo(0, 0) }}>What people are saying about us</a>
           </div>
           <div className='footer-link'>
-            <a className='non-styled-link' onClick={() => { browserHistory.push('/privacypolicy'); window.scrollTo(0, 0) }}>Privacy policy.</a>
+            <a className='non-styled-link' onClick={() => { browserHistory.push('/privacypolicy'); window.scrollTo(0, 0) }}>Privacy policy</a>
           </div>
           <div className='footer-link'>
-            <a className='non-styled-link' href="mailto:support@skoller.com">Contact us.</a>
+            <a className='non-styled-link' href="mailto:support@skoller.com">Contact us</a>
           </div>
           <div className='footer-link'>
             Skoller, Inc. &copy; 2018
