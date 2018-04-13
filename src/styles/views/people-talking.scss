@@ -62,7 +62,7 @@
       @include section-marketing;
       @include slant;
       margin-top: 4rem;
-      padding-top: 4rem;
+      padding: 4rem 0 4rem 0;
       background: $cn-color-blue;
       color: $cn-color-white;
       display: flex;
@@ -72,8 +72,11 @@
       align-items: center;
 
       .testimonial {
-        flex-basis: 33%;
-        margin-bottom: $unit-space;
+        flex-basis: 27%;
+        font-size: 18px;
+        margin-bottom: $unit-space * 2;
+        text-align: center;
+        font-weight: normal;
       }
     }
   }
