@@ -75,8 +75,14 @@
       @include fluid-width-embed;
       border-radius: $cn-border-radius;
       overflow: hidden;
-      width: 100%;
+      width: 80%;
       margin: 0 auto;
+      height: 80vh;
+
+      @include breakpoint(medium) {
+        width: 100%;
+        max-width: 1000px;
+      }
     }
   }
 

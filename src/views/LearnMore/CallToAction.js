@@ -7,7 +7,7 @@ class CallToAction extends React.Component {
       <div className="section-cta">
         <ul className="actions">
           <li className="action">
-            <a className="button" href="#promo-signup">
+            <a className="button" onClick={() => { browserHistory.push('/landing'); window.scrollTo(0, 0) }}>
               This is dope. Sign me up.
             </a>
           </li>
