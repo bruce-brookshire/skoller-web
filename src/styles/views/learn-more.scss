@@ -66,10 +66,8 @@
   .cn-learn-more-content {
     margin: 2rem auto;
 
-    @include breakpoint(medium) {
-      width: 100%;
-      max-width: 1000px;
-    }
+    width: 100%;
+    max-width: 850px;
 
     .video {
       @include fluid-width-embed;
