@@ -23,22 +23,22 @@ class PeopleTalking extends React.Component {
           </div>
           <div className='testimonials'>
             <div className='testimonial'>
-              This app combines everything that I have ever needed to keep up with classes. I recommend to everyone in college! My semester was significantly easier because of this app
+              &quot;This app combines everything that I have ever needed to keep up with classes. I recommend to everyone in college! My semester was significantly easier because of this app&quot;
             </div>
             <div className='testimonial'>
-              I love this app. It has been a lifesaver. I have had trouble staying on top of and keeping track of my assignments in the past and Skoller has been a huge help in helping me work towards fixing that problem.
+              &quot;I love this app. It has been a lifesaver. I have had trouble staying on top of and keeping track of my assignments in the past and Skoller has been a huge help in helping me work towards fixing that problem.&quot;
             </div>
             <div className='testimonial'>
-              Overall I love the app! Very helpful in not letting me forget about assignments and lowers the stress of possibly missing a due date.
+              &quot;Overall I love the app! Very helpful in not letting me forget about assignments and lowers the stress of possibly missing a due date.&quot;
             </div>
             <div className='testimonial'>
-              I love that it reminded me, days in advance, it saved me from &quot;O sh*t&quot; moments   ----- My favorite lol
+              &quot;I love that it reminded me, days in advance, it saved me from &apos;O sh*t&apos; moments&quot;
             </div>
             <div className='testimonial'>
-              Skoller&apos;s grade calculator and tracker has stepped in where my university&apos;s platform failed. I can see how I&apos;m doing in all my classes in one place and keep myself on target more easily than clicking back through each individual syllabus. Love it!
+              &quot;Skoller&apos;s grade calculator and tracker has stepped in where my university&apos;s platform failed. I can see how I&apos;m doing in all my classes in one place and keep myself on target more easily than clicking back through each individual syllabus. Love it!&quot;
             </div>
             <div className='testimonial'>
-              Really amazing app! I wish more people would use it. It has helped me streamline my semester and made keeping up with assignments easier. I love Skoller!
+              &quot;Really amazing app! I wish more people would use it. It has helped me streamline my semester and made keeping up with assignments easier. I love Skoller!&quot;
             </div>
           </div>
         </div>
