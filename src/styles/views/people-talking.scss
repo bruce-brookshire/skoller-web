@@ -27,6 +27,11 @@
         height: 100%;
         width: 100%;
         max-width: 500px;
+        margin-bottom: $unit-space * 2;
+
+        @include breakpoint(medium) {
+          margin: 0;
+        }
 
         .video {
           @include fluid-width-embed;
@@ -39,7 +44,12 @@
         border-radius: 8px;
         text-align: center;
         position: relative;
-        width: 450px;
+        width: 90%;
+        min-width: 300px;
+
+        @include breakpoint(medium) {
+          width: 450px;
+        }
 
         .people-talking-header {
           width: 200px;
@@ -88,11 +98,15 @@
       align-items: center;
 
       .testimonial {
-        flex-basis: 27%;
+        flex-basis: 80%;
         font-size: 18px;
         margin-bottom: $unit-space * 2;
         text-align: center;
         font-weight: normal;
+
+        @include breakpoint(medium) {
+          flex-basis: 27%;
+        }
       }
     }
   }
