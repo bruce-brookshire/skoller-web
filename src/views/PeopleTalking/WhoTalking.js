@@ -27,6 +27,7 @@ class WhoTalking extends React.Component {
 
     return (
       <div className='section-people-talking'>
+        <span className='people-talking-header'>IN THE PRESS</span>
         <div className="content">
           <ul className="list">
             {peopleList.map((u, idx) => {
