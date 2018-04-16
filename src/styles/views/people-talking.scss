@@ -33,28 +33,39 @@
       }
 
       .section-people-talking {
-        text-align: right;
+        border: 2px solid #4A4A4A;
+        border-radius: 8px;
+        text-align: center;
         position: relative;
-        width: 100%;
-    
-        .section-header {
-          @include section-header-alt;
-          color: $cn-font-color;
-    
-          @include breakpoint(large) {
-            margin-bottom: 2rem;
-          }
+        width: 450px;
+
+        .people-talking-header {
+          width: 200px;
+          position: absolute;
+          font-weight: bold;
+          font-size: 24px;
+          top: calc(-24px / 2);
+          left: calc(50% - (200px / 2));
+          text-align: center;
+          height: 24px;
+          background: $cn-primary-background-color;
+          letter-spacing: 4px;
         }
-    
-        .list {
-          @include unstyled-list;
-          padding-top: $unit-space;
-    
-          li {
-            margin-bottom: 2rem;
-    
-            .people-talking-img {
-              width: 250px;
+
+        .content {
+          margin: 0 auto;
+          width: 250px;
+      
+          .list {
+            @include unstyled-list;
+            padding-top: $unit-space;
+      
+            li {
+              margin-bottom: 2rem;
+      
+              .people-talking-img {
+                width: 250px;
+              }
             }
           }
         }
