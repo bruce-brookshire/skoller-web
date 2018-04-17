@@ -56,8 +56,8 @@ class SignUpForm extends React.Component {
         phone: '',
         birthday: '',
         gender: '',
-        is_university: null,
-        is_highschool: null,
+        is_university: false,
+        is_highschool: false,
         notification_time: `${7 + (date.getTimezoneOffset() / 60)}:00:00`,
         future_reminder_notification_time: `${17 + (date.getTimezoneOffset() / 60)}:00:00`
       }
@@ -105,7 +105,12 @@ class SignUpForm extends React.Component {
               error={formErrors.student && formErrors.student.is_university}
               label='College student'
               name='student.is_university'
-              onChange={updateProperty}
+              onChange={(name, value) => {
+                updateProperty(name, value)
+                if (value === true) {
+                  updateProperty('student.is_highschool', false)
+                }
+              }}
               value={form.student.is_university}
             />
             <small className='sub-header'>or</small>
@@ -114,7 +119,12 @@ class SignUpForm extends React.Component {
               error={formErrors.student && formErrors.student.is_highschool}
               label='High school Student'
               name='student.is_highschool'
-              onChange={updateProperty}
+              onChange={(name, value) => {
+                updateProperty(name, value)
+                if (value === true) {
+                  updateProperty('student.is_university', false)
+                }
+              }}
               value={form.student.is_highschool}
             />
           </div>
