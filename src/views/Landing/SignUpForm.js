@@ -39,7 +39,8 @@ class SignUpForm extends React.Component {
     return {
       form: this.initializeFormData(),
       emailError: null,
-      showSupportedSchools: false
+      showSupportedSchools: false,
+      universityError: false
     }
   }
 
@@ -56,7 +57,7 @@ class SignUpForm extends React.Component {
         phone: '',
         birthday: '',
         gender: '',
-        is_university: false,
+        is_university: true,
         is_highschool: false,
         notification_time: `${7 + (date.getTimezoneOffset() / 60)}:00:00`,
         future_reminder_notification_time: `${17 + (date.getTimezoneOffset() / 60)}:00:00`
@@ -66,13 +67,18 @@ class SignUpForm extends React.Component {
 
   onSubmit () {
     const form = this.mapForm()
-    if (this.props.validateForm(form, requiredFields) && !this.state.emailError) {
-      actions.auth.registerUser(form).then(() => {
-        this.props.resetValidation()
-        const { userStore: { authToken } } = this.props.rootStore
-        this.cookie.set('skollerToken', authToken, { maxAge: 84600 * 7 })
-        browserHistory.push('/student/onboard')
-      }).catch(() => false)
+    if (!form.student.is_university && !form.student.is_highschool) {
+      this.setState({universityError: true})
+    } else {
+      this.setState({universityError: false})
+      if (this.props.validateForm(form, requiredFields) && !this.state.emailError) {
+        actions.auth.registerUser(form).then(() => {
+          this.props.resetValidation()
+          const { userStore: { authToken } } = this.props.rootStore
+          this.cookie.set('skollerToken', authToken, { maxAge: 84600 * 7 })
+          browserHistory.push('/student/onboard')
+        }).catch(() => false)
+      }
     }
   }
 
@@ -92,7 +98,7 @@ class SignUpForm extends React.Component {
   // }
 
   render () {
-    const {form} = this.state
+    const {form, universityError} = this.state
     const {formErrors, updateProperty} = this.props
 
     return (
@@ -102,7 +108,7 @@ class SignUpForm extends React.Component {
           <div className='is-university'>
             <CheckboxField
               containerClassName='margin-top margin-right'
-              error={formErrors.student && formErrors.student.is_university}
+              error={universityError}
               label='College student'
               name='student.is_university'
               onChange={(name, value) => {
@@ -116,8 +122,8 @@ class SignUpForm extends React.Component {
             <small className='sub-header'>or</small>
             <CheckboxField
               containerClassName='margin-top margin-left'
-              error={formErrors.student && formErrors.student.is_highschool}
-              label='High school Student'
+              error={universityError}
+              label='High school student'
               name='student.is_highschool'
               onChange={(name, value) => {
                 updateProperty(name, value)
