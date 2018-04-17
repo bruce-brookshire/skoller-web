@@ -125,28 +125,14 @@ $h2-size-sm: 36px;
             box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.1);
             min-height: 100%;
             width: 100%;
-            
-            .facebook-button {
-              @include button;
-              align-items: center;
-              background-color: white;
-              border: 1px solid #CCC;
-              display: flex;
-              justify-content: center;
-        
-              i {
-                color: #3b5998;
-                font-size: 1em;
-                margin-right: 0.5em;
-              }
-        
-              span {
-                font-size: .75em;
-                color: grey;
-              }
+
+            .is-university {
+              @include row();
+              margin: 0;
+              // width: 66%;
+              // justify-content: space-between;
+              align-items: baseline;
             }
-        
-            .school-info { font-size: 11px; }
           }
       
         }

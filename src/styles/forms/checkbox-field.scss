@@ -12,7 +12,7 @@
   .cn-form-checkbox {
     border: 0;
     &.error {
-      border: 1px solid red;
+      outline: 1px solid red;
     }
   }
   .cn-checkbox-label {
