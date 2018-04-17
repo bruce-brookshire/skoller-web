@@ -44,6 +44,7 @@ const router = (
       <Route path='/privacypolicy' component={PrivacyPolicy} />
       <Route path='/learn-more' component={LearnMore} />
       <Route path='/what-people-say' component={PeopleTalking} />
+      <Route path='/our-team' component={OurTeam} />
       <Route path='/faq' component={Faq} />
       <Route path='/app' component={Layout} onEnter={requireAuth}>
         <IndexRedirect to='/student/classes' />
