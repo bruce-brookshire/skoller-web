@@ -10,6 +10,7 @@ import ForgotPassword from './views/ForgotPassword'
 import PrivacyPolicy from './views/PrivacyPolicy'
 import LearnMore from './views/LearnMore'
 import PeopleTalking from './views/PeopleTalking'
+import OurTeam from './views/OurTeam'
 import ResetPassword from './views/ResetPassword'
 
 import DIYLanding from './views/Student/DIYLanding'
