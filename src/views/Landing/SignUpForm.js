@@ -88,10 +88,25 @@ class SignUpForm extends React.Component {
     return newForm
   }
 
-  // testEmailFormat (email) {
-  //   const regEx = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-  //   return regEx.test(email)
-  // }
+  onVerifyEmail () {
+    const {email} = this.state.form
+    const {is_university} = this.state.form.student
+
+    if (is_university) {
+      if (email && !this.testEmailFormat(email)) {
+        this.setState({ emailError: {type: 'info', message: 'Please use your school email!'} })
+      } else {
+        this.setState({emailError: null})
+      }
+    } else {
+      this.setState({emailError: null})
+    }
+  }
+
+  testEmailFormat (email) {
+    const regEx = /\.+@.+\.edu$/
+    return regEx.test(email)
+  }
 
   // onAddMyUniversity () {
   //   window.location.href = 'mailto:support@skoller.co?Subject=Add My School - ' + this.state.form.email
@@ -166,6 +181,7 @@ class SignUpForm extends React.Component {
                 showErrorMessage={this.state.emailError && this.state.emailError.message}
                 label='School email'
                 name='email'
+                onBlur={this.onVerifyEmail.bind(this)}
                 onChange={updateProperty}
                 placeholder='School email'
                 value={form.email}
