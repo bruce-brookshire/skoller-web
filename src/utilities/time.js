@@ -84,8 +84,19 @@ export function convertLocalDateToUTC (dateString, tzAbbr) {
   return d
 }
 
-export function formatDate(dateString) {
+export function formatDate (dateString) {
   return moment(dateString, "YYYY-MM-DD").format("MMMM Do")
+}
+
+export function wrapTimeHour (date, hour) {
+  let offsetHour = hour + (date.getTimezoneOffset() / 60)
+  if (offsetHour >= 24) {
+    offsetHour -= 24
+  }
+  if (offsetHour < 10) {
+    offsetHour = '0' + offsetHour
+  }
+  return offsetHour
 }
 
 /*
