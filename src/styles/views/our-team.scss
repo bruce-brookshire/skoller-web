@@ -15,6 +15,12 @@
         flex-wrap: wrap;
         justify-content: space-around;
         align-items: center;
+        a {
+          text-decoration: none;
+        }
+        a:hover {
+          color: $cn-font-color;
+        }
         
         @include breakpoint(large) {
           width: 1030px;

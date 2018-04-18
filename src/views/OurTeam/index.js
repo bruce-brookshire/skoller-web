@@ -11,7 +11,7 @@ class OurTeam extends React.Component {
       <div className='cn-our-team-container'>
         <LandingNav rootStore={this.props.rootStore} />
         <div className='cn-our-team-content'>
-          <h2 className='center-text'>We have the most amazing team.</h2>
+          <h2 className='center-text'>We have an amazing team.</h2>
           <div className='teammates'>
             <div className='teammate-cell'>
               <div className='teammate'>
@@ -89,7 +89,7 @@ class OurTeam extends React.Component {
                 <p className='teammate-title'>at 14 schools</p>
                 <p className='teammate-description'> Our ambassadors are some of the most well-connected people at their schools.</p>
                 <div className='teammate-links'>
-                  <a href='http://google.com'><i className="fa fa-instagram"></i></a>
+                  <a href='http://google.com'><small>Check them out on our Instagram! </small><i className="fa fa-instagram"></i></a>
                 </div>
               </div>
             </div>
@@ -118,18 +118,20 @@ class OurTeam extends React.Component {
           </div>
           <h2 className='center-text'>And only the best advisors.</h2>
           <div className='teammates'>
-            <div className='teammate-cell-empty'>
+            <div className='teammate-cell'>
               <div className='teammate'>
+                <img className='teammate-image' src='src/assets/images/our_team/bill.png'></img>
                 <p className='teammate-name'>Bill Brennan</p>
-                <p className='teammate-title'>Entrepreneur</p>
+                <p className='teammate-title'>Serial Entrepreneur</p>
                 <p className='teammate-description'> Carson is the conductor. He oversees product innovation, business partnerships, and growth strategies.</p>
                 <div className='teammate-links'>
                   <a href='http://google.com'><i className="fa fa-linkedin-square"></i></a>
                 </div>
               </div>
             </div>
-            <div className='teammate-cell-empty'>
+            <div className='teammate-cell'>
               <div className='teammate'>
+                <img className='teammate-image' src='src/assets/images/our_team/chris.png'></img>
                 <p className='teammate-name'>Chris Sloan</p>
                 <p className='teammate-title'>Attorney and Entrepreneurial Expert</p>
                 <p className='teammate-description'> Carson is the conductor. He oversees product innovation, business partnerships, and growth strategies.</p>
@@ -138,11 +140,12 @@ class OurTeam extends React.Component {
                 </div>
               </div>
             </div>
-            <div className='teammate-cell-empty'>
+            <div className='teammate-cell'>
               <div className='teammate'>
-                <p className='teammate-name'>Ladidida</p>
-                <p className='teammate-title'>Founder & CEO</p>
-                <p className='teammate-description'> Carson is the conductor. He oversees product innovation, business partnerships, and growth strategies.</p>
+                <img className='teammate-image' src='src/assets/images/our_team/future.png'></img>
+                <p className='teammate-name'>Future</p>
+                <p className='teammate-title'>Serial Entrepreneur</p>
+                <p className='teammate-description'> Future is the conductor. He oversees product innovation, business partnerships, and growth strategies.</p>
                 <div className='teammate-links'>
                   <a href='http://google.com'><i className="fa fa-linkedin-square"></i></a>
                 </div>
