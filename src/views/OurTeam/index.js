@@ -108,7 +108,7 @@ class OurTeam extends React.Component {
               <div className='teammate'>
                 <img className='teammate-image-partner' src='src/assets/images/our_team/taskgenie.png'></img>
                 <p className='teammate-name'>Task Genie</p>
-                <p className='teammate-title'>Inda-based data entry</p>
+                <p className='teammate-title'>India-based data entry</p>
                 <p className='teammate-description'> Our team trained 18 data entry resources from Task Genie to input syllabus information.</p>
                 <div className='teammate-links'>
                   <a href='http://www.task-genie.com/'><i className="fa fa-globe"></i></a>
@@ -134,7 +134,7 @@ class OurTeam extends React.Component {
               <div className='teammate'>
                 <img className='teammate-image' src='src/assets/images/our_team/chris.png'></img>
                 <p className='teammate-name'>Chris Sloan</p>
-                <p className='teammate-title'>Attorney and Entrepreneurial Expert<br></br>Nashville, TN</p>
+                <p className='teammate-title'>Attorney &amp; Emerging Tech Specialist<br></br>Nashville, TN</p>
                 <div className='teammate-links'>
                   <a href='https://www.linkedin.com/in/chrissloanesq/'><i className="fa fa-linkedin-square"></i></a> <a href='https://www.bakerdonelson.com/chris-sloan'><i className="fa fa-globe"></i></a>
                 </div>
