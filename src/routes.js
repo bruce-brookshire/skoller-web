@@ -10,6 +10,7 @@ import ForgotPassword from './views/ForgotPassword'
 import PrivacyPolicy from './views/PrivacyPolicy'
 import LearnMore from './views/LearnMore'
 import PeopleTalking from './views/PeopleTalking'
+import OurTeam from './views/OurTeam'
 import ResetPassword from './views/ResetPassword'
 
 import DIYLanding from './views/Student/DIYLanding'
@@ -44,6 +45,7 @@ const router = (
       <Route path='/privacypolicy' component={PrivacyPolicy} />
       <Route path='/learn-more' component={LearnMore} />
       <Route path='/what-people-say' component={PeopleTalking} />
+      <Route path='/our-team' component={OurTeam} />
       <Route path='/faq' component={Faq} />
       <Route path='/app' component={Layout} onEnter={requireAuth}>
         <IndexRedirect to='/student/classes' />
