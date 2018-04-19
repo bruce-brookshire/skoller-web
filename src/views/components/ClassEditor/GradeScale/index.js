@@ -20,30 +20,30 @@ const headers = [
 const gradeScales = [
   {
     id: 1,
-    grade_scale: 'A,90|B,80|C,70|D,60'
+    grade_scale: {'A': '90', 'B': '80', 'C': '70', 'D': '60'}
   },
   {
     id: 2,
-    grade_scale: 'A,93|A-,90|B+,87|B,83|B-,80|C+,77|C,73|C-,70|D,60'
+    grade_scale: {'A': '93','A-': '90','B+': '87','B': '83','B-': '80','C+': '77','C': '73','C-': '70','D': '60'}
   },
   {
     id: 3,
-    grade_scale: 'A,93|A-,90|B+,87|B,83|B-,80|C+,77|C,73|C-,70|D+,67|D,63|D-,60'
+    grade_scale: {'A': '93','A-': '90','B+': '87','B': '83','B-': '80','C+': '77','C': '73','C-': '70','D+': '67','D': '63','D-': '60'}
   }
 ]
 
 const moreGradeScales = [
   {
     id: 4,
-    grade_scale: 'A,92.5|A-,89.5|B+,86.5|B,82.5|B-,79.5|C+,76.5|C,72.5|C-,69.5|D+,66.5|D,62.5|D-,59.5'
+    grade_scale: {'A':'92.5','A-':'89.5','B+':'86.5','B':'82.5','B-':'79.5','C+':'76.5','C':'72.5','C-':'69.5','D+':'66.5','D':'62.5','D-':'59.5'}
   },
   {
     id: 5,
-    grade_scale: 'Pass,50'
+    grade_scale: {'Pass': '50'}
   },
   {
     id: 6,
-    grade_scale: 'A,92|A-,90|B+,88|B,82|B-,80|C+,78|C,72|C-,70|D+,68|D,62|D-,60'
+    grade_scale: {'A':'92','A-':'90','B+':'88','B':'82','B-':'80','C+':'78','C':'72','C-':'70','D+':'68','D':'62','D-':'60'}
   }
 ]
 
@@ -62,25 +62,46 @@ class GradeScale extends React.Component {
     return {
       showAllGradeScales: false,
       gradeScales,
-      form: this.initializeFormData(this.props.cl),
-      loading: false
+      form: {
+        grade: '',
+        min: ''
+      },
+      loading: false,
+      currentGradeScale: this.props.cl.grade_scale_map || ''
     }
   }
 
-  /*
-  * Method for intializing form data.
-  * GradeScale form data.
-  *
-  * @param [Object] data. initial data
-  * @return [Object]. Form object.
-  */
-  initializeFormData (data) {
-    let formData = data || {}
-    const {grade_scale} = formData
+  onDeleteGS (key) {
+    this.setState({loading: true})
+    let newGradeScale = this.state.currentGradeScale;
+    delete newGradeScale[key];
+    this.setState({currentGradeScale: newGradeScale})
+    actions.gradescales.updateGradeScale(this.props.cl, {grade_scale: newGradeScale}).then((cl) => {
+      if (this.props.onSubmit) this.props.onSubmit(cl)
+      this.setState({loading: false})
+    }).catch(() => { this.setState({loading: false}) })
+  }
 
-    return ({
-      grade_scale: grade_scale || ''
-    })
+  renderGradeScale(grade_scale) {
+    return <ul className="grade-scale-list">
+      {Object.keys(grade_scale).sort((a,b) => {
+        return parseFloat(grade_scale[a]) < parseFloat(grade_scale[b]) ? 1 : -1
+      }).map((key, idx) => 
+        <li key={idx} className="grade-row">
+          <div className="grade-key">{key}</div><div className="grade-min">{grade_scale[key]}</div>
+        </li>
+      )}
+      <li className="adopt-button">
+        <button
+          className='button full-width margin-top'
+          disabled={this.state.loading}
+          onClick={() => { this.setGradeScale(grade_scale) }}
+        >
+          Adopt
+          {this.state.loading ? <Loading style={{color: 'white', marginLeft: '0.5em'}} /> : null}
+        </button>
+      </li>
+    </ul>
   }
 
   /*
@@ -89,39 +110,86 @@ class GradeScale extends React.Component {
   * @return [Component] div. Current grade scale.
   */
   renderCurrentGradeScale () {
-    // const {syllabusForm: {gradeScaleSubmitted, gradeScale}} = syllabusFormStore
-    const currentGradeScale = this.props.cl.grade_scale || ''
-    return <div className='margin-bottom'>{`Current Grade Scale: ${currentGradeScale}`}</div>
-  }
+    const {grade_scale_map} = this.props.cl
 
-  /*
-  * Row data to be passed to the grid
-  *
-  * @return [Array]. Array of formatted row data.
-  */
-  getRows () {
-    return this.state.gradeScales.map((item, index) =>
-      this.mapRow(item, index)
+    return (
+      <div className="current-grade-scale-container">Current Grade Scale
+        <div className="current-grade-scale">
+          <ul className="current-grade-scale-list">
+            {Object.keys(grade_scale_map).sort((a,b) => {
+              return parseFloat(grade_scale_map[a]) < parseFloat(grade_scale_map[b]) ? 1 : -1
+              }).map((key, idx) => 
+                <li key={idx} className="grade-row">
+                  <div className="delete-x">
+                    <div
+                      className='button-delete-x'
+                      onClick={(event) => {
+                        event.stopPropagation()
+                        this.onDeleteGS(key)
+                      }}><i className='fa fa-times' />
+                    </div>
+                  </div>
+                  <div className="grade">
+                    <div className="grade-key">{key}</div>
+                    <div className="grade-min">{grade_scale_map[key]}</div>
+                  </div>
+                </li>
+              )}
+          </ul>
+        </div>
+        {this.renderForm()}
+      </div>
     )
   }
 
-  /*
-  * Formats row data to be passed to the grid for display
-  *
-  * @param [Object] item. Row data to be formatted.
-  * @param [Number] index. Index of row data.
-  * @return [Object] row. Object of formatted row data for display in grid.
-  */
-  mapRow (item, index) {
-    const { id, grade_scale } = item
+  renderOtherGradeScales () {
+    const gradeScalesText = this.state.showAllGradeScales ? 'Show Less Grade Scales' : 'Show More Grade Scales'
+    return ( 
+      <div className="other-common-scales-container">Other common scales
+        <div className="other-common-scales">
+          {this.state.gradeScales.map((item, index) =>
+            this.renderGradeScale(item.grade_scale)
+          )}
+        </div>
+        <a style={{display: 'block', cursor: 'pointer'}} className='margin-top' onClick={() => this.toggleGradeScales()}> {gradeScalesText} </a>
+      </div>
+    )
+  }
 
-    const row = {
-      id: id || '',
-      select: <a onClick={() => { this.setGradeScale(item) }}><i className='fa fa-pencil'/></a>,
-      gradeScale: <div>{grade_scale}</div>
-    }
+  renderForm() {
+    const {form} = this.state
+    const {formErrors, updateProperty} = this.props
+    return (
+      <div className="grade-scale-form">
+        <div className="grade-scale-form-inputs">
+          <InputField
+                containerClassName='margin-top'
+                error={formErrors.grade}
+                label='Grade'
+                name='grade'
+                onChange={updateProperty}
+                value={form.grade}
+              />
 
-    return row
+          <InputField
+            containerClassName='margin-top'
+            error={formErrors.grade}
+            label='Min'
+            name='min'
+            onChange={updateProperty}
+            value={form.min}
+          />
+        </div>
+        <button
+          className='button full-width margin-top'
+          disabled={this.state.loading}
+          onClick={this.onSubmit.bind(this)}
+        >
+          Submit
+          {this.state.loading ? <Loading style={{color: 'white', marginLeft: '0.5em'}} /> : null}
+        </button>
+      </div>
+    )
   }
 
   /*
@@ -130,7 +198,12 @@ class GradeScale extends React.Component {
   * @param [Object] gradeScale. gradeScale object to be edited.
   */
   setGradeScale (gradeScale) {
-    this.setState({form: this.initializeFormData(gradeScale)})
+    this.setState({loading: true})
+    this.setState({currentGradeScale: gradeScale || ''})
+    actions.gradescales.updateGradeScale(this.props.cl, {grade_scale: gradeScale}).then((cl) => {
+      if (this.props.onSubmit) this.props.onSubmit(cl)
+      this.setState({loading: false})
+    }).catch(() => { this.setState({loading: false}) })
   }
 
   /*
@@ -147,56 +220,23 @@ class GradeScale extends React.Component {
   */
   onSubmit () {
     this.setState({loading: true})
-    actions.gradescales.updateGradeScale(this.props.cl, this.state.form).then((cl) => {
+    let newGradeScale = this.state.currentGradeScale;
+    newGradeScale[this.state.form.grade] = this.state.form.min;
+    this.setState({currentGradeScale: newGradeScale})
+    actions.gradescales.updateGradeScale(this.props.cl, {grade_scale: newGradeScale}).then((cl) => {
       if (this.props.onSubmit) this.props.onSubmit(cl)
       this.setState({loading: false})
     }).catch(() => { this.setState({loading: false}) })
   }
 
   render () {
-    const {form} = this.state
-    const {formErrors, updateProperty} = this.props
-    const gradeScalesText = this.state.showAllGradeScales ? 'Show Less Grade Scales' : 'Show More Grade Scales'
-
     return (
-      <div className='margin-top-2x margin-bottom-2x'>
+      <div id="class-editor-grade-scale" className='margin-top-2x margin-bottom-2x'>
         <h5 style={{marginTop: '0.25em', marginBottom: '0.5em'}}>Edit gradescale</h5>
-        {this.renderCurrentGradeScale()}
-        <div className='margin-top'>
-          <div className='row'>
-            <div className='col-xs-12'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.grade_scale}
-                label='Grade Scale'
-                name='grade_scale'
-                onChange={updateProperty}
-                placeholder='Grade Scale, i.e. A,90|B,80|C,70|D,60'
-                value={form.grade_scale}
-              />
-            </div>
-            <div className='col-xs-12 margin-top margin-bottom'>
-              <button
-                className='button full-width'
-                disabled={this.state.loading}
-                onClick={this.onSubmit.bind(this)}
-              >
-                Submit gradescale
-                {this.state.loading ? <Loading style={{color: 'white', marginLeft: '0.5em'}} /> : null}
-              </button>
-            </div>
-          </div>
+        <div className="grade-scales">
+          {this.renderCurrentGradeScale()}
+          {this.renderOtherGradeScales()}
         </div>
-
-        <div className='margin-top'>
-          <Grid
-            headers={headers}
-            rows={this.getRows()}
-            disabled={true}
-          />
-        </div>
-
-        <a style={{display: 'block', cursor: 'pointer'}} className='margin-top' onClick={() => this.toggleGradeScales()}> {gradeScalesText} </a>
       </div>
     )
   }
