@@ -76,7 +76,7 @@ class Verification extends React.Component {
               className={`button full-width ${disableClass}`}
               onClick={this.onNext.bind(this)}
               disabled={disableButton}
-            >Aight</button>
+            >Continue</button>
           </div>
         </div>
       </div>
