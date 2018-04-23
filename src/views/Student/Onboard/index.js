@@ -48,21 +48,9 @@ class Onboard extends React.Component {
   render () {
     return (
       <div className='cn-onboarding-container'>
-
-        { this.state.currentIndex !== this.state.stepCount - 1
-          ? <div className='full-width' style={{display: 'flex', flex: 1}}>
-            <ProgressBar currentStep={this.state.currentIndex + 1}>
-              {steps.map((step, index) => {
-                return <ProgressStep key={`step-${index}`} label={step} />
-              })}
-            </ProgressBar>
-          </div> : null
-        }
-
         <div className='full-width' style={{display: 'flex', flex: 5}}>
           {this.renderContent()}
         </div>
-
       </div>
     )
   }

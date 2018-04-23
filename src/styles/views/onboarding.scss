@@ -42,30 +42,18 @@
   }
 
   .cn-verification-container {
-    width: 100%;
+    width: 400px;
     .img-container {
       align-items: center;
       display: flex;
-      @include breakpoint(medium) {
-        justify-content: flex-end;
-      }
-      @include breakpoint(small) {
-        justify-content: center;
-      }
-
-      img {
-        height: 10rem;
-      }
     }
     .content-container {
-      @include breakpoint(tablet) {
-        align-items: flex-start;
+      
+      h1 {
+        font-size: 36px;
+        margin-bottom: 0;
       }
-      @include breakpoint(small) {
-        align-items: center;
-        display: flex;
-        flex-direction: column;
-      }
+
       .resend-verification {
         font-size: 11px;
         margin-left: auto;
