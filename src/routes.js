@@ -15,6 +15,7 @@ import ResetPassword from './views/ResetPassword'
 import DIYLanding from './views/Student/DIYLanding'
 import MyClasses from './views/Student/MyClasses'
 import Onboard from './views/Student/Onboard'
+import Verification from './views/Student/Verification'
 
 import AssignmentsTutorial from './views/SyllabusTutorial/AssignmentsTutorial'
 import WeightsTutorial from './views/SyllabusTutorial/WeightsTutorial'
@@ -49,7 +50,8 @@ const router = (
         <IndexRedirect to='/student/classes' />
         <Route path='/student'>
           <IndexRedirect to='/student/classes'/>
-          <Route path='/student/onboard' component={Onboard} onEnter={authOnboard} />
+          <Route path='/student/onboard' component={Onboard} />
+          <Route path='/student/verify' component={Verification} onEnter={authOnboard} />
           <Route path='/student/diy' component={DIYLanding} />
           <Route path='/student/classes' component={MyClasses}/>
         </Route>
@@ -117,7 +119,7 @@ function authenticateStudent (user) {
       }).catch(() => false)
     } else {
       return new Promise((resolve, reject) => {
-        resolve(browserHistory.push('/student/onboard'))
+        resolve(browserHistory.push('/student/verify'))
       })
     }
   }
@@ -131,8 +133,10 @@ function authenticateStudent (user) {
 */
 function authOnboard () {
   if (userStore.user) {
-    if (!userStore.user.student) {
-      browserHistory.push('/student/classes')
+    if (userStore.user.student) {
+      if (userStore.user.student.is_verified) {
+        browserHistory.push('/student/classes')
+      }
     }
   }
 }

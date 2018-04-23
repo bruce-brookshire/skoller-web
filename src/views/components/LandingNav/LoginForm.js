@@ -65,7 +65,7 @@ class LoginForm extends React.Component {
                 : browserHistory.push('/student/onboard')
             }).catch(() => false)
           } else {
-            browserHistory.push('/student/onboard')
+            browserHistory.push('/student/verify')
           }
         } else {
           browserHistory.push('/hub')

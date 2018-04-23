@@ -49,6 +49,7 @@
 
 // Composed Views ------------------------
 @import 'views/mixins/landing.scss';
+@import 'views/mixins/onboarding.scss';
 @import 'views/analytics.scss';
 @import 'views/call-to-action.scss';
 @import 'views/class-approval.scss';
@@ -71,7 +72,7 @@
 @import 'views/switchboard.scss';
 @import 'views/syllabus-tool.scss';
 @import 'views/syllabus-tutorial.scss';
-
+@import 'views/verification.scss';
 
 html { box-sizing: border-box; }
 

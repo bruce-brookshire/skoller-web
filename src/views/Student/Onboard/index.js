@@ -4,18 +4,13 @@ import {inject, observer} from 'mobx-react'
 import Classes from './Classes'
 import ProjectFourDoor from './ProjectFourDoor'
 import SubmitSyllabi from './SubmitSyllabi/index'
-import Verification from './Verification'
-import {ProgressBar, ProgressStep} from '../../../components/ProgressBar'
-
-const steps = [ 'Personal Info', 'Verification', 'Enroll in classes', 'Submit syllabi' ]
 
 @inject('rootStore') @observer
 class Onboard extends React.Component {
   constructor (props) {
     super(props)
-    const {userStore: {user}} = props.rootStore
     this.state = {
-      currentIndex: user.student.is_verified ? 1 : 0,
+      currentIndex: 1,
       stepCount: 4,
       showUploadWarning: false
     }
@@ -23,8 +18,6 @@ class Onboard extends React.Component {
 
   renderContent () {
     switch (this.state.currentIndex) {
-      case 0:
-        return <Verification onNext={this.onNext.bind(this)}/>
       case 1:
         return <Classes onNext={this.onNext.bind(this)} />
       case 2:
@@ -37,12 +30,6 @@ class Onboard extends React.Component {
 
   onNext () {
     this.setState({currentIndex: this.state.currentIndex + 1})
-  }
-
-  onPrevious () {
-    if (this.state.currentIndex !== 0 && !(this.state.currentIndex === 1 && userStore.user.is_verified)) {
-      this.setState({currentIndex: this.state.currentIndex - 1})
-    }
   }
 
   render () {
