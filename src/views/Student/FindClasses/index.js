@@ -42,7 +42,7 @@ const headers = [
 ]
 
 
-class Classes extends React.Component {
+class FindClasses extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -240,8 +240,8 @@ class Classes extends React.Component {
   }
 }
 
-Classes.propTypes = {
+FindClasses.propTypes = {
   onNext: PropTypes.func.isRequired
 }
 
-export default Classes
+export default FindClasses

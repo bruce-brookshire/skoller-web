@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
-import Classes from './Classes'
+import FindClasses from '../FindClasses'
 import ProjectFourDoor from './ProjectFourDoor'
 import SubmitSyllabi from './SubmitSyllabi/index'
 
@@ -19,7 +19,7 @@ class Onboard extends React.Component {
   renderContent () {
     switch (this.state.currentIndex) {
       case 1:
-        return <Classes onNext={this.onNext.bind(this)} />
+        return <FindClasses onNext={this.onNext.bind(this)} />
       case 2:
         return <SubmitSyllabi onNext={this.onNext.bind(this)} />
       case 3:

@@ -3,6 +3,7 @@ import {inject, observer} from 'mobx-react'
 import VerificationCode from '../../../components/VerificationCode'
 import actions from '../../../actions'
 import {formatPhone} from '../../../utilities/display'
+import {browserHistory} from 'react-router'
 
 const numberOfDigits = 5
 
@@ -45,7 +46,7 @@ class Verification extends React.Component {
   */
   onNext () {
     actions.auth.verifyPhoneNumber(this.getForm()).then(() => {
-      this.props.onNext()
+      browserHistory.push('/student/onboard')
     }).catch(() => false)
   }
 
