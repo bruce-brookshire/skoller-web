@@ -42,6 +42,7 @@
 
           @include breakpoint(medium) {
             flex-basis: calc(50% - 2rem);
+            max-width: 350px;
           }
 
           @include breakpoint(large) {
@@ -142,6 +143,7 @@
 
           @include breakpoint(medium) {
             flex-basis: calc(50% - 2rem);
+            max-width: 350px;
           }
 
           @include breakpoint(large) {
