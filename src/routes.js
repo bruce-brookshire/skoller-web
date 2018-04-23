@@ -14,7 +14,7 @@ import ResetPassword from './views/ResetPassword'
 
 import DIYLanding from './views/Student/DIYLanding'
 import MyClasses from './views/Student/MyClasses'
-import Onboard from './views/Student/Onboard'
+import FindClasses from './views/Student/FindClasses'
 import Verification from './views/Student/Verification'
 
 import AssignmentsTutorial from './views/SyllabusTutorial/AssignmentsTutorial'
@@ -50,7 +50,7 @@ const router = (
         <IndexRedirect to='/student/classes' />
         <Route path='/student'>
           <IndexRedirect to='/student/classes'/>
-          <Route path='/student/onboard' component={Onboard} />
+          <Route path='/student/find-classes' component={FindClasses} />
           <Route path='/student/verify' component={Verification} onEnter={authOnboard} />
           <Route path='/student/diy' component={DIYLanding} />
           <Route path='/student/classes' component={MyClasses}/>
@@ -92,12 +92,8 @@ function requireAuth (nextState, replaceState) {
     actions.auth.getUserByToken()
       .then((user) => {
         authenticateStudent(user.user).then(() => {
-          if (nextState.routes.findIndex(route => route.path === '/student/onboard') !== -1) {
-            authOnboard()
-          }
           userStore.setFetchingUser(false)
         }).catch((error) => { userStore.setFetchingUser(false) })
-
         userStore.setFetchingUser(false)
       })
       .catch((error) => {
@@ -115,7 +111,7 @@ function authenticateStudent (user) {
   if (user.student) {
     if (user.student.is_verified) {
       return actions.classes.getStudentClasses().then((classes) => {
-        if (classes.length === 0) browserHistory.push('/student/onboard')
+        if (classes.length === 0) browserHistory.push('/student/find-classes')
       }).catch(() => false)
     } else {
       return new Promise((resolve, reject) => {

@@ -1,0 +1,21 @@
+.cn-find-classes-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .cn-find-classes-content {
+    width: 382px;
+
+    .cn-find-classes-header {
+      h2 {
+        font-size: 36px;
+        margin-bottom: $unit-space / 2;
+      }
+
+      p {
+        margin: 0;
+        font-size: 14px;
+      }
+    }
+  }
+}

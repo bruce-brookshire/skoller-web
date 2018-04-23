@@ -46,7 +46,7 @@ class Verification extends React.Component {
   */
   onNext () {
     actions.auth.verifyPhoneNumber(this.getForm()).then(() => {
-      browserHistory.push('/student/onboard')
+      browserHistory.push('/student/find-classes')
     }).catch(() => false)
   }
 
