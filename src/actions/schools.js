@@ -72,6 +72,27 @@ export function getHubSchoolsMinified () {
 }
 
 /*
+* Search schools by name
+*/
+export function searchSchools (param) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/school/list?name=${param}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error fetching schools. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
 * Grab all the schools in the system for admin.
 *
 * @params [Object] form. Login form data.
