@@ -20,10 +20,9 @@ export function maskPhoneNumber (oldPhoneNumber, newPhoneNumber) {
         }
         break
       case 9:
-        if (newNumber[4] == '-') {
+        if (newNumber[4] === '-') {
           formatedPhoneNumber = `${newNumber.slice(0, 3)}-${newNumber[3]}${newNumber.slice(5, 7)}-${newNumber.slice(7, 9)}`
-        }
-        else if (newNumber[7] !== '-') {
+        } else if (newNumber[7] !== '-') {
           formatedPhoneNumber = `${newNumber.slice(0, 7)}-${newNumber.slice(7, 9)}`
         }
         break

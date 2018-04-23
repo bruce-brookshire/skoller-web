@@ -1,9 +1,12 @@
 import React from 'react'
+import {inject, observer} from 'mobx-react'
 import VerificationCode from '../../../components/VerificationCode'
 import actions from '../../../actions'
+import {formatPhone} from '../../../utilities/display'
 
 const numberOfDigits = 5
 
+@inject('rootStore') @observer
 class Verification extends React.Component {
   constructor (props) {
     super(props)
@@ -57,35 +60,25 @@ class Verification extends React.Component {
   render () {
     const disableButton = !this.isValid()
     const disableClass = disableButton ? 'disabled' : ''
+    const {userStore: {user}} = this.props.rootStore
 
     return (
       <div className='vertical-align' style={{margin: '0 auto'}}>
         <div className='cn-verification-container'>
-          <div className='row'>
-            <div className='col-xs-12 col-sm-4 img-container'>
-              <img className='right center-vertical' src='/src/assets/images/buzz_buzz.png' />
-            </div>
-            <div className='col-xs-12 col-sm-8 content-container'>
-              <h1>Buzz Buzz</h1>
-              <span>We sent a verification code to your phone. Enter it here, please.</span>
-              <VerificationCode numberOfDigits={numberOfDigits} onChange={this.onChange.bind(this)} />
-              <a className='resend-verification' onClick={this.onResendVerification.bind(this)}>Resend verification code?</a>
-            </div>
+          <div className='img-container'>
+            <img className='center-vertical' src='/src/assets/images/letter2.png' />
+          </div>
+          <div className='content-container'>
+            <h1>Verify your phone number</h1>
+            <span>We sent a verification code to {formatPhone(user.student.phone)}. Enter it here! Didn’t get it? <a onClick={this.onResendVerification.bind(this)}>Resend link</a>.</span>
+            <VerificationCode numberOfDigits={numberOfDigits} onChange={this.onChange.bind(this)} />
+            <button
+              className={`button full-width ${disableClass}`}
+              onClick={this.onNext.bind(this)}
+              disabled={disableButton}
+            >Continue</button>
           </div>
         </div>
-
-        <div className='row full-width justify-center'>
-          <div className='space-between-vertical col-xs-12 col-md-8 col-lg-6'>
-            <div style={{position: 'relative'}}>
-              <button
-                className={`button full-width margin-top margin-bottom ${disableClass}`}
-                onClick={this.onNext.bind(this)}
-                disabled={disableButton}
-              >Aight</button>
-            </div>
-          </div>
-        </div>
-
       </div>
     )
   }

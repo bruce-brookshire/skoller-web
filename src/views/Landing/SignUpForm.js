@@ -6,6 +6,7 @@ import {Form, ValidateForm} from 'react-form-library'
 import {InputField, CheckboxField} from '../../components/Form'
 import actions from '../../actions'
 import {maskPhoneNumber} from '../../utilities/mask'
+import {wrapTimeHour} from '../../utilities/time'
 
 const requiredFields = {
   'email': {
@@ -59,8 +60,8 @@ class SignUpForm extends React.Component {
         gender: '',
         is_university: true,
         is_highschool: false,
-        notification_time: `${7 + (date.getTimezoneOffset() / 60)}:00:00`,
-        future_reminder_notification_time: `${17 + (date.getTimezoneOffset() / 60)}:00:00`
+        notification_time: `${wrapTimeHour(date, 7)}:00:00`,
+        future_reminder_notification_time: `${wrapTimeHour(date, 17)}:00:00`
       }
     }
   }

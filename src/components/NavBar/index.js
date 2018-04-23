@@ -32,9 +32,10 @@ class NavBar extends React.Component {
   }
 
   getSchool () {
+    // TODO: Fix
     const {userStore: {user}} = this.props.rootStore
     if (user.student) {
-      return `${user.student.school.name}`
+      return `A school?`
     } else {
       return 'Skoller'
     }
