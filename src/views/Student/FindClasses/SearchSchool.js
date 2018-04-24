@@ -76,6 +76,7 @@ class SearchSchool extends React.Component {
         updateAutoCompleteResults={this.onUpdateAutoComplete.bind(this)}
         placeholder='Find your school'
         renderRow={this.renderRow.bind(this)}
+        newRow={true}
       />
     )
   }
