@@ -30,6 +30,7 @@ class CreateSchoolModal extends React.Component {
     return {
       form: this.initializeFormData(),
       loading: false,
+      statesLoading: false,
       universityError: false,
       states: []
     }
@@ -46,10 +47,16 @@ class CreateSchoolModal extends React.Component {
   }
 
   componentWillMount () {
-    this.setState({loading: true})
+    this.setState({statesLoading: true})
     actions.schools.getStates().then((states) => {
-      this.setState({states, loading: false})
-    }).catch(() => { this.setState({loading: false}) })
+      this.setState({states, statesLoading: false})
+    }).catch(() => { this.setState({statesLoading: false}) })
+  }
+
+  mapForm (form) {
+    let newForm = form
+    newForm.adr_country = 'us'
+    return newForm
   }
 
   /*
@@ -63,14 +70,15 @@ class CreateSchoolModal extends React.Component {
     } else {
       this.setState({universityError: false})
       if (this.props.validateForm(this.state.form, requiredFields)) {
-        this.onCreateSchool(this.state.form)
+        const form = this.mapForm(this.state.form)
+        this.onCreateSchool(form)
       }
     }
   }
 
   onCreateSchool (form) {
     this.setState({loading: true})
-    actions.classes.createSchool(form).then((school) => {
+    actions.schools.createSchool(form).then((school) => {
       this.props.onSubmit(school)
       this.props.onClose()
       this.setState({loading: false})
@@ -134,7 +142,7 @@ class CreateSchoolModal extends React.Component {
             placeholder='School city'
             value={form.adr_locality}
           />
-          {this.state.loading ? <Loading /> : <SelectField
+          {this.state.statesLoading ? <Loading /> : <SelectField
             containerClassName='margin-top'
             error={formErrors.adr_region}
             label='School state'
@@ -144,6 +152,9 @@ class CreateSchoolModal extends React.Component {
             value={form.adr_region}
             options={this.state.states}
           />}
+          <button
+            className='button margin-top margin-bottom form-button'
+          >Save new school</button>
         </form>
       </div>
     )
