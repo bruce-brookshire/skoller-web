@@ -156,6 +156,9 @@ class CreateSchoolModal extends React.Component {
             className='button margin-top margin-bottom form-button'
           >Save new school</button>
         </form>
+        <div className='cn-create-school-footer'>
+          We&apos;ll use this info for all classes at this school
+        </div>
       </div>
     )
   }
