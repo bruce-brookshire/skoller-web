@@ -60,6 +60,7 @@ class FindClasses extends React.Component {
   renderClass () {
     return (
       <div className='cn-find-classes-field'>
+        <div className='cn-find-classes-label'>Class name</div>
         <SearchClass
           schoolId={this.state.school.id}
           onSchoolSelect={this.onSubmitSchool.bind(this)}
