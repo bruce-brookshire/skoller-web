@@ -3,11 +3,11 @@ import PropTypes from 'prop-types'
 import AutoComplete from '../../../components/AutoComplete'
 import actions from '../../../actions'
 
-class SearchSchool extends React.Component {
+class SearchClass extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      schools: [],
+      classes: [],
       loading: false
     }
   }
@@ -16,7 +16,7 @@ class SearchSchool extends React.Component {
   * Return the data source for the auto complete.
   */
   getDataSource () {
-    return this.state.schools
+    return this.state.classes
   }
 
   /*
@@ -26,23 +26,23 @@ class SearchSchool extends React.Component {
   onUpdateAutoComplete (value) {
     if (value) {
       this.setState({loading: true})
-      actions.schools.searchSchools(value).then((schools) => {
-        this.setState({schools, loading: false})
+      actions.classes.searchStudentClasses(this.props.schoolId, value).then((classes) => {
+        this.setState({classes, loading: false})
       }).catch(() => { this.setState({loading: false}) })
     } else {
-      this.setState({schools: []})
+      this.setState({classes: []})
     }
   }
 
-  onSchoolCreate (name) {
-    this.props.onSchoolCreate(name)
+  onClassCreate (name) {
+    this.props.onClassCreate(name)
   }
 
   /*
-  * If school exists, select school
+  * If class exists, select class
   */
-  onSchoolSelect (school, resetState) {
-    this.props.onSchoolSelect(school)
+  onClassSelect (cl, resetState) {
+    this.props.onClassSelect(cl)
     resetState()
   }
 
@@ -51,7 +51,7 @@ class SearchSchool extends React.Component {
   */
   renderRow (data, index, resetState) {
     return (
-      <div className='cn-autocomplete-result' key={`result-${index}`} onClick={() => this.onSchoolSelect(data, resetState)}>
+      <div className='cn-autocomplete-result' key={`result-${index}`} onClick={() => this.onClassSelect(data, resetState)}>
         <div>
           <span>{data.name}</span>
         </div>
@@ -63,7 +63,8 @@ class SearchSchool extends React.Component {
     return (
       <div className='cn-autocomplete-results-container'>
         <div className='cn-autocomplete-result'>
-          <a onClick={() => this.onSchoolCreate(searchText())}>Create a new school called {searchText()}</a>
+          {/* <a onClick={() => this.onClassCreate(searchText())}>Create a new class called {searchText()}</a> */}
+          This should be on the bottom
         </div>
       </div>
     )
@@ -76,16 +77,17 @@ class SearchSchool extends React.Component {
         dataSource={this.getDataSource()}
         emptyMessage={this.emptyMessage.bind(this)}
         updateAutoCompleteResults={this.onUpdateAutoComplete.bind(this)}
-        placeholder='Find your school'
+        placeholder='Find your class'
         renderRow={this.renderRow.bind(this)}
       />
     )
   }
 }
 
-SearchSchool.propTypes = {
-  onSchoolSelect: PropTypes.func.isRequired,
-  onSchoolCreate: PropTypes.func.isRequired
+SearchClass.propTypes = {
+  schoolId: PropTypes.number,
+  onClassSelect: PropTypes.func.isRequired,
+  onClassCreate: PropTypes.func.isRequired
 }
 
-export default SearchSchool
+export default SearchClass

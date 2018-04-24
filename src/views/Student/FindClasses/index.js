@@ -4,6 +4,7 @@ import {Form, ValidateForm} from 'react-form-library'
 import actions from '../../../actions'
 import {InputField} from '../../../components/Form'
 import SearchSchool from './SearchSchool'
+import SearchClass from './SearchClass'
 import CreateSchoolModal from './CreateSchoolModal'
 import Modal from '../../../components/Modal'
 
@@ -29,7 +30,7 @@ class FindClasses extends React.Component {
     this.toggleCreateSchoolModal()
   }
 
-  renderSchool () {
+  renderSchoolName () {
     const {formErrors} = this.props
     return (
       <InputField
@@ -40,6 +41,40 @@ class FindClasses extends React.Component {
         }}
         value={this.state.schoolName}
       />
+    )
+  }
+
+  renderSchool () {
+    let {school} = this.state
+    return (
+      <div className='cn-find-classes-field'>
+        <div className='cn-find-classes-label'>School</div>
+        {school ? this.renderSchoolName() : <SearchSchool
+          onSchoolSelect={this.onSubmitSchool.bind(this)}
+          onSchoolCreate={this.onCreateSchool.bind(this)}
+        />}
+      </div>
+    )
+  }
+
+  renderClass () {
+    return (
+      <div className='cn-find-classes-field'>
+        <SearchClass
+          schoolId={this.state.school.id}
+          onSchoolSelect={this.onSubmitSchool.bind(this)}
+          onSchoolCreate={this.onCreateSchool.bind(this)}
+        />
+      </div>
+    )
+  }
+
+  renderDisabledField () {
+    return (
+      <div className='cn-find-classes-field'>
+        <div className='cn-find-classes-disabled-label'></div>        
+        <div className='cn-find-classes-disabled'></div>
+      </div>
     )
   }
 
@@ -75,11 +110,8 @@ class FindClasses extends React.Component {
             <h2>Set up or find a class</h2>
             <p>Make sure this info is correct so your classmates can find the class!</p>
           </div>
-          <h5>School</h5>
-          {schoolName ? this.renderSchool() : <SearchSchool
-            onSchoolSelect={this.onSubmitSchool.bind(this)}
-            onSchoolCreate={this.onCreateSchool.bind(this)}
-          />}
+          {this.renderSchool()}
+          {this.state.school ? this.renderClass() : this.renderDisabledField()}
         </div>
         {schoolName && this.renderCreateSchoolModal()}
       </div>

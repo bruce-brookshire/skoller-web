@@ -18,9 +18,26 @@
       }
     }
 
-    h5 {
-      @include form-label;
-      font-weight: normal;
+    .cn-find-classes-field {
+      margin-top: $unit-space;
+
+      .cn-find-classes-label {
+        @include form-label;
+        font-weight: normal;
+        margin-top: $unit-space;
+      }
+
+      .cn-find-classes-disabled-label {
+        @include form-label;
+        height: 14px;
+        width: 50%;
+        background-color: $cn-color-grey;
+      }
+
+      .cn-find-classes-disabled {
+        height: 32px;
+        background-color: $cn-color-grey;
+      }
     }
   }
 }

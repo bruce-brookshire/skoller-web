@@ -33,9 +33,8 @@ export function searchClasses (queryString) {
 *
 * @params [Object] param. Search parameters.
 */
-export function searchStudentClasses (param) {
-  const {user: {student: {school}}} = userStore
-  return fetch(`${Environment.SERVER_NAME}/api/v1/schools/${school.id}/classes?class_name=${param}&class_number=${param}&professor_name=${param}&or=true&enrollable_period=true`, {
+export function searchStudentClasses (schoolId, name) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/schools/${schoolId}/classes?class_name=${name}`, {
     method: 'GET',
     headers: {
       'Authorization': userStore.authToken,
