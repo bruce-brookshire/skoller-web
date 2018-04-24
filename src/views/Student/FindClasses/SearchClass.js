@@ -52,8 +52,16 @@ class SearchClass extends React.Component {
   renderRow (data, index, resetState) {
     return (
       <div className='cn-autocomplete-result' key={`result-${index}`} onClick={() => this.onClassSelect(data, resetState)}>
-        <div>
-          <span>{data.name}</span>
+        <div className='cn-find-classes-results'>
+          <span className='cn-find-classes-results-item class-name'>{data.name}</span>
+          <span className='cn-find-classes-results-item'></span>
+          {data.professor
+            ? <span className='cn-find-classes-results-item'>{data.professor.name_first} {data.professor.name_last}</span>
+            : <span className='cn-find-classes-results-item'>--</span>}
+          <span className='cn-find-classes-results-item'>{data.class_period_name}</span>
+          <span className='cn-find-classes-results-item'>{data.meet_days} {data.meet_start_time}</span>
+          <span className='cn-find-classes-results-item'>{data.subject} {data.code}-{data.section}</span>
+          <div className='cn-results-divider'></div>
         </div>
       </div>
     )
@@ -62,8 +70,7 @@ class SearchClass extends React.Component {
   emptyMessage (searchText) {
     return (
       <div className='cn-autocomplete-result'>
-        {/* <a onClick={() => this.onClassCreate(searchText())}></a> */}
-        Create a new class called {searchText()}
+        <a onClick={() => this.onClassCreate(searchText())}>Create a new class called {searchText()}</a>
       </div>
     )
   }

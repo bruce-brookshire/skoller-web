@@ -35,8 +35,13 @@ class FindClasses extends React.Component {
     this.setState({cl: cl, clName: cl.name})
   }
 
-  onCreateSchool (school) {
-    this.setState({schoolName: school})
+  onCreateClass (clName) {
+    this.setState({clName})
+    this.toggleCreateSchoolModal()
+  }
+
+  onCreateSchool (schoolName) {
+    this.setState({schoolName})
     this.toggleCreateSchoolModal()
   }
 
@@ -89,7 +94,7 @@ class FindClasses extends React.Component {
         {cl ? this.renderClassName() : <SearchClass
           schoolId={this.state.school.id}
           onClassSelect={this.onSubmitClass.bind(this)}
-          onClassCreate={this.onCreateSchool.bind(this)}
+          onClassCreate={this.onCreateClass.bind(this)}
         />}
       </div>
     )
@@ -98,7 +103,7 @@ class FindClasses extends React.Component {
   renderDisabledField () {
     return (
       <div className='cn-find-classes-field'>
-        <div className='cn-find-classes-disabled-label'></div>        
+        <div className='cn-find-classes-disabled-label'></div>
         <div className='cn-find-classes-disabled'></div>
       </div>
     )
