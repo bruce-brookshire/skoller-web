@@ -17,5 +17,10 @@
         font-size: 14px;
       }
     }
+
+    h5 {
+      @include form-label;
+      font-weight: normal;
+    }
   }
 }
