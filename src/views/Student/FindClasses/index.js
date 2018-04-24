@@ -4,13 +4,16 @@ import {Form, ValidateForm} from 'react-form-library'
 import actions from '../../../actions'
 import {InputField} from '../../../components/Form'
 import SearchSchool from './SearchSchool'
+import CreateSchoolModal from './CreateSchoolModal'
+import Modal from '../../../components/Modal'
 
 class FindClasses extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       school: null,
-      schoolName: ''
+      schoolName: '',
+      openCreateSchoolModal: false
     }
   }
 
@@ -24,8 +27,13 @@ class FindClasses extends React.Component {
     this.setState({school: school, schoolName: school.name})
   }
 
+  onCreateSchool (school) {
+    this.setState({schoolName: school})
+    this.toggleCreateSchoolModal()
+  }
+
   renderSchool () {
-    const {formErrors, updateProperty} = this.props
+    const {formErrors} = this.props
     return (
       <InputField
         error={formErrors.schoolName}
@@ -42,6 +50,25 @@ class FindClasses extends React.Component {
     this.setState({school: null, schoolName: ''})
   }
 
+  toggleCreateSchoolModal () {
+    this.setState({openCreateSchoolModal: !this.state.openCreateSchoolModal})
+  }
+
+  renderCreateSchoolModal () {
+    return (
+      <Modal
+        open={this.state.openCreateSchoolModal}
+        onClose={this.toggleCreateSchoolModal.bind(this)}
+      >
+        <CreateSchoolModal
+          name={this.state.schoolName}
+          onClose={this.toggleCreateSchoolModal.bind(this)}
+          onSubmit={this.onSubmitSchool.bind(this)}
+        />
+      </Modal>
+    )
+  }
+
   render () {
     let {schoolName} = this.state
     return (
@@ -54,8 +81,10 @@ class FindClasses extends React.Component {
           <h5>School</h5>
           {schoolName ? this.renderSchool() : <SearchSchool
             onSchoolSelect={this.onSubmitSchool.bind(this)}
+            onSchoolCreate={this.onCreateSchool.bind(this)}
           />}
         </div>
+        {schoolName && this.renderCreateSchoolModal()}
       </div>
     )
   }

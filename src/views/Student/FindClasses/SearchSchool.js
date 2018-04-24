@@ -34,8 +34,12 @@ class SearchSchool extends React.Component {
     }
   }
 
+  onSchoolCreate (name) {
+    this.props.onSchoolCreate(name)
+  }
+
   /*
-  * If professor exists, select professor
+  * If professor exists, select school
   */
   onSchoolSelect (school, resetState) {
     this.props.onSchoolSelect(school)
@@ -55,18 +59,22 @@ class SearchSchool extends React.Component {
     )
   }
 
+  emptyMessage (searchText) {
+    return (
+      <div className='cn-autocomplete-results-container'>
+        <div className='cn-autocomplete-result'>
+          <a onClick={() => this.onSchoolCreate(searchText())}>Create a new school called {searchText()}</a>
+        </div>
+      </div>
+    )
+  }
+
   render () {
     return (
       <AutoComplete
         className={this.state.loading ? 'loading' : ''}
         dataSource={this.getDataSource()}
-        emptyMessage={
-          <div className='cn-autocomplete-results-container'>
-            <div className='cn-autocomplete-result'>{`Can\'t find your professor? `}
-              {/* <a onClick={this.onAddProfessor.bind(this)}>Add a new one.</a> */}
-            </div>
-          </div>
-        }
+        emptyMessage={this.emptyMessage.bind(this)}
         updateAutoCompleteResults={this.onUpdateAutoComplete.bind(this)}
         placeholder='Find your school'
         renderRow={this.renderRow.bind(this)}
@@ -76,7 +84,8 @@ class SearchSchool extends React.Component {
 }
 
 SearchSchool.propTypes = {
-  onSchoolSelect: PropTypes.func.isRequired
+  onSchoolSelect: PropTypes.func.isRequired,
+  onSchoolCreate: PropTypes.func.isRequired
 }
 
 export default SearchSchool

@@ -53,7 +53,7 @@ class AutoComplete extends React.Component {
       const loading = this.state.newSearch || this.props.className == 'loading'
       const blank = this.state.autoCompleteValue == ''
       if (this.props.dataSource.length === 0 && !loading && !blank) {
-        return this.props.emptyMessage
+        return this.props.emptyMessage(this.getSearchText.bind(this))
       }
       return (
         <div className='cn-autocomplete-results-container'>

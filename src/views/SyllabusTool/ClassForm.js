@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
 import {InputField, TimeInputField} from '../../components/Form'
-import Modal from '../../components/Modal'
 import actions from '../../actions'
 import {convertUTCDatetimeToDateString, convertLocalDateToUTC,
   mapTimeStringToInput} from '../../utilities/time'
