@@ -11,18 +11,28 @@ import Modal from '../../../components/Modal'
 class FindClasses extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {
-      school: null,
-      schoolName: '',
-      openCreateSchoolModal: false
-    }
+    this.state = this.initializeState()
   }
 
   componentWillMount () {
   }
 
+  initializeState () {
+    return {
+      school: null,
+      schoolName: '',
+      openCreateSchoolModal: false,
+      cl: null,
+      clName: ''
+    }
+  }
+
   onSubmitSchool (school) {
     this.setState({school: school, schoolName: school.name})
+  }
+
+  onSubmitClass (cl) {
+    this.setState({cl: cl, clName: cl.name})
   }
 
   onCreateSchool (school) {
@@ -44,6 +54,20 @@ class FindClasses extends React.Component {
     )
   }
 
+  renderClassName () {
+    const {formErrors} = this.props
+    return (
+      <InputField
+        error={formErrors.clName}
+        name='clName'
+        onChange={(name, value) => {
+          this.resetClass()
+        }}
+        value={this.state.clName}
+      />
+    )
+  }
+
   renderSchool () {
     let {school} = this.state
     return (
@@ -58,14 +82,15 @@ class FindClasses extends React.Component {
   }
 
   renderClass () {
+    let {cl} = this.state
     return (
       <div className='cn-find-classes-field'>
         <div className='cn-find-classes-label'>Class name</div>
-        <SearchClass
+        {cl ? this.renderClassName() : <SearchClass
           schoolId={this.state.school.id}
-          onSchoolSelect={this.onSubmitSchool.bind(this)}
-          onSchoolCreate={this.onCreateSchool.bind(this)}
-        />
+          onClassSelect={this.onSubmitClass.bind(this)}
+          onClassCreate={this.onCreateSchool.bind(this)}
+        />}
       </div>
     )
   }
@@ -79,8 +104,12 @@ class FindClasses extends React.Component {
     )
   }
 
+  resetClass () {
+    this.setState({cl: null, clName: ''})
+  }
+
   resetSchool () {
-    this.setState({school: null, schoolName: ''})
+    this.setState(this.initializeState())
   }
 
   toggleCreateSchoolModal () {
