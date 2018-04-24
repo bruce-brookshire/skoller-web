@@ -24,6 +24,7 @@ class FindClasses extends React.Component {
       openCreateSchoolModal: false,
       cl: null,
       clName: '',
+      newSchool: false,
       newCl: false
     }
   }
@@ -41,7 +42,7 @@ class FindClasses extends React.Component {
   }
 
   onCreateSchool (schoolName) {
-    this.setState({schoolName})
+    this.setState({schoolName, newSchool: true})
     this.toggleCreateSchoolModal()
   }
 
@@ -66,7 +67,7 @@ class FindClasses extends React.Component {
         error={formErrors.clName}
         name='clName'
         onChange={(name, value) => {
-          this.resetClass()
+          this.resetClass(value)
         }}
         value={this.state.clName}
       />
@@ -87,11 +88,11 @@ class FindClasses extends React.Component {
   }
 
   renderClass () {
-    let {cl, newCl} = this.state
+    let {cl, newCl, newSchool} = this.state
     return (
       <div className='cn-find-classes-field cn-find-classes-class-name'>
         <div className='cn-find-classes-label'>Class name</div>
-        {(cl || newCl) ? this.renderClassName() : <SearchClass
+        {(cl || newCl || newSchool) ? this.renderClassName() : <SearchClass
           schoolId={this.state.school.id}
           onClassSelect={this.onSubmitClass.bind(this)}
           onClassCreate={this.onCreateClass.bind(this)}
@@ -109,8 +110,13 @@ class FindClasses extends React.Component {
     )
   }
 
-  resetClass () {
-    this.setState({cl: null, clName: '', newCl: false})
+  resetClass (value) {
+    const {newSchool} = this.state
+    if (newSchool) {
+      this.setState({clName: value})
+    } else {
+      this.setState({cl: null, clName: '', newCl: false})
+    }
   }
 
   resetSchool () {
