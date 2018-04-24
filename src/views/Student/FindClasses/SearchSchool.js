@@ -56,6 +56,7 @@ class SearchSchool extends React.Component {
           <span className='cn-find-classes-results-item title'>{data.name}</span>
           <span className='cn-find-classes-results-item'></span>
           <span className='cn-find-classes-results-item'>{data.adr_locality}, {data.adr_region}</span>
+          <div className='cn-results-divider'></div>
         </div>
       </div>
     )
