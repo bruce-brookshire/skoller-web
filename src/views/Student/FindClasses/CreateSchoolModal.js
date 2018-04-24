@@ -8,9 +8,6 @@ const requiredFields = {
   'name': {
     type: 'required'
   },
-  'is_university': {
-    type: 'required'
-  },
   'adr_locality': {
     type: 'required'
   },
@@ -38,7 +35,8 @@ class CreateSchoolModal extends React.Component {
 
   initializeFormData () {
     return {
-      is_university: null,
+      is_university: true,
+      is_highschool: false,
       name: this.props.name || '',
       adr_locality: '',
       adr_region: ''
@@ -51,7 +49,7 @@ class CreateSchoolModal extends React.Component {
   onSubmit (event) {
     event.preventDefault()
 
-    if (!this.state.form.is_university && !this.state.form.student.is_highschool) {
+    if (!this.state.form.is_university && !this.state.form.is_highschool) {
       this.setState({universityError: true})
     } else {
       this.setState({universityError: false})
@@ -75,37 +73,42 @@ class CreateSchoolModal extends React.Component {
     const {formErrors, updateProperty} = this.props
 
     return (
-      <form onSubmit={this.onSubmit.bind(this)}>
-        <div className='is-university'>
-          <CheckboxField
-            containerClassName='margin-top margin-right'
-            error={universityError}
-            label='College'
-            name='is_university'
-            onChange={(name, value) => {
-              updateProperty(name, value)
-              if (value === true) {
-                updateProperty('is_highschool', false)
-              }
-            }}
-            value={form.is_university}
-          />
-          <small className='sub-header'>or</small>
-          <CheckboxField
-            containerClassName='margin-top margin-left'
-            error={universityError}
-            label='High school'
-            name='is_highschool'
-            onChange={(name, value) => {
-              updateProperty(name, value)
-              if (value === true) {
-                updateProperty('is_university', false)
-              }
-            }}
-            value={form.is_highschool}
-          />
+      <div className='cn-create-school-container'>
+        <div className='cn-create-school-header'>
+          Create a new school
         </div>
-      </form>
+        <form onSubmit={this.onSubmit.bind(this)}>
+          <div className='is-university'>
+            <CheckboxField
+              containerClassName='margin-top margin-right'
+              error={universityError}
+              label='College'
+              name='is_university'
+              onChange={(name, value) => {
+                let form = this.state.form
+                form.is_university = value
+                form.is_highschool = !value
+                this.setState({form})
+              }}
+              value={form.is_university}
+            />
+            <small className='sub-header'>or</small>
+            <CheckboxField
+              containerClassName='margin-top margin-left'
+              error={universityError}
+              label='High school'
+              name='is_highschool'
+              onChange={(name, value) => {
+                let form = this.state.form
+                form.is_university = !value
+                form.is_highschool = value
+                this.setState({form})
+              }}
+              value={form.is_highschool}
+            />
+          </div>
+        </form>
+      </div>
     )
   }
 }

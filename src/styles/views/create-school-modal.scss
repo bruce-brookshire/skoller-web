@@ -1,0 +1,29 @@
+.cn-find-classes-container {
+  .cn-modal {
+    min-width: 350px;
+    overflow-y: hidden;
+
+    .cn-create-school-container {
+      
+      .cn-create-school-header {
+        text-align: center;
+      }
+
+      .is-university {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        margin: 0;
+        // width: 66%;
+        // justify-content: space-between;
+        align-items: baseline;
+
+        .sub-header {
+          color: $cn-color-grey;
+          font-weight: normal;
+        }
+      }
+    }
+    
+  }
+}
