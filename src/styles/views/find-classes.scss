@@ -18,44 +18,44 @@
       }
     }
 
+    .cn-find-classes-class-name .cn-autocomplete-result {
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+
     .cn-find-classes-field {
       margin-top: $unit-space;
 
       .cn-autocomplete-results-container {
         max-height: 200px;
 
-        .cn-autocomplete-result {
-          padding-top: 5px;
-          padding-bottom: 5px;
+        .cn-find-classes-results {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          position: relative;
 
-          .cn-find-classes-results {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            position: relative;
-  
-            .cn-results-divider {
-              position: absolute;
-              border-bottom: 1px solid #D8D8D8;
-              border-radius: 1px;
-              bottom: -5px;
-              width: 100%;
-            }
-  
-            .class-name {
-              color: $cn-color-blue;
-              font-weight: 500;
-              flex-basis: 100%;
-            }
-  
-            .cn-find-classes-results-item:nth-of-type(odd) {
-              flex-basis: 50%;
-              text-align: left;
-            }
-            .cn-find-classes-results-item:nth-of-type(even) {
-              flex-basis: 50%;
-              text-align: right;
-            }
+          .cn-results-divider {
+            position: absolute;
+            border-bottom: 1px solid #D8D8D8;
+            border-radius: 1px;
+            bottom: -5px;
+            width: 100%;
+          }
+
+          .class-name {
+            color: $cn-color-blue;
+            font-weight: 500;
+            flex-basis: 100%;
+          }
+
+          .cn-find-classes-results-item:nth-of-type(odd) {
+            flex-basis: 50%;
+            text-align: left;
+          }
+          .cn-find-classes-results-item:nth-of-type(even) {
+            flex-basis: 50%;
+            text-align: right;
           }
         }
       }

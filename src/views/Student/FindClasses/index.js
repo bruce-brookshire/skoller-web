@@ -37,7 +37,6 @@ class FindClasses extends React.Component {
 
   onCreateClass (clName) {
     this.setState({clName})
-    this.toggleCreateSchoolModal()
   }
 
   onCreateSchool (schoolName) {
@@ -89,7 +88,7 @@ class FindClasses extends React.Component {
   renderClass () {
     let {cl} = this.state
     return (
-      <div className='cn-find-classes-field'>
+      <div className='cn-find-classes-field cn-find-classes-class-name'>
         <div className='cn-find-classes-label'>Class name</div>
         {cl ? this.renderClassName() : <SearchClass
           schoolId={this.state.school.id}
