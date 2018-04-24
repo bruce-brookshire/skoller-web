@@ -28,6 +28,28 @@ export function getAllSchools () {
 }
 
 /*
+* Get states
+*
+*/
+export function getStates () {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/locations`, {
+    method: 'GET',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error fetching states. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
 * Get fields of study.
 *
 * @param [Number] schoolId. Id of the school.

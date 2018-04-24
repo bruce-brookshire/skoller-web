@@ -21,7 +21,7 @@ import {getSchoolPeriods, createPeriod, updatePeriod} from './periods'
 import {attachProfessorToClass, createProfessor, removeProfessorFromClass,
   searchProfessors, updateProfessor} from './professors'
 import {createSchool, getAllSchools, getFieldsOfStudy, getHubSchools,
-  getHubSchoolsMinified, getSchoolById, updateSchool, searchSchools} from './schools'
+  getHubSchoolsMinified, getSchoolById, updateSchool, searchSchools, getStates} from './schools'
 import {getAutoUpdateInfo, updateAutoUpdateInfo, forecastAutoUpdateInfo, getMinVersionInfo, updateMinVer} from './settings'
 import {showSnackbar} from './snackbar'
 import {getNextClass} from './syllabusworkers'
@@ -141,7 +141,8 @@ const actions = {
     getHubSchoolsMinified,
     getSchoolById,
     searchSchools,
-    updateSchool
+    updateSchool,
+    getStates
   },
   settings: {
     getAutoUpdateInfo,

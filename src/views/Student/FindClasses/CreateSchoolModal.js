@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
-import {InputField, CheckboxField} from '../../../components/Form'
+import {InputField, CheckboxField, SelectField} from '../../../components/Form'
 import actions from '../../../actions'
+import Loading from '../../../components/Loading'
 
 const requiredFields = {
   'name': {
@@ -29,7 +30,8 @@ class CreateSchoolModal extends React.Component {
     return {
       form: this.initializeFormData(),
       loading: false,
-      universityError: false
+      universityError: false,
+      states: []
     }
   }
 
@@ -41,6 +43,13 @@ class CreateSchoolModal extends React.Component {
       adr_locality: '',
       adr_region: ''
     }
+  }
+
+  componentWillMount () {
+    this.setState({loading: true})
+    actions.schools.getStates().then((states) => {
+      this.setState({states, loading: false})
+    }).catch(() => { this.setState({loading: false}) })
   }
 
   /*
@@ -116,6 +125,25 @@ class CreateSchoolModal extends React.Component {
             placeholder='School name'
             value={form.name}
           />
+          <InputField
+            containerClassName='margin-top'
+            error={formErrors.adr_locality}
+            label='School city'
+            name='adr_locality'
+            onChange={updateProperty}
+            placeholder='School city'
+            value={form.adr_locality}
+          />
+          {this.state.loading ? <Loading /> : <SelectField
+            containerClassName='margin-top'
+            error={formErrors.adr_region}
+            label='School state'
+            name='adr_region'
+            onChange={updateProperty}
+            placeholder='Select state'
+            value={form.adr_region}
+            options={this.state.states}
+          />}
         </form>
       </div>
     )

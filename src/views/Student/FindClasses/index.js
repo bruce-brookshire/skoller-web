@@ -17,9 +17,6 @@ class FindClasses extends React.Component {
     }
   }
 
-  /*
-  * Fetch the classes for a user.
-  */
   componentWillMount () {
   }
 
