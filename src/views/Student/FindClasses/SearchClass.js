@@ -61,11 +61,9 @@ class SearchClass extends React.Component {
 
   emptyMessage (searchText) {
     return (
-      <div className='cn-autocomplete-results-container'>
-        <div className='cn-autocomplete-result'>
-          {/* <a onClick={() => this.onClassCreate(searchText())}>Create a new class called {searchText()}</a> */}
-          This should be on the bottom
-        </div>
+      <div className='cn-autocomplete-result'>
+        {/* <a onClick={() => this.onClassCreate(searchText())}></a> */}
+        Create a new class called {searchText()}
       </div>
     )
   }
@@ -79,6 +77,7 @@ class SearchClass extends React.Component {
         updateAutoCompleteResults={this.onUpdateAutoComplete.bind(this)}
         placeholder='Find your class'
         renderRow={this.renderRow.bind(this)}
+        newRow={true}
       />
     )
   }

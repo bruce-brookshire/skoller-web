@@ -21,6 +21,10 @@
     .cn-find-classes-field {
       margin-top: $unit-space;
 
+      .cn-autocomplete-results-container {
+        max-height: 200px;
+      }
+
       .cn-find-classes-label {
         @include form-label;
         font-weight: normal;

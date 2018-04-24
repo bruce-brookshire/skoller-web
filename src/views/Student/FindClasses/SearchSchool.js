@@ -61,10 +61,8 @@ class SearchSchool extends React.Component {
 
   emptyMessage (searchText) {
     return (
-      <div className='cn-autocomplete-results-container'>
-        <div className='cn-autocomplete-result'>
-          <a onClick={() => this.onSchoolCreate(searchText())}>Create a new school called {searchText()}</a>
-        </div>
+      <div className='cn-autocomplete-result'>
+        <a onClick={() => this.onSchoolCreate(searchText())}>Create a new school called {searchText()}</a>
       </div>
     )
   }
