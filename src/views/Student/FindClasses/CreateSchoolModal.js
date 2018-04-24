@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
-import {CheckboxField} from '../../../components/Form'
+import {InputField, CheckboxField} from '../../../components/Form'
 import actions from '../../../actions'
 
 const requiredFields = {
@@ -107,6 +107,15 @@ class CreateSchoolModal extends React.Component {
               value={form.is_highschool}
             />
           </div>
+          <InputField
+            containerClassName='margin-top'
+            error={formErrors.name}
+            label='School name'
+            name='name'
+            onChange={updateProperty}
+            placeholder='School name'
+            value={form.name}
+          />
         </form>
       </div>
     )
