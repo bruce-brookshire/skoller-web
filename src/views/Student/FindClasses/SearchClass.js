@@ -53,7 +53,7 @@ class SearchClass extends React.Component {
     return (
       <div className='cn-autocomplete-result' key={`result-${index}`} onClick={() => this.onClassSelect(data, resetState)}>
         <div className='cn-find-classes-results'>
-          <span className='cn-find-classes-results-item class-name'>{data.name}</span>
+          <span className='cn-find-classes-results-item title'>{data.name}</span>
           <span className='cn-find-classes-results-item'></span>
           {data.professor
             ? <span className='cn-find-classes-results-item'>{data.professor.name_first} {data.professor.name_last}</span>
