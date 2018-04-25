@@ -265,7 +265,7 @@ class FindClasses extends React.Component {
           {this.renderSchool()}
           {school ? this.renderClass() : this.renderDisabledField()}
           {(cl || (newCl && clName)) ? this.renderSemester() : this.renderDisabledField()}
-          {semester ? this.renderClassDetail() : this.renderDisabledField()}
+          {(!school || (school && school.is_university)) && (semester ? this.renderClassDetail() : this.renderDisabledField())}
         </div>
         {schoolName && this.renderCreateSchoolModal()}
       </div>
