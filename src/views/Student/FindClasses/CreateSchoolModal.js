@@ -80,8 +80,8 @@ class CreateSchoolModal extends React.Component {
     this.setState({loading: true})
     actions.schools.createSchool(form).then((school) => {
       this.props.onSubmit(school)
-      this.props.onClose()
       this.setState({loading: false})
+      this.props.onClose()
     }).catch(() => { this.setState({loading: false}) })
   }
 
