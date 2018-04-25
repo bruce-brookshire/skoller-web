@@ -10,8 +10,8 @@ var Environment = require('../../environment.js')
 *
 * @params [Object] school. School to grab the periods.
 */
-export function getSchoolPeriods (school) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/schools/${school.id}/periods`, {
+export function getSchoolPeriods (schoolId, name) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/schools/${schoolId}/periods?name=${name}`, {
     method: 'GET',
     headers: {
       'Authorization': userStore.authToken,

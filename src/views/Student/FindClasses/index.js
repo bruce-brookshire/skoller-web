@@ -5,6 +5,7 @@ import actions from '../../../actions'
 import {InputField} from '../../../components/Form'
 import SearchSchool from './SearchSchool'
 import SearchClass from './SearchClass'
+import SearchSemester from './SearchSemester'
 import CreateSchoolModal from './CreateSchoolModal'
 import Modal from '../../../components/Modal'
 
@@ -25,7 +26,8 @@ class FindClasses extends React.Component {
       cl: null,
       clName: '',
       newSchool: false,
-      newCl: false
+      newCl: false,
+      semester: null
     }
   }
 
@@ -37,8 +39,19 @@ class FindClasses extends React.Component {
     this.setState({cl: cl, clName: cl.name})
   }
 
+  onSubmitSemester (semester) {
+    this.setState({semester})
+  }
+
   onCreateClass (clName) {
     this.setState({clName, newCl: true})
+  }
+
+  onCreateSemester (semester) {
+    const {school} = this.state
+    actions.periods.createPeriod(school.id, {name: semester}).then((semester) => {
+      this.setState({semester})
+    }).catch(() => { this.setState({semester: null}) })
   }
 
   onCreateSchool (schoolName) {
@@ -101,6 +114,21 @@ class FindClasses extends React.Component {
     )
   }
 
+  renderSemester () {
+    const {school} = this.state
+    return (
+      <div className='cn-find-classes-field cn-find-classes-class-name'>
+        <div className='cn-find-classes-label'>{!school.is_university ? 'Year or ' : ''}Semester</div>
+        <SearchSemester
+          schoolId={school.id}
+          isUniversity={school.is_university}
+          onSemesterSelect={this.onSubmitSemester.bind(this)}
+          onSemesterCreate={this.onCreateSemester.bind(this)}
+        />
+      </div>
+    )
+  }
+
   renderDisabledField () {
     return (
       <div className='cn-find-classes-field'>
@@ -143,7 +171,7 @@ class FindClasses extends React.Component {
   }
 
   render () {
-    let {schoolName} = this.state
+    let {schoolName, school, cl, newCl, clName} = this.state
     return (
       <div className='cn-find-classes-container'>
         <div className='cn-find-classes-content'>
@@ -152,7 +180,8 @@ class FindClasses extends React.Component {
             <p>Make sure this info is correct so your classmates can find the class!</p>
           </div>
           {this.renderSchool()}
-          {this.state.school ? this.renderClass() : this.renderDisabledField()}
+          {school ? this.renderClass() : this.renderDisabledField()}
+          {(cl || (newCl && clName)) ? this.renderSemester() : this.renderDisabledField()}
         </div>
         {schoolName && this.renderCreateSchoolModal()}
       </div>
