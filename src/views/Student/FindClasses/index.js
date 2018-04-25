@@ -27,7 +27,10 @@ class FindClasses extends React.Component {
       clName: '',
       newSchool: false,
       newCl: false,
-      semester: null
+      semester: null,
+      subject: '',
+      section: '',
+      code: ''
     }
   }
 
@@ -104,12 +107,14 @@ class FindClasses extends React.Component {
   renderSchool () {
     const {school} = this.state
     return (
-      <div className='cn-find-classes-field'>
-        <div className='cn-find-classes-label'>School</div>
-        {school ? this.renderSchoolName() : <SearchSchool
-          onSchoolSelect={this.onSubmitSchool.bind(this)}
-          onSchoolCreate={this.onCreateSchool.bind(this)}
-        />}
+      <div className='cn-find-classes-field-container'>
+        <div className='cn-find-classes-field'>
+          <div className='cn-find-classes-label'>School</div>
+          {school ? this.renderSchoolName() : <SearchSchool
+            onSchoolSelect={this.onSubmitSchool.bind(this)}
+            onSchoolCreate={this.onCreateSchool.bind(this)}
+          />}
+        </div>
       </div>
     )
   }
@@ -117,13 +122,15 @@ class FindClasses extends React.Component {
   renderClass () {
     const {cl, newCl} = this.state
     return (
-      <div className='cn-find-classes-field cn-find-classes-class-name'>
-        <div className='cn-find-classes-label'>Class name</div>
-        {(cl || newCl) ? this.renderClassName() : <SearchClass
-          schoolId={this.state.school.id}
-          onClassSelect={this.onSubmitClass.bind(this)}
-          onClassCreate={this.onCreateClass.bind(this)}
-        />}
+      <div className='cn-find-classes-field-container'>
+        <div className='cn-find-classes-field'>
+          <div className='cn-find-classes-label'>Class name</div>
+          {(cl || newCl) ? this.renderClassName() : <SearchClass
+            schoolId={this.state.school.id}
+            onClassSelect={this.onSubmitClass.bind(this)}
+            onClassCreate={this.onCreateClass.bind(this)}
+          />}
+        </div>
       </div>
     )
   }
@@ -131,23 +138,27 @@ class FindClasses extends React.Component {
   renderSemester () {
     const {school, semester} = this.state
     return (
-      <div className='cn-find-classes-field cn-find-classes-class-name'>
-        <div className='cn-find-classes-label'>{!school.is_university ? 'Year or ' : ''}Semester</div>
-        {semester ? this.renderSemesterName() : <SearchSemester
-          schoolId={school.id}
-          isUniversity={school.is_university}
-          onSemesterSelect={this.onSubmitSemester.bind(this)}
-          onSemesterCreate={this.onCreateSemester.bind(this)}
-        />}
+      <div className='cn-find-classes-field-container'>
+        <div className='cn-find-classes-field'>
+          <div className='cn-find-classes-label'>{!school.is_university ? 'Year or ' : ''}Semester</div>
+          {semester ? this.renderSemesterName() : <SearchSemester
+            schoolId={school.id}
+            isUniversity={school.is_university}
+            onSemesterSelect={this.onSubmitSemester.bind(this)}
+            onSemesterCreate={this.onCreateSemester.bind(this)}
+          />}
+        </div>
       </div>
     )
   }
 
   renderDisabledField () {
     return (
-      <div className='cn-find-classes-field'>
-        <div className='cn-find-classes-disabled-label'></div>
-        <div className='cn-find-classes-disabled'></div>
+      <div className='cn-find-classes-field-container'>
+        <div className='cn-find-classes-field'>
+          <div className='cn-find-classes-disabled-label'></div>
+          <div className='cn-find-classes-disabled'></div>
+        </div>
       </div>
     )
   }
@@ -157,7 +168,15 @@ class FindClasses extends React.Component {
     if (newSchool) {
       this.setState({clName: value})
     } else {
-      this.setState({cl: null, clName: '', newCl: false, semester: null})
+      this.setState({
+        cl: null,
+        clName: '',
+        newCl: false,
+        semester: null,
+        subject: '',
+        section: '',
+        code: ''
+      })
     }
   }
 
@@ -193,8 +212,49 @@ class FindClasses extends React.Component {
     )
   }
 
+  renderClassDetail () {
+    const {formErrors} = this.props
+    return (
+      <div className='cn-find-classes-field-container'>
+        <div className='cn-find-classes-sub-field'>
+          <div className='cn-find-classes-label'>Subject</div>
+          <InputField
+            error={formErrors.subject}
+            name='subject'
+            onChange={(name, value) => {
+              this.setState({subject: value})
+            }}
+            value={this.state.subject}
+          />
+        </div>
+        <div className='cn-find-classes-sub-field'>
+          <div className='cn-find-classes-label'>Code</div>
+          <InputField
+            error={formErrors.code}
+            name='code'
+            onChange={(name, value) => {
+              this.setState({code: value})
+            }}
+            value={this.state.code}
+          />
+        </div>
+        <div className='cn-find-classes-sub-field'>
+          <div className='cn-find-classes-label'>Section</div>
+          <InputField
+            error={formErrors.section}
+            name='section'
+            onChange={(name, value) => {
+              this.setState({section: value})
+            }}
+            value={this.state.section}
+          />
+        </div>
+      </div>
+    )
+  }
+
   render () {
-    let {schoolName, school, cl, newCl, clName} = this.state
+    let {schoolName, school, cl, newCl, clName, semester} = this.state
     return (
       <div className='cn-find-classes-container'>
         <div className='cn-find-classes-content'>
@@ -205,6 +265,7 @@ class FindClasses extends React.Component {
           {this.renderSchool()}
           {school ? this.renderClass() : this.renderDisabledField()}
           {(cl || (newCl && clName)) ? this.renderSemester() : this.renderDisabledField()}
+          {semester ? this.renderClassDetail() : this.renderDisabledField()}
         </div>
         {schoolName && this.renderCreateSchoolModal()}
       </div>

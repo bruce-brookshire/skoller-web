@@ -18,8 +18,21 @@
       }
     }
 
-    .cn-find-classes-field {
+    .cn-find-classes-field-container {
       margin-top: $unit-space;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      margin-top: 0;
+      justify-content: space-between;
+
+      .cn-find-classes-sub-field {
+        width: 30%;
+      }
+
+      .cn-find-classes-field {
+        width: 100%;
+      }
 
       .cn-autocomplete-results-container {
         max-height: 200px;
@@ -27,7 +40,6 @@
         .cn-autocomplete-result {
           padding-top: 5px;
           padding-bottom: 5px;
-        
 
           .cn-find-classes-results {
             display: flex;
@@ -73,6 +85,7 @@
         width: 50%;
         background-color: $cn-color-grey;
         border-radius: 3px;
+        margin-top: $unit-space;
       }
 
       .cn-find-classes-disabled {
