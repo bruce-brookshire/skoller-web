@@ -25,6 +25,18 @@ class MeetingTimeModal extends React.Component {
     }
   }
 
+  /*
+  * On submit, create meeting times.
+  */
+  onSubmit (event) {
+    event.preventDefault()
+
+    // if (this.props.validateForm(this.state.form, requiredFields)) {
+    //   const form = this.mapForm(this.state.form)
+    //   this.onCreateSchool(form)
+    // }
+  }
+
   render () {
     const {form, universityError} = this.state
     const {formErrors, updateProperty} = this.props
@@ -34,11 +46,16 @@ class MeetingTimeModal extends React.Component {
         <div className='cn-meeting-time-header'>
           Pick meeting times
         </div>
-        <SliderField
-          name='is_online'
-          onChange={updateProperty}
-          value={form.is_online}
-        />
+        <form onSubmit={this.onSubmit.bind(this)}>
+          <div className='cn-meeting-time-slider'>
+            This is an online class
+            <SliderField
+              name='is_online'
+              onChange={updateProperty}
+              value={form.is_online}
+            />
+          </div>
+        </form>
       </div>
     )
   }

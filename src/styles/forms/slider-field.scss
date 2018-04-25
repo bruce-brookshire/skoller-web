@@ -8,6 +8,10 @@
   input {
     display:none;
 
+    & + .slider:before {
+      transform: translateX(0);
+    }
+
     &:checked + .slider {
       background-color: $cn-color-blue;
     }

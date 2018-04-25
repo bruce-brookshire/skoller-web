@@ -2,5 +2,14 @@
   
   .cn-meeting-time-header {
     text-align: center;
+    margin-bottom: $unit-space;
+    font-weight: 500;
+    font-size: 18px;
+  }
+
+  .cn-meeting-time-slider {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
   }
 }
