@@ -39,7 +39,14 @@ class FindClasses extends React.Component {
   }
 
   onSubmitClass (cl) {
-    this.setState({cl: cl, clName: cl.name, semester: cl.class_period})
+    this.setState({
+      cl: cl,
+      clName: cl.name,
+      semester: cl.class_period,
+      section: cl.section,
+      code: cl.code,
+      subject: cl.subject
+    })
   }
 
   onSubmitSemester (semester) {
@@ -193,6 +200,33 @@ class FindClasses extends React.Component {
     }
   }
 
+  resetSubject (value) {
+    const {newCl} = this.state
+    if (newCl) {
+      this.setState({subject: value})
+    } else {
+      this.resetClass()
+    }
+  }
+
+  resetCode (value) {
+    const {newCl} = this.state
+    if (newCl) {
+      this.setState({code: value})
+    } else {
+      this.resetClass()
+    }
+  }
+
+  resetSection (value) {
+    const {newCl} = this.state
+    if (newCl) {
+      this.setState({section: value})
+    } else {
+      this.resetClass()
+    }
+  }
+
   toggleCreateSchoolModal () {
     this.setState({openCreateSchoolModal: !this.state.openCreateSchoolModal})
   }
@@ -222,7 +256,7 @@ class FindClasses extends React.Component {
             error={formErrors.subject}
             name='subject'
             onChange={(name, value) => {
-              this.setState({subject: value})
+              this.resetSubject(value)
             }}
             value={this.state.subject}
           />
@@ -233,7 +267,7 @@ class FindClasses extends React.Component {
             error={formErrors.code}
             name='code'
             onChange={(name, value) => {
-              this.setState({code: value})
+              this.resetCode(value)
             }}
             value={this.state.code}
           />
@@ -244,7 +278,7 @@ class FindClasses extends React.Component {
             error={formErrors.section}
             name='section'
             onChange={(name, value) => {
-              this.setState({section: value})
+              this.resetSection(value)
             }}
             value={this.state.section}
           />
