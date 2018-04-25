@@ -287,8 +287,22 @@ class FindClasses extends React.Component {
     )
   }
 
+  renderMeeting () {
+    return (
+      <div className='cn-find-classes-field-container'>
+        <div className='cn-find-classes-field'>
+          <button
+            className={`button full-width`}
+            onClick={() => this.toggleCreateSchoolModal()}
+            type="button"
+          >Pick meeting times</button>
+        </div>
+      </div>
+    )
+  }
+
   render () {
-    let {schoolName, school, cl, newCl, clName, semester} = this.state
+    let {schoolName, school, cl, newCl, clName, semester, section, subject, code} = this.state
     return (
       <div className='cn-find-classes-container'>
         <div className='cn-find-classes-content'>
@@ -300,6 +314,7 @@ class FindClasses extends React.Component {
           {school ? this.renderClass() : this.renderDisabledField()}
           {(cl || (newCl && clName)) ? this.renderSemester() : this.renderDisabledField()}
           {(!school || (school && school.is_university)) && (semester ? this.renderClassDetail() : this.renderDisabledField())}
+          {(section && subject && code) ? this.renderMeeting() : this.renderDisabledField()}
         </div>
         {schoolName && this.renderCreateSchoolModal()}
       </div>
