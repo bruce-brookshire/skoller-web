@@ -8,6 +8,7 @@ import SearchClass from './SearchClass'
 import SearchSemester from './SearchSemester'
 import CreateSchoolModal from './CreateSchoolModal'
 import Modal from '../../../components/Modal'
+import MeetingTimeModal from './MeetingTimeModal'
 
 class FindClasses extends React.Component {
   constructor (props) {
@@ -23,6 +24,7 @@ class FindClasses extends React.Component {
       school: null,
       schoolName: '',
       openCreateSchoolModal: false,
+      openMeetingTimeModal: false,
       cl: null,
       clName: '',
       newSchool: false,
@@ -231,6 +233,10 @@ class FindClasses extends React.Component {
     this.setState({openCreateSchoolModal: !this.state.openCreateSchoolModal})
   }
 
+  toggleMeetingTimeModal () {
+    this.setState({openMeetingTimeModal: !this.state.openMeetingTimeModal})
+  }
+
   renderCreateSchoolModal () {
     return (
       <Modal
@@ -240,6 +246,20 @@ class FindClasses extends React.Component {
         <CreateSchoolModal
           name={this.state.schoolName}
           onClose={this.toggleCreateSchoolModal.bind(this)}
+          onSubmit={this.onSubmitSchool.bind(this)}
+        />
+      </Modal>
+    )
+  }
+
+  renderMeetingTimeModal () {
+    return (
+      <Modal
+        open={this.state.openMeetingTimeModal}
+        onClose={this.toggleMeetingTimeModal.bind(this)}
+      >
+        <MeetingTimeModal
+          onClose={this.toggleMeetingTimeModal.bind(this)}
           onSubmit={this.onSubmitSchool.bind(this)}
         />
       </Modal>
@@ -293,7 +313,7 @@ class FindClasses extends React.Component {
         <div className='cn-find-classes-field'>
           <button
             className={`button full-width`}
-            onClick={() => this.toggleCreateSchoolModal()}
+            onClick={() => this.toggleMeetingTimeModal()}
             type="button"
           >Pick meeting times</button>
         </div>
@@ -317,6 +337,7 @@ class FindClasses extends React.Component {
           {(section && subject && code) ? this.renderMeeting() : this.renderDisabledField()}
         </div>
         {schoolName && this.renderCreateSchoolModal()}
+        {this.renderMeetingTimeModal()}
       </div>
     )
   }
