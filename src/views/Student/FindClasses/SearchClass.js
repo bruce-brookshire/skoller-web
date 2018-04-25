@@ -60,7 +60,7 @@ class SearchClass extends React.Component {
             : <span className='cn-find-classes-results-item'>--</span>}
           <span className='cn-find-classes-results-item'>{data.class_period_name}</span>
           <span className='cn-find-classes-results-item'>{data.meet_days} {data.meet_start_time}</span>
-          <span className='cn-find-classes-results-item'>{data.subject} {data.code}-{data.section}</span>
+          <span className='cn-find-classes-results-item'>{data.subject} {data.code}.{data.section}</span>
           <div className='cn-results-divider'></div>
         </div>
       </div>
