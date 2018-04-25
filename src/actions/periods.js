@@ -34,8 +34,8 @@ export function getSchoolPeriods (schoolId, name) {
 * @params [Object] school. School.
 * @params [Object] form. Period form.
 */
-export function createPeriod (school, form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/schools/${school.id}/periods`, {
+export function createPeriod (schoolId, form) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/schools/${schoolId}/periods`, {
     method: 'POST',
     headers: {
       'Authorization': userStore.authToken,

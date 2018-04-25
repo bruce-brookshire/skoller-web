@@ -36,7 +36,7 @@ class FindClasses extends React.Component {
   }
 
   onSubmitClass (cl) {
-    this.setState({cl: cl, clName: cl.name})
+    this.setState({cl: cl, clName: cl.name, semester: cl.class_period})
   }
 
   onSubmitSemester (semester) {
@@ -69,6 +69,20 @@ class FindClasses extends React.Component {
           this.resetSchool()
         }}
         value={this.state.schoolName}
+      />
+    )
+  }
+
+  renderSemesterName () {
+    const {formErrors} = this.props
+    return (
+      <InputField
+        error={formErrors.semesterName}
+        name='semesterName'
+        onChange={(name, value) => {
+          this.resetSemester()
+        }}
+        value={this.state.semester.name}
       />
     )
   }
@@ -115,16 +129,16 @@ class FindClasses extends React.Component {
   }
 
   renderSemester () {
-    const {school} = this.state
+    const {school, semester} = this.state
     return (
       <div className='cn-find-classes-field cn-find-classes-class-name'>
         <div className='cn-find-classes-label'>{!school.is_university ? 'Year or ' : ''}Semester</div>
-        <SearchSemester
+        {semester ? this.renderSemesterName() : <SearchSemester
           schoolId={school.id}
           isUniversity={school.is_university}
           onSemesterSelect={this.onSubmitSemester.bind(this)}
           onSemesterCreate={this.onCreateSemester.bind(this)}
-        />
+        />}
       </div>
     )
   }
@@ -143,12 +157,21 @@ class FindClasses extends React.Component {
     if (newSchool) {
       this.setState({clName: value})
     } else {
-      this.setState({cl: null, clName: '', newCl: false})
+      this.setState({cl: null, clName: '', newCl: false, semester: null})
     }
   }
 
   resetSchool () {
     this.setState(this.initializeState())
+  }
+
+  resetSemester () {
+    const {newCl} = this.state
+    if (newCl) {
+      this.setState({semester: null})
+    } else {
+      this.resetClass()
+    }
   }
 
   toggleCreateSchoolModal () {
