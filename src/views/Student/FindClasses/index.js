@@ -42,7 +42,7 @@ class FindClasses extends React.Component {
   }
 
   onCreateSchool (schoolName) {
-    this.setState({schoolName, newSchool: true})
+    this.setState({schoolName, newSchool: true, newCl: true})
     this.toggleCreateSchoolModal()
   }
 
@@ -75,7 +75,7 @@ class FindClasses extends React.Component {
   }
 
   renderSchool () {
-    let {school} = this.state
+    const {school} = this.state
     return (
       <div className='cn-find-classes-field'>
         <div className='cn-find-classes-label'>School</div>
@@ -88,11 +88,11 @@ class FindClasses extends React.Component {
   }
 
   renderClass () {
-    let {cl, newCl, newSchool} = this.state
+    const {cl, newCl} = this.state
     return (
       <div className='cn-find-classes-field cn-find-classes-class-name'>
         <div className='cn-find-classes-label'>Class name</div>
-        {(cl || newCl || newSchool) ? this.renderClassName() : <SearchClass
+        {(cl || newCl) ? this.renderClassName() : <SearchClass
           schoolId={this.state.school.id}
           onClassSelect={this.onSubmitClass.bind(this)}
           onClassCreate={this.onCreateClass.bind(this)}
