@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
+import {SliderField} from '../../../components/Form'
 
 class MeetingTimeModal extends React.Component {
   constructor (props) {
@@ -20,6 +21,7 @@ class MeetingTimeModal extends React.Component {
 
   initializeFormData () {
     return {
+      is_online: false
     }
   }
 
@@ -32,6 +34,11 @@ class MeetingTimeModal extends React.Component {
         <div className='cn-meeting-time-header'>
           Pick meeting times
         </div>
+        <SliderField
+          name='is_online'
+          onChange={updateProperty}
+          value={form.is_online}
+        />
       </div>
     )
   }

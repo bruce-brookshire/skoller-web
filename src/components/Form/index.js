@@ -6,6 +6,7 @@ import PillField from './PillField'
 import SelectField from './SelectField'
 import TextAreaField from './TextAreaField'
 import TimeInputField from './TimeInputField'
+import SliderField from './SliderField'
 
 export {CheckboxField}
 export {DateRangeField}
@@ -15,3 +16,4 @@ export {PillField}
 export {SelectField}
 export {TextAreaField}
 export {TimeInputField}
+export {SliderField}
