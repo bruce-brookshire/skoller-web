@@ -56,6 +56,10 @@ class FindClasses extends React.Component {
     })
   }
 
+  onSubmitMeetingTime (form) {
+    this.setState({days: form.days, time: form.time})
+  }
+
   onSubmitSemester (semester) {
     this.setState({semester})
   }
@@ -279,7 +283,7 @@ class FindClasses extends React.Component {
           days={newCl && days}
           time={newCl && time}
           onClose={this.toggleMeetingTimeModal.bind(this)}
-          onSubmit={this.onSubmitSchool.bind(this)}
+          onSubmit={this.onSubmitMeetingTime.bind(this)}
         />
       </Modal>
     )
@@ -363,7 +367,7 @@ class FindClasses extends React.Component {
     const {newCl, days, time} = this.state
     return (
       <div>
-        {newCl || !days || !time ? this.renderMeetingButton() : this.renderMeetingFields()}
+        {newCl && (!days || !time) ? this.renderMeetingButton() : this.renderMeetingFields()}
       </div>
     )
   }

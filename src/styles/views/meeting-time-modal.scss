@@ -72,12 +72,14 @@
 
       .button {
         border-radius: 0;
-        padding: .6em .5em 0.25em;
+        padding: .7em .5em 0.25em;
+        min-height: 100%;
       }
 
       .button-invert {
         border-radius: 0;
-        padding: .6em .5em 0.25em;
+        padding: .7em .5em 0.25em;
+        min-height: 100%;
       }
     }
 

@@ -97,7 +97,7 @@ class MeetingTimeModal extends React.Component {
     const {time} = this.props
     if (time) {
       let newTime = moment(time, 'HH:mm:ss')
-      return newTime.hour()
+      return newTime.hour().toString().padStart(2, '0')
     }
   }
 
@@ -105,7 +105,7 @@ class MeetingTimeModal extends React.Component {
     const {time} = this.props
     if (time) {
       let newTime = moment(time, 'HH:mm:ss')
-      return newTime.minute()
+      return newTime.minute().toString().padStart(2, '0')
     }
   }
 
@@ -138,8 +138,34 @@ class MeetingTimeModal extends React.Component {
         label={c.day}
         value={form.selectedDays.find(day => day === c.day) ? c.day : ''}
         onClick={this.toggleDays.bind(this)}
+        type='button'
       />
     })
+  }
+
+  mapDays (form) {
+    let newDays = []
+    form.selectedDays.map((day) => {
+      let newDay = daysOfWeek.find(dow => dow.day === day)
+      if (newDay) {
+        newDays.push(newDay.code)
+      }
+    })
+    return newDays.join('')
+  }
+
+  mapTime (form) {
+    let mappedTime = moment(form.meet_time_hour + ':' + form.meet_time_min + form.meet_time_ampm, 'h:mma')
+    return mappedTime.format('HH:mm:ss')
+  }
+
+  mapForm () {
+    const {form} = this.state
+    let mappedForm = {
+      days: this.mapDays(form),
+      time: this.mapTime(form)
+    }
+    return mappedForm
   }
 
   /*
@@ -148,10 +174,9 @@ class MeetingTimeModal extends React.Component {
   onSubmit (event) {
     event.preventDefault()
 
-    // if (this.props.validateForm(this.state.form, requiredFields)) {
-    //   const form = this.mapForm(this.state.form)
-    //   this.onCreateSchool(form)
-    // }
+    let form = this.mapForm()
+    this.props.onSubmit(form)
+    this.props.onClose()
   }
 
   renderTimes () {
@@ -211,6 +236,7 @@ class MeetingTimeModal extends React.Component {
   render () {
     const {form, universityError} = this.state
     const {formErrors, updateProperty} = this.props
+    // let disabled = (!form.is_online || (form.selectedDays === [] && form.meet_time_min === '' && form.meet_time_hour === ''))
 
     return (
       <div className='cn-meeting-time-container'>
@@ -231,6 +257,10 @@ class MeetingTimeModal extends React.Component {
             {this.renderDays()}
           </div>}
           {!form.is_online && this.renderTimes()}
+          <button
+            className={`button full-width margin-top`}
+            type='submit'
+          >Done</button>
         </form>
       </div>
     )

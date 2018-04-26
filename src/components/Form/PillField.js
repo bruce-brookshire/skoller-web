@@ -28,7 +28,8 @@ class PillField extends React.Component {
         <button
           className={inputClasses.join(' ')}
           id={input.id}
-          onClick={this.onClick.bind(this)}>
+          onClick={this.onClick.bind(this)}
+          type={input.type ? input.type : 'submit'}>
           {input.label}
         </button>
       </div>
@@ -43,7 +44,8 @@ PillField.propTypes = {
   inputErrorClass: PropTypes.string,
   label: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
-  value: PropTypes.string.isRequired
+  value: PropTypes.string.isRequired,
+  type: PropTypes.string
 }
 
 export default PillField
