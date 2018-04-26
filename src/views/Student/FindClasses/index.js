@@ -35,7 +35,8 @@ class FindClasses extends React.Component {
       section: '',
       code: '',
       days: '',
-      time: ''
+      time: '',
+      professor: null
     }
   }
 
@@ -367,11 +368,12 @@ class FindClasses extends React.Component {
   }
 
   renderProfessor () {
-    const {school} = this.state
+    const {newCl, school, professor} = this.state
     return (
       <div className='cn-find-classes-field-container'>
         <div className='cn-find-classes-field'>
           <div className='cn-find-classes-label'>{school.is_university ? 'Professor' : 'Teacher'}</div>
+          {/* {newCl && !professor ? this.renderProfessorButton() : this.renderProfessorFields()} */}
         </div>
       </div>
     )
