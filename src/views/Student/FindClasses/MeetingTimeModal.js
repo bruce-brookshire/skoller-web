@@ -97,7 +97,14 @@ class MeetingTimeModal extends React.Component {
     const {time} = this.props
     if (time) {
       let newTime = moment(time, 'HH:mm:ss')
-      return newTime.hour().toString().padStart(2, '0')
+      let hour = newTime.hour()
+      if (hour === 0) {
+        hour = 24
+      }
+      if (hour > 12) {
+        hour -= 12
+      }
+      return hour.toString().padStart(2, '0')
     }
   }
 

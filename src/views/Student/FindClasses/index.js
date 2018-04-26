@@ -356,7 +356,7 @@ class FindClasses extends React.Component {
             onChange={(name, value) => {
               this.resetMeetingDetails(value)
             }}
-            value={this.state.days + ' ' + moment(this.state.time, 'HH:mm:ss').format('h:mm a').toString()}
+            value={this.state.days + ' ' + moment(this.state.time, 'HH:mm:ss').format('hh:mm a').toString()}
           />
         </div>
       </div>
