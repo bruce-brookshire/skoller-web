@@ -13,4 +13,38 @@
     align-items: center;
     font-size: 14px;
   }
+
+  .cn-meeting-time-days {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-top: $unit-space;
+
+    .cn-pill-container {
+      flex-basis: calc(100% / 7 + 0.25px);
+      margin: 0;
+      padding: 0;
+      border: 1px solid $cn-color-blue;
+      margin-left: -1px;
+
+      .button {
+        border-radius: 0;
+        padding: .6em .5em 0.25em;
+      }
+
+      .button-invert {
+        border-radius: 0;
+        padding: .6em .5em 0.25em;
+      }
+    }
+
+    .cn-pill-container:first-child {
+      border-radius: 3px 0 0 3px;
+      margin-left: 0;
+    }
+
+    .cn-pill-container:last-child {
+      border-radius: 0 3px 3px 0;
+    }
+  }
 }

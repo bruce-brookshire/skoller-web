@@ -4,13 +4,13 @@ import {Form, ValidateForm} from 'react-form-library'
 import {SliderField, PillField} from '../../../components/Form'
 
 const days = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday'
+  'Sun',
+  'Mon',
+  'Tue',
+  'Wed',
+  'Thu',
+  'Fri',
+  'Sat'
 ]
 
 class MeetingTimeModal extends React.Component {
