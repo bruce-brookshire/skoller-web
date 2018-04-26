@@ -20,6 +20,44 @@
     font-size: 14px;
   }
 
+  .cn-meeting-times {
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    justify-content: space-between;
+    align-items: baseline;
+
+    .cn-meeting-time {
+      max-width: 36px;
+      font-weight: bold;
+    }
+
+    .cn-meeting-time-select {
+      max-width: 60px;
+      position: relative;
+
+      // remove browser dropdown arrow and use custom class to add dropdown arrow
+      select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+      }
+      select::-ms-expand {
+        display: none;
+      }
+
+      &::after {
+        content: "";
+        border-top: 0.3em solid $cn-color-blue;
+        border-right: 0.3em solid transparent;
+        border-left: 0.3em solid transparent;
+        position: absolute;
+        top: 45%;
+        right: 10px;
+      }
+    }
+  }
+
   .cn-meeting-time-days {
     display: flex;
     flex-direction: row;

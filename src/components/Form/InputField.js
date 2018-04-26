@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-
 class FormMessage extends React.Component {
   render () {
     const {message} = this.props
@@ -100,6 +99,10 @@ class InputInfoField extends React.Component {
             type={input.type}
             value={input.value}
             disabled={input.disabled}
+            size={input.size}
+            max={input.max}
+            min={input.min}
+            pattern={input.pattern}
           />
         </div>
         {error && showErrorMessage ? <FormMessage message={error} /> : null}
@@ -127,6 +130,10 @@ InputInfoField.propTypes = {
   onFocus: PropTypes.func,
   placeholder: PropTypes.string,
   type: PropTypes.string,
+  size: PropTypes.number,
+  max: PropTypes.number,
+  min: PropTypes.number,
+  pattern: PropTypes.string,
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,

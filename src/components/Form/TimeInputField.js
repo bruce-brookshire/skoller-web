@@ -16,17 +16,22 @@ class FormMessage extends React.Component {
 class TimePickerField extends React.Component {
 
   render () {
-    const {containerClassName, error, showErrorMessage} = this.props
+    const {containerClassName, message, showErrorMessage, type, error} = this.props
     const containerClasses = ['cn-input-container']
     if (containerClassName) containerClasses.push(containerClassName)
 
     return (
-      <div className='form-element' style={{position:'relative'}}>
+      <div className='form-element' style={{position: 'relative'}}>
         <InputField
-          type='time'
           {...this.props}
+          type='tel'
+          size={2}
+          min={2}
+          max={2}
+          placeholder='00'
+          pattern={type === 'hour' ? '^(([1][0-2])|([0][1-9]))$' : '^[0-5][05]$'}
         />
-        {error && showErrorMessage ? <FormMessage message={error} /> : null}
+        {error && message && showErrorMessage ? <FormMessage message={message} /> : null}
       </div>
     )
   }
@@ -50,7 +55,10 @@ TimePickerField.propTypes = {
   onFocus: PropTypes.func,
   placeholder: PropTypes.string,
   showErrorMessage: PropTypes.bool,
+  step: PropTypes.number,
   type: PropTypes.string,
+  message: PropTypes.string,
+  error: PropTypes.bool,
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,

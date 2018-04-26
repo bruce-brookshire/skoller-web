@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
-import {SliderField, PillField} from '../../../components/Form'
+import {SliderField, PillField, TimeInputField, SelectField} from '../../../components/Form'
 
 const days = [
   'Sun',
@@ -11,6 +11,17 @@ const days = [
   'Thu',
   'Fri',
   'Sat'
+]
+
+const ampm = [
+  {
+    id: 'am',
+    name: 'AM'
+  },
+  {
+    id: 'pm',
+    name: 'PM'
+  }
 ]
 
 class MeetingTimeModal extends React.Component {
@@ -33,7 +44,9 @@ class MeetingTimeModal extends React.Component {
     return {
       is_online: false,
       selectedDays: [],
-      meet_start_time: ''
+      meet_time_hour: '',
+      meet_time_min: '',
+      meet_time_ampm: 'am'
     }
   }
 
@@ -97,6 +110,47 @@ class MeetingTimeModal extends React.Component {
             {this.renderDays()}
           </div>
           <div className='cn-meeting-time-label'>Meet time</div>
+          <div className='cn-meeting-times'>
+            <TimeInputField
+              containerClassName='cn-meeting-time'
+              error={formErrors.meet_time_hour}
+              name='meet_time_hour'
+              onBlur={() => {
+                if (form.meet_time_hour.length < 2) {
+                  let newForm = form
+                  newForm.meet_time_hour = form.meet_time_hour.padStart(2, '0')
+                  this.setState({form: newForm})
+                }
+              }}
+              onChange={(updateProperty)}
+              value={form.meet_time_hour}
+              type='hour'
+            />
+            <div className='cn-meeting-time'>:</div>
+            <TimeInputField
+              containerClassName='cn-meeting-time'
+              error={formErrors.meet_time_min}
+              name='meet_time_min'
+              onBlur={() => {
+                if (form.meet_time_min.length < 2) {
+                  let newForm = form
+                  newForm.meet_time_min = form.meet_time_min.padStart(2, '0')
+                  this.setState({form: newForm})
+                }
+              }}
+              onChange={updateProperty}
+              value={form.meet_time_min}
+              type='min'
+            />
+            <SelectField
+              containerClassName='cn-meeting-time-select'
+              error={formErrors.meet_time_ampm}
+              name='meet_time_ampm'
+              onChange={updateProperty}
+              value={form.meet_time_ampm}
+              options={ampm}
+            />
+          </div>
         </form>
       </div>
     )
