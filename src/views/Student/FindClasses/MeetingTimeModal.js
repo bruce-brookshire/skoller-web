@@ -1,16 +1,38 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
+import moment from 'moment-timezone'
 import {SliderField, PillField, TimeInputField, SelectField} from '../../../components/Form'
 
-const days = [
-  'Sun',
-  'Mon',
-  'Tue',
-  'Wed',
-  'Thu',
-  'Fri',
-  'Sat'
+const daysOfWeek = [
+  {
+    day: 'Sun',
+    code: 'U'
+  },
+  {
+    day: 'Mon',
+    code: 'M'
+  },
+  {
+    day: 'Tue',
+    code: 'T'
+  },
+  {
+    day: 'Wed',
+    code: 'W'
+  },
+  {
+    day: 'Thu',
+    code: 'R'
+  },
+  {
+    day: 'Fri',
+    code: 'F'
+  },
+  {
+    day: 'Sat',
+    code: 'S'
+  }
 ]
 
 const ampm = [
@@ -42,11 +64,56 @@ class MeetingTimeModal extends React.Component {
 
   initializeFormData () {
     return {
-      is_online: false,
-      selectedDays: [],
-      meet_time_hour: '',
-      meet_time_min: '',
-      meet_time_ampm: 'am'
+      is_online: this.extractOnline() || false,
+      selectedDays: this.extractDays() || [],
+      meet_time_hour: this.extractHour() || '',
+      meet_time_min: this.extractMin() || '',
+      meet_time_ampm: this.extractAmPm() || 'am'
+    }
+  }
+
+  extractOnline () {
+    const {days} = this.props
+    if (days) {
+      return (days.indexOf('Online') > -1)
+    }
+  }
+
+  extractDays () {
+    const {days} = this.props
+    let newDays = []
+    if (days) {
+      days.map((day) => {
+        let newDay = daysOfWeek.find(dow => dow.code === day)
+        if (day) {
+          newDays.push(newDay)
+        }
+      })
+    }
+    return newDays
+  }
+
+  extractHour () {
+    const {time} = this.props
+    if (time) {
+      let newTime = moment(time, 'HH:mm:ss')
+      return newTime.hour()
+    }
+  }
+
+  extractMin () {
+    const {time} = this.props
+    if (time) {
+      let newTime = moment(time, 'HH:mm:ss')
+      return newTime.minute()
+    }
+  }
+
+  extractAmPm () {
+    const {time} = this.props
+    if (time) {
+      let newTime = moment(time, 'HH:mm:ss')
+      return newTime.hour() > 11 ? 'pm' : 'am'
     }
   }
 
@@ -65,11 +132,11 @@ class MeetingTimeModal extends React.Component {
 
   renderDays () {
     const {form} = this.state
-    return days.map((c) => {
+    return daysOfWeek.map((c) => {
       return <PillField
-        key={c}
-        label={c}
-        value={form.selectedDays.find(day => day === c) ? c : ''}
+        key={c.code}
+        label={c.day}
+        value={form.selectedDays.find(day => day === c.day) ? c.day : ''}
         onClick={this.toggleDays.bind(this)}
       />
     })
@@ -175,7 +242,9 @@ MeetingTimeModal.propTypes = {
   validateForm: PropTypes.func,
   formErrors: PropTypes.object,
   onClose: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired
+  onSubmit: PropTypes.func.isRequired,
+  days: PropTypes.array,
+  time: PropTypes.string
 }
 
 export default ValidateForm(Form(MeetingTimeModal, 'form'))
