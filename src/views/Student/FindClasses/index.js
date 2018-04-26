@@ -9,6 +9,7 @@ import SearchSemester from './SearchSemester'
 import CreateSchoolModal from './CreateSchoolModal'
 import Modal from '../../../components/Modal'
 import MeetingTimeModal from './MeetingTimeModal'
+import moment from 'moment-timezone'
 
 class FindClasses extends React.Component {
   constructor (props) {
@@ -32,7 +33,9 @@ class FindClasses extends React.Component {
       semester: null,
       subject: '',
       section: '',
-      code: ''
+      code: '',
+      days: '',
+      time: ''
     }
   }
 
@@ -47,7 +50,9 @@ class FindClasses extends React.Component {
       semester: cl.class_period,
       section: cl.section,
       code: cl.code,
-      subject: cl.subject
+      subject: cl.subject,
+      days: cl.meet_days,
+      time: cl.meet_start_time
     })
   }
 
@@ -184,7 +189,9 @@ class FindClasses extends React.Component {
         semester: null,
         subject: '',
         section: '',
-        code: ''
+        code: '',
+        days: '',
+        time: ''
       })
     }
   }
@@ -229,6 +236,15 @@ class FindClasses extends React.Component {
     }
   }
 
+  resetMeetingDetails (value) {
+    const {newCl} = this.state
+    if (newCl) {
+      this.toggleMeetingTimeModal()
+    } else {
+      this.resetClass()
+    }
+  }
+
   toggleCreateSchoolModal () {
     this.setState({openCreateSchoolModal: !this.state.openCreateSchoolModal})
   }
@@ -253,12 +269,15 @@ class FindClasses extends React.Component {
   }
 
   renderMeetingTimeModal () {
+    const {newCl, days, time} = this.state
     return (
       <Modal
         open={this.state.openMeetingTimeModal}
         onClose={this.toggleMeetingTimeModal.bind(this)}
       >
         <MeetingTimeModal
+          days={newCl && days}
+          time={newCl && time}
           onClose={this.toggleMeetingTimeModal.bind(this)}
           onSubmit={this.onSubmitSchool.bind(this)}
         />
@@ -307,7 +326,7 @@ class FindClasses extends React.Component {
     )
   }
 
-  renderMeeting () {
+  renderMeetingButton () {
     return (
       <div className='cn-find-classes-field-container'>
         <div className='cn-find-classes-field'>
@@ -317,6 +336,34 @@ class FindClasses extends React.Component {
             type="button"
           >Pick meeting times</button>
         </div>
+      </div>
+    )
+  }
+
+  renderMeetingFields () {
+    const {formErrors} = this.props
+    return (
+      <div className='cn-find-classes-field-container'>
+        <div className='cn-find-classes-field'>
+          <div className='cn-find-classes-label'>Meet times</div>
+          <InputField
+            error={formErrors.meet_times}
+            name='meet_times'
+            onChange={(name, value) => {
+              this.resetMeetingDetails(value)
+            }}
+            value={this.state.days + ' ' + moment(this.state.time, 'HH:mm:ss').format('h:mm a').toString()}
+          />
+        </div>
+      </div>
+    )
+  }
+
+  renderMeeting () {
+    const {newCl, days, time} = this.state
+    return (
+      <div>
+        {newCl || !days || !time ? this.renderMeetingButton() : this.renderMeetingFields()}
       </div>
     )
   }
