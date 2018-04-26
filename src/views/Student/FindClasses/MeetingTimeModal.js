@@ -83,10 +83,10 @@ class MeetingTimeModal extends React.Component {
     const {days} = this.props
     let newDays = []
     if (days) {
-      days.map((day) => {
-        let newDay = daysOfWeek.find(dow => dow.code === day)
-        if (day) {
-          newDays.push(newDay)
+      days.split('').map((day) => {
+        let newDay = daysOfWeek.find(dow => dow.code === day.toString())
+        if (newDay) {
+          newDays.push(newDay.day)
         }
       })
     }
@@ -243,7 +243,7 @@ MeetingTimeModal.propTypes = {
   formErrors: PropTypes.object,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  days: PropTypes.array,
+  days: PropTypes.string,
   time: PropTypes.string
 }
 
