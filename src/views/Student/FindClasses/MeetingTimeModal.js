@@ -32,7 +32,8 @@ class MeetingTimeModal extends React.Component {
   initializeFormData () {
     return {
       is_online: false,
-      selectedDays: ['Monday']
+      selectedDays: [],
+      meet_start_time: ''
     }
   }
 
@@ -91,9 +92,11 @@ class MeetingTimeModal extends React.Component {
               value={form.is_online}
             />
           </div>
+          <div className='cn-meeting-time-label'>Meet days</div>
           <div className='cn-meeting-time-days'>
             {this.renderDays()}
           </div>
+          <div className='cn-meeting-time-label'>Meet time</div>
         </form>
       </div>
     )
