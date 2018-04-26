@@ -332,48 +332,42 @@ class FindClasses extends React.Component {
 
   renderMeetingButton () {
     return (
-      <div className='cn-find-classes-field-container'>
-        <div className='cn-find-classes-field'>
-          <button
-            className={`button full-width`}
-            onClick={() => this.toggleMeetingTimeModal()}
-            type="button"
-          >Pick meeting times</button>
-        </div>
-      </div>
+      <button
+        className={`button full-width`}
+        onClick={() => this.toggleMeetingTimeModal()}
+        type="button"
+      >Pick meeting times</button>
     )
   }
 
   renderMeetingFields () {
     const {formErrors} = this.props
     return (
-      <div className='cn-find-classes-field-container'>
-        <div className='cn-find-classes-field'>
-          <div className='cn-find-classes-label'>Meet times</div>
-          <InputField
-            error={formErrors.meet_times}
-            name='meet_times'
-            onChange={(name, value) => {
-              this.resetMeetingDetails(value)
-            }}
-            value={this.state.days + ' ' + moment(this.state.time, 'HH:mm:ss').format('hh:mm a').toString()}
-          />
-        </div>
-      </div>
+      <InputField
+        error={formErrors.meet_times}
+        name='meet_times'
+        onChange={(name, value) => {
+          this.resetMeetingDetails(value)
+        }}
+        value={this.state.days + ' ' + moment(this.state.time, 'HH:mm:ss').format('hh:mm a').toString()}
+      />
     )
   }
 
   renderMeeting () {
     const {newCl, days, time} = this.state
     return (
-      <div>
-        {newCl && (!days || !time) ? this.renderMeetingButton() : this.renderMeetingFields()}
+      <div className='cn-find-classes-field-container'>
+        <div className='cn-find-classes-field'>
+          <div className='cn-find-classes-label'>Meet times</div>
+          {newCl && (!days || !time) ? this.renderMeetingButton() : this.renderMeetingFields()}
+        </div>
       </div>
     )
   }
 
   render () {
-    let {schoolName, school, cl, newCl, clName, semester, section, subject, code} = this.state
+    let {schoolName, school, cl, newCl, clName, semester, section, subject, code, time, days} = this.state
     return (
       <div className='cn-find-classes-container'>
         <div className='cn-find-classes-content'>
@@ -386,6 +380,7 @@ class FindClasses extends React.Component {
           {(cl || (newCl && clName)) ? this.renderSemester() : this.renderDisabledField()}
           {(!school || (school && school.is_university)) && (semester ? this.renderClassDetail() : this.renderDisabledField())}
           {(section && subject && code) ? this.renderMeeting() : this.renderDisabledField()}
+          {(time && days) ? this.renderMeeting() : this.renderDisabledField()}
         </div>
         {schoolName && this.renderCreateSchoolModal()}
         {this.renderMeetingTimeModal()}
