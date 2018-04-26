@@ -132,11 +132,14 @@ class MeetingTimeModal extends React.Component {
               error={formErrors.meet_time_min}
               name='meet_time_min'
               onBlur={() => {
-                if (form.meet_time_min.length < 2) {
-                  let newForm = form
-                  newForm.meet_time_min = form.meet_time_min.padStart(2, '0')
-                  this.setState({form: newForm})
+                let newForm = form
+                if (newForm.meet_time_min[1] % 5 !== 0) {
+                  newForm.meet_time_min = (5 * Math.round(newForm.meet_time_min / 5)).toString()
                 }
+                if (newForm.meet_time_min.length < 2) {
+                  newForm.meet_time_min = newForm.meet_time_min.padStart(2, '0')
+                }
+                this.setState({form: newForm})
               }}
               onChange={updateProperty}
               value={form.meet_time_min}
