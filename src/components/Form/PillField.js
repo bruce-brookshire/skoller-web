@@ -43,7 +43,7 @@ PillField.propTypes = {
   inputErrorClass: PropTypes.string,
   label: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
-  value: PropTypes.bool.isRequired,
+  value: PropTypes.string.isRequired
 }
 
 export default PillField

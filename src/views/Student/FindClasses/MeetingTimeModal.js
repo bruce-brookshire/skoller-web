@@ -1,7 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
-import {SliderField} from '../../../components/Form'
+import {SliderField, PillField} from '../../../components/Form'
+
+const days = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday'
+]
 
 class MeetingTimeModal extends React.Component {
   constructor (props) {
@@ -21,8 +31,34 @@ class MeetingTimeModal extends React.Component {
 
   initializeFormData () {
     return {
-      is_online: false
+      is_online: false,
+      selectedDays: ['Monday']
     }
+  }
+
+  toggleDays (newVal) {
+    let newForm = this.state.form
+    let newDays = this.state.form.selectedDays
+    let index = newDays.indexOf(newVal)
+    if (index > -1) {
+      newDays.splice(index, 1)
+    } else {
+      newDays.push(newVal)
+    }
+    newForm.selectedDays = newDays
+    this.setState({form: newForm})
+  }
+
+  renderDays () {
+    const {form} = this.state
+    return days.map((c) => {
+      return <PillField
+        key={c}
+        label={c}
+        value={form.selectedDays.find(day => day === c) ? c : ''}
+        onClick={this.toggleDays.bind(this)}
+      />
+    })
   }
 
   /*
@@ -54,6 +90,9 @@ class MeetingTimeModal extends React.Component {
               onChange={updateProperty}
               value={form.is_online}
             />
+          </div>
+          <div className='cn-meeting-time-days'>
+            {this.renderDays()}
           </div>
         </form>
       </div>
