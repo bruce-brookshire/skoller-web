@@ -366,6 +366,17 @@ class FindClasses extends React.Component {
     )
   }
 
+  renderProfessor () {
+    const {school} = this.state
+    return (
+      <div className='cn-find-classes-field-container'>
+        <div className='cn-find-classes-field'>
+          <div className='cn-find-classes-label'>{school.is_university ? 'Professor' : 'Teacher'}</div>
+        </div>
+      </div>
+    )
+  }
+
   render () {
     let {schoolName, school, cl, newCl, clName, semester, section, subject, code, time, days} = this.state
     return (
@@ -380,7 +391,7 @@ class FindClasses extends React.Component {
           {(cl || (newCl && clName)) ? this.renderSemester() : this.renderDisabledField()}
           {(!school || (school && school.is_university)) && (semester ? this.renderClassDetail() : this.renderDisabledField())}
           {(school && !school.is_university && semester) || (section && subject && code) ? this.renderMeeting() : this.renderDisabledField()}
-          {(time && days) ? this.renderMeeting() : this.renderDisabledField()}
+          {(time && days) ? this.renderProfessor() : this.renderDisabledField()}
         </div>
         {schoolName && this.renderCreateSchoolModal()}
         {this.renderMeetingTimeModal()}
