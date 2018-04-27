@@ -442,7 +442,7 @@ class FindClasses extends React.Component {
 
   renderExistsMessage () {
     return (
-      <span>Woah… that class is already set up! 😲💯</span>
+      <div className='cn-find-classes-exists'>Woah… that class is already set up! 😲💯</div>
     )
   }
 
@@ -452,7 +452,7 @@ class FindClasses extends React.Component {
       <div>
         {!newCl && this.renderExistsMessage()}
         <button
-          className='button margin-top margin-bottom form-button'
+          className='button margin-top margin-bottom form-button full-width'
         >{newCl ? 'Create class' : `Enroll in ${cl.name}`}</button>
       </div>
     )

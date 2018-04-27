@@ -12,6 +12,12 @@
   .cn-find-classes-content {
     width: 382px;
 
+    .cn-find-classes-exists {
+      text-align: center;
+      margin-top: $unit-space;
+      font-size: 14px;
+    }
+
     .cn-find-classes-header {
       h2 {
         font-size: 36px;
