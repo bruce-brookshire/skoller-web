@@ -39,7 +39,8 @@ class FindClasses extends React.Component {
       code: '',
       days: '',
       time: '',
-      professor: null
+      professor: null,
+      loading: false
     }
   }
 
@@ -58,6 +59,38 @@ class FindClasses extends React.Component {
       days: cl.meet_days,
       time: cl.meet_start_time
     })
+  }
+
+  mapForm () {
+    let form = {
+      name: this.state.clName,
+      meet_start_time: this.state.time,
+      meet_days: this.state.days,
+      professor_id: this.state.professor.id,
+      code: this.state.code || '',
+      section: this.state.section || '',
+      subject: this.state.subject || ''
+    }
+    return form
+  }
+
+  enroll (cl) {
+    actions.classes.enrollInClass(cl.id).then((cl) => {
+      this.setState({loading: false})
+    })
+  }
+
+  onSubmit () {
+    const {newCl, cl, semester} = this.state
+    this.setState({loading: true})
+    if (newCl) {
+      let clForm = this.mapForm()
+      actions.classes.createClass(clForm, semester.id).then((cl) => {
+        this.enroll(cl)
+      }).catch(() => { this.setState({loading: false}) })
+    } else {
+      this.enroll(cl)
+    }
   }
 
   onSubmitMeetingTime (form) {
@@ -452,6 +485,7 @@ class FindClasses extends React.Component {
       <div>
         {!newCl && this.renderExistsMessage()}
         <button
+          onClick={this.onSubmit.bind(this)}
           className='button margin-top margin-bottom form-button full-width'
         >{newCl ? 'Create class' : `Enroll in ${cl.name}`}</button>
       </div>

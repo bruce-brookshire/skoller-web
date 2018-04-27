@@ -177,9 +177,8 @@ export function dropClass (classId) {
 /*
 * Create a new class
 */
-export function createClass (form) {
-  const {user: {student: {school}}} = userStore
-  return fetch(`${Environment.SERVER_NAME}/api/v1/periods/${school.periods[0].id}/classes`, {
+export function createClass (form, periodId) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/periods/${periodId}/classes`, {
     method: 'POST',
     headers: {
       'Authorization': userStore.authToken,
