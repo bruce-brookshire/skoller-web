@@ -11,8 +11,8 @@ var Environment = require('../../environment.js')
 * @params [Object] param. Search parameters.
 * @param [Number] periodId. Id of the school period to query by.
 */
-export function searchProfessors (param, periodId) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/periods/${periodId}/professors?professor.name=${param}`, {
+export function searchProfessors (param, schoolId) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/schools/${schoolId}/professors?professor.name=${param}`, {
     method: 'GET',
     headers: {
       'Authorization': userStore.authToken,
@@ -35,8 +35,8 @@ export function searchProfessors (param, periodId) {
 * @params [Object] form. Professor form.
 * @param [Number] periodId. Id of period.
 */
-export function createProfessor (form, periodId) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/periods/${periodId}/professors`, {
+export function createProfessor (form, schoolId) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/schools/${schoolId}/professors`, {
     method: 'POST',
     headers: {
       'Authorization': userStore.authToken,

@@ -6,6 +6,7 @@ import {InputField} from '../../../components/Form'
 import SearchSchool from './SearchSchool'
 import SearchClass from './SearchClass'
 import SearchSemester from './SearchSemester'
+import SearchProfessor from './SearchProfessor'
 import CreateSchoolModal from './CreateSchoolModal'
 import Modal from '../../../components/Modal'
 import MeetingTimeModal from './MeetingTimeModal'
@@ -69,11 +70,22 @@ class FindClasses extends React.Component {
     this.setState({clName, newCl: true})
   }
 
+  onSubmitProfessor (professor) {
+    this.setState({professor})
+  }
+
   onCreateSemester (semester) {
     const {school} = this.state
     actions.periods.createPeriod(school.id, {name: semester}).then((semester) => {
       this.setState({semester})
     }).catch(() => { this.setState({semester: null}) })
+  }
+
+  onCreateProfessor (professor) {
+    const {school} = this.state
+    actions.professors.createProfessor(professor, school.id).then((professor) => {
+      this.setState({professor})
+    }).catch(() => { this.setState({professor: null}) })
   }
 
   onCreateSchool (schoolName) {
@@ -105,6 +117,20 @@ class FindClasses extends React.Component {
           this.resetSemester()
         }}
         value={this.state.semester.name}
+      />
+    )
+  }
+
+  renderProfessorName () {
+    const {formErrors} = this.props
+    return (
+      <InputField
+        error={formErrors.professorName}
+        name='professorName'
+        onChange={(name, value) => {
+          this.resetProfessor()
+        }}
+        value={this.state.professor.name_first + this.state.professor.name_last}
       />
     )
   }
@@ -209,6 +235,15 @@ class FindClasses extends React.Component {
     const {newCl} = this.state
     if (newCl) {
       this.setState({semester: null})
+    } else {
+      this.resetClass()
+    }
+  }
+
+  resetProfessor () {
+    const {newCl} = this.state
+    if (newCl) {
+      this.setState({professor: null})
     } else {
       this.resetClass()
     }
@@ -368,12 +403,17 @@ class FindClasses extends React.Component {
   }
 
   renderProfessor () {
-    const {newCl, school, professor} = this.state
+    const {school, professor} = this.state
     return (
       <div className='cn-find-classes-field-container'>
         <div className='cn-find-classes-field'>
           <div className='cn-find-classes-label'>{school.is_university ? 'Professor' : 'Teacher'}</div>
-          {/* {newCl && !professor ? this.renderProfessorButton() : this.renderProfessorFields()} */}
+          {professor ? this.renderProfessorName() : <SearchProfessor
+            schoolId={school.id}
+            isUniversity={school.is_university}
+            onProfessorSelect={this.onSubmitProfessor.bind(this)}
+            onProfessorCreate={this.onCreateProfessor.bind(this)}
+          />}
         </div>
       </div>
     )

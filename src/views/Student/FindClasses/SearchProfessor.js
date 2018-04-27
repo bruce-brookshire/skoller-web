@@ -26,9 +26,9 @@ class SearchProfessor extends React.Component {
   onUpdateAutoComplete (value) {
     if (value) {
       this.setState({loading: true})
-      // actions.professors.searchProfessors(this.props.schoolId, value).then((professors) => {
-      //   this.setState({professors, loading: false})
-      // }).catch(() => { this.setState({loading: false}) })
+      actions.professors.searchProfessors(value, this.props.schoolId).then((professors) => {
+        this.setState({professors, loading: false})
+      }).catch(() => { this.setState({loading: false}) })
     } else {
       this.setState({professors: []})
     }
@@ -55,7 +55,7 @@ class SearchProfessor extends React.Component {
         <div className='cn-find-classes-results'>
           <span className='cn-find-classes-results-item title'>{data.name_first} {data.name_last}</span>
           <span className='cn-find-classes-results-item'></span>
-          <span className='cn-find-classes-results-item'>Students: {data.email}</span>
+          <span className='cn-find-classes-results-item'>{data.email}</span>
           <div className='cn-results-divider'></div>
         </div>
       </div>
