@@ -64,13 +64,13 @@ class CreateProfessorModal extends React.Component {
   }
 
   render () {
-    const {form, universityError} = this.state
-    const {formErrors, updateProperty} = this.props
+    const {form} = this.state
+    const {formErrors, updateProperty, isUniversity} = this.props
 
     return (
       <div className='cn-create-professor-container'>
         <div className='cn-create-professor-header'>
-          Add new professor
+          Add new {isUniversity ? 'professor' : 'teacher'}
         </div>
         <form onSubmit={this.onSubmit.bind(this)}>
           <div className='cn-create-professor-row'>
@@ -127,10 +127,10 @@ class CreateProfessorModal extends React.Component {
           </div>
           <button
             className='button margin-top margin-bottom form-button'
-          >Save new professor</button>
+          >Save new {isUniversity ? 'professor' : 'teacher'}</button>
         </form>
         <div className='cn-create-professor-footer'>
-          We&apos;ll use this info for the professor&apos;s other classes.
+          We&apos;ll use this info for the {isUniversity ? 'professor' : 'teacher'}&apos;s other classes.
         </div>
       </div>
     )
