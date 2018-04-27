@@ -11,6 +11,7 @@ import CreateSchoolModal from './CreateSchoolModal'
 import Modal from '../../../components/Modal'
 import MeetingTimeModal from './MeetingTimeModal'
 import moment from 'moment-timezone'
+import CreateProfessorModal from './CreateProfessorModal'
 
 class FindClasses extends React.Component {
   constructor (props) {
@@ -27,6 +28,7 @@ class FindClasses extends React.Component {
       schoolName: '',
       openCreateSchoolModal: false,
       openMeetingTimeModal: false,
+      openCreateProfessorModal: false,
       cl: null,
       clName: '',
       newSchool: false,
@@ -82,10 +84,7 @@ class FindClasses extends React.Component {
   }
 
   onCreateProfessor (professor) {
-    const {school} = this.state
-    actions.professors.createProfessor(professor, school.id).then((professor) => {
-      this.setState({professor})
-    }).catch(() => { this.setState({professor: null}) })
+    this.toggleCreateProfessorModal()
   }
 
   onCreateSchool (schoolName) {
@@ -290,8 +289,26 @@ class FindClasses extends React.Component {
     this.setState({openCreateSchoolModal: !this.state.openCreateSchoolModal})
   }
 
+  toggleCreateProfessorModal () {
+    this.setState({openCreateProfessorModal: !this.state.openCreateProfessorModal})
+  }
+
   toggleMeetingTimeModal () {
     this.setState({openMeetingTimeModal: !this.state.openMeetingTimeModal})
+  }
+
+  renderCreateProfessorModal () {
+    return (
+      <Modal
+        open={this.state.openCreateProfessorModal}
+        onClose={this.toggleCreateProfessorModal.bind(this)}
+      >
+        <CreateProfessorModal
+          onClose={this.toggleCreateProfessorModal.bind(this)}
+          onSubmit={this.onSubmitProfessor.bind(this)}
+        />
+      </Modal>
+    )
   }
 
   renderCreateSchoolModal () {
@@ -438,6 +455,7 @@ class FindClasses extends React.Component {
         </div>
         {schoolName && this.renderCreateSchoolModal()}
         {this.renderMeetingTimeModal()}
+        {this.renderCreateProfessorModal()}
       </div>
     )
   }
