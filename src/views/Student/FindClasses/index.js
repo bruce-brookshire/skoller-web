@@ -130,7 +130,7 @@ class FindClasses extends React.Component {
         onChange={(name, value) => {
           this.resetProfessor()
         }}
-        value={this.state.professor.name_first + this.state.professor.name_last}
+        value={this.state.professor ? this.state.professor.name_first + this.state.professor.name_last : ''}
       />
     )
   }
@@ -222,7 +222,8 @@ class FindClasses extends React.Component {
         section: '',
         code: '',
         days: '',
-        time: ''
+        time: '',
+        professor: null
       })
     }
   }
@@ -403,12 +404,12 @@ class FindClasses extends React.Component {
   }
 
   renderProfessor () {
-    const {school, professor} = this.state
+    const {school, professor, newCl} = this.state
     return (
       <div className='cn-find-classes-field-container'>
         <div className='cn-find-classes-field'>
           <div className='cn-find-classes-label'>{school.is_university ? 'Professor' : 'Teacher'}</div>
-          {professor ? this.renderProfessorName() : <SearchProfessor
+          {!newCl || professor ? this.renderProfessorName() : <SearchProfessor
             schoolId={school.id}
             isUniversity={school.is_university}
             onProfessorSelect={this.onSubmitProfessor.bind(this)}
