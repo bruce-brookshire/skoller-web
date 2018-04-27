@@ -129,7 +129,7 @@ class FindClasses extends React.Component {
         onChange={(name, value) => {
           this.resetProfessor()
         }}
-        value={this.state.professor ? this.state.professor.name_first + this.state.professor.name_last : ''}
+        value={this.state.professor ? this.state.professor.name_first + ' ' + this.state.professor.name_last : ''}
       />
     )
   }
@@ -298,12 +298,15 @@ class FindClasses extends React.Component {
   }
 
   renderCreateProfessorModal () {
+    const {school} = this.state
     return (
       <Modal
         open={this.state.openCreateProfessorModal}
         onClose={this.toggleCreateProfessorModal.bind(this)}
       >
         <CreateProfessorModal
+          schoolId={school.id}
+          isUniversity={school.is_university}
           onClose={this.toggleCreateProfessorModal.bind(this)}
           onSubmit={this.onSubmitProfessor.bind(this)}
         />
@@ -455,7 +458,7 @@ class FindClasses extends React.Component {
         </div>
         {schoolName && this.renderCreateSchoolModal()}
         {this.renderMeetingTimeModal()}
-        {this.renderCreateProfessorModal()}
+        {school && this.renderCreateProfessorModal()}
       </div>
     )
   }
