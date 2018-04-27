@@ -62,10 +62,10 @@ class LoginForm extends React.Component {
             actions.classes.getStudentClasses().then((classes) => {
               classes.length > 0
                 ? browserHistory.push('/student/classes')
-                : browserHistory.push('/student/onboard')
+                : browserHistory.push('/student/find-classes')
             }).catch(() => false)
           } else {
-            browserHistory.push('/student/onboard')
+            browserHistory.push('/student/verify')
           }
         } else {
           browserHistory.push('/hub')

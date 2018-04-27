@@ -140,6 +140,16 @@ class OurTeam extends React.Component {
                 </div>
               </div>
             </div>
+            <div className='teammate-cell-advisor'>
+              <div className='teammate'>
+                <img className='teammate-image' src='src/assets/images/our_team/dorrian.png'></img>
+                <p className='teammate-name'>Dorrian Porter</p>
+                <p className='teammate-title'>CEO, Vestaboard<br></br>San Francisco Bay Area</p>
+                <div className='teammate-links'>
+                  <a href='https://www.linkedin.com/in/dorrianporter/'><i className="fa fa-linkedin-square"></i></a> <a href='https://www.vestaboard.com/'><i className="fa fa-globe"></i></a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <LandingFooter />

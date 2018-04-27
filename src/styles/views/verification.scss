@@ -1,0 +1,23 @@
+.cn-verification-container {
+  @include onboarding-section;
+  
+  .cn-verification-content {
+    width: 400px;
+    .img-container {
+      align-items: center;
+      display: flex;
+    }
+    .content-container {
+      
+      h1 {
+        font-size: 36px;
+        margin-bottom: 0;
+      }
+
+      .resend-verification {
+        font-size: 11px;
+        margin-left: auto;
+      }
+    }
+  }
+}

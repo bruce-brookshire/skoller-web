@@ -3,6 +3,7 @@ import {inject, observer} from 'mobx-react'
 import VerificationCode from '../../../components/VerificationCode'
 import actions from '../../../actions'
 import {formatPhone} from '../../../utilities/display'
+import {browserHistory} from 'react-router'
 
 const numberOfDigits = 5
 
@@ -45,7 +46,7 @@ class Verification extends React.Component {
   */
   onNext () {
     actions.auth.verifyPhoneNumber(this.getForm()).then(() => {
-      this.props.onNext()
+      browserHistory.push('/student/find-classes')
     }).catch(() => false)
   }
 
@@ -63,20 +64,22 @@ class Verification extends React.Component {
     const {userStore: {user}} = this.props.rootStore
 
     return (
-      <div className='vertical-align' style={{margin: '0 auto'}}>
-        <div className='cn-verification-container'>
-          <div className='img-container'>
-            <img className='center-vertical' src='/src/assets/images/letter2.png' />
-          </div>
-          <div className='content-container'>
-            <h1>Verify your phone number</h1>
-            <span>We sent a verification code to {formatPhone(user.student.phone)}. Enter it here! Didn’t get it? <a onClick={this.onResendVerification.bind(this)}>Resend link</a>.</span>
-            <VerificationCode numberOfDigits={numberOfDigits} onChange={this.onChange.bind(this)} />
-            <button
-              className={`button full-width ${disableClass}`}
-              onClick={this.onNext.bind(this)}
-              disabled={disableButton}
-            >Continue</button>
+      <div className='cn-verification-container'>
+        <div className='vertical-align' style={{margin: '0 auto'}}>
+          <div className='cn-verification-content'>
+            <div className='img-container'>
+              <img className='center-vertical' src='/src/assets/images/letter2.png' />
+            </div>
+            <div className='content-container'>
+              <h1>Verify your phone number</h1>
+              <span>We sent a verification code to {formatPhone(user.student.phone)}. Enter it here! Didn’t get it? <a onClick={this.onResendVerification.bind(this)}>Resend link</a>.</span>
+              <VerificationCode numberOfDigits={numberOfDigits} onChange={this.onChange.bind(this)} />
+              <button
+                className={`button full-width ${disableClass}`}
+                onClick={this.onNext.bind(this)}
+                disabled={disableButton}
+              >Continue</button>
+            </div>
           </div>
         </div>
       </div>

@@ -20,8 +20,7 @@
 @import 'forms/pill-field';
 @import 'forms/select-field';
 @import 'forms/textarea-field';
-// @import 'forms/form';
-// @import 'forms/textfield';
+@import 'forms/slider-field';
 
 // Components ----------------------------
 @import 'components/add-class';
@@ -49,11 +48,15 @@
 
 // Composed Views ------------------------
 @import 'views/mixins/landing.scss';
+@import 'views/mixins/onboarding.scss';
 @import 'views/analytics.scss';
 @import 'views/call-to-action.scss';
 @import 'views/class-approval.scss';
+@import 'views/create-professor-modal.scss';
+@import 'views/create-school-modal.scss';
 @import 'views/diylanding.scss';
 @import 'views/faq.scss';
+@import 'views/find-classes.scss';
 @import 'views/forgot-password.scss';
 @import 'views/hub-accounts.scss';
 @import 'views/hub-classes.scss';
@@ -63,6 +66,7 @@
 @import 'views/landing-nav.scss';
 @import 'views/landing.scss';
 @import 'views/learn-more.scss';
+@import 'views/meeting-time-modal.scss';
 @import 'views/myclasses.scss';
 @import 'views/onboarding.scss';
 @import 'views/people-talking.scss';
@@ -72,7 +76,7 @@
 @import 'views/switchboard.scss';
 @import 'views/syllabus-tool.scss';
 @import 'views/syllabus-tutorial.scss';
-
+@import 'views/verification.scss';
 
 html { box-sizing: border-box; }
 
@@ -95,6 +99,7 @@ body {
   background: $cn-primary-background-color;
   color: $cn-font-color;
   font-family: $cn-font-family;
+  line-height: 1.2;
 }
 
 .app {

@@ -28,13 +28,14 @@ export function getAllSchools () {
 }
 
 /*
-* Get the active schools for signup
+* Get states
 *
 */
-export function getActiveSchools () {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/school/list`, {
+export function getStates () {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/locations`, {
     method: 'GET',
     headers: {
+      'Authorization': userStore.authToken,
       'Content-Type': 'application/json'
     }
   })
@@ -43,7 +44,7 @@ export function getActiveSchools () {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching schools. Try again.')
+      showSnackbar('Error fetching states. Try again.')
       return Promise.reject(error)
     })
 }
@@ -76,6 +77,27 @@ export function getFieldsOfStudy (schoolId, query) {
 */
 export function getHubSchoolsMinified () {
   return fetch(`${Environment.SERVER_NAME}/api/v1/school/list`, {
+    method: 'GET',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error fetching schools. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Search schools by name
+*/
+export function searchSchools (param) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/school/list?name=${param}`, {
     method: 'GET',
     headers: {
       'Authorization': userStore.authToken,

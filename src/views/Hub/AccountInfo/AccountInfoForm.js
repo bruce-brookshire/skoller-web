@@ -18,7 +18,7 @@ class AccountInfoForm extends React.Component {
     }).catch(() => { this.setState({loadingRoles: false}) })
 
     this.setState({loadingSchools: true})
-    actions.schools.getActiveSchools().then(schools => {
+    actions.schools.getHubSchoolsMinified().then(schools => {
       this.setState({schools, loadingSchools: false})
     }).catch(() => { this.setState({loadingSchools: false}) })
   }

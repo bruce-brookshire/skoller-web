@@ -1,0 +1,26 @@
+.cn-create-professor-container {
+  
+  .cn-create-professor-header {
+    text-align: center;
+  }
+
+  .cn-create-professor-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: $unit-space;
+
+    .form-element {
+      width: 100%;
+    }
+
+    .cn-create-professor-name {
+      width: calc(50% - 10px);
+    }
+  }
+
+  .cn-create-professor-footer {
+    font-size: 14px;
+    text-align: center;
+  }
+}

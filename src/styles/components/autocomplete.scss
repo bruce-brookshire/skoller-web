@@ -1,4 +1,6 @@
 .cn-autocomplete-container {
+  position: relative;
+
   .cn-autocomplete-input {
     @include form-element;
     &.loading {
@@ -14,6 +16,10 @@
   .cn-autocomplete-results-container {
     max-height: 100px;
     overflow-y: scroll;
+    z-index: 1;
+    position: absolute;
+    width: 100%;
+
     .cn-autocomplete-result {
       background-color: #fff;
       border: 1px solid #CCC;
