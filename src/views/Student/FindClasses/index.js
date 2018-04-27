@@ -440,8 +440,26 @@ class FindClasses extends React.Component {
     )
   }
 
+  renderExistsMessage () {
+    return (
+      <span>Woah… that class is already set up! 😲💯</span>
+    )
+  }
+
+  renderSubmit () {
+    const {newCl, cl} = this.state
+    return (
+      <div>
+        {!newCl && this.renderExistsMessage()}
+        <button
+          className='button margin-top margin-bottom form-button'
+        >{newCl ? 'Create class' : `Enroll in ${cl.name}`}</button>
+      </div>
+    )
+  }
+
   render () {
-    let {schoolName, school, cl, newCl, clName, semester, section, subject, code, time, days} = this.state
+    let {schoolName, school, cl, newCl, clName, semester, section, subject, code, time, days, professor} = this.state
     return (
       <div className='cn-find-classes-container'>
         <div className='cn-find-classes-content'>
@@ -455,6 +473,7 @@ class FindClasses extends React.Component {
           {(!school || (school && school.is_university)) && (semester ? this.renderClassDetail() : this.renderDisabledField())}
           {(school && !school.is_university && semester) || (section && subject && code) ? this.renderMeeting() : this.renderDisabledField()}
           {(time && days) ? this.renderProfessor() : this.renderDisabledField()}
+          {school && clName && semester && (!school.is_university || (section && subject && code)) && time && days && (!newCl || professor) && this.renderSubmit()}
         </div>
         {schoolName && this.renderCreateSchoolModal()}
         {this.renderMeetingTimeModal()}
