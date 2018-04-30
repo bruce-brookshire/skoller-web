@@ -4,7 +4,7 @@ class LandingMessage extends React.Component {
   render () {
     return (
       <div className='container-landing-message'>
-        <h2 className='margin-bottom'>Keep up with your classes, together.</h2>
+        <h2 className='margin-bottom'>Keep up with classes, together.</h2>
         <ul className='landing-message'>
           <li className='message-row'>
             <div className='cn-person'>
