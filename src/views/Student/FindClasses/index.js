@@ -12,6 +12,7 @@ import Modal from '../../../components/Modal'
 import MeetingTimeModal from './MeetingTimeModal'
 import moment from 'moment-timezone'
 import CreateProfessorModal from './CreateProfessorModal'
+import { browserHistory } from 'react-router'
 
 class FindClasses extends React.Component {
   constructor (props) {
@@ -75,8 +76,15 @@ class FindClasses extends React.Component {
   }
 
   enroll (cl) {
-    actions.classes.enrollInClass(cl.id).then((cl) => {
+    actions.classes.enrollInClass(cl.id).then((studentCl) => {
       this.setState({loading: false})
+      browserHistory.push({
+        pathname: 'student/class-link',
+        state: {
+          enrollmentLink: studentCl.enrollment_link,
+          className: cl.name
+        }
+      })
     })
   }
 
