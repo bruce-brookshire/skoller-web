@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { browserHistory } from 'react-router'
 
 const enrollmentLink = 'localhost:8080/e/4erkl'
 const className = 'Business Law'
@@ -19,6 +20,13 @@ class ClassLink extends React.Component {
             {enrollmentLink}
           </div>
         </div>
+        <button
+          className='button full-width margin-top'
+          onClick={() => {
+            browserHistory.push('/student/classes')
+          }}>
+          Continue to Skoller
+        </button>
       </div>
     )
   }
