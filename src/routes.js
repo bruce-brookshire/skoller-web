@@ -33,6 +33,8 @@ import AccountInfo from './views/Hub/AccountInfo'
 import Analytics from './views/Hub/Analytics'
 import Switchboard from './views/Hub/Switchboard'
 
+import EnrollmentLink from './views/EnrollmentLink'
+
 import actions from './actions'
 import stores from './stores'
 const {userStore} = stores
@@ -49,6 +51,7 @@ const router = (
       <Route path='/what-people-say' component={PeopleTalking} />
       <Route path='/our-team' component={OurTeam} />
       <Route path='/faq' component={Faq} />
+      <Route path='/e/:link' component={EnrollmentLink} />
       <Route path='/app' component={Layout} onEnter={requireAuth}>
         <IndexRedirect to='/student/classes' />
         <Route path='/student'>
