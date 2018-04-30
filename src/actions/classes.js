@@ -379,3 +379,26 @@ export function getLocks (classId) {
       return Promise.reject(error)
     })
 }
+
+/*
+* Get class and link details
+*
+* @param [string] link. Class link
+*/
+export function getClassByLink (link) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/enrollment-link/${link}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => parseResponse(response))
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error finding class. Try again.')
+      return Promise.reject(error)
+    })
+}
