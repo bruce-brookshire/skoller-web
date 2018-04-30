@@ -1,0 +1,37 @@
+.cn-class-link-container {
+  width: 400px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 0 auto;
+
+  .cn-class-link-header {
+    font-size: 36px;
+    font-weight: bold;
+    text-align: left;
+    width: 100%;
+  }
+
+  .cn-class-link-text {
+    font-size: 14px;
+  }
+
+  .cn-class-link-background {
+    margin-top: $unit-space;
+    width: 100%;
+    background-color: $cn-link-background;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 52px;
+
+    .cn-class-link {
+      font-size: 24px;
+      padding-top: 7px;
+      font-weight: bold;
+    }
+  }
+}
