@@ -55,7 +55,8 @@ class LoginForm extends React.Component {
         this.props.resetValidation()
 
         const { userStore: { authToken, user } } = this.props.rootStore
-        this.cookie.set('skollerToken', authToken, { maxAge: 86400 * 7 })
+        this.cookie.remove('skollerToken', { path: '/' })
+        this.cookie.set('skollerToken', authToken, { maxAge: 86400 * 7, path: '/' })
 
         if (user.student) {
           if (user.student.is_verified) {

@@ -17,6 +17,7 @@ import DIYLanding from './views/Student/DIYLanding'
 import MyClasses from './views/Student/MyClasses'
 import FindClasses from './views/Student/FindClasses'
 import Verification from './views/Student/Verification'
+import ClassLink from './views/Student/ClassLink'
 
 import AssignmentsTutorial from './views/SyllabusTutorial/AssignmentsTutorial'
 import WeightsTutorial from './views/SyllabusTutorial/WeightsTutorial'
@@ -54,6 +55,7 @@ const router = (
           <IndexRedirect to='/student/classes'/>
           <Route path='/student/find-classes' component={FindClasses} />
           <Route path='/student/verify' component={Verification} onEnter={authOnboard} />
+          <Route path='/student/class-link' component={ClassLink} />
           <Route path='/student/diy' component={DIYLanding} />
           <Route path='/student/classes' component={MyClasses}/>
         </Route>
@@ -141,7 +143,7 @@ function authOnboard () {
 
 const cookie = new Cookies()
 function logout (nextState, replaceState) {
-  cookie.remove('skollerToken')
+  cookie.remove('skollerToken', { path: '/' })
   replaceState(null, '/landing')
 }
 

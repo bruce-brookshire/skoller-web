@@ -76,7 +76,8 @@ class SignUpForm extends React.Component {
         actions.auth.registerUser(form).then(() => {
           this.props.resetValidation()
           const { userStore: { authToken } } = this.props.rootStore
-          this.cookie.set('skollerToken', authToken, { maxAge: 84600 * 7 })
+          this.cookie.remove('skollerToken', { path: '/' })
+          this.cookie.set('skollerToken', authToken, { maxAge: 84600 * 7, path: '/' })
           browserHistory.push('/student/verify')
         }).catch(() => false)
       }
