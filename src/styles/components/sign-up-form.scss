@@ -1,0 +1,23 @@
+@mixin row {
+  display: flex;
+  flex-direction: column;
+  margin: 2rem auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  width: 100%;
+
+  @include breakpoint(medium) {
+    flex-direction: row;
+    max-width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+.cn-sign-up-form {
+  .is-university {
+    @include row();
+    margin: 0;
+    align-items: baseline;
+  }
+}

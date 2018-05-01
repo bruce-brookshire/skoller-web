@@ -16,7 +16,7 @@ import ResetPassword from './views/ResetPassword'
 import DIYLanding from './views/Student/DIYLanding'
 import MyClasses from './views/Student/MyClasses'
 import FindClasses from './views/Student/FindClasses'
-import Verification from './views/Student/Verification'
+import Verification from './views/components/Verification'
 import ClassLink from './views/Student/ClassLink'
 
 import AssignmentsTutorial from './views/SyllabusTutorial/AssignmentsTutorial'
@@ -32,6 +32,9 @@ import Accounts from './views/Hub/Accounts'
 import AccountInfo from './views/Hub/AccountInfo'
 import Analytics from './views/Hub/Analytics'
 import Switchboard from './views/Hub/Switchboard'
+
+import EnrollmentLinkLanding from './views/EnrollmentLink/Landing'
+import Enroll from './views/EnrollmentLink/Enroll'
 
 import actions from './actions'
 import stores from './stores'
@@ -49,6 +52,9 @@ const router = (
       <Route path='/what-people-say' component={PeopleTalking} />
       <Route path='/our-team' component={OurTeam} />
       <Route path='/faq' component={Faq} />
+      <Route path='/enroll' component={Enroll} />
+      <Route path='/e/:link' component={EnrollmentLinkLanding} />
+
       <Route path='/app' component={Layout} onEnter={requireAuth}>
         <IndexRedirect to='/student/classes' />
         <Route path='/student'>

@@ -1,12 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {browserHistory} from 'react-router'
 import {Cookies} from 'react-cookie'
 import {Form, ValidateForm} from 'react-form-library'
-import {InputField, CheckboxField} from '../../components/Form'
-import actions from '../../actions'
-import {maskPhoneNumber} from '../../utilities/mask'
-import {wrapTimeHour} from '../../utilities/time'
+import {InputField, CheckboxField} from '../../../components/Form'
+import actions from '../../../actions'
+import {maskPhoneNumber} from '../../../utilities/mask'
+import {wrapTimeHour} from '../../../utilities/time'
 
 const requiredFields = {
   'email': {
@@ -78,7 +77,7 @@ class SignUpForm extends React.Component {
           const { userStore: { authToken } } = this.props.rootStore
           this.cookie.remove('skollerToken', { path: '/' })
           this.cookie.set('skollerToken', authToken, { maxAge: 84600 * 7, path: '/' })
-          browserHistory.push('/student/verify')
+          this.props.onSubmit()
         }).catch(() => false)
       }
     }
@@ -110,18 +109,14 @@ class SignUpForm extends React.Component {
     return regEx.test(email)
   }
 
-  // onAddMyUniversity () {
-  //   window.location.href = 'mailto:support@skoller.co?Subject=Add My School - ' + this.state.form.email
-  // }
-
   render () {
     const {form, universityError} = this.state
-    const {formErrors, updateProperty} = this.props
+    const {formErrors, updateProperty, header, buttonText} = this.props
 
     return (
-      <div id='sign-up-form'>
+      <div className='cn-sign-up-form'>
         <form className='form-padding'>
-          <h2>Sign up <small className='sub-header'>(it&apos;s free!)</small></h2>
+          {header && <h2>{header}</h2>}
           <div className='is-university'>
             <CheckboxField
               containerClassName='margin-top margin-right'
@@ -215,13 +210,14 @@ class SignUpForm extends React.Component {
               />
             </div>
           </div>
+          <div className='center-text'>
+            <button
+              className='button margin-top margin-bottom full-width'
+              type='button'
+              onClick={this.onSubmit.bind(this)}
+            >{buttonText || 'Submit'}</button>
+          </div>
         </form>
-        <div className='col-xs-12 center-text'>
-          <button
-            className='button margin-top margin-bottom form-button'
-            onClick={this.onSubmit.bind(this)}
-          >Take me there.</button>
-        </div>
       </div>
     )
   }
@@ -232,7 +228,13 @@ SignUpForm.propTypes = {
   resetValidation: PropTypes.func,
   rootStore: PropTypes.object,
   updateProperty: PropTypes.func,
-  validateForm: PropTypes.func
+  validateForm: PropTypes.func,
+  header: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.element
+  ]),
+  buttonText: PropTypes.string,
+  onSubmit: PropTypes.func
 }
 
 export default ValidateForm(Form(SignUpForm, 'form'))

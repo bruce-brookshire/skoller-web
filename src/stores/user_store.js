@@ -6,7 +6,8 @@ class UserStore {
       loading: null,
       fetchingUser: null,
       authToken: null,
-      user: null
+      user: null,
+      enrollmentLink: null
     })
   }
 

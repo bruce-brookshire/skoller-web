@@ -54,22 +54,11 @@ class LoginForm extends React.Component {
       actions.auth.authenticateUser(this.state.form).then(() => {
         this.props.resetValidation()
 
-        const { userStore: { authToken, user } } = this.props.rootStore
+        const { userStore: { authToken } } = this.props.rootStore
         this.cookie.remove('skollerToken', { path: '/' })
         this.cookie.set('skollerToken', authToken, { maxAge: 86400 * 7, path: '/' })
-
-        if (user.student) {
-          if (user.student.is_verified) {
-            actions.classes.getStudentClasses().then((classes) => {
-              classes.length > 0
-                ? browserHistory.push('/student/classes')
-                : browserHistory.push('/student/find-classes')
-            }).catch(() => false)
-          } else {
-            browserHistory.push('/student/verify')
-          }
-        } else {
-          browserHistory.push('/hub')
+        if (this.props.onSubmit) {
+          this.props.onSubmit()
         }
       }).catch(() => false)
     }

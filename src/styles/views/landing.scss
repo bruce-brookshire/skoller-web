@@ -126,12 +126,13 @@ $h2-size-sm: 36px;
             min-height: 100%;
             width: 100%;
 
-            .is-university {
-              @include row();
-              margin: 0;
-              // width: 66%;
-              // justify-content: space-between;
-              align-items: baseline;
+            .cn-sign-up-form {
+              margin-top: 2rem;
+              
+              .form-padding {
+                width: 95%;
+                margin: 0 auto;
+              }
             }
           }
       
@@ -213,14 +214,4 @@ $h2-size-sm: 36px;
 .muted-text { color: $cn-color-grey; }
 
 .blue-text { color: $cn-color-blue; }
-
-.form-padding {
-  width: 95%;
-  margin: 0 auto;
-  margin-top: 2rem;
-}
-
-.form-button {
-  width: 98%;
-}
 

@@ -46,7 +46,11 @@ class Verification extends React.Component {
   */
   onNext () {
     actions.auth.verifyPhoneNumber(this.getForm()).then(() => {
-      browserHistory.push('/student/find-classes')
+      if (this.props.onSubmit) {
+        this.props.onSubmit()
+      } else {
+        browserHistory.push('/student/find-classes')
+      }
     }).catch(() => false)
   }
 
@@ -65,7 +69,7 @@ class Verification extends React.Component {
 
     return (
       <div className='cn-verification-container'>
-        <div className='vertical-align' style={{margin: '0 auto'}}>
+        <div className='vertical-align'>
           <div className='cn-verification-content'>
             <div className='img-container'>
               <img className='center-vertical' src='/src/assets/images/letter2.png' />
