@@ -52,8 +52,8 @@ const router = (
       <Route path='/what-people-say' component={PeopleTalking} />
       <Route path='/our-team' component={OurTeam} />
       <Route path='/faq' component={Faq} />
-      <Route path='/e/:link' component={EnrollmentLinkLanding} />
       <Route path='/enroll' component={Enroll} />
+      <Route path='/e/:link' component={EnrollmentLinkLanding} />
 
       <Route path='/app' component={Layout} onEnter={requireAuth}>
         <IndexRedirect to='/student/classes' />

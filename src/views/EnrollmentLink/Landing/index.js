@@ -34,7 +34,7 @@ class EnrollmentLink extends React.Component {
       })
       .catch(() => {
         browserHistory.push({
-          pathname: 'enroll',
+          pathname: '../enroll',
           state: {
             enrollmentLink: this.props.params.link
           }
@@ -53,7 +53,7 @@ class EnrollmentLink extends React.Component {
         })
         .catch(() => {
           browserHistory.push({
-            pathname: 'enroll',
+            pathname: '../enroll',
             state: {
               enrollmentLink: this.props.params.link
             }
@@ -62,23 +62,6 @@ class EnrollmentLink extends React.Component {
     } else {
       this.enroll()
     }
-  }
-
-  authenticateStudent (user) {
-    if (user.student) {
-      if (user.student.is_verified) {
-        return actions.classes.getStudentClasses().then((classes) => {
-          if (classes.length === 0) browserHistory.push('/student/find-classes')
-        }).catch(() => false)
-      } else {
-        return new Promise((resolve, reject) => {
-          resolve(browserHistory.push('/student/verify'))
-        })
-      }
-    }
-    return new Promise((resolve, reject) => {
-      resolve()
-    })
   }
 
   render () {
