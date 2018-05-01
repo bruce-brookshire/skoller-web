@@ -3,7 +3,9 @@ import PropTypes from 'prop-types'
 import actions from '../../../actions'
 import LandingNav from '../../components/LandingNav'
 import SignUpForm from '../../components/SignUpForm'
+import {inject, observer} from 'mobx-react'
 
+@inject('rootStore') @observer
 class Enroll extends React.Component {
   constructor (props) {
     super(props)
@@ -12,13 +14,44 @@ class Enroll extends React.Component {
 
   initializeState () {
     return {
+      step: 1
     }
   }
 
   componentWillMount () {
   }
 
-  onSubmit () {
+  incrementStep () {
+    const {step} = this.state
+    let newStep = step + 1
+    this.setState({step: newStep})
+  }
+
+  renderSignup () {
+    return (
+      <div>
+        <div className='cn-create-account-header'>
+          Create your account
+        </div>
+        <div className='cn-create-account-subheader'>
+          This information will help your classmates identify you.
+        </div>
+        <SignUpForm
+          rootStore={this.props.rootStore}
+          onSubmit={() => this.incrementStep()}
+        />
+      </div>
+    )
+  }
+
+  renderContent () {
+    const {step} = this.state
+    return (
+      <div className='cn-enrollment-link-content'>
+        {step === 1 && this.renderSignup()}
+        {step === 2 && <div>test</div>}
+      </div>
+    )
   }
 
   render () {
@@ -28,15 +61,7 @@ class Enroll extends React.Component {
           noLogin={true}
           imgPath='../src/assets/images/logo-wide-blue@1x.png'
         />
-        <div className='cn-enrollment-link-content'>
-          <div className='cn-create-account-header'>
-            Create your account
-          </div>
-          <div className='cn-create-account-subheader'>
-            This information will help your classmates identify you.
-          </div>
-          <SignUpForm />
-        </div>
+        {this.renderContent()}
       </div>
     )
   }
