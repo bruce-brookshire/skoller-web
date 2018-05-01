@@ -128,6 +128,11 @@ $h2-size-sm: 36px;
 
             .cn-sign-up-form {
               margin-top: 2rem;
+              
+              .form-padding {
+                width: 95%;
+                margin: 0 auto;
+              }
             }
           }
       
@@ -209,13 +214,4 @@ $h2-size-sm: 36px;
 .muted-text { color: $cn-color-grey; }
 
 .blue-text { color: $cn-color-blue; }
-
-.form-padding {
-  width: 95%;
-  margin: 0 auto;
-}
-
-.form-button {
-  width: 98%;
-}
 

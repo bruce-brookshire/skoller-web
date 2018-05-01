@@ -18,8 +18,6 @@
   .is-university {
     @include row();
     margin: 0;
-    // width: 66%;
-    // justify-content: space-between;
     align-items: baseline;
   }
 }
