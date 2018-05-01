@@ -229,7 +229,10 @@ SignUpForm.propTypes = {
   rootStore: PropTypes.object,
   updateProperty: PropTypes.func,
   validateForm: PropTypes.func,
-  header: PropTypes.string,
+  header: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.element
+  ]),
   buttonText: PropTypes.string,
   onSubmit: PropTypes.func
 }

@@ -5,6 +5,7 @@ import LandingNav from '../../components/LandingNav'
 import SignUpForm from '../../components/SignUpForm'
 import {inject, observer} from 'mobx-react'
 import Verification from '../../components/Verification'
+import {browserHistory} from 'react-router'
 
 @inject('rootStore') @observer
 class Enroll extends React.Component {
@@ -28,6 +29,13 @@ class Enroll extends React.Component {
     this.setState({step: newStep})
   }
 
+  onSubmit () {
+    actions.classes.enrollByLink(this.props.location.state.enrollmentLink)
+      .then(() => {
+        browserHistory.push('/student/classes')
+      })
+  }
+
   renderSignup () {
     return (
       <div>
@@ -45,12 +53,20 @@ class Enroll extends React.Component {
     )
   }
 
+  renderVerification () {
+    return (
+      <Verification
+        onSubmit={() => this.onSubmit()}
+      />
+    )
+  }
+
   renderContent () {
     const {step} = this.state
     return (
       <div className='cn-enrollment-link-content'>
         {step === 1 && this.renderSignup()}
-        {step === 2 && <Verification />}
+        {step === 2 && this.renderVerification()}
       </div>
     )
   }
