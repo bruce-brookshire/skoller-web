@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {browserHistory} from 'react-router'
 import {Cookies} from 'react-cookie'
 import {Form, ValidateForm} from 'react-form-library'
 import {InputField, CheckboxField} from '../../../components/Form'
@@ -78,7 +77,7 @@ class SignUpForm extends React.Component {
           const { userStore: { authToken } } = this.props.rootStore
           this.cookie.remove('skollerToken', { path: '/' })
           this.cookie.set('skollerToken', authToken, { maxAge: 84600 * 7, path: '/' })
-          browserHistory.push('/student/verify')
+          this.props.onSubmit()
         }).catch(() => false)
       }
     }
@@ -231,7 +230,8 @@ SignUpForm.propTypes = {
   updateProperty: PropTypes.func,
   validateForm: PropTypes.func,
   header: PropTypes.string,
-  buttonText: PropTypes.string
+  buttonText: PropTypes.string,
+  onSubmit: PropTypes.func
 }
 
 export default ValidateForm(Form(SignUpForm, 'form'))
