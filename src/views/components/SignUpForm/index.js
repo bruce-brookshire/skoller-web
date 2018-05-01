@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import {browserHistory} from 'react-router'
 import {Cookies} from 'react-cookie'
 import {Form, ValidateForm} from 'react-form-library'
-import {InputField, CheckboxField} from '../../components/Form'
-import actions from '../../actions'
-import {maskPhoneNumber} from '../../utilities/mask'
-import {wrapTimeHour} from '../../utilities/time'
+import {InputField, CheckboxField} from '../../../components/Form'
+import actions from '../../../actions'
+import {maskPhoneNumber} from '../../../utilities/mask'
+import {wrapTimeHour} from '../../../utilities/time'
 
 const requiredFields = {
   'email': {
@@ -119,7 +119,7 @@ class SignUpForm extends React.Component {
     const {formErrors, updateProperty} = this.props
 
     return (
-      <div id='sign-up-form'>
+      <div className='cn-sign-up-form'>
         <form className='form-padding'>
           <h2>Sign up <small className='sub-header'>(it&apos;s free!)</small></h2>
           <div className='is-university'>

@@ -125,14 +125,6 @@ $h2-size-sm: 36px;
             box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.1);
             min-height: 100%;
             width: 100%;
-
-            .is-university {
-              @include row();
-              margin: 0;
-              // width: 66%;
-              // justify-content: space-between;
-              align-items: baseline;
-            }
           }
       
         }
