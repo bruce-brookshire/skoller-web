@@ -1,9 +1,28 @@
 import React from 'react'
-import LoginForm from './LoginForm'
+import LoginForm from '../LoginForm'
 import PropTypes from 'prop-types'
 import {browserHistory} from 'react-router'
+import actions from '../../../actions'
 
 class LandingNav extends React.Component {
+  onSubmitLogin () {
+    const { userStore: { user } } = this.props.rootStore
+
+    if (user.student) {
+      if (user.student.is_verified) {
+        actions.classes.getStudentClasses().then((classes) => {
+          classes.length > 0
+            ? browserHistory.push('/student/classes')
+            : browserHistory.push('/student/find-classes')
+        }).catch(() => false)
+      } else {
+        browserHistory.push('/student/verify')
+      }
+    } else {
+      browserHistory.push('/hub')
+    }
+  }
+
   render () {
     return (
       <div className='cn-landing-navbar'>
@@ -11,7 +30,10 @@ class LandingNav extends React.Component {
           <h1>
             <a onClick={() => { browserHistory.push('/landing'); window.scrollTo(0, 0) }} ><img alt="Skoller" className='logo' src={this.props.imgPath || 'src/assets/images/logo-wide-blue@1x.png'} /></a>
           </h1>
-          {!this.props.noLogin && <LoginForm rootStore={this.props.rootStore}/>}
+          {!this.props.noLogin && <LoginForm
+            rootStore={this.props.rootStore}
+            onSubmit={() => this.onSubmitLogin()}
+          />}
         </div>
       </div>
     )

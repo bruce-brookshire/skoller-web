@@ -16,7 +16,8 @@ class Enroll extends React.Component {
 
   initializeState () {
     return {
-      step: 1
+      step: 1,
+      newUser: true
     }
   }
 
@@ -29,6 +30,10 @@ class Enroll extends React.Component {
     this.setState({step: newStep})
   }
 
+  switchForm () {
+    this.setState({newUser: !this.state.newUser})
+  }
+
   onSubmit () {
     actions.classes.enrollByLink(this.props.location.state.enrollmentLink)
       .then(() => {
@@ -38,7 +43,7 @@ class Enroll extends React.Component {
 
   renderSignup () {
     return (
-      <div>
+      <div className='cn-create-account-form'>
         <div className='cn-create-account-header'>
           Create your account
         </div>
@@ -49,6 +54,11 @@ class Enroll extends React.Component {
           rootStore={this.props.rootStore}
           onSubmit={() => this.incrementStep()}
         />
+        <a
+          className='cn-create-account-login'
+          onClick={() => this.switchForm()}>
+          Already have an account? Log in.
+        </a>
       </div>
     )
   }
@@ -62,11 +72,11 @@ class Enroll extends React.Component {
   }
 
   renderContent () {
-    const {step} = this.state
+    const {newUser, step} = this.state
     return (
       <div className='cn-enrollment-link-content'>
-        {step === 1 && this.renderSignup()}
-        {step === 2 && this.renderVerification()}
+        {newUser && step === 1 && this.renderSignup()}
+        {newUser && step === 2 && this.renderVerification()}
       </div>
     )
   }
