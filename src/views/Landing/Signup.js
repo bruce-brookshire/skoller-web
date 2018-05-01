@@ -9,6 +9,7 @@ class Signup extends React.Component {
           <div id='sign-up-form'>
             <SignUpForm {...this.props}
               header={<div>Sign up <small className='sub-header'>(it&apos;s free!)</small></div>}
+              buttonText='Take me there.'
             />
           </div>
         </div>

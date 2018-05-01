@@ -23,10 +23,19 @@
       }
     }
 
-    
-
     .cn-enrollment-link-pic {
       width: 100%;
+    }
+
+    .cn-create-account-header {
+      font-weight: bold;
+      font-size: 36px;
+      align-self: flex-start;
+    }
+
+    .cn-create-account-subheader {
+      font-size: 14px;
+      align-self: flex-start;
     }
   }
 }

@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import actions from '../../../actions'
 import LandingNav from '../../components/LandingNav'
+import SignUpForm from '../../components/SignUpForm'
 
 class Enroll extends React.Component {
   constructor (props) {
@@ -28,7 +29,13 @@ class Enroll extends React.Component {
           imgPath='../src/assets/images/logo-wide-blue@1x.png'
         />
         <div className='cn-enrollment-link-content'>
-          
+          <div className='cn-create-account-header'>
+            Create your account
+          </div>
+          <div className='cn-create-account-subheader'>
+            This information will help your classmates identify you.
+          </div>
+          <SignUpForm />
         </div>
       </div>
     )

@@ -112,7 +112,7 @@ class SignUpForm extends React.Component {
 
   render () {
     const {form, universityError} = this.state
-    const {formErrors, updateProperty, header} = this.props
+    const {formErrors, updateProperty, header, buttonText} = this.props
 
     return (
       <div className='cn-sign-up-form'>
@@ -216,10 +216,9 @@ class SignUpForm extends React.Component {
               className='button margin-top margin-bottom full-width'
               type='button'
               onClick={this.onSubmit.bind(this)}
-            >Take me there.</button>
+            >{buttonText || 'Submit'}</button>
           </div>
         </form>
-        
       </div>
     )
   }
@@ -231,7 +230,8 @@ SignUpForm.propTypes = {
   rootStore: PropTypes.object,
   updateProperty: PropTypes.func,
   validateForm: PropTypes.func,
-  header: PropTypes.string
+  header: PropTypes.string,
+  buttonText: PropTypes.string
 }
 
 export default ValidateForm(Form(SignUpForm, 'form'))
