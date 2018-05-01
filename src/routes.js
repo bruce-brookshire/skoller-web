@@ -16,7 +16,7 @@ import ResetPassword from './views/ResetPassword'
 import DIYLanding from './views/Student/DIYLanding'
 import MyClasses from './views/Student/MyClasses'
 import FindClasses from './views/Student/FindClasses'
-import Verification from './views/Student/Verification'
+import Verification from './views/components/Verification'
 import ClassLink from './views/Student/ClassLink'
 
 import AssignmentsTutorial from './views/SyllabusTutorial/AssignmentsTutorial'

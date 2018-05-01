@@ -4,6 +4,7 @@ import actions from '../../../actions'
 import LandingNav from '../../components/LandingNav'
 import SignUpForm from '../../components/SignUpForm'
 import {inject, observer} from 'mobx-react'
+import Verification from '../../components/Verification'
 
 @inject('rootStore') @observer
 class Enroll extends React.Component {
@@ -49,7 +50,7 @@ class Enroll extends React.Component {
     return (
       <div className='cn-enrollment-link-content'>
         {step === 1 && this.renderSignup()}
-        {step === 2 && <div>test</div>}
+        {step === 2 && <Verification />}
       </div>
     )
   }

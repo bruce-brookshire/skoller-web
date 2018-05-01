@@ -65,7 +65,7 @@ class Verification extends React.Component {
 
     return (
       <div className='cn-verification-container'>
-        <div className='vertical-align' style={{margin: '0 auto'}}>
+        <div className='vertical-align's>
           <div className='cn-verification-content'>
             <div className='img-container'>
               <img className='center-vertical' src='/src/assets/images/letter2.png' />
