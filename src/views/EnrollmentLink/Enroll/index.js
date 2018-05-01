@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import actions from '../../../actions'
 import LandingNav from '../../components/LandingNav'
+import LoginForm from '../../components/LoginForm'
 import SignUpForm from '../../components/SignUpForm'
 import {inject, observer} from 'mobx-react'
 import Verification from '../../components/Verification'
@@ -41,6 +42,25 @@ class Enroll extends React.Component {
       })
   }
 
+  renderLogin () {
+    return (
+      <div className='cn-login-form'>
+        <div className='cn-login-header'>
+          Login
+        </div>
+        <LoginForm
+          rootStore={this.props.rootStore}
+          onSubmit={() => this.onSubmit()}
+        />
+        <a
+          className='cn-create-account-login'
+          onClick={() => this.switchForm()}>
+          Don&apos;t have an account? Make one.
+        </a>
+      </div>
+    )
+  }
+
   renderSignup () {
     return (
       <div className='cn-create-account-form'>
@@ -75,6 +95,7 @@ class Enroll extends React.Component {
     const {newUser, step} = this.state
     return (
       <div className='cn-enrollment-link-content'>
+        {!newUser && this.renderLogin()}
         {newUser && step === 1 && this.renderSignup()}
         {newUser && step === 2 && this.renderVerification()}
       </div>

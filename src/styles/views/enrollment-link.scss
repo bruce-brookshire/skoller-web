@@ -43,9 +43,31 @@
         font-size: 14px;
         align-self: flex-start;
       }
+    }
 
-      .cn-create-account-login {
-        text-decoration: underline;
+    .cn-create-account-login {
+      text-decoration: underline;
+    }
+
+    .cn-login-form {
+      .cn-login-header {
+        font-weight: bold;
+        font-size: 36px;
+        align-self: flex-start;
+      }
+
+      .form-login {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .form-control {
+        margin-top: $unit-space;
+      }
+
+      .button {
+        margin-top: $unit-space;
+        margin-bottom: $unit-space;
       }
     }
   }
