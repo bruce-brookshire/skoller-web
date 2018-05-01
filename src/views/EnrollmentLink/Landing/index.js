@@ -30,7 +30,7 @@ class EnrollmentLink extends React.Component {
   enroll () {
     actions.classes.enrollByLink(this.props.params.link)
       .then(() => {
-        browserHistory.push('student/classes')
+        browserHistory.push('../student/classes')
       })
       .catch(() => {
         browserHistory.push({
