@@ -402,3 +402,24 @@ export function getClassByLink (link) {
       return Promise.reject(error)
     })
 }
+
+/*
+* Enroll in class by link
+*
+* @param [Number] classId. Class to unlock
+* @param [Object] form. Optional params for class unlock.
+*/
+export function enrollByLink (link) {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/enrollment-link/${link}`, {
+    method: 'POST',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => checkError(response))
+    .catch(error => {
+      // showSnackbar('Error unlocking class. Try again.')
+      return Promise.reject(error)
+    })
+}

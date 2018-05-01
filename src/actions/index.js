@@ -7,7 +7,7 @@ import {createClassPost, deleteClassPost, getClassPost, getClassPosts, likePost,
   updateClassPost, createClassComment, deleteClassComment, likeComment, unlikeComment, updateClassComment,
   createClassReply, deleteClassReply, likeReply, unlikeReply, updateClassReply} from './chat'
 import {createClass, deleteClass, dropClass, getClassById, getClassByLink, getLocks, getProfessorClasses,
-  getStudentClasses, getStudentClassesById, enrollInClass, searchClasses, searchStudentClasses,
+  getStudentClasses, getStudentClassesById, enrollByLink, enrollInClass, searchClasses, searchStudentClasses,
   updateClass, lockClass, unlockClass, approveClass, denyClass, updateClassStatus} from './classes'
 import {createIssue, getHelpTypes, resolveIssue, getRequestTypes, resolveChangeRequest, createStudentRequest,
   resolveStudentRequest} from './classhelp'
@@ -76,6 +76,7 @@ const actions = {
     denyClass,
     createClass,
     dropClass,
+    enrollByLink,
     enrollInClass,
     getClassById,
     getClassByLink,

@@ -1,10 +1,13 @@
 import React from 'react'
+import { Cookies } from 'react-cookie'
 import PropTypes from 'prop-types'
-import actions from '../../actions'
-import LandingNav from '../components/LandingNav'
-import stores from '../../stores'
+import actions from '../../../actions'
+import LandingNav from '../../components/LandingNav'
+import {browserHistory} from 'react-router'
+import stores from '../../../stores'
 
 const {userStore} = stores
+const cookie = new Cookies()
 
 class EnrollmentLink extends React.Component {
   constructor (props) {
@@ -24,8 +27,58 @@ class EnrollmentLink extends React.Component {
     }).catch(() => false)
   }
 
+  enroll () {
+    actions.classes.enrollByLink(this.props.params.link)
+      .then(() => {
+        browserHistory.push('student/classes')
+      })
+      .catch(() => {
+        browserHistory.push({
+          pathname: 'enroll',
+          state: {
+            enrollmentLink: this.props.params.link
+          }
+        })
+      })
+  }
+
   onSubmit () {
-    userStore.enrollmentLink = this.props.params.link
+    if (!userStore.user) {
+      userStore.authToken = cookie.get('skollerToken')
+      actions.auth.getUserByToken()
+        .then((user) => {
+          if (user.user.student && user.user.student.is_verified) {
+            this.enroll()
+          }
+        })
+        .catch(() => {
+          browserHistory.push({
+            pathname: 'enroll',
+            state: {
+              enrollmentLink: this.props.params.link
+            }
+          })
+        })
+    } else {
+      this.enroll()
+    }
+  }
+
+  authenticateStudent (user) {
+    if (user.student) {
+      if (user.student.is_verified) {
+        return actions.classes.getStudentClasses().then((classes) => {
+          if (classes.length === 0) browserHistory.push('/student/find-classes')
+        }).catch(() => false)
+      } else {
+        return new Promise((resolve, reject) => {
+          resolve(browserHistory.push('/student/verify'))
+        })
+      }
+    }
+    return new Promise((resolve, reject) => {
+      resolve()
+    })
   }
 
   render () {
