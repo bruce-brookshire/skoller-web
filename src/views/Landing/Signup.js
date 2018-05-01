@@ -7,7 +7,9 @@ class Signup extends React.Component {
       <div id='promo-signup' className='container-promo-signup'>
         <div className='container-form-register'>
           <div id='sign-up-form'>
-            <SignUpForm {...this.props}/>
+            <SignUpForm {...this.props}
+              header={<div>Sign up <small className='sub-header'>(it&apos;s free!)</small></div>}
+            />
           </div>
         </div>
       </div>

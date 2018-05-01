@@ -110,18 +110,14 @@ class SignUpForm extends React.Component {
     return regEx.test(email)
   }
 
-  // onAddMyUniversity () {
-  //   window.location.href = 'mailto:support@skoller.co?Subject=Add My School - ' + this.state.form.email
-  // }
-
   render () {
     const {form, universityError} = this.state
-    const {formErrors, updateProperty} = this.props
+    const {formErrors, updateProperty, header} = this.props
 
     return (
       <div className='cn-sign-up-form'>
         <form className='form-padding'>
-          <h2>Sign up <small className='sub-header'>(it&apos;s free!)</small></h2>
+          {header && <h2>{header}</h2>}
           <div className='is-university'>
             <CheckboxField
               containerClassName='margin-top margin-right'
@@ -232,7 +228,8 @@ SignUpForm.propTypes = {
   resetValidation: PropTypes.func,
   rootStore: PropTypes.object,
   updateProperty: PropTypes.func,
-  validateForm: PropTypes.func
+  validateForm: PropTypes.func,
+  header: PropTypes.string
 }
 
 export default ValidateForm(Form(SignUpForm, 'form'))
