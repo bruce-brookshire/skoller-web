@@ -32,7 +32,7 @@ const ContentEnum = {
   GRADE_SCALE: 1,
   WEIGHTS: 2,
   ASSIGNMENTS: 3,
-  CHAT: 4,
+  CHAT: 4
 }
 
 @inject('rootStore') @observer
@@ -74,17 +74,17 @@ class SyllabusTool extends React.Component {
   /*
   * Deletes the provided document and removes it from the documents array in state
   */
-  deleteDocument(doc,idx){
-    actions.documents.deleteClassDocument(navbarStore.cl,doc).then(() => {
+  deleteDocument (doc, idx) {
+    actions.documents.deleteClassDocument(navbarStore.cl, doc).then(() => {
       let newDocs = this.state.documents
-      newDocs.splice(idx,1)
+      newDocs.splice(idx, 1)
       this.setState({
         documents: newDocs,
         currentDocumentIndex: 0,
-        currentDocument: null,
+        currentDocument: null
       })
       // Show documents deleted modal if all files deleted and not in "Complete" or "Change" status
-      if(this.state.documents.length == 0 && navbarStore.cl.status.name != 'Complete' && navbarStore.cl.status.name != 'Change'){
+      if (this.state.documents.length === 0 && navbarStore.cl.status.name !== 'Complete' && navbarStore.cl.status.name !== 'Change') {
         this.toggleDocumentsDeletedModal()
       }
     }).catch(() => false)
@@ -162,15 +162,15 @@ class SyllabusTool extends React.Component {
   /*
   * Determine if class is in "Change Request" status
   */
-  isChangeRequest(){
-    return navbarStore.cl && navbarStore.cl.status && navbarStore.cl.status.name == 'Change' ? true : false
+  isChangeRequest () {
+    return navbarStore.cl && navbarStore.cl.status && navbarStore.cl.status.name === 'Change'
   }
 
   /*
   * Determine if class is in "Help" status
   */
-  isHelpNeeded(){
-    return navbarStore.cl && navbarStore.cl.status && navbarStore.cl.status.name == 'Help' ? true : false
+  isHelpNeeded () {
+    return navbarStore.cl && navbarStore.cl.status && navbarStore.cl.status.name === 'Help'
   }
 
   /*
@@ -181,7 +181,7 @@ class SyllabusTool extends React.Component {
     actions.classes.getClassById(classId).then((cl) => {
       navbarStore.cl = cl
       this.setState({loadingClass: false})
-    }).catch((error) => {  this.setState({loadingClass: false}) })
+    }).catch(() => { this.setState({loadingClass: false}) })
   }
   /*
   * Fetch the documents for a class.
@@ -222,8 +222,8 @@ class SyllabusTool extends React.Component {
   */
   unlockClass () {
     const {params: {classId}} = this.props
-    const form = (navbarStore.isDIY || (this.state.isAdmin && !this.state.isSW)) ?
-      {is_class: true} : {class_lock_section_id: this.state.sectionId}
+    const form = (navbarStore.isDIY || (this.state.isAdmin && !this.state.isSW))
+      ? {is_class: true} : {class_lock_section_id: this.state.sectionId}
 
     actions.classes.unlockClass(classId, form).then(() => {
     }).catch(() => false)
@@ -272,7 +272,7 @@ class SyllabusTool extends React.Component {
     const {cl} = navbarStore
     if (!navbarStore.isDIY && cl) {
       return (
-          <div className='margin-right'>{cl.school && cl.school.name}</div>
+        <div className='margin-right'>{cl.school && cl.school.name}</div>
       )
     }
   }
@@ -306,7 +306,7 @@ class SyllabusTool extends React.Component {
     if (isReviewer || (isAdmin && !isSW) || (isChangeReq || isHelpReq)) {
       if (isReviewer) {
         return (
-          <FileTabs style={{marginLeft: '7px', marginRight: '7px'}} currentIndex={this.state.currentIndex-2}>
+          <FileTabs style={{marginLeft: '7px', marginRight: '7px'}} currentIndex={this.state.currentIndex - 2}>
             <FileTab className='flex' name='Weights' onClick={() => this.setState({currentIndex: 2})} />
             <FileTab className='flex' name='Assignments' onClick={() => this.setState({currentIndex: 3})} />
           </FileTabs>
@@ -328,7 +328,7 @@ class SyllabusTool extends React.Component {
   /*
   * Gets array of all student requests yet to be completed
   */
-  openStudentRequests(){
+  openStudentRequests () {
     const sr = navbarStore.cl.student_requests.filter(c => !c.is_completed)
     const cr = navbarStore.cl.change_requests.filter(c => !c.is_completed)
     return sr.concat(cr)
@@ -337,13 +337,13 @@ class SyllabusTool extends React.Component {
   /*
   * Gets array of all new doc ids
   */
-  allNewDocs(){
-    if(navbarStore.cl && navbarStore.cl.student_requests && navbarStore.cl.student_requests.length > 0){
+  allNewDocs () {
+    if (navbarStore.cl && navbarStore.cl.student_requests && navbarStore.cl.student_requests.length > 0) {
       let sr = this.openStudentRequests()
       let arr = []
-      sr.forEach((r) => {r.docs && r.docs.length > 0 ? arr.push(r.docs.map((d) => d.id)) : null})
+      sr.forEach((r) => { r.docs && r.docs.length > 0 ? arr.push(r.docs.map((d) => d.id)) : null })
       return [].concat(...arr)
-    }else{
+    } else {
       return []
     }
   }
@@ -351,19 +351,19 @@ class SyllabusTool extends React.Component {
   /*
   * Determines if the document originates from a student request
   */
-  isNewDoc(doc){
+  isNewDoc (doc) {
     return this.allNewDocs().indexOf(doc.id) > -1
   }
 
   /*
   * Determines if the class has any new docs
   */
-  hasNewDoc(){
+  hasNewDoc () {
     let newDocs = this.allNewDocs()
     return this.state.documents.filter((d) => newDocs.indexOf(d.id) > -1).length > 0
   }
 
-  navigateToHelpNeeded() {
+  navigateToHelpNeeded () {
     browserHistory.push({
       pathname: '/hub/classes',
       state: {
@@ -372,7 +372,7 @@ class SyllabusTool extends React.Component {
     })
   }
 
-  navigateToNeedsChange() {
+  navigateToNeedsChange () {
     browserHistory.push({
       pathname: '/hub/classes',
       state: {
@@ -400,7 +400,7 @@ class SyllabusTool extends React.Component {
                 }
                 onDelete={() => {
                   let result = window.confirm('Are you sure you want to delete this document?')
-                  if(result) this.deleteDocument(document,index)
+                  if (result) this.deleteDocument(document, index)
                 }}
               />
             )
@@ -478,10 +478,10 @@ class SyllabusTool extends React.Component {
   */
   renderHavingIssues () {
     return (
-        <a
-          className='having-issues cn-red'
-          onClick={this.toggleIssuesModal.bind(this)}
-        >Having issues?</a>
+      <a
+        className='having-issues cn-red'
+        onClick={this.toggleIssuesModal.bind(this)}
+      >Having issues?</a>
     )
   }
 
@@ -495,8 +495,8 @@ class SyllabusTool extends React.Component {
         open={this.state.openDocumentsDeletedModal}
         onClose={this.toggleDocumentsDeletedModal.bind(this)}
         onSubmit={(cl) => {
-          let isChange = navbarStore.cl ? navbarStore.cl.status.name == 'Change' : false
-          let isHelp = navbarStore.cl ? navbarStore.cl.status.name == 'Help' : false
+          let isChange = navbarStore.cl ? navbarStore.cl.status.name === 'Change' : false
+          let isHelp = navbarStore.cl ? navbarStore.cl.status.name === 'Help' : false
           this.updateClass(cl)
           isChange ? this.navigateToNeedsChange() : (isHelp ? this.navigateToHelpNeeded() : this.unlockSWLock())
         }}
@@ -524,7 +524,7 @@ class SyllabusTool extends React.Component {
   /*
   * Render the issues resolved modal.
   */
-  renderRequestResolvedModal() {
+  renderRequestResolvedModal () {
     let openRequests = this.openStudentRequests()
     return (
       <RequestResolvedModal
@@ -542,7 +542,7 @@ class SyllabusTool extends React.Component {
   /*
   * Render the help needed info
   */
-  renderHelpResolvedModal() {
+  renderHelpResolvedModal () {
     return (
       <HelpResolvedModal
         cl={navbarStore.cl}
@@ -601,7 +601,7 @@ class SyllabusTool extends React.Component {
   /*
   * Render the student request info
   */
-  renderStudentRequest() {
+  renderStudentRequest () {
     if ((this.state.isAdmin || this.state.isSW) && this.isChangeRequest()) {
       return (
         <div className='cn-status-form'>
@@ -614,7 +614,7 @@ class SyllabusTool extends React.Component {
   /*
   * Render the help needed info
   */
-  renderHelpNeeded() {
+  renderHelpNeeded () {
     if ((this.state.isAdmin || this.state.isSW) && this.isHelpNeeded()) {
       return (
         <div className='cn-status-form'>
@@ -661,8 +661,8 @@ class SyllabusTool extends React.Component {
   */
   handleSWNext () {
     const {sectionId} = this.state
-    let sectionName = sectionId === 100 ? 'weights' : sectionId === 200 ?
-      'assignments' : 'reviews'
+    let sectionName = sectionId === 100 ? 'weights' : sectionId === 200
+      ? 'assignments' : 'reviews'
     this.getNextClass(sectionName)
   }
 
@@ -751,7 +751,7 @@ class SyllabusTool extends React.Component {
   tagUploader () {
     const {documents, currentDocumentIndex, isAdmin} = this.state
     let document = documents[currentDocumentIndex]
-    if(isAdmin && document) {
+    if (isAdmin && document) {
       const email = document.user ? document.user.email : null
 
       if (email) {
@@ -785,7 +785,7 @@ class SyllabusTool extends React.Component {
   }
 
   render () {
-    const {disableNext, loadingClass, isAdmin,
+    const {disableNext, loadingClass,
       isReviewer, currentIndex, gettingClass, submitting} = this.state
 
     const disableButton = disableNext || gettingClass || submitting
