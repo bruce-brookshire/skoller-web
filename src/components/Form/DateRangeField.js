@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import InputField from './InputField'
 
 class DateRangeField extends React.Component {
   constructor (props) {
@@ -20,12 +19,12 @@ class DateRangeField extends React.Component {
   onChange (event) {
     let name = event.target.name
     let value = {}
-    if (name === 'min_date'){
-    	value = {min: event.target.value, max: this.state.max}
-    	this.setState({min: event.target.value})
+    if (name === 'min_date') {
+      value = {min: event.target.value, max: this.state.max}
+      this.setState({min: event.target.value})
     } else {
-    	value = {min: this.state.min, max: event.target.value}
-    	this.setState({max: event.target.value})
+      value = {min: this.state.min, max: event.target.value}
+      this.setState({max: event.target.value})
     }
     this.props.onChange(name, value)
   }
@@ -38,12 +37,12 @@ class DateRangeField extends React.Component {
   render () {
     const containerClasses = ['cn-input-container']
     const labelClasses = ['cn-input-label']
-    const inputClasses = ['cn-form-input','cn-date-range-input']
+    const inputClasses = ['cn-form-input', 'cn-date-range-input']
 
     const {containerClassName, labelClassName, inputClassName,
       containerActiveClassName, labelActiveClassName, inputActiveClassName,
       containerErrorClassName, labelErrorClassName, inputErrorClassName,
-      id, label, error, message, showErrorMessage
+      id, label, error
     } = this.props
 
     if (containerClassName) containerClasses.push(containerClassName)
@@ -59,7 +58,7 @@ class DateRangeField extends React.Component {
       if (inputActiveClassName) inputClasses.push(inputActiveClassName)
     }
 
-    if (this.props.error) {
+    if (error) {
       containerClasses.push('error')
       labelClasses.push('error')
       inputClasses.push('error')
@@ -106,22 +105,23 @@ class DateRangeField extends React.Component {
 }
 
 DateRangeField.propTypes = {
-  containerClass: PropTypes.string,
-  containerActiveClass: PropTypes.string,
-  containerErrorClass: PropTypes.string,
+  containerClassName: PropTypes.string,
+  containerActiveClassName: PropTypes.string,
+  containerErrorClassName: PropTypes.string,
   id: PropTypes.string,
-  inputClass: PropTypes.string,
-  inputActiveClass: PropTypes.string,
-  inputErrorClass: PropTypes.string,
+  inputClassName: PropTypes.string,
+  inputActiveClassName: PropTypes.string,
+  inputErrorClassName: PropTypes.string,
   label: PropTypes.string,
-  labelClass: PropTypes.string,
-  labelActiveClass: PropTypes.string,
-  labelErrorClass: PropTypes.string,
+  labelClassName: PropTypes.string,
+  labelActiveClassName: PropTypes.string,
+  labelErrorClassName: PropTypes.string,
   name: PropTypes.string.isRequired,
   onBlur: PropTypes.func,
   onChange: PropTypes.func.isRequired,
   onFocus: PropTypes.func,
   placeholder: PropTypes.string,
+  error: PropTypes.bool,
   value: PropTypes.oneOfType([
     PropTypes.string
   ]).isRequired
