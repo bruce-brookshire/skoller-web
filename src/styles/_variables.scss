@@ -15,13 +15,20 @@ $cn-color-green: #7ed321;
 $cn-primary-background-color: #f5f7f9;
 $cn-blue-cell-background: #edf5ff;
 $cn-link-background: rgba(85,185,229,0.2);
+$cn-autocomplete-loading-background: $cn-color-white;
+$cn-autocomplete-results-background: $cn-color-white;
+$cn-form-border: #CCC;
 
 $cn-border-radius: 3px;
 
 $cn-info-color: $cn-color-blue;
 $cn-error-color: red;
+$cn-error-color-text: $cn-color-white;
 $cn-warning-color: $cn-color-pink;
-
+$cn-snackbar-warning: yellow;
+$cn-snackbar-warning-text: $cn-font-color;
+$cn-snackbar-info: black;
+$cn-snackbar-info-text: $cn-color-white;
 
 $triangle-border-width: 2px;
 $triangle-width: 7px;

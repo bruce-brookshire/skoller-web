@@ -1,22 +1,6 @@
 .cn-input-container {
-  &.margin-top {
-    margin-top: 0.5em;
-  }
-  &.active {
-
-  }
-  &.error {
-
-  }
   .description {
     font-size: 11px;
     margin-top: 0.5em;
-  }
-  .cn-form-input {
-    @include form-element;
-
-  }
-  .cn-input-label {
-    @include form-label;
   }
 }

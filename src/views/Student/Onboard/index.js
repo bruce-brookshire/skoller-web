@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
-import FindClasses from '../FindClasses'
 import ProjectFourDoor from './ProjectFourDoor'
 import SubmitSyllabi from './SubmitSyllabi/index'
 
@@ -11,7 +10,7 @@ class Onboard extends React.Component {
     super(props)
     this.state = {
       currentIndex: 1,
-      stepCount: 4,
+      stepCount: 2,
       showUploadWarning: false
     }
   }
@@ -19,10 +18,8 @@ class Onboard extends React.Component {
   renderContent () {
     switch (this.state.currentIndex) {
       case 1:
-        return <FindClasses onNext={this.onNext.bind(this)} />
-      case 2:
         return <SubmitSyllabi onNext={this.onNext.bind(this)} />
-      case 3:
+      case 2:
         return <ProjectFourDoor />
       default:
     }

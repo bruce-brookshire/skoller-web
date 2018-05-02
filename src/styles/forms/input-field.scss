@@ -1,27 +1,15 @@
 .cn-input-container {
+  &.margin-bottom {
+    margin-bottom: 0.5em;
+  }
   &.margin-top {
     margin-top: 0.5em;
   }
-  &.active {
-
-  }
-  &.error {
-
-  }
   .cn-form-input {
     @include form-element;
-
   }
   .cn-input-label {
     @include form-label;
-  }
-
-  .cn-date-range-fields {
-    flex: 1;
-    flex-direction: row;
-    input:first-child {
-      margin-bottom: 5px;
-    }
   }
 
   .cn-info-container {

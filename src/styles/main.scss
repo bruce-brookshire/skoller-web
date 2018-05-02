@@ -7,14 +7,14 @@
 @import 'mixins/button';
 @import 'mixins/layout';
 @import 'mixins/triangle';
-@import 'mixins/typography';
+@import 'mixins/landing';
 
 @import 'fonts';
-// @import 'mixins/icons';
 
 // Forms ----------------------------------------------------------------------
 @import 'forms/mixins/input';
 @import 'forms/checkbox-field';
+@import 'forms/date-range-field';
 @import 'forms/input-field';
 @import 'forms/multiselect-field';
 @import 'forms/pill-field';
@@ -23,11 +23,9 @@
 @import 'forms/slider-field';
 
 // Components ----------------------------
-@import 'components/add-class';
 @import 'components/autocomplete';
 @import 'components/chat';
 @import 'components/class-editor-table.scss';
-@import 'components/create-class';
 @import 'components/file-tab';
 @import 'components/file-viewer';
 @import 'components/flex-table';
@@ -48,15 +46,12 @@
 
 
 // Composed Views ------------------------
-@import 'views/mixins/landing.scss';
 @import 'views/mixins/onboarding.scss';
 @import 'views/analytics.scss';
 @import 'views/call-to-action.scss';
-@import 'views/class-approval.scss';
 @import 'views/class-link.scss';
 @import 'views/create-professor-modal.scss';
 @import 'views/create-school-modal.scss';
-@import 'views/diylanding.scss';
 @import 'views/enrollment-link.scss';
 @import 'views/faq.scss';
 @import 'views/find-classes.scss';
@@ -76,7 +71,9 @@
 @import 'views/our-team.scss';
 @import 'views/privacy-policy.scss';
 @import 'views/school-info.scss';
+@import 'views/sign-up.scss';
 @import 'views/switchboard.scss';
+@import 'views/submit-syllabi.scss';
 @import 'views/syllabus-tool.scss';
 @import 'views/syllabus-tutorial.scss';
 @import 'views/verification.scss';

@@ -1,18 +1,8 @@
 .cn-input-container {
-  &.margin-bottom {
-    margin-bottom: 0.5em;
-  }
-  &.margin-top {
-    margin-top: 0.5em;
-  }
-  &.active {
-  }
-  &.error {
-  }
   .cn-form-checkbox {
     border: 0;
     &.error {
-      outline: 1px solid red;
+      outline: 1px solid $cn-error-color;
     }
   }
   .cn-checkbox-label {

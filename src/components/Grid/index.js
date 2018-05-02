@@ -30,7 +30,7 @@ class Grid extends React.Component {
         <tbody>
           <tr colSpan={headers.length}>
             <td className='no-items' colSpan={headers.length}>
-             {emptyMessage || 'There are no items to be displayed.'}
+              {emptyMessage || 'There are no items to be displayed.'}
             </td>
           </tr>
         </tbody>
@@ -55,7 +55,7 @@ class Grid extends React.Component {
   }
 
   render () {
-    const {className, disabled, canSelect, canDelete} = this.props
+    const {className, disabled, canDelete} = this.props
     const classes = ['cn-table-grid']
     if (className) classes.push(className)
 
@@ -83,7 +83,8 @@ Grid.propTypes = {
   headers: PropTypes.array,
   onDelete: PropTypes.func,
   onSelect: PropTypes.func,
-  rows: PropTypes.array
+  rows: PropTypes.array,
+  className: PropTypes.string
 }
 
 export default Grid

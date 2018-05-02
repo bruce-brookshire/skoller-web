@@ -1,20 +1,9 @@
 .cn-input-container {
-  &.margin-top {
-    margin-top: 0.5em;
-  }
-  &.active {
-
-  }
-  &.error {
-  }
   .cn-form-select {
     @include form-element;
     border: 0;
     &.error {
-      border: 1px solid red;
+      border: 1px solid $cn-error-color;
     }
-  }
-  .cn-input-label {
-    @include form-label;
   }
 }

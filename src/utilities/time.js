@@ -40,7 +40,7 @@ export function mapTimeToDisplay (timeString) {
 * @param [String] tzAbbr. Abbreviation of timezone, i.e. PST
 * @param [String] YYYY-MM-DD
 */
-export function convertUTCDatetimeToDateString(dateTime, tzAbbr) {
+export function convertUTCDatetimeToDateString (dateTime, tzAbbr) {
   const tz = mapTimezone(tzAbbr)
   const d = moment.tz(dateTime, tz).format('YYYY-MM-DD')
   return d
@@ -53,9 +53,9 @@ export function convertUTCDatetimeToDateString(dateTime, tzAbbr) {
 * @param [String] tzAbbr. Abbreviation of timezone, i.e. PST
 * @param [String] YYYY-MM-DD
 */
-export function convertUTCDatetimeToDateTimeString(dateTime, tzAbbr) {
+export function convertUTCDatetimeToDateTimeString (dateTime, tzAbbr) {
   const tz = mapTimezone(tzAbbr)
-  const d = moment.tz(dateTime, tz).parseZone().format("ddd, MMM Do YYYY [at] h:mm a")
+  const d = moment.tz(dateTime, tz).parseZone().format('ddd, MMM Do YYYY [at] h:mm a')
   return d
 }
 
@@ -65,7 +65,7 @@ export function convertUTCDatetimeToDateTimeString(dateTime, tzAbbr) {
 * @param [Date] dateTime. Date time. HH:MM:ss.SSSSSS
 * @param [String] tzAbbr. Abbreviation of timezone, i.e. PST
 */
-export function convertUTCTimeToTimeString(dateTime, tzAbbr) {
+export function convertUTCTimeToTimeString (dateTime, tzAbbr) {
   const tz = mapTimezone(tzAbbr)
   const d = moment.tz(dateTime, 'HH:mm:ss.SSSSSS', tz).parseZone().format('HH:mm')
   return d
@@ -85,7 +85,7 @@ export function convertLocalDateToUTC (dateString, tzAbbr) {
 }
 
 export function formatDate (dateString) {
-  return moment(dateString, "YYYY-MM-DD").format("MMMM Do")
+  return moment(dateString, 'YYYY-MM-DD').format('MMMM Do')
 }
 
 export function wrapTimeHour (date, hour) {
@@ -126,7 +126,7 @@ export function mapTimezone (abbr) {
 /*
 * Intialize time zone data with the timezones supported.
 */
-export function initalizeTimezoneData() {
+function initalizeTimezoneData () {
   moment.tz.add([
     'America/Los_Angeles|PST PDT|80 70|01010101010|1Lzm0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0',
     'America/Chicago|CST CDT|60 50 50 50 50|01010101010101010101010101010101010102010101010103401010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-261s0 1nX0 11B0 1nX0 1wp0 TX0 WN0 1qL0 1cN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 11z0 1o10 11z0 11B0 1Hz0 14p0 11z0 1o10 11z0 1qN0 WL0 1qN0 11z0 1o10 11z0 RB0 8x30 iw0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|92e5',
@@ -136,7 +136,6 @@ export function initalizeTimezoneData() {
     'America/Adak|HST HDT|b0 a0 a0 b0 a0 a0 a0 90|012034343434343434343434343434343456767676767676767676767676767676767676767676767676767676767676767676767676767676767676767676767676767676767676|-17SX0 8wW0 iB0 Qlb0 52O0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 cm0 10q0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|326'
   ])
 }
-
 
 /*
 * Add a zero to the beginnig of an integer if its less than 10.

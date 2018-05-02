@@ -16,6 +16,6 @@ export function checkIfFirstKey (obj, key) {
 * @param [Object] obj. Object to check
 * @return [Object]. Cloned object
 */
-export function deepClone(obj) {
-  return Object.assign({},obj)
+export function deepClone (obj) {
+  return Object.assign({}, obj)
 }

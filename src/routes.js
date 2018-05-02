@@ -1,6 +1,6 @@
 import React from 'react'
 import { Cookies } from 'react-cookie'
-import { Router, Route, Redirect, IndexRedirect, IndexRoute, browserHistory } from 'react-router'
+import { Router, Route, Redirect, IndexRedirect, browserHistory } from 'react-router'
 import App from './containers/App'
 import Layout from './containers/Layout'
 
@@ -13,7 +13,6 @@ import PeopleTalking from './views/PeopleTalking'
 import OurTeam from './views/OurTeam'
 import ResetPassword from './views/ResetPassword'
 
-import DIYLanding from './views/Student/DIYLanding'
 import MyClasses from './views/Student/MyClasses'
 import FindClasses from './views/Student/FindClasses'
 import Verification from './views/components/Verification'
@@ -22,7 +21,6 @@ import ClassLink from './views/Student/ClassLink'
 import AssignmentsTutorial from './views/SyllabusTutorial/AssignmentsTutorial'
 import WeightsTutorial from './views/SyllabusTutorial/WeightsTutorial'
 import SyllabusTool from './views/SyllabusTool'
-import ClassApproval from './views/ClassApproval'
 
 import HubLanding from './views/Hub/HubLanding'
 import HubSchools from './views/Hub/HubSchools'
@@ -62,7 +60,6 @@ const router = (
           <Route path='/student/find-classes' component={FindClasses} />
           <Route path='/student/verify' component={Verification} onEnter={authOnboard} />
           <Route path='/student/class-link' component={ClassLink} />
-          <Route path='/student/diy' component={DIYLanding} />
           <Route path='/student/classes' component={MyClasses}/>
         </Route>
 
@@ -78,13 +75,10 @@ const router = (
           <Route path='/hub/switchboard' component={Switchboard} />
         </Route>
 
-        <Route path='/diy' component={DIYLanding} />
         <Route path='/class/:classId/syllabus_tool' component={SyllabusTool} />
 
         <Route path='/class/:classId/syllabus_tool/tutorial/assignments' component={AssignmentsTutorial} />
         <Route path='/class/:classId/syllabus_tool/tutorial/weights' component={WeightsTutorial} />
-
-        <Route path='/class/:classId/approvals' component={ClassApproval} />
       </Route>
       <Route path="/logout" onEnter={logout} />
       <Redirect from="*" to="/"/>

@@ -2,49 +2,30 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 class WeightConverter extends React.Component {
-
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       val_converter: '0'
     }
   }
 
-
   toggleConverter (e) {
-    let obj = {};
-    if(e.target.value > .5){
-      obj[e.target.name] = 1;
+    let obj = {}
+    if (e.target.value > 0.5) {
+      obj[e.target.name] = 1
+    } else {
+      obj[e.target.name] = 0
     }
-    else{
-      obj[e.target.name] = 0;
-    }
-    this.setState(obj);
+    this.setState(obj)
   }
 
   render () {
-    // return (
-    //   <div id={this.props.id}>
-    //     <span>
-    //       <div className='converter-titles-container'>
-    //         <span className='converter-titles'>
-    //           Percentages
-    //         </span>
-    //         <span className='converter-titles'>
-    //           Points
-    //         </span>
-    //       </div>
-    //       <div>
-    //           <input className='weight-converter-bar' type='range' min='1' max='2'/>
-    //       </div>
-    //     </span>
-    //   </div>
-    // )
     const classes = ['ball']
-    if (this.props.value) classes.push('active')
+    const {value, id} = this.props
+    if (value) classes.push('active')
 
     return (
-      <div id={this.props.id} className='cn-weight-converter' onClick={() => this.props.onChange()}>
+      <div id={id} className='cn-weight-converter' onClick={() => this.props.onChange()}>
         <div className='slider full-width round'>
           <div className={classes.join(' ')}/>
         </div>
@@ -53,6 +34,10 @@ class WeightConverter extends React.Component {
   }
 }
 
-
+WeightConverter.propTypes = {
+  value: PropTypes.bool,
+  id: PropTypes.string,
+  onChange: PropTypes.func
+}
 
 export default WeightConverter

@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import {inject, observer} from 'mobx-react'
-import {browserHistory} from 'react-router'
-import Footer from '../components/Footer'
 // import Loading from '../components/Loading'
 import Snackbar from '../components/Snackbar'
 
@@ -26,7 +24,6 @@ class App extends React.Component {
       <div className='app public'>
         {this.props.children}
         {this.renderSnackBar()}
-        {/* <Footer/> */}
       </div>
     )
   }

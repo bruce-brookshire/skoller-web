@@ -1,17 +1,13 @@
 import React from 'react'
-import AddClass from '../../components/AddClass'
-import CreateClass from '../../components/CreateClass'
-import Modal from '../../../components/Modal/index'
 import ClassList from '../../components/ClassList'
 import actions from '../../../actions'
+import { browserHistory } from 'react-router'
 
 class MyClasses extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      classes: [],
-      openAddModal: false,
-      openCreateModal: false
+      classes: []
     }
   }
 
@@ -70,45 +66,12 @@ class MyClasses extends React.Component {
             emptyMessage='You are not enrolled in any classes.'
             onUpdate={(cl) => this.updateClass(cl)}
           />
-          <button className='button-invert full-width add-button' onClick={() => this.toggleAddModal()}>
+          <button className='button-invert full-width add-button' onClick={() => { browserHistory.push('student/find-classes') }}>
             Add a Class
           </button>
         </div>
       </div>
     )
-  }
-
-  /*
-  * Toggle the add class modal.
-  *
-  * @return null.
-  */
-  toggleAddModal () {
-    this.setState({openAddModal: !this.state.openAddModal})
-  }
-
-  /*
-  * Toggle the create class modal.
-  *
-  * @return null.
-  */
-  toggleCreateModal () {
-    this.setState({openCreateModal: !this.state.openCreateModal})
-  }
-
-  /*
-  * Method for adding a class. Can only add one class at a time.
-  *
-  * @param [Event] event. Onclick event.
-  * @param [Object] cl. Class user would like to add.
-  * @return [Object] null.
-  */
-  onAddClass (cl) {
-    actions.classes.enrollInClass(cl.id).then((c) => {
-      const newClasses = this.state.classes
-      newClasses.push(c)
-      this.setState({classes: newClasses, openAddModal: false, openCreateModal: false})
-    }).catch(() => false)
   }
 
   /*
@@ -124,39 +87,6 @@ class MyClasses extends React.Component {
     }).catch(() => false)
   }
 
-  /*
-  * Render the add class modal.
-  */
-  renderAddClassModal () {
-    return (
-      <Modal
-        open={this.state.openAddModal}
-        onClose={this.toggleAddModal.bind(this)}
-      >
-        <AddClass
-          classes={this.state.classes}
-          onSubmit={this.onAddClass.bind(this)}
-          onCreateClass={this.toggleCreateModal.bind(this)}
-          onClose={this.toggleAddModal.bind(this)}
-        />
-      </Modal>
-    )
-  }
-
-  /*
-  * Render the create class modal.
-  */
-  renderCreateClassModal () {
-    return (
-      <Modal
-        open={this.state.openCreateModal}
-        onClose={this.toggleCreateModal.bind(this)}
-      >
-        <CreateClass onSubmit={this.onAddClass.bind(this)} onClose={this.toggleCreateModal.bind(this)}/>
-      </Modal>
-    )
-  }
-
   render () {
     return (
       <div className= 'cn-my-classes-container'>
@@ -167,15 +97,12 @@ class MyClasses extends React.Component {
           </div>
 
           <div className='right'>
-            <h4><a onClick={() => this.toggleAddModal()}>Add Class</a></h4>
+            <h4><a onClick={() => { browserHistory.push('student/find-classes') }}>Add Class</a></h4>
           </div>
         </div>
 
         {this.renderNeedsSyllabusInfo()}
-
         {this.renderContent()}
-        {this.renderAddClassModal()}
-        {this.renderCreateClassModal()}
       </div>
     )
   }
