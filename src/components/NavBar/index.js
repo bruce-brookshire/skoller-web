@@ -1,11 +1,9 @@
 import React from 'react'
 import {inject, observer} from 'mobx-react'
-import {Link} from 'react-router'
 import ClassInfo from './ClassInfo'
 
 @inject('rootStore') @observer
 class NavBar extends React.Component {
-
   getName () {
     const {userStore: {user}} = this.props.rootStore
     if (user.student) {
@@ -60,7 +58,7 @@ class NavBar extends React.Component {
   }
 
   renderClassInfo () {
-    const {userStore: {user}, navbarStore: {cl, isDIY, toggleEditCl, toggleIssues, toggleHelpResolved, toggleRequestResolved, toggleWrench, toggleChat}} = this.props.rootStore
+    const {navbarStore: {cl, isDIY, toggleEditCl, toggleIssues, toggleHelpResolved, toggleRequestResolved, toggleWrench, toggleChat}} = this.props.rootStore
     const admin = this.props.rootStore.userStore.isAdmin()
     if (cl) {
       return (
@@ -78,7 +76,7 @@ class NavBar extends React.Component {
   }
 
   render () {
-    const {userStore: {user}, navbarStore: {cl, title}} = this.props.rootStore
+    const {userStore: {user}, navbarStore: {title}} = this.props.rootStore
     return (
       <div className='cn-navbar'>
         <div>
@@ -94,9 +92,9 @@ class NavBar extends React.Component {
             <span>{this.getDescription()}</span>
           </div>
           <div className='right'>
-            {user.avatar ?
-              <img className='profile-img' src={this.user.avatar}/> :
-              <div className='profile-img vertical-align profile-initials'>{this.getInitials()}</div>}
+            {user.avatar
+              ? <img className='profile-img' src={this.user.avatar}/>
+              : <div className='profile-img vertical-align profile-initials'>{this.getInitials()}</div>}
           </div>
         </div>
       </div>

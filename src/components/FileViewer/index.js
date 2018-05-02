@@ -2,19 +2,17 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 class FileViewer extends React.Component {
-
   static propTypes = {
     source: PropTypes.string
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
       rotate: 0
     }
   }
-
 
   /*
   * Set the url of the file.
@@ -33,19 +31,17 @@ class FileViewer extends React.Component {
     return url
   }
 
-
   /*
   * Determine if the file type is a PDF.
   *
   * @param [String] url. Original url of the file to be displayed.
   * @return [Boolean]. Boolean value indicating whther the document is a PDF
   */
-  isPDF(url) {
+  isPDF (url) {
     const pdf = /.*\.(pdf)/ig
 
     return pdf.test(url)
   }
-
 
   /*
   * Determine if the file type is a word doc.
@@ -59,7 +55,6 @@ class FileViewer extends React.Component {
     return wordDoc.test(url)
   }
 
-
   /*
   * Determine if the file type is an image.
   *
@@ -72,20 +67,18 @@ class FileViewer extends React.Component {
     return img.test(url)
   }
 
-
   /**
    * Rotate the image/doc in the file viewer
    *
    * @param {SyntheticEvent} event
    */
-  handleRotateFile(event) {
+  handleRotateFile (event) {
     event.preventDefault()
 
     let { rotate } = this.state
 
     this.setState({ rotate: rotate >= 270 ? 0 : rotate + 90 })
   }
-
 
   /**
    * Render...
@@ -115,8 +108,8 @@ class FileViewer extends React.Component {
 
         {this.isImage(this.props.source)
           ? <button onClick={this.handleRotateFile.bind(this)} className="action">
-              <i className="fa fa-refresh" />
-            </button>
+            <i className="fa fa-refresh" />
+          </button>
           : null
         }
       </div>

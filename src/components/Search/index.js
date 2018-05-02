@@ -30,7 +30,7 @@ class Search extends React.Component {
   onSearch () {
     const text = this.state.searchText
     this.props.onSearch(text)
-    this.setState({searched: text != ''})
+    this.setState({searched: text !== ''})
   }
 
   /*
@@ -63,7 +63,7 @@ class Search extends React.Component {
     const {searchExcluded} = this.props
     return searchResults.map(result => {
       Object.keys(result).forEach(key => {
-        const allowedSearch = searchExcluded == undefined || searchExcluded.length == 0 || searchExcluded.indexOf(key) == -1
+        const allowedSearch = searchExcluded === undefined || searchExcluded.length === 0 || searchExcluded.indexOf(key) === -1
         if (key !== 'id' && allowedSearch) {
           result[key] = this.matchText(result[key])
         }
@@ -81,7 +81,7 @@ class Search extends React.Component {
     const re = new RegExp(`${this.state.searchText}(.*$)`, 'i')
     const output = re.exec(text)
 
-    if (output && output.index >=0 && text && text.length > 0 && text !== 'TBA') {
+    if (output && output.index >= 0 && text && text.length > 0 && text !== 'TBA') {
       let first = text.substring(0, output.index)
       let middle = text.substring(output.index, this.state.searchText.length + output.index)
       let last = text.substring(this.state.searchText.length + output.index, text.length)
