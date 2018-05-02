@@ -69,9 +69,6 @@ class ClassForm extends React.Component {
   * exists.
   */
   componentWillMount () {
-    actions.classes.getProfessorClasses(this.props.professor).then(classes => {
-      this.setState({classes})
-    }).catch(() => false)
   }
 
   /*
