@@ -2,7 +2,6 @@ import React from 'react'
 import LandingNav from '../components/LandingNav'
 import {inject, observer} from 'mobx-react'
 import LandingFooter from '../components/LandingFooter'
-import CallToAction from '../LearnMore/CallToAction'
 
 @inject('rootStore') @observer
 class OurTeam extends React.Component {
@@ -17,7 +16,7 @@ class OurTeam extends React.Component {
               <div className='teammate'>
                 <img className='teammate-image' src='src/assets/images/our_team/carson.png'></img>
                 <p className='teammate-name'>Carson Ward</p>
-                <p className='teammate-title'>Founder & CEO</p>
+                <p className='teammate-title'>Founder &amp; CEO</p>
                 <p className='teammate-description'> Carson is the conductor. He oversees product innovation, business partnerships, and growth strategies.</p>
                 <div className='teammate-links'>
                   <a href='https://www.linkedin.com/in/carsonward2/'><i className="fa fa-linkedin-square"></i></a> <a href='mailto:carson@skoller.co'><i className="fa fa-envelope"></i></a>
@@ -28,7 +27,7 @@ class OurTeam extends React.Component {
               <div className='teammate'>
                 <img className='teammate-image' src='src/assets/images/our_team/logan.png'></img>
                 <p className='teammate-name'>Logan Matthews</p>
-                <p className='teammate-title'>Founder & COO</p>
+                <p className='teammate-title'>Founder &amp; COO</p>
                 <p className='teammate-description'> Logan is the recruiter. He oversees external relations, business partnerships, and marketing.</p>
                 <div className='teammate-links'>
                   <a href='https://www.linkedin.com/in/loganmatthews/'><i className="fa fa-linkedin-square"></i></a> <a href='mailto:logan@skoller.com'><i className="fa fa-envelope"></i></a>
@@ -39,7 +38,7 @@ class OurTeam extends React.Component {
               <div className='teammate'>
                 <img className='teammate-image' src='src/assets/images/our_team/jon.png'></img>
                 <p className='teammate-name'>Jonathan Rankin</p>
-                <p className='teammate-title'>Founder & Creative Director</p>
+                <p className='teammate-title'>Founder &amp; Creative Director</p>
                 <p className='teammate-description'> Jon is the designer. He oversees user experience. He also builds data scraping and machine learning robots.</p>
                 <div className='teammate-links'>
                   <a href='https://www.linkedin.com/in/jonathanrankin/'><i className="fa fa-linkedin-square"></i></a> <a href='mailto:jonathan@skoller.co'><i className="fa fa-envelope"></i></a>
