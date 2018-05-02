@@ -1,0 +1,45 @@
+.container-promo-signup {
+  align-items: center;
+  display: hidden;
+  @include breakpoint(medium) {
+    display: flex;
+    flex-grow: 1;
+    min-height: 100%;
+    width: 475px;
+  }
+
+  .container-form-register {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+    @include breakpoint(medium) {
+      display: flex;
+    }
+
+    @include breakpoint(large) {
+      margin-bottom: 0;
+      height: 100%;
+    }
+
+    #sign-up-form {
+      background-color: $cn-color-white;
+      border-radius: 8px;
+      box-shadow: 0px 15px 35px 0px rgba(0, 0, 0, 0.07);
+      box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.1);
+      min-height: 100%;
+      width: 100%;
+
+      .cn-sign-up-form {
+        margin-top: 2rem;
+        
+        .form-padding {
+          width: 95%;
+          margin: 0 auto;
+        }
+      }
+    }
+  }
+}

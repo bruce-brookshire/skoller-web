@@ -22,10 +22,10 @@
     flex-direction: column;
 
     .cn-analytics-item:nth-of-type(even) {
-        background: #edf5ff;
+      background: $cn-blue-cell-background;
     }
     .cn-analytics-item:nth-of-type(odd) {
-        background: #fff;
+      background: $cn-color-white;
     }
 
     .cn-analytics-label {
