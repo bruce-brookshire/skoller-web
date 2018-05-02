@@ -97,10 +97,10 @@ function requireAuth (nextState, replaceState) {
       .then((user) => {
         authenticateStudent(user.user).then(() => {
           userStore.setFetchingUser(false)
-        }).catch((error) => { userStore.setFetchingUser(false) })
+        }).catch((eror) => { userStore.setFetchingUser(false) })
         userStore.setFetchingUser(false)
       })
-      .catch((error) => {
+      .catch(() => {
         browserHistory.push('/landing')
         userStore.setFetchingUser(false)
       })
