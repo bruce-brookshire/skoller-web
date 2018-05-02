@@ -1,10 +1,6 @@
 .cn-diy-landing-container {
-  align-items: center;
+  @include center-viewport-content-container-internal;
   align-self: center;
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 64px);
-  justify-content: center;
   padding: 50px;
 
   .content-container {
