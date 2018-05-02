@@ -14,10 +14,10 @@ export function mapProfessor (professor) {
 }
 
 export function roundToTwo (val) {
-  return +(Math.round(val + "e+2")  + "e-2");
+  return +(Math.round(val + 'e+2') + 'e-2')
 }
 
-export function formatPhone(num) {
+export function formatPhone (num) {
   return num.slice(0, 3) + '-' + num.slice(3, 6) + '-' + num.slice(6, 10)
 }
 
