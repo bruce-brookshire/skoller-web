@@ -1,15 +1,15 @@
+//components/AutoComplete
 .cn-autocomplete-container {
   position: relative;
 
   .cn-autocomplete-input {
     @include form-element;
     &.loading {
-        background-color: #ffffff;
+        background-color: $cn-autocomplete-loading-background;
         background-image: url("http://loadinggif.com/images/image-selection/3.gif");
         background-size: 16px 16px;
         background-position: 99% center;
         background-repeat: no-repeat;
-        // margin-right: 5px;
     }
 
   }
@@ -21,19 +21,19 @@
     width: 100%;
 
     .cn-autocomplete-result {
-      background-color: #fff;
-      border: 1px solid #CCC;
+      background-color: $cn-autocomplete-results-background;
+      border: 1px solid $cn-form-border;
       border-top: 0;
       border-bottom: 0;
       font-size: 0.75em;
       padding: 10px;
 
       &:hover {
-        background-color: darken(#fff, 10%);
+        background-color: darken($cn-autocomplete-results-background, 10%);
       }
 
       &:last-child{
-        border-bottom: 1px solid #CCC;
+        border-bottom: 1px solid $cn-form-border;
         border-radius: $cn-border-radius;
         border-top-left-radius: 0;
         border-top-right-radius: 0;

@@ -25,7 +25,7 @@
 
 @mixin form-element {
   background-color: $cn-color-white;
-  border: 1px solid #CCC;
+  border: 1px solid $cn-form-border;
   border-radius: $cn-border-radius;
   height: 32px;
   // margin-top: 5px;
@@ -52,80 +52,3 @@
 
   }
 }
-
-// @mixin form-input {
-//   border: 1px solid $secondary-text-color;
-//   color: $primary-text-color;
-//   font-size: $primary-font-size;
-//   padding: 1rem;
-//   width: 100%;
-//
-//   &::placeholder { color: $placeholder-text-color; }
-//
-//   &.has-error {
-//     border-color: $color-error;
-//     color: $color-error;
-//   }
-// }
-//
-// @mixin form-input-alt {
-//   background: transparent;
-//   border: 2px solid $white-hex;
-//   border-bottom: 0;
-//   color: $white-hex;
-//
-//   &::placeholder { color: rgba($white-hex, .5); }
-//
-//   &:last-child { border-bottom: 2px solid $white-hex; }
-//
-//   &:focus,
-//   &:active {
-//     background: $white-hex;
-//     color: $primary-color;
-//   }
-// }
-//
-// @mixin form-input-textarea {
-//  @include form-input;
-// }
-//
-// @mixin form-textarea {
-//   @include form-input;
-//   background: transparent;
-//   border: 1px solid $white-hex;
-//   border-radius: $border-radius;
-//   color: $white-hex;
-//   font-family: $tertiary-font-family;
-//   resize: none;
-//
-//   &:focus {
-//     background: $white-hex;
-//     color: $primary-color;
-//     outline: none;
-//
-//     &::placeholder { color: $white-hex; }
-//  }
-//
-//   &::placeholder { color: $primary-color-muted; }
-// }
-//
-// @mixin form-textarea-alt {
-//   @include form-textarea;
-//   background: $white-hex;
-//   color: $black-hex;
-//
-//   &::placeholder { color: $placeholder-text-color; }
-// }
-//
-//
-// // Styles for stacked and segmented inputs --------------------
-// @mixin first-form-input  {
-//   @include form-input;
-//   border-bottom: 0;
-//   border-radius: $form-element-radius $form-element-radius 0 0;
-// }
-//
-// @mixin last-form-input {
-//   @include form-input;
-//   border-radius: 0 0 $form-element-radius $form-element-radius;
-// }
