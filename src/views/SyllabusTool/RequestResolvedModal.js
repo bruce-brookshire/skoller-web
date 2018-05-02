@@ -3,22 +3,17 @@ import {browserHistory} from 'react-router'
 import {inject, observer} from 'mobx-react'
 import PropTypes from 'prop-types'
 import Modal from '../../components/Modal'
-import {CheckboxField, TextAreaField} from '../../components/Form'
 import actions from '../../actions'
 import stores from '../../stores'
 
 @inject('rootStore') @observer
 class RequestResolvedModal extends React.Component {
-  constructor (props) {
-    super(props)
-  }
-
   isSW () {
     const {userStore} = stores
     return userStore.isSW()
   }
 
-  navigateToNeedsChange() {
+  navigateToNeedsChange () {
     browserHistory.push({
       pathname: '/hub/classes',
       state: {
@@ -27,46 +22,46 @@ class RequestResolvedModal extends React.Component {
     })
   }
 
-  resolveChangeRequest(){
+  resolveChangeRequest () {
     const {cl} = this.props
     actions.classhelp.resolveChangeRequest(this.props.request.id).then((res) => {
       actions.classes.getClassById(cl.id).then((cl) => {
         this.props.onSubmit(cl)
-        if(!this.props.request){
+        if (!this.props.request) {
           this.navigateToNeedsChange()
         }
       }).catch(() => false)
     }).catch(() => false)
   }
 
-  resolveStudentRequest(){
+  resolveStudentRequest () {
     const {cl} = this.props
     actions.classhelp.resolveStudentRequest(this.props.request.id).then((res) => {
       actions.classes.getClassById(cl.id).then((cl) => {
         this.props.onSubmit(cl)
-        if(!this.props.request){
+        if (!this.props.request) {
           this.navigateToNeedsChange()
         }
       }).catch(() => false)
     }).catch(() => false)
   }
 
-  onResolve(){
+  onResolve () {
     // This must be a standard change request
-    if(this.props.request.hasOwnProperty('note')){
+    if (this.props.request.hasOwnProperty('note')) {
       this.resolveChangeRequest()
     // This must be a student request
-    }else{
+    } else {
       this.resolveStudentRequest()
     }
   }
 
-  onCancel(){
+  onCancel () {
     this.props.onClose()
   }
 
-  renderContent(){
-    if(this.props.request){
+  renderContent () {
+    if (this.props.request) {
       return (
         <div>
           <h5 className="center-text">Did you fix the change request?</h5>
@@ -80,13 +75,12 @@ class RequestResolvedModal extends React.Component {
           </button>
         </div>
       )
-    }else{
+    } else {
       return null
     }
   }
 
   render () {
-    const {cl} = this.props
     return (
       <Modal
         open={this.props.open}
@@ -102,7 +96,7 @@ RequestResolvedModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   open: PropTypes.bool,
-  request: PropTypes.object,
+  request: PropTypes.object
 }
 
 export default RequestResolvedModal

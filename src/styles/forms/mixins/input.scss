@@ -11,34 +11,19 @@
   }
 }
 
-@mixin input-buttons {
-  input {
-    &[type='submit'],
-    &[type='reset'],
-    &[type='button'] {
-      @content;
-    }
-  }
-
-  button { @content; }
-}
-
 @mixin form-element {
   background-color: $cn-color-white;
   border: 1px solid $cn-form-border;
   border-radius: $cn-border-radius;
   height: 32px;
-  // margin-top: 5px;
   padding-left: 10px;
   padding-right: 10px;
   width: 100%;
   &:focus {
     outline: 0;
   }
-  &.active {
-  }
   &.error {
-    border-color: red;
+    border-color: $cn-error-color;
   }
 }
 
@@ -47,8 +32,5 @@
   margin-bottom: 5px;
   &.active {
     color: $cn-color-blue;
-  }
-  &.error {
-
   }
 }
