@@ -18,7 +18,7 @@ class FileTab extends React.Component {
     if (this.props.changed) classes.push('cn-red-background-alt')
     return (
       <div className={classes.join(' ')} onClick={() => this.props.onClick()}>
-        <span>{this.props.name}</span>
+        {this.props.name}
         {this.renderRemoveBtn()}
       </div>
     )
