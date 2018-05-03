@@ -19,17 +19,9 @@ class Weights extends React.Component {
     if (!disabled) {
       actions.weights.getClassWeights(cl).then((weights) => {
         // if in review, set
-        const noWeights = (cl.status.id === 500 && weights.length === 0)
+        const noWeights = (isReview && weights.length === 0)
         this.setState({weights, noWeights})
       }).then(() => false)
-    }
-  }
-
-  componentWillReceiveProps (nextProps) {
-    /* Only here becuase weights tutroail changes the array of weights dependent
-     on step. If tutorial changes. Remove this code and isTutorial prop! */
-    if (nextProps.isTutorial && nextProps.weights.length !== this.state.weights.length) {
-      this.setState({weights: nextProps.weights})
     }
   }
 

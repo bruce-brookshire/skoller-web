@@ -11,6 +11,8 @@
   .cn-body-container {
     display: flex;
     flex-direction: column;
+    padding-right: 1em;
+    padding-left: 1em;
 
     @include breakpoint(medium) {
       flex-direction: row;
@@ -25,6 +27,7 @@
       padding-top: 0;
 
       &.cn-control-panel {
+        padding-left: 0;
         .cn-section-header{
           position: absolute;
           margin-top: -1.1em;
@@ -40,7 +43,7 @@
           flex: 1;
         }
         @include breakpoint(large) {
-          flex: 0.42;
+          flex: 1;
         }
         .cn-section-footer {
           display: flex;
@@ -79,7 +82,7 @@
           flex: 1;
         }
         @include breakpoint(large) {
-          flex: 0.58;
+          flex: 2;
         }
       }
 
