@@ -105,7 +105,7 @@ class SignUpForm extends React.Component {
   }
 
   testEmailFormat (email) {
-    const regEx = /\.+@.+\.edu$/
+    const regEx = /.+@.+\.edu$/
     return regEx.test(email)
   }
 
