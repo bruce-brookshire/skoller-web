@@ -72,7 +72,7 @@ class Verification extends React.Component {
         <div className='vertical-align'>
           <div className='cn-verification-content'>
             <div className='img-container'>
-              <img className='center-vertical' src='/src/assets/images/letter2.png' />
+              <img src='/src/assets/images/letter2.png' />
             </div>
             <div className='content-container'>
               <h1>Verify your phone number</h1>
