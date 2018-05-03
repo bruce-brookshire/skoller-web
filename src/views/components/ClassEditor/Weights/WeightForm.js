@@ -97,40 +97,43 @@ class WeightForm extends React.Component {
     const {formErrors, updateProperty} = this.props
 
     return (
-      <div id='class-editor-weight-form' className='margin-top'>
-        <div className='row'>
-          <div className='col-xs-8'>
-            <InputField
-              containerClassName='margin-top'
-              error={formErrors.name}
-              label="Category name"
-              name="name"
-              onChange={updateProperty}
-              placeholder="Weight Category, i.e. Exams"
-              value={form.name}
-            />
+      <div>
+        <h5 style={{marginTop: '0.25em', marginBottom: '0.5em'}}>{viewOnly ? 'Edit' : 'Add'} weights</h5>
+        <div id='class-editor-weight-form' className='margin-top'>
+          <div className='row'>
+            <div className='col-xs-8'>
+              <InputField
+                containerClassName='margin-top'
+                error={formErrors.name}
+                label="Category name"
+                name="name"
+                onChange={updateProperty}
+                placeholder="Weight Category, i.e. Exams"
+                value={form.name}
+              />
+            </div>
+            <div className='col-xs-4'>
+              <InputField
+                containerClassName='margin-top'
+                error={formErrors.weight}
+                label="Weight"
+                name="weight"
+                onChange={updateProperty}
+                placeholder="Weight"
+                type="number"
+                value={form.weight}
+              />
+            </div>
           </div>
-          <div className='col-xs-4'>
-            <InputField
-              containerClassName='margin-top'
-              error={formErrors.weight}
-              label="Weight"
-              name="weight"
-              onChange={updateProperty}
-              placeholder="Weight"
-              type="number"
-              value={form.weight}
-            />
-          </div>
+          <button
+            className='button full-width margin-top'
+            disabled={this.state.loading}
+            onClick={this.onSubmit.bind(this)}
+          >
+            Submit category weight
+            {this.state.loading ? <Loading style={{color: 'white', marginLeft: '0.5em'}} /> : null}
+          </button>
         </div>
-        <button
-          className='button full-width margin-top'
-          disabled={this.state.loading}
-          onClick={this.onSubmit.bind(this)}
-        >
-          Submit category weight
-          {this.state.loading ? <Loading style={{color: 'white', marginLeft: '0.5em'}} /> : null}
-        </button>
       </div>
     )
   }

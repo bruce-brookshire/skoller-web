@@ -36,6 +36,9 @@ class PointTotal extends React.Component {
     return (
       <div>
         <div className='row'>
+          <a onClick={() => this.props.reset()}>Go back</a>
+        </div>
+        <div className='row'>
           <span style={{margin: '0 auto'}}>Enter the total number of points for the class.</span>
           <div className='col-xs-6' style={{margin: '0 auto'}}>
             <InputField
@@ -61,7 +64,8 @@ PointTotal.propTypes = {
   onChange: PropTypes.func.isRequired,
   pointTotal: PropTypes.number,
   updateProperty: PropTypes.func,
-  validateForm: PropTypes.func
+  validateForm: PropTypes.func,
+  reset: PropTypes.func
 }
 
 export default ValidateForm(Form(PointTotal, 'form'))

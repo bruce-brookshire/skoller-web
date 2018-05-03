@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import PointTotal from './PointTotal'
 import WeightConverter from '../../../../components/WeightConverter/index'
 import WeightForm from './WeightForm'
+import WeightType from './WeightType'
 import actions from '../../../../actions'
 
 class Weights extends React.Component {
@@ -48,7 +49,7 @@ class Weights extends React.Component {
   * @return [Object]. State object.
   */
   initializeState () {
-    const {cl, isReview, weights, isTutorial} = this.props
+    const {cl, isReview, weights} = this.props
     return {
       currentWeight: null,
       isPoints: cl.is_points,
@@ -66,20 +67,31 @@ class Weights extends React.Component {
   renderContent () {
     const {cl} = this.props
     const {isPoints, totalPoints, viewOnly, disabled} = this.state
-    if (isPoints && !totalPoints && !viewOnly && !disabled) {
+    if (!isPoints && !totalPoints && !viewOnly && !disabled) {
+      // ask for weights or points
+      return (
+        <div style={{display: 'flex', flex: '1', flexDirection: 'column', justifyContent: 'space-evenly'}}>
+          <WeightType
+            cl={cl}
+            onSubmit={this.onTypeSelection.bind(this)}
+          />
+        </div>
+      )
+    } else if (isPoints && !totalPoints && !viewOnly && !disabled) {
+      // ask for total points
       return (
         <div style={{display: 'flex', flex: '1', flexDirection: 'column', justifyContent: 'space-evenly'}}>
           <PointTotal
             cl={cl}
             onChange={this.onChangeTotalPoints.bind(this)}
             totalPoints={this.state.totalPoints}
+            reset={() => this.setState({isPoints: false, totalPoints: null})}
           />
-          {!viewOnly && this.renderWeightSlider()}
         </div>
       )
+    } else {
+      return this.renderWeightsContent()
     }
-
-    return this.renderWeightsContent()
   }
 
   /*
@@ -90,7 +102,7 @@ class Weights extends React.Component {
     return (
       <div style={{display: 'flex', flex: '1', flexDirection: 'column'}}>
         <div className={`class-editor-table ${viewOnly ? 'view-only' : ''}`}>
-          <div id='class-editor-weights-table' className='' ref={(field) => { this.sectionControl = field; }}>
+          <div id='class-editor-weights-table' className='' ref={(field) => { this.sectionControl = field }}>
             {this.renderWeights()}
           </div>
           <div id='class-weights-total'>
@@ -279,12 +291,16 @@ class Weights extends React.Component {
   /*
   * Toggle the weights from percentages to points or vice versa.
   */
-  onToggleConverter () {
+  onTypeSelection (isPoints) {
     const {cl} = this.props
-    const isPoints = !this.state.isPoints
-    actions.classes.updateClass({id: cl.id, is_points: isPoints}).then((cl) => {
-      this.setState({isPoints})
-    }).catch(() => false)
+
+    if (isPoints) {
+      actions.classes.updateClass({id: cl.id, is_points: isPoints}).then((cl) => {
+        this.setState({isPoints})
+      }).catch(() => false)
+    } else {
+      this.setState({totalPoints: 100})
+    }
   }
 
   /*
@@ -336,7 +352,6 @@ class Weights extends React.Component {
 
     return (
       <div style={{display: 'flex', flex: '1', flexDirection: 'column'}}>
-        <h5 style={{marginTop: '0.25em', marginBottom: '0.5em'}}>{viewOnly ? 'Edit' : 'Add'} weights</h5>
         {viewOnly && <a className='right-text' style={{marginBottom: '5px'}} onClick={() => this.setState({viewOnly: false}) }>edit</a>}
         {this.renderContent()}
       </div>
