@@ -80,23 +80,7 @@ class SyllabusTool extends React.Component {
   * Intialize the current index of content to be shown.
   */
   initializeCurrentIndex () {
-    const {state} = this.props.location
     let currentIndex = ContentEnum.WEIGHTS
-    if (state.sectionId) {
-      switch (state.sectionId) {
-        case 100:
-          currentIndex = ContentEnum.WEIGHTS
-          break
-        case 200:
-          currentIndex = ContentEnum.ASSIGNMENTS
-          break
-        case 300:
-          currentIndex = ContentEnum.WEIGHTS
-          break
-        default:
-          break
-      }
-    }
     return currentIndex
   }
 
