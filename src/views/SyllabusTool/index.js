@@ -13,7 +13,7 @@ import {FileTabs, FileTab} from '../../components/FileTab'
 
 const {navbarStore} = stores
 
-const steps = [ 'Weights', 'Assignments' ]
+const steps = [ 'Weights', 'Assignments', 'Review' ]
 
 const ContentEnum = {
   WEIGHTS: 0,
@@ -314,13 +314,11 @@ class SyllabusTool extends React.Component {
   */
   renderProgressBar () {
     return (
-      <div className='margin-bottom'>
-        <ProgressBar currentStep={this.state.currentIndex}>
-          {steps.map((step, index) => {
-            return <ProgressStep key={`step-${index}`} label={step} />
-          })}
-        </ProgressBar>
-      </div>
+      <ProgressBar currentStep={this.state.currentIndex}>
+        {steps.map((step, index) => {
+          return <ProgressStep key={`step-${index}`} label={step} index={index} />
+        })}
+      </ProgressBar>
     )
   }
 
@@ -343,6 +341,7 @@ class SyllabusTool extends React.Component {
     if (loadingClass || navbarStore.cl == null) return <Loading />
     return (
       <div className='cn-syllabus-tool-container'>
+        {this.renderProgressBar()}
         <div className='cn-body-container'>
           <div className='cn-section-container cn-control-panel'>
             <div className='cn-section-header'>
@@ -363,8 +362,6 @@ class SyllabusTool extends React.Component {
                   onClick={this.onNext.bind(this)}
                 >{this.renderButtonText()}</button>
               </div>
-
-              {this.renderProgressBar()}
             </div>
           </div>
 

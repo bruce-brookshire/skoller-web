@@ -2,15 +2,36 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: flex-end;
-  width: 100%;
+  align-items: center;
+  width: 300px;
+  align-self: center;
 
-  .cn-progress-bar {
+  @include breakpoint(medium) {
+    width: 720px;
+  }
+
+  .cn-progress-step:first-child {
+    .cn-progress-bar {
+      .cn-progress-divider-left {
+        display: none;
+      }
+    }
+  }
+
+  .cn-progress-step:last-child {
+    .cn-progress-bar {
+      .cn-progress-divider-right {
+        display: none;
+      }
+    }
+  }
+
+  .cn-progress-step {
     display: flex;
-    flex: 1;
     flex-direction: column;
-    padding-right: 10px;
-    padding-left: 10px;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
 
     .progress-bar-title {
       font-size: 0.75em;
@@ -18,40 +39,61 @@
       text-align: center;
     }
 
-    .progress-bar-step {
-      background-color: $cn-color-grey;
-      border-radius: 500px;
-      font-size: 4px;
+    .cn-progress-bar {
+      width: 20px;
+      height: 20px;
+      border: 1px solid black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-top: 4.5px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 3px;
+      position: relative;
 
       &.active {
         background-color: $cn-color-blue;
+        color: $cn-color-white;
+      }
+
+      .cn-progress-divider-left {
+        position: absolute;
+        left: -1/3 * 300px / 2;
+        top: 50%;
+        height: 1px;
+        border-top: 1px solid black;
+        width: 1/3 * 300px / 2;
+
+        @include breakpoint(medium) {
+          left: -1/3 * 720px / 2;
+          width: 1/3 * 720px / 2;
+        }
+      }
+
+      .cn-progress-divider-right {
+        position: absolute;
+        right: -1/3 * 300px / 2;
+        top: 50%;
+        height: 1px;
+        border-top: 1px solid black;
+        width: 1/3 * 300px / 2;
+
+        @include breakpoint(medium) {
+          right: -1/3 * 720px / 2;
+          width: 1/3 * 720px / 2;
+        }
+      }
+  
+      .progress-bar-step {
+        background-color: $cn-color-grey;
+        border-radius: 500px;
+        font-size: 4px;
+  
+        &.active {
+          background-color: $cn-color-blue;
+        }
       }
     }
   }
 }
-
-// .progress-step-bar-reached{
-//     background-color: $cn-color-blue;
-//     border-radius: 500px;
-//     font-size: 6px;
-//     width:120px;
-// }
-//
-// .progress-step-bar-unreached{
-//     background-color: $cn-color-grey;
-//     border-radius: 500px;
-//     font-size: 6px;
-//     // width:120%;
-//     width:120px;
-// }
-//
-//
-// .progress-step-spacing{
-//     margin-right: 10px;
-//     margin-left: 10px;
-// }
-// .widen-step{
-//     width: 100%;
-//     margin-right:15px;
-//     margin-left:15px;
-// }

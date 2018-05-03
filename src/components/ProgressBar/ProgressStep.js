@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 class ProgressStep extends React.Component {
   render () {
-    const {active, label} = this.props
+    const {active, label, index} = this.props
     const classes = ['progress-bar-step']
     if (active) {
       classes.push('active')
@@ -12,9 +12,13 @@ class ProgressStep extends React.Component {
     // if (label == 'Input Weights' || label == 'Assignments Intro') steps_with_spacing.push('progress-step-spacing')
 
     return (
-      <div className='cn-progress-bar'>
+      <div className='cn-progress-step'>
+        <div className='cn-progress-bar'>
+          <div className='cn-progress-divider-left'></div>
+          {index + 1}
+          <div className='cn-progress-divider-right'></div>
+        </div>
         <p className='progress-bar-title'><strong>{label}</strong></p>
-        <div className={classes.join(' ')}>&ensp;</div>
       </div>
     )
   }
@@ -22,7 +26,8 @@ class ProgressStep extends React.Component {
 
 ProgressStep.propTypes = {
   active: PropTypes.bool,
-  label: PropTypes.string
+  label: PropTypes.string,
+  index: PropTypes.number
 }
 
 export default ProgressStep
