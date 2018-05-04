@@ -42,7 +42,8 @@ class FindClasses extends React.Component {
       days: '',
       time: '',
       professor: null,
-      loading: false
+      loading: false,
+      fade: false
     }
   }
 
@@ -514,7 +515,7 @@ class FindClasses extends React.Component {
   renderFields () {
     const {school, cl, newCl, clName, semester, section, subject, code, time, days, professor} = this.state
     return (
-      <div>
+      <div className={this.state.fade ? 'cn-find-class-fade-left' : ''}>
         {this.renderSchool()}
         {school ? this.renderClass() : this.renderDisabledField()}
         {(cl || (newCl && clName)) ? this.renderSemester() : this.renderDisabledField()}
@@ -529,14 +530,27 @@ class FindClasses extends React.Component {
   renderCard () {
     let {school, cl, professor, semester} = this.state
     return (
-      <div className='cn-find-classes-card'>
-        <ClassCard
-          cl={cl}
-          onSubmit={this.onSubmit.bind(this)}
-          schoolName={school ? school.name : ''}
-          professorName={professor ? professor.name_first + ' ' + professor.name_last : ''}
-          semesterName={semester ? semester.name : ''}
-        />
+      <div>
+        <div className='cn-find-classes-card'>
+          <ClassCard
+            cl={cl}
+            onSubmit={this.onSubmit.bind(this)}
+            schoolName={school ? school.name : ''}
+            professorName={professor ? professor.name_first + ' ' + professor.name_last : ''}
+            semesterName={semester ? semester.name : ''}
+          />
+        </div>
+        <div className='cn-find-classes-back'>
+          <button
+            className='full-width button margin-top error-button'
+            onClick={() => {
+              this.setState({fade: true})
+              this.resetClass()
+            }}
+          >
+          👈 Go back - wrong class!
+          </button>
+        </div>
       </div>
     )
   }
