@@ -512,10 +512,10 @@ class FindClasses extends React.Component {
           {this.renderSchool()}
           {school ? this.renderClass() : this.renderDisabledField()}
           {(cl || (newCl && clName)) ? this.renderSemester() : this.renderDisabledField()}
-          {(!school || (school && school.is_university)) && (semester ? this.renderClassDetail() : this.renderDisabledField())}
-          {(school && !school.is_university && semester) || (section && subject && code) ? this.renderMeeting() : this.renderDisabledField()}
-          {(time && days) ? this.renderProfessor() : this.renderDisabledField()}
-          {school && clName && semester && (!school.is_university || (section && subject && code)) && time && days && (!newCl || professor) && this.renderSubmit()}
+          {(!newCl && cl) || ((!school || (school && school.is_university)) && semester) ? this.renderClassDetail() : this.renderDisabledField()}
+          {(!newCl && cl) || (school && !school.is_university && semester) || (section && subject && code) ? this.renderMeeting() : this.renderDisabledField()}
+          {(!newCl && cl) || (time && days) ? this.renderProfessor() : this.renderDisabledField()}
+          {((!newCl && cl) || (school && clName && semester && (!school.is_university || (section && subject && code)) && time && days && (!newCl || professor))) && this.renderSubmit()}
         </div>
         {schoolName && this.renderCreateSchoolModal()}
         {this.renderMeetingTimeModal()}
