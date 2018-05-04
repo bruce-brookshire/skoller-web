@@ -12,6 +12,39 @@
   .cn-find-classes-content {
     width: 382px;
 
+    .error-button {
+      background-color: $cn-error-color;
+    }
+
+    .cn-find-class-fade-left {
+      @keyframes slideinleft {
+        from { transform: translateX(-150%); }
+        to   { transform: translateX(calc(50% - 382px / 2)); }
+      }
+      animation: 1s slideinleft;
+      transform: translateX(calc(50% - 382px / 2));
+    }
+
+    .cn-find-classes-card {
+      @keyframes slidein {
+        from { transform: translateX(150%); }
+        to   { transform: translateX(calc(50% - 382px / 2)); }
+      }
+      animation: 1s slidein;
+      transform: translateX(calc(50% - 382px / 2));
+      width: 382px;
+    }
+
+    .cn-find-classes-card .animate-out {
+      @keyframes slideout {
+        to { transform: translateX(150%); }
+        from   { transform: translateX(calc(50% - 382px / 2)); }
+      }
+      animation: 1s slideout;
+      transform: translateX(150%);
+      width: 382px;
+    }
+
     .cn-find-classes-exists {
       text-align: center;
       margin-top: $unit-space;

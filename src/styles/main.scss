@@ -8,6 +8,7 @@
 @import 'mixins/layout';
 @import 'mixins/triangle';
 @import 'mixins/landing';
+@import 'mixins/shadow-box';
 
 @import 'fonts';
 
@@ -25,6 +26,7 @@
 // Components ----------------------------
 @import 'components/autocomplete';
 @import 'components/chat';
+@import 'components/class-card.scss';
 @import 'components/class-editor-table.scss';
 @import 'components/file-tab';
 @import 'components/file-viewer';

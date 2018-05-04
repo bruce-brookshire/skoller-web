@@ -65,7 +65,7 @@ class AutoComplete extends React.Component {
             return this.props.renderRow(rowData, index, this.resetState.bind(this))
           })
           }
-          {this.props.newRow && !blank && this.props.emptyMessage(this.getSearchText.bind(this))}
+          {this.props.newRow && !blank && !loading && this.props.emptyMessage(this.getSearchText.bind(this))}
         </div>
       )
     }
