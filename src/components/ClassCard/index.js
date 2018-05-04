@@ -8,8 +8,10 @@ class ClassCard extends React.Component {
 
     return (
       <div className='cn-class-card'>
-        <div className='cn-class-title'>
-          {cl.name}
+        <div className='cn-class-card-content'>
+          <div className='cn-class-title'>
+            {cl.name}
+          </div>
         </div>
       </div>
     )
