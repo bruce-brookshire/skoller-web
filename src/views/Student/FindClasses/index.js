@@ -527,10 +527,15 @@ class FindClasses extends React.Component {
   }
 
   renderCard () {
+    let {school, cl, professor, semester} = this.state
     return (
       <div className='cn-find-classes-card'>
         <ClassCard
-          cl={this.state.cl}
+          cl={cl}
+          onSubmit={this.onSubmit.bind(this)}
+          schoolName={school ? school.name : ''}
+          professorName={professor ? professor.name_first + ' ' + professor.name_last : ''}
+          semesterName={semester ? semester.name : ''}
         />
       </div>
     )
