@@ -18,10 +18,22 @@ class WeightType extends React.Component {
           Is this class based on points or percentages?
         </div>
         <CheckboxField
-        
+          containerClassName='margin-top margin-right'
+          label='Points'
+          name='isPoints'
+          onChange={(name, value) => {
+            this.setState({isPoints: value})
+          }}
+          value={this.state.isPoints}
         />
         <CheckboxField
-        
+          containerClassName='margin-top margin-right'
+          label='Percentage'
+          name='isPercentage'
+          onChange={(name, value) => {
+            this.setState({isPoints: !value})
+          }}
+          value={!this.state.isPoints}
         />
       </div>
     )
