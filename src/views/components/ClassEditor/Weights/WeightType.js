@@ -35,8 +35,19 @@ class WeightType extends React.Component {
           }}
           value={!this.state.isPoints}
         />
+        <button
+          className='margin-top button full-width'
+          onClick={() => this.props.onSubmit(this.state.isPoints)}
+        >
+        Next Step
+        </button>
       </div>
     )
   }
 }
+
+WeightType.propTypes = {
+  onSubmit: PropTypes.func
+}
+
 export default WeightType

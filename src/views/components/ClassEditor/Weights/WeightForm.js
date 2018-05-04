@@ -98,7 +98,7 @@ class WeightForm extends React.Component {
 
     return (
       <div>
-        <h5 style={{marginTop: '0.25em', marginBottom: '0.5em'}}>{viewOnly ? 'Edit' : 'Add'} weights</h5>
+        <h5 style={{marginTop: '0.25em', marginBottom: '0.5em'}}>Edit weights</h5>
         <div id='class-editor-weight-form' className='margin-top'>
           <div className='row'>
             <div className='col-xs-8'>

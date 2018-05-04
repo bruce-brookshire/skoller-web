@@ -56,7 +56,7 @@ class Weights extends React.Component {
       noWeights: null,
       totalPoints: null,
       weights: weights || [],
-      viewOnly: isReview
+      viewOnly: isReview || false
     }
   }
 
@@ -111,7 +111,6 @@ class Weights extends React.Component {
         </div>
         {!viewOnly && this.renderWeightsCheckbox()}
         {!viewOnly && this.renderWeightForm()}
-        {!viewOnly && this.renderWeightSlider()}
       </div>
     )
   }
@@ -234,19 +233,6 @@ class Weights extends React.Component {
             checked={this.state.noWeights}
           /> Weights were not provided on the syllabus.
         </label>
-      )
-    }
-  }
-
-  /*
-  * Render the slider
-  */
-  renderWeightSlider () {
-    if (this.state.weights.length === 0 || this.props.disabled) {
-      return (
-        <div className='margin-top'>
-          <WeightConverter id='class-editor-weight-converter' onChange={this.onToggleConverter.bind(this)} value={this.state.isPoints}/>
-        </div>
       )
     }
   }
