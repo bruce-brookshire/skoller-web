@@ -46,6 +46,11 @@
         width: 100%;
       }
 
+      .cn-form-input:disabled {
+        background-color: $cn-form-border;
+        color: $cn-font-color;
+      }
+
       .cn-autocomplete-results-container {
         max-height: 200px;
 
@@ -95,14 +100,14 @@
         @include form-label;
         height: 14px;
         width: 50%;
-        background-color: $cn-color-grey;
+        background-color: $cn-form-border;
         border-radius: 3px;
         margin-top: $unit-space;
       }
 
       .cn-find-classes-disabled {
         height: 32px;
-        background-color: $cn-color-grey;
+        background-color: $cn-form-border;
         border-radius: 3px;
       }
     }

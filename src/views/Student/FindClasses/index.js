@@ -149,6 +149,7 @@ class FindClasses extends React.Component {
 
   renderSemesterName () {
     const {formErrors} = this.props
+    const {newCl, cl} = this.state
     return (
       <InputField
         error={formErrors.semesterName}
@@ -157,12 +158,14 @@ class FindClasses extends React.Component {
           this.resetSemester()
         }}
         value={this.state.semester.name}
+        disabled={!newCl && cl}
       />
     )
   }
 
   renderProfessorName () {
     const {formErrors} = this.props
+    const {newCl, cl} = this.state
     return (
       <InputField
         error={formErrors.professorName}
@@ -170,6 +173,7 @@ class FindClasses extends React.Component {
         onChange={(name, value) => {
           this.resetProfessor()
         }}
+        disabled={!newCl && cl}
         value={this.state.professor ? this.state.professor.name_first + ' ' + this.state.professor.name_last : ''}
       />
     )
@@ -389,6 +393,7 @@ class FindClasses extends React.Component {
 
   renderClassDetail () {
     const {formErrors} = this.props
+    const {newCl, cl} = this.state
     return (
       <div className='cn-find-classes-field-container'>
         <div className='cn-find-classes-sub-field'>
@@ -400,6 +405,7 @@ class FindClasses extends React.Component {
               this.resetSubject(value)
             }}
             value={this.state.subject}
+            disabled={!newCl && cl}
           />
         </div>
         <div className='cn-find-classes-sub-field'>
@@ -411,6 +417,7 @@ class FindClasses extends React.Component {
               this.resetCode(value)
             }}
             value={this.state.code}
+            disabled={!newCl && cl}
           />
         </div>
         <div className='cn-find-classes-sub-field'>
@@ -422,6 +429,7 @@ class FindClasses extends React.Component {
               this.resetSection(value)
             }}
             value={this.state.section}
+            disabled={!newCl && cl}
           />
         </div>
       </div>
@@ -440,6 +448,7 @@ class FindClasses extends React.Component {
 
   renderMeetingFields () {
     const {formErrors} = this.props
+    const {newCl, cl} = this.state
     return (
       <InputField
         error={formErrors.meet_times}
@@ -448,6 +457,7 @@ class FindClasses extends React.Component {
           this.resetMeetingDetails(value)
         }}
         value={this.state.days + ' ' + moment(this.state.time, 'HH:mm:ss').format('hh:mm a').toString()}
+        disabled={!newCl && cl}
       />
     )
   }
