@@ -12,6 +12,16 @@
   .cn-find-classes-content {
     width: 382px;
 
+    .cn-find-classes-card {
+      @keyframes slidein {
+        from { transform: translateX(-50%); }
+        to   { transform: translateX(calc(50% - 382px / 2)); }
+      }
+      animation: 1s slidein;
+      transform: translateX(calc(50% - 382px / 2));
+      width: 382px;
+    }
+
     .cn-find-classes-exists {
       text-align: center;
       margin-top: $unit-space;

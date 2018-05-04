@@ -13,6 +13,7 @@ import MeetingTimeModal from './MeetingTimeModal'
 import moment from 'moment-timezone'
 import CreateProfessorModal from './CreateProfessorModal'
 import { browserHistory } from 'react-router'
+import ClassCard from '../../../components/ClassCard'
 
 class FindClasses extends React.Component {
   constructor (props) {
@@ -510,22 +511,41 @@ class FindClasses extends React.Component {
     )
   }
 
+  renderFields () {
+    const {school, cl, newCl, clName, semester, section, subject, code, time, days, professor} = this.state
+    return (
+      <div>
+        {this.renderSchool()}
+        {school ? this.renderClass() : this.renderDisabledField()}
+        {(cl || (newCl && clName)) ? this.renderSemester() : this.renderDisabledField()}
+        {(!newCl && cl) || ((!school || (school && school.is_university)) && semester) ? this.renderClassDetail() : this.renderDisabledField()}
+        {(!newCl && cl) || (school && !school.is_university && semester) || (section && subject && code) ? this.renderMeeting() : this.renderDisabledField()}
+        {(!newCl && cl) || (time && days) ? this.renderProfessor() : this.renderDisabledField()}
+        {((!newCl && cl) || (school && clName && semester && (!school.is_university || (section && subject && code)) && time && days && (!newCl || professor))) && this.renderSubmit()}
+      </div>
+    )
+  }
+
+  renderCard () {
+    return (
+      <div className='cn-find-classes-card'>
+        <ClassCard
+          cl={this.state.cl}
+        />
+      </div>
+    )
+  }
+
   render () {
-    let {schoolName, school, cl, newCl, clName, semester, section, subject, code, time, days, professor} = this.state
+    let {schoolName, school, cl, newCl} = this.state
     return (
       <div className='cn-find-classes-container'>
         <div className='cn-find-classes-content'>
           <div className='cn-find-classes-header'>
-            <h2>Set up or find a class</h2>
+            <h2>Find a class</h2>
             <p>Make sure this info is correct so your classmates can find the class!</p>
           </div>
-          {this.renderSchool()}
-          {school ? this.renderClass() : this.renderDisabledField()}
-          {(cl || (newCl && clName)) ? this.renderSemester() : this.renderDisabledField()}
-          {(!newCl && cl) || ((!school || (school && school.is_university)) && semester) ? this.renderClassDetail() : this.renderDisabledField()}
-          {(!newCl && cl) || (school && !school.is_university && semester) || (section && subject && code) ? this.renderMeeting() : this.renderDisabledField()}
-          {(!newCl && cl) || (time && days) ? this.renderProfessor() : this.renderDisabledField()}
-          {((!newCl && cl) || (school && clName && semester && (!school.is_university || (section && subject && code)) && time && days && (!newCl || professor))) && this.renderSubmit()}
+          {(newCl || !cl) ? this.renderFields() : this.renderCard()}
         </div>
         {schoolName && this.renderCreateSchoolModal()}
         {this.renderMeetingTimeModal()}
