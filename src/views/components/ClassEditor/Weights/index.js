@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import PointTotal from './PointTotal'
 import WeightForm from './WeightForm'
+import WeightTable from './WeightTable'
 import WeightType from './WeightType'
 import actions from '../../../../actions'
 
@@ -92,98 +93,35 @@ class Weights extends React.Component {
   * Render the weights and weight form.
   */
   renderWeightsContent () {
-    const {viewOnly} = this.state
+    const {viewOnly, weights, currentWeight} = this.state
+    const {cl, disabled} = this.props
     return (
       <div>
-        {!viewOnly && this.renderWeightForm()}
-        {/* <div className={`class-editor-table ${viewOnly ? 'view-only' : ''}`}>
-          <div id='class-editor-weights-table' className='' ref={(field) => { this.sectionControl = field }}>
-            {this.renderWeights()}
-          </div>
+        {!viewOnly &&
+          <WeightForm
+            cl={cl}
+            onCreateWeight={this.onCreateWeight.bind(this)}
+            onUpdateWeight={this.onUpdateWeight.bind(this)}
+            weight={this.state.currentWeight}
+          />
+        }
+        {weights.length !== 0 &&
+          <WeightTable
+            weights={weights}
+            viewOnly={viewOnly}
+            currentWeight={currentWeight}
+            disabled={disabled}
+            cl={cl}
+            onSelectWeight={this.onSelectWeight.bind(this)}
+            onDeleteWeight={this.onDeleteWeight.bind(this)}
+          />
+        }
+        {/*
           <div id='class-weights-total'>
             {this.renderTotalPercentage()}
           </div>
-        </div>
         {!viewOnly && this.renderWeightsCheckbox()} */}
       </div>
-    )
-  }
-
-  /*
-  * Render the weights for a given class.
-  */
-  renderWeights () {
-    const weights = this.state.weights
-    if (weights.length === 0) {
-      return <div className='center-text margin-top'>
-        <span>There are currently no weights for this class.</span>
-      </div>
-    }
-    // sort weights by created at
-    return weights.sort((a, b) => {
-      return a.inserted_at > b.inserted_at
-    }).map((weight, index) =>
-      this.getRow(weight, index)
-    )
-  }
-
-  /*
-  * Formats row data to be passed to the grid for display
-  *
-  * @param [Object] item. Row data to be formatted.
-  * @param [Number] index. Index of row data.
-  */
-  getRow (item, index) {
-    const {id, name, weight} = item
-    const {currentWeight, viewOnly} = this.state
-    const {cl, disabled} = this.props
-
-    const activeClass = (currentWeight && currentWeight.id) === id
-      ? 'active' : ''
-
-    return (
-      <div
-        className={`row table-row ${activeClass}`}
-        key={`weight-${index}`}
-        onClick={() => {
-          if (viewOnly || disabled) return
-          this.onSelectWeight(item)
-        }}
-      >
-        {!viewOnly &&
-          <div className='col-xs-1'>
-            <div
-              className='button-delete-x center-content'
-              onClick={(event) => {
-                event.stopPropagation()
-                if (disabled) return
-                this.onDeleteWeight(item)
-              }}><i className='fa fa-times' />
-            </div>
-          </div>
-        }
-        <div className={viewOnly ? 'col-xs-10' : 'col-xs-9'}>
-          <span>{name}</span>
-        </div>
-        <div className='col-xs-2 right-text'>
-          <span>{weight}{!cl.is_points ? '%' : ''}</span>
-        </div>
-      </div>
-    )
-  }
-
-  /*
-  * Render weight form.
-  */
-  renderWeightForm () {
-    const {cl} = this.props
-    return (
-      <WeightForm
-        cl={cl}
-        onCreateWeight={this.onCreateWeight.bind(this)}
-        onUpdateWeight={this.onUpdateWeight.bind(this)}
-        weight={this.state.currentWeight}
-      />
     )
   }
 
