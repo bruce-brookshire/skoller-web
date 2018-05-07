@@ -52,6 +52,20 @@ class WeightTable extends React.Component {
   }
 
   /*
+  * Get the total weight value.
+  *
+  * @return [Number] totalWeight. The accumlated percentages.
+  */
+  getTotalWeight () {
+    const {weights} = this.props
+    let totalWeight = 0
+    weights.forEach(item => {
+      totalWeight += Number(item.weight)
+    })
+    return totalWeight
+  }
+
+  /*
   * Render the weights for a given class.
   */
   renderWeights () {
@@ -61,6 +75,32 @@ class WeightTable extends React.Component {
       return a.inserted_at > b.inserted_at
     }).map((weight, index) =>
       this.getRow(weight, index)
+    )
+  }
+
+  /*
+  * Render total percentage
+  *
+  */
+  renderTotalPercentage () {
+    const total = this.getTotalWeight()
+    const {viewOnly, cl} = this.props
+    const totalPoints = viewOnly ? total : `${total}/${this.props.totalPoints}`
+
+    return (
+      <div id='class-editor-weights-total' className='row'>
+        <div className='col-xs-9'>
+          <span>{!cl.is_points ? 'Total:' : 'Total points'}</span>
+        </div>
+        <div className='col-xs-3 right-text'>
+          <span>
+            {
+              !cl.is_points
+                ? `${total.toFixed(2)}%`
+                : totalPoints
+            }</span>
+        </div>
+      </div>
     )
   }
 
@@ -75,6 +115,9 @@ class WeightTable extends React.Component {
         <div className={`class-editor-table ${viewOnly ? 'view-only' : ''}`}>
           <div id='class-editor-weights-table' className='' ref={(field) => { this.sectionControl = field }}>
             {this.renderWeights()}
+            <div id='class-weights-total'>
+              {this.renderTotalPercentage()}
+            </div>
           </div>
         </div>
       </div>
@@ -89,7 +132,8 @@ WeightTable.propTypes = {
   disabled: PropTypes.bool,
   cl: PropTypes.object,
   onSelectWeight: PropTypes.func,
-  onDeleteWeight: PropTypes.func
+  onDeleteWeight: PropTypes.func,
+  totalPoints: PropTypes.number
 }
 
 export default WeightTable

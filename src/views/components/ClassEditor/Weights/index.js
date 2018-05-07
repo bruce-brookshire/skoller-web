@@ -80,7 +80,7 @@ class Weights extends React.Component {
       return (
         <PointTotal
           onChange={this.onChangeTotalPoints.bind(this)}
-          totalPoints={this.state.totalPoints}
+          totalPoints={totalPoints}
           reset={() => this.setState({reset: true})}
         />
       )
@@ -93,7 +93,7 @@ class Weights extends React.Component {
   * Render the weights and weight form.
   */
   renderWeightsContent () {
-    const {viewOnly, weights, currentWeight} = this.state
+    const {viewOnly, weights, currentWeight, totalPoints} = this.state
     const {cl, disabled} = this.props
     return (
       <div>
@@ -114,39 +114,11 @@ class Weights extends React.Component {
             cl={cl}
             onSelectWeight={this.onSelectWeight.bind(this)}
             onDeleteWeight={this.onDeleteWeight.bind(this)}
+            totalPoints={totalPoints}
           />
         }
         {/*
-          <div id='class-weights-total'>
-            {this.renderTotalPercentage()}
-          </div>
         {!viewOnly && this.renderWeightsCheckbox()} */}
-      </div>
-    )
-  }
-
-  /*
-  * Render total percentage
-  *
-  */
-  renderTotalPercentage () {
-    const total = this.getTotalWeight()
-    const totalPoints = this.state.viewOnly ? total : `${total}/${this.state.totalPoints}`
-    const {cl} = this.props
-
-    return (
-      <div id='class-editor-weights-total' className='row'>
-        <div className='col-xs-9'>
-          <span>{!cl.is_points ? 'Total:' : 'Total points'}</span>
-        </div>
-        <div className='col-xs-3 right-text'>
-          <span>
-            {
-              !cl.is_points
-                ? `${total.toFixed(2)}%`
-                : totalPoints
-            }</span>
-        </div>
       </div>
     )
   }
