@@ -20,7 +20,6 @@ const ContentEnum = {
 
 @inject('rootStore') @observer
 class SyllabusTool extends React.Component {
-  
   constructor (props) {
     super(props)
     this.state = this.initializeState()
@@ -336,12 +335,7 @@ class SyllabusTool extends React.Component {
   }
 
   render () {
-    const {disableNext, loadingClass, currentIndex, gettingClass, submitting} = this.state
-
-    const disableButton = disableNext || gettingClass || submitting
-    const disabledClass = disableButton ? 'disabled' : ''
-    const completeClass = (currentIndex === ContentEnum.ASSIGNMENTS) ? 'cn-green-background' : ''
-
+    const {loadingClass} = this.state
     const {navbarStore} = this.props.rootStore
 
     if (loadingClass || navbarStore.cl == null) return <Loading />
@@ -359,14 +353,6 @@ class SyllabusTool extends React.Component {
             <div className='cn-section-footer'>
               <div>
                 {this.renderHavingIssues()}
-              </div>
-              <div className='horizontal-align-row margin-top margin-right margin-left middle-xs center-xs'>
-                <button
-                  className={`button col-xs-12 ${completeClass} ${disabledClass}`}
-                  style={{flex: '100 1 auto'}}
-                  disabled={disableButton}
-                  onClick={this.onNext.bind(this)}
-                >{this.renderButtonText()}</button>
               </div>
             </div>
           </div>
