@@ -115,7 +115,7 @@ class WeightForm extends React.Component {
           value={form.name}
         />
         <InputField
-          containerClassName='margin-top'
+          containerClassName='margin-top hide-spinner'
           error={formErrors.weight}
           label="Value"
           name="weight"
