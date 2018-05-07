@@ -5,6 +5,9 @@ import WeightConverter from '../../../../components/WeightConverter/index'
 import WeightForm from './WeightForm'
 import WeightType from './WeightType'
 import actions from '../../../../actions'
+import stores from '../../../../stores'
+
+const {navbarStore} = stores
 
 class Weights extends React.Component {
   constructor (props) {
@@ -16,7 +19,8 @@ class Weights extends React.Component {
   * Fetch the weights for a given class
   */
   componentWillMount () {
-    const {cl, disabled, isReview} = this.props
+    const {disabled, isReview} = this.props
+    const {cl} = navbarStore
     if (!disabled) {
       actions.weights.getClassWeights(cl).then((weights) => {
         // if in review, set
@@ -49,14 +53,14 @@ class Weights extends React.Component {
   * @return [Object]. State object.
   */
   initializeState () {
-    const {cl, isReview, weights} = this.props
+    const {isReview, weights} = this.props
     return {
       currentWeight: null,
-      isPoints: cl.is_points,
       noWeights: null,
       totalPoints: null,
       weights: weights || [],
-      viewOnly: isReview || false
+      viewOnly: isReview || false,
+      reset: false
     }
   }
 
@@ -65,27 +69,27 @@ class Weights extends React.Component {
   * Otherwise render the table
   */
   renderContent () {
-    const {cl} = this.props
-    const {isPoints, totalPoints, viewOnly, disabled} = this.state
-    if (!isPoints && !totalPoints && !viewOnly && !disabled) {
+    const {cl} = navbarStore
+    const {totalPoints, viewOnly, disabled, reset, weights} = this.state
+
+    if (((!cl.is_points && !totalPoints && weights.length === 0) || reset) && !viewOnly && !disabled) {
       // ask for weights or points
       return (
         <div style={{display: 'flex', flex: '1', flexDirection: 'column', justifyContent: 'space-evenly'}}>
           <WeightType
-            cl={cl}
+            isPoints={cl.is_points}
             onSubmit={this.onTypeSelection.bind(this)}
           />
         </div>
       )
-    } else if (isPoints && !totalPoints && !viewOnly && !disabled) {
+    } else if (cl.is_points && !totalPoints && !viewOnly && !disabled) {
       // ask for total points
       return (
         <div style={{display: 'flex', flex: '1', flexDirection: 'column', justifyContent: 'space-evenly'}}>
           <PointTotal
-            cl={cl}
             onChange={this.onChangeTotalPoints.bind(this)}
             totalPoints={this.state.totalPoints}
-            reset={() => this.setState({isPoints: false, totalPoints: null})}
+            reset={() => this.setState({reset: true})}
           />
         </div>
       )
@@ -143,6 +147,7 @@ class Weights extends React.Component {
     const {id, name, weight} = item
     const {currentWeight, viewOnly} = this.state
     const {disabled} = this.props
+    const {cl} = navbarStore
 
     const activeClass = (currentWeight && currentWeight.id) === id
       ? 'active' : ''
@@ -172,7 +177,7 @@ class Weights extends React.Component {
           <span>{name}</span>
         </div>
         <div className='col-xs-2 right-text'>
-          <span>{weight}{!this.state.isPoints ? '%' : ''}</span>
+          <span>{weight}{!cl.is_points ? '%' : ''}</span>
         </div>
       </div>
     )
@@ -182,9 +187,10 @@ class Weights extends React.Component {
   * Render weight form.
   */
   renderWeightForm () {
+    const {cl} = navbarStore
     return (
       <WeightForm
-        cl={this.props.cl}
+        cl={cl}
         onCreateWeight={this.onCreateWeight.bind(this)}
         onUpdateWeight={this.onUpdateWeight.bind(this)}
         weight={this.state.currentWeight}
@@ -199,16 +205,17 @@ class Weights extends React.Component {
   renderTotalPercentage () {
     const total = this.getTotalWeight()
     const totalPoints = this.state.viewOnly ? total : `${total}/${this.state.totalPoints}`
+    const {cl} = navbarStore
 
     return (
       <div id='class-editor-weights-total' className='row'>
         <div className='col-xs-9'>
-          <span>{!this.state.isPoints ? 'Total:' : 'Total points'}</span>
+          <span>{!cl.is_points ? 'Total:' : 'Total points'}</span>
         </div>
         <div className='col-xs-3 right-text'>
           <span>
             {
-              !this.state.isPoints
+              !cl.is_points
                 ? `${total.toFixed(2)}%`
                 : totalPoints
             }</span>
@@ -257,8 +264,9 @@ class Weights extends React.Component {
   * @return [Boolean]. Truth value if the total weight percentage is within range.
   */
   isTotalWeightSecure () {
+    const {cl} = navbarStore
     let totalWeight = this.getTotalWeight()
-    if (this.state.isPoints) {
+    if (cl.is_points) {
       if (!this.state.totalPoints) return false
       totalWeight = (totalWeight / this.state.totalPoints) * 100
     }
@@ -278,15 +286,15 @@ class Weights extends React.Component {
   * Toggle the weights from percentages to points or vice versa.
   */
   onTypeSelection (isPoints) {
-    const {cl} = this.props
+    const {cl} = navbarStore
 
     if (isPoints) {
-      actions.classes.updateClass({id: cl.id, is_points: isPoints}).then((cl) => {
-        this.setState({isPoints})
-      }).catch(() => false)
+      this.setState({reset: false})
     } else {
-      this.setState({totalPoints: 100})
+      this.setState({totalPoints: 100, reset: false})
     }
+    navbarStore.cl.is_points = isPoints
+    this.props.onUpdateClass({id: cl.id, is_points: isPoints})
   }
 
   /*
@@ -346,12 +354,12 @@ class Weights extends React.Component {
 }
 
 Weights.propTypes = {
-  cl: PropTypes.object,
   disabled: PropTypes.bool,
   disableNext: PropTypes.bool,
   isReview: PropTypes.bool,
   toggleDisabled: PropTypes.func,
-  weights: PropTypes.array
+  weights: PropTypes.array,
+  onUpdateClass: PropTypes.func
 }
 
 export default Weights

@@ -106,6 +106,12 @@ class SyllabusTool extends React.Component {
     }).catch(() => false)
   }
 
+  onUpdateClass (form) {
+    actions.classes.updateClass(form).then((cl) => {
+      navbarStore.cl = cl
+    }).catch(() => false)
+  }
+
   /*
   * Lock the class for DIY or SW.
   */
@@ -232,7 +238,12 @@ class SyllabusTool extends React.Component {
     const {isReviewer} = this.state
     switch (this.state.currentIndex) {
       case ContentEnum.WEIGHTS:
-        return <Weights cl={navbarStore.cl} isReview={isReviewer} disableNext={this.state.disableNext} toggleDisabled={this.toggleDisabled.bind(this)} />
+        return <Weights
+          isReview={isReviewer}
+          disableNext={this.state.disableNext}
+          toggleDisabled={this.toggleDisabled.bind(this)}
+          onUpdateClass={this.onUpdateClass.bind(this)}
+        />
       case ContentEnum.ASSIGNMENTS:
         return <Assignments cl={navbarStore.cl} isReview={isReviewer} />
       default:

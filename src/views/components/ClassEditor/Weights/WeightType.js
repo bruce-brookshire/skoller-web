@@ -7,7 +7,7 @@ class WeightType extends React.Component {
     super(props)
 
     this.state = {
-      isPoints: false
+      isPoints: this.props.isPoints || false
     }
   }
 
@@ -47,6 +47,7 @@ class WeightType extends React.Component {
 }
 
 WeightType.propTypes = {
+  isPoints: PropTypes.bool,
   onSubmit: PropTypes.func
 }
 

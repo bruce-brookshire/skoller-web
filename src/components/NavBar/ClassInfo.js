@@ -12,8 +12,7 @@ class ClassInfo extends React.Component {
           <i className='fa fa-wrench cn-red cursor' onClick={() => this.props.toggleWrench()} />
         </div>
       )
-    }
-    else if (isAdmin && is_editable) {
+    } else if (isAdmin && is_editable) {
       return (
         <div className='margin-left'>
           <i className='fa fa-wrench cn-grey cursor' onClick={() => this.props.toggleWrench()} />
@@ -30,8 +29,7 @@ class ClassInfo extends React.Component {
           <i className='fa fa-comment-o cn-grey cursor' onClick={() => this.props.toggleChat()} />
         </div>
       )
-    }
-    else if (isAdmin && is_chat_enabled) {
+    } else if (isAdmin && is_chat_enabled) {
       return (
         <div className='margin-left'>
           <i className='fa fa-comment cn-blue cursor' onClick={() => this.props.toggleChat()} />
@@ -45,7 +43,7 @@ class ClassInfo extends React.Component {
     const studentRequests = cl.student_requests.filter(c => !c.is_completed)
     const changeRequests = cl.change_requests.filter(c => !c.is_completed)
     const allRequests = studentRequests.concat(changeRequests)
-    const needsChange = allRequests.length > 0 && (cl.status.name == 'Complete' || cl.status.name == 'Change')
+    const needsChange = allRequests.length > 0 && (cl.status.name === 'Complete' || cl.status.name === 'Change')
     if (needsChange) {
       return (
         <div className='issue-icon-container' onClick={() => this.props.toggleRequestResolved()}>
@@ -64,7 +62,7 @@ class ClassInfo extends React.Component {
     const studentRequests = cl.student_requests.filter(h => !h.is_completed)
     const helpRequests = cl.help_requests.filter(h => !h.is_completed)
     const allRequests = studentRequests.concat(helpRequests)
-    const needsHelp = allRequests.length > 0 && cl.status.name != 'Complete' && cl.status.name != 'Change'
+    const needsHelp = allRequests.length > 0 && cl.status.name !== 'Complete' && cl.status.name !== 'Change'
     if (needsHelp && !isDIY) {
       return (
         <div className='issue-icon-container' onClick={() => this.props.toggleHelpResolved()}>
@@ -97,14 +95,14 @@ class ClassInfo extends React.Component {
 
   render () {
     return (
-        <div className='header-container'>
-          <div className='header'>
-            {this.renderChangeRequest()}
-            {this.renderHelpRequest()}
-            <h2>{this.props.cl && this.props.cl.name}</h2>
-            {this.props.isAdmin && <div className='margin-left'>
-              <i className='fa fa-pencil cn-blue cursor' onClick={() => this.props.onEdit()} />
-            </div>}
+      <div className='header-container'>
+        <div className='header'>
+          {this.renderChangeRequest()}
+          {this.renderHelpRequest()}
+          <h2>{this.props.cl && this.props.cl.name}</h2>
+          {this.props.isAdmin && <div className='margin-left'>
+            <i className='fa fa-pencil cn-blue cursor' onClick={() => this.props.onEdit()} />
+          </div>}
           {this.renderWrench()}
           {this.renderChatEnabled()}
         </div>
