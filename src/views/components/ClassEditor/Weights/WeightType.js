@@ -39,7 +39,7 @@ class WeightType extends React.Component {
           className='margin-top button full-width'
           onClick={() => this.props.onSubmit(this.state.isPoints)}
         >
-        Next Step
+          Next Step
         </button>
       </div>
     )

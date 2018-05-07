@@ -38,19 +38,17 @@ class PointTotal extends React.Component {
         <div className='cn-section-content-header'>
           How many total points are available for this class?
         </div>
-        <div>
-          <InputField
-            containerClassName='margin-top'
-            error={formErrors.pointTotal}
-            name="pointTotal"
-            onChange={updateProperty}
-            placeholder="Points"
-            type="number"
-            value={form.pointTotal}
-            min={0}
-          />
-          <button className='button full-width margin-top margin-bottom' onClick={this.onSubmit.bind(this)}>Next step</button>
-        </div>
+        <InputField
+          containerClassName='margin-top'
+          error={formErrors.pointTotal}
+          name="pointTotal"
+          onChange={updateProperty}
+          placeholder="Points"
+          type="number"
+          value={form.pointTotal}
+          min={0}
+        />
+        <button className='button full-width margin-top margin-bottom' onClick={this.onSubmit.bind(this)}>Next step</button>
         <div>
           <a onClick={() => this.props.reset()}>Go back</a>
         </div>

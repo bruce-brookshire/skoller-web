@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import PointTotal from './PointTotal'
-import WeightConverter from '../../../../components/WeightConverter/index'
 import WeightForm from './WeightForm'
 import WeightType from './WeightType'
 import actions from '../../../../actions'
@@ -34,8 +33,7 @@ class Weights extends React.Component {
     if (this.props.toggleDisabled && !this.state.viewOnly) {
       let {disableNext} = this.props
       if (!disableNext && this.state.noWeights) {
-      }
-      else if (!this.isTotalWeightSecure() && !disableNext) {
+      } else if (!this.isTotalWeightSecure() && !disableNext) {
         this.props.toggleDisabled(true)
       } else if (this.isTotalWeightSecure() && disableNext) {
         this.props.toggleDisabled(false)
@@ -349,7 +347,8 @@ Weights.propTypes = {
   isReview: PropTypes.bool,
   toggleDisabled: PropTypes.func,
   weights: PropTypes.array,
-  onUpdateClass: PropTypes.func
+  onUpdateClass: PropTypes.func,
+  cl: PropTypes.object
 }
 
 export default Weights
