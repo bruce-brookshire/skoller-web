@@ -3,15 +3,13 @@ import PropTypes from 'prop-types'
 import {browserHistory} from 'react-router'
 import Loading from '../../components/Loading'
 import actions from '../../actions'
-import stores from '../../stores'
 import Weights from '../components/ClassEditor/Weights'
 import Assignments from '../components/ClassEditor/Assignments'
 import {ProgressBar, ProgressStep} from '../../components/ProgressBar'
 import FileViewer from '../../components/FileViewer'
 import IssuesModal from './IssuesModal'
 import {FileTabs, FileTab} from '../../components/FileTab'
-
-const {navbarStore} = stores
+import {inject, observer} from 'mobx-react'
 
 const steps = [ 'Weights', 'Assignments', 'Review' ]
 
@@ -20,7 +18,9 @@ const ContentEnum = {
   ASSIGNMENTS: 1
 }
 
+@inject('rootStore') @observer
 class SyllabusTool extends React.Component {
+  
   constructor (props) {
     super(props)
     this.state = this.initializeState()
@@ -38,6 +38,7 @@ class SyllabusTool extends React.Component {
   * Unlock the class on component will mount
   */
   componentWillUnmount () {
+    let {navbarStore} = this.props.rootStore
     navbarStore.cl = null
     navbarStore.isDIY = false
     this.unlockClass()
@@ -59,6 +60,7 @@ class SyllabusTool extends React.Component {
   initializeState () {
     const {state} = this.props.location
     const currentIndex = this.initializeCurrentIndex()
+    let {navbarStore} = this.props.rootStore
     navbarStore.cl = null
     navbarStore.isDIY = state.isDIY || false
     return {
@@ -89,6 +91,7 @@ class SyllabusTool extends React.Component {
   */
   getClass () {
     const {params: {classId}} = this.props
+    let {navbarStore} = this.props.rootStore
     actions.classes.getClassById(classId).then((cl) => {
       navbarStore.cl = cl
       this.setState({loadingClass: false})
@@ -107,6 +110,7 @@ class SyllabusTool extends React.Component {
   }
 
   onUpdateClass (form) {
+    let {navbarStore} = this.props.rootStore
     actions.classes.updateClass(form).then((cl) => {
       navbarStore.cl = cl
     }).catch(() => false)
@@ -116,6 +120,7 @@ class SyllabusTool extends React.Component {
   * Lock the class for DIY or SW.
   */
   lockClass () {
+    const {navbarStore} = this.props.rootStore
     const {params: {classId}} = this.props
     const form = {is_class: true}
     actions.classes.lockClass(classId, form).then(() => {
@@ -235,10 +240,12 @@ class SyllabusTool extends React.Component {
   * Render the syllabus section content.
   */
   renderContent () {
+    const {navbarStore} = this.props.rootStore
     const {isReviewer} = this.state
     switch (this.state.currentIndex) {
       case ContentEnum.WEIGHTS:
         return <Weights
+          cl={navbarStore.cl}
           isReview={isReviewer}
           disableNext={this.state.disableNext}
           toggleDisabled={this.toggleDisabled.bind(this)}
@@ -291,6 +298,7 @@ class SyllabusTool extends React.Component {
   * Render the having issues modal.
   */
   renderIssuesModal () {
+    const {navbarStore} = this.props.rootStore
     return (
       <IssuesModal
         cl={navbarStore.cl}
@@ -323,6 +331,7 @@ class SyllabusTool extends React.Component {
   * @param [Object]. The class to update with
   */
   updateClass (cl) {
+    let {navbarStore} = this.props.rootStore
     navbarStore.cl = cl
   }
 
@@ -332,6 +341,8 @@ class SyllabusTool extends React.Component {
     const disableButton = disableNext || gettingClass || submitting
     const disabledClass = disableButton ? 'disabled' : ''
     const completeClass = (currentIndex === ContentEnum.ASSIGNMENTS) ? 'cn-green-background' : ''
+
+    const {navbarStore} = this.props.rootStore
 
     if (loadingClass || navbarStore.cl == null) return <Loading />
     return (
@@ -375,7 +386,8 @@ class SyllabusTool extends React.Component {
 
 SyllabusTool.propTypes = {
   location: PropTypes.object,
-  params: PropTypes.object
+  params: PropTypes.object,
+  rootStore: PropTypes.object
 }
 
 export default SyllabusTool
