@@ -21,9 +21,6 @@ import Weights from '../components/ClassEditor/Weights'
 import {FileTabs, FileTab} from '../../components/FileTab'
 import {ProgressBar, ProgressStep} from '../../components/ProgressBar'
 import actions from '../../actions'
-import stores from '../../stores'
-
-const {navbarStore} = stores
 
 const steps = [ 'Weights Intro', 'Input Weights', 'Assignments Intro', 'Input Assignments' ]
 
@@ -39,6 +36,7 @@ const ContentEnum = {
 class SyllabusTool extends React.Component {
   constructor (props) {
     super(props)
+    let {navbarStore} = this.props.rootStore
     navbarStore.toggleEditCl = this.toggleEditClassModal.bind(this)
     navbarStore.toggleWrench = this.toggleWrench.bind(this)
     navbarStore.toggleChat = this.toggleChat.bind(this)
@@ -60,6 +58,7 @@ class SyllabusTool extends React.Component {
   * Unlock the class on component will mount
   */
   componentWillUnmount () {
+    let {navbarStore} = this.props.rootStore
     navbarStore.cl = null
     navbarStore.isDIY = false
     navbarStore.toggleEditCl = null
@@ -75,6 +74,7 @@ class SyllabusTool extends React.Component {
   * Deletes the provided document and removes it from the documents array in state
   */
   deleteDocument (doc, idx) {
+    let {navbarStore} = this.props.rootStore
     actions.documents.deleteClassDocument(navbarStore.cl, doc).then(() => {
       let newDocs = this.state.documents
       newDocs.splice(idx, 1)
@@ -107,6 +107,7 @@ class SyllabusTool extends React.Component {
   initializeState () {
     const {state} = this.props.location
     const currentIndex = this.initializeCurrentIndex()
+    let {navbarStore} = this.props.rootStore
     navbarStore.cl = null
     navbarStore.isDIY = state.isDIY || false
     return {
@@ -163,6 +164,7 @@ class SyllabusTool extends React.Component {
   * Determine if class is in "Change Request" status
   */
   isChangeRequest () {
+    let {navbarStore} = this.props.rootStore
     return navbarStore.cl && navbarStore.cl.status && navbarStore.cl.status.name === 'Change'
   }
 
@@ -170,6 +172,7 @@ class SyllabusTool extends React.Component {
   * Determine if class is in "Help" status
   */
   isHelpNeeded () {
+    let {navbarStore} = this.props.rootStore
     return navbarStore.cl && navbarStore.cl.status && navbarStore.cl.status.name === 'Help'
   }
 
@@ -177,6 +180,7 @@ class SyllabusTool extends React.Component {
   * Fetch the class by id.
   */
   getClass () {
+    let {navbarStore} = this.props.rootStore
     const {params: {classId}} = this.props
     actions.classes.getClassById(classId).then((cl) => {
       navbarStore.cl = cl
@@ -206,6 +210,7 @@ class SyllabusTool extends React.Component {
   * Lock the class for DIY or admin who are not working as SW.
   */
   lockClass () {
+    let {navbarStore} = this.props.rootStore
     if (navbarStore.isDIY || (this.state.isAdmin && !this.state.isSW)) {
       const {params: {classId}} = this.props
       const form = {is_class: true}
@@ -222,6 +227,7 @@ class SyllabusTool extends React.Component {
   * Unlock the the class when not complete.
   */
   unlockClass () {
+    let {navbarStore} = this.props.rootStore
     const {params: {classId}} = this.props
     const form = (navbarStore.isDIY || (this.state.isAdmin && !this.state.isSW))
       ? {is_class: true} : {class_lock_section_id: this.state.sectionId}
@@ -263,6 +269,7 @@ class SyllabusTool extends React.Component {
   * @param [Object]. The class to update with
   */
   updateClass (cl) {
+    let {navbarStore} = this.props.rootStore
     navbarStore.cl = cl
   }
 
@@ -270,6 +277,7 @@ class SyllabusTool extends React.Component {
   * Render the controls for the syllabi worker or admin.
   */
   renderSWControls () {
+    let {navbarStore} = this.props.rootStore
     const {cl} = navbarStore
     if (!navbarStore.isDIY && cl) {
       return (
@@ -282,6 +290,7 @@ class SyllabusTool extends React.Component {
   * Render the syllabus section content.
   */
   renderContent () {
+    let {navbarStore} = this.props.rootStore
     const {isReviewer} = this.state
     switch (this.state.currentIndex) {
       case ContentEnum.PROFESSOR:
@@ -330,6 +339,7 @@ class SyllabusTool extends React.Component {
   * Gets array of all student requests yet to be completed
   */
   openStudentRequests () {
+    let {navbarStore} = this.props.rootStore
     const sr = navbarStore.cl.student_requests.filter(c => !c.is_completed)
     const cr = navbarStore.cl.change_requests.filter(c => !c.is_completed)
     return sr.concat(cr)
@@ -339,6 +349,7 @@ class SyllabusTool extends React.Component {
   * Gets array of all new doc ids
   */
   allNewDocs () {
+    let {navbarStore} = this.props.rootStore
     if (navbarStore.cl && navbarStore.cl.student_requests && navbarStore.cl.student_requests.length > 0) {
       let sr = this.openStudentRequests()
       let arr = []
@@ -415,6 +426,7 @@ class SyllabusTool extends React.Component {
   * Render the progress bar for DIY.
   */
   renderProgressBar () {
+    let {navbarStore} = this.props.rootStore
     if (navbarStore.isDIY) {
       return (
         <div className='margin-bottom'>
@@ -432,6 +444,7 @@ class SyllabusTool extends React.Component {
   * Render the back button to tab between syllabus sections
   */
   renderBackButton () {
+    let {navbarStore} = this.props.rootStore
     const {currentIndex} = this.state
 
     if (currentIndex > ContentEnum.WEIGHTS && navbarStore.isDIY) {
@@ -462,6 +475,7 @@ class SyllabusTool extends React.Component {
   * Render the enrollment count for admin.
   */
   renderEnrollment () {
+    let {navbarStore} = this.props.rootStore
     const {isAdmin} = this.state
     const {cl} = navbarStore
     if (isAdmin && cl) {
@@ -490,6 +504,7 @@ class SyllabusTool extends React.Component {
   * Render the all documents deleted modal.
   */
   renderDocumentsDeletedModal () {
+    let {navbarStore} = this.props.rootStore
     return (
       <DocumentsDeletedModal
         cl={navbarStore.cl}
@@ -509,6 +524,7 @@ class SyllabusTool extends React.Component {
   * Render the having issues modal.
   */
   renderIssuesModal () {
+    let {navbarStore} = this.props.rootStore
     return (
       <IssuesModal
         cl={navbarStore.cl}
@@ -526,6 +542,7 @@ class SyllabusTool extends React.Component {
   * Render the issues resolved modal.
   */
   renderRequestResolvedModal () {
+    let {navbarStore} = this.props.rootStore
     let openRequests = this.openStudentRequests()
     return (
       <RequestResolvedModal
@@ -544,6 +561,7 @@ class SyllabusTool extends React.Component {
   * Render the help needed info
   */
   renderHelpResolvedModal () {
+    let {navbarStore} = this.props.rootStore
     return (
       <HelpResolvedModal
         cl={navbarStore.cl}
@@ -560,6 +578,7 @@ class SyllabusTool extends React.Component {
   * Render the editclass modal.
   */
   renderEditClassModal () {
+    let {navbarStore} = this.props.rootStore
     return (
       <Modal
         open={this.state.openEditClassModal}
@@ -578,6 +597,7 @@ class SyllabusTool extends React.Component {
   * Render the status form of the class for the admin to update.
   */
   renderStatusForm () {
+    let {navbarStore} = this.props.rootStore
     if (this.state.isAdmin && !this.state.isSW && !this.isChangeRequest()) {
       return (
         <div className='cn-status-form'>
@@ -591,6 +611,7 @@ class SyllabusTool extends React.Component {
   * Render the button text dependent on worker.
   */
   renderButtonText () {
+    let {navbarStore} = this.props.rootStore
     const {isReviewer, isAdmin, isSW, isChangeReq, isHelpReq} = this.state
     let text = ''
     if ((isReviewer || navbarStore.isDIY) && this.state.currentIndex === ContentEnum.ASSIGNMENTS) text = 'Everything looks good. Submit info and continue'
@@ -603,6 +624,7 @@ class SyllabusTool extends React.Component {
   * Render the student request info
   */
   renderStudentRequest () {
+    let {navbarStore} = this.props.rootStore
     if ((this.state.isAdmin || this.state.isSW) && this.isChangeRequest()) {
       return (
         <div className='cn-status-form'>
@@ -616,6 +638,7 @@ class SyllabusTool extends React.Component {
   * Render the help needed info
   */
   renderHelpNeeded () {
+    let {navbarStore} = this.props.rootStore
     if ((this.state.isAdmin || this.state.isSW) && this.isHelpNeeded()) {
       return (
         <div className='cn-status-form'>
@@ -629,6 +652,7 @@ class SyllabusTool extends React.Component {
   * On syllabus section done.
   */
   onNext () {
+    let {navbarStore} = this.props.rootStore
     const {isReviewer, isAdmin, isSW} = this.state
 
     if (navbarStore.isDIY) {
@@ -649,6 +673,7 @@ class SyllabusTool extends React.Component {
   * If DIY is done, complete class.
   */
   handleDIYNext () {
+    let {navbarStore} = this.props.rootStore
     if (this.state.sectionId === 100) {
       browserHistory.push(`/class/${navbarStore.cl.id}/syllabus_tool/tutorial/assignments`)
     } else {
@@ -727,6 +752,7 @@ class SyllabusTool extends React.Component {
   }
 
   toggleChat () {
+    let {navbarStore} = this.props.rootStore
     const {cl} = navbarStore
     actions.classes.updateClass({id: cl.id, is_chat_enabled: !cl.is_chat_enabled}).then((cl) => {
       navbarStore.cl = cl
@@ -734,6 +760,7 @@ class SyllabusTool extends React.Component {
   }
 
   toggleWrench () {
+    let {navbarStore} = this.props.rootStore
     const {cl} = navbarStore
     actions.classes.updateClass({id: cl.id, is_editable: !cl.is_editable}).then((cl) => {
       navbarStore.cl = cl
@@ -788,6 +815,7 @@ class SyllabusTool extends React.Component {
   render () {
     const {disableNext, loadingClass,
       isReviewer, currentIndex, gettingClass, submitting} = this.state
+    let {navbarStore} = this.props.rootStore
 
     const disableButton = disableNext || gettingClass || submitting
     const disabledClass = disableButton ? 'disabled' : ''

@@ -5,7 +5,6 @@ import Modal from '../../components/Modal'
 import {CheckboxField} from '../../components/Form'
 import {browserHistory} from 'react-router'
 import actions from '../../actions'
-import stores from '../../stores'
 
 @inject('rootStore') @observer
 class HelpResolvedModal extends React.Component {
@@ -35,7 +34,7 @@ class HelpResolvedModal extends React.Component {
   }
 
   isSW () {
-    const {userStore} = stores
+    const {userStore} = this.props.rootStore
     return userStore.isSW()
   }
 
@@ -212,7 +211,8 @@ HelpResolvedModal.propTypes = {
   cl: PropTypes.object.isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  open: PropTypes.bool
+  open: PropTypes.bool,
+  rootStore: PropTypes.object
 }
 
 export default HelpResolvedModal
