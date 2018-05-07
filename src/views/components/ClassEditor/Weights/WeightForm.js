@@ -26,6 +26,8 @@ class WeightForm extends React.Component {
   componentWillReceiveProps (nextProps) {
     if (nextProps.weight && this.state.form.id !== nextProps.weight.id) {
       this.setState({form: this.initializeFormData(nextProps.weight)})
+    } else {
+      this.setState({form: this.initializeFormData()})
     }
   }
 
@@ -129,7 +131,7 @@ class WeightForm extends React.Component {
           disabled={this.state.loading}
           onClick={this.onSubmit.bind(this)}
         >
-          Submit category weight
+          Add weight
           {this.state.loading ? <Loading /> : null}
         </button>
       </div>
