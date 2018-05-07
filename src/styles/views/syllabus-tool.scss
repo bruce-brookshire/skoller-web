@@ -34,10 +34,15 @@
           display: flex;
           align-items: center;
         }
-        .cn-section-control {
+        .cn-section-content {
           background-color: #e8f3fd;
           overflow-y: scroll;
           padding: 1em;
+
+          .cn-section-content-header {
+            font-size: 24px;
+            font-weight: 600;
+          }
         }
         @include breakpoint(medium) {
           flex: 1;
@@ -74,7 +79,7 @@
           align-items: center;
         }
         
-        .cn-section-control {
+        .cn-section-content {
           height: 300px;
           flex: 1;
         }
@@ -87,7 +92,7 @@
         }
       }
 
-      .cn-section-control {
+      .cn-section-content {
         border-radius: 10px;
         border: 2px solid #a9a9a9;
         display: flex;

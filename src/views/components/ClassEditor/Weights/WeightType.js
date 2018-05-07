@@ -14,7 +14,7 @@ class WeightType extends React.Component {
   render () {
     return (
       <div className='cn-weight-type'>
-        <div className='cn-weight-type-header'>
+        <div className='cn-section-content-header'>
           Is this class based on points or percentages?
         </div>
         <CheckboxField

@@ -353,7 +353,7 @@ class SyllabusTool extends React.Component {
             <div className='cn-section-header'>
               {this.renderBackButton()}
             </div>
-            <div className='cn-section-control'>
+            <div className='cn-section-content'>
               {this.renderContent()}
             </div>
             <div className='cn-section-footer'>
@@ -373,7 +373,7 @@ class SyllabusTool extends React.Component {
 
           <div className='cn-section-container cn-file-panel'>
             {this.renderDocumentTabs()}
-            <div className='cn-section-control'>
+            <div className='cn-section-content'>
               {this.state.currentDocument && <FileViewer source={this.state.currentDocument} /> }
             </div>
           </div>

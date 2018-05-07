@@ -35,7 +35,7 @@ class PointTotal extends React.Component {
     const {formErrors, updateProperty} = this.props
     return (
       <div className='cn-point-total'>
-        <div className='cn-point-total-header'>
+        <div className='cn-section-content-header'>
           How many total points are available for this class?
         </div>
         <div>

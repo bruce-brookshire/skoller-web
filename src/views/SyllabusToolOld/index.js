@@ -835,7 +835,7 @@ class SyllabusTool extends React.Component {
               {this.renderSkipButton()}
               {this.tagWorker()}
             </div>
-            <div className='cn-section-control'>
+            <div className='cn-section-content'>
               {this.renderContent()}
             </div>
             {this.renderSectionTabs()}
@@ -863,7 +863,7 @@ class SyllabusTool extends React.Component {
             <div className='cn-section-header'>
               {this.tagUploader()}
             </div>
-            <div className='cn-section-control'>
+            <div className='cn-section-content'>
               {this.state.currentDocument && <FileViewer source={this.state.currentDocument} /> }
             </div>
             {this.renderDocumentTabs()}

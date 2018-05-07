@@ -97,43 +97,47 @@ class WeightForm extends React.Component {
     const {formErrors, updateProperty} = this.props
 
     return (
-      <div>
-        <h5 style={{marginTop: '0.25em', marginBottom: '0.5em'}}>Edit weights</h5>
-        <div id='class-editor-weight-form' className='margin-top'>
-          <div className='row'>
-            <div className='col-xs-8'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.name}
-                label="Category name"
-                name="name"
-                onChange={updateProperty}
-                placeholder="Weight Category, i.e. Exams"
-                value={form.name}
-              />
-            </div>
-            <div className='col-xs-4'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.weight}
-                label="Weight"
-                name="weight"
-                onChange={updateProperty}
-                placeholder="Weight"
-                type="number"
-                value={form.weight}
-              />
-            </div>
-          </div>
-          <button
-            className='button full-width margin-top'
-            disabled={this.state.loading}
-            onClick={this.onSubmit.bind(this)}
-          >
-            Submit category weight
-            {this.state.loading ? <Loading style={{color: 'white', marginLeft: '0.5em'}} /> : null}
-          </button>
+      <div id='cn-weight-form'>
+        <div className='cn-section-content-header'>
+          Add weights for this class
         </div>
+        <div className='cn-weight-form-instructions'>
+          A weight is a category of assignments with a specific value.
+          For example: Exams are worth 25%, Quizzes are worth 15%, etc.
+        </div>
+        <div className='row'>
+          <div className='col-xs-8'>
+            <InputField
+              containerClassName='margin-top'
+              error={formErrors.name}
+              label="Category name"
+              name="name"
+              onChange={updateProperty}
+              placeholder="Weight Category, i.e. Exams"
+              value={form.name}
+            />
+          </div>
+          <div className='col-xs-4'>
+            <InputField
+              containerClassName='margin-top'
+              error={formErrors.weight}
+              label="Weight"
+              name="weight"
+              onChange={updateProperty}
+              placeholder="Weight"
+              type="number"
+              value={form.weight}
+            />
+          </div>
+        </div>
+        <button
+          className='button full-width margin-top'
+          disabled={this.state.loading}
+          onClick={this.onSubmit.bind(this)}
+        >
+          Submit category weight
+          {this.state.loading ? <Loading /> : null}
+        </button>
       </div>
     )
   }

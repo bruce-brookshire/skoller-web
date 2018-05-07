@@ -96,7 +96,8 @@ class Weights extends React.Component {
   renderWeightsContent () {
     const {viewOnly} = this.state
     return (
-      <div style={{display: 'flex', flex: '1', flexDirection: 'column'}}>
+      <div>
+        {!viewOnly && this.renderWeightForm()}
         <div className={`class-editor-table ${viewOnly ? 'view-only' : ''}`}>
           <div id='class-editor-weights-table' className='' ref={(field) => { this.sectionControl = field }}>
             {this.renderWeights()}
@@ -106,7 +107,6 @@ class Weights extends React.Component {
           </div>
         </div>
         {!viewOnly && this.renderWeightsCheckbox()}
-        {!viewOnly && this.renderWeightForm()}
       </div>
     )
   }
