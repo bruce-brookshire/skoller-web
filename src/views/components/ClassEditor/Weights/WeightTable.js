@@ -73,9 +73,14 @@ class WeightTable extends React.Component {
     const {viewOnly} = this.props
 
     return (
-      <div className={`class-editor-table ${viewOnly ? 'view-only' : ''}`}>
-        <div id='class-editor-weights-table' className='' ref={(field) => { this.sectionControl = field }}>
-          {this.renderWeights()}
+      <div id='cn-weight-table'>
+        <div id='cn-weight-table-label'>
+          Saved weights
+        </div>
+        <div className={`class-editor-table ${viewOnly ? 'view-only' : ''}`}>
+          <div id='class-editor-weights-table' className='' ref={(field) => { this.sectionControl = field }}>
+            {this.renderWeights()}
+          </div>
         </div>
       </div>
     )
