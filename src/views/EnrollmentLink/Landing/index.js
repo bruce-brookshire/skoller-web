@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import actions from '../../../actions'
 import LandingNav from '../../components/LandingNav'
 import {browserHistory} from 'react-router'
+import {inject, observer} from 'mobx-react'
 
 const cookie = new Cookies()
 
