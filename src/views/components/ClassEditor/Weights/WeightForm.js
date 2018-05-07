@@ -67,8 +67,13 @@ class WeightForm extends React.Component {
   *
   */
   onSubmit () {
-    if (this.props.validateForm(this.state.form, requiredFields)) {
-      !this.state.form.id ? this.onCreateWeight() : this.onUpdateWeight()
+    const {form} = this.state
+    const {weight} = this.props
+
+    if (this.props.validateForm(form, requiredFields)) {
+      form.id && (weight && (form.name === weight.name || form.weight === weight.weight))
+        ? this.onUpdateWeight()
+        : this.onCreateWeight()
     }
   }
 
