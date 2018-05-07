@@ -34,25 +34,25 @@ class PointTotal extends React.Component {
     const {form} = this.state
     const {formErrors, updateProperty} = this.props
     return (
-      <div>
-        <div className='row'>
-          <a onClick={() => this.props.reset()}>Go back</a>
+      <div className='cn-point-total'>
+        <div className='cn-point-total-header'>
+          How many total points are available for this class?
         </div>
-        <div className='row'>
-          <span style={{margin: '0 auto'}}>Enter the total number of points for the class.</span>
-          <div className='col-xs-6' style={{margin: '0 auto'}}>
-            <InputField
-              containerClassName='margin-top'
-              error={formErrors.pointTotal}
-              label="Total points"
-              name="pointTotal"
-              onChange={updateProperty}
-              placeholder="Total points"
-              type="number"
-              value={form.pointTotal}
-            />
-            <button className='button full-width margin-top margin-bottom' onClick={this.onSubmit.bind(this)}>OK</button>
-          </div>
+        <div>
+          <InputField
+            containerClassName='margin-top'
+            error={formErrors.pointTotal}
+            name="pointTotal"
+            onChange={updateProperty}
+            placeholder="Points"
+            type="number"
+            value={form.pointTotal}
+            min={0}
+          />
+          <button className='button full-width margin-top margin-bottom' onClick={this.onSubmit.bind(this)}>Next step</button>
+        </div>
+        <div>
+          <a onClick={() => this.props.reset()}>Go back</a>
         </div>
       </div>
     )

@@ -71,23 +71,19 @@ class Weights extends React.Component {
     if (((!cl.is_points && !totalPoints && weights.length === 0) || reset) && !viewOnly && !disabled) {
       // ask for weights or points
       return (
-        <div style={{display: 'flex', flex: '1', flexDirection: 'column', justifyContent: 'space-evenly'}}>
-          <WeightType
-            isPoints={cl.is_points}
-            onSubmit={this.onTypeSelection.bind(this)}
-          />
-        </div>
+        <WeightType
+          isPoints={cl.is_points}
+          onSubmit={this.onTypeSelection.bind(this)}
+        />
       )
     } else if (cl.is_points && !totalPoints && !viewOnly && !disabled) {
       // ask for total points
       return (
-        <div style={{display: 'flex', flex: '1', flexDirection: 'column', justifyContent: 'space-evenly'}}>
-          <PointTotal
-            onChange={this.onChangeTotalPoints.bind(this)}
-            totalPoints={this.state.totalPoints}
-            reset={() => this.setState({reset: true})}
-          />
-        </div>
+        <PointTotal
+          onChange={this.onChangeTotalPoints.bind(this)}
+          totalPoints={this.state.totalPoints}
+          reset={() => this.setState({reset: true})}
+        />
       )
     } else {
       return this.renderWeightsContent()
@@ -339,8 +335,8 @@ class Weights extends React.Component {
     const {viewOnly} = this.state
 
     return (
-      <div style={{display: 'flex', flex: '1', flexDirection: 'column'}}>
-        {viewOnly && <a className='right-text' style={{marginBottom: '5px'}} onClick={() => this.setState({viewOnly: false}) }>edit</a>}
+      <div>
+        {viewOnly && <a className='right-text' onClick={() => this.setState({viewOnly: false}) }>edit</a>}
         {this.renderContent()}
       </div>
     )
