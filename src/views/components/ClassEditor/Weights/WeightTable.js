@@ -22,7 +22,7 @@ class WeightTable extends React.Component {
 
     return (
       <div
-        className={`row table-row ${activeClass}`}
+        className={`table-row ${activeClass}`}
         key={`weight-${index}`}
         onClick={() => {
           if (viewOnly || disabled) return
@@ -56,11 +56,6 @@ class WeightTable extends React.Component {
   */
   renderWeights () {
     const {weights} = this.props
-    if (weights.length === 0) {
-      return <div className='center-text margin-top'>
-        <span>There are currently no weights for this class.</span>
-      </div>
-    }
     // sort weights by created at
     return weights.sort((a, b) => {
       return a.inserted_at > b.inserted_at

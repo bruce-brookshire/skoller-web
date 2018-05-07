@@ -187,5 +187,56 @@
     }
   }
 
+  .class-editor-table {
+    background-color: $cn-color-white;
+    border: 1px solid $cn-color-grey;
+    border-radius: $cn-border-radius;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   
+    &.view-only {
+      height: 100%;
+      .table-row {
+        cursor: auto;
+        &:hover {
+          background-color: $cn-color-white;
+        }
+      }
+  
+    }
+  
+    .table-row {
+      cursor: pointer;
+      padding: 0.5em;
+      font-size: 12px;
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      .bold {
+        font-weight: 600;
+      }
+      &:hover {
+        background-color: darken($cn-color-white, 10%);
+      }
+  
+      &.active {
+        background-color: #b0d3fb;
+      }
+    }
+  
+    #class-weights-total {
+      border-top: 2px solid #a0a0a0;
+      padding: 0.5em;
+    }
+  
+    #class-editor-assignments-table {
+      overflow-y: scroll;
+  
+      .desctiption {
+        font-size: 10px;
+        font-weight: 400;
+      }
+    }
+  }  
 }
