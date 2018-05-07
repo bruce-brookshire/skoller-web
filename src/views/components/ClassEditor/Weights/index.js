@@ -219,7 +219,7 @@ class Weights extends React.Component {
   renderWeightsCheckbox () {
     if (this.state.weights.length === 0) {
       return (
-        <label style={{marginTop: '2px'}}>
+        <label>
           <input
             onChange={(event) => {
               this.props.toggleDisabled(!event.target.checked)

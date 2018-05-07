@@ -101,35 +101,29 @@ class WeightForm extends React.Component {
         <div className='cn-section-content-header'>
           Add weights for this class
         </div>
-        <div className='cn-weight-form-instructions'>
+        <div id='cn-weight-form-instructions'>
           A weight is a category of assignments with a specific value.
           For example: Exams are worth 25%, Quizzes are worth 15%, etc.
         </div>
-        <div className='row'>
-          <div className='col-xs-8'>
-            <InputField
-              containerClassName='margin-top'
-              error={formErrors.name}
-              label="Category name"
-              name="name"
-              onChange={updateProperty}
-              placeholder="Weight Category, i.e. Exams"
-              value={form.name}
-            />
-          </div>
-          <div className='col-xs-4'>
-            <InputField
-              containerClassName='margin-top'
-              error={formErrors.weight}
-              label="Weight"
-              name="weight"
-              onChange={updateProperty}
-              placeholder="Weight"
-              type="number"
-              value={form.weight}
-            />
-          </div>
-        </div>
+        <InputField
+          containerClassName='margin-top'
+          error={formErrors.name}
+          label="Weight name"
+          name="name"
+          onChange={updateProperty}
+          placeholder="e.g. Exams"
+          value={form.name}
+        />
+        <InputField
+          containerClassName='margin-top'
+          error={formErrors.weight}
+          label="Value"
+          name="weight"
+          onChange={updateProperty}
+          placeholder="e.g. 25"
+          type="number"
+          value={form.weight}
+        />
         <button
           className='button full-width margin-top'
           disabled={this.state.loading}

@@ -12,6 +12,10 @@ class FormMessage extends React.Component {
   }
 }
 
+FormMessage.propTypes = {
+  message: PropTypes.string
+}
+
 class InputInfoField extends React.Component {
   constructor (props) {
     super(props)
@@ -33,11 +37,12 @@ class InputInfoField extends React.Component {
   }
 
   renderInfo () {
-    if (this.props.info) {
+    const {info} = this.props
+    if (info) {
       return (
         <div className='cn-info-container'>
           <div className='message-bubble triangle-bottom'>
-            {this.props.info}
+            {info}
             <div className='triangle-inner' />
           </div>
           <i className='fa fa-info-circle'/>
@@ -54,7 +59,7 @@ class InputInfoField extends React.Component {
     const {containerClassName, labelClassName, inputClassName,
       containerActiveClassName, labelActiveClassName, inputActiveClassName,
       containerErrorClassName, labelErrorClassName, inputErrorClassName,
-      id, label, error, message, showErrorMessage
+      id, label, error, showErrorMessage
     } = this.props
 
     if (containerClassName) containerClasses.push(containerClassName)
@@ -112,18 +117,18 @@ class InputInfoField extends React.Component {
 }
 
 InputInfoField.propTypes = {
-  containerClass: PropTypes.string,
-  containerActiveClass: PropTypes.string,
-  containerErrorClass: PropTypes.string,
+  containerClassName: PropTypes.string,
+  containerActiveClassName: PropTypes.string,
+  containerErrorClassName: PropTypes.string,
   disabled: PropTypes.bool,
   id: PropTypes.string,
-  inputClass: PropTypes.string,
-  inputActiveClass: PropTypes.string,
-  inputErrorClass: PropTypes.string,
+  inputClassName: PropTypes.string,
+  inputActiveClassName: PropTypes.string,
+  inputErrorClassName: PropTypes.string,
   label: PropTypes.string,
-  labelClass: PropTypes.string,
-  labelActiveClass: PropTypes.string,
-  labelErrorClass: PropTypes.string,
+  labelClassName: PropTypes.string,
+  labelActiveClassName: PropTypes.string,
+  labelErrorClassName: PropTypes.string,
   name: PropTypes.string.isRequired,
   onBlur: PropTypes.func,
   onChange: PropTypes.func.isRequired,
@@ -134,6 +139,9 @@ InputInfoField.propTypes = {
   max: PropTypes.number,
   min: PropTypes.number,
   pattern: PropTypes.string,
+  error: PropTypes.string,
+  showErrorMessage: PropTypes.bool,
+  info: PropTypes.string,
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
