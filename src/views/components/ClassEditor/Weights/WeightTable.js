@@ -90,7 +90,7 @@ class WeightTable extends React.Component {
     return (
       <div id='class-editor-weights-total' className='row'>
         <div className='col-xs-9'>
-          <span>{!cl.is_points ? 'Total:' : 'Total points'}</span>
+          <span>Total*:</span>
         </div>
         <div className='col-xs-3 right-text'>
           <span>

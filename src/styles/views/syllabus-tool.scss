@@ -209,7 +209,8 @@
     .table-row {
       cursor: pointer;
       padding: 0.5em;
-      font-size: 12px;
+      padding-right: 0;
+      font-size: 14px;
       display: flex;
       flex-direction: row;
       width: 100%;
@@ -226,8 +227,9 @@
     }
   
     #class-weights-total {
-      border-top: 2px solid #a0a0a0;
+      border-top: 1px solid $cn-color-grey;
       padding: 0.5em;
+      font-size: 14px;
     }
   
     #class-editor-assignments-table {
