@@ -75,10 +75,10 @@ class Weights extends React.Component {
   * Render the weights and weight form.
   */
   renderWeightsContent () {
-    const {viewOnly, weights, currentWeight, totalPoints} = this.state
+    const {viewOnly, weights, currentWeight, totalPoints, noWeights} = this.state
     const {cl} = this.props
 
-    let disableButton = !this.isTotalWeightSecure()
+    let disableButton = !this.isTotalWeightSecure() && !noWeights
     return (
       <div>
         {!viewOnly &&
@@ -86,7 +86,12 @@ class Weights extends React.Component {
             cl={cl}
             onCreateWeight={this.onCreateWeight.bind(this)}
             onUpdateWeight={this.onUpdateWeight.bind(this)}
-            weight={this.state.currentWeight}
+            weight={currentWeight}
+            noWeights={noWeights}
+            numWeights={weights.length}
+            onNoWeightChecked={(checked) => {
+              this.setState({noWeights: checked})
+            }}
           />
         }
         {weights.length !== 0 &&
@@ -103,11 +108,11 @@ class Weights extends React.Component {
         {weights.length !== 0 &&
           <div id='cn-weights-info'>*The total should be 100% unless extra credit is offered.</div>
         }
-        {weights.length !== 0 &&
+        {(weights.length !== 0 || noWeights) &&
           <button
             onClick={() => this.props.onSubmit()}
             disabled={disableButton}
-            className={disableButton ? 'button full-width disabled' : 'button full-width'}
+            className={disableButton ? 'button full-width disabled margin-top' : 'button full-width margin-top'}
           >
             Save and continue
           </button>
@@ -116,25 +121,6 @@ class Weights extends React.Component {
         {!viewOnly && this.renderWeightsCheckbox()} */}
       </div>
     )
-  }
-
-  /*
-  * Render the checkbox for weights.
-  */
-  renderWeightsCheckbox () {
-    if (this.state.weights.length === 0) {
-      return (
-        <label>
-          <input
-            onChange={(event) => {
-              this.setState({noWeights: event.target.checked})
-            }}
-            type='checkbox'
-            checked={this.state.noWeights}
-          /> Weights were not provided on the syllabus.
-        </label>
-      )
-    }
   }
 
   /*

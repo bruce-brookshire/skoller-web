@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
-import {InputField} from '../../../../components/Form'
+import {InputField, CheckboxField} from '../../../../components/Form'
 import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
 
@@ -99,9 +99,29 @@ class WeightForm extends React.Component {
     }).catch(() => { this.setState({loading: false}) })
   }
 
+  /*
+  * Render the checkbox for weights.
+  */
+  renderWeightsCheckbox () {
+    const {noWeights} = this.props
+
+    return (
+      <CheckboxField
+        name='noWeights'
+        onChange={(name, value) => {
+          this.props.onNoWeightChecked(value)
+        }}
+        value={noWeights}
+        containerClassName='margin-top'
+        inputClassName='margin-right'
+        label={'Weights were not provided on the syllabus.'}
+      />
+    )
+  }
+
   render () {
     const {form} = this.state
-    const {formErrors, updateProperty} = this.props
+    const {formErrors, updateProperty, numWeights, noWeights} = this.props
 
     return (
       <div id='cn-weight-form'>
@@ -131,14 +151,15 @@ class WeightForm extends React.Component {
           type="number"
           value={form.weight}
         />
-        <button
+        {numWeights === 0 && this.renderWeightsCheckbox()}
+        {!noWeights && <button
           className='button full-width margin-top'
           disabled={this.state.loading}
           onClick={this.onSubmit.bind(this)}
         >
           Add weight
           {this.state.loading ? <Loading /> : null}
-        </button>
+        </button>}
       </div>
     )
   }
@@ -151,7 +172,10 @@ WeightForm.propTypes = {
   onUpdateWeight: PropTypes.func.isRequired,
   updateProperty: PropTypes.func,
   weight: PropTypes.object,
-  validateForm: PropTypes.func
+  validateForm: PropTypes.func,
+  noWeights: PropTypes.bool,
+  numWeights: PropTypes.number,
+  onNoWeightChecked: PropTypes.func
 }
 
 export default ValidateForm(Form(WeightForm, 'form'))
