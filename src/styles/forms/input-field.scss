@@ -8,9 +8,6 @@
   .cn-form-input {
     @include form-element;
   }
-  .cn-input-label {
-    @include form-label;
-  }
 
   &.hide-spinner {
     input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
@@ -85,4 +82,8 @@
   input[type="date"]:valid:before {
     content: "";
   }
+}
+
+.cn-input-label {
+  @include form-label;
 }

@@ -200,6 +200,7 @@ class AssignmentForm extends React.Component {
               type='number'
               options={yearOpts}
               value={form.year_due}
+              disabled={this.state.due_null === true}
             />
           </div>
           <div className='col-xs-4'>
@@ -207,6 +208,7 @@ class AssignmentForm extends React.Component {
               <div className='cn-input-container margin-top center-xs'>
                 <label htmlFor="due_null" className='cn-input-label'>No due date</label>
                 <CheckboxField
+                  inputClassName='cn-big-checkbox'
                   tabIndex="-1"
                   type="checkbox"
                   name="due_null"
@@ -241,7 +243,7 @@ AssignmentForm.propTypes = {
   onUpdateAssignment: PropTypes.func.isRequired,
   updateProperty: PropTypes.func,
   validateForm: PropTypes.func,
-  currentWeight: PropTypes.number,
+  currentWeight: PropTypes.object,
   resetValidation: PropTypes.func
 }
 

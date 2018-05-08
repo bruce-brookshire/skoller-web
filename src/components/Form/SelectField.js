@@ -84,6 +84,7 @@ class SelectField extends React.Component {
           onChange={this.onChange.bind(this)}
           onFocus={this.onFocus.bind(this)}
           value={input.value}
+          disabled={input.disabled}
         >
           <option value=''>{placeholder || 'Select...'}</option>
           {
@@ -120,6 +121,7 @@ SelectField.propTypes = {
   onFocus: PropTypes.func,
   options: PropTypes.array.isRequired,
   placeholder: PropTypes.string,
+  disabled: PropTypes.bool,
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
