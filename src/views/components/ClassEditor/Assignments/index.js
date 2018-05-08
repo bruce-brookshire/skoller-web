@@ -15,18 +15,16 @@ class Assignments extends React.Component {
   * Fetch the weights for a given class
   */
   componentWillMount () {
-    const {cl, disabled} = this.props
-    if (!disabled) {
-      this.setState({loadingAssignments: true})
-      actions.assignments.getClassAssignments(cl).then((assignments) => {
-        this.setState({assignments, loadingAssignments: false})
-      }).then(() => { this.setState({loadingAssignments: false}) })
+    const {cl} = this.props
+    this.setState({loadingAssignments: true})
+    actions.assignments.getClassAssignments(cl).then((assignments) => {
+      this.setState({assignments, loadingAssignments: false})
+    }).then(() => { this.setState({loadingAssignments: false}) })
 
-      this.setState({loadingWeights: true})
-      actions.weights.getClassWeights(cl).then((weights) => {
-        this.setState({weights, loadingWeights: false})
-      }).then(() => { this.setState({loadingWeights: false}) })
-    }
+    this.setState({loadingWeights: true})
+    actions.weights.getClassWeights(cl).then((weights) => {
+      this.setState({weights, loadingWeights: false})
+    }).then(() => { this.setState({loadingWeights: false}) })
   }
 
   /*
@@ -35,14 +33,14 @@ class Assignments extends React.Component {
   * @return [Object]. State object.
   */
   initializeState () {
-    const {isReview, assignments, weights} = this.props
+    const {isReview} = this.props
     return {
-      assignments: assignments || [],
+      assignments: [],
       currentAssignment: null,
       loadingAssignments: false,
       loadingWeights: false,
       viewOnly: isReview,
-      weights: weights || [],
+      weights: [],
       prevWeight: null
     }
   }
@@ -51,7 +49,7 @@ class Assignments extends React.Component {
   * Render the assignments for a given class.
   */
   renderAssignments () {
-    const assignments = this.state.assignments
+    const {assignments} = this.state
     if (assignments.length === 0) {
       return (
         <div className='center-text margin-top'>
@@ -59,7 +57,7 @@ class Assignments extends React.Component {
         </div>
       )
     }
-    //sort by due date.
+    // sort by due date.
     return assignments.sort((a, b) => {
       return a.inserted_at > b.inserted_at
     }).map((assignment, index) =>
@@ -76,7 +74,6 @@ class Assignments extends React.Component {
   getRow (item, index) {
     const {id, name, weight_id, due} = item
     const {currentAssignment, viewOnly} = this.state
-    const {disabled} = this.props
 
     const activeClass = (currentAssignment && currentAssignment.id) === id
       ? 'active' : ''
@@ -86,7 +83,7 @@ class Assignments extends React.Component {
         className={`row table-row ${activeClass}`}
         key={`assignment-${index}`}
         onClick={() => {
-          if (viewOnly || disabled) return
+          if (viewOnly) return
           this.onSelectAssignment(item)
         }}
       >
@@ -96,7 +93,7 @@ class Assignments extends React.Component {
               className='button-delete-x center-content'
               onClick={(event) => {
                 event.stopPropagation()
-                if (disabled) return
+                // if (disabled) return
                 this.onDeleteAssignment(item)
               }}><i className='fa fa-times' />
             </div>
@@ -105,8 +102,8 @@ class Assignments extends React.Component {
         <div className={!viewOnly ? 'col-xs-9' : 'col-xs-10'}>
           <div className='bold'><span>{name}</span></div>
           <div>
-            <span className='desctiption'>{weight_id && this.state.weights &&
-              this.state.weights.find(w => w.id === weight_id).name || 'N/A'}
+            <span className='desctiption'>{(weight_id && this.state.weights &&
+              this.state.weights.find(w => w.id === weight_id).name) || 'N/A'}
             </span>
           </div>
         </div>
@@ -125,7 +122,6 @@ class Assignments extends React.Component {
       <AssignmentForm
         assignment={this.state.currentAssignment}
         cl={this.props.cl}
-        disabled={this.props.disabled}
         onCreateAssignment={this.onCreateAssignment.bind(this)}
         onUpdateAssignment={this.onUpdateAssignment.bind(this)}
         prevWeight={this.state.prevWeight}
@@ -173,8 +169,9 @@ class Assignments extends React.Component {
   * @param [Object] assignment. Assignment.
   */
   onUpdateAssignment (assignment) {
-    const newAssignments = this.state.assignments
-    const index = this.state.assignments.findIndex(a => a.id === assignment.id)
+    const {assignments} = this.state
+    const newAssignments = assignments
+    const index = assignments.findIndex(a => a.id === assignment.id)
     newAssignments[index] = assignment
     this.setState({assignments: newAssignments, currentAssignment: null})
   }
@@ -185,36 +182,33 @@ class Assignments extends React.Component {
   * @param [Object] assignment. The assignment to be deleted.
   */
   onDeleteAssignment (assignment) {
+    const {assignments} = this.state
     actions.assignments.deleteAssignment(assignment).then(() => {
-      const newAssignments = this.state.assignments.filter(a => a.id !== assignment.id)
+      const newAssignments = assignments.filter(a => a.id !== assignment.id)
       this.setState({assignments: newAssignments})
     }).catch(() => false)
   }
 
   render () {
-    const {viewOnly, loadingAssignments, loadingWeights, assignments} = this.state
+    const {viewOnly, loadingAssignments, loadingWeights} = this.state
     if (loadingAssignments || loadingWeights) return <Loading />
     return (
-      <div className='space-between-vertical'>
-        <h5 style={{marginTop: '0.25em', marginBottom: '0.5em'}}>{viewOnly ? 'Edit' : 'Add'} Assignments ({assignments.length})</h5>
-        {viewOnly && <a className='right-text' style={{marginBottom: '5px'}} onClick={() => this.setState({viewOnly: false}) }>edit</a>}
+      <div id='cn-assignments'>
+        {!viewOnly && this.renderAssignmentForm()}
+        {viewOnly && <a className='right-text' onClick={() => this.setState({viewOnly: false}) }>edit</a>}
         <div className={`class-editor-table ${viewOnly ? 'view-only' : ''}`} >
-          <div id='class-editor-assignments-table' ref={(field) => { this.sectionControl = field; }}>
+          <div id='class-editor-assignments-table' ref={(field) => { this.sectionControl = field }}>
             {this.renderAssignments()}
           </div>
         </div>
-        {!viewOnly && this.renderAssignmentForm()}
       </div>
     )
   }
 }
 
 Assignments.propTypes = {
-  assignments: PropTypes.array,
   cl: PropTypes.object,
-  disabled: PropTypes.bool,
-  isReview: PropTypes.bool,
-  weights: PropTypes.array
+  isReview: PropTypes.bool
 }
 
 export default Assignments

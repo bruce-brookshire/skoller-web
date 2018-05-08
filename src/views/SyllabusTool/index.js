@@ -240,7 +240,9 @@ class SyllabusTool extends React.Component {
           onUpdateClass={this.onUpdateClass.bind(this)}
         />
       case ContentEnum.ASSIGNMENTS:
-        return <Assignments cl={navbarStore.cl} isReview={isReviewer} />
+        return <Assignments
+          cl={navbarStore.cl}
+          isReview={isReviewer} />
       default:
     }
   }

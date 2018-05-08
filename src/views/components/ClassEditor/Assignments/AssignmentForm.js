@@ -29,15 +29,13 @@ class AssignmentForm extends React.Component {
   * Fetch the weights to populate weight select.
   */
   componentWillMount () {
-    const {cl, disabled} = this.props
-    if (!disabled) {
-      actions.weights.getClassWeights(cl).then((weights) => {
-        weights = weights.sort((a, b) => {
-          return a.inserted_at > b.inserted_at
-        })
-        this.setState({weights})
-      }).then(() => false)
-    }
+    const {cl} = this.props
+    actions.weights.getClassWeights(cl).then((weights) => {
+      weights = weights.sort((a, b) => {
+        return a.inserted_at > b.inserted_at
+      })
+      this.setState({weights})
+    }).then(() => false)
   }
 
   /*
@@ -48,7 +46,6 @@ class AssignmentForm extends React.Component {
       this.setState({form: this.initializeFormData(nextProps.assignment)})
     }
   }
-
 
   /*
   * Method for intializing the state.
@@ -76,8 +73,8 @@ class AssignmentForm extends React.Component {
     const {id, name, weight_id, due} = formData
     const {cl, prevWeight} = this.props
 
-    const due_date = due ?
-      convertUTCDatetimeToDateString(due, cl.school.timezone) : ''
+    const due_date = due
+      ? convertUTCDatetimeToDateString(due, cl.school.timezone) : ''
 
     const date = new Date()
 
@@ -137,16 +134,14 @@ class AssignmentForm extends React.Component {
   * Map the form
   */
   mapForm () {
+    const {cl} = this.props
     if (!this.state.due_null) {
-      const {cl} = this.props
       let newForm = {...this.state.form}
       let due = newForm.due.split('/')
       due = `${newForm.year_due}-${due[0]}-${due[1]}`
       newForm.due = convertLocalDateToUTC(due, cl.school.timezone)
       return newForm
-    }
-    else {
-      const {cl} = this.props
+    } else {
       let newForm = {...this.state.form}
       newForm.due = null
       return newForm
@@ -171,13 +166,12 @@ class AssignmentForm extends React.Component {
   renderWeightDropDown () {
     const {form} = this.state
     const {formErrors, updateProperty} = this.props
-    if (this.state.weights.length == 0){
+    if (this.state.weights.length === 0) {
       form.weight_id = null
       return (
         <div className='margin-top'>This class does not have any weights</div>
       )
-    }
-    else {
+    } else {
       return (
         <SelectField
           containerClassName='margin-top'
@@ -229,7 +223,7 @@ class AssignmentForm extends React.Component {
               }}
               placeholder='MM/DD'
               value={form.due}
-              disabled={this.state.due_null == true}
+              disabled={this.state.due_null === true}
             />
           </div>
           <div className='col-xs-4'>
@@ -249,11 +243,11 @@ class AssignmentForm extends React.Component {
             <div className='form-element'>
               <div className='cn-input-container margin-top center-xs'>
                 <label htmlFor="due_null" className='cn-input-label'>Due date is not provided</label>
-                <input 
+                <input
                   className='cn-form-input'
                   tabIndex="-1"
-                  type="checkbox" 
-                  ref="due_null" 
+                  type="checkbox"
+                  ref="due_null"
                   name="due_null"
                   defaultChecked={this.state.due_null}
                   onChange={this.handleChange.bind(this)}
@@ -279,12 +273,13 @@ class AssignmentForm extends React.Component {
 AssignmentForm.propTypes = {
   assignment: PropTypes.object,
   cl: PropTypes.object,
-  disabled: PropTypes.bool,
   formErrors: PropTypes.object,
   onCreateAssignment: PropTypes.func.isRequired,
   onUpdateAssignment: PropTypes.func.isRequired,
   updateProperty: PropTypes.func,
-  validateForm: PropTypes.func
+  validateForm: PropTypes.func,
+  prevWeight: PropTypes.number,
+  resetValidation: PropTypes.func
 }
 
 export default ValidateForm(Form(AssignmentForm, 'form'))
