@@ -16,30 +16,12 @@ class Weights extends React.Component {
   * Fetch the weights for a given class
   */
   componentWillMount () {
-    const {cl, disabled, isReview} = this.props
-    if (!disabled) {
-      actions.weights.getClassWeights(cl).then((weights) => {
-        // if in review, set
-        const noWeights = (isReview && weights.length === 0)
-        this.setState({weights, noWeights})
-      }).then(() => false)
-    }
-  }
-
-  /*
-  * Disable next.
-  */
-  componentDidUpdate () {
-    // Disable the parents submit button if weights are not secure.
-    if (this.props.toggleDisabled && !this.state.viewOnly) {
-      let {disableNext} = this.props
-      if (!disableNext && this.state.noWeights) {
-      } else if (!this.isTotalWeightSecure() && !disableNext) {
-        this.props.toggleDisabled(true)
-      } else if (this.isTotalWeightSecure() && disableNext) {
-        this.props.toggleDisabled(false)
-      }
-    }
+    const {cl, isReview} = this.props
+    actions.weights.getClassWeights(cl).then((weights) => {
+      // if in review, set
+      const noWeights = (isReview && weights.length === 0)
+      this.setState({weights, noWeights})
+    }).then(() => false)
   }
 
   /*
@@ -48,12 +30,12 @@ class Weights extends React.Component {
   * @return [Object]. State object.
   */
   initializeState () {
-    const {isReview, weights} = this.props
+    const {isReview} = this.props
     return {
       currentWeight: null,
       noWeights: null,
       totalPoints: null,
-      weights: weights || [],
+      weights: [],
       viewOnly: isReview || false,
       reset: false
     }
@@ -94,7 +76,9 @@ class Weights extends React.Component {
   */
   renderWeightsContent () {
     const {viewOnly, weights, currentWeight, totalPoints} = this.state
-    const {cl, disabled} = this.props
+    const {cl} = this.props
+
+    let disableButton = !this.isTotalWeightSecure()
     return (
       <div>
         {!viewOnly &&
@@ -110,12 +94,23 @@ class Weights extends React.Component {
             weights={weights}
             viewOnly={viewOnly}
             currentWeight={currentWeight}
-            disabled={disabled}
             cl={cl}
             onSelectWeight={this.onSelectWeight.bind(this)}
             onDeleteWeight={this.onDeleteWeight.bind(this)}
             totalPoints={totalPoints}
           />
+        }
+        {weights.length !== 0 &&
+          <div id='cn-weights-info'>*The total should be 100% unless extra credit is offered.</div>
+        }
+        {weights.length !== 0 &&
+          <button
+            onClick={() => this.props.onSubmit()}
+            disabled={disableButton}
+            className={disableButton ? 'button full-width disabled' : 'button full-width'}
+          >
+            Save and continue
+          </button>
         }
         {/*
         {!viewOnly && this.renderWeightsCheckbox()} */}
@@ -132,7 +127,6 @@ class Weights extends React.Component {
         <label>
           <input
             onChange={(event) => {
-              this.props.toggleDisabled(!event.target.checked)
               this.setState({noWeights: event.target.checked})
             }}
             type='checkbox'
@@ -169,7 +163,7 @@ class Weights extends React.Component {
       if (!this.state.totalPoints) return false
       totalWeight = (totalWeight / this.state.totalPoints) * 100
     }
-    return (totalWeight <= 101 && totalWeight >= 99)
+    return (totalWeight < 101 && totalWeight > 99.9)
   }
 
   /*
@@ -243,7 +237,7 @@ class Weights extends React.Component {
     const {viewOnly} = this.state
 
     return (
-      <div>
+      <div id='cn-weights'>
         {viewOnly && <a className='right-text' onClick={() => this.setState({viewOnly: false}) }>edit</a>}
         {this.renderContent()}
       </div>
@@ -252,13 +246,10 @@ class Weights extends React.Component {
 }
 
 Weights.propTypes = {
-  disabled: PropTypes.bool,
-  disableNext: PropTypes.bool,
   isReview: PropTypes.bool,
-  toggleDisabled: PropTypes.func,
-  weights: PropTypes.array,
   onUpdateClass: PropTypes.func,
-  cl: PropTypes.object
+  cl: PropTypes.object,
+  onSubmit: PropTypes.func
 }
 
 export default Weights

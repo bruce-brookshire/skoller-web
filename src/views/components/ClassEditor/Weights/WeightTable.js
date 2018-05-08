@@ -15,7 +15,7 @@ class WeightTable extends React.Component {
   */
   getRow (item, index) {
     const {id, name, weight} = item
-    const {currentWeight, viewOnly, cl, disabled} = this.props
+    const {currentWeight, viewOnly, cl} = this.props
 
     const activeClass = (currentWeight && currentWeight.id) === id
       ? 'active' : ''
@@ -25,7 +25,7 @@ class WeightTable extends React.Component {
         className={`table-row ${activeClass}`}
         key={`weight-${index}`}
         onClick={() => {
-          if (viewOnly || disabled) return
+          if (viewOnly) return
           this.props.onSelectWeight(item)
         }}
       >
@@ -35,7 +35,7 @@ class WeightTable extends React.Component {
               className='button-delete-x center-content'
               onClick={(event) => {
                 event.stopPropagation()
-                if (disabled) return
+                /* if (disabled) return */
                 this.props.onDeleteWeight(item)
               }}><i className='fa fa-times' />
             </div>
@@ -88,7 +88,7 @@ class WeightTable extends React.Component {
     const totalPoints = viewOnly ? total : `${total}/${this.props.totalPoints}`
 
     return (
-      <div id='class-editor-weights-total' className='row'>
+      <div className='row'>
         <div className='col-xs-9'>
           <span>Total*:</span>
         </div>
@@ -113,7 +113,7 @@ class WeightTable extends React.Component {
           Saved weights
         </div>
         <div className={`class-editor-table ${viewOnly ? 'view-only' : ''}`}>
-          <div id='class-editor-weights-table' className='' ref={(field) => { this.sectionControl = field }}>
+          <div ref={(field) => { this.sectionControl = field }}>
             {this.renderWeights()}
             <div id='class-weights-total'>
               {this.renderTotalPercentage()}
@@ -129,7 +129,6 @@ WeightTable.propTypes = {
   viewOnly: PropTypes.bool,
   weights: PropTypes.array,
   currentWeight: PropTypes.object,
-  disabled: PropTypes.bool,
   cl: PropTypes.object,
   onSelectWeight: PropTypes.func,
   onDeleteWeight: PropTypes.func,

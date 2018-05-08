@@ -66,7 +66,6 @@ class SyllabusTool extends React.Component {
       currentDocumentIndex: 0,
       currentDocument: null,
       currentIndex,
-      disableNext: false,
       documents: [],
       gettingClass: false,
       isSW: state.isSW || false,
@@ -203,15 +202,6 @@ class SyllabusTool extends React.Component {
   }
 
   /*
-  * Disable the next button
-  *
-  * @param [Boolean] value. Boolean value to indicate if next button should be disabled
-  */
-  toggleDisabled (value) {
-    this.setState({disableNext: value})
-  }
-
-  /*
   * Render the back button to tab between syllabus sections
   */
   renderBackButton () {
@@ -246,8 +236,7 @@ class SyllabusTool extends React.Component {
         return <Weights
           cl={navbarStore.cl}
           isReview={isReviewer}
-          disableNext={this.state.disableNext}
-          toggleDisabled={this.toggleDisabled.bind(this)}
+          onSubmit={this.onNext.bind(this)}
           onUpdateClass={this.onUpdateClass.bind(this)}
         />
       case ContentEnum.ASSIGNMENTS:
