@@ -107,7 +107,7 @@ class Weights extends React.Component {
           />
         }
         {weights.length !== 0 &&
-          <div id='cn-weights-info'>*The total should be 100% unless extra credit is offered.</div>
+          <div id='cn-weights-info'>*The total should be 100%</div>
         }
         {(weights.length !== 0 || noWeights) &&
           <button

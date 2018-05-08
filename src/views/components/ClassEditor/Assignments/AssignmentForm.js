@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
-import {InputField, CheckboxField} from '../../../../components/Form'
+import {InputField, CheckboxField, SelectField} from '../../../../components/Form'
 import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
 import {convertLocalDateToUTC, convertUTCDatetimeToDateString} from '../../../../utilities/time'
@@ -18,6 +18,19 @@ const requiredFields = {
     validate: (value) => { return `${value}`.length === 4 }
   }
 }
+
+const date = new Date()
+
+const yearOpts = [
+  {
+    name: date.getFullYear(),
+    value: date.getFullYear()
+  },
+  {
+    name: date.getFullYear() + 1,
+    value: date.getFullYear() + 1
+  }
+]
 
 class AssignmentForm extends React.Component {
   constructor (props) {
@@ -61,8 +74,6 @@ class AssignmentForm extends React.Component {
 
     const due_date = due
       ? convertUTCDatetimeToDateString(due, cl.school.timezone) : ''
-
-    const date = new Date()
 
     return ({
       id: id || null,
@@ -179,7 +190,7 @@ class AssignmentForm extends React.Component {
             />
           </div>
           <div className='col-xs-4'>
-            <InputField
+            <SelectField
               containerClassName='margin-top'
               error={formErrors.year_due}
               label='Year due'
@@ -187,8 +198,8 @@ class AssignmentForm extends React.Component {
               onChange={updateProperty}
               placeholder='Year'
               type='number'
+              options={yearOpts}
               value={form.year_due}
-              disabled={true}
             />
           </div>
           <div className='col-xs-4'>
