@@ -207,31 +207,28 @@ class AssignmentForm extends React.Component {
             />
           </div>
           <div className='col-xs-4'>
-            <div className='form-element'>
-              <div className='cn-input-container margin-top center-xs'>
-                <label htmlFor="due_null" className='cn-input-label'>No due date</label>
-                <CheckboxField
-                  inputClassName='cn-big-checkbox'
-                  tabIndex="-1"
-                  type="checkbox"
-                  name="due_null"
-                  value={this.state.due_null}
-                  onChange={(name, value) => {
-                    this.setState({due_null: value})
-                  }}
-                />
-              </div>
+            <div className='cn-input-container margin-top center-xs'>
+              <label htmlFor="due_null" className='cn-input-label'>No due date</label>
+              <CheckboxField
+                inputClassName='cn-big-checkbox'
+                tabIndex="-1"
+                type="checkbox"
+                name="due_null"
+                value={this.state.due_null}
+                onChange={(name, value) => {
+                  this.setState({due_null: value})
+                }}
+              />
             </div>
           </div>
         </div>
         <button
           className='button full-width margin-top'
-          style={{marginBottom: '0.5em'}}
           disabled={this.state.loading}
           onClick={this.onSubmit.bind(this)}
         >
           Submit assignment
-          {this.state.loading ? <Loading style={{color: 'white', marginLeft: '0.5em'}} /> : null}
+          {this.state.loading ? <Loading /> : null}
         </button>
       </div>
     )
