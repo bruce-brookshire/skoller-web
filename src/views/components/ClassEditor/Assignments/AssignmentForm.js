@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
-import {InputField} from '../../../../components/Form'
+import {InputField, CheckboxField} from '../../../../components/Form'
 import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
 import {convertLocalDateToUTC, convertUTCDatetimeToDateString} from '../../../../utilities/time'
@@ -140,15 +140,14 @@ class AssignmentForm extends React.Component {
     return `${dateParts[1]}/${dateParts[2]}`
   }
 
-  handleChange () {
-    this.setState({due_null: this.refs.due_null.checked})
-  }
-
   render () {
     const {form} = this.state
-    const {formErrors, updateProperty} = this.props
+    const {formErrors, updateProperty, currentWeight} = this.props
     return (
       <div id='class-editor-assignment-form'>
+        <div className='cn-section-content-header'>
+          Add assignments{currentWeight ? ' for the category ' + currentWeight.name : ''}
+        </div>
         <div className='row'>
           <div className='col-xs-12'>
             <InputField
@@ -195,15 +194,15 @@ class AssignmentForm extends React.Component {
           <div className='col-xs-4'>
             <div className='form-element'>
               <div className='cn-input-container margin-top center-xs'>
-                <label htmlFor="due_null" className='cn-input-label'>Due date is not provided</label>
-                <input
-                  className='cn-form-input'
+                <label htmlFor="due_null" className='cn-input-label'>No due date</label>
+                <CheckboxField
                   tabIndex="-1"
                   type="checkbox"
-                  ref="due_null"
                   name="due_null"
-                  defaultChecked={this.state.due_null}
-                  onChange={this.handleChange.bind(this)}
+                  value={this.state.due_null}
+                  onChange={(name, value) => {
+                    this.setState({due_null: value})
+                  }}
                 />
               </div>
             </div>
