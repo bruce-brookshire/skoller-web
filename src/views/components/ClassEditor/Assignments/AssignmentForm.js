@@ -227,7 +227,7 @@ class AssignmentForm extends React.Component {
           disabled={this.state.loading}
           onClick={this.onSubmit.bind(this)}
         >
-          Submit assignment
+          Add assignment
           {this.state.loading ? <Loading /> : null}
         </button>
       </div>
