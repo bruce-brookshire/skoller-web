@@ -23,6 +23,9 @@ class Assignments extends React.Component {
 
     this.setState({loadingWeights: true})
     actions.weights.getClassWeights(cl).then((weights) => {
+      weights = weights.sort((a, b) => {
+        return a.weight < b.weight
+      })
       this.setState({weights, loadingWeights: false})
     }).then(() => { this.setState({loadingWeights: false}) })
   }
@@ -118,13 +121,15 @@ class Assignments extends React.Component {
   * Render assignment form.
   */
   renderAssignmentForm () {
+    const {currentAssignment, prevWeight} = this.state
+    const {cl} = this.props
     return (
       <AssignmentForm
-        assignment={this.state.currentAssignment}
-        cl={this.props.cl}
+        assignment={currentAssignment}
+        cl={cl}
         onCreateAssignment={this.onCreateAssignment.bind(this)}
         onUpdateAssignment={this.onUpdateAssignment.bind(this)}
-        prevWeight={this.state.prevWeight}
+        prevWeight={prevWeight}
       />
     )
   }
