@@ -159,6 +159,9 @@ class AssignmentForm extends React.Component {
         <div className='cn-section-content-header'>
           Add assignments{currentWeight ? ' for the category ' + currentWeight.name : ''}
         </div>
+        <div className='margin-top'>
+          Add any assignments for this class{currentWeight ? ' that fall under the category ' + currentWeight.name : ''}.
+        </div>
         <div className='row'>
           <div className='col-xs-12'>
             <InputField
@@ -169,7 +172,7 @@ class AssignmentForm extends React.Component {
               label='Assignment name'
               name='name'
               onChange={updateProperty}
-              placeholder='Assignment name, i.e. Exam 1'
+              placeholder='e.g. Exam 1'
               value={form.name}
             />
           </div>
@@ -179,7 +182,7 @@ class AssignmentForm extends React.Component {
               containerClassName='margin-top'
               error={formErrors.due}
               info={`If a precise due date has not been provided for this assignment, please do not guess! Select the box that says 'due date is not provided' and the submit assignment. The due date can be added through the app at a later date.`}
-              label='Due Date'
+              label='Due date (MM/DD)'
               name='due'
               onChange={(name, value) => {
                 updateProperty(name, maskAssignmentDate(form.due, value))
