@@ -26,7 +26,7 @@ class Assignments extends React.Component {
       weights = weights.sort((a, b) => {
         return a.weight < b.weight
       })
-      this.setState({weights, loadingWeights: false, currentWeight: weights[0]})
+      this.setState({weights, loadingWeights: false})
     }).then(() => { this.setState({loadingWeights: false}) })
   }
 
@@ -44,7 +44,7 @@ class Assignments extends React.Component {
       loadingWeights: false,
       viewOnly: isReview,
       weights: [],
-      currentWeight: null
+      currentWeightIndex: 0
     }
   }
 
@@ -121,7 +121,7 @@ class Assignments extends React.Component {
   * Render assignment form.
   */
   renderAssignmentForm () {
-    const {currentAssignment, currentWeight} = this.state
+    const {currentAssignment, currentWeightIndex, weights} = this.state
     const {cl} = this.props
     return (
       <AssignmentForm
@@ -129,7 +129,7 @@ class Assignments extends React.Component {
         cl={cl}
         onCreateAssignment={this.onCreateAssignment.bind(this)}
         onUpdateAssignment={this.onUpdateAssignment.bind(this)}
-        currentWeight={currentWeight}
+        currentWeight={weights[currentWeightIndex]}
       />
     )
   }
@@ -194,18 +194,30 @@ class Assignments extends React.Component {
     }).catch(() => false)
   }
 
+  onNext () {
+    const {currentWeightIndex, weights} = this.state
+    if (weights[currentWeightIndex + 1]) {
+      this.setState({currentWeightIndex: currentWeightIndex + 1})
+    } else {
+      this.props.onSubmit()
+    }
+  }
+
   render () {
     const {viewOnly, loadingAssignments, loadingWeights} = this.state
     if (loadingAssignments || loadingWeights) return <Loading />
     return (
       <div id='cn-assignments'>
         {!viewOnly && this.renderAssignmentForm()}
-        {viewOnly && <a className='right-text' onClick={() => this.setState({viewOnly: false}) }>edit</a>}
+        {!viewOnly &&
+          <a onClick={() => this.onNext()}>Skip this category</a>
+        }
+        {/* {viewOnly && <a className='right-text' onClick={() => this.setState({viewOnly: false}) }>edit</a>}
         <div className={`class-editor-table ${viewOnly ? 'view-only' : ''}`} >
           <div id='class-editor-assignments-table' ref={(field) => { this.sectionControl = field }}>
             {this.renderAssignments()}
           </div>
-        </div>
+        </div> */}
       </div>
     )
   }
@@ -213,7 +225,8 @@ class Assignments extends React.Component {
 
 Assignments.propTypes = {
   cl: PropTypes.object,
-  isReview: PropTypes.bool
+  isReview: PropTypes.bool,
+  onSubmit: PropTypes.func
 }
 
 export default Assignments

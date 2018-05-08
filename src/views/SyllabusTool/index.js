@@ -242,7 +242,8 @@ class SyllabusTool extends React.Component {
       case ContentEnum.ASSIGNMENTS:
         return <Assignments
           cl={navbarStore.cl}
-          isReview={isReviewer} />
+          isReview={isReviewer}
+          onSubmit={this.onNext.bind(this)} />
       default:
     }
   }
