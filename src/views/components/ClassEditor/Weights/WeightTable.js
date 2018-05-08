@@ -2,11 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 class WeightTable extends React.Component {
-  // constructor (props) {
-  //   super(props)
-  //   this.state = this.initializeState()
-  // }
-
   /*
   * Formats row data to be passed to the grid for display
   *
