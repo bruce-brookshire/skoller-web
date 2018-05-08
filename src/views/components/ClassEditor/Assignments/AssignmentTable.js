@@ -82,9 +82,14 @@ class AssignmentTable extends React.Component {
     const {viewOnly} = this.props
 
     return (
-      <div className={`class-editor-table ${viewOnly ? 'view-only' : ''}`} >
-        <div id='class-editor-assignments-table' ref={(field) => { this.sectionControl = field }}>
-          {this.renderAssignments()}
+      <div id='cn-assignment-table'>
+        <div id='cn-assignment-table-label'>
+          Saved assignments
+        </div>
+        <div className={`class-editor-table ${viewOnly ? 'view-only' : ''}`} >
+          <div id='class-editor-assignments-table' ref={(field) => { this.sectionControl = field }}>
+            {this.renderAssignments()}
+          </div>
         </div>
       </div>
     )
