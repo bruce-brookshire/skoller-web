@@ -26,7 +26,7 @@ class Assignments extends React.Component {
       weights = weights.sort((a, b) => {
         return a.weight < b.weight
       })
-      this.setState({weights, loadingWeights: false})
+      this.setState({weights, loadingWeights: false, currentWeight: weights[0]})
     }).then(() => { this.setState({loadingWeights: false}) })
   }
 
@@ -44,7 +44,7 @@ class Assignments extends React.Component {
       loadingWeights: false,
       viewOnly: isReview,
       weights: [],
-      prevWeight: null
+      currentWeight: null
     }
   }
 
@@ -121,7 +121,7 @@ class Assignments extends React.Component {
   * Render assignment form.
   */
   renderAssignmentForm () {
-    const {currentAssignment, prevWeight} = this.state
+    const {currentAssignment, currentWeight} = this.state
     const {cl} = this.props
     return (
       <AssignmentForm
@@ -129,7 +129,7 @@ class Assignments extends React.Component {
         cl={cl}
         onCreateAssignment={this.onCreateAssignment.bind(this)}
         onUpdateAssignment={this.onUpdateAssignment.bind(this)}
-        prevWeight={prevWeight}
+        currentWeight={currentWeight}
       />
     )
   }
@@ -164,7 +164,7 @@ class Assignments extends React.Component {
   onCreateAssignment (assignment) {
     const newAssignments = this.state.assignments
     newAssignments.push(assignment)
-    this.setState({assignments: newAssignments, currentAssignment: null, prevWeight: assignment.weight_id})
+    this.setState({assignments: newAssignments, currentAssignment: null})
     this.sectionControl.scrollTop = this.sectionControl.scrollHeight
   }
 

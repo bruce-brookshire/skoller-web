@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
-import {InputField, SelectField} from '../../../../components/Form'
+import {InputField} from '../../../../components/Form'
 import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
 import {convertLocalDateToUTC, convertUTCDatetimeToDateString} from '../../../../utilities/time'
@@ -26,19 +26,6 @@ class AssignmentForm extends React.Component {
   }
 
   /*
-  * Fetch the weights to populate weight select.
-  */
-  componentWillMount () {
-    const {cl} = this.props
-    actions.weights.getClassWeights(cl).then((weights) => {
-      weights = weights.sort((a, b) => {
-        return a.inserted_at > b.inserted_at
-      })
-      this.setState({weights})
-    }).then(() => false)
-  }
-
-  /*
   * If new assignment is received, update form.
   */
   componentWillReceiveProps (nextProps) {
@@ -56,8 +43,7 @@ class AssignmentForm extends React.Component {
     return {
       form: this.initializeFormData(),
       due_null: false,
-      loading: false,
-      weights: []
+      loading: false
     }
   }
 
@@ -71,7 +57,7 @@ class AssignmentForm extends React.Component {
   initializeFormData (data) {
     let formData = data || {}
     const {id, name, weight_id, due} = formData
-    const {cl, prevWeight} = this.props
+    const {cl, currentWeight} = this.props
 
     const due_date = due
       ? convertUTCDatetimeToDateString(due, cl.school.timezone) : ''
@@ -81,7 +67,7 @@ class AssignmentForm extends React.Component {
     return ({
       id: id || null,
       name: name || '',
-      weight_id: weight_id || prevWeight || '',
+      weight_id: weight_id || currentWeight.id || '',
       due: due_date ? this.mapAssignmentDate(due_date) : '',
       year_due: due_date ? due_date.split('-')[0] : date.getFullYear()
     })
@@ -92,11 +78,6 @@ class AssignmentForm extends React.Component {
   *
   */
   onSubmit () {
-    if (this.state.weights.length > 0) {
-      requiredFields.weight_id = {
-        type: 'required'
-      }
-    }
     if (this.state.due_null) {
       requiredFields.due = {}
     }
@@ -163,40 +144,12 @@ class AssignmentForm extends React.Component {
     this.setState({due_null: this.refs.due_null.checked})
   }
 
-  renderWeightDropDown () {
-    const {form} = this.state
-    const {formErrors, updateProperty} = this.props
-    if (this.state.weights.length === 0) {
-      form.weight_id = null
-      return (
-        <div className='margin-top'>This class does not have any weights</div>
-      )
-    } else {
-      return (
-        <SelectField
-          containerClassName='margin-top'
-          error={formErrors.weight_id}
-          info={'The assignments added will appear for everyone in the class. Be sure to only add graded assignments that apply to all classmates.'}
-          label='Grading category'
-          name='weight_id'
-          onChange={updateProperty}
-          options={this.state.weights}
-          placeholder='Select grading category'
-          value={form.weight_id}
-        />
-      )
-    }
-  }
-
   render () {
     const {form} = this.state
     const {formErrors, updateProperty} = this.props
     return (
       <div id='class-editor-assignment-form'>
         <div className='row'>
-          <div className='col-xs-12'>
-            {this.renderWeightDropDown()}
-          </div>
           <div className='col-xs-12'>
             <InputField
               style={{marginTop: '0em'}}
@@ -278,7 +231,7 @@ AssignmentForm.propTypes = {
   onUpdateAssignment: PropTypes.func.isRequired,
   updateProperty: PropTypes.func,
   validateForm: PropTypes.func,
-  prevWeight: PropTypes.number,
+  currentWeight: PropTypes.number,
   resetValidation: PropTypes.func
 }
 

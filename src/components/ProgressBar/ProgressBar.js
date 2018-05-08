@@ -6,7 +6,7 @@ class ProgressBar extends React.Component {
     const {children, currentStep} = this.props
     return children.map((child, index) => {
       const newProps = {
-        active: index === currentStep,
+        active: index <= currentStep,
         key: `step-${index}`
       }
       return React.cloneElement(child, newProps)
