@@ -99,26 +99,6 @@ class WeightForm extends React.Component {
     }).catch(() => { this.setState({loading: false}) })
   }
 
-  /*
-  * Render the checkbox for weights.
-  */
-  renderWeightsCheckbox () {
-    const {noWeights} = this.props
-
-    return (
-      <CheckboxField
-        name='noWeights'
-        onChange={(name, value) => {
-          this.props.onNoWeightChecked(value)
-        }}
-        value={noWeights}
-        containerClassName='margin-top'
-        inputClassName='margin-right'
-        label={'Weights were not provided on the syllabus.'}
-      />
-    )
-  }
-
   render () {
     const {form} = this.state
     const {formErrors, updateProperty, numWeights, noWeights} = this.props
@@ -151,7 +131,18 @@ class WeightForm extends React.Component {
           type="number"
           value={form.weight}
         />
-        {numWeights === 0 && this.renderWeightsCheckbox()}
+        {numWeights === 0 &&
+          <CheckboxField
+            name='noWeights'
+            onChange={(name, value) => {
+              this.props.onNoWeightChecked(value)
+            }}
+            value={noWeights}
+            containerClassName='margin-top'
+            inputClassName='margin-right'
+            label={'Weights were not provided on the syllabus.'}
+          />
+        }
         {!noWeights && <button
           className='button full-width margin-top'
           disabled={this.state.loading}
@@ -160,6 +151,9 @@ class WeightForm extends React.Component {
           Add weight
           {this.state.loading ? <Loading /> : null}
         </button>}
+        <div className='margin-top'>
+          <a onClick={() => this.props.reset()}>Go back</a>
+        </div>
       </div>
     )
   }
@@ -175,7 +169,8 @@ WeightForm.propTypes = {
   validateForm: PropTypes.func,
   noWeights: PropTypes.bool,
   numWeights: PropTypes.number,
-  onNoWeightChecked: PropTypes.func
+  onNoWeightChecked: PropTypes.func,
+  reset: PropTypes.func
 }
 
 export default ValidateForm(Form(WeightForm, 'form'))

@@ -92,6 +92,7 @@ class Weights extends React.Component {
             onNoWeightChecked={(checked) => {
               this.setState({noWeights: checked})
             }}
+            reset={() => this.setState({reset: true})}
           />
         }
         {weights.length !== 0 &&
@@ -168,7 +169,7 @@ class Weights extends React.Component {
     const {cl} = this.props
 
     if (isPoints) {
-      this.setState({reset: false})
+      this.setState({totalPoints: 0, reset: false})
     } else {
       this.setState({totalPoints: 100, reset: false})
     }
