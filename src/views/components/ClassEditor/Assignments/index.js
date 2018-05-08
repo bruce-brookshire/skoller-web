@@ -134,6 +134,7 @@ class Assignments extends React.Component {
             onDeleteAssignment={this.onDeleteAssignment.bind(this)}
             weights={weights}
             cl={cl}
+            currentWeight={weights[currentWeightIndex]}
           />
         }
         {/* {viewOnly && <a className='right-text' onClick={() => this.setState({viewOnly: false}) }>edit</a>}

@@ -11,7 +11,7 @@ class AssignmentTable extends React.Component {
   */
   getRow (item, index) {
     const {id, name, weight_id, due} = item
-    const {currentAssignment, viewOnly, weights} = this.props
+    const {currentAssignment, viewOnly, weights, currentWeight} = this.props
 
     const activeClass = (currentAssignment && currentAssignment.id) === id
       ? 'active' : ''
@@ -37,15 +37,13 @@ class AssignmentTable extends React.Component {
           </div>
         }
         <div className={!viewOnly ? 'col-xs-9' : 'col-xs-10'}>
-          <div className='bold'><span>{name}</span></div>
-          <div>
-            <span className='desctiption'>{(weight_id && weights &&
-              weights.find(w => w.id === weight_id).name) || 'N/A'}
-            </span>
-          </div>
+          <div>{name}</div>
+          {!currentWeight && <div className='description'>
+            {(weight_id && weights && weights.find(w => w.id === weight_id).name) || 'N/A'}
+          </div>}
         </div>
         <div className='col-xs-2 right-text'>
-          <span>{due ? this.mapAssignmentDate(due) : 'N/A'}</span>
+          {due ? this.mapAssignmentDate(due) : 'N/A'}
         </div>
       </div>
     )
@@ -79,12 +77,12 @@ class AssignmentTable extends React.Component {
   }
 
   render () {
-    const {viewOnly} = this.props
+    const {viewOnly, currentWeight} = this.props
 
     return (
       <div id='cn-assignment-table'>
         <div id='cn-assignment-table-label'>
-          Saved assignments
+          Saved assignments{currentWeight ? ' for ' + currentWeight.name : ''}
         </div>
         <div className={`class-editor-table ${viewOnly ? 'view-only' : ''}`} >
           <div id='class-editor-assignments-table' ref={(field) => { this.sectionControl = field }}>
@@ -103,7 +101,8 @@ AssignmentTable.propTypes = {
   onSelectAssignment: PropTypes.func,
   onDeleteAssignment: PropTypes.func,
   weights: PropTypes.array,
-  cl: PropTypes.object
+  cl: PropTypes.object,
+  currentWeight: PropTypes.object
 }
 
 export default AssignmentTable
