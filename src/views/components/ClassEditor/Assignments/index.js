@@ -48,6 +48,11 @@ class Assignments extends React.Component {
     }
   }
 
+  filterAssignments () {
+    const {assignments, currentWeightIndex, weights} = this.state
+    return assignments.filter((assign) => assign.weight_id === weights[currentWeightIndex].id)
+  }
+
   /*
   * Set form value equal to assignment in order to be edited.
   *
@@ -106,8 +111,10 @@ class Assignments extends React.Component {
 
   render () {
     const {viewOnly, loadingAssignments, loadingWeights, currentAssignment,
-      currentWeightIndex, weights, assignments} = this.state
+      currentWeightIndex, weights} = this.state
     const {cl} = this.props
+
+    let assignments = this.filterAssignments()
     if (loadingAssignments || loadingWeights) return <Loading />
     return (
       <div id='cn-assignments'>
