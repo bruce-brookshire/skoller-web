@@ -110,9 +110,9 @@ class AssignmentForm extends React.Component {
   onCreateAssignment (form) {
     this.setState({loading: true})
     actions.assignments.createAssignment(this.props.cl, form).then((assignment) => {
-      this.props.onCreateAssignment(assignment)
       this.props.resetValidation()
       this.setState({form: this.initializeFormData(), loading: false, due_null: false})
+      this.props.onCreateAssignment(assignment)
     }).catch(() => { this.setState({loading: false}) })
   }
 
