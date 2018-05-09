@@ -176,7 +176,10 @@ class SyllabusTool extends React.Component {
       browserHistory.push({ pathname: `/class/${cl.id}/syllabus_tool`, state: {...state} })
       this.intializeComponent()
       this.setState({gettingClass: false})
-    }).catch(() => { this.setState({gettingClass: false}) })
+    }).catch(() => {
+      this.setState({gettingClass: false})
+      browserHistory.push('hub/landing')
+    })
   }
 
   /*

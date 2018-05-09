@@ -47,7 +47,7 @@ class AssignmentForm extends React.Component {
     }
 
     if (nextProps.currentWeight.id !== this.props.currentWeight.id) {
-      let newForm = this.state.form
+      let newForm = this.initializeFormData()
       newForm.weight_id = nextProps.currentWeight.id
       this.setState({form: newForm})
     }

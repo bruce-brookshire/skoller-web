@@ -127,7 +127,7 @@ class Assignments extends React.Component {
             currentWeight={weights[currentWeightIndex]}
           />
         }
-        {!viewOnly &&
+        {!viewOnly && assignments.length === 0 &&
           <div className='margin-top center-text'>
             <a onClick={() => this.onNext()}>Skip this category</a>
           </div>
