@@ -118,8 +118,6 @@ class Weights extends React.Component {
             Save and continue
           </button>
         }
-        {/*
-        {!viewOnly && this.renderWeightsCheckbox()} */}
       </div>
     )
   }

@@ -144,6 +144,14 @@ class Assignments extends React.Component {
             currentWeight={weights[currentWeightIndex]}
           />
         }
+        {(assignments.length !== 0) &&
+          <button
+            onClick={() => this.onNext()}
+            className='button full-width margin-top'
+          >
+            Save and continue
+          </button>
+        }
         {/* {viewOnly && <a className='right-text' onClick={() => this.setState({viewOnly: false}) }>edit</a>}
          */}
       </div>
