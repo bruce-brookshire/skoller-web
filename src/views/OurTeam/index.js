@@ -14,7 +14,7 @@ class OurTeam extends React.Component {
           <div className='teammates'>
             <div className='teammate-cell'>
               <div className='teammate'>
-                <img className='teammate-image' src='src/assets/images/our_team/carson.png'></img>
+                <img className='teammate-image' src='src/assets/images/our_team/carsonblack.png'></img>
                 <p className='teammate-name'>Carson Ward</p>
                 <p className='teammate-title'>Founder &amp; CEO</p>
                 <p className='teammate-description'> Carson is the conductor. He oversees product innovation, business partnerships, and growth strategies.</p>
