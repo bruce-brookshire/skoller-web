@@ -265,6 +265,12 @@ class SyllabusTool extends React.Component {
                 this.setState({currentIndex: ContentEnum.ASSIGNMENTS})
               }}
             />
+            <button
+              className='button full-width margin-top margin-bottom'
+              onClick={() => this.onNext()}
+            >
+            ⚡️Submit⚡️
+            </button>
           </div>
         )
       default:
