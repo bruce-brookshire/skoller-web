@@ -116,7 +116,11 @@ body {
     right: 0;
     left: 0;
     overflow-x: scroll;
-    overflow-y: hidden;
+    overflow-y: scroll;
+    @include breakpoint(medium) {
+      overflow-y: hidden;
+    }
+    
   }
 }
 
