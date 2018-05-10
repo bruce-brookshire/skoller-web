@@ -18,7 +18,7 @@ class AssignmentTable extends React.Component {
 
     return (
       <div
-        className={`row table-row ${activeClass}`}
+        className={`table-row ${activeClass}`}
         key={`assignment-${index}`}
         onClick={() => {
           if (viewOnly) return

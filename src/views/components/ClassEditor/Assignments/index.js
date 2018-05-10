@@ -128,7 +128,7 @@ class Assignments extends React.Component {
           />
         }
         {!viewOnly && assignments.length === 0 &&
-          <div className='margin-top center-text'>
+          <div className='margin-top margin-bottom center-text'>
             <a onClick={() => this.onNext()}>Skip this category</a>
           </div>
         }
@@ -147,7 +147,7 @@ class Assignments extends React.Component {
         {(assignments.length !== 0) &&
           <button
             onClick={() => this.onNext()}
-            className='button full-width margin-top'
+            className='button full-width margin-top margin-bottom'
           >
             Save and continue
           </button>
