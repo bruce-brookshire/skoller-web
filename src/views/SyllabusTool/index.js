@@ -15,7 +15,8 @@ const steps = [ 'Weights', 'Assignments', 'Review' ]
 
 const ContentEnum = {
   WEIGHTS: 0,
-  ASSIGNMENTS: 1
+  ASSIGNMENTS: 1,
+  REVIEW: 2
 }
 
 @inject('rootStore') @observer
@@ -71,7 +72,7 @@ class SyllabusTool extends React.Component {
       loadingClass: true,
       openIssuesModal: false,
       sectionId: state.sectionId || null,
-      stepCount: 2
+      stepCount: 3
     }
   }
 
@@ -224,20 +225,38 @@ class SyllabusTool extends React.Component {
   */
   renderContent () {
     const {navbarStore} = this.props.rootStore
-    const {isReviewer} = this.state
     switch (this.state.currentIndex) {
       case ContentEnum.WEIGHTS:
         return <Weights
           cl={navbarStore.cl}
-          isReview={isReviewer}
+          isReview={false}
           onSubmit={this.onNext.bind(this)}
           onUpdateClass={this.onUpdateClass.bind(this)}
         />
       case ContentEnum.ASSIGNMENTS:
         return <Assignments
           cl={navbarStore.cl}
-          isReview={isReviewer}
+          isReview={false}
           onSubmit={this.onNext.bind(this)} />
+      case ContentEnum.REVIEW:
+        return (
+          <div>
+            <Weights
+              cl={navbarStore.cl}
+              isReview={true}
+              onSubmit={this.onNext.bind(this)}
+              onUpdateClass={this.onUpdateClass.bind(this)}
+              onEdit={() => {
+                this.setState({currentIndex: ContentEnum.WEIGHTS})
+              }}
+            />
+            <Assignments
+              cl={navbarStore.cl}
+              isReview={true}
+              onSubmit={this.onNext.bind(this)}
+            />
+          </div>
+        )
       default:
     }
   }

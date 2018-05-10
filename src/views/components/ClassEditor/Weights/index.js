@@ -109,7 +109,7 @@ class Weights extends React.Component {
         {weights.length !== 0 &&
           <div id='cn-weights-info'>*The total should be 100%</div>
         }
-        {(weights.length !== 0 || noWeights) &&
+        {(weights.length !== 0 || noWeights) && !viewOnly &&
           <button
             onClick={() => this.props.onSubmit()}
             disabled={disableButton}
@@ -223,7 +223,7 @@ class Weights extends React.Component {
 
     return (
       <div id='cn-weights'>
-        {viewOnly && <a className='right-text' onClick={() => this.setState({viewOnly: false}) }>edit</a>}
+        {viewOnly && <a className='right-text' onClick={() => this.props.onEdit()}>edit</a>}
         {this.renderContent()}
       </div>
     )
@@ -234,7 +234,8 @@ Weights.propTypes = {
   isReview: PropTypes.bool,
   onUpdateClass: PropTypes.func,
   cl: PropTypes.object,
-  onSubmit: PropTypes.func
+  onSubmit: PropTypes.func,
+  onEdit: PropTypes.func
 }
 
 export default Weights
