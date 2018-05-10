@@ -52,24 +52,9 @@
         @include breakpoint(large) {
           flex: 1;
         }
-        .cn-section-footer {
-          display: flex;
-          flex-direction: column;
-          
-          .cn-status-form, button {
-            min-width: 100%;
-            @include breakpoint(medium) {
-              min-width: 50%;
-            }
-          }
-          .having-issues {
-            float: right;
-          }
-        }
       }
 
       &.cn-file-panel {
-        position: relative;
         background-color: $cn-color-white;
         border-radius: 10px;
         border: 1px solid #4A4A4A;
@@ -79,6 +64,7 @@
           margin-top: -1.1em;
           display: flex;
           align-items: center;
+          align-self: flex-end;
         }
         
         .cn-section-content {
