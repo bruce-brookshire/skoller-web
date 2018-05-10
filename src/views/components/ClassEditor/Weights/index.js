@@ -16,11 +16,9 @@ class Weights extends React.Component {
   * Fetch the weights for a given class
   */
   componentWillMount () {
-    const {cl, isReview} = this.props
+    const {cl} = this.props
     actions.weights.getClassWeights(cl).then((weights) => {
-      // if in review, set
-      const noWeights = (isReview && weights.length === 0)
-      this.setState({weights, noWeights})
+      this.setState({weights})
     }).then(() => false)
   }
 
@@ -30,13 +28,11 @@ class Weights extends React.Component {
   * @return [Object]. State object.
   */
   initializeState () {
-    const {isReview} = this.props
     return {
       currentWeight: null,
       noWeights: null,
       totalPoints: null,
       weights: [],
-      viewOnly: isReview || false,
       reset: false
     }
   }
@@ -46,10 +42,10 @@ class Weights extends React.Component {
   * Otherwise render the table
   */
   renderContent () {
-    const {cl} = this.props
-    const {totalPoints, viewOnly, disabled, reset, weights} = this.state
+    const {cl, isReview} = this.props
+    const {totalPoints, reset, weights} = this.state
 
-    if (((!cl.is_points && !totalPoints && weights.length === 0) || reset) && !viewOnly && !disabled) {
+    if (((!cl.is_points && !totalPoints && weights.length === 0) || reset) && !isReview) {
       // ask for weights or points
       return (
         <WeightType
@@ -57,7 +53,7 @@ class Weights extends React.Component {
           onSubmit={this.onTypeSelection.bind(this)}
         />
       )
-    } else if (cl.is_points && !totalPoints && !viewOnly && !disabled) {
+    } else if (cl.is_points && !totalPoints && !isReview) {
       // ask for total points
       return (
         <PointTotal
@@ -75,13 +71,13 @@ class Weights extends React.Component {
   * Render the weights and weight form.
   */
   renderWeightsContent () {
-    const {viewOnly, weights, currentWeight, totalPoints, noWeights} = this.state
-    const {cl} = this.props
+    const {weights, currentWeight, totalPoints, noWeights} = this.state
+    const {cl, isReview} = this.props
 
     let disableButton = !this.isTotalWeightSecure() && !noWeights
     return (
       <div>
-        {!viewOnly &&
+        {!isReview &&
           <WeightForm
             cl={cl}
             onCreateWeight={this.onCreateWeight.bind(this)}
@@ -98,7 +94,7 @@ class Weights extends React.Component {
         {weights.length !== 0 &&
           <WeightTable
             weights={weights}
-            viewOnly={viewOnly}
+            viewOnly={isReview}
             currentWeight={currentWeight}
             cl={cl}
             onSelectWeight={this.onSelectWeight.bind(this)}
@@ -110,7 +106,7 @@ class Weights extends React.Component {
         {weights.length !== 0 &&
           <div id='cn-weights-info'>*The total should be 100%</div>
         }
-        {(weights.length !== 0 || noWeights) && !viewOnly &&
+        {(weights.length !== 0 || noWeights) && !isReview &&
           <button
             onClick={() => this.props.onSubmit()}
             disabled={disableButton}
@@ -129,8 +125,10 @@ class Weights extends React.Component {
   * @return [Number] totalWeight. The accumlated percentages.
   */
   getTotalWeight () {
+    const {weights} = this.state
     let totalWeight = 0
-    this.state.weights.forEach(item => {
+
+    weights.forEach(item => {
       totalWeight += Number(item.weight)
     })
     return totalWeight
@@ -144,10 +142,12 @@ class Weights extends React.Component {
   */
   isTotalWeightSecure () {
     const {cl} = this.props
+    const {totalPoints} = this.state
     let totalWeight = this.getTotalWeight()
+
     if (cl.is_points) {
-      if (!this.state.totalPoints) return false
-      totalWeight = (totalWeight / this.state.totalPoints) * 100
+      if (!totalPoints) return false
+      totalWeight = (totalWeight / totalPoints) * 100
     }
     return (totalWeight < 101 && totalWeight > 99.9)
   }

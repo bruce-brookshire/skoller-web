@@ -106,7 +106,7 @@ class WeightTable extends React.Component {
       <div id='cn-weight-table'>
         <div id='cn-weight-table-label'>
           {viewOnly ? 'Weights' : 'Saved weights'}
-          {viewOnly && <a className='right-text' onClick={() => this.props.onEdit()}>Edit</a>}
+          {viewOnly && <a onClick={() => this.props.onEdit()}>Edit</a>}
         </div>
         <div className={`class-editor-table ${viewOnly ? 'view-only' : ''}`}>
           <div ref={(field) => { this.sectionControl = field }}>
