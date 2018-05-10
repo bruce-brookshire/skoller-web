@@ -241,6 +241,13 @@ class SyllabusTool extends React.Component {
       case ContentEnum.REVIEW:
         return (
           <div>
+            <div className='cn-section-content-header'>
+              Almost done!
+            </div>
+            <div>
+              Here&apos;s your last chance to review the weights and assignments for {navbarStore.cl.name + ' '}
+              before submitting for the whole class.
+            </div>
             <Weights
               cl={navbarStore.cl}
               isReview={true}
@@ -254,6 +261,9 @@ class SyllabusTool extends React.Component {
               cl={navbarStore.cl}
               isReview={true}
               onSubmit={this.onNext.bind(this)}
+              onEdit={() => {
+                this.setState({currentIndex: ContentEnum.ASSIGNMENTS})
+              }}
             />
           </div>
         )
