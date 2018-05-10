@@ -1,6 +1,7 @@
 import React from 'react'
 import LoginForm from './LoginForm'
 import {browserHistory} from 'react-router'
+import PropTypes from 'prop-types'
 
 class LandingNav extends React.Component {
   render () {
@@ -10,10 +11,16 @@ class LandingNav extends React.Component {
           <h1>
             <a onClick={() => { browserHistory.push('/landing'); window.scrollTo(0, 0) }} ><img alt="Skoller" className='logo' src='src/assets/images/logo-wide-blue@1x.png' /></a>
           </h1>
-          <LoginForm rootStore={this.props.rootStore}/>
+          {!this.props.hideLogin && <LoginForm rootStore={this.props.rootStore}/>}
         </div>
       </div>
     )
   }
 }
+
+LandingNav.propTypes = {
+  hideLogin: PropTypes.bool,
+  rootStore: PropTypes.object
+}
+
 export default LandingNav

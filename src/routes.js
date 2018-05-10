@@ -1,6 +1,6 @@
 import React from 'react'
 import { Cookies } from 'react-cookie'
-import { Router, Route, Redirect, IndexRedirect, IndexRoute, browserHistory } from 'react-router'
+import { Router, Route, Redirect, IndexRedirect, browserHistory } from 'react-router'
 import App from './containers/App'
 import Layout from './containers/Layout'
 
@@ -11,6 +11,7 @@ import PrivacyPolicy from './views/PrivacyPolicy'
 import LearnMore from './views/LearnMore'
 import PeopleTalking from './views/PeopleTalking'
 import OurTeam from './views/OurTeam'
+import PitchDeck from './views/PitchDeck'
 import ResetPassword from './views/ResetPassword'
 
 import DIYLanding from './views/Student/DIYLanding'
@@ -47,6 +48,7 @@ const router = (
       <Route path='/what-people-say' component={PeopleTalking} />
       <Route path='/our-team' component={OurTeam} />
       <Route path='/faq' component={Faq} />
+      <Route path='/pitch-deck' component={PitchDeck} />
       <Route path='/app' component={Layout} onEnter={requireAuth}>
         <IndexRedirect to='/student/classes' />
         <Route path='/student'>
@@ -96,11 +98,11 @@ function requireAuth (nextState, replaceState) {
             authOnboard()
           }
           userStore.setFetchingUser(false)
-        }).catch((error) => { userStore.setFetchingUser(false) })
+        }).catch(() => { userStore.setFetchingUser(false) })
 
         userStore.setFetchingUser(false)
       })
-      .catch((error) => {
+      .catch(() => {
         browserHistory.push('/landing')
         userStore.setFetchingUser(false)
       })
