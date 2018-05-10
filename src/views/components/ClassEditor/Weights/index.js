@@ -104,6 +104,7 @@ class Weights extends React.Component {
             onSelectWeight={this.onSelectWeight.bind(this)}
             onDeleteWeight={this.onDeleteWeight.bind(this)}
             totalPoints={totalPoints}
+            onEdit={() => this.props.onEdit()}
           />
         }
         {weights.length !== 0 &&
@@ -219,11 +220,8 @@ class Weights extends React.Component {
   }
 
   render () {
-    const {viewOnly} = this.state
-
     return (
       <div id='cn-weights'>
-        {viewOnly && <a className='right-text' onClick={() => this.props.onEdit()}>edit</a>}
         {this.renderContent()}
       </div>
     )

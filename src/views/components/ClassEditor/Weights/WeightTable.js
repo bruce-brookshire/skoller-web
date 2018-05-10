@@ -105,7 +105,8 @@ class WeightTable extends React.Component {
     return (
       <div id='cn-weight-table'>
         <div id='cn-weight-table-label'>
-          Saved weights
+          {viewOnly ? 'Weights' : 'Saved weights'}
+          {viewOnly && <a className='right-text' onClick={() => this.props.onEdit()}>Edit</a>}
         </div>
         <div className={`class-editor-table ${viewOnly ? 'view-only' : ''}`}>
           <div ref={(field) => { this.sectionControl = field }}>
@@ -127,7 +128,8 @@ WeightTable.propTypes = {
   cl: PropTypes.object,
   onSelectWeight: PropTypes.func,
   onDeleteWeight: PropTypes.func,
-  totalPoints: PropTypes.number
+  totalPoints: PropTypes.number,
+  onEdit: PropTypes.func
 }
 
 export default WeightTable
