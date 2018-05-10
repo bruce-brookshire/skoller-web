@@ -77,12 +77,13 @@ class AssignmentTable extends React.Component {
   }
 
   render () {
-    const {viewOnly, currentWeight} = this.props
+    const {viewOnly, currentWeight, assignments} = this.props
 
     return (
       <div id='cn-assignment-table'>
         <div id='cn-assignment-table-label'>
-          Saved assignments{currentWeight ? ' for ' + currentWeight.name : ''}
+          {!viewOnly ? `Saved assignments${currentWeight ? ' for ' + currentWeight.name : ''}` : `Assignments (${assignments.length})`}
+          {viewOnly && <a onClick={() => this.props.onEdit()}>Edit</a>}
         </div>
         <div className={`class-editor-table ${viewOnly ? 'view-only' : ''}`} >
           <div id='class-editor-assignments-table' ref={(field) => { this.sectionControl = field }}>
@@ -102,7 +103,8 @@ AssignmentTable.propTypes = {
   onDeleteAssignment: PropTypes.func,
   weights: PropTypes.array,
   cl: PropTypes.object,
-  currentWeight: PropTypes.object
+  currentWeight: PropTypes.object,
+  onEdit: PropTypes.func
 }
 
 export default AssignmentTable

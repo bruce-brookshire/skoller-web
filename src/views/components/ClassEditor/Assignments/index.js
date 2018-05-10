@@ -142,9 +142,10 @@ class Assignments extends React.Component {
             weights={weights}
             cl={cl}
             currentWeight={weights[currentWeightIndex]}
+            onEdit={() => this.props.onEdit()}
           />
         }
-        {(assignments.length !== 0) &&
+        {assignments.length !== 0 && !viewOnly &&
           <button
             onClick={() => this.onNext()}
             className='button full-width margin-top margin-bottom'
@@ -160,7 +161,8 @@ class Assignments extends React.Component {
 Assignments.propTypes = {
   cl: PropTypes.object,
   isReview: PropTypes.bool,
-  onSubmit: PropTypes.func
+  onSubmit: PropTypes.func,
+  onEdit: PropTypes.func
 }
 
 export default Assignments

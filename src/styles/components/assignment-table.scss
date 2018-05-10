@@ -4,5 +4,7 @@
   #cn-assignment-table-label {
     font-size: 14px;
     margin-bottom: $unit-space / 2;
+    display: flex;
+    justify-content: space-between;
   }
 }
