@@ -144,14 +144,14 @@ class WeightForm extends React.Component {
           />
         }
         {!noWeights && <button
-          className='button full-width margin-top'
+          className='button full-width margin-top margin-bottom'
           disabled={this.state.loading}
           onClick={this.onSubmit.bind(this)}
         >
           Add weight
           {this.state.loading ? <Loading /> : null}
         </button>}
-        <div className='margin-top'>
+        <div className='margin-bottom'>
           <a onClick={() => this.props.reset()}>Go back</a>
         </div>
       </div>

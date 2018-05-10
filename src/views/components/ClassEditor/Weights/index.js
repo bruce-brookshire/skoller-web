@@ -110,7 +110,7 @@ class Weights extends React.Component {
           <button
             onClick={() => this.props.onSubmit()}
             disabled={disableButton}
-            className={disableButton ? 'button full-width disabled margin-top' : 'button full-width margin-top'}
+            className={disableButton ? 'button full-width disabled margin-top margin-bottom' : 'button full-width margin-top margin-bottom'}
           >
             Save and continue
           </button>

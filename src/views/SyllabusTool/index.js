@@ -244,7 +244,7 @@ class SyllabusTool extends React.Component {
             <div className='cn-section-content-header'>
               Almost done!
             </div>
-            <div>
+            <div className='margin-bottom'>
               Here&apos;s your last chance to review the weights and assignments for {navbarStore.cl.name + ' '}
               before submitting for the whole class.
             </div>

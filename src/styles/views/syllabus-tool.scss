@@ -13,6 +13,7 @@
     flex-direction: column;
     padding-right: 1em;
     padding-left: 1em;
+    overflow-y: scroll;
 
     @include breakpoint(medium) {
       flex-direction: row;
@@ -38,6 +39,7 @@
           background-color: #e8f3fd;
           overflow-y: scroll;
           padding: 1em;
+          padding-bottom: 0;
 
           .cn-section-content-header {
             font-size: 24px;
