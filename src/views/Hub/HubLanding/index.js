@@ -258,29 +258,14 @@ class HubLanding extends React.Component {
 
                   <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
                     <button
-                      className={`nav-button button full-width ${disableWeights ? 'disabled' : ''}`}
-                      disabled={disableWeights}
-                      onClick={() => this.getNextClass('weights', 100)}
-                    >
-                      <img src='/src/assets/images/icons/Weights.png'/>
-                      <span>Weights (
-                      {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}}/>
-                        : weightCount
-                      }
-                      )</span>
-                    </button>
-                  </div>
-
-                  <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
-                    <button
                       className={`nav-button button full-width ${disableAssignments ? 'disabled' : ''}`}
                       disabled={disableAssignments}
                       onClick={() => this.getNextClass('assignments', 200)}
                     >
                       <img src='/src/assets/images/icons/Assignments.png'/>
-                      <span>Assigments (
+                      <span>Syllabi (
                       {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
-                        : assignmentCount
+                        : assignmentCount + weightCount
                       }
                       )</span>
                     </button>
