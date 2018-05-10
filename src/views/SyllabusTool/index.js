@@ -58,14 +58,13 @@ class SyllabusTool extends React.Component {
   */
   initializeState () {
     const {state} = this.props.location
-    const currentIndex = this.initializeCurrentIndex()
     let {navbarStore} = this.props.rootStore
     navbarStore.cl = null
     navbarStore.isDIY = state.isDIY || false
     return {
       currentDocumentIndex: 0,
       currentDocument: null,
-      currentIndex,
+      currentIndex: ContentEnum.WEIGHTS,
       documents: [],
       gettingClass: false,
       isSW: state.isSW || false,
@@ -74,14 +73,6 @@ class SyllabusTool extends React.Component {
       sectionId: state.sectionId || null,
       stepCount: 2
     }
-  }
-
-  /*
-  * Intialize the current index of content to be shown.
-  */
-  initializeCurrentIndex () {
-    let currentIndex = ContentEnum.WEIGHTS
-    return currentIndex
   }
 
   /*

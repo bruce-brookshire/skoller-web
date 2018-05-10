@@ -152,8 +152,6 @@ class Assignments extends React.Component {
             Save and continue
           </button>
         }
-        {/* {viewOnly && <a className='right-text' onClick={() => this.setState({viewOnly: false}) }>edit</a>}
-         */}
       </div>
     )
   }
