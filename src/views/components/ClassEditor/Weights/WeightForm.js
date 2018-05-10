@@ -83,8 +83,8 @@ class WeightForm extends React.Component {
   onCreateWeight () {
     this.setState({loading: true})
     actions.weights.createWeight(this.props.cl, this.state.form).then((weight) => {
-      this.props.onCreateWeight(weight)
       this.setState({form: this.initializeFormData(), loading: false})
+      this.props.onCreateWeight(weight)
     }).catch(() => { this.setState({loading: false}) })
   }
 
@@ -94,8 +94,8 @@ class WeightForm extends React.Component {
   onUpdateWeight () {
     this.setState({loading: true})
     actions.weights.updateWeight(this.props.cl, this.state.form).then((weight) => {
-      this.props.onUpdateWeight(weight)
       this.setState({form: this.initializeFormData(), loading: false})
+      this.props.onUpdateWeight(weight)
     }).catch(() => { this.setState({loading: false}) })
   }
 

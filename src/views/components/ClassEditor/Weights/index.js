@@ -207,7 +207,7 @@ class Weights extends React.Component {
   onDeleteWeight (weight) {
     actions.weights.deleteWeight(weight).then(() => {
       const newWeights = this.state.weights.filter(w => w.id !== weight.id)
-      this.setState({weights: newWeights})
+      this.setState({weights: newWeights, currentWeight: null})
     }).catch(() => false)
   }
 
