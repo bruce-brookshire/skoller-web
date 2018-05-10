@@ -120,7 +120,6 @@ class HubLanding extends React.Component {
   */
   renderAdminMenu () {
     if (this.isAdminUser()) {
-      const helpCount = this.getStatusCount('Help') || 0
       return (
         <div className='margin-top margin-bottom'>
           <span className='button-header center-text'>Admin panel</span>
@@ -130,9 +129,9 @@ class HubLanding extends React.Component {
               <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/schools')}>
                 <img src='/src/assets/images/icons/School.png'/>
                 <span>Schools (
-                  {this.state.loadingStatuses ? <Loading style={{color: 'white'}}/>
-                    : this.state.schoolCount
-                  }
+                {this.state.loadingStatuses ? <Loading style={{color: 'white'}}/>
+                  : this.state.schoolCount
+                }
                 )</span>
               </button>
             </div>
@@ -160,7 +159,7 @@ class HubLanding extends React.Component {
 
             <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 margin-top'>
               <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/switchboard')}>
-                <i className='fa fa-toggle-on' style={{color:'#FEFEFE',fontSize:'1.9rem'}}></i>
+                <i className='fa fa-toggle-on' style={{color: '#FEFEFE', fontSize: '1.9rem'}}></i>
                 <span>Switchboard</span>
               </button>
             </div>
@@ -196,9 +195,9 @@ class HubLanding extends React.Component {
             >
               <img src='/src/assets/images/icons/change_requests.png'/>
               <span>Change Request (
-                {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
-                  : changeCount
-                }
+              {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
+                : changeCount
+              }
               )</span>
             </button>
           </div>}
@@ -210,9 +209,9 @@ class HubLanding extends React.Component {
             >
               <img src='/src/assets/images/icons/repair.png'/>
               <span>Under Maintenance (
-                {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
-                  : maintCount
-                }
+              {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
+                : maintCount
+              }
               )</span>
             </button>
           </div>}
@@ -223,11 +222,11 @@ class HubLanding extends React.Component {
               disabled={disableApproval}
               onClick={this.onNeedsApproval.bind(this)}
             >
-              <i className='fa fa-thumbs-o-up' style={{color:'#FEFEFE',fontSize:'1.9rem'}}></i>
+              <i className='fa fa-thumbs-o-up' style={{color: '#FEFEFE', fontSize: '1.9rem'}}></i>
               <span>Needs Approval (
-                {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
-                  : approvalCount
-                }
+              {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
+                : approvalCount
+              }
               )</span>
             </button>
           </div>}
@@ -239,12 +238,10 @@ class HubLanding extends React.Component {
   render () {
     const weightCount = this.getStatusCount('Weights') || 0
     const assignmentCount = this.getStatusCount('Assignments') || 0
-    const reviewCount = this.getStatusCount('Review') || 0
     const helpCount = this.getStatusCount('Help') || 0
 
     const disableWeights = weightCount === 0
     const disableAssignments = assignmentCount === 0
-    const disableReviews = reviewCount === 0
     const disableHelp = helpCount === 0
 
     return (
@@ -256,23 +253,8 @@ class HubLanding extends React.Component {
               <p className='description margin-top'>Where the syllabus magic happens <i className="em em-crystal_ball"></i></p>
 
               <div>
-                <span className='button-header center-text'>What's in action?</span>
+                <span className='button-header center-text'>What&apos;s in action?</span>
                 <div className='nav-button-container row full-width'>
-
-                  <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
-                    <button
-                      className={`nav-button button full-width ${disableWeights ? 'disabled' : ''}`}
-                      disabled={disableWeights}
-                      onClick={() => this.getNextClass('weights', 100)}
-                    >
-                      <img src='/src/assets/images/icons/Weights.png'/>
-                      <span>Weights (
-                        {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}}/>
-                          : weightCount
-                        }
-                      )</span>
-                    </button>
-                  </div>
 
                   <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
                     <button
@@ -281,25 +263,10 @@ class HubLanding extends React.Component {
                       onClick={() => this.getNextClass('assignments', 200)}
                     >
                       <img src='/src/assets/images/icons/Assignments.png'/>
-                      <span>Assigments (
-                        {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
-                          : assignmentCount
-                        }
-                      )</span>
-                    </button>
-                  </div>
-
-                  <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
-                    <button
-                      className={`nav-button button full-width ${disableReviews ? 'disabled' : ''}`}
-                      disabled={disableReviews}
-                      onClick={() => this.getNextClass('reviews', 300)}
-                    >
-                      <img src='/src/assets/images/icons/Review.png'/>
-                      <span>Review (
-                        {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
-                          : reviewCount
-                        }
+                      <span>Syllabi (
+                      {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
+                        : assignmentCount + weightCount
+                      }
                       )</span>
                     </button>
                   </div>
@@ -312,9 +279,9 @@ class HubLanding extends React.Component {
                     >
                       <img src='/src/assets/images/icons/NeedsHelp.png'/>
                       <span>Help Needed (
-                        {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
-                          : helpCount
-                        }
+                      {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
+                        : helpCount
+                      }
                       )</span>
                     </button>
                   </div>}

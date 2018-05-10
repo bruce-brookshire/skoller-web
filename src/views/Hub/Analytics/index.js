@@ -1,11 +1,11 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import DateRangeField from '../../../components/Form/DateRangeField'
 import PillField from '../../../components/Form/PillField'
 import SelectField from '../../../components/Form/SelectField'
 import {inject, observer} from 'mobx-react'
 import {formatDate} from '../../../utilities/time'
 import actions from '../../../actions'
-import stores from '../../../stores'
 import Advertising from './Advertising'
 import AssignmentInfo from './AssignmentInfo'
 import ChatAnalytics from './ChatAnalytics'
@@ -14,8 +14,6 @@ import Notifications from './Notifications'
 import Reviews from './Reviews'
 import SyllabiProcessing from './SyllabiProcessing'
 import Updates from './Updates'
-
-const {navbarStore} = stores
 
 @inject('rootStore') @observer
 class Analytics extends React.Component {
@@ -33,6 +31,7 @@ class Analytics extends React.Component {
   }
 
   componentWillUnmount () {
+    let {navbarStore} = this.props.rootStore
     navbarStore.title = ''
   }
 
@@ -48,6 +47,7 @@ class Analytics extends React.Component {
   * Initialize state
   */
   initializeState () {
+    let {navbarStore} = this.props.rootStore
     const {state} = this.props.location
     navbarStore.cl = null
     navbarStore.title = 'Skoller Analytics'
@@ -276,6 +276,10 @@ class Analytics extends React.Component {
       </div>
     )
   }
+}
+
+Analytics.propTypes = {
+  rootStore: PropTypes.object
 }
 
 export default Analytics

@@ -4,11 +4,11 @@ import PropTypes from 'prop-types'
 import actions from '../../../actions'
 import LandingNav from '../../components/LandingNav'
 import {browserHistory} from 'react-router'
-import stores from '../../../stores'
+import {inject, observer} from 'mobx-react'
 
-const {userStore} = stores
 const cookie = new Cookies()
 
+@inject('rootStore') @observer
 class EnrollmentLink extends React.Component {
   constructor (props) {
     super(props)
@@ -43,6 +43,7 @@ class EnrollmentLink extends React.Component {
   }
 
   onSubmit () {
+    let {userStore} = this.props.rootStore
     if (!userStore.user) {
       userStore.authToken = cookie.get('skollerToken')
       actions.auth.getUserByToken()
@@ -96,7 +97,8 @@ class EnrollmentLink extends React.Component {
 }
 
 EnrollmentLink.PropTypes = {
-  params: PropTypes.object.isRequired
+  params: PropTypes.object.isRequired,
+  rootStore: PropTypes.func
 }
 
 export default EnrollmentLink

@@ -11,6 +11,9 @@
   .cn-body-container {
     display: flex;
     flex-direction: column;
+    padding-right: 1em;
+    padding-left: 1em;
+    overflow-y: scroll;
 
     @include breakpoint(medium) {
       flex-direction: row;
@@ -22,24 +25,32 @@
       flex: 1;
       flex-direction: column;
       padding: 1em;
+      padding-top: 0;
 
       &.cn-control-panel {
+        padding-left: 0;
         .cn-section-header{
           position: absolute;
           margin-top: -1.1em;
           display: flex;
           align-items: center;
         }
-        .cn-section-control {
+        .cn-section-content {
           background-color: #e8f3fd;
           overflow-y: scroll;
           padding: 1em;
+          padding-bottom: 0;
+
+          .cn-section-content-header {
+            font-size: 24px;
+            font-weight: 600;
+          }
         }
         @include breakpoint(medium) {
           flex: 1;
         }
         @include breakpoint(large) {
-          flex: 0.42;
+          flex: 1;
         }
         .cn-section-footer {
           display: flex;
@@ -59,6 +70,9 @@
 
       &.cn-file-panel {
         position: relative;
+        background-color: $cn-color-white;
+        border-radius: 10px;
+        border: 1px solid #4A4A4A;
 
         .cn-section-header{
           position: absolute;
@@ -67,23 +81,23 @@
           align-items: center;
         }
         
-        .cn-section-control {
+        .cn-section-content {
           height: 300px;
+          flex: 1;
         }
 
         @include breakpoint(medium) {
-          flex: 1;
+          flex: 2;
         }
         @include breakpoint(large) {
-          flex: 0.58;
+          flex: 2.5;
         }
       }
 
-      .cn-section-control {
+      .cn-section-content {
         border-radius: 10px;
         border: 2px solid #a9a9a9;
         display: flex;
-        flex: 1;
         flex-direction: column;
         overflow: hidden;
       }
@@ -175,5 +189,43 @@
     }
   }
 
+  .class-editor-table {
+    background-color: $cn-color-white;
+    border: 1px solid $cn-color-grey;
+    border-radius: $cn-border-radius;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   
+    &.view-only {
+      height: 100%;
+      .table-row {
+        cursor: auto;
+        &:hover {
+          background-color: $cn-color-white;
+        }
+      }
+  
+    }
+  
+    .table-row {
+      cursor: pointer;
+      padding: 0.5em;
+      padding-right: 0;
+      font-size: 14px;
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      .bold {
+        font-weight: 600;
+      }
+      &:hover {
+        background-color: darken($cn-color-white, 10%);
+      }
+  
+      &.active {
+        background-color: $cn-blue-cell-background;
+      }
+    }
+  }  
 }

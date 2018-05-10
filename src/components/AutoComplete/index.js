@@ -50,8 +50,8 @@ class AutoComplete extends React.Component {
 
   renderAutoCompleteResults () {
     if (this.state.isDirty) {
-      const loading = this.state.newSearch || this.props.className == 'loading'
-      const blank = this.state.autoCompleteValue == ''
+      const loading = this.state.newSearch || this.props.className === 'loading'
+      const blank = this.state.autoCompleteValue === ''
       if (this.props.dataSource.length === 0 && !loading && !blank) {
         return (
           <div className='cn-autocomplete-results-container'>
@@ -81,7 +81,7 @@ class AutoComplete extends React.Component {
     this.timeout = setTimeout(() => {
       if (self.timeout) clearTimeout(self.timeout)
       self.onUpdateAutoCompleteResults(self.state.autoCompleteValue)
-      this.setState({newSearch:false})
+      this.setState({newSearch: false})
     }, 400)
   }
 
@@ -111,7 +111,8 @@ AutoComplete.propTypes = {
   updateAutoCompleteResults: PropTypes.func,
   onBlur: PropTypes.func,
   onFocus: PropTypes.func,
-  newRow: PropTypes.bool
+  newRow: PropTypes.bool,
+  className: PropTypes.string
 }
 
 export default AutoComplete

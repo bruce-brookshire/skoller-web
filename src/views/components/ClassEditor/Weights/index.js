@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import PointTotal from './PointTotal'
-import WeightConverter from '../../../../components/WeightConverter/index'
 import WeightForm from './WeightForm'
+import WeightTable from './WeightTable'
+import WeightType from './WeightType'
 import actions from '../../../../actions'
 
 class Weights extends React.Component {
@@ -15,39 +16,10 @@ class Weights extends React.Component {
   * Fetch the weights for a given class
   */
   componentWillMount () {
-    const {cl, disabled, isReview} = this.props
-    if (!disabled) {
-      actions.weights.getClassWeights(cl).then((weights) => {
-        // if in review, set
-        const noWeights = (cl.status.id === 500 && weights.length === 0)
-        this.setState({weights, noWeights})
-      }).then(() => false)
-    }
-  }
-
-  componentWillReceiveProps (nextProps) {
-    /* Only here becuase weights tutroail changes the array of weights dependent
-     on step. If tutorial changes. Remove this code and isTutorial prop! */
-    if (nextProps.isTutorial && nextProps.weights.length !== this.state.weights.length) {
-      this.setState({weights: nextProps.weights})
-    }
-  }
-
-  /*
-  * Disable next.
-  */
-  componentDidUpdate () {
-    // Disable the parents submit button if weights are not secure.
-    if (this.props.toggleDisabled && !this.state.viewOnly) {
-      let {disableNext} = this.props
-      if (!disableNext && this.state.noWeights) {
-      }
-      else if (!this.isTotalWeightSecure() && !disableNext) {
-        this.props.toggleDisabled(true)
-      } else if (this.isTotalWeightSecure() && disableNext) {
-        this.props.toggleDisabled(false)
-      }
-    }
+    const {cl} = this.props
+    actions.weights.getClassWeights(cl).then((weights) => {
+      this.setState({weights})
+    }).then(() => false)
   }
 
   /*
@@ -56,14 +28,12 @@ class Weights extends React.Component {
   * @return [Object]. State object.
   */
   initializeState () {
-    const {cl, isReview, weights, isTutorial} = this.props
     return {
       currentWeight: null,
-      isPoints: cl.is_points,
       noWeights: null,
       totalPoints: null,
-      weights: weights || [],
-      viewOnly: isReview
+      weights: [],
+      reset: false
     }
   }
 
@@ -72,179 +42,81 @@ class Weights extends React.Component {
   * Otherwise render the table
   */
   renderContent () {
-    const {cl} = this.props
-    const {isPoints, totalPoints, viewOnly, disabled} = this.state
-    if (isPoints && !totalPoints && !viewOnly && !disabled) {
-      return (
-        <div style={{display: 'flex', flex: '1', flexDirection: 'column', justifyContent: 'space-evenly'}}>
-          <PointTotal
-            cl={cl}
-            onChange={this.onChangeTotalPoints.bind(this)}
-            totalPoints={this.state.totalPoints}
-          />
-          {!viewOnly && this.renderWeightSlider()}
-        </div>
-      )
-    }
+    const {cl, isReview} = this.props
+    const {totalPoints, reset, weights} = this.state
 
-    return this.renderWeightsContent()
+    if (((!cl.is_points && !totalPoints && weights.length === 0) || reset) && !isReview) {
+      // ask for weights or points
+      return (
+        <WeightType
+          isPoints={cl.is_points}
+          onSubmit={this.onTypeSelection.bind(this)}
+        />
+      )
+    } else if (cl.is_points && !totalPoints && !isReview) {
+      // ask for total points
+      return (
+        <PointTotal
+          onChange={this.onChangeTotalPoints.bind(this)}
+          totalPoints={totalPoints}
+          reset={() => this.setState({reset: true})}
+        />
+      )
+    } else {
+      return this.renderWeightsContent()
+    }
   }
 
   /*
   * Render the weights and weight form.
   */
   renderWeightsContent () {
-    const {viewOnly} = this.state
+    const {weights, currentWeight, totalPoints, noWeights} = this.state
+    const {cl, isReview} = this.props
+
+    let disableButton = !this.isTotalWeightSecure() && !noWeights
     return (
-      <div style={{display: 'flex', flex: '1', flexDirection: 'column'}}>
-        <div className={`class-editor-table ${viewOnly ? 'view-only' : ''}`}>
-          <div id='class-editor-weights-table' className='' ref={(field) => { this.sectionControl = field; }}>
-            {this.renderWeights()}
-          </div>
-          <div id='class-weights-total'>
-            {this.renderTotalPercentage()}
-          </div>
-        </div>
-        {!viewOnly && this.renderWeightsCheckbox()}
-        {!viewOnly && this.renderWeightForm()}
-        {!viewOnly && this.renderWeightSlider()}
-      </div>
-    )
-  }
-
-  /*
-  * Render the weights for a given class.
-  */
-  renderWeights () {
-    const weights = this.state.weights
-    if (weights.length === 0) {
-      return <div className='center-text margin-top'>
-        <span>There are currently no weights for this class.</span>
-      </div>
-    }
-    // sort weights by created at
-    return weights.sort((a, b) => {
-      return a.inserted_at > b.inserted_at
-    }).map((weight, index) =>
-      this.getRow(weight, index)
-    )
-  }
-
-  /*
-  * Formats row data to be passed to the grid for display
-  *
-  * @param [Object] item. Row data to be formatted.
-  * @param [Number] index. Index of row data.
-  */
-  getRow (item, index) {
-    const {id, name, weight} = item
-    const {currentWeight, viewOnly} = this.state
-    const {disabled} = this.props
-
-    const activeClass = (currentWeight && currentWeight.id) === id
-      ? 'active' : ''
-
-    return (
-      <div
-        className={`row table-row ${activeClass}`}
-        key={`weight-${index}`}
-        onClick={() => {
-          if (viewOnly || disabled) return
-          this.onSelectWeight(item)
-        }}
-      >
-        {!viewOnly &&
-          <div className='col-xs-1'>
-            <div
-              className='button-delete-x center-content'
-              onClick={(event) => {
-                event.stopPropagation()
-                if (disabled) return
-                this.onDeleteWeight(item)
-              }}><i className='fa fa-times' />
-            </div>
-          </div>
-        }
-        <div className={viewOnly ? 'col-xs-10' : 'col-xs-9'}>
-          <span>{name}</span>
-        </div>
-        <div className='col-xs-2 right-text'>
-          <span>{weight}{!this.state.isPoints ? '%' : ''}</span>
-        </div>
-      </div>
-    )
-  }
-
-  /*
-  * Render weight form.
-  */
-  renderWeightForm () {
-    return (
-      <WeightForm
-        cl={this.props.cl}
-        onCreateWeight={this.onCreateWeight.bind(this)}
-        onUpdateWeight={this.onUpdateWeight.bind(this)}
-        weight={this.state.currentWeight}
-      />
-    )
-  }
-
-  /*
-  * Render total percentage
-  *
-  */
-  renderTotalPercentage () {
-    const total = this.getTotalWeight()
-    const totalPoints = this.state.viewOnly ? total : `${total}/${this.state.totalPoints}`
-
-    return (
-      <div id='class-editor-weights-total' className='row'>
-        <div className='col-xs-9'>
-          <span>{!this.state.isPoints ? 'Total:' : 'Total points'}</span>
-        </div>
-        <div className='col-xs-3 right-text'>
-          <span>
-            {
-              !this.state.isPoints
-                ? `${total.toFixed(2)}%`
-                : totalPoints
-            }</span>
-        </div>
-      </div>
-    )
-  }
-
-  /*
-  * Render the checkbox for weights.
-  */
-  renderWeightsCheckbox () {
-    if (this.state.weights.length === 0) {
-      return (
-        <label style={{marginTop: '2px'}}>
-          <input
-            onChange={(event) => {
-              this.props.toggleDisabled(!event.target.checked)
-              this.setState({noWeights: event.target.checked})
+      <div>
+        {!isReview &&
+          <WeightForm
+            cl={cl}
+            onCreateWeight={this.onCreateWeight.bind(this)}
+            onUpdateWeight={this.onUpdateWeight.bind(this)}
+            weight={currentWeight}
+            noWeights={noWeights}
+            numWeights={weights.length}
+            onNoWeightChecked={(checked) => {
+              this.setState({noWeights: checked})
             }}
-            type='checkbox'
-            checked={this.state.noWeights}
-          /> Weights were not provided on the syllabus.
-        </label>
-      )
-    }
-  }
-
-  /*
-  * Render the slider
-  */
-  renderWeightSlider () {
-    if (this.state.weights.length === 0 || this.props.disabled) {
-      return (
-        <div className='margin-top'>
-          <WeightConverter id='class-editor-weight-converter' onChange={this.onToggleConverter.bind(this)} value={this.state.isPoints}/>
-        </div>
-      )
-    }
+            reset={() => this.setState({reset: true})}
+          />
+        }
+        {weights.length !== 0 &&
+          <WeightTable
+            weights={weights}
+            viewOnly={isReview}
+            currentWeight={currentWeight}
+            cl={cl}
+            onSelectWeight={this.onSelectWeight.bind(this)}
+            onDeleteWeight={this.onDeleteWeight.bind(this)}
+            totalPoints={totalPoints}
+            onEdit={() => this.props.onEdit()}
+          />
+        }
+        {weights.length !== 0 &&
+          <div id='cn-weights-info'>*The total should be 100%</div>
+        }
+        {(weights.length !== 0 || noWeights) && !isReview &&
+          <button
+            onClick={() => this.props.onSubmit()}
+            disabled={disableButton}
+            className={disableButton ? 'button full-width disabled margin-top margin-bottom' : 'button full-width margin-top margin-bottom'}
+          >
+            Save and continue
+          </button>
+        }
+      </div>
+    )
   }
 
   /*
@@ -253,8 +125,10 @@ class Weights extends React.Component {
   * @return [Number] totalWeight. The accumlated percentages.
   */
   getTotalWeight () {
+    const {weights} = this.state
     let totalWeight = 0
-    this.state.weights.forEach(item => {
+
+    weights.forEach(item => {
       totalWeight += Number(item.weight)
     })
     return totalWeight
@@ -267,12 +141,15 @@ class Weights extends React.Component {
   * @return [Boolean]. Truth value if the total weight percentage is within range.
   */
   isTotalWeightSecure () {
+    const {cl} = this.props
+    const {totalPoints} = this.state
     let totalWeight = this.getTotalWeight()
-    if (this.state.isPoints) {
-      if (!this.state.totalPoints) return false
-      totalWeight = (totalWeight / this.state.totalPoints) * 100
+
+    if (cl.is_points) {
+      if (!totalPoints) return false
+      totalWeight = (totalWeight / totalPoints) * 100
     }
-    return (totalWeight <= 101 && totalWeight >= 99)
+    return (totalWeight < 101 && totalWeight > 99.9)
   }
 
   /*
@@ -287,12 +164,15 @@ class Weights extends React.Component {
   /*
   * Toggle the weights from percentages to points or vice versa.
   */
-  onToggleConverter () {
+  onTypeSelection (isPoints) {
     const {cl} = this.props
-    const isPoints = !this.state.isPoints
-    actions.classes.updateClass({id: cl.id, is_points: isPoints}).then((cl) => {
-      this.setState({isPoints})
-    }).catch(() => false)
+
+    if (isPoints) {
+      this.setState({totalPoints: 0, reset: false})
+    } else {
+      this.setState({totalPoints: 100, reset: false})
+    }
+    this.props.onUpdateClass({id: cl.id, is_points: isPoints})
   }
 
   /*
@@ -327,7 +207,7 @@ class Weights extends React.Component {
   onDeleteWeight (weight) {
     actions.weights.deleteWeight(weight).then(() => {
       const newWeights = this.state.weights.filter(w => w.id !== weight.id)
-      this.setState({weights: newWeights})
+      this.setState({weights: newWeights, currentWeight: null})
     }).catch(() => false)
   }
 
@@ -340,12 +220,8 @@ class Weights extends React.Component {
   }
 
   render () {
-    const {viewOnly} = this.state
-
     return (
-      <div style={{display: 'flex', flex: '1', flexDirection: 'column'}}>
-        <h5 style={{marginTop: '0.25em', marginBottom: '0.5em'}}>{viewOnly ? 'Edit' : 'Add'} weights</h5>
-        {viewOnly && <a className='right-text' style={{marginBottom: '5px'}} onClick={() => this.setState({viewOnly: false}) }>edit</a>}
+      <div id='cn-weights'>
         {this.renderContent()}
       </div>
     )
@@ -353,12 +229,11 @@ class Weights extends React.Component {
 }
 
 Weights.propTypes = {
-  cl: PropTypes.object,
-  disabled: PropTypes.bool,
-  disableNext: PropTypes.bool,
   isReview: PropTypes.bool,
-  toggleDisabled: PropTypes.func,
-  weights: PropTypes.array
+  onUpdateClass: PropTypes.func,
+  cl: PropTypes.object,
+  onSubmit: PropTypes.func,
+  onEdit: PropTypes.func
 }
 
 export default Weights

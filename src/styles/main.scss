@@ -24,10 +24,10 @@
 @import 'forms/slider-field';
 
 // Components ----------------------------
+@import 'components/assignment-table';
 @import 'components/autocomplete';
 @import 'components/chat';
 @import 'components/class-card.scss';
-@import 'components/class-editor-table.scss';
 @import 'components/file-tab';
 @import 'components/file-viewer';
 @import 'components/flex-table';
@@ -45,7 +45,10 @@
 @import 'components/progress-bar.scss';
 @import 'components/weight-converter.scss';
 @import 'components/verification-code';
-
+@import 'components/weights';
+@import 'components/weight-form';
+@import 'components/weight-table';
+@import 'components/weight-type';
 
 // Composed Views ------------------------
 @import 'views/mixins/onboarding.scss';
@@ -115,10 +118,7 @@ body {
     right: 0;
     left: 0;
     overflow-x: scroll;
-
-    /* sticky bottom */
-    margin-bottom: -160px;
-    padding-bottom: 160px;
+    overflow-y: scroll;
   }
 }
 

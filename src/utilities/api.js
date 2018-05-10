@@ -1,7 +1,3 @@
-// import {showSnackbar} from '../actions/snackbar'
-// import stores from '../stores'
-// const {navigationStore} = stores
-
 /*
 * Function to check if http request was successful
 *

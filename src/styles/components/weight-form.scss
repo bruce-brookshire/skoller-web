@@ -1,0 +1,10 @@
+#cn-weight-form {
+  flex: 9;
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+  #cn-weight-form-instructions {
+    font-size: 14px;
+    margin-top: $unit-space;
+  }
+}

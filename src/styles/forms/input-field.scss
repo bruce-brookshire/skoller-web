@@ -8,8 +8,16 @@
   .cn-form-input {
     @include form-element;
   }
-  .cn-input-label {
-    @include form-label;
+
+  &.hide-spinner {
+    input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
   }
 
   .cn-info-container {
@@ -74,4 +82,8 @@
   input[type="date"]:valid:before {
     content: "";
   }
+}
+
+.cn-input-label {
+  @include form-label;
 }

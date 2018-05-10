@@ -11,8 +11,8 @@ var Environment = require('../../environment.js')
 *
 * @param [String] section name. Name of section SW is working.
 */
-export function getNextClass (sectionName) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/syllabus-workers/${sectionName}`, {
+export function getNextClass () {
+  return fetch(`${Environment.SERVER_NAME}/api/v1/syllabus-workers/`, {
     method: 'POST',
     headers: {
       'Authorization': userStore.authToken,

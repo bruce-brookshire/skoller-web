@@ -8,4 +8,8 @@
   .cn-checkbox-label {
     @include form-label;
   }
+  .cn-big-checkbox {
+    height: 2em;
+    width: 2em;
+  }
 }

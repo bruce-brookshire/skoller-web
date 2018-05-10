@@ -4,12 +4,11 @@ import {inject, observer} from 'mobx-react'
 import PropTypes from 'prop-types'
 import Modal from '../../components/Modal'
 import actions from '../../actions'
-import stores from '../../stores'
 
 @inject('rootStore') @observer
 class RequestResolvedModal extends React.Component {
   isSW () {
-    const {userStore} = stores
+    const {userStore} = this.props.rootStore
     return userStore.isSW()
   }
 

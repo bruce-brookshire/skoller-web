@@ -48,7 +48,7 @@ class HelpNeededInfo extends React.Component {
     const {cl} = this.props
     if(this.state.helpRequests && this.state.helpRequests[0]){
       return (
-        <div className='cn-section-control' style={{margin: '10px 0',height: '8em',overflowY: "scroll"}}>
+        <div className='cn-section-content' style={{margin: '10px 0',height: '8em',overflowY: "scroll"}}>
           {this.renderTitle()}
           {this.state.helpRequests[0].note || this.state.helpRequests[0].notes ? this.renderHelpRequestNote() : null}
         </div>

@@ -71,7 +71,7 @@ class StudentRequestInfo extends React.Component {
     const {cl} = this.props
     if(this.state.studentRequests && this.state.studentRequests[0]){
       return (
-        <div className='cn-section-control' style={{margin: '10px 0',maxHeight: '12em'}}>
+        <div className='cn-section-content' style={{margin: '10px 0',maxHeight: '12em'}}>
           {this.renderTitle()}
           {this.state.studentRequests[0].data ? (
             <div className='row'>

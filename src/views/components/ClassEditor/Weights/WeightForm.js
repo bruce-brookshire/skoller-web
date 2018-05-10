@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
-import {InputField} from '../../../../components/Form'
+import {InputField, CheckboxField} from '../../../../components/Form'
 import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
 
@@ -26,6 +26,8 @@ class WeightForm extends React.Component {
   componentWillReceiveProps (nextProps) {
     if (nextProps.weight && this.state.form.id !== nextProps.weight.id) {
       this.setState({form: this.initializeFormData(nextProps.weight)})
+    } else {
+      this.setState({form: this.initializeFormData()})
     }
   }
 
@@ -65,8 +67,13 @@ class WeightForm extends React.Component {
   *
   */
   onSubmit () {
-    if (this.props.validateForm(this.state.form, requiredFields)) {
-      !this.state.form.id ? this.onCreateWeight() : this.onUpdateWeight()
+    const {form} = this.state
+    const {weight} = this.props
+
+    if (this.props.validateForm(form, requiredFields)) {
+      form.id && (weight && (form.name === weight.name || form.weight === weight.weight))
+        ? this.onUpdateWeight()
+        : this.onCreateWeight()
     }
   }
 
@@ -76,8 +83,8 @@ class WeightForm extends React.Component {
   onCreateWeight () {
     this.setState({loading: true})
     actions.weights.createWeight(this.props.cl, this.state.form).then((weight) => {
-      this.props.onCreateWeight(weight)
       this.setState({form: this.initializeFormData(), loading: false})
+      this.props.onCreateWeight(weight)
     }).catch(() => { this.setState({loading: false}) })
   }
 
@@ -87,50 +94,66 @@ class WeightForm extends React.Component {
   onUpdateWeight () {
     this.setState({loading: true})
     actions.weights.updateWeight(this.props.cl, this.state.form).then((weight) => {
-      this.props.onUpdateWeight(weight)
       this.setState({form: this.initializeFormData(), loading: false})
+      this.props.onUpdateWeight(weight)
     }).catch(() => { this.setState({loading: false}) })
   }
 
   render () {
     const {form} = this.state
-    const {formErrors, updateProperty} = this.props
+    const {formErrors, updateProperty, numWeights, noWeights} = this.props
 
     return (
-      <div id='class-editor-weight-form' className='margin-top'>
-        <div className='row'>
-          <div className='col-xs-8'>
-            <InputField
-              containerClassName='margin-top'
-              error={formErrors.name}
-              label="Category name"
-              name="name"
-              onChange={updateProperty}
-              placeholder="Weight Category, i.e. Exams"
-              value={form.name}
-            />
-          </div>
-          <div className='col-xs-4'>
-            <InputField
-              containerClassName='margin-top'
-              error={formErrors.weight}
-              label="Weight"
-              name="weight"
-              onChange={updateProperty}
-              placeholder="Weight"
-              type="number"
-              value={form.weight}
-            />
-          </div>
+      <div id='cn-weight-form'>
+        <div className='cn-section-content-header'>
+          Add weights for this class
         </div>
-        <button
-          className='button full-width margin-top'
+        <div id='cn-weight-form-instructions'>
+          A weight is a category of assignments with a specific value.
+          For example: Exams are worth 25%, Quizzes are worth 15%, etc.
+        </div>
+        <InputField
+          containerClassName='margin-top'
+          error={formErrors.name}
+          label="Weight name"
+          name="name"
+          onChange={updateProperty}
+          placeholder="e.g. Exams"
+          value={form.name}
+        />
+        <InputField
+          containerClassName='margin-top hide-spinner'
+          error={formErrors.weight}
+          label="Value"
+          name="weight"
+          onChange={updateProperty}
+          placeholder="e.g. 25"
+          type="number"
+          value={form.weight}
+        />
+        {numWeights === 0 &&
+          <CheckboxField
+            name='noWeights'
+            onChange={(name, value) => {
+              this.props.onNoWeightChecked(value)
+            }}
+            value={noWeights}
+            containerClassName='margin-top'
+            inputClassName='margin-right'
+            label={'Weights were not provided on the syllabus.'}
+          />
+        }
+        {!noWeights && <button
+          className='button full-width margin-top margin-bottom'
           disabled={this.state.loading}
           onClick={this.onSubmit.bind(this)}
         >
-          Submit category weight
-          {this.state.loading ? <Loading style={{color: 'white', marginLeft: '0.5em'}} /> : null}
-        </button>
+          Add weight
+          {this.state.loading ? <Loading /> : null}
+        </button>}
+        <div className='margin-bottom'>
+          <a onClick={() => this.props.reset()}>Go back</a>
+        </div>
       </div>
     )
   }
@@ -143,7 +166,11 @@ WeightForm.propTypes = {
   onUpdateWeight: PropTypes.func.isRequired,
   updateProperty: PropTypes.func,
   weight: PropTypes.object,
-  validateForm: PropTypes.func
+  validateForm: PropTypes.func,
+  noWeights: PropTypes.bool,
+  numWeights: PropTypes.number,
+  onNoWeightChecked: PropTypes.func,
+  reset: PropTypes.func
 }
 
 export default ValidateForm(Form(WeightForm, 'form'))

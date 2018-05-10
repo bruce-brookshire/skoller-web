@@ -1,17 +1,15 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import actions from '../../../actions'
 import Loading from '../../../components/Loading'
 import Modal from '../../../components/Modal'
 import CustomNotificationForm from './CustomNotificationForm'
 import AutoUpdate from './AutoUpdate'
 import MinVerUpdate from './MinVerUpdate'
-import stores from '../../../stores'
 import {inject, observer} from 'mobx-react'
 import NotificationHistory from './NotificationHistory'
 import AssignmentReminders from './AssignmentReminders'
 import AssignmentReminderForm from './AssignmentReminderForm'
-
-const {navbarStore} = stores
 
 @inject('rootStore') @observer
 class Switchboard extends React.Component {
@@ -46,11 +44,13 @@ class Switchboard extends React.Component {
   }
 
   componentWillMount () {
+    let {navbarStore} = this.props.rootStore
     navbarStore.title = 'Switchboard'
     this.initializeComponent()
   }
 
   componentWillUnmount () {
+    let {navbarStore} = this.props.rootStore
     navbarStore.title = ''
   }
 
@@ -212,6 +212,10 @@ class Switchboard extends React.Component {
       </div>
     )
   }
+}
+
+Switchboard.propTypes = {
+  rootStore: PropTypes.object
 }
 
 export default Switchboard

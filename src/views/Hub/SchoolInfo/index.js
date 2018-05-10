@@ -11,9 +11,6 @@ import SchoolDetailsForm from './SchoolDetailsForm'
 import UploadHistory from '../../../components/UploadHistory'
 import actions from '../../../actions'
 import {inject, observer} from 'mobx-react'
-import stores from '../../../stores'
-
-const {navbarStore} = stores
 
 @inject('rootStore') @observer
 class SchoolInfo extends React.Component {
@@ -37,6 +34,7 @@ class SchoolInfo extends React.Component {
   }
 
   componentWillUnmount () {
+    let {navbarStore} = this.props.rootStore
     navbarStore.title = ''
   }
 
@@ -52,6 +50,7 @@ class SchoolInfo extends React.Component {
 
   initializeState () {
     const {state} = this.props.location
+    let {navbarStore} = this.props.rootStore
     navbarStore.cl = null
     navbarStore.title = 'School Info'
     return {
@@ -382,6 +381,10 @@ class SchoolInfo extends React.Component {
       </div>
     )
   }
+}
+
+SchoolInfo.propTypes = {
+  rootStore: PropTypes.object
 }
 
 export default SchoolInfo
