@@ -160,9 +160,9 @@ class UploadDocuments extends React.Component {
   *
   * @return [Boolean]. boolean indicating if the class is complete.
   */
-  isComplete () {
+  isUploadAllowed () {
     const {cl} = this.props
-    return (cl.status && cl.status.name === 'Complete')
+    return (cl.status && cl.status.name !== 'Complete' && cl.status.name !== 'Help' && cl.status.name !== 'Change')
   }
 
   renderDuplicateFileMessage () {
@@ -185,12 +185,12 @@ class UploadDocuments extends React.Component {
           </div>
           <div className='col-xs-3'>
             <UploadHistory
-              disabled={this.isComplete() || this.state.documents.filter((item) => item.is_syllabus).length > 0}
+              disabled={!this.isUploadAllowed() || this.getSyllabusDocuments().length > 0}
               files={this.getSyllabusDocuments()}
               unsavedDocuments={this.state.unsavedSyllabusDocs}
               info='Upload your class syllabus.'
               onUpload={(file) => { this.onUpload(file, true) }}
-              title={this.isComplete()
+              title={!this.isUploadAllowed()
                 ? 'The syllabus for this class has already been submitted.'
                 : (this.state.unsavedSyllabusDocs.length === 0 ? 'Drop syllabus here' : '')
               }
@@ -199,7 +199,7 @@ class UploadDocuments extends React.Component {
           </div>
           <div className='col-xs-3'>
             <UploadHistory
-              disabled={this.isComplete()}
+              disabled={!this.isUploadAllowed()}
               files={this.getAdditionalDocuments()}
               unsavedDocuments={this.state.unsavedAdditionalDocs}
               info='If assignment schedules or grading info are provided, drop them here.'
