@@ -10,7 +10,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
+  
     @include breakpoint(medium) {
       min-height: 591px;
     }
@@ -19,8 +19,6 @@
       width: 1000px;
       overflow-y: hidden;
       height: 591px;
-      // left: calc(50% - 1000px / 2);
-      // top: calc(50% - (519px / 2) - 29px);
 
       iframe {
         width: 100%;
@@ -29,3 +27,4 @@
     }
   }
 }
+
