@@ -37,7 +37,12 @@ class ProjectFourDoor extends React.Component {
   */
   onDIY () {
     const {cl} = this.props
-    browserHistory.push(`/class/${cl.id}/syllabus_tool/`)
+    browserHistory.push({
+      pathname: `/class/${cl.id}/syllabus_tool/`,
+      state: {
+        isDIY: true
+      }
+    })
   }
 
   /*

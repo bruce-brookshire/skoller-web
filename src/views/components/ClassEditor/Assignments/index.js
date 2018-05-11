@@ -49,8 +49,8 @@ class Assignments extends React.Component {
   }
 
   filterAssignments () {
-    const {assignments, currentWeightIndex, weights} = this.state
-    return assignments.filter((assign) => assign.weight_id === weights[currentWeightIndex].id)
+    const {assignments, currentWeightIndex, weights, viewOnly} = this.state
+    return !viewOnly ? assignments.filter((assign) => assign.weight_id === weights[currentWeightIndex].id) : assignments
   }
 
   /*

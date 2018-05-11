@@ -71,7 +71,6 @@ class SyllabusTool extends React.Component {
       isSW: state.isSW || false,
       loadingClass: true,
       openIssuesModal: false,
-      sectionId: state.sectionId || null,
       stepCount: 3
     }
   }
