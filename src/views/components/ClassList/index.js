@@ -60,11 +60,11 @@ class ClassList extends React.Component {
   * @return [Object] row. Object of formatted row data for display in grid.
   */
   mapRow (item, index) {
-    const {id, number, name, meet_start_time, meet_days, campus, professor, status, enrollment} = item
+    const {id, subject, section, code, name, meet_start_time, meet_days, campus, professor, status, enrollment} = item
 
     const row = {
       id: id || '',
-      courseNumber: number || '-',
+      courseNumber: subject + ' ' + code + '.' + section || '-',
       name: name || '-',
       professor: professor ? mapProfessor(professor) : 'TBA',
       days: meet_days || 'TBA',
@@ -88,7 +88,7 @@ class ClassList extends React.Component {
     if (status === 'new class' || status === 'needs syllabus') {
       return <span className='cn-red'> Upload Syllabus </span>
     } else if (status === 'weights' || status === 'assignments' || status === 'review' || status === 'help') {
-      return <span style={{color: '#a0a0a0'}}>In Review</span>
+      return <span className='cn-grey'>In Review</span>
     } else if (status === 'complete' || status === 'change') {
       return <span className='cn-green' >Complete</span>
     }
