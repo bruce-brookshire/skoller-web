@@ -18,8 +18,6 @@ import FindClasses from './views/Student/FindClasses'
 import Verification from './views/components/Verification'
 import ClassLink from './views/Student/ClassLink'
 
-import AssignmentsTutorial from './views/SyllabusTutorial/AssignmentsTutorial'
-import WeightsTutorial from './views/SyllabusTutorial/WeightsTutorial'
 import SyllabusTool from './views/SyllabusTool'
 
 import HubLanding from './views/Hub/HubLanding'
@@ -76,9 +74,6 @@ const router = (
         </Route>
 
         <Route path='/class/:classId/syllabus_tool' component={SyllabusTool} />
-
-        <Route path='/class/:classId/syllabus_tool/tutorial/assignments' component={AssignmentsTutorial} />
-        <Route path='/class/:classId/syllabus_tool/tutorial/weights' component={WeightsTutorial} />
       </Route>
       <Route path="/logout" onEnter={logout} />
       <Redirect from="*" to="/"/>
