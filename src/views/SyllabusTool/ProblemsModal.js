@@ -8,14 +8,27 @@ class ProblemsModal extends React.Component {
     this.state = { value: '', note: '', helpTypes: [] }
   }
 
+  // TODO: Go to new documents page when made.
+  goToDocuments () {
+    this.props.onClose()
+  }
+
   render () {
     return (
       <Modal
         open={this.props.open}
         onClose={() => this.props.onClose()}
       >
-        <div>
-          <button className='button-invert close full-width margin-top margin-bottom' onClick={() => this.props.onClose()}>Close</button>
+        <div id='cn-student-problems-modal'>
+          <h3 className='center-text'>Having problems?</h3>
+          <div className='center-text'>
+            If someone uploaded the wrong documents for this class, 
+            you can delete and add files on the <a onClick={() => this.goToDocuments()}>documents page</a> for this class.
+          </div>
+          <div className='center-text margin-top'>
+          If that’s not your issue, <a className='link' href='mailto:support@skoller.com'>let us know</a> what’s going on and we’ll figure it out.
+          </div>
+          <button className='button full-width margin-top margin-bottom' onClick={() => this.props.onClose()}>Got it</button>
         </div>
       </Modal>
     )

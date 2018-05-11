@@ -90,91 +90,6 @@
     }
   }
 
-  .grade-scales {
-    display: flex;
-    justify-content: space-around;
-
-    .current-grade-scale-container{
-      text-align: center;
-      flex-grow: 1;
-      .current-grade-scale {
-        .current-grade-scale-list {
-          @include unstyled-list;
-          border-radius: 10px;
-          border: 2px solid #a9a9a9;
-          background-color: $cn-color-white;
-
-          .grade-row {
-            margin: $unit-space / 4 $unit-space / 2 0 $unit-space / 2;
-            display: flex;
-            justify-content: center;
-
-            .delete-x {
-              align-self: flex-start;
-              flex-basis: 25px;
-            }
-
-            .grade {
-              display: flex;
-              justify-content: space-around;
-              flex-basis: 75px;
-            }
-          }
-        }
-      }
-      .grade-scale-form {
-        .grade-scale-form-inputs {
-          display: flex;
-          justify-content: space-around;
-
-          input {
-            width: 50px;
-          }
-        }
-      }
-    }
-
-    .other-common-scales-container{
-      text-align: center;
-      flex-grow: 2;
-
-      .other-common-scales {
-        text-align: left;
-        display: flex;
-        justify-content: space-around;
-        flex-grow: 2;
-        flex-wrap: wrap;
-      }
-    }
-
-    .grade-scale-list {
-      @include unstyled-list;
-      border-radius: 10px;
-      border: 2px solid #a9a9a9;
-      background-color: $cn-color-white;
-      flex-basis: 75px;
-      position: relative;
-
-      .adopt-button {
-        margin-top: calc(2em + 5px);
-
-        .button {
-          @include button;
-          width: 80%;
-          position: absolute;
-          bottom: 5px;
-          left:10%;
-        }
-      }
-      
-      .grade-row {
-        margin: $unit-space / 4 $unit-space / 2 0 $unit-space / 2;
-        display: flex;
-        justify-content: space-between;
-      }
-    }
-  }
-
   .class-editor-table {
     background-color: $cn-color-white;
     border: 1px solid $cn-color-grey;
@@ -213,5 +128,11 @@
         background-color: $cn-blue-cell-background;
       }
     }
-  }  
+  }
+
+  .cn-modal {
+    min-width: 300px;
+    width: 300px;
+    overflow-y: hidden;
+  }
 }
