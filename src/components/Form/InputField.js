@@ -86,7 +86,7 @@ class InputInfoField extends React.Component {
 
     const input = this.props
     return (
-      <div className='form-element' style={{position: 'relative'}}>
+      <div className='form-element relative'>
         <div className={containerClasses.join(' ')}>
           {label
             ? <label className={labelClasses.join(' ')} htmlFor={id}>

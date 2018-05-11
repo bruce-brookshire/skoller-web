@@ -293,3 +293,10 @@ body {
 .relative {
   position: relative;
 }
+
+.cn-total-center-flex {
+  display: 'flex';
+  align-items: 'center';
+  justify-content: 'center';
+  height: '100%';
+}

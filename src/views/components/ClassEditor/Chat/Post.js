@@ -1,10 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Form, ValidateForm} from 'react-form-library'
-import {InputField} from '../../../../components/Form'
-import Loading from '../../../../components/Loading'
-import actions from '../../../../actions'
-import {convertUTCDatetimeToDateString,mapTimeToDisplay} from '../../../../utilities/time'
+import {convertUTCDatetimeToDateString, mapTimeToDisplay} from '../../../../utilities/time'
 
 class Post extends React.Component {
   constructor (props) {
@@ -14,18 +10,18 @@ class Post extends React.Component {
     this.user = this.student && this.student.users && this.student.users[0] ? this.student.users[0] : null
   }
 
-  renderContent(){
-    if(this.post){
-      if(this.props.type == 'post'){
+  renderContent () {
+    if (this.post) {
+      if (this.props.type === 'post') {
         return this.post.post
-      }else if(this.props.type == 'comment'){
+      } else if (this.props.type === 'comment') {
         return this.post.comment
-      }else if(this.props.type == 'reply'){
+      } else if (this.props.type === 'reply') {
         return this.post.reply
-      }else {
+      } else {
         return '-'
       }
-    }else{ return '-' }
+    } else { return '-' }
   }
 
   render () {
@@ -37,7 +33,7 @@ class Post extends React.Component {
             {this.user ? (<span>{`${this.student.name_first} ${this.student.name_last}`}</span>) : null}
           </div>
           <div className='col-xs-6 right-text'>
-            {this.post.inserted_at ? (<span>{convertUTCDatetimeToDateString(this.post.inserted_at,'CST') + ' ' + mapTimeToDisplay(this.post.inserted_at)}</span>) : null}
+            {this.post.inserted_at ? (<span>{convertUTCDatetimeToDateString(this.post.inserted_at, 'CST') + ' ' + mapTimeToDisplay(this.post.inserted_at)}</span>) : null}
           </div>
         </div>
         <div className='post-content'>
@@ -60,7 +56,7 @@ class Post extends React.Component {
 Post.propTypes = {
   onDelete: PropTypes.func,
   post: PropTypes.object,
-  type: PropTypes.string,
+  type: PropTypes.string
 }
 
 export default Post

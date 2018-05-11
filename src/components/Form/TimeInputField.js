@@ -13,15 +13,18 @@ class FormMessage extends React.Component {
   }
 }
 
-class TimePickerField extends React.Component {
+FormMessage.propTypes = {
+  message: PropTypes.string
+}
 
+class TimePickerField extends React.Component {
   render () {
     const {containerClassName, message, showErrorMessage, type, error} = this.props
     const containerClasses = ['cn-input-container']
     if (containerClassName) containerClasses.push(containerClassName)
 
     return (
-      <div className='form-element' style={{position: 'relative'}}>
+      <div className='form-element relative'>
         <InputField
           {...this.props}
           type='tel'
