@@ -40,7 +40,7 @@ class LandingNav extends React.Component {
   }
 }
 
-LandingNav.PropTypes = {
+LandingNav.propTypes = {
   rootStore: PropTypes.object,
   noLogin: PropTypes.bool,
   imgPath: PropTypes.string
