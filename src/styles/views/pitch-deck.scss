@@ -6,10 +6,14 @@
 
   #cn-pitch-container {
     height: calc(100vh - (86.3px + 69px));
-    min-height: 591px;
+    min-height: calc(100vw * .591);
     display: flex;
     align-items: center;
     justify-content: center;
+
+    @include breakpoint(medium) {
+      min-height: 591px;
+    }
 
     #cn-pitch-content {
       width: 1000px;
