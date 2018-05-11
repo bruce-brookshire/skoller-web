@@ -10,13 +10,15 @@ class PitchDeck extends React.Component {
           hideLogin={true}
         />
         <div id='cn-pitch-container'>
-          <iframe
-            src="https://docs.google.com/presentation/d/e/2PACX-1vTRHFiq3gcYXfZswP46WP3eYkA1O9GIx4KBVTzVONByMLt0FYb_YtkA28EmCHxB__qgenMSXNBv1DJj/embed?start=false&loop=false&delayms=60000"
-            frameBorder="0"
-            allowFullScreen="true"
-            mozallowfullscreen="true"
-            webkitallowfullscreen="true">
-          </iframe>
+          <div id='cn-pitch-content'>
+            <iframe
+              src="https://docs.google.com/presentation/d/e/2PACX-1vTRHFiq3gcYXfZswP46WP3eYkA1O9GIx4KBVTzVONByMLt0FYb_YtkA28EmCHxB__qgenMSXNBv1DJj/embed?start=false&loop=false&delayms=60000"
+              frameBorder="0"
+              allowFullScreen="true"
+              mozallowfullscreen="true"
+              webkitallowfullscreen="true">
+            </iframe>
+          </div>
         </div>
         <LandingFooter />
       </div>
