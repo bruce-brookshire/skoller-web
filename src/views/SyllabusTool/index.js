@@ -289,7 +289,7 @@ class SyllabusTool extends React.Component {
   */
   renderDocumentTabs () {
     return (
-      <FileTabs style={{marginLeft: '7px', marginRight: '7px'}} currentIndex={this.state.currentDocumentIndex}>
+      <FileTabs currentIndex={this.state.currentDocumentIndex}>
         {
           this.state.documents.map((document, index) => {
             return (

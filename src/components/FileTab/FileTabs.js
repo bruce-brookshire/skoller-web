@@ -15,7 +15,7 @@ class FileTabs extends React.Component {
 
   render () {
     return (
-      <div className='cn-file-tabs' style={this.props.style}>
+      <div className='cn-file-tabs'>
         {this.getFileTabs()}
       </div>
     )
@@ -24,7 +24,7 @@ class FileTabs extends React.Component {
 
 FileTabs.propTypes = {
   children: PropTypes.node,
-  style: PropTypes.object
+  currentIndex: PropTypes.number
 }
 
 export default FileTabs
