@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import AssignmentForm from './AssignmentForm'
 import AssignmentTable from './AssignmentTable'
+import SkipCategoryModal from './SkipCategoryModal'
 import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
 
@@ -44,7 +45,8 @@ class Assignments extends React.Component {
       loadingWeights: false,
       viewOnly: isReview,
       weights: [],
-      currentWeightIndex: 0
+      currentWeightIndex: 0,
+      openSkipCategoryModal: false
     }
   }
 
@@ -109,6 +111,27 @@ class Assignments extends React.Component {
     }
   }
 
+  /*
+  * Toggle the problems modal.
+  */
+  toggleSkipCategoryModal () {
+    this.setState({openSkipCategoryModal: !this.state.openSkipCategoryModal})
+  }
+
+  /*
+  * Render the having issues modal.
+  */
+  renderSkipCategoryModal () {
+    const {openSkipCategoryModal} = this.state
+    return (
+      <SkipCategoryModal
+        open={openSkipCategoryModal}
+        onClose={this.toggleSkipCategoryModal.bind(this)}
+        onConfirm={this.onNext.bind(this)}
+      />
+    )
+  }
+
   render () {
     const {viewOnly, loadingAssignments, loadingWeights, currentAssignment,
       currentWeightIndex, weights} = this.state
@@ -129,7 +152,7 @@ class Assignments extends React.Component {
         }
         {!viewOnly && assignments.length === 0 &&
           <div className='margin-top margin-bottom center-text'>
-            <a onClick={() => this.onNext()}>Skip this category</a>
+            <a onClick={() => this.toggleSkipCategoryModal()}>Skip this category</a>
           </div>
         }
         {assignments.length !== 0 &&
@@ -153,6 +176,7 @@ class Assignments extends React.Component {
             Save and continue
           </button>
         }
+        {this.renderSkipCategoryModal()}
       </div>
     )
   }

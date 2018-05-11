@@ -4,11 +4,6 @@ import Modal from '../../components/Modal'
 import {browserHistory} from 'react-router'
 
 class ProblemsModal extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = { value: '', note: '', helpTypes: [] }
-  }
-
   // TODO: Go to new documents page when made.
   goToDocuments () {
     browserHistory.push('/student/classes')

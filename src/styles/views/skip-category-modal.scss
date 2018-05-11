@@ -1,0 +1,11 @@
+#cn-skip-category-modal {
+  .cn-button-yes-no {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: $unit-space;
+    button {
+      width: calc(50% - 10px)
+    }
+  }
+}
