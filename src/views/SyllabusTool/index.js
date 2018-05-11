@@ -8,6 +8,7 @@ import Assignments from '../components/ClassEditor/Assignments'
 import {ProgressBar, ProgressStep} from '../../components/ProgressBar'
 import FileViewer from '../../components/FileViewer'
 import IssuesModal from './IssuesModal'
+import ProblemsModal from './ProblemsModal'
 import {FileTabs, FileTab} from '../../components/FileTab'
 import {inject, observer} from 'mobx-react'
 
@@ -68,9 +69,9 @@ class SyllabusTool extends React.Component {
       currentIndex: ContentEnum.WEIGHTS,
       documents: [],
       gettingClass: false,
-      isSW: state.isSW || false,
       loadingClass: true,
       openIssuesModal: false,
+      openProblemsModal: false,
       stepCount: 3
     }
   }
@@ -128,6 +129,13 @@ class SyllabusTool extends React.Component {
   }
 
   /*
+  * Toggle the problems modal.
+  */
+  toggleStudentProblemsModal () {
+    this.setState({openProblemsModal: !this.state.openProblemsModal})
+  }
+
+  /*
   * Unlock the the class when not complete.
   */
   unlockClass () {
@@ -143,12 +151,12 @@ class SyllabusTool extends React.Component {
   */
   unlock () {
     const {params: {classId}} = this.props
-    const {isSW} = this.state
+    const {navbarStore} = this.props.rootStore
     const form = {is_class: true, is_completed: true}
     this.setState({submitting: true})
     actions.classes.unlockClass(classId, form).then(() => {
       this.setState({submitting: false})
-      if (isSW) {
+      if (!navbarStore.isDIY) {
         this.getNextClass()
       } else {
         browserHistory.push('/student/classes')
@@ -302,14 +310,15 @@ class SyllabusTool extends React.Component {
   }
 
   /*
-  * Render having issues for admin and SW
+  * Render having issues
   */
   renderHavingIssues () {
+    const {navbarStore} = this.props.rootStore
     return (
       <a
-        className='having-issues cn-red'
-        onClick={this.toggleIssuesModal.bind(this)}
-      >Having issues?</a>
+        className='cn-red'
+        onClick={!navbarStore.isDIY ? this.toggleIssuesModal.bind(this) : this.toggleStudentProblemsModal.bind(this)}
+      >Syllabus issues?</a>
     )
   }
 
@@ -318,15 +327,32 @@ class SyllabusTool extends React.Component {
   */
   renderIssuesModal () {
     const {navbarStore} = this.props.rootStore
+    const {openIssuesModal} = this.state
     return (
       <IssuesModal
         cl={navbarStore.cl}
-        open={this.state.openIssuesModal}
+        open={openIssuesModal}
         onClose={this.toggleIssuesModal.bind(this)}
         onSubmit={(cl) => {
           this.updateClass(cl)
           this.unlock()
         }}
+      />
+    )
+  }
+
+  /*
+  * Render the having issues modal.
+  */
+  renderProblemsModal () {
+    const {navbarStore} = this.props.rootStore
+    const {openProblemsModal} = this.state
+
+    return (
+      <ProblemsModal
+        cl={navbarStore.cl}
+        open={openProblemsModal}
+        onClose={this.toggleStudentProblemsModal.bind(this)}
       />
     )
   }
@@ -382,7 +408,8 @@ class SyllabusTool extends React.Component {
             </div>
           </div>
         </div>
-        {navbarStore.cl && this.renderIssuesModal()}
+        {navbarStore.cl && !navbarStore.isDIY && this.renderIssuesModal()}
+        {navbarStore.cl && navbarStore.isDIY && this.renderProblemsModal()}
       </div>
     )
   }

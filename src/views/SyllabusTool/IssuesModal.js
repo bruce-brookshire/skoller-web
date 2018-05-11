@@ -48,7 +48,6 @@ class IssuesModal extends React.Component {
   * Render the issue if issue exitsts.
   */
   renderDescription () {
-    const {cl} = this.props
     const helpTicket = this.getOpenHelpTickets()[0]
     return (
       <div>
@@ -132,7 +131,6 @@ class IssuesModal extends React.Component {
   }
 
   render () {
-    const {cl} = this.props
     return (
       <Modal
         open={this.props.open}
