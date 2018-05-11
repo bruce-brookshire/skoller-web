@@ -37,9 +37,9 @@ class HubLanding extends React.Component {
   /*
   * Fetch the next weight class for worker
   */
-  getNextClass (sectionName, sectionId) {
-    actions.syllabusworkers.getNextClass(sectionName).then((cl) => {
-      this.navigateToSyllabusTool(cl, sectionId)
+  getNextClass () {
+    actions.syllabusworkers.getNextClass().then((cl) => {
+      this.navigateToSyllabusTool(cl)
     }).catch(() => false)
   }
 
@@ -49,14 +49,11 @@ class HubLanding extends React.Component {
   * @param [Object] cl. The class to work.
   * @param [Number] sectionId. The section id of the section to work.
   */
-  navigateToSyllabusTool (cl, sectionId) {
+  navigateToSyllabusTool (cl) {
     browserHistory.push({
       pathname: `/class/${cl.id}/syllabus_tool`,
       state: {
-        isAdmin: this.isAdminUser(),
-        isReviewer: sectionId === 300,
-        isSW: true,
-        sectionId
+        isSW: true
       }
     })
   }
@@ -119,54 +116,52 @@ class HubLanding extends React.Component {
   * Render menu for admins.
   */
   renderAdminMenu () {
-    if (this.isAdminUser()) {
-      return (
-        <div className='margin-top margin-bottom'>
-          <span className='button-header center-text'>Admin panel</span>
-          <div className='nav-button-container row full-width' style={{alignItems: 'flex-end'}}>
+    return (
+      <div className='margin-top margin-bottom'>
+        <span className='button-header center-text'>Admin panel</span>
+        <div className='nav-button-container row full-width' style={{alignItems: 'flex-end'}}>
 
-            <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 margin-top'>
-              <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/schools')}>
-                <img src='/src/assets/images/icons/School.png'/>
-                <span>Schools (
-                {this.state.loadingStatuses ? <Loading style={{color: 'white'}}/>
-                  : this.state.schoolCount
-                }
-                )</span>
-              </button>
-            </div>
+          <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 margin-top'>
+            <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/schools')}>
+              <img src='/src/assets/images/icons/School.png'/>
+              <span>Schools (
+              {this.state.loadingStatuses ? <Loading style={{color: 'white'}}/>
+                : this.state.schoolCount
+              }
+              )</span>
+            </button>
+          </div>
 
-            <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 margin-top'>
-              <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/classes')}>
-                <img src='/src/assets/images/icons/Search.png'/>
-                <span>Class Search</span>
-              </button>
-            </div>
+          <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 margin-top'>
+            <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/classes')}>
+              <img src='/src/assets/images/icons/Search.png'/>
+              <span>Class Search</span>
+            </button>
+          </div>
 
-            <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 margin-top'>
-              <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/accounts')}>
-                <img src='/src/assets/images/icons/Accounts.png'/>
-                <span>Accounts</span>
-              </button>
-            </div>
+          <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 margin-top'>
+            <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/accounts')}>
+              <img src='/src/assets/images/icons/Accounts.png'/>
+              <span>Accounts</span>
+            </button>
+          </div>
 
-            <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 margin-top'>
-              <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/analytics')}>
-                <img src='/src/assets/images/icons/analytics.png'/>
-                <span>Analytics</span>
-              </button>
-            </div>
+          <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 margin-top'>
+            <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/analytics')}>
+              <img src='/src/assets/images/icons/analytics.png'/>
+              <span>Analytics</span>
+            </button>
+          </div>
 
-            <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 margin-top'>
-              <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/switchboard')}>
-                <i className='fa fa-toggle-on' style={{color: '#FEFEFE', fontSize: '1.9rem'}}></i>
-                <span>Switchboard</span>
-              </button>
-            </div>
+          <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 margin-top'>
+            <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/switchboard')}>
+              <i className='fa fa-toggle-on' style={{color: '#FEFEFE', fontSize: '1.9rem'}}></i>
+              <span>Switchboard</span>
+            </button>
           </div>
         </div>
-      )
-    }
+      </div>
+    )
   }
 
   getStatusCount (key) {
@@ -236,12 +231,9 @@ class HubLanding extends React.Component {
   }
 
   render () {
-    const weightCount = this.getStatusCount('Weights') || 0
-    const assignmentCount = this.getStatusCount('Assignments') || 0
+    const syllabiCount = this.getStatusCount('Weights') + this.getStatusCount('Assignments') || 0
     const helpCount = this.getStatusCount('Help') || 0
 
-    const disableWeights = weightCount === 0
-    const disableAssignments = assignmentCount === 0
     const disableHelp = helpCount === 0
 
     return (
@@ -258,14 +250,14 @@ class HubLanding extends React.Component {
 
                   <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
                     <button
-                      className={`nav-button button full-width ${disableAssignments ? 'disabled' : ''}`}
-                      disabled={disableAssignments}
-                      onClick={() => this.getNextClass('assignments', 200)}
+                      className={`nav-button button full-width ${syllabiCount === 0 ? 'disabled' : ''}`}
+                      disabled={syllabiCount === 0}
+                      onClick={() => this.getNextClass()}
                     >
                       <img src='/src/assets/images/icons/Assignments.png'/>
                       <span>Syllabi (
                       {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
-                        : assignmentCount + weightCount
+                        : syllabiCount
                       }
                       )</span>
                     </button>
@@ -288,7 +280,7 @@ class HubLanding extends React.Component {
                 </div>
               </div>
               {(this.isChangeReqUser() || this.isAdminUser()) && this.renderMaintMenu()}
-              {this.renderAdminMenu()}
+              {this.isAdminUser() && this.renderAdminMenu()}
             </div>
           </div>
 
