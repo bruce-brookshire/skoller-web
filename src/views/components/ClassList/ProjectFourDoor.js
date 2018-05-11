@@ -132,10 +132,8 @@ class ProjectFourDoor extends React.Component {
   renderNormal () {
     return (
       <div className='cn-project-four-door'>
-        <button className='button full-width' onClick={this.onDIY.bind(this)}>Review syllabus now</button>
-        <div>
-          <span>Or Skoller will automatically review it for you within 72 hours.</span>
-        </div>
+        <button className='button full-width'>Hang out while the Skoller team takes care of it</button>
+        <a onClick={this.onDIY.bind(this)}>Or input your syllabus information now</a>
       </div>
     )
   }
@@ -162,7 +160,7 @@ class ProjectFourDoor extends React.Component {
     return (
       <div className='cn-project-four-door'>
         <button className='button full-width' onClick={this.onDIY.bind(this)}>Review syllabus now</button>
-        <span>Wait for a classmate to review the syllabus, but this could take a while...</span>
+        <span>Or wait for a classmate to review the syllabus, but this could take a while...</span>
       </div>
     )
   }
