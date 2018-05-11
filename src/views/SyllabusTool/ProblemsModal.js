@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Modal from '../../components/Modal'
+import {browserHistory} from 'react-router'
 
 class ProblemsModal extends React.Component {
   constructor (props) {
@@ -10,7 +11,7 @@ class ProblemsModal extends React.Component {
 
   // TODO: Go to new documents page when made.
   goToDocuments () {
-    this.props.onClose()
+    browserHistory.push('/student/classes')
   }
 
   render () {
