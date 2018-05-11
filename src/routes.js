@@ -11,6 +11,7 @@ import PrivacyPolicy from './views/PrivacyPolicy'
 import LearnMore from './views/LearnMore'
 import PeopleTalking from './views/PeopleTalking'
 import OurTeam from './views/OurTeam'
+import PitchDeck from './views/PitchDeck'
 import ResetPassword from './views/ResetPassword'
 
 import MyClasses from './views/Student/MyClasses'
@@ -50,7 +51,7 @@ const router = (
       <Route path='/faq' component={Faq} />
       <Route path='/enroll' component={Enroll} />
       <Route path='/e/:link' component={EnrollmentLinkLanding} />
-
+      <Route path='/pitch-deck' component={PitchDeck} />
       <Route path='/app' component={Layout} onEnter={requireAuth}>
         <IndexRedirect to='/student/classes' />
         <Route path='/student'>
@@ -92,7 +93,8 @@ function requireAuth (nextState, replaceState) {
       .then((user) => {
         authenticateStudent(user.user).then(() => {
           userStore.setFetchingUser(false)
-        }).catch((eror) => { userStore.setFetchingUser(false) })
+        }).catch(() => { userStore.setFetchingUser(false) })
+
         userStore.setFetchingUser(false)
       })
       .catch(() => {

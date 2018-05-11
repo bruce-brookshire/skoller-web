@@ -1,0 +1,27 @@
+#cn-pitch-deck {
+  overflow-x: auto;
+  height: 100%;
+  @include landing-nav-parent();
+  background: #323232;
+
+  #cn-pitch-container {
+    height: calc(100vh - (86.3px + 69px));
+    min-height: 591px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    #cn-pitch-content {
+      width: 1000px;
+      overflow-y: hidden;
+      height: 591px;
+      // left: calc(50% - 1000px / 2);
+      // top: calc(50% - (519px / 2) - 29px);
+
+      iframe {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}
