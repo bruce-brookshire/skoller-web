@@ -1,14 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import FlexTable from '../../../components/FlexTable'
-import FOSUploadInfo from './FOSUploadInfo'
 import Modal from '../../../components/Modal'
 import PeriodForm from './PeriodForm'
 import SemesterDetails from './SemesterDetails'
 import { updateSchool } from '../../../actions/schools'
 import SchoolDetails from './SchoolDetails'
 import SchoolDetailsForm from './SchoolDetailsForm'
-import UploadHistory from '../../../components/UploadHistory'
 import actions from '../../../actions'
 import {inject, observer} from 'mobx-react'
 
@@ -54,9 +51,6 @@ class SchoolInfo extends React.Component {
     navbarStore.cl = null
     navbarStore.title = 'School Info'
     return {
-      completedFOSCount: 0,
-      erroredFOS: [],
-      openFOSModal: false,
       openDetailsForm: false,
       openPeriodForm: false,
       school: (state && state.school) || null,
@@ -283,52 +277,6 @@ class SchoolInfo extends React.Component {
   }
 
   /*
-  * On upload class fos, show results of upload.
-  *
-  * @param [File] file. File to be uploaded.
-  */
-  onUploadFOS (file) {
-    actions.fieldsofstudy.uploadFOSCsv(file).then((fos) => {
-      const erroredFOS = fos.filter(f => {
-        let error = f.errors
-        if (error && f.errors.school_field) {
-          error = f.errors.school_field.findIndex(e =>
-            e.toLowerCase() === 'has already been taken') === -1
-        }
-        return error
-      })
-      const completedFOSCount = fos.length - erroredFOS.length
-      this.setState({ erroredFOS, completedFOSCount, openFOSModal: true })
-    })
-  }
-
-  /*
-  * Render the fos upload modal
-  */
-  renderFOSUploadModal () {
-    const {openFOSModal, erroredFOS, completedFOSCount} = this.state
-    return (
-      <Modal
-        open={openFOSModal}
-        onClose={this.toggleFOSUploadModal.bind(this)}
-      >
-        <div>
-          <FOSUploadInfo
-            erroredFOS={erroredFOS}
-            completedFOSCount={completedFOSCount}
-          />
-          <div className='row'>
-            <button
-              className='button-invert full-width margin-top margin-bottom'
-              onClick={this.toggleFOSUploadModal.bind(this)}
-            > Close </button>
-          </div>
-        </div>
-      </Modal>
-    )
-  }
-
-  /*
   * Toggle schools details modal.
   */
   toggleDetailsForm () {
@@ -342,30 +290,12 @@ class SchoolInfo extends React.Component {
     this.setState({openPeriodForm: !this.state.openPeriodForm})
   }
 
-  /*
-  * Toggle fos modal.
-  */
-  toggleFOSUploadModal () {
-    this.setState({openFOSModal: !this.state.openFOSModal})
-  }
-
   render () {
     return (
       <div className='cn-school-info'>
         <div className='row'>
           <div className='col-xs-12 col-md-6 margin-top'>
             {this.renderSchoolDetails()}
-          </div>
-          <div className='col-xs-12 col-md-6 margin-top'>
-            <h3>3. Import fields of study</h3>
-            <UploadHistory
-              allow='text/csv'
-              disabled={false}
-              files={[]}
-              info='Upload fields of study csv.'
-              onUpload={(file) => { this.onUploadFOS(file) }}
-              title='Fields of Study'
-            />
           </div>
           <div className='col-xs-12 col-md-6 margin-top'>
             {this.renderPeriod()}
@@ -377,7 +307,6 @@ class SchoolInfo extends React.Component {
         </div>
         {this.renderDetailsFormModal()}
         {this.renderPeriodFormModal()}
-        {this.renderFOSUploadModal()}
       </div>
     )
   }
