@@ -11,8 +11,8 @@ import {createClass, deleteClass, dropClass, getClassById, getClassByLink, getLo
   updateClass, lockClass, unlockClass, approveClass, denyClass, updateClassStatus} from './classes'
 import {createIssue, getHelpTypes, resolveIssue, getRequestTypes, resolveChangeRequest, createStudentRequest,
   resolveStudentRequest} from './classhelp'
-import {getClassDocuments, uploadClassCsv, uploadClassDocument, deleteClassDocument,
-  uploadFOSCsv} from './documents'
+import {getClassDocuments, uploadClassCsv, uploadClassDocument, deleteClassDocument} from './documents'
+import {getFieldsOfStudy, uploadFOSCsv} from './fieldsofstudy'
 import {updateGradeScale} from './gradescales'
 import {getStatuses, getStatusesHub} from './hub'
 import {sendNeedsSyllabusNotification, getNotificationLogs, sendCustomNotification,
@@ -20,7 +20,7 @@ import {sendNeedsSyllabusNotification, getNotificationLogs, sendCustomNotificati
 import {getSchoolPeriods, createPeriod, updatePeriod} from './periods'
 import {attachProfessorToClass, createProfessor, removeProfessorFromClass,
   searchProfessors, updateProfessor} from './professors'
-import {createSchool, getAllSchools, getFieldsOfStudy, getHubSchools,
+import {createSchool, getAllSchools, getHubSchools,
   getHubSchoolsMinified, getSchoolById, updateSchool, searchSchools, getStates} from './schools'
 import {getAutoUpdateInfo, updateAutoUpdateInfo, forecastAutoUpdateInfo, getMinVersionInfo, updateMinVer} from './settings'
 import {showSnackbar} from './snackbar'
@@ -104,7 +104,10 @@ const actions = {
     getClassDocuments,
     deleteClassDocument,
     uploadClassCsv,
-    uploadClassDocument,
+    uploadClassDocument
+  },
+  fieldsofstudy: {
+    getFieldsOfStudy,
     uploadFOSCsv
   },
   gradescales: {
@@ -138,7 +141,6 @@ const actions = {
   schools: {
     createSchool,
     getAllSchools,
-    getFieldsOfStudy,
     getHubSchools,
     getHubSchoolsMinified,
     getSchoolById,

@@ -288,7 +288,7 @@ class SchoolInfo extends React.Component {
   * @param [File] file. File to be uploaded.
   */
   onUploadFOS (file) {
-    actions.documents.uploadFOSCsv(this.state.school.id, file).then((fos) => {
+    actions.fieldsofstudy.uploadFOSCsv(file).then((fos) => {
       const erroredFOS = fos.filter(f => {
         let error = f.errors
         if (error && f.errors.school_field) {

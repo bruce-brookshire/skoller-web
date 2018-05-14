@@ -108,31 +108,3 @@ export function uploadClassCsv(periodId, file) {
       return Promise.reject(error)
     })
 }
-
-/*
-* Upload a csv import for fields of study for a school.
-*
-* @param [Number] schoolId. The school to upload the csv for.
-* @param [Object] file. The file to upload.
-*/
-export function uploadFOSCsv(schoolId, file) {
-  let form = new FormData()
-  form.append('file', file)
-
-  return fetch(`${Environment.SERVER_NAME}/api/v1/schools/${schoolId}/fields-of-study/csv`, {
-    method: 'POST',
-    headers: {
-      'Authorization': userStore.authToken
-    },
-    body: form
-  })
-    .then(response => parseResponse(response))
-    .then(data => {
-      return data
-    })
-    .catch(error => {
-      if (error === 422) showSnackbar('File name has already been taken.')
-      else showSnackbar('Error uploading file. Try again.')
-      return Promise.reject(error)
-    })
-}
