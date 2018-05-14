@@ -1,23 +1,12 @@
-import 'isomorphic-fetch'
-import {checkError, parseResponse} from '../utilities/api'
+import {get} from '../utilities/api'
 import {showSnackbar} from './snackbar'
-import stores from '../stores'
-const {userStore} = stores
-var Environment = require('../../environment.js')
 
 /*
 * Grab the class statuses for the hub view
 *
 */
 export function getStatusesHub () {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/class-statuses/hub`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/class-statuses/hub`)
     .then(data => {
       return data
     })
@@ -32,14 +21,7 @@ export function getStatusesHub () {
 *
 */
 export function getStatuses () {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/class-statuses`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/class-statuses`)
     .then(data => {
       return data
     })

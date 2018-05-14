@@ -9,5 +9,6 @@
     },
     "rules": {
       "camelcase": ["error", {"properties": "never"}]
-    }
+    },
+    "globals": { "fetch": false }
 }

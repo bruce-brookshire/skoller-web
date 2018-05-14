@@ -1,3 +1,9 @@
+import 'isomorphic-fetch'
+import stores from '../stores'
+import {showSnackbar} from './snackbar'
+const {userStore} = stores
+var Environment = require('../../environment.js')
+
 /*
 * Function to check if http request was successful
 *
@@ -26,4 +32,66 @@ export const parseResponse = (response) => {
     // if (response.status === 401) logout()
     return Promise.reject(response.status)
   }
+}
+
+export function get (path, queryString, errMsg) {
+  return fetch(`${Environment.SERVER_NAME}${path}${queryString ? '?' + queryString : ''}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => parseResponse(response))
+    .catch(error => {
+      if (errMsg) showSnackbar(errMsg)
+      return Promise.reject(error)
+    })
+}
+
+export function post (path, form, errMsg) {
+  return fetch(`${Environment.SERVER_NAME}${path}`, {
+    method: 'POST',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(form)
+  })
+    .then(response => parseResponse(response))
+    .catch(error => {
+      if (errMsg) showSnackbar(errMsg)
+      return Promise.reject(error)
+    })
+}
+
+export function put (path, form, errMsg) {
+  return fetch(`${Environment.SERVER_NAME}${path}`, {
+    method: 'PUT',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(form)
+  })
+    .then(response => parseResponse(response))
+    .catch(error => {
+      if (errMsg) showSnackbar(errMsg)
+      return Promise.reject(error)
+    })
+}
+
+export function del (path, errMsg) {
+  return fetch(`${Environment.SERVER_NAME}${path}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => checkError(response))
+    .catch(error => {
+      if (errMsg) showSnackbar(errMsg)
+      return Promise.reject(error)
+    })
 }

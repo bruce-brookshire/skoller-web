@@ -10,7 +10,7 @@ class LandingNav extends React.Component {
 
     if (user.student) {
       if (user.student.is_verified) {
-        actions.classes.getStudentClasses().then((classes) => {
+        actions.classes.getStudentClassesById(user.student.id).then((classes) => {
           classes.length > 0
             ? browserHistory.push('/student/classes')
             : browserHistory.push('/student/find-classes')

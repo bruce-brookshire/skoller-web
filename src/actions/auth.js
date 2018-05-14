@@ -1,9 +1,7 @@
-import 'isomorphic-fetch'
-import {checkError, parseResponse} from '../utilities/api'
-import {showSnackbar} from './snackbar'
+import {post, get, put} from '../utilities/api'
+import {showSnackbar} from '../utilities/snackbar'
 import stores from '../stores'
 const {userStore} = stores
-var Environment = require('../../environment.js')
 
 /*
 * Authenticate login credentials. Set the user.
@@ -13,14 +11,7 @@ var Environment = require('../../environment.js')
 export function authenticateUser (form) {
   userStore.loading = true
 
-  return fetch(`${Environment.SERVER_NAME}/api/v1/users/login`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(response => parseResponse(response))
+  return post(`/api/v1/users/login`, form, '')
     .then(data => {
       userStore.authToken = `Bearer ${data.token}`
       userStore.user = data.user
@@ -45,14 +36,7 @@ export function authenticateUser (form) {
 export function registerUser (form) {
   userStore.loading = true
 
-  return fetch(`${Environment.SERVER_NAME}/api/v1/users`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(response => parseResponse(response))
+  return post(`/api/v1/users`, form, '')
     .then(data => {
       userStore.authToken = `Bearer ${data.token}`
       userStore.user = data.user
@@ -73,14 +57,7 @@ export function registerUser (form) {
 * Fetch user to set state.
 */
 export function getUserByToken () {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/users/token-login`, {
-    method: 'POST',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return post(`/api/v1/users/token-login`, null, '')
     .then(data => {
       userStore.user = data.user
       return data
@@ -95,14 +72,7 @@ export function getUserByToken () {
 */
 export function resendVerification () {
   const {user: {student}} = userStore
-  return fetch(`${Environment.SERVER_NAME}/api/v1/students/${student.id}/resend/`, {
-    method: 'POST',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => checkError(response))
+  return post(`/api/v1/students/${student.id}/resend/`, null, '')
     .then(() => { showSnackbar('Verification code resent.', 'info') })
     .catch(error => {
       showSnackbar('Could not send verification code. Try again later.')
@@ -115,17 +85,8 @@ export function resendVerification () {
 */
 export function verifyPhoneNumber (form) {
   const {user: {student}} = userStore
-  return fetch(`${Environment.SERVER_NAME}/api/v1/students/${student.id}/verify`, {
-    method: 'POST',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(response => checkError(response))
+  return post(`/api/v1/students/${student.id}/verify`, form, 'Invalid verification code.')
     .catch(error => {
-      showSnackbar('Invalid verification code.')
       return Promise.reject(error)
     })
 }
@@ -136,15 +97,7 @@ export function verifyPhoneNumber (form) {
 * @param [Object] form. Forgot password form.
 */
 export function forgotPassword (form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/forgot`, {
-    method: 'POST',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(response => checkError(response))
+  return post(`/api/v1/forgot`, form, '')
     .then(() => {
       showSnackbar('An email has been sent to your email address with further instructions.', 'info')
     })
@@ -160,15 +113,7 @@ export function forgotPassword (form) {
 * @params [Object] form. Reset password form data.
 */
 export function resetPassword (form, token) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/reset`, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(response => checkError(response))
+  return post(`/api/v1/reset`, form, '')
     .then(() => {
       showSnackbar('Your password has been successfully reset.', 'info')
     })
@@ -186,19 +131,11 @@ export function resetPassword (form, token) {
 * Get user roles.
 */
 export function getUsers (queryString = false) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/users${queryString ? ('?'+queryString) : ''}`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/users`, queryString, 'Error fetching users. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching users. Try again.')
       return Promise.reject(error)
     })
 }
@@ -209,19 +146,11 @@ export function getUsers (queryString = false) {
 * @param [Object] user. User to fetch
 */
 export function getUserById (user) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/users/${user.id}`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/users/${user.id}`, '', 'Error fetching user. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching user. Try again.')
       return Promise.reject(error)
     })
 }
@@ -230,19 +159,11 @@ export function getUserById (user) {
 * Get user roles.
 */
 export function getRoles () {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/roles`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/roles`, '', 'Error fetching roles. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching roles. Try again.')
       return Promise.reject(error)
     })
 }
@@ -253,15 +174,7 @@ export function getRoles () {
 * @params [Object] form. User form data.
 */
 export function createAccount (form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/users/create`, {
-    method: 'POST',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(response => parseResponse(response))
+  return post(`/api/v1/users/create`, form, '')
     .then(data => {
       return data
     })
@@ -281,20 +194,11 @@ export function createAccount (form) {
 * @params [Object] form. User form data.
 */
 export function updateAccount (form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/users/${form.id}/update`, {
-    method: 'PUT',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(response => parseResponse(response))
+  return put(`/api/v1/users/${form.id}/update`, form, 'Error updating user. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error updating user. Try again.')
       return Promise.reject(error)
     })
 }
