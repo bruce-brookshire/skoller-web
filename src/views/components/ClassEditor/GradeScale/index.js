@@ -87,13 +87,15 @@ class GradeScale extends React.Component {
   initializeState () {
     return {
       showAllGradeScales: false,
+      showCommonGradeScales: false,
       gradeScales,
       form: {
         grade: '',
         min: ''
       },
       loading: false,
-      currentGradeScale: this.props.cl.grade_scale_map || ''
+      currentGradeScale: this.props.cl.grade_scale_map || '',
+      isEditable: false
     }
   }
 
@@ -108,8 +110,8 @@ class GradeScale extends React.Component {
     }).catch(() => { this.setState({loading: false}) })
   }
 
-  renderGradeScale (gradeScale) {
-    return <ul className="grade-scale-list">
+  renderGradeScale (gradeScale, index) {
+    return <ul className="grade-scale-list" key={index}>
       {Object.keys(gradeScale).sort((a, b) => {
         return parseFloat(gradeScale[a]) < parseFloat(gradeScale[b]) ? 1 : -1
       }).map((key, idx) =>
@@ -137,7 +139,8 @@ class GradeScale extends React.Component {
   */
   renderCurrentGradeScale () {
     const gradeScale = this.props.cl.grade_scale
-    const {edit} = this.props
+    const {showCommonGradeScales, isEditable} = this.state
+    const {canEdit} = this.props
 
     return (
       <div>
@@ -148,7 +151,7 @@ class GradeScale extends React.Component {
               return parseFloat(gradeScale[a]) < parseFloat(gradeScale[b]) ? 1 : -1
             }).map((key, idx) =>
               <li key={idx} className="grade-row">
-                {edit && <div className="delete-x">
+                {isEditable && <div className="delete-x">
                   <div
                     className='button-delete-x'
                     onClick={(event) => {
@@ -165,15 +168,22 @@ class GradeScale extends React.Component {
             )}
           </ul>
         </div>
-        {edit && this.renderForm()}
-        <button
+        {isEditable && this.renderForm()}
+        {canEdit && !isEditable && <button
+          className='button full-width margin-top'
+          onClick={() => this.setState({isEditable: true})}
+        >
+          Edit Scale
+        </button>}
+        {isEditable && <button
           className='button full-width margin-top'
           disabled={this.state.loading}
-          onClick={edit ? this.onSubmit.bind() : this.props.onSubmit.bind(this)}
+          onClick={this.onSubmit.bind(this)}
         >
-          {edit ? 'Submit' : 'Edit Scale'}
+          Submit
           {this.state.loading ? <Loading style={{color: 'white', marginLeft: '0.5em'}} /> : null}
-        </button>
+        </button>}
+        {isEditable && <a onClick={() => { this.setState({showCommonGradeScales: !showCommonGradeScales}) }}>{showCommonGradeScales ? 'Hide' : 'Show'} common scales</a>}
       </div>
     )
   }
@@ -185,7 +195,7 @@ class GradeScale extends React.Component {
         Other common scales
         <div className="other-common-scales">
           {this.state.gradeScales.map((item, index) =>
-            this.renderGradeScale(item.grade_scale)
+            this.renderGradeScale(item.grade_scale, index)
           )}
         </div>
         <a style={{display: 'block', cursor: 'pointer'}} className='margin-top' onClick={() => this.toggleGradeScales()}> {gradeScalesText} </a>
@@ -259,13 +269,13 @@ class GradeScale extends React.Component {
   }
 
   render () {
-    const {edit} = this.props
+    const {showCommonGradeScales, isEditable} = this.state
 
     return (
       <div id='class-editor-grade-scale'>
         <div id='class-editor-grade-scale-content'>
           {this.renderCurrentGradeScale()}
-          {edit && this.renderOtherGradeScales()}
+          {isEditable && showCommonGradeScales && this.renderOtherGradeScales()}
         </div>
       </div>
     )
@@ -277,7 +287,7 @@ GradeScale.propTypes = {
   formErrors: PropTypes.object,
   onSubmit: PropTypes.func,
   updateProperty: PropTypes.func,
-  edit: PropTypes.bool
+  canEdit: PropTypes.bool
 }
 
 export default ValidateForm(Form(GradeScale, 'form'))

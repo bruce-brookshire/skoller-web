@@ -33,8 +33,7 @@ class ClassAdmin extends React.Component {
       openEditClassModal: false,
       openHelpResolvedModal: false,
       openIssuesModal: false,
-      openRequestResolvedModal: false,
-      editGradeScale: false
+      openRequestResolvedModal: false
     }
   }
 
@@ -226,12 +225,11 @@ class ClassAdmin extends React.Component {
   }
 
   renderGradeScale () {
-    const {cl, editGradeScale} = this.state
+    const {cl} = this.state
     return (
       <GradeScale
         cl={cl}
-        edit={editGradeScale}
-        onSubmit={() => this.setState({editGradeScale: !editGradeScale})}
+        canEdit={true}
       />
     )
   }
