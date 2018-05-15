@@ -103,19 +103,6 @@ export function createClass (form, periodId) {
 }
 
 /*
-* Delete a new class
-*/
-export function deleteClass (cl) {
-  return del(`/api/v1/classes/${cl.id}`, 'Error deleting class. Try again.')
-    .then(data => {
-      return data
-    })
-    .catch(error => {
-      return Promise.reject(error)
-    })
-}
-
-/*
 * Update a class
 */
 export function updateClass (form) {
@@ -124,40 +111,6 @@ export function updateClass (form) {
       return data
     })
     .catch(error => {
-      return Promise.reject(error)
-    })
-}
-
-/*
-* Approve class
-*
-* @param [Object] cl. Class to approve.
-*/
-export function approveClass (cl) {
-  return post(`/api/v1/classes/${cl.id}/approve`, null, '')
-    .then(data => {
-      showSnackbar('Class approved.', 'info')
-      return data
-    })
-    .catch(error => {
-      showSnackbar('Error approving class. Try again.')
-      return Promise.reject(error)
-    })
-}
-
-/*
-* Deny class
-*
-* @param [Object] cl. Class to deny.
-*/
-export function denyClass (cl) {
-  return post(`/api/v1/classes/${cl.id}/deny`, null, '')
-    .then(data => {
-      showSnackbar('Class rejected.', 'info')
-      return data
-    })
-    .catch(error => {
-      showSnackbar('Error rejecting class. Try again.')
       return Promise.reject(error)
     })
 }
@@ -202,21 +155,6 @@ export function lockClass (classId, form) {
 */
 export function unlockClass (classId, form) {
   return post(`/api/v1/classes/${classId}/unlock`, form, '')
-    .catch(error => {
-      return Promise.reject(error)
-    })
-}
-
-/*
-* Get the class locks
-*
-* @param [Number] classId. Class to unlock
-*/
-export function getLocks (classId) {
-  return get(`/api/v1/classes/${classId}/locks`, '', '')
-    .then(data => {
-      return data
-    })
     .catch(error => {
       return Promise.reject(error)
     })

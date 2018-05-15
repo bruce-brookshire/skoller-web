@@ -3,21 +3,19 @@ import {getAnalytics} from './analytics'
 import {authenticateUser, createAccount, forgotPassword, getRoles,
   getUserById, getUserByToken, getUsers, registerUser, resetPassword,
   resendVerification, updateAccount, verifyPhoneNumber} from './auth'
-import {createClassPost, deleteClassPost, getClassPost, getClassPosts, likePost, unlikePost,
-  updateClassPost, createClassComment, deleteClassComment, likeComment, unlikeComment, updateClassComment,
-  createClassReply, deleteClassReply, likeReply, unlikeReply, updateClassReply} from './chat'
-import {createClass, deleteClass, dropClass, getClassById, getClassByLink, getLocks,
-  getStudentClassesById, enrollByLink, enrollInClass, searchClasses, searchStudentClasses,
-  updateClass, lockClass, unlockClass, approveClass, denyClass, updateClassStatus} from './classes'
+import {deleteClassPost, getClassPosts, deleteClassComment, deleteClassReply} from './chat'
+import {createClass, dropClass, getClassById, getClassByLink, getStudentClassesById,
+  enrollByLink, enrollInClass, searchClasses, searchStudentClasses, updateClass, lockClass,
+  unlockClass, updateClassStatus} from './classes'
 import {createIssue, getHelpTypes, resolveIssue, getRequestTypes, resolveChangeRequest, createStudentRequest,
   resolveStudentRequest} from './classhelp'
-import {getClassDocuments, uploadClassCsv, uploadClassDocument, deleteClassDocument} from './documents'
+import {getClassDocuments, uploadClassCsv, uploadClassDocument} from './documents'
 import {getFieldsOfStudy, uploadFOSCsv} from './fieldsofstudy'
 import {updateGradeScale} from './gradescales'
 import {getStatuses, getStatusesHub} from './hub'
 import {sendNeedsSyllabusNotification, getNotificationLogs, sendCustomNotification,
   getAssignmentReminders, deleteAssignmentReminders, addReminderNotification, getAssignmentReminderTopics} from './notifications'
-import {getSchoolPeriods, createPeriod, updatePeriod} from './periods'
+import {getSchoolPeriods, createPeriod} from './periods'
 import {attachProfessorToClass, createProfessor, removeProfessorFromClass,
   searchProfessors, updateProfessor} from './professors'
 import {createSchool, getAllSchools, getHubSchools,
@@ -51,35 +49,18 @@ const actions = {
     updateAccount
   },
   chat: {
-    createClassPost,
-    createClassComment,
-    createClassReply,
     deleteClassComment,
     deleteClassPost,
     deleteClassReply,
-    getClassPost,
-    getClassPosts,
-    likeComment,
-    likePost,
-    likeReply,
-    unlikeComment,
-    unlikeReply,
-    unlikePost,
-    updateClassComment,
-    updateClassPost,
-    updateClassReply
+    getClassPosts
   },
   classes: {
-    approveClass,
-    deleteClass,
-    denyClass,
     createClass,
     dropClass,
     enrollByLink,
     enrollInClass,
     getClassById,
     getClassByLink,
-    getLocks,
     getStudentClassesById,
     lockClass,
     searchClasses,
@@ -99,7 +80,6 @@ const actions = {
   },
   documents: {
     getClassDocuments,
-    deleteClassDocument,
     uploadClassCsv,
     uploadClassDocument
   },
@@ -125,8 +105,7 @@ const actions = {
   },
   periods: {
     createPeriod,
-    getSchoolPeriods,
-    updatePeriod
+    getSchoolPeriods
   },
   professors: {
     attachProfessorToClass,

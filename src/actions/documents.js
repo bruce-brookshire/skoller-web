@@ -1,4 +1,4 @@
-import {get, postFile, del} from '../utilities/api'
+import {get, postFile} from '../utilities/api'
 import {showSnackbar} from '../utilities/snackbar'
 
 /*
@@ -33,24 +33,6 @@ export function uploadClassDocument (cl, file, isSyllabus = false) {
       return data
     })
     .catch(error => {
-      return Promise.reject(error)
-    })
-}
-
-/*
-* Delete the given file for a class
-*
-* @param [Object] cl. The class to remove the document from.
-* @param [Object] doc. The document to be deleted
-*/
-export function deleteClassDocument (cl, doc) {
-  return del(`/api/v1/classes/${cl.id}/docs/${doc.id}`, '')
-    .then(data => {
-      showSnackbar('Class document deleted.', 'info')
-      return data
-    })
-    .catch(error => {
-      showSnackbar('Error deleting file. Try again.')
       return Promise.reject(error)
     })
 }
