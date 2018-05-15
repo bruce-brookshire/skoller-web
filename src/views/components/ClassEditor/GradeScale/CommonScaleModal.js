@@ -126,9 +126,9 @@ class CommonScaleModal extends React.Component {
   renderContent () {
     const gradeScalesText = this.state.showAllGradeScales ? 'Show Less Grade Scales' : 'Show More Grade Scales'
     return (
-      <div className="other-common-scales-container">
-        Other common scales
-        <div className="other-common-scales">
+      <div id="cn-common-scales-container">
+        <h2>Other common scales</h2>
+        <div id="cn-common-scales-content">
           {this.state.gradeScales.map((item) =>
             this.renderGradeScale(item.grade_scale, item.id)
           )}
