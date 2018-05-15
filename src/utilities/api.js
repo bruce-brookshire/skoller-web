@@ -65,6 +65,21 @@ export function post (path, form, errMsg) {
     })
 }
 
+export function postFile (path, form, errMsg) {
+  return fetch(`${Environment.SERVER_NAME}${path}`, {
+    method: 'POST',
+    headers: {
+      'Authorization': userStore.authToken
+    },
+    body: form
+  })
+    .then(response => parseResponse(response))
+    .catch(error => {
+      if (errMsg) showSnackbar(errMsg)
+      return Promise.reject(error)
+    })
+}
+
 export function put (path, form, errMsg) {
   return fetch(`${Environment.SERVER_NAME}${path}`, {
     method: 'PUT',

@@ -1,17 +1,15 @@
 import {get} from '../utilities/api'
-import {showSnackbar} from './snackbar'
 
 /*
 * Grab the class statuses for the hub view
 *
 */
 export function getStatusesHub () {
-  return get(`/api/v1/class-statuses/hub`)
+  return get(`/api/v1/class-statuses/hub`, '', 'Error fetching statuses. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching statuses. Try again.')
       return Promise.reject(error)
     })
 }
@@ -21,12 +19,11 @@ export function getStatusesHub () {
 *
 */
 export function getStatuses () {
-  return get(`/api/v1/class-statuses`)
+  return get(`/api/v1/class-statuses`, '', 'Error fetching statuses. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching statuses. Try again.')
       return Promise.reject(error)
     })
 }

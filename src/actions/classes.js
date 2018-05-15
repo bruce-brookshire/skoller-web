@@ -213,7 +213,7 @@ export function unlockClass (classId, form) {
 * @param [Number] classId. Class to unlock
 */
 export function getLocks (classId) {
-  return get(`/api/v1/classes/${classId}/locks`, '')
+  return get(`/api/v1/classes/${classId}/locks`, '', '')
     .then(data => {
       return data
     })
@@ -228,7 +228,7 @@ export function getLocks (classId) {
 * @param [string] link. Class link
 */
 export function getClassByLink (link) {
-  return get(`/api/v1/enrollment-link/${link}`, 'Error finding class. Try again.')
+  return get(`/api/v1/enrollment-link/${link}`, '', 'Error finding class. Try again.')
     .then(data => {
       return data
     })
