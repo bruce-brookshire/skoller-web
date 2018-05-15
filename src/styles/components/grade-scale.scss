@@ -1,0 +1,30 @@
+#class-editor-grade-scale {
+  @include shadow-box;
+
+  #class-editor-grade-scale-content {
+    @include shadow-box-content;
+
+    .grade-scale-title {
+      @include shadow-box-title;
+    }
+
+    .grade-scale-list {
+      list-style: none;
+  
+      .grade-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+  
+        .grade {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+        }
+      }
+    }
+  }
+}

@@ -5,6 +5,7 @@ import actions from '../../actions'
 import Modal from '../../components/Modal'
 import ClassForm from './ClassForm'
 import IssuesModal from '../components/ClassEditor/IssuesModal'
+import GradeScale from '../components/ClassEditor/GradeScale'
 import HelpResolvedModal from './HelpResolvedModal'
 import RequestResolvedModal from './RequestResolvedModal'
 import ClassCard from '../../components/ClassCard'
@@ -32,7 +33,8 @@ class ClassAdmin extends React.Component {
       openEditClassModal: false,
       openHelpResolvedModal: false,
       openIssuesModal: false,
-      openRequestResolvedModal: false
+      openRequestResolvedModal: false,
+      editGradeScale: false
     }
   }
 
@@ -224,7 +226,14 @@ class ClassAdmin extends React.Component {
   }
 
   renderGradeScale () {
-
+    const {cl, editGradeScale} = this.state
+    return (
+      <GradeScale
+        cl={cl}
+        edit={editGradeScale}
+        onSubmit={() => this.setState({editGradeScale: !editGradeScale})}
+      />
+    )
   }
 
   renderProfessor () {

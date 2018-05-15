@@ -2,20 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
 import {InputField} from '../../../../components/Form'
-import Grid from '../../../../components/Grid/index'
 import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
-
-const headers = [
-  {
-    field: 'select',
-    display: ''
-  },
-  {
-    field: 'gradeScale',
-    display: 'Grade Scales'
-  }
-]
 
 const gradeScales = [
   {
@@ -24,18 +12,46 @@ const gradeScales = [
   },
   {
     id: 2,
-    grade_scale: {'A': '93','A-': '90','B+': '87','B': '83','B-': '80','C+': '77','C': '73','C-': '70','D': '60'}
+    grade_scale: {'A': '93',
+      'A-': '90',
+      'B+': '87',
+      'B': '83',
+      'B-': '80',
+      'C+': '77',
+      'C': '73',
+      'C-': '70',
+      'D': '60'}
   },
   {
     id: 3,
-    grade_scale: {'A': '93','A-': '90','B+': '87','B': '83','B-': '80','C+': '77','C': '73','C-': '70','D+': '67','D': '63','D-': '60'}
+    grade_scale: {'A': '93',
+      'A-': '90',
+      'B+': '87',
+      'B': '83',
+      'B-': '80',
+      'C+': '77',
+      'C': '73',
+      'C-': '70',
+      'D+': '67',
+      'D': '63',
+      'D-': '60'}
   }
 ]
 
 const moreGradeScales = [
   {
     id: 4,
-    grade_scale: {'A':'92.5','A-':'89.5','B+':'86.5','B':'82.5','B-':'79.5','C+':'76.5','C':'72.5','C-':'69.5','D+':'66.5','D':'62.5','D-':'59.5'}
+    grade_scale: {'A': '92.5',
+      'A-': '89.5',
+      'B+': '86.5',
+      'B': '82.5',
+      'B-': '79.5',
+      'C+': '76.5',
+      'C': '72.5',
+      'C-': '69.5',
+      'D+': '66.5',
+      'D': '62.5',
+      'D-': '59.5'}
   },
   {
     id: 5,
@@ -43,7 +59,17 @@ const moreGradeScales = [
   },
   {
     id: 6,
-    grade_scale: {'A':'92','A-':'90','B+':'88','B':'82','B-':'80','C+':'78','C':'72','C-':'70','D+':'68','D':'62','D-':'60'}
+    grade_scale: {'A': '92',
+      'A-': '90',
+      'B+': '88',
+      'B': '82',
+      'B-': '80',
+      'C+': '78',
+      'C': '72',
+      'C-': '70',
+      'D+': '68',
+      'D': '62',
+      'D-': '60'}
   }
 ]
 
@@ -73,8 +99,8 @@ class GradeScale extends React.Component {
 
   onDeleteGS (key) {
     this.setState({loading: true})
-    let newGradeScale = this.state.currentGradeScale;
-    delete newGradeScale[key];
+    let newGradeScale = this.state.currentGradeScale
+    delete newGradeScale[key]
     this.setState({currentGradeScale: newGradeScale})
     actions.gradescales.updateGradeScale(this.props.cl, {grade_scale: newGradeScale}).then((cl) => {
       if (this.props.onSubmit) this.props.onSubmit(cl)
@@ -82,20 +108,20 @@ class GradeScale extends React.Component {
     }).catch(() => { this.setState({loading: false}) })
   }
 
-  renderGradeScale(grade_scale) {
+  renderGradeScale (gradeScale) {
     return <ul className="grade-scale-list">
-      {Object.keys(grade_scale).sort((a,b) => {
-        return parseFloat(grade_scale[a]) < parseFloat(grade_scale[b]) ? 1 : -1
-      }).map((key, idx) => 
+      {Object.keys(gradeScale).sort((a, b) => {
+        return parseFloat(gradeScale[a]) < parseFloat(gradeScale[b]) ? 1 : -1
+      }).map((key, idx) =>
         <li key={idx} className="grade-row">
-          <div className="grade-key">{key}</div><div className="grade-min">{grade_scale[key]}</div>
+          <div className="grade-key">{key}</div><div className="grade-min">{gradeScale[key]}</div>
         </li>
       )}
       <li className="adopt-button">
         <button
           className='button full-width margin-top'
           disabled={this.state.loading}
-          onClick={() => { this.setGradeScale(grade_scale) }}
+          onClick={() => { this.setGradeScale(gradeScale) }}
         >
           Adopt
           {this.state.loading ? <Loading style={{color: 'white', marginLeft: '0.5em'}} /> : null}
@@ -110,42 +136,53 @@ class GradeScale extends React.Component {
   * @return [Component] div. Current grade scale.
   */
   renderCurrentGradeScale () {
-    const {grade_scale_map} = this.props.cl
+    const gradeScale = this.props.cl.grade_scale
+    const {edit} = this.props
 
     return (
-      <div className="current-grade-scale-container">Current Grade Scale
+      <div>
+        <div className='grade-scale-title'>Current Grade Scale</div>
         <div className="current-grade-scale">
-          <ul className="current-grade-scale-list">
-            {Object.keys(grade_scale_map).sort((a,b) => {
-              return parseFloat(grade_scale_map[a]) < parseFloat(grade_scale_map[b]) ? 1 : -1
-              }).map((key, idx) => 
-                <li key={idx} className="grade-row">
-                  <div className="delete-x">
-                    <div
-                      className='button-delete-x'
-                      onClick={(event) => {
-                        event.stopPropagation()
-                        this.onDeleteGS(key)
-                      }}><i className='fa fa-times' />
-                    </div>
+          <ul className="grade-scale-list">
+            {Object.keys(gradeScale).sort((a, b) => {
+              return parseFloat(gradeScale[a]) < parseFloat(gradeScale[b]) ? 1 : -1
+            }).map((key, idx) =>
+              <li key={idx} className="grade-row">
+                {edit && <div className="delete-x">
+                  <div
+                    className='button-delete-x'
+                    onClick={(event) => {
+                      event.stopPropagation()
+                      this.onDeleteGS(key)
+                    }}><i className='fa fa-times' />
                   </div>
-                  <div className="grade">
-                    <div className="grade-key">{key}</div>
-                    <div className="grade-min">{grade_scale_map[key]}</div>
-                  </div>
-                </li>
-              )}
+                </div>}
+                <div className="grade">
+                  <div className="grade-key">{key}</div>
+                  <div className="grade-min">{gradeScale[key]}</div>
+                </div>
+              </li>
+            )}
           </ul>
         </div>
-        {this.renderForm()}
+        {edit && this.renderForm()}
+        <button
+          className='button full-width margin-top'
+          disabled={this.state.loading}
+          onClick={edit ? this.onSubmit.bind() : this.props.onSubmit.bind(this)}
+        >
+          {edit ? 'Submit' : 'Edit Scale'}
+          {this.state.loading ? <Loading style={{color: 'white', marginLeft: '0.5em'}} /> : null}
+        </button>
       </div>
     )
   }
 
   renderOtherGradeScales () {
     const gradeScalesText = this.state.showAllGradeScales ? 'Show Less Grade Scales' : 'Show More Grade Scales'
-    return ( 
-      <div className="other-common-scales-container">Other common scales
+    return (
+      <div className="other-common-scales-container">
+        Other common scales
         <div className="other-common-scales">
           {this.state.gradeScales.map((item, index) =>
             this.renderGradeScale(item.grade_scale)
@@ -156,20 +193,20 @@ class GradeScale extends React.Component {
     )
   }
 
-  renderForm() {
+  renderForm () {
     const {form} = this.state
     const {formErrors, updateProperty} = this.props
     return (
       <div className="grade-scale-form">
         <div className="grade-scale-form-inputs">
           <InputField
-                containerClassName='margin-top'
-                error={formErrors.grade}
-                label='Grade'
-                name='grade'
-                onChange={updateProperty}
-                value={form.grade}
-              />
+            containerClassName='margin-top'
+            error={formErrors.grade}
+            label='Grade'
+            name='grade'
+            onChange={updateProperty}
+            value={form.grade}
+          />
 
           <InputField
             containerClassName='margin-top'
@@ -180,14 +217,6 @@ class GradeScale extends React.Component {
             value={form.min}
           />
         </div>
-        <button
-          className='button full-width margin-top'
-          disabled={this.state.loading}
-          onClick={this.onSubmit.bind(this)}
-        >
-          Submit
-          {this.state.loading ? <Loading style={{color: 'white', marginLeft: '0.5em'}} /> : null}
-        </button>
       </div>
     )
   }
@@ -220,8 +249,8 @@ class GradeScale extends React.Component {
   */
   onSubmit () {
     this.setState({loading: true})
-    let newGradeScale = this.state.currentGradeScale;
-    newGradeScale[this.state.form.grade] = this.state.form.min;
+    let newGradeScale = this.state.currentGradeScale
+    newGradeScale[this.state.form.grade] = this.state.form.min
     this.setState({currentGradeScale: newGradeScale})
     actions.gradescales.updateGradeScale(this.props.cl, {grade_scale: newGradeScale}).then((cl) => {
       if (this.props.onSubmit) this.props.onSubmit(cl)
@@ -230,12 +259,13 @@ class GradeScale extends React.Component {
   }
 
   render () {
+    const {edit} = this.props
+
     return (
-      <div id="class-editor-grade-scale" className='margin-top-2x margin-bottom-2x'>
-        <h5 style={{marginTop: '0.25em', marginBottom: '0.5em'}}>Edit gradescale</h5>
-        <div className="grade-scales">
+      <div id='class-editor-grade-scale'>
+        <div id='class-editor-grade-scale-content'>
           {this.renderCurrentGradeScale()}
-          {this.renderOtherGradeScales()}
+          {edit && this.renderOtherGradeScales()}
         </div>
       </div>
     )
@@ -246,7 +276,8 @@ GradeScale.propTypes = {
   cl: PropTypes.object,
   formErrors: PropTypes.object,
   onSubmit: PropTypes.func,
-  updateProperty: PropTypes.func
+  updateProperty: PropTypes.func,
+  edit: PropTypes.bool
 }
 
 export default ValidateForm(Form(GradeScale, 'form'))
