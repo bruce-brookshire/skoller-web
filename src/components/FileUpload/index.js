@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Loading from '../../components/Loading'
 import actions from '../../actions'
+import {showSnackbar} from '../../utilities/snackbar'
 
 class FileUpload extends React.Component {
   constructor (props) {
@@ -84,9 +85,9 @@ class FileUpload extends React.Component {
       const isValidFileType = this.validateFileType(file)
 
       if (!isValidFileName) {
-        actions.snackbar.showSnackbar('That file name contains invalid characters. Change the file name to upload. Invalid characters are: # % & * : < > ? / \\ { | }.')
+        showSnackbar('That file name contains invalid characters. Change the file name to upload. Invalid characters are: # % & * : < > ? / \\ { | }.')
       } else {
-        isValidFileType ? this.uploadFile(file) : actions.snackbar.showSnackbar('That file type is not supported. Please use .doc, .docx, .jpeg, .pdf, or .png file types.')
+        isValidFileType ? this.uploadFile(file) : showSnackbar('That file type is not supported. Please use .doc, .docx, .jpeg, .pdf, or .png file types.')
       }
 
       this.setState({isDragActive: false})

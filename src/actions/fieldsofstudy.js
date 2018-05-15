@@ -1,5 +1,5 @@
 import {get, postFile} from '../utilities/api'
-import {showSnackbar} from './snackbar'
+import {showSnackbar} from '../utilities/snackbar'
 
 /*
 * Get fields of study.

@@ -1,5 +1,5 @@
 import {get, post, del, put} from '../utilities/api'
-import {showSnackbar} from './snackbar'
+import {showSnackbar} from '../utilities/snackbar'
 import stores from '../stores'
 const {userStore} = stores
 
