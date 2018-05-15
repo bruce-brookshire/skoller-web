@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Modal from '../../components/Modal'
-import actions from '../../actions'
+import Modal from '../../../../components/Modal'
+import actions from '../../../../actions'
 
 class IssuesModal extends React.Component {
   constructor (props) {
@@ -147,7 +147,7 @@ class IssuesModal extends React.Component {
 
 class CheckboxField extends React.Component {
   render () {
-    const {checked, label, onChange,} = this.props
+    const {checked, label, onChange} = this.props
     return (
       <label>
         <input
