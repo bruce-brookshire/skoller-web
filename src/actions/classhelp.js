@@ -1,5 +1,5 @@
 import 'isomorphic-fetch'
-import {checkError, parseResponse} from '../utilities/api'
+import {parseResponse, get, post} from '../utilities/api'
 import {showSnackbar} from './snackbar'
 import stores from '../stores'
 const {userStore} = stores
@@ -9,19 +9,11 @@ var Environment = require('../../environment.js')
 * Get help types
 */
 export function getHelpTypes () {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/class-help-types`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/class-help-types`, 'Error fetching help types. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching help types. Try again.')
       return Promise.reject(error)
     })
 }
@@ -30,20 +22,11 @@ export function getHelpTypes () {
 * Create help ticket
 */
 export function createIssue (cl, helpId, form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}/help/${helpId}`, {
-    method: 'POST',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(response => parseResponse(response))
+  return post(`/api/v1/classes/${cl.id}/help/${helpId}`, form, 'Error creating help ticket. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error creating help ticket. Try again.')
       return Promise.reject(error)
     })
 }

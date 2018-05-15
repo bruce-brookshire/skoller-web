@@ -1,9 +1,7 @@
-import 'isomorphic-fetch'
-import {checkError, parseResponse, get, post, del, put} from '../utilities/api'
+import {get, post, del, put} from '../utilities/api'
 import {showSnackbar} from './snackbar'
 import stores from '../stores'
 const {userStore} = stores
-var Environment = require('../../environment.js')
 
 /*
 * Search classes by param
@@ -203,17 +201,8 @@ export function lockClass (classId, form) {
 * @param [Object] form. Optional params for class unlock.
 */
 export function unlockClass (classId, form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${classId}/unlock`, {
-    method: 'POST',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(response => checkError(response))
+  return post(`/api/v1/classes/${classId}/unlock`, form, '')
     .catch(error => {
-      // showSnackbar('Error unlocking class. Try again.')
       return Promise.reject(error)
     })
 }
@@ -224,19 +213,11 @@ export function unlockClass (classId, form) {
 * @param [Number] classId. Class to unlock
 */
 export function getLocks (classId) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${classId}/locks`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/classes/${classId}/locks`, '')
     .then(data => {
       return data
     })
     .catch(error => {
-      // showSnackbar('Error unlocking class. Try again.')
       return Promise.reject(error)
     })
 }
@@ -247,19 +228,11 @@ export function getLocks (classId) {
 * @param [string] link. Class link
 */
 export function getClassByLink (link) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/enrollment-link/${link}`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/enrollment-link/${link}`, 'Error finding class. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error finding class. Try again.')
       return Promise.reject(error)
     })
 }
@@ -271,16 +244,8 @@ export function getClassByLink (link) {
 * @param [Object] form. Optional params for class unlock.
 */
 export function enrollByLink (link) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/enrollment-link/${link}`, {
-    method: 'POST',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => checkError(response))
+  return post(`/api/v1/enrollment-link/${link}`, null, '')
     .catch(error => {
-      // showSnackbar('Error unlocking class. Try again.')
       return Promise.reject(error)
     })
 }
