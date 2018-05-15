@@ -3,9 +3,7 @@ import {getAnalytics} from './analytics'
 import {authenticateUser, createAccount, forgotPassword, getRoles,
   getUserById, getUserByToken, getUsers, registerUser, resetPassword,
   resendVerification, updateAccount, verifyPhoneNumber} from './auth'
-import {createClassPost, deleteClassPost, getClassPost, getClassPosts, likePost, unlikePost,
-  updateClassPost, createClassComment, deleteClassComment, likeComment, unlikeComment, updateClassComment,
-  createClassReply, deleteClassReply, likeReply, unlikeReply, updateClassReply} from './chat'
+import {deleteClassPost, getClassPosts, deleteClassComment, deleteClassReply} from './chat'
 import {createClass, deleteClass, dropClass, getClassById, getClassByLink, getLocks,
   getStudentClassesById, enrollByLink, enrollInClass, searchClasses, searchStudentClasses,
   updateClass, lockClass, unlockClass, approveClass, denyClass, updateClassStatus} from './classes'
@@ -51,23 +49,10 @@ const actions = {
     updateAccount
   },
   chat: {
-    createClassPost,
-    createClassComment,
-    createClassReply,
     deleteClassComment,
     deleteClassPost,
     deleteClassReply,
-    getClassPost,
-    getClassPosts,
-    likeComment,
-    likePost,
-    likeReply,
-    unlikeComment,
-    unlikeReply,
-    unlikePost,
-    updateClassComment,
-    updateClassPost,
-    updateClassReply
+    getClassPosts
   },
   classes: {
     approveClass,
