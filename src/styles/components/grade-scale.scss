@@ -8,14 +8,25 @@
       @include shadow-box-title;
     }
 
+    #grade-scale-form {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+
+      .grade-scale-input {
+        width: 5em;
+      }
+    }
+
     .grade-scale-list {
       list-style: none;
+      width: 7em;
   
       .grade-row {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        align-items: center;
+        align-items: baseline;
   
         .grade {
           width: 100%;

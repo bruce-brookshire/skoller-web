@@ -230,6 +230,7 @@ class ClassAdmin extends React.Component {
       <GradeScale
         cl={cl}
         canEdit={true}
+        onSubmit={(cl) => this.updateClass(cl)}
       />
     )
   }

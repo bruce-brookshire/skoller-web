@@ -4,74 +4,7 @@ import {Form, ValidateForm} from 'react-form-library'
 import {InputField} from '../../../../components/Form'
 import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
-
-const gradeScales = [
-  {
-    id: 1,
-    grade_scale: {'A': '90', 'B': '80', 'C': '70', 'D': '60'}
-  },
-  {
-    id: 2,
-    grade_scale: {'A': '93',
-      'A-': '90',
-      'B+': '87',
-      'B': '83',
-      'B-': '80',
-      'C+': '77',
-      'C': '73',
-      'C-': '70',
-      'D': '60'}
-  },
-  {
-    id: 3,
-    grade_scale: {'A': '93',
-      'A-': '90',
-      'B+': '87',
-      'B': '83',
-      'B-': '80',
-      'C+': '77',
-      'C': '73',
-      'C-': '70',
-      'D+': '67',
-      'D': '63',
-      'D-': '60'}
-  }
-]
-
-const moreGradeScales = [
-  {
-    id: 4,
-    grade_scale: {'A': '92.5',
-      'A-': '89.5',
-      'B+': '86.5',
-      'B': '82.5',
-      'B-': '79.5',
-      'C+': '76.5',
-      'C': '72.5',
-      'C-': '69.5',
-      'D+': '66.5',
-      'D': '62.5',
-      'D-': '59.5'}
-  },
-  {
-    id: 5,
-    grade_scale: {'Pass': '50'}
-  },
-  {
-    id: 6,
-    grade_scale: {'A': '92',
-      'A-': '90',
-      'B+': '88',
-      'B': '82',
-      'B-': '80',
-      'C+': '78',
-      'C': '72',
-      'C-': '70',
-      'D+': '68',
-      'D': '62',
-      'D-': '60'}
-  }
-]
+import CommonScaleModal from './CommonScaleModal'
 
 class GradeScale extends React.Component {
   constructor (props) {
@@ -86,9 +19,7 @@ class GradeScale extends React.Component {
   */
   initializeState () {
     return {
-      showAllGradeScales: false,
       showCommonGradeScales: false,
-      gradeScales,
       form: {
         grade: '',
         min: ''
@@ -110,28 +41,6 @@ class GradeScale extends React.Component {
     }).catch(() => { this.setState({loading: false}) })
   }
 
-  renderGradeScale (gradeScale, index) {
-    return <ul className="grade-scale-list" key={index}>
-      {Object.keys(gradeScale).sort((a, b) => {
-        return parseFloat(gradeScale[a]) < parseFloat(gradeScale[b]) ? 1 : -1
-      }).map((key, idx) =>
-        <li key={idx} className="grade-row">
-          <div className="grade-key">{key}</div><div className="grade-min">{gradeScale[key]}</div>
-        </li>
-      )}
-      <li className="adopt-button">
-        <button
-          className='button full-width margin-top'
-          disabled={this.state.loading}
-          onClick={() => { this.setGradeScale(gradeScale) }}
-        >
-          Adopt
-          {this.state.loading ? <Loading style={{color: 'white', marginLeft: '0.5em'}} /> : null}
-        </button>
-      </li>
-    </ul>
-  }
-
   /*
   * Render the current gradeScale
   *
@@ -139,7 +48,7 @@ class GradeScale extends React.Component {
   */
   renderCurrentGradeScale () {
     const gradeScale = this.props.cl.grade_scale
-    const {showCommonGradeScales, isEditable} = this.state
+    const {isEditable} = this.state
     const {canEdit} = this.props
 
     return (
@@ -183,22 +92,7 @@ class GradeScale extends React.Component {
           Submit
           {this.state.loading ? <Loading style={{color: 'white', marginLeft: '0.5em'}} /> : null}
         </button>}
-        {isEditable && <a onClick={() => { this.setState({showCommonGradeScales: !showCommonGradeScales}) }}>{showCommonGradeScales ? 'Hide' : 'Show'} common scales</a>}
-      </div>
-    )
-  }
-
-  renderOtherGradeScales () {
-    const gradeScalesText = this.state.showAllGradeScales ? 'Show Less Grade Scales' : 'Show More Grade Scales'
-    return (
-      <div className="other-common-scales-container">
-        Other common scales
-        <div className="other-common-scales">
-          {this.state.gradeScales.map((item, index) =>
-            this.renderGradeScale(item.grade_scale, index)
-          )}
-        </div>
-        <a style={{display: 'block', cursor: 'pointer'}} className='margin-top' onClick={() => this.toggleGradeScales()}> {gradeScalesText} </a>
+        {isEditable && <a onClick={() => { this.toggleCommonScaleModal() }}>Show common scales</a>}
       </div>
     )
   }
@@ -207,19 +101,18 @@ class GradeScale extends React.Component {
     const {form} = this.state
     const {formErrors, updateProperty} = this.props
     return (
-      <div className="grade-scale-form">
-        <div className="grade-scale-form-inputs">
+      <div id="grade-scale-form">
+        <div className="grade-scale-input">
           <InputField
-            containerClassName='margin-top'
             error={formErrors.grade}
             label='Grade'
             name='grade'
             onChange={updateProperty}
             value={form.grade}
           />
-
+        </div>
+        <div className="grade-scale-input">
           <InputField
-            containerClassName='margin-top'
             error={formErrors.grade}
             label='Min'
             name='min'
@@ -246,15 +139,6 @@ class GradeScale extends React.Component {
   }
 
   /*
-  * Toggle the gradescales shown.
-  *
-  */
-  toggleGradeScales () {
-    const gs = this.state.showAllGradeScales ? gradeScales : gradeScales.concat(moreGradeScales) // note, show all will become opposite value
-    this.setState({ showAllGradeScales: !this.state.showAllGradeScales, gradeScales: gs })
-  }
-
-  /*
   * Submit the grade scale
   */
   onSubmit () {
@@ -268,15 +152,34 @@ class GradeScale extends React.Component {
     }).catch(() => { this.setState({loading: false}) })
   }
 
-  render () {
-    const {showCommonGradeScales, isEditable} = this.state
+  /*
+  * Toggle the issues resolved modal.
+  */
+  toggleCommonScaleModal () {
+    this.setState({showCommonGradeScales: !this.state.showCommonGradeScales})
+  }
 
+  renderCommonScaleModal () {
+    const gradeScale = this.props.cl.grade_scale
+    return (
+      <CommonScaleModal
+        currentScale={gradeScale}
+        open={this.state.showCommonGradeScales}
+        onClose={this.toggleCommonScaleModal.bind(this)}
+        onSubmit={(scale) => {
+          this.setGradeScale(scale)
+        }}
+      />
+    )
+  }
+
+  render () {
     return (
       <div id='class-editor-grade-scale'>
         <div id='class-editor-grade-scale-content'>
           {this.renderCurrentGradeScale()}
-          {isEditable && showCommonGradeScales && this.renderOtherGradeScales()}
         </div>
+        {this.renderCommonScaleModal()}
       </div>
     )
   }
