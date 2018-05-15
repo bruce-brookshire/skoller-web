@@ -18,6 +18,7 @@ class PitchDeck extends React.Component {
               mozallowfullscreen="true"
               webkitallowfullscreen="true">
             </iframe>
+            <div className='cn-hide'></div>
           </div>
         </div>
         <LandingFooter />
