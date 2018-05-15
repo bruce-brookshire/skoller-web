@@ -1,9 +1,7 @@
-import 'isomorphic-fetch'
-import {checkError, parseResponse} from '../utilities/api'
-import {showSnackbar} from './snackbar'
+import {get, post, del, put} from '../utilities/api'
+import {showSnackbar} from '../utilities/snackbar'
 import stores from '../stores'
 const {userStore} = stores
-var Environment = require('../../environment.js')
 
 /*
 * Search classes by param
@@ -11,19 +9,11 @@ var Environment = require('../../environment.js')
 * @params [Object] queryString. Search parameters.
 */
 export function searchClasses (queryString) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes?${queryString}`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/classes`, queryString, 'Error searching classes. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error searching classes. Try again.')
       return Promise.reject(error)
     })
 }
@@ -34,19 +24,11 @@ export function searchClasses (queryString) {
 * @params [Object] param. Search parameters.
 */
 export function searchStudentClasses (schoolId, name) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/schools/${schoolId}/classes?class_name=${name}`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/schools/${schoolId}/classes`, `class_name=${name}`, 'Error searching classes. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error searching classes. Try again.')
       return Promise.reject(error)
     })
 }
@@ -57,31 +39,13 @@ export function searchStudentClasses (schoolId, name) {
 * @param [Number] classId. The id of the class to get.
 */
 export function getClassById (classId) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${classId}`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/classes/${classId}`, '', 'Error fetching class. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching class. Try again.')
       return Promise.reject(error)
     })
-}
-
-
-/*
-* Get classes for students
-*
-*/
-export function getStudentClasses () {
-  const {user: {student}} = userStore
-  return getStudentClassesById(student.id)
 }
 
 /*
@@ -89,44 +53,11 @@ export function getStudentClasses () {
 *
 */
 export function getStudentClassesById (studentId) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/students/${studentId}/classes/`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/students/${studentId}/classes/`, '', 'Error fetching classes. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching classes. Try again.')
-      return Promise.reject(error)
-    })
-}
-
-/*
-* Get classes for professor
-*
-* @param [Object] professor. Professor of class
-*/
-export function getProfessorClasses (professor,professorSchool=null) {
-  const school = userStore && userStore.user && userStore.user.student && userStore.user.student.school ? userStore.user.student.school : null
-  const url = `${Environment.SERVER_NAME}/api/v1/classes?school=${professorSchool ? professorSchool.id : school.id}&professor_id=${professor.id}`
-  return fetch(url, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
-    .then(data => {
-      return data
-    })
-    .catch(error => {
-      showSnackbar('Error fetching classes. Try again.')
       return Promise.reject(error)
     })
 }
@@ -138,19 +69,11 @@ export function getProfessorClasses (professor,professorSchool=null) {
 */
 export function enrollInClass (classId) {
   const {user: {student}} = userStore
-  return fetch(`${Environment.SERVER_NAME}/api/v1/students/${student.id}/classes/${classId}`, {
-    method: 'POST',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return post(`/api/v1/students/${student.id}/classes/${classId}`, null, 'Error enrolling in class. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error enrolling in class. Try again.')
       return Promise.reject(error)
     })
 }
@@ -160,16 +83,8 @@ export function enrollInClass (classId) {
 */
 export function dropClass (classId) {
   const {user: {student}} = userStore
-  return fetch(`${Environment.SERVER_NAME}/api/v1/students/${student.id}/classes/${classId}`, {
-    method: 'DELETE',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => checkError(response))
+  return del(`/api/v1/students/${student.id}/classes/${classId}`, 'Error dropping class. Try again.')
     .catch(error => {
-      showSnackbar('Error dropping class. Try again.')
       return Promise.reject(error)
     })
 }
@@ -178,20 +93,11 @@ export function dropClass (classId) {
 * Create a new class
 */
 export function createClass (form, periodId) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/periods/${periodId}/classes`, {
-    method: 'POST',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(response => parseResponse(response))
+  return post(`api/v1/periods/${periodId}/classes`, form, 'Error creating class. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error creating class. Try again.')
       return Promise.reject(error)
     })
 }
@@ -200,19 +106,11 @@ export function createClass (form, periodId) {
 * Delete a new class
 */
 export function deleteClass (cl) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}`, {
-    method: 'DELETE',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return del(`/api/v1/classes/${cl.id}`, 'Error deleting class. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error deleting class. Try again.')
       return Promise.reject(error)
     })
 }
@@ -221,20 +119,11 @@ export function deleteClass (cl) {
 * Update a class
 */
 export function updateClass (form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${form.id}`, {
-    method: 'PUT',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(response => parseResponse(response))
+  return put(`/api/v1/classes/${form.id}`, form, 'Error updating class. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error updating class. Try again.')
       return Promise.reject(error)
     })
 }
@@ -245,14 +134,7 @@ export function updateClass (form) {
 * @param [Object] cl. Class to approve.
 */
 export function approveClass (cl) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}/approve`, {
-    method: 'POST',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-  })
-    .then(response => parseResponse(response))
+  return post(`/api/v1/classes/${cl.id}/approve`, null, '')
     .then(data => {
       showSnackbar('Class approved.', 'info')
       return data
@@ -269,14 +151,7 @@ export function approveClass (cl) {
 * @param [Object] cl. Class to deny.
 */
 export function denyClass (cl) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}/deny`, {
-    method: 'POST',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-  })
-    .then(response => checkError(response))
+  return post(`/api/v1/classes/${cl.id}/deny`, null, '')
     .then(data => {
       showSnackbar('Class rejected.', 'info')
       return data
@@ -294,15 +169,7 @@ export function denyClass (cl) {
 * @param [Object] form. Class status form.
 */
 export function updateClassStatus (cl, form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}/statuses`, {
-    method: 'PUT',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(response => parseResponse(response))
+  return put(`$/api/v1/classes/${cl.id}/statuses`, form)
     .then(data => {
       showSnackbar('Class status updated.', 'info')
       return data
@@ -320,15 +187,7 @@ export function updateClassStatus (cl, form) {
 * @param [Object] form. Optional params for class lock.
 */
 export function lockClass (classId, form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${classId}/lock`, {
-    method: 'POST',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(response => checkError(response))
+  return post(`/api/v1/classes/${classId}/lock`, form, '')
     .catch(error => {
       if (error !== 422) showSnackbar('Error locking class. Try again.')
       return Promise.reject(error)
@@ -342,17 +201,8 @@ export function lockClass (classId, form) {
 * @param [Object] form. Optional params for class unlock.
 */
 export function unlockClass (classId, form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${classId}/unlock`, {
-    method: 'POST',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(response => checkError(response))
+  return post(`/api/v1/classes/${classId}/unlock`, form, '')
     .catch(error => {
-      // showSnackbar('Error unlocking class. Try again.')
       return Promise.reject(error)
     })
 }
@@ -363,19 +213,11 @@ export function unlockClass (classId, form) {
 * @param [Number] classId. Class to unlock
 */
 export function getLocks (classId) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${classId}/locks`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/classes/${classId}/locks`, '', '')
     .then(data => {
       return data
     })
     .catch(error => {
-      // showSnackbar('Error unlocking class. Try again.')
       return Promise.reject(error)
     })
 }
@@ -386,19 +228,11 @@ export function getLocks (classId) {
 * @param [string] link. Class link
 */
 export function getClassByLink (link) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/enrollment-link/${link}`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/enrollment-link/${link}`, '', 'Error finding class. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error finding class. Try again.')
       return Promise.reject(error)
     })
 }
@@ -410,16 +244,8 @@ export function getClassByLink (link) {
 * @param [Object] form. Optional params for class unlock.
 */
 export function enrollByLink (link) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/enrollment-link/${link}`, {
-    method: 'POST',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => checkError(response))
+  return post(`/api/v1/enrollment-link/${link}`, null, '')
     .catch(error => {
-      // showSnackbar('Error unlocking class. Try again.')
       return Promise.reject(error)
     })
 }

@@ -1,10 +1,5 @@
-import 'isomorphic-fetch'
-import {checkError, parseResponse} from '../utilities/api'
-import {showSnackbar} from './snackbar'
-import stores from '../stores'
-const {userStore} = stores
-var Environment = require('../../environment.js')
-
+import {post} from '../utilities/api'
+import {showSnackbar} from '../utilities/snackbar'
 
 /*
 * Get the next class with an open section for syllabus worker.
@@ -12,14 +7,7 @@ var Environment = require('../../environment.js')
 * @param [String] section name. Name of section SW is working.
 */
 export function getNextClass () {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/syllabus-workers/`, {
-    method: 'POST',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return post(`/api/v1/syllabus-workers/`, null, '')
     .then(data => {
       return data
     })

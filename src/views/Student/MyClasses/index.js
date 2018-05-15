@@ -1,8 +1,11 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+import {inject, observer} from 'mobx-react'
 import ClassList from '../../components/ClassList'
 import actions from '../../../actions'
 import { browserHistory } from 'react-router'
 
+@inject('rootStore') @observer
 class MyClasses extends React.Component {
   constructor (props) {
     super(props)
@@ -16,7 +19,8 @@ class MyClasses extends React.Component {
   }
 
   updateClasses () {
-    actions.classes.getStudentClasses().then((classes) => {
+    const {user: {student}} = this.props.rootStore.userStore
+    actions.classes.getStudentClassesById(student.id).then((classes) => {
       this.setState({classes})
     }).catch(() => false)
   }
@@ -106,6 +110,10 @@ class MyClasses extends React.Component {
       </div>
     )
   }
+}
+
+MyClasses.propTypes = {
+  rootStore: PropTypes.object
 }
 
 export default MyClasses

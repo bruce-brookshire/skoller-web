@@ -1,9 +1,4 @@
-import 'isomorphic-fetch'
-import {checkError, parseResponse} from '../utilities/api'
-import {showSnackbar} from './snackbar'
-import stores from '../stores'
-const {userStore} = stores
-var Environment = require('../../environment.js')
+import {get, post, put} from '../utilities/api'
 
 /*
 * Get school periods.
@@ -11,19 +6,11 @@ var Environment = require('../../environment.js')
 * @params [Object] school. School to grab the periods.
 */
 export function getSchoolPeriods (schoolId, name) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/schools/${schoolId}/periods?name=${name}`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/schools/${schoolId}/periods`, `name=${name}`, 'Error fetching periods. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching periods. Try again.')
       return Promise.reject(error)
     })
 }
@@ -35,24 +22,14 @@ export function getSchoolPeriods (schoolId, name) {
 * @params [Object] form. Period form.
 */
 export function createPeriod (schoolId, form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/schools/${schoolId}/periods`, {
-    method: 'POST',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(response => parseResponse(response))
+  return post(`/api/v1/schools/${schoolId}/periods`, form, 'Error creating period. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error creating period. Try again.')
       return Promise.reject(error)
     })
 }
-
 
 /*
 * Update period
@@ -60,20 +37,11 @@ export function createPeriod (schoolId, form) {
 * @params [Object] form. Period form.
 */
 export function updatePeriod (form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/periods/${form.id}`, {
-    method: 'PUT',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(response => parseResponse(response))
+  return put(`/api/v1/periods/${form.id}`, form, 'Error updating period. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error updating period. Try again.')
       return Promise.reject(error)
     })
 }

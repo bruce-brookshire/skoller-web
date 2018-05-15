@@ -111,7 +111,7 @@ function requireAuth (nextState, replaceState) {
 function authenticateStudent (user) {
   if (user.student) {
     if (user.student.is_verified) {
-      return actions.classes.getStudentClasses().then((classes) => {
+      return actions.classes.getStudentClassesById(user.student.id).then((classes) => {
         if (classes.length === 0) browserHistory.push('/student/find-classes')
       }).catch(() => false)
     } else {

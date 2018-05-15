@@ -1,11 +1,4 @@
-import 'isomorphic-fetch'
-import {checkError, parseResponse} from '../utilities/api'
-import {showSnackbar} from './snackbar'
-import stores from '../stores'
-const {userStore} = stores
-var Environment = require('../../environment.js')
-
-
+import {put} from '../utilities/api'
 
 /*
 * Update an assignment
@@ -13,21 +6,11 @@ var Environment = require('../../environment.js')
 * @params [Object] form. Assignment form.
 */
 export function updateGradeScale (cl, form) {
-
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}`, {
-    method: 'PUT',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(response => parseResponse(response))
+  return put(`/api/v1/classes/${cl.id}`, form, 'Error updating gradescale. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error updating gradescale. Try again.')
       return Promise.reject(error)
     })
 }

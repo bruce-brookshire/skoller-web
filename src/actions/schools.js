@@ -1,28 +1,15 @@
-import 'isomorphic-fetch'
-import {checkError, parseResponse} from '../utilities/api'
-import {showSnackbar} from './snackbar'
-import stores from '../stores'
-const {userStore} = stores
-var Environment = require('../../environment.js')
+import {get, post, put} from '../utilities/api'
 
 /*
 * Get the all schools for signup
 *
 */
 export function getAllSchools () {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/schools`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/schools`, '', 'Error fetching schools. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching schools. Try again.')
       return Promise.reject(error)
     })
 }
@@ -32,19 +19,11 @@ export function getAllSchools () {
 *
 */
 export function getStates () {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/locations`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/locations`, '', 'Error fetching states. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching states. Try again.')
       return Promise.reject(error)
     })
 }
@@ -53,19 +32,11 @@ export function getStates () {
 * Get minified counts
 */
 export function getHubSchoolsMinified () {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/school/list`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/school/list`, '', 'Error fetching schools. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching schools. Try again.')
       return Promise.reject(error)
     })
 }
@@ -74,19 +45,11 @@ export function getHubSchoolsMinified () {
 * Search schools by name
 */
 export function searchSchools (param) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/school/list?name=${param}`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`api/v1/school/list`, `name=${param}`, 'Error fetching schools. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching schools. Try again.')
       return Promise.reject(error)
     })
 }
@@ -97,19 +60,11 @@ export function searchSchools (param) {
 * @params [Object] form. Login form data.
 */
 export function getHubSchools () {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/schools/hub`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/schools/hub`, '', 'Error fetching schools. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching schools. Try again.')
       return Promise.reject(error)
     })
 }
@@ -120,19 +75,11 @@ export function getHubSchools () {
 * @params [Object] school. School.
 */
 export function getSchoolById (school) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/schools/${school.id}`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/schools/${school.id}`, '', 'Error fetching school. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching school. Try again.')
       return Promise.reject(error)
     })
 }
@@ -143,24 +90,14 @@ export function getSchoolById (school) {
 * @params [Object] form. School form.
 */
 export function createSchool (form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/schools`, {
-    method: 'POST',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(response => parseResponse(response))
+  return post(`/api/v1/schools`, form, 'Error creating school. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error creating school. Try again.')
       return Promise.reject(error)
     })
 }
-
 
 /*
 * Update school
@@ -168,20 +105,11 @@ export function createSchool (form) {
 * @params [Object] form. School form.
 */
 export function updateSchool (form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/schools/${form.id}`, {
-    method: 'PUT',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(response => parseResponse(response))
+  return put(`/api/v1/schools/${form.id}`, form, 'Error updating school. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error updating school. Try again.')
       return Promise.reject(error)
     })
 }
