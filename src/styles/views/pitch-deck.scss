@@ -19,10 +19,20 @@
       width: 1000px;
       overflow-y: hidden;
       height: 591px;
+      position: relative;
 
       iframe {
         width: 100%;
         height: 100%;
+      }
+
+      .cn-hide {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 140px;
+        height: 29px;
+        background-color: #323232
       }
     }
   }
