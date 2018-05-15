@@ -7,16 +7,15 @@ import ClassForm from './ClassForm'
 import IssuesModal from '../components/ClassEditor/IssuesModal'
 import HelpResolvedModal from './HelpResolvedModal'
 import RequestResolvedModal from './RequestResolvedModal'
+import ClassCard from '../../components/ClassCard'
+import Loading from '../../components/Loading'
 
 @inject('rootStore') @observer
 class ClassAdmin extends React.Component {
   constructor (props) {
     super(props)
     let {navbarStore} = this.props.rootStore
-    navbarStore.toggleEditCl = this.toggleEditClassModal.bind(this)
-    navbarStore.toggleWrench = this.toggleWrench.bind(this)
-    navbarStore.toggleChat = this.toggleChat.bind(this)
-    navbarStore.toggleIssues = this.toggleIssuesModal.bind(this)
+    navbarStore.title = 'Class Admin'
     navbarStore.toggleHelpResolved = this.toggleHelpResolvedModal.bind(this)
     navbarStore.toggleRequestResolved = this.toggleRequestResolvedModal.bind(this)
     this.state = this.initializeState()
@@ -27,9 +26,9 @@ class ClassAdmin extends React.Component {
   */
   initializeState () {
     let {navbarStore} = this.props.rootStore
-    navbarStore.cl = null
     navbarStore.isDIY = false
     return {
+      cl: null,
       openEditClassModal: false,
       openHelpResolvedModal: false,
       openIssuesModal: false,
@@ -58,11 +57,7 @@ class ClassAdmin extends React.Component {
   */
   componentWillUnmount () {
     let {navbarStore} = this.props.rootStore
-    navbarStore.cl = null
-    navbarStore.toggleEditCl = null
-    navbarStore.toggleWrench = null
-    navbarStore.toggleChat = null
-    navbarStore.toggleIssues = null
+    navbarStore.title = null
     navbarStore.toggleHelpResolved = null
     navbarStore.toggleRequestResolved = null
   }
@@ -71,10 +66,9 @@ class ClassAdmin extends React.Component {
   * Fetch the class by id.
   */
   getClass () {
-    let {navbarStore} = this.props.rootStore
     const {params: {classId}} = this.props
     actions.classes.getClassById(classId).then((cl) => {
-      navbarStore.cl = cl
+      this.setState({cl})
       this.setState({loadingClass: false})
     }).catch(() => { this.setState({loadingClass: false}) })
   }
@@ -83,9 +77,9 @@ class ClassAdmin extends React.Component {
   * Gets array of all student requests yet to be completed
   */
   openStudentRequests () {
-    let {navbarStore} = this.props.rootStore
-    const sr = navbarStore.cl.student_requests.filter(c => !c.is_completed)
-    const cr = navbarStore.cl.change_requests.filter(c => !c.is_completed)
+    let {cl} = this.state
+    const sr = cl.student_requests.filter(c => !c.is_completed)
+    const cr = cl.change_requests.filter(c => !c.is_completed)
     return sr.concat(cr)
   }
 
@@ -118,18 +112,16 @@ class ClassAdmin extends React.Component {
   }
 
   toggleChat () {
-    let {navbarStore} = this.props.rootStore
-    const {cl} = navbarStore
+    const {cl} = this.state
     actions.classes.updateClass({id: cl.id, is_chat_enabled: !cl.is_chat_enabled}).then((cl) => {
-      navbarStore.cl = cl
+      this.setState({cl})
     }).catch(() => false)
   }
 
   toggleWrench () {
-    let {navbarStore} = this.props.rootStore
-    const {cl} = navbarStore
+    const {cl} = this.state
     actions.classes.updateClass({id: cl.id, is_editable: !cl.is_editable}).then((cl) => {
-      navbarStore.cl = cl
+      this.setState({cl})
     }).catch(() => false)
   }
 
@@ -139,22 +131,21 @@ class ClassAdmin extends React.Component {
   * @param [Object]. The class to update with
   */
   updateClass (cl) {
-    let {navbarStore} = this.props.rootStore
-    navbarStore.cl = cl
+    this.setState({cl})
   }
 
   /*
   * Render the editclass modal.
   */
   renderEditClassModal () {
-    let {navbarStore} = this.props.rootStore
+    const {cl} = this.state
     return (
       <Modal
         open={this.state.openEditClassModal}
         onClose={this.toggleEditClassModal.bind(this)}
       >
         <ClassForm
-          cl={navbarStore.cl}
+          cl={cl}
           onClose={this.toggleEditClassModal.bind(this)}
           onSubmit={this.updateClass.bind(this)}
         />
@@ -166,10 +157,10 @@ class ClassAdmin extends React.Component {
   * Render the help needed info
   */
   renderHelpResolvedModal () {
-    let {navbarStore} = this.props.rootStore
+    const {cl} = this.state
     return (
       <HelpResolvedModal
-        cl={navbarStore.cl}
+        cl={cl}
         open={this.state.openHelpResolvedModal}
         onClose={this.toggleHelpResolvedModal.bind(this)}
         onSubmit={(cl) => {
@@ -183,10 +174,10 @@ class ClassAdmin extends React.Component {
   * Render the having issues modal.
   */
   renderIssuesModal () {
-    let {navbarStore} = this.props.rootStore
+    const {cl} = this.state
     return (
       <IssuesModal
-        cl={navbarStore.cl}
+        cl={cl}
         open={this.state.openIssuesModal}
         onClose={this.toggleIssuesModal.bind(this)}
         onSubmit={(cl) => {
@@ -200,11 +191,11 @@ class ClassAdmin extends React.Component {
   * Render the issues resolved modal.
   */
   renderRequestResolvedModal () {
-    let {navbarStore} = this.props.rootStore
+    const {cl} = this.state
     let openRequests = this.openStudentRequests()
     return (
       <RequestResolvedModal
-        cl={navbarStore.cl}
+        cl={cl}
         open={this.state.openRequestResolvedModal}
         onClose={this.toggleRequestResolvedModal.bind(this)}
         onSubmit={(cl) => {
@@ -216,7 +207,20 @@ class ClassAdmin extends React.Component {
   }
 
   renderClassDetais () {
-
+    const {cl} = this.state
+    return (
+      <div id='cn-class-details'>
+        <ClassCard
+          cl={cl}
+          schoolName={cl.school.name}
+          semesterName={cl.class_period.name}
+          onEdit={this.toggleEditClassModal.bind(this)}
+          isAdmin={true}
+          toggleWrench={this.toggleWrench.bind(this)}
+          toggleChat={this.toggleChat.bind(this)}
+        />
+      </div>
+    )
   }
 
   renderGradeScale () {
@@ -247,9 +251,7 @@ class ClassAdmin extends React.Component {
 
   }
 
-  render () {
-    const {navbarStore} = this.props.rootStore
-
+  renderClass () {
     return (
       <div id='cn-class-admin'>
         {this.renderClassDetais()}
@@ -260,12 +262,18 @@ class ClassAdmin extends React.Component {
         {this.renderAssignments()}
         {this.renderChat()}
         {this.renderSyllabus()}
-        {navbarStore.cl && this.renderIssuesModal()}
-        {navbarStore.cl && this.renderHelpResolvedModal()}
-        {navbarStore.cl && this.renderRequestResolvedModal()}
+        {this.renderIssuesModal()}
+        {this.renderHelpResolvedModal()}
+        {this.renderRequestResolvedModal()}
         {this.renderEditClassModal()}
       </div>
     )
+  }
+
+  render () {
+    const {cl} = this.state
+
+    return cl ? this.renderClass() : <Loading />
   }
 }
 

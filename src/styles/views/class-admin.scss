@@ -1,0 +1,11 @@
+#cn-class-admin {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+
+  #cn-class-details {
+    flex-basis: 300px;
+  }
+}

@@ -5,10 +5,6 @@ class NavBarStore {
     extendObservable(this, {
       cl: null,
       isDIY: false,
-      toggleEditCl: null,
-      toggleWrench: null,
-      toggleIssues: null,
-      toggleChat: null,
       toggleHelpResolved: null,
       toggleRequestResolved: null,
       title: null
