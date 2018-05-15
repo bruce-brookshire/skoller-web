@@ -155,25 +155,15 @@ class HubClasses extends React.Component {
   * @param [Object] cl. Class to edit.
   */
   onEditClass (cl) {
-    if(cl && this.isNew(cl)){
-      browserHistory.push({
-        pathname: `/class/${cl.id}/approvals`,
-        state: {
-          isAdmin: this.isAdminUser(),
-          isSW: this.isSW(),
-        }
-      })
-    }else{
-      browserHistory.push({
-        pathname: `/class/${cl.id}/syllabus_tool`,
-        state: {
-          isAdmin: this.isAdminUser(),
-          isSW: this.isSW(),
-          isChangeReq: this.isChangeReq(),
-          isHelpReq: this.isHelpReq()
-        }
-      })
-    }
+    browserHistory.push({
+      pathname: `/class/${cl.id}/admin`,
+      state: {
+        isAdmin: this.isAdminUser(),
+        isSW: this.isSW(),
+        isChangeReq: this.isChangeReq(),
+        isHelpReq: this.isHelpReq()
+      }
+    })
   }
 
   isAdminUser () {

@@ -12,22 +12,49 @@ class ClassCard extends React.Component {
     )
   }
 
-  render () {
-    const {cl, schoolName, semesterName, professorName} = this.props
+  renderAdminHeader () {
     const isEditable = this.props.cl.is_editable
     const isChat = this.props.cl.is_chat_enabled
+
+    return (
+      <div>
+        <i className='fa fa-pencil cn-blue cursor' onClick={() => this.props.onEdit()} />
+        <i className={'fa fa-wrench cursor margin-left ' + (isEditable ? 'cn-grey' : 'cn-red')} onClick={() => this.props.toggleWrench()} />
+        <i className={'cursor margin-left ' + (isChat ? 'fa fa-comment cn-blue' : 'fa fa-comment-o cn-grey')} onClick={() => this.props.toggleChat()} />
+      </div>
+    )
+  }
+
+  renderAdminFields () {
+    const {cl} = this.props
+
+    return (
+      <div className='cn-class-card-row'>
+        <div className='cn-class-card-field'>
+          <div className='cn-class-card-label'>
+            Status
+          </div>
+          {cl.status.name}
+        </div>
+        <div className='cn-class-card-field'>
+          <div className='cn-class-card-label'>
+            Enrollment
+          </div>
+          {cl.enrollment}
+        </div>
+      </div>
+    )
+  }
+
+  render () {
+    const {cl, schoolName, semesterName, professorName} = this.props
 
     return (
       <div className='cn-class-card'>
         <div className='cn-class-card-content'>
           <div className='cn-class-title'>
             {cl.name}
-            {this.props.isAdmin &&
-            <div>
-              <i className='fa fa-pencil cn-blue cursor' onClick={() => this.props.onEdit()} />
-              <i className={'fa fa-wrench cursor margin-left ' + (isEditable ? 'cn-grey' : 'cn-red')} onClick={() => this.props.toggleWrench()} />
-              <i className={'cursor margin-left ' + (isChat ? 'fa fa-comment cn-blue' : 'fa fa-comment-o cn-grey')} onClick={() => this.props.toggleChat()} />
-            </div>}
+            {this.props.isAdmin && this.renderAdminHeader()}
           </div>
           <div className='cn-class-card-row'>
             <div className='cn-class-card-field'>
@@ -54,7 +81,7 @@ class ClassCard extends React.Component {
               <div className='cn-class-card-label'>
                 Professor
               </div>
-              {professorName}
+              {professorName || 'N/A'}
             </div>
           </div>
           <div className='cn-class-card-row'>
@@ -81,6 +108,7 @@ class ClassCard extends React.Component {
             onClick={() => this.props.onSubmit()}
             className='button margin-top form-button full-width'
           >{`Enroll in ${cl.name}`}</button>}
+          {this.props.isAdmin && this.renderAdminFields()}
         </div>
       </div>
     )
@@ -97,5 +125,6 @@ ClassCard.propTypes = {
   semesterName: PropTypes.string,
   onEdit: PropTypes.func,
   isAdmin: PropTypes.bool,
-  toggleWrench: PropTypes.func
+  toggleWrench: PropTypes.func,
+  toggleChat: PropTypes.func
 }
