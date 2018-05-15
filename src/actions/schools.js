@@ -45,7 +45,7 @@ export function getHubSchoolsMinified () {
 * Search schools by name
 */
 export function searchSchools (param) {
-  return get(`api/v1/school/list`, `name=${param}`, 'Error fetching schools. Try again.')
+  return get(`/api/v1/school/list`, `name=${param}`, 'Error fetching schools. Try again.')
     .then(data => {
       return data
     })
