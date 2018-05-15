@@ -20,6 +20,7 @@ import Verification from './views/components/Verification'
 import ClassLink from './views/Student/ClassLink'
 
 import SyllabusTool from './views/SyllabusTool'
+import ClassAdmin from './views/ClassAdmin'
 
 import HubLanding from './views/Hub/HubLanding'
 import HubSchools from './views/Hub/HubSchools'
@@ -75,12 +76,41 @@ const router = (
         </Route>
 
         <Route path='/class/:classId/syllabus_tool' component={SyllabusTool} />
+        <Route path='/class/:classId/admin' component={ClassAdmin} onEnter={requireAdmin} />
       </Route>
       <Route path="/logout" onEnter={logout} />
       <Redirect from="*" to="/"/>
     </Route>
   </Router>
 )
+
+/*
+* Require users to not be students
+*/
+function requireAdmin (nextState, replaceState) {
+  if (!userStore.user) {
+    userStore.setFetchingUser(true)
+    userStore.authToken = cookie.get('skollerToken')
+    actions.auth.getUserByToken()
+      .then((user) => {
+        authenticateStudent(user.user).then(() => {
+          userStore.setFetchingUser(false)
+        }).catch(() => { userStore.setFetchingUser(false) })
+
+        if (userStore.user) {
+          if (userStore.user.student) {
+            userStore.setFetchingUser(false)
+            browserHistory.push('/student/classes')
+          }
+        }
+        userStore.setFetchingUser(false)
+      })
+      .catch(() => {
+        browserHistory.push('/landing')
+        userStore.setFetchingUser(false)
+      })
+  }
+}
 
 /*
 * Handle strongly typed url

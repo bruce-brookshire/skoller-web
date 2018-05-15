@@ -12,6 +12,13 @@ import RequestResolvedModal from './RequestResolvedModal'
 class ClassAdmin extends React.Component {
   constructor (props) {
     super(props)
+    let {navbarStore} = this.props.rootStore
+    navbarStore.toggleEditCl = this.toggleEditClassModal.bind(this)
+    navbarStore.toggleWrench = this.toggleWrench.bind(this)
+    navbarStore.toggleChat = this.toggleChat.bind(this)
+    navbarStore.toggleIssues = this.toggleIssuesModal.bind(this)
+    navbarStore.toggleHelpResolved = this.toggleHelpResolvedModal.bind(this)
+    navbarStore.toggleRequestResolved = this.toggleRequestResolvedModal.bind(this)
     this.state = this.initializeState()
   }
 
@@ -22,18 +29,28 @@ class ClassAdmin extends React.Component {
     let {navbarStore} = this.props.rootStore
     navbarStore.cl = null
     navbarStore.isDIY = false
-    navbarStore.toggleEditCl = this.toggleEditClassModal.bind(this)
-    navbarStore.toggleWrench = this.toggleWrench.bind(this)
-    navbarStore.toggleChat = this.toggleChat.bind(this)
-    navbarStore.toggleIssues = this.toggleIssuesModal.bind(this)
-    navbarStore.toggleHelpResolved = this.toggleHelpResolvedModal.bind(this)
-    navbarStore.toggleRequestResolved = this.toggleRequestResolvedModal.bind(this)
     return {
       openEditClassModal: false,
       openHelpResolvedModal: false,
       openIssuesModal: false,
       openRequestResolvedModal: false
     }
+  }
+
+  /*
+  * Fetch the documents for a class.
+  * Lock the class.
+  */
+  componentWillMount () {
+    this.intializeComponent()
+  }
+
+  /*
+  * Intialize the component
+  */
+  intializeComponent () {
+    this.setState(this.initializeState())
+    this.getClass()
   }
 
   /*
@@ -48,6 +65,18 @@ class ClassAdmin extends React.Component {
     navbarStore.toggleIssues = null
     navbarStore.toggleHelpResolved = null
     navbarStore.toggleRequestResolved = null
+  }
+
+  /*
+  * Fetch the class by id.
+  */
+  getClass () {
+    let {navbarStore} = this.props.rootStore
+    const {params: {classId}} = this.props
+    actions.classes.getClassById(classId).then((cl) => {
+      navbarStore.cl = cl
+      this.setState({loadingClass: false})
+    }).catch(() => { this.setState({loadingClass: false}) })
   }
 
   /*
@@ -242,6 +271,7 @@ class ClassAdmin extends React.Component {
 
 ClassAdmin.propTypes = {
   location: PropTypes.object,
+  params: PropTypes.object,
   rootStore: PropTypes.object
 }
 
