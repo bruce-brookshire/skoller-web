@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import ClassInfo from './ClassInfo'
 
@@ -13,40 +14,22 @@ class NavBar extends React.Component {
     }
   }
 
-  isAdmin () {
-    const {userStore: {user}} = this.props.rootStore
-    return user.roles.findIndex(r => r.name.toLowerCase() === 'admin') > -1
-  }
-
   getDescription () {
     const {userStore: {user}} = this.props.rootStore
+    const admin = this.props.rootStore.userStore.isAdmin()
     if (user.student) {
-      return this.getSchool()
-    } else if (this.isAdmin()) {
+      return 'Student'
+    } else if (admin) {
       return 'Admin'
     } else {
       return 'Syllabi Worker'
     }
   }
 
-  getSchool () {
-    // TODO: Fix
-    const {userStore: {user}} = this.props.rootStore
-    if (user.student) {
-      return `A school?`
-    } else {
-      return 'Skoller'
-    }
-  }
-
   getInitials () {
     const {userStore: {user}} = this.props.rootStore
-    const roleNames = user.roles.map((r) => r.name)
-    if (roleNames.indexOf('Admin') !== -1) {
-      return 'AD'
-    } else if (roleNames.indexOf('Syllabus Worker') !== -1) {
-      return 'SW'
-    } else if (roleNames.indexOf('Student') !== -1) {
+    const admin = this.props.rootStore.userStore.isAdmin()
+    if (user.student) {
       if (user.student.name_first && user.student.name_last) {
         return user.student.name_first[0].toUpperCase() + user.student.name_last[0].toUpperCase()
       } else if (user.student.name_first.length >= 2) {
@@ -54,6 +37,10 @@ class NavBar extends React.Component {
       } else {
         return 'ST'
       }
+    } else if (admin) {
+      return 'AD'
+    } else {
+      return 'SW'
     }
   }
 
@@ -100,6 +87,10 @@ class NavBar extends React.Component {
       </div>
     )
   }
+}
+
+NavBar.propTypes = {
+  rootStore: PropTypes.object
 }
 
 export default NavBar
