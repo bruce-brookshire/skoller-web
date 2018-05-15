@@ -30,18 +30,3 @@ export function createPeriod (schoolId, form) {
       return Promise.reject(error)
     })
 }
-
-/*
-* Update period
-*
-* @params [Object] form. Period form.
-*/
-export function updatePeriod (form) {
-  return put(`/api/v1/periods/${form.id}`, form, 'Error updating period. Try again.')
-    .then(data => {
-      return data
-    })
-    .catch(error => {
-      return Promise.reject(error)
-    })
-}
