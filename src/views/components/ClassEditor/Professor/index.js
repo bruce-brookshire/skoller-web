@@ -146,17 +146,18 @@ class Professor extends React.Component {
   }
 
   renderProfessorModal () {
-    const {school} = this.props.cl
+    const {cl} = this.props
     return (
       <Modal
         open={this.state.openModal}
         onClose={this.toggleProfessorModal.bind(this)}
       >
         <ProfessorModal
-          schoolId={school.id}
-          isUniversity={school.is_university}
+          schoolId={cl.school.id}
+          isUniversity={cl.school.is_university}
           onClose={this.toggleProfessorModal.bind(this)}
           onSubmit={this.onAttachProfessorToClass.bind(this)}
+          professor={cl.professor}
         />
       </Modal>
     )
@@ -172,7 +173,7 @@ class Professor extends React.Component {
           <div id='professor-title'>
             Professor
             <div>
-              {canEdit && <i className='fa fa-pencil cn-blue cursor' onClick={() => this.setState({isEditable: true})} />}
+              {canEdit && <i className='fa fa-pencil cn-blue cursor' onClick={() => !cl.professor ? this.setState({isEditable: true}) : this.toggleProfessorModal()} />}
               {canEdit && cl.professor && <i className='fa fa-trash cn-red cursor margin-left' onClick={() => this.removeProfessorFromClass()} />}
             </div>
           </div>

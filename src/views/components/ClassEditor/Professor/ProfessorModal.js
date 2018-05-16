@@ -34,13 +34,15 @@ class ProfessorModal extends React.Component {
   }
 
   initializeFormData () {
+    const {professor} = this.props
     return {
-      name_first: '',
-      name_last: '',
-      email: '',
-      phone: '',
-      office_location: '',
-      office_availability: ''
+      id: (professor && professor.id) || null,
+      name_first: (professor && professor.name_first) || '',
+      name_last: (professor && professor.name_last) || '',
+      email: (professor && professor.email) || '',
+      phone: (professor && professor.phone) || '',
+      office_location: (professor && professor.office_location) || '',
+      office_availability: (professor && professor.office_availability) || ''
     }
   }
 
@@ -53,14 +55,26 @@ class ProfessorModal extends React.Component {
     }).catch(() => { this.setState({loading: false}) })
   }
 
+  onUpdateProfessor (form) {
+    this.setState({loading: true})
+    actions.professors.updateProfessor(form).then((professor) => {
+      this.props.onSubmit(professor)
+      this.setState({loading: false})
+      this.props.onClose()
+    }).catch(() => { this.setState({loading: false}) })
+  }
+
   /*
   * On submit, create professor.
   */
   onSubmit (event) {
+    const {professor} = this.props
     event.preventDefault()
 
     if (this.props.validateForm(this.state.form, requiredFields)) {
-      this.onCreateProfessor(this.state.form)
+      professor && professor.id
+        ? this.onUpdateProfessor(this.state.form)
+        : this.onCreateProfessor(this.state.form)
     }
   }
 
@@ -157,7 +171,8 @@ ProfessorModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   schoolId: PropTypes.number.isRequired,
-  isUniversity: PropTypes.bool
+  isUniversity: PropTypes.bool,
+  professor: PropTypes.object
 }
 
 export default ValidateForm(Form(ProfessorModal, 'form'))
