@@ -14,12 +14,6 @@ class ProfessorInfo extends React.Component {
           <p>{office_location || 'Office location missing.'}</p>
           <p>{office_availability || 'Office hours missing'}</p>
         </div>
-        {this.props.disableEdit ? null : (
-          <div>
-            <a onClick={() => this.props.onRemoveProfessor()}>remove professor</a>
-            <a onClick={() => this.props.onEditProfessor()}>edit professor info </a>
-          </div>
-        )}
       </div>
     )
   }

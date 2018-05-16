@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
 import SearchProfessor from './SearchProfessor'
-import ProfessorForm from './ProfessorForm'
 import ProfessorInfo from './ProfessorInfo'
 import actions from '../../../../actions'
 
@@ -39,87 +38,27 @@ class Professor extends React.Component {
     }
   }
 
-  /*
-  * Render content.
-  *
-  * @return [Component].
-  */
-  renderContent () {
-    const {professor} = this.props.cl
-    if (!professor) {
-
-    } else {
-      switch (this.state.step) {
-        case ContentEnum.SEARCH_PROFESSOR:
-          return <SearchProfessor cl={this.props.cl} onAddProfessor={this.onAddProfessor.bind(this)} onProfessorSelect={this.onProfessorSelect.bind(this)} />
-        case ContentEnum.PROFESSOR_INFO:
-          return <ProfessorInfo
-            professor={this.props.cl.professor}
-            onEditProfessor={this.onEditProfessor.bind(this)}
-            onRemoveProfessor={this.onRemoveProfessor.bind(this)} />
-        case ContentEnum.PROFESSOR_FORM:
-          return <ProfessorForm
-            cl={this.props.cl}
-            onSubmit={this.onSubmitProfessor.bind(this)}/>
-        default:
-      }
-    }
-  }
-
-  /*
-  * If professor doesn't exist in search results, create professor.
-  */
-  onAddProfessor () {
-    this.setState({step: ContentEnum.PROFESSOR_FORM})
-  }
-
-  /*
-  * If user wants to edit professor info, edit professor.
-  */
-  onEditProfessor () {
-    this.setState({step: ContentEnum.PROFESSOR_FORM})
-  }
-
-  /*
-  * Remove the professor from the class.
-  */
-  onRemoveProfessor () {
-    this.onRemoveProfessorFromClass()
-  }
-  /*
-  * On professor select from professor search
-  *
-  * @param [Object] professor. Professor object.
-  */
-  onProfessorSelect (professor) {
-    this.onAttachProfessorToClass(professor)
-  }
-
-  /*
-  * Professor submit call back
-  *
-  * @param [Object] professor. Professor object.
-  */
-  onSubmitProfessor (professor) {
-    this.onAttachProfessorToClass(professor)
-  }
-
   /* Attach professor to the class.
   *
   * @param [Object] professor. Professor object.
   */
   onAttachProfessorToClass (professor) {
     actions.professors.attachProfessorToClass(this.props.cl, professor).then((cl) => {
-      if (this.props.onSubmit) this.props.onSubmit(cl)
+      this.onSubmit(cl)
     }).catch(() => false)
+  }
+
+  onSubmit (cl) {
+    this.setState({isEditable: false})
+    if (this.props.onSubmit) this.props.onSubmit(cl)
   }
 
   /*
   * Remove professor from the class.
   */
-  onRemoveProfessorFromClass () {
+  removeProfessorFromClass () {
     actions.professors.removeProfessorFromClass(this.props.cl).then((cl) => {
-      if (this.props.onSubmit) this.props.onSubmit(cl)
+      this.onSubmit(cl)
     }).catch(() => false)
   }
 
@@ -139,6 +78,16 @@ class Professor extends React.Component {
       >
         Edit Professor
       </button>
+    )
+  }
+
+  renderProfessor () {
+    return (
+      <ProfessorInfo
+        professor={this.props.cl.professor}
+        onEditProfessor={this.onEditProfessor.bind(this)}
+        onRemoveProfessor={this.onRemoveProfessor.bind(this)}
+      />
     )
   }
 
@@ -179,7 +128,7 @@ class Professor extends React.Component {
   }
 
   render () {
-    const {canEdit} = this.props
+    const {canEdit, cl} = this.props
     const {isEditable} = this.state
 
     return (
@@ -187,6 +136,10 @@ class Professor extends React.Component {
         <div id='class-editor-professor-content'>
           <div id='professor-title'>
             Professor
+            <div>
+              <i className='fa fa-pencil cn-blue cursor' onClick={() => this.setState({isEditable: true})} />
+              {cl.professor && <i className='fa fa-trash cn-red cursor margin-left' onClick={() => this.removeProfessorFromClass()} />}
+            </div>
           </div>
           {!isEditable && this.renderProfessorInfo()}
           {isEditable && this.renderProfessorControls()}

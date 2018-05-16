@@ -242,6 +242,7 @@ class ClassAdmin extends React.Component {
       <Professor
         cl={cl}
         canEdit={true}
+        onSubmit={(cl) => this.updateClass(cl)}
       />
     )
   }
