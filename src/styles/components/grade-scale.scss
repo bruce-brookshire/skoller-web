@@ -1,11 +1,15 @@
 #class-editor-grade-scale {
   @include shadow-box;
+  min-width: 200px;
 
   #class-editor-grade-scale-content {
     @include shadow-box-content;
 
     .grade-scale-title {
       @include shadow-box-title;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
     }
 
     #grade-scale-form {
@@ -21,7 +25,7 @@
 
   .cn-grade-scale-options {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
   }
 
   .grade-scale-list {

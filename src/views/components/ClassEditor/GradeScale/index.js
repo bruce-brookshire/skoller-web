@@ -84,17 +84,6 @@ class GradeScale extends React.Component {
     )
   }
 
-  renderEditToggle () {
-    return (
-      <button
-        className='button full-width margin-top'
-        onClick={() => this.setState({isEditable: true})}
-      >
-        Edit Scale
-      </button>
-    )
-  }
-
   renderSubmitButton () {
     const {loading} = this.state
     return (
@@ -113,32 +102,8 @@ class GradeScale extends React.Component {
     return (
       <div className='cn-grade-scale-options'>
         <a
-          onClick={() => this.setState({isEditable: false})}
-        >&lt; Back</a>
-        <a
           onClick={() => { this.toggleCommonScaleModal() }}
         >Common scales</a>
-      </div>
-    )
-  }
-
-  /*
-  * Render the current gradeScale
-  *
-  * @return [Component] div. Current grade scale.
-  */
-  renderCurrentGradeScale () {
-    const {isEditable} = this.state
-    const {canEdit} = this.props
-
-    return (
-      <div>
-        <div className='grade-scale-title'>Current Grade Scale</div>
-        {this.renderScale()}
-        {isEditable && this.renderForm()}
-        {canEdit && !isEditable && this.renderEditToggle()}
-        {isEditable && this.renderSubmitButton()}
-        {isEditable && this.renderOptions()}
       </div>
     )
   }
@@ -202,10 +167,19 @@ class GradeScale extends React.Component {
   }
 
   render () {
+    const {canEdit} = this.props
+    const {isEditable} = this.state
     return (
       <div id='class-editor-grade-scale'>
         <div id='class-editor-grade-scale-content'>
-          {this.renderCurrentGradeScale()}
+          <div className='grade-scale-title'>
+            Grade Scale
+            {canEdit && <i className='fa fa-pencil cn-blue cursor' onClick={() => this.setState({isEditable: !isEditable})} />}
+          </div>
+          {this.renderScale()}
+          {isEditable && this.renderForm()}
+          {isEditable && this.renderSubmitButton()}
+          {isEditable && this.renderOptions()}
         </div>
         {this.renderCommonScaleModal()}
       </div>

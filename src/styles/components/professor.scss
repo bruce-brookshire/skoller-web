@@ -9,6 +9,7 @@
       @include shadow-box-title;
       display: flex;
       justify-content: space-between;
+      align-items: baseline;
     }
 
     .professor-detail-row {
