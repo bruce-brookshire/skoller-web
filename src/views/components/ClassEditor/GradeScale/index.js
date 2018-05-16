@@ -20,25 +20,106 @@ class GradeScale extends React.Component {
   initializeState () {
     return {
       showCommonGradeScales: false,
-      form: {
-        grade: '',
-        min: ''
-      },
+      form: this.initializeForm(),
       loading: false,
-      currentGradeScale: this.props.cl.grade_scale_map || '',
+      currentGradeScale: this.props.cl.grade_scale || '',
       isEditable: false
     }
   }
 
-  onDeleteGS (key) {
+  initializeForm () {
+    return {
+      grade: '',
+      min: ''
+    }
+  }
+
+  updateClass (newGradeScale) {
     this.setState({loading: true})
-    let newGradeScale = this.state.currentGradeScale
-    delete newGradeScale[key]
     this.setState({currentGradeScale: newGradeScale})
     actions.gradescales.updateGradeScale(this.props.cl, {grade_scale: newGradeScale}).then((cl) => {
       if (this.props.onSubmit) this.props.onSubmit(cl)
       this.setState({loading: false})
     }).catch(() => { this.setState({loading: false}) })
+  }
+
+  onDeleteGS (key) {
+    let newGradeScale = this.state.currentGradeScale
+    delete newGradeScale[key]
+    this.updateClass(newGradeScale)
+  }
+
+  renderDeleteButton (key) {
+    return (
+      <div className="delete-x">
+        <div
+          className='button-delete-x'
+          onClick={(event) => {
+            event.stopPropagation()
+            this.onDeleteGS(key)
+          }}><i className='fa fa-times' />
+        </div>
+      </div>
+    )
+  }
+
+  renderScale () {
+    const gradeScale = this.props.cl.grade_scale
+    const {isEditable} = this.state
+
+    return (
+      <ul className="grade-scale-list">
+        {Object.keys(gradeScale).sort((a, b) => {
+          return parseFloat(gradeScale[a]) < parseFloat(gradeScale[b]) ? 1 : -1
+        }).map((key, idx) =>
+          <li key={idx} className="grade-row">
+            {isEditable && this.renderDeleteButton(key)}
+            <div className="grade">
+              <div className="grade-key">{key}</div>
+              <div className="grade-min">{gradeScale[key]}</div>
+            </div>
+          </li>
+        )}
+      </ul>
+    )
+  }
+
+  renderEditToggle () {
+    return (
+      <button
+        className='button full-width margin-top'
+        onClick={() => this.setState({isEditable: true})}
+      >
+        Edit Scale
+      </button>
+    )
+  }
+
+  renderSubmitButton () {
+    const {loading} = this.state
+    return (
+      <button
+        className='button full-width margin-top margin-bottom'
+        disabled={loading}
+        onClick={this.onSubmit.bind(this)}
+      >
+        Submit
+        {loading ? <Loading style={{color: 'white', marginLeft: '0.5em'}} /> : null}
+      </button>
+    )
+  }
+
+  renderOptions () {
+    return (
+      <div className='cn-grade-scale-options'>
+        <a
+          onClick={() => this.setState({isEditable: false})}
+        >&lt; Back</a>
+        <a
+          onClick={() => { this.toggleCommonScaleModal() }}
+        >Common scales</a>
+      </div>
+    )
   }
 
   /*
@@ -47,52 +128,17 @@ class GradeScale extends React.Component {
   * @return [Component] div. Current grade scale.
   */
   renderCurrentGradeScale () {
-    const gradeScale = this.props.cl.grade_scale
     const {isEditable} = this.state
     const {canEdit} = this.props
 
     return (
       <div>
         <div className='grade-scale-title'>Current Grade Scale</div>
-        <div className="current-grade-scale">
-          <ul className="grade-scale-list">
-            {Object.keys(gradeScale).sort((a, b) => {
-              return parseFloat(gradeScale[a]) < parseFloat(gradeScale[b]) ? 1 : -1
-            }).map((key, idx) =>
-              <li key={idx} className="grade-row">
-                {isEditable && <div className="delete-x">
-                  <div
-                    className='button-delete-x'
-                    onClick={(event) => {
-                      event.stopPropagation()
-                      this.onDeleteGS(key)
-                    }}><i className='fa fa-times' />
-                  </div>
-                </div>}
-                <div className="grade">
-                  <div className="grade-key">{key}</div>
-                  <div className="grade-min">{gradeScale[key]}</div>
-                </div>
-              </li>
-            )}
-          </ul>
-        </div>
+        {this.renderScale()}
         {isEditable && this.renderForm()}
-        {canEdit && !isEditable && <button
-          className='button full-width margin-top'
-          onClick={() => this.setState({isEditable: true})}
-        >
-          Edit Scale
-        </button>}
-        {isEditable && <button
-          className='button full-width margin-top'
-          disabled={this.state.loading}
-          onClick={this.onSubmit.bind(this)}
-        >
-          Submit
-          {this.state.loading ? <Loading style={{color: 'white', marginLeft: '0.5em'}} /> : null}
-        </button>}
-        {isEditable && <a onClick={() => { this.toggleCommonScaleModal() }}>Show common scales</a>}
+        {canEdit && !isEditable && this.renderEditToggle()}
+        {isEditable && this.renderSubmitButton()}
+        {isEditable && this.renderOptions()}
       </div>
     )
   }
@@ -125,31 +171,13 @@ class GradeScale extends React.Component {
   }
 
   /*
-  * Set form value equal to gradeScale in order to be updated.
-  *
-  * @param [Object] gradeScale. gradeScale object to be edited.
-  */
-  setGradeScale (gradeScale) {
-    this.setState({loading: true})
-    this.setState({currentGradeScale: gradeScale || ''})
-    actions.gradescales.updateGradeScale(this.props.cl, {grade_scale: gradeScale}).then((cl) => {
-      if (this.props.onSubmit) this.props.onSubmit(cl)
-      this.setState({loading: false})
-    }).catch(() => { this.setState({loading: false}) })
-  }
-
-  /*
   * Submit the grade scale
   */
   onSubmit () {
-    this.setState({loading: true})
     let newGradeScale = this.state.currentGradeScale
     newGradeScale[this.state.form.grade] = this.state.form.min
-    this.setState({currentGradeScale: newGradeScale})
-    actions.gradescales.updateGradeScale(this.props.cl, {grade_scale: newGradeScale}).then((cl) => {
-      if (this.props.onSubmit) this.props.onSubmit(cl)
-      this.setState({loading: false})
-    }).catch(() => { this.setState({loading: false}) })
+    this.updateClass(newGradeScale)
+    this.setState({form: this.initializeForm()})
   }
 
   /*
@@ -167,7 +195,7 @@ class GradeScale extends React.Component {
         open={this.state.showCommonGradeScales}
         onClose={this.toggleCommonScaleModal.bind(this)}
         onSubmit={(scale) => {
-          this.setGradeScale(scale)
+          this.updateClass(scale || '')
         }}
       />
     )
