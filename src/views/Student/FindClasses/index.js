@@ -337,7 +337,7 @@ class FindClasses extends React.Component {
   }
 
   toggleProfessorModal () {
-    this.setState({openCreateProfessorModal: !this.state.openProfessorModal})
+    this.setState({openProfessorModal: !this.state.openProfessorModal})
   }
 
   toggleMeetingTimeModal () {
