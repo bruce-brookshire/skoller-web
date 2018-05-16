@@ -14,3 +14,20 @@
   font-size: 24px;
   font-weight: 600;
 }
+
+@mixin shadow-box-row {
+  margin-top: $unit-space;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin shadow-box-field {
+  text-align: center;
+  font-size: 14px;
+}
+
+@mixin shadow-box-label {
+  font-weight: 300;
+}

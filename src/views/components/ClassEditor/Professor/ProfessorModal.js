@@ -1,9 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
-import {InputField} from '../../../components/Form'
-import actions from '../../../actions'
-import Loading from '../../../components/Loading'
+import {InputField} from '../../../../components/Form'
+import actions from '../../../../actions'
 
 const requiredFields = {
   'name_first': {
@@ -17,7 +16,7 @@ const requiredFields = {
   }
 }
 
-class CreateProfessorModal extends React.Component {
+class ProfessorModal extends React.Component {
   constructor (props) {
     super(props)
     this.state = this.initializeState()
@@ -39,7 +38,7 @@ class CreateProfessorModal extends React.Component {
       name_last: '',
       email: '',
       office_location: '',
-      office_hours: ''
+      office_availability: ''
     }
   }
 
@@ -117,12 +116,12 @@ class CreateProfessorModal extends React.Component {
           </div>
           <div className='cn-create-professor-row'>
             <InputField
-              error={formErrors.office_hours}
+              error={formErrors.office_availability}
               label='Office hours'
-              name='office_hours'
+              name='office_availability'
               onChange={updateProperty}
               placeholder='Office hours'
-              value={form.office_hours}
+              value={form.office_availability}
             />
           </div>
           <button
@@ -137,7 +136,7 @@ class CreateProfessorModal extends React.Component {
   }
 }
 
-CreateProfessorModal.propTypes = {
+ProfessorModal.propTypes = {
   updateProperty: PropTypes.func,
   validateForm: PropTypes.func,
   formErrors: PropTypes.object,
@@ -147,4 +146,4 @@ CreateProfessorModal.propTypes = {
   isUniversity: PropTypes.bool
 }
 
-export default ValidateForm(Form(CreateProfessorModal, 'form'))
+export default ValidateForm(Form(ProfessorModal, 'form'))

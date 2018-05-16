@@ -10,5 +10,25 @@
       display: flex;
       justify-content: space-between;
     }
+
+    .professor-detail-row {
+      @include shadow-box-row;
+
+      .professor-detail-field {
+        @include shadow-box-field;
+
+        .professor-detail-label {
+          @include shadow-box-label;
+        }
+      }
+
+      .professor-detail-field:last-child {
+        text-align: right;
+      }
+
+      .professor-detail-field:first-child {
+        text-align: left;
+      }
+    }
   }
 }

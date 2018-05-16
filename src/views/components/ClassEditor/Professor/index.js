@@ -2,28 +2,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
 import SearchProfessor from './SearchProfessor'
-import ProfessorInfo from './ProfessorInfo'
 import actions from '../../../../actions'
-
-const ContentEnum = {
-  SEARCH_PROFESSOR: 0,
-  PROFESSOR_INFO: 1,
-  PROFESSOR_FORM: 2
-}
+import ProfessorModal from './ProfessorModal'
+import Modal from '../../../../components/Modal'
 
 class Professor extends React.Component {
   constructor (props) {
     super(props)
     this.state = this.initializeState()
-  }
-
-  /*
-  * If professor changes, update step accordingly.
-  */
-  componentWillReceiveProps (nextProps) {
-    if (JSON.stringify(this.props.cl.professor) !== JSON.stringify(nextProps.cl.professor)) {
-      this.setState({step: nextProps.cl.professor ? ContentEnum.PROFESSOR_INFO : ContentEnum.SEARCH_PROFESSOR})
-    }
   }
 
   /*
@@ -33,8 +19,8 @@ class Professor extends React.Component {
   */
   initializeState () {
     return {
-      step: this.props.cl.professor ? ContentEnum.PROFESSOR_INFO : ContentEnum.SEARCH_PROFESSOR,
-      isEditable: false
+      isEditable: false,
+      openModal: false
     }
   }
 
@@ -53,6 +39,10 @@ class Professor extends React.Component {
     if (this.props.onSubmit) this.props.onSubmit(cl)
   }
 
+  onCreateProfessor (professor) {
+    this.toggleProfessorModal()
+  }
+
   /*
   * Remove professor from the class.
   */
@@ -60,6 +50,10 @@ class Professor extends React.Component {
     actions.professors.removeProfessorFromClass(this.props.cl).then((cl) => {
       this.onSubmit(cl)
     }).catch(() => false)
+  }
+
+  toggleProfessorModal () {
+    this.setState({openModal: !this.state.openModal})
   }
 
   renderNoProfessor () {
@@ -70,24 +64,48 @@ class Professor extends React.Component {
     )
   }
 
-  renderEditToggle () {
-    return (
-      <button
-        className='button full-width margin-top'
-        onClick={() => this.setState({isEditable: true})}
-      >
-        Edit Professor
-      </button>
-    )
-  }
-
   renderProfessor () {
+    const {professor: {name_first, name_last, phone, email, office_location, office_availability}} = this.props.cl
+
     return (
-      <ProfessorInfo
-        professor={this.props.cl.professor}
-        onEditProfessor={this.onEditProfessor.bind(this)}
-        onRemoveProfessor={this.onRemoveProfessor.bind(this)}
-      />
+      <div>
+        <div className='professor-detail-row'>
+          <div className='professor-detail-field'>
+            <div className='professor-detail-label'>
+              Name
+            </div>
+            <strong>{name_first ? `${name_first} ` : ''}{name_last || ''}</strong>
+          </div>
+          <div className='professor-detail-field'>
+            <div className='professor-detail-label'>
+              Phone
+            </div>
+            {phone || 'N/A'}
+          </div>
+        </div>
+        <div className='professor-detail-row'>
+          <div className='professor-detail-field'>
+            <div className='professor-detail-label'>
+              Email
+            </div>
+            {email || 'N/A'}
+          </div>
+          <div className='professor-detail-field'>
+            <div className='professor-detail-label'>
+              Location
+            </div>
+            {office_location || 'N/A'}
+          </div>
+        </div>
+        <div className='professor-detail-row'>
+          <div className='professor-detail-field'>
+            <div className='professor-detail-label'>
+              Hours
+            </div>
+            {office_availability || 'N/A'}
+          </div>
+        </div>
+      </div>
     )
   }
 
@@ -110,8 +128,8 @@ class Professor extends React.Component {
           <SearchProfessor
             schoolId={cl.school.id}
             isUniversity={cl.school.is_university}
-            onProfessorCreate={this.onAddProfessor.bind(this)}
-            onProfessorSelect={this.onProfessorSelect.bind(this)}
+            onProfessorCreate={this.onCreateProfessor.bind(this)}
+            onProfessorSelect={this.onAttachProfessorToClass.bind(this)}
           />
         }
       </div>
@@ -127,6 +145,23 @@ class Professor extends React.Component {
     )
   }
 
+  renderProfessorModal () {
+    const {school} = this.props.cl
+    return (
+      <Modal
+        open={this.state.openModal}
+        onClose={this.toggleProfessorModal.bind(this)}
+      >
+        <ProfessorModal
+          schoolId={school.id}
+          isUniversity={school.is_university}
+          onClose={this.toggleProfessorModal.bind(this)}
+          onSubmit={this.onAttachProfessorToClass.bind(this)}
+        />
+      </Modal>
+    )
+  }
+
   render () {
     const {canEdit, cl} = this.props
     const {isEditable} = this.state
@@ -137,15 +172,15 @@ class Professor extends React.Component {
           <div id='professor-title'>
             Professor
             <div>
-              <i className='fa fa-pencil cn-blue cursor' onClick={() => this.setState({isEditable: true})} />
-              {cl.professor && <i className='fa fa-trash cn-red cursor margin-left' onClick={() => this.removeProfessorFromClass()} />}
+              {canEdit && <i className='fa fa-pencil cn-blue cursor' onClick={() => this.setState({isEditable: true})} />}
+              {canEdit && cl.professor && <i className='fa fa-trash cn-red cursor margin-left' onClick={() => this.removeProfessorFromClass()} />}
             </div>
           </div>
           {!isEditable && this.renderProfessorInfo()}
           {isEditable && this.renderProfessorControls()}
-          {canEdit && !isEditable && this.renderEditToggle()}
           {isEditable && this.renderOptions()}
         </div>
+        {this.renderProfessorModal()}
       </div>
     )
   }

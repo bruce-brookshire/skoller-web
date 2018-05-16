@@ -1,3 +1,4 @@
+// TODO: Maybe make a class for shadow stuff
 .cn-class-card {
   @include shadow-box;
   width: 100%;
@@ -13,19 +14,13 @@
     }
 
     .cn-class-card-row {
-      margin-top: $unit-space;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
+      @include shadow-box-row;
 
       .cn-class-card-field {
-        text-align: center;
-        font-size: 14px;
+        @include shadow-box-field;
 
         .cn-class-card-label {
-          font-weight: 300;
-          
+          @include shadow-box-label;
         }
       }
 
@@ -36,8 +31,6 @@
       .cn-class-card-field:last-child {
         text-align: right;
       }
-
-      
     }
   }
 }

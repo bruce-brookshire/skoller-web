@@ -11,7 +11,7 @@ import CreateSchoolModal from './CreateSchoolModal'
 import Modal from '../../../components/Modal'
 import MeetingTimeModal from './MeetingTimeModal'
 import moment from 'moment-timezone'
-import CreateProfessorModal from './CreateProfessorModal'
+import ProfessorModal from '../../components/ClassEditor/Professor/ProfessorModal'
 import { browserHistory } from 'react-router'
 import ClassCard from '../../../components/ClassCard'
 
@@ -30,7 +30,7 @@ class FindClasses extends React.Component {
       schoolName: '',
       openCreateSchoolModal: false,
       openMeetingTimeModal: false,
-      openCreateProfessorModal: false,
+      openProfessorModal: false,
       cl: null,
       clName: '',
       newSchool: false,
@@ -127,7 +127,7 @@ class FindClasses extends React.Component {
   }
 
   onCreateProfessor (professor) {
-    this.toggleCreateProfessorModal()
+    this.toggleProfessorModal()
   }
 
   onCreateSchool (schoolName) {
@@ -336,25 +336,25 @@ class FindClasses extends React.Component {
     this.setState({openCreateSchoolModal: !this.state.openCreateSchoolModal})
   }
 
-  toggleCreateProfessorModal () {
-    this.setState({openCreateProfessorModal: !this.state.openCreateProfessorModal})
+  toggleProfessorModal () {
+    this.setState({openCreateProfessorModal: !this.state.openProfessorModal})
   }
 
   toggleMeetingTimeModal () {
     this.setState({openMeetingTimeModal: !this.state.openMeetingTimeModal})
   }
 
-  renderCreateProfessorModal () {
+  renderProfessorModal () {
     const {school} = this.state
     return (
       <Modal
-        open={this.state.openCreateProfessorModal}
-        onClose={this.toggleCreateProfessorModal.bind(this)}
+        open={this.state.openProfessorModal}
+        onClose={this.toggleProfessorModal.bind(this)}
       >
-        <CreateProfessorModal
+        <ProfessorModal
           schoolId={school.id}
           isUniversity={school.is_university}
-          onClose={this.toggleCreateProfessorModal.bind(this)}
+          onClose={this.toggleProfessorModal.bind(this)}
           onSubmit={this.onSubmitProfessor.bind(this)}
         />
       </Modal>
@@ -568,7 +568,7 @@ class FindClasses extends React.Component {
         </div>
         {schoolName && this.renderCreateSchoolModal()}
         {this.renderMeetingTimeModal()}
-        {school && this.renderCreateProfessorModal()}
+        {school && this.renderProfessorModal()}
       </div>
     )
   }
