@@ -10,6 +10,7 @@ import HelpResolvedModal from './HelpResolvedModal'
 import RequestResolvedModal from './RequestResolvedModal'
 import ClassCard from '../../components/ClassCard'
 import Loading from '../../components/Loading'
+import Professor from '../components/ClassEditor/Professor'
 
 @inject('rootStore') @observer
 class ClassAdmin extends React.Component {
@@ -236,7 +237,12 @@ class ClassAdmin extends React.Component {
   }
 
   renderProfessor () {
-
+    const {cl} = this.state
+    return (
+      <Professor
+        cl={cl}
+      />
+    )
   }
 
   renderStudents () {

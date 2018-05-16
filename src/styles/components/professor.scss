@@ -1,0 +1,11 @@
+#class-editor-professor {
+  @include shadow-box;
+
+  #class-editor-professor-content {
+    @include shadow-box-content;
+
+    #professor-title {
+      @include shadow-box-title;
+    }
+  }
+}
