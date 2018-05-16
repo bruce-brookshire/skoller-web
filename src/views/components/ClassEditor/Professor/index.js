@@ -1,13 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
+import SearchProfessor from './SearchProfessor'
 import ProfessorForm from './ProfessorForm'
 import ProfessorInfo from './ProfessorInfo'
 import actions from '../../../../actions'
 
 const ContentEnum = {
-  PROFESSOR_INFO: 0,
-  PROFESSOR_FORM: 1
+  SEARCH_PROFESSOR: 0,
+  PROFESSOR_INFO: 1,
+  PROFESSOR_FORM: 2
 }
 
 class Professor extends React.Component {
@@ -21,7 +23,7 @@ class Professor extends React.Component {
   */
   componentWillReceiveProps (nextProps) {
     if (JSON.stringify(this.props.cl.professor) !== JSON.stringify(nextProps.cl.professor)) {
-      this.setState({step: nextProps.cl.professor ? ContentEnum.PROFESSOR_FORM : ContentEnum.PROFESSOR_INFO})
+      this.setState({step: nextProps.cl.professor ? ContentEnum.PROFESSOR_INFO : ContentEnum.SEARCH_PROFESSOR})
     }
   }
 
@@ -32,7 +34,8 @@ class Professor extends React.Component {
   */
   initializeState () {
     return {
-      step: this.props.cl.professor ? ContentEnum.PROFESSOR_FORM : ContentEnum.PROFESSOR_INFO
+      step: this.props.cl.professor ? ContentEnum.PROFESSOR_INFO : ContentEnum.SEARCH_PROFESSOR,
+      isEditable: false
     }
   }
 
@@ -42,17 +45,24 @@ class Professor extends React.Component {
   * @return [Component].
   */
   renderContent () {
-    switch (this.state.step) {
-      case ContentEnum.PROFESSOR_INFO:
-        return <ProfessorInfo
-          professor={this.props.cl.professor}
-          onEditProfessor={this.onEditProfessor.bind(this)}
-          onRemoveProfessor={this.onRemoveProfessor.bind(this)} />
-      case ContentEnum.PROFESSOR_FORM:
-        return <ProfessorForm
-          cl={this.props.cl}
-          onSubmit={this.onSubmitProfessor.bind(this)}/>
-      default:
+    const {professor} = this.props.cl
+    if (!professor) {
+
+    } else {
+      switch (this.state.step) {
+        case ContentEnum.SEARCH_PROFESSOR:
+          return <SearchProfessor cl={this.props.cl} onAddProfessor={this.onAddProfessor.bind(this)} onProfessorSelect={this.onProfessorSelect.bind(this)} />
+        case ContentEnum.PROFESSOR_INFO:
+          return <ProfessorInfo
+            professor={this.props.cl.professor}
+            onEditProfessor={this.onEditProfessor.bind(this)}
+            onRemoveProfessor={this.onRemoveProfessor.bind(this)} />
+        case ContentEnum.PROFESSOR_FORM:
+          return <ProfessorForm
+            cl={this.props.cl}
+            onSubmit={this.onSubmitProfessor.bind(this)}/>
+        default:
+      }
     }
   }
 
@@ -121,14 +131,67 @@ class Professor extends React.Component {
     )
   }
 
+  renderEditToggle () {
+    return (
+      <button
+        className='button full-width margin-top'
+        onClick={() => this.setState({isEditable: true})}
+      >
+        Edit Professor
+      </button>
+    )
+  }
+
+  renderProfessorInfo () {
+    const {professor} = this.props.cl
+
+    return (
+      <div>
+        {!professor ? this.renderNoProfessor() : this.renderProfessor()}
+      </div>
+    )
+  }
+
+  renderProfessorControls () {
+    const {cl} = this.props
+
+    return (
+      <div className='margin-top'>
+        {!cl.professor &&
+          <SearchProfessor
+            schoolId={cl.school.id}
+            isUniversity={cl.school.is_university}
+            onProfessorCreate={this.onAddProfessor.bind(this)}
+            onProfessorSelect={this.onProfessorSelect.bind(this)}
+          />
+        }
+      </div>
+    )
+  }
+  renderOptions () {
+    return (
+      <div className='margin-top'>
+        <a
+          onClick={() => this.setState({isEditable: false})}
+        >&lt; Back</a>
+      </div>
+    )
+  }
+
   render () {
+    const {canEdit} = this.props
+    const {isEditable} = this.state
+
     return (
       <div id='class-editor-professor'>
         <div id='class-editor-professor-content'>
           <div id='professor-title'>
             Professor
           </div>
-          {this.props.cl.professor ? this.renderContent() : this.renderNoProfessor()}
+          {!isEditable && this.renderProfessorInfo()}
+          {isEditable && this.renderProfessorControls()}
+          {canEdit && !isEditable && this.renderEditToggle()}
+          {isEditable && this.renderOptions()}
         </div>
       </div>
     )
@@ -137,7 +200,8 @@ class Professor extends React.Component {
 
 Professor.propTypes = {
   cl: PropTypes.object.isRequired,
-  onSubmit: PropTypes.func
+  onSubmit: PropTypes.func,
+  canEdit: PropTypes.bool
 }
 
 export default ValidateForm(Form(Professor, 'form'))

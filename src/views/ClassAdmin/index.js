@@ -241,6 +241,7 @@ class ClassAdmin extends React.Component {
     return (
       <Professor
         cl={cl}
+        canEdit={true}
       />
     )
   }

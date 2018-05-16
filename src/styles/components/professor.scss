@@ -1,5 +1,6 @@
 #class-editor-professor {
   @include shadow-box;
+  min-width: 300px;
 
   #class-editor-professor-content {
     @include shadow-box-content;
