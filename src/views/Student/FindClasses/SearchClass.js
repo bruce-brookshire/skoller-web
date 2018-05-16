@@ -52,15 +52,15 @@ class SearchClass extends React.Component {
   renderRow (data, index, resetState) {
     return (
       <div className='cn-autocomplete-result' key={`result-${index}`} onClick={() => this.onClassSelect(data, resetState)}>
-        <div className='cn-find-classes-results'>
-          <span className='cn-find-classes-results-item title'>{data.name}</span>
-          <span className='cn-find-classes-results-item'></span>
+        <div className='cn-autocomplete-detail-results'>
+          <span className='cn-autocomplete-detail-results-item title'>{data.name}</span>
+          <span className='cn-autocomplete-detail-results-item'></span>
           {data.professor
-            ? <span className='cn-find-classes-results-item'>{data.professor.name_first} {data.professor.name_last}</span>
-            : <span className='cn-find-classes-results-item'>--</span>}
-          <span className='cn-find-classes-results-item'>{data.class_period_name}</span>
-          <span className='cn-find-classes-results-item'>{data.meet_days} {data.meet_start_time}</span>
-          <span className='cn-find-classes-results-item'>{data.subject} {data.code}.{data.section}</span>
+            ? <span className='cn-autocomplete-detail-results-item'>{data.professor.name_first} {data.professor.name_last}</span>
+            : <span className='cn-autocomplete-detail-results-item'>--</span>}
+          <span className='cn-autocomplete-detail-results-item'>{data.class_period_name}</span>
+          <span className='cn-autocomplete-detail-results-item'>{data.meet_days} {data.meet_start_time}</span>
+          <span className='cn-autocomplete-detail-results-item'>{data.subject} {data.code}.{data.section}</span>
           <div className='cn-results-divider'></div>
         </div>
       </div>

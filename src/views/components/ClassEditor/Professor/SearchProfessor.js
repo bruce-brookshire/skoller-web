@@ -52,10 +52,10 @@ class SearchProfessor extends React.Component {
   renderRow (data, index, resetState) {
     return (
       <div className='cn-autocomplete-result' key={`result-${index}`} onClick={() => this.onProfessorSelect(data, resetState)}>
-        <div className='cn-find-classes-results'>
-          <span className='cn-find-classes-results-item title'>{data.name_first} {data.name_last}</span>
-          <span className='cn-find-classes-results-item'></span>
-          <span className='cn-find-classes-results-item'>{data.email}</span>
+        <div className='cn-autocomplete-detail-results'>
+          <span className='cn-autocomplete-detail-results-item title'>{data.name_first} {data.name_last}</span>
+          <span className='cn-autocomplete-detail-results-item'></span>
+          <span className='cn-autocomplete-detail-results-item'>{data.email}</span>
           <div className='cn-results-divider'></div>
         </div>
       </div>
