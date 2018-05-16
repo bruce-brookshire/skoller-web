@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
 import {InputField} from '../../../../components/Form'
 import actions from '../../../../actions'
+import {maskPhoneNumber} from '../../../../utilities/mask'
 
 const requiredFields = {
   'name_first': {
@@ -37,6 +38,7 @@ class ProfessorModal extends React.Component {
       name_first: '',
       name_last: '',
       email: '',
+      phone: '',
       office_location: '',
       office_availability: ''
     }
@@ -102,6 +104,18 @@ class ProfessorModal extends React.Component {
               onChange={updateProperty}
               placeholder='Email address'
               value={form.email}
+            />
+          </div>
+          <div className='cn-create-professor-row'>
+            <InputField
+              error={formErrors.phone}
+              label='Phone Number'
+              name='phone'
+              onChange={(name, value) => {
+                updateProperty(name, maskPhoneNumber(form.phone, value))
+              }}
+              placeholder='Phone Number'
+              value={form.phone}
             />
           </div>
           <div className='cn-create-professor-row'>
