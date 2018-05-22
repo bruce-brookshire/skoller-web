@@ -4,7 +4,7 @@ import {authenticateUser, createAccount, forgotPassword, getRoles,
   getUserById, getUserByToken, getUsers, registerUser, resetPassword,
   resendVerification, updateAccount, verifyPhoneNumber} from './auth'
 import {deleteClassPost, getClassPosts, deleteClassComment, deleteClassReply} from './chat'
-import {createClass, dropClass, getClassById, getClassByLink, getStudentClassesById,
+import {createClass, dropClass, getClassById, getClassByIdAdmin, getClassByLink, getStudentClassesById,
   enrollByLink, enrollInClass, searchClasses, searchStudentClasses, updateClass, lockClass,
   unlockClass, updateClassStatus} from './classes'
 import {createIssue, getHelpTypes, resolveIssue, getRequestTypes, resolveChangeRequest, createStudentRequest,
@@ -60,6 +60,7 @@ const actions = {
     enrollByLink,
     enrollInClass,
     getClassById,
+    getClassByIdAdmin,
     getClassByLink,
     getStudentClassesById,
     lockClass,

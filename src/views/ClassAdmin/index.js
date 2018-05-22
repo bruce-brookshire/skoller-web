@@ -11,6 +11,7 @@ import RequestResolvedModal from './RequestResolvedModal'
 import ClassCard from '../../components/ClassCard'
 import Loading from '../../components/Loading'
 import Professor from '../components/ClassEditor/Professor'
+import StudentList from './StudentList'
 
 @inject('rootStore') @observer
 class ClassAdmin extends React.Component {
@@ -69,7 +70,7 @@ class ClassAdmin extends React.Component {
   */
   getClass () {
     const {params: {classId}} = this.props
-    actions.classes.getClassById(classId).then((cl) => {
+    actions.classes.getClassByIdAdmin(classId).then((cl) => {
       this.setState({cl})
       this.setState({loadingClass: false})
     }).catch(() => { this.setState({loadingClass: false}) })
@@ -248,7 +249,12 @@ class ClassAdmin extends React.Component {
   }
 
   renderStudents () {
-
+    const {cl} = this.state
+    return (
+      <StudentList
+        students={cl.students}
+      />
+    )
   }
 
   renderWeights () {

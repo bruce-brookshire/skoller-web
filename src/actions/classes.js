@@ -49,6 +49,21 @@ export function getClassById (classId) {
 }
 
 /*
+* Get admin class by id
+*
+* @param [Number] classId. The id of the class to get.
+*/
+export function getClassByIdAdmin (classId) {
+  return get(`/api/v1/classes/${classId}/admin`, '', 'Error fetching class. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
 * Get classes for students by student id
 *
 */
