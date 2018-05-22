@@ -113,10 +113,7 @@ class AccountInfo extends React.Component {
 
   onClassSelect (cl) {
     browserHistory.push({
-      pathname: `/class/${cl.id}/syllabus_tool`,
-      state: {
-        isAdmin: true
-      }
+      pathname: `/class/${cl.id}/admin`
     })
   }
 
