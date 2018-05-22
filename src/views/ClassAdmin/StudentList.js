@@ -52,18 +52,19 @@ class StudentList extends React.Component {
 
     const row = {
       id: id || '',
-      firstName: student ? (<div onClick={() => { this.onAccountSelect(item.user) }}><span>{student.name_first}</span></div>) : (<div><span>-</span></div>),
-      lastName: student ? (<div onClick={() => { this.onAccountSelect(item.user) }}><span>{student.name_last}</span></div>) : (<div><span>-</span></div>),
-      email: email ? <div onClick={() => { this.onAccountSelect(item.user) }}><span>{email}</span></div> : '',
-      status: is_active ? (<a onClick={() => { this.onAccountSelect(item.user) }}>Active</a>) : (<a className='cn-red'>Suspended</a>),
-      is_dropped: !student.is_dropped ? (<a onClick={() => { this.onAccountSelect(item.user) }}>Active</a>) : (<a className='cn-red'>Dropped</a>)
+      firstName: student ? (<div onClick={() => { this.onAccountSelect(item) }}><span>{student.name_first}</span></div>) : (<div><span>-</span></div>),
+      lastName: student ? (<div onClick={() => { this.onAccountSelect(item) }}><span>{student.name_last}</span></div>) : (<div><span>-</span></div>),
+      email: email ? <div onClick={() => { this.onAccountSelect(item) }}><span>{email}</span></div> : '',
+      status: is_active ? (<a onClick={() => { this.onAccountSelect(item) }}>Active</a>) : (<a className='cn-red'>Suspended</a>),
+      is_dropped: !student.is_dropped ? (<a onClick={() => { this.onAccountSelect(item) }}>Active</a>) : (<a className='cn-red'>Dropped</a>)
     }
 
     return row
   }
 
-  onAccountSelect (user) {
-    browserHistory.push({pathname: '/hub/accounts/account/info', state: {user}})
+  onAccountSelect (student) {
+    let state = {user: {student: student, ...student.user}}
+    browserHistory.push({pathname: '/hub/accounts/account/info', state: state})
   }
 
   render () {

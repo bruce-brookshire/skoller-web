@@ -1,10 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {browserHistory} from 'react-router'
-import FlexTable from '../../../components/FlexTable'
 import Modal from '../../../components/Modal'
 import AccountInfoForm from './AccountInfoForm'
-import UploadHistory from '../../../components/UploadHistory'
 import actions from '../../../actions'
 import ClassList from '../../components/ClassList'
 
@@ -21,7 +19,7 @@ class AccountInfo extends React.Component {
         this.setState({user})
       }).catch(() => false)
     }
-    if(this.state.user && this.state.user.student) {
+    if (this.state.user && this.state.user.student) {
       actions.classes.getStudentClassesById(this.state.user.student.id).then(classes => {
         this.setState({classes: classes})
       }).catch(() => false)
@@ -55,8 +53,8 @@ class AccountInfo extends React.Component {
           <h3>1. Account Details</h3>
           <a onClick={this.toggleAccountForm.bind(this)}>Edit</a>
         </div>
-        {user ?
-          <table className='roles-table'>
+        {user
+          ? <table className='roles-table'>
             <tbody>
               <tr>
                 <th className='cn-flex-table-cell'>Email:</th>
@@ -113,7 +111,7 @@ class AccountInfo extends React.Component {
     this.setState({openAccountForm: !this.state.openAccountForm})
   }
 
-  onClassSelect(cl) {
+  onClassSelect (cl) {
     browserHistory.push({
       pathname: `/class/${cl.id}/syllabus_tool`,
       state: {
@@ -150,6 +148,10 @@ class AccountInfo extends React.Component {
       </div>
     )
   }
+}
+
+AccountInfo.propTypes = {
+  location: PropTypes.object
 }
 
 export default AccountInfo
