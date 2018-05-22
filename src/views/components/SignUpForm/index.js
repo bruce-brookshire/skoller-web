@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Cookies} from 'react-cookie'
 import {Form, ValidateForm} from 'react-form-library'
 import {InputField, CheckboxField} from '../../../components/Form'
 import actions from '../../../actions'
@@ -28,7 +27,6 @@ const requiredFields = {
 class SignUpForm extends React.Component {
   constructor (props) {
     super(props)
-    this.cookie = new Cookies()
     this.state = this.initializeState()
   }
 
@@ -39,7 +37,6 @@ class SignUpForm extends React.Component {
     return {
       form: this.initializeFormData(),
       emailError: null,
-      showSupportedSchools: false,
       universityError: false
     }
   }
@@ -53,7 +50,6 @@ class SignUpForm extends React.Component {
       student: {
         name_first: '',
         name_last: '',
-        school_id: '',
         phone: '',
         birthday: '',
         gender: '',
@@ -74,9 +70,6 @@ class SignUpForm extends React.Component {
       if (this.props.validateForm(form, requiredFields) && !this.state.emailError) {
         actions.auth.registerUser(form).then(() => {
           this.props.resetValidation()
-          const { userStore: { authToken } } = this.props.rootStore
-          this.cookie.remove('skollerToken', { path: '/' })
-          this.cookie.set('skollerToken', authToken, { maxAge: 84600 * 7, path: '/' })
           this.props.onSubmit()
         }).catch(() => false)
       }

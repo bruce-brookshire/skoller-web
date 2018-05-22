@@ -1,8 +1,24 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {browserHistory} from 'react-router'
 import SignUpForm from '../components/SignUpForm'
+import {inject, observer} from 'mobx-react'
+import {Cookies} from 'react-cookie'
 
+@inject('rootStore') @observer
 class Signup extends React.Component {
+  constructor (props) {
+    super(props)
+    this.cookie = new Cookies()
+  }
+
+  onSubmit () {
+    const { userStore: { authToken } } = this.props.rootStore
+    this.cookie.remove('skollerToken', { path: '/' })
+    this.cookie.set('skollerToken', authToken, { maxAge: 84600 * 7, path: '/' })
+    browserHistory.push('/student/verify')
+  }
+
   render () {
     return (
       <div id='promo-signup' className='container-promo-signup'>
@@ -11,13 +27,17 @@ class Signup extends React.Component {
             <SignUpForm {...this.props}
               header={<div>Sign up <small className='sub-header'>(it&apos;s free!)</small></div>}
               buttonText='Take me there.'
-              onSubmit={() => { browserHistory.push('/student/verify') }}
+              onSubmit={this.onSubmit.bind(this)}
             />
           </div>
         </div>
       </div>
     )
   }
+}
+
+Signup.propTypes = {
+  rootStore: PropTypes.object
 }
 
 export default Signup

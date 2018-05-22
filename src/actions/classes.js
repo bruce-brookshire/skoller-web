@@ -108,7 +108,7 @@ export function dropClass (classId) {
 * Create a new class
 */
 export function createClass (form, periodId) {
-  return post(`api/v1/periods/${periodId}/classes`, form, 'Error creating class. Try again.')
+  return post(`/api/v1/periods/${periodId}/classes`, form, 'Error creating class. Try again.')
     .then(data => {
       return data
     })
@@ -137,7 +137,7 @@ export function updateClass (form) {
 * @param [Object] form. Class status form.
 */
 export function updateClassStatus (cl, form) {
-  return put(`$/api/v1/classes/${cl.id}/statuses`, form)
+  return put(`/api/v1/classes/${cl.id}/statuses`, form)
     .then(data => {
       showSnackbar('Class status updated.', 'info')
       return data
