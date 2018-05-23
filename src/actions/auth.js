@@ -54,6 +54,24 @@ export function registerUser (form) {
 }
 
 /*
+*  Register the user.
+*
+* @params [Object] form. Sign up form data.
+*/
+export function registerUserAdmin (form) {
+  return post(`/api/v1/users`, form, '')
+    .then(data => data)
+    .catch(error => {
+      if (error !== 422) {
+        showSnackbar('Error registering user. Try again.')
+      } else {
+        showSnackbar('Username already exists.')
+      }
+      return Promise.reject(error)
+    })
+}
+
+/*
 * Fetch user to set state.
 */
 export function getUserByToken () {

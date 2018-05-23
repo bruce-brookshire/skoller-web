@@ -3,6 +3,8 @@ import {browserHistory} from 'react-router'
 import AccountSearch from './AccountSearch'
 import Grid from '../../../components/Grid'
 import actions from '../../../actions'
+import Modal from '../../../components/Modal'
+import SignUpForm from '../../components/SignUpForm'
 
 const headers = [
   {
@@ -36,14 +38,15 @@ class Accounts extends React.Component {
     super(props)
     this.state = {
       loading: false,
-      users: []
+      users: [],
+      openCreateModal: false
     }
   }
 
   /*
   * Get users
   */
-  getAccounts(queryString){
+  getAccounts (queryString) {
     this.setState({loading: true})
     actions.auth.getUsers(queryString).then(users => {
       this.setState({users, loading: false})
@@ -69,7 +72,7 @@ class Accounts extends React.Component {
   * @return [Object] row. Object of formatted row data for display in grid.
   */
   mapRow (item, index) {
-    const {id, email, is_active, roles, student} = item
+    const {id, email, is_active: isActive, roles, student} = item
 
     const row = {
       id: id || '',
@@ -78,28 +81,44 @@ class Accounts extends React.Component {
       lastName: student ? (<div onClick={() => { this.onAccountSelect(item) }}><span>{student.name_last}</span></div>) : (<div><span>-</span></div>),
       school: student && student.school ? (<div onClick={() => { this.onAccountSelect(item) }}><span>{student.school.name}</span></div>) : (<div><span>-</span></div>),
       email: email ? <div onClick={() => { this.onAccountSelect(item) }}><span>{email}</span></div> : '',
-      status: is_active ? (<a onClick={() => { this.onAccountSelect(item) }}>Active</a>) : (<a className='cn-red'>Suspended</a>),
+      status: isActive ? (<a onClick={() => { this.onAccountSelect(item) }}>Active</a>) : (<a className='cn-red'>Suspended</a>)
     }
 
     return row
   }
 
-  onCreateAccount () {
-    browserHistory.push('/hub/accounts/account/info')
+  onCreateAccount (user) {
+    browserHistory.push({pathname: '/hub/accounts/account/info', state: {user: user.user}})
   }
 
   onAccountSelect (user) {
     browserHistory.push({pathname: '/hub/accounts/account/info', state: {user}})
   }
 
+  toggleCreateModal () {
+    const {openCreateModal} = this.state
+    this.setState({openCreateModal: !openCreateModal})
+  }
+
+  renderCreateAccountModal () {
+    return (
+      <Modal
+        open={this.state.openCreateModal}
+        onClose={this.toggleCreateModal.bind(this)}
+      >
+        <SignUpForm onSubmit={this.onCreateAccount.bind(this)} onClose={this.toggleCreateModal.bind(this)} isAdmin={true} />
+      </Modal>
+    )
+  }
+
   render () {
     return (
       <div className='cn-accounts-container'>
         <div className='margin-bottom'>
-          <h2 className='center-text' style={{marginBottom: 0}}>Search Accounts</h2>
+          <h2 className='center-text'>Search Accounts</h2>
           <AccountSearch {...this.props} loading={this.state.loading} onSearch={this.getAccounts.bind(this)}/>
           <div>
-            <a onClick={this.onCreateAccount.bind(this)}>Create new account</a>
+            <a onClick={this.toggleCreateModal.bind(this)}>Create new account</a>
             <span className='description'>Manage user account details from this page</span>
             <span className='total-results'>Total Results: {this.state.users.length}</span>
           </div>
@@ -112,6 +131,7 @@ class Accounts extends React.Component {
           disabled={true}
           canDelete={false}
         />
+        {this.renderCreateAccountModal()}
       </div>
     )
   }

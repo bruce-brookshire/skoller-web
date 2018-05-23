@@ -76,6 +76,21 @@ class SignUpForm extends React.Component {
     }
   }
 
+  onSubmitAdmin () {
+    const form = this.mapForm()
+    if (!form.student.is_university && !form.student.is_highschool) {
+      this.setState({universityError: true})
+    } else {
+      this.setState({universityError: false})
+      if (this.props.validateForm(form, requiredFields) && !this.state.emailError) {
+        actions.auth.registerUserAdmin(form).then((user) => {
+          this.props.resetValidation()
+          this.props.onSubmit(user)
+        }).catch(() => false)
+      }
+    }
+  }
+
   mapForm () {
     let newForm = JSON.parse(JSON.stringify(this.state.form))
     newForm.student.phone = newForm.student.phone.replace(/-/g, '')
@@ -84,9 +99,9 @@ class SignUpForm extends React.Component {
 
   onVerifyEmail () {
     const {email} = this.state.form
-    const {is_university} = this.state.form.student
+    const isUniversity = this.state.form.student.is_university
 
-    if (is_university) {
+    if (isUniversity) {
       if (email && !this.testEmailFormat(email)) {
         this.setState({ emailError: {type: 'info', message: 'Please use your school email!'} })
       } else {
@@ -104,7 +119,7 @@ class SignUpForm extends React.Component {
 
   render () {
     const {form, universityError} = this.state
-    const {formErrors, updateProperty, header, buttonText} = this.props
+    const {formErrors, updateProperty, header, buttonText, isAdmin} = this.props
 
     return (
       <div className='cn-sign-up-form'>
@@ -207,7 +222,7 @@ class SignUpForm extends React.Component {
             <button
               className='button margin-top margin-bottom full-width'
               type='button'
-              onClick={this.onSubmit.bind(this)}
+              onClick={isAdmin ? this.onSubmitAdmin.bind(this) : this.onSubmit.bind(this)}
             >{buttonText || 'Submit'}</button>
           </div>
         </form>
@@ -219,7 +234,6 @@ class SignUpForm extends React.Component {
 SignUpForm.propTypes = {
   formErrors: PropTypes.object,
   resetValidation: PropTypes.func,
-  rootStore: PropTypes.object,
   updateProperty: PropTypes.func,
   validateForm: PropTypes.func,
   header: PropTypes.oneOfType([
@@ -227,7 +241,8 @@ SignUpForm.propTypes = {
     PropTypes.element
   ]),
   buttonText: PropTypes.string,
-  onSubmit: PropTypes.func
+  onSubmit: PropTypes.func,
+  isAdmin: PropTypes.bool
 }
 
 export default ValidateForm(Form(SignUpForm, 'form'))
