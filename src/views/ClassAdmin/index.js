@@ -37,7 +37,8 @@ class ClassAdmin extends React.Component {
       openHelpResolvedModal: false,
       openIssuesModal: false,
       openRequestResolvedModal: false,
-      isWeightsEditable: false
+      isWeightsEditable: false,
+      weights: []
     }
   }
 
@@ -73,7 +74,7 @@ class ClassAdmin extends React.Component {
   getClass () {
     const {params: {classId}} = this.props
     actions.classes.getClassByIdAdmin(classId).then((cl) => {
-      this.setState({cl})
+      this.setState({cl, weights: cl.weights})
       this.setState({loadingClass: false})
     }).catch(() => { this.setState({loadingClass: false}) })
   }
@@ -86,6 +87,18 @@ class ClassAdmin extends React.Component {
     const sr = cl.student_requests.filter(c => !c.is_completed)
     const cr = cl.change_requests.filter(c => !c.is_completed)
     return sr.concat(cr)
+  }
+
+  /*
+  * Delete weight.
+  *
+  * @param [Object] weight. The weight to be deleted.
+  */
+  onDeleteWeight (weight) {
+    actions.weights.deleteWeight(weight).then(() => {
+      const newWeights = this.state.weights.filter(w => w.id !== weight.id)
+      this.setState({weights: newWeights})
+    }).catch(() => false)
   }
 
   /*
@@ -260,7 +273,7 @@ class ClassAdmin extends React.Component {
   }
 
   renderWeights () {
-    const {cl, isWeightsEditable} = this.state
+    const {cl, isWeightsEditable, weights} = this.state
     return (
       <div id='cn-admin-weight-table'>
         <div id='cn-admin-weight-table-content'>
@@ -274,7 +287,8 @@ class ClassAdmin extends React.Component {
           <WeightTable
             cl={cl}
             viewOnly={!isWeightsEditable}
-            weights={cl.weights}
+            weights={weights}
+            onDeleteWeight={this.onDeleteWeight.bind(this)}
           />
         </div>
       </div>
