@@ -36,7 +36,8 @@ class ClassAdmin extends React.Component {
       openEditClassModal: false,
       openHelpResolvedModal: false,
       openIssuesModal: false,
-      openRequestResolvedModal: false
+      openRequestResolvedModal: false,
+      isWeightsEditable: false
     }
   }
 
@@ -259,16 +260,20 @@ class ClassAdmin extends React.Component {
   }
 
   renderWeights () {
-    const {cl} = this.state
+    const {cl, isWeightsEditable} = this.state
     return (
       <div id='cn-admin-weight-table'>
         <div id='cn-admin-weight-table-content'>
           <div className='cn-admin-weight-table-title'>
             Weights
+            <div>
+              {isWeightsEditable && <i className='fa fa-plus cn-blue cursor margin-right' onClick={() => this.setState({isWeightsEditable: !isWeightsEditable})} />}
+              <i className='fa fa-pencil cn-blue cursor' onClick={() => this.setState({isWeightsEditable: !isWeightsEditable})} />
+            </div>
           </div>
           <WeightTable
             cl={cl}
-            viewOnly={true}
+            viewOnly={!isWeightsEditable}
             weights={cl.weights}
           />
         </div>
