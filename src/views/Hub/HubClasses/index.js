@@ -7,6 +7,7 @@ import actions from '../../../actions'
 import {mapProfessor} from '../../../utilities/display'
 import {mapTimeToDisplay} from '../../../utilities/time'
 import {inject, observer} from 'mobx-react'
+import PropTypes from 'prop-types'
 
 const headers = [
   {
@@ -98,8 +99,8 @@ class HubClasses extends React.Component {
   * @return [Object] row. Object of formatted row data for display in grid.
   */
   mapRow (item, index) {
-    const {id, school, number, name, enrolled, meet_start_time,
-      meet_days, length, campus, professor, status, period_name} = item
+    const {id, school, number, name, enrolled, meet_start_time: startTime,
+      meet_days: days, length, campus, professor, status, period_name: period} = item
 
     const row = {
       id: id || '',
@@ -108,12 +109,12 @@ class HubClasses extends React.Component {
       name: name || '-',
       enrollment: enrolled || 0,
       professor: professor ? mapProfessor(professor) : 'TBA',
-      days: meet_days || 'TBA',
-      beginTime: meet_start_time ? mapTimeToDisplay(meet_start_time) : 'TBA',
+      days: days || 'TBA',
+      beginTime: startTime ? mapTimeToDisplay(startTime) : 'TBA',
       length: length || 'TBA',
       campus: campus || '',
       status: status ? this.mapStatus(status) : '-',
-      period: period_name || ''
+      period: period || ''
     }
 
     return row
@@ -127,8 +128,9 @@ class HubClasses extends React.Component {
   * @param [String] status. Class status.
   */
   mapStatus (status) {
-    if (status)
+    if (status) {
       status = status.toLowerCase()
+    }
     if (status === 'new class') {
       return <span className='cn-red'>NEEDS APPROVAL</span>
     } else if (status === 'needs syllabus') {
@@ -181,29 +183,24 @@ class HubClasses extends React.Component {
     return userStore.isHelpReq()
   }
 
-  isChangeReq() {
+  isChangeReq () {
     const {userStore} = this.props.rootStore
     return userStore.isChangeReq()
   }
 
-  isNew(cl) {
-    let found = this.state.classes.find((c) => c.id == cl.id)
-    if(found){return found.is_new_class}else{return false}
-  }
-
-  getHeaderText(state) {
-    if(state.needsHelp){
+  getHeaderText (state) {
+    if (state.needsHelp) {
       return 'Classes in review that need help'
-    }else if (state.needsChange){
+    } else if (state.needsChange) {
       return 'Completed classes with a change request'
-    }else if (state.needsMaint){
+    } else if (state.needsMaint) {
       return 'Classes currently under maintenance'
-    }else if (state.needsApproval){
+    } else if (state.needsApproval) {
       return 'Classes that need to be approved'
     }
   }
 
-  renderHeader() {
+  renderHeader () {
     const {state} = this.props.location
     // If the class is in any of these states, don't show the search bar
     const boole = state && (state.needsHelp || state.needsChange || state.needsMaint || state.needsApproval)
@@ -211,7 +208,7 @@ class HubClasses extends React.Component {
       <div className='margin-bottom'>
         <h2 className='center-text' style={{marginBottom: 0}}>{this.getHeaderText(state)}</h2>
         <ClassSearch {...this.props} loading={this.state.loading}
-                      onSearch={this.getClasses.bind(this)} hidden={true}/>
+          onSearch={this.getClasses.bind(this)} hidden={true}/>
         <div className='margin-top'>
           <span className='total right'>Total results: {this.state.classes.length}</span>
         </div>
@@ -220,7 +217,7 @@ class HubClasses extends React.Component {
       <div className='margin-bottom'>
         <h2 className='center-text' style={{marginBottom: 0}}>Class Search</h2>
         <ClassSearch {...this.props} loading={this.state.loading}
-                    onSearch={this.getClasses.bind(this)}/>
+          onSearch={this.getClasses.bind(this)}/>
         <div className='margin-top'>
           <a onClick={this.onCreateClass.bind(this)}>Create new class </a>
           <span className='description'>Manage classes from this page</span>
@@ -234,8 +231,9 @@ class HubClasses extends React.Component {
     return (
       <div className='cn-classes-container'>
         {this.renderHeader()}
-        {this.state.loading ? <div className='center-text'><Loading /></div> :
-          <Grid
+        {this.state.loading
+          ? <div className='center-text'><Loading /></div>
+          : <Grid
             className='cn-classes-table'
             headers={headers}
             rows={this.getRows()}
@@ -249,6 +247,11 @@ class HubClasses extends React.Component {
       </div>
     )
   }
+}
+
+HubClasses.propTypes = {
+  rootStore: PropTypes.object,
+  location: PropTypes.object
 }
 
 export default HubClasses
