@@ -158,34 +158,8 @@ class HubClasses extends React.Component {
   */
   onEditClass (cl) {
     browserHistory.push({
-      pathname: `/class/${cl.id}/admin`,
-      state: {
-        isAdmin: this.isAdminUser(),
-        isSW: this.isSW(),
-        isChangeReq: this.isChangeReq(),
-        isHelpReq: this.isHelpReq()
-      }
+      pathname: `/class/${cl.id}/admin`
     })
-  }
-
-  isAdminUser () {
-    const {userStore} = this.props.rootStore
-    return userStore.isAdmin()
-  }
-
-  isSW () {
-    const {userStore} = this.props.rootStore
-    return userStore.isSW()
-  }
-
-  isHelpReq () {
-    const {userStore} = this.props.rootStore
-    return userStore.isHelpReq()
-  }
-
-  isChangeReq () {
-    const {userStore} = this.props.rootStore
-    return userStore.isChangeReq()
   }
 
   getHeaderText (state) {
