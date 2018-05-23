@@ -106,8 +106,7 @@ class ClassAdmin extends React.Component {
   onCreateWeight (weight) {
     const newWeights = this.state.weights
     newWeights.push(weight)
-    this.setState({weights: newWeights, currentWeight: null})
-    this.toggleWeightCreateModal()
+    this.setState({weights: newWeights, currentWeight: null, openWeightCreateModal: false})
   }
 
   /*
@@ -116,8 +115,7 @@ class ClassAdmin extends React.Component {
   * @param [Object] weight. Weight object to be edited.
   */
   onSelectWeight (weight) {
-    this.setState({currentWeight: weight})
-    this.toggleWeightCreateModal()
+    this.setState({currentWeight: weight, openWeightCreateModal: true})
   }
 
   /*
@@ -129,8 +127,7 @@ class ClassAdmin extends React.Component {
     const newWeights = this.state.weights
     const index = this.state.weights.findIndex(w => w.id === weight.id)
     newWeights[index] = weight
-    this.setState({weights: newWeights, currentWeight: null})
-    this.toggleWeightCreateModal()
+    this.setState({weights: newWeights, currentWeight: null, openWeightCreateModal: false})
   }
 
   /*
@@ -151,8 +148,7 @@ class ClassAdmin extends React.Component {
   * @param [Object] assignment. Assignment object to be edited.
   */
   onSelectAssignment (assignment) {
-    this.setState({currentAssignment: assignment})
-    this.toggleAssignmentModal()
+    this.setState({currentAssignment: assignment, openAssignmentModal: true})
   }
 
   /*
@@ -163,8 +159,7 @@ class ClassAdmin extends React.Component {
   onCreateAssignment (assignment) {
     const newAssignments = this.state.assignments
     newAssignments.push(assignment)
-    this.setState({assignments: newAssignments, currentAssignment: null})
-    this.toggleAssignmentModal()
+    this.setState({assignments: newAssignments, currentAssignment: null, openAssignmentModal: false})
   }
 
   /*
@@ -177,8 +172,7 @@ class ClassAdmin extends React.Component {
     const newAssignments = assignments
     const index = assignments.findIndex(a => a.id === assignment.id)
     newAssignments[index] = assignment
-    this.setState({assignments: newAssignments, currentAssignment: null})
-    this.toggleAssignmentModal()
+    this.setState({assignments: newAssignments, currentAssignment: null, openAssignmentModal: false})
   }
 
   /*
@@ -192,6 +186,10 @@ class ClassAdmin extends React.Component {
       const newAssignments = assignments.filter(a => a.id !== assignment.id)
       this.setState({assignments: newAssignments})
     }).catch(() => false)
+  }
+
+  onWeightClose () {
+    this.setState({currentWeight: null, openWeightCreateModal: false})
   }
 
   /*
@@ -330,7 +328,7 @@ class ClassAdmin extends React.Component {
     return (
       <Modal
         open={this.state.openWeightCreateModal}
-        onClose={this.toggleWeightCreateModal.bind(this)}
+        onClose={this.onWeightClose.bind(this)}
       >
         <WeightForm
           cl={cl}
@@ -440,7 +438,7 @@ class ClassAdmin extends React.Component {
           <div className='cn-admin-assignment-table-title'>
             Assignments
             <div>
-              {isAssignmentsEditable && <i className='fa fa-plus cn-blue cursor margin-right' />}
+              {isAssignmentsEditable && <i className='fa fa-plus cn-blue cursor margin-right' onClick={() => this.toggleAssignmentModal()} />}
               <i className='fa fa-pencil cn-blue cursor' onClick={() => this.setState({isAssignmentsEditable: !isAssignmentsEditable})} />
             </div>
           </div>

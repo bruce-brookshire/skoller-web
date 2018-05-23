@@ -42,7 +42,7 @@ class AssignmentForm extends React.Component {
   * If new assignment is received, update form.
   */
   componentWillReceiveProps (nextProps) {
-    if (nextProps.assignment && this.state.form.id !== nextProps.assignment.id) {
+    if (nextProps.assignment && (this.state.form.id !== nextProps.assignment.id)) {
       this.setState({form: this.initializeFormData(nextProps.assignment)})
     }
 
@@ -59,8 +59,9 @@ class AssignmentForm extends React.Component {
   * @return [Object]. State object.
   */
   initializeState () {
+    const {assignment} = this.props
     return {
-      form: this.initializeFormData(),
+      form: this.initializeFormData(assignment),
       due_null: false,
       loading: false
     }
@@ -110,7 +111,6 @@ class AssignmentForm extends React.Component {
   onCreateAssignment (form) {
     this.setState({loading: true})
     actions.assignments.createAssignment(this.props.cl, form).then((assignment) => {
-      this.props.resetValidation()
       this.setState({form: this.initializeFormData(), loading: false, due_null: false})
       this.props.onCreateAssignment(assignment)
     }).catch(() => { this.setState({loading: false}) })
@@ -123,7 +123,6 @@ class AssignmentForm extends React.Component {
     this.setState({loading: true})
     actions.assignments.updateAssignment(this.props.cl, form).then((assignment) => {
       this.props.onUpdateAssignment(assignment)
-      this.props.resetValidation()
       this.setState({form: this.initializeFormData(), loading: false, due_null: false})
     }).catch(() => { this.setState({loading: false}) })
   }
