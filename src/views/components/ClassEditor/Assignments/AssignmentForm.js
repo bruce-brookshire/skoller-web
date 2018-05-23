@@ -75,18 +75,18 @@ class AssignmentForm extends React.Component {
   */
   initializeFormData (data) {
     let formData = data || {}
-    const {id, name, weight_id, due} = formData
+    const {id, name, weight_id: weightId, due} = formData
     const {cl, currentWeight} = this.props
 
-    const due_date = due
+    const dueDate = due
       ? convertUTCDatetimeToDateString(due, cl.school.timezone) : ''
 
     return ({
       id: id || null,
       name: name || '',
-      weight_id: weight_id || currentWeight.id || '',
-      due: due_date ? this.mapAssignmentDate(due_date) : '',
-      year_due: due_date ? due_date.split('-')[0] : date.getFullYear()
+      weight_id: weightId || (currentWeight && currentWeight.id) || '',
+      due: dueDate ? this.mapAssignmentDate(dueDate) : '',
+      year_due: dueDate ? dueDate.split('-')[0] : date.getFullYear()
     })
   }
 

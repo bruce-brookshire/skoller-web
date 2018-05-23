@@ -15,6 +15,7 @@ import StudentList from './StudentList'
 import WeightTable from '../components/ClassEditor/Weights/WeightTable'
 import WeightForm from '../components/ClassEditor/Weights/WeightForm'
 import AssignmentTable from '../components/ClassEditor/Assignments/AssignmentTable'
+import AssignmentForm from '../components/ClassEditor/Assignments/AssignmentForm'
 
 @inject('rootStore') @observer
 class ClassAdmin extends React.Component {
@@ -45,7 +46,8 @@ class ClassAdmin extends React.Component {
       currentWeight: null,
       isAssignmentsEditable: false,
       currentAssignment: null,
-      assignments: []
+      assignments: [],
+      openAssignmentModal: false
     }
   }
 
@@ -150,6 +152,7 @@ class ClassAdmin extends React.Component {
   */
   onSelectAssignment (assignment) {
     this.setState({currentAssignment: assignment})
+    this.toggleAssignmentModal()
   }
 
   /*
@@ -161,6 +164,7 @@ class ClassAdmin extends React.Component {
     const newAssignments = this.state.assignments
     newAssignments.push(assignment)
     this.setState({assignments: newAssignments, currentAssignment: null})
+    this.toggleAssignmentModal()
   }
 
   /*
@@ -174,6 +178,7 @@ class ClassAdmin extends React.Component {
     const index = assignments.findIndex(a => a.id === assignment.id)
     newAssignments[index] = assignment
     this.setState({assignments: newAssignments, currentAssignment: null})
+    this.toggleAssignmentModal()
   }
 
   /*
@@ -219,6 +224,10 @@ class ClassAdmin extends React.Component {
 
   toggleWeightCreateModal () {
     this.setState({openWeightCreateModal: !this.state.openWeightCreateModal})
+  }
+
+  toggleAssignmentModal () {
+    this.setState({openAssignmentModal: !this.state.openAssignmentModal})
   }
 
   toggleChat () {
@@ -328,6 +337,23 @@ class ClassAdmin extends React.Component {
           weight={currentWeight}
           onCreateWeight={this.onCreateWeight.bind(this)}
           onUpdateWeight={this.onUpdateWeight.bind(this)}
+        />
+      </Modal>
+    )
+  }
+
+  renderAssignmentModal () {
+    const {cl, currentAssignment} = this.state
+    return (
+      <Modal
+        open={this.state.openAssignmentModal}
+        onClose={this.toggleAssignmentModal.bind(this)}
+      >
+        <AssignmentForm
+          cl={cl}
+          assignment={currentAssignment}
+          onCreateAssignment={this.onCreateAssignment.bind(this)}
+          onUpdateAssignment={this.onUpdateAssignment.bind(this)}
         />
       </Modal>
     )
@@ -454,6 +480,7 @@ class ClassAdmin extends React.Component {
         {this.renderRequestResolvedModal()}
         {this.renderEditClassModal()}
         {this.renderWeightCreateModal()}
+        {this.renderAssignmentModal()}
       </div>
     )
   }
