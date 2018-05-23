@@ -13,6 +13,7 @@ import Loading from '../../components/Loading'
 import Professor from '../components/ClassEditor/Professor'
 import StudentList from './StudentList'
 import WeightTable from '../components/ClassEditor/Weights/WeightTable'
+import WeightForm from '../components/ClassEditor/Weights/WeightForm'
 
 @inject('rootStore') @observer
 class ClassAdmin extends React.Component {
@@ -38,7 +39,9 @@ class ClassAdmin extends React.Component {
       openIssuesModal: false,
       openRequestResolvedModal: false,
       isWeightsEditable: false,
-      weights: []
+      weights: [],
+      openWeightCreateModal: false,
+      currentWeight: null
     }
   }
 
@@ -90,6 +93,41 @@ class ClassAdmin extends React.Component {
   }
 
   /*
+  * On create weight, push weight onto array
+  *
+  * @param [Object] weight. Weight.
+  */
+  onCreateWeight (weight) {
+    const newWeights = this.state.weights
+    newWeights.push(weight)
+    this.setState({weights: newWeights, currentWeight: null})
+    this.toggleWeightCreateModal()
+  }
+
+  /*
+  * Set form value equal to weight in order to be edited.
+  *
+  * @param [Object] weight. Weight object to be edited.
+  */
+  onSelectWeight (weight) {
+    this.setState({currentWeight: weight})
+    this.toggleWeightCreateModal()
+  }
+
+  /*
+  * On update weight, replace existing weight with the new weight.
+  *
+  * @param [Object] weight. Weight.
+  */
+  onUpdateWeight (weight) {
+    const newWeights = this.state.weights
+    const index = this.state.weights.findIndex(w => w.id === weight.id)
+    newWeights[index] = weight
+    this.setState({weights: newWeights, currentWeight: null})
+    this.toggleWeightCreateModal()
+  }
+
+  /*
   * Delete weight.
   *
   * @param [Object] weight. The weight to be deleted.
@@ -97,7 +135,7 @@ class ClassAdmin extends React.Component {
   onDeleteWeight (weight) {
     actions.weights.deleteWeight(weight).then(() => {
       const newWeights = this.state.weights.filter(w => w.id !== weight.id)
-      this.setState({weights: newWeights})
+      this.setState({weights: newWeights, currentWeight: null})
     }).catch(() => false)
   }
 
@@ -127,6 +165,10 @@ class ClassAdmin extends React.Component {
   */
   toggleRequestResolvedModal () {
     this.setState({openRequestResolvedModal: !this.state.openRequestResolvedModal})
+  }
+
+  toggleWeightCreateModal () {
+    this.setState({openWeightCreateModal: !this.state.openWeightCreateModal})
   }
 
   toggleChat () {
@@ -224,6 +266,23 @@ class ClassAdmin extends React.Component {
     )
   }
 
+  renderWeightCreateModal () {
+    const {cl, currentWeight} = this.state
+    return (
+      <Modal
+        open={this.state.openWeightCreateModal}
+        onClose={this.toggleWeightCreateModal.bind(this)}
+      >
+        <WeightForm
+          cl={cl}
+          weight={currentWeight}
+          onCreateWeight={this.onCreateWeight.bind(this)}
+          onUpdateWeight={this.onUpdateWeight.bind(this)}
+        />
+      </Modal>
+    )
+  }
+
   renderClassDetais () {
     const {cl} = this.state
     return (
@@ -273,14 +332,14 @@ class ClassAdmin extends React.Component {
   }
 
   renderWeights () {
-    const {cl, isWeightsEditable, weights} = this.state
+    const {cl, isWeightsEditable, weights, currentWeight} = this.state
     return (
       <div id='cn-admin-weight-table'>
         <div id='cn-admin-weight-table-content'>
           <div className='cn-admin-weight-table-title'>
             Weights
             <div>
-              {isWeightsEditable && <i className='fa fa-plus cn-blue cursor margin-right' onClick={() => this.setState({isWeightsEditable: !isWeightsEditable})} />}
+              {isWeightsEditable && <i className='fa fa-plus cn-blue cursor margin-right' onClick={() => this.toggleWeightCreateModal()} />}
               <i className='fa fa-pencil cn-blue cursor' onClick={() => this.setState({isWeightsEditable: !isWeightsEditable})} />
             </div>
           </div>
@@ -289,6 +348,8 @@ class ClassAdmin extends React.Component {
             viewOnly={!isWeightsEditable}
             weights={weights}
             onDeleteWeight={this.onDeleteWeight.bind(this)}
+            currentWeight={currentWeight}
+            onSelectWeight={this.onSelectWeight.bind(this)}
           />
         </div>
       </div>
@@ -322,6 +383,7 @@ class ClassAdmin extends React.Component {
         {this.renderHelpResolvedModal()}
         {this.renderRequestResolvedModal()}
         {this.renderEditClassModal()}
+        {this.renderWeightCreateModal()}
       </div>
     )
   }
