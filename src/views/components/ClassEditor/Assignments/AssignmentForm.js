@@ -158,7 +158,7 @@ class AssignmentForm extends React.Component {
 
   render () {
     const {form} = this.state
-    const {formErrors, updateProperty, currentWeight} = this.props
+    const {formErrors, updateProperty, currentWeight, isAdmin, weights} = this.props
     return (
       <div id='class-editor-assignment-form'>
         <div className='cn-section-content-header'>
@@ -181,6 +181,18 @@ class AssignmentForm extends React.Component {
               value={form.name}
             />
           </div>
+          {isAdmin && <div className='col-xs-12'>
+            <SelectField
+              style={{marginTop: '0em'}}
+              containerClassName='margin-top'
+              error={formErrors.weight_id}
+              label='Weight'
+              name='weight_id'
+              onChange={updateProperty}
+              options={weights}
+              value={form.weight_id}
+            />
+          </div>}
           <div className='col-xs-4'>
             <InputField
               style={{marginTop: '0.25em'}}
@@ -249,7 +261,9 @@ AssignmentForm.propTypes = {
   updateProperty: PropTypes.func,
   validateForm: PropTypes.func,
   currentWeight: PropTypes.object,
-  resetValidation: PropTypes.func
+  resetValidation: PropTypes.func,
+  isAdmin: PropTypes.bool,
+  weights: PropTypes.array
 }
 
 export default ValidateForm(Form(AssignmentForm, 'form'))

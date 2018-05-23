@@ -341,7 +341,7 @@ class ClassAdmin extends React.Component {
   }
 
   renderAssignmentModal () {
-    const {cl, currentAssignment} = this.state
+    const {cl, currentAssignment, weights} = this.state
     return (
       <Modal
         open={this.state.openAssignmentModal}
@@ -352,6 +352,8 @@ class ClassAdmin extends React.Component {
           assignment={currentAssignment}
           onCreateAssignment={this.onCreateAssignment.bind(this)}
           onUpdateAssignment={this.onUpdateAssignment.bind(this)}
+          isAdmin={true}
+          weights={weights}
         />
       </Modal>
     )
@@ -431,7 +433,7 @@ class ClassAdmin extends React.Component {
   }
 
   renderAssignments () {
-    const {cl, isAssignmentsEditable, assignments} = this.state
+    const {cl, isAssignmentsEditable, assignments, weights} = this.state
     return (
       <div id='cn-admin-assignment-table'>
         <div id='cn-admin-assignment-table-content'>
@@ -448,6 +450,7 @@ class ClassAdmin extends React.Component {
             viewOnly={!isAssignmentsEditable}
             onSelectAssignment={this.onSelectAssignment.bind(this)}
             onDeleteAssignment={this.onDeleteAssignment.bind(this)}
+            weights={weights}
           />
         </div>
       </div>
