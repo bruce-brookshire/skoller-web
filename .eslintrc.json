@@ -10,5 +10,5 @@
     "rules": {
       "camelcase": ["error", {"properties": "never"}]
     },
-    "globals": { "fetch": false }
+    "globals": { "fetch": false, "FormData": false }
 }
