@@ -92,16 +92,22 @@ class Weights extends React.Component {
           />
         }
         {weights.length !== 0 &&
-          <WeightTable
-            weights={weights}
-            viewOnly={isReview}
-            currentWeight={currentWeight}
-            cl={cl}
-            onSelectWeight={this.onSelectWeight.bind(this)}
-            onDeleteWeight={this.onDeleteWeight.bind(this)}
-            totalPoints={totalPoints}
-            onEdit={() => this.props.onEdit()}
-          />
+          <div id='cn-weight-table'>
+            <div id='cn-weight-table-label'>
+              {isReview ? 'Weights' : 'Saved weights'}
+              {isReview && <a onClick={() => this.props.onEdit()}>Edit</a>}
+            </div>
+            <WeightTable
+              weights={weights}
+              viewOnly={isReview}
+              currentWeight={currentWeight}
+              cl={cl}
+              onSelectWeight={this.onSelectWeight.bind(this)}
+              onDeleteWeight={this.onDeleteWeight.bind(this)}
+              totalPoints={totalPoints}
+              onEdit={() => this.props.onEdit()}
+            />
+          </div>
         }
         {weights.length !== 0 &&
           <div id='cn-weights-info'>*The total should be 100%</div>

@@ -8,4 +8,21 @@
   #cn-class-details {
     flex-basis: 300px;
   }
+
+  #cn-admin-weight-table {
+    @include shadow-box;
+    min-width: 200px;
+
+    #cn-admin-weight-table-content {
+      @include shadow-box-content;
+
+      .cn-admin-weight-table-title {
+        @include shadow-box-title;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: $unit-space;
+      }
+    }
+  }
 }

@@ -12,6 +12,7 @@ import ClassCard from '../../components/ClassCard'
 import Loading from '../../components/Loading'
 import Professor from '../components/ClassEditor/Professor'
 import StudentList from './StudentList'
+import WeightTable from '../components/ClassEditor/Weights/WeightTable'
 
 @inject('rootStore') @observer
 class ClassAdmin extends React.Component {
@@ -258,7 +259,21 @@ class ClassAdmin extends React.Component {
   }
 
   renderWeights () {
-
+    const {cl} = this.state
+    return (
+      <div id='cn-admin-weight-table'>
+        <div id='cn-admin-weight-table-content'>
+          <div className='cn-admin-weight-table-title'>
+            Weights
+          </div>
+          <WeightTable
+            cl={cl}
+            viewOnly={true}
+            weights={cl.weights}
+          />
+        </div>
+      </div>
+    )
   }
 
   renderAssignments () {
