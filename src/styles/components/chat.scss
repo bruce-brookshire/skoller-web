@@ -1,22 +1,38 @@
 
-.chat {
-  .chat-post {
-    background: $cn-color-white;
-    border: 1px solid $cn-color-grey;
-    color: $cn-color-grey;
-    font-size: 0.8rem;
-    padding: 10px;
-    &.post {
-      margin-top: 10px;
+#class-editor-chat {
+  @include shadow-box;
+  min-width: 200px;
+
+  #class-editor-chat-content {
+    @include shadow-box-content;
+
+    .class-editor-chat-title {
+      @include shadow-box-title;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
     }
-    .post-content {
-      color: $cn-font-color;
-      font-size: 0.9rem;
-      padding: 10px 0;
+
+    .chat {
+      .chat-post {
+        background: $cn-color-white;
+        border: 1px solid $cn-color-grey;
+        color: $cn-color-grey;
+        font-size: 0.8rem;
+        padding: 10px;
+        &.post {
+          margin-top: 10px;
+        }
+        .post-content {
+          color: $cn-font-color;
+          font-size: 0.9rem;
+          padding: 10px 0;
+        }
+      }
+      .post-comments,.post-replies {
+        transform: translateX(8%);
+        width: 92.5%;
+      }
     }
-  }
-  .post-comments,.post-replies {
-    transform: translateX(8%);
-    width: 92.5%;
   }
 }

@@ -16,6 +16,7 @@ import WeightTable from '../components/ClassEditor/Weights/WeightTable'
 import WeightForm from '../components/ClassEditor/Weights/WeightForm'
 import AssignmentTable from '../components/ClassEditor/Assignments/AssignmentTable'
 import AssignmentForm from '../components/ClassEditor/Assignments/AssignmentForm'
+import Chat from '../components/ClassEditor/Chat'
 
 @inject('rootStore') @observer
 class ClassAdmin extends React.Component {
@@ -458,7 +459,12 @@ class ClassAdmin extends React.Component {
   }
 
   renderChat () {
-
+    const {cl} = this.state
+    return (
+      <Chat
+        cl={cl}
+      />
+    )
   }
 
   renderSyllabus () {
