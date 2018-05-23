@@ -84,7 +84,8 @@ class ClassSearch extends React.Component {
   }
 
   renderValueInput () {
-    switch (this.state.searchField) {
+    const {searchField, searchValue} = this.state
+    switch (searchField) {
       case 'class_status':
         return (
           <SelectField
@@ -92,7 +93,7 @@ class ClassSearch extends React.Component {
             label='Select status'
             options={this.getStatusOptions()}
             onChange={this.onChangeSearchValue.bind(this)}
-            value={this.state.searchValue}
+            value={searchValue}
           />
         )
       default:
@@ -102,7 +103,7 @@ class ClassSearch extends React.Component {
             label='Contains'
             onChange={this.onChangeSearchValue.bind(this)}
             placeholder='Search value'
-            value={this.state.searchValue}
+            value={searchValue}
           />
         )
     }
@@ -130,23 +131,24 @@ class ClassSearch extends React.Component {
   }
 
   onSearch () {
-    if (this.state.schoolId || (this.state.searchField && this.state.searchValue)) {
+    const {schoolId, searchField, searchValue} = this.state
+    if (schoolId || (searchField && searchValue)) {
       let params = ''
-      if (this.state.schoolId && this.state.searchField) {
-        params = `school=${this.state.schoolId}&${this.state.searchField}=${this.state.searchValue}`
-      } else if (this.state.schoolId) {
-        params = `school=${this.state.schoolId}`
-      } else if (this.state.searchField && this.state.searchValue) {
-        params = `${this.state.searchField}=${this.state.searchValue}`
+      if (schoolId && searchField) {
+        params = `school=${schoolId}&${searchField}=${searchValue}`
+      } else if (schoolId) {
+        params = `school=${schoolId}`
+      } else if (searchField && searchValue) {
+        params = `${searchField}=${searchValue}`
       }
-      params += `&enrollable_period=true`
       this.props.onSearch(params)
     }
   }
 
   render () {
-    let disabled = !(this.state.schoolId || (this.state.searchField && this.state.searchValue))
-    if (this.state.searchField && !this.state.searchValue) disabled = true
+    const {schoolId, searchField, searchValue} = this.state
+    let disabled = !(schoolId || (searchField && searchValue))
+    if (searchField && !searchValue) disabled = true
     const disabledClass = disabled ? 'disabled' : ''
     return this.props.hidden ? null : (
       <div>
@@ -157,7 +159,7 @@ class ClassSearch extends React.Component {
               label='School'
               options={this.getSchoolOptions()}
               onChange={this.onChangeSchools.bind(this)}
-              value={this.state.school_id}
+              value={schoolId}
             />
           </div>
           <div className='col-xs-12 col-sm-3 margin-top'>
@@ -166,7 +168,7 @@ class ClassSearch extends React.Component {
               label='Search by'
               options={this.getSearchFieldOptions()}
               onChange={this.onChangeSearchField.bind(this)}
-              value={this.state.searchField}
+              value={searchField}
             />
           </div>
           <div className='col-xs-12 col-sm-3 margin-top'>
@@ -188,7 +190,10 @@ class ClassSearch extends React.Component {
 }
 
 ClassSearch.propTypes = {
-  onSearch: PropTypes.func.isRequired
+  onSearch: PropTypes.func.isRequired,
+  location: PropTypes.object,
+  hidden: PropTypes.bool,
+  loading: PropTypes.bool
 }
 
 export default ClassSearch
