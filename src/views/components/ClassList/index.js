@@ -106,7 +106,7 @@ class ClassList extends React.Component {
         headers={headers}
         rows={this.getRows()}
         disabled={this.props.disabled}
-        canDelete={this.props.onDelete}
+        canDelete={this.props.onDelete ? true : false} // eslint-disable-line no-unneeded-ternary
         canSelect={this.props.onSelect ? true : false} // eslint-disable-line no-unneeded-ternary
         onDelete={this.props.onDelete ? this.props.onDelete() : null}
         onSelect={this.onClassSelect.bind(this)}

@@ -7,16 +7,14 @@ import {showSnackbar} from '../utilities/snackbar'
 * @param [String] section name. Name of section SW is working.
 */
 export function getNextClass () {
-  return post(`/api/v1/syllabus-workers/`, null, '')
+  return post(`/api/v1/syllabus-workers/`, null, 'Error retrieving class. Try again.')
     .then(data => {
+      if (!data) {
+        showSnackbar('No sections available at this time', 'info')
+      }
       return data
     })
     .catch(error => {
-      if (error === 204) {
-        showSnackbar('No sections available at this time', 'info')
-      } else {
-        showSnackbar('Error retrieving class. Try again.')
-      }
       return Promise.reject(error)
     })
 }
