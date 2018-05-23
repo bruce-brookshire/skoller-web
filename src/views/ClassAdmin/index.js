@@ -14,6 +14,7 @@ import Professor from '../components/ClassEditor/Professor'
 import StudentList from './StudentList'
 import WeightTable from '../components/ClassEditor/Weights/WeightTable'
 import WeightForm from '../components/ClassEditor/Weights/WeightForm'
+import AssignmentTable from '../components/ClassEditor/Assignments/AssignmentTable'
 
 @inject('rootStore') @observer
 class ClassAdmin extends React.Component {
@@ -41,7 +42,8 @@ class ClassAdmin extends React.Component {
       isWeightsEditable: false,
       weights: [],
       openWeightCreateModal: false,
-      currentWeight: null
+      currentWeight: null,
+      isAssignmentsEditable: false
     }
   }
 
@@ -357,7 +359,25 @@ class ClassAdmin extends React.Component {
   }
 
   renderAssignments () {
-
+    const {cl, isAssignmentsEditable} = this.state
+    return (
+      <div id='cn-admin-assignment-table'>
+        <div id='cn-admin-assignment-table-content'>
+          <div className='cn-admin-assignment-table-title'>
+            Assignments
+            <div>
+              {isAssignmentsEditable && <i className='fa fa-plus cn-blue cursor margin-right' />}
+              <i className='fa fa-pencil cn-blue cursor' onClick={() => this.setState({isAssignmentsEditable: !isAssignmentsEditable})} />
+            </div>
+          </div>
+          <AssignmentTable
+            cl={cl}
+            assignments={cl.assignments}
+            viewOnly={!isAssignmentsEditable}
+          />
+        </div>
+      </div>
+    )
   }
 
   renderChat () {

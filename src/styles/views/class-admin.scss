@@ -25,4 +25,20 @@
       }
     }
   }
+
+  #cn-admin-assignment-table {
+    @include shadow-box;
+
+    #cn-admin-assignment-table-content {
+      @include shadow-box-content;
+
+      .cn-admin-assignment-table-title {
+        @include shadow-box-title;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: $unit-space;
+      }
+    }
+  }
 }
