@@ -43,7 +43,9 @@ class ClassAdmin extends React.Component {
       weights: [],
       openWeightCreateModal: false,
       currentWeight: null,
-      isAssignmentsEditable: false
+      isAssignmentsEditable: false,
+      currentAssignment: null,
+      assignments: []
     }
   }
 
@@ -79,7 +81,7 @@ class ClassAdmin extends React.Component {
   getClass () {
     const {params: {classId}} = this.props
     actions.classes.getClassByIdAdmin(classId).then((cl) => {
-      this.setState({cl, weights: cl.weights})
+      this.setState({cl, weights: cl.weights, assignments: cl.assignments})
       this.setState({loadingClass: false})
     }).catch(() => { this.setState({loadingClass: false}) })
   }
@@ -138,6 +140,52 @@ class ClassAdmin extends React.Component {
     actions.weights.deleteWeight(weight).then(() => {
       const newWeights = this.state.weights.filter(w => w.id !== weight.id)
       this.setState({weights: newWeights, currentWeight: null})
+    }).catch(() => false)
+  }
+
+  /*
+  * Set form value equal to assignment in order to be edited.
+  *
+  * @param [Object] assignment. Assignment object to be edited.
+  */
+  onSelectAssignment (assignment) {
+    this.setState({currentAssignment: assignment})
+  }
+
+  /*
+  * On create assignment, push assignment onto array
+  *
+  * @param [Object] assignment. Assignment.
+  */
+  onCreateAssignment (assignment) {
+    const newAssignments = this.state.assignments
+    newAssignments.push(assignment)
+    this.setState({assignments: newAssignments, currentAssignment: null})
+  }
+
+  /*
+  * On update assignment, replace existing assignment with the new assignment.
+  *
+  * @param [Object] assignment. Assignment.
+  */
+  onUpdateAssignment (assignment) {
+    const {assignments} = this.state
+    const newAssignments = assignments
+    const index = assignments.findIndex(a => a.id === assignment.id)
+    newAssignments[index] = assignment
+    this.setState({assignments: newAssignments, currentAssignment: null})
+  }
+
+  /*
+  * Delete assignment.
+  *
+  * @param [Object] assignment. The assignment to be deleted.
+  */
+  onDeleteAssignment (assignment) {
+    const {assignments} = this.state
+    actions.assignments.deleteAssignment(assignment).then(() => {
+      const newAssignments = assignments.filter(a => a.id !== assignment.id)
+      this.setState({assignments: newAssignments})
     }).catch(() => false)
   }
 
@@ -359,7 +407,7 @@ class ClassAdmin extends React.Component {
   }
 
   renderAssignments () {
-    const {cl, isAssignmentsEditable} = this.state
+    const {cl, isAssignmentsEditable, assignments} = this.state
     return (
       <div id='cn-admin-assignment-table'>
         <div id='cn-admin-assignment-table-content'>
@@ -372,8 +420,10 @@ class ClassAdmin extends React.Component {
           </div>
           <AssignmentTable
             cl={cl}
-            assignments={cl.assignments}
+            assignments={assignments}
             viewOnly={!isAssignmentsEditable}
+            onSelectAssignment={this.onSelectAssignment.bind(this)}
+            onDeleteAssignment={this.onDeleteAssignment.bind(this)}
           />
         </div>
       </div>
