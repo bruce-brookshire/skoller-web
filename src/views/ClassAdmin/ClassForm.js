@@ -1,22 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
-import {InputField, TimeInputField} from '../../components/Form'
+import {InputField} from '../../components/Form'
 import actions from '../../actions'
 import {convertUTCDatetimeToDateString, convertLocalDateToUTC,
   mapTimeStringToInput} from '../../utilities/time'
+import DaySelector from '../components/ClassEditor/MeetingTimes/DaySelector'
 
 const requiredFields = {
   'name': {
-    type: 'required'
-  },
-  'number': {
-    type: 'required'
-  },
-  'class_start': {
-    type: 'required'
-  },
-  'class_end': {
     type: 'required'
   }
 }
@@ -47,7 +39,6 @@ class ClassForm extends React.Component {
       class_end: clEnd,
       crn,
       meet_start_time: startTime,
-      meet_end_time: endTime,
       meet_days: days,
       location,
       type,
@@ -63,7 +54,6 @@ class ClassForm extends React.Component {
       crn: crn || '',
       campus: campus || '',
       meet_start_time: startTime ? mapTimeStringToInput(startTime) : 'TBA',
-      meet_end_time: endTime ? mapTimeStringToInput(endTime) : 'TBA',
       meet_days: days || '',
       location: location || '',
       type: type || ''
@@ -99,9 +89,9 @@ class ClassForm extends React.Component {
   onCreateClass (form) {
     this.setState({loading: true})
     actions.classes.createClass(form).then((cl) => {
+      this.setState({loading: false})
       this.props.onSubmit(cl)
       this.props.onClose()
-      this.setState({loading: false})
     }).catch(() => { this.setState({loading: false}) })
   }
 
@@ -111,10 +101,37 @@ class ClassForm extends React.Component {
   onUpdateClass (form) {
     this.setState({loading: true})
     actions.classes.updateClass(form).then((cl) => {
+      this.setState({loading: false})
       this.props.onSubmit(cl)
       this.props.onClose()
-      this.setState({loading: false})
     }).catch(() => { this.setState({loading: false}) })
+  }
+
+  onDaysUpdate (newVal) {
+    let newForm = this.state.form
+    newForm.meet_days = newVal
+    this.setState({form: newForm})
+  }
+
+  renderDays () {
+    const {form} = this.state
+    return (
+      <DaySelector
+        days={form.meet_days}
+        onChange={this.onDaysUpdate.bind(this)}
+      />
+    )
+  }
+
+  renderMeetInfo () {
+    return (
+      <div>
+        <div className='cn-meeting-time-days col-xs-12 margin-top'>
+          {this.renderDays()}
+        </div>
+        {/* {this.state.days !== 'Online' && this.renderTimes()} */}
+      </div>
+    )
   }
 
   render () {
@@ -150,30 +167,6 @@ class ClassForm extends React.Component {
           <div className='col-xs-12'>
             <InputField
               containerClassName='margin-top'
-              error={formErrors.class_start}
-              label="Class start"
-              name="class_start"
-              onChange={updateProperty}
-              placeholder="Class start"
-              type='date'
-              value={form.class_start}
-            />
-          </div>
-          <div className='col-xs-12'>
-            <InputField
-              containerClassName='margin-top'
-              error={formErrors.class_end}
-              label="Class end"
-              name="class_end"
-              onChange={updateProperty}
-              placeholder="Class end"
-              type='date'
-              value={form.class_end}
-            />
-          </div>
-          <div className='col-xs-12'>
-            <InputField
-              containerClassName='margin-top'
               error={formErrors.crn}
               label="Class crn"
               name="crn"
@@ -193,39 +186,7 @@ class ClassForm extends React.Component {
               value={form.campus}
             />
           </div>
-          <div className='col-xs-12'>
-            <InputField
-              containerClassName='margin-top'
-              error={formErrors.meet_days}
-              label="Meet days"
-              name="meet_days"
-              onChange={updateProperty}
-              placeholder="i.e. MWF"
-              value={form.meet_days}
-            />
-          </div>
-          <div className='col-xs-12'>
-            <TimeInputField
-              containerClassName='margin-top'
-              error={formErrors.meet_start_time}
-              label="Start time"
-              name="meet_start_time"
-              onChange={updateProperty}
-              placeholder="i.e. 8:00am"
-              value={form.meet_start_time}
-            />
-          </div>
-          <div className='col-xs-12'>
-            <TimeInputField
-              containerClassName='margin-top'
-              error={formErrors.meet_end_time}
-              label="End time"
-              name="meet_end_time"
-              onChange={updateProperty}
-              placeholder="i.e. 9:00am"
-              value={form.meet_end_time}
-            />
-          </div>
+          {this.renderMeetInfo()}
           <div className='col-xs-12'>
             <InputField
               containerClassName='margin-top'
