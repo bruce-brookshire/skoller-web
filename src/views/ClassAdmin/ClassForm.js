@@ -134,15 +134,6 @@ class ClassForm extends React.Component {
     )
   }
 
-  renderMeetInfo () {
-    return (
-      <div>
-        {this.renderDays()}
-        {this.state.days !== 'Online' && this.renderTimes()}
-      </div>
-    )
-  }
-
   render () {
     const {form} = this.state
     const {formErrors, updateProperty} = this.props
@@ -212,8 +203,9 @@ class ClassForm extends React.Component {
             value={form.campus}
           />
         </div>
-        <div className='class-form-field'>
-          {this.renderMeetInfo()}
+        <div id='meeting-info' className='class-form-field margin-top'>
+          {this.renderDays()}
+          {this.state.days !== 'Online' && this.renderTimes()}
         </div>
         <div className='class-form-field'>
           <InputField

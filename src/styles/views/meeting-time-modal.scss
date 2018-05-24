@@ -5,17 +5,4 @@
     font-weight: 500;
     font-size: 18px;
   }
-
-  .cn-meeting-time-label {
-    @include form-label;
-    font-weight: normal;
-    margin-top: $unit-space;
-  }
-
-  .cn-meeting-time-slider {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 14px;
-  }
 }

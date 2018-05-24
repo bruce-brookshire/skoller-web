@@ -2,7 +2,17 @@
   display: flex;
   width: 100%;
 
-  .form-element {
+  .cn-meeting-time-slider {
+    min-width: 200px;
+  }
+
+  > .form-element {
     width: 100%;
   }
+}
+
+#meeting-info {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
 }
