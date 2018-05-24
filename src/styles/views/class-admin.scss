@@ -12,11 +12,7 @@
 
     .class-card {
       margin: $unit-space;
-      flex-basis: 200px;
-    }
-  
-    #cn-class-details {
-      flex-basis: 300px;
+      min-width: 300px;
     }
   
     #cn-admin-weight-table {

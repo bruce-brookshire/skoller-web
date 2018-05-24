@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
 import moment from 'moment-timezone'
-import {SliderField, PillField, TimeInputField, SelectField} from '../../../components/Form'
+import {SliderField, PillField, TimeInputField, SelectField} from '../../../../components/Form'
 
 const daysOfWeek = [
   {
@@ -46,7 +46,7 @@ const ampm = [
   }
 ]
 
-class MeetingTimeModal extends React.Component {
+class MeetingTimes extends React.Component {
   constructor (props) {
     super(props)
     this.state = this.initializeState()
@@ -241,9 +241,8 @@ class MeetingTimeModal extends React.Component {
   }
 
   render () {
-    const {form, universityError} = this.state
-    const {formErrors, updateProperty} = this.props
-    // let disabled = (!form.is_online || (form.selectedDays === [] && form.meet_time_min === '' && form.meet_time_hour === ''))
+    const {form} = this.state
+    const {updateProperty} = this.props
 
     return (
       <div className='cn-meeting-time-container'>
@@ -274,7 +273,7 @@ class MeetingTimeModal extends React.Component {
   }
 }
 
-MeetingTimeModal.propTypes = {
+MeetingTimes.propTypes = {
   updateProperty: PropTypes.func,
   validateForm: PropTypes.func,
   formErrors: PropTypes.object,
@@ -284,4 +283,4 @@ MeetingTimeModal.propTypes = {
   time: PropTypes.string
 }
 
-export default ValidateForm(Form(MeetingTimeModal, 'form'))
+export default ValidateForm(Form(MeetingTimes, 'form'))

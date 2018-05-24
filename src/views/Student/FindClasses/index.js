@@ -9,7 +9,7 @@ import SearchSemester from './SearchSemester'
 import SearchProfessor from '../../components/ClassEditor/Professor/SearchProfessor'
 import CreateSchoolModal from './CreateSchoolModal'
 import Modal from '../../../components/Modal'
-import MeetingTimeModal from './MeetingTimeModal'
+import MeetingTimes from '../../components/ClassEditor/MeetingTimes'
 import moment from 'moment-timezone'
 import ProfessorModal from '../../components/ClassEditor/Professor/ProfessorModal'
 import { browserHistory } from 'react-router'
@@ -383,7 +383,7 @@ class FindClasses extends React.Component {
         open={this.state.openMeetingTimeModal}
         onClose={this.toggleMeetingTimeModal.bind(this)}
       >
-        <MeetingTimeModal
+        <MeetingTimes
           days={newCl && days}
           time={newCl && time}
           onClose={this.toggleMeetingTimeModal.bind(this)}
