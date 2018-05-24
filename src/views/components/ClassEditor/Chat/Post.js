@@ -7,7 +7,7 @@ class Post extends React.Component {
     super(props)
     this.post = props.post
     this.student = this.post.student
-    this.user = this.student && this.student.users && this.student.users[0] ? this.student.users[0] : null
+    this.user = this.student && this.student.user ? this.student.user : null
   }
 
   renderContent () {
