@@ -1,20 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Form, ValidateForm} from 'react-form-library'
-import moment from 'moment-timezone'
-import {SliderField, TimeInputField, SelectField} from '../../../../components/Form'
 import DaySelector from './DaySelector'
-
-const ampm = [
-  {
-    id: 'am',
-    name: 'AM'
-  },
-  {
-    id: 'pm',
-    name: 'PM'
-  }
-]
+import TimeFields from './TimeFields'
 
 class MeetingTimes extends React.Component {
   constructor (props) {
@@ -27,48 +14,9 @@ class MeetingTimes extends React.Component {
   */
   initializeState () {
     return {
-      form: this.initializeFormData(),
       loading: false,
-      days: this.props.days || ''
-    }
-  }
-
-  initializeFormData () {
-    return {
-      meet_time_hour: this.extractHour() || '',
-      meet_time_min: this.extractMin() || '',
-      meet_time_ampm: this.extractAmPm() || 'am'
-    }
-  }
-
-  extractHour () {
-    const {time} = this.props
-    if (time) {
-      let newTime = moment(time, 'HH:mm:ss')
-      let hour = newTime.hour()
-      if (hour === 0) {
-        hour = 24
-      }
-      if (hour > 12) {
-        hour -= 12
-      }
-      return hour.toString().padStart(2, '0')
-    }
-  }
-
-  extractMin () {
-    const {time} = this.props
-    if (time) {
-      let newTime = moment(time, 'HH:mm:ss')
-      return newTime.minute().toString().padStart(2, '0')
-    }
-  }
-
-  extractAmPm () {
-    const {time} = this.props
-    if (time) {
-      let newTime = moment(time, 'HH:mm:ss')
-      return newTime.hour() > 11 ? 'pm' : 'am'
+      days: this.props.days || '',
+      time: this.props.time || ''
     }
   }
 
@@ -86,20 +34,14 @@ class MeetingTimes extends React.Component {
     )
   }
 
-  mapTime (form) {
-    if (form.meet_time_hour && form.meet_time_min) {
-      let mappedTime = moment(form.meet_time_hour + ':' + form.meet_time_min + form.meet_time_ampm, 'h:mma')
-      return mappedTime.format('HH:mm:ss')
-    } else {
-      return ''
-    }
+  onTimeUpdate (newVal) {
+    this.setState({time: newVal})
   }
 
   mapForm () {
-    const {form} = this.state
     let mappedForm = {
       days: this.state.days,
-      time: this.mapTime(form)
+      time: this.state.time
     }
     return mappedForm
   }
@@ -115,62 +57,8 @@ class MeetingTimes extends React.Component {
     this.props.onClose()
   }
 
-  renderTimes () {
-    const {form} = this.state
-    const {formErrors, updateProperty} = this.props
-    return (
-      <div>
-        <div className='cn-meeting-time-label'>Meet time</div>
-        <div className='cn-meeting-times'>
-          <TimeInputField
-            containerClassName='cn-meeting-time'
-            error={formErrors.meet_time_hour}
-            name='meet_time_hour'
-            onBlur={() => {
-              if (form.meet_time_hour.length < 2) {
-                let newForm = form
-                newForm.meet_time_hour = form.meet_time_hour.padStart(2, '0')
-                this.setState({form: newForm})
-              }
-            }}
-            onChange={(updateProperty)}
-            value={form.meet_time_hour}
-            type='hour'
-          />
-          <div className='cn-meeting-time'>:</div>
-          <TimeInputField
-            containerClassName='cn-meeting-time'
-            error={formErrors.meet_time_min}
-            name='meet_time_min'
-            onBlur={() => {
-              let newForm = form
-              if (newForm.meet_time_min[1] % 5 !== 0) {
-                newForm.meet_time_min = (5 * Math.round(newForm.meet_time_min / 5)).toString()
-              }
-              if (newForm.meet_time_min.length < 2) {
-                newForm.meet_time_min = newForm.meet_time_min.padStart(2, '0')
-              }
-              this.setState({form: newForm})
-            }}
-            onChange={updateProperty}
-            value={form.meet_time_min}
-            type='min'
-          />
-          <SelectField
-            containerClassName='cn-meeting-time-select'
-            error={formErrors.meet_time_ampm}
-            name='meet_time_ampm'
-            onChange={updateProperty}
-            value={form.meet_time_ampm}
-            options={ampm}
-          />
-        </div>
-      </div>
-    )
-  }
-
   render () {
-    const {form} = this.state
+    const {time, days} = this.state
 
     return (
       <div className='cn-meeting-time-container'>
@@ -178,8 +66,13 @@ class MeetingTimes extends React.Component {
           Pick meeting times
         </div>
         <form onSubmit={this.onSubmit.bind(this)}>
-          {!form.is_online && this.renderDays()}
-          {!form.is_online && this.renderTimes()}
+          {this.renderDays()}
+          {days !== 'Online' &&
+            <TimeFields
+              time={time}
+              onChange={this.onTimeUpdate.bind(this)}
+            />
+          }
           <button
             className={`button full-width margin-top`}
             type='submit'
@@ -191,13 +84,11 @@ class MeetingTimes extends React.Component {
 }
 
 MeetingTimes.propTypes = {
-  updateProperty: PropTypes.func,
   validateForm: PropTypes.func,
-  formErrors: PropTypes.object,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   days: PropTypes.string,
   time: PropTypes.string
 }
 
-export default ValidateForm(Form(MeetingTimes, 'form'))
+export default MeetingTimes

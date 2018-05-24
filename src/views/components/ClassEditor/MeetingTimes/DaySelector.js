@@ -114,7 +114,7 @@ class DaySelector extends React.Component {
             name='is_online'
             onChange={(name, value) => {
               this.setState({isOnline: value})
-              this.props.onChange('Online')
+              this.props.onChange(value ? 'Online' : '')
             }}
             value={isOnline}
           />
