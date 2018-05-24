@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {PillField} from '../../../../components/Form'
+import {PillField, SliderField} from '../../../../components/Form'
 
 const daysOfWeek = [
   {
@@ -41,7 +41,15 @@ class DaySelector extends React.Component {
 
   initializeState () {
     return {
-      selectedDays: this.extractDays() || []
+      selectedDays: this.extractDays() || [],
+      isOnline: this.extractOnline() || false
+    }
+  }
+
+  extractOnline () {
+    const {days} = this.props
+    if (days) {
+      return (days.indexOf('Online') > -1)
     }
   }
 
@@ -96,9 +104,25 @@ class DaySelector extends React.Component {
   }
 
   render () {
+    const {isOnline} = this.state
+
     return (
-      <div className='cn-day-selector'>
-        {this.renderDays()}
+      <div>
+        <div className='cn-meeting-time-slider margin-bottom'>
+          This is an online class
+          <SliderField
+            name='is_online'
+            onChange={(name, value) => {
+              this.setState({isOnline: value})
+              this.props.onChange('Online')
+            }}
+            value={isOnline}
+          />
+        </div>
+        {!isOnline && <div className='cn-meeting-time-label'>Meet days</div>}
+        {!isOnline && <div className='cn-day-selector'>
+          {this.renderDays()}
+        </div>}
       </div>
     )
   }

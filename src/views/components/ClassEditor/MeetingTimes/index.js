@@ -35,17 +35,9 @@ class MeetingTimes extends React.Component {
 
   initializeFormData () {
     return {
-      is_online: this.extractOnline() || false,
       meet_time_hour: this.extractHour() || '',
       meet_time_min: this.extractMin() || '',
       meet_time_ampm: this.extractAmPm() || 'am'
-    }
-  }
-
-  extractOnline () {
-    const {days} = this.props
-    if (days) {
-      return (days.indexOf('Online') > -1)
     }
   }
 
@@ -95,8 +87,12 @@ class MeetingTimes extends React.Component {
   }
 
   mapTime (form) {
-    let mappedTime = moment(form.meet_time_hour + ':' + form.meet_time_min + form.meet_time_ampm, 'h:mma')
-    return mappedTime.format('HH:mm:ss')
+    if (form.meet_time_hour && form.meet_time_min) {
+      let mappedTime = moment(form.meet_time_hour + ':' + form.meet_time_min + form.meet_time_ampm, 'h:mma')
+      return mappedTime.format('HH:mm:ss')
+    } else {
+      return ''
+    }
   }
 
   mapForm () {
@@ -175,7 +171,6 @@ class MeetingTimes extends React.Component {
 
   render () {
     const {form} = this.state
-    const {updateProperty} = this.props
 
     return (
       <div className='cn-meeting-time-container'>
@@ -183,15 +178,6 @@ class MeetingTimes extends React.Component {
           Pick meeting times
         </div>
         <form onSubmit={this.onSubmit.bind(this)}>
-          <div className='cn-meeting-time-slider'>
-            This is an online class
-            <SliderField
-              name='is_online'
-              onChange={updateProperty}
-              value={form.is_online}
-            />
-          </div>
-          {!form.is_online && <div className='cn-meeting-time-label'>Meet days</div>}
           {!form.is_online && this.renderDays()}
           {!form.is_online && this.renderTimes()}
           <button

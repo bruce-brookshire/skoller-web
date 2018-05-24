@@ -271,7 +271,7 @@ class ClassAdmin extends React.Component {
   * @param [Object]. The class to update with
   */
   updateClass (cl) {
-    this.setState({cl})
+    this.getClass()
   }
 
   /*
@@ -286,8 +286,8 @@ class ClassAdmin extends React.Component {
       >
         <ClassForm
           cl={cl}
-          onClose={this.toggleEditClassModal.bind(this)}
           onSubmit={this.updateClass.bind(this)}
+          onClose={this.toggleEditClassModal.bind(this)}
         />
       </Modal>
     )
