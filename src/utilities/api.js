@@ -26,8 +26,8 @@ export const checkError = (response) => {
 * @return [Object] response. Http response from server.
 */
 export const parseResponse = (response) => {
-  if (response.status >= 200 && response.status < 300 && response.status !== 204) {
-    return response.json()
+  if (response.status >= 200 && response.status < 300) {
+    if (response.status !== 204) return response.json()
   } else {
     // if (response.status === 401) logout()
     return Promise.reject(response.status)
@@ -45,6 +45,7 @@ export function get (path, queryString, errMsg) {
     .then(response => parseResponse(response))
     .catch(error => {
       if (errMsg) showSnackbar(errMsg)
+      if (Environment.IS_DEV) console.log(error)
       return Promise.reject(error)
     })
 }
@@ -61,6 +62,7 @@ export function post (path, form, errMsg) {
     .then(response => parseResponse(response))
     .catch(error => {
       if (errMsg) showSnackbar(errMsg)
+      if (Environment.IS_DEV) console.log(error)
       return Promise.reject(error)
     })
 }
@@ -76,6 +78,7 @@ export function postFile (path, form, errMsg) {
     .then(response => parseResponse(response))
     .catch(error => {
       if (errMsg) showSnackbar(errMsg)
+      if (Environment.IS_DEV) console.log(error)
       return Promise.reject(error)
     })
 }
@@ -92,6 +95,7 @@ export function put (path, form, errMsg) {
     .then(response => parseResponse(response))
     .catch(error => {
       if (errMsg) showSnackbar(errMsg)
+      if (Environment.IS_DEV) console.log(error)
       return Promise.reject(error)
     })
 }
@@ -107,6 +111,7 @@ export function del (path, errMsg) {
     .then(response => checkError(response))
     .catch(error => {
       if (errMsg) showSnackbar(errMsg)
+      if (Environment.IS_DEV) console.log(error)
       return Promise.reject(error)
     })
 }

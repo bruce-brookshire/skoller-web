@@ -1,31 +1,27 @@
+// TODO: Maybe make a class for shadow stuff
 .cn-class-card {
   @include shadow-box;
   width: 100%;
   margin-top: $unit-space;
 
   .cn-class-card-content {
-    padding: $unit-space;
+    @include shadow-box-content;
 
     .cn-class-title {
-      border-bottom: 2px solid black;
-      font-size: 24px;
-      font-weight: 600;
+      @include shadow-box-title;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
     }
 
     .cn-class-card-row {
-      margin-top: $unit-space;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
+      @include shadow-box-row;
 
       .cn-class-card-field {
-        text-align: center;
-        font-size: 14px;
+        @include shadow-box-field;
 
         .cn-class-card-label {
-          font-weight: 300;
-          
+          @include shadow-box-label;
         }
       }
 
@@ -36,8 +32,6 @@
       .cn-class-card-field:last-child {
         text-align: right;
       }
-
-      
     }
   }
 }

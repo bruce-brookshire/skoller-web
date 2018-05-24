@@ -58,4 +58,3 @@ export function deleteClassReply (cl, reply) {
       return Promise.reject(error)
     })
 }
-

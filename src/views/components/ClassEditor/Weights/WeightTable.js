@@ -103,17 +103,11 @@ class WeightTable extends React.Component {
     const {viewOnly} = this.props
 
     return (
-      <div id='cn-weight-table'>
-        <div id='cn-weight-table-label'>
-          {viewOnly ? 'Weights' : 'Saved weights'}
-          {viewOnly && <a onClick={() => this.props.onEdit()}>Edit</a>}
-        </div>
-        <div className={`class-editor-table ${viewOnly ? 'view-only' : ''}`}>
-          <div ref={(field) => { this.sectionControl = field }}>
-            {this.renderWeights()}
-            <div id='class-weights-total'>
-              {this.renderTotalPercentage()}
-            </div>
+      <div id='class-editor-weight-table' className={`${viewOnly ? 'view-only' : ''}`}>
+        <div ref={(field) => { this.sectionControl = field }}>
+          {this.renderWeights()}
+          <div id='class-weights-total'>
+            {this.renderTotalPercentage()}
           </div>
         </div>
       </div>
@@ -123,13 +117,12 @@ class WeightTable extends React.Component {
 
 WeightTable.propTypes = {
   viewOnly: PropTypes.bool,
-  weights: PropTypes.array,
+  weights: PropTypes.array.isRequired,
   currentWeight: PropTypes.object,
   cl: PropTypes.object,
   onSelectWeight: PropTypes.func,
   onDeleteWeight: PropTypes.func,
-  totalPoints: PropTypes.number,
-  onEdit: PropTypes.func
+  totalPoints: PropTypes.number
 }
 
 export default WeightTable

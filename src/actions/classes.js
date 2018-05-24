@@ -49,6 +49,21 @@ export function getClassById (classId) {
 }
 
 /*
+* Get admin class by id
+*
+* @param [Number] classId. The id of the class to get.
+*/
+export function getClassByIdAdmin (classId) {
+  return get(`/api/v1/classes/${classId}/admin`, '', 'Error fetching class. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
 * Get classes for students by student id
 *
 */
@@ -93,7 +108,7 @@ export function dropClass (classId) {
 * Create a new class
 */
 export function createClass (form, periodId) {
-  return post(`api/v1/periods/${periodId}/classes`, form, 'Error creating class. Try again.')
+  return post(`/api/v1/periods/${periodId}/classes`, form, 'Error creating class. Try again.')
     .then(data => {
       return data
     })
@@ -122,7 +137,7 @@ export function updateClass (form) {
 * @param [Object] form. Class status form.
 */
 export function updateClassStatus (cl, form) {
-  return put(`$/api/v1/classes/${cl.id}/statuses`, form)
+  return put(`/api/v1/classes/${cl.id}/statuses`, form)
     .then(data => {
       showSnackbar('Class status updated.', 'info')
       return data

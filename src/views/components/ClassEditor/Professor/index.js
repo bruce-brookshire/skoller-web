@@ -2,29 +2,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
 import SearchProfessor from './SearchProfessor'
-import ProfessorForm from './ProfessorForm'
-import ProfessorInfo from './ProfessorInfo'
 import actions from '../../../../actions'
-
-const ContentEnum = {
-  SEARCH_PROFESSOR: 0,
-  PROFESSOR_INFO: 1,
-  PROFESSOR_FORM: 2
-}
+import ProfessorModal from './ProfessorModal'
+import Modal from '../../../../components/Modal'
 
 class Professor extends React.Component {
   constructor (props) {
     super(props)
     this.state = this.initializeState()
-  }
-
-  /*
-  * If professor changes, update step accordingly.
-  */
-  componentWillReceiveProps (nextProps) {
-    if (JSON.stringify(this.props.cl.professor) !== JSON.stringify(nextProps.cl.professor)) {
-      this.setState({step: nextProps.cl.professor ? ContentEnum.PROFESSOR_INFO : ContentEnum.SEARCH_PROFESSOR})
-    }
   }
 
   /*
@@ -34,63 +19,9 @@ class Professor extends React.Component {
   */
   initializeState () {
     return {
-      step: this.props.cl.professor ? ContentEnum.PROFESSOR_INFO : ContentEnum.SEARCH_PROFESSOR
+      isEditable: false,
+      openModal: false
     }
-  }
-
-  /*
-  * Render content.
-  *
-  * @return [Component].
-  */
-  renderContent () {
-    switch (this.state.step) {
-      case ContentEnum.SEARCH_PROFESSOR:
-        return <SearchProfessor cl={this.props.cl} onAddProfessor={this.onAddProfessor.bind(this)} onProfessorSelect={this.onProfessorSelect.bind(this)} />
-      case ContentEnum.PROFESSOR_INFO:
-        return <ProfessorInfo professor={this.props.cl.professor} onEditProfessor={this.onEditProfessor.bind(this)} onRemoveProfessor={this.onRemoveProfessor.bind(this)} />
-      case ContentEnum.PROFESSOR_FORM:
-        return <ProfessorForm cl={this.props.cl} onSubmit={this.onSubmitProfessor.bind(this)}/>
-      default:
-    }
-  }
-
-  /*
-  * If professor doesn't exist in search results, create professor.
-  */
-  onAddProfessor () {
-    this.setState({step: ContentEnum.PROFESSOR_FORM})
-  }
-
-  /*
-  * If user wants to edit professor info, edit professor.
-  */
-  onEditProfessor () {
-    this.setState({step: ContentEnum.PROFESSOR_FORM})
-  }
-
-  /*
-  * Remove the professor from the class.
-  */
-  onRemoveProfessor () {
-    this.onRemoveProfessorFromClass()
-  }
-  /*
-  * On professor select from professor search
-  *
-  * @param [Object] professor. Professor object.
-  */
-  onProfessorSelect (professor) {
-    this.onAttachProfessorToClass(professor)
-  }
-
-  /*
-  * Professor submit call back
-  *
-  * @param [Object] professor. Professor object.
-  */
-  onSubmitProfessor (professor) {
-    this.onAttachProfessorToClass(professor)
   }
 
   /* Attach professor to the class.
@@ -99,24 +30,158 @@ class Professor extends React.Component {
   */
   onAttachProfessorToClass (professor) {
     actions.professors.attachProfessorToClass(this.props.cl, professor).then((cl) => {
-      if (this.props.onSubmit) this.props.onSubmit(cl)
+      this.onSubmit(cl)
     }).catch(() => false)
+  }
+
+  onSubmit (cl) {
+    this.setState({isEditable: false})
+    if (this.props.onSubmit) this.props.onSubmit(cl)
+  }
+
+  onCreateProfessor (professor) {
+    this.toggleProfessorModal()
   }
 
   /*
   * Remove professor from the class.
   */
-  onRemoveProfessorFromClass () {
+  removeProfessorFromClass () {
     actions.professors.removeProfessorFromClass(this.props.cl).then((cl) => {
-      if (this.props.onSubmit) this.props.onSubmit(cl)
+      this.onSubmit(cl)
     }).catch(() => false)
   }
 
-  render () {
+  toggleProfessorModal () {
+    this.setState({openModal: !this.state.openModal})
+  }
+
+  renderNoProfessor () {
+    return (
+      <div className='margin-top'>
+        No professor found for this class.
+      </div>
+    )
+  }
+
+  renderProfessor () {
+    const {professor: {name_first, name_last, phone, email, office_location, office_availability}} = this.props.cl
+
     return (
       <div>
-        <h5 style={{marginTop: '0.25em', marginBottom: '0.5em'}}>Edit professor</h5>
-        {this.renderContent()}
+        <div className='professor-detail-row'>
+          <div className='professor-detail-field'>
+            <div className='professor-detail-label'>
+              Name
+            </div>
+            <strong>{name_first ? `${name_first} ` : ''}{name_last || ''}</strong>
+          </div>
+          <div className='professor-detail-field'>
+            <div className='professor-detail-label'>
+              Phone
+            </div>
+            {phone || 'N/A'}
+          </div>
+        </div>
+        <div className='professor-detail-row'>
+          <div className='professor-detail-field'>
+            <div className='professor-detail-label'>
+              Email
+            </div>
+            {email || 'N/A'}
+          </div>
+          <div className='professor-detail-field'>
+            <div className='professor-detail-label'>
+              Location
+            </div>
+            {office_location || 'N/A'}
+          </div>
+        </div>
+        <div className='professor-detail-row'>
+          <div className='professor-detail-field'>
+            <div className='professor-detail-label'>
+              Hours
+            </div>
+            {office_availability || 'N/A'}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  renderProfessorInfo () {
+    const {professor} = this.props.cl
+
+    return (
+      <div>
+        {!professor ? this.renderNoProfessor() : this.renderProfessor()}
+      </div>
+    )
+  }
+
+  renderProfessorControls () {
+    const {cl} = this.props
+
+    return (
+      <div className='margin-top'>
+        {!cl.professor &&
+          <SearchProfessor
+            schoolId={cl.school.id}
+            isUniversity={cl.school.is_university}
+            onProfessorCreate={this.onCreateProfessor.bind(this)}
+            onProfessorSelect={this.onAttachProfessorToClass.bind(this)}
+          />
+        }
+      </div>
+    )
+  }
+  renderOptions () {
+    return (
+      <div className='margin-top'>
+        <a
+          onClick={() => this.setState({isEditable: false})}
+        >&lt; Back</a>
+      </div>
+    )
+  }
+
+  renderProfessorModal () {
+    const {cl} = this.props
+    return (
+      <Modal
+        open={this.state.openModal}
+        onClose={this.toggleProfessorModal.bind(this)}
+      >
+        <ProfessorModal
+          schoolId={cl.school.id}
+          isUniversity={cl.school.is_university}
+          onClose={this.toggleProfessorModal.bind(this)}
+          onSubmit={this.onAttachProfessorToClass.bind(this)}
+          professor={cl.professor}
+        />
+      </Modal>
+    )
+  }
+
+  render () {
+    const {canEdit, cl} = this.props
+    const {isEditable} = this.state
+
+    return (
+      <div id='class-editor-professor'>
+        <div id='class-editor-professor-content'>
+          <div id='professor-title'>
+            Professor
+            <div>
+              {canEdit && <i className='fa fa-pencil cn-blue cursor' onClick={() => !cl.professor ? this.setState({isEditable: true}) : this.toggleProfessorModal()} />}
+              {canEdit && cl.professor && <i className='fa fa-trash cn-red cursor margin-left' onClick={() => this.removeProfessorFromClass()} />}
+            </div>
+          </div>
+          {!isEditable && this.renderProfessorInfo()}
+          {isEditable && this.renderProfessorControls()}
+          {isEditable && this.renderOptions()}
+        </div>
+        {this.renderProfessorModal()}
       </div>
     )
   }
@@ -124,7 +189,8 @@ class Professor extends React.Component {
 
 Professor.propTypes = {
   cl: PropTypes.object.isRequired,
-  onSubmit: PropTypes.func
+  onSubmit: PropTypes.func,
+  canEdit: PropTypes.bool
 }
 
 export default ValidateForm(Form(Professor, 'form'))

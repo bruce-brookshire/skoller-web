@@ -10,7 +10,7 @@ class AssignmentTable extends React.Component {
   * @param [Number] index. Index of row data.
   */
   getRow (item, index) {
-    const {id, name, weight_id, due} = item
+    const {id, name, weight_id: weightId, due} = item
     const {currentAssignment, viewOnly, weights, currentWeight} = this.props
 
     const activeClass = (currentAssignment && currentAssignment.id) === id
@@ -39,7 +39,7 @@ class AssignmentTable extends React.Component {
         <div className={!viewOnly ? 'col-xs-9' : 'col-xs-10'}>
           <div>{name}</div>
           {!currentWeight && <div className='description'>
-            {(weight_id && weights && weights.find(w => w.id === weight_id).name) || 'N/A'}
+            {(weightId && weights && weights.find(w => w.id === weightId).name) || 'N/A'}
           </div>}
         </div>
         <div className='col-xs-2 right-text'>
@@ -77,19 +77,11 @@ class AssignmentTable extends React.Component {
   }
 
   render () {
-    const {viewOnly, currentWeight, assignments} = this.props
+    const {viewOnly} = this.props
 
     return (
-      <div id='cn-assignment-table'>
-        <div id='cn-assignment-table-label'>
-          {!viewOnly ? `Saved assignments${currentWeight ? ' for ' + currentWeight.name : ''}` : `Assignments (${assignments.length})`}
-          {viewOnly && <a onClick={() => this.props.onEdit()}>Edit</a>}
-        </div>
-        <div className={`class-editor-table ${viewOnly ? 'view-only' : ''}`} >
-          <div id='class-editor-assignments-table' ref={(field) => { this.sectionControl = field }}>
-            {this.renderAssignments()}
-          </div>
-        </div>
+      <div id='class-editor-assignments-table' className={`${viewOnly ? 'view-only' : ''}`} ref={(field) => { this.sectionControl = field }} >
+        {this.renderAssignments()}
       </div>
     )
   }
@@ -97,14 +89,13 @@ class AssignmentTable extends React.Component {
 
 AssignmentTable.propTypes = {
   viewOnly: PropTypes.bool,
-  assignments: PropTypes.array,
+  assignments: PropTypes.array.isRequired,
   currentAssignment: PropTypes.object,
   onSelectAssignment: PropTypes.func,
   onDeleteAssignment: PropTypes.func,
   weights: PropTypes.array,
   cl: PropTypes.object,
-  currentWeight: PropTypes.object,
-  onEdit: PropTypes.func
+  currentWeight: PropTypes.object
 }
 
 export default AssignmentTable

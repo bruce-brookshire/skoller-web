@@ -1,0 +1,29 @@
+.cn-autocomplete-detail-results {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  position: relative;
+
+  .cn-results-divider {
+    position: absolute;
+    border-bottom: 1px solid #D8D8D8;
+    border-radius: 1px;
+    bottom: -5px;
+    width: 100%;
+  }
+
+  .title {
+    color: $cn-color-blue;
+    font-weight: 500;
+    flex-basis: 100%;
+  }
+
+  .cn-autocomplete-detail-results-item:nth-of-type(odd) {
+    flex-basis: 50%;
+    text-align: left;
+  }
+  .cn-autocomplete-detail-results-item:nth-of-type(even) {
+    flex-basis: 50%;
+    text-align: right;
+  }
+}

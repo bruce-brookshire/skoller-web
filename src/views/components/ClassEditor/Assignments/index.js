@@ -156,17 +156,23 @@ class Assignments extends React.Component {
           </div>
         }
         {assignments.length !== 0 &&
-          <AssignmentTable
-            viewOnly={viewOnly}
-            assignments={assignments}
-            currentAssignment={currentAssignment}
-            onSelectAssignment={this.onSelectAssignment.bind(this)}
-            onDeleteAssignment={this.onDeleteAssignment.bind(this)}
-            weights={weights}
-            cl={cl}
-            currentWeight={weights[currentWeightIndex]}
-            onEdit={() => this.props.onEdit()}
-          />
+          <div id='cn-assignment-table'>
+            <div id='cn-assignment-table-label'>
+              {!viewOnly ? `Saved assignments${weights[currentWeightIndex] ? ' for ' + weights[currentWeightIndex].name : ''}` : `Assignments (${assignments.length})`}
+              {viewOnly && <a onClick={() => this.props.onEdit()}>Edit</a>}
+            </div>
+            <AssignmentTable
+              viewOnly={viewOnly}
+              assignments={assignments}
+              currentAssignment={currentAssignment}
+              onSelectAssignment={this.onSelectAssignment.bind(this)}
+              onDeleteAssignment={this.onDeleteAssignment.bind(this)}
+              weights={weights}
+              cl={cl}
+              currentWeight={weights[currentWeightIndex]}
+              onEdit={() => this.props.onEdit()}
+            />
+          </div>
         }
         {assignments.length !== 0 && !viewOnly &&
           <button

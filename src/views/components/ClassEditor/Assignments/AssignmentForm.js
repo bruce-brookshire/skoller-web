@@ -42,7 +42,7 @@ class AssignmentForm extends React.Component {
   * If new assignment is received, update form.
   */
   componentWillReceiveProps (nextProps) {
-    if (nextProps.assignment && this.state.form.id !== nextProps.assignment.id) {
+    if (nextProps.assignment && (this.state.form.id !== nextProps.assignment.id)) {
       this.setState({form: this.initializeFormData(nextProps.assignment)})
     }
 
@@ -59,8 +59,9 @@ class AssignmentForm extends React.Component {
   * @return [Object]. State object.
   */
   initializeState () {
+    const {assignment} = this.props
     return {
-      form: this.initializeFormData(),
+      form: this.initializeFormData(assignment),
       due_null: false,
       loading: false
     }
@@ -75,18 +76,18 @@ class AssignmentForm extends React.Component {
   */
   initializeFormData (data) {
     let formData = data || {}
-    const {id, name, weight_id, due} = formData
+    const {id, name, weight_id: weightId, due} = formData
     const {cl, currentWeight} = this.props
 
-    const due_date = due
+    const dueDate = due
       ? convertUTCDatetimeToDateString(due, cl.school.timezone) : ''
 
     return ({
       id: id || null,
       name: name || '',
-      weight_id: weight_id || currentWeight.id || '',
-      due: due_date ? this.mapAssignmentDate(due_date) : '',
-      year_due: due_date ? due_date.split('-')[0] : date.getFullYear()
+      weight_id: weightId || (currentWeight && currentWeight.id) || '',
+      due: dueDate ? this.mapAssignmentDate(dueDate) : '',
+      year_due: dueDate ? dueDate.split('-')[0] : date.getFullYear()
     })
   }
 
@@ -110,7 +111,6 @@ class AssignmentForm extends React.Component {
   onCreateAssignment (form) {
     this.setState({loading: true})
     actions.assignments.createAssignment(this.props.cl, form).then((assignment) => {
-      this.props.resetValidation()
       this.setState({form: this.initializeFormData(), loading: false, due_null: false})
       this.props.onCreateAssignment(assignment)
     }).catch(() => { this.setState({loading: false}) })
@@ -123,7 +123,6 @@ class AssignmentForm extends React.Component {
     this.setState({loading: true})
     actions.assignments.updateAssignment(this.props.cl, form).then((assignment) => {
       this.props.onUpdateAssignment(assignment)
-      this.props.resetValidation()
       this.setState({form: this.initializeFormData(), loading: false, due_null: false})
     }).catch(() => { this.setState({loading: false}) })
   }
@@ -159,7 +158,7 @@ class AssignmentForm extends React.Component {
 
   render () {
     const {form} = this.state
-    const {formErrors, updateProperty, currentWeight} = this.props
+    const {formErrors, updateProperty, currentWeight, isAdmin, weights} = this.props
     return (
       <div id='class-editor-assignment-form'>
         <div className='cn-section-content-header'>
@@ -182,6 +181,18 @@ class AssignmentForm extends React.Component {
               value={form.name}
             />
           </div>
+          {isAdmin && <div className='col-xs-12'>
+            <SelectField
+              style={{marginTop: '0em'}}
+              containerClassName='margin-top'
+              error={formErrors.weight_id}
+              label='Weight'
+              name='weight_id'
+              onChange={updateProperty}
+              options={weights}
+              value={form.weight_id}
+            />
+          </div>}
           <div className='col-xs-4'>
             <InputField
               style={{marginTop: '0.25em'}}
@@ -250,7 +261,9 @@ AssignmentForm.propTypes = {
   updateProperty: PropTypes.func,
   validateForm: PropTypes.func,
   currentWeight: PropTypes.object,
-  resetValidation: PropTypes.func
+  resetValidation: PropTypes.func,
+  isAdmin: PropTypes.bool,
+  weights: PropTypes.array
 }
 
 export default ValidateForm(Form(AssignmentForm, 'form'))

@@ -7,11 +7,13 @@ import SignUpForm from '../../components/SignUpForm'
 import {inject, observer} from 'mobx-react'
 import Verification from '../../components/Verification'
 import {browserHistory} from 'react-router'
+import {Cookies} from 'react-cookie'
 
 @inject('rootStore') @observer
 class Enroll extends React.Component {
   constructor (props) {
     super(props)
+    this.cookie = new Cookies()
     this.state = this.initializeState()
   }
 
@@ -40,6 +42,13 @@ class Enroll extends React.Component {
       .then(() => {
         browserHistory.push('/student/classes')
       })
+  }
+
+  onSignUp () {
+    const { userStore: { authToken } } = this.props.rootStore
+    this.cookie.remove('skollerToken', { path: '/' })
+    this.cookie.set('skollerToken', authToken, { maxAge: 84600 * 7, path: '/' })
+    this.incrementStep()
   }
 
   renderLogin () {
@@ -72,7 +81,7 @@ class Enroll extends React.Component {
         </div>
         <SignUpForm
           rootStore={this.props.rootStore}
-          onSubmit={() => this.incrementStep()}
+          onSubmit={() => this.onSignUp()}
         />
         <a
           className='cn-create-account-login'
@@ -115,8 +124,9 @@ class Enroll extends React.Component {
   }
 }
 
-Enroll.PropTypes = {
-  location: PropTypes.object.isRequired
+Enroll.propTypes = {
+  location: PropTypes.object.isRequired,
+  rootStore: PropTypes.object
 }
 
 export default Enroll

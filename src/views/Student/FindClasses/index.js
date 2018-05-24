@@ -6,12 +6,12 @@ import {InputField} from '../../../components/Form'
 import SearchSchool from './SearchSchool'
 import SearchClass from './SearchClass'
 import SearchSemester from './SearchSemester'
-import SearchProfessor from './SearchProfessor'
+import SearchProfessor from '../../components/ClassEditor/Professor/SearchProfessor'
 import CreateSchoolModal from './CreateSchoolModal'
 import Modal from '../../../components/Modal'
-import MeetingTimeModal from './MeetingTimeModal'
+import MeetingTimes from '../../components/ClassEditor/MeetingTimes'
 import moment from 'moment-timezone'
-import CreateProfessorModal from './CreateProfessorModal'
+import ProfessorModal from '../../components/ClassEditor/Professor/ProfessorModal'
 import { browserHistory } from 'react-router'
 import ClassCard from '../../../components/ClassCard'
 
@@ -30,7 +30,7 @@ class FindClasses extends React.Component {
       schoolName: '',
       openCreateSchoolModal: false,
       openMeetingTimeModal: false,
-      openCreateProfessorModal: false,
+      openProfessorModal: false,
       cl: null,
       clName: '',
       newSchool: false,
@@ -67,7 +67,7 @@ class FindClasses extends React.Component {
   mapForm () {
     let form = {
       name: this.state.clName,
-      meet_start_time: this.state.time,
+      meet_start_time: this.state.days === 'Online' ? 'Online' : this.state.time,
       meet_days: this.state.days,
       professor_id: this.state.professor.id,
       code: this.state.code || '',
@@ -104,7 +104,7 @@ class FindClasses extends React.Component {
   }
 
   onSubmitMeetingTime (form) {
-    this.setState({days: form.days, time: form.time})
+    this.setState({days: form.days, time: form.days !== 'Online' ? form.time : ''})
   }
 
   onSubmitSemester (semester) {
@@ -127,7 +127,7 @@ class FindClasses extends React.Component {
   }
 
   onCreateProfessor (professor) {
-    this.toggleCreateProfessorModal()
+    this.toggleProfessorModal()
   }
 
   onCreateSchool (schoolName) {
@@ -336,25 +336,25 @@ class FindClasses extends React.Component {
     this.setState({openCreateSchoolModal: !this.state.openCreateSchoolModal})
   }
 
-  toggleCreateProfessorModal () {
-    this.setState({openCreateProfessorModal: !this.state.openCreateProfessorModal})
+  toggleProfessorModal () {
+    this.setState({openProfessorModal: !this.state.openProfessorModal})
   }
 
   toggleMeetingTimeModal () {
     this.setState({openMeetingTimeModal: !this.state.openMeetingTimeModal})
   }
 
-  renderCreateProfessorModal () {
+  renderProfessorModal () {
     const {school} = this.state
     return (
       <Modal
-        open={this.state.openCreateProfessorModal}
-        onClose={this.toggleCreateProfessorModal.bind(this)}
+        open={this.state.openProfessorModal}
+        onClose={this.toggleProfessorModal.bind(this)}
       >
-        <CreateProfessorModal
+        <ProfessorModal
           schoolId={school.id}
           isUniversity={school.is_university}
-          onClose={this.toggleCreateProfessorModal.bind(this)}
+          onClose={this.toggleProfessorModal.bind(this)}
           onSubmit={this.onSubmitProfessor.bind(this)}
         />
       </Modal>
@@ -377,15 +377,15 @@ class FindClasses extends React.Component {
   }
 
   renderMeetingTimeModal () {
-    const {newCl, days, time} = this.state
+    const {days, time} = this.state
     return (
       <Modal
         open={this.state.openMeetingTimeModal}
         onClose={this.toggleMeetingTimeModal.bind(this)}
       >
-        <MeetingTimeModal
-          days={newCl && days}
-          time={newCl && time}
+        <MeetingTimes
+          days={days}
+          time={time}
           onClose={this.toggleMeetingTimeModal.bind(this)}
           onSubmit={this.onSubmitMeetingTime.bind(this)}
         />
@@ -450,7 +450,9 @@ class FindClasses extends React.Component {
 
   renderMeetingFields () {
     const {formErrors} = this.props
-    const {newCl, cl} = this.state
+    const {newCl, cl, days, time} = this.state
+
+    let inputValue = days + (time ? ' ' + moment(this.state.time, 'HH:mm:ss').format('hh:mm a').toString() : '')
     return (
       <InputField
         error={formErrors.meet_times}
@@ -458,7 +460,7 @@ class FindClasses extends React.Component {
         onChange={(name, value) => {
           this.resetMeetingDetails(value)
         }}
-        value={this.state.days + ' ' + moment(this.state.time, 'HH:mm:ss').format('hh:mm a').toString()}
+        value={inputValue}
         disabled={!newCl && cl}
       />
     )
@@ -470,7 +472,7 @@ class FindClasses extends React.Component {
       <div className='cn-find-classes-field-container'>
         <div className='cn-find-classes-field'>
           <div className='cn-find-classes-label'>Meet times</div>
-          {newCl && (!days || !time) ? this.renderMeetingButton() : this.renderMeetingFields()}
+          {newCl && (!days || !time) && days !== 'Online' ? this.renderMeetingButton() : this.renderMeetingFields()}
         </div>
       </div>
     )
@@ -521,8 +523,8 @@ class FindClasses extends React.Component {
         {(cl || (newCl && clName)) ? this.renderSemester() : this.renderDisabledField()}
         {(!newCl && cl) || ((!school || (school && school.is_university)) && semester) ? this.renderClassDetail() : this.renderDisabledField()}
         {(!newCl && cl) || (school && !school.is_university && semester) || (section && subject && code) ? this.renderMeeting() : this.renderDisabledField()}
-        {(!newCl && cl) || (time && days) ? this.renderProfessor() : this.renderDisabledField()}
-        {((!newCl && cl) || (school && clName && semester && (!school.is_university || (section && subject && code)) && time && days && (!newCl || professor))) && this.renderSubmit()}
+        {(!newCl && cl) || ((time && days) || days === 'Online') ? this.renderProfessor() : this.renderDisabledField()}
+        {((!newCl && cl) || (school && clName && semester && (!school.is_university || (section && subject && code)) && ((time && days) || days === 'Online') && (!newCl || professor))) && this.renderSubmit()}
       </div>
     )
   }
@@ -568,7 +570,7 @@ class FindClasses extends React.Component {
         </div>
         {schoolName && this.renderCreateSchoolModal()}
         {this.renderMeetingTimeModal()}
-        {school && this.renderCreateProfessorModal()}
+        {school && this.renderProfessorModal()}
       </div>
     )
   }

@@ -52,10 +52,10 @@ class SearchSchool extends React.Component {
   renderRow (data, index, resetState) {
     return (
       <div className='cn-autocomplete-result' key={`result-${index}`} onClick={() => this.onSchoolSelect(data, resetState)}>
-        <div className='cn-find-classes-results'>
-          <span className='cn-find-classes-results-item title'>{data.name}</span>
-          <span className='cn-find-classes-results-item'></span>
-          <span className='cn-find-classes-results-item'>{data.adr_locality}, {data.adr_region}</span>
+        <div className='cn-autocomplete-detail-results'>
+          <span className='cn-autocomplete-detail-results-item title'>{data.name}</span>
+          <span className='cn-autocomplete-detail-results-item'></span>
+          <span className='cn-autocomplete-detail-results-item'>{data.adr_locality}, {data.adr_region}</span>
           <div className='cn-results-divider'></div>
         </div>
       </div>

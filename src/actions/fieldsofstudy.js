@@ -7,7 +7,7 @@ import {showSnackbar} from '../utilities/snackbar'
 * @param [query] string. Query the fields of study.
 */
 export function getFieldsOfStudy (query) {
-  return get(`/api/v1/fields-of-study/list`, `field_name=${query}`, 'Error fetching schools. Try again.')
+  return get(`/api/v1/fields-of-study/list`, `field_name=${query}`, 'Error fetching fields. Try again.')
     .then(data => {
       return data
     })

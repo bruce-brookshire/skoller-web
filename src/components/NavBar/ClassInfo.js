@@ -4,40 +4,6 @@ import {mapProfessor} from '../../utilities/display'
 import {mapTimeToDisplay} from '../../utilities/time'
 
 class ClassInfo extends React.Component {
-  renderWrench () {
-    const {isAdmin, cl: {is_editable}} = this.props
-    if (isAdmin && !is_editable) {
-      return (
-        <div className='margin-left'>
-          <i className='fa fa-wrench cn-red cursor' onClick={() => this.props.toggleWrench()} />
-        </div>
-      )
-    } else if (isAdmin && is_editable) {
-      return (
-        <div className='margin-left'>
-          <i className='fa fa-wrench cn-grey cursor' onClick={() => this.props.toggleWrench()} />
-        </div>
-      )
-    }
-  }
-
-  renderChatEnabled () {
-    const {isAdmin, cl: {is_chat_enabled}} = this.props
-    if (isAdmin && !is_chat_enabled) {
-      return (
-        <div className='margin-left'>
-          <i className='fa fa-comment-o cn-grey cursor' onClick={() => this.props.toggleChat()} />
-        </div>
-      )
-    } else if (isAdmin && is_chat_enabled) {
-      return (
-        <div className='margin-left'>
-          <i className='fa fa-comment cn-blue cursor' onClick={() => this.props.toggleChat()} />
-        </div>
-      )
-    }
-  }
-
   renderChangeRequest () {
     const {cl} = this.props
     const studentRequests = cl.student_requests.filter(c => !c.is_completed)
@@ -100,11 +66,6 @@ class ClassInfo extends React.Component {
           {this.renderChangeRequest()}
           {this.renderHelpRequest()}
           <h2>{this.props.cl && this.props.cl.name}</h2>
-          {this.props.isAdmin && <div className='margin-left'>
-            <i className='fa fa-pencil cn-blue cursor' onClick={() => this.props.onEdit()} />
-          </div>}
-          {this.renderWrench()}
-          {this.renderChatEnabled()}
         </div>
         {this.renderClassDetails()}
       </div>
@@ -114,14 +75,9 @@ class ClassInfo extends React.Component {
 
 ClassInfo.propTypes = {
   cl: PropTypes.object.isRequired,
-  isAdmin: PropTypes.bool,
   isDIY: PropTypes.bool,
-  onEdit: PropTypes.func,
-  toggleIssues: PropTypes.func,
   toggleHelpResolved: PropTypes.func,
-  toggleRequestResolved: PropTypes.func,
-  toggleWrench: PropTypes.func,
-  toggleChat: PropTypes.func
+  toggleRequestResolved: PropTypes.func
 }
 
 export default ClassInfo

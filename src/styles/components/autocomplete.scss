@@ -14,7 +14,7 @@
 
   }
   .cn-autocomplete-results-container {
-    max-height: 100px;
+    max-height: 200px;
     overflow-y: scroll;
     z-index: 1;
     position: absolute;
@@ -27,6 +27,8 @@
       border-bottom: 0;
       font-size: 0.75em;
       padding: 10px;
+      padding-top: 5px;
+      padding-bottom: 5px;
 
       &:hover {
         background-color: darken($cn-autocomplete-results-background, 10%);

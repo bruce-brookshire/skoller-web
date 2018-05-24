@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import actions from '../../../../actions'
 import {browserHistory} from 'react-router'
-
 import Post from './Post'
 
 class Chat extends React.Component {
@@ -137,10 +136,17 @@ class Chat extends React.Component {
 
   render () {
     return (
-      <div className='chat margin-top-2x margin-bottom-2x'>
-        {this.state.posts.length > 0 ? (
-          this.renderPosts()
-        ) : this.renderNoPosts()}
+      <div id='class-editor-chat'>
+        <div id='class-editor-chat-content'>
+          <div className='class-editor-chat-title'>
+            Chat
+          </div>
+          <div className='chat'>
+            {this.state.posts.length > 0 ? (
+              this.renderPosts()
+            ) : this.renderNoPosts()}
+          </div>
+        </div>
       </div>
     )
   }

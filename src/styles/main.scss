@@ -24,19 +24,26 @@
 @import 'forms/slider-field';
 
 // Components ----------------------------
+@import 'components/assignments';
 @import 'components/assignment-table';
 @import 'components/autocomplete';
+@import 'components/autocomplete-detail';
 @import 'components/chat';
 @import 'components/class-card.scss';
+@import 'components/common-scale-modal.scss';
+@import 'components/day-selector';
 @import 'components/file-tab';
 @import 'components/file-viewer';
 @import 'components/flex-table';
+@import 'components/grade-scale';
 @import 'components/grid';
 @import 'components/modal';
 @import 'components/navbar';
+@import 'components/professor';
 @import 'components/progress-bar.scss';
 @import 'components/search';
 @import 'components/sign-up-form';
+@import 'components/time-fields';
 @import 'components/topnav';
 @import 'components/snackbar';
 @import 'components/student-request-modal';
@@ -54,6 +61,8 @@
 @import 'views/mixins/onboarding.scss';
 @import 'views/analytics.scss';
 @import 'views/call-to-action.scss';
+@import 'views/class-admin.scss';
+@import 'views/class-form.scss';
 @import 'views/class-link.scss';
 @import 'views/create-professor-modal.scss';
 @import 'views/create-school-modal.scss';
@@ -80,6 +89,7 @@
 @import 'views/school-info.scss';
 @import 'views/sign-up.scss';
 @import 'views/skip-category-modal.scss';
+@import 'views/student-list.scss';
 @import 'views/student-problems-modal.scss';
 @import 'views/submit-syllabi.scss';
 @import 'views/switchboard.scss';
@@ -295,8 +305,8 @@ body {
 }
 
 .cn-total-center-flex {
-  display: 'flex';
-  align-items: 'center';
-  justify-content: 'center';
-  height: '100%';
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }

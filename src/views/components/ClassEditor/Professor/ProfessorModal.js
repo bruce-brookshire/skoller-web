@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
-import {InputField} from '../../../components/Form'
-import actions from '../../../actions'
-import Loading from '../../../components/Loading'
+import {InputField} from '../../../../components/Form'
+import actions from '../../../../actions'
+import {maskPhoneNumber} from '../../../../utilities/mask'
 
 const requiredFields = {
   'name_first': {
@@ -17,7 +17,7 @@ const requiredFields = {
   }
 }
 
-class CreateProfessorModal extends React.Component {
+class ProfessorModal extends React.Component {
   constructor (props) {
     super(props)
     this.state = this.initializeState()
@@ -34,12 +34,15 @@ class CreateProfessorModal extends React.Component {
   }
 
   initializeFormData () {
+    const {professor} = this.props
     return {
-      name_first: '',
-      name_last: '',
-      email: '',
-      office_location: '',
-      office_hours: ''
+      id: (professor && professor.id) || null,
+      name_first: (professor && professor.name_first) || '',
+      name_last: (professor && professor.name_last) || '',
+      email: (professor && professor.email) || '',
+      phone: (professor && professor.phone) || '',
+      office_location: (professor && professor.office_location) || '',
+      office_availability: (professor && professor.office_availability) || ''
     }
   }
 
@@ -52,14 +55,26 @@ class CreateProfessorModal extends React.Component {
     }).catch(() => { this.setState({loading: false}) })
   }
 
+  onUpdateProfessor (form) {
+    this.setState({loading: true})
+    actions.professors.updateProfessor(form).then((professor) => {
+      this.props.onSubmit(professor)
+      this.setState({loading: false})
+      this.props.onClose()
+    }).catch(() => { this.setState({loading: false}) })
+  }
+
   /*
   * On submit, create professor.
   */
   onSubmit (event) {
+    const {professor} = this.props
     event.preventDefault()
 
     if (this.props.validateForm(this.state.form, requiredFields)) {
-      this.onCreateProfessor(this.state.form)
+      professor && professor.id
+        ? this.onUpdateProfessor(this.state.form)
+        : this.onCreateProfessor(this.state.form)
     }
   }
 
@@ -107,6 +122,18 @@ class CreateProfessorModal extends React.Component {
           </div>
           <div className='cn-create-professor-row'>
             <InputField
+              error={formErrors.phone}
+              label='Phone Number'
+              name='phone'
+              onChange={(name, value) => {
+                updateProperty(name, maskPhoneNumber(form.phone, value))
+              }}
+              placeholder='Phone Number'
+              value={form.phone}
+            />
+          </div>
+          <div className='cn-create-professor-row'>
+            <InputField
               error={formErrors.office_location}
               label='Office location'
               name='office_location'
@@ -117,12 +144,12 @@ class CreateProfessorModal extends React.Component {
           </div>
           <div className='cn-create-professor-row'>
             <InputField
-              error={formErrors.office_hours}
+              error={formErrors.office_availability}
               label='Office hours'
-              name='office_hours'
+              name='office_availability'
               onChange={updateProperty}
               placeholder='Office hours'
-              value={form.office_hours}
+              value={form.office_availability}
             />
           </div>
           <button
@@ -137,14 +164,15 @@ class CreateProfessorModal extends React.Component {
   }
 }
 
-CreateProfessorModal.propTypes = {
+ProfessorModal.propTypes = {
   updateProperty: PropTypes.func,
   validateForm: PropTypes.func,
   formErrors: PropTypes.object,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   schoolId: PropTypes.number.isRequired,
-  isUniversity: PropTypes.bool
+  isUniversity: PropTypes.bool,
+  professor: PropTypes.object
 }
 
-export default ValidateForm(Form(CreateProfessorModal, 'form'))
+export default ValidateForm(Form(ProfessorModal, 'form'))

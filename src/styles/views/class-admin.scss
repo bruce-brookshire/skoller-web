@@ -1,0 +1,72 @@
+#cn-class-admin-container {
+  display: flex;
+
+  #cn-class-admin {
+    flex-basis: 50%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+
+    .class-card {
+      margin: $unit-space;
+      min-width: 300px;
+    }
+  
+    #cn-admin-weight-table {
+      @include shadow-box;
+      min-width: calc(250px + 2 * $unit-space);
+  
+      #cn-admin-weight-table-content {
+        @include shadow-box-content;
+  
+        .cn-admin-weight-table-title {
+          @include shadow-box-title;
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+          margin-bottom: $unit-space;
+        }
+      }
+    }
+  
+    #cn-admin-assignment-table {
+      @include shadow-box;
+  
+      #cn-admin-assignment-table-content {
+        @include shadow-box-content;
+  
+        .cn-admin-assignment-table-title {
+          @include shadow-box-title;
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+          margin-bottom: $unit-space;
+        }
+      }
+    }
+  }
+
+  #cn-class-docs {
+    @include shadow-box;
+    flex-basis: 50%;
+    min-height: 100%;
+
+    #cn-doc-container {
+      @include shadow-box-content;
+      height: 100%;
+
+      #cn-doc-title {
+        @include shadow-box-title;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+      #cn-doc-content {
+        height: 92%;
+      }
+    }
+  }
+}
