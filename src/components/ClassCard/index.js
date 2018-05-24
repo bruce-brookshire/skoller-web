@@ -76,7 +76,7 @@ class ClassCard extends React.Component {
               <div className='cn-class-card-label'>
                 Meeting times
               </div>
-              {cl.meet_days + ' ' + moment(cl.meet_start_time, 'HH:mm:ss').format('hh:mm a').toString()}
+              {cl.meet_days + (cl.meet_days !== 'Online' ? ' ' + moment(cl.meet_start_time, 'HH:mm:ss').format('hh:mm a').toString() : '')}
             </div>
             <div className='cn-class-card-field'>
               <div className='cn-class-card-label'>
