@@ -3,9 +3,8 @@ import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
 import {InputField} from '../../components/Form'
 import actions from '../../actions'
-import {convertUTCDatetimeToDateString, convertLocalDateToUTC,
-  mapTimeStringToInput} from '../../utilities/time'
 import DaySelector from '../components/ClassEditor/MeetingTimes/DaySelector'
+import TimeFields from '../components/ClassEditor/MeetingTimes/TimeFields'
 
 const requiredFields = {
   'name': {
@@ -35,25 +34,20 @@ class ClassForm extends React.Component {
       name,
       number,
       campus,
-      class_start: clStart,
-      class_end: clEnd,
       crn,
       meet_start_time: startTime,
       meet_days: days,
       location,
-      type,
-      school
+      type
     }} = this.props
 
     return {
       id: id || '',
       name: name || '',
       number: number || '',
-      class_start: clStart ? convertUTCDatetimeToDateString(clStart, school.timezone) : '',
-      class_end: clEnd ? convertUTCDatetimeToDateString(clEnd, school.timezone) : '',
       crn: crn || '',
       campus: campus || '',
-      meet_start_time: startTime ? mapTimeStringToInput(startTime) : 'TBA',
+      meet_start_time: startTime || '',
       meet_days: days || '',
       location: location || '',
       type: type || ''
@@ -76,10 +70,7 @@ class ClassForm extends React.Component {
   * Map form
   */
   mapForm () {
-    const {cl} = this.props
     let form = {...this.state.form}
-    form.class_start = convertLocalDateToUTC(this.state.form.class_start, cl.school.timezone)
-    form.class_end = convertLocalDateToUTC(this.state.form.class_end, cl.school.timezone)
     return form
   }
 
@@ -113,6 +104,12 @@ class ClassForm extends React.Component {
     this.setState({form: newForm})
   }
 
+  onTimeUpdate (newVal) {
+    let newForm = this.state.form
+    newForm.meet_start_time = newVal
+    this.setState({form: newForm})
+  }
+
   renderDays () {
     const {form} = this.state
     return (
@@ -123,13 +120,21 @@ class ClassForm extends React.Component {
     )
   }
 
+  renderTimes () {
+    const {form} = this.state
+    return (
+      <TimeFields
+        time={form.meet_start_time}
+        onChange={this.onTimeUpdate.bind(this)}
+      />
+    )
+  }
+
   renderMeetInfo () {
     return (
       <div>
-        <div className='cn-meeting-time-days col-xs-12 margin-top'>
-          {this.renderDays()}
-        </div>
-        {/* {this.state.days !== 'Online' && this.renderTimes()} */}
+        {this.renderDays()}
+        {this.state.days !== 'Online' && this.renderTimes()}
       </div>
     )
   }
@@ -141,81 +146,81 @@ class ClassForm extends React.Component {
 
     return (
       <form onSubmit={this.onSubmit.bind(this)}>
-        <div className='row'>
-          <div className='col-xs-12'>
-            <InputField
-              containerClassName='margin-top'
-              error={formErrors.name}
-              label="Class name"
-              name="name"
-              onChange={updateProperty}
-              placeholder="i.e. Math 101"
-              value={form.name}
-            />
-          </div>
-          <div className='col-xs-12'>
-            <InputField
-              containerClassName='margin-top'
-              error={formErrors.number}
-              label="Class number"
-              name="number"
-              onChange={updateProperty}
-              placeholder="i.e. MTH 1002.01"
-              value={form.number}
-            />
-          </div>
-          <div className='col-xs-12'>
-            <InputField
-              containerClassName='margin-top'
-              error={formErrors.crn}
-              label="Class crn"
-              name="crn"
-              onChange={updateProperty}
-              placeholder="i.e. 48427"
-              value={form.crn}
-            />
-          </div>
-          <div className='col-xs-12'>
-            <InputField
-              containerClassName='margin-top'
-              error={formErrors.campus}
-              label="Campus"
-              name="campus"
-              onChange={updateProperty}
-              placeholder="Campus"
-              value={form.campus}
-            />
-          </div>
+        <div className='class-form-field'>
+          <InputField
+            containerClassName='margin-top'
+            error={formErrors.name}
+            label="Class name"
+            name="name"
+            onChange={updateProperty}
+            placeholder="i.e. Math 101"
+            value={form.name}
+          />
+        </div>
+        <div className='class-form-field'>
+          <InputField
+            containerClassName='margin-top'
+            error={formErrors.number}
+            label="Class number"
+            name="number"
+            onChange={updateProperty}
+            placeholder="i.e. MTH 1002.01"
+            value={form.number}
+          />
+        </div>
+        <div className='class-form-field'>
+          <InputField
+            containerClassName='margin-top'
+            error={formErrors.crn}
+            label="Class crn"
+            name="crn"
+            onChange={updateProperty}
+            placeholder="i.e. 48427"
+            value={form.crn}
+          />
+        </div>
+        <div className='class-form-field'>
+          <InputField
+            containerClassName='margin-top'
+            error={formErrors.campus}
+            label="Campus"
+            name="campus"
+            onChange={updateProperty}
+            placeholder="Campus"
+            value={form.campus}
+          />
+        </div>
+        <div className='class-form-field'>
           {this.renderMeetInfo()}
-          <div className='col-xs-12'>
-            <InputField
-              containerClassName='margin-top'
-              error={formErrors.location}
-              label="Location"
-              name="location"
-              onChange={updateProperty}
-              placeholder="Location"
-              value={form.location}
-            />
-          </div>
-          <div className='col-xs-12'>
-            <InputField
-              containerClassName='margin-top'
-              error={formErrors.type}
-              label="Class type"
-              name="location"
-              onChange={updateProperty}
-              placeholder="i.e. Lecture"
-              value={form.type}
-            />
-          </div>
-          <div className='col-xs-12'>
-            <button
-              className={`button full-width margin-top margin-bottom ${disabledClass}`}
-              disabled={this.state.loading}
-              type="submit"
-            >Submit</button>
-          </div>
+        </div>
+        <div className='class-form-field'>
+          <InputField
+            containerClassName='margin-top'
+            error={formErrors.location}
+            label="Location"
+            name="location"
+            onChange={updateProperty}
+            placeholder="Location"
+            value={form.location}
+          />
+        </div>
+        <div className='class-form-field'>
+          <InputField
+            containerClassName='margin-top'
+            error={formErrors.type}
+            label="Class type"
+            name="location"
+            onChange={updateProperty}
+            placeholder="i.e. Lecture"
+            value={form.type}
+          />
+        </div>
+        <div className='class-form-field'>
+          <button
+            className={`button full-width margin-top margin-bottom ${disabledClass}`}
+            disabled={this.state.loading}
+            type="submit"
+          >Submit</button>
         </div>
       </form>
     )
