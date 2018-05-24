@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import {browserHistory} from 'react-router'
 import {convertUTCDatetimeToDateString, mapTimeToDisplay} from '../../../../utilities/time'
 
 class Post extends React.Component {
@@ -24,13 +25,18 @@ class Post extends React.Component {
     } else { return '-' }
   }
 
+  onAccountSelect () {
+    let state = {user: {student: this.student, ...this.user}}
+    browserHistory.push({pathname: '/hub/accounts/account/info', state: state})
+  }
+
   render () {
     return (
       <div className={`chat-post ${this.props.type}`}>
         <div className='post-header row'>
           <div className='col-xs-6'>
             {this.user && this.user.avatar ? (<img src={this.user.avatar}></img>) : null}
-            {this.user ? (<span>{`${this.student.name_first} ${this.student.name_last}`}</span>) : null}
+            {this.user ? (<a onClick={this.onAccountSelect.bind(this)}>{`${this.student.name_first} ${this.student.name_last}`}</a>) : null}
           </div>
           <div className='col-xs-6 right-text'>
             {this.post.inserted_at ? (<span>{convertUTCDatetimeToDateString(this.post.inserted_at, 'CST') + ' ' + mapTimeToDisplay(this.post.inserted_at)}</span>) : null}
