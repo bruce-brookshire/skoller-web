@@ -2,38 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
 import moment from 'moment-timezone'
-import {SliderField, PillField, TimeInputField, SelectField} from '../../../../components/Form'
-
-const daysOfWeek = [
-  {
-    day: 'Sun',
-    code: 'U'
-  },
-  {
-    day: 'Mon',
-    code: 'M'
-  },
-  {
-    day: 'Tue',
-    code: 'T'
-  },
-  {
-    day: 'Wed',
-    code: 'W'
-  },
-  {
-    day: 'Thu',
-    code: 'R'
-  },
-  {
-    day: 'Fri',
-    code: 'F'
-  },
-  {
-    day: 'Sat',
-    code: 'S'
-  }
-]
+import {SliderField, TimeInputField, SelectField} from '../../../../components/Form'
+import DaySelector from './DaySelector'
 
 const ampm = [
   {
@@ -58,14 +28,14 @@ class MeetingTimes extends React.Component {
   initializeState () {
     return {
       form: this.initializeFormData(),
-      loading: false
+      loading: false,
+      days: this.props.days || ''
     }
   }
 
   initializeFormData () {
     return {
       is_online: this.extractOnline() || false,
-      selectedDays: this.extractDays() || [],
       meet_time_hour: this.extractHour() || '',
       meet_time_min: this.extractMin() || '',
       meet_time_ampm: this.extractAmPm() || 'am'
@@ -77,20 +47,6 @@ class MeetingTimes extends React.Component {
     if (days) {
       return (days.indexOf('Online') > -1)
     }
-  }
-
-  extractDays () {
-    const {days} = this.props
-    let newDays = []
-    if (days) {
-      days.split('').map((day) => {
-        let newDay = daysOfWeek.find(dow => dow.code === day.toString())
-        if (newDay) {
-          newDays.push(newDay.day)
-        }
-      })
-    }
-    return newDays
   }
 
   extractHour () {
@@ -124,41 +80,18 @@ class MeetingTimes extends React.Component {
     }
   }
 
-  toggleDays (newVal) {
-    let newForm = this.state.form
-    let newDays = this.state.form.selectedDays
-    let index = newDays.indexOf(newVal)
-    if (index > -1) {
-      newDays.splice(index, 1)
-    } else {
-      newDays.push(newVal)
-    }
-    newForm.selectedDays = newDays
-    this.setState({form: newForm})
+  onDaysUpdate (newVal) {
+    this.setState({days: newVal})
   }
 
   renderDays () {
-    const {form} = this.state
-    return daysOfWeek.map((c) => {
-      return <PillField
-        key={c.code}
-        label={c.day}
-        value={form.selectedDays.find(day => day === c.day) ? c.day : ''}
-        onClick={this.toggleDays.bind(this)}
-        type='button'
+    const {days} = this.props
+    return (
+      <DaySelector
+        days={days}
+        onChange={this.onDaysUpdate.bind(this)}
       />
-    })
-  }
-
-  mapDays (form) {
-    let newDays = []
-    form.selectedDays.map((day) => {
-      let newDay = daysOfWeek.find(dow => dow.day === day)
-      if (newDay) {
-        newDays.push(newDay.code)
-      }
-    })
-    return newDays.join('')
+    )
   }
 
   mapTime (form) {
@@ -169,7 +102,7 @@ class MeetingTimes extends React.Component {
   mapForm () {
     const {form} = this.state
     let mappedForm = {
-      days: this.mapDays(form),
+      days: this.state.days,
       time: this.mapTime(form)
     }
     return mappedForm
@@ -259,9 +192,7 @@ class MeetingTimes extends React.Component {
             />
           </div>
           {!form.is_online && <div className='cn-meeting-time-label'>Meet days</div>}
-          {!form.is_online && <div className='cn-meeting-time-days'>
-            {this.renderDays()}
-          </div>}
+          {!form.is_online && this.renderDays()}
           {!form.is_online && this.renderTimes()}
           <button
             className={`button full-width margin-top`}

@@ -56,39 +56,4 @@
       }
     }
   }
-
-  .cn-meeting-time-days {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-
-    .cn-pill-container {
-      flex-basis: calc(100% / 7 + 0.25px);
-      margin: 0;
-      padding: 0;
-      border: 1px solid $cn-color-blue;
-      margin-left: -1px;
-
-      .button {
-        border-radius: 0;
-        padding: .7em .5em 0.25em;
-        min-height: 100%;
-      }
-
-      .button-invert {
-        border-radius: 0;
-        padding: .7em .5em 0.25em;
-        min-height: 100%;
-      }
-    }
-
-    .cn-pill-container:first-child {
-      border-radius: 3px 0 0 3px;
-      margin-left: 0;
-    }
-
-    .cn-pill-container:last-child {
-      border-radius: 0 3px 3px 0;
-    }
-  }
 }
