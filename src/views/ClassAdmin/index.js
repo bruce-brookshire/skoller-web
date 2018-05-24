@@ -17,6 +17,8 @@ import WeightForm from '../components/ClassEditor/Weights/WeightForm'
 import AssignmentTable from '../components/ClassEditor/Assignments/AssignmentTable'
 import AssignmentForm from '../components/ClassEditor/Assignments/AssignmentForm'
 import Chat from '../components/ClassEditor/Chat'
+import FileViewer from '../../components/FileViewer'
+import {FileTabs, FileTab} from '../../components/FileTab'
 
 @inject('rootStore') @observer
 class ClassAdmin extends React.Component {
@@ -48,7 +50,11 @@ class ClassAdmin extends React.Component {
       isAssignmentsEditable: false,
       currentAssignment: null,
       assignments: [],
-      openAssignmentModal: false
+      openAssignmentModal: false,
+      currentDocument: null,
+      currentDocumentIndex: 0,
+      documents: [],
+      hideDocuments: false
     }
   }
 
@@ -66,6 +72,7 @@ class ClassAdmin extends React.Component {
   intializeComponent () {
     this.setState(this.initializeState())
     this.getClass()
+    this.getDocuments()
   }
 
   /*
@@ -87,6 +94,17 @@ class ClassAdmin extends React.Component {
       this.setState({cl, weights: cl.weights, assignments: cl.assignments})
       this.setState({loadingClass: false})
     }).catch(() => { this.setState({loadingClass: false}) })
+  }
+
+  /*
+  * Fetch the documents for a class.
+  */
+  getDocuments () {
+    const {params: {classId}} = this.props
+    actions.documents.getClassDocuments(classId).then((documents) => {
+      documents.sort((a, b) => b.is_syllabus)
+      this.setState({documents, currentDocument: (documents[0] && documents[0].path) || null})
+    }).catch(() => false)
   }
 
   /*
@@ -229,6 +247,10 @@ class ClassAdmin extends React.Component {
     this.setState({openAssignmentModal: !this.state.openAssignmentModal})
   }
 
+  toggleDocs () {
+    this.setState({hideDocuments: !this.state.hideDocuments})
+  }
+
   toggleChat () {
     const {cl} = this.state
     actions.classes.updateClass({id: cl.id, is_chat_enabled: !cl.is_chat_enabled}).then((cl) => {
@@ -363,7 +385,7 @@ class ClassAdmin extends React.Component {
   renderClassDetais () {
     const {cl} = this.state
     return (
-      <div id='cn-class-details'>
+      <div id='cn-class-details' className='class-card'>
         <ClassCard
           cl={cl}
           schoolName={cl.school.name}
@@ -372,6 +394,7 @@ class ClassAdmin extends React.Component {
           isAdmin={true}
           toggleWrench={this.toggleWrench.bind(this)}
           toggleChat={this.toggleChat.bind(this)}
+          toggleDocuments={this.toggleDocs.bind(this)}
         />
       </div>
     )
@@ -380,38 +403,44 @@ class ClassAdmin extends React.Component {
   renderGradeScale () {
     const {cl} = this.state
     return (
-      <GradeScale
-        cl={cl}
-        canEdit={true}
-        onSubmit={(cl) => this.updateClass(cl)}
-      />
+      <div className='class-card'>
+        <GradeScale
+          cl={cl}
+          canEdit={true}
+          onSubmit={(cl) => this.updateClass(cl)}
+        />
+      </div>
     )
   }
 
   renderProfessor () {
     const {cl} = this.state
     return (
-      <Professor
-        cl={cl}
-        canEdit={true}
-        onSubmit={(cl) => this.updateClass(cl)}
-      />
+      <div className='class-card'>
+        <Professor
+          cl={cl}
+          canEdit={true}
+          onSubmit={(cl) => this.updateClass(cl)}
+        />
+      </div>
     )
   }
 
   renderStudents () {
     const {cl} = this.state
     return (
-      <StudentList
-        students={cl.students}
-      />
+      <div className='class-card'>
+        <StudentList
+          students={cl.students}
+        />
+      </div>
     )
   }
 
   renderWeights () {
     const {cl, isWeightsEditable, weights, currentWeight} = this.state
     return (
-      <div id='cn-admin-weight-table'>
+      <div id='cn-admin-weight-table' className='class-card'>
         <div id='cn-admin-weight-table-content'>
           <div className='cn-admin-weight-table-title'>
             Weights
@@ -436,7 +465,7 @@ class ClassAdmin extends React.Component {
   renderAssignments () {
     const {cl, isAssignmentsEditable, assignments, weights} = this.state
     return (
-      <div id='cn-admin-assignment-table'>
+      <div id='cn-admin-assignment-table' className='class-card'>
         <div id='cn-admin-assignment-table-content'>
           <div className='cn-admin-assignment-table-title'>
             Assignments
@@ -461,27 +490,72 @@ class ClassAdmin extends React.Component {
   renderChat () {
     const {cl} = this.state
     return (
-      <Chat
-        cl={cl}
-      />
+      <div className='class-card'>
+        <Chat
+          cl={cl}
+        />
+      </div>
+    )
+  }
+
+  /*
+  * Render the document tabs for the user to tab between documents.
+  */
+  renderDocumentTabs () {
+    const {currentDocumentIndex, documents} = this.state
+    return (
+      <FileTabs currentIndex={currentDocumentIndex}>
+        {
+          documents.map((document, index) => {
+            return (
+              <FileTab
+                key={index}
+                name={document.name}
+                removable={false}
+                changed={false}
+                onClick={() =>
+                  this.setState({currentDocument: document.path, currentDocumentIndex: index})
+                }
+              />
+            )
+          })
+        }
+      </FileTabs>
     )
   }
 
   renderSyllabus () {
-
+    const {currentDocument} = this.state
+    return (
+      <div id='cn-doc-container'>
+        <div id='cn-doc-title'>
+          Documents
+          <i className='fa fa-eye cn-blue cursor' onClick={() => this.toggleDocs()} />
+        </div>
+        {this.renderDocumentTabs()}
+        <div id='cn-doc-content'>
+          {currentDocument && <FileViewer source={currentDocument} /> }
+        </div>
+      </div>
+    )
   }
 
   renderClass () {
+    const {documents, hideDocuments} = this.state
     return (
-      <div id='cn-class-admin'>
-        {this.renderClassDetais()}
-        {this.renderGradeScale()}
-        {this.renderProfessor()}
-        {this.renderStudents()}
-        {this.renderWeights()}
-        {this.renderAssignments()}
-        {this.renderChat()}
-        {this.renderSyllabus()}
+      <div id='cn-class-admin-container'>
+        <div id='cn-class-admin'>
+          {this.renderClassDetais()}
+          {this.renderGradeScale()}
+          {this.renderProfessor()}
+          {this.renderStudents()}
+          {this.renderWeights()}
+          {this.renderAssignments()}
+          {this.renderChat()}
+        </div>
+        {documents.length !== 0 && !hideDocuments && <div id='cn-class-docs'>
+          {this.renderSyllabus()}
+        </div>}
         {this.renderIssuesModal()}
         {this.renderHelpResolvedModal()}
         {this.renderRequestResolvedModal()}

@@ -18,6 +18,7 @@ class ClassCard extends React.Component {
 
     return (
       <div>
+        <i className='fa fa-file-text cn-blue cursor margin-right' onClick={() => this.props.toggleDocuments()} />
         <i className='fa fa-pencil cn-blue cursor' onClick={() => this.props.onEdit()} />
         <i className={'fa fa-wrench cursor margin-left ' + (isEditable ? 'cn-grey' : 'cn-red')} onClick={() => this.props.toggleWrench()} />
         <i className={'cursor margin-left ' + (isChat ? 'fa fa-comment cn-blue' : 'fa fa-comment-o cn-grey')} onClick={() => this.props.toggleChat()} />
@@ -126,5 +127,6 @@ ClassCard.propTypes = {
   onEdit: PropTypes.func,
   isAdmin: PropTypes.bool,
   toggleWrench: PropTypes.func,
-  toggleChat: PropTypes.func
+  toggleChat: PropTypes.func,
+  toggleDocuments: PropTypes.func
 }
