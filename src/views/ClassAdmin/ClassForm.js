@@ -43,12 +43,12 @@ class ClassForm extends React.Component {
       name,
       number,
       campus,
-      class_start,
-      class_end,
+      class_start: clStart,
+      class_end: clEnd,
       crn,
-      meet_start_time,
-      meet_end_time,
-      meet_days,
+      meet_start_time: startTime,
+      meet_end_time: endTime,
+      meet_days: days,
       location,
       type,
       school
@@ -58,15 +58,15 @@ class ClassForm extends React.Component {
       id: id || '',
       name: name || '',
       number: number || '',
-      class_start: class_start ? convertUTCDatetimeToDateString(class_start, school.timezone) : '',
-      class_end: class_end ? convertUTCDatetimeToDateString(class_end, school.timezone) : '',
+      class_start: clStart ? convertUTCDatetimeToDateString(clStart, school.timezone) : '',
+      class_end: clEnd ? convertUTCDatetimeToDateString(clEnd, school.timezone) : '',
       crn: crn || '',
       campus: campus || '',
-      meet_start_time: meet_start_time ? mapTimeStringToInput(meet_start_time) : 'TBA',
-      meet_end_time: meet_end_time ? mapTimeStringToInput(meet_end_time) : 'TBA',
-      meet_days: meet_days || '',
+      meet_start_time: startTime ? mapTimeStringToInput(startTime) : 'TBA',
+      meet_end_time: endTime ? mapTimeStringToInput(endTime) : 'TBA',
+      meet_days: days || '',
       location: location || '',
-      type: type || '',
+      type: type || ''
     }
   }
 
@@ -85,7 +85,7 @@ class ClassForm extends React.Component {
   /*
   * Map form
   */
-  mapForm() {
+  mapForm () {
     const {cl} = this.props
     let form = {...this.state.form}
     form.class_start = convertLocalDateToUTC(this.state.form.class_start, cl.school.timezone)
