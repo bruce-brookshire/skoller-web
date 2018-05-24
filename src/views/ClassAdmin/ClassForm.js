@@ -32,7 +32,9 @@ class ClassForm extends React.Component {
     const {cl: {
       id,
       name,
-      number,
+      subject,
+      code,
+      section,
       campus,
       crn,
       meet_start_time: startTime,
@@ -44,7 +46,9 @@ class ClassForm extends React.Component {
     return {
       id: id || '',
       name: name || '',
-      number: number || '',
+      subject: subject || '',
+      code: code || '',
+      section: section || '',
       crn: crn || '',
       campus: campus || '',
       meet_start_time: startTime || '',
@@ -160,12 +164,30 @@ class ClassForm extends React.Component {
         <div className='class-form-field'>
           <InputField
             containerClassName='margin-top'
-            error={formErrors.number}
-            label="Class number"
-            name="number"
+            error={formErrors.subject}
+            label="Subject"
+            name="subject"
             onChange={updateProperty}
-            placeholder="i.e. MTH 1002.01"
-            value={form.number}
+            placeholder="i.e. MTH"
+            value={form.subject}
+          />
+          <InputField
+            containerClassName='margin-top'
+            error={formErrors.code}
+            label="Code"
+            name="code"
+            onChange={updateProperty}
+            placeholder="i.e. 1002"
+            value={form.code}
+          />
+          <InputField
+            containerClassName='margin-top'
+            error={formErrors.section}
+            label="Section"
+            name="section"
+            onChange={updateProperty}
+            placeholder="i.e. 01"
+            value={form.section}
           />
         </div>
         <div className='class-form-field'>
