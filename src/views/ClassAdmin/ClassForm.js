@@ -74,7 +74,8 @@ class ClassForm extends React.Component {
   * Map form
   */
   mapForm () {
-    let form = {...this.state.form}
+    let meetStartTime = this.state.form.meet_days === 'Online' ? 'Online' : this.state.form.meet_start_time
+    let form = {...this.state.form, meet_start_time: meetStartTime}
     return form
   }
 
@@ -205,7 +206,7 @@ class ClassForm extends React.Component {
         </div>
         <div id='meeting-info' className='class-form-field margin-top'>
           {this.renderDays()}
-          {this.state.days !== 'Online' && this.renderTimes()}
+          {this.state.form.meet_days !== 'Online' && this.renderTimes()}
         </div>
         <div className='class-form-field'>
           <InputField
