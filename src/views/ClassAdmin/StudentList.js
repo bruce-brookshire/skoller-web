@@ -47,7 +47,7 @@ class StudentList extends React.Component {
   * @return [Object] row. Object of formatted row data for display in grid.
   */
   mapRow (item, index) {
-    const {id, email, is_active, roles} = item.user
+    const {id, email, is_active: isActive} = item.user
     const student = item
 
     const row = {
@@ -55,7 +55,7 @@ class StudentList extends React.Component {
       firstName: student ? (<div onClick={() => { this.onAccountSelect(item) }}><span>{student.name_first}</span></div>) : (<div><span>-</span></div>),
       lastName: student ? (<div onClick={() => { this.onAccountSelect(item) }}><span>{student.name_last}</span></div>) : (<div><span>-</span></div>),
       email: email ? <div onClick={() => { this.onAccountSelect(item) }}><span>{email}</span></div> : '',
-      status: is_active ? (<a onClick={() => { this.onAccountSelect(item) }}>Active</a>) : (<a className='cn-red'>Suspended</a>),
+      status: isActive ? (<a onClick={() => { this.onAccountSelect(item) }}>Active</a>) : (<a className='cn-red'>Suspended</a>),
       is_dropped: !student.is_dropped ? (<a onClick={() => { this.onAccountSelect(item) }}>Active</a>) : (<a className='cn-red'>Dropped</a>)
     }
 
