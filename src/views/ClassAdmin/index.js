@@ -19,6 +19,7 @@ import AssignmentForm from '../components/ClassEditor/Assignments/AssignmentForm
 import Chat from '../components/ClassEditor/Chat'
 import FileViewer from '../../components/FileViewer'
 import {FileTabs, FileTab} from '../../components/FileTab'
+import {browserHistory} from 'react-router'
 
 @inject('rootStore') @observer
 class ClassAdmin extends React.Component {
@@ -47,7 +48,6 @@ class ClassAdmin extends React.Component {
       weights: [],
       openWeightCreateModal: false,
       currentWeight: null,
-      isAssignmentsEditable: false,
       currentAssignment: null,
       assignments: [],
       openAssignmentModal: false,
@@ -167,7 +167,7 @@ class ClassAdmin extends React.Component {
   * @param [Object] assignment. Assignment object to be edited.
   */
   onSelectAssignment (assignment) {
-    this.setState({currentAssignment: assignment, openAssignmentModal: true})
+    browserHistory.push(`/assignment/${assignment.id}/admin`)
   }
 
   /*
@@ -463,21 +463,18 @@ class ClassAdmin extends React.Component {
   }
 
   renderAssignments () {
-    const {cl, isAssignmentsEditable, assignments, weights} = this.state
+    const {cl, assignments, weights} = this.state
     return (
       <div id='cn-admin-assignment-table' className='class-card'>
         <div id='cn-admin-assignment-table-content'>
           <div className='cn-admin-assignment-table-title'>
             Assignments
-            <div>
-              {isAssignmentsEditable && <i className='fa fa-plus cn-blue cursor margin-right' onClick={() => this.toggleAssignmentModal()} />}
-              <i className='fa fa-pencil cn-blue cursor' onClick={() => this.setState({isAssignmentsEditable: !isAssignmentsEditable})} />
-            </div>
+            <i className='fa fa-plus cn-blue cursor margin-right' onClick={() => this.toggleAssignmentModal()} />
           </div>
           <AssignmentTable
             cl={cl}
             assignments={assignments}
-            viewOnly={!isAssignmentsEditable}
+            viewOnly={false}
             onSelectAssignment={this.onSelectAssignment.bind(this)}
             onDeleteAssignment={this.onDeleteAssignment.bind(this)}
             weights={weights}
