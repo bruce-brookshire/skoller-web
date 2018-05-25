@@ -18,10 +18,12 @@ class AssignmentAdmin extends React.Component {
   }
 
   renderAssignmentCard () {
-    const {assignment} = this.props.location.state
+    const {assignment, school, weights} = this.props.location.state
     return (
       <AssignmentCard
         assignment={assignment}
+        school={school}
+        weights={weights}
       />
     )
   }

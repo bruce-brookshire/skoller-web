@@ -169,7 +169,10 @@ class ClassAdmin extends React.Component {
   onSelectAssignment (assignment) {
     browserHistory.push({
       pathname: `/assignment/${assignment.id}/admin`,
-      state: {assignment}
+      state: {assignment,
+        school: this.state.cl.school,
+        weights: this.state.weights
+      }
     })
   }
 
