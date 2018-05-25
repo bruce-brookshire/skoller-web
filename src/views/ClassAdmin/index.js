@@ -481,6 +481,7 @@ class ClassAdmin extends React.Component {
             onSelectAssignment={this.onSelectAssignment.bind(this)}
             onDeleteAssignment={this.onDeleteAssignment.bind(this)}
             weights={weights}
+            isAdmin={true}
           />
         </div>
       </div>

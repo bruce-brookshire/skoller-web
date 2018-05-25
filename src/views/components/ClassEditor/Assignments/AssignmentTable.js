@@ -10,8 +10,8 @@ class AssignmentTable extends React.Component {
   * @param [Number] index. Index of row data.
   */
   getRow (item, index) {
-    const {id, name, weight_id: weightId, due} = item
-    const {currentAssignment, viewOnly, weights, currentWeight} = this.props
+    const {id, name, weight_id: weightId, due, from_mod: fromMod, student_count: students, mod_count: mods} = item
+    const {currentAssignment, viewOnly, weights, currentWeight, isAdmin} = this.props
 
     const activeClass = (currentAssignment && currentAssignment.id) === id
       ? 'active' : ''
@@ -36,14 +36,17 @@ class AssignmentTable extends React.Component {
             </div>
           </div>
         }
-        <div className={!viewOnly ? 'col-xs-9' : 'col-xs-10'}>
+        <div className={!viewOnly ? 'col-xs-8' : 'col-xs-9'}>
           <div>{name}</div>
           {!currentWeight && <div className='description'>
             {(weightId && weights && weights.find(w => w.id === weightId).name) || 'N/A'}
           </div>}
+          {isAdmin && <div>Students: {students}</div>}
         </div>
-        <div className='col-xs-2 right-text'>
+        <div className='col-xs-3 right-text'>
           {due ? this.mapAssignmentDate(due) : 'N/A'}
+          {isAdmin && <div>{(fromMod ? 'Mod' : 'Syllabus')}</div>}
+          {isAdmin && <div>Mods: {mods}</div>}
         </div>
       </div>
     )
@@ -95,7 +98,8 @@ AssignmentTable.propTypes = {
   onDeleteAssignment: PropTypes.func,
   weights: PropTypes.array,
   cl: PropTypes.object,
-  currentWeight: PropTypes.object
+  currentWeight: PropTypes.object,
+  isAdmin: PropTypes.bool
 }
 
 export default AssignmentTable
