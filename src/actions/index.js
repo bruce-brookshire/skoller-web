@@ -13,6 +13,7 @@ import {getClassDocuments, uploadClassCsv, uploadClassDocument} from './document
 import {getFieldsOfStudy, uploadFOSCsv} from './fieldsofstudy'
 import {updateGradeScale} from './gradescales'
 import {getStatuses, getStatusesHub} from './hub'
+import {getAssignmentMods} from './mods'
 import {sendNeedsSyllabusNotification, getNotificationLogs, sendCustomNotification,
   getAssignmentReminders, deleteAssignmentReminders, addReminderNotification, getAssignmentReminderTopics} from './notifications'
 import {getSchoolPeriods, createPeriod} from './periods'
@@ -95,6 +96,9 @@ const actions = {
   hub: {
     getStatuses,
     getStatusesHub
+  },
+  mods: {
+    getAssignmentMods
   },
   notifications: {
     sendNeedsSyllabusNotification,
