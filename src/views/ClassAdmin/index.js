@@ -167,7 +167,10 @@ class ClassAdmin extends React.Component {
   * @param [Object] assignment. Assignment object to be edited.
   */
   onSelectAssignment (assignment) {
-    browserHistory.push(`/assignment/${assignment.id}/admin`)
+    browserHistory.push({
+      pathname: `/assignment/${assignment.id}/admin`,
+      state: {assignment}
+    })
   }
 
   /*

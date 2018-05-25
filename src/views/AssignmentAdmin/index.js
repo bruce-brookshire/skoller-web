@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
+import AssignmentCard from './AssignmentCard'
 
 @inject('rootStore') @observer
 class AssignmentAdmin extends React.Component {
@@ -16,15 +17,27 @@ class AssignmentAdmin extends React.Component {
     }
   }
 
+  renderAssignmentCard () {
+    const {assignment} = this.props.location.state
+    return (
+      <AssignmentCard
+        assignment={assignment}
+      />
+    )
+  }
+
   render () {
     return (
-      <div>Hello</div>
+      <div id='cn-assignment-admin-container'>
+        {this.renderAssignmentCard()}
+      </div>
     )
   }
 }
 
 AssignmentAdmin.propTypes = {
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  location: PropTypes.object
 }
 
 export default AssignmentAdmin
