@@ -25,10 +25,13 @@
 
 // Components ----------------------------
 @import 'components/assignments';
+@import 'components/assignment-card';
 @import 'components/assignment-table';
 @import 'components/autocomplete';
 @import 'components/autocomplete-detail';
+@import 'components/card';
 @import 'components/chat';
+@import 'components/chat-post';
 @import 'components/class-card.scss';
 @import 'components/common-scale-modal.scss';
 @import 'components/day-selector';
@@ -42,6 +45,7 @@
 @import 'components/professor';
 @import 'components/progress-bar.scss';
 @import 'components/search';
+@import 'components/shadow-box';
 @import 'components/sign-up-form';
 @import 'components/time-fields';
 @import 'components/topnav';
@@ -60,6 +64,7 @@
 // Composed Views ------------------------
 @import 'views/mixins/onboarding.scss';
 @import 'views/analytics.scss';
+@import 'views/assignment-admin.scss';
 @import 'views/call-to-action.scss';
 @import 'views/class-admin.scss';
 @import 'views/class-form.scss';

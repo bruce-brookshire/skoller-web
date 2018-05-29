@@ -21,6 +21,7 @@ import ClassLink from './views/Student/ClassLink'
 
 import SyllabusTool from './views/SyllabusTool'
 import ClassAdmin from './views/ClassAdmin'
+import AssignmentAdmin from './views/AssignmentAdmin'
 
 import HubLanding from './views/Hub/HubLanding'
 import HubSchools from './views/Hub/HubSchools'
@@ -77,6 +78,7 @@ const router = (
 
         <Route path='/class/:classId/syllabus_tool' component={SyllabusTool} />
         <Route path='/class/:classId/admin' component={ClassAdmin} onEnter={requireAdmin} />
+        <Route path='/assignment/:assignmentId/admin' component={AssignmentAdmin} onEnter={requireAdmin} />
       </Route>
       <Route path="/logout" onEnter={logout} />
       <Redirect from="*" to="/"/>

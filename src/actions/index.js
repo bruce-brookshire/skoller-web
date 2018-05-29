@@ -1,4 +1,4 @@
-import {createAssignment, deleteAssignment, getClassAssignments, updateAssignment} from './assignments'
+import {createAssignment, deleteAssignment, deleteAssignmentPost, getClassAssignments, updateAssignment} from './assignments'
 import {getAnalytics} from './analytics'
 import {authenticateUser, createAccount, forgotPassword, getRoles,
   getUserById, getUserByToken, getUsers, registerUser, registerUserAdmin, resetPassword,
@@ -13,6 +13,7 @@ import {getClassDocuments, uploadClassCsv, uploadClassDocument} from './document
 import {getFieldsOfStudy, uploadFOSCsv} from './fieldsofstudy'
 import {updateGradeScale} from './gradescales'
 import {getStatuses, getStatusesHub} from './hub'
+import {getAssignmentMods} from './mods'
 import {sendNeedsSyllabusNotification, getNotificationLogs, sendCustomNotification,
   getAssignmentReminders, deleteAssignmentReminders, addReminderNotification, getAssignmentReminderTopics} from './notifications'
 import {getSchoolPeriods, createPeriod} from './periods'
@@ -31,6 +32,7 @@ const actions = {
   assignments: {
     createAssignment,
     deleteAssignment,
+    deleteAssignmentPost,
     getClassAssignments,
     updateAssignment
   },
@@ -95,6 +97,9 @@ const actions = {
   hub: {
     getStatuses,
     getStatusesHub
+  },
+  mods: {
+    getAssignmentMods
   },
   notifications: {
     sendNeedsSyllabusNotification,

@@ -1,0 +1,7 @@
+.cn-shadow-box {
+  @include shadow-box;
+
+  .cn-shadow-box-content {
+    @include shadow-box-content;
+  }
+}
