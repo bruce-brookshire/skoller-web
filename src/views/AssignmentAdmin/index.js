@@ -4,6 +4,8 @@ import {inject, observer} from 'mobx-react'
 import AssignmentCard from './AssignmentCard'
 import actions from '../../actions'
 import ModCard from './ModCard'
+import Modal from '../../components/Modal'
+import ModDetail from './ModDetail'
 
 @inject('rootStore') @observer
 class AssignmentAdmin extends React.Component {
@@ -17,7 +19,9 @@ class AssignmentAdmin extends React.Component {
   initializeState () {
     return {
       loading: false,
-      mods: []
+      mods: [],
+      openModModal: false,
+      currentMod: null
     }
   }
 
@@ -34,6 +38,10 @@ class AssignmentAdmin extends React.Component {
     }).catch(() => { this.setState({loading: false}) })
   }
 
+  onModSelect (item) {
+    this.setState({openModModal: true, currentMod: item})
+  }
+
   renderAssignmentCard () {
     const {assignment, school, weights} = this.props.location.state
     return (
@@ -42,6 +50,23 @@ class AssignmentAdmin extends React.Component {
         school={school}
         weights={weights}
       />
+    )
+  }
+
+  /*
+  * Render the editclass modal.
+  */
+  renderModModal () {
+    const {openModModal, currentMod} = this.state
+    return (
+      <Modal
+        open={openModModal}
+        onClose={() => this.setState({openModModal: false, currentMod: null})}
+      >
+        <ModDetail
+          mod={currentMod}
+        />
+      </Modal>
     )
   }
 
@@ -55,7 +80,9 @@ class AssignmentAdmin extends React.Component {
           mods={mods}
           timeZone={school.timezone}
           weights={weights}
+          onSelect={this.onModSelect.bind(this)}
         />}
+        {this.renderModModal()}
       </div>
     )
   }

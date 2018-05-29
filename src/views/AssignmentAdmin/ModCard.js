@@ -54,13 +54,13 @@ class ModCard extends React.Component {
 
     const row = {
       id: id || '',
-      modType: <div onClick={() => { this.onModSelect(item) }}>{modType}</div>,
-      changes: <div onClick={() => { this.onModSelect(item) }}>{this.renderChanges(data)}</div>,
-      approvals: <div onClick={() => { this.onModSelect(item) }}>{actions.filter(item => item.is_accepted).length}</div>,
-      dismissals: <div onClick={() => { this.onModSelect(item) }}>{actions.filter(item => !item.is_accepted && item.is_accepted !== null).length}</div>,
-      isPrivate: <div onClick={() => { this.onModSelect(item) }}>{isPrivate ? 'True' : 'False'}</div>,
-      isAutoUpdate: <div onClick={() => { this.onModSelect(item) }}>{isAutoUpdate ? 'True' : 'False'}</div>,
-      createdAt: <div onClick={() => { this.onModSelect(item) }}>{convertUTCDatetimeToDateTimeString(createdAt, timeZone)}</div>
+      modType: <div onClick={() => { this.props.onSelect(item) }}>{modType}</div>,
+      changes: <div onClick={() => { this.props.onSelect(item) }}>{this.renderChanges(data)}</div>,
+      approvals: <div onClick={() => { this.props.onSelect(item) }}>{actions.filter(item => item.is_accepted).length}</div>,
+      dismissals: <div onClick={() => { this.props.onSelect(item) }}>{actions.filter(item => !item.is_accepted && item.is_accepted !== null).length}</div>,
+      isPrivate: <div onClick={() => { this.props.onSelect(item) }}>{isPrivate ? 'True' : 'False'}</div>,
+      isAutoUpdate: <div onClick={() => { this.props.onSelect(item) }}>{isAutoUpdate ? 'True' : 'False'}</div>,
+      createdAt: <div onClick={() => { this.props.onSelect(item) }}>{convertUTCDatetimeToDateTimeString(createdAt, timeZone)}</div>
     }
 
     return row
@@ -122,7 +122,8 @@ class ModCard extends React.Component {
 ModCard.propTypes = {
   mods: PropTypes.array.isRequired,
   timeZone: PropTypes.string.isRequired,
-  weights: PropTypes.array
+  weights: PropTypes.array,
+  onSelect: PropTypes.func
 }
 
 export default ModCard
