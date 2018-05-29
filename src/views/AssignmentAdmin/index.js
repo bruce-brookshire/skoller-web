@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import AssignmentCard from './AssignmentCard'
 import actions from '../../actions'
+import ModCard from './ModCard'
 
 @inject('rootStore') @observer
 class AssignmentAdmin extends React.Component {
@@ -45,9 +46,13 @@ class AssignmentAdmin extends React.Component {
   }
 
   render () {
+    const {mods} = this.state
     return (
       <div id='cn-assignment-admin-container'>
         {this.renderAssignmentCard()}
+        {mods && <ModCard
+          mods={mods}
+        />}
       </div>
     )
   }
