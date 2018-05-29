@@ -9,6 +9,10 @@ const headers = [
     display: 'Type'
   },
   {
+    field: 'changes',
+    display: 'Changes'
+  },
+  {
     field: 'approvals',
     display: 'Approvals'
   },
@@ -31,6 +35,12 @@ const headers = [
 ]
 
 class ModCard extends React.Component {
+  getWeight (id) {
+    const {weights} = this.props
+
+    return weights.find(item => item.id === id).name
+  }
+
   getRows () {
     const {mods} = this.props
     return mods.map((item, index) =>
@@ -39,12 +49,13 @@ class ModCard extends React.Component {
   }
 
   mapRow (item, index) {
-    const {id, mod_type: modType, is_private: isPrivate, is_auto_update: isAutoUpdate, mod_created_at: createdAt, actions} = item
+    const {id, mod_type: modType, data, is_private: isPrivate, is_auto_update: isAutoUpdate, mod_created_at: createdAt, actions} = item
     const {timeZone} = this.props
 
     const row = {
       id: id || '',
       modType: <div onClick={() => { this.onModSelect(item) }}>{modType}</div>,
+      changes: <div onClick={() => { this.onModSelect(item) }}>{this.renderChanges(data)}</div>,
       approvals: <div onClick={() => { this.onModSelect(item) }}>{actions.filter(item => item.is_accepted).length}</div>,
       dismissals: <div onClick={() => { this.onModSelect(item) }}>{actions.filter(item => !item.is_accepted && item.is_accepted !== null).length}</div>,
       isPrivate: <div onClick={() => { this.onModSelect(item) }}>{isPrivate ? 'True' : 'False'}</div>,
@@ -53,6 +64,32 @@ class ModCard extends React.Component {
     }
 
     return row
+  }
+
+  renderChanges (item) {
+    let changes = {}
+    let newItem = item.assignment ? item.assignment : item
+    const {timeZone} = this.props
+
+    if (newItem.name) {
+      changes.name = newItem.name
+    }
+
+    if (newItem.weight_id) {
+      changes.weight = this.getWeight(newItem.weight_id)
+    }
+
+    if (newItem.due) {
+      changes.due = convertUTCDatetimeToDateTimeString(newItem.due, timeZone)
+    }
+
+    return (
+      <div>
+        {changes.name && <div>Name: {changes.name}</div>}
+        {changes.weight && <div>Weight: {changes.weight}</div>}
+        {changes.due && <div>Due: {changes.due}</div>}
+      </div>
+    )
   }
 
   renderMods () {
@@ -84,7 +121,8 @@ class ModCard extends React.Component {
 
 ModCard.propTypes = {
   mods: PropTypes.array.isRequired,
-  timeZone: PropTypes.string.isRequired
+  timeZone: PropTypes.string.isRequired,
+  weights: PropTypes.array
 }
 
 export default ModCard
