@@ -47,11 +47,13 @@ class AssignmentAdmin extends React.Component {
 
   render () {
     const {mods} = this.state
+    const {school} = this.props.location.state
     return (
       <div id='cn-assignment-admin-container'>
         {this.renderAssignmentCard()}
         {mods && <ModCard
           mods={mods}
+          timeZone={school.timezone}
         />}
       </div>
     )

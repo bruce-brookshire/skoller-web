@@ -12,17 +12,6 @@ export const timezoneOptions = [
 // call on load
 initalizeTimezoneData()
 
-/*
-* Map the time string to input. Needs to be HH:MM
-*/
-export function mapTimeStringToInput (timeString) {
-  let time = timeString
-  if (timeString && timeString.length > 5) {
-    time = timeString.substring(0, 5)
-  }
-  return time
-}
-
 export function mapTimeToDisplay (timeString) {
   const time = timeString.split(':')
   const h = parseInt(time[0])
