@@ -6,6 +6,7 @@ import actions from '../../actions'
 import ModCard from './ModCard'
 import Modal from '../../components/Modal'
 import ModDetail from './ModDetail'
+import AssignmentPosts from './AssignmentPosts'
 
 @inject('rootStore') @observer
 class AssignmentAdmin extends React.Component {
@@ -17,11 +18,13 @@ class AssignmentAdmin extends React.Component {
   }
 
   initializeState () {
+    const {assignment} = this.props.location.state
     return {
       loading: false,
       mods: [],
       openModModal: false,
-      currentMod: null
+      currentMod: null,
+      posts: assignment.posts || []
     }
   }
 
@@ -36,6 +39,12 @@ class AssignmentAdmin extends React.Component {
       this.setState({mods})
       this.setState({loading: false})
     }).catch(() => { this.setState({loading: false}) })
+  }
+
+  onDeletePost (post) {
+    const newPosts = this.state.posts.filter(p => p.id !== post.id)
+    console.log(newPosts)
+    this.setState({posts: newPosts})
   }
 
   onModSelect (item) {
@@ -70,8 +79,20 @@ class AssignmentAdmin extends React.Component {
     )
   }
 
+  renderAssignmentPosts () {
+    const {assignment} = this.props.location.state
+    const {posts} = this.state
+    return (
+      <AssignmentPosts
+        assignment={assignment}
+        posts={posts}
+        onDelete={this.onDeletePost.bind(this)}
+      />
+    )
+  }
+
   render () {
-    const {mods} = this.state
+    const {mods, currentMod} = this.state
     const {school, weights} = this.props.location.state
     return (
       <div id='cn-assignment-admin-container'>
@@ -82,7 +103,8 @@ class AssignmentAdmin extends React.Component {
           weights={weights}
           onSelect={this.onModSelect.bind(this)}
         />}
-        {this.renderModModal()}
+        {this.renderAssignmentPosts()}
+        {currentMod && this.renderModModal()}
       </div>
     )
   }

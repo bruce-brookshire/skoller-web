@@ -12,27 +12,5 @@
       justify-content: space-between;
       align-items: baseline;
     }
-
-    .chat {
-      .chat-post {
-        background: $cn-color-white;
-        border: 1px solid $cn-color-grey;
-        color: $cn-color-grey;
-        font-size: 0.8rem;
-        padding: 10px;
-        &.post {
-          margin-top: 10px;
-        }
-        .post-content {
-          color: $cn-font-color;
-          font-size: 0.9rem;
-          padding: 10px 0;
-        }
-      }
-      .post-comments,.post-replies {
-        transform: translateX(8%);
-        width: 92.5%;
-      }
-    }
   }
 }

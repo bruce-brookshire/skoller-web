@@ -1,4 +1,4 @@
-import {createAssignment, deleteAssignment, getClassAssignments, updateAssignment} from './assignments'
+import {createAssignment, deleteAssignment, deleteAssignmentPost, getClassAssignments, updateAssignment} from './assignments'
 import {getAnalytics} from './analytics'
 import {authenticateUser, createAccount, forgotPassword, getRoles,
   getUserById, getUserByToken, getUsers, registerUser, registerUserAdmin, resetPassword,
@@ -32,6 +32,7 @@ const actions = {
   assignments: {
     createAssignment,
     deleteAssignment,
+    deleteAssignmentPost,
     getClassAssignments,
     updateAssignment
   },

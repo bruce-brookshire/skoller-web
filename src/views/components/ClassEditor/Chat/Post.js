@@ -47,8 +47,8 @@ class Post extends React.Component {
         </div>
         <div className='post-footer row'>
           <div className='post-likes col-xs-6'>
-            <i className='fa fa-thumbs-up'></i>
-            <span>{this.post.likes ? this.post.likes.length : 0}</span>
+            {this.props.showLikes && <i className='fa fa-thumbs-up'></i>}
+            {this.props.showLikes && <span>{this.post.likes ? this.post.likes.length : 0}</span>}
           </div>
           <div className='post-actions col-xs-6 right-text'>
             <i className='fa fa-trash cn-red cursor' onClick={() => this.props.onDelete()}></i>
@@ -62,7 +62,8 @@ class Post extends React.Component {
 Post.propTypes = {
   onDelete: PropTypes.func,
   post: PropTypes.object,
-  type: PropTypes.string
+  type: PropTypes.string,
+  showLikes: PropTypes.bool
 }
 
 export default Post

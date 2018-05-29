@@ -98,7 +98,11 @@ class Chat extends React.Component {
     }).map((p) => {
       return (
         <div className='posts-container' key={`post${p.id}`}>
-          <Post post={p} type={'post'} onDelete={() => this.onDeletePost(p)}/>
+          <Post
+            post={p}
+            type={'post'}
+            showLikes={true}
+            onDelete={() => this.onDeletePost(p)}/>
           <div className='post-comments'>
             {this.renderComments(p)}
           </div>

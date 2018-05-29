@@ -54,3 +54,13 @@ export function deleteAssignment (form) {
       return Promise.reject(error)
     })
 }
+
+/*
+* Delete an assignment post
+*/
+export function deleteAssignmentPost (assignmentId, postId) {
+  return del(`/api/v1/assignments/${assignmentId}/posts/${postId}`, 'Error deleting assignment post. Try again.')
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
