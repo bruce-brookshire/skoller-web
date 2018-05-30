@@ -33,6 +33,7 @@ import Analytics from './views/Hub/Analytics'
 import Switchboard from './views/Hub/Switchboard'
 
 import EnrollmentLinkLanding from './views/EnrollmentLink/Landing'
+import StudentLink from './views/StudentLink'
 import Enroll from './views/EnrollmentLink/Enroll'
 
 import actions from './actions'
@@ -53,6 +54,7 @@ const router = (
       <Route path='/faq' component={Faq} />
       <Route path='/enroll' component={Enroll} />
       <Route path='/e/:link' component={EnrollmentLinkLanding} />
+      <Route path='/s/:link' component={StudentLink} />
       <Route path='/pitch-deck' component={PitchDeck} />
       <Route path='/app' component={Layout} onEnter={requireAuth}>
         <IndexRedirect to='/student/classes' />

@@ -94,6 +94,9 @@ class SignUpForm extends React.Component {
   mapForm () {
     let newForm = JSON.parse(JSON.stringify(this.state.form))
     newForm.student.phone = newForm.student.phone.replace(/-/g, '')
+    if (this.props.link) {
+      newForm.student.link = this.props.link
+    }
     return newForm
   }
 
@@ -242,7 +245,8 @@ SignUpForm.propTypes = {
   ]),
   buttonText: PropTypes.string,
   onSubmit: PropTypes.func,
-  isAdmin: PropTypes.bool
+  isAdmin: PropTypes.bool,
+  link: PropTypes.string
 }
 
 export default ValidateForm(Form(SignUpForm, 'form'))
