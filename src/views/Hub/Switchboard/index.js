@@ -14,6 +14,7 @@ import UploadHistory from '../../../components/UploadHistory'
 import FOSUploadInfo from './FOSUploadInfo'
 import SignupLinks from './SignupLinks'
 import SignupLinkForm from './SignupLinkForm'
+import LinkDetail from './LinkDetail'
 
 @inject('rootStore') @observer
 class Switchboard extends React.Component {
@@ -31,7 +32,9 @@ class Switchboard extends React.Component {
       completedFOSCount: 0,
       erroredFOS: [],
       openFOSModal: false,
-      links: []
+      links: [],
+      currentLink: null,
+      openLinkModal: false
     }
   }
 
@@ -181,6 +184,10 @@ class Switchboard extends React.Component {
     }).catch(() => false)
   }
 
+  onSelectLink (item) {
+    this.setState({currentLink: item, openLinkModal: true})
+  }
+
   /*
   * On upload class fos, show results of upload.
   *
@@ -312,6 +319,7 @@ class Switchboard extends React.Component {
           {this.state.loading ? <div className='center-text'><Loading /></div>
             : <SignupLinks
               links={this.state.links}
+              onSelect={this.onSelectLink.bind(this)}
             />
           }
           <SignupLinkForm
@@ -319,6 +327,28 @@ class Switchboard extends React.Component {
           />
         </div>
       </div>
+    )
+  }
+
+  renderLinkModal () {
+    const {openLinkModal, currentLink} = this.state
+    return (
+      <Modal
+        open={openLinkModal}
+        onClose={() => this.setState({openLinkModal: false, currentLink: null})}
+      >
+        <div>
+          <LinkDetail
+            link={currentLink}
+          />
+          <div className='row'>
+            <button
+              className='button-invert full-width margin-top margin-bottom'
+              onClick={() => this.setState({openLinkModal: false, currentLink: null})}
+            > Close </button>
+          </div>
+        </div>
+      </Modal>
     )
   }
 
@@ -350,6 +380,7 @@ class Switchboard extends React.Component {
         {this.renderAutoUpdateModal()}
         {this.renderVersionUpdateModal()}
         {this.renderFOSUploadModal()}
+        {this.renderLinkModal()}
       </div>
     )
   }

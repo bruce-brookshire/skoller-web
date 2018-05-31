@@ -48,6 +48,10 @@ class SignupLinks extends React.Component {
     )
   }
 
+  onSelect (item) {
+    this.props.onSelect(item)
+  }
+
   render () {
     return (
       <div className='cn-log-table'>
@@ -57,16 +61,18 @@ class SignupLinks extends React.Component {
           rows={this.getRows()}
           disabled={true}
           canDelete={false}
-          canSelect={false}
+          canSelect={true}
           emptyMessage={'No links exist yet.'}
           deleteMessage={''}
+          onSelect={this.onSelect.bind(this)}
         />
       </div>
     )
   }
 }
 SignupLinks.propTypes = {
-  links: PropTypes.array.isRequired
+  links: PropTypes.array.isRequired,
+  onSelect: PropTypes.func
 }
 
 export default SignupLinks
