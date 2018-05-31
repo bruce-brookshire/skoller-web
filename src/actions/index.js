@@ -22,7 +22,7 @@ import {attachProfessorToClass, createProfessor, removeProfessorFromClass,
 import {createSchool, getAllSchools, getHubSchools,
   getHubSchoolsMinified, getSchoolById, updateSchool, searchSchools, getStates} from './schools'
 import {getAutoUpdateInfo, updateAutoUpdateInfo, forecastAutoUpdateInfo, getMinVersionInfo, updateMinVer} from './settings'
-import {getCustomLinks} from './signup-links'
+import {createCustomLink, getCustomLinks} from './signup-links'
 import {getNextClass} from './syllabusworkers'
 import {createWeight, deleteWeight, getClassWeights, updateWeight} from './weights'
 
@@ -140,6 +140,7 @@ const actions = {
     updateMinVer
   },
   signupLinks: {
+    createCustomLink,
     getCustomLinks
   },
   syllabusworkers: {

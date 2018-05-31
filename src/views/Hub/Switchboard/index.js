@@ -13,6 +13,7 @@ import AssignmentReminderForm from './AssignmentReminderForm'
 import UploadHistory from '../../../components/UploadHistory'
 import FOSUploadInfo from './FOSUploadInfo'
 import SignupLinks from './SignupLinks'
+import SignupLinkForm from './SignupLinkForm'
 
 @inject('rootStore') @observer
 class Switchboard extends React.Component {
@@ -311,6 +312,9 @@ class Switchboard extends React.Component {
               links={this.state.links}
             />
           }
+          <SignupLinkForm
+
+          />
         </div>
       </div>
     )
