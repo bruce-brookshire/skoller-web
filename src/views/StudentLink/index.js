@@ -51,6 +51,7 @@ class StudentLink extends React.Component {
           rootStore={this.props.rootStore}
           onSubmit={() => this.onSignUp()}
           link={this.props.params.link}
+          customLink={this.props.params.customLink}
         />
         <a
           className='cn-create-account-login'
