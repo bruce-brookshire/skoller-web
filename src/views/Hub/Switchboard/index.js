@@ -43,12 +43,8 @@ class Switchboard extends React.Component {
     actions.settings.getMinVersionInfo().then((minAppVersionData) => {
       this.setState({minAppVersionData})
     }).catch(() => false)
-    actions.notifications.getAssignmentReminders().then((reminders) => {
-      this.setState({reminders})
-    }).catch(() => false)
-    actions.signupLinks.getCustomLinks().then((links) => {
-      this.setState({links})
-    }).catch(() => false)
+    this.getReminders()
+    this.getCustomLinks()
     actions.settings.getAutoUpdateInfo().then((autoUpdateData) => {
       this.setState({autoUpdateData, loading: false})
     }).catch(() => false)
@@ -70,9 +66,15 @@ class Switchboard extends React.Component {
     this.initializeComponent()
   }
 
-  onSubmitReminder () {
+  getReminders () {
     actions.notifications.getAssignmentReminders().then((reminders) => {
       this.setState({reminders})
+    }).catch(() => false)
+  }
+
+  getCustomLinks () {
+    actions.signupLinks.getCustomLinks().then((links) => {
+      this.setState({links})
     }).catch(() => false)
   }
 
@@ -295,7 +297,7 @@ class Switchboard extends React.Component {
             />
           }
           <AssignmentReminderForm
-            onSubmit={this.onSubmitReminder.bind(this)}
+            onSubmit={this.getReminders.bind(this)}
           />
         </div>
       </div>
@@ -313,7 +315,7 @@ class Switchboard extends React.Component {
             />
           }
           <SignupLinkForm
-
+            onSubmit={this.getCustomLinks.bind(this)}
           />
         </div>
       </div>
