@@ -12,6 +12,7 @@ import AssignmentReminders from './AssignmentReminders'
 import AssignmentReminderForm from './AssignmentReminderForm'
 import UploadHistory from '../../../components/UploadHistory'
 import FOSUploadInfo from './FOSUploadInfo'
+import SignupLinks from './SignupLinks'
 
 @inject('rootStore') @observer
 class Switchboard extends React.Component {
@@ -28,7 +29,8 @@ class Switchboard extends React.Component {
       reminders: [],
       completedFOSCount: 0,
       erroredFOS: [],
-      openFOSModal: false
+      openFOSModal: false,
+      links: []
     }
   }
 
@@ -42,6 +44,9 @@ class Switchboard extends React.Component {
     }).catch(() => false)
     actions.notifications.getAssignmentReminders().then((reminders) => {
       this.setState({reminders})
+    }).catch(() => false)
+    actions.signupLinks.getCustomLinks().then((links) => {
+      this.setState({links})
     }).catch(() => false)
     actions.settings.getAutoUpdateInfo().then((autoUpdateData) => {
       this.setState({autoUpdateData, loading: false})
@@ -296,6 +301,21 @@ class Switchboard extends React.Component {
     )
   }
 
+  renderSignupLinks () {
+    return (
+      <div className='cn-shadow-box margin-top'>
+        <div className='cn-shadow-box-content'>
+          <h3 className='cn-blue center-text'>Signup Links</h3>
+          {this.state.loading ? <div className='center-text'><Loading /></div>
+            : <SignupLinks
+              links={this.state.links}
+            />
+          }
+        </div>
+      </div>
+    )
+  }
+
   render () {
     return (
       <div className='cn-switchboard-container'>
@@ -317,6 +337,7 @@ class Switchboard extends React.Component {
           <div className='cn-switchboard-section-large'>
             {this.renderNotificationHistory()}
             {this.renderAssignmentReminders()}
+            {this.renderSignupLinks()}
           </div>
         </div>
         {this.renderCustomNotificationModal()}
