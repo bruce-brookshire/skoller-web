@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Grid from '../../../components/Grid'
+import {convertUTCDatetimeToDateString} from '../../../utilities/time'
 
 const headers = [
   {
@@ -33,8 +34,8 @@ class SignupLinks extends React.Component {
       id: id,
       name: name,
       link: link,
-      start: start,
-      end: end,
+      start: start ? convertUTCDatetimeToDateString(start, 'CST') : '',
+      end: end ? convertUTCDatetimeToDateString(end, 'CST') : '',
       count: count
     }
     return row

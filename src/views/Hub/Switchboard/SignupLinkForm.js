@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {InputField, CheckboxField, SelectField} from '../../../components/Form'
+import {InputField} from '../../../components/Form'
 import {Form, ValidateForm} from 'react-form-library'
 import actions from '../../../actions'
+import {convertLocalDateToUTC} from '../../../utilities/time'
 
 const requiredFields = {
   'name': {
@@ -51,8 +52,8 @@ class SignupLinkForm extends React.Component {
 
   mapForm (form) {
     let newForm = {...this.state.form}
-    if (newForm.start) newForm.start = newForm.start + 'T00:00:00.000000'
-    if (newForm.end) newForm.end = newForm.end + 'T00:00:00.000000'
+    if (newForm.start) newForm.start = convertLocalDateToUTC(newForm.start, 'CST')
+    if (newForm.end) newForm.end = convertLocalDateToUTC(newForm.end, 'CST')
     return newForm
   }
 
@@ -100,6 +101,7 @@ class SignupLinkForm extends React.Component {
               name="start"
               onChange={updateProperty}
               value={form.start}
+              type='date'
             />
           </div>
           <div className='col-xs-12 col-md-2'>
@@ -109,6 +111,7 @@ class SignupLinkForm extends React.Component {
               name="end"
               onChange={updateProperty}
               value={form.end}
+              type='date'
             />
           </div>
           <div className='col-xs-4 col-md-2'>
