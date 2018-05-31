@@ -97,6 +97,9 @@ class SignUpForm extends React.Component {
     if (this.props.link) {
       newForm.student.link = this.props.link
     }
+    if (this.props.customLink) {
+      newForm.student.custom_link = this.props.customLink
+    }
     return newForm
   }
 
@@ -246,7 +249,8 @@ SignUpForm.propTypes = {
   buttonText: PropTypes.string,
   onSubmit: PropTypes.func,
   isAdmin: PropTypes.bool,
-  link: PropTypes.string
+  link: PropTypes.string,
+  customLink: PropTypes.string
 }
 
 export default ValidateForm(Form(SignUpForm, 'form'))

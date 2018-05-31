@@ -12,6 +12,9 @@ import AssignmentReminders from './AssignmentReminders'
 import AssignmentReminderForm from './AssignmentReminderForm'
 import UploadHistory from '../../../components/UploadHistory'
 import FOSUploadInfo from './FOSUploadInfo'
+import SignupLinks from './SignupLinks'
+import SignupLinkForm from './SignupLinkForm'
+import LinkDetail from './LinkDetail'
 
 @inject('rootStore') @observer
 class Switchboard extends React.Component {
@@ -28,7 +31,10 @@ class Switchboard extends React.Component {
       reminders: [],
       completedFOSCount: 0,
       erroredFOS: [],
-      openFOSModal: false
+      openFOSModal: false,
+      links: [],
+      currentLink: null,
+      openLinkModal: false
     }
   }
 
@@ -40,9 +46,8 @@ class Switchboard extends React.Component {
     actions.settings.getMinVersionInfo().then((minAppVersionData) => {
       this.setState({minAppVersionData})
     }).catch(() => false)
-    actions.notifications.getAssignmentReminders().then((reminders) => {
-      this.setState({reminders})
-    }).catch(() => false)
+    this.getReminders()
+    this.getCustomLinks()
     actions.settings.getAutoUpdateInfo().then((autoUpdateData) => {
       this.setState({autoUpdateData, loading: false})
     }).catch(() => false)
@@ -64,9 +69,15 @@ class Switchboard extends React.Component {
     this.initializeComponent()
   }
 
-  onSubmitReminder () {
+  getReminders () {
     actions.notifications.getAssignmentReminders().then((reminders) => {
       this.setState({reminders})
+    }).catch(() => false)
+  }
+
+  getCustomLinks () {
+    actions.signupLinks.getCustomLinks().then((links) => {
+      this.setState({links})
     }).catch(() => false)
   }
 
@@ -132,25 +143,29 @@ class Switchboard extends React.Component {
 
   renderAutoUpdateSettings () {
     return (
-      <div className='auto-update margin-top'>
-        <h3 className='cn-blue'>Auto Updates</h3>
-        <p>Enrollment is {this.findAutoUpdateSetting('auto_upd_enroll_thresh')} or more</p>
-        <p>{Math.round(this.findAutoUpdateSetting('auto_upd_response_thresh') * 100)}% or more responded to the update</p>
-        <p>{Math.round(this.findAutoUpdateSetting('auto_upd_approval_thresh') * 100)}% or more responses were copies</p>
-        <a className="cn-blue" onClick={() => this.setState({openAutoUpdateModal: true})}>See details</a>
+      <div className='cn-shadow-box margin-top'>
+        <div className='cn-shadow-box-content'>
+          <h3 className='cn-blue'>Auto Updates</h3>
+          <p>Enrollment is {this.findAutoUpdateSetting('auto_upd_enroll_thresh')} or more</p>
+          <p>{Math.round(this.findAutoUpdateSetting('auto_upd_response_thresh') * 100)}% or more responded to the update</p>
+          <p>{Math.round(this.findAutoUpdateSetting('auto_upd_approval_thresh') * 100)}% or more responses were copies</p>
+          <a className="cn-blue" onClick={() => this.setState({openAutoUpdateModal: true})}>See details</a>
+        </div>
       </div>
     )
   }
 
   renderMinVersionSettings () {
     return (
-      <div className='min-ver margin-top'>
-        <div className='min-ver-header'>
-          <h3 className='cn-blue'>Minimum App Version </h3><a className="margin-left" onClick={() => this.setState({openVersionUpdateModal: true})}>Edit</a>
-        </div>
-        <div>
-          <p>iOS Version: {this.findMinVerSetting('min_ios_version')}</p>
-          <p>Android Version: {this.findMinVerSetting('min_android_version')}</p>
+      <div className='cn-shadow-box margin-top'>
+        <div className='min-ver cn-shadow-box-content'>
+          <div className='min-ver-header'>
+            <h3 className='cn-blue'>Minimum App Version </h3><a className="margin-left" onClick={() => this.setState({openVersionUpdateModal: true})}>Edit</a>
+          </div>
+          <div>
+            <p>iOS Version: {this.findMinVerSetting('min_ios_version')}</p>
+            <p>Android Version: {this.findMinVerSetting('min_android_version')}</p>
+          </div>
         </div>
       </div>
     )
@@ -167,6 +182,10 @@ class Switchboard extends React.Component {
       const newReminders = this.state.reminders.filter(cc => cc.id !== item.id)
       this.setState({reminders: newReminders})
     }).catch(() => false)
+  }
+
+  onSelectLink (item) {
+    this.setState({currentLink: item, openLinkModal: true})
   }
 
   /*
@@ -222,36 +241,129 @@ class Switchboard extends React.Component {
     )
   }
 
+  renderNotifications () {
+    return (
+      <div className='cn-shadow-box'>
+        <div className='cn-shadow-box-content'>
+          <h3 className='cn-blue'>Notifications</h3>
+          <div className="cn-switchboard-section-item">
+            <button className='button' onClick={() => this.send()}>
+              Send &apos;Needs Syllabus&apos; Notification
+            </button>
+          </div>
+          <div className="cn-switchboard-section-item">
+            <button className='button margin-top' onClick={() => this.setState({openCustomNotificationModal: true}) }>
+              Send Custom Notification
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  renderFieldOfStudy () {
+    return (
+      <div className='cn-shadow-box margin-top'>
+        <div className='cn-shadow-box-content'>
+          <h3 className='cn-blue center-text'>Import fields of study</h3>
+          <UploadHistory
+            allow='text/csv'
+            disabled={false}
+            files={[]}
+            info='Upload fields of study csv.'
+            onUpload={(file) => { this.onUploadFOS(file) }}
+            title='Fields of Study'
+          />
+        </div>
+      </div>
+    )
+  }
+
+  renderNotificationHistory () {
+    return (
+      <div className='cn-shadow-box'>
+        <div className='cn-shadow-box-content'>
+          <h3 className='cn-blue center-text'>History</h3>
+          {this.state.loading
+            ? <div className='center-text'><Loading /></div>
+            : <NotificationHistory logs={this.state.logs} />}
+        </div>
+      </div>
+    )
+  }
+
+  renderAssignmentReminders () {
+    return (
+      <div className='cn-shadow-box margin-top'>
+        <div className='cn-shadow-box-content'>
+          <h3 className='cn-blue center-text'>Assignment Reminders</h3>
+          {this.state.loading ? <div className='center-text'><Loading /></div>
+            : <AssignmentReminders
+              reminders={this.state.reminders}
+              onDelete={() => this.onDeleteReminder.bind(this)}
+            />
+          }
+          <AssignmentReminderForm
+            onSubmit={this.getReminders.bind(this)}
+          />
+        </div>
+      </div>
+    )
+  }
+
+  renderSignupLinks () {
+    return (
+      <div className='cn-shadow-box margin-top'>
+        <div className='cn-shadow-box-content'>
+          <h3 className='cn-blue center-text'>Signup Links</h3>
+          {this.state.loading ? <div className='center-text'><Loading /></div>
+            : <SignupLinks
+              links={this.state.links}
+              onSelect={this.onSelectLink.bind(this)}
+            />
+          }
+          <SignupLinkForm
+            onSubmit={this.getCustomLinks.bind(this)}
+          />
+        </div>
+      </div>
+    )
+  }
+
+  renderLinkModal () {
+    const {openLinkModal, currentLink} = this.state
+    return (
+      <Modal
+        open={openLinkModal}
+        onClose={() => this.setState({openLinkModal: false, currentLink: null})}
+      >
+        <div>
+          <LinkDetail
+            link={currentLink}
+          />
+          <div className='row'>
+            <button
+              className='button-invert full-width margin-top margin-bottom'
+              onClick={() => this.setState({openLinkModal: false, currentLink: null})}
+            > Close </button>
+          </div>
+        </div>
+      </Modal>
+    )
+  }
+
   render () {
     return (
       <div className='cn-switchboard-container'>
         <div className='horizontal-align-row center-text'>
           <div className='cn-switchboard-section-small'>
-            <h3 className='cn-blue'>Notifications</h3>
-            <div className="cn-switchboard-section-item">
-              <button className='button' onClick={() => this.send()}>
-                Send &apos;Needs Syllabus&apos; Notification
-              </button>
-            </div>
-            <div className="cn-switchboard-section-item">
-              <button className='button margin-top' onClick={() => this.setState({openCustomNotificationModal: true}) }>
-                Send Custom Notification
-              </button>
-            </div>
+            {this.renderNotifications()}
             <div className="cn-switchboard-section-item">
               {this.state.loading ? <div className='center-text'><Loading /></div>
                 : this.renderAutoUpdateSettings()}
             </div>
             <div className='cn-switchboard-section-item'>
-              <h3 className='cn-blue center-text'>Import fields of study</h3>
-              <UploadHistory
-                allow='text/csv'
-                disabled={false}
-                files={[]}
-                info='Upload fields of study csv.'
-                onUpload={(file) => { this.onUploadFOS(file) }}
-                title='Fields of Study'
-              />
+              {this.renderFieldOfStudy()}
             </div>
             <div className="cn-switchboard-section-item">
               {this.state.loading ? <div className='center-text'><Loading /></div>
@@ -259,26 +371,16 @@ class Switchboard extends React.Component {
             </div>
           </div>
           <div className='cn-switchboard-section-large'>
-            <h3 className='cn-blue center-text'>History</h3>
-            {this.state.loading ? <div className='center-text'><Loading /></div>
-              : <NotificationHistory logs={this.state.logs} />
-            }
-            <h3 className='cn-blue center-text'>Assignment Reminders</h3>
-            {this.state.loading ? <div className='center-text'><Loading /></div>
-              : <AssignmentReminders
-                reminders={this.state.reminders}
-                onDelete={() => this.onDeleteReminder.bind(this)}
-              />
-            }
-            <AssignmentReminderForm
-              onSubmit={this.onSubmitReminder.bind(this)}
-            />
+            {this.renderNotificationHistory()}
+            {this.renderAssignmentReminders()}
+            {this.renderSignupLinks()}
           </div>
         </div>
         {this.renderCustomNotificationModal()}
         {this.renderAutoUpdateModal()}
         {this.renderVersionUpdateModal()}
         {this.renderFOSUploadModal()}
+        {this.renderLinkModal()}
       </div>
     )
   }
