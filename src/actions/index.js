@@ -19,6 +19,7 @@ import {sendNeedsSyllabusNotification, getNotificationLogs, sendCustomNotificati
 import {getSchoolPeriods, createPeriod} from './periods'
 import {attachProfessorToClass, createProfessor, removeProfessorFromClass,
   searchProfessors, updateProfessor} from './professors'
+import {resolveReport, getIncompleteReports} from './reports'
 import {createSchool, getAllSchools, getHubSchools,
   getHubSchoolsMinified, getSchoolById, updateSchool, searchSchools, getStates} from './schools'
 import {getAutoUpdateInfo, updateAutoUpdateInfo, forecastAutoUpdateInfo, getMinVersionInfo, updateMinVer} from './settings'
@@ -121,6 +122,10 @@ const actions = {
     removeProfessorFromClass,
     searchProfessors,
     updateProfessor
+  },
+  reports: {
+    getIncompleteReports,
+    resolveReport
   },
   schools: {
     createSchool,

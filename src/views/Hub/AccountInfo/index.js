@@ -5,6 +5,26 @@ import Modal from '../../../components/Modal'
 import AccountInfoForm from './AccountInfoForm'
 import actions from '../../../actions'
 import ClassList from '../../components/ClassList'
+import Grid from '../../../components/Grid'
+
+const headers = [
+  {
+    field: 'context',
+    display: 'Context'
+  },
+  {
+    field: 'note',
+    display: 'Note'
+  },
+  {
+    field: 'isComplete',
+    display: 'Complete?'
+  },
+  {
+    field: 'reportedBy',
+    display: 'Reported By'
+  }
+]
 
 class AccountInfo extends React.Component {
   constructor (props) {
@@ -15,9 +35,7 @@ class AccountInfo extends React.Component {
   componentWillMount () {
     const {state} = this.props.location
     if (state && state.user) {
-      actions.auth.getUserById(state.user).then(user => {
-        this.setState({user})
-      }).catch(() => false)
+      this.getUser(state.user)
     }
     if (this.state.user && this.state.user.student) {
       actions.classes.getStudentClassesById(this.state.user.student.id).then(classes => {
@@ -35,6 +53,12 @@ class AccountInfo extends React.Component {
     }
   }
 
+  getUser (user) {
+    actions.auth.getUserById(user).then(user => {
+      this.setState({user})
+    }).catch(() => false)
+  }
+
   getUserRoles () {
     const {user} = this.state
     let roles = (user.roles && user.roles.map(role => role.name)) || []
@@ -48,43 +72,45 @@ class AccountInfo extends React.Component {
     const {user} = this.state
 
     return (
-      <div>
-        <div className='edit-header'>
-          <h3>1. Account Details</h3>
-          <a onClick={this.toggleAccountForm.bind(this)}>Edit</a>
+      <div className='cn-shadow-box'>
+        <div className='cn-shadow-box-content'>
+          <div className='cn-card-title edit-header'>
+            Account Details
+            <i className='fa fa-pencil cn-blue cursor' onClick={this.toggleAccountForm.bind(this)} />
+          </div>
+          {user
+            ? <table className='margin-top roles-table'>
+              <tbody>
+                <tr>
+                  <th className='cn-flex-table-cell'>Email:</th>
+                  <td className='cn-flex-table-cell'>{user.email}</td>
+                </tr>
+                <tr>
+                  <th className='cn-flex-table-cell'>Roles:</th>
+                  <td className='cn-flex-table-cell'>{this.getUserRoles()}</td>
+                </tr>
+                {user.student &&
+                  <tr>
+                    <th className='cn-flex-table-cell'>First name:</th>
+                    <td className='cn-flex-table-cell'>{user.student.name_first}</td>
+                  </tr>
+                }
+                {user.student &&
+                  <tr>
+                    <th className='cn-flex-table-cell'>Last name:</th>
+                    <td className='cn-flex-table-cell'>{user.student.name_last}</td>
+                  </tr>
+                }
+                {user.student &&
+                  <tr>
+                    <th className='cn-flex-table-cell'>Phone:</th>
+                    <td className='cn-flex-table-cell'>{user.student.phone}</td>
+                  </tr>
+                }
+              </tbody>
+            </table> : <a onClick={this.toggleAccountForm.bind(this)}>Add details</a>
+          }
         </div>
-        {user
-          ? <table className='roles-table'>
-            <tbody>
-              <tr>
-                <th className='cn-flex-table-cell'>Email:</th>
-                <td className='cn-flex-table-cell'>{user.email}</td>
-              </tr>
-              <tr>
-                <th className='cn-flex-table-cell'>Roles:</th>
-                <td className='cn-flex-table-cell'>{this.getUserRoles()}</td>
-              </tr>
-              {user.student &&
-                <tr>
-                  <th className='cn-flex-table-cell'>First name:</th>
-                  <td className='cn-flex-table-cell'>{user.student.name_first}</td>
-                </tr>
-              }
-              {user.student &&
-                <tr>
-                  <th className='cn-flex-table-cell'>Last name:</th>
-                  <td className='cn-flex-table-cell'>{user.student.name_last}</td>
-                </tr>
-              }
-              {user.student &&
-                <tr>
-                  <th className='cn-flex-table-cell'>Phone:</th>
-                  <td className='cn-flex-table-cell'>{user.student.phone}</td>
-                </tr>
-              }
-            </tbody>
-          </table> : <a onClick={this.toggleAccountForm.bind(this)}>Add details</a>
-        }
       </div>
     )
   }
@@ -117,29 +143,77 @@ class AccountInfo extends React.Component {
     })
   }
 
+  getRows () {
+    return this.state.user.reports.map((item, index) =>
+      this.mapRow(item, index)
+    )
+  }
+
+  mapRow (item, index) {
+    const {context, note, is_complete: isComplete, reported_by: reportedBy, id} = item
+
+    const row = {
+      id: id,
+      context: context || '',
+      note: note || '',
+      isComplete: isComplete ? 'True' : 'False',
+      reportedBy: reportedBy.email
+    }
+
+    return row
+  }
+
+  onSelectReport (report) {
+    actions.reports.resolveReport(report.id).then(() => {
+      this.getUser(this.state.user)
+    }).catch(() => false)
+  }
+
+  renderReports () {
+    return (
+      <div className='cn-shadow-box'>
+        <div className='cn-shadow-box-content'>
+          <div className='cn-card-title margin-bottom'>
+            Reports
+          </div>
+          {this.state.user.reports && <Grid
+            headers={headers}
+            rows={this.getRows()}
+            disabled={true}
+            className="striped"
+            canSelect={true}
+            onSelect={this.onSelectReport.bind(this)}
+          />}
+        </div>
+      </div>
+    )
+  }
+
   render () {
     return (
-      <div className='cn-school-info'>
+      <div>
         <h2 className='center-text'>Account Info</h2>
-        <div className='row'>
-          <div className='col-xs-12 col-md-6 margin-top'>
-            {this.renderAccountDetails()}
-          </div>
-        </div>
-        <div className="row center-md center-lg">
-          <div className='col-xs-12 col-md-9 col-lg-6 margin-top'>
-            {this.state.user && this.state.user.student &&
-              <ClassList
-                classes={this.state.classes}
-                disabled={true}
-                onDelete={null}
-                onSelect={this.onClassSelect.bind(this)}
-                deleteMessage=""
-                emptyMessage="This student has no classes."
-                onUpdate={null}
-              />
-            }
-          </div>
+        <div id='cn-account-info'>
+          {this.renderAccountDetails()}
+          {this.state.user && this.state.user.student &&
+            <div className='cn-shadow-box'>
+              <div className='cn-shadow-box-content'>
+                <div className='cn-card-title margin-bottom'>
+                  Classes
+                </div>
+                <ClassList
+                  classes={this.state.classes}
+                  disabled={true}
+                  onDelete={null}
+                  onSelect={this.onClassSelect.bind(this)}
+                  deleteMessage=""
+                  emptyMessage="This student has no classes."
+                  onUpdate={null}
+                />
+              </div>
+            </div>
+          }
+          {this.renderReports()}
         </div>
         {this.renderAccountFormModal()}
       </div>
