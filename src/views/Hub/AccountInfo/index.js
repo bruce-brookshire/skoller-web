@@ -121,34 +121,28 @@ class AccountInfo extends React.Component {
 
   render () {
     return (
-      <div className='cn-school-info'>
+      <div>
         <h2 className='center-text'>Account Info</h2>
-        <div className='row'>
-          <div className='col-xs-12 col-md-2'>
-            {this.renderAccountDetails()}
-          </div>
-        </div>
-        <div className="row center-md center-lg">
-          <div className='col-xs-12 col-md-9 col-lg-6 margin-top'>
-            {this.state.user && this.state.user.student &&
-              <div className='cn-shadow-box'>
-                <div className='cn-shadow-box-content'>
-                  <div className='cn-card-title margin-bottom'>
-                    Classes
-                  </div>
-                  <ClassList
-                    classes={this.state.classes}
-                    disabled={true}
-                    onDelete={null}
-                    onSelect={this.onClassSelect.bind(this)}
-                    deleteMessage=""
-                    emptyMessage="This student has no classes."
-                    onUpdate={null}
-                  />
+        <div id='cn-account-info'>
+          {this.renderAccountDetails()}
+          {this.state.user && this.state.user.student &&
+            <div className='cn-shadow-box'>
+              <div className='cn-shadow-box-content'>
+                <div className='cn-card-title margin-bottom'>
+                  Classes
                 </div>
+                <ClassList
+                  classes={this.state.classes}
+                  disabled={true}
+                  onDelete={null}
+                  onSelect={this.onClassSelect.bind(this)}
+                  deleteMessage=""
+                  emptyMessage="This student has no classes."
+                  onUpdate={null}
+                />
               </div>
-            }
-          </div>
+            </div>
+          }
         </div>
         {this.renderAccountFormModal()}
       </div>
