@@ -9,10 +9,19 @@ import actions from '../../../actions'
 class HubLanding extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {statuses: [], schoolCount: 0, loadingStatuses: false}
+    this.state = {
+      statuses: [],
+      schoolCount: 0,
+      loadingStatuses: false,
+      loadingReports: false,
+      reports: []
+    }
   }
   componentWillMount () {
     this.getStatuses()
+    if (this.isAdminUser()) {
+      this.getReports()
+    }
   }
 
   /*
@@ -23,6 +32,13 @@ class HubLanding extends React.Component {
     actions.hub.getStatusesHub().then((statuses) => {
       this.setState({statuses: statuses.statuses, schoolCount: statuses.schools, loadingStatuses: false})
     }).catch(() => { this.setState({loadingStatuses: false}) })
+  }
+
+  getReports () {
+    this.setState({loadingReports: true})
+    actions.reports.getIncompleteReports().then((reports) => {
+      this.setState({reports, loadingReports: false})
+    }).catch(() => { this.setState({loadingReports: false}) })
   }
 
   /*
@@ -157,6 +173,17 @@ class HubLanding extends React.Component {
             <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/switchboard')}>
               <i className='fa fa-toggle-on' style={{color: '#FEFEFE', fontSize: '1.9rem'}}></i>
               <span>Switchboard</span>
+            </button>
+          </div>
+
+          <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 margin-top'>
+            <button className='nav-button admin button full-width'>
+              <img src='/src/assets/images/icons/School.png'/>
+              <span>Reports (
+              {this.state.loadingReports ? <Loading style={{color: 'white'}}/>
+                : this.state.reports.length
+              }
+              )</span>
             </button>
           </div>
         </div>
