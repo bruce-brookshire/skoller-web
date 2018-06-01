@@ -48,43 +48,45 @@ class AccountInfo extends React.Component {
     const {user} = this.state
 
     return (
-      <div>
-        <div className='edit-header'>
-          <h3>1. Account Details</h3>
-          <a onClick={this.toggleAccountForm.bind(this)}>Edit</a>
+      <div className='cn-shadow-box'>
+        <div className='cn-shadow-box-content'>
+          <div className='cn-card-title edit-header'>
+            Account Details
+            <i className='fa fa-pencil cn-blue cursor' onClick={this.toggleAccountForm.bind(this)} />
+          </div>
+          {user
+            ? <table className='margin-top roles-table'>
+              <tbody>
+                <tr>
+                  <th className='cn-flex-table-cell'>Email:</th>
+                  <td className='cn-flex-table-cell'>{user.email}</td>
+                </tr>
+                <tr>
+                  <th className='cn-flex-table-cell'>Roles:</th>
+                  <td className='cn-flex-table-cell'>{this.getUserRoles()}</td>
+                </tr>
+                {user.student &&
+                  <tr>
+                    <th className='cn-flex-table-cell'>First name:</th>
+                    <td className='cn-flex-table-cell'>{user.student.name_first}</td>
+                  </tr>
+                }
+                {user.student &&
+                  <tr>
+                    <th className='cn-flex-table-cell'>Last name:</th>
+                    <td className='cn-flex-table-cell'>{user.student.name_last}</td>
+                  </tr>
+                }
+                {user.student &&
+                  <tr>
+                    <th className='cn-flex-table-cell'>Phone:</th>
+                    <td className='cn-flex-table-cell'>{user.student.phone}</td>
+                  </tr>
+                }
+              </tbody>
+            </table> : <a onClick={this.toggleAccountForm.bind(this)}>Add details</a>
+          }
         </div>
-        {user
-          ? <table className='roles-table'>
-            <tbody>
-              <tr>
-                <th className='cn-flex-table-cell'>Email:</th>
-                <td className='cn-flex-table-cell'>{user.email}</td>
-              </tr>
-              <tr>
-                <th className='cn-flex-table-cell'>Roles:</th>
-                <td className='cn-flex-table-cell'>{this.getUserRoles()}</td>
-              </tr>
-              {user.student &&
-                <tr>
-                  <th className='cn-flex-table-cell'>First name:</th>
-                  <td className='cn-flex-table-cell'>{user.student.name_first}</td>
-                </tr>
-              }
-              {user.student &&
-                <tr>
-                  <th className='cn-flex-table-cell'>Last name:</th>
-                  <td className='cn-flex-table-cell'>{user.student.name_last}</td>
-                </tr>
-              }
-              {user.student &&
-                <tr>
-                  <th className='cn-flex-table-cell'>Phone:</th>
-                  <td className='cn-flex-table-cell'>{user.student.phone}</td>
-                </tr>
-              }
-            </tbody>
-          </table> : <a onClick={this.toggleAccountForm.bind(this)}>Add details</a>
-        }
       </div>
     )
   }
@@ -122,7 +124,7 @@ class AccountInfo extends React.Component {
       <div className='cn-school-info'>
         <h2 className='center-text'>Account Info</h2>
         <div className='row'>
-          <div className='col-xs-12 col-md-6 margin-top'>
+          <div className='col-xs-12 col-md-2'>
             {this.renderAccountDetails()}
           </div>
         </div>
