@@ -31,6 +31,7 @@ import Accounts from './views/Hub/Accounts'
 import AccountInfo from './views/Hub/AccountInfo'
 import Analytics from './views/Hub/Analytics'
 import Switchboard from './views/Hub/Switchboard'
+import ReportList from './views/Hub/ReportList'
 
 import EnrollmentLinkLanding from './views/EnrollmentLink/Landing'
 import StudentLink from './views/StudentLink'
@@ -77,6 +78,7 @@ const router = (
           <Route path='/hub/accounts/account/info' component={AccountInfo} />
           <Route path='/hub/analytics' component={Analytics} />
           <Route path='/hub/switchboard' component={Switchboard} />
+          <Route path='/hub/reports' component={ReportList} />
         </Route>
 
         <Route path='/class/:classId/syllabus_tool' component={SyllabusTool} />

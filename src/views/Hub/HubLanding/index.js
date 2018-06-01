@@ -17,6 +17,7 @@ class HubLanding extends React.Component {
       reports: []
     }
   }
+
   componentWillMount () {
     this.getStatuses()
     if (this.isAdminUser()) {
@@ -177,7 +178,8 @@ class HubLanding extends React.Component {
           </div>
 
           <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 margin-top'>
-            <button className='nav-button admin button full-width'>
+            <button className='nav-button admin button full-width' onClick={() =>
+              browserHistory.push({pathname: '/hub/reports', state: {reports: this.state.reports}})}>
               <img src='/src/assets/images/icons/School.png'/>
               <span>Reports (
               {this.state.loadingReports ? <Loading style={{color: 'white'}}/>
