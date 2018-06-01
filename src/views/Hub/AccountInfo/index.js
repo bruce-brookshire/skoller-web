@@ -5,6 +5,26 @@ import Modal from '../../../components/Modal'
 import AccountInfoForm from './AccountInfoForm'
 import actions from '../../../actions'
 import ClassList from '../../components/ClassList'
+import Grid from '../../../components/Grid'
+
+const headers = [
+  {
+    field: 'context',
+    display: 'Context'
+  },
+  {
+    field: 'note',
+    display: 'Note'
+  },
+  {
+    field: 'isComplete',
+    display: 'Complete?'
+  },
+  {
+    field: 'reportedBy',
+    display: 'Reported By'
+  }
+]
 
 class AccountInfo extends React.Component {
   constructor (props) {
@@ -119,6 +139,44 @@ class AccountInfo extends React.Component {
     })
   }
 
+  getRows () {
+    return this.state.user.reports.map((item, index) =>
+      this.mapRow(item, index)
+    )
+  }
+
+  mapRow (item, index) {
+    const {context, note, is_complete: isComplete, reported_by: reportedBy, id} = item
+
+    const row = {
+      id: id,
+      context: context || '',
+      note: note || '',
+      isComplete: isComplete ? 'True' : 'False',
+      reportedBy: reportedBy.email
+    }
+
+    return row
+  }
+
+  renderReports () {
+    return (
+      <div className='cn-shadow-box'>
+        <div className='cn-shadow-box-content'>
+          <div className='cn-card-title margin-bottom'>
+            Reports
+          </div>
+          {this.state.user.reports && <Grid
+            headers={headers}
+            rows={this.getRows()}
+            disabled={true}
+            className="striped"
+          />}
+        </div>
+      </div>
+    )
+  }
+
   render () {
     return (
       <div>
@@ -143,6 +201,7 @@ class AccountInfo extends React.Component {
               </div>
             </div>
           }
+          {this.renderReports()}
         </div>
         {this.renderAccountFormModal()}
       </div>
