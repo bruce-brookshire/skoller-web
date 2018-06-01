@@ -35,9 +35,7 @@ class AccountInfo extends React.Component {
   componentWillMount () {
     const {state} = this.props.location
     if (state && state.user) {
-      actions.auth.getUserById(state.user).then(user => {
-        this.setState({user})
-      }).catch(() => false)
+      this.getUser(state.user)
     }
     if (this.state.user && this.state.user.student) {
       actions.classes.getStudentClassesById(this.state.user.student.id).then(classes => {
@@ -53,6 +51,12 @@ class AccountInfo extends React.Component {
       openAccountForm: false,
       user: (state && state.user) || null
     }
+  }
+
+  getUser (user) {
+    actions.auth.getUserById(user).then(user => {
+      this.setState({user})
+    }).catch(() => false)
   }
 
   getUserRoles () {
@@ -159,6 +163,12 @@ class AccountInfo extends React.Component {
     return row
   }
 
+  onSelectReport (report) {
+    actions.reports.resolveReport(report.id).then(() => {
+      this.getUser(this.state.user)
+    }).catch(() => false)
+  }
+
   renderReports () {
     return (
       <div className='cn-shadow-box'>
@@ -171,6 +181,8 @@ class AccountInfo extends React.Component {
             rows={this.getRows()}
             disabled={true}
             className="striped"
+            canSelect={true}
+            onSelect={this.onSelectReport.bind(this)}
           />}
         </div>
       </div>
