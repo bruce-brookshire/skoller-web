@@ -131,15 +131,22 @@ class AccountInfo extends React.Component {
         <div className="row center-md center-lg">
           <div className='col-xs-12 col-md-9 col-lg-6 margin-top'>
             {this.state.user && this.state.user.student &&
-              <ClassList
-                classes={this.state.classes}
-                disabled={true}
-                onDelete={null}
-                onSelect={this.onClassSelect.bind(this)}
-                deleteMessage=""
-                emptyMessage="This student has no classes."
-                onUpdate={null}
-              />
+              <div className='cn-shadow-box'>
+                <div className='cn-shadow-box-content'>
+                  <div className='cn-card-title margin-bottom'>
+                    Classes
+                  </div>
+                  <ClassList
+                    classes={this.state.classes}
+                    disabled={true}
+                    onDelete={null}
+                    onSelect={this.onClassSelect.bind(this)}
+                    deleteMessage=""
+                    emptyMessage="This student has no classes."
+                    onUpdate={null}
+                  />
+                </div>
+              </div>
             }
           </div>
         </div>
