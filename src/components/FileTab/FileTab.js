@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 class FileTab extends React.Component {
-
   renderRemoveBtn () {
     if (this.props.removable) {
       return (<button className='fa fa-times' onClick={() => this.props.onDelete()}></button>)

@@ -35,7 +35,12 @@ class UploadHistory extends React.Component {
     return (
       <div className='cn-upload-history'>
         <div className='upload-history-list'>
-          <FileUpload className={containerClasses.join(' ')} allow={this.props.allow} disabled={this.props.disabled} onUpload={this.props.onUpload}>
+          <FileUpload
+            className={containerClasses.join(' ')}
+            allow={this.props.allow}
+            disabled={this.props.disabled}
+            onUpload={this.props.onUpload}
+          >
             <span className='header center-text'>{title}</span>
             {this.renderHistory()}
           </FileUpload>

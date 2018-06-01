@@ -1,4 +1,4 @@
-import {get, post, put} from '../utilities/api'
+import {get, post} from '../utilities/api'
 
 /*
 * Get school periods.
