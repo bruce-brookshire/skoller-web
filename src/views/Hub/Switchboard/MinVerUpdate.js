@@ -18,7 +18,7 @@ class AutoUpdate extends React.Component {
     super(props)
     this.state = this.initializeState()
   }
-  
+
   initializeState () {
     return {
       form: this.initializeFormData(),
@@ -26,19 +26,19 @@ class AutoUpdate extends React.Component {
     }
   }
 
-  initializeFormData() {
+  initializeFormData () {
     return {
-      min_ios_version: this.findSetting("min_ios_version"),
-      min_android_version: this.findSetting("min_android_version")
+      min_ios_version: this.findSetting('min_ios_version'),
+      min_android_version: this.findSetting('min_android_version')
     }
   }
 
   findSetting (key) {
-    return this.props.data.find(x => x.name == key).value
+    return this.props.data.find(x => x.name === key).value
   }
 
-  mapFormData() {
-    const {form} = this.state;
+  mapFormData () {
+    const {form} = this.state
 
     let array = []
 
@@ -50,7 +50,7 @@ class AutoUpdate extends React.Component {
       array.push(obj)
     })
 
-    return array;
+    return array
   }
 
   /*
@@ -60,9 +60,8 @@ class AutoUpdate extends React.Component {
     event.preventDefault()
 
     if (this.props.validateForm(this.state.form, requiredFields)) {
-
       const data = this.mapFormData()
-      
+
       actions.settings.updateMinVer(data).then(() => {
         this.props.onSubmit()
         this.props.onClose()
