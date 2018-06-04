@@ -15,6 +15,7 @@ class ClassCard extends React.Component {
   renderAdminHeader () {
     const isEditable = this.props.cl.is_editable
     const isChat = this.props.cl.is_chat_enabled
+    const {cl} = this.props
 
     return (
       <div>
@@ -22,6 +23,7 @@ class ClassCard extends React.Component {
         <i className='fa fa-pencil cn-blue cursor' onClick={() => this.props.onEdit()} />
         <i className={'fa fa-wrench cursor margin-left ' + (isEditable ? 'cn-grey' : 'cn-red')} onClick={() => this.props.toggleWrench()} />
         <i className={'cursor margin-left ' + (isChat ? 'fa fa-comment cn-blue' : 'fa fa-comment-o cn-grey')} onClick={() => this.props.toggleChat()} />
+        {cl.student_requests.findIndex((item) => !item.is_completed) > -1 && <i className='fa fa-warning cn-red cursor margin-left' onClick={this.props.onSelectIssue.bind(this)} />}
       </div>
     )
   }
@@ -128,5 +130,6 @@ ClassCard.propTypes = {
   isAdmin: PropTypes.bool,
   toggleWrench: PropTypes.func,
   toggleChat: PropTypes.func,
-  toggleDocuments: PropTypes.func
+  toggleDocuments: PropTypes.func,
+  onSelectIssue: PropTypes.func
 }

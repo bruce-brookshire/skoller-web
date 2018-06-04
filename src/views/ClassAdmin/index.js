@@ -408,6 +408,7 @@ class ClassAdmin extends React.Component {
           toggleWrench={this.toggleWrench.bind(this)}
           toggleChat={this.toggleChat.bind(this)}
           toggleDocuments={this.toggleDocs.bind(this)}
+          onSelectIssue={this.toggleStudentRequestInfo.bind(this)}
         />
       </div>
     )
