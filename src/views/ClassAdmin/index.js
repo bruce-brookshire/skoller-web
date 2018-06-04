@@ -436,6 +436,8 @@ class ClassAdmin extends React.Component {
           cl={cl}
           canEdit={true}
           onSubmit={(cl) => this.updateClass(cl)}
+          hasIssues={cl.change_requests.findIndex((item) => item.change_type.id === 300 && !item.is_completed) > -1}
+          onSelectIssue={this.toggleStudentRequestInfo.bind(this)}
         />
       </div>
     )
@@ -476,6 +478,7 @@ class ClassAdmin extends React.Component {
             <div>
               {isWeightsEditable && <i className='fa fa-plus cn-blue cursor margin-right' onClick={() => this.toggleWeightCreateModal()} />}
               <i className='fa fa-pencil cn-blue cursor' onClick={() => this.setState({isWeightsEditable: !isWeightsEditable})} />
+              {cl.change_requests.findIndex((item) => item.change_type.id === 200 && !item.is_completed) > -1 && <i className='fa fa-warning cn-red cursor margin-left' onClick={this.toggleStudentRequestInfo.bind(this)} />}
             </div>
           </div>
           <WeightTable
