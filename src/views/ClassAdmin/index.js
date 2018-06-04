@@ -483,7 +483,7 @@ class ClassAdmin extends React.Component {
         <div className='cn-shadow-box-content'>
           <HelpNeededInfo
             cl={cl}
-            onComplete={this.toggleRequestResolvedModal.bind(this)}
+            onComplete={this.toggleHelpResolvedModal.bind(this)}
           />
         </div>
       </div>
