@@ -214,6 +214,10 @@ body {
   color: red;
 }
 
+.cn-yellow {
+  color: $cn-color-yellow;
+}
+
 .cn-red-background {
   background-color: red;
   &:hover {

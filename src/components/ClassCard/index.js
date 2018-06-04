@@ -24,6 +24,7 @@ class ClassCard extends React.Component {
         <i className={'fa fa-wrench cursor margin-left ' + (isEditable ? 'cn-grey' : 'cn-red')} onClick={() => this.props.toggleWrench()} />
         <i className={'cursor margin-left ' + (isChat ? 'fa fa-comment cn-blue' : 'fa fa-comment-o cn-grey')} onClick={() => this.props.toggleChat()} />
         {cl.student_requests.findIndex((item) => !item.is_completed) > -1 && <i className='fa fa-warning cn-red cursor margin-left' onClick={this.props.onSelectIssue.bind(this)} />}
+        {cl.help_requests.findIndex((item) => !item.is_completed) > -1 && <i className='fa fa-info-circle cn-yellow cursor margin-left' onClick={this.props.onSelectHelp.bind(this)} />}
       </div>
     )
   }
@@ -131,5 +132,6 @@ ClassCard.propTypes = {
   toggleWrench: PropTypes.func,
   toggleChat: PropTypes.func,
   toggleDocuments: PropTypes.func,
-  onSelectIssue: PropTypes.func
+  onSelectIssue: PropTypes.func,
+  onSelectHelp: PropTypes.func
 }
