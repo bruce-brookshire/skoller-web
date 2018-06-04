@@ -1,12 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import actions from '../../actions'
 
 class StudentRequestInfo extends React.Component {
-  constructor (props) {
-    super(props)
-  }
-
   componentWillMount () {
     const open = this.getOpenStudentRequests()
     this.setState({
@@ -24,7 +19,7 @@ class StudentRequestInfo extends React.Component {
     return sr.concat(cr)
   }
 
-  renderTitle(){
+  renderTitle () {
     return (
       <div className='student-request-title center-text' style={{margin: '0.5em 0'}}>
         {this.state.studentRequests[0].user && this.state.studentRequests[0].user.email ? (
@@ -41,12 +36,12 @@ class StudentRequestInfo extends React.Component {
     )
   }
 
-  renderStudentRequestFields(fields){
+  renderStudentRequestFields (fields) {
     return Object.keys(fields).map((field, index) => {
       let val = fields[field]
-      let formattedField = field.replace(/_/g,' ')
+      let formattedField = field.replace(/_/g, ' ')
       let finalFormat = formattedField.charAt(0).toUpperCase() + formattedField.slice(1)
-      if(val && field != 'id'){
+      if (val && field !== 'id') {
         return (
           <div className='student-request-field row' key={index}>
             <em className='col-xs-6'>{finalFormat}</em>
@@ -57,7 +52,7 @@ class StudentRequestInfo extends React.Component {
     })
   }
 
-  renderContent(){
+  renderContent () {
     return (
       <div className='student-request-content'>
         <div className='student-request-fields'>
@@ -68,10 +63,9 @@ class StudentRequestInfo extends React.Component {
   }
 
   render () {
-    const {cl} = this.props
-    if(this.state.studentRequests && this.state.studentRequests[0]){
+    if (this.state.studentRequests && this.state.studentRequests[0]) {
       return (
-        <div className='cn-section-content' style={{margin: '10px 0',maxHeight: '12em'}}>
+        <div className='cn-section-content' style={{margin: '10px 0', maxHeight: '12em'}}>
           {this.renderTitle()}
           {this.state.studentRequests[0].data ? (
             <div className='row'>
@@ -87,7 +81,7 @@ class StudentRequestInfo extends React.Component {
 }
 
 StudentRequestInfo.propTypes = {
-  cl: PropTypes.object.isRequired,
+  cl: PropTypes.object.isRequired
 }
 
 export default StudentRequestInfo

@@ -20,6 +20,7 @@ import Chat from '../components/ClassEditor/Chat'
 import FileViewer from '../../components/FileViewer'
 import {FileTabs, FileTab} from '../../components/FileTab'
 import {browserHistory} from 'react-router'
+import StudentRequestInfo from './StudentRequestInfo'
 
 @inject('rootStore') @observer
 class ClassAdmin extends React.Component {
@@ -54,7 +55,8 @@ class ClassAdmin extends React.Component {
       currentDocument: null,
       currentDocumentIndex: 0,
       documents: [],
-      hideDocuments: false
+      hideDocuments: false,
+      openStudentRequestInfo: false
     }
   }
 
@@ -257,6 +259,10 @@ class ClassAdmin extends React.Component {
     this.setState({hideDocuments: !this.state.hideDocuments})
   }
 
+  toggleStudentRequestInfo () {
+    this.setState({openStudentRequestInfo: !this.state.openStudentRequestInfo})
+  }
+
   toggleChat () {
     const {cl} = this.state
     actions.classes.updateClass({id: cl.id, is_chat_enabled: !cl.is_chat_enabled}).then((cl) => {
@@ -414,6 +420,8 @@ class ClassAdmin extends React.Component {
           cl={cl}
           canEdit={true}
           onSubmit={(cl) => this.updateClass(cl)}
+          hasIssues={cl.change_requests.findIndex((item) => item.change_type.id === 100 && !item.is_completed) > -1}
+          onSelectIssue={this.toggleStudentRequestInfo.bind(this)}
         />
       </div>
     )
@@ -439,6 +447,19 @@ class ClassAdmin extends React.Component {
         <StudentList
           students={cl.students}
         />
+      </div>
+    )
+  }
+
+  renderStudentRequestInfo () {
+    const {cl} = this.state
+    return (
+      <div className='cn-shadow-box margin-bottom'>
+        <div className='cn-shadow-box-content'>
+          <StudentRequestInfo
+            cl={cl}
+          />
+        </div>
       </div>
     )
   }
@@ -531,21 +552,23 @@ class ClassAdmin extends React.Component {
   renderSyllabus () {
     const {currentDocument} = this.state
     return (
-      <div id='cn-doc-container'>
-        <div id='cn-doc-title'>
-          Documents
-          <i className='fa fa-eye cn-blue cursor' onClick={() => this.toggleDocs()} />
-        </div>
-        {this.renderDocumentTabs()}
-        <div id='cn-doc-content'>
-          {currentDocument && <FileViewer source={currentDocument} /> }
+      <div id='cn-class-docs'>
+        <div id='cn-doc-container'>
+          <div id='cn-doc-title'>
+            Documents
+            <i className='fa fa-eye cn-blue cursor' onClick={() => this.toggleDocs()} />
+          </div>
+          {this.renderDocumentTabs()}
+          <div id='cn-doc-content'>
+            {currentDocument && <FileViewer source={currentDocument} /> }
+          </div>
         </div>
       </div>
     )
   }
 
   renderClass () {
-    const {documents, hideDocuments} = this.state
+    const {documents, hideDocuments, openStudentRequestInfo} = this.state
     return (
       <div id='cn-class-admin-container'>
         <div id='cn-class-admin'>
@@ -557,8 +580,9 @@ class ClassAdmin extends React.Component {
           {this.renderAssignments()}
           {this.renderChat()}
         </div>
-        {documents.length !== 0 && !hideDocuments && <div id='cn-class-docs'>
-          {this.renderSyllabus()}
+        {((documents.length !== 0 && !hideDocuments) || openStudentRequestInfo) && <div id='cn-half-panel'>
+          {openStudentRequestInfo && this.renderStudentRequestInfo()}
+          {documents.length !== 0 && !hideDocuments && this.renderSyllabus()}
         </div>}
         {this.renderIssuesModal()}
         {this.renderHelpResolvedModal()}
