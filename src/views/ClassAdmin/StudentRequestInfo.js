@@ -21,17 +21,20 @@ class StudentRequestInfo extends React.Component {
 
   renderTitle () {
     return (
-      <div className='student-request-title center-text' style={{margin: '0.5em 0'}}>
-        {this.state.studentRequests[0].user && this.state.studentRequests[0].user.email ? (
-          <h5 style={{margin: '2px'}}>{this.state.studentRequests[0].user.email}</h5>
-        ) : null}
-        <h6 className='student-request-type' style={{margin: '2px'}}>Student Request</h6>
-        {this.state.studentRequests[0].change_type && this.state.studentRequests[0].change_type.name ? (
-          <h6 style={{margin: '2px'}}>{this.state.studentRequests[0].change_type.name}</h6>
-        ) : null}
-        {this.state.studentRequests[0].notes ? (
-          <h6 style={{margin: '2px'}}>{`Note: ${this.state.studentRequests[0].notes}`}</h6>
-        ) : null}
+      <div className='cn-student-request-title margin-bottom'>
+        <div className='center-text'>
+          {this.state.studentRequests[0].user && this.state.studentRequests[0].user.email ? (
+            <h5 className='margin-zero'>{this.state.studentRequests[0].user.email}</h5>
+          ) : null}
+          <h6 className='margin-zero'>Student Request</h6>
+          {this.state.studentRequests[0].change_type && this.state.studentRequests[0].change_type.name ? (
+            <h6 className='margin-zero'>{this.state.studentRequests[0].change_type.name}</h6>
+          ) : null}
+          {this.state.studentRequests[0].notes ? (
+            <h6 className='margin-zero'>{`Note: ${this.state.studentRequests[0].notes}`}</h6>
+          ) : null}
+        </div>
+        <button className='button' onClick={() => this.props.onComplete()}>Complete</button>
       </div>
     )
   }
@@ -43,9 +46,9 @@ class StudentRequestInfo extends React.Component {
       let finalFormat = formattedField.charAt(0).toUpperCase() + formattedField.slice(1)
       if (val && field !== 'id') {
         return (
-          <div className='student-request-field row' key={index}>
-            <em className='col-xs-6'>{finalFormat}</em>
-            <span className='col-xs-6'>{val}</span>
+          <div className='cn-student-request-content' key={index}>
+            <em>{finalFormat}</em>
+            <span>{val}</span>
           </div>
         )
       }
@@ -54,10 +57,8 @@ class StudentRequestInfo extends React.Component {
 
   renderContent () {
     return (
-      <div className='student-request-content'>
-        <div className='student-request-fields'>
-          {this.renderStudentRequestFields(this.state.studentRequests[0].data)}
-        </div>
+      <div>
+        {this.renderStudentRequestFields(this.state.studentRequests[0].data)}
       </div>
     )
   }
@@ -65,14 +66,10 @@ class StudentRequestInfo extends React.Component {
   render () {
     if (this.state.studentRequests && this.state.studentRequests[0]) {
       return (
-        <div className='cn-section-content' style={{margin: '10px 0', maxHeight: '12em'}}>
+        <div>
           {this.renderTitle()}
           {this.state.studentRequests[0].data ? (
-            <div className='row'>
-              <div className='col-xs-12'>
-                {this.renderContent()}
-              </div>
-            </div>
+            this.renderContent()
           ) : null}
         </div>
       )
@@ -81,7 +78,8 @@ class StudentRequestInfo extends React.Component {
 }
 
 StudentRequestInfo.propTypes = {
-  cl: PropTypes.object.isRequired
+  cl: PropTypes.object.isRequired,
+  onComplete: PropTypes.func
 }
 
 export default StudentRequestInfo

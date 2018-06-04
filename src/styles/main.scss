@@ -97,6 +97,7 @@
 @import 'views/skip-category-modal.scss';
 @import 'views/student-list.scss';
 @import 'views/student-problems-modal.scss';
+@import 'views/student-request-info.scss';
 @import 'views/submit-syllabi.scss';
 @import 'views/switchboard.scss';
 @import 'views/syllabus-tool.scss';
@@ -260,6 +261,10 @@ body {
 
 .margin-top {
   margin-top: $unit-space;
+}
+
+.margin-zero {
+  margin: 0;
 }
 
 // Helpers ------------------------------------
