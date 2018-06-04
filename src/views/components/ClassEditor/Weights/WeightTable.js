@@ -122,7 +122,9 @@ WeightTable.propTypes = {
   cl: PropTypes.object,
   onSelectWeight: PropTypes.func,
   onDeleteWeight: PropTypes.func,
-  totalPoints: PropTypes.number
+  totalPoints: PropTypes.number,
+  hasIssues: PropTypes.bool,
+  onSelectIssue: PropTypes.func
 }
 
 export default WeightTable

@@ -167,14 +167,17 @@ class GradeScale extends React.Component {
   }
 
   render () {
-    const {canEdit} = this.props
+    const {canEdit, hasIssues} = this.props
     const {isEditable} = this.state
     return (
       <div id='class-editor-grade-scale'>
         <div id='class-editor-grade-scale-content'>
           <div className='grade-scale-title'>
             Grade Scale
-            {canEdit && <i className='fa fa-pencil cn-blue cursor' onClick={() => this.setState({isEditable: !isEditable})} />}
+            <div>
+              {canEdit && <i className='fa fa-pencil cn-blue cursor' onClick={() => this.setState({isEditable: !isEditable})} />}
+              {hasIssues && <i className='fa fa-warning cn-red cursor margin-left' onClick={() => this.props.onSelectIssue()} />}
+            </div>
           </div>
           {this.renderScale()}
           {isEditable && this.renderForm()}
@@ -192,7 +195,9 @@ GradeScale.propTypes = {
   formErrors: PropTypes.object,
   onSubmit: PropTypes.func,
   updateProperty: PropTypes.func,
-  canEdit: PropTypes.bool
+  canEdit: PropTypes.bool,
+  hasIssues: PropTypes.bool,
+  onSelectIssue: PropTypes.func
 }
 
 export default ValidateForm(Form(GradeScale, 'form'))

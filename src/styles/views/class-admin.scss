@@ -49,23 +49,26 @@
     }
   }
 
-  #cn-class-docs {
-    @include shadow-box;
+  #cn-half-panel {
     flex-basis: 50%;
-    min-height: 100%;
 
-    #cn-doc-container {
-      @include shadow-box-content;
+    #cn-class-docs {
+      @include shadow-box;
       height: 100%;
-
-      #cn-doc-title {
-        @include shadow-box-title;
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-      }
-      #cn-doc-content {
-        height: 92%;
+  
+      #cn-doc-container {
+        @include shadow-box-content;
+        height: 100%;
+  
+        #cn-doc-title {
+          @include shadow-box-title;
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+        }
+        #cn-doc-content {
+          height: 92%;
+        }
       }
     }
   }

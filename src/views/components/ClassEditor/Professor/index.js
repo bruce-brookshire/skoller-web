@@ -164,7 +164,7 @@ class Professor extends React.Component {
   }
 
   render () {
-    const {canEdit, cl} = this.props
+    const {canEdit, cl, hasIssues} = this.props
     const {isEditable} = this.state
 
     return (
@@ -175,6 +175,7 @@ class Professor extends React.Component {
             <div>
               {canEdit && <i className='fa fa-pencil cn-blue cursor' onClick={() => !cl.professor ? this.setState({isEditable: true}) : this.toggleProfessorModal()} />}
               {canEdit && cl.professor && <i className='fa fa-trash cn-red cursor margin-left' onClick={() => this.removeProfessorFromClass()} />}
+              {hasIssues && <i className='fa fa-warning cn-red cursor margin-left' onClick={() => this.props.onSelectIssue()} />}
             </div>
           </div>
           {!isEditable && this.renderProfessorInfo()}
@@ -190,7 +191,9 @@ class Professor extends React.Component {
 Professor.propTypes = {
   cl: PropTypes.object.isRequired,
   onSubmit: PropTypes.func,
-  canEdit: PropTypes.bool
+  canEdit: PropTypes.bool,
+  hasIssues: PropTypes.bool,
+  onSelectIssue: PropTypes.func
 }
 
 export default ValidateForm(Form(Professor, 'form'))

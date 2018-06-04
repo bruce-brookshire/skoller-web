@@ -20,6 +20,8 @@ import Chat from '../components/ClassEditor/Chat'
 import FileViewer from '../../components/FileViewer'
 import {FileTabs, FileTab} from '../../components/FileTab'
 import {browserHistory} from 'react-router'
+import StudentRequestInfo from './StudentRequestInfo'
+import HelpNeededInfo from './HelpNeededInfo'
 
 @inject('rootStore') @observer
 class ClassAdmin extends React.Component {
@@ -54,7 +56,9 @@ class ClassAdmin extends React.Component {
       currentDocument: null,
       currentDocumentIndex: 0,
       documents: [],
-      hideDocuments: false
+      hideDocuments: false,
+      openStudentRequestInfo: false,
+      openHelpInfo: false
     }
   }
 
@@ -257,6 +261,14 @@ class ClassAdmin extends React.Component {
     this.setState({hideDocuments: !this.state.hideDocuments})
   }
 
+  toggleStudentRequestInfo () {
+    this.setState({openStudentRequestInfo: !this.state.openStudentRequestInfo})
+  }
+
+  toggleHelpRequestInfo () {
+    this.setState({openHelpInfo: !this.state.openHelpInfo})
+  }
+
   toggleChat () {
     const {cl} = this.state
     actions.classes.updateClass({id: cl.id, is_chat_enabled: !cl.is_chat_enabled}).then((cl) => {
@@ -346,6 +358,7 @@ class ClassAdmin extends React.Component {
         onClose={this.toggleRequestResolvedModal.bind(this)}
         onSubmit={(cl) => {
           this.updateClass(cl)
+          this.setState({openStudentRequestInfo: false})
         }}
         request={openRequests[0]}
       />
@@ -401,6 +414,8 @@ class ClassAdmin extends React.Component {
           toggleWrench={this.toggleWrench.bind(this)}
           toggleChat={this.toggleChat.bind(this)}
           toggleDocuments={this.toggleDocs.bind(this)}
+          onSelectIssue={this.toggleStudentRequestInfo.bind(this)}
+          onSelectHelp={this.toggleHelpRequestInfo.bind(this)}
         />
       </div>
     )
@@ -414,6 +429,8 @@ class ClassAdmin extends React.Component {
           cl={cl}
           canEdit={true}
           onSubmit={(cl) => this.updateClass(cl)}
+          hasIssues={cl.change_requests.findIndex((item) => item.change_type.id === 100 && !item.is_completed) > -1}
+          onSelectIssue={this.toggleStudentRequestInfo.bind(this)}
         />
       </div>
     )
@@ -427,6 +444,8 @@ class ClassAdmin extends React.Component {
           cl={cl}
           canEdit={true}
           onSubmit={(cl) => this.updateClass(cl)}
+          hasIssues={cl.change_requests.findIndex((item) => item.change_type.id === 300 && !item.is_completed) > -1}
+          onSelectIssue={this.toggleStudentRequestInfo.bind(this)}
         />
       </div>
     )
@@ -443,6 +462,34 @@ class ClassAdmin extends React.Component {
     )
   }
 
+  renderStudentRequestInfo () {
+    const {cl} = this.state
+    return (
+      <div className='cn-shadow-box margin-bottom'>
+        <div className='cn-shadow-box-content'>
+          <StudentRequestInfo
+            cl={cl}
+            onComplete={this.toggleRequestResolvedModal.bind(this)}
+          />
+        </div>
+      </div>
+    )
+  }
+
+  renderHelpInfo () {
+    const {cl} = this.state
+    return (
+      <div className='cn-shadow-box margin-bottom'>
+        <div className='cn-shadow-box-content'>
+          <HelpNeededInfo
+            cl={cl}
+            onComplete={this.toggleHelpResolvedModal.bind(this)}
+          />
+        </div>
+      </div>
+    )
+  }
+
   renderWeights () {
     const {cl, isWeightsEditable, weights, currentWeight} = this.state
     return (
@@ -453,6 +500,7 @@ class ClassAdmin extends React.Component {
             <div>
               {isWeightsEditable && <i className='fa fa-plus cn-blue cursor margin-right' onClick={() => this.toggleWeightCreateModal()} />}
               <i className='fa fa-pencil cn-blue cursor' onClick={() => this.setState({isWeightsEditable: !isWeightsEditable})} />
+              {cl.change_requests.findIndex((item) => item.change_type.id === 200 && !item.is_completed) > -1 && <i className='fa fa-warning cn-red cursor margin-left' onClick={this.toggleStudentRequestInfo.bind(this)} />}
             </div>
           </div>
           <WeightTable
@@ -531,21 +579,23 @@ class ClassAdmin extends React.Component {
   renderSyllabus () {
     const {currentDocument} = this.state
     return (
-      <div id='cn-doc-container'>
-        <div id='cn-doc-title'>
-          Documents
-          <i className='fa fa-eye cn-blue cursor' onClick={() => this.toggleDocs()} />
-        </div>
-        {this.renderDocumentTabs()}
-        <div id='cn-doc-content'>
-          {currentDocument && <FileViewer source={currentDocument} /> }
+      <div id='cn-class-docs'>
+        <div id='cn-doc-container'>
+          <div id='cn-doc-title'>
+            Documents
+            <i className='fa fa-eye cn-blue cursor' onClick={() => this.toggleDocs()} />
+          </div>
+          {this.renderDocumentTabs()}
+          <div id='cn-doc-content'>
+            {currentDocument && <FileViewer source={currentDocument} /> }
+          </div>
         </div>
       </div>
     )
   }
 
   renderClass () {
-    const {documents, hideDocuments} = this.state
+    const {documents, hideDocuments, openStudentRequestInfo, openHelpInfo} = this.state
     return (
       <div id='cn-class-admin-container'>
         <div id='cn-class-admin'>
@@ -557,8 +607,11 @@ class ClassAdmin extends React.Component {
           {this.renderAssignments()}
           {this.renderChat()}
         </div>
-        {documents.length !== 0 && !hideDocuments && <div id='cn-class-docs'>
-          {this.renderSyllabus()}
+        {((documents.length !== 0 && !hideDocuments) || openStudentRequestInfo || openHelpInfo) &&
+        <div id='cn-half-panel'>
+          {openStudentRequestInfo && this.renderStudentRequestInfo()}
+          {openHelpInfo && this.renderHelpInfo()}
+          {documents.length !== 0 && !hideDocuments && this.renderSyllabus()}
         </div>}
         {this.renderIssuesModal()}
         {this.renderHelpResolvedModal()}
