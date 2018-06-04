@@ -352,6 +352,7 @@ class ClassAdmin extends React.Component {
         onClose={this.toggleRequestResolvedModal.bind(this)}
         onSubmit={(cl) => {
           this.updateClass(cl)
+          this.setState({openStudentRequestInfo: false})
         }}
         request={openRequests[0]}
       />

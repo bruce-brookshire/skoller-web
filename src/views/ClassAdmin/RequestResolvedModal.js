@@ -7,11 +7,6 @@ import actions from '../../actions'
 
 @inject('rootStore') @observer
 class RequestResolvedModal extends React.Component {
-  isSW () {
-    const {userStore} = this.props.rootStore
-    return userStore.isSW()
-  }
-
   navigateToNeedsChange () {
     browserHistory.push({
       pathname: '/hub/classes',
@@ -53,6 +48,7 @@ class RequestResolvedModal extends React.Component {
     } else {
       this.resolveStudentRequest()
     }
+    this.props.onClose()
   }
 
   onCancel () {
