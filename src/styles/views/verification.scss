@@ -1,14 +1,28 @@
 .cn-verification-container {
   @include onboarding-section;
+  padding: 0;
+
+  @include breakpoint(medium) {
+    width: 400px;
+  }
   
   .cn-verification-content {
-    width: 400px;
+    width: 100%;
+
+    @include breakpoint(medium) {
+      width: 400px;
+    }
+
     .img-container {
       align-items: center;
       display: flex;
 
       img {
-        width: 400px;
+        width: 100%;
+        
+        @include breakpoint(medium) {
+          width: 400px;
+        }
       }
     }
     .content-container {

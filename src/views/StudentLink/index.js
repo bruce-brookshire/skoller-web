@@ -53,11 +53,6 @@ class StudentLink extends React.Component {
           link={this.props.params.link}
           customLink={this.props.params.customLink}
         />
-        <a
-          className='cn-create-account-login'
-          onClick={() => this.switchForm()}>
-          Already have an account? Log in.
-        </a>
       </div>
     )
   }

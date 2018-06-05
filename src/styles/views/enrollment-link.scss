@@ -4,9 +4,15 @@
 
   .cn-enrollment-link-content {
     @include center-viewport-content-container-internal;
-    width: 475px;
-    max-width: 1000px;
+    width: 100%;
     margin: 0 auto;
+    padding: 1em;
+
+    @include breakpoint(medium) {
+      width: 475px;
+      max-width: 1000px;
+      padding: 0;
+    }
 
     .cn-enrollment-link-content-inner {
       width: 382px;
