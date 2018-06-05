@@ -63,14 +63,14 @@ class SemesterDetails extends React.Component {
   }
 
   mapRow (item, index) {
-    const {id, name, inserted_at, student_count, class_count} = item
+    const {id, name, inserted_at: insertedAt, student_count: studentCount, class_count: classCount} = item
     const row = {
       id: id,
       name: name || '',
-      inserted_at: inserted_at
-        ? convertUTCDatetimeToDateTimeString(inserted_at, 'CST') : '',
-      student_count: student_count || 0,
-      class_count: class_count || 0,
+      inserted_at: insertedAt
+        ? convertUTCDatetimeToDateTimeString(insertedAt, 'CST') : '',
+      student_count: studentCount || 0,
+      class_count: classCount || 0,
       component: this.props.onUpload ? <div className='col-xs-12 col-md-6 margin-top'>
         <h3>Import classes</h3>
         <UploadHistory

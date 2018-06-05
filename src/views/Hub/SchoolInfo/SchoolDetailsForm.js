@@ -56,23 +56,23 @@ class SchoolDetailsForm extends React.Component {
   */
   initializeFormData (data) {
     let formData = data || {}
-    const {id, name, adr_zip, adr_state, adr_line_1, adr_city, timezone, email_domains, short_name} = formData
+    const {id, name, adr_zip: zip, adr_state: state, adr_line_1: line1, adr_city: city, timezone, email_domains: domains, short_name: shortName} = formData
 
-    const student_email = (email_domains && email_domains
-      .filter(e => !e.is_professor_only).map(e => e.email_domain ).join(', ')) || ''
-    const professor_email = (email_domains && email_domains
-      .filter(e => e.is_professor_only).map(e => e.email_domain ).join(', ')) || ''
+    const studentEmail = (domains && domains
+      .filter(e => !e.is_professor_only).map(e => e.email_domain).join(', ')) || ''
+    const professorEmail = (domains && domains
+      .filter(e => e.is_professor_only).map(e => e.email_domain).join(', ')) || ''
     return ({
       id: id || '',
       name: name || '',
-      adr_zip: adr_zip || '',
-      adr_state: adr_state || '',
-      adr_line_1: adr_line_1 || '',
-      adr_city: adr_city || '',
+      adr_zip: zip || '',
+      adr_state: state || '',
+      adr_line_1: line1 || '',
+      adr_city: city || '',
       timezone: timezone || '',
-      student_email: student_email || '',
-      professor_email: professor_email || '',
-      short_name: short_name || ''
+      student_email: studentEmail || '',
+      professor_email: professorEmail || '',
+      short_name: shortName || ''
     })
   }
 
@@ -259,11 +259,13 @@ SchoolDetailsForm.propTypes = {
   cl: PropTypes.object,
   formErrors: PropTypes.object,
   updateProperty: PropTypes.func,
-  validateForm: PropTypes.func
+  validateForm: PropTypes.func,
+  school: PropTypes.object,
+  onSubmit: PropTypes.func,
+  onClose: PropTypes.func
 }
 
 export default ValidateForm(Form(SchoolDetailsForm, 'form'))
-
 
 class InfoButton extends React.Component {
   render () {
@@ -274,4 +276,8 @@ class InfoButton extends React.Component {
       </div>
     )
   }
+}
+
+InfoButton.propTypes = {
+  message: PropTypes.string
 }

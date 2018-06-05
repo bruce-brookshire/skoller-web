@@ -19,12 +19,12 @@ const headers = [
 
 class AssignmentReminders extends React.Component {
   mapRow (item, index) {
-    const {message, is_plural, topic, id} = item
+    const {message, is_plural: plural, topic, id} = item
 
     const row = {
       id: id,
       message: message,
-      is_plural: is_plural ? 'Yes' : 'No',
+      is_plural: plural ? 'Yes' : 'No',
       type: topic && topic.name ? topic.name : ''
     }
     return row
@@ -55,7 +55,7 @@ class AssignmentReminders extends React.Component {
     )
   }
 }
-AssignmentReminders.PropTypes = {
+AssignmentReminders.propTypes = {
   reminders: PropTypes.array.isRequired,
   onDelete: PropTypes.func
 }
