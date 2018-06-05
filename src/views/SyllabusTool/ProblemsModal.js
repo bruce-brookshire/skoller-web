@@ -18,8 +18,7 @@ class ProblemsModal extends React.Component {
         <div id='cn-student-problems-modal'>
           <h3 className='center-text'>Having problems?</h3>
           <div className='center-text'>
-            If someone uploaded the wrong documents for this class, 
-            you can delete and add files on the <a onClick={() => this.goToDocuments()}>documents page</a> for this class.
+            If someone uploaded the wrong documents for this class, you can delete and add files on the <a onClick={() => this.goToDocuments()}>documents page</a> for this class.
           </div>
           <div className='center-text margin-top'>
           If that’s not your issue, <a className='link' href='mailto:support@skoller.com'>let us know</a> what’s going on and we’ll figure it out.

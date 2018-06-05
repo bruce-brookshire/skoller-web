@@ -2,7 +2,6 @@ import React from 'react'
 import HoverImage from '../../components/Image/HoverImage'
 
 class WhoTalking extends React.Component {
-
   render () {
     const peopleList = [
       {

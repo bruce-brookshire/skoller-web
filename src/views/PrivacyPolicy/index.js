@@ -1,9 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import {browserHistory} from 'react-router'
 
 class PrivacyPolicy extends React.Component {
-
   render () {
     return (
       <div className='cn-privacy-policy-container'>
@@ -11,9 +9,9 @@ class PrivacyPolicy extends React.Component {
           <div className="center-text">
             <h2>
               <img
-              className='privacy-policy-logo'
-              onClick={()=>{ browserHistory.push('/landing') }}
-              src='../../../src/assets/images/logo-wide-blue@1x.png'/>
+                className='privacy-policy-logo'
+                onClick={() => { browserHistory.push('/landing') }}
+                src='../../../src/assets/images/logo-wide-blue@1x.png'/>
               <span style={{display: 'block'}}>Skoller Mobile App Privacy Policy</span>
             </h2>
             <em>Last modified: January 2018</em>
@@ -23,13 +21,13 @@ class PrivacyPolicy extends React.Component {
             <div className='privacy-policy-section'>
               <h3>Introduction</h3>
               <p>Skoller, LLC, a Tennessee limited liability company,
-              ("Company" or "We") respects your privacy and are committed to protecting it
+              (&quot;Company&quot; or &quot;We&quot;) respects your privacy and are committed to protecting it
               through our compliance with this policy.
               This policy describes:</p>
               <ul>
                 <li>The types of information we may collect or that you may provide
                 when you download, install, register with, access or use the
-                Skoller Mobile Application (the "App").</li>
+                Skoller Mobile Application (the &quot;App&quot;).</li>
                 <li>Our practices for collecting, using, maintaining, protecting and disclosing that information.</li>
               </ul>
               <p>This policy applies only to information we collect in this App and, in e-mail,
@@ -75,7 +73,7 @@ class PrivacyPolicy extends React.Component {
               <h3>Information You Provide to Us</h3>
               <p>When you download, register with or use this App, we may ask you provide information:</p>
               <ul>
-                <li>By which you may be personally identified, such as name, school issued e-mail address, and phone number ("personal information").</li>
+                <li>By which you may be personally identified, such as name, school issued e-mail address, and phone number (&quot;personal information&quot;).</li>
                 <li>That is about you and does identify you relating to assignments and
                 changes to assignments such as adding, deleting or adjusting due dates and
                 relating to interactions on communication platforms within the App.
@@ -92,8 +90,8 @@ class PrivacyPolicy extends React.Component {
                 <li>Your search queries on the App.</li>
                 <li>Historical copies of course information, including course syllabi.</li>
               </ul>
-              <p>You may provide information to be published or displayed ("Posted")
-              on public areas of the App (collectively, "User Contributions").
+              <p>You may provide information to be published or displayed (&quot;Posted&quot;)
+              on public areas of the App (collectively, &quot;User Contributions&quot;).
               Your User Contributions are Posted and transmitted to others at your own risk.
               Additionally, we cannot control the actions of third parties with whom
               you may choose to share your User Contributions.
@@ -110,9 +108,9 @@ class PrivacyPolicy extends React.Component {
                 including traffic data, location data, logs and other communication data
                 and the resources that you access and use on or through the App. </li>
                 <li><strong>Device Information.</strong> We may collect information about your mobile device
-                and internet connection, including the device's unique device identifier,
+                and internet connection, including the device&apos;s unique device identifier,
                 IP address, operating system, browser type, mobile network information and the
-                device's telephone number.</li>
+                device&apos;s telephone number.</li>
                 <li><strong>Stored Information and Files.</strong> The App also may access metadata and
                 other information associated with other files stored on your device.
                 This may include, for example, photographs, audio and video clips,
@@ -149,7 +147,7 @@ class PrivacyPolicy extends React.Component {
               apps and other online services websites.
               They may use this information to provide you with interest-based (behavioral) advertising or
               other targeted content.</p>
-              <p>We do not control these third parties' tracking technologies or how they may be used.
+              <p>We do not control these third parties&apos; tracking technologies or how they may be used.
               If you have any questions about an advertisement or other targeted content,
               you should contact the responsible provider directly.</p>
             </div>
@@ -187,7 +185,7 @@ class PrivacyPolicy extends React.Component {
                 and who are bound by contractual obligations to keep personal information confidential
                 and use it only for the purposes for which we disclose it to them.</li>
                 <li>To a buyer or other successor in the event of a merger, divestiture, restructuring,
-                reorganization, dissolution or other sale or transfer of some or all of Company's assets,
+                reorganization, dissolution or other sale or transfer of some or all of Company&apos;s assets,
                 whether as a going concern or as part of bankruptcy, liquidation or similar proceeding,
                 in which personal information held by Company about our App users is among the assets transferred.</li>
                 <li>To fulfill the purpose for which you provide it.</li>
@@ -249,7 +247,7 @@ class PrivacyPolicy extends React.Component {
             <div className='privacy-policy-section'>
               <h3>Changes to Our Privacy Policy</h3>
               <p>We may update our privacy policy from time to time.
-              If we make material changes to how we treat our users' personal information,
+              If we make material changes to how we treat our users&apos; personal information,
               we will post the new privacy policy on this page.
               The date the privacy policy was last revised is identified at the top of the page.
               You are responsible for periodically visiting this privacy policy to check for any changes.</p>

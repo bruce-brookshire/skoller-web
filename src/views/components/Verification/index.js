@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import VerificationCode from '../../../components/VerificationCode'
 import actions from '../../../actions'
@@ -89,6 +90,11 @@ class Verification extends React.Component {
       </div>
     )
   }
+}
+
+Verification.propTypes = {
+  rootStore: PropTypes.object,
+  onSubmit: PropTypes.func
 }
 
 export default Verification
