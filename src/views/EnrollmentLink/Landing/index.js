@@ -96,7 +96,7 @@ class EnrollmentLink extends React.Component {
   }
 }
 
-EnrollmentLink.PropTypes = {
+EnrollmentLink.propTypes = {
   params: PropTypes.object.isRequired,
   rootStore: PropTypes.func
 }
