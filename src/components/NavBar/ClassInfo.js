@@ -46,14 +46,14 @@ class ClassInfo extends React.Component {
   * Render the class details for non DIY
   */
   renderClassDetails () {
-    const {cl: {number, professor, meet_days, meet_start_time}, isDIY} = this.props
+    const {cl: {number, professor, meet_days: days, meet_start_time: startTime}, isDIY} = this.props
 
     if (!isDIY) {
       return (
         <div className='class-details'>
           <span>{number}</span>
           <span>{professor && mapProfessor(professor)}</span>
-          <span>{meet_days}: {meet_start_time ? mapTimeToDisplay(meet_start_time) : 'TBA'}</span>
+          <span>{days}: {startTime ? mapTimeToDisplay(startTime) : 'TBA'}</span>
         </div>
       )
     }

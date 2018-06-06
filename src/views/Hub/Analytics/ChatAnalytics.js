@@ -1,41 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Loading from '../../../components/Loading'
 import {inject, observer} from 'mobx-react'
-import {browserHistory} from 'react-router'
-import actions from '../../../actions'
 import {roundToTwo} from '../../../utilities/display'
 
 @inject('rootStore') @observer
 class ChatAnalytics extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = this.initializeState()
-  }
-
-  /////////////////////////
-  ///////// INIT //////////
-  /////////////////////////
-
-  componentWillMount () {
-  }
-
-  componentWillUnmount () {
-  }
-
-  /*
-  * Initialize state
-  */
-  initializeState () {
-    return {
-      loading: false,
-    }
-  }
-
-  ///////////////////////////
-  ///////// RENDER //////////
-  ///////////////////////////
-
   render () {
     const cl = this.props.data.class
     const {chat} = this.props.data

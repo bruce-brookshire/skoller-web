@@ -1,9 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Loading from '../../../components/Loading'
 import {inject, observer} from 'mobx-react'
-import {browserHistory} from 'react-router'
-import actions from '../../../actions'
 import {convertUTCTimeToTimeString} from '../../../utilities/time'
 import Grid from '../../../components/Grid/index'
 import {roundToTwo} from '../../../utilities/display'
@@ -25,34 +22,6 @@ const headers = [
 
 @inject('rootStore') @observer
 class Notifications extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = this.initializeState()
-  }
-
-  /////////////////////////
-  ///////// INIT //////////
-  /////////////////////////
-
-  componentWillMount () {
-  }
-
-  componentWillUnmount () {
-  }
-
-  /*
-  * Initialize state
-  */
-  initializeState () {
-    return {
-      loading: false,
-    }
-  }
-
-  ///////////////////////////
-  ///////// RENDER //////////
-  ///////////////////////////
-
   getRows () {
     return this.props.data.notifications.common_times.map((item, index) =>
       this.mapRow(item, index)
@@ -60,10 +29,10 @@ class Notifications extends React.Component {
   }
 
   mapRow (item, index) {
-    const { timezone, notification_time, count } = item
+    const { timezone, notification_time: notificationTime, count } = item
 
     const row = {
-      notification_time: convertUTCTimeToTimeString(notification_time, timezone),
+      notification_time: convertUTCTimeToTimeString(notificationTime, timezone),
       timezone: timezone || '',
       count: count || 0
     }

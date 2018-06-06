@@ -1,9 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import {browserHistory} from 'react-router'
 
 class Faq extends React.Component {
-
   render () {
     return (
       <div className='cn-faq-container'>
@@ -11,9 +9,9 @@ class Faq extends React.Component {
           <div className="center-text">
             <h2>
               <img
-              className='faq-logo'
-              onClick={()=>{ browserHistory.push('/landing') }}
-              src='../../../src/assets/images/logo-wide-blue@1x.png'/>
+                className='faq-logo'
+                onClick={() => { browserHistory.push('/landing') }}
+                src='../../../src/assets/images/logo-wide-blue@1x.png'/>
               <span style={{display: 'block'}}>Skoller FAQ</span>
             </h2>
             <em>Last modified: January 2018</em>

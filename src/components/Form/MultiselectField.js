@@ -19,8 +19,8 @@ class MultiselectField extends React.Component {
         key={index}
         onClick={() => this.onSelect(data)}
       >
-        {this.autoComplete ?
-          matchText(data.name, this.autoComplete.getSearchText())
+        {this.autoComplete
+          ? matchText(data.name, this.autoComplete.getSearchText())
           : data.name
         }
       </div>
@@ -102,7 +102,7 @@ class MultiselectField extends React.Component {
         <div>
           <AutoComplete
             ref={(component) => { if (component) { this.autoComplete = component } }}
-            className={loading ? 'loading': ''}
+            className={loading ? 'loading' : ''}
             dataSource={options}
             emptyMessage={emptyMessage}
             updateAutoCompleteResults={this.onUpdateAutoCompleteResults.bind(this)}

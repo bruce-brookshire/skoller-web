@@ -213,7 +213,7 @@ class ProjectFourDoor extends React.Component {
   }
 
   render () {
-    const {is_auto_syllabus, is_diy_enabled, is_diy_preferred} = this.state.school
+    const {is_auto_syllabus: autoSyllabus, is_diy_enabled: diy, is_diy_preferred: diyPref} = this.state.school
     // in review
     if (this.inHelp()) {
       return this.renderSkollerWorking()
@@ -224,16 +224,16 @@ class ProjectFourDoor extends React.Component {
     } else if (this.needsSyllabus()) {
       return this.renderNeedsSyllabus()
     // normal
-    } else if (is_diy_enabled && !is_diy_preferred && is_auto_syllabus) {
+    } else if (diy && !diyPref && autoSyllabus) {
       return this.renderNormal()
     // inverted
-    } else if (is_diy_enabled && is_diy_preferred && is_auto_syllabus) {
+    } else if (diy && diyPref && autoSyllabus) {
       return this.renderInverted()
       // compass
-    } else if (!is_diy_enabled && !is_diy_preferred && is_auto_syllabus) {
+    } else if (!diy && !diyPref && autoSyllabus) {
       return this.renderCompass()
       // diy
-    } else if (is_diy_enabled && is_diy_preferred && !is_auto_syllabus) {
+    } else if (diy && diyPref && !autoSyllabus) {
       return this.renderDIY()
     } else {
       return this.renderNormal()

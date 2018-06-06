@@ -12,8 +12,7 @@ class SkipCategoryModal extends React.Component {
         <div id='cn-skip-category-modal'>
           <h3 className='center-text'>Are you sure you want to skip this category?</h3>
           <div className='center-text'>
-            Not having any assignments for a category can throw off your grade calculator. 
-            Even if you don’t know the due date yet, you should add any assignments that you know about for this category.
+            Not having any assignments for a category can throw off your grade calculator. Even if you don’t know the due date yet, you should add any assignments that you know about for this category.
           </div>
           <div className='cn-button-yes-no'>
             <button className='button cn-red-background' onClick={() => {

@@ -60,15 +60,15 @@ class ClassList extends React.Component {
   * @return [Object] row. Object of formatted row data for display in grid.
   */
   mapRow (item, index) {
-    const {id, subject, section, code, name, meet_start_time, meet_days, campus, professor, status, enrollment} = item
+    const {id, subject, section, code, name, meet_start_time: startTime, meet_days: days, campus, professor, status, enrollment} = item
 
     const row = {
       id: id || '',
       courseNumber: subject + ' ' + code + '.' + section || '-',
       name: name || '-',
       professor: professor ? mapProfessor(professor) : 'TBA',
-      days: meet_days || 'TBA',
-      beginTime: meet_start_time ? mapTimeToDisplay(meet_start_time) : 'TBA',
+      days: days || 'TBA',
+      beginTime: startTime ? mapTimeToDisplay(startTime) : 'TBA',
       campus: campus || '',
       status: status ? this.mapStatus(status) : '-',
       enrollment: enrollment || 0,
