@@ -24,13 +24,13 @@ const headers = [
 
 class NotificationHistory extends React.Component {
   mapRow (item, index) {
-    const {notification_category, affected_users, inserted_at, msg} = item
+    const {notification_category: category, affected_users: users, inserted_at: insertedAt, msg} = item
 
     const row = {
-      notification_category: notification_category || 'N/A',
-      affected_users: affected_users || 0,
-      inserted_at: inserted_at
-        ? convertUTCDatetimeToDateTimeString(inserted_at, 'CST') : '',
+      notification_category: category || 'N/A',
+      affected_users: users || 0,
+      inserted_at: insertedAt
+        ? convertUTCDatetimeToDateTimeString(insertedAt, 'CST') : '',
       msg: msg || ''
     }
     return row
@@ -61,7 +61,7 @@ class NotificationHistory extends React.Component {
     )
   }
 }
-NotificationHistory.PropTypes = {
+NotificationHistory.propTypes = {
   logs: PropTypes.array.isRequired
 }
 

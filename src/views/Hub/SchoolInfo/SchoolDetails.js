@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 class SchoolDetails extends React.Component {
-
   renderSchoolTable () {
     const {school} = this.props
     return (
@@ -22,11 +21,11 @@ class SchoolDetails extends React.Component {
           </tr>
           <tr>
             <th>Student email domain:</th>
-            <td>{school.email_domains && school.email_domains.filter(e => !e.is_professor_only).map(e => e.email_domain ).join(', ')}</td>
+            <td>{school.email_domains && school.email_domains.filter(e => !e.is_professor_only).map(e => e.email_domain).join(', ')}</td>
           </tr>
           <tr>
             <th>Prof email domain:</th>
-            <td>{school.email_domains && school.email_domains.filter(e => e.is_professor_only).map(e => e.email_domain ).join(', ')}</td>
+            <td>{school.email_domains && school.email_domains.filter(e => e.is_professor_only).map(e => e.email_domain).join(', ')}</td>
           </tr>
           <tr>
             <th>Time Zone:</th>

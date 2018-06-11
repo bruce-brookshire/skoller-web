@@ -6,12 +6,10 @@ import SelectField from '../../../components/Form/SelectField'
 import {inject, observer} from 'mobx-react'
 import {formatDate} from '../../../utilities/time'
 import actions from '../../../actions'
-import Advertising from './Advertising'
 import AssignmentInfo from './AssignmentInfo'
 import ChatAnalytics from './ChatAnalytics'
 import GradeEntry from './GradeEntry'
 import Notifications from './Notifications'
-import Reviews from './Reviews'
 import SyllabiProcessing from './SyllabiProcessing'
 import Updates from './Updates'
 
@@ -48,7 +46,6 @@ class Analytics extends React.Component {
   */
   initializeState () {
     let {navbarStore} = this.props.rootStore
-    const {state} = this.props.location
     navbarStore.cl = null
     navbarStore.title = 'Skoller Analytics'
     return {
@@ -85,7 +82,7 @@ class Analytics extends React.Component {
   }
 
   getAudienceName () {
-    let found = this.selectAudienceOptions().find((a) => a.value == this.state.audience)
+    let found = this.selectAudienceOptions().find((a) => a.value === this.state.audience)
     return found.name
   }
 
@@ -136,7 +133,7 @@ class Analytics extends React.Component {
 
   renderCategories () {
     return this.categories.map((c) => {
-      return <PillField label={c} value={this.state.category} onClick={(newVal) => this.setState({category:newVal})} />
+      return <PillField key={c} label={c} value={this.state.category} onClick={(newVal) => this.setState({category: newVal})} />
     })
   }
 
@@ -177,9 +174,9 @@ class Analytics extends React.Component {
   }
 
   renderGeneralResultFields () {
-    return this.generalFields.map((f) => {
+    return this.generalFields.map((f, idx) => {
       return (
-        <li>
+        <li key={idx}>
           <i className='fa fa-info general-field-info-icon'></i>
           <strong>{`${f}: `}</strong>
           <span>NA</span>
@@ -204,7 +201,7 @@ class Analytics extends React.Component {
   renderCustomResultsContent () {
     switch (this.state.category) {
       case 'Advertising':
-        return <Advertising audience={this.state.audience} max={this.state.maxDate} min={this.state.minDate}/>
+        return null
       case 'Syllabi Processing':
         // return <SyllabiProcessing audience={this.state.audience} max={this.state.maxDate} min={this.state.minDate}/>
         return <SyllabiProcessing data={this.state.data}/>
@@ -224,7 +221,7 @@ class Analytics extends React.Component {
         // return <GradeEntry audience={this.state.audience} max={this.state.maxDate} min={this.state.minDate}/>
         return <GradeEntry data={this.state.data}/>
       case 'Reviews and More':
-        return <Reviews audience={this.state.audience} max={this.state.maxDate} min={this.state.minDate}/>
+        return null
       default:
     }
   }
@@ -248,7 +245,7 @@ class Analytics extends React.Component {
 
   renderSearchAudience () {
     return (
-      <h5 className='center-text' style={{marginBottom: '1px',marginTop: '1px'}}>
+      <h5 className='center-text' style={{marginBottom: '1px', marginTop: '1px'}}>
         {this.getAudienceName()}
         {this.state.minDate && this.state.maxDate ? (
           <span>{` (${formatDate(this.state.minDate)} through ${formatDate(this.state.maxDate)})`}</span>

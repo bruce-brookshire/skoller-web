@@ -36,6 +36,7 @@ import ReportList from './views/Hub/ReportList'
 import EnrollmentLinkLanding from './views/EnrollmentLink/Landing'
 import StudentLink from './views/StudentLink'
 import Enroll from './views/EnrollmentLink/Enroll'
+import DownloadApp from './views/components/DownloadApp'
 
 import actions from './actions'
 import stores from './stores'
@@ -46,6 +47,7 @@ const router = (
     <Route path="/" component={App}>
       <IndexRedirect to="/app"/>
       <Route path='/landing' component={Landing} />
+      <Route path='/test' component={DownloadApp} />
       <Route path='/forgot_password' component={ForgotPassword} />
       <Route path='/reset_password/:token' component={ResetPassword} />
       <Route path='/privacypolicy' component={PrivacyPolicy} />

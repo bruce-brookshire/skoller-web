@@ -10,7 +10,7 @@ import actions from '../../actions'
 class HelpResolvedModal extends React.Component {
   constructor (props) {
     super(props)
-    this.options = ['Weights','Assignments','Review']
+    this.options = ['Weights', 'Assignments', 'Review']
     this.state = { value: '', note: '', helpTypes: [], form: {}, resolveValue: null, statuses: [] }
   }
 
@@ -26,9 +26,9 @@ class HelpResolvedModal extends React.Component {
     }).catch(() => false)
   }
 
-  getStatus(statusKey){
+  getStatus (statusKey) {
     let arr = this.state.statuses.filter((s) => {
-      return s.name == statusKey
+      return s.name === statusKey
     })
     return arr[0]
   }
@@ -38,7 +38,7 @@ class HelpResolvedModal extends React.Component {
     return userStore.isSW()
   }
 
-  navigateToHelpNeeded() {
+  navigateToHelpNeeded () {
     browserHistory.push({
       pathname: '/hub/classes',
       state: {
@@ -50,22 +50,22 @@ class HelpResolvedModal extends React.Component {
   /*
   * Handle resolve checkbox change.
   */
-  onCheckboxChange (name,checked,value) {
+  onCheckboxChange (name, checked, value) {
     let formCopy = this.state.form
-    if (checked && value == 'Weights') {
+    if (checked && value === 'Weights') {
       let status = this.getStatus(value)
       formCopy.class_status_id = status.id
-      this.setState({form:formCopy,resolveValue: value})
-    } else if (checked && value == 'Assignments'){
+      this.setState({form: formCopy, resolveValue: value})
+    } else if (checked && value === 'Assignments') {
       let status = this.getStatus(value)
       formCopy.class_status_id = status.id
-      this.setState({form:formCopy,resolveValue: value})
-    } else if (checked && value == 'Review') {
+      this.setState({form: formCopy, resolveValue: value})
+    } else if (checked && value === 'Review') {
       let status = this.getStatus(value)
       formCopy.class_status_id = status.id
-      this.setState({form:formCopy,resolveValue: value})
-    } else if (checked && value == 'No Change Needed') {
-      this.setState({form:formCopy,resolveValue: value})
+      this.setState({form: formCopy, resolveValue: value})
+    } else if (checked && value === 'No Change Needed') {
+      this.setState({form: formCopy, resolveValue: value})
     } else {
       this.setState({resolveValue: null})
     }
@@ -74,18 +74,18 @@ class HelpResolvedModal extends React.Component {
   /*
   * Resolve form options
   */
-  renderFormOptions(){
+  renderFormOptions () {
     let ind = 0
     return this.options.map((opt) => {
       ind++
       return (
         <CheckboxField
-        checked={this.state.resolveValue === opt}
-        value={this.state.resolveValue === opt}
-        label={opt}
-        name='issue_resolved_modal'
-        onChange={(name,checked) => this.onCheckboxChange(name,checked,opt)}
-        key={ind}/>
+          checked={this.state.resolveValue === opt}
+          value={this.state.resolveValue === opt}
+          label={opt}
+          name='issue_resolved_modal'
+          onChange={(name, checked) => this.onCheckboxChange(name, checked, opt)}
+          key={ind}/>
       )
     })
   }
@@ -93,7 +93,7 @@ class HelpResolvedModal extends React.Component {
   /*
   * Resolve form
   */
-  renderForm(openTickets){
+  renderForm (openTickets) {
     const helpTicket = openTickets[0]
     return (
       <div>
@@ -113,50 +113,49 @@ class HelpResolvedModal extends React.Component {
     )
   }
 
-  updateClassStatus() {
+  updateClassStatus () {
     const {cl} = this.props
-    actions.classes.updateClassStatus(cl,this.state.form).then((cl) => {
+    actions.classes.updateClassStatus(cl, this.state.form).then((cl) => {
       this.props.onSubmit(cl)
       this.props.onClose()
       this.setState({resolveValue: null})
-      if(this.getOpenHelpTickets().length == 0){
+      if (this.getOpenHelpTickets().length === 0) {
         this.navigateToHelpNeeded()
       }
     }).catch(() => false)
   }
 
-  refreshClass() {
+  refreshClass () {
+    const {cl} = this.props
     actions.classes.getClassById(cl.id).then((cl) => {
       this.props.onSubmit(cl)
       this.props.onClose()
       this.setState({resolveValue: null})
-      if(this.getOpenHelpTickets().length == 0){
+      if (this.getOpenHelpTickets().length === 0) {
         this.navigateToHelpNeeded()
       }
     }).catch(() => false)
   }
 
-  resolveStudentRequest(req){
-    const {cl} = this.props
+  resolveStudentRequest (req) {
     actions.classhelp.resolveStudentRequest(req.id).then((res) => {
       // If the resolution requires a status change, make that happen
-      if(this.state.resolveValue){
+      if (this.state.resolveValue) {
         this.updateClassStatus()
       // The resolution did  not require a change to status, refresh the class
-      }else{
+      } else {
         this.refreshClass()
       }
     }).catch(() => false)
   }
 
-  resolveStandardHelpTicket(helpTicket){
-    const {cl} = this.props
+  resolveStandardHelpTicket (helpTicket) {
     actions.classhelp.resolveIssue(helpTicket.id).then((helpTicket) => {
       // If the resolution requires a status change, make that happen
-      if(this.state.resolveValue){
+      if (this.state.resolveValue) {
         this.updateClassStatus()
       // The resolution did  not require a change to status, refresh the class
-      }else{
+      } else {
         this.refreshClass()
       }
     }).catch(() => false)
@@ -167,10 +166,10 @@ class HelpResolvedModal extends React.Component {
   */
   onResolve (helpTicket) {
     // If it has the 'notes' property this is really a 'student_request' but we treat it like a help request
-    if(helpTicket.hasOwnProperty('notes')){
+    if (helpTicket.hasOwnProperty('notes')) {
       this.resolveStudentRequest(helpTicket)
     // Otherwise this is a standard help request that we resolve like any other issue
-    }else{
+    } else {
       this.resolveStandardHelpTicket(helpTicket)
     }
   }
@@ -178,7 +177,7 @@ class HelpResolvedModal extends React.Component {
   /*
   * Cancel resolution
   */
-  onCancel(){
+  onCancel () {
     this.props.onClose()
   }
 
@@ -193,7 +192,6 @@ class HelpResolvedModal extends React.Component {
   }
 
   render () {
-    const {cl} = this.props
     const openTickets = this.getOpenHelpTickets()
     return openTickets.length > 0 ? (
       <Modal

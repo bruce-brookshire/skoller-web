@@ -2,6 +2,7 @@ import React from 'react'
 import LandingNav from '../components/LandingNav'
 import {inject, observer} from 'mobx-react'
 import LandingFooter from '../components/LandingFooter'
+import PropTypes from 'prop-types'
 
 @inject('rootStore') @observer
 class OurTeam extends React.Component {
@@ -155,6 +156,10 @@ class OurTeam extends React.Component {
       </div>
     )
   }
+}
+
+OurTeam.propTypes = {
+  rootStore: PropTypes.object
 }
 
 export default OurTeam

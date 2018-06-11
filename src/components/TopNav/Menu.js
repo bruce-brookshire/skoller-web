@@ -63,7 +63,6 @@ export default Menu
 
 @inject('rootStore') @observer
 class MenuItem extends React.Component {
-
   render () {
     const currentPath = window.location.pathname
     const adminAccessible = this.props.menuItem.admin && !this.props.rootStore.userStore.isStudent()
@@ -83,5 +82,6 @@ class MenuItem extends React.Component {
 
 MenuItem.propTypes = {
   menuItem: PropTypes.object,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  rootStore: PropTypes.object
 }

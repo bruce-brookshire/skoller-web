@@ -8,6 +8,7 @@ import {inject, observer} from 'mobx-react'
 import Verification from '../../components/Verification'
 import {browserHistory} from 'react-router'
 import {Cookies} from 'react-cookie'
+import DownloadApp from '../../components/DownloadApp'
 
 @inject('rootStore') @observer
 class Enroll extends React.Component {
@@ -95,7 +96,7 @@ class Enroll extends React.Component {
   renderVerification () {
     return (
       <Verification
-        onSubmit={() => this.onSubmit()}
+        onSubmit={() => this.incrementStep()}
       />
     )
   }
@@ -107,7 +108,16 @@ class Enroll extends React.Component {
         {!newUser && this.renderLogin()}
         {newUser && step === 1 && this.renderSignup()}
         {newUser && step === 2 && this.renderVerification()}
+        {newUser && step === 3 && this.renderDownload()}
       </div>
+    )
+  }
+
+  renderDownload () {
+    return (
+      <DownloadApp
+        onNext={this.onSubmit.bind(this)}
+      />
     )
   }
 

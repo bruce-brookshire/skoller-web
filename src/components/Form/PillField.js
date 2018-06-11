@@ -2,22 +2,23 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 class PillField extends React.Component {
-
   onClick () {
     this.props.onClick(this.props.label)
   }
 
   render () {
-    const inputClasses = ['cn-form-pill','full-width']
+    const inputClasses = ['cn-form-pill', 'full-width']
 
-    const {inputClassName, inputActiveClassName, inputErrorClassName,
-      id, label, error, message
-    } = this.props
+    const {inputClassName, inputErrorClassName, label, error} = this.props
 
     if (inputClassName) inputClasses.push(inputClassName)
-    if (this.props.value == this.props.label){inputClasses.push('button')}else{inputClasses.push('button-invert')}
+    if (this.props.value === label) {
+      inputClasses.push('button')
+    } else {
+      inputClasses.push('button-invert')
+    }
 
-    if (this.props.error) {
+    if (error) {
       inputClasses.push('error')
       if (inputErrorClassName) inputClasses.push(inputErrorClassName)
     }
@@ -39,13 +40,13 @@ class PillField extends React.Component {
 
 PillField.propTypes = {
   id: PropTypes.string,
-  inputClass: PropTypes.string,
-  inputActiveClass: PropTypes.string,
-  inputErrorClass: PropTypes.string,
+  inputClassName: PropTypes.string,
+  inputErrorClassName: PropTypes.string,
   label: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   value: PropTypes.string.isRequired,
-  type: PropTypes.string
+  type: PropTypes.string,
+  error: PropTypes.bool
 }
 
 export default PillField

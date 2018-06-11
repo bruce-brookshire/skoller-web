@@ -9,11 +9,11 @@ class HoverImage extends React.Component {
     }
   }
 
-  mouseOver() {
+  mouseOver () {
     this.setState({src: this.props.hoverImg})
   }
 
-  mouseOut() {
+  mouseOut () {
     this.setState({src: this.props.img})
   }
 
@@ -22,7 +22,6 @@ class HoverImage extends React.Component {
       <img className={this.props.className} src={this.state.src} onMouseOver={this.mouseOver.bind(this)} onMouseOut={this.mouseOut.bind(this)} />
     )
   }
-
 }
 
 HoverImage.propTypes = {
@@ -30,4 +29,4 @@ HoverImage.propTypes = {
   img: PropTypes.string,
   className: PropTypes.string
 }
-export default HoverImage;
+export default HoverImage

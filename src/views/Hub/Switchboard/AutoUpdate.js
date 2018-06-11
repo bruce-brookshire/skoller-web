@@ -42,7 +42,7 @@ class AutoUpdate extends React.Component {
     super(props)
     this.state = this.initializeState()
   }
-  
+
   initializeState () {
     return {
       form: this.initializeFormData(),
@@ -52,19 +52,19 @@ class AutoUpdate extends React.Component {
     }
   }
 
-  initializeFormData() {
+  initializeFormData () {
     return {
-      auto_upd_enroll_thresh: this.findSetting("auto_upd_enroll_thresh"),
-      auto_upd_response_thresh: Math.round(this.findSetting("auto_upd_response_thresh") * 100),
-      auto_upd_approval_thresh: Math.round(this.findSetting("auto_upd_approval_thresh") * 100)
+      auto_upd_enroll_thresh: this.findSetting('auto_upd_enroll_thresh'),
+      auto_upd_response_thresh: Math.round(this.findSetting('auto_upd_response_thresh') * 100),
+      auto_upd_approval_thresh: Math.round(this.findSetting('auto_upd_approval_thresh') * 100)
     }
   }
 
   forecast () {
     const {form} = this.state
-    let queryString =`auto_upd_approval_thresh=${form.auto_upd_approval_thresh / 100}` + 
-    `&auto_upd_response_thresh=${form.auto_upd_response_thresh / 100}` + 
-    `&auto_upd_enroll_thresh=${form.auto_upd_enroll_thresh}` 
+    let queryString = `auto_upd_approval_thresh=${form.auto_upd_approval_thresh / 100}` +
+    `&auto_upd_response_thresh=${form.auto_upd_response_thresh / 100}` +
+    `&auto_upd_enroll_thresh=${form.auto_upd_enroll_thresh}`
 
     this.setState({loading: true})
     actions.settings.forecastAutoUpdateInfo(queryString).then((data) => {
@@ -73,7 +73,7 @@ class AutoUpdate extends React.Component {
   }
 
   findSetting (key) {
-    return this.props.data.settings.find(x => x.name == key).value
+    return this.props.data.settings.find(x => x.name === key).value
   }
 
   getRows () {
@@ -89,20 +89,20 @@ class AutoUpdate extends React.Component {
     return row
   }
 
-  mapFormData() {
-    const {form} = this.state;
+  mapFormData () {
+    const {form} = this.state
 
     let array = []
 
     Object.keys(form).forEach((k) => {
       let obj = {
         name: k,
-        value: k == "auto_upd_response_thresh" || k == "auto_upd_approval_thresh" ? (form[k] / 100).toString() : form[k]
+        value: k === 'auto_upd_response_thresh' || k === 'auto_upd_approval_thresh' ? (form[k] / 100).toString() : form[k]
       }
       array.push(obj)
     })
 
-    return array;
+    return array
   }
 
   /*
@@ -112,9 +112,8 @@ class AutoUpdate extends React.Component {
     event.preventDefault()
 
     if (this.props.validateForm(this.state.form, requiredFields)) {
-
       const data = this.mapFormData()
-      
+
       actions.settings.updateAutoUpdateInfo(data).then(() => {
         this.props.onSubmit()
         this.initializeFormData()
@@ -123,14 +122,14 @@ class AutoUpdate extends React.Component {
   }
 
   maskPercentage (oldNum, newNum) {
-    if ((newNum > 100 || newNum <= 0) && newNum != "") return oldNum
+    if ((newNum > 100 || newNum <= 0) && newNum !== '') return oldNum
 
-    if (newNum.indexOf('.') != -1) return oldNum
+    if (newNum.indexOf('.') !== -1) return oldNum
 
     return newNum
   }
 
-  renderPercentage(item1, item2) {
+  renderPercentage (item1, item2) {
     return (
       <div>
         {roundToTwo((item1 / item2) * 100)}% ({item1} out of {item2})
@@ -169,14 +168,14 @@ class AutoUpdate extends React.Component {
               <div className='cn-auto-update-row'>
                 <div className='cn-auto-update-row-title'><strong><u>Level 2: Response</u></strong></div>
                 <div className='cn-auto-update-row-input'>
-                <InputField
-                  containerClassName='cn-auto-update-input'
-                  error={formErrors.auto_upd_response_thresh}
-                  name="auto_upd_response_thresh"
-                  onChange={(name, value) => {
-                    updateProperty(name, this.maskPercentage(form.auto_upd_response_thresh, value))
-                  }}
-                  value={form.auto_upd_response_thresh} />%
+                  <InputField
+                    containerClassName='cn-auto-update-input'
+                    error={formErrors.auto_upd_response_thresh}
+                    name="auto_upd_response_thresh"
+                    onChange={(name, value) => {
+                      updateProperty(name, this.maskPercentage(form.auto_upd_response_thresh, value))
+                    }}
+                    value={form.auto_upd_response_thresh} />%
                 </div>
                 {this.renderPercentage(metrics.actual_metrics.shared_mods, metrics.max_metrics.shared_mods)}&nbsp;
                 <span>
@@ -207,9 +206,9 @@ class AutoUpdate extends React.Component {
               <h3 className="center-text">Summary</h3>
               <div className="cn-auto-update-summary">
                 {this.renderPercentage(metrics.summary, metrics.max_metrics.responded_mods)}&nbsp;
-                  <span>
-                    of mods in communities reach auto-update.
-                  </span>
+                <span>
+                  of mods in communities reach auto-update.
+                </span>
               </div>
             </div>
             <div className='col-xs-12'>

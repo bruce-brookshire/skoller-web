@@ -7,6 +7,7 @@ import FeatureHighlights from './FeatureHighlights'
 import CommunityFeature from './CommunityFeature'
 import CallToAction from './CallToAction'
 import LandingFooter from '../components/LandingFooter'
+import PropTypes from 'prop-types'
 
 @inject('rootStore') @observer
 class LearnMore extends React.Component {
@@ -28,6 +29,10 @@ class LearnMore extends React.Component {
       </div>
     )
   }
+}
+
+LearnMore.propTypes = {
+  rootStore: PropTypes.object
 }
 
 export default LearnMore

@@ -199,6 +199,9 @@ export function getClassByLink (link) {
 export function enrollByLink (link) {
   return post(`/api/v1/enrollment-link/${link}`, null, '')
     .catch(error => {
+      if (error === 422) {
+        showSnackbar('You already have this class!')
+      }
       return Promise.reject(error)
     })
 }

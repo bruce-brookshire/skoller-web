@@ -15,7 +15,7 @@ import LandingFooter from '../components/LandingFooter'
 @inject('rootStore') @observer
 class Landing extends React.Component {
   render () {
-    const meta = {
+    const meta = { // eslint-disable-line no-unused-vars
       title: 'Skoller',
       meta: {
         name: {
@@ -48,7 +48,7 @@ class Landing extends React.Component {
   }
 }
 
-Landing.PropTypes = {
+Landing.propTypes = {
   rootStore: PropTypes.object
 }
 

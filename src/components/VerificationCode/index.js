@@ -5,7 +5,7 @@ class VerificationCode extends React.Component {
   constructor (props) {
     super(props)
     this.state = this.initializeState()
-    this.inputs= []
+    this.inputs = []
   }
 
   /*

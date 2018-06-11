@@ -146,6 +146,12 @@ class IssuesModal extends React.Component {
 }
 
 class CheckboxField extends React.Component {
+  static propTypes = {
+    checked: PropTypes.bool,
+    label: PropTypes.string,
+    onChange: PropTypes.func
+  }
+
   render () {
     const {checked, label, onChange} = this.props
     return (

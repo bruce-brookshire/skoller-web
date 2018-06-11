@@ -54,7 +54,8 @@ Modal.propTypes = {
   children: PropTypes.node,
   footer: PropTypes.node,
   open: PropTypes.bool,
-  title: PropTypes.string
+  title: PropTypes.string,
+  onClose: PropTypes.func
 }
 
 export default Modal

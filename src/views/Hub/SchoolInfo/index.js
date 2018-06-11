@@ -72,8 +72,6 @@ class SchoolInfo extends React.Component {
 
     updateSchool(school).then((res) => {
       this.setState({ school: school })
-    }).catch(() => {
-      alert('An unknown error occurred...')
     })
   }
 
@@ -81,8 +79,8 @@ class SchoolInfo extends React.Component {
     if (this.state && !this.state.school) return null
 
     const statesDef = this.fourDoorStatesDef
-    const { is_diy_enabled, is_diy_preferred, is_auto_syllabus } = this.state.school
-    const curState = [is_diy_enabled, is_diy_preferred, is_auto_syllabus]
+    const { is_diy_enabled: diy, is_diy_preferred: diyPref, is_auto_syllabus: autoSyllabus } = this.state.school
+    const curState = [diy, diyPref, autoSyllabus]
     const comp = JSON.stringify(curState)
     const curIdx = Object.values(statesDef).findIndex((b) => comp === JSON.stringify(b))
 
@@ -91,8 +89,8 @@ class SchoolInfo extends React.Component {
 
   handleChatStateChange () {
     if (this.state.school) {
-      const {id, is_chat_enabled} = this.state.school
-      actions.schools.updateSchool({id: id, is_chat_enabled: !is_chat_enabled}).then((school) => {
+      const {id, is_chat_enabled: chat} = this.state.school
+      actions.schools.updateSchool({id: id, is_chat_enabled: !chat}).then((school) => {
         this.setState({school: school})
       }).catch(() => { this.setState({loading: false}) })
     }
@@ -313,7 +311,8 @@ class SchoolInfo extends React.Component {
 }
 
 SchoolInfo.propTypes = {
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  location: PropTypes.object
 }
 
 export default SchoolInfo

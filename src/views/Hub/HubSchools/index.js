@@ -52,12 +52,12 @@ class HubSchools extends React.Component {
   componentWillMount () {
     actions.schools.getHubSchools().then(schools => {
       headers[0].display = `Schools (${schools.length})`
-      headers[1].display = `# of students (${this.getTotal(schools,'Students')})`
-      headers[3].display = `Weights (${this.getTotal(schools,'Weights')})`
-      headers[4].display = `Assignments (${this.getTotal(schools,'Assignments')})`
-      headers[5].display = `Review (${this.getTotal(schools,'Review')})`
-      headers[6].display = `Help (${this.getTotal(schools,'Help')})`
-      headers[7].display = `Complete (${this.getTotal(schools,'Complete')})`
+      headers[1].display = `# of students (${this.getTotal(schools, 'Students')})`
+      headers[3].display = `Weights (${this.getTotal(schools, 'Weights')})`
+      headers[4].display = `Assignments (${this.getTotal(schools, 'Assignments')})`
+      headers[5].display = `Review (${this.getTotal(schools, 'Review')})`
+      headers[6].display = `Help (${this.getTotal(schools, 'Help')})`
+      headers[7].display = `Complete (${this.getTotal(schools, 'Complete')})`
       this.setState({schools})
     }).catch(() => false)
   }
@@ -81,18 +81,18 @@ class HubSchools extends React.Component {
   * @return [Object] row. Object of formatted row data for display in grid.
   */
   mapRow (item, index) {
-    const {id, name, enrollment, is_diy_enabled, is_diy_preferred, is_auto_syllabus, classes} = item
+    const {id, name, enrollment, is_diy_enabled: diy, is_diy_preferred: diyPref, is_auto_syllabus: autoSyllabus, classes} = item
 
     const row = {
       id: id || '',
       name: name ? <div onClick={() => this.onSchoolSelect(item)}><span style={{display: 'block'}}><strong>{name}</strong></span><span style={{fontSize: '10px'}}>Period</span></div> : 'TBA',
       numberOfStudents: enrollment || 0,
-      fourDoor: this.mapFourDoor(is_diy_enabled, is_diy_preferred, is_auto_syllabus),
+      fourDoor: this.mapFourDoor(diy, diyPref, autoSyllabus),
       weights: this.getCounts(classes, 'Weights') || this.renderCheck(),
       assignments: this.getCounts(classes, 'Assignments') || this.renderCheck(),
       review: this.getCounts(classes, 'Review') || this.renderCheck(),
       help: this.getCounts(classes, 'Help') || this.renderCheck(),
-      complete: this.getCounts(classes, 'Complete') || this.renderCheck(),
+      complete: this.getCounts(classes, 'Complete') || this.renderCheck()
     }
 
     return row
@@ -101,14 +101,14 @@ class HubSchools extends React.Component {
   /*
   * Render the four door status for a given school.
   */
-  mapFourDoor (is_diy_enabled, is_diy_preferred, is_auto_syllabus) {
-    if (is_diy_enabled && !is_diy_preferred && is_auto_syllabus) {
+  mapFourDoor (diy, diyPreferred, autoSyllabus) {
+    if (diy && !diyPreferred && autoSyllabus) {
       return 'Normal'
-    } else if (is_diy_enabled && is_diy_preferred && is_auto_syllabus) {
+    } else if (diy && diyPreferred && autoSyllabus) {
       return 'DIY Preferred'
-    } else if (!is_diy_enabled && !is_diy_preferred && is_auto_syllabus) {
+    } else if (!diy && !diyPreferred && autoSyllabus) {
       return 'Skoller only'
-    } else if (is_diy_enabled && is_diy_preferred && !is_auto_syllabus) {
+    } else if (diy && diyPreferred && !autoSyllabus) {
       return 'DIY only'
     } else {
       return 'Normal'
@@ -126,13 +126,11 @@ class HubSchools extends React.Component {
     return cl && cl.count
   }
 
-  getTotal(schools,type) {
-    if(type == 'Students'){
-      const total = schools.map(s => s.enrollment).reduce((a, b) => a + b, 0)
-      return total
-    }else{
-      const total = schools.map(s => this.getCounts(s.classes,type) || 0).reduce((a, b) => a + b, 0)
-      return total
+  getTotal (schools, type) {
+    if (type === 'Students') {
+      return schools.map(s => s.enrollment).reduce((a, b) => a + b, 0)
+    } else {
+      return schools.map(s => this.getCounts(s.classes, type) || 0).reduce((a, b) => a + b, 0)
     }
   }
 

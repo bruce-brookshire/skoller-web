@@ -65,7 +65,7 @@ class Professor extends React.Component {
   }
 
   renderProfessor () {
-    const {professor: {name_first, name_last, phone, email, office_location, office_availability}} = this.props.cl
+    const {professor: {name_first: first, name_last: last, phone, email, office_location: officeLocation, office_availability: availability}} = this.props.cl
 
     return (
       <div>
@@ -74,7 +74,7 @@ class Professor extends React.Component {
             <div className='professor-detail-label'>
               Name
             </div>
-            <strong>{name_first ? `${name_first} ` : ''}{name_last || ''}</strong>
+            <strong>{first ? `${first} ` : ''}{last || ''}</strong>
           </div>
           <div className='professor-detail-field'>
             <div className='professor-detail-label'>
@@ -94,7 +94,7 @@ class Professor extends React.Component {
             <div className='professor-detail-label'>
               Location
             </div>
-            {office_location || 'N/A'}
+            {officeLocation || 'N/A'}
           </div>
         </div>
         <div className='professor-detail-row'>
@@ -102,7 +102,7 @@ class Professor extends React.Component {
             <div className='professor-detail-label'>
               Hours
             </div>
-            {office_availability || 'N/A'}
+            {availability || 'N/A'}
           </div>
         </div>
       </div>

@@ -22,7 +22,8 @@ class LoginForm extends React.Component {
     resetValidation: PropTypes.func,
     rootStore: PropTypes.object,
     updateProperty: PropTypes.func,
-    validateForm: PropTypes.func
+    validateForm: PropTypes.func,
+    onSubmit: PropTypes.func
   }
 
   constructor (props) {

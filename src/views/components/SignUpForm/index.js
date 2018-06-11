@@ -133,7 +133,7 @@ class SignUpForm extends React.Component {
           {header && <h2>{header}</h2>}
           <div className='is-university'>
             <CheckboxField
-              containerClassName='margin-top margin-right'
+              containerClassName='margin-top'
               error={universityError}
               label='College student'
               name='student.is_university'
@@ -147,7 +147,7 @@ class SignUpForm extends React.Component {
             />
             <small className='sub-header'>or</small>
             <CheckboxField
-              containerClassName='margin-top margin-left'
+              containerClassName='margin-top'
               error={universityError}
               label='High school student'
               name='student.is_highschool'
