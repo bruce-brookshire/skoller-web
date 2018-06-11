@@ -568,7 +568,7 @@ class ClassAdmin extends React.Component {
               <FileTab
                 key={index}
                 name={document.name}
-                removable={false}
+                removable={true}
                 changed={false}
                 onClick={() =>
                   this.setState({currentDocument: document.path, currentDocumentIndex: index})
