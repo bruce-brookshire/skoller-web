@@ -64,7 +64,7 @@ class ClassList extends React.Component {
 
     const row = {
       id: id || '',
-      courseNumber: subject + ' ' + code + '.' + section || '-',
+      courseNumber: (subject ? subject + ' ' : '') + code + (section ? '.' + section : ''),
       name: name || '-',
       professor: professor ? mapProfessor(professor) : 'TBA',
       days: days || 'TBA',
