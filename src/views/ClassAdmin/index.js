@@ -217,7 +217,9 @@ class ClassAdmin extends React.Component {
   }
 
   onDocDelete (doc) {
-    console.log(doc)
+    const {cl} = this.state
+    actions.documents.deleteClassDocument(cl.id, doc.id).then(() => {
+    }).catch(() => false)
   }
 
   onWeightClose () {
