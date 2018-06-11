@@ -221,6 +221,9 @@ class ClassAdmin extends React.Component {
     actions.documents.deleteClassDocument(cl.id, doc.id).then(() => {
       const newDocs = documents.filter(d => d.id !== doc.id)
       this.setState({documents: newDocs})
+      if (newDocs.length === 0 && !cl.status.is_complete) {
+        this.toggleNoDocModal()
+      }
     }).catch(() => false)
   }
 
