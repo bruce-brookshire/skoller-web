@@ -23,6 +23,7 @@ import {browserHistory} from 'react-router'
 import StudentRequestInfo from './StudentRequestInfo'
 import HelpNeededInfo from './HelpNeededInfo'
 import StatusForm from './StatusForm'
+import DocumentsDeletedModal from './DocumentsDeletedModal'
 
 @inject('rootStore') @observer
 class ClassAdmin extends React.Component {
@@ -30,8 +31,6 @@ class ClassAdmin extends React.Component {
     super(props)
     let {navbarStore} = this.props.rootStore
     navbarStore.title = 'Class Admin'
-    navbarStore.toggleHelpResolved = this.toggleHelpResolvedModal.bind(this)
-    navbarStore.toggleRequestResolved = this.toggleRequestResolvedModal.bind(this)
     this.state = this.initializeState()
   }
 
@@ -59,7 +58,8 @@ class ClassAdmin extends React.Component {
       documents: [],
       hideDocuments: false,
       openStudentRequestInfo: false,
-      openHelpInfo: false
+      openHelpInfo: false,
+      openNoDocModal: false
     }
   }
 
@@ -86,8 +86,6 @@ class ClassAdmin extends React.Component {
   componentWillUnmount () {
     let {navbarStore} = this.props.rootStore
     navbarStore.title = null
-    navbarStore.toggleHelpResolved = null
-    navbarStore.toggleRequestResolved = null
   }
 
   /*
@@ -218,6 +216,10 @@ class ClassAdmin extends React.Component {
     }).catch(() => false)
   }
 
+  onDocDelete (doc) {
+    console.log(doc)
+  }
+
   onWeightClose () {
     this.setState({currentWeight: null, openWeightCreateModal: false})
   }
@@ -256,6 +258,10 @@ class ClassAdmin extends React.Component {
 
   toggleAssignmentModal () {
     this.setState({openAssignmentModal: !this.state.openAssignmentModal})
+  }
+
+  toggleNoDocModal () {
+    this.setState({openNoDocModal: !this.state.openNoDocModal})
   }
 
   toggleDocs () {
@@ -384,6 +390,18 @@ class ClassAdmin extends React.Component {
           onUpdateWeight={this.onUpdateWeight.bind(this)}
         />
       </Modal>
+    )
+  }
+
+  renderNoDocModal () {
+    const {cl} = this.state
+    return (
+      <DocumentsDeletedModal
+        cl={cl}
+        onSubmit={this.toggleNoDocModal.bind(this)}
+        open={this.state.openNoDocModal}
+        onClose={this.toggleNoDocModal.bind(this)}
+      />
     )
   }
 
@@ -568,10 +586,14 @@ class ClassAdmin extends React.Component {
               <FileTab
                 key={index}
                 name={document.name}
+                documentId={document.id}
                 removable={true}
                 changed={false}
                 onClick={() =>
                   this.setState({currentDocument: document.path, currentDocumentIndex: index})
+                }
+                onDelete={() =>
+                  this.onDocDelete(document)
                 }
               />
             )
@@ -624,6 +646,7 @@ class ClassAdmin extends React.Component {
         {this.renderEditClassModal()}
         {this.renderWeightCreateModal()}
         {this.renderAssignmentModal()}
+        {this.renderNoDocModal()}
       </div>
     )
   }
