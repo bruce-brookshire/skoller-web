@@ -57,6 +57,7 @@ class StatusForm extends React.Component {
       const form = {...this.state.form}
       form.class_status_id = parseInt(form.class_status_id)
       actions.classes.updateClassStatus(this.props.cl, form).then((cl) => {
+        this.props.onSubmit()
       }).catch(() => false)
     }
   }
@@ -95,7 +96,8 @@ StatusForm.propTypes = {
   cl: PropTypes.object,
   formErrors: PropTypes.object,
   validateForm: PropTypes.func,
-  updateProperty: PropTypes.func
+  updateProperty: PropTypes.func,
+  onSubmit: PropTypes.func
 }
 
 export default ValidateForm(Form(StatusForm, 'form'))

@@ -22,6 +22,7 @@ import {FileTabs, FileTab} from '../../components/FileTab'
 import {browserHistory} from 'react-router'
 import StudentRequestInfo from './StudentRequestInfo'
 import HelpNeededInfo from './HelpNeededInfo'
+import StatusForm from './StatusForm'
 
 @inject('rootStore') @observer
 class ClassAdmin extends React.Component {
@@ -306,6 +307,10 @@ class ClassAdmin extends React.Component {
           cl={cl}
           onSubmit={this.updateClass.bind(this)}
           onClose={this.toggleEditClassModal.bind(this)}
+        />
+        <StatusForm
+          cl={cl}
+          onSubmit={this.updateClass.bind(this)}
         />
       </Modal>
     )
