@@ -44,10 +44,19 @@ export function registerUser (form) {
     })
     .catch(error => {
       userStore.loading = false
-      if (error !== 422) {
+      if (error.status !== 422) {
         showSnackbar('Error registering user. Try again.')
       } else {
-        showSnackbar('Username already exists.')
+        error.json().then(error => {
+          if ((error.errors.student &&
+            error.errors.student.phone &&
+            error.errors.student.phone.findIndex(item => item === 'Phone exists.') > -1) ||
+            (error.errors.email && error.errors.email.findIndex(item => item === 'has already been taken') > -1)) {
+            showSnackbar('User already exists.')
+          } else {
+            showSnackbar('Error registering user. Try again.')
+          }
+        })
       }
       return Promise.reject(error)
     })
