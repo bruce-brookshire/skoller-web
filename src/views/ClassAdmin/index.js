@@ -302,7 +302,7 @@ class ClassAdmin extends React.Component {
   *
   * @param [Object]. The class to update with
   */
-  updateClass (cl) {
+  updateClass () {
     this.getClass()
   }
 
@@ -339,8 +339,8 @@ class ClassAdmin extends React.Component {
         cl={cl}
         open={this.state.openHelpResolvedModal}
         onClose={this.toggleHelpResolvedModal.bind(this)}
-        onSubmit={(cl) => {
-          this.updateClass(cl)
+        onSubmit={() => {
+          this.updateClass()
         }}
       />
     )
@@ -356,8 +356,8 @@ class ClassAdmin extends React.Component {
         cl={cl}
         open={this.state.openIssuesModal}
         onClose={this.toggleIssuesModal.bind(this)}
-        onSubmit={(cl) => {
-          this.updateClass(cl)
+        onSubmit={() => {
+          this.updateClass()
         }}
       />
     )
@@ -374,8 +374,8 @@ class ClassAdmin extends React.Component {
         cl={cl}
         open={this.state.openRequestResolvedModal}
         onClose={this.toggleRequestResolvedModal.bind(this)}
-        onSubmit={(cl) => {
-          this.updateClass(cl)
+        onSubmit={() => {
+          this.updateClass()
           this.setState({openStudentRequestInfo: false})
         }}
         request={openRequests[0]}
@@ -405,7 +405,10 @@ class ClassAdmin extends React.Component {
     return (
       <DocumentsDeletedModal
         cl={cl}
-        onSubmit={this.toggleNoDocModal.bind(this)}
+        onSubmit={() => {
+          this.updateClass()
+          this.toggleNoDocModal()
+        }}
         open={this.state.openNoDocModal}
         onClose={this.toggleNoDocModal.bind(this)}
       />
@@ -458,7 +461,7 @@ class ClassAdmin extends React.Component {
         <GradeScale
           cl={cl}
           canEdit={true}
-          onSubmit={(cl) => this.updateClass(cl)}
+          onSubmit={() => this.updateClass()}
           hasIssues={cl.change_requests.findIndex((item) => item.change_type.id === 100 && !item.is_completed) > -1}
           onSelectIssue={this.toggleStudentRequestInfo.bind(this)}
         />
@@ -473,7 +476,7 @@ class ClassAdmin extends React.Component {
         <Professor
           cl={cl}
           canEdit={true}
-          onSubmit={(cl) => this.updateClass(cl)}
+          onSubmit={() => this.updateClass()}
           hasIssues={cl.change_requests.findIndex((item) => item.change_type.id === 300 && !item.is_completed) > -1}
           onSelectIssue={this.toggleStudentRequestInfo.bind(this)}
         />
