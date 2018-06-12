@@ -9,7 +9,7 @@ import {createClass, dropClass, getClassById, getClassByIdAdmin, getClassByLink,
   unlockClass, updateClassStatus} from './classes'
 import {createIssue, getHelpTypes, resolveIssue, getRequestTypes, resolveChangeRequest, createStudentRequest,
   resolveStudentRequest} from './classhelp'
-import {getClassDocuments, uploadClassCsv, uploadClassDocument} from './documents'
+import {getClassDocuments, uploadClassCsv, uploadClassDocument, deleteClassDocument} from './documents'
 import {getFieldsOfStudy, uploadFOSCsv} from './fieldsofstudy'
 import {updateGradeScale} from './gradescales'
 import {getStatuses, getStatusesHub} from './hub'
@@ -85,6 +85,7 @@ const actions = {
     resolveStudentRequest
   },
   documents: {
+    deleteClassDocument,
     getClassDocuments,
     uploadClassCsv,
     uploadClassDocument

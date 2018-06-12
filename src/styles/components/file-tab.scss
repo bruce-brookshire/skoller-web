@@ -4,7 +4,7 @@
   flex-wrap: wrap;
 
   .cn-file-tab {
-    align-items: center;
+    align-items: baseline;
     background-color: $cn-color-white;
     cursor: pointer;
     display: flex;
@@ -20,10 +20,6 @@
       flex: 1;
     }
 
-    &:first-child { border-left-width: 2px; }
-
-    &:last-child { border-right-width: 2px; }
-
     &:hover { 
       color: $cn-font-color;
     }
@@ -34,15 +30,17 @@
     }
 
     button {
+      padding: 0;
       font-size: 0.8em;
       height: 20px;
       margin-left: 5px;
-      padding: 2px;
-      text-align: center;
       width: 20px;
+      border: 0;
       &:hover {
         cursor: pointer;
       }
+      background-color: $cn-color-white;
+      color: $cn-color-red;
     }
   }
 }

@@ -1,4 +1,4 @@
-import {get, postFile} from '../utilities/api'
+import {get, postFile, del} from '../utilities/api'
 import {showSnackbar} from '../utilities/snackbar'
 
 /*
@@ -54,6 +54,18 @@ export function uploadClassCsv (periodId, file) {
     .catch(error => {
       if (error === 422) showSnackbar('File name has already been taken.')
       else showSnackbar('Error uploading file. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Get classes for students
+*
+* @param [Number] classId. The class to get the class documents for.
+*/
+export function deleteClassDocument (classId, docId) {
+  return del(`/api/v1/classes/${classId}/docs/${docId}`, 'Error deleting doc. Try again.')
+    .catch(error => {
       return Promise.reject(error)
     })
 }
