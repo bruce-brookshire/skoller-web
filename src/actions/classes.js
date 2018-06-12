@@ -157,7 +157,7 @@ export function updateClassStatus (cl, form) {
 export function lockClass (classId, form) {
   return post(`/api/v1/classes/${classId}/lock`, form, '')
     .catch(error => {
-      if (error !== 422) showSnackbar('Error locking class. Try again.')
+      if (error.status !== 422) showSnackbar('Error locking class. Try again.')
       return Promise.reject(error)
     })
 }
@@ -199,7 +199,7 @@ export function getClassByLink (link) {
 export function enrollByLink (link) {
   return post(`/api/v1/enrollment-link/${link}`, null, '')
     .catch(error => {
-      if (error === 422) {
+      if (error.status === 422) {
         showSnackbar('You already have this class!')
       }
       return Promise.reject(error)

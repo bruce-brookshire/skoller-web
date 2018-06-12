@@ -71,10 +71,20 @@ export function registerUserAdmin (form) {
   return post(`/api/v1/users`, form, '')
     .then(data => data)
     .catch(error => {
-      if (error !== 422) {
+      if (error.status !== 422) {
         showSnackbar('Error registering user. Try again.')
       } else {
-        showSnackbar('Username already exists.')
+        error.json().then(error => {
+          if (error.errors.student &&
+            error.errors.student.phone &&
+            error.errors.student.phone.findIndex(item => item === 'Phone exists.') > -1) {
+            showSnackbar('Phone already exists.')
+          } else if (error.errors.email && error.errors.email.findIndex(item => item === 'has already been taken') > -1) {
+            showSnackbar('Email already exists.')
+          } else {
+            showSnackbar('Error registering user. Try again.')
+          }
+        })
       }
       return Promise.reject(error)
     })
@@ -191,26 +201,6 @@ export function getRoles () {
       return data
     })
     .catch(error => {
-      return Promise.reject(error)
-    })
-}
-
-/*
-*  Create a user account (admin)
-*
-* @params [Object] form. User form data.
-*/
-export function createAccount (form) {
-  return post(`/api/v1/users/create`, form, '')
-    .then(data => {
-      return data
-    })
-    .catch(error => {
-      if (error !== 422) {
-        showSnackbar('Error creating user. Try again.')
-      } else {
-        showSnackbar('Username already exists.')
-      }
       return Promise.reject(error)
     })
 }

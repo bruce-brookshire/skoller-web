@@ -1,6 +1,6 @@
 import {createAssignment, deleteAssignment, deleteAssignmentPost, getClassAssignments, updateAssignment} from './assignments'
 import {getAnalytics} from './analytics'
-import {authenticateUser, createAccount, forgotPassword, getRoles,
+import {authenticateUser, forgotPassword, getRoles,
   getUserById, getUserByToken, getUsers, registerUser, registerUserAdmin, resetPassword,
   resendVerification, updateAccount, verifyPhoneNumber} from './auth'
 import {deleteClassPost, getClassPosts, deleteClassComment, deleteClassReply} from './chat'
@@ -40,7 +40,6 @@ const actions = {
   },
   auth: {
     authenticateUser,
-    createAccount,
     getRoles,
     getUserById,
     getUserByToken,
