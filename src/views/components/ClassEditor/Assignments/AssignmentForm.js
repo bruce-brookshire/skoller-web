@@ -199,7 +199,7 @@ class AssignmentForm extends React.Component {
               containerClassName='margin-top'
               error={formErrors.due}
               info={`Don’t have the due date for an assignment? No worries– you can always add one later. Go ahead and add the assignment now.`}
-              label='Due date (MM/DD)'
+              label='Due date'
               name='due'
               onChange={(name, value) => {
                 updateProperty(name, maskAssignmentDate(form.due, value))
