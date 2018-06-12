@@ -63,11 +63,13 @@ class SignUpForm extends React.Component {
 
   onSubmit () {
     const form = this.mapForm()
+    let emailError = this.onVerifyEmail()
+    this.setState({emailError: emailError})
     if (!form.student.is_university && !form.student.is_highschool) {
       this.setState({universityError: true})
     } else {
       this.setState({universityError: false})
-      if (this.props.validateForm(form, requiredFields) && !this.state.emailError) {
+      if (this.props.validateForm(form, requiredFields) && !emailError) {
         actions.auth.registerUser(form).then(() => {
           this.props.resetValidation()
           this.props.onSubmit()
@@ -107,14 +109,10 @@ class SignUpForm extends React.Component {
     const {email} = this.state.form
     const isUniversity = this.state.form.student.is_university
 
-    if (isUniversity) {
-      if (email && !this.testEmailFormat(email)) {
-        this.setState({ emailError: {type: 'info', message: 'Please use your school email!'} })
-      } else {
-        this.setState({emailError: null})
-      }
+    if (isUniversity && email && !this.testEmailFormat(email)) {
+      return {type: 'info', message: 'Please use your school email!'}
     } else {
-      this.setState({emailError: null})
+      return null
     }
   }
 
@@ -192,7 +190,9 @@ class SignUpForm extends React.Component {
                 showErrorMessage={this.state.emailError && this.state.emailError.message}
                 label='School email'
                 name='email'
-                onBlur={this.onVerifyEmail.bind(this)}
+                onBlur={() => {
+                  this.setState({emailError: this.onVerifyEmail()})
+                }}
                 onChange={updateProperty}
                 placeholder='School email'
                 value={form.email}
