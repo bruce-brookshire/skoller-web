@@ -52,7 +52,7 @@ export function uploadClassCsv (periodId, file) {
       return data
     })
     .catch(error => {
-      if (error === 422) showSnackbar('File name has already been taken.')
+      if (error.status === 422) showSnackbar('File name has already been taken.')
       else showSnackbar('Error uploading file. Try again.')
       return Promise.reject(error)
     })
