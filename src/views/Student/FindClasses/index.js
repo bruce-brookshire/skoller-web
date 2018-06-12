@@ -395,10 +395,10 @@ class FindClasses extends React.Component {
 
   renderClassDetail () {
     const {formErrors} = this.props
-    const {newCl, cl} = this.state
+    const {newCl, cl, school} = this.state
     return (
       <div className='cn-find-classes-field-container'>
-        <div className='cn-find-classes-sub-field'>
+        {school && school.is_university && <div className='cn-find-classes-sub-field'>
           <div className='cn-find-classes-label'>Subject</div>
           <InputField
             error={formErrors.subject}
@@ -409,8 +409,8 @@ class FindClasses extends React.Component {
             value={this.state.subject}
             disabled={!newCl && cl}
           />
-        </div>
-        <div className='cn-find-classes-sub-field'>
+        </div>}
+        <div className={school && school.is_university ? 'cn-find-classes-sub-field' : 'cn-find-classes-field'}>
           <div className='cn-find-classes-label'>Code</div>
           <InputField
             error={formErrors.code}
@@ -422,7 +422,7 @@ class FindClasses extends React.Component {
             disabled={!newCl && cl}
           />
         </div>
-        <div className='cn-find-classes-sub-field'>
+        {school && school.is_university && <div className='cn-find-classes-sub-field'>
           <div className='cn-find-classes-label'>Section</div>
           <InputField
             error={formErrors.section}
@@ -433,7 +433,7 @@ class FindClasses extends React.Component {
             value={this.state.section}
             disabled={!newCl && cl}
           />
-        </div>
+        </div>}
       </div>
     )
   }
@@ -521,8 +521,8 @@ class FindClasses extends React.Component {
         {this.renderSchool()}
         {school ? this.renderClass() : this.renderDisabledField()}
         {(cl || (newCl && clName)) ? this.renderSemester() : this.renderDisabledField()}
-        {(!newCl && cl) || ((!school || (school && school.is_university)) && semester) ? this.renderClassDetail() : this.renderDisabledField()}
-        {(!newCl && cl) || (school && !school.is_university && semester) || (section && subject && code) ? this.renderMeeting() : this.renderDisabledField()}
+        {(!newCl && cl) || (semester) ? this.renderClassDetail() : this.renderDisabledField()}
+        {(!newCl && cl) || (school && !school.is_university && code) || (section && subject && code) ? this.renderMeeting() : this.renderDisabledField()}
         {(!newCl && cl) || ((time && days) || days === 'Online') ? this.renderProfessor() : this.renderDisabledField()}
         {((!newCl && cl) || (school && clName && semester && (!school.is_university || (section && subject && code)) && ((time && days) || days === 'Online') && (!newCl || professor))) && this.renderSubmit()}
       </div>
