@@ -29,7 +29,8 @@ class ProfessorModal extends React.Component {
   initializeState () {
     return {
       form: this.initializeFormData(),
-      loading: false
+      loading: false,
+      editMode: this.props.professor ? true : false // eslint-disable-line no-unneeded-ternary
     }
   }
 
@@ -79,13 +80,13 @@ class ProfessorModal extends React.Component {
   }
 
   render () {
-    const {form} = this.state
+    const {form, editMode} = this.state
     const {formErrors, updateProperty, isUniversity} = this.props
 
     return (
       <div className='cn-create-professor-container'>
         <div className='cn-create-professor-header'>
-          Add new {isUniversity ? 'professor' : 'teacher'}
+          {!editMode ? 'Add new ' : 'Edit '}{isUniversity ? 'professor' : 'teacher'}
         </div>
         <form onSubmit={this.onSubmit.bind(this)}>
           <div className='cn-create-professor-row'>
@@ -154,10 +155,10 @@ class ProfessorModal extends React.Component {
           </div>
           <button
             className='button margin-top margin-bottom form-button'
-          >Save new {isUniversity ? 'professor' : 'teacher'}</button>
+          >{!editMode ? 'Save new ' : 'Update '}{isUniversity ? 'professor' : 'teacher'}</button>
         </form>
         <div className='cn-create-professor-footer'>
-          We&apos;ll use this info for the {isUniversity ? 'professor' : 'teacher'}&apos;s other classes.
+          {!editMode && `We&apos;ll use this info for the ${isUniversity ? 'professor' : 'teacher'}&apos;s other classes.`}
         </div>
       </div>
     )
