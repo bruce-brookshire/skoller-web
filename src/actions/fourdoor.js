@@ -1,4 +1,4 @@
-import {post, get, put} from '../utilities/api'
+import {post, get, put, del} from '../utilities/api'
 
 /*
 * Set a school's four door override
@@ -30,12 +30,39 @@ export function getFourDoor () {
 }
 
 /*
+* Get fourdoor settings
+*
+*/
+export function getFourDoorOverrides () {
+  return get(`/api/v1/four-door/overrides`, '', 'Error fetching four door overrides. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
 * Update four door defaults
 *
 * @params [Object] form. 4door form.
 */
 export function updateFourDoor (form) {
   return put(`/api/v1/four-door/`, form, 'Error updating four door. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Delete a post from the given class
+*/
+export function deleteOverride (schoolId) {
+  return del(`/api/v1/schools/${schoolId}/four-door`, '')
     .then(data => {
       return data
     })
