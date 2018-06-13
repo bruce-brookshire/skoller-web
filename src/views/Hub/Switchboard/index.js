@@ -16,6 +16,7 @@ import SignupLinks from './SignupLinks'
 import SignupLinkForm from './SignupLinkForm'
 import LinkDetail from './LinkDetail'
 import FourDoor from '../../components/FourDoor'
+import FourDoorOverrides from './FourDoorOverrides'
 
 @inject('rootStore') @observer
 class Switchboard extends React.Component {
@@ -36,7 +37,8 @@ class Switchboard extends React.Component {
       links: [],
       currentLink: null,
       openLinkModal: false,
-      fourDoor: []
+      fourDoor: [],
+      fourDoorOverrides: []
     }
   }
 
@@ -52,6 +54,9 @@ class Switchboard extends React.Component {
     this.getCustomLinks()
     actions.fourdoor.getFourDoor().then((fourDoor) => {
       this.setState({fourDoor})
+    })
+    actions.fourdoor.getFourDoorOverrides().then((fourDoorOverrides) => {
+      this.setState({fourDoorOverrides})
     })
     actions.settings.getAutoUpdateInfo().then((autoUpdateData) => {
       this.setState({autoUpdateData, loading: false})
@@ -341,6 +346,21 @@ class Switchboard extends React.Component {
     )
   }
 
+  renderFourDoorOverrides () {
+    return (
+      <div className='cn-shadow-box margin-top'>
+        <div className='cn-shadow-box-content'>
+          <h3 className='cn-blue center-text'>Four Door Overrides</h3>
+          {this.state.loading ? <div className='center-text'><Loading /></div>
+            : <FourDoorOverrides
+              schools={this.state.fourDoorOverrides}
+            />
+          }
+        </div>
+      </div>
+    )
+  }
+
   renderLinkModal () {
     const {openLinkModal, currentLink} = this.state
     return (
@@ -379,6 +399,7 @@ class Switchboard extends React.Component {
   }
 
   render () {
+    const {fourDoorOverrides} = this.state
     return (
       <div className='cn-switchboard-container'>
         <div className='horizontal-align-row center-text'>
@@ -403,6 +424,7 @@ class Switchboard extends React.Component {
             {this.renderNotificationHistory()}
             {this.renderAssignmentReminders()}
             {this.renderSignupLinks()}
+            {fourDoorOverrides && this.renderFourDoorOverrides()}
           </div>
         </div>
         {this.renderCustomNotificationModal()}

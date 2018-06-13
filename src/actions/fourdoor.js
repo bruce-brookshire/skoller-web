@@ -30,6 +30,20 @@ export function getFourDoor () {
 }
 
 /*
+* Get fourdoor settings
+*
+*/
+export function getFourDoorOverrides () {
+  return get(`/api/v1/four-door/overrides`, '', 'Error fetching four door overrides. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
 * Update four door defaults
 *
 * @params [Object] form. 4door form.
