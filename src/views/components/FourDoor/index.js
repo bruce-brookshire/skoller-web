@@ -30,12 +30,12 @@ class FourDoor extends React.Component {
       is_auto_syllabus: values[nextIdx][2]
     }
 
-    this.props.onChange(school, form)
+    school ? this.props.onChange(school, form) : this.props.onChange(form)
   }
 
   getFourDoorState () {
     const statesDef = this.fourDoorStatesDef
-    const { is_diy_enabled: diy, is_diy_preferred: diyPref, is_auto_syllabus: autoSyllabus } = this.props.school
+    const { is_diy_enabled: diy, is_diy_preferred: diyPref, is_auto_syllabus: autoSyllabus } = this.props.currentValues
     const curState = [diy, diyPref, autoSyllabus]
     const comp = JSON.stringify(curState)
     const curIdx = Object.values(statesDef).findIndex((b) => comp === JSON.stringify(b))
@@ -82,7 +82,8 @@ class FourDoor extends React.Component {
 
 FourDoor.propTypes = {
   onChange: PropTypes.func,
-  school: PropTypes.object
+  school: PropTypes.object,
+  currentValues: PropTypes.object
 }
 
 export default FourDoor

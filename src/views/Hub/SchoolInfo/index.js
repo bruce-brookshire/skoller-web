@@ -80,6 +80,7 @@ class SchoolInfo extends React.Component {
     return (
       <FourDoor
         school={this.state.school}
+        currentValues={this.state.school}
         onChange={this.onFourDoorChange.bind(this)}
       />
     )

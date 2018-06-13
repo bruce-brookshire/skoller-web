@@ -11,7 +11,7 @@ import {createIssue, getHelpTypes, resolveIssue, getRequestTypes, resolveChangeR
   resolveStudentRequest} from './classhelp'
 import {getClassDocuments, uploadClassCsv, uploadClassDocument, deleteClassDocument} from './documents'
 import {getFieldsOfStudy, uploadFOSCsv} from './fieldsofstudy'
-import {overrideSchool} from './fourdoor'
+import {overrideSchool, getFourDoor, updateFourDoor} from './fourdoor'
 import {updateGradeScale} from './gradescales'
 import {getStatuses, getStatusesHub} from './hub'
 import {getAssignmentMods} from './mods'
@@ -95,7 +95,9 @@ const actions = {
     uploadFOSCsv
   },
   fourdoor: {
-    overrideSchool
+    overrideSchool,
+    getFourDoor,
+    updateFourDoor
   },
   gradescales: {
     updateGradeScale

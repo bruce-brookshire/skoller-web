@@ -15,6 +15,7 @@ import FOSUploadInfo from './FOSUploadInfo'
 import SignupLinks from './SignupLinks'
 import SignupLinkForm from './SignupLinkForm'
 import LinkDetail from './LinkDetail'
+import FourDoor from '../../components/FourDoor'
 
 @inject('rootStore') @observer
 class Switchboard extends React.Component {
@@ -34,7 +35,8 @@ class Switchboard extends React.Component {
       openFOSModal: false,
       links: [],
       currentLink: null,
-      openLinkModal: false
+      openLinkModal: false,
+      fourDoor: []
     }
   }
 
@@ -48,6 +50,9 @@ class Switchboard extends React.Component {
     }).catch(() => false)
     this.getReminders()
     this.getCustomLinks()
+    actions.fourdoor.getFourDoor().then((fourDoor) => {
+      this.setState({fourDoor})
+    })
     actions.settings.getAutoUpdateInfo().then((autoUpdateData) => {
       this.setState({autoUpdateData, loading: false})
     }).catch(() => false)
@@ -79,6 +84,12 @@ class Switchboard extends React.Component {
     actions.signupLinks.getCustomLinks().then((links) => {
       this.setState({links})
     }).catch(() => false)
+  }
+
+  onFourDoorChange (form) {
+    actions.fourdoor.updateFourDoor(form).then((fourDoor) => {
+      this.setState({fourDoor})
+    })
   }
 
   /*
@@ -352,6 +363,21 @@ class Switchboard extends React.Component {
     )
   }
 
+  renderFourDoor () {
+    const {fourDoor} = this.state
+    return (
+      <div className='cn-shadow-box margin-top'>
+        <div className='cn-shadow-box-content'>
+          <h3 className='cn-blue center-text'>Four Door Status</h3>
+          <FourDoor
+            currentValues={fourDoor}
+            onChange={this.onFourDoorChange.bind(this)}
+          />
+        </div>
+      </div>
+    )
+  }
+
   render () {
     return (
       <div className='cn-switchboard-container'>
@@ -368,6 +394,9 @@ class Switchboard extends React.Component {
             <div className="cn-switchboard-section-item">
               {this.state.loading ? <div className='center-text'><Loading /></div>
                 : this.renderMinVersionSettings()}
+            </div>
+            <div className="cn-switchboard-section-item">
+              {this.renderFourDoor()}
             </div>
           </div>
           <div className='cn-switchboard-section-large'>
