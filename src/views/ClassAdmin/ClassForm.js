@@ -9,6 +9,15 @@ import TimeFields from '../components/ClassEditor/MeetingTimes/TimeFields'
 const requiredFields = {
   'name': {
     type: 'required'
+  },
+  'subject': {
+    type: 'required'
+  },
+  'code': {
+    type: 'required'
+  },
+  'section': {
+    type: 'required'
   }
 }
 
@@ -63,6 +72,11 @@ class ClassForm extends React.Component {
   */
   onSubmit (event) {
     event.preventDefault()
+
+    if (!this.props.cl.school.is_university) {
+      requiredFields.section = {}
+      requiredFields.subject = {}
+    }
 
     if (this.props.validateForm(this.state.form, requiredFields)) {
       const form = this.mapForm(this.state.form)
