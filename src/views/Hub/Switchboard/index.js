@@ -17,6 +17,7 @@ import SignupLinkForm from './SignupLinkForm'
 import LinkDetail from './LinkDetail'
 import FourDoor from '../../components/FourDoor'
 import FourDoorOverrides from './FourDoorOverrides'
+import {browserHistory} from 'react-router'
 
 @inject('rootStore') @observer
 class Switchboard extends React.Component {
@@ -105,6 +106,13 @@ class Switchboard extends React.Component {
     actions.fourdoor.deleteOverride(item.id).then(() => {
       this.getOverrides()
     }).catch(() => false)
+  }
+
+  /*
+  * On school select.
+  */
+  onSchoolSelect (school) {
+    browserHistory.push({pathname: '/hub/schools/school/info', state: {school}})
   }
 
   /*
@@ -365,6 +373,7 @@ class Switchboard extends React.Component {
             : <FourDoorOverrides
               schools={this.state.fourDoorOverrides}
               onDelete={() => this.onDeleteOverride.bind(this)}
+              onSelect={() => this.onSchoolSelect.bind(this)}
             />
           }
         </div>
