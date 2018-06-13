@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import Modal from '../../../components/Modal'
 import PeriodForm from './PeriodForm'
 import SemesterDetails from './SemesterDetails'
-import { updateSchool } from '../../../actions/schools'
 import SchoolDetails from './SchoolDetails'
 import SchoolDetailsForm from './SchoolDetailsForm'
 import actions from '../../../actions'
@@ -66,11 +65,13 @@ class SchoolInfo extends React.Component {
     const nextIdx = currIdx + 1 > states.length - 1 ? 0 : currIdx + 1
 
     const { school } = this.state
-    school.is_diy_enabled = values[nextIdx][0]
-    school.is_diy_preferred = values[nextIdx][1]
-    school.is_auto_syllabus = values[nextIdx][2]
+    let form = {
+      is_diy_enabled: values[nextIdx][0],
+      is_diy_preferred: values[nextIdx][1],
+      is_auto_syllabus: values[nextIdx][2]
+    }
 
-    updateSchool(school).then((res) => {
+    actions.fourdoor.overrideSchool(school.id, form).then((school) => {
       this.setState({ school: school })
     })
   }
@@ -150,9 +151,6 @@ class SchoolInfo extends React.Component {
   */
   renderSchoolDetails () {
     const { school } = this.state
-    // is_auto_syllabus : true
-    // is_diy_enabled : true
-    // is_diy_preferred : false
 
     return (
       <SchoolDetails
