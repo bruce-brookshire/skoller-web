@@ -37,7 +37,7 @@ class Switchboard extends React.Component {
       links: [],
       currentLink: null,
       openLinkModal: false,
-      fourDoor: [],
+      fourDoor: {},
       fourDoorOverrides: []
     }
   }
@@ -55,9 +55,7 @@ class Switchboard extends React.Component {
     actions.fourdoor.getFourDoor().then((fourDoor) => {
       this.setState({fourDoor})
     })
-    actions.fourdoor.getFourDoorOverrides().then((fourDoorOverrides) => {
-      this.setState({fourDoorOverrides})
-    })
+    this.getOverrides()
     actions.settings.getAutoUpdateInfo().then((autoUpdateData) => {
       this.setState({autoUpdateData, loading: false})
     }).catch(() => false)
@@ -85,6 +83,12 @@ class Switchboard extends React.Component {
     }).catch(() => false)
   }
 
+  getOverrides () {
+    actions.fourdoor.getFourDoorOverrides().then((fourDoorOverrides) => {
+      this.setState({fourDoorOverrides})
+    }).catch(() => false)
+  }
+
   getCustomLinks () {
     actions.signupLinks.getCustomLinks().then((links) => {
       this.setState({links})
@@ -95,6 +99,12 @@ class Switchboard extends React.Component {
     actions.fourdoor.updateFourDoor(form).then((fourDoor) => {
       this.setState({fourDoor})
     })
+  }
+
+  onDeleteOverride (item) {
+    actions.fourdoor.deleteOverride(item.id).then(() => {
+      this.getOverrides()
+    }).catch(() => false)
   }
 
   /*
@@ -354,6 +364,7 @@ class Switchboard extends React.Component {
           {this.state.loading ? <div className='center-text'><Loading /></div>
             : <FourDoorOverrides
               schools={this.state.fourDoorOverrides}
+              onDelete={() => this.onDeleteOverride.bind(this)}
             />
           }
         </div>
@@ -399,7 +410,7 @@ class Switchboard extends React.Component {
   }
 
   render () {
-    const {fourDoorOverrides} = this.state
+    const {fourDoorOverrides, currentLink} = this.state
     return (
       <div className='cn-switchboard-container'>
         <div className='horizontal-align-row center-text'>
@@ -431,7 +442,7 @@ class Switchboard extends React.Component {
         {this.renderAutoUpdateModal()}
         {this.renderVersionUpdateModal()}
         {this.renderFOSUploadModal()}
-        {this.renderLinkModal()}
+        {currentLink && this.renderLinkModal()}
       </div>
     )
   }

@@ -32,7 +32,7 @@ class AssignmentReminderForm extends React.Component {
   initializeFormData () {
     return {
       message: '',
-      assignment_reminder_notification_topic_id: this.state && this.state.form ? this.state.form.assignment_reminder_notification_topic_id : null,
+      assignment_reminder_notification_topic_id: this.state && this.state.form ? this.state.form.assignment_reminder_notification_topic_id : 0,
       is_plural: false
     }
   }
