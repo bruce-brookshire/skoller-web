@@ -162,7 +162,7 @@ class AssignmentForm extends React.Component {
     return (
       <div id='class-editor-assignment-form'>
         <div className='cn-section-content-header'>
-          Add assignments{currentWeight ? ' for the category ' + currentWeight.name : ''}
+          Add {currentWeight ? currentWeight.name : 'assignments'}
         </div>
         <div className='margin-top'>
           Add any assignments for this class{currentWeight ? ' that fall under the category ' + currentWeight.name : ''}.
@@ -170,7 +170,6 @@ class AssignmentForm extends React.Component {
         <div className='row'>
           <div className='col-xs-12'>
             <InputField
-              style={{marginTop: '0em'}}
               containerClassName='margin-top'
               error={formErrors.name}
               info={'Be sure to add the assignment name exactly how it appears in the syllabus. Hint: use copy and paste to minimize typ-o\'s'}
@@ -183,7 +182,6 @@ class AssignmentForm extends React.Component {
           </div>
           {isAdmin && <div className='col-xs-12'>
             <SelectField
-              style={{marginTop: '0em'}}
               containerClassName='margin-top'
               error={formErrors.weight_id}
               label='Weight'
@@ -194,8 +192,7 @@ class AssignmentForm extends React.Component {
             />
           </div>}
           <div className='col-xs-4'>
-            <InputField
-              style={{marginTop: '0.25em'}}
+            {!this.state.due_null && <InputField
               containerClassName='margin-top'
               error={formErrors.due}
               info={`Don’t have the due date for an assignment? No worries– you can always add one later. Go ahead and add the assignment now.`}
@@ -207,10 +204,10 @@ class AssignmentForm extends React.Component {
               placeholder='MM/DD'
               value={form.due}
               disabled={this.state.due_null === true}
-            />
+            />}
           </div>
           <div className='col-xs-4'>
-            <SelectField
+            {!this.state.due_null && <SelectField
               containerClassName='margin-top'
               error={formErrors.year_due}
               label='Year due'
@@ -221,7 +218,7 @@ class AssignmentForm extends React.Component {
               options={yearOpts}
               value={form.year_due}
               disabled={this.state.due_null === true}
-            />
+            />}
           </div>
           <div className='col-xs-4'>
             <div className='cn-input-container margin-top center-xs'>

@@ -44,7 +44,7 @@ class AssignmentTable extends React.Component {
           {isAdmin && <div>Students: {students}</div>}
         </div>
         <div className='col-xs-3 right-text'>
-          {due ? this.mapAssignmentDate(due) : 'N/A'}
+          {due ? this.mapAssignmentDate(due) : ''}
           {isAdmin && <div>{(fromMod ? 'Mod' : 'Syllabus')}</div>}
           {isAdmin && <div>Mods: {mods}</div>}
         </div>
