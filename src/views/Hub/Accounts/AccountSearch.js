@@ -120,44 +120,28 @@ class AccountSearch extends React.Component {
     this.setState({suspended: value})
   }
 
-  /*
-  * Determines if search is valid
-  */
-  validSearch () {
-    // If not suspended and its a student search, they need to select a school
-    if (!this.state.suspended && this.state.accountType === 100 && this.state.schoolId === '') {
-      return false
-    } else {
-      return true
-    }
-  }
-
   onSearch () {
-    if (this.validSearch()) {
-      let params = ''
-      if (this.state.schoolId && this.state.searchValue !== '') {
-        params = `school_id=${this.state.schoolId}&account_type=${this.state.accountType}&email=${this.state.searchValue}`
-      } else if (this.state.schoolId && this.state.searchValue === '') {
-        params = `school_id=${this.state.schoolId}&account_type=${this.state.accountType}`
-      } else if (this.state.searchValue !== '') {
-        params = `account_type=${this.state.accountType}&email=${this.state.searchValue}`
-      } else {
-        params = `account_type=${this.state.accountType}`
-      }
-      if (this.state.accountType !== 200) {
-        params += `&is_suspended=${this.state.suspended}`
-      }
-      if (this.state.accountType === 100 && this.state.searchValue !== '') {
-        params += `&user_name=${this.state.searchValue}`
-        params += `&or=${true}`
-      }
-      this.props.onSearch(params)
+    let params = ''
+    if (this.state.schoolId && this.state.searchValue !== '') {
+      params = `school_id=${this.state.schoolId}&account_type=${this.state.accountType}&email=${this.state.searchValue}`
+    } else if (this.state.schoolId && this.state.searchValue === '') {
+      params = `school_id=${this.state.schoolId}&account_type=${this.state.accountType}`
+    } else if (this.state.searchValue !== '') {
+      params = `account_type=${this.state.accountType}&email=${this.state.searchValue}`
+    } else {
+      params = `account_type=${this.state.accountType}`
     }
+    if (this.state.accountType !== 200) {
+      params += `&is_suspended=${this.state.suspended}`
+    }
+    if (this.state.accountType === 100 && this.state.searchValue !== '') {
+      params += `&user_name=${this.state.searchValue}`
+      params += `&or=${true}`
+    }
+    this.props.onSearch(params)
   }
 
   render () {
-    const valid = this.validSearch()
-    const disabledClass = valid ? '' : 'disabled'
     return (
       <div className='margin-bottom'>
         <div className='row'>
@@ -177,8 +161,7 @@ class AccountSearch extends React.Component {
           </div>
           <div className={`col-xs-12 col-sm-${this.state.accountType === 100 ? '3' : '4'} margin-top vertical-align`}>
             <button
-              className={`button full-width ${disabledClass}`}
-              disabled={!valid}
+              className={`button full-width`}
               onClick={this.onSearch.bind(this)}>
               Search
               {this.props.loading ? <Loading style={{color: 'white', marginLeft: '0.5em'}} /> : null}
