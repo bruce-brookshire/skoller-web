@@ -17,9 +17,8 @@ export function getFieldsOfStudy (query) {
 }
 
 /*
-* Upload a csv import for fields of study for a school.
+* Upload a csv import for fields of study.
 *
-* @param [Number] schoolId. The school to upload the csv for.
 * @param [Object] file. The file to upload.
 */
 export function uploadFOSCsv (file) {
