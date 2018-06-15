@@ -411,7 +411,7 @@ class FindClasses extends React.Component {
           />
         </div>}
         <div className={school && school.is_university ? 'cn-find-classes-sub-field' : 'cn-find-classes-field'}>
-          <div className='cn-find-classes-label'>Code</div>
+          <div className='cn-find-classes-label'>{school && school.is_university ? 'Code' : 'Period or Start Time'}</div>
           <InputField
             error={formErrors.code}
             name='code'
@@ -420,6 +420,7 @@ class FindClasses extends React.Component {
             }}
             value={this.state.code}
             disabled={!newCl && cl}
+            placeholder={school && !school.is_university && 'e.g. 5th Period'}
           />
         </div>
         {school && school.is_university && <div className='cn-find-classes-sub-field'>
@@ -522,9 +523,9 @@ class FindClasses extends React.Component {
         {school ? this.renderClass() : this.renderDisabledField()}
         {(cl || (newCl && clName)) ? this.renderSemester() : this.renderDisabledField()}
         {(!newCl && cl) || (semester) ? this.renderClassDetail() : this.renderDisabledField()}
-        {(!newCl && cl) || (school && !school.is_university && code) || (section && subject && code) ? this.renderMeeting() : this.renderDisabledField()}
-        {(!newCl && cl) || ((time && days) || days === 'Online') ? this.renderProfessor() : this.renderDisabledField()}
-        {((!newCl && cl) || (school && clName && semester && (!school.is_university || (section && subject && code)) && ((time && days) || days === 'Online') && (!newCl || professor))) && this.renderSubmit()}
+        {(!school || (school && school.is_university)) && ((!newCl && cl) || (section && subject && code) ? this.renderMeeting() : this.renderDisabledField())}
+        {(!newCl && cl) || ((time && days) || days === 'Online') || (school && !school.is_university && code) ? this.renderProfessor() : this.renderDisabledField()}
+        {((!newCl && cl) || (school && clName && semester && (!school.is_university || (section && subject && code)) && (!school.is_university || ((time && days) || days === 'Online')) && (!newCl || professor))) && this.renderSubmit()}
       </div>
     )
   }
