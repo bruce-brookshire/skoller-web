@@ -52,8 +52,20 @@ class ClassCard extends React.Component {
     )
   }
 
+  renderSection () {
+    const {cl} = this.props
+    return (
+      <div className='cn-class-card-field'>
+        <div className='cn-class-card-label'>
+          Section
+        </div>
+        {cl.section}
+      </div>
+    )
+  }
+
   render () {
-    const {cl, schoolName, semesterName, professorName} = this.props
+    const {cl, schoolName, semesterName, professorName, isAdmin} = this.props
 
     return (
       <div className='cn-class-card'>
@@ -77,38 +89,34 @@ class ClassCard extends React.Component {
             </div>
           </div>
           <div className='cn-class-card-row'>
-            <div className='cn-class-card-field'>
+            {(isAdmin || (!isAdmin && (cl.meet_days || cl.meet_start_time))) && <div className='cn-class-card-field'>
               <div className='cn-class-card-label'>
                 Meeting times
               </div>
               {cl.meet_days + (cl.meet_days !== 'Online' && cl.meet_start_time ? ' ' + moment(cl.meet_start_time, 'HH:mm:ss').format('hh:mm a').toString() : '')}
-            </div>
+            </div>}
             <div className='cn-class-card-field'>
               <div className='cn-class-card-label'>
                 Professor
               </div>
               {professorName || 'N/A'}
             </div>
+            {!isAdmin && !cl.code && cl.section && this.renderSection()}
           </div>
           <div className='cn-class-card-row'>
-            <div className='cn-class-card-field'>
+            {(isAdmin || (!isAdmin && cl.subject)) && <div className='cn-class-card-field'>
               <div className='cn-class-card-label'>
                 Subject
               </div>
               {cl.subject}
-            </div>
-            <div className='cn-class-card-field'>
+            </div>}
+            {(isAdmin || (!isAdmin && cl.code)) && <div className='cn-class-card-field'>
               <div className='cn-class-card-label'>
                 Code
               </div>
               {cl.code}
-            </div>
-            <div className='cn-class-card-field'>
-              <div className='cn-class-card-label'>
-                Section
-              </div>
-              {cl.section}
-            </div>
+            </div>}
+            {(isAdmin || (!isAdmin && cl.code && cl.section)) && this.renderSection()}
           </div>
           {this.props.onSubmit && <button
             onClick={() => this.props.onSubmit()}

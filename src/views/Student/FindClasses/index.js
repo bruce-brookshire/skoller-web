@@ -60,7 +60,8 @@ class FindClasses extends React.Component {
       code: cl.code,
       subject: cl.subject,
       days: cl.meet_days,
-      time: cl.meet_start_time
+      time: cl.meet_start_time,
+      professor: cl.professor
     })
   }
 
