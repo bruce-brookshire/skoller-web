@@ -222,6 +222,15 @@ class Switchboard extends React.Component {
     this.setState({currentLink: item, openLinkModal: true})
   }
 
+  handleCSVErrors (items) {
+    const erroredItem = items.filter(f => {
+      let error = f.error || f.errors
+      return error
+    })
+    const completedItemCount = items.length - erroredItem.length
+    this.setState({ erroredItem, completedItemCount, openCSVModal: true })
+  }
+
   /*
   * On upload class fos, show results of upload.
   *
@@ -229,16 +238,7 @@ class Switchboard extends React.Component {
   */
   onUploadFOS (file) {
     actions.fieldsofstudy.uploadFOSCsv(file).then((fos) => {
-      const erroredItem = fos.filter(f => {
-        let error = f.error
-        if (error && f.error.school_field) {
-          error = f.error.school_field.findIndex(e =>
-            e.toLowerCase() === 'has already been taken') === -1
-        }
-        return error
-      })
-      const completedItemCount = fos.length - erroredItem.length
-      this.setState({ erroredItem, completedItemCount, openCSVModal: true })
+      this.handleCSVErrors(fos)
     })
   }
 
@@ -249,11 +249,7 @@ class Switchboard extends React.Component {
   */
   onUploadSchools (file) {
     actions.schools.uploadSchoolCsv(file).then((school) => {
-      const erroredItem = school.filter(f => {
-        return f.errors
-      })
-      const completedItemCount = school.length - erroredItem.length
-      this.setState({ erroredItem, completedItemCount, openCSVModal: true })
+      this.handleCSVErrors(school)
     })
   }
 
