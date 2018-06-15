@@ -37,7 +37,7 @@ class FourDoorOverrides extends React.Component {
           disabled={true}
           canDelete={true}
           canSelect={true}
-          emptyMessage={'No reminder messages exist yet.'}
+          emptyMessage={'No overrides exist yet.'}
           deleteMessage={''}
           onDelete={this.props.onDelete ? this.props.onDelete() : null}
           onSelect={this.props.onSelect ? this.props.onSelect() : null}

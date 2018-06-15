@@ -22,7 +22,7 @@ import {attachProfessorToClass, createProfessor, removeProfessorFromClass,
   searchProfessors, updateProfessor} from './professors'
 import {resolveReport, getIncompleteReports} from './reports'
 import {createSchool, getAllSchools, getHubSchools,
-  getHubSchoolsMinified, getSchoolById, updateSchool, searchSchools, getStates} from './schools'
+  getHubSchoolsMinified, getSchoolById, updateSchool, searchSchools, getStates, uploadSchoolCsv} from './schools'
 import {getAutoUpdateInfo, updateAutoUpdateInfo, forecastAutoUpdateInfo, getMinVersionInfo, updateMinVer} from './settings'
 import {createCustomLink, getCustomLinkById, getCustomLinks} from './signup-links'
 import {getNextClass} from './syllabusworkers'
@@ -143,7 +143,8 @@ const actions = {
     getSchoolById,
     searchSchools,
     updateSchool,
-    getStates
+    getStates,
+    uploadSchoolCsv
   },
   settings: {
     getAutoUpdateInfo,

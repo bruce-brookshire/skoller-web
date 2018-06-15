@@ -11,7 +11,7 @@ import NotificationHistory from './NotificationHistory'
 import AssignmentReminders from './AssignmentReminders'
 import AssignmentReminderForm from './AssignmentReminderForm'
 import UploadHistory from '../../../components/UploadHistory'
-import FOSUploadInfo from './FOSUploadInfo'
+import CSVUploadInfo from './CSVUploadInfo'
 import SignupLinks from './SignupLinks'
 import SignupLinkForm from './SignupLinkForm'
 import LinkDetail from './LinkDetail'
@@ -32,9 +32,9 @@ class Switchboard extends React.Component {
       autoUpdateData: [],
       minAppVersionData: [],
       reminders: [],
-      completedFOSCount: 0,
-      erroredFOS: [],
-      openFOSModal: false,
+      completedItemCount: 0,
+      erroredItem: [],
+      openCSVModal: false,
       links: [],
       currentLink: null,
       openLinkModal: false,
@@ -222,6 +222,23 @@ class Switchboard extends React.Component {
     this.setState({currentLink: item, openLinkModal: true})
   }
 
+  handleCSVErrors (items, mapErrors) {
+    const erroredItem = items.filter(f => {
+      let error = f.error || f.errors
+      return error
+    }).map((item, index) => { return mapErrors(item, index) })
+    console.log(erroredItem)
+    const completedItemCount = items.length - erroredItem.length
+    this.setState({ erroredItem, completedItemCount, openCSVModal: true })
+  }
+
+  mapFOSErrors (item, index) {
+    if (item.errors) {
+      item.name = item.field
+    }
+    return item
+  }
+
   /*
   * On upload class fos, show results of upload.
   *
@@ -229,45 +246,47 @@ class Switchboard extends React.Component {
   */
   onUploadFOS (file) {
     actions.fieldsofstudy.uploadFOSCsv(file).then((fos) => {
-      const erroredFOS = fos.filter(f => {
-        let error = f.errors
-        if (error && f.errors.school_field) {
-          error = f.errors.school_field.findIndex(e =>
-            e.toLowerCase() === 'has already been taken') === -1
-        }
-        return error
-      })
-      const completedFOSCount = fos.length - erroredFOS.length
-      this.setState({ erroredFOS, completedFOSCount, openFOSModal: true })
+      this.handleCSVErrors(fos, this.mapFOSErrors)
+    })
+  }
+
+  /*
+  * On upload school, show results of upload.
+  *
+  * @param [File] file. File to be uploaded.
+  */
+  onUploadSchools (file) {
+    actions.schools.uploadSchoolCsv(file).then((school) => {
+      this.handleCSVErrors(school, (item, index) => { return item })
     })
   }
 
   /*
   * Toggle fos modal.
   */
-  toggleFOSUploadModal () {
-    this.setState({openFOSModal: !this.state.openFOSModal})
+  toggleCSVModal () {
+    this.setState({openCSVModal: !this.state.openCSVModal})
   }
 
   /*
   * Render the fos upload modal
   */
   renderFOSUploadModal () {
-    const {openFOSModal, erroredFOS, completedFOSCount} = this.state
+    const {openCSVModal, erroredItem, completedItemCount} = this.state
     return (
       <Modal
-        open={openFOSModal}
-        onClose={this.toggleFOSUploadModal.bind(this)}
+        open={openCSVModal}
+        onClose={this.toggleCSVModal.bind(this)}
       >
         <div>
-          <FOSUploadInfo
-            erroredFOS={erroredFOS}
-            completedFOSCount={completedFOSCount}
+          <CSVUploadInfo
+            erroredItem={erroredItem}
+            completedItemCount={completedItemCount}
           />
           <div className='row'>
             <button
               className='button-invert full-width margin-top margin-bottom'
-              onClick={this.toggleFOSUploadModal.bind(this)}
+              onClick={this.toggleCSVModal.bind(this)}
             > Close </button>
           </div>
         </div>
@@ -418,6 +437,24 @@ class Switchboard extends React.Component {
     )
   }
 
+  renderSchoolUpload () {
+    return (
+      <div className='cn-shadow-box margin-top'>
+        <div className='cn-shadow-box-content'>
+          <h3 className='cn-blue center-text'>Import schools</h3>
+          <UploadHistory
+            allow='text/csv'
+            disabled={false}
+            files={[]}
+            info='Upload school csv.'
+            onUpload={(file) => { this.onUploadSchools(file) }}
+            title='Schools'
+          />
+        </div>
+      </div>
+    )
+  }
+
   render () {
     const {fourDoorOverrides, currentLink} = this.state
     return (
@@ -431,6 +468,9 @@ class Switchboard extends React.Component {
             </div>
             <div className='cn-switchboard-section-item'>
               {this.renderFieldOfStudy()}
+            </div>
+            <div className='cn-switchboard-section-item'>
+              {this.renderSchoolUpload()}
             </div>
             <div className="cn-switchboard-section-item">
               {this.state.loading ? <div className='center-text'><Loading /></div>

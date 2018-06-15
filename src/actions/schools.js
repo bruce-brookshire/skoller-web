@@ -1,4 +1,5 @@
-import {get, post, put} from '../utilities/api'
+import {get, post, put, postFile} from '../utilities/api'
+import {showSnackbar} from '../utilities/snackbar'
 
 /*
 * Get the all schools for signup
@@ -110,6 +111,26 @@ export function updateSchool (form) {
       return data
     })
     .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Upload a csv import for a school.
+*
+* @param [Object] file. The file to upload.
+*/
+export function uploadSchoolCsv (file) {
+  let form = new FormData()
+  form.append('file', file)
+
+  return postFile(`/api/v1/schools/csv`, form, '')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      if (error.status === 422) showSnackbar('File name has already been taken.')
+      else showSnackbar('Error uploading file. Try again.')
       return Promise.reject(error)
     })
 }
