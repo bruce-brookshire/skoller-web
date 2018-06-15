@@ -158,7 +158,7 @@ class ProfessorModal extends React.Component {
           >{!editMode ? 'Save new ' : 'Update '}{isUniversity ? 'professor' : 'teacher'}</button>
         </form>
         <div className='cn-create-professor-footer'>
-          {!editMode && `We&apos;ll use this info for the ${isUniversity ? 'professor' : 'teacher'}&apos;s other classes.`}
+          {!editMode && `We'll use this info for the ${isUniversity ? 'professor' : 'teacher'}'s other classes.`}
         </div>
       </div>
     )

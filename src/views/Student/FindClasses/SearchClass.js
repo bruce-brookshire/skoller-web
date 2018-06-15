@@ -58,7 +58,7 @@ class SearchClass extends React.Component {
           {data.professor
             ? <span className='cn-autocomplete-detail-results-item'>{data.professor.name_first} {data.professor.name_last}</span>
             : <span className='cn-autocomplete-detail-results-item'>--</span>}
-          <span className='cn-autocomplete-detail-results-item'>{data.class_period_name}</span>
+          <span className='cn-autocomplete-detail-results-item'>{data.class_period.name}</span>
           <span className='cn-autocomplete-detail-results-item'>{data.meet_days} {data.meet_start_time}</span>
           <span className='cn-autocomplete-detail-results-item'>{data.subject} {data.code}.{data.section}</span>
           <div className='cn-results-divider'></div>
