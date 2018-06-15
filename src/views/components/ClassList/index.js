@@ -64,11 +64,11 @@ class ClassList extends React.Component {
 
     const row = {
       id: id || '',
-      courseNumber: (subject ? subject + ' ' : '') + code + (section ? '.' + section : ''),
+      courseNumber: (subject ? subject + ' ' : '') + (code ? code : '') + (section && code ? '.' + section : ''), // eslint-disable-line no-unneeded-ternary
       name: name || '-',
-      professor: professor ? mapProfessor(professor) : 'TBA',
-      days: days || 'TBA',
-      beginTime: startTime ? mapTimeToDisplay(startTime) : 'TBA',
+      professor: professor ? mapProfessor(professor) : '',
+      days: days || '',
+      beginTime: startTime ? mapTimeToDisplay(startTime) : (section && !code ? section : ''),
       campus: campus || '',
       status: status ? this.mapStatus(status) : '-',
       enrollment: enrollment || 0,
