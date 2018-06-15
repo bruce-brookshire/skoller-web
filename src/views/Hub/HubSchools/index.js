@@ -111,11 +111,11 @@ class HubSchools extends React.Component {
     actions.schools.getHubSchools(queryString).then(schools => {
       headers[0].display = `Schools (${schools.length})`
       headers[1].display = `# of students (${this.getTotal(schools, 'Students')})`
-      headers[3].display = `Weights (${this.getTotal(schools, 'Weights')})`
-      headers[4].display = `Assignments (${this.getTotal(schools, 'Assignments')})`
-      headers[5].display = `Review (${this.getTotal(schools, 'Review')})`
-      headers[6].display = `Help (${this.getTotal(schools, 'Help')})`
-      headers[7].display = `Complete (${this.getTotal(schools, 'Complete')})`
+      headers[2].display = `Weights (${this.getTotal(schools, 'Weights')})`
+      headers[3].display = `Assignments (${this.getTotal(schools, 'Assignments')})`
+      headers[4].display = `Review (${this.getTotal(schools, 'Review')})`
+      headers[5].display = `Help (${this.getTotal(schools, 'Help')})`
+      headers[6].display = `Complete (${this.getTotal(schools, 'Complete')})`
       this.setState({schools, loading: false})
     }).catch(() => this.setState({loading: false}))
   }
@@ -139,7 +139,7 @@ class HubSchools extends React.Component {
       <div className='cn-schools-container'>
         <div className='margin-bottom'>
           <h2 className='center-text'>Schools</h2>
-          <div id='cn-school-search'>
+          <div id='cn-school-search-container'>
             <SchoolSearch
               onSearch={this.onSearchSchool.bind(this)}
               loading={this.state.loading}
@@ -150,13 +150,13 @@ class HubSchools extends React.Component {
             <span className='description'>Manage school details from this page</span>
           </div>
         </div>
-        <Grid
+        {this.state.schools && <Grid
           className='cn-schools-table'
           headers={headers}
           rows={this.getRows()}
           disabled={true}
           canDelete={false}
-        />
+        />}
       </div>
     )
   }
