@@ -2,6 +2,7 @@ import React from 'react'
 import {browserHistory} from 'react-router'
 import Grid from '../../../components/Grid'
 import actions from '../../../actions'
+import SchoolSearch from './SchoolSearch'
 
 const headers = [
   {
@@ -11,10 +12,6 @@ const headers = [
   {
     field: 'numberOfStudents',
     display: '# of students'
-  },
-  {
-    field: 'fourDoor',
-    display: '4Door'
   },
   {
     field: 'weights',
@@ -42,24 +39,9 @@ class HubSchools extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      schools: []
+      schools: [],
+      loading: false
     }
-  }
-
-  /*
-  * Fetch school details for the hub.
-  */
-  componentWillMount () {
-    actions.schools.getHubSchools().then(schools => {
-      headers[0].display = `Schools (${schools.length})`
-      headers[1].display = `# of students (${this.getTotal(schools, 'Students')})`
-      headers[3].display = `Weights (${this.getTotal(schools, 'Weights')})`
-      headers[4].display = `Assignments (${this.getTotal(schools, 'Assignments')})`
-      headers[5].display = `Review (${this.getTotal(schools, 'Review')})`
-      headers[6].display = `Help (${this.getTotal(schools, 'Help')})`
-      headers[7].display = `Complete (${this.getTotal(schools, 'Complete')})`
-      this.setState({schools})
-    }).catch(() => false)
   }
 
   /*
@@ -81,13 +63,12 @@ class HubSchools extends React.Component {
   * @return [Object] row. Object of formatted row data for display in grid.
   */
   mapRow (item, index) {
-    const {id, name, enrollment, is_diy_enabled: diy, is_diy_preferred: diyPref, is_auto_syllabus: autoSyllabus, classes} = item
+    const {id, name, enrollment, classes} = item
 
     const row = {
       id: id || '',
       name: name ? <div onClick={() => this.onSchoolSelect(item)}><span style={{display: 'block'}}><strong>{name}</strong></span><span style={{fontSize: '10px'}}>Period</span></div> : 'TBA',
       numberOfStudents: enrollment || 0,
-      fourDoor: this.mapFourDoor(diy, diyPref, autoSyllabus),
       weights: this.getCounts(classes, 'Weights') || this.renderCheck(),
       assignments: this.getCounts(classes, 'Assignments') || this.renderCheck(),
       review: this.getCounts(classes, 'Review') || this.renderCheck(),
@@ -96,23 +77,6 @@ class HubSchools extends React.Component {
     }
 
     return row
-  }
-
-  /*
-  * Render the four door status for a given school.
-  */
-  mapFourDoor (diy, diyPreferred, autoSyllabus) {
-    if (diy && !diyPreferred && autoSyllabus) {
-      return 'Normal'
-    } else if (diy && diyPreferred && autoSyllabus) {
-      return 'DIY Preferred'
-    } else if (!diy && !diyPreferred && autoSyllabus) {
-      return 'Skoller only'
-    } else if (diy && diyPreferred && !autoSyllabus) {
-      return 'DIY only'
-    } else {
-      return 'Normal'
-    }
   }
 
   /*
@@ -142,6 +106,20 @@ class HubSchools extends React.Component {
     return <i className='fa fa-check' style={{color: '#a9a9a9'}}/>
   }
 
+  onSearchSchool (queryString) {
+    this.setState({loading: true})
+    actions.schools.getHubSchools(queryString).then(schools => {
+      headers[0].display = `Schools (${schools.length})`
+      headers[1].display = `# of students (${this.getTotal(schools, 'Students')})`
+      headers[3].display = `Weights (${this.getTotal(schools, 'Weights')})`
+      headers[4].display = `Assignments (${this.getTotal(schools, 'Assignments')})`
+      headers[5].display = `Review (${this.getTotal(schools, 'Review')})`
+      headers[6].display = `Help (${this.getTotal(schools, 'Help')})`
+      headers[7].display = `Complete (${this.getTotal(schools, 'Complete')})`
+      this.setState({schools, loading: false})
+    }).catch(() => this.setState({loading: false}))
+  }
+
   /*
   * On create school.
   */
@@ -161,6 +139,12 @@ class HubSchools extends React.Component {
       <div className='cn-schools-container'>
         <div className='margin-bottom'>
           <h2 className='center-text'>Schools</h2>
+          <div id='cn-school-search'>
+            <SchoolSearch
+              onSearch={this.onSearchSchool.bind(this)}
+              loading={this.state.loading}
+            />
+          </div>
           <div>
             <a onClick={this.onCreateSchool.bind(this)}>Create new school </a>
             <span className='description'>Manage school details from this page</span>

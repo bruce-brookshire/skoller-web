@@ -60,8 +60,8 @@ export function searchSchools (param) {
 *
 * @params [Object] form. Login form data.
 */
-export function getHubSchools () {
-  return get(`/api/v1/schools/hub`, '', 'Error fetching schools. Try again.')
+export function getHubSchools (queryString) {
+  return get(`/api/v1/schools/hub`, queryString, 'Error fetching schools. Try again.')
     .then(data => {
       return data
     })
