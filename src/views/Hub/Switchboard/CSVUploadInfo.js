@@ -31,7 +31,7 @@ class CSVUploadInfo extends React.Component {
   renderItemError (item, index) {
     return (
       <div className='cn-flex-table-row' key={index}>
-        <div className='cn-flex-table-cell'>{item.field}</div>
+        <div className='cn-flex-table-cell'>{item.name}</div>
         <div className='cn-flex-table-cell'>{Object.keys(item.errors).map((k, index) => {
           return <div key={index}>{k}: {item.errors[k].join(', ')} </div>
         })}</div>

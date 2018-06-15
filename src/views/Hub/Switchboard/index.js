@@ -222,13 +222,21 @@ class Switchboard extends React.Component {
     this.setState({currentLink: item, openLinkModal: true})
   }
 
-  handleCSVErrors (items) {
+  handleCSVErrors (items, mapErrors) {
     const erroredItem = items.filter(f => {
       let error = f.error || f.errors
       return error
-    })
+    }).map((item, index) => { return mapErrors(item, index) })
+    console.log(erroredItem)
     const completedItemCount = items.length - erroredItem.length
     this.setState({ erroredItem, completedItemCount, openCSVModal: true })
+  }
+
+  mapFOSErrors (item, index) {
+    if (item.errors) {
+      item.name = item.field
+    }
+    return item
   }
 
   /*
@@ -238,7 +246,7 @@ class Switchboard extends React.Component {
   */
   onUploadFOS (file) {
     actions.fieldsofstudy.uploadFOSCsv(file).then((fos) => {
-      this.handleCSVErrors(fos)
+      this.handleCSVErrors(fos, this.mapFOSErrors)
     })
   }
 
@@ -249,7 +257,7 @@ class Switchboard extends React.Component {
   */
   onUploadSchools (file) {
     actions.schools.uploadSchoolCsv(file).then((school) => {
-      this.handleCSVErrors(school)
+      this.handleCSVErrors(school, (item, index) => { return item })
     })
   }
 
