@@ -52,12 +52,12 @@ class ClassCard extends React.Component {
     )
   }
 
-  renderSection () {
+  renderSection (title) {
     const {cl} = this.props
     return (
       <div className='cn-class-card-field'>
         <div className='cn-class-card-label'>
-          Section
+          {title}
         </div>
         {cl.section}
       </div>
@@ -101,7 +101,7 @@ class ClassCard extends React.Component {
               </div>
               {professorName || 'N/A'}
             </div>
-            {!isAdmin && !cl.code && cl.section && this.renderSection()}
+            {!isAdmin && !cl.code && cl.section && this.renderSection('Period')}
           </div>
           <div className='cn-class-card-row'>
             {(isAdmin || (!isAdmin && cl.subject)) && <div className='cn-class-card-field'>
@@ -116,7 +116,7 @@ class ClassCard extends React.Component {
               </div>
               {cl.code}
             </div>}
-            {(isAdmin || (!isAdmin && cl.code && cl.section)) && this.renderSection()}
+            {(isAdmin || (!isAdmin && cl.code && cl.section)) && this.renderSection('Section')}
           </div>
           {this.props.onSubmit && <button
             onClick={() => this.props.onSubmit()}
