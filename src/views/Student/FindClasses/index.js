@@ -536,27 +536,23 @@ class FindClasses extends React.Component {
   renderCard () {
     let {school, cl, professor, semester} = this.state
     return (
-      <div>
-        <div className='cn-find-classes-card'>
-          <ClassCard
-            cl={cl}
-            onSubmit={this.onSubmit.bind(this)}
-            schoolName={school ? school.name : ''}
-            professorName={professor ? professor.name_first + ' ' + professor.name_last : ''}
-            semesterName={semester ? semester.name : ''}
-          />
-        </div>
-        <div className='cn-find-classes-back'>
-          <button
-            className='full-width button margin-top error-button'
-            onClick={() => {
-              this.setState({fade: true})
-              this.resetClass()
-            }}
-          >
-          👈 Go back - wrong class!
-          </button>
-        </div>
+      <div className='cn-find-classes-card'>
+        <ClassCard
+          cl={cl}
+          onSubmit={this.onSubmit.bind(this)}
+          schoolName={school ? school.name : ''}
+          professorName={professor ? professor.name_first + ' ' + professor.name_last : ''}
+          semesterName={semester ? semester.name : ''}
+        />
+        <button
+          className='full-width button margin-top error-button'
+          onClick={() => {
+            this.setState({fade: true})
+            this.resetClass()
+          }}
+        >
+        👈 Go back - wrong class!
+        </button>
       </div>
     )
   }
