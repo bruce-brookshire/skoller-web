@@ -409,6 +409,7 @@ class FindClasses extends React.Component {
             }}
             value={this.state.subject}
             disabled={!newCl && cl}
+            placeholder='e.g. MKT'
           />
         </div>}
         {school && school.is_university && <div className='cn-find-classes-sub-field'>
@@ -421,6 +422,7 @@ class FindClasses extends React.Component {
             }}
             value={this.state.code}
             disabled={!newCl && cl}
+            placeholder='e.g. 3201'
           />
         </div>}
         <div className={school && school.is_university ? 'cn-find-classes-sub-field' : 'cn-find-classes-field'}>
@@ -433,7 +435,7 @@ class FindClasses extends React.Component {
             }}
             value={this.state.section}
             disabled={!newCl && cl}
-            placeholder={school && !school.is_university && 'e.g. 5th Period'}
+            placeholder={(school && !school.is_university) ? 'e.g. 5th Period' : 'e.g. 01'}
           />
         </div>
       </div>
