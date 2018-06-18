@@ -155,7 +155,7 @@ class Assignments extends React.Component {
             <a onClick={() => this.toggleSkipCategoryModal()}>Skip this category</a>
           </div>
         }
-        {assignments.length !== 0 &&
+        {(assignments.length !== 0 || viewOnly) &&
           <div id='cn-assignment-table'>
             <div id='cn-assignment-table-label'>
               {!viewOnly ? `Saved assignments${weights[currentWeightIndex] ? ' for ' + weights[currentWeightIndex].name : ''}` : `Assignments (${assignments.length})`}
