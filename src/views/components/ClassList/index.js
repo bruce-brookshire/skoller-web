@@ -68,7 +68,7 @@ class ClassList extends React.Component {
       name: name || '-',
       professor: professor ? mapProfessor(professor) : '',
       days: days || '',
-      beginTime: startTime ? mapTimeToDisplay(startTime) : (section && !code ? section : ''),
+      beginTime: days === 'Online' ? '' : (startTime ? mapTimeToDisplay(startTime) : (section && !code ? section : '')),
       campus: campus || '',
       status: status ? this.mapStatus(status) : '-',
       enrollment: enrollment || 0,
