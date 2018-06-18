@@ -249,10 +249,10 @@ class SyllabusTool extends React.Component {
         return (
           <div>
             <div className='cn-section-content-header'>
-              Step 3: Almost done!
+              Step 3: Review
             </div>
             <div className='margin-bottom'>
-              Here&apos;s your last chance to review the weights and assignments
+              Almost done! Here&apos;s your last chance to review the weights and assignments
                before submitting for the whole class.
             </div>
             <Weights
