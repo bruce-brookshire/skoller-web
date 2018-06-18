@@ -147,7 +147,7 @@ FileUpload.propTypes = {
   disabled: PropTypes.bool,
   onUpload: PropTypes.func,
   className: PropTypes.string,
-  children: PropTypes.object
+  children: PropTypes.array
 }
 
 export default FileUpload

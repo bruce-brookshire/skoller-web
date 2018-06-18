@@ -238,7 +238,7 @@ class ProjectFourDoor extends React.Component {
     } else if (!diy && !diyPref && autoSyllabus) {
       return this.renderCompass()
       // diy
-    } else if (diy && diyPref && !autoSyllabus) {
+    } else if (diy && !autoSyllabus) {
       return this.renderDIY()
     } else {
       return this.renderNormal()
