@@ -101,7 +101,7 @@ class WeightForm extends React.Component {
 
   render () {
     const {form} = this.state
-    const {formErrors, updateProperty, numWeights, noWeights} = this.props
+    const {formErrors, updateProperty, numWeights, noWeights, cl} = this.props
 
     return (
       <div id='cn-weight-form'>
@@ -121,16 +121,21 @@ class WeightForm extends React.Component {
           placeholder="e.g. Exams"
           value={form.name}
         />
-        <InputField
-          containerClassName='margin-top hide-spinner'
-          error={formErrors.weight}
-          label="Value"
-          name="weight"
-          onChange={updateProperty}
-          placeholder="e.g. 25"
-          type="number"
-          value={form.weight}
-        />
+        <div id='cn-weight-form-value'>
+          <InputField
+            containerClassName='margin-top hide-spinner'
+            error={formErrors.weight}
+            label="Value"
+            name="weight"
+            onChange={updateProperty}
+            placeholder="e.g. 25"
+            type="number"
+            value={form.weight}
+          />
+          {!cl.is_points && <div className='pct'>
+            %
+          </div>}
+        </div>
         {numWeights === 0 &&
           <CheckboxField
             name='noWeights'

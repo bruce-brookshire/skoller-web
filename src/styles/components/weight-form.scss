@@ -7,4 +7,15 @@
     font-size: 14px;
     margin-top: $unit-space;
   }
+
+  #cn-weight-form-value {
+    display: flex;
+    align-items: flex-end;
+    width: 85px;
+
+    .pct {
+      margin-bottom: 3px;
+      margin-left: 3px;
+    }
+  }
 }
