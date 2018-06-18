@@ -132,9 +132,9 @@ class WeightForm extends React.Component {
             type="number"
             value={form.weight}
           />
-          {!cl.is_points && <div className='pct'>
-            %
-          </div>}
+          <div className='pct'>
+            {!cl.is_points ? '%' : 'pts'}
+          </div>
         </div>
         {numWeights === 0 &&
           <CheckboxField
