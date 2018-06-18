@@ -132,7 +132,8 @@ class ProjectFourDoor extends React.Component {
   renderNormal () {
     return (
       <div className='cn-project-four-door'>
-        <button className='button full-width'>Hang out while the Skoller team takes care of it</button>
+        <button className='button full-width cn-shadow-box'>Hang out while the Skoller team takes care of it</button>
+        <div className='margin-bottom'>--- OR ---</div>
         <a onClick={this.onDIY.bind(this)}>Or input your syllabus information now</a>
       </div>
     )
@@ -141,7 +142,8 @@ class ProjectFourDoor extends React.Component {
   renderInverted () {
     return (
       <div className='cn-project-four-door'>
-        <button className='button full-width' onClick={this.onDIY.bind(this)}>Review syllabus now</button>
+        <button className='button full-width cn-shadow-box' onClick={this.onDIY.bind(this)}>Review syllabus now</button>
+        <div className='margin-bottom'>--- OR ---</div>
         <span>Or Skoller will automatically review it for you within 72 hours.</span>
       </div>
     )
@@ -151,6 +153,7 @@ class ProjectFourDoor extends React.Component {
     return (
       <div className='cn-project-four-door'>
         <h2>All done!</h2>
+        <div className='margin-bottom'>--- OR ---</div>
         <span>Hang tight while Skoller reviews your syllabus for you</span>
       </div>
     )
@@ -159,7 +162,8 @@ class ProjectFourDoor extends React.Component {
   renderDIY () {
     return (
       <div className='cn-project-four-door'>
-        <button className='button full-width' onClick={this.onDIY.bind(this)}>Review syllabus now</button>
+        <button className='button full-width cn-shadow-box' onClick={this.onDIY.bind(this)}>Review syllabus now</button>
+        <div className='margin-bottom'>--- OR ---</div>
         <span>Or wait for a classmate to review the syllabus, but this could take a while...</span>
       </div>
     )
@@ -171,7 +175,8 @@ class ProjectFourDoor extends React.Component {
     return (
       <div className='center-text'>
         <span>{spanText}</span>
-        <button className={`button full-width margin-top ${hasUnsavedSyllabi && !this.props.uploading ? '' : 'disabled'}`}
+        <div className='margin-top'>--- OR ---</div>
+        <button className={`button full-width margin-top cn-shadow-box ${hasUnsavedSyllabi && !this.props.uploading ? '' : 'disabled'}`}
           disabled={!hasUnsavedSyllabi || this.props.uploading}
           onClick={() => { this.props.onSubmit() }}>{this.props.uploading ? (<i className='fa fa-circle-o-notch fa-spin'></i>) : 'Submit'}</button>
       </div>
