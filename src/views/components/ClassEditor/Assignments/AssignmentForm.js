@@ -165,7 +165,7 @@ class AssignmentForm extends React.Component {
           Step 2: Add Assignments
         </div>
         <div className='margin-top'>
-          Add all assignments <i className='cn-blue'>{currentWeight ? ' that fall under the category ' + currentWeight.name : 'for this class'}</i>
+          Add all assignments{currentWeight && ' that fall under the category'} <i className='cn-blue'>{currentWeight ? currentWeight.name : 'for this class'}</i>
         </div>
         <div className='row'>
           <div className='col-xs-12'>
