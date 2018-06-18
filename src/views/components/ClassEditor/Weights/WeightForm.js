@@ -106,11 +106,11 @@ class WeightForm extends React.Component {
     return (
       <div id='cn-weight-form'>
         <div className='cn-section-content-header'>
-          Add weights for this class
+          Step 1: Add Weights
         </div>
         <div id='cn-weight-form-instructions'>
-          A weight is a category of assignments with a specific value.
-          For example: Exams are worth 25%, Quizzes are worth 15%, etc.
+          Weights are how much a certain group of assignments contribute to your final grade.
+           For example: <i className='cn-blue'>Exams are worth 25% of your final grade</i>
         </div>
         <InputField
           containerClassName='margin-top'
