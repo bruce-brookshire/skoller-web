@@ -74,7 +74,7 @@ class NavBar extends React.Component {
           </div>
           <div className='right'>
             {user.avatar
-              ? <img className='profile-img' src={this.user.avatar}/>
+              ? <img className='profile-img' src={user.avatar}/>
               : <div className='profile-img vertical-align profile-initials'>{this.getInitials()}</div>}
           </div>
         </div>
