@@ -162,10 +162,10 @@ class AssignmentForm extends React.Component {
     return (
       <div id='class-editor-assignment-form'>
         <div className='cn-section-content-header'>
-          Add {currentWeight ? currentWeight.name : 'assignments'}
+          Step 2: Add Assignments
         </div>
         <div className='margin-top'>
-          Add any assignments for this class{currentWeight ? ' that fall under the category ' + currentWeight.name : ''}.
+          Add all assignments <i className='cn-blue'>{currentWeight ? ' that fall under the category ' + currentWeight.name : 'for this class'}</i>
         </div>
         <div className='row'>
           <div className='col-xs-12'>
