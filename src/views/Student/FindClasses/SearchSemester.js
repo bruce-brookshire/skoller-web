@@ -8,7 +8,8 @@ class SearchSemester extends React.Component {
     super(props)
     this.state = {
       semesters: [],
-      loading: false
+      loading: false,
+      value: ''
     }
   }
 
@@ -27,7 +28,7 @@ class SearchSemester extends React.Component {
     if (value) {
       this.setState({loading: true})
       actions.periods.getSchoolPeriods(this.props.schoolId, value).then((semesters) => {
-        this.setState({semesters, loading: false})
+        this.setState({semesters, loading: false, value})
       }).catch(() => { this.setState({loading: false}) })
     } else {
       this.setState({semesters: []})
@@ -46,6 +47,17 @@ class SearchSemester extends React.Component {
     resetState()
   }
 
+  renderTitle (name) {
+    const {value} = this.state
+    const idx = name.toLowerCase().indexOf(value.toLowerCase())
+
+    return (
+      <span className='cn-autocomplete-detail-results-item title'>
+        {name.substring(0, idx)}<span className='cn-blue'>{name.substring(idx, idx + value.length)}</span>{name.substring(idx + value.length)}
+      </span>
+    )
+  }
+
   /*
   * Render the autocomplete results.
   */
@@ -53,7 +65,7 @@ class SearchSemester extends React.Component {
     return (
       <div className='cn-autocomplete-result' key={`result-${index}`} onClick={() => this.onSemesterSelect(data, resetState)}>
         <div className='cn-autocomplete-detail-results'>
-          <span className='cn-autocomplete-detail-results-item title'>{data.name}</span>
+          {this.renderTitle(data.name)}
           <span className='cn-autocomplete-detail-results-item'></span>
           <span className='cn-autocomplete-detail-results-item'>Students: {data.student_count}</span>
           <span className='cn-autocomplete-detail-results-item'>Classes: {data.class_count}</span>

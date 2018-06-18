@@ -8,7 +8,8 @@ class SearchSchool extends React.Component {
     super(props)
     this.state = {
       schools: [],
-      loading: false
+      loading: false,
+      value: ''
     }
   }
 
@@ -27,7 +28,7 @@ class SearchSchool extends React.Component {
     if (value) {
       this.setState({loading: true})
       actions.schools.searchSchools(value).then((schools) => {
-        this.setState({schools, loading: false})
+        this.setState({schools, loading: false, value})
       }).catch(() => { this.setState({loading: false}) })
     } else {
       this.setState({schools: []})
@@ -46,6 +47,17 @@ class SearchSchool extends React.Component {
     resetState()
   }
 
+  renderTitle (name) {
+    const {value} = this.state
+    const idx = name.toLowerCase().indexOf(value.toLowerCase())
+
+    return (
+      <span className='cn-autocomplete-detail-results-item title'>
+        {name.substring(0, idx)}<span className='cn-blue'>{name.substring(idx, idx + value.length)}</span>{name.substring(idx + value.length)}
+      </span>
+    )
+  }
+
   /*
   * Render the autocomplete results.
   */
@@ -53,7 +65,7 @@ class SearchSchool extends React.Component {
     return (
       <div className='cn-autocomplete-result' key={`result-${index}`} onClick={() => this.onSchoolSelect(data, resetState)}>
         <div className='cn-autocomplete-detail-results'>
-          <span className='cn-autocomplete-detail-results-item title'>{data.name}</span>
+          {this.renderTitle(data.name)}
           <span className='cn-autocomplete-detail-results-item'></span>
           <span className='cn-autocomplete-detail-results-item'>{data.adr_locality}, {data.adr_region}</span>
           <div className='cn-results-divider'></div>

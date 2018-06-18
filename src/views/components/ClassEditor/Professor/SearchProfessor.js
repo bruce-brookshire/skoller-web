@@ -8,7 +8,8 @@ class SearchProfessor extends React.Component {
     super(props)
     this.state = {
       professors: [],
-      loading: false
+      loading: false,
+      value: ''
     }
   }
 
@@ -27,7 +28,7 @@ class SearchProfessor extends React.Component {
     if (value) {
       this.setState({loading: true})
       actions.professors.searchProfessors(value, this.props.schoolId).then((professors) => {
-        this.setState({professors, loading: false})
+        this.setState({professors, loading: false, value})
       }).catch(() => { this.setState({loading: false}) })
     } else {
       this.setState({professors: []})
@@ -46,6 +47,25 @@ class SearchProfessor extends React.Component {
     resetState()
   }
 
+  renderTitle (nameFirst, nameLast) {
+    const {value} = this.state
+    const idxFirst = nameFirst.toLowerCase().indexOf(value.toLowerCase())
+    const idxLast = nameLast.toLowerCase().indexOf(value.toLowerCase())
+
+    return (
+      <span className='cn-autocomplete-detail-results-item title'>
+        {idxFirst > -1 ? this.renderName(nameFirst, idxFirst, value) : nameFirst}&nbsp;
+        {idxLast > -1 ? this.renderName(nameLast, idxLast, value) : nameLast}
+      </span>
+    )
+  }
+
+  renderName (name, idx, value) {
+    return (
+      <span>{name.substring(0, idx)}<span className='cn-blue'>{name.substring(idx, idx + value.length)}</span>{name.substring(idx + value.length)}</span>
+    )
+  }
+
   /*
   * Render the autocomplete results.
   */
@@ -53,7 +73,7 @@ class SearchProfessor extends React.Component {
     return (
       <div className='cn-autocomplete-result' key={`result-${index}`} onClick={() => this.onProfessorSelect(data, resetState)}>
         <div className='cn-autocomplete-detail-results'>
-          <span className='cn-autocomplete-detail-results-item title'>{data.name_first} {data.name_last}</span>
+          {this.renderTitle(data.name_first, data.name_last)}
           <span className='cn-autocomplete-detail-results-item'></span>
           <span className='cn-autocomplete-detail-results-item'>{data.email}</span>
           <div className='cn-results-divider'></div>
