@@ -17,11 +17,11 @@ class UploadHistory extends React.Component {
         )
       })
     } else if (unsavedDocuments && unsavedDocuments.length > 0) {
-      return unsavedDocuments.map((file, index) => {
+      return unsavedDocuments.map((file) => {
         return (
-          <div key={index}>
+          <div key={file.name}>
             <div style={{display: 'inline-block', marginRight: '5px'}}>{file.name}</div>
-            <button onClick={() => { this.props.onDeleteDocument(index) }} className='fa fa-trash cn-red'></button>
+            <button onClick={() => { this.props.onDeleteDocument(file.name) }} className='fa fa-trash cn-red'></button>
           </div>
         )
       })

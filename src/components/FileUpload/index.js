@@ -33,6 +33,7 @@ class FileUpload extends React.Component {
           ref={(component) => { this.fileInput = component }}
           onChange={(event) => this.onDrop(event)}
         />
+        {this.props.children || null}
       </div>
     )
   }
@@ -145,7 +146,8 @@ FileUpload.propTypes = {
   allow: PropTypes.string,
   disabled: PropTypes.bool,
   onUpload: PropTypes.func,
-  className: PropTypes.string
+  className: PropTypes.string,
+  children: PropTypes.object
 }
 
 export default FileUpload
