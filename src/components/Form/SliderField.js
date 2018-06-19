@@ -15,6 +15,7 @@ class SliderField extends React.Component {
           name={input.name}
           onChange={this.onChange.bind(this)}
           checked={input.value}
+          error={this.props.error}
         />
         <span className="slider round"></span>
       </label>
@@ -25,7 +26,8 @@ class SliderField extends React.Component {
 SliderField.propTypes = {
   name: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  value: PropTypes.bool.isRequired
+  value: PropTypes.bool.isRequired,
+  error: PropTypes.bool
 }
 
 export default SliderField

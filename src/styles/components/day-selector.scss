@@ -10,14 +10,16 @@
     border: 1px solid $cn-color-blue;
     margin-left: -1px;
 
+    &.error {
+      border-color: red;
+    }
+
     .button {
-      border-radius: 0;
       padding: .7em .5em 0.25em;
       min-height: 100%;
     }
 
     .button-invert {
-      border-radius: 0;
       padding: .7em .5em 0.25em;
       min-height: 100%;
     }

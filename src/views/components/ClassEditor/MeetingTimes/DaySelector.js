@@ -99,6 +99,7 @@ class DaySelector extends React.Component {
         value={selectedDays.find(day => day === c.day) ? c.day : ''}
         onClick={this.toggleDays.bind(this)}
         type='button'
+        error={this.props.error}
       />
     })
   }
@@ -117,6 +118,7 @@ class DaySelector extends React.Component {
               this.props.onChange(value ? 'Online' : '')
             }}
             value={isOnline}
+            error={this.props.error}
           />
         </div>
         {!isOnline && <div className='cn-meeting-time-label'>Meet days</div>}
@@ -130,7 +132,8 @@ class DaySelector extends React.Component {
 
 DaySelector.propTypes = {
   days: PropTypes.string,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  error: PropTypes.bool
 }
 
 export default DaySelector

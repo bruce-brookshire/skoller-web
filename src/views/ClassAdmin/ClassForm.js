@@ -18,6 +18,12 @@ const requiredFields = {
   },
   'section': {
     type: 'required'
+  },
+  'meet_start_time': {
+    type: 'required'
+  },
+  'meet_days': {
+    type: 'required'
   }
 }
 
@@ -72,8 +78,12 @@ class ClassForm extends React.Component {
     event.preventDefault()
 
     if (!this.props.cl.school.is_university) {
-      requiredFields.section = {}
+      requiredFields.code = {}
       requiredFields.subject = {}
+    }
+
+    if (this.state.form.meet_days === 'Online') {
+      requiredFields.meet_start_time = {}
     }
 
     if (this.props.validateForm(this.state.form, requiredFields)) {
@@ -129,10 +139,12 @@ class ClassForm extends React.Component {
 
   renderDays () {
     const {form} = this.state
+    const {formErrors} = this.props
     return (
       <DaySelector
         days={form.meet_days}
         onChange={this.onDaysUpdate.bind(this)}
+        error={formErrors.meet_days}
       />
     )
   }

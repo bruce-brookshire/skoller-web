@@ -1,3 +1,7 @@
 .cn-pill-container {
   padding: 5px;
+
+  &.error {
+    border-color: red;
+  }
 }

@@ -8,6 +8,7 @@ class PillField extends React.Component {
 
   render () {
     const inputClasses = ['cn-form-pill', 'full-width']
+    const containerClasses = ['col-xs-12', 'col-md-6', 'col-lg-4', 'cn-pill-container']
 
     const {inputClassName, inputErrorClassName, label, error} = this.props
 
@@ -19,13 +20,14 @@ class PillField extends React.Component {
     }
 
     if (error) {
+      containerClasses.push('error')
       inputClasses.push('error')
       if (inputErrorClassName) inputClasses.push(inputErrorClassName)
     }
 
     const input = this.props
     return (
-      <div className='col-xs-12 col-md-6 col-lg-4 cn-pill-container'>
+      <div className={containerClasses.join(' ')}>
         <button
           className={inputClasses.join(' ')}
           id={input.id}
