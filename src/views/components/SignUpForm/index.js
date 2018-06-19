@@ -36,7 +36,6 @@ class SignUpForm extends React.Component {
   initializeState () {
     return {
       form: this.initializeFormData(),
-      emailError: null,
       universityError: false
     }
   }
@@ -63,13 +62,11 @@ class SignUpForm extends React.Component {
 
   onSubmit () {
     const form = this.mapForm()
-    let emailError = this.onVerifyEmail()
-    this.setState({emailError: emailError})
     if (!form.student.is_university && !form.student.is_highschool) {
       this.setState({universityError: true})
     } else {
       this.setState({universityError: false})
-      if (this.props.validateForm(form, requiredFields) && !emailError) {
+      if (this.props.validateForm(form, requiredFields)) {
         actions.auth.registerUser(form).then(() => {
           this.props.resetValidation()
           this.props.onSubmit()
@@ -84,7 +81,7 @@ class SignUpForm extends React.Component {
       this.setState({universityError: true})
     } else {
       this.setState({universityError: false})
-      if (this.props.validateForm(form, requiredFields) && !this.state.emailError) {
+      if (this.props.validateForm(form, requiredFields)) {
         actions.auth.registerUserAdmin(form).then((user) => {
           this.props.resetValidation()
           this.props.onSubmit(user)
@@ -103,22 +100,6 @@ class SignUpForm extends React.Component {
       newForm.student.custom_link = this.props.customLink
     }
     return newForm
-  }
-
-  onVerifyEmail () {
-    const {email} = this.state.form
-    const isUniversity = this.state.form.student.is_university
-
-    if (isUniversity && email && !this.testEmailFormat(email)) {
-      return {type: 'info', message: 'Please use your school email!'}
-    } else {
-      return null
-    }
-  }
-
-  testEmailFormat (email) {
-    const regEx = /.+@.+\.edu$/
-    return regEx.test(email)
   }
 
   render () {
@@ -186,13 +167,9 @@ class SignUpForm extends React.Component {
             <div className='col-xs-12'>
               <InputField
                 containerClassName='margin-top'
-                error={formErrors.email || (this.state.emailError && this.state.emailError.message)}
-                showErrorMessage={this.state.emailError && this.state.emailError.message}
+                error={formErrors.email}
                 label='School email'
                 name='email'
-                onBlur={() => {
-                  this.setState({emailError: this.onVerifyEmail()})
-                }}
                 onChange={updateProperty}
                 placeholder='School email'
                 value={form.email}
