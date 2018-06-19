@@ -7,7 +7,7 @@ const {snackbarStore} = stores
 * @param [String] messgae. Message to show in the snackbar.
 * @param [String] type. Type of info [info | warning | error]
 */
-export function showSnackbar (message, type = 'error') {
+export function showSnackbar (message, type = 'error', time = 3000) {
   snackbarStore.message = message
   snackbarStore.type = type
   snackbarStore.show = true
@@ -17,5 +17,5 @@ export function showSnackbar (message, type = 'error') {
     snackbarStore.show = false
     snackbarStore.type = null
     snackbarStore.message = null
-  }, 3000)
+  }, time)
 }

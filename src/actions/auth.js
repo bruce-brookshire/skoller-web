@@ -52,7 +52,7 @@ export function registerUser (form) {
             error.errors.student.phone &&
             error.errors.student.phone.findIndex(item => item === 'Phone exists.') > -1) ||
             (error.errors.email && error.errors.email.findIndex(item => item === 'has already been taken') > -1)) {
-            showSnackbar('User already exists.')
+            showSnackbar('This account has already been created. Log in on the app. Need assistance? Contact us at support@skoller.co.', 'error', 5000)
           } else {
             showSnackbar('Error registering user. Try again.')
           }
