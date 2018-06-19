@@ -65,7 +65,6 @@ class ClassSearch extends React.Component {
   getSearchFieldOptions () {
     const options = [
       {value: 'class_name', name: 'Class Name'},
-      {value: 'class_number', name: 'Class Number'},
       {value: 'class_status', name: 'Status'},
       {value: 'professor_name', name: 'Professor'},
       {value: 'class_maint', name: 'Maintenance'}
