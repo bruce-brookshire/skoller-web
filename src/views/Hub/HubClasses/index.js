@@ -15,8 +15,16 @@ const headers = [
     display: 'School'
   },
   {
-    field: 'courseNumber',
-    display: 'Class Number'
+    field: 'subject',
+    display: 'Subject'
+  },
+  {
+    field: 'code',
+    display: 'Code'
+  },
+  {
+    field: 'section',
+    display: 'Section'
   },
   {
     field: 'name',
@@ -37,10 +45,6 @@ const headers = [
   {
     field: 'beginTime',
     display: 'Start time'
-  },
-  {
-    field: 'length',
-    display: 'Length'
   },
   {
     field: 'status',
@@ -95,19 +99,20 @@ class HubClasses extends React.Component {
   * @return [Object] row. Object of formatted row data for display in grid.
   */
   mapRow (item, index) {
-    const {id, school, number, name, enrolled, meet_start_time: startTime,
-      meet_days: days, length, professor, status, period_name: period} = item
+    const {id, school, code, subject, section, name, enrolled, meet_start_time: startTime,
+      meet_days: days, professor, status, period_name: period} = item
 
     const row = {
       id: id || '',
       school: (school && school.name) || 'TBA',
-      courseNumber: number || '-',
+      subject: subject || '-',
+      code: code || '-',
+      section: section || '-',
       name: name || '-',
       enrollment: enrolled || 0,
       professor: professor ? mapProfessor(professor) : 'TBA',
       days: days || 'TBA',
-      beginTime: startTime ? mapTimeToDisplay(startTime) : 'TBA',
-      length: length || 'TBA',
+      beginTime: days !== 'Online' ? (startTime ? mapTimeToDisplay(startTime) : 'TBA') : 'Online',
       status: status ? this.mapStatus(status) : '-',
       period: period || ''
     }
