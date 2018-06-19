@@ -135,9 +135,9 @@ class ProjectFourDoor extends React.Component {
   renderNormal () {
     return (
       <div className='cn-project-four-door'>
-        <button className='button full-width cn-shadow-box'>Hang out while the Skoller team takes care of it</button>
+        <div className='margin-bottom'>Hang out while the Skoller team takes care of it</div>
         <div className='margin-bottom'>--- OR ---</div>
-        <a onClick={this.onDIY.bind(this)}>Or input your syllabus information now</a>
+        <button className='button full-width cn-shadow-box' onClick={this.onDIY.bind(this)}>Input your syllabus information now</button>
       </div>
     )
   }
@@ -147,7 +147,7 @@ class ProjectFourDoor extends React.Component {
       <div className='cn-project-four-door'>
         <button className='button full-width cn-shadow-box' onClick={this.onDIY.bind(this)}>Review syllabus now</button>
         <div className='margin-bottom'>--- OR ---</div>
-        <span>Or Skoller will automatically review it for you within 72 hours.</span>
+        <span>Skoller will automatically review it for you within 24 hours.</span>
       </div>
     )
   }
@@ -156,7 +156,6 @@ class ProjectFourDoor extends React.Component {
     return (
       <div className='cn-project-four-door'>
         <h2>All done!</h2>
-        <div className='margin-bottom'>--- OR ---</div>
         <span>Hang tight while Skoller reviews your syllabus for you</span>
       </div>
     )
@@ -167,7 +166,7 @@ class ProjectFourDoor extends React.Component {
       <div className='cn-project-four-door'>
         <button className='button full-width cn-shadow-box' onClick={this.onDIY.bind(this)}>Review syllabus now</button>
         <div className='margin-bottom'>--- OR ---</div>
-        <span>Or wait for a classmate to review the syllabus, but this could take a while...</span>
+        <span>Wait for a classmate to review the syllabus, but this could take a while...</span>
       </div>
     )
   }
@@ -178,7 +177,6 @@ class ProjectFourDoor extends React.Component {
     return (
       <div className='center-text'>
         <span>{spanText}</span>
-        <div className='margin-top'>--- OR ---</div>
         <button className={`button full-width margin-top cn-shadow-box ${hasUnsavedSyllabi && !this.props.uploading ? '' : 'disabled'}`}
           disabled={!hasUnsavedSyllabi || this.props.uploading}
           onClick={() => { this.props.onSubmit() }}>{this.props.uploading ? (<i className='fa fa-circle-o-notch fa-spin'></i>) : 'Submit'}</button>
