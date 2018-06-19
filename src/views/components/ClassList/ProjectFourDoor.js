@@ -4,6 +4,7 @@ import {inject, observer} from 'mobx-react'
 import {browserHistory} from 'react-router'
 import StudentRequestModal from './StudentRequestModal'
 import actions from '../../../actions'
+import Loading from '../../../components/Loading'
 
 @inject('rootStore') @observer
 class ProjectFourDoor extends React.Component {
@@ -12,14 +13,16 @@ class ProjectFourDoor extends React.Component {
     this.state = {
       openStudentRequestModal: false,
       studentModalError: null,
-      school: {}
+      school: {},
+      loading: false
     }
   }
 
   componentWillMount () {
+    this.setState({loading: true})
     actions.classes.getClassById(this.props.cl.id).then((cl) => {
-      this.setState({school: cl.school})
-    })
+      this.setState({school: cl.school, loading: false})
+    }).catch(() => this.setState({loading: false}))
   }
 
   /*
@@ -217,7 +220,7 @@ class ProjectFourDoor extends React.Component {
     }
   }
 
-  render () {
+  renderFourDoor () {
     const {is_auto_syllabus: autoSyllabus, is_diy_enabled: diy, is_diy_preferred: diyPref} = this.state.school
     // in review
     if (this.inHelp()) {
@@ -243,6 +246,11 @@ class ProjectFourDoor extends React.Component {
     } else {
       return this.renderNormal()
     }
+  }
+
+  render () {
+    const {loading} = this.state
+    return loading ? <Loading /> : this.renderFourDoor()
   }
 }
 
