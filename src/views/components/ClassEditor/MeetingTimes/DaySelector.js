@@ -106,10 +106,15 @@ class DaySelector extends React.Component {
 
   render () {
     const {isOnline} = this.state
+    const sliderClass = ['cn-meeting-time-slider', 'margin-bottom']
+
+    if (this.props.error) {
+      sliderClass.push('cn-red')
+    }
 
     return (
       <div>
-        <div className='cn-meeting-time-slider margin-bottom'>
+        <div className={sliderClass.join(' ')}>
           This is an online class
           <SliderField
             name='is_online'
@@ -118,7 +123,6 @@ class DaySelector extends React.Component {
               this.props.onChange(value ? 'Online' : '')
             }}
             value={isOnline}
-            error={this.props.error}
           />
         </div>
         {!isOnline && <div className='cn-meeting-time-label'>Meet days</div>}
