@@ -44,7 +44,6 @@ class ClassForm extends React.Component {
       subject,
       code,
       section,
-      campus,
       crn,
       meet_start_time: startTime,
       meet_days: days,
@@ -59,7 +58,6 @@ class ClassForm extends React.Component {
       code: code || '',
       section: section || '',
       crn: crn || '',
-      campus: campus || '',
       meet_start_time: startTime || '',
       meet_days: days || '',
       location: location || '',
@@ -205,17 +203,6 @@ class ClassForm extends React.Component {
             onChange={updateProperty}
             placeholder="i.e. 48427"
             value={form.crn}
-          />
-        </div>
-        <div className='class-form-field'>
-          <InputField
-            containerClassName='margin-top'
-            error={formErrors.campus}
-            label="Campus"
-            name="campus"
-            onChange={updateProperty}
-            placeholder="Campus"
-            value={form.campus}
           />
         </div>
         <div id='meeting-info' className='class-form-field margin-top'>

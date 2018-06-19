@@ -27,10 +27,6 @@ const headers = [
     display: 'Start Time'
   },
   {
-    field: 'campus',
-    display: 'Campus'
-  },
-  {
     field: 'status',
     display: 'Syllabus Status'
   },
@@ -60,7 +56,7 @@ class ClassList extends React.Component {
   * @return [Object] row. Object of formatted row data for display in grid.
   */
   mapRow (item, index) {
-    const {id, subject, section, code, name, meet_start_time: startTime, meet_days: days, campus, professor, status, enrollment} = item
+    const {id, subject, section, code, name, meet_start_time: startTime, meet_days: days, professor, status, enrollment} = item
 
     const row = {
       id: id || '',
@@ -69,7 +65,6 @@ class ClassList extends React.Component {
       professor: professor ? mapProfessor(professor) : '',
       days: days || '',
       beginTime: days === 'Online' ? '' : (startTime ? mapTimeToDisplay(startTime) : (section && !code ? section : '')),
-      campus: campus || '',
       status: status ? this.mapStatus(status) : '-',
       enrollment: enrollment || 0,
       component: this.props.onUpdate ? <UploadDocuments cl={item} onUpdateClass={(cl) => { this.props.onUpdate(cl) }}/> : null
