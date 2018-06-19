@@ -47,7 +47,6 @@ const router = (
     <Route path="/" component={App}>
       <IndexRedirect to="/app"/>
       <Route path='/landing' component={Landing} />
-      <Route path='/test' component={DownloadApp} />
       <Route path='/forgot_password' component={ForgotPassword} />
       <Route path='/reset_password/:token' component={ResetPassword} />
       <Route path='/privacypolicy' component={PrivacyPolicy} />
