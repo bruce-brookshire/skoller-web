@@ -5,6 +5,7 @@ import actions from '../../../actions'
 import LandingNav from '../../components/LandingNav'
 import {browserHistory} from 'react-router'
 import {inject, observer} from 'mobx-react'
+import {mobilecheck} from '../../../utilities/display'
 
 const cookie = new Cookies()
 
@@ -30,13 +31,22 @@ class EnrollmentLink extends React.Component {
   enroll () {
     actions.classes.enrollByLink(this.props.params.link)
       .then(() => {
-        browserHistory.push('/student/classes')
+        if (!mobilecheck()) browserHistory.push('/student/classes')
+        else browserHistory.push('/download')
       })
-      .catch(() => {
-        browserHistory.push({
-          pathname: '/enroll',
-          state: {
-            enrollmentLink: this.props.params.link
+      .catch((error) => {
+        error.json().then(error => {
+          if (error.errors && error.errors.student_class &&
+            error.errors.student_class.findIndex(item => item === 'has already been taken') > -1) {
+            if (!mobilecheck()) browserHistory.push('/student/classes')
+            else browserHistory.push('/download')
+          } else {
+            browserHistory.push({
+              pathname: '/enroll',
+              state: {
+                enrollmentLink: this.props.params.link
+              }
+            })
           }
         })
       })

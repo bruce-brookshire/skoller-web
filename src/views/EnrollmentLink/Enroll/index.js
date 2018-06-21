@@ -25,9 +25,6 @@ class Enroll extends React.Component {
     }
   }
 
-  componentWillMount () {
-  }
-
   incrementStep () {
     const {step} = this.state
     let newStep = step + 1
@@ -38,11 +35,14 @@ class Enroll extends React.Component {
     this.setState({newUser: !this.state.newUser})
   }
 
+  onDLNext () {
+    browserHistory.push('/student/classes')
+  }
+
   onSubmit () {
-    actions.classes.enrollByLink(this.props.location.state.enrollmentLink)
-      .then(() => {
-        browserHistory.push('/student/classes')
-      })
+    actions.classes.enrollByLink(this.props.location.state.enrollmentLink).then(() => {
+      this.incrementStep()
+    })
   }
 
   onSignUp () {
@@ -96,7 +96,7 @@ class Enroll extends React.Component {
   renderVerification () {
     return (
       <Verification
-        onSubmit={() => this.incrementStep()}
+        onSubmit={() => this.onSubmit()}
       />
     )
   }
@@ -116,7 +116,7 @@ class Enroll extends React.Component {
   renderDownload () {
     return (
       <DownloadApp
-        onNext={this.onSubmit.bind(this)}
+        onNext={this.onDLNext.bind(this)}
       />
     )
   }

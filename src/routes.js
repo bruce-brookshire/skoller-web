@@ -58,6 +58,7 @@ const router = (
       <Route path='/e/:link' component={EnrollmentLinkLanding} />
       <Route path='/s/:link' component={StudentLink} />
       <Route path='/c/:customLink' component={StudentLink} />
+      <Route path='/download' component={DownloadApp} />
       <Route path='/pitch-deck' component={PitchDeck} />
       <Route path='/app' component={Layout} onEnter={requireAuth}>
         <IndexRedirect to='/student/classes' />

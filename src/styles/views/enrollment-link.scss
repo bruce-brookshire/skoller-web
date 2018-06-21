@@ -15,8 +15,12 @@
     }
 
     .cn-enrollment-link-content-inner {
-      width: 382px;
+      width: 100%;
       font-size: 14px;
+
+      @include breakpoint(medium) {
+        width: 382px;
+      }
 
       .cn-enrollment-link-msg {
         font-weight: bold;
