@@ -16,7 +16,7 @@ class Process extends React.Component {
                 1. Create an account
               </h3>
               <p className='muted-text'>
-                Create an account using your school email and select your classes.
+                Create an account using your email and select your classes.
               </p>
             </li>
             <li className='col-xs-12 col-sm-4 center-text'>

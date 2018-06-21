@@ -123,10 +123,10 @@ class SignUpForm extends React.Component {
               <InputField
                 containerClassName='margin-top'
                 error={formErrors.email}
-                label='School email'
+                label='Email'
                 name='email'
                 onChange={updateProperty}
-                placeholder='School email'
+                placeholder='Email'
                 value={form.email}
               />
             </div>
