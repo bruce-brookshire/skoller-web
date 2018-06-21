@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
-import {InputField, CheckboxField} from '../../../components/Form'
+import {InputField} from '../../../components/Form'
 import actions from '../../../actions'
 import {maskPhoneNumber} from '../../../utilities/mask'
 import {wrapTimeHour} from '../../../utilities/time'
@@ -30,13 +30,9 @@ class SignUpForm extends React.Component {
     this.state = this.initializeState()
   }
 
-  componentWillMount () {
-  }
-
   initializeState () {
     return {
-      form: this.initializeFormData(),
-      universityError: false
+      form: this.initializeFormData()
     }
   }
 
@@ -52,8 +48,6 @@ class SignUpForm extends React.Component {
         phone: '',
         birthday: '',
         gender: '',
-        is_university: true,
-        is_highschool: false,
         notification_time: `${wrapTimeHour(date, 7)}:00:00`,
         future_reminder_notification_time: `${wrapTimeHour(date, 17)}:00:00`
       }
@@ -62,31 +56,21 @@ class SignUpForm extends React.Component {
 
   onSubmit () {
     const form = this.mapForm()
-    if (!form.student.is_university && !form.student.is_highschool) {
-      this.setState({universityError: true})
-    } else {
-      this.setState({universityError: false})
-      if (this.props.validateForm(form, requiredFields)) {
-        actions.auth.registerUser(form).then(() => {
-          this.props.resetValidation()
-          this.props.onSubmit()
-        }).catch(() => false)
-      }
+    if (this.props.validateForm(form, requiredFields)) {
+      actions.auth.registerUser(form).then(() => {
+        this.props.resetValidation()
+        this.props.onSubmit()
+      }).catch(() => false)
     }
   }
 
   onSubmitAdmin () {
     const form = this.mapForm()
-    if (!form.student.is_university && !form.student.is_highschool) {
-      this.setState({universityError: true})
-    } else {
-      this.setState({universityError: false})
-      if (this.props.validateForm(form, requiredFields)) {
-        actions.auth.registerUserAdmin(form).then((user) => {
-          this.props.resetValidation()
-          this.props.onSubmit(user)
-        }).catch(() => false)
-      }
+    if (this.props.validateForm(form, requiredFields)) {
+      actions.auth.registerUserAdmin(form).then((user) => {
+        this.props.resetValidation()
+        this.props.onSubmit(user)
+      }).catch(() => false)
     }
   }
 
@@ -103,42 +87,13 @@ class SignUpForm extends React.Component {
   }
 
   render () {
-    const {form, universityError} = this.state
+    const {form} = this.state
     const {formErrors, updateProperty, header, buttonText, isAdmin} = this.props
 
     return (
       <div className='cn-sign-up-form'>
         <form className='form-padding'>
           {header && <h2>{header}</h2>}
-          <div className='is-university'>
-            <CheckboxField
-              containerClassName='margin-top'
-              error={universityError}
-              label='College student'
-              name='student.is_university'
-              onChange={(name, value) => {
-                updateProperty(name, value)
-                if (value === true) {
-                  updateProperty('student.is_highschool', false)
-                }
-              }}
-              value={form.student.is_university}
-            />
-            <small className='sub-header'>or</small>
-            <CheckboxField
-              containerClassName='margin-top'
-              error={universityError}
-              label='High school student'
-              name='student.is_highschool'
-              onChange={(name, value) => {
-                updateProperty(name, value)
-                if (value === true) {
-                  updateProperty('student.is_university', false)
-                }
-              }}
-              value={form.student.is_highschool}
-            />
-          </div>
           <div className='row'>
             <div className='col-xs-6'>
               <InputField
