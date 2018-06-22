@@ -7,7 +7,7 @@ import {get, post, put} from '../utilities/api'
 * @param [Number] periodId. Id of the school period to query by.
 */
 export function searchProfessors (param, schoolId) {
-  return get(`/api/v1/schools/${schoolId}/professors`, `professor.name=${param}`, 'Error searching professors. Try again.')
+  return get(`/api/v1/schools/${schoolId}/professors`, `professor_name=${param}`, 'Error searching professors. Try again.')
     .then(data => {
       return data
     })
