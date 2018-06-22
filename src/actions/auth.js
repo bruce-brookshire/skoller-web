@@ -19,7 +19,7 @@ export function authenticateUser (form) {
     })
     .catch(error => {
       userStore.loading = false
-      if (error !== 401 && error !== 404) {
+      if (error.status !== 401 && error.status !== 404) {
         showSnackbar('Error logging in. Try again.')
       } else {
         showSnackbar('Incorrect username or password.')
@@ -155,7 +155,7 @@ export function resetPassword (form, token) {
       showSnackbar('Your password has been successfully reset.', 'info')
     })
     .catch(error => {
-      if (error === 401) {
+      if (error.status === 401) {
         showSnackbar('Your token has expired.')
       } else {
         showSnackbar('There was an error. Try again.')
