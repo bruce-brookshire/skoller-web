@@ -8,9 +8,6 @@ const requiredFields = {
   'name': {
     type: 'required'
   },
-  'adr_zip': {
-    type: 'required'
-  },
   'adr_region': {
     type: 'required'
   },
