@@ -46,14 +46,13 @@ class SchoolDetailsForm extends React.Component {
   */
   initializeFormData (data) {
     let formData = data || {}
-    const {id, name, adr_zip: zip, adr_state: state, adr_line_1: line1, adr_city: city, timezone, short_name: shortName} = formData
+    const {id, name, adr_zip: zip, adr_region: region, adr_locality: locality, timezone, short_name: shortName} = formData
     return ({
       id: id || '',
       name: name || '',
       adr_zip: zip || '',
-      adr_state: state || '',
-      adr_line_1: line1 || '',
-      adr_city: city || '',
+      adr_region: region || '',
+      adr_locality: locality || '',
       timezone: timezone || '',
       short_name: shortName || ''
     })
