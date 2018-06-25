@@ -16,16 +16,8 @@ class SchoolDetails extends React.Component {
             <td>{school.short_name}</td>
           </tr>
           <tr>
-            <th>Address:</th>
-            <td>{school.adr_line_1}, {school.adr_city} {school.adr_state} {school.adr_zip}</td>
-          </tr>
-          <tr>
-            <th>Student email domain:</th>
-            <td>{school.email_domains && school.email_domains.filter(e => !e.is_professor_only).map(e => e.email_domain).join(', ')}</td>
-          </tr>
-          <tr>
-            <th>Prof email domain:</th>
-            <td>{school.email_domains && school.email_domains.filter(e => e.is_professor_only).map(e => e.email_domain).join(', ')}</td>
+            <th>Location:</th>
+            <td>{school.adr_locality} {school.adr_region} {school.adr_zip}</td>
           </tr>
           <tr>
             <th>Time Zone:</th>
