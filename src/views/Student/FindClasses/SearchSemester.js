@@ -26,9 +26,9 @@ class SearchSemester extends React.Component {
   */
   onUpdateAutoComplete (value) {
     if (value) {
-      this.setState({loading: true})
+      this.setState({loading: true, value})
       actions.periods.getSchoolPeriods(this.props.schoolId, value).then((semesters) => {
-        this.setState({semesters, loading: false, value})
+        this.setState({semesters, loading: false})
       }).catch(() => { this.setState({loading: false}) })
     } else {
       this.setState({semesters: []})

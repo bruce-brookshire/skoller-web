@@ -27,9 +27,9 @@ class SearchClass extends React.Component {
   */
   onUpdateAutoComplete (value) {
     if (value) {
-      this.setState({loading: true})
+      this.setState({loading: true, value})
       actions.classes.searchStudentClasses(this.props.schoolId, value).then((classes) => {
-        this.setState({classes, loading: false, value})
+        this.setState({classes, loading: false})
       }).catch(() => { this.setState({loading: false}) })
     } else {
       this.setState({classes: []})

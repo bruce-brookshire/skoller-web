@@ -26,9 +26,9 @@ class SearchSchool extends React.Component {
   */
   onUpdateAutoComplete (value) {
     if (value) {
-      this.setState({loading: true})
+      this.setState({loading: true, value})
       actions.schools.searchSchools(value).then((schools) => {
-        this.setState({schools, loading: false, value})
+        this.setState({schools, loading: false})
       }).catch(() => { this.setState({loading: false}) })
     } else {
       this.setState({schools: []})
