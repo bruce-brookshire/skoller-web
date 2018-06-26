@@ -165,7 +165,10 @@ class AssignmentForm extends React.Component {
           Step 2: Add Assignments
         </div>
         <div className='margin-top'>
-          Add all assignments{currentWeight && ' that fall under the category'} <i className='cn-blue'>{currentWeight ? currentWeight.name : 'for this class'}</i>
+          Add all assignments{currentWeight && ' that fall under the category:'}
+        </div>
+        <div className='cn-section-content-header center-text cn-blue margin-top'>
+          {currentWeight ? currentWeight.name : 'for this class'}
         </div>
         <div className='row'>
           <div className='col-xs-12'>
@@ -195,7 +198,7 @@ class AssignmentForm extends React.Component {
             {!this.state.due_null && <InputField
               containerClassName='margin-top'
               error={formErrors.due}
-              info={`Don’t have the due date for an assignment? No worries– you can always add one later. Go ahead and add the assignment now.`}
+              info={`Due date unknown for an assignment? No worries-you can always add one later. Go ahead and create the assignment for everyone in your class.`}
               label='Due date'
               name='due'
               onChange={(name, value) => {
@@ -210,7 +213,7 @@ class AssignmentForm extends React.Component {
             {!this.state.due_null && <SelectField
               containerClassName='margin-top'
               error={formErrors.year_due}
-              label='Year due'
+              label='Year'
               name='year_due'
               onChange={updateProperty}
               placeholder='Year'
@@ -222,7 +225,7 @@ class AssignmentForm extends React.Component {
           </div>
           <div className='col-xs-4'>
             <div className='cn-input-container margin-top center-xs'>
-              <label htmlFor="due_null" className='cn-input-label'>No due date</label>
+              <label htmlFor="due_null" className='cn-input-label'>Unknown?</label>
               <CheckboxField
                 inputClassName='cn-big-checkbox'
                 tabIndex="-1"

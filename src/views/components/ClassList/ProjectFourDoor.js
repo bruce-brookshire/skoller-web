@@ -255,7 +255,7 @@ class ProjectFourDoor extends React.Component {
 ProjectFourDoor.propTypes = {
   cl: PropTypes.object,
   rootStore: PropTypes.object,
-  unsavedSyllabi: PropTypes.bool,
+  unsavedSyllabi: PropTypes.array,
   uploading: PropTypes.bool,
   onSubmit: PropTypes.func
 }

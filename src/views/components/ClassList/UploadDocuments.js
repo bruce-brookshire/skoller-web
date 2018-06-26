@@ -211,7 +211,7 @@ class UploadDocuments extends React.Component {
           <div className='col-xs-3 vertical-align center'>
             <ProjectFourDoor cl={this.props.cl}
               onSubmit={() => { this.uploadDocuments() }}
-              unsavedSyllabi={this.state.unsavedSyllabusDocs ? true : false} // eslint-disable-line no-unneeded-ternary
+              unsavedSyllabi={this.state.unsavedSyllabusDocs}
               unsavedAdditional={this.state.unsavedAdditionalDocs}
               uploading={this.state.uploading}
             />

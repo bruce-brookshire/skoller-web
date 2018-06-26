@@ -132,6 +132,17 @@ class Assignments extends React.Component {
     )
   }
 
+  renderSavedMessage (assignments) {
+    const {viewOnly, weights, currentWeightIndex} = this.state
+    return (
+      <span>
+        {!viewOnly && <span>Saved assignments</span>}
+        {!viewOnly && weights[currentWeightIndex] && <span> for <i className='cn-blue'>{weights[currentWeightIndex].name}</i></span>}
+        {viewOnly && `Assignments (${assignments.length})`}
+      </span>
+    )
+  }
+
   render () {
     const {viewOnly, loadingAssignments, loadingWeights, currentAssignment,
       currentWeightIndex, weights} = this.state
@@ -158,7 +169,7 @@ class Assignments extends React.Component {
         {(assignments.length !== 0 || viewOnly) &&
           <div id='cn-assignment-table'>
             <div id='cn-assignment-table-label'>
-              {!viewOnly ? `Saved assignments${weights[currentWeightIndex] ? ' for ' + weights[currentWeightIndex].name : ''}` : `Assignments (${assignments.length})`}
+              {this.renderSavedMessage(assignments)}
               {viewOnly && <a onClick={() => this.props.onEdit()}>Edit</a>}
             </div>
             <AssignmentTable
