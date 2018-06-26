@@ -149,10 +149,10 @@ class SyllabusTool extends React.Component {
   /*
   * Unlock the class for syllabus worker.
   */
-  unlock () {
+  unlock (isCompleted) {
     const {params: {classId}} = this.props
     const {navbarStore} = this.props.rootStore
-    const form = {is_class: true, is_completed: true}
+    const form = {is_class: true, is_completed: isCompleted}
     this.setState({submitting: true})
     actions.classes.unlockClass(classId, form).then(() => {
       this.setState({submitting: false})
@@ -190,7 +190,7 @@ class SyllabusTool extends React.Component {
     if (currentIndex !== (stepCount - 1)) {
       this.setState({currentIndex: currentIndex + 1})
     } else {
-      this.unlock()
+      this.unlock(true)
     }
   }
 
@@ -335,7 +335,7 @@ class SyllabusTool extends React.Component {
         onClose={this.toggleIssuesModal.bind(this)}
         onSubmit={(cl) => {
           this.updateClass(cl)
-          this.unlock()
+          this.unlock(false)
         }}
       />
     )
