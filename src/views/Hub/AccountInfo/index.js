@@ -59,6 +59,17 @@ class AccountInfo extends React.Component {
     }).catch(() => false)
   }
 
+  toggleactive () {
+    const {user} = this.state
+    const form = {
+      is_active: !user.is_active,
+      id: user.id
+    }
+    actions.auth.updateAccount(form).then(user => {
+      this.setState({user})
+    })
+  }
+
   getUserRoles () {
     const {user} = this.state
     let roles = (user.roles && user.roles.map(role => role.name)) || []
@@ -76,7 +87,8 @@ class AccountInfo extends React.Component {
         <div className='cn-shadow-box-content'>
           <div className='cn-card-title edit-header'>
             Account Details
-            <i className='fa fa-pencil cn-blue cursor' onClick={this.toggleAccountForm.bind(this)} />
+            <i className={'fa fa-hand-paper-o cursor margin-left ' + (user.is_active ? 'cn-grey' : 'cn-red')} onClick={() => this.toggleactive()} />
+            <i className='fa fa-pencil cn-blue cursor margin-left' onClick={this.toggleAccountForm.bind(this)} />
           </div>
           {user
             ? <table className='margin-top roles-table'>
