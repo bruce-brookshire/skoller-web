@@ -109,7 +109,7 @@ class Weights extends React.Component {
             />
           </div>
         }
-        {weights.length !== 0 &&
+        {weights.length !== 0 && !cl.is_points &&
           <div id='cn-weights-info'>*The total should be 100%</div>
         }
         {(weights.length !== 0 || noWeights) && !isReview &&

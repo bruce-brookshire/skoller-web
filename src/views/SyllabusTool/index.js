@@ -273,10 +273,19 @@ class SyllabusTool extends React.Component {
               }}
             />
             <button
+              id='cn-review-submit'
               className='button full-width margin-top margin-bottom'
               onClick={() => this.onNext()}
             >
-            ⚡️Submit⚡️
+              <div>
+              ⚡️
+              </div>
+              <div>
+              Submit
+              </div>
+              <div>
+              ⚡️
+              </div>
             </button>
           </div>
         )

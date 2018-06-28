@@ -8,6 +8,12 @@
     height: 100%;
   }
 
+  #cn-review-submit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .cn-body-container {
     display: flex;
     flex-direction: column;
