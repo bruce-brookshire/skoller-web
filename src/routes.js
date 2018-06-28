@@ -14,14 +14,14 @@ import OurTeam from './views/OurTeam'
 import PitchDeck from './views/PitchDeck'
 import ResetPassword from './views/ResetPassword'
 
-import DIYLanding from './views/Student/DIYLanding'
 import MyClasses from './views/Student/MyClasses'
-import Onboard from './views/Student/Onboard'
+import FindClasses from './views/Student/FindClasses'
+import Verification from './views/components/Verification'
+import ClassLink from './views/Student/ClassLink'
 
-import AssignmentsTutorial from './views/SyllabusTutorial/AssignmentsTutorial'
-import WeightsTutorial from './views/SyllabusTutorial/WeightsTutorial'
 import SyllabusTool from './views/SyllabusTool'
-import ClassApproval from './views/ClassApproval'
+import ClassAdmin from './views/ClassAdmin'
+import AssignmentAdmin from './views/AssignmentAdmin'
 
 import HubLanding from './views/Hub/HubLanding'
 import HubSchools from './views/Hub/HubSchools'
@@ -31,6 +31,12 @@ import Accounts from './views/Hub/Accounts'
 import AccountInfo from './views/Hub/AccountInfo'
 import Analytics from './views/Hub/Analytics'
 import Switchboard from './views/Hub/Switchboard'
+import ReportList from './views/Hub/ReportList'
+
+import EnrollmentLinkLanding from './views/EnrollmentLink/Landing'
+import StudentLink from './views/StudentLink'
+import Enroll from './views/EnrollmentLink/Enroll'
+import DownloadApp from './views/components/DownloadApp'
 
 import actions from './actions'
 import stores from './stores'
@@ -48,13 +54,19 @@ const router = (
       <Route path='/what-people-say' component={PeopleTalking} />
       <Route path='/our-team' component={OurTeam} />
       <Route path='/faq' component={Faq} />
+      <Route path='/enroll' component={Enroll} />
+      <Route path='/e/:link' component={EnrollmentLinkLanding} />
+      <Route path='/s/:link' component={StudentLink} />
+      <Route path='/c/:customLink' component={StudentLink} />
+      <Route path='/download' component={DownloadApp} />
       <Route path='/pitch-deck' component={PitchDeck} />
       <Route path='/app' component={Layout} onEnter={requireAuth}>
         <IndexRedirect to='/student/classes' />
         <Route path='/student'>
           <IndexRedirect to='/student/classes'/>
-          <Route path='/student/onboard' component={Onboard} onEnter={authOnboard} />
-          <Route path='/student/diy' component={DIYLanding} />
+          <Route path='/student/find-classes' component={FindClasses} />
+          <Route path='/student/verify' component={Verification} onEnter={authOnboard} />
+          <Route path='/student/class-link' component={ClassLink} />
           <Route path='/student/classes' component={MyClasses}/>
         </Route>
 
@@ -68,21 +80,46 @@ const router = (
           <Route path='/hub/accounts/account/info' component={AccountInfo} />
           <Route path='/hub/analytics' component={Analytics} />
           <Route path='/hub/switchboard' component={Switchboard} />
+          <Route path='/hub/reports' component={ReportList} />
         </Route>
 
-        <Route path='/diy' component={DIYLanding} />
         <Route path='/class/:classId/syllabus_tool' component={SyllabusTool} />
-
-        <Route path='/class/:classId/syllabus_tool/tutorial/assignments' component={AssignmentsTutorial} />
-        <Route path='/class/:classId/syllabus_tool/tutorial/weights' component={WeightsTutorial} />
-
-        <Route path='/class/:classId/approvals' component={ClassApproval} />
+        <Route path='/class/:classId/admin' component={ClassAdmin} onEnter={requireAdmin} />
+        <Route path='/assignment/:assignmentId/admin' component={AssignmentAdmin} onEnter={requireAdmin} />
       </Route>
       <Route path="/logout" onEnter={logout} />
       <Redirect from="*" to="/"/>
     </Route>
   </Router>
 )
+
+/*
+* Require users to not be students
+*/
+function requireAdmin (nextState, replaceState) {
+  if (!userStore.user) {
+    userStore.setFetchingUser(true)
+    userStore.authToken = cookie.get('skollerToken')
+    actions.auth.getUserByToken()
+      .then((user) => {
+        authenticateStudent(user.user).then(() => {
+          userStore.setFetchingUser(false)
+        }).catch(() => { userStore.setFetchingUser(false) })
+
+        if (userStore.user) {
+          if (userStore.user.student) {
+            userStore.setFetchingUser(false)
+            browserHistory.push('/student/classes')
+          }
+        }
+        userStore.setFetchingUser(false)
+      })
+      .catch(() => {
+        browserHistory.push('/landing')
+        userStore.setFetchingUser(false)
+      })
+  }
+}
 
 /*
 * Handle strongly typed url
@@ -94,9 +131,6 @@ function requireAuth (nextState, replaceState) {
     actions.auth.getUserByToken()
       .then((user) => {
         authenticateStudent(user.user).then(() => {
-          if (nextState.routes.findIndex(route => route.path === '/student/onboard') !== -1) {
-            authOnboard()
-          }
           userStore.setFetchingUser(false)
         }).catch(() => { userStore.setFetchingUser(false) })
 
@@ -116,12 +150,12 @@ function requireAuth (nextState, replaceState) {
 function authenticateStudent (user) {
   if (user.student) {
     if (user.student.is_verified) {
-      return actions.classes.getStudentClasses().then((classes) => {
-        if (classes.length === 0) browserHistory.push('/student/onboard')
+      return actions.classes.getStudentClassesById(user.student.id).then((classes) => {
+        if (classes.length === 0) browserHistory.push('/student/find-classes')
       }).catch(() => false)
     } else {
       return new Promise((resolve, reject) => {
-        resolve(browserHistory.push('/student/onboard'))
+        resolve(browserHistory.push('/student/verify'))
       })
     }
   }
@@ -135,15 +169,17 @@ function authenticateStudent (user) {
 */
 function authOnboard () {
   if (userStore.user) {
-    if (!userStore.user.student) {
-      browserHistory.push('/student/classes')
+    if (userStore.user.student) {
+      if (userStore.user.student.is_verified) {
+        browserHistory.push('/student/classes')
+      }
     }
   }
 }
 
 const cookie = new Cookies()
 function logout (nextState, replaceState) {
-  cookie.remove('skollerToken')
+  cookie.remove('skollerToken', { path: '/' })
   replaceState(null, '/landing')
 }
 

@@ -1,31 +1,33 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Form, ValidateForm} from 'react-form-library'
-import {InputField} from '../../../../components/Form'
-import Loading from '../../../../components/Loading'
-import actions from '../../../../actions'
-import {convertUTCDatetimeToDateString,mapTimeToDisplay} from '../../../../utilities/time'
+import {browserHistory} from 'react-router'
+import {convertUTCDatetimeToDateString, mapTimeToDisplay} from '../../../../utilities/time'
 
 class Post extends React.Component {
   constructor (props) {
     super(props)
     this.post = props.post
     this.student = this.post.student
-    this.user = this.student && this.student.users && this.student.users[0] ? this.student.users[0] : null
+    this.user = this.student && this.student.user ? this.student.user : null
   }
 
-  renderContent(){
-    if(this.post){
-      if(this.props.type == 'post'){
+  renderContent () {
+    if (this.post) {
+      if (this.props.type === 'post') {
         return this.post.post
-      }else if(this.props.type == 'comment'){
+      } else if (this.props.type === 'comment') {
         return this.post.comment
-      }else if(this.props.type == 'reply'){
+      } else if (this.props.type === 'reply') {
         return this.post.reply
-      }else {
+      } else {
         return '-'
       }
-    }else{ return '-' }
+    } else { return '-' }
+  }
+
+  onAccountSelect () {
+    let state = {user: {student: this.student, ...this.user}}
+    browserHistory.push({pathname: '/hub/accounts/account/info', state: state})
   }
 
   render () {
@@ -34,10 +36,10 @@ class Post extends React.Component {
         <div className='post-header row'>
           <div className='col-xs-6'>
             {this.user && this.user.avatar ? (<img src={this.user.avatar}></img>) : null}
-            {this.user ? (<span>{`${this.student.name_first} ${this.student.name_last}`}</span>) : null}
+            {this.user ? (<a onClick={this.onAccountSelect.bind(this)}>{`${this.student.name_first} ${this.student.name_last}`}</a>) : null}
           </div>
           <div className='col-xs-6 right-text'>
-            {this.post.inserted_at ? (<span>{convertUTCDatetimeToDateString(this.post.inserted_at,'CST') + ' ' + mapTimeToDisplay(this.post.inserted_at)}</span>) : null}
+            {this.post.inserted_at ? (<span>{convertUTCDatetimeToDateString(this.post.inserted_at, 'CST') + ' ' + mapTimeToDisplay(this.post.inserted_at)}</span>) : null}
           </div>
         </div>
         <div className='post-content'>
@@ -45,8 +47,8 @@ class Post extends React.Component {
         </div>
         <div className='post-footer row'>
           <div className='post-likes col-xs-6'>
-            <i className='fa fa-thumbs-up'></i>
-            <span>{this.post.likes ? this.post.likes.length : 0}</span>
+            {this.props.showLikes && <i className='fa fa-thumbs-up'></i>}
+            {this.props.showLikes && <span>{this.post.likes ? this.post.likes.length : 0}</span>}
           </div>
           <div className='post-actions col-xs-6 right-text'>
             <i className='fa fa-trash cn-red cursor' onClick={() => this.props.onDelete()}></i>
@@ -61,6 +63,7 @@ Post.propTypes = {
   onDelete: PropTypes.func,
   post: PropTypes.object,
   type: PropTypes.string,
+  showLikes: PropTypes.bool
 }
 
 export default Post

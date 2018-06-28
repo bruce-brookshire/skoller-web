@@ -1,0 +1,33 @@
+@mixin shadow-box {
+  background-color: $cn-color-white;
+  border-radius: 8px;
+  box-shadow: 0px 15px 35px 0px rgba(0, 0, 0, 0.07);
+  box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.1);
+}
+
+@mixin shadow-box-content {
+  padding: $unit-space;
+}
+
+@mixin shadow-box-title {
+  border-bottom: 2px solid black;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+@mixin shadow-box-row {
+  margin-top: $unit-space;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin shadow-box-field {
+  text-align: center;
+  font-size: 14px;
+}
+
+@mixin shadow-box-label {
+  font-weight: 300;
+}

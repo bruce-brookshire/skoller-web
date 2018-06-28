@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
-import {InputField, SelectField} from '../../../../components/Form'
+import {InputField, CheckboxField, SelectField} from '../../../../components/Form'
 import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
 import {convertLocalDateToUTC, convertUTCDatetimeToDateString} from '../../../../utilities/time'
@@ -19,6 +19,19 @@ const requiredFields = {
   }
 }
 
+const date = new Date()
+
+const yearOpts = [
+  {
+    name: date.getFullYear(),
+    value: date.getFullYear()
+  },
+  {
+    name: date.getFullYear() + 1,
+    value: date.getFullYear() + 1
+  }
+]
+
 class AssignmentForm extends React.Component {
   constructor (props) {
     super(props)
@@ -26,29 +39,19 @@ class AssignmentForm extends React.Component {
   }
 
   /*
-  * Fetch the weights to populate weight select.
-  */
-  componentWillMount () {
-    const {cl, disabled} = this.props
-    if (!disabled) {
-      actions.weights.getClassWeights(cl).then((weights) => {
-        weights = weights.sort((a, b) => {
-          return a.inserted_at > b.inserted_at
-        })
-        this.setState({weights})
-      }).then(() => false)
-    }
-  }
-
-  /*
   * If new assignment is received, update form.
   */
   componentWillReceiveProps (nextProps) {
-    if (nextProps.assignment && this.state.form.id !== nextProps.assignment.id) {
+    if (nextProps.assignment && (this.state.form.id !== nextProps.assignment.id)) {
       this.setState({form: this.initializeFormData(nextProps.assignment)})
     }
-  }
 
+    if (nextProps.currentWeight.id !== this.props.currentWeight.id) {
+      let newForm = this.initializeFormData()
+      newForm.weight_id = nextProps.currentWeight.id
+      this.setState({form: newForm})
+    }
+  }
 
   /*
   * Method for intializing the state.
@@ -56,11 +59,11 @@ class AssignmentForm extends React.Component {
   * @return [Object]. State object.
   */
   initializeState () {
+    const {assignment} = this.props
     return {
-      form: this.initializeFormData(),
+      form: this.initializeFormData(assignment),
       due_null: false,
-      loading: false,
-      weights: []
+      loading: false
     }
   }
 
@@ -73,20 +76,18 @@ class AssignmentForm extends React.Component {
   */
   initializeFormData (data) {
     let formData = data || {}
-    const {id, name, weight_id, due} = formData
-    const {cl, prevWeight} = this.props
+    const {id, name, weight_id: weightId, due} = formData
+    const {cl, currentWeight} = this.props
 
-    const due_date = due ?
-      convertUTCDatetimeToDateString(due, cl.school.timezone) : ''
-
-    const date = new Date()
+    const dueDate = due
+      ? convertUTCDatetimeToDateString(due, cl.school.timezone) : ''
 
     return ({
       id: id || null,
       name: name || '',
-      weight_id: weight_id || prevWeight || '',
-      due: due_date ? this.mapAssignmentDate(due_date) : '',
-      year_due: due_date ? due_date.split('-')[0] : date.getFullYear()
+      weight_id: weightId || (currentWeight && currentWeight.id) || '',
+      due: dueDate ? this.mapAssignmentDate(dueDate) : '',
+      year_due: dueDate ? dueDate.split('-')[0] : date.getFullYear()
     })
   }
 
@@ -95,11 +96,6 @@ class AssignmentForm extends React.Component {
   *
   */
   onSubmit () {
-    if (this.state.weights.length > 0) {
-      requiredFields.weight_id = {
-        type: 'required'
-      }
-    }
     if (this.state.due_null) {
       requiredFields.due = {}
     }
@@ -115,9 +111,8 @@ class AssignmentForm extends React.Component {
   onCreateAssignment (form) {
     this.setState({loading: true})
     actions.assignments.createAssignment(this.props.cl, form).then((assignment) => {
-      this.props.onCreateAssignment(assignment)
-      this.props.resetValidation()
       this.setState({form: this.initializeFormData(), loading: false, due_null: false})
+      this.props.onCreateAssignment(assignment)
     }).catch(() => { this.setState({loading: false}) })
   }
 
@@ -128,7 +123,6 @@ class AssignmentForm extends React.Component {
     this.setState({loading: true})
     actions.assignments.updateAssignment(this.props.cl, form).then((assignment) => {
       this.props.onUpdateAssignment(assignment)
-      this.props.resetValidation()
       this.setState({form: this.initializeFormData(), loading: false, due_null: false})
     }).catch(() => { this.setState({loading: false}) })
   }
@@ -137,16 +131,14 @@ class AssignmentForm extends React.Component {
   * Map the form
   */
   mapForm () {
+    const {cl} = this.props
     if (!this.state.due_null) {
-      const {cl} = this.props
       let newForm = {...this.state.form}
       let due = newForm.due.split('/')
       due = `${newForm.year_due}-${due[0]}-${due[1]}`
       newForm.due = convertLocalDateToUTC(due, cl.school.timezone)
       return newForm
-    }
-    else {
-      const {cl} = this.props
+    } else {
       let newForm = {...this.state.form}
       newForm.due = null
       return newForm
@@ -164,112 +156,96 @@ class AssignmentForm extends React.Component {
     return `${dateParts[1]}/${dateParts[2]}`
   }
 
-  handleChange () {
-    this.setState({due_null: this.refs.due_null.checked})
-  }
-
-  renderWeightDropDown () {
-    const {form} = this.state
-    const {formErrors, updateProperty} = this.props
-    if (this.state.weights.length == 0){
-      form.weight_id = null
-      return (
-        <div className='margin-top'>This class does not have any weights</div>
-      )
-    }
-    else {
-      return (
-        <SelectField
-          containerClassName='margin-top'
-          error={formErrors.weight_id}
-          info={'The assignments added will appear for everyone in the class. Be sure to only add graded assignments that apply to all classmates.'}
-          label='Grading category'
-          name='weight_id'
-          onChange={updateProperty}
-          options={this.state.weights}
-          placeholder='Select grading category'
-          value={form.weight_id}
-        />
-      )
-    }
-  }
-
   render () {
     const {form} = this.state
-    const {formErrors, updateProperty} = this.props
+    const {formErrors, updateProperty, currentWeight, isAdmin, weights} = this.props
     return (
       <div id='class-editor-assignment-form'>
+        <div className='cn-section-content-header'>
+          Step 2: Add Assignments
+        </div>
+        <div className='margin-top'>
+          Add all assignments{currentWeight && ' that fall under the category:'}
+        </div>
+        <div className='cn-section-content-header center-text cn-blue margin-top'>
+          {currentWeight ? currentWeight.name : 'for this class'}
+        </div>
         <div className='row'>
           <div className='col-xs-12'>
-            {this.renderWeightDropDown()}
-          </div>
-          <div className='col-xs-12'>
             <InputField
-              style={{marginTop: '0em'}}
               containerClassName='margin-top'
               error={formErrors.name}
               info={'Be sure to add the assignment name exactly how it appears in the syllabus. Hint: use copy and paste to minimize typ-o\'s'}
               label='Assignment name'
               name='name'
               onChange={updateProperty}
-              placeholder='Assignment name, i.e. Exam 1'
+              placeholder='e.g. Exam 1'
               value={form.name}
             />
           </div>
+          {isAdmin && <div className='col-xs-12'>
+            <SelectField
+              containerClassName='margin-top'
+              error={formErrors.weight_id}
+              label='Weight'
+              name='weight_id'
+              onChange={updateProperty}
+              options={weights}
+              value={form.weight_id}
+            />
+          </div>}
           <div className='col-xs-4'>
-            <InputField
-              style={{marginTop: '0.25em'}}
+            {!this.state.due_null && <InputField
               containerClassName='margin-top'
               error={formErrors.due}
-              info={`If a precise due date has not been provided for this assignment, please do not guess! Select the box that says 'due date is not provided' and the submit assignment. The due date can be added through the app at a later date.`}
-              label='Due Date'
+              info={`Due date unknown for an assignment? No worries-you can always add one later. Go ahead and create the assignment for everyone in your class.`}
+              label='Due date'
               name='due'
               onChange={(name, value) => {
                 updateProperty(name, maskAssignmentDate(form.due, value))
               }}
               placeholder='MM/DD'
               value={form.due}
-              disabled={this.state.due_null == true}
-            />
+              disabled={this.state.due_null === true}
+            />}
           </div>
           <div className='col-xs-4'>
-            <InputField
+            {!this.state.due_null && <SelectField
               containerClassName='margin-top'
               error={formErrors.year_due}
-              label='Year due'
+              label='Year'
               name='year_due'
               onChange={updateProperty}
               placeholder='Year'
               type='number'
+              options={yearOpts}
               value={form.year_due}
-              disabled={true}
-            />
+              disabled={this.state.due_null === true}
+            />}
           </div>
           <div className='col-xs-4'>
-            <div className='form-element'>
-              <div className='cn-input-container margin-top center-xs'>
-                <label htmlFor="due_null" className='cn-input-label'>Due date is not provided</label>
-                <input 
-                  className='cn-form-input'
-                  tabIndex="-1"
-                  type="checkbox" 
-                  ref="due_null" 
-                  name="due_null"
-                  defaultChecked={this.state.due_null}
-                  onChange={this.handleChange.bind(this)}
-                />
-              </div>
+            <div className='cn-input-container margin-top center-xs'>
+              <label htmlFor="due_null" className='cn-input-label'>Unknown?</label>
+              <CheckboxField
+                inputClassName='cn-big-checkbox'
+                tabIndex="-1"
+                type="checkbox"
+                name="due_null"
+                value={this.state.due_null}
+                onChange={(name, value) => {
+                  this.setState({due_null: value})
+                }}
+              />
             </div>
           </div>
         </div>
         <button
           className='button full-width margin-top'
-          style={{marginBottom: '0.5em'}}
           disabled={this.state.loading}
           onClick={this.onSubmit.bind(this)}
         >
-          Submit assignment
-          {this.state.loading ? <Loading style={{color: 'white', marginLeft: '0.5em'}} /> : null}
+          Add assignment
+          {this.state.loading ? <Loading /> : null}
         </button>
       </div>
     )
@@ -279,12 +255,15 @@ class AssignmentForm extends React.Component {
 AssignmentForm.propTypes = {
   assignment: PropTypes.object,
   cl: PropTypes.object,
-  disabled: PropTypes.bool,
   formErrors: PropTypes.object,
   onCreateAssignment: PropTypes.func.isRequired,
   onUpdateAssignment: PropTypes.func.isRequired,
   updateProperty: PropTypes.func,
-  validateForm: PropTypes.func
+  validateForm: PropTypes.func,
+  currentWeight: PropTypes.object,
+  resetValidation: PropTypes.func,
+  isAdmin: PropTypes.bool,
+  weights: PropTypes.array
 }
 
 export default ValidateForm(Form(AssignmentForm, 'form'))

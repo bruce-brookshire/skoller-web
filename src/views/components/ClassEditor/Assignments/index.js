@@ -1,9 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import AssignmentForm from './AssignmentForm'
+import AssignmentTable from './AssignmentTable'
+import SkipCategoryModal from './SkipCategoryModal'
 import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
-import {convertUTCDatetimeToDateString} from '../../../../utilities/time'
 
 class Assignments extends React.Component {
   constructor (props) {
@@ -15,18 +16,19 @@ class Assignments extends React.Component {
   * Fetch the weights for a given class
   */
   componentWillMount () {
-    const {cl, disabled} = this.props
-    if (!disabled) {
-      this.setState({loadingAssignments: true})
-      actions.assignments.getClassAssignments(cl).then((assignments) => {
-        this.setState({assignments, loadingAssignments: false})
-      }).then(() => { this.setState({loadingAssignments: false}) })
+    const {cl} = this.props
+    this.setState({loadingAssignments: true})
+    actions.assignments.getClassAssignments(cl).then((assignments) => {
+      this.setState({assignments, loadingAssignments: false})
+    }).then(() => { this.setState({loadingAssignments: false}) })
 
-      this.setState({loadingWeights: true})
-      actions.weights.getClassWeights(cl).then((weights) => {
-        this.setState({weights, loadingWeights: false})
-      }).then(() => { this.setState({loadingWeights: false}) })
-    }
+    this.setState({loadingWeights: true})
+    actions.weights.getClassWeights(cl).then((weights) => {
+      weights = weights.sort((a, b) => {
+        return a.weight < b.weight
+      })
+      this.setState({weights, loadingWeights: false})
+    }).then(() => { this.setState({loadingWeights: false}) })
   }
 
   /*
@@ -35,115 +37,22 @@ class Assignments extends React.Component {
   * @return [Object]. State object.
   */
   initializeState () {
-    const {isReview, assignments, weights} = this.props
+    const {isReview} = this.props
     return {
-      assignments: assignments || [],
+      assignments: [],
       currentAssignment: null,
       loadingAssignments: false,
       loadingWeights: false,
       viewOnly: isReview,
-      weights: weights || [],
-      prevWeight: null
+      weights: [],
+      currentWeightIndex: 0,
+      openSkipCategoryModal: false
     }
   }
 
-  /*
-  * Render the assignments for a given class.
-  */
-  renderAssignments () {
-    const assignments = this.state.assignments
-    if (assignments.length === 0) {
-      return (
-        <div className='center-text margin-top'>
-          <span>There are currently no assignments for this class.</span>
-        </div>
-      )
-    }
-    //sort by due date.
-    return assignments.sort((a, b) => {
-      return a.inserted_at > b.inserted_at
-    }).map((assignment, index) =>
-      this.getRow(assignment, index)
-    )
-  }
-
-  /*
-  * Formats row data to be passed to the grid for display
-  *
-  * @param [Object] item. Row data to be formatted.
-  * @param [Number] index. Index of row data.
-  */
-  getRow (item, index) {
-    const {id, name, weight_id, due} = item
-    const {currentAssignment, viewOnly} = this.state
-    const {disabled} = this.props
-
-    const activeClass = (currentAssignment && currentAssignment.id) === id
-      ? 'active' : ''
-
-    return (
-      <div
-        className={`row table-row ${activeClass}`}
-        key={`assignment-${index}`}
-        onClick={() => {
-          if (viewOnly || disabled) return
-          this.onSelectAssignment(item)
-        }}
-      >
-        {!viewOnly &&
-          <div className='col-xs-1'>
-            <div
-              className='button-delete-x center-content'
-              onClick={(event) => {
-                event.stopPropagation()
-                if (disabled) return
-                this.onDeleteAssignment(item)
-              }}><i className='fa fa-times' />
-            </div>
-          </div>
-        }
-        <div className={!viewOnly ? 'col-xs-9' : 'col-xs-10'}>
-          <div className='bold'><span>{name}</span></div>
-          <div>
-            <span className='desctiption'>{weight_id && this.state.weights &&
-              this.state.weights.find(w => w.id === weight_id).name || 'N/A'}
-            </span>
-          </div>
-        </div>
-        <div className='col-xs-2 right-text'>
-          <span>{due ? this.mapAssignmentDate(due) : 'N/A'}</span>
-        </div>
-      </div>
-    )
-  }
-
-  /*
-  * Render assignment form.
-  */
-  renderAssignmentForm () {
-    return (
-      <AssignmentForm
-        assignment={this.state.currentAssignment}
-        cl={this.props.cl}
-        disabled={this.props.disabled}
-        onCreateAssignment={this.onCreateAssignment.bind(this)}
-        onUpdateAssignment={this.onUpdateAssignment.bind(this)}
-        prevWeight={this.state.prevWeight}
-      />
-    )
-  }
-
-  /*
-  * Map the assignment dateParts
-  *
-  * @param [String] date. YYYY-MM-DD
-  * @return [String]. MM/DD
-  */
-  mapAssignmentDate (date) {
-    const {cl} = this.props
-    const datePretty = convertUTCDatetimeToDateString(date, cl.school.timezone)
-    const dateParts = datePretty.split('-')
-    return `${dateParts[1]}/${dateParts[2]}`
+  filterAssignments () {
+    const {assignments, currentWeightIndex, weights, viewOnly} = this.state
+    return !viewOnly ? assignments.filter((assign) => assign.weight_id === weights[currentWeightIndex].id) : assignments
   }
 
   /*
@@ -163,7 +72,7 @@ class Assignments extends React.Component {
   onCreateAssignment (assignment) {
     const newAssignments = this.state.assignments
     newAssignments.push(assignment)
-    this.setState({assignments: newAssignments, currentAssignment: null, prevWeight: assignment.weight_id})
+    this.setState({assignments: newAssignments, currentAssignment: null})
     this.sectionControl.scrollTop = this.sectionControl.scrollHeight
   }
 
@@ -173,8 +82,9 @@ class Assignments extends React.Component {
   * @param [Object] assignment. Assignment.
   */
   onUpdateAssignment (assignment) {
-    const newAssignments = this.state.assignments
-    const index = this.state.assignments.findIndex(a => a.id === assignment.id)
+    const {assignments} = this.state
+    const newAssignments = assignments
+    const index = assignments.findIndex(a => a.id === assignment.id)
     newAssignments[index] = assignment
     this.setState({assignments: newAssignments, currentAssignment: null})
   }
@@ -185,36 +95,115 @@ class Assignments extends React.Component {
   * @param [Object] assignment. The assignment to be deleted.
   */
   onDeleteAssignment (assignment) {
+    const {assignments} = this.state
     actions.assignments.deleteAssignment(assignment).then(() => {
-      const newAssignments = this.state.assignments.filter(a => a.id !== assignment.id)
+      const newAssignments = assignments.filter(a => a.id !== assignment.id)
       this.setState({assignments: newAssignments})
     }).catch(() => false)
   }
 
+  onNext () {
+    const {currentWeightIndex, weights} = this.state
+    if (weights[currentWeightIndex + 1]) {
+      this.setState({currentWeightIndex: currentWeightIndex + 1})
+    } else {
+      this.props.onSubmit()
+    }
+  }
+
+  /*
+  * Toggle the problems modal.
+  */
+  toggleSkipCategoryModal () {
+    this.setState({openSkipCategoryModal: !this.state.openSkipCategoryModal})
+  }
+
+  /*
+  * Render the having issues modal.
+  */
+  renderSkipCategoryModal () {
+    const {openSkipCategoryModal} = this.state
+    return (
+      <SkipCategoryModal
+        open={openSkipCategoryModal}
+        onClose={this.toggleSkipCategoryModal.bind(this)}
+        onConfirm={this.onNext.bind(this)}
+      />
+    )
+  }
+
+  renderSavedMessage (assignments) {
+    const {viewOnly, weights, currentWeightIndex} = this.state
+    return (
+      <span>
+        {!viewOnly && <span>Saved assignments</span>}
+        {!viewOnly && weights[currentWeightIndex] && <span> for <i className='cn-blue'>{weights[currentWeightIndex].name}</i></span>}
+        {viewOnly && `Assignments (${assignments.length})`}
+      </span>
+    )
+  }
+
   render () {
-    const {viewOnly, loadingAssignments, loadingWeights, assignments} = this.state
+    const {viewOnly, loadingAssignments, loadingWeights, currentAssignment,
+      currentWeightIndex, weights} = this.state
+    const {cl} = this.props
+
+    let assignments = this.filterAssignments()
     if (loadingAssignments || loadingWeights) return <Loading />
     return (
-      <div className='space-between-vertical'>
-        <h5 style={{marginTop: '0.25em', marginBottom: '0.5em'}}>{viewOnly ? 'Edit' : 'Add'} Assignments ({assignments.length})</h5>
-        {viewOnly && <a className='right-text' style={{marginBottom: '5px'}} onClick={() => this.setState({viewOnly: false}) }>edit</a>}
-        <div className={`class-editor-table ${viewOnly ? 'view-only' : ''}`} >
-          <div id='class-editor-assignments-table' ref={(field) => { this.sectionControl = field; }}>
-            {this.renderAssignments()}
+      <div id='cn-assignments'>
+        {!viewOnly &&
+          <AssignmentForm
+            assignment={currentAssignment}
+            cl={cl}
+            onCreateAssignment={this.onCreateAssignment.bind(this)}
+            onUpdateAssignment={this.onUpdateAssignment.bind(this)}
+            currentWeight={weights[currentWeightIndex]}
+          />
+        }
+        {!viewOnly && assignments.length === 0 &&
+          <div className='margin-top margin-bottom center-text'>
+            <a onClick={() => this.toggleSkipCategoryModal()}>Skip this category</a>
           </div>
-        </div>
-        {!viewOnly && this.renderAssignmentForm()}
+        }
+        {(assignments.length !== 0 || viewOnly) &&
+          <div id='cn-assignment-table'>
+            <div id='cn-assignment-table-label'>
+              {this.renderSavedMessage(assignments)}
+              {viewOnly && <a onClick={() => this.props.onEdit()}>Edit</a>}
+            </div>
+            <AssignmentTable
+              viewOnly={viewOnly}
+              assignments={assignments}
+              currentAssignment={currentAssignment}
+              onSelectAssignment={this.onSelectAssignment.bind(this)}
+              onDeleteAssignment={this.onDeleteAssignment.bind(this)}
+              weights={weights}
+              cl={cl}
+              currentWeight={weights[currentWeightIndex]}
+              onEdit={() => this.props.onEdit()}
+            />
+          </div>
+        }
+        {assignments.length !== 0 && !viewOnly &&
+          <button
+            onClick={() => this.onNext()}
+            className='button full-width margin-top margin-bottom'
+          >
+            Save and continue
+          </button>
+        }
+        {this.renderSkipCategoryModal()}
       </div>
     )
   }
 }
 
 Assignments.propTypes = {
-  assignments: PropTypes.array,
   cl: PropTypes.object,
-  disabled: PropTypes.bool,
   isReview: PropTypes.bool,
-  weights: PropTypes.array
+  onSubmit: PropTypes.func,
+  onEdit: PropTypes.func
 }
 
 export default Assignments

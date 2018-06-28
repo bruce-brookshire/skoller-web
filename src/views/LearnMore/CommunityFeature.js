@@ -5,7 +5,7 @@ class CommunityFeature extends React.Component {
     return (
       <div className='section-community-feature'>
         <div className="content">
-          <h2 className='section-header'>Plus, a <span className='blue-text'>community</span> you can't find anywhere else.</h2>
+          <h2 className='section-header'>Plus, a <span className='blue-text'>community</span> you can&apos;t find anywhere else.</h2>
           <div className='row'>
             <div className='col-xs-12 col-sm-6'>
               <div className='twin-image'>
@@ -15,9 +15,9 @@ class CommunityFeature extends React.Component {
             </div>
             <div className='col-xs-12 col-sm-6 copy'>
               <p>As the semester goes on, your class schedules are bound to change.&nbsp;
-                <span className='blue-text'>
-                  {'With Skoller\'s Updates, you and your classmates have nothing to worry about.'}
-                </span> When one student adjusts their schedule on Skoller, all classmates get a notification with the option to copy or dismiss the change.
+              <span className='blue-text'>
+                {'With Skoller\'s Updates, you and your classmates have nothing to worry about.'}
+              </span> When one student adjusts their schedule on Skoller, all classmates get a notification with the option to copy or dismiss the change.
               </p>
               <p>
                 {'Wanna talk to your classmates about what\'s going on in class? '}

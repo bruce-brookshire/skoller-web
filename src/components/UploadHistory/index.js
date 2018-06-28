@@ -4,8 +4,8 @@ import FileUpload from '../FileUpload'
 
 class UploadHistory extends React.Component {
   renderHistory () {
-    const {files,unsavedDocuments} = this.props
-    if(files && files.length > 0){
+    const {files, unsavedDocuments} = this.props
+    if (files && files.length > 0) {
       return files.map((file, index) => {
         return (
           <a
@@ -16,12 +16,12 @@ class UploadHistory extends React.Component {
           >{file.name}</a>
         )
       })
-    }else if(unsavedDocuments && unsavedDocuments.length > 0){
-      return unsavedDocuments.map((file, index) => {
+    } else if (unsavedDocuments && unsavedDocuments.length > 0) {
+      return unsavedDocuments.map((file) => {
         return (
-          <div key={index}>
-            <div style={{display:'inline-block', marginRight: '5px'}}>{file.name}</div>
-            <button onClick={() => {this.props.onDeleteDocument(index)}} className='fa fa-trash cn-red'></button>
+          <div key={file.name}>
+            <div style={{display: 'inline-block', marginRight: '5px'}}>{file.name}</div>
+            <button onClick={() => { this.props.onDeleteDocument(file.name) }} className='fa fa-trash cn-red'></button>
           </div>
         )
       })
@@ -35,7 +35,12 @@ class UploadHistory extends React.Component {
     return (
       <div className='cn-upload-history'>
         <div className='upload-history-list'>
-          <FileUpload className={containerClasses.join(' ')} allow={this.props.allow} disabled={this.props.disabled} onUpload={this.props.onUpload}>
+          <FileUpload
+            className={containerClasses.join(' ')}
+            allow={this.props.allow}
+            disabled={this.props.disabled}
+            onUpload={this.props.onUpload}
+          >
             <span className='header center-text'>{title}</span>
             {this.renderHistory()}
           </FileUpload>

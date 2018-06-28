@@ -7,36 +7,47 @@
 @import 'mixins/button';
 @import 'mixins/layout';
 @import 'mixins/triangle';
-@import 'mixins/typography';
+@import 'mixins/landing';
+@import 'mixins/shadow-box';
 
 @import 'fonts';
-// @import 'mixins/icons';
 
 // Forms ----------------------------------------------------------------------
 @import 'forms/mixins/input';
 @import 'forms/checkbox-field';
+@import 'forms/date-range-field';
 @import 'forms/input-field';
 @import 'forms/multiselect-field';
 @import 'forms/pill-field';
 @import 'forms/select-field';
 @import 'forms/textarea-field';
-// @import 'forms/form';
-// @import 'forms/textfield';
+@import 'forms/slider-field';
 
 // Components ----------------------------
-@import 'components/add-class';
+@import 'components/assignments';
+@import 'components/assignment-card';
+@import 'components/assignment-table';
 @import 'components/autocomplete';
+@import 'components/autocomplete-detail';
+@import 'components/card';
 @import 'components/chat';
-@import 'components/class-editor-table.scss';
-@import 'components/create-class';
+@import 'components/chat-post';
+@import 'components/class-card.scss';
+@import 'components/common-scale-modal.scss';
+@import 'components/day-selector';
 @import 'components/file-tab';
 @import 'components/file-viewer';
 @import 'components/flex-table';
+@import 'components/grade-scale';
 @import 'components/grid';
 @import 'components/modal';
 @import 'components/navbar';
+@import 'components/professor';
 @import 'components/progress-bar.scss';
 @import 'components/search';
+@import 'components/shadow-box';
+@import 'components/sign-up-form';
+@import 'components/time-fields';
 @import 'components/topnav';
 @import 'components/snackbar';
 @import 'components/student-request-modal';
@@ -45,15 +56,25 @@
 @import 'components/progress-bar.scss';
 @import 'components/weight-converter.scss';
 @import 'components/verification-code';
-
+@import 'components/weights';
+@import 'components/weight-form';
+@import 'components/weight-table';
+@import 'components/weight-type';
 
 // Composed Views ------------------------
-@import 'views/mixins/landing.scss';
+@import 'views/mixins/onboarding.scss';
+@import 'views/account-info.scss';
 @import 'views/analytics.scss';
+@import 'views/assignment-admin.scss';
 @import 'views/call-to-action.scss';
-@import 'views/class-approval.scss';
-@import 'views/diylanding.scss';
+@import 'views/class-admin.scss';
+@import 'views/class-form.scss';
+@import 'views/class-link.scss';
+@import 'views/create-professor-modal.scss';
+@import 'views/create-school-modal.scss';
+@import 'views/enrollment-link.scss';
 @import 'views/faq.scss';
+@import 'views/find-classes.scss';
 @import 'views/forgot-password.scss';
 @import 'views/hub-accounts.scss';
 @import 'views/hub-classes.scss';
@@ -63,17 +84,25 @@
 @import 'views/landing-nav.scss';
 @import 'views/landing.scss';
 @import 'views/learn-more.scss';
+@import 'views/meeting-time-modal.scss';
 @import 'views/myclasses.scss';
 @import 'views/onboarding.scss';
 @import 'views/people-talking.scss';
 @import 'views/pitch-deck.scss';
 @import 'views/our-team.scss';
 @import 'views/privacy-policy.scss';
+@import 'views/project-four-door.scss';
 @import 'views/school-info.scss';
+@import 'views/school-search.scss';
+@import 'views/sign-up.scss';
+@import 'views/skip-category-modal.scss';
+@import 'views/student-list.scss';
+@import 'views/student-problems-modal.scss';
+@import 'views/student-request-info.scss';
+@import 'views/submit-syllabi.scss';
 @import 'views/switchboard.scss';
 @import 'views/syllabus-tool.scss';
-@import 'views/syllabus-tutorial.scss';
-
+@import 'views/verification.scss';
 
 html { box-sizing: border-box; }
 
@@ -96,6 +125,7 @@ body {
   background: $cn-primary-background-color;
   color: $cn-font-color;
   font-family: $cn-font-family;
+  line-height: 1.2;
 }
 
 .app {
@@ -108,11 +138,8 @@ body {
     bottom: 0;
     right: 0;
     left: 0;
-    overflow-x: scroll;
-
-    /* sticky bottom */
-    margin-bottom: -160px;
-    padding-bottom: 160px;
+    overflow-x: auto;
+    overflow-y: auto;
   }
 }
 
@@ -188,6 +215,10 @@ body {
   color: red;
 }
 
+.cn-yellow {
+  color: $cn-color-yellow;
+}
+
 .cn-red-background {
   background-color: red;
   &:hover {
@@ -205,7 +236,7 @@ body {
 
 
 .cn-green {
-  color: #00C000;
+  color: $cn-color-green;
 }
 
 .cn-green-background {
@@ -216,7 +247,7 @@ body {
 }
 
 .cn-grey {
-  color: #9f9f9f;
+  color: $cn-color-grey;
 }
 
 
@@ -235,6 +266,10 @@ body {
 
 .margin-top {
   margin-top: $unit-space;
+}
+
+.margin-zero {
+  margin: 0;
 }
 
 // Helpers ------------------------------------
@@ -283,4 +318,17 @@ body {
 
 .relative {
   position: relative;
+}
+
+.cn-total-center-flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.web-only {
+  @media only screen and (max-width: 760px) {
+    display: none;
+  }
 }

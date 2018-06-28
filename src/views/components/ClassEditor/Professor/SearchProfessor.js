@@ -2,26 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import AutoComplete from '../../../../components/AutoComplete'
 import actions from '../../../../actions'
-import {mapProfessor} from '../../../../utilities/display'
 
 class SearchProfessor extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {professors: [], loading: false}
-  }
-
-  /*
-  * Render the autocomplete results.
-  */
-  renderRow (data, index, resetState) {
-    return (
-      <div className='cn-autocomplete-result' key={`result-${index}`} onClick={() => this.onProfessorSelect(data)}>
-        <span>{mapProfessor(data)}</span>
-        <div>
-          <span>{data.email}</span>
-        </div>
-      </div>
-    )
+    this.state = {
+      professors: [],
+      loading: false,
+      value: ''
+    }
   }
 
   /*
@@ -32,62 +21,95 @@ class SearchProfessor extends React.Component {
   }
 
   /*
-  * Handle on professor doesn't exist..
-  */
-  onAddProfessor () {
-    this.props.onAddProfessor()
-  }
-
-  /*
-  * If professor exists, select professor
-  */
-  onProfessorSelect (professor) {
-    this.props.onProfessorSelect(professor)
-  }
-
-  /*
   * Search for autocomplete.
   * @param [String] value. Autocomplete search value
   */
-  onUpdateAutoCompleteResults (value) {
+  onUpdateAutoComplete (value) {
     if (value) {
       this.setState({loading: true})
-      actions.professors.searchProfessors(value, this.props.cl.class_period_id).then((professors) => {
-        this.setState({professors, loading: false})
+      actions.professors.searchProfessors(value, this.props.schoolId).then((professors) => {
+        this.setState({professors, loading: false, value})
       }).catch(() => { this.setState({loading: false}) })
     } else {
       this.setState({professors: []})
     }
   }
 
-  render () {
+  onProfessorCreate (name) {
+    this.props.onProfessorCreate(name)
+  }
+
+  /*
+  * If class exists, select class
+  */
+  onProfessorSelect (professor, resetState) {
+    this.props.onProfessorSelect(professor)
+    resetState()
+  }
+
+  renderTitle (nameFirst, nameLast) {
+    const {value} = this.state
+    const idxFirst = nameFirst.toLowerCase().indexOf(value.toLowerCase())
+    const idxLast = nameLast.toLowerCase().indexOf(value.toLowerCase())
+
     return (
-      <div className='row margin-top'>
-        <div className='col-xs-12'>
-          <h5>No professor selected.</h5>
-          <AutoComplete
-            className={this.state.loading ? 'loading' : ''}
-            dataSource={this.getDataSource()}
-            emptyMessage={
-              <div className='cn-autocomplete-results-container'>
-                <div className='cn-autocomplete-result'>{`Can\'t find your professor? `}
-                  <a onClick={this.onAddProfessor.bind(this)}>Add a new one.</a>
-                </div>
-              </div>
-            }
-            updateAutoCompleteResults={this.onUpdateAutoCompleteResults.bind(this)}
-            placeholder='Search for your professor...'
-            renderRow={this.renderRow.bind(this)}
-          />
+      <span className='cn-autocomplete-detail-results-item title'>
+        {idxFirst > -1 ? this.renderName(nameFirst, idxFirst, value) : nameFirst}&nbsp;
+        {idxLast > -1 ? this.renderName(nameLast, idxLast, value) : nameLast}
+      </span>
+    )
+  }
+
+  renderName (name, idx, value) {
+    return (
+      <span>{name.substring(0, idx)}<span className='cn-blue'>{name.substring(idx, idx + value.length)}</span>{name.substring(idx + value.length)}</span>
+    )
+  }
+
+  /*
+  * Render the autocomplete results.
+  */
+  renderRow (data, index, resetState) {
+    return (
+      <div className='cn-autocomplete-result' key={`result-${index}`} onClick={() => this.onProfessorSelect(data, resetState)}>
+        <div className='cn-autocomplete-detail-results'>
+          {this.renderTitle(data.name_first, data.name_last)}
+          <span className='cn-autocomplete-detail-results-item'></span>
+          <span className='cn-autocomplete-detail-results-item'>{data.email}</span>
+          <div className='cn-results-divider'></div>
         </div>
       </div>
+    )
+  }
+
+  emptyMessage () {
+    const {isUniversity} = this.props
+    return (
+      <div className='cn-autocomplete-result'>
+        <a onClick={() => this.onProfessorCreate()}>Create a new {isUniversity ? 'professor' : 'teacher'}</a>
+      </div>
+    )
+  }
+
+  render () {
+    return (
+      <AutoComplete
+        className={this.state.loading ? 'loading' : ''}
+        dataSource={this.getDataSource()}
+        emptyMessage={this.emptyMessage.bind(this)}
+        updateAutoCompleteResults={this.onUpdateAutoComplete.bind(this)}
+        placeholder={'e.g. Smith'}
+        renderRow={this.renderRow.bind(this)}
+        newRow={true}
+      />
     )
   }
 }
 
 SearchProfessor.propTypes = {
-  cl: PropTypes.object.isRequired,
-  onAddProfessor: PropTypes.func.isRequired,
+  schoolId: PropTypes.number,
+  isUniversity: PropTypes.bool,
+  onProfessorCreate: PropTypes.func.isRequired,
   onProfessorSelect: PropTypes.func.isRequired
 }
 

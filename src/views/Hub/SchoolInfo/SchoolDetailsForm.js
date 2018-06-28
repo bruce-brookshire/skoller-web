@@ -1,30 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
-import {InputField, SelectField} from '../../../components/Form'
+import {InputField} from '../../../components/Form'
 import actions from '../../../actions'
-import {timezoneOptions} from '../../../utilities/time'
 
 const requiredFields = {
   'name': {
     type: 'required'
   },
-  'adr_zip': {
+  'adr_region': {
     type: 'required'
   },
-  'adr_state': {
-    type: 'required'
-  },
-  'adr_line_1': {
-    type: 'required'
-  },
-  'adr_city': {
-    type: 'required'
-  },
-  'timezone': {
-    type: 'required'
-  },
-  'student_email': {
+  'adr_locality': {
     type: 'required'
   }
 }
@@ -56,24 +43,22 @@ class SchoolDetailsForm extends React.Component {
   */
   initializeFormData (data) {
     let formData = data || {}
-    const {id, name, adr_zip, adr_state, adr_line_1, adr_city, timezone, email_domains, short_name} = formData
-
-    const student_email = (email_domains && email_domains
-      .filter(e => !e.is_professor_only).map(e => e.email_domain ).join(', ')) || ''
-    const professor_email = (email_domains && email_domains
-      .filter(e => e.is_professor_only).map(e => e.email_domain ).join(', ')) || ''
+    const {id, name, adr_zip: zip, adr_region: region, adr_locality: locality, timezone, short_name: shortName} = formData
     return ({
       id: id || '',
       name: name || '',
-      adr_zip: adr_zip || '',
-      adr_state: adr_state || '',
-      adr_line_1: adr_line_1 || '',
-      adr_city: adr_city || '',
+      adr_zip: zip || '',
+      adr_region: region || '',
+      adr_locality: locality || '',
       timezone: timezone || '',
-      student_email: student_email || '',
-      professor_email: professor_email || '',
-      short_name: short_name || ''
+      short_name: shortName || ''
     })
+  }
+
+  mapForm (form) {
+    let newForm = form
+    newForm.adr_country = 'us'
+    return newForm
   }
 
   /*
@@ -106,29 +91,6 @@ class SchoolDetailsForm extends React.Component {
       this.props.onSubmit(school)
       this.setState({loading: false})
     }).catch(() => { this.setState({loading: false}) })
-  }
-
-  /*
-  * Map commma delimated email domains.
-  */
-  mapForm (f) {
-    const form = {...f}
-    form.email_domains = []
-    let emailDomains = form.student_email.replace(' ', '').split(',').map(emailDomain => {
-      return {email_domain: emailDomain, is_professor_only: false}
-    })
-    if (form.professor_email) {
-      const professorEmails = form.professor_email.replace(' ', '').split(',').map(emailDomain => {
-        return {email_domain: emailDomain, is_professor_only: true}
-      })
-      emailDomains = emailDomains.concat(professorEmails)
-    }
-    form.email_domains = emailDomains
-    // form.email_domains.push({email_domain: form.student_email, is_professor_only: false})
-    // if (form.professor_email) form.email_domains.push({email_domain: form.professor_email, is_professor_only: true})
-    delete form.student_email
-    delete form.professor_email
-    return form
   }
 
   render () {
@@ -166,34 +128,23 @@ class SchoolDetailsForm extends React.Component {
             <div className='col-xs-12'>
               <InputField
                 containerClassName='margin-top'
-                error={formErrors.adr_line_1}
-                label="School address"
-                name="adr_line_1"
-                onChange={updateProperty}
-                placeholder="School address"
-                value={form.adr_line_1}
-              />
-            </div>
-            <div className='col-xs-12'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.adr_city}
+                error={formErrors.adr_locality}
                 label="School city"
-                name="adr_city"
+                name="adr_locality"
                 onChange={updateProperty}
                 placeholder="School city"
-                value={form.adr_city}
+                value={form.adr_locality}
               />
             </div>
             <div className='col-xs-12'>
               <InputField
                 containerClassName='margin-top'
-                error={formErrors.adr_state}
+                error={formErrors.adr_region}
                 label="School state"
-                name="adr_state"
+                name="adr_region"
                 onChange={updateProperty}
                 placeholder="School state"
-                value={form.adr_state}
+                value={form.adr_region}
               />
             </div>
             <div className='col-xs-12'>
@@ -205,42 +156,6 @@ class SchoolDetailsForm extends React.Component {
                 onChange={updateProperty}
                 placeholder="School zip code"
                 value={form.adr_zip}
-              />
-            </div>
-            <div className='col-xs-12'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.student_email}
-                label="Student email"
-                name="student_email"
-                onChange={updateProperty}
-                placeholder="Student email"
-                value={form.student_email}
-              />
-              <InfoButton message='Email domains are comma delimated and start with @' />
-            </div>
-            <div className='col-xs-12'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.professor_email}
-                label="Professor email"
-                name="professor_email"
-                onChange={updateProperty}
-                placeholder="Professor email"
-                value={form.professor_email}
-              />
-              <InfoButton message='Email domains are comma delimated and start with @' />
-            </div>
-            <div className='col-xs-12'>
-              <SelectField
-                containerClassName='margin-top'
-                error={formErrors.timezone}
-                label="School timezone"
-                name="timezone"
-                onChange={updateProperty}
-                options={timezoneOptions}
-                placeholder="Select timezone"
-                value={form.timezone}
               />
             </div>
           </div>
@@ -259,11 +174,13 @@ SchoolDetailsForm.propTypes = {
   cl: PropTypes.object,
   formErrors: PropTypes.object,
   updateProperty: PropTypes.func,
-  validateForm: PropTypes.func
+  validateForm: PropTypes.func,
+  school: PropTypes.object,
+  onSubmit: PropTypes.func,
+  onClose: PropTypes.func
 }
 
 export default ValidateForm(Form(SchoolDetailsForm, 'form'))
-
 
 class InfoButton extends React.Component {
   render () {
@@ -274,4 +191,8 @@ class InfoButton extends React.Component {
       </div>
     )
   }
+}
+
+InfoButton.propTypes = {
+  message: PropTypes.string
 }

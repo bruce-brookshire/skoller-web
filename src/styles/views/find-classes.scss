@@ -1,0 +1,109 @@
+.cn-find-classes-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .cn-modal {
+    max-width: 350px;
+    min-width: 350px;
+    overflow-y: hidden;
+  }
+
+  .cn-find-classes-content {
+    width: 382px;
+
+    .error-button {
+      background-color: $cn-error-color;
+    }
+
+    .cn-find-class-fade-left {
+      @keyframes slideinleft {
+        from { transform: translateX(-150%); }
+        to   { transform: translateX(calc(50% - 382px / 2)); }
+      }
+      animation: 1s slideinleft;
+      transform: translateX(calc(50% - 382px / 2));
+    }
+
+    .cn-find-classes-card {
+      @keyframes slidein {
+        from { transform: translateX(150%); }
+        to   { transform: translateX(calc(50% - 382px / 2)); }
+      }
+      animation: 1s slidein;
+      transform: translateX(calc(50% - 382px / 2));
+      width: 382px;
+    }
+
+    .cn-find-classes-card .animate-out {
+      @keyframes slideout {
+        to { transform: translateX(150%); }
+        from   { transform: translateX(calc(50% - 382px / 2)); }
+      }
+      animation: 1s slideout;
+      transform: translateX(150%);
+      width: 382px;
+    }
+
+    .cn-find-classes-exists {
+      text-align: center;
+      margin-top: $unit-space;
+      font-size: 14px;
+    }
+
+    .cn-find-classes-header {
+      h2 {
+        font-size: 36px;
+        margin-bottom: $unit-space / 2;
+      }
+
+      p {
+        margin: 0;
+        font-size: 14px;
+      }
+    }
+
+    .cn-find-classes-field-container {
+      margin-top: $unit-space;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      margin-top: 0;
+      justify-content: space-between;
+
+      .cn-find-classes-sub-field {
+        width: 30%;
+      }
+
+      .cn-find-classes-field {
+        width: 100%;
+      }
+
+      .cn-form-input:disabled {
+        background-color: $cn-form-border;
+        color: $cn-font-color;
+      }
+
+      .cn-find-classes-label {
+        @include form-label;
+        font-weight: normal;
+        margin-top: $unit-space;
+      }
+
+      .cn-find-classes-disabled-label {
+        @include form-label;
+        height: 14px;
+        width: 50%;
+        background-color: $cn-form-border;
+        border-radius: 3px;
+        margin-top: $unit-space;
+      }
+
+      .cn-find-classes-disabled {
+        height: 32px;
+        background-color: $cn-form-border;
+        border-radius: 3px;
+      }
+    }
+  }
+}

@@ -35,7 +35,6 @@ class TextArea extends React.Component {
     }
   }
 
-
   render () {
     const containerClasses = ['cn-input-container']
     const labelClasses = ['cn-input-label']
@@ -44,7 +43,7 @@ class TextArea extends React.Component {
     const {containerClassName, labelClassName, inputClassName,
       containerActiveClassName, labelActiveClassName, inputActiveClassName,
       containerErrorClassName, labelErrorClassName, inputErrorClassName,
-      id, label, error, message, showErrorMessage
+      id, label, error
     } = this.props
 
     if (containerClassName) containerClasses.push(containerClassName)
@@ -60,7 +59,7 @@ class TextArea extends React.Component {
       if (inputActiveClassName) inputClasses.push(inputActiveClassName)
     }
 
-    if (this.props.error) {
+    if (error) {
       containerClasses.push('error')
       labelClasses.push('error')
       inputClasses.push('error')
@@ -94,17 +93,17 @@ class TextArea extends React.Component {
 }
 
 TextArea.propTypes = {
-  containerClass: PropTypes.string,
-  containerActiveClass: PropTypes.string,
-  containerErrorClass: PropTypes.string,
+  containerClassName: PropTypes.string,
+  containerActiveClassName: PropTypes.string,
+  containerErrorClassName: PropTypes.string,
   id: PropTypes.string,
-  inputClass: PropTypes.string,
-  inputActiveClass: PropTypes.string,
-  inputErrorClass: PropTypes.string,
+  inputClassName: PropTypes.string,
+  inputActiveClassName: PropTypes.string,
+  inputErrorClassName: PropTypes.string,
   label: PropTypes.string,
-  labelClass: PropTypes.string,
-  labelActiveClass: PropTypes.string,
-  labelErrorClass: PropTypes.string,
+  labelClassName: PropTypes.string,
+  labelActiveClassName: PropTypes.string,
+  labelErrorClassName: PropTypes.string,
   name: PropTypes.string.isRequired,
   onBlur: PropTypes.func,
   onChange: PropTypes.func.isRequired,
@@ -116,7 +115,9 @@ TextArea.propTypes = {
   ]),
   value: PropTypes.oneOfType([
     PropTypes.string
-  ]).isRequired
+  ]).isRequired,
+  error: PropTypes.bool,
+  info: PropTypes.string
 }
 
 export default TextArea

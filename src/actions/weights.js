@@ -1,9 +1,4 @@
-import 'isomorphic-fetch'
-import {checkError, parseResponse} from '../utilities/api'
-import {showSnackbar} from './snackbar'
-import stores from '../stores'
-const {userStore} = stores
-var Environment = require('../../environment.js')
+import {get, post, put, del} from '../utilities/api'
 
 /*
 * Get weigths for class
@@ -11,19 +6,11 @@ var Environment = require('../../environment.js')
 * @param [Object] cl. Class
 */
 export function getClassWeights (cl) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}/weights`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/classes/${cl.id}/weights`, '', 'Error fetching weights. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching weights. Try again.')
       return Promise.reject(error)
     })
 }
@@ -34,20 +21,11 @@ export function getClassWeights (cl) {
 * @params [Object] form. Weight form.
 */
 export function createWeight (cl, form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}/weights`, {
-    method: 'POST',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(response => parseResponse(response))
+  return post(`/api/v1/classes/${cl.id}/weights`, form, 'Error creating weight. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error creating weight. Try again.')
       return Promise.reject(error)
     })
 }
@@ -58,39 +36,21 @@ export function createWeight (cl, form) {
 * @params [Object] form. Weight form.
 */
 export function updateWeight (cl, form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/weights/${form.id}`, {
-    method: 'PUT',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(response => parseResponse(response))
+  return put(`/api/v1/weights/${form.id}`, form, 'Error updating weight. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error updating weight. Try again.')
       return Promise.reject(error)
     })
 }
-
 
 /*
 * Delete a weight
 */
 export function deleteWeight (form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/weights/${form.id}`, {
-    method: 'DELETE',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => checkError(response))
+  return del(`/api/v1/weights/${form.id}`, 'Error deleting weight. Try again.')
     .catch(error => {
-      showSnackbar('Error deleting weight. Try again.')
       return Promise.reject(error)
     })
 }

@@ -1,17 +1,5 @@
 .cn-input-container {
-  &.margin-top {
-    margin-top: 0.5em;
-  }
-  &.active {
-
-  }
-  &.error {
-
-  }
   .cn-form-textarea {
     @include form-element;
-  }
-  .cn-input-label {
-    @include form-label;
   }
 }

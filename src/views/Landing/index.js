@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import {browserHistory} from 'react-router'
 import {inject, observer} from 'mobx-react'
 
-import DocumentMeta from 'react-document-meta'
-import SmartBanner from 'react-smartbanner'
+import 'react-document-meta'
+import 'react-smartbanner'
 import '../../../node_modules/react-smartbanner/src/styles/style.scss'
 
 import LandingNav from '../components/LandingNav'
@@ -15,7 +15,7 @@ import LandingFooter from '../components/LandingFooter'
 @inject('rootStore') @observer
 class Landing extends React.Component {
   render () {
-    const meta = {
+    const meta = { // eslint-disable-line no-unused-vars
       title: 'Skoller',
       meta: {
         name: {
@@ -37,12 +37,9 @@ class Landing extends React.Component {
           </div>
 
           <div className='cn-learn-more'>
-            When one student keeps up, everyone keeps up. <a className='non-styled-link' style={{fontWeight: "500"}} onClick={() => { browserHistory.push('/learn-more'); window.scrollTo(0, 0) }}>Learn more</a>.
+            When one student keeps up, everyone keeps up. <a className='non-styled-link' style={{fontWeight: '500'}} onClick={() => { browserHistory.push('/learn-more'); window.scrollTo(0, 0) }}>Learn more</a>.
           </div>
         </div>
-
-        {/* start of section 6 */}
-        {/* <Availability/> */}
 
         <LandingFooter />
 
@@ -51,7 +48,7 @@ class Landing extends React.Component {
   }
 }
 
-Landing.PropTypes = {
+Landing.propTypes = {
   rootStore: PropTypes.object
 }
 

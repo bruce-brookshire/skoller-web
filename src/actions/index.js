@@ -1,29 +1,30 @@
-import {createAssignment, deleteAssignment, getClassAssignments, updateAssignment} from './assignments'
+import {createAssignment, deleteAssignment, deleteAssignmentPost, getClassAssignments, updateAssignment} from './assignments'
 import {getAnalytics} from './analytics'
-import {authenticateUser, createAccount, forgotPassword, getRoles,
-  getUserById, getUserByToken, getUsers, registerUser, resetPassword,
+import {authenticateUser, forgotPassword, getRoles,
+  getUserById, getUserByToken, getUsers, registerUser, registerUserAdmin, resetPassword,
   resendVerification, updateAccount, verifyPhoneNumber} from './auth'
-import {createClassPost, deleteClassPost, getClassPost, getClassPosts, likePost, unlikePost,
-  updateClassPost, createClassComment, deleteClassComment, likeComment, unlikeComment, updateClassComment,
-  createClassReply, deleteClassReply, likeReply, unlikeReply, updateClassReply} from './chat'
-import {createClass, deleteClass, dropClass, getClassById, getLocks, getProfessorClasses,
-  getStudentClasses, getStudentClassesById, enrollInClass, searchClasses, searchStudentClasses,
-  updateClass, lockClass, unlockClass, approveClass, denyClass, updateClassStatus} from './classes'
+import {deleteClassPost, getClassPosts, deleteClassComment, deleteClassReply} from './chat'
+import {createClass, dropClass, getClassById, getClassByIdAdmin, getClassByLink, getStudentClassesById,
+  enrollByLink, enrollInClass, searchClasses, searchStudentClasses, updateClass, lockClass,
+  unlockClass, updateClassStatus} from './classes'
 import {createIssue, getHelpTypes, resolveIssue, getRequestTypes, resolveChangeRequest, createStudentRequest,
   resolveStudentRequest} from './classhelp'
-import {getClassDocuments, uploadClassCsv, uploadClassDocument, deleteClassDocument,
-  uploadFOSCsv} from './documents'
+import {getClassDocuments, uploadClassCsv, uploadClassDocument, deleteClassDocument} from './documents'
+import {getFieldsOfStudy, uploadFOSCsv} from './fieldsofstudy'
+import {overrideSchool, getFourDoor, updateFourDoor, getFourDoorOverrides, deleteOverride} from './fourdoor'
 import {updateGradeScale} from './gradescales'
 import {getStatuses, getStatusesHub} from './hub'
+import {getAssignmentMods} from './mods'
 import {sendNeedsSyllabusNotification, getNotificationLogs, sendCustomNotification,
   getAssignmentReminders, deleteAssignmentReminders, addReminderNotification, getAssignmentReminderTopics} from './notifications'
-import {getSchoolPeriods, createPeriod, updatePeriod} from './periods'
+import {getSchoolPeriods, createPeriod} from './periods'
 import {attachProfessorToClass, createProfessor, removeProfessorFromClass,
   searchProfessors, updateProfessor} from './professors'
-import {createSchool, getAllSchools, getActiveSchools, getFieldsOfStudy, getHubSchools,
-  getHubSchoolsMinified, getSchoolById, updateSchool} from './schools'
+import {resolveReport, getIncompleteReports} from './reports'
+import {createSchool, getAllSchools, getHubSchools,
+  getHubSchoolsMinified, getSchoolById, updateSchool, searchSchools, getStates, uploadSchoolCsv} from './schools'
 import {getAutoUpdateInfo, updateAutoUpdateInfo, forecastAutoUpdateInfo, getMinVersionInfo, updateMinVer} from './settings'
-import {showSnackbar} from './snackbar'
+import {createCustomLink, getCustomLinkById, getCustomLinks} from './signup-links'
 import {getNextClass} from './syllabusworkers'
 import {createWeight, deleteWeight, getClassWeights, updateWeight} from './weights'
 
@@ -34,53 +35,38 @@ const actions = {
   assignments: {
     createAssignment,
     deleteAssignment,
+    deleteAssignmentPost,
     getClassAssignments,
     updateAssignment
   },
   auth: {
     authenticateUser,
-    createAccount,
     getRoles,
     getUserById,
     getUserByToken,
     getUsers,
     forgotPassword,
     registerUser,
+    registerUserAdmin,
     resetPassword,
     resendVerification,
     verifyPhoneNumber,
     updateAccount
   },
   chat: {
-    createClassPost,
-    createClassComment,
-    createClassReply,
     deleteClassComment,
     deleteClassPost,
     deleteClassReply,
-    getClassPost,
-    getClassPosts,
-    likeComment,
-    likePost,
-    likeReply,
-    unlikeComment,
-    unlikeReply,
-    unlikePost,
-    updateClassComment,
-    updateClassPost,
-    updateClassReply
+    getClassPosts
   },
   classes: {
-    approveClass,
-    deleteClass,
-    denyClass,
     createClass,
     dropClass,
+    enrollByLink,
     enrollInClass,
     getClassById,
-    getLocks,
-    getProfessorClasses,
-    getStudentClasses,
+    getClassByIdAdmin,
+    getClassByLink,
     getStudentClassesById,
     lockClass,
     searchClasses,
@@ -99,11 +85,21 @@ const actions = {
     resolveStudentRequest
   },
   documents: {
-    getClassDocuments,
     deleteClassDocument,
+    getClassDocuments,
     uploadClassCsv,
-    uploadClassDocument,
+    uploadClassDocument
+  },
+  fieldsofstudy: {
+    getFieldsOfStudy,
     uploadFOSCsv
+  },
+  fourdoor: {
+    overrideSchool,
+    getFourDoor,
+    updateFourDoor,
+    getFourDoorOverrides,
+    deleteOverride
   },
   gradescales: {
     updateGradeScale
@@ -111,6 +107,9 @@ const actions = {
   hub: {
     getStatuses,
     getStatusesHub
+  },
+  mods: {
+    getAssignmentMods
   },
   notifications: {
     sendNeedsSyllabusNotification,
@@ -123,8 +122,7 @@ const actions = {
   },
   periods: {
     createPeriod,
-    getSchoolPeriods,
-    updatePeriod
+    getSchoolPeriods
   },
   professors: {
     attachProfessorToClass,
@@ -133,15 +131,20 @@ const actions = {
     searchProfessors,
     updateProfessor
   },
+  reports: {
+    getIncompleteReports,
+    resolveReport
+  },
   schools: {
     createSchool,
     getAllSchools,
-    getActiveSchools,
-    getFieldsOfStudy,
     getHubSchools,
     getHubSchoolsMinified,
     getSchoolById,
-    updateSchool
+    searchSchools,
+    updateSchool,
+    getStates,
+    uploadSchoolCsv
   },
   settings: {
     getAutoUpdateInfo,
@@ -150,8 +153,10 @@ const actions = {
     getMinVersionInfo,
     updateMinVer
   },
-  snackbar: {
-    showSnackbar
+  signupLinks: {
+    createCustomLink,
+    getCustomLinkById,
+    getCustomLinks
   },
   syllabusworkers: {
     getNextClass

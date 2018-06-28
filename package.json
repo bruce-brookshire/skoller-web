@@ -1,6 +1,6 @@
 {
   "name": "classnav-web",
-  "version": "1.5.8",
+  "version": "2.0.0",
   "description": "This is the project for the classnav web application.",
   "main": "./src/index.js",
   "scripts": {
@@ -53,7 +53,7 @@
   "author": "FortyAu",
   "license": "ISC",
   "devDependencies": {
-    "babel-eslint": "^7.2.3",
+    "babel-eslint": "^8.2.1",
     "eslint": "^4.5.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.7.0",
@@ -66,5 +66,6 @@
     "postcss-loader": "^2.0.9",
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.5.1"
-  }
+  },
+  "eslintIgnore": ["src/classnav-web"]
 }

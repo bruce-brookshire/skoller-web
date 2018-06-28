@@ -6,7 +6,6 @@ import TopNav from '../components/TopNav'
 
 @inject('rootStore') @observer
 class Layout extends React.Component {
-
   render () {
     return (
       <div>

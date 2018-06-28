@@ -4,9 +4,8 @@
   bottom: 2 * $unit-space;
   box-shadow: 0 0 40px rgba(#000, .15);
   color: white;
-  left: 50%;
-  margin-left: -125px;
-  min-width: 250px;
+  left: calc(50% - 125px);
+  width: 250px;
   padding: 16px;
   pointer-events: none;
   position: fixed;
@@ -20,17 +19,17 @@
   }
 
   &.error {
-    background-color: red;
-    color: #fff;
+    background-color: $cn-error-color;
+    color: $cn-error-color-text;
   }
 
   &.warning {
-    background-color: yellow;
-    color: black;
+    background-color: $cn-snackbar-warning;
+    color: $cn-snackbar-warning-text;
   }
 
   &.info {
-    background-color: #000;
-    color: #fff;
+    background-color: $cn-snackbar-info;
+    color: $cn-snackbar-info-text;
   }
 }

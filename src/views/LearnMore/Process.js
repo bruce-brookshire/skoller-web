@@ -1,7 +1,6 @@
 import React from 'react'
 
 class Process extends React.Component {
-
   /**
    * @TODO Refactor out helper classes
    */
@@ -9,7 +8,7 @@ class Process extends React.Component {
     return (
       <div className='section-process'>
         <div className="content">
-          <h2 className="section-header">Here's how it works</h2>
+          <h2 className="section-header">Here&apos;s how it works</h2>
           <ul className='row process-list'>
             <li className='col-xs-12 col-sm-4 center-text'>
               <img width="96" height="96" alt="Create an account" src='src/assets/images/landing_page/step_one.png'/>
@@ -17,7 +16,7 @@ class Process extends React.Component {
                 1. Create an account
               </h3>
               <p className='muted-text'>
-                Create an account using your school email and select your classes.
+                Create an account using your email and select your classes.
               </p>
             </li>
             <li className='col-xs-12 col-sm-4 center-text'>

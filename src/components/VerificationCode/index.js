@@ -5,15 +5,8 @@ class VerificationCode extends React.Component {
   constructor (props) {
     super(props)
     this.state = this.initializeState()
-    this.inputs= []
-  }
-
-  /*
-  * Autofocus input
-  */
-  componentDidMount () {
-    this.inputs[0].input.focus()
-  }
+    this.inputs = []
+  } 
 
   initializeState () {
     return {
@@ -110,6 +103,7 @@ class VerifitcationInput extends React.Component {
         onFocus={(event) => this.setState({isFocused: true})}
         maxLength={1}
         value={value}
+        type='tel'
       />
     )
   }

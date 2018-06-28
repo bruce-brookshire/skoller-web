@@ -3,47 +3,34 @@ import PropTypes from 'prop-types'
 import DateRangeField from '../../../components/Form/DateRangeField'
 import PillField from '../../../components/Form/PillField'
 import SelectField from '../../../components/Form/SelectField'
-import Loading from '../../../components/Loading'
-import FlexTable from '../../../components/FlexTable'
-import ProfessorInfo from '../../components/ClassEditor/Professor/ProfessorInfo'
 import {inject, observer} from 'mobx-react'
-import {browserHistory} from 'react-router'
-import {mapProfessor} from '../../../utilities/display'
-import {mapTimeToDisplay, formatDate} from '../../../utilities/time'
+import {formatDate} from '../../../utilities/time'
 import actions from '../../../actions'
-import stores from '../../../stores'
-import Advertising from './Advertising' 
 import AssignmentInfo from './AssignmentInfo'
 import ChatAnalytics from './ChatAnalytics'
 import GradeEntry from './GradeEntry'
 import Notifications from './Notifications'
-import Reviews from './Reviews'
 import SyllabiProcessing from './SyllabiProcessing'
 import Updates from './Updates'
-
-const {navbarStore} = stores
 
 @inject('rootStore') @observer
 class Analytics extends React.Component {
   constructor (props) {
     super(props)
-    this.categories = ['Advertising','Syllabi Processing','Assignment Info','Updates','Chat','Notifications',
-                      'Grade Entry','Reviews and More']
-    this.generalFields = ['Accounts (active)','Daily active users','Monthly active users','Sessions',
-                          'Time per visit (avg.)','Screen views']
+    this.categories = ['Advertising', 'Syllabi Processing', 'Assignment Info', 'Updates', 'Chat', 'Notifications',
+      'Grade Entry', 'Reviews and More']
+    this.generalFields = ['Accounts (active)', 'Daily active users', 'Monthly active users', 'Sessions',
+      'Time per visit (avg.)', 'Screen views']
     this.state = this.initializeState()
   }
-
-  /////////////////////////
-  ///////// INIT //////////
-  /////////////////////////
 
   componentWillMount () {
     this.intializeComponent()
   }
 
   componentWillUnmount () {
-    navbarStore.title = ""
+    let {navbarStore} = this.props.rootStore
+    navbarStore.title = ''
   }
 
   /*
@@ -58,9 +45,9 @@ class Analytics extends React.Component {
   * Initialize state
   */
   initializeState () {
-    const {state} = this.props.location
+    let {navbarStore} = this.props.rootStore
     navbarStore.cl = null
-    navbarStore.title = "Skoller Analytics"
+    navbarStore.title = 'Skoller Analytics'
     return {
       audience: 'allSchools',
       category: 'Advertising',
@@ -72,24 +59,20 @@ class Analytics extends React.Component {
     }
   }
 
-  ////////////////////////////
-  ///////// ACTIONS //////////
-  ////////////////////////////
-
   /*
   * Fetch schools
   */
   getSchools () {
-    this.setState({loading:true})
+    this.setState({loading: true})
     actions.schools.getAllSchools().then(schools => {
-      this.setState({schools,loading:false})
+      this.setState({schools, loading: false})
     }).catch(() => false)
   }
 
-  getAnalytics(minDate, maxDate, audience) {
-    if (minDate && maxDate && minDate != '' && maxDate != '') {
+  getAnalytics (minDate, maxDate, audience) {
+    if (minDate && maxDate && minDate !== '' && maxDate !== '') {
       let queryString = `date_start=${minDate}&date_end=${maxDate}`
-      if (audience != 'allSchools') {
+      if (audience !== 'allSchools') {
         queryString = queryString + `&school_id=${audience}`
       }
       actions.analytics.getAnalytics(queryString).then((data) => {
@@ -98,56 +81,48 @@ class Analytics extends React.Component {
     }
   }
 
-  ////////////////////////////
-  ///////// METHODS //////////
-  ////////////////////////////
-
-  getAudienceName() {
-    let found = this.selectAudienceOptions().find((a) => a.value == this.state.audience)
+  getAudienceName () {
+    let found = this.selectAudienceOptions().find((a) => a.value === this.state.audience)
     return found.name
   }
 
-  selectAudienceOptions() {
-    let arr = [{value:'allSchools',name:'All Schools'}]
+  selectAudienceOptions () {
+    let arr = [{value: 'allSchools', name: 'All Schools'}]
     this.state.schools.forEach(school => {
       arr.push({value: school.id, name: school.name})
     })
     return arr
   }
 
-  updateAudience(value) {
+  updateAudience (value) {
     const {minDate, maxDate} = this.state
     this.setState({audience: value})
     this.getAnalytics(minDate, maxDate, value)
   }
 
-  updateDates(value) {
+  updateDates (value) {
     const {audience} = this.state
     this.setState({maxDate: value.max, minDate: value.min})
     this.getAnalytics(value.min, value.max, audience)
   }
 
-  ////////////////////////////
-  ///////// RENDER ///////////
-  ////////////////////////////
-
-  renderAudienceStats() {
+  renderAudienceStats () {
     return (
       <div className='audience-stats'>
-        <h5 style={{marginBottom: '5px',marginTop: '10px'}}>{`# of Schools Selected: ${this.state.audience == 'allSchools' ? this.state.schools.length : 1}`}</h5>
-        <h5 style={{marginBottom: '5px',marginTop: '5px'}}>{`Total Available Market: N/A`}</h5>
+        <h5 style={{marginBottom: '5px', marginTop: '10px'}}>{`# of Schools Selected: ${this.state.audience === 'allSchools' ? this.state.schools.length : 1}`}</h5>
+        <h5 style={{marginBottom: '5px', marginTop: '5px'}}>{`Total Available Market: N/A`}</h5>
       </div>
     )
   }
 
-  renderSelectAudience() {
+  renderSelectAudience () {
     return (
       <div className='analytics-section select-audience-container col-xs-12 col-sm-4'>
         <h3 className='center-text cn-blue'>Select Audience</h3>
         <SelectField
           label=""
           name="select_audience"
-          onChange={(name,value) => this.updateAudience(value)}
+          onChange={(name, value) => this.updateAudience(value)}
           options={this.selectAudienceOptions()}
           value={this.state.audience}
         />
@@ -156,13 +131,13 @@ class Analytics extends React.Component {
     )
   }
 
-  renderCategories() {
+  renderCategories () {
     return this.categories.map((c) => {
-      return <PillField label={c} value={this.state.category} onClick={(newVal) => this.setState({category:newVal})} />
+      return <PillField key={c} label={c} value={this.state.category} onClick={(newVal) => this.setState({category: newVal})} />
     })
   }
 
-  renderSelectCategory() {
+  renderSelectCategory () {
     return (
       <div className='analytics-section select-category-container col-xs-12 col-sm-4 row'>
         <h3 className='center-text cn-blue full-width'>Select Custom Category</h3>
@@ -171,9 +146,9 @@ class Analytics extends React.Component {
     )
   }
 
-  renderDaysInRange() {
-    let days = (Date.parse(this.state.maxDate) - Date.parse(this.state.minDate))/(1000 * 60 * 60 * 24)
-    let weeks = (days/7).toFixed(1)
+  renderDaysInRange () {
+    let days = (Date.parse(this.state.maxDate) - Date.parse(this.state.minDate)) / (1000 * 60 * 60 * 24)
+    let weeks = (days / 7).toFixed(1)
     return (
       <h5 className='daysInRange center-text'>
         {`${days} days (${weeks} weeks)`}
@@ -181,16 +156,16 @@ class Analytics extends React.Component {
     )
   }
 
-  renderSelectDates() {
+  renderSelectDates () {
     return (
       <div className='analytics-section select-date-container col-xs-12 col-sm-4'>
         <h3 className='center-text cn-blue full-width'>Select Date Range</h3>
         <DateRangeField
           label=""
-          onChange={(name,value) => {
+          onChange={(name, value) => {
             this.updateDates(value)
           }}
-          value={{max:this.state.maxDate,min:this.state.minDate}}
+          value={{max: this.state.maxDate, min: this.state.minDate}}
           name="dates"
         />
         {this.state.maxDate && this.state.minDate ? this.renderDaysInRange() : null}
@@ -198,10 +173,10 @@ class Analytics extends React.Component {
     )
   }
 
-  renderGeneralResultFields() {
-    return this.generalFields.map((f) => {
+  renderGeneralResultFields () {
+    return this.generalFields.map((f, idx) => {
       return (
-        <li>
+        <li key={idx}>
           <i className='fa fa-info general-field-info-icon'></i>
           <strong>{`${f}: `}</strong>
           <span>NA</span>
@@ -210,11 +185,11 @@ class Analytics extends React.Component {
     })
   }
 
-  renderGeneralResults() {
+  renderGeneralResults () {
     return (
       <div className='col-xs-12 col-sm-5'>
         <h3 className='center-text cn-blue full-width'>General</h3>
-        <ul style={{listStyle:'none'}}>
+        <ul style={{listStyle: 'none'}}>
           {this.state.audience ? this.renderGeneralResultFields() : (
             <h5 className='center-text'>Please select an audience to view its stats</h5>
           )}
@@ -223,10 +198,10 @@ class Analytics extends React.Component {
     )
   }
 
-  renderCustomResultsContent() {
+  renderCustomResultsContent () {
     switch (this.state.category) {
       case 'Advertising':
-        return <Advertising audience={this.state.audience} max={this.state.maxDate} min={this.state.minDate}/>
+        return null
       case 'Syllabi Processing':
         // return <SyllabiProcessing audience={this.state.audience} max={this.state.maxDate} min={this.state.minDate}/>
         return <SyllabiProcessing data={this.state.data}/>
@@ -246,12 +221,12 @@ class Analytics extends React.Component {
         // return <GradeEntry audience={this.state.audience} max={this.state.maxDate} min={this.state.minDate}/>
         return <GradeEntry data={this.state.data}/>
       case 'Reviews and More':
-        return <Reviews audience={this.state.audience} max={this.state.maxDate} min={this.state.minDate}/>
+        return null
       default:
     }
   }
 
-  renderCustomResults() {
+  renderCustomResults () {
     return (
       <div className='col-xs-12 col-sm-7'>
         {this.state.category ? this.renderSearchCategory() : null}
@@ -260,7 +235,7 @@ class Analytics extends React.Component {
     )
   }
 
-  renderSearchCategory(){
+  renderSearchCategory () {
     return (
       <h3 className='center-text cn-blue full-width'>
         {this.state.category}
@@ -268,9 +243,9 @@ class Analytics extends React.Component {
     )
   }
 
-  renderSearchAudience(){
+  renderSearchAudience () {
     return (
-      <h5 className='center-text' style={{marginBottom: '1px',marginTop: '1px'}}>
+      <h5 className='center-text' style={{marginBottom: '1px', marginTop: '1px'}}>
         {this.getAudienceName()}
         {this.state.minDate && this.state.maxDate ? (
           <span>{` (${formatDate(this.state.minDate)} through ${formatDate(this.state.maxDate)})`}</span>
@@ -298,6 +273,10 @@ class Analytics extends React.Component {
       </div>
     )
   }
+}
+
+Analytics.propTypes = {
+  rootStore: PropTypes.object
 }
 
 export default Analytics

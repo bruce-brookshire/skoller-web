@@ -2,14 +2,19 @@
   align-items: center;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
 
   .cn-verification-code-input {
     @include form-element;
-    display: flex;
-    flex: 1;
-    height: 32px;
-    max-width: 32px;
-    margin: $unit-space;
+    margin: $unit-space $unit-space / 4 $unit-space $unit-space / 4;
+    flex-basis: 20%;
+    max-width: 48px;
+    height: 48px;
+    text-align: center;
+
+    @include breakpoint(medium) {
+      margin: $unit-space;
+    }
 
     &.active {
       outline: 1px solid $cn-color-blue;

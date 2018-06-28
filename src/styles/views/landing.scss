@@ -92,67 +92,6 @@ $h2-size-sm: 36px;
         }
       }
 
-      .container-promo-signup {
-        align-items: center;
-        display: hidden;
-        @include breakpoint(medium) {
-          display: flex;
-          flex-grow: 1;
-          min-height: 100%;
-          width: 475px;
-        }
-    
-        .container-form-register {
-          display: none;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          width: 100%;
-    
-          @include breakpoint(medium) {
-            display: flex;
-          }
-    
-          @include breakpoint(large) {
-            margin-bottom: 0;
-            height: 100%;
-          }
-
-          #sign-up-form {
-            background-color: $cn-color-white;
-            border-radius: 8px;
-            box-shadow: 0px 15px 35px 0px rgba(0, 0, 0, 0.07);
-            box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.1);
-            min-height: 100%;
-            width: 100%;
-            
-            .facebook-button {
-              @include button;
-              align-items: center;
-              background-color: white;
-              border: 1px solid #CCC;
-              display: flex;
-              justify-content: center;
-        
-              i {
-                color: #3b5998;
-                font-size: 1em;
-                margin-right: 0.5em;
-              }
-        
-              span {
-                font-size: .75em;
-                color: grey;
-              }
-            }
-        
-            .school-info { font-size: 11px; }
-          }
-      
-        }
-      }
-
-
       h2 {
         font-size: 36px;
         margin: 0;
@@ -172,69 +111,9 @@ $h2-size-sm: 36px;
       }
     }
   }
-
-  .section-availability {
-    @include section-marketing;
-    @include slant;
-    background: $cn-color-blue;
-    color: $cn-color-white;
-    text-align: center;
-    position: relative;
-
-    &::after {
-      box-shadow: 0 0 10px red;
-      content: '';
-      display: block;
-      height: 1px;
-      position: absolute;
-      top: 0;
-      z-index: 1000;
-    }
-
-    a {
-      @include anchor-text;
-      @include anchor-text-invert;
-    }
-
-    .section-header {
-      @include section-header-alt;
-      color: $cn-color-white;
-
-      @include breakpoint(large) {
-        margin-bottom: 2rem;
-      }
-    }
-
-    .list {
-      @include unstyled-list;
-      @include col-list;
-      margin: 0 auto 4rem;
-
-      li {
-        font-size: 1.25em;
-        font-weight: 200;
-        margin: .25rem 0;
-
-        @include breakpoint(medium) {
-          font-size: 1.5em;
-          margin: 1rem 0;
-        }
-      }
-    }
-  }
 }
 
 .muted-text { color: $cn-color-grey; }
 
 .blue-text { color: $cn-color-blue; }
-
-.form-padding {
-  width: 95%;
-  margin: 0 auto;
-  margin-top: 2rem;
-}
-
-.form-button {
-  width: 98%;
-}
 

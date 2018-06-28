@@ -11,6 +11,9 @@
   .cn-body-container {
     display: flex;
     flex-direction: column;
+    padding-right: 1em;
+    padding-left: 1em;
+    overflow-y: hidden;
 
     @include breakpoint(medium) {
       flex-direction: row;
@@ -22,158 +25,74 @@
       flex: 1;
       flex-direction: column;
       padding: 1em;
+      padding-top: 0;
 
       &.cn-control-panel {
+        padding-left: 0;
         .cn-section-header{
           position: absolute;
           margin-top: -1.1em;
           display: flex;
           align-items: center;
         }
-        .cn-section-control {
+        .cn-section-content {
           background-color: #e8f3fd;
-          overflow-y: scroll;
+          overflow-y: auto;
           padding: 1em;
+          padding-bottom: 0;
+
+          .cn-section-content-header {
+            font-size: 24px;
+            font-weight: 600;
+          }
         }
         @include breakpoint(medium) {
           flex: 1;
         }
         @include breakpoint(large) {
-          flex: 0.42;
-        }
-        .cn-section-footer {
-          display: flex;
-          flex-direction: column;
-          
-          .cn-status-form, button {
-            min-width: 100%;
-            @include breakpoint(medium) {
-              min-width: 50%;
-            }
-          }
-          .having-issues {
-            float: right;
-          }
+          flex: 1;
         }
       }
 
       &.cn-file-panel {
-        position: relative;
+        background-color: $cn-color-white;
+        border-radius: 10px;
+        border: 1px solid #4A4A4A;
 
         .cn-section-header{
           position: absolute;
           margin-top: -1.1em;
           display: flex;
           align-items: center;
+          align-self: flex-end;
         }
         
-        .cn-section-control {
+        .cn-section-content {
           height: 300px;
+          flex: 1;
         }
 
         @include breakpoint(medium) {
-          flex: 1;
+          flex: 2;
         }
         @include breakpoint(large) {
-          flex: 0.58;
+          flex: 2.5;
         }
       }
 
-      .cn-section-control {
+      .cn-section-content {
         border-radius: 10px;
         border: 2px solid #a9a9a9;
         display: flex;
-        flex: 1;
         flex-direction: column;
         overflow: hidden;
       }
     }
   }
 
-  .grade-scales {
-    display: flex;
-    justify-content: space-around;
-
-    .current-grade-scale-container{
-      text-align: center;
-      flex-grow: 1;
-      .current-grade-scale {
-        .current-grade-scale-list {
-          @include unstyled-list;
-          border-radius: 10px;
-          border: 2px solid #a9a9a9;
-          background-color: $cn-color-white;
-
-          .grade-row {
-            margin: $unit-space / 4 $unit-space / 2 0 $unit-space / 2;
-            display: flex;
-            justify-content: center;
-
-            .delete-x {
-              align-self: flex-start;
-              flex-basis: 25px;
-            }
-
-            .grade {
-              display: flex;
-              justify-content: space-around;
-              flex-basis: 75px;
-            }
-          }
-        }
-      }
-      .grade-scale-form {
-        .grade-scale-form-inputs {
-          display: flex;
-          justify-content: space-around;
-
-          input {
-            width: 50px;
-          }
-        }
-      }
-    }
-
-    .other-common-scales-container{
-      text-align: center;
-      flex-grow: 2;
-
-      .other-common-scales {
-        text-align: left;
-        display: flex;
-        justify-content: space-around;
-        flex-grow: 2;
-        flex-wrap: wrap;
-      }
-    }
-
-    .grade-scale-list {
-      @include unstyled-list;
-      border-radius: 10px;
-      border: 2px solid #a9a9a9;
-      background-color: $cn-color-white;
-      flex-basis: 75px;
-      position: relative;
-
-      .adopt-button {
-        margin-top: calc(2em + 5px);
-
-        .button {
-          @include button;
-          width: 80%;
-          position: absolute;
-          bottom: 5px;
-          left:10%;
-        }
-      }
-      
-      .grade-row {
-        margin: $unit-space / 4 $unit-space / 2 0 $unit-space / 2;
-        display: flex;
-        justify-content: space-between;
-      }
-    }
+  .cn-modal {
+    min-width: 300px;
+    width: 300px;
+    overflow-y: hidden;
   }
-
-  
 }

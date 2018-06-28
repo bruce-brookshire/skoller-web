@@ -1,11 +1,10 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
-import {Link} from 'react-router'
 import ClassInfo from './ClassInfo'
 
 @inject('rootStore') @observer
 class NavBar extends React.Component {
-
   getName () {
     const {userStore: {user}} = this.props.rootStore
     if (user.student) {
@@ -15,39 +14,22 @@ class NavBar extends React.Component {
     }
   }
 
-  isAdmin () {
-    const {userStore: {user}} = this.props.rootStore
-    return user.roles.findIndex(r => r.name.toLowerCase() === 'admin') > -1
-  }
-
   getDescription () {
     const {userStore: {user}} = this.props.rootStore
+    const admin = this.props.rootStore.userStore.isAdmin()
     if (user.student) {
-      return this.getSchool()
-    } else if (this.isAdmin()) {
+      return 'Student'
+    } else if (admin) {
       return 'Admin'
     } else {
       return 'Syllabi Worker'
     }
   }
 
-  getSchool () {
-    const {userStore: {user}} = this.props.rootStore
-    if (user.student) {
-      return `${user.student.school.name}`
-    } else {
-      return 'Skoller'
-    }
-  }
-
   getInitials () {
     const {userStore: {user}} = this.props.rootStore
-    const roleNames = user.roles.map((r) => r.name)
-    if (roleNames.indexOf('Admin') !== -1) {
-      return 'AD'
-    } else if (roleNames.indexOf('Syllabus Worker') !== -1) {
-      return 'SW'
-    } else if (roleNames.indexOf('Student') !== -1) {
+    const admin = this.props.rootStore.userStore.isAdmin()
+    if (user.student) {
       if (user.student.name_first && user.student.name_last) {
         return user.student.name_first[0].toUpperCase() + user.student.name_last[0].toUpperCase()
       } else if (user.student.name_first.length >= 2) {
@@ -55,29 +37,27 @@ class NavBar extends React.Component {
       } else {
         return 'ST'
       }
+    } else if (admin) {
+      return 'AD'
+    } else {
+      return 'SW'
     }
   }
 
   renderClassInfo () {
-    const {userStore: {user}, navbarStore: {cl, isDIY, toggleEditCl, toggleIssues, toggleHelpResolved, toggleRequestResolved, toggleWrench, toggleChat}} = this.props.rootStore
-    const admin = this.props.rootStore.userStore.isAdmin()
+    const {navbarStore: {cl, isDIY, toggleHelpResolved, toggleRequestResolved}} = this.props.rootStore
     if (cl) {
       return (
         <ClassInfo cl={cl}
-          isAdmin={admin}
           isDIY={isDIY}
-          onEdit={toggleEditCl}
-          toggleIssues={toggleIssues}
           toggleHelpResolved={toggleHelpResolved}
-          toggleRequestResolved={toggleRequestResolved}
-          toggleWrench={toggleWrench}
-          toggleChat={toggleChat} />
+          toggleRequestResolved={toggleRequestResolved} />
       )
     }
   }
 
   render () {
-    const {userStore: {user}, navbarStore: {cl, title}} = this.props.rootStore
+    const {userStore: {user}, navbarStore: {title}} = this.props.rootStore
     return (
       <div className='cn-navbar'>
         <div>
@@ -93,14 +73,18 @@ class NavBar extends React.Component {
             <span>{this.getDescription()}</span>
           </div>
           <div className='right'>
-            {user.avatar ?
-              <img className='profile-img' src={this.user.avatar}/> :
-              <div className='profile-img vertical-align profile-initials'>{this.getInitials()}</div>}
+            {user.avatar
+              ? <img className='profile-img' src={user.avatar}/>
+              : <div className='profile-img vertical-align profile-initials'>{this.getInitials()}</div>}
           </div>
         </div>
       </div>
     )
   }
+}
+
+NavBar.propTypes = {
+  rootStore: PropTypes.object
 }
 
 export default NavBar

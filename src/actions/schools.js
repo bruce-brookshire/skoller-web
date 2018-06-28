@@ -1,72 +1,30 @@
-import 'isomorphic-fetch'
-import {checkError, parseResponse} from '../utilities/api'
-import {showSnackbar} from './snackbar'
-import stores from '../stores'
-const {userStore} = stores
-var Environment = require('../../environment.js')
+import {get, post, put, postFile} from '../utilities/api'
+import {showSnackbar} from '../utilities/snackbar'
 
 /*
 * Get the all schools for signup
 *
 */
 export function getAllSchools () {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/schools`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/schools`, '', 'Error fetching schools. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching schools. Try again.')
       return Promise.reject(error)
     })
 }
 
 /*
-* Get the active schools for signup
+* Get states
 *
 */
-export function getActiveSchools () {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/school/list`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+export function getStates () {
+  return get(`/api/v1/locations`, '', 'Error fetching states. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching schools. Try again.')
-      return Promise.reject(error)
-    })
-}
-
-/*
-* Get fields of study.
-*
-* @param [Number] schoolId. Id of the school.
-* @param [query] string. Query the fields of study.
-*/
-export function getFieldsOfStudy (schoolId, query) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/schools/${schoolId}/fields-of-study/list?field_name=${query}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
-    .then(data => {
-      return data
-    })
-    .catch(error => {
-      showSnackbar('Error fetching schools. Try again.')
       return Promise.reject(error)
     })
 }
@@ -75,19 +33,24 @@ export function getFieldsOfStudy (schoolId, query) {
 * Get minified counts
 */
 export function getHubSchoolsMinified () {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/school/list`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/school/list`, '', 'Error fetching schools. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching schools. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Search schools by name
+*/
+export function searchSchools (param) {
+  return get(`/api/v1/school/list`, `name=${param}`, 'Error fetching schools. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
       return Promise.reject(error)
     })
 }
@@ -97,20 +60,12 @@ export function getHubSchoolsMinified () {
 *
 * @params [Object] form. Login form data.
 */
-export function getHubSchools () {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/schools/hub`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+export function getHubSchools (queryString) {
+  return get(`/api/v1/schools/hub`, queryString, 'Error fetching schools. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching schools. Try again.')
       return Promise.reject(error)
     })
 }
@@ -121,19 +76,11 @@ export function getHubSchools () {
 * @params [Object] school. School.
 */
 export function getSchoolById (school) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/schools/${school.id}`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/schools/${school.id}`, '', 'Error fetching school. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching school. Try again.')
       return Promise.reject(error)
     })
 }
@@ -144,24 +91,14 @@ export function getSchoolById (school) {
 * @params [Object] form. School form.
 */
 export function createSchool (form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/schools`, {
-    method: 'POST',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(response => parseResponse(response))
+  return post(`/api/v1/schools`, form, 'Error creating school. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error creating school. Try again.')
       return Promise.reject(error)
     })
 }
-
 
 /*
 * Update school
@@ -169,20 +106,31 @@ export function createSchool (form) {
 * @params [Object] form. School form.
 */
 export function updateSchool (form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/schools/${form.id}`, {
-    method: 'PUT',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(response => parseResponse(response))
+  return put(`/api/v1/schools/${form.id}`, form, 'Error updating school. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error updating school. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Upload a csv import for a school.
+*
+* @param [Object] file. The file to upload.
+*/
+export function uploadSchoolCsv (file) {
+  let form = new FormData()
+  form.append('file', file)
+
+  return postFile(`/api/v1/schools/csv`, form, '')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      if (error.status === 422) showSnackbar('File name has already been taken.')
+      else showSnackbar('Error uploading file. Try again.')
       return Promise.reject(error)
     })
 }

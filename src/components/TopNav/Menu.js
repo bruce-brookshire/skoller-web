@@ -9,14 +9,6 @@ const menuItems = [
     path: '/hub/landing',
     text: 'Back to homepage'
   },
-  // {
-  //   icon: 'fa fa-check-circle-o',
-  //   path: '/student/diy'
-  // },
-  // {
-  //   icon: 'fa fa-calendar',
-  //   path: '/calendar'
-  // },
   {
     admin: false,
     path: '/logout',
@@ -71,16 +63,10 @@ export default Menu
 
 @inject('rootStore') @observer
 class MenuItem extends React.Component {
-
-  constructor (props) {
-    super(props)
-  }
-
   render () {
-    const {menuItem: {icon}} = this.props
     const currentPath = window.location.pathname
     const adminAccessible = this.props.menuItem.admin && !this.props.rootStore.userStore.isStudent()
-    if((adminAccessible || !this.props.menuItem.admin) && currentPath != this.props.menuItem.path){
+    if ((adminAccessible || !this.props.menuItem.admin) && currentPath !== this.props.menuItem.path) {
       return (
         <div className={`menu-item`}>
           <a onClick={() => this.props.onClick()}>
@@ -88,7 +74,7 @@ class MenuItem extends React.Component {
           </a>
         </div>
       )
-    }else{
+    } else {
       return null
     }
   }
@@ -96,5 +82,6 @@ class MenuItem extends React.Component {
 
 MenuItem.propTypes = {
   menuItem: PropTypes.object,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  rootStore: PropTypes.object
 }

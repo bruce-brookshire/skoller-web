@@ -1,12 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import FlexTable from '../FlexTable'
-import Loading from '../Loading'
 
 class SearchResults extends React.Component {
   render () {
     const {disableEmptyMessage, emptyMessage, loading,
-       searchResultHeaders, searchResults} = this.props
+      searchResultHeaders, searchResults} = this.props
     return (
       <div className="search-result">
         <FlexTable

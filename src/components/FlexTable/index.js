@@ -70,14 +70,7 @@ class FlexTable extends React.Component {
         </div>
         <div className='cn-flex-table-body'>
           {loading
-            ? <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: '100%'
-              }}
-            > <Loading /> </div> : this.renderTableBody()}
+            ? <div className='cn-total-center-flex'> <Loading /> </div> : this.renderTableBody()}
         </div>
       </div>
     )

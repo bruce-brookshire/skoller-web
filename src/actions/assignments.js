@@ -1,9 +1,4 @@
-import 'isomorphic-fetch'
-import {checkError, parseResponse} from '../utilities/api'
-import {showSnackbar} from './snackbar'
-import stores from '../stores'
-const {userStore} = stores
-var Environment = require('../../environment.js')
+import {get, post, put, del} from '../utilities/api'
 
 /*
 * Get assignments for class
@@ -11,19 +6,11 @@ var Environment = require('../../environment.js')
 * @param [Object] cl. Class
 */
 export function getClassAssignments (cl) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}/assignments`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/classes/${cl.id}/assignments`, '', 'Error fetching assignments. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching assignments. Try again.')
       return Promise.reject(error)
     })
 }
@@ -34,20 +21,11 @@ export function getClassAssignments (cl) {
 * @params [Object] form. Assignment form.
 */
 export function createAssignment (cl, form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}/assignments`, {
-    method: 'POST',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(response => parseResponse(response))
+  return post(`/api/v1/classes/${cl.id}/assignments`, form, 'Error creating assignment. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error creating assignment. Try again.')
       return Promise.reject(error)
     })
 }
@@ -58,20 +36,11 @@ export function createAssignment (cl, form) {
 * @params [Object] form. Assignment form.
 */
 export function updateAssignment (cl, form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/class/assignments/${form.id}`, {
-    method: 'PUT',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(response => parseResponse(response))
+  return put(`/api/v1/class/assignments/${form.id}`, form, 'Error updating assignment. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error updating assignment. Try again.')
       return Promise.reject(error)
     })
 }
@@ -80,16 +49,18 @@ export function updateAssignment (cl, form) {
 * Delete an assignment
 */
 export function deleteAssignment (form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/class/assignments/${form.id}`, {
-    method: 'DELETE',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => checkError(response))
+  return del(`/api/v1/class/assignments/${form.id}`, 'Error deleting assignment. Try again.')
     .catch(error => {
-      showSnackbar('Error deleting assignment. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Delete an assignment post
+*/
+export function deleteAssignmentPost (assignmentId, postId) {
+  return del(`/api/v1/assignments/${assignmentId}/posts/${postId}`, 'Error deleting assignment post. Try again.')
+    .catch(error => {
       return Promise.reject(error)
     })
 }

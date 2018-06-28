@@ -1,9 +1,4 @@
-import 'isomorphic-fetch'
-import {checkError, parseResponse} from '../utilities/api'
-import {showSnackbar} from './snackbar'
-import stores from '../stores'
-const {userStore} = stores
-var Environment = require('../../environment.js')
+import {get, post, put} from '../utilities/api'
 
 /*
 * Search classes by param
@@ -11,20 +6,12 @@ var Environment = require('../../environment.js')
 * @params [Object] param. Search parameters.
 * @param [Number] periodId. Id of the school period to query by.
 */
-export function searchProfessors (param, periodId) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/periods/${periodId}/professors?professor.name=${param}`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+export function searchProfessors (param, schoolId) {
+  return get(`/api/v1/schools/${schoolId}/professors`, `professor_name=${param}`, 'Error searching professors. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error searching professors. Try again.')
       return Promise.reject(error)
     })
 }
@@ -35,21 +22,12 @@ export function searchProfessors (param, periodId) {
 * @params [Object] form. Professor form.
 * @param [Number] periodId. Id of period.
 */
-export function createProfessor (form, periodId) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/periods/${periodId}/professors`, {
-    method: 'POST',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(response => parseResponse(response))
+export function createProfessor (form, schoolId) {
+  return post(`/api/v1/schools/${schoolId}/professors`, form, 'Error creating professor. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error creating professor. Try again.')
       return Promise.reject(error)
     })
 }
@@ -60,20 +38,11 @@ export function createProfessor (form, periodId) {
 * @params [Object] form. Professor form.
 */
 export function updateProfessor (form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/professors/${form.id}`, {
-    method: 'PUT',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(response => parseResponse(response))
+  return put(`/api/v1/professors/${form.id}`, form, 'Error updating professor. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error updating professor. Try again.')
       return Promise.reject(error)
     })
 }
@@ -85,20 +54,11 @@ export function updateProfessor (form) {
 export function attachProfessorToClass (cl, professor) {
   const form = {professor_id: professor.id}
 
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}`, {
-    method: 'PUT',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(response => parseResponse(response))
+  return put(`/api/v1/classes/${cl.id}`, form, 'Error attaching professor to class. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error attaching professor to class. Try again.')
       return Promise.reject(error)
     })
 }
@@ -109,20 +69,11 @@ export function attachProfessorToClass (cl, professor) {
 export function removeProfessorFromClass (cl) {
   const form = {professor_id: null}
 
-  return fetch(`${Environment.SERVER_NAME}/api/v1/classes/${cl.id}`, {
-    method: 'PUT',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then(response => parseResponse(response))
+  return put(`/api/v1/classes/${cl.id}`, form, 'Error removing professor from class. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error removing professor from class. Try again.')
       return Promise.reject(error)
     })
 }

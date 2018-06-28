@@ -1,0 +1,63 @@
+ /* The switch - the box around the slider */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 24px;
+
+  input {
+    display:none;
+
+    & + .slider:before {
+      transform: translateX(0);
+    }
+
+    &:checked + .slider {
+      background-color: $cn-color-blue;
+    }
+
+    &:focus + .slider {
+      box-shadow: 0 0 1px $cn-color-blue;
+    }
+
+    &:checked + .slider:before {
+      -webkit-transform: translateX(16px);
+      -ms-transform: translateX(16px);
+      transform: translateX(16px);
+    }
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: $cn-color-grey;
+    -webkit-transition: .4s;
+    transition: .4s;
+
+    &:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 2px;
+      bottom: 2px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+      box-shadow: 1px 1px 2px 0 rgba(0,0,0,0.25);
+    }
+
+    /* Rounded sliders */
+    &.round {
+      border-radius: 12px;
+
+      &:before {
+        border-radius: 50%;
+      } 
+    }
+  }
+}

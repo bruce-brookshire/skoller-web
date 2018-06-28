@@ -36,7 +36,7 @@ class GridRow extends React.Component {
   renderDelete (rowData, rowIndex) {
     const {canDelete} = this.props
     if (canDelete) {
-      return <td><i className='fa fa-trash delete' onClick={ event => this.toggleDeleteDialog(event)} style={{color: 'red'}}/></td>
+      return <td><i className='fa fa-trash delete' onClick={ event => this.toggleDeleteDialog(event)}/></td>
     }
   }
 

@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-
 class FormMessage extends React.Component {
   render () {
     const {message} = this.props
@@ -11,6 +10,10 @@ class FormMessage extends React.Component {
       </div>
     )
   }
+}
+
+FormMessage.propTypes = {
+  message: PropTypes.string
 }
 
 class InputInfoField extends React.Component {
@@ -34,11 +37,12 @@ class InputInfoField extends React.Component {
   }
 
   renderInfo () {
-    if (this.props.info) {
+    const {info} = this.props
+    if (info) {
       return (
         <div className='cn-info-container'>
           <div className='message-bubble triangle-bottom'>
-            {this.props.info}
+            {info}
             <div className='triangle-inner' />
           </div>
           <i className='fa fa-info-circle'/>
@@ -55,7 +59,7 @@ class InputInfoField extends React.Component {
     const {containerClassName, labelClassName, inputClassName,
       containerActiveClassName, labelActiveClassName, inputActiveClassName,
       containerErrorClassName, labelErrorClassName, inputErrorClassName,
-      id, label, error, message, showErrorMessage
+      id, label, error, showErrorMessage
     } = this.props
 
     if (containerClassName) containerClasses.push(containerClassName)
@@ -82,7 +86,7 @@ class InputInfoField extends React.Component {
 
     const input = this.props
     return (
-      <div className='form-element' style={{position: 'relative'}}>
+      <div className='form-element relative'>
         <div className={containerClasses.join(' ')}>
           {label
             ? <label className={labelClasses.join(' ')} htmlFor={id}>
@@ -100,6 +104,10 @@ class InputInfoField extends React.Component {
             type={input.type}
             value={input.value}
             disabled={input.disabled}
+            size={input.size}
+            max={input.max}
+            min={input.min}
+            pattern={input.pattern}
           />
         </div>
         {error && showErrorMessage ? <FormMessage message={error} /> : null}
@@ -109,24 +117,31 @@ class InputInfoField extends React.Component {
 }
 
 InputInfoField.propTypes = {
-  containerClass: PropTypes.string,
-  containerActiveClass: PropTypes.string,
-  containerErrorClass: PropTypes.string,
+  containerClassName: PropTypes.string,
+  containerActiveClassName: PropTypes.string,
+  containerErrorClassName: PropTypes.string,
   disabled: PropTypes.bool,
   id: PropTypes.string,
-  inputClass: PropTypes.string,
-  inputActiveClass: PropTypes.string,
-  inputErrorClass: PropTypes.string,
+  inputClassName: PropTypes.string,
+  inputActiveClassName: PropTypes.string,
+  inputErrorClassName: PropTypes.string,
   label: PropTypes.string,
-  labelClass: PropTypes.string,
-  labelActiveClass: PropTypes.string,
-  labelErrorClass: PropTypes.string,
+  labelClassName: PropTypes.string,
+  labelActiveClassName: PropTypes.string,
+  labelErrorClassName: PropTypes.string,
   name: PropTypes.string.isRequired,
   onBlur: PropTypes.func,
   onChange: PropTypes.func.isRequired,
   onFocus: PropTypes.func,
   placeholder: PropTypes.string,
   type: PropTypes.string,
+  size: PropTypes.number,
+  max: PropTypes.number,
+  min: PropTypes.number,
+  pattern: PropTypes.string,
+  error: PropTypes.string,
+  showErrorMessage: PropTypes.bool,
+  info: PropTypes.string,
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,

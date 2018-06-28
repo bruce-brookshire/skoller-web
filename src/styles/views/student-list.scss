@@ -1,0 +1,15 @@
+#cn-student-list {
+  @include shadow-box;
+  min-width: 200px;
+
+  #cn-student-list-content {
+    @include shadow-box-content;
+
+    .cn-student-list-title {
+      @include shadow-box-title;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+  }
+}

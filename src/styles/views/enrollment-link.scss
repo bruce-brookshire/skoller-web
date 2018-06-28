@@ -1,0 +1,79 @@
+.cn-enrollment-link-container {
+  overflow-x: hidden;
+  height: 100%;
+
+  .cn-enrollment-link-content {
+    @include center-viewport-content-container-internal;
+    width: 100%;
+    margin: 0 auto;
+    padding: 1em;
+
+    @include breakpoint(medium) {
+      width: 475px;
+      max-width: 1000px;
+      padding: 0;
+    }
+
+    .cn-enrollment-link-content-inner {
+      width: 100%;
+      font-size: 14px;
+
+      @include breakpoint(medium) {
+        width: 382px;
+      }
+
+      .cn-enrollment-link-msg {
+        font-weight: bold;
+        font-size: 36px;
+      }
+    }
+
+    .cn-enrollment-link-pic {
+      width: 100%;
+    }
+
+    .cn-create-account-form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .cn-create-account-header {
+        font-weight: bold;
+        font-size: 36px;
+        align-self: flex-start;
+      }
+
+      .cn-create-account-subheader {
+        font-size: 14px;
+        align-self: flex-start;
+      }
+    }
+
+    .cn-create-account-login {
+      text-decoration: underline;
+    }
+
+    .cn-login-form {
+      .cn-login-header {
+        font-weight: bold;
+        font-size: 36px;
+        align-self: flex-start;
+      }
+
+      .form-login {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .form-control {
+        margin-top: $unit-space;
+      }
+
+      .button {
+        margin-top: $unit-space;
+        margin-bottom: $unit-space;
+      }
+    }
+  }
+}

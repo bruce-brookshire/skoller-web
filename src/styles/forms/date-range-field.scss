@@ -1,0 +1,9 @@
+.cn-input-container {
+  .cn-date-range-fields {
+    flex: 1;
+    flex-direction: row;
+    input:first-child {
+      margin-bottom: 5px;
+    }
+  }
+}

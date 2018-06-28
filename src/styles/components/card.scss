@@ -1,0 +1,26 @@
+.cn-card-title {
+  @include shadow-box-title;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.cn-card-row {
+  @include shadow-box-row;
+
+  .cn-card-field {
+    @include shadow-box-field;
+
+    .cn-card-label {
+      @include shadow-box-label;
+    }
+  }
+
+  .cn-card-field:first-child {
+    text-align: left;
+  }
+
+  .cn-card-field:last-child {
+    text-align: right;
+  }
+}

@@ -1,0 +1,21 @@
+#cn-weight-form {
+  flex: 9;
+  overflow-y: hidden;
+  overflow-x: hidden;
+
+  #cn-weight-form-instructions {
+    font-size: 14px;
+    margin-top: $unit-space;
+  }
+
+  #cn-weight-form-value {
+    display: flex;
+    align-items: flex-end;
+    width: 85px;
+
+    .pct {
+      margin-bottom: 3px;
+      margin-left: 3px;
+    }
+  }
+}

@@ -1,28 +1,15 @@
-import 'isomorphic-fetch'
-import {checkError, parseResponse} from '../utilities/api'
-import {showSnackbar} from './snackbar'
-import stores from '../stores'
-const {userStore} = stores
-var Environment = require('../../environment.js')
+import {get} from '../utilities/api'
 
 /*
 * Grab the class statuses for the hub view
 *
 */
 export function getStatusesHub () {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/class-statuses/hub`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/class-statuses/hub`, '', 'Error fetching statuses. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching statuses. Try again.')
       return Promise.reject(error)
     })
 }
@@ -32,19 +19,11 @@ export function getStatusesHub () {
 *
 */
 export function getStatuses () {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/class-statuses`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/class-statuses`, '', 'Error fetching statuses. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching statuses. Try again.')
       return Promise.reject(error)
     })
 }

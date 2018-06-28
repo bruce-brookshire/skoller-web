@@ -1,27 +1,14 @@
-import 'isomorphic-fetch'
-import {checkError, parseResponse} from '../utilities/api'
-import {showSnackbar} from './snackbar'
-import stores from '../stores'
-const {userStore} = stores
-var Environment = require('../../environment.js')
+import {get, put} from '../utilities/api'
 
 /*
 * Get auto update metrics and settings
 */
 export function getAutoUpdateInfo () {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/auto-updates`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/auto-updates`, '', 'Error fetching auto update settings. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching analytics. Try again.')
       return Promise.reject(error)
     })
 }
@@ -30,19 +17,11 @@ export function getAutoUpdateInfo () {
 * Get auto update metrics and settings
 */
 export function getMinVersionInfo () {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/min-version`, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/min-version`, '', 'Error fetching versions. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching analytics. Try again.')
       return Promise.reject(error)
     })
 }
@@ -51,19 +30,11 @@ export function getMinVersionInfo () {
 * Get auto update metrics and settings
 */
 export function forecastAutoUpdateInfo (queryString) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/auto-updates/forecast?` + queryString, {
-    method: 'GET',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => parseResponse(response))
+  return get(`/api/v1/auto-updates/forecast`, queryString, 'Error forecasting. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching analytics. Try again.')
       return Promise.reject(error)
     })
 }
@@ -72,22 +43,11 @@ export function forecastAutoUpdateInfo (queryString) {
 * Update auto update metrics and settings
 */
 export function updateAutoUpdateInfo (form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/auto-updates/`, {
-    method: 'PUT',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      settings: form
-    })
-  })
-    .then(response => parseResponse(response))
+  return put(`/api/v1/auto-updates/`, {settings: form}, 'Error updating metrics. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching analytics. Try again.')
       return Promise.reject(error)
     })
 }
@@ -96,22 +56,11 @@ export function updateAutoUpdateInfo (form) {
 * Update min ver settings
 */
 export function updateMinVer (form) {
-  return fetch(`${Environment.SERVER_NAME}/api/v1/min-version/`, {
-    method: 'PUT',
-    headers: {
-      'Authorization': userStore.authToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      settings: form
-    })
-  })
-    .then(response => parseResponse(response))
+  return put(`/api/v1/min-version/`, {settings: form}, 'Error updating versions. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
-      showSnackbar('Error fetching analytics. Try again.')
       return Promise.reject(error)
     })
 }

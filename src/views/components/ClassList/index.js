@@ -27,10 +27,6 @@ const headers = [
     display: 'Start Time'
   },
   {
-    field: 'campus',
-    display: 'Campus'
-  },
-  {
     field: 'status',
     display: 'Syllabus Status'
   },
@@ -60,16 +56,15 @@ class ClassList extends React.Component {
   * @return [Object] row. Object of formatted row data for display in grid.
   */
   mapRow (item, index) {
-    const {id, number, name, meet_start_time, meet_days, campus, professor, status, enrollment} = item
+    const {id, subject, section, code, name, meet_start_time: startTime, meet_days: days, professor, status, enrollment} = item
 
     const row = {
       id: id || '',
-      courseNumber: number || '-',
+      courseNumber: (subject ? subject + ' ' : '') + (code ? code : '') + (section && code ? '.' + section : ''), // eslint-disable-line no-unneeded-ternary
       name: name || '-',
-      professor: professor ? mapProfessor(professor) : 'TBA',
-      days: meet_days || 'TBA',
-      beginTime: meet_start_time ? mapTimeToDisplay(meet_start_time) : 'TBA',
-      campus: campus || '',
+      professor: professor ? mapProfessor(professor) : '',
+      days: days || '',
+      beginTime: days === 'Online' ? '' : (startTime ? mapTimeToDisplay(startTime) : (section && !code ? section : '')),
       status: status ? this.mapStatus(status) : '-',
       enrollment: enrollment || 0,
       component: this.props.onUpdate ? <UploadDocuments cl={item} onUpdateClass={(cl) => { this.props.onUpdate(cl) }}/> : null
@@ -88,7 +83,7 @@ class ClassList extends React.Component {
     if (status === 'new class' || status === 'needs syllabus') {
       return <span className='cn-red'> Upload Syllabus </span>
     } else if (status === 'weights' || status === 'assignments' || status === 'review' || status === 'help') {
-      return <span style={{color: '#a0a0a0'}}>In Review</span>
+      return <span className='cn-grey'>In Review</span>
     } else if (status === 'complete' || status === 'change') {
       return <span className='cn-green' >Complete</span>
     }
@@ -106,8 +101,8 @@ class ClassList extends React.Component {
         headers={headers}
         rows={this.getRows()}
         disabled={this.props.disabled}
-        canDelete={this.props.onDelete}
-        canSelect={this.props.onSelect}
+        canDelete={this.props.onDelete ? true : false} // eslint-disable-line no-unneeded-ternary
+        canSelect={this.props.onSelect ? true : false} // eslint-disable-line no-unneeded-ternary
         onDelete={this.props.onDelete ? this.props.onDelete() : null}
         onSelect={this.onClassSelect.bind(this)}
         deleteMessage={this.props.deleteMessage}

@@ -7,7 +7,7 @@ class PitchDeck extends React.Component {
     return (
       <div id='cn-pitch-deck'>
         <LandingNav
-          hideLogin={true}
+          noLogin={true}
         />
         <div id='cn-pitch-container'>
           <div id='cn-pitch-content'>

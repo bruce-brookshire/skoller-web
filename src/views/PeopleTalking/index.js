@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import LandingNav from '../components/LandingNav'
 import {inject, observer} from 'mobx-react'
 import LandingFooter from '../components/LandingFooter'
@@ -47,6 +48,10 @@ class PeopleTalking extends React.Component {
       </div>
     )
   }
+}
+
+PeopleTalking.propTypes = {
+  rootStore: PropTypes.object
 }
 
 export default PeopleTalking

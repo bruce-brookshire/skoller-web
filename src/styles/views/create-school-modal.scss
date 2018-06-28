@@ -1,0 +1,23 @@
+.cn-create-school-container {
+  .cn-create-school-header {
+    text-align: center;
+  }
+
+  .cn-create-school-footer {
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .is-university {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin: 0;
+    align-items: baseline;
+
+    .sub-header {
+      color: $cn-color-grey;
+      font-weight: normal;
+    }
+  }
+}

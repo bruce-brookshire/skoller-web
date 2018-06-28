@@ -16,11 +16,6 @@ class AccountInfoForm extends React.Component {
     actions.auth.getRoles().then(roles => {
       this.setState({roles, loadingRoles: false})
     }).catch(() => { this.setState({loadingRoles: false}) })
-
-    this.setState({loadingSchools: true})
-    actions.schools.getActiveSchools().then(schools => {
-      this.setState({schools, loadingSchools: false})
-    }).catch(() => { this.setState({loadingSchools: false}) })
   }
 
   /*
@@ -29,13 +24,10 @@ class AccountInfoForm extends React.Component {
   initializeState () {
     let userRoles = []
     if (this.props.user && this.props.user.roles) userRoles = this.props.user.roles
-    if (this.props.user && this.props.user.student) userRoles.push({id: 100, name: 'Student'})
     return {
       roles: [],
-      schools: [],
       fieldsOfStudy: [],
       emailError: null,
-      loadingSchools: false,
       loadingFOS: false,
       loadingRoles: false,
       rolesError: '',
@@ -52,25 +44,22 @@ class AccountInfoForm extends React.Component {
   * @return [Object]. Form object.
   */
   initializeFormData (data) {
-    const date = new Date()
     let formData = data || {}
 
     const {id, email} = formData
 
     let studentId = ''
     let phone = ''
-    let name_last = ''
-    let name_first = ''
-    let school_id = ''
-    let fields_of_study = []
+    let nameLast = ''
+    let nameFirst = ''
+    let fieldsOfStudy = []
 
     if (formData.student) {
       studentId = formData.student.id
       phone = formData.student.phone
-      name_first = formData.student.name_first
-      name_last = formData.student.name_last,
-      school_id = formData.student.school.id
-      fields_of_study = formData.student.fields_of_study.map(f => {
+      nameFirst = formData.student.name_first
+      nameLast = formData.student.name_last
+      fieldsOfStudy = formData.student.fields_of_study.map(f => {
         return {
           value: f.id,
           name: f.field
@@ -85,11 +74,9 @@ class AccountInfoForm extends React.Component {
       student: {
         id: studentId || '',
         phone: phone || '',
-        name_first: name_first || '',
-        name_last: name_last || '',
-        school_id: school_id || '',
-        fields_of_study: fields_of_study || [],
-        notification_time: `${7 + (date.getTimezoneOffset()/60)}:00:00`
+        name_first: nameFirst || '',
+        name_last: nameLast || '',
+        fields_of_study: fieldsOfStudy || []
       }
     }
   }
@@ -156,92 +143,6 @@ class AccountInfoForm extends React.Component {
   }
 
   /*
-  * Render the school if a school email.
-  */
-  renderSchool () {
-    const {form: {student: {school_id}}} = this.state
-    if (school_id) {
-      return (
-        <div className='margin-top school-info cn-blue' style={{fontSize: 11}}>
-          <span>{this.state.schools.find(school => school.id === school_id).name}</span>
-        </div>
-      )
-    }
-  }
-
-  /*
-  * Verify the school email address if student role.
-  */
-  onVerifyEmail () {
-    if (this.hasStudentRole()) {
-      const {email} = this.state.form
-
-      if (email && this.testEmailFormat(email)) {
-        const school = this.getSchoolFromDomain(email)
-        if (!school) {
-          const emailInfo = (
-            <div>
-              <div>{'Oop! Looks like the email you entered was not a school email.'}</div>
-            </div>
-          )
-
-          this.setState({ emailError: {type: 'info', message: emailInfo} })
-        } else {
-          this.setState({emailError: null})
-        }
-        this.setSchoolId(school)
-      } else {
-        this.setSchoolId()
-        this.setState({emailError: null})
-      }
-    }
-  }
-
-  /*
-  * Test to see if the email has a valid format.
-  */
-  testEmailFormat (email) {
-    const regEx = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-    return regEx.test(email)
-  }
-
-  /*
-  * Get the school from the email domain.
-  */
-  getSchoolFromDomain (email) {
-    let schoolFromDomain = null
-    const domain = email.split('@')[1].toLowerCase()
-    for (let i = 0; i < this.state.schools.length; i++) {
-      const emailDomainIndex = this.state.schools[i].email_domains
-        .findIndex(email => email.email_domain.replace('@', '').toLowerCase() === domain.toLowerCase())
-
-      if (emailDomainIndex > -1) {
-        if (this.state.schools[i].email_domains[emailDomainIndex].is_professor_only) {
-          this.setState({
-            emailError: {
-              type: 'error',
-              message: 'Oops! Looks like you are using a professor email. Skoller is for students only.'
-            }
-          })
-        } else {
-          schoolFromDomain = this.state.schools[i]
-        }
-        i = this.state.schools.length
-      }
-    }
-    return schoolFromDomain
-  }
-
-  /*
-  * Set the school id for the user in state from the email address.
-  */
-  setSchoolId (school) {
-    let newForm = {...this.state.form}
-    newForm.student.school_id = (school && school.id) || ''
-    this.setState({form: newForm})
-  }
-
-  /*
   * Determine whether the new user or existing user
   *
   */
@@ -260,9 +161,6 @@ class AccountInfoForm extends React.Component {
         },
         'student.name_last': {
           type: 'required'
-        },
-        'student.school_id': {
-          tyoe: 'required'
         },
         'student.phone': {
           type: 'phone'
@@ -287,17 +185,23 @@ class AccountInfoForm extends React.Component {
     }
 
     if (this.props.validateForm(this.state.form, requiredFields) && !this.state.emailError) {
-      !this.state.form.id ? this.onCreateUser() : this.onUpdateUser()
+      this.onUpdateUser()
     }
   }
 
-  /*
-  * Create a new user
-  */
-  onCreateUser () {
-    actions.auth.createAccount(this.mapForm(this.state.form)).then((user) => {
-      this.props.onSubmit(user)
-    }).catch(() => false)
+  noNewFieldsOfStudy (a1, a2) {
+    if (a1 === a2) return true
+    if (a1 == null || a2 == null) return false
+    if (a1.length !== a2.length) return false
+
+    let a1Sorted = a1.sort((a, b) => {
+      return a > b ? 1 : -1
+    })
+    let a2Sorted = a1.sort((a, b) => {
+      return a > b ? 1 : -1
+    })
+
+    return a1Sorted.every((v, i) => v === a2Sorted[i])
   }
 
   /*
@@ -324,6 +228,9 @@ class AccountInfoForm extends React.Component {
       form.roles = this.state.userRoles
         .filter(role => role.id !== 100).map(role => role.id)
       form.student.fields_of_study = form.student.fields_of_study.map(f => f.value)
+      if (this.noNewFieldsOfStudy(form.student.fields_of_study, this.props.user.student.fields_of_study)) {
+        form.student.fields_of_study = null
+      }
     }
     return form
   }
@@ -335,15 +242,10 @@ class AccountInfoForm extends React.Component {
   */
   updateFOSOptions (value) {
     if (value.length > 0) {
-      const {form: {student: {school_id}}} = this.state
-      if (school_id) {
-        this.setState({loadingFOS: true})
-        actions.schools.getFieldsOfStudy(school_id, value).then((fieldsOfStudy) => {
-          this.setState({fieldsOfStudy, loadingFOS: false})
-        }).catch(() => { this.setState({loadingFOS: false}) })
-      }
-    } else {
-      this.setState({fieldsOfStudy: [ ]})
+      this.setState({loadingFOS: true})
+      actions.fieldsofstudy.getFieldsOfStudy(value).then((fieldsOfStudy) => {
+        this.setState({fieldsOfStudy, loadingFOS: false})
+      }).catch(() => { this.setState({loadingFOS: false}) })
     }
   }
 
@@ -358,19 +260,21 @@ class AccountInfoForm extends React.Component {
   }
 
   render () {
-    const {form} = this.state
+    const {form, roles} = this.state
     const {formErrors, updateProperty} = this.props
 
-    if (this.state.loadingRoles || this.state.loadingSchools) return <Loading />
+    if (this.state.loadingRoles) return <Loading />
     return (
       <div>
-        <h3> Account Roles </h3>
-        {this.renderInputs()}
-        {this.state.rolesError &&
-          <div className='cn-red' style={{fontSize: '11px', marginTop: '0.5em'}}>
-            <i className='fa fa-info-circle' /><span style={{marginLeft: '2px'}}>{this.state.rolesError}</span>
-          </div>
-        }
+        {roles && <div>
+          <h3> Account Roles </h3>
+          {this.renderInputs()}
+          {this.state.rolesError &&
+            <div className='cn-red'>
+              <i className='fa fa-info-circle' /><span>{this.state.rolesError}</span>
+            </div>
+          }
+        </div>}
         <h3> Account Information </h3>
         <div>
           <div className='row'>
@@ -401,21 +305,13 @@ class AccountInfoForm extends React.Component {
               </div>
             }
             <div className='col-xs-12'>
-              {this.renderSchool()}
               <InputField
-                containerClassName={!form.student.school_id ? 'margin-top' : ''}
+                containerClassName='margin-top'
                 error={formErrors.email || (this.state.emailError && this.state.emailError.message)}
                 showErrorMessage={this.state.emailError && this.state.emailError.message}
-                label={!form.student.school_id ? 'Email' : ''}
+                label='Email'
                 name='email'
-                onBlur={this.onVerifyEmail.bind(this)}
-                onChange={(name, value) => {
-                  // Have to reset fields of study.
-                  const form = {...this.state.form}
-                  form.email = value
-                  form.student.fields_of_study = []
-                  this.setState({form, fieldsOfStudy: []})
-                }}
+                onChange={updateProperty}
                 placeholder='Email'
                 value={form.email}
               />
@@ -485,7 +381,9 @@ AccountInfoForm.propTypes = {
   formErrors: PropTypes.object,
   user: PropTypes.object,
   updateProperty: PropTypes.func,
-  validateForm: PropTypes.func
+  validateForm: PropTypes.func,
+  onSubmit: PropTypes.func,
+  onClose: PropTypes.func
 }
 
 export default ValidateForm(Form(AccountInfoForm, 'form'))

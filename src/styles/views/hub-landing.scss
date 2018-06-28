@@ -1,9 +1,6 @@
 .cn-hub-landing-container {
   @include breakpoint(medium) {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    height: calc(100vh - 64px);
+    @include center-viewport-content-container-internal;
   }
 
   .center-content {
@@ -74,5 +71,4 @@
       }
      }
    }
-
 }

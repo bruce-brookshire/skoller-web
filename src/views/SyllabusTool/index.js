@@ -1,50 +1,29 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {inject, observer} from 'mobx-react'
 import {browserHistory} from 'react-router'
-import Assignments from '../components/ClassEditor/Assignments'
-import Chat from '../components/ClassEditor/Chat'
-import ClassForm from './ClassForm'
-import FileViewer from '../../components/FileViewer'
-import GradeScale from '../components/ClassEditor/GradeScale'
-import DocumentsDeletedModal from './DocumentsDeletedModal'
-import HelpResolvedModal from './HelpResolvedModal'
-import IssuesModal from './IssuesModal'
-import RequestResolvedModal from './RequestResolvedModal'
-import HelpNeededInfo from './HelpNeededInfo'
-import StudentRequestInfo from './StudentRequestInfo'
 import Loading from '../../components/Loading'
-import Modal from '../../components/Modal'
-import Professor from '../components/ClassEditor/Professor'
-import StatusForm from './StatusForm'
-import Weights from '../components/ClassEditor/Weights'
-import {FileTabs, FileTab} from '../../components/FileTab'
-import {ProgressBar, ProgressStep} from '../../components/ProgressBar'
 import actions from '../../actions'
-import stores from '../../stores'
+import Weights from '../components/ClassEditor/Weights'
+import Assignments from '../components/ClassEditor/Assignments'
+import {ProgressBar, ProgressStep} from '../../components/ProgressBar'
+import FileViewer from '../../components/FileViewer'
+import IssuesModal from '../components/ClassEditor/IssuesModal'
+import ProblemsModal from './ProblemsModal'
+import {FileTabs, FileTab} from '../../components/FileTab'
+import {inject, observer} from 'mobx-react'
 
-const {navbarStore} = stores
-
-const steps = [ 'Weights Intro', 'Input Weights', 'Assignments Intro', 'Input Assignments' ]
+const steps = [ 'Weights', 'Assignments', 'Review' ]
 
 const ContentEnum = {
-  PROFESSOR: 0,
-  GRADE_SCALE: 1,
-  WEIGHTS: 2,
-  ASSIGNMENTS: 3,
-  CHAT: 4,
+  WEIGHTS: 0,
+  ASSIGNMENTS: 1,
+  REVIEW: 2
 }
 
 @inject('rootStore') @observer
 class SyllabusTool extends React.Component {
   constructor (props) {
     super(props)
-    navbarStore.toggleEditCl = this.toggleEditClassModal.bind(this)
-    navbarStore.toggleWrench = this.toggleWrench.bind(this)
-    navbarStore.toggleChat = this.toggleChat.bind(this)
-    navbarStore.toggleIssues = this.toggleIssuesModal.bind(this)
-    navbarStore.toggleHelpResolved = this.toggleHelpResolvedModal.bind(this)
-    navbarStore.toggleRequestResolved = this.toggleRequestResolvedModal.bind(this)
     this.state = this.initializeState()
   }
 
@@ -60,34 +39,10 @@ class SyllabusTool extends React.Component {
   * Unlock the class on component will mount
   */
   componentWillUnmount () {
+    let {navbarStore} = this.props.rootStore
     navbarStore.cl = null
     navbarStore.isDIY = false
-    navbarStore.toggleEditCl = null
-    navbarStore.toggleWrench = null
-    navbarStore.toggleChat = null
-    navbarStore.toggleIssues = null
-    navbarStore.toggleHelpResolved = null
-    navbarStore.toggleRequestResolved = null
     this.unlockClass()
-  }
-
-  /*
-  * Deletes the provided document and removes it from the documents array in state
-  */
-  deleteDocument(doc,idx){
-    actions.documents.deleteClassDocument(navbarStore.cl,doc).then(() => {
-      let newDocs = this.state.documents
-      newDocs.splice(idx,1)
-      this.setState({
-        documents: newDocs,
-        currentDocumentIndex: 0,
-        currentDocument: null,
-      })
-      // Show documents deleted modal if all files deleted and not in "Complete" or "Change" status
-      if(this.state.documents.length == 0 && navbarStore.cl.status.name != 'Complete' && navbarStore.cl.status.name != 'Change'){
-        this.toggleDocumentsDeletedModal()
-      }
-    }).catch(() => false)
   }
 
   /*
@@ -97,7 +52,6 @@ class SyllabusTool extends React.Component {
     this.setState(this.initializeState())
     this.getClass()
     this.getDocuments()
-    this.getLocks()
     this.lockClass()
   }
 
@@ -106,71 +60,20 @@ class SyllabusTool extends React.Component {
   */
   initializeState () {
     const {state} = this.props.location
-    const currentIndex = this.initializeCurrentIndex()
+    let {navbarStore} = this.props.rootStore
     navbarStore.cl = null
     navbarStore.isDIY = state.isDIY || false
     return {
       currentDocumentIndex: 0,
       currentDocument: null,
-      currentIndex,
-      disableNext: false,
+      currentIndex: ContentEnum.WEIGHTS,
       documents: [],
       gettingClass: false,
-      isAdmin: state.isAdmin || false,
-      isChangeReq: state.isChangeReq || false,
-      isHelpReq: state.isHelpReq || false,
-      isReviewer: state.isReviewer || false,
-      isSW: state.isSW || false,
       loadingClass: true,
-      locks: [],
-      openDocumentsDeletedModal: false,
-      openEditClassModal: false,
-      openHelpResolvedModal: false,
       openIssuesModal: false,
-      openRequestResolvedModal: false,
-      sectionId: state.sectionId || null,
-      stepCount: 4,
-      submiting: false
+      openProblemsModal: false,
+      stepCount: 3
     }
-  }
-
-  /*
-  * Intialize the current index of content to be shown.
-  */
-  initializeCurrentIndex () {
-    const {state} = this.props.location
-    let currentIndex = ContentEnum.WEIGHTS
-    if (state.isAdmin && !state.isSW) currentIndex = ContentEnum.PROFESSOR
-    if (state.sectionId) {
-      switch (state.sectionId) {
-        case 100:
-          currentIndex = ContentEnum.WEIGHTS
-          break
-        case 200:
-          currentIndex = ContentEnum.ASSIGNMENTS
-          break
-        case 300:
-          currentIndex = ContentEnum.WEIGHTS
-          break
-        default:
-          break
-      }
-    }
-    return currentIndex
-  }
-
-  /*
-  * Determine if class is in "Change Request" status
-  */
-  isChangeRequest(){
-    return navbarStore.cl && navbarStore.cl.status && navbarStore.cl.status.name == 'Change' ? true : false
-  }
-
-  /*
-  * Determine if class is in "Help" status
-  */
-  isHelpNeeded(){
-    return navbarStore.cl && navbarStore.cl.status && navbarStore.cl.status.name == 'Help' ? true : false
   }
 
   /*
@@ -178,11 +81,13 @@ class SyllabusTool extends React.Component {
   */
   getClass () {
     const {params: {classId}} = this.props
+    let {navbarStore} = this.props.rootStore
     actions.classes.getClassById(classId).then((cl) => {
       navbarStore.cl = cl
       this.setState({loadingClass: false})
-    }).catch((error) => {  this.setState({loadingClass: false}) })
+    }).catch(() => { this.setState({loadingClass: false}) })
   }
+
   /*
   * Fetch the documents for a class.
   */
@@ -194,27 +99,40 @@ class SyllabusTool extends React.Component {
     }).catch(() => false)
   }
 
-  getLocks () {
-    const {params: {classId}} = this.props
-    actions.classes.getLocks(classId).then((locks) => {
-      this.setState({locks})
+  onUpdateClass (form) {
+    let {navbarStore} = this.props.rootStore
+    actions.classes.updateClass(form).then((cl) => {
+      navbarStore.cl = cl
     }).catch(() => false)
   }
 
   /*
-  * Lock the class for DIY or admin who are not working as SW.
+  * Lock the class for DIY or SW.
   */
   lockClass () {
-    if (navbarStore.isDIY || (this.state.isAdmin && !this.state.isSW)) {
-      const {params: {classId}} = this.props
-      const form = {is_class: true}
-      actions.classes.lockClass(classId, form).then(() => {
-      }).catch((error) => {
-        if (error === 409 && navbarStore.isDIY) {
-          browserHistory.push('/student/classes')
-        }
-      })
-    }
+    const {navbarStore} = this.props.rootStore
+    const {params: {classId}} = this.props
+    const form = {is_class: true}
+    actions.classes.lockClass(classId, form).then(() => {
+    }).catch((error) => {
+      if (error === 409 && navbarStore.isDIY) {
+        browserHistory.push('/student/classes')
+      }
+    })
+  }
+
+  /*
+  * Toggle the issues modal.
+  */
+  toggleIssuesModal () {
+    this.setState({openIssuesModal: !this.state.openIssuesModal})
+  }
+
+  /*
+  * Toggle the problems modal.
+  */
+  toggleStudentProblemsModal () {
+    this.setState({openProblemsModal: !this.state.openProblemsModal})
   }
 
   /*
@@ -222,463 +140,58 @@ class SyllabusTool extends React.Component {
   */
   unlockClass () {
     const {params: {classId}} = this.props
-    const form = (navbarStore.isDIY || (this.state.isAdmin && !this.state.isSW)) ?
-      {is_class: true} : {class_lock_section_id: this.state.sectionId}
+    const form = {is_class: true}
 
     actions.classes.unlockClass(classId, form).then(() => {
     }).catch(() => false)
   }
 
   /*
-  * Unlock and complete for diy
-  */
-  unlockDIYLock () {
-    const {params: {classId}} = this.props
-    const form = {is_class: true, is_completed: true}
-    this.setState({submitting: true})
-    actions.classes.unlockClass(classId, form).then(() => {
-      browserHistory.push('/student/classes')
-      this.setState({submitting: false})
-    }).catch(() => { this.setState({submitting: false}) })
-  }
-
-  /*
   * Unlock the class for syllabus worker.
   */
-  unlockSWLock () {
+  unlock (isCompleted) {
     const {params: {classId}} = this.props
-    const form = {class_lock_section_id: this.state.sectionId, is_completed: true}
-
+    const {navbarStore} = this.props.rootStore
+    const form = {is_class: true, is_completed: isCompleted}
     this.setState({submitting: true})
     actions.classes.unlockClass(classId, form).then(() => {
-      this.handleSWNext()
       this.setState({submitting: false})
+      if (!navbarStore.isDIY) {
+        this.getNextClass()
+      } else {
+        browserHistory.push('/student/classes')
+      }
     }).catch(() => { this.setState({submitting: false}); browserHistory.push('/hub/landing') })
   }
 
   /*
-  * Update the class in state.
+  * Fetch the next class for SW.
   *
-  * @param [Object]. The class to update with
   */
-  updateClass (cl) {
-    navbarStore.cl = cl
-  }
-
-  /*
-  * Render the controls for the syllabi worker or admin.
-  */
-  renderSWControls () {
-    const {cl} = navbarStore
-    if (!navbarStore.isDIY && cl) {
-      return (
-          <div className='margin-right'>{cl.school && cl.school.name}</div>
-      )
-    }
-  }
-
-  /*
-  * Render the syllabus section content.
-  */
-  renderContent () {
-    const {isReviewer} = this.state
-    switch (this.state.currentIndex) {
-      case ContentEnum.PROFESSOR:
-        return <Professor cl={navbarStore.cl} onSubmit={this.updateClass.bind(this)}/>
-      case ContentEnum.GRADE_SCALE:
-        return <GradeScale cl={navbarStore.cl} onSubmit={this.updateClass.bind(this)}/>
-      case ContentEnum.WEIGHTS:
-        return <Weights cl={navbarStore.cl} isReview={isReviewer} disableNext={this.state.disableNext} toggleDisabled={this.toggleDisabled.bind(this)} />
-      case ContentEnum.ASSIGNMENTS:
-        return <Assignments cl={navbarStore.cl} isReview={isReviewer} />
-      case ContentEnum.CHAT:
-        return <Chat cl={navbarStore.cl} />
-      default:
-    }
-  }
-
-  /*
-  * Render the syllabus section tabs for user to tab between syllabus section content.
-  * Render for syllabus workers and admin. Not for DIY.
-  */
-  renderSectionTabs () {
-    const {isReviewer, isAdmin, isSW, isChangeReq, isHelpReq} = this.state
-    if (isReviewer || (isAdmin && !isSW) || (isChangeReq || isHelpReq)) {
-      if (isReviewer) {
-        return (
-          <FileTabs style={{marginLeft: '7px', marginRight: '7px'}} currentIndex={this.state.currentIndex-2}>
-            <FileTab className='flex' name='Weights' onClick={() => this.setState({currentIndex: 2})} />
-            <FileTab className='flex' name='Assignments' onClick={() => this.setState({currentIndex: 3})} />
-          </FileTabs>
-        )
-      } else {
-        return (
-          <FileTabs style={{marginLeft: '7px', marginRight: '7px'}} currentIndex={this.state.currentIndex}>
-            <FileTab className='flex' name='Professor Info' onClick={() => this.setState({currentIndex: 0})} />
-            <FileTab className='flex' name='Grade Scale' onClick={() => this.setState({currentIndex: 1})} />
-            <FileTab className='flex' name='Weights' onClick={() => this.setState({currentIndex: 2})} />
-            <FileTab className='flex' name='Assignments' onClick={() => this.setState({currentIndex: 3})} />
-            <FileTab className='flex' name='Chat' onClick={() => this.setState({currentIndex: 4})} />
-          </FileTabs>
-        )
-      }
-    }
-  }
-
-  /*
-  * Gets array of all student requests yet to be completed
-  */
-  openStudentRequests(){
-    const sr = navbarStore.cl.student_requests.filter(c => !c.is_completed)
-    const cr = navbarStore.cl.change_requests.filter(c => !c.is_completed)
-    return sr.concat(cr)
-  }
-
-  /*
-  * Gets array of all new doc ids
-  */
-  allNewDocs(){
-    if(navbarStore.cl && navbarStore.cl.student_requests && navbarStore.cl.student_requests.length > 0){
-      let sr = this.openStudentRequests()
-      let arr = []
-      sr.forEach((r) => {r.docs && r.docs.length > 0 ? arr.push(r.docs.map((d) => d.id)) : null})
-      return [].concat(...arr)
-    }else{
-      return []
-    }
-  }
-
-  /*
-  * Determines if the document originates from a student request
-  */
-  isNewDoc(doc){
-    return this.allNewDocs().indexOf(doc.id) > -1
-  }
-
-  /*
-  * Determines if the class has any new docs
-  */
-  hasNewDoc(){
-    let newDocs = this.allNewDocs()
-    return this.state.documents.filter((d) => newDocs.indexOf(d.id) > -1).length > 0
-  }
-
-  navigateToHelpNeeded() {
-    browserHistory.push({
-      pathname: '/hub/classes',
-      state: {
-        needsHelp: true
-      }
+  getNextClass () {
+    this.setState({gettingClass: true})
+    actions.syllabusworkers.getNextClass().then((cl) => {
+      const {state} = this.props.location
+      browserHistory.push({ pathname: `/class/${cl.id}/syllabus_tool`, state: {...state} })
+      this.intializeComponent()
+      this.setState({gettingClass: false})
+    }).catch(() => {
+      this.setState({gettingClass: false})
+      browserHistory.push('hub/landing')
     })
-  }
-
-  navigateToNeedsChange() {
-    browserHistory.push({
-      pathname: '/hub/classes',
-      state: {
-        needsChange: true
-      }
-    })
-  }
-
-  /*
-  * Render the document tabs for the user to tab between documents.
-  */
-  renderDocumentTabs () {
-    return (
-      <FileTabs style={{marginLeft: '7px', marginRight: '7px'}} currentIndex={this.state.currentDocumentIndex}>
-        {
-          this.state.documents.map((document, index) => {
-            return (
-              <FileTab
-                key={index}
-                name={document.name}
-                removable={this.state.isAdmin || this.state.isChangeReq}
-                changed={this.isNewDoc(document)}
-                onClick={() =>
-                  this.setState({currentDocument: document.path, currentDocumentIndex: index})
-                }
-                onDelete={() => {
-                  let result = window.confirm('Are you sure you want to delete this document?')
-                  if(result) this.deleteDocument(document,index)
-                }}
-              />
-            )
-          })
-        }
-      </FileTabs>
-    )
-  }
-
-  /*
-  * Render the progress bar for DIY.
-  */
-  renderProgressBar () {
-    if (navbarStore.isDIY) {
-      return (
-        <div className='margin-bottom'>
-          <ProgressBar currentStep={this.state.currentIndex}>
-            {steps.map((step, index) => {
-              return <ProgressStep key={`step-${index}`} label={step} />
-            })}
-          </ProgressBar>
-        </div>
-      )
-    }
-  }
-
-  /*
-  * Render the back button to tab between syllabus sections
-  */
-  renderBackButton () {
-    const {currentIndex} = this.state
-
-    if (currentIndex > ContentEnum.WEIGHTS && navbarStore.isDIY) {
-      return (
-        <a className='back-button' onClick={this.onPrevious.bind(this)}>
-          <i className='fa fa-angle-left' />
-        </a>
-      )
-    }
-  }
-
-  /*
-  * Render the skip button for DIY
-  */
-  renderSkipButton () {
-    {/* TODO Put this back in
-      if (navbarStore.isDIY) {
-        return (
-          <a className='skip-button' onClick={() => false}>
-            <span>Skip this class</span>
-          </a>
-        )
-      }
-    */}
-  }
-
-  /*
-  * Render the enrollment count for admin.
-  */
-  renderEnrollment () {
-    const {isAdmin} = this.state
-    const {cl} = navbarStore
-    if (isAdmin && cl) {
-      return (
-        <div className='left'>
-          <span style={{marginRight: '5px'}}>{cl.enrollment || 0}</span>
-          <i className='fa fa-user' />
-        </div>
-      )
-    }
-  }
-
-  /*
-  * Render having issues for admin and SW
-  */
-  renderHavingIssues () {
-    return (
-        <a
-          className='having-issues cn-red'
-          onClick={this.toggleIssuesModal.bind(this)}
-        >Having issues?</a>
-    )
-  }
-
-  /*
-  * Render the all documents deleted modal.
-  */
-  renderDocumentsDeletedModal () {
-    return (
-      <DocumentsDeletedModal
-        cl={navbarStore.cl}
-        open={this.state.openDocumentsDeletedModal}
-        onClose={this.toggleDocumentsDeletedModal.bind(this)}
-        onSubmit={(cl) => {
-          let isChange = navbarStore.cl ? navbarStore.cl.status.name == 'Change' : false
-          let isHelp = navbarStore.cl ? navbarStore.cl.status.name == 'Help' : false
-          this.updateClass(cl)
-          isChange ? this.navigateToNeedsChange() : (isHelp ? this.navigateToHelpNeeded() : this.unlockSWLock())
-        }}
-      />
-    )
-  }
-
-  /*
-  * Render the having issues modal.
-  */
-  renderIssuesModal () {
-    return (
-      <IssuesModal
-        cl={navbarStore.cl}
-        open={this.state.openIssuesModal}
-        onClose={this.toggleIssuesModal.bind(this)}
-        onSubmit={(cl) => {
-          this.updateClass(cl)
-          this.unlockSWLock()
-        }}
-      />
-    )
-  }
-
-  /*
-  * Render the issues resolved modal.
-  */
-  renderRequestResolvedModal() {
-    let openRequests = this.openStudentRequests()
-    return (
-      <RequestResolvedModal
-        cl={navbarStore.cl}
-        open={this.state.openRequestResolvedModal}
-        onClose={this.toggleRequestResolvedModal.bind(this)}
-        onSubmit={(cl) => {
-          this.updateClass(cl)
-        }}
-        request={openRequests[0]}
-      />
-    )
-  }
-
-  /*
-  * Render the help needed info
-  */
-  renderHelpResolvedModal() {
-    return (
-      <HelpResolvedModal
-        cl={navbarStore.cl}
-        open={this.state.openHelpResolvedModal}
-        onClose={this.toggleHelpResolvedModal.bind(this)}
-        onSubmit={(cl) => {
-          this.updateClass(cl)
-        }}
-      />
-    )
-  }
-
-  /*
-  * Render the editclass modal.
-  */
-  renderEditClassModal () {
-    return (
-      <Modal
-        open={this.state.openEditClassModal}
-        onClose={this.toggleEditClassModal.bind(this)}
-      >
-        <ClassForm
-          cl={navbarStore.cl}
-          onClose={this.toggleEditClassModal.bind(this)}
-          onSubmit={this.updateClass.bind(this)}
-        />
-      </Modal>
-    )
-  }
-
-  /*
-  * Render the status form of the class for the admin to update.
-  */
-  renderStatusForm () {
-    if (this.state.isAdmin && !this.state.isSW && !this.isChangeRequest()) {
-      return (
-        <div className='cn-status-form'>
-          <StatusForm cl={navbarStore.cl}/>
-        </div>
-      )
-    }
-  }
-
-  /*
-  * Render the button text dependent on worker.
-  */
-  renderButtonText () {
-    const {isReviewer, isAdmin, isSW, isChangeReq, isHelpReq} = this.state
-    let text = ''
-    if ((isReviewer || navbarStore.isDIY) && this.state.currentIndex === ContentEnum.ASSIGNMENTS) text = 'Everything looks good. Submit info and continue'
-    else if ((isAdmin && !isSW) || (isChangeReq || isHelpReq)) text = 'Done'
-    else text = 'Next'
-    return text
-  }
-
-  /*
-  * Render the student request info
-  */
-  renderStudentRequest() {
-    if ((this.state.isAdmin || this.state.isSW) && this.isChangeRequest()) {
-      return (
-        <div className='cn-status-form'>
-          <StudentRequestInfo cl={navbarStore.cl}/>
-        </div>
-      )
-    }
-  }
-
-  /*
-  * Render the help needed info
-  */
-  renderHelpNeeded() {
-    if ((this.state.isAdmin || this.state.isSW) && this.isHelpNeeded()) {
-      return (
-        <div className='cn-status-form'>
-          <HelpNeededInfo cl={navbarStore.cl}/>
-        </div>
-      )
-    }
   }
 
   /*
   * On syllabus section done.
   */
   onNext () {
-    const {isReviewer, isAdmin, isSW} = this.state
+    const {currentIndex, stepCount} = this.state
 
-    if (navbarStore.isDIY) {
-      this.handleDIYNext()
-    } else if (isAdmin && !isSW) {
-      browserHistory.push('/hub/classes')
-    } else if (isAdmin || isSW) {
-      if (isReviewer && this.state.currentIndex !== (this.state.stepCount - 1)) {
-        this.setState({currentIndex: this.state.currentIndex + 1})
-      } else {
-        this.unlockSWLock()
-      }
-    }
-  }
-
-  /*
-  * On DIY next
-  * If DIY is done, complete class.
-  */
-  handleDIYNext () {
-    if (this.state.sectionId === 100) {
-      browserHistory.push(`/class/${navbarStore.cl.id}/syllabus_tool/tutorial/assignments`)
+    if (currentIndex !== (stepCount - 1)) {
+      this.setState({currentIndex: currentIndex + 1})
     } else {
-      this.unlockDIYLock()
+      this.unlock(true)
     }
-  }
-
-  /*
-  * Get the next class with an open syllabus section for syllabus
-  * worker to work on.
-  */
-  handleSWNext () {
-    const {sectionId} = this.state
-    let sectionName = sectionId === 100 ? 'weights' : sectionId === 200 ?
-      'assignments' : 'reviews'
-    this.getNextClass(sectionName)
-  }
-
-  /*
-  * Fetch the next class for SW.
-  *
-  * @param [String] sectionName. Name of the section SW is working on.
-  */
-  getNextClass (sectionName) {
-    this.setState({gettingClass: true})
-    actions.syllabusworkers.getNextClass(sectionName).then((cl) => {
-      const {state} = this.props.location
-      browserHistory.push({ pathname: `/class/${cl.id}/syllabus_tool`, state: {...state} })
-      this.intializeComponent()
-      this.setState({gettingClass: false})
-    }).catch(() => { this.setState({gettingClass: false}) })
   }
 
   /*
@@ -691,162 +204,212 @@ class SyllabusTool extends React.Component {
   }
 
   /*
-  * Toggle the documents deleted modal.
+  * Render the back button to tab between syllabus sections
   */
-  toggleDocumentsDeletedModal () {
-    this.setState({openDocumentsDeletedModal: !this.state.openDocumentsDeletedModal})
-  }
+  renderBackButton () {
+    const {currentIndex} = this.state
 
-  /*
-  * Toggle the issues modal.
-  */
-  toggleIssuesModal () {
-    this.setState({openIssuesModal: !this.state.openIssuesModal})
-  }
-
-  /*
-  * Toggle the issues resolved modal.
-  */
-  toggleHelpResolvedModal () {
-    this.setState({openHelpResolvedModal: !this.state.openHelpResolvedModal})
-  }
-
-  /*
-  * Toggle the issues resolved modal.
-  */
-  toggleRequestResolvedModal () {
-    this.setState({openRequestResolvedModal: !this.state.openRequestResolvedModal})
-  }
-
-  /*
-  * Toggle the edit class modal.
-  */
-  toggleEditClassModal () {
-    this.setState({openEditClassModal: !this.state.openEditClassModal})
-  }
-
-  toggleChat () {
-    const {cl} = navbarStore
-    actions.classes.updateClass({id: cl.id, is_chat_enabled: !cl.is_chat_enabled}).then((cl) => {
-      navbarStore.cl = cl
-    }).catch(() => false)
-  }
-
-  toggleWrench () {
-    const {cl} = navbarStore
-    actions.classes.updateClass({id: cl.id, is_editable: !cl.is_editable}).then((cl) => {
-      navbarStore.cl = cl
-    }).catch(() => false)
-  }
-
-  /*
-  * Disable the next button
-  *
-  * @param [Boolean] value. Boolean value to indicate if next button should be disabled
-  */
-  toggleDisabled (value) {
-    this.setState({disableNext: value})
-  }
-
-  tagUploader () {
-    const {documents, currentDocumentIndex, isAdmin} = this.state
-    let document = documents[currentDocumentIndex]
-    if(isAdmin && document) {
-      const email = document.user ? document.user.email : null
-
-      if (email) {
-        return (
-          <div className='margin-right right'>
-            <i className='fa fa-user' />
-            <span style={{marginRight: '2px'}}>{email}</span>
-          </div>
-        )
-      }
-    }
-  }
-
-  tagWorker () {
-    let lock = null
-    if (this.state.currentIndex === ContentEnum.WEIGHTS) {
-      lock = this.state.locks.find(lock => lock.class_lock_section.id === 100)
-    } else if (this.state.currentIndex === ContentEnum.ASSIGNMENTS) {
-      lock = this.state.locks.find(lock => lock.class_lock_section.id === 200)
-    }
-    const email = lock ? lock.user.email : null
-
-    if (email) {
+    if (currentIndex > ContentEnum.WEIGHTS) {
       return (
-        <div>
-          <i className='fa fa-user' />
-          <span style={{marginLeft: '2px'}}>{email}</span>
-        </div>
+        <a className='back-button' onClick={this.onPrevious.bind(this)}>
+          <i className='fa fa-angle-left' /> Go Back
+        </a>
       )
     }
   }
 
-  render () {
-    const {disableNext, loadingClass, isAdmin,
-      isReviewer, currentIndex, gettingClass, submitting} = this.state
+  /*
+  * Render the button text dependent on worker.
+  */
+  renderButtonText () {
+    return (this.state.currentIndex === ContentEnum.ASSIGNMENTS)
+      ? 'Everything looks good. Submit info and continue'
+      : 'Next'
+  }
 
-    const disableButton = disableNext || gettingClass || submitting
-    const disabledClass = disableButton ? 'disabled' : ''
-    const completeClass = ((isReviewer || navbarStore.isDIY) &&
-      currentIndex === ContentEnum.ASSIGNMENTS) ? 'cn-green-background' : ''
+  /*
+  * Render the syllabus section content.
+  */
+  renderContent () {
+    const {navbarStore} = this.props.rootStore
+    switch (this.state.currentIndex) {
+      case ContentEnum.WEIGHTS:
+        return <Weights
+          cl={navbarStore.cl}
+          isReview={false}
+          onSubmit={this.onNext.bind(this)}
+          onUpdateClass={this.onUpdateClass.bind(this)}
+        />
+      case ContentEnum.ASSIGNMENTS:
+        return <Assignments
+          cl={navbarStore.cl}
+          isReview={false}
+          onSubmit={this.onNext.bind(this)} />
+      case ContentEnum.REVIEW:
+        return (
+          <div>
+            <div className='cn-section-content-header'>
+              Step 3: Review
+            </div>
+            <div className='margin-bottom'>
+              Almost done! Here&apos;s your last chance to review the weights and assignments
+               before submitting for the whole class.
+            </div>
+            <Weights
+              cl={navbarStore.cl}
+              isReview={true}
+              onSubmit={this.onNext.bind(this)}
+              onUpdateClass={this.onUpdateClass.bind(this)}
+              onEdit={() => {
+                this.setState({currentIndex: ContentEnum.WEIGHTS})
+              }}
+            />
+            <Assignments
+              cl={navbarStore.cl}
+              isReview={true}
+              onSubmit={this.onNext.bind(this)}
+              onEdit={() => {
+                this.setState({currentIndex: ContentEnum.ASSIGNMENTS})
+              }}
+            />
+            <button
+              className='button full-width margin-top margin-bottom'
+              onClick={() => this.onNext()}
+            >
+            ⚡️Submit⚡️
+            </button>
+          </div>
+        )
+      default:
+    }
+  }
+
+  /*
+  * Render the document tabs for the user to tab between documents.
+  */
+  renderDocumentTabs () {
+    return (
+      <FileTabs currentIndex={this.state.currentDocumentIndex}>
+        {
+          this.state.documents.map((document, index) => {
+            return (
+              <FileTab
+                key={index}
+                name={document.name}
+                removable={false}
+                changed={false}
+                onClick={() =>
+                  this.setState({currentDocument: document.path, currentDocumentIndex: index})
+                }
+              />
+            )
+          })
+        }
+      </FileTabs>
+    )
+  }
+
+  /*
+  * Render having issues
+  */
+  renderHavingIssues () {
+    const {navbarStore} = this.props.rootStore
+    return (
+      <a
+        className='cn-red'
+        onClick={!navbarStore.isDIY ? this.toggleIssuesModal.bind(this) : this.toggleStudentProblemsModal.bind(this)}
+      >Syllabus issues?</a>
+    )
+  }
+
+  /*
+  * Render the having issues modal.
+  */
+  renderIssuesModal () {
+    const {navbarStore} = this.props.rootStore
+    const {openIssuesModal} = this.state
+    return (
+      <IssuesModal
+        cl={navbarStore.cl}
+        open={openIssuesModal}
+        onClose={this.toggleIssuesModal.bind(this)}
+        onSubmit={(cl) => {
+          this.updateClass(cl)
+          this.unlock(false)
+        }}
+      />
+    )
+  }
+
+  /*
+  * Render the having issues modal.
+  */
+  renderProblemsModal () {
+    const {navbarStore} = this.props.rootStore
+    const {openProblemsModal} = this.state
+
+    return (
+      <ProblemsModal
+        cl={navbarStore.cl}
+        open={openProblemsModal}
+        onClose={this.toggleStudentProblemsModal.bind(this)}
+      />
+    )
+  }
+
+  /*
+  * Render the progress bar for DIY.
+  */
+  renderProgressBar () {
+    return (
+      <ProgressBar currentStep={this.state.currentIndex}>
+        {steps.map((step, index) => {
+          return <ProgressStep key={`step-${index}`} label={step} index={index} />
+        })}
+      </ProgressBar>
+    )
+  }
+
+  /*
+  * Update the class in state.
+  *
+  * @param [Object]. The class to update with
+  */
+  updateClass (cl) {
+    let {navbarStore} = this.props.rootStore
+    navbarStore.cl = cl
+  }
+
+  render () {
+    const {loadingClass} = this.state
+    const {navbarStore} = this.props.rootStore
 
     if (loadingClass || navbarStore.cl == null) return <Loading />
     return (
       <div className='cn-syllabus-tool-container'>
-
+        {this.renderProgressBar()}
         <div className='cn-body-container'>
-
           <div className='cn-section-container cn-control-panel'>
             <div className='cn-section-header'>
-              {this.renderSWControls()}
               {this.renderBackButton()}
-              {this.renderSkipButton()}
-              {this.tagWorker()}
             </div>
-            <div className='cn-section-control'>
+            <div className='cn-section-content'>
               {this.renderContent()}
-            </div>
-            {this.renderSectionTabs()}
-            <div className='cn-section-footer'>
-              <div>
-                {this.renderStudentRequest()}
-                {this.renderHelpNeeded()}
-                {this.renderEnrollment()}
-                {!this.isChangeRequest() && !this.isHelpNeeded() && this.renderHavingIssues()}
-              </div>
-              {!this.isChangeRequest() && !this.isHelpNeeded() && <div className='horizontal-align-row margin-top margin-right margin-left middle-xs center-xs'>
-                <button
-                  className={`button col-xs-12 ${completeClass} ${disabledClass}`}
-                  style={{flex: '100 1 auto'}}
-                  disabled={disableButton}
-                  onClick={this.onNext.bind(this)}
-                >{this.renderButtonText()}</button>
-              </div>}
-
-              {this.renderProgressBar()}
             </div>
           </div>
 
           <div className='cn-section-container cn-file-panel'>
+            {this.renderDocumentTabs()}
             <div className='cn-section-header'>
-              {this.tagUploader()}
+              {this.renderHavingIssues()}
             </div>
-            <div className='cn-section-control'>
+            <div className='cn-section-content'>
               {this.state.currentDocument && <FileViewer source={this.state.currentDocument} /> }
             </div>
-            {this.renderDocumentTabs()}
           </div>
-
         </div>
-
-        {navbarStore.cl && this.renderIssuesModal()}
-        {navbarStore.cl && this.renderHelpResolvedModal()}
-        {navbarStore.cl && this.renderRequestResolvedModal()}
-        {navbarStore.cl && this.renderDocumentsDeletedModal()}
-        {this.renderEditClassModal()}
+        {navbarStore.cl && !navbarStore.isDIY && this.renderIssuesModal()}
+        {navbarStore.cl && navbarStore.isDIY && this.renderProblemsModal()}
       </div>
     )
   }
@@ -854,7 +417,8 @@ class SyllabusTool extends React.Component {
 
 SyllabusTool.propTypes = {
   location: PropTypes.object,
-  params: PropTypes.object
+  params: PropTypes.object,
+  rootStore: PropTypes.object
 }
 
 export default SyllabusTool
