@@ -55,7 +55,7 @@ export function getAssignmentReminders () {
 * Get Assignment reminder message topics
 */
 export function getAssignmentReminderTopics () {
-  return fetch(`/api/v1/reminder-messages/topics`, '', 'Error getting messages. Try again.')
+  return get(`/api/v1/reminder-messages/topics`, '', 'Error getting messages. Try again.')
     .catch(error => {
       return Promise.reject(error)
     })
