@@ -57,7 +57,7 @@ class PeriodForm extends React.Component {
   * Create a new period
   */
   onCreatePeriod (form) {
-    actions.periods.createPeriod(this.props.school, form).then((period) => {
+    actions.periods.createPeriod(this.props.school.id, form).then((period) => {
       this.props.onSubmit()
     }).catch(() => false)
   }
