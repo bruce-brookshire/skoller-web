@@ -150,7 +150,7 @@ export function forgotPassword (form) {
 * @params [Object] form. Reset password form data.
 */
 export function resetPassword (form, token) {
-  return post(`/api/v1/reset`, form, '')
+  return post(`/api/v1/reset`, form, '', 'Bearer ' + token)
     .then(() => {
       showSnackbar('Your password has been successfully reset.', 'info')
     })

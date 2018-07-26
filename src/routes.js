@@ -48,7 +48,7 @@ const router = (
       <IndexRedirect to="/app"/>
       <Route path='/landing' component={Landing} />
       <Route path='/forgot_password' component={ForgotPassword} />
-      <Route path='/reset_password/:token' component={ResetPassword} />
+      <Route path='/reset_password' component={ResetPassword} />
       <Route path='/privacypolicy' component={PrivacyPolicy} />
       <Route path='/learn-more' component={LearnMore} />
       <Route path='/what-people-say' component={PeopleTalking} />
