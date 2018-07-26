@@ -125,7 +125,9 @@ class SignUpForm extends React.Component {
                 error={formErrors.email}
                 label='Email'
                 name='email'
-                onChange={updateProperty}
+                onChange={(name, value) => {
+                  updateProperty(name, value.trim())
+                }}
                 placeholder='Email'
                 value={form.email}
               />
