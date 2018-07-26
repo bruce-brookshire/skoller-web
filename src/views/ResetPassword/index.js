@@ -37,7 +37,7 @@ class ResetPassword extends React.Component {
   */
   onSubmit () {
     if (this.props.validateForm(this.state.form, requiredFields)) {
-      actions.auth.resetPassword(this.state.form, this.props.params.token).then(() => {
+      actions.auth.resetPassword(this.state.form, this.props.location.query.token).then(() => {
         browserHistory.push('/landing')
       }).catch(() => false)
     }
@@ -96,7 +96,7 @@ class ResetPassword extends React.Component {
 ResetPassword.propTypes = {
   formErrors: PropTypes.object,
   updateProperty: PropTypes.func,
-  params: PropTypes.object,
+  location: PropTypes.object,
   validateForm: PropTypes.func
 }
 
