@@ -49,11 +49,11 @@ export function get (path, queryString, errMsg) {
     })
 }
 
-export function post (path, form, errMsg) {
+export function post (path, form, errMsg, token = userStore.authToken) {
   return fetch(`${Environment.SERVER_NAME}${path}`, {
     method: 'POST',
     headers: {
-      'Authorization': userStore.authToken,
+      'Authorization': token,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(form)
