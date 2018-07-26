@@ -105,10 +105,10 @@ class Enroll extends React.Component {
     const {newUser, step} = this.state
     return (
       <div className='cn-enrollment-link-content'>
-        {!newUser && this.renderLogin()}
+        {!newUser && step === 1 && this.renderLogin()}
         {newUser && step === 1 && this.renderSignup()}
         {newUser && step === 2 && this.renderVerification()}
-        {newUser && step === 3 && this.renderDownload()}
+        {((newUser && step === 3) || (!newUser && step === 2)) && this.renderDownload()}
       </div>
     )
   }
