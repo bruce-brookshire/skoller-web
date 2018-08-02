@@ -4,7 +4,7 @@ import AccountSearch from './AccountSearch'
 import Grid from '../../../components/Grid'
 import actions from '../../../actions'
 import Modal from '../../../components/Modal'
-import SignUpForm from '../../components/SignUpForm'
+import AdminSignUpForm from './AdminSignUpForm'
 
 const headers = [
   {
@@ -106,7 +106,7 @@ class Accounts extends React.Component {
         open={this.state.openCreateModal}
         onClose={this.toggleCreateModal.bind(this)}
       >
-        <SignUpForm onSubmit={this.onCreateAccount.bind(this)} onClose={this.toggleCreateModal.bind(this)} isAdmin={true} />
+        <AdminSignUpForm onSubmit={this.onCreateAccount.bind(this)} onClose={this.toggleCreateModal.bind(this)} />
       </Modal>
     )
   }
