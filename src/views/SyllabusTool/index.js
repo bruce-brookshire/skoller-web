@@ -396,12 +396,12 @@ class SyllabusTool extends React.Component {
     if (loadingClass || navbarStore.cl == null) return <Loading />
     return (
       <div className='cn-syllabus-tool-container'>
-        {this.renderProgressBar()}
         <div className='cn-body-container'>
           <div className='cn-section-container cn-control-panel'>
             <div className='cn-section-header'>
               {this.renderBackButton()}
             </div>
+            {this.renderProgressBar()}
             <div className='cn-section-content'>
               {this.renderContent()}
             </div>
