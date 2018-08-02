@@ -109,9 +109,12 @@ class Weights extends React.Component {
             />
           </div>
         }
-        {weights.length !== 0 && !cl.is_points &&
-          <div id='cn-weights-info'>*The total should be 100%</div>
-        }
+        <div id='cn-weights-info'>
+          {(weights.length !== 0 && !cl.is_points)
+            ? <div className="info-flex"><div>Extra Credit?</div><div>*The total should be 100%</div></div>
+            : <div>Extra Credit?</div>
+          }
+        </div>
         {(weights.length !== 0 || noWeights) && !isReview &&
           <button
             onClick={() => this.props.onSubmit()}
