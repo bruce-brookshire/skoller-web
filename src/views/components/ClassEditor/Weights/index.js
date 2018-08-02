@@ -110,10 +110,8 @@ class Weights extends React.Component {
           </div>
         }
         <div id='cn-weights-info'>
-          {(weights.length !== 0 && !cl.is_points)
-            ? <div className="info-flex"><div>Extra Credit?</div><div>*The total should be 100%</div></div>
-            : <div>Extra Credit?</div>
-          }
+          {weights.length !== 0 && <div>Extra Credit?</div>}
+          {(weights.length !== 0 && !cl.is_points) && <div>*The total should be 100%</div>}
         </div>
         {(weights.length !== 0 || noWeights) && !isReview &&
           <button
