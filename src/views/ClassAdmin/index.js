@@ -24,6 +24,7 @@ import StudentRequestInfo from './StudentRequestInfo'
 import HelpNeededInfo from './HelpNeededInfo'
 import StatusForm from './StatusForm'
 import DocumentsDeletedModal from './DocumentsDeletedModal'
+import ClassNotes from './ClassNotes'
 
 @inject('rootStore') @observer
 class ClassAdmin extends React.Component {
@@ -583,6 +584,17 @@ class ClassAdmin extends React.Component {
     )
   }
 
+  renderNotes () {
+    const {cl} = this.state
+    return (
+      <div className='class-card'>
+        <ClassNotes
+          cl={cl}
+        />
+      </div>
+    )
+  }
+
   /*
   * Render the document tabs for the user to tab between documents.
   */
@@ -643,6 +655,7 @@ class ClassAdmin extends React.Component {
           {this.renderWeights()}
           {this.renderAssignments()}
           {this.renderChat()}
+          {this.renderNotes()}
         </div>
         {((documents.length !== 0 && !hideDocuments) || openStudentRequestInfo || openHelpInfo) &&
         <div id='cn-half-panel'>
