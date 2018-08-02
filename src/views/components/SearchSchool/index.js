@@ -83,15 +83,17 @@ class SearchSchool extends React.Component {
   }
 
   render () {
+    const {placeholder} = this.props
     return (
       <AutoComplete
         className={this.state.loading ? 'loading' : ''}
         dataSource={this.getDataSource()}
         emptyMessage={this.emptyMessage.bind(this)}
         updateAutoCompleteResults={this.onUpdateAutoComplete.bind(this)}
-        placeholder='Find your school'
+        placeholder={placeholder || ''}
         renderRow={this.renderRow.bind(this)}
-        newRow={true}
+        newRow={this.props.onSchoolCreate ? true : false} // eslint-disable-line no-unneeded-ternary
+        label={this.props.label}
       />
     )
   }
@@ -99,7 +101,9 @@ class SearchSchool extends React.Component {
 
 SearchSchool.propTypes = {
   onSchoolSelect: PropTypes.func.isRequired,
-  onSchoolCreate: PropTypes.func.isRequired
+  onSchoolCreate: PropTypes.func,
+  label: PropTypes.string,
+  placeholder: PropTypes.string
 }
 
 export default SearchSchool

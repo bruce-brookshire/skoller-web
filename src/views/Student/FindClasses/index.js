@@ -205,6 +205,7 @@ class FindClasses extends React.Component {
           {school ? this.renderSchoolName() : <SearchSchool
             onSchoolSelect={this.onSubmitSchool.bind(this)}
             onSchoolCreate={this.onCreateSchool.bind(this)}
+            placeholder={'Find your school'}
           />}
         </div>
       </div>

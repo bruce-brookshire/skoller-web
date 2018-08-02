@@ -44,6 +44,7 @@ class AutoComplete extends React.Component {
         value={this.state.autoCompleteValue}
         onBlur={this.onBlur.bind(this)}
         onFocus={this.onFocus.bind(this)}
+        label={this.props.label}
       />
     )
   }
@@ -112,7 +113,8 @@ AutoComplete.propTypes = {
   onBlur: PropTypes.func,
   onFocus: PropTypes.func,
   newRow: PropTypes.bool,
-  className: PropTypes.string
+  className: PropTypes.string,
+  label: PropTypes.string
 }
 
 export default AutoComplete

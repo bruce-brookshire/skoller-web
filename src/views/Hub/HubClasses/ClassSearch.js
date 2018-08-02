@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import {InputField, SelectField} from '../../../components/Form'
 import Loading from '../../../components/Loading'
 import actions from '../../../actions'
+import SearchSchool from '../../components/SearchSchool'
 
 class ClassSearch extends React.Component {
   constructor (props) {
@@ -144,6 +145,27 @@ class ClassSearch extends React.Component {
     }
   }
 
+  onSubmitSchool (school) {
+    this.setState({schoolId: school.id, schoolName: school.name})
+  }
+
+  renderSchoolName () {
+    return (
+      <InputField
+        label='School'
+        name='schoolName'
+        onChange={(name, value) => {
+          this.resetSchool()
+        }}
+        value={this.state.schoolName}
+      />
+    )
+  }
+
+  resetSchool () {
+    this.setState({schoolId: null})
+  }
+
   render () {
     const {schoolId, searchField, searchValue} = this.state
     let disabled = !(schoolId || (searchField && searchValue))
@@ -153,13 +175,10 @@ class ClassSearch extends React.Component {
       <div>
         <div className='row'>
           <div className='col-xs-12 col-sm-3 margin-top'>
-            <SelectField
-              name='schoolId'
+            {schoolId ? this.renderSchoolName() : <SearchSchool
               label='School'
-              options={this.getSchoolOptions()}
-              onChange={this.onChangeSchools.bind(this)}
-              value={schoolId}
-            />
+              onSchoolSelect={this.onSubmitSchool.bind(this)}
+            />}
           </div>
           <div className='col-xs-12 col-sm-3 margin-top'>
             <SelectField

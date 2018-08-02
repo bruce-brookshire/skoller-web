@@ -25,16 +25,23 @@ class AutoCompleteInput extends React.Component {
     const classes = ['cn-autocomplete-input']
     if (input.className) classes.push(input.className)
     return (
-      <input
-        onClick={this.onClick}
-        className={classes.join(' ')}
-        placeholder={input.placeholder}
-        onBlur={this.onBlur.bind(this)}
-        onFocus={this.onFocus.bind(this)}
-        onChange={(event) => this.props.onChange(event)}
-        onKeyUp={(event) => this.props.onKeyUp(event)}
-        value={input.value}
-      />
+      <div>
+        {input.label
+          ? <label className='cn-input-label'>
+            {input.label}
+          </label> : null
+        }
+        <input
+          onClick={this.onClick}
+          className={classes.join(' ')}
+          placeholder={input.placeholder}
+          onBlur={this.onBlur.bind(this)}
+          onFocus={this.onFocus.bind(this)}
+          onChange={(event) => this.props.onChange(event)}
+          onKeyUp={(event) => this.props.onKeyUp(event)}
+          value={input.value}
+        />
+      </div>
     )
   }
 }
