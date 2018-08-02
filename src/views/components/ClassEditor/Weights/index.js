@@ -67,6 +67,19 @@ class Weights extends React.Component {
     }
   }
 
+  renderExtraCredit () {
+    return (
+      <div className='cn-info-container cn-blue'>Extra Credit?
+      <div className='message-bubble triangle-bottom'>
+        <b><u>Do not</u></b> worry about adding extra credit, as this is the grade calculator&apos;s
+        foundations for everyone in the class. Add extra credit individually as you enter
+        your grades throughout the semester.
+        <div className='triangle-inner' />
+      </div>
+      </div>
+    )
+  }
+
   /*
   * Render the weights and weight form.
   */
@@ -110,7 +123,7 @@ class Weights extends React.Component {
           </div>
         }
         <div id='cn-weights-info'>
-          {weights.length !== 0 && <div>Extra Credit?</div>}
+          {weights.length !== 0 && this.renderExtraCredit()}
           {(weights.length !== 0 && !cl.is_points) && <div>*The total should be 100%</div>}
         </div>
         {(weights.length !== 0 || noWeights) && !isReview &&
