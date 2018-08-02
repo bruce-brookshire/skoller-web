@@ -1,7 +1,25 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Modal from '../../components/Modal'
+import NoteForm from './NoteForm'
 
 class ClassNotes extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      openNoteCreateModal: false
+    }
+  }
+
+  onCreateNote (cl) {
+    this.props.onCreateNote(cl)
+    this.toggleNoteModal()
+  }
+
+  toggleNoteModal () {
+    this.setState({openNoteCreateModal: !this.state.openNoteCreateModal})
+  }
+
   /*
   * Renders posts from the array held in state
   */
@@ -9,7 +27,7 @@ class ClassNotes extends React.Component {
     return this.props.cl.notes.map((n, idx) => {
       return (
         <div className='notes-container' key={`notes-${idx}`}>
-          n.notes
+          {n.notes}
         </div>
       )
     })
@@ -24,12 +42,28 @@ class ClassNotes extends React.Component {
     )
   }
 
+  renderNoteModal () {
+    const {cl} = this.props
+    return (
+      <Modal
+        open={this.state.openNoteCreateModal}
+        onClose={this.toggleNoteModal.bind(this)}
+      >
+        <NoteForm
+          cl={cl}
+          onCreateNote={this.onCreateNote.bind(this)}
+        />
+      </Modal>
+    )
+  }
+
   render () {
     return (
-      <div id='class-editor-chat'>
-        <div id='class-editor-chat-content'>
-          <div className='class-editor-chat-title'>
+      <div className='cn-shadow-box'>
+        <div className='cn-shadow-box-content'>
+          <div className='cn-card-title margin-bottom'>
             Notes
+            <i className='fa fa-plus cn-blue cursor margin-right' onClick={() => this.toggleNoteModal()} />
           </div>
           <div className='notes'>
             {this.props.cl.notes.length > 0 ? (
@@ -37,13 +71,15 @@ class ClassNotes extends React.Component {
             ) : this.renderNoNotes()}
           </div>
         </div>
+        {this.renderNoteModal()}
       </div>
     )
   }
 }
 
 ClassNotes.propTypes = {
-  cl: PropTypes.object
+  cl: PropTypes.object,
+  onCreateNote: PropTypes.func.isRequired
 }
 
 export default ClassNotes

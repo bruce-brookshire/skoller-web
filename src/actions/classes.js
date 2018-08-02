@@ -205,3 +205,13 @@ export function enrollByLink (link) {
       return Promise.reject(error)
     })
 }
+
+export function addNote (cl, form) {
+  return post(`/api/v1/classes/${cl.id}/notes`, form, 'Note not added, try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}

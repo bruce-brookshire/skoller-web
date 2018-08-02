@@ -6,7 +6,7 @@ import {authenticateUser, forgotPassword, getRoles,
 import {deleteClassPost, getClassPosts, deleteClassComment, deleteClassReply} from './chat'
 import {createClass, dropClass, getClassById, getClassByIdAdmin, getClassByLink, getStudentClassesById,
   enrollByLink, enrollInClass, searchClasses, searchStudentClasses, updateClass, lockClass,
-  unlockClass, updateClassStatus} from './classes'
+  unlockClass, updateClassStatus, addNote} from './classes'
 import {createIssue, getHelpTypes, resolveIssue, getRequestTypes, resolveChangeRequest, createStudentRequest,
   resolveStudentRequest} from './classhelp'
 import {getClassDocuments, uploadClassCsv, uploadClassDocument, deleteClassDocument} from './documents'
@@ -60,6 +60,7 @@ const actions = {
     getClassPosts
   },
   classes: {
+    addNote,
     createClass,
     dropClass,
     enrollByLink,

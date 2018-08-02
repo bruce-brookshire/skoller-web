@@ -590,6 +590,7 @@ class ClassAdmin extends React.Component {
       <div className='class-card'>
         <ClassNotes
           cl={cl}
+          onCreateNote={(cl) => this.setState({cl})}
         />
       </div>
     )
