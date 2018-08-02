@@ -4,16 +4,15 @@ import {InputField, SelectField} from '../../../components/Form'
 import Loading from '../../../components/Loading'
 import actions from '../../../actions'
 import SearchSchool from '../../components/SearchSchool'
+import {inject, observer} from 'mobx-react'
 
+@inject('rootStore') @observer
 class ClassSearch extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       schools: [],
-      statuses: [],
-      schoolId: '',
-      searchField: '',
-      searchValue: ''
+      statuses: []
     }
   }
 
@@ -34,18 +33,23 @@ class ClassSearch extends React.Component {
 
   intitializeParams () {
     const {state} = this.props.location
+    let {searchStore} = this.props.rootStore
     if (state) {
       if (state.needsHelp) {
-        this.setState({searchField: 'class_status', searchValue: 600})
+        searchStore.searchField = 'class_status'
+        searchStore.searchValue = 600
         this.onSearch()
       } else if (state.needsChange) {
-        this.setState({searchField: 'class_status', searchValue: 800})
+        searchStore.searchField = 'class_status'
+        searchStore.searchValue = 800
         this.onSearch()
       } else if (state.needsMaint) {
-        this.setState({searchField: 'class_maint', searchValue: true})
+        searchStore.searchField = 'class_maint'
+        searchStore.searchValue = true
         this.onSearch()
       } else if (state.needsApproval) {
-        this.setState({searchField: 'class_status', searchValue: 100})
+        searchStore.searchField = 'class_status'
+        searchStore.searchValue = 100
         this.onSearch()
       }
     }
@@ -84,7 +88,7 @@ class ClassSearch extends React.Component {
   }
 
   renderValueInput () {
-    const {searchField, searchValue} = this.state
+    const {searchField, searchValue} = this.props.rootStore.searchStore
     switch (searchField) {
       case 'class_status':
         return (
@@ -113,25 +117,29 @@ class ClassSearch extends React.Component {
   * Update the school.
   */
   onChangeSchools (name, value) {
-    this.setState({schoolId: value})
+    let {searchStore} = this.props.rootStore
+    searchStore.schoolId = value
   }
 
   /*
   * Update the field to query classes.
   */
   onChangeSearchField (name, value) {
-    this.setState({searchField: value, searchValue: ''})
+    let {searchStore} = this.props.rootStore
+    searchStore.searchField = value
+    searchStore.searchValue = ''
   }
 
   /*
   * Update the search value to query classes.
   */
   onChangeSearchValue (name, value) {
-    this.setState({searchValue: value})
+    let {searchStore} = this.props.rootStore
+    searchStore.searchValue = value
   }
 
   onSearch () {
-    const {schoolId, searchField, searchValue} = this.state
+    let {schoolId, searchField, searchValue} = this.props.rootStore.searchStore
     if (schoolId || (searchField && searchValue)) {
       let params = ''
       if (schoolId && searchField) {
@@ -146,10 +154,13 @@ class ClassSearch extends React.Component {
   }
 
   onSubmitSchool (school) {
-    this.setState({schoolId: school.id, schoolName: school.name})
+    let {searchStore} = this.props.rootStore
+    searchStore.schoolId = school.id
+    searchStore.schoolName = school.name
   }
 
   renderSchoolName () {
+    let {schoolName} = this.props.rootStore.searchStore
     return (
       <InputField
         label='School'
@@ -157,17 +168,19 @@ class ClassSearch extends React.Component {
         onChange={(name, value) => {
           this.resetSchool()
         }}
-        value={this.state.schoolName}
+        value={schoolName}
       />
     )
   }
 
   resetSchool () {
-    this.setState({schoolId: null})
+    let {searchStore} = this.props.rootStore
+    searchStore.schoolId = null
+    searchStore.schoolName = ''
   }
 
   render () {
-    const {schoolId, searchField, searchValue} = this.state
+    let {schoolId, searchField, searchValue} = this.props.rootStore.searchStore
     let disabled = !(schoolId || (searchField && searchValue))
     if (searchField && !searchValue) disabled = true
     const disabledClass = disabled ? 'disabled' : ''
@@ -211,7 +224,8 @@ ClassSearch.propTypes = {
   onSearch: PropTypes.func.isRequired,
   location: PropTypes.object,
   hidden: PropTypes.bool,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  rootStore: PropTypes.object
 }
 
 export default ClassSearch

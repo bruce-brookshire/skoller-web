@@ -2,13 +2,15 @@ import { extendObservable } from 'mobx'
 import snackbarStore from './snackbar_store'
 import userStore from './user_store'
 import navbarStore from './navbar_store'
+import searchStore from './search_store'
 
 class ApplicationStore {
   constructor () {
     extendObservable(this, {
       snackbarStore,
       userStore,
-      navbarStore
+      navbarStore,
+      searchStore
     })
   }
 }
