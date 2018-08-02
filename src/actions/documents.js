@@ -7,7 +7,7 @@ import {showSnackbar} from '../utilities/snackbar'
 * @param [Number] classId. The class to get the class documents for.
 */
 export function getClassDocuments (classId) {
-  return get(`/api/v1/classes/${classId}/docs`, 'Error fetching documents. Try again.')
+  return get(`/api/v1/classes/${classId}/docs`, '', 'Error fetching documents. Try again.')
     .then(data => {
       return data
     })
