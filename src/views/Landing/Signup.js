@@ -28,6 +28,7 @@ class Signup extends React.Component {
               header={<div>Sign up <small className='sub-header'>(it&apos;s free!)</small></div>}
               buttonText='Take me there.'
               onSubmit={this.onSubmit.bind(this)}
+              referralCode={true}
             />
           </div>
         </div>

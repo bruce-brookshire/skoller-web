@@ -86,14 +86,34 @@ class SignUpForm extends React.Component {
     return newForm
   }
 
+  renderReferralCode () {
+    const {formErrors, updateProperty} = this.props
+    const {form} = this.state
+    return (
+      <div id="cn-referral-code">
+        <InputField
+          error={formErrors.student && formErrors.student.custom_link}
+          label='Referral code?'
+          name='student.custom_link'
+          onChange={updateProperty}
+          placeholder='Optional'
+          value={form.student.custom_link}
+        />
+      </div>
+    )
+  }
+
   render () {
     const {form} = this.state
-    const {formErrors, updateProperty, header, buttonText, isAdmin} = this.props
+    const {formErrors, updateProperty, header, buttonText, isAdmin, referralCode} = this.props
 
     return (
       <div className='cn-sign-up-form'>
         <form className='form-padding'>
-          {header && <h2>{header}</h2>}
+          <div id='cn-sign-up-form-header'>
+            {header && <h2>{header}</h2>}
+            {referralCode && this.renderReferralCode()}
+          </div>
           <div className='row'>
             <div className='col-xs-6'>
               <InputField
@@ -184,7 +204,8 @@ SignUpForm.propTypes = {
   onSubmit: PropTypes.func,
   isAdmin: PropTypes.bool,
   link: PropTypes.string,
-  customLink: PropTypes.string
+  customLink: PropTypes.string,
+  referralCode: PropTypes.bool
 }
 
 export default ValidateForm(Form(SignUpForm, 'form'))
