@@ -32,7 +32,7 @@ class ProjectFourDoor extends React.Component {
   */
   isComplete () {
     const {cl} = this.props
-    return (cl.status && cl.status.name === 'Complete')
+    return (cl.status && cl.status.is_complete)
   }
 
   /*
