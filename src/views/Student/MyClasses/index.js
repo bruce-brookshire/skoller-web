@@ -4,6 +4,7 @@ import {inject, observer} from 'mobx-react'
 import ClassList from '../../components/ClassList'
 import actions from '../../../actions'
 import { browserHistory } from 'react-router'
+import Card from '../../../components/Card'
 
 @inject('rootStore') @observer
 class MyClasses extends React.Component {
@@ -61,6 +62,8 @@ class MyClasses extends React.Component {
   renderContent () {
     return (
       <div>
+        <div className='margin-bottom center-text'>From this page, you can enroll in your classes, upload syllabi, and check other class details.</div>
+        {this.renderNeedsSyllabusInfo()}
         <div className='cn-table-grid-container'>
           <ClassList
             classes={this.state.classes}
@@ -91,22 +94,26 @@ class MyClasses extends React.Component {
     }).catch(() => false)
   }
 
+  renderTitle () {
+    return (
+      <div className='cn-icon-flex'>
+        My classes
+        <i className='fa fa-plus cn-blue cursor' onClick={() => browserHistory.push('student/find-classes') } />
+      </div>
+    )
+  }
+
+  renderDescription () {
+
+  }
+
   render () {
     return (
       <div className= 'cn-my-classes-container'>
-        <div className='cn-my-classes-header margin-bottom'>
-          <div className='left'>
-            <h2>My classes</h2><br/>
-            <span>From this page, you can enroll in your classes, upload syllabi, and check other class details.</span>
-          </div>
-
-          <div className='right'>
-            <h4><a onClick={() => { browserHistory.push('student/find-classes') }}>Add Class</a></h4>
-          </div>
-        </div>
-
-        {this.renderNeedsSyllabusInfo()}
-        {this.renderContent()}
+        <Card
+          title={this.renderTitle()}
+          content={this.renderContent()}
+        />
       </div>
     )
   }

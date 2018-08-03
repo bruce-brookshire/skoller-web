@@ -332,3 +332,10 @@ body {
     display: none;
   }
 }
+
+.cn-icon-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  width: 100%;
+}
