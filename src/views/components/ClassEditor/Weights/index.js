@@ -72,7 +72,7 @@ class Weights extends React.Component {
       <div className='cn-info-container cn-blue'>Extra Credit?
       <div className='message-bubble triangle-bottom'>
         <b><u>Do not</u></b> worry about adding extra credit, as this is the grade calculator&apos;s
-        foundations for everyone in the class. you can add extra credit to assignments in the app as you enter grades throughout the semester.
+        foundations for everyone in the class. You can add extra credit to assignments in the app as you enter grades throughout the semester.
         <div className='triangle-inner' />
       </div>
       </div>
