@@ -175,7 +175,8 @@ class ClassAdmin extends React.Component {
       pathname: `/assignment/${assignment.id}/admin`,
       state: {assignment,
         school: this.state.cl.school,
-        weights: this.state.weights
+        weights: this.state.weights,
+        cl: this.state.cl
       }
     })
   }

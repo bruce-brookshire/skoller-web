@@ -7,6 +7,7 @@ import ModCard from './ModCard'
 import Modal from '../../components/Modal'
 import ModDetail from './ModDetail'
 import AssignmentPosts from './AssignmentPosts'
+import AssignmentForm from '../components/ClassEditor/Assignments/AssignmentForm'
 
 @inject('rootStore') @observer
 class AssignmentAdmin extends React.Component {
@@ -24,7 +25,10 @@ class AssignmentAdmin extends React.Component {
       mods: [],
       openModModal: false,
       currentMod: null,
-      posts: assignment.posts || []
+      posts: assignment.posts || [],
+      openAssignmentModal: false,
+      assignment: assignment,
+      studentCount: assignment.student_count || 0
     }
   }
 
@@ -51,13 +55,21 @@ class AssignmentAdmin extends React.Component {
     this.setState({openModModal: true, currentMod: item})
   }
 
+  toggleAssignmentModal () {
+    this.setState({openAssignmentModal: !this.state.openAssignmentModal})
+  }
+
   renderAssignmentCard () {
-    const {assignment, school, weights} = this.props.location.state
+    const {school, weights} = this.props.location.state
+    const {assignment, mods, studentCount} = this.state
     return (
       <AssignmentCard
         assignment={assignment}
         school={school}
         weights={weights}
+        onClickEdit={this.toggleAssignmentModal.bind(this)}
+        modCount={mods.length}
+        studentCount={studentCount}
       />
     )
   }
@@ -91,6 +103,25 @@ class AssignmentAdmin extends React.Component {
     )
   }
 
+  renderAssignmentModal () {
+    const {openAssignmentModal, assignment} = this.state
+    const {cl, weights} = this.props.location.state
+    return (
+      <Modal
+        open={openAssignmentModal}
+        onClose={() => this.toggleAssignmentModal()}
+      >
+        <AssignmentForm
+          assignment={assignment}
+          cl={cl}
+          onUpdateAssignment={(assignment) => this.setState({assignment: assignment, openAssignmentModal: !openAssignmentModal})}
+          isAdmin={true}
+          weights={weights}
+        />
+      </Modal>
+    )
+  }
+
   render () {
     const {mods, currentMod} = this.state
     const {school, weights} = this.props.location.state
@@ -105,6 +136,7 @@ class AssignmentAdmin extends React.Component {
         />}
         {this.renderAssignmentPosts()}
         {currentMod && this.renderModModal()}
+        {this.renderAssignmentModal()}
       </div>
     )
   }
