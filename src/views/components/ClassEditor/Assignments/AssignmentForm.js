@@ -112,7 +112,7 @@ class AssignmentForm extends React.Component {
     this.setState({loading: true})
     actions.assignments.createAssignment(this.props.cl, form).then((assignment) => {
       this.setState({form: this.initializeFormData(), loading: false, due_null: false})
-      this.props.onCreateAssignment(assignment)
+      if (this.props.onCreateAssignment) this.props.onCreateAssignment(assignment)
     }).catch(() => { this.setState({loading: false}) })
   }
 
@@ -158,18 +158,9 @@ class AssignmentForm extends React.Component {
 
   render () {
     const {form} = this.state
-    const {formErrors, updateProperty, currentWeight, isAdmin, weights} = this.props
+    const {formErrors, updateProperty, isAdmin, weights} = this.props
     return (
-      <div id='class-editor-assignment-form'>
-        <div className='cn-section-content-header'>
-          Step 2: Add Assignments
-        </div>
-        <div className='margin-top'>
-          Add all assignments{currentWeight && ' that fall under the category:'}
-        </div>
-        <div className='cn-section-content-header center-text cn-blue margin-top'>
-          {currentWeight ? currentWeight.name : 'for this class'}
-        </div>
+      <div>
         <div className='row'>
           <div className='col-xs-12'>
             <InputField
@@ -254,9 +245,9 @@ class AssignmentForm extends React.Component {
 
 AssignmentForm.propTypes = {
   assignment: PropTypes.object,
-  cl: PropTypes.object,
+  cl: PropTypes.object.isRequired,
   formErrors: PropTypes.object,
-  onCreateAssignment: PropTypes.func.isRequired,
+  onCreateAssignment: PropTypes.func,
   onUpdateAssignment: PropTypes.func.isRequired,
   updateProperty: PropTypes.func,
   validateForm: PropTypes.func,
