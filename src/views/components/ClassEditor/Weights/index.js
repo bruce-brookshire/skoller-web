@@ -72,8 +72,7 @@ class Weights extends React.Component {
       <div className='cn-info-container cn-blue'>Extra Credit?
       <div className='message-bubble triangle-bottom'>
         <b><u>Do not</u></b> worry about adding extra credit, as this is the grade calculator&apos;s
-        foundations for everyone in the class. Add extra credit individually as you enter
-        your grades throughout the semester.
+        foundations for everyone in the class. You can add extra credit to assignments in the app as you enter grades throughout the semester.
         <div className='triangle-inner' />
       </div>
       </div>
@@ -86,7 +85,7 @@ class Weights extends React.Component {
         <div className='cn-info-container cn-blue'>Weights &ne; 100%?
         <div className='message-bubble triangle-bottom'>
           There are two options here.<br /><br />
-          1. <b><u>Politely</u></b> approach the professor to reconsile the situation.<br /><br />
+          1. <b><u>Politely</u></b> approach the professor to reconcile the situation.<br /><br />
           2. Add a weight named &quot;Additional x&#37;&quot; with the value needed to reach 100%
           <div className='triangle-inner' />
         </div>
