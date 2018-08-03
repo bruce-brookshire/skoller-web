@@ -15,17 +15,13 @@
 }
 
 .cn-sign-up-form {
-  .is-university {
-    @include row();
-    margin: 0;
-    align-items: baseline;
-    width: 100%;
-    padding: 0;
-    justify-content: space-around;
-    flex-direction: row;
+  #cn-sign-up-form-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
 
-    @include breakpoint(medium) {
-      width: 20em;
+    #cn-referral-code {
+      width: 150px;
     }
   }
 }
