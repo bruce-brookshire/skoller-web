@@ -19,7 +19,7 @@ class WeightType extends React.Component {
         </div>
         <CheckboxField
           containerClassName='margin-top margin-right'
-          label='Points'
+          label='Points (e.g. 100/500)'
           name='isPoints'
           onChange={(name, value) => {
             this.setState({isPoints: value})
@@ -28,7 +28,7 @@ class WeightType extends React.Component {
         />
         <CheckboxField
           containerClassName='margin-top margin-right'
-          label='Percentage'
+          label='Percentage (e.g. 20%)'
           name='isPercentage'
           onChange={(name, value) => {
             this.setState({isPoints: !value})

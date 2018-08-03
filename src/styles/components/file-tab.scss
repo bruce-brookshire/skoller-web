@@ -10,6 +10,7 @@
     display: flex;
     justify-content: center;
     padding: .5rem 1rem;
+    padding-bottom: 0;
     text-align: center;
     overflow-x: hidden;
     font-size: 12px; 
@@ -26,7 +27,7 @@
 
     &.active { 
       color: $cn-font-color;
-      font-size: 24px;
+      font-size: 16px;
     }
 
     button {

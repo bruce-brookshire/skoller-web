@@ -67,6 +67,34 @@ class Weights extends React.Component {
     }
   }
 
+  renderExtraCredit () {
+    return (
+      <div className='cn-info-container cn-blue'>Extra Credit?
+      <div className='message-bubble triangle-bottom'>
+        <b><u>Do not</u></b> worry about adding extra credit, as this is the grade calculator&apos;s
+        foundations for everyone in the class. Add extra credit individually as you enter
+        your grades throughout the semester.
+        <div className='triangle-inner' />
+      </div>
+      </div>
+    )
+  }
+
+  renderWeightTotalWarning () {
+    return (
+      <div>
+        <div className='cn-info-container cn-blue'>Weights &ne; 100%?
+        <div className='message-bubble triangle-bottom'>
+          There are two options here.<br /><br />
+          1. <b><u>Politely</u></b> approach the professor to reconsile the situation.<br /><br />
+          2. Add a weight named &quot;Additional x&#37;&quot; with the value needed to reach 100%
+          <div className='triangle-inner' />
+        </div>
+        </div>
+      </div>
+    )
+  }
+
   /*
   * Render the weights and weight form.
   */
@@ -109,9 +137,13 @@ class Weights extends React.Component {
             />
           </div>
         }
-        {weights.length !== 0 && !cl.is_points &&
-          <div id='cn-weights-info'>*The total should be 100%</div>
-        }
+        <div id='cn-weights-info'>
+          {weights.length !== 0 && <div>
+            {this.renderExtraCredit()}
+            {!cl.is_points && this.renderWeightTotalWarning()}
+          </div>}
+          {(weights.length !== 0 && !cl.is_points) && <div>*The total should be 100%</div>}
+        </div>
         {(weights.length !== 0 || noWeights) && !isReview &&
           <button
             onClick={() => this.props.onSubmit()}

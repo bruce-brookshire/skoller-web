@@ -17,12 +17,13 @@ class AssignmentCard extends React.Component {
   }
 
   render () {
-    const {assignment, weights} = this.props
+    const {assignment, weights, studentCount, modCount} = this.props
     return (
       <div id='cn-assignment-card' className='cn-shadow-box'>
         <div className='cn-shadow-box-content'>
           <div className='cn-card-title'>
             Assignment
+            <i className='fa fa-pencil cn-blue cursor' onClick={() => this.props.onClickEdit()} />
           </div>
           <div className='cn-card-row'>
             <div className='cn-card-field'>
@@ -35,7 +36,7 @@ class AssignmentCard extends React.Component {
               <div className='cn-card-label'>
                 Due
               </div>
-              {this.mapAssignmentDate(assignment.due)}
+              {assignment.due ? this.mapAssignmentDate(assignment.due) : 'None'}
             </div>
           </div>
           <div className='cn-card-row'>
@@ -57,13 +58,13 @@ class AssignmentCard extends React.Component {
               <div className='cn-card-label'>
                 Students
               </div>
-              {assignment.student_count}
+              {studentCount}
             </div>
             <div className='cn-card-field'>
               <div className='cn-card-label'>
                 Mods
               </div>
-              {assignment.mod_count}
+              {modCount}
             </div>
           </div>
         </div>
@@ -75,7 +76,10 @@ class AssignmentCard extends React.Component {
 AssignmentCard.propTypes = {
   assignment: PropTypes.object,
   school: PropTypes.object,
-  weights: PropTypes.array
+  weights: PropTypes.array,
+  onClickEdit: PropTypes.func,
+  studentCount: PropTypes.number,
+  modCount: PropTypes.number
 }
 
 export default AssignmentCard

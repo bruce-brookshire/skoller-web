@@ -6,10 +6,6 @@
   width: 300px;
   align-self: center;
 
-  @include breakpoint(medium) {
-    width: 720px;
-  }
-
   .cn-progress-step:first-child {
     .cn-progress-bar {
       .cn-progress-divider-left {
@@ -65,11 +61,6 @@
         height: 1px;
         border-top: 1px solid black;
         width: 1/3 * 300px / 2;
-
-        @include breakpoint(medium) {
-          left: -1/3 * 720px / 2;
-          width: 1/3 * 720px / 2;
-        }
       }
 
       .cn-progress-divider-right {
@@ -79,11 +70,6 @@
         height: 1px;
         border-top: 1px solid black;
         width: 1/3 * 300px / 2;
-
-        @include breakpoint(medium) {
-          right: -1/3 * 720px / 2;
-          width: 1/3 * 720px / 2;
-        }
       }
     }
   }

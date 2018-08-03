@@ -153,13 +153,24 @@ class Assignments extends React.Component {
     return (
       <div id='cn-assignments'>
         {!viewOnly &&
-          <AssignmentForm
-            assignment={currentAssignment}
-            cl={cl}
-            onCreateAssignment={this.onCreateAssignment.bind(this)}
-            onUpdateAssignment={this.onUpdateAssignment.bind(this)}
-            currentWeight={weights[currentWeightIndex]}
-          />
+          <div id='class-editor-assignment-form'>
+            <div className='cn-section-content-header'>
+              Step 2: Add Assignments
+            </div>
+            <div className='margin-top'>
+              Add all assignments{weights[currentWeightIndex] && ' that fall under the category:'}
+            </div>
+            <div className='cn-section-content-header center-text cn-blue margin-top'>
+              {weights[currentWeightIndex] ? weights[currentWeightIndex].name : 'for this class'}
+            </div>
+            <AssignmentForm
+              assignment={currentAssignment}
+              cl={cl}
+              onCreateAssignment={this.onCreateAssignment.bind(this)}
+              onUpdateAssignment={this.onUpdateAssignment.bind(this)}
+              currentWeight={weights[currentWeightIndex]}
+            />
+          </div>
         }
         {!viewOnly && assignments.length === 0 &&
           <div className='margin-top margin-bottom center-text'>
