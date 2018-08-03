@@ -6,7 +6,8 @@ class SearchStore {
       schoolId: null,
       schoolName: '',
       searchField: false,
-      searchValue: null
+      searchValue: null,
+      school: null
     })
   }
 }

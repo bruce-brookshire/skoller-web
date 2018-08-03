@@ -14,7 +14,9 @@ import moment from 'moment-timezone'
 import ProfessorModal from '../../components/ClassEditor/Professor/ProfessorModal'
 import { browserHistory } from 'react-router'
 import ClassCard from '../../../components/ClassCard'
+import {inject, observer} from 'mobx-react'
 
+@inject('rootStore') @observer
 class FindClasses extends React.Component {
   constructor (props) {
     super(props)
@@ -26,8 +28,6 @@ class FindClasses extends React.Component {
 
   initializeState () {
     return {
-      school: null,
-      schoolName: '',
       openCreateSchoolModal: false,
       openMeetingTimeModal: false,
       openProfessorModal: false,
@@ -48,7 +48,9 @@ class FindClasses extends React.Component {
   }
 
   onSubmitSchool (school) {
-    this.setState({school: school, schoolName: school.name})
+    let {searchStore} = this.props.rootStore
+    searchStore.school = school
+    searchStore.schoolName = school.name
   }
 
   onSubmitClass (cl) {
@@ -121,7 +123,7 @@ class FindClasses extends React.Component {
   }
 
   onCreateSemester (semester) {
-    const {school} = this.state
+    const {school} = this.props.rootStore.searchStore
     actions.periods.createPeriod(school.id, {name: semester}).then((semester) => {
       this.setState({semester})
     }).catch(() => { this.setState({semester: null}) })
@@ -132,12 +134,15 @@ class FindClasses extends React.Component {
   }
 
   onCreateSchool (schoolName) {
-    this.setState({schoolName, newSchool: true, newCl: true})
+    const {searchStore} = this.props.rootStore
+    searchStore.schoolName = schoolName
+    this.setState({newSchool: true, newCl: true})
     this.toggleCreateSchoolModal()
   }
 
   renderSchoolName () {
     const {formErrors} = this.props
+    const {schoolName} = this.props.rootStore.searchStore
     return (
       <InputField
         error={formErrors.schoolName}
@@ -145,14 +150,14 @@ class FindClasses extends React.Component {
         onChange={(name, value) => {
           this.resetSchool()
         }}
-        value={this.state.schoolName}
+        value={schoolName}
       />
     )
   }
 
   renderSemesterName () {
     const {formErrors} = this.props
-    const {newCl, cl} = this.state
+    const {newCl, cl, semester} = this.state
     return (
       <InputField
         error={formErrors.semesterName}
@@ -160,7 +165,7 @@ class FindClasses extends React.Component {
         onChange={(name, value) => {
           this.resetSemester()
         }}
-        value={this.state.semester.name}
+        value={semester.name}
         disabled={!newCl && cl}
       />
     )
@@ -168,7 +173,7 @@ class FindClasses extends React.Component {
 
   renderProfessorName () {
     const {formErrors} = this.props
-    const {newCl, cl} = this.state
+    const {newCl, cl, professor} = this.state
     return (
       <InputField
         error={formErrors.professorName}
@@ -177,13 +182,14 @@ class FindClasses extends React.Component {
           this.resetProfessor()
         }}
         disabled={!newCl && cl}
-        value={this.state.professor ? this.state.professor.name_first + ' ' + this.state.professor.name_last : ''}
+        value={professor ? professor.name_first + ' ' + professor.name_last : ''}
       />
     )
   }
 
   renderClassName () {
     const {formErrors} = this.props
+    const {clName} = this.state
     return (
       <InputField
         error={formErrors.clName}
@@ -191,13 +197,13 @@ class FindClasses extends React.Component {
         onChange={(name, value) => {
           this.resetClass(value)
         }}
-        value={this.state.clName}
+        value={clName}
       />
     )
   }
 
   renderSchool () {
-    const {school} = this.state
+    const {school} = this.props.rootStore.searchStore
     return (
       <div className='cn-find-classes-field-container'>
         <div className='cn-find-classes-field'>
@@ -214,12 +220,13 @@ class FindClasses extends React.Component {
 
   renderClass () {
     const {cl, newCl} = this.state
+    const {school} = this.props.rootStore.searchStore
     return (
       <div className='cn-find-classes-field-container'>
         <div className='cn-find-classes-field'>
           <div className='cn-find-classes-label'>Class name</div>
           {(cl || newCl) ? this.renderClassName() : <SearchClass
-            schoolId={this.state.school.id}
+            schoolId={school.id}
             onClassSelect={this.onSubmitClass.bind(this)}
             onClassCreate={this.onCreateClass.bind(this)}
           />}
@@ -229,7 +236,8 @@ class FindClasses extends React.Component {
   }
 
   renderSemester () {
-    const {school, semester} = this.state
+    const {semester} = this.state
+    const {school} = this.props.rootStore.searchStore
     return (
       <div className='cn-find-classes-field-container'>
         <div className='cn-find-classes-field'>
@@ -277,6 +285,9 @@ class FindClasses extends React.Component {
   }
 
   resetSchool () {
+    const {searchStore} = this.props.rootStore
+    searchStore.school = null
+    searchStore.schoolName = ''
     this.setState(this.initializeState())
   }
 
@@ -347,7 +358,7 @@ class FindClasses extends React.Component {
   }
 
   renderProfessorModal () {
-    const {school} = this.state
+    const {school} = this.props.rootStore.searchStore
     return (
       <Modal
         open={this.state.openProfessorModal}
@@ -364,13 +375,14 @@ class FindClasses extends React.Component {
   }
 
   renderCreateSchoolModal () {
+    const {schoolName} = this.props.rootStore.searchStore
     return (
       <Modal
         open={this.state.openCreateSchoolModal}
         onClose={this.toggleCreateSchoolModal.bind(this)}
       >
         <CreateSchoolModal
-          name={this.state.schoolName}
+          name={schoolName}
           onClose={this.toggleCreateSchoolModal.bind(this)}
           onSubmit={this.onSubmitSchool.bind(this)}
         />
@@ -397,7 +409,8 @@ class FindClasses extends React.Component {
 
   renderClassDetail () {
     const {formErrors} = this.props
-    const {newCl, cl, school} = this.state
+    const {newCl, cl} = this.state
+    const {school} = this.props.rootStore.searchStore
     return (
       <div className='cn-find-classes-field-container'>
         {school && school.is_university && <div className='cn-find-classes-sub-field'>
@@ -484,7 +497,8 @@ class FindClasses extends React.Component {
   }
 
   renderProfessor () {
-    const {school, professor, newCl} = this.state
+    const {school} = this.props.rootStore.searchStore
+    const {professor, newCl} = this.state
     return (
       <div className='cn-find-classes-field-container'>
         <div className='cn-find-classes-field'>
@@ -520,7 +534,8 @@ class FindClasses extends React.Component {
   }
 
   renderFields () {
-    const {school, cl, newCl, clName, semester, section, subject, code, time, days, professor} = this.state
+    const {school} = this.props.rootStore.searchStore
+    const {cl, newCl, clName, semester, section, subject, code, time, days, professor} = this.state
     return (
       <div className={this.state.fade ? 'cn-find-class-fade-left' : ''}>
         {this.renderSchool()}
@@ -535,7 +550,8 @@ class FindClasses extends React.Component {
   }
 
   renderCard () {
-    let {school, cl, professor, semester} = this.state
+    const {school} = this.props.rootStore.searchStore
+    let {cl, professor, semester} = this.state
     return (
       <div className='cn-find-classes-card'>
         <ClassCard
@@ -559,7 +575,8 @@ class FindClasses extends React.Component {
   }
 
   render () {
-    let {schoolName, school, cl, newCl} = this.state
+    const {school, schoolName} = this.props.rootStore.searchStore
+    let {cl, newCl} = this.state
     return (
       <div className='cn-find-classes-container'>
         <div className='cn-find-classes-content'>
@@ -580,7 +597,8 @@ class FindClasses extends React.Component {
 FindClasses.propTypes = {
   formErrors: PropTypes.object,
   updateProperty: PropTypes.func,
-  validateForm: PropTypes.func
+  validateForm: PropTypes.func,
+  rootStore: PropTypes.object
 }
 
 export default ValidateForm(Form(FindClasses, 'form'))
