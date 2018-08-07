@@ -63,7 +63,7 @@ class Grid extends React.Component {
       <table className={classes.join(' ')}>
         <thead>
           <tr >
-            {disabled ? null : <th className='th-spacer'></th>}
+            <th className='th-spacer'></th>
             {this.renderTableHeaders()}
             {canDelete ? <th className='th-spacer'></th> : null}
           </tr>

@@ -4,6 +4,7 @@ import {inject, observer} from 'mobx-react'
 import ClassList from '../../components/ClassList'
 import actions from '../../../actions'
 import { browserHistory } from 'react-router'
+import Card from '../../../components/Card'
 
 @inject('rootStore') @observer
 class MyClasses extends React.Component {
@@ -61,14 +62,15 @@ class MyClasses extends React.Component {
   renderContent () {
     return (
       <div>
+        <div className='margin-bottom center-text'>From this page, you can enroll in your classes, upload syllabi, and check other class details.</div>
+        {this.renderNeedsSyllabusInfo()}
         <div className='cn-table-grid-container'>
           <ClassList
             classes={this.state.classes}
-            disabled={false}
             onDelete={() => this.onDeleteClass.bind(this)}
             deleteMessage={'Are you sure you want to drop this class?'}
             emptyMessage='You are not enrolled in any classes.'
-            onUpdate={(cl) => this.updateClass(cl)}
+            onSelect={this.onClassSelect.bind(this)}
           />
           <button className='button-invert full-width add-button' onClick={() => { browserHistory.push('student/find-classes') }}>
             Add a Class
@@ -76,6 +78,12 @@ class MyClasses extends React.Component {
         </div>
       </div>
     )
+  }
+
+  onClassSelect (cl) {
+    browserHistory.push({
+      pathname: `/student/class/${cl.id}/`
+    })
   }
 
   /*
@@ -91,22 +99,22 @@ class MyClasses extends React.Component {
     }).catch(() => false)
   }
 
+  renderTitle () {
+    return (
+      <div className='cn-icon-flex'>
+        My classes
+        <i className='fa fa-plus cn-blue cursor' onClick={() => browserHistory.push('student/find-classes') } />
+      </div>
+    )
+  }
+
   render () {
     return (
-      <div className= 'cn-my-classes-container'>
-        <div className='cn-my-classes-header margin-bottom'>
-          <div className='left'>
-            <h2>My classes</h2><br/>
-            <span>From this page, you can enroll in your classes, upload syllabi, and check other class details.</span>
-          </div>
-
-          <div className='right'>
-            <h4><a onClick={() => { browserHistory.push('student/find-classes') }}>Add Class</a></h4>
-          </div>
-        </div>
-
-        {this.renderNeedsSyllabusInfo()}
-        {this.renderContent()}
+      <div className='cn-my-classes-container'>
+        <Card
+          title={this.renderTitle()}
+          content={this.renderContent()}
+        />
       </div>
     )
   }
