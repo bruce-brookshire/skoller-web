@@ -34,7 +34,8 @@ class UploadDocuments extends React.Component {
       uploading: false,
       openStudentRequestModal: false,
       studentModalMessageShowing: false,
-      studentModalError: null
+      studentModalError: null,
+      viewDocs: false
     }
   }
 
@@ -242,9 +243,14 @@ class UploadDocuments extends React.Component {
   }
 
   renderTitle () {
+    const {viewDocs} = this.state
     if (this.needsSyllabus()) {
       return (
         <div className='cn-red'>Syllabus Needed</div>
+      )
+    } else if (viewDocs) {
+      return (
+        <div className='cn-grey'>Documents Uploaded</div>
       )
     } else if (this.isComplete()) {
       return (
@@ -257,11 +263,10 @@ class UploadDocuments extends React.Component {
     }
   }
 
-  renderNeedsSyllabus () {
-    const {unsavedSyllabusDocs, unsavedAdditionalDocs, uploading} = this.state
-    let hasUnsavedSyllabi = unsavedSyllabusDocs && unsavedSyllabusDocs.length > 0
+  renderDocView () {
+    const {unsavedSyllabusDocs, unsavedAdditionalDocs} = this.state
     return (
-      <div>
+      <div className='margin-bottom'>
         {this.renderDuplicateFileMessage()}
         <UploadHistory
           disabled={!this.isUploadAllowed() || this.getSyllabusDocuments().length > 0}
@@ -284,6 +289,16 @@ class UploadDocuments extends React.Component {
           title='Drop any additional documents (optional)'
           onDeleteDocument={(ind) => { this.deleteAdditional(ind) }}
         />
+      </div>
+    )
+  }
+
+  renderNeedsSyllabus () {
+    const {unsavedSyllabusDocs, uploading} = this.state
+    let hasUnsavedSyllabi = unsavedSyllabusDocs && unsavedSyllabusDocs.length > 0
+    return (
+      <div>
+        {this.renderDocView()}
         <button className={`button full-width margin-top cn-shadow-box ${hasUnsavedSyllabi && !uploading ? '' : 'disabled'}`}
           disabled={!hasUnsavedSyllabi || uploading}
           onClick={() => { this.uploadDocuments() }}>{uploading ? (<i className='fa fa-circle-o-notch fa-spin'></i>) : 'Submit'}
@@ -329,17 +344,53 @@ class UploadDocuments extends React.Component {
     return (
       <div>
         <ProjectFourDoor cl={this.props.cl} />
-        {this.renderNeedAssistance()}
+        {this.renderToolbar()}
       </div>
     )
   }
 
   renderContent () {
+    const {viewDocs} = this.state
     if (this.needsSyllabus()) {
       return this.renderNeedsSyllabus()
+    } else if (viewDocs) {
+      return (
+        <div>
+          {this.renderDocView()}
+          {this.renderToolbar()}
+        </div>
+      )
     } else {
       return this.renderFourDoor()
     }
+  }
+
+  renderToolbar () {
+    const {viewDocs} = this.state
+    return (
+      <div id='cn-upload-doc-toolbar'>
+        {this.renderNeedAssistance()}
+        {viewDocs ? this.renderViewStatus() : this.renderViewDocs()}
+      </div>
+    )
+  }
+
+  renderViewDocs () {
+    const {viewDocs} = this.state
+    return (
+      <div className='center-text'>
+        <a onClick={() => { this.setState({viewDocs: !viewDocs}) }}>View Documents</a>
+      </div>
+    )
+  }
+
+  renderViewStatus () {
+    const {viewDocs} = this.state
+    return (
+      <div className='center-text'>
+        <a onClick={() => { this.setState({viewDocs: !viewDocs}) }}>View Status</a>
+      </div>
+    )
   }
 
   render () {

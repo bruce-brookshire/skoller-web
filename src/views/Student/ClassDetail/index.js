@@ -38,7 +38,7 @@ class ClassDetail extends React.Component {
   render () {
     const {loading, cl} = this.state
     return (
-      <div className='cn-my-classes-container'>
+      <div id='cn-class-detail-container'>
         {loading
           ? <Loading />
           : <UploadDocuments cl={cl}/>}
