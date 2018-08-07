@@ -1,9 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import {inject, observer} from 'mobx-react'
 import UploadDocuments from './UploadDocuments'
 import actions from '../../../actions'
 import Loading from '../../../components/Loading'
 
+@inject('rootStore') @observer
 class ClassDetail extends React.Component {
   constructor (props) {
     super(props)
@@ -17,11 +19,19 @@ class ClassDetail extends React.Component {
     this.getClass()
   }
 
+  componentWillUnmount () {
+    let {navbarStore} = this.props.rootStore
+    navbarStore.title = ''
+  }
+
   getClass () {
     const {classId} = this.props.params
+    let {navbarStore} = this.props.rootStore
+
     this.setState({loading: true})
     actions.classes.getClassById(classId).then(cl => {
       this.setState({cl, loading: false})
+      navbarStore.title = cl.name
     }).catch(() => this.setState({loading: false}))
   }
 
@@ -43,7 +53,8 @@ class ClassDetail extends React.Component {
 }
 
 ClassDetail.propTypes = {
-  params: PropTypes.object
+  params: PropTypes.object,
+  rootStore: PropTypes.object
 }
 
 export default ClassDetail

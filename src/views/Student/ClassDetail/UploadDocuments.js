@@ -174,47 +174,34 @@ class UploadDocuments extends React.Component {
   render () {
     return (
       <div className='cn-upload-documents-container'>
-        <h4 className='center-text' style={{marginBottom: '-10px', marginTop: '15px'}}>{this.props.cl.name}</h4>
         {this.renderDuplicateFileMessage()}
-        <div className='row relative'>
-          <div className='col-xs-3 vertical-align'>
-            <h4>Finish up this class.</h4>
-            <span className='info-1'>Upload documents and review syllabi.</span>
-          </div>
-          <div className='col-xs-3'>
-            <UploadHistory
-              disabled={!this.isUploadAllowed() || this.getSyllabusDocuments().length > 0}
-              files={this.getSyllabusDocuments()}
-              unsavedDocuments={this.state.unsavedSyllabusDocs}
-              info='Upload your class syllabus.'
-              onUpload={(file) => { this.onUpload(file, true) }}
-              title={!this.isUploadAllowed()
-                ? 'The syllabus for this class has already been submitted.'
-                : (this.state.unsavedSyllabusDocs.length === 0 ? 'Drop syllabus here' : '')
-              }
-              onDeleteDocument={(ind) => { this.deleteSyllabus(ind) }}
-            />
-          </div>
-          <div className='col-xs-3'>
-            <UploadHistory
-              disabled={!this.isUploadAllowed()}
-              files={this.getAdditionalDocuments()}
-              unsavedDocuments={this.state.unsavedAdditionalDocs}
-              info='If assignment schedules or grading info are provided, drop them here.'
-              onUpload={(file) => { this.onUpload(file, false) }}
-              title='Drop any additional documents (optional)'
-              onDeleteDocument={(ind) => { this.deleteAdditional(ind) }}
-            />
-          </div>
-          <div className='col-xs-3 vertical-align center'>
-            <ProjectFourDoor cl={this.props.cl}
-              onSubmit={() => { this.uploadDocuments() }}
-              unsavedSyllabi={this.state.unsavedSyllabusDocs}
-              unsavedAdditional={this.state.unsavedAdditionalDocs}
-              uploading={this.state.uploading}
-            />
-          </div>
-        </div>
+        <UploadHistory
+          disabled={!this.isUploadAllowed() || this.getSyllabusDocuments().length > 0}
+          files={this.getSyllabusDocuments()}
+          unsavedDocuments={this.state.unsavedSyllabusDocs}
+          info='Upload your class syllabus.'
+          onUpload={(file) => { this.onUpload(file, true) }}
+          title={!this.isUploadAllowed()
+            ? 'The syllabus for this class has already been submitted.'
+            : (this.state.unsavedSyllabusDocs.length === 0 ? 'Drop syllabus here' : '')
+          }
+          onDeleteDocument={(ind) => { this.deleteSyllabus(ind) }}
+        />
+        <UploadHistory
+          disabled={!this.isUploadAllowed()}
+          files={this.getAdditionalDocuments()}
+          unsavedDocuments={this.state.unsavedAdditionalDocs}
+          info='If assignment schedules or grading info are provided, drop them here.'
+          onUpload={(file) => { this.onUpload(file, false) }}
+          title='Drop any additional documents (optional)'
+          onDeleteDocument={(ind) => { this.deleteAdditional(ind) }}
+        />
+        <ProjectFourDoor cl={this.props.cl}
+          onSubmit={() => { this.uploadDocuments() }}
+          unsavedSyllabi={this.state.unsavedSyllabusDocs}
+          unsavedAdditional={this.state.unsavedAdditionalDocs}
+          uploading={this.state.uploading}
+        />
       </div>
     )
   }
