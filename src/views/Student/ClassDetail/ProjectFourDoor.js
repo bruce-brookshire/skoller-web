@@ -2,29 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import {browserHistory} from 'react-router'
-import StudentRequestModal from './StudentRequestModal'
-import actions from '../../../actions'
-import Loading from '../../../components/Loading'
 
 @inject('rootStore') @observer
 class ProjectFourDoor extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      openStudentRequestModal: false,
-      studentModalError: null,
-      school: {},
-      loading: false
-    }
-  }
-
-  componentWillMount () {
-    this.setState({loading: true})
-    actions.classes.getClassById(this.props.cl.id).then((cl) => {
-      this.setState({school: cl.school, loading: false})
-    }).catch(() => this.setState({loading: false}))
-  }
-
   /*
   * Determine if the class is 'complete'.
   *
@@ -49,16 +29,6 @@ class ProjectFourDoor extends React.Component {
   }
 
   /*
-  * Determine if the class is in 'needs syllabus' state to render Project4Door.
-  *
-  * @return [Boolean]. boolean indicating if the class is in needs syllabus
-  */
-  needsSyllabus () {
-    const {cl} = this.props
-    return (cl.status && cl.status.name === 'Needs Syllabus')
-  }
-
-  /*
   * Determine if the class is in review status (able to request help)
   *
   * @return [Boolean]. boolean indicating if the class is in review
@@ -66,70 +36,6 @@ class ProjectFourDoor extends React.Component {
   inHelp () {
     const {cl} = this.props
     return (cl.status && cl.status.name === 'Help')
-  }
-
-  /*
-  * Toggle the student request modal.
-  *
-  * @return null.
-  */
-  toggleStudentRequestModal () {
-    this.setState({openStudentRequestModal: !this.state.openStudentRequestModal})
-  }
-
-  /*
-  * Run when the modal errors out
-  *
-  * @return null.
-  */
-  onStudentRequestModalError () {
-    this.setState({
-      studentModalMessageShowing: true,
-      studentModalError: true,
-      openStudentRequestModal: false
-    })
-    setTimeout(() => {
-      this.setState({
-        studentModalMessageShowing: false
-      })
-    }, 3000)
-  }
-
-  /*
-  * Run when the modal change is successful
-  *
-  * @return null.
-  */
-  onStudentRequestModalSuccess () {
-    this.setState({
-      studentModalMessageShowing: true,
-      studentModalError: false,
-      openStudentRequestModal: false
-    })
-    setTimeout(() => {
-      this.setState({
-        studentModalMessageShowing: false
-      })
-    }, 3000)
-  }
-
-  renderNeedAssistance () {
-    const {cl} = this.props
-    return (
-      <div>
-        <div className='center-text'>
-          <a onClick={() => { this.toggleStudentRequestModal() }}>Need assistance?</a>
-        </div>
-        {this.renderRequestModalMessage()}
-        <StudentRequestModal
-          open={this.state.openStudentRequestModal}
-          onClose={() => this.toggleStudentRequestModal.bind(this)}
-          onError={() => { this.onStudentRequestModalError() }}
-          onSuccess={() => { this.onStudentRequestModalSuccess() }}
-          cl={cl}>
-        </StudentRequestModal>
-      </div>
-    )
   }
 
   renderNormal () {
@@ -171,64 +77,30 @@ class ProjectFourDoor extends React.Component {
     )
   }
 
-  renderNeedsSyllabus () {
-    let hasUnsavedSyllabi = this.props.unsavedSyllabi && this.props.unsavedSyllabi.length > 0
-    let spanText = hasUnsavedSyllabi ? 'Double check to make sure you\'re submitting the correct file(s).' : 'Upload your syllabus.'
-    return (
-      <div className='center-text'>
-        <span>{spanText}</span>
-        <button className={`button full-width margin-top cn-shadow-box ${hasUnsavedSyllabi && !this.props.uploading ? '' : 'disabled'}`}
-          disabled={!hasUnsavedSyllabi || this.props.uploading}
-          onClick={() => { this.props.onSubmit() }}>{this.props.uploading ? (<i className='fa fa-circle-o-notch fa-spin'></i>) : 'Submit'}</button>
-      </div>
-    )
-  }
-
   renderSkollerWorking () {
     return (
-      <div>
-        <div className='center-text'>
-          <span>Hang tight. Skoller is working on this syllabus right now.</span><br/><br/>
-        </div>
-        {this.renderNeedAssistance()}
+      <div className='center-text'>
+        <span>Hang tight. Skoller is working on this syllabus right now.</span><br/><br/>
       </div>
     )
   }
 
   renderComplete () {
     return (
-      <div>
-        <div className='center-text'>
-          <span>All done! You and your classmates are good to go.</span><br/><br/>
-        </div>
-        {this.renderNeedAssistance()}
+      <div className='center-text'>
+        <span>All done! You and your classmates are good to go.</span><br/><br/>
       </div>
     )
   }
 
-  renderRequestModalMessage () {
-    if (this.state.studentModalMessageShowing) {
-      return (
-        <div className='center-text request-modal-message'>
-          {this.state.studentModalError ? 'Error creating request.' : 'Your request has been received. Thank you!'}
-        </div>
-      )
-    } else {
-      return null
-    }
-  }
-
   renderFourDoor () {
-    const {is_auto_syllabus: autoSyllabus, is_diy_enabled: diy, is_diy_preferred: diyPref} = this.state.school
+    const {is_auto_syllabus: autoSyllabus, is_diy_enabled: diy, is_diy_preferred: diyPref} = this.props.cl.school
     // in review
     if (this.inHelp()) {
       return this.renderSkollerWorking()
     // complete
     } else if (this.isComplete()) {
       return this.renderComplete()
-    // needs syllabus
-    } else if (this.needsSyllabus()) {
-      return this.renderNeedsSyllabus()
     // normal
     } else if (diy && !diyPref && autoSyllabus) {
       return this.renderNormal()
@@ -247,17 +119,13 @@ class ProjectFourDoor extends React.Component {
   }
 
   render () {
-    const {loading} = this.state
-    return loading ? <Loading /> : this.renderFourDoor()
+    return this.renderFourDoor()
   }
 }
 
 ProjectFourDoor.propTypes = {
   cl: PropTypes.object,
-  rootStore: PropTypes.object,
-  unsavedSyllabi: PropTypes.array,
-  uploading: PropTypes.bool,
-  onSubmit: PropTypes.func
+  rootStore: PropTypes.object
 }
 
 export default ProjectFourDoor

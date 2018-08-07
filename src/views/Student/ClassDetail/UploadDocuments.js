@@ -5,6 +5,7 @@ import ProjectFourDoor from './ProjectFourDoor'
 import UploadHistory from '../../../components/UploadHistory'
 import actions from '../../../actions'
 import Card from '../../../components/Card'
+import StudentRequestModal from './StudentRequestModal'
 
 class UploadDocuments extends React.Component {
   constructor (props) {
@@ -30,7 +31,10 @@ class UploadDocuments extends React.Component {
       duplicateFile: false,
       unsavedAdditionalDocs: [],
       unsavedSyllabusDocs: [],
-      uploading: false
+      uploading: false,
+      openStudentRequestModal: false,
+      studentModalMessageShowing: false,
+      studentModalError: null
     }
   }
 
@@ -58,6 +62,42 @@ class UploadDocuments extends React.Component {
   }
 
   /*
+  * Run when the modal errors out
+  *
+  * @return null.
+  */
+  onStudentRequestModalError () {
+    this.setState({
+      studentModalMessageShowing: true,
+      studentModalError: true,
+      openStudentRequestModal: false
+    })
+    setTimeout(() => {
+      this.setState({
+        studentModalMessageShowing: false
+      })
+    }, 3000)
+  }
+
+  /*
+  * Run when the modal change is successful
+  *
+  * @return null.
+  */
+  onStudentRequestModalSuccess () {
+    this.setState({
+      studentModalMessageShowing: true,
+      studentModalError: false,
+      openStudentRequestModal: false
+    })
+    setTimeout(() => {
+      this.setState({
+        studentModalMessageShowing: false
+      })
+    }, 3000)
+  }
+
+  /*
   * Save ref to unsaved upload.
   *
   * @param [Object] file. File uploaded
@@ -79,6 +119,15 @@ class UploadDocuments extends React.Component {
       newAddtl.push(file)
       this.setState({unsavedAdditionalDocs: newAddtl})
     }
+  }
+
+  /*
+  * Toggle the student request modal.
+  *
+  * @return null.
+  */
+  toggleStudentRequestModal () {
+    this.setState({openStudentRequestModal: !this.state.openStudentRequestModal})
   }
 
   /*
@@ -174,6 +223,16 @@ class UploadDocuments extends React.Component {
     return (cl.status && cl.status.name === 'Needs Syllabus')
   }
 
+  /*
+  * Determine if the class is 'complete'.
+  *
+  * @return [Boolean]. boolean indicating if the class is complete
+  */
+  isComplete () {
+    const {cl} = this.props
+    return (cl.status && cl.status.is_complete)
+  }
+
   renderDuplicateFileMessage () {
     if (this.state.duplicateFile) {
       return (<h5 className='center-text' style={{color: 'red', marginTop: '10px', marginBottom: '-20px'}}>{this.state.duplicateFile} has already been added</h5>)
@@ -185,7 +244,15 @@ class UploadDocuments extends React.Component {
   renderTitle () {
     if (this.needsSyllabus()) {
       return (
-        <div className='cn-red'>Syllabus needed</div>
+        <div className='cn-red'>Syllabus Needed</div>
+      )
+    } else if (this.isComplete()) {
+      return (
+        <div className='cn-green'>Syllabus Completed</div>
+      )
+    } else {
+      return (
+        <div>Syllabus In Review</div>
       )
     }
   }
@@ -221,12 +288,48 @@ class UploadDocuments extends React.Component {
           disabled={!hasUnsavedSyllabi || uploading}
           onClick={() => { this.uploadDocuments() }}>{uploading ? (<i className='fa fa-circle-o-notch fa-spin'></i>) : 'Submit'}
         </button>
-        {/* <ProjectFourDoor cl={this.props.cl}
-          onSubmit={() => { this.uploadDocuments() }}
-          unsavedSyllabi={this.state.unsavedSyllabusDocs}
-          unsavedAdditional={this.state.unsavedAdditionalDocs}
-          uploading={this.state.uploading}
-        /> */}
+      </div>
+    )
+  }
+
+  renderNeedAssistance () {
+    const {cl} = this.props
+    const {openStudentRequestModal} = this.state
+    return (
+      <div>
+        <div className='center-text'>
+          <a onClick={() => { this.toggleStudentRequestModal() }}>Need assistance?</a>
+        </div>
+        {this.renderRequestModalMessage()}
+        <StudentRequestModal
+          open={openStudentRequestModal}
+          onClose={() => this.toggleStudentRequestModal.bind(this)}
+          onError={() => { this.onStudentRequestModalError() }}
+          onSuccess={() => { this.onStudentRequestModalSuccess() }}
+          cl={cl}>
+        </StudentRequestModal>
+      </div>
+    )
+  }
+
+  renderRequestModalMessage () {
+    const {studentModalMessageShowing, studentModalError} = this.state
+    if (studentModalMessageShowing) {
+      return (
+        <div className='center-text request-modal-message'>
+          {studentModalError ? 'Error creating request.' : 'Your request has been received. Thank you!'}
+        </div>
+      )
+    } else {
+      return null
+    }
+  }
+
+  renderFourDoor () {
+    return (
+      <div>
+        <ProjectFourDoor cl={this.props.cl} />
+        {this.renderNeedAssistance()}
       </div>
     )
   }
@@ -234,6 +337,8 @@ class UploadDocuments extends React.Component {
   renderContent () {
     if (this.needsSyllabus()) {
       return this.renderNeedsSyllabus()
+    } else {
+      return this.renderFourDoor()
     }
   }
 
