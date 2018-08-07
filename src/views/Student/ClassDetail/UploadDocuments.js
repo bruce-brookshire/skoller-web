@@ -153,6 +153,7 @@ class UploadDocuments extends React.Component {
         unsavedAdditionalDocs: unsavedAdditionalNew,
         uploading: !(unsavedSyllabiNew.length === 0 && unsavedAdditionalNew.length === 0)
       })
+      this.props.onUpload()
     }).catch(() => false)
   }
 
@@ -404,7 +405,8 @@ class UploadDocuments extends React.Component {
 }
 
 UploadDocuments.propTypes = {
-  cl: PropTypes.object
+  cl: PropTypes.object.isRequired,
+  onUpload: PropTypes.func
 }
 
 export default UploadDocuments

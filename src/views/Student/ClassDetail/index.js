@@ -41,7 +41,7 @@ class ClassDetail extends React.Component {
       <div id='cn-class-detail-container'>
         {loading
           ? <Loading />
-          : <UploadDocuments cl={cl}/>}
+          : <UploadDocuments cl={cl} onUpload={this.getClass.bind(this)} />}
       </div>
     )
   }
