@@ -18,6 +18,7 @@ import MyClasses from './views/Student/MyClasses'
 import FindClasses from './views/Student/FindClasses'
 import Verification from './views/components/Verification'
 import ClassLink from './views/Student/ClassLink'
+import ClassDetail from './views/Student/ClassDetail'
 
 import SyllabusTool from './views/SyllabusTool'
 import ClassAdmin from './views/ClassAdmin'
@@ -68,6 +69,7 @@ const router = (
           <Route path='/student/verify' component={Verification} onEnter={authOnboard} />
           <Route path='/student/class-link' component={ClassLink} />
           <Route path='/student/classes' component={MyClasses}/>
+          <Route path='/student/class/:classId' component={ClassDetail} />
         </Route>
 
         <Route path='/hub'>

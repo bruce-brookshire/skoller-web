@@ -70,6 +70,7 @@ class MyClasses extends React.Component {
             onDelete={() => this.onDeleteClass.bind(this)}
             deleteMessage={'Are you sure you want to drop this class?'}
             emptyMessage='You are not enrolled in any classes.'
+            onSelect={this.onClassSelect.bind(this)}
           />
           <button className='button-invert full-width add-button' onClick={() => { browserHistory.push('student/find-classes') }}>
             Add a Class
@@ -77,6 +78,12 @@ class MyClasses extends React.Component {
         </div>
       </div>
     )
+  }
+
+  onClassSelect (cl) {
+    browserHistory.push({
+      pathname: `/student/class/${cl.id}/`
+    })
   }
 
   /*
@@ -101,13 +108,9 @@ class MyClasses extends React.Component {
     )
   }
 
-  renderDescription () {
-
-  }
-
   render () {
     return (
-      <div className= 'cn-my-classes-container'>
+      <div className='cn-my-classes-container'>
         <Card
           title={this.renderTitle()}
           content={this.renderContent()}
