@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import ProjectFourDoor from './ProjectFourDoor'
 import UploadHistory from '../../../components/UploadHistory'
 import actions from '../../../actions'
+import Card from '../../../components/Card'
 
 class UploadDocuments extends React.Component {
   constructor (props) {
@@ -163,6 +164,16 @@ class UploadDocuments extends React.Component {
     return (cl.status && cl.status.name !== 'Complete' && cl.status.name !== 'Help' && cl.status.name !== 'Change')
   }
 
+  /*
+  * Determine if the class is in 'needs syllabus' state to render Project4Door.
+  *
+  * @return [Boolean]. boolean indicating if the class is in needs syllabus
+  */
+  needsSyllabus () {
+    const {cl} = this.props
+    return (cl.status && cl.status.name === 'Needs Syllabus')
+  }
+
   renderDuplicateFileMessage () {
     if (this.state.duplicateFile) {
       return (<h5 className='center-text' style={{color: 'red', marginTop: '10px', marginBottom: '-20px'}}>{this.state.duplicateFile} has already been added</h5>)
@@ -171,38 +182,67 @@ class UploadDocuments extends React.Component {
     }
   }
 
-  render () {
+  renderTitle () {
+    if (this.needsSyllabus()) {
+      return (
+        <div className='cn-red'>Syllabus needed</div>
+      )
+    }
+  }
+
+  renderNeedsSyllabus () {
+    const {unsavedSyllabusDocs, unsavedAdditionalDocs, uploading} = this.state
+    let hasUnsavedSyllabi = unsavedSyllabusDocs && unsavedSyllabusDocs.length > 0
     return (
-      <div className='cn-upload-documents-container'>
+      <div>
         {this.renderDuplicateFileMessage()}
         <UploadHistory
           disabled={!this.isUploadAllowed() || this.getSyllabusDocuments().length > 0}
           files={this.getSyllabusDocuments()}
-          unsavedDocuments={this.state.unsavedSyllabusDocs}
+          unsavedDocuments={unsavedSyllabusDocs}
           info='Upload your class syllabus.'
           onUpload={(file) => { this.onUpload(file, true) }}
           title={!this.isUploadAllowed()
             ? 'The syllabus for this class has already been submitted.'
-            : (this.state.unsavedSyllabusDocs.length === 0 ? 'Drop syllabus here' : '')
+            : (unsavedSyllabusDocs.length === 0 ? 'Drop syllabus here' : '')
           }
           onDeleteDocument={(ind) => { this.deleteSyllabus(ind) }}
         />
         <UploadHistory
           disabled={!this.isUploadAllowed()}
           files={this.getAdditionalDocuments()}
-          unsavedDocuments={this.state.unsavedAdditionalDocs}
+          unsavedDocuments={unsavedAdditionalDocs}
           info='If assignment schedules or grading info are provided, drop them here.'
           onUpload={(file) => { this.onUpload(file, false) }}
           title='Drop any additional documents (optional)'
           onDeleteDocument={(ind) => { this.deleteAdditional(ind) }}
         />
-        <ProjectFourDoor cl={this.props.cl}
+        <button className={`button full-width margin-top cn-shadow-box ${hasUnsavedSyllabi && !uploading ? '' : 'disabled'}`}
+          disabled={!hasUnsavedSyllabi || uploading}
+          onClick={() => { this.uploadDocuments() }}>{uploading ? (<i className='fa fa-circle-o-notch fa-spin'></i>) : 'Submit'}
+        </button>
+        {/* <ProjectFourDoor cl={this.props.cl}
           onSubmit={() => { this.uploadDocuments() }}
           unsavedSyllabi={this.state.unsavedSyllabusDocs}
           unsavedAdditional={this.state.unsavedAdditionalDocs}
           uploading={this.state.uploading}
-        />
+        /> */}
       </div>
+    )
+  }
+
+  renderContent () {
+    if (this.needsSyllabus()) {
+      return this.renderNeedsSyllabus()
+    }
+  }
+
+  render () {
+    return (
+      <Card
+        title={this.renderTitle()}
+        content={this.renderContent()}
+      />
     )
   }
 }

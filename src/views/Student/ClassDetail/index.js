@@ -35,18 +35,13 @@ class ClassDetail extends React.Component {
     }).catch(() => this.setState({loading: false}))
   }
 
-  renderContent () {
-    const {cl} = this.state
-    return (
-      <UploadDocuments cl={cl}/>
-    )
-  }
-
   render () {
-    const {loading} = this.state
+    const {loading, cl} = this.state
     return (
       <div className='cn-my-classes-container'>
-        {loading ? <Loading /> : this.renderContent()}
+        {loading
+          ? <Loading />
+          : <UploadDocuments cl={cl}/>}
       </div>
     )
   }
