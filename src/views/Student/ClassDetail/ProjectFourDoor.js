@@ -41,9 +41,14 @@ class ProjectFourDoor extends React.Component {
   renderNormal () {
     return (
       <div className='cn-project-four-door'>
-        <div className='margin-bottom'>Hang out while the Skoller team takes care of it</div>
-        <div className='margin-bottom'>--- OR ---</div>
-        <button className='button full-width cn-shadow-box' onClick={this.onDIY.bind(this)}>Input your syllabus information now</button>
+        <div className='margin-bottom'>Hang tight while Skoller grabs the important syllabus information.</div>
+        <div id='or' className='margin-bottom'>
+          <div className='line' />
+          <div className='or'><b>OR</b></div>
+          <div className='line' />
+        </div>
+        <div className='margin-bottom'>Finish setting this class up using our <b>Do-It-Yourself</b> tool.</div>
+        <button className='button full-width cn-shadow-box' onClick={this.onDIY.bind(this)}>Start</button>
       </div>
     )
   }
