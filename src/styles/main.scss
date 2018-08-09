@@ -68,8 +68,10 @@
 @import 'views/assignment-admin.scss';
 @import 'views/call-to-action.scss';
 @import 'views/class-admin.scss';
+@import 'views/class-detail.scss';
 @import 'views/class-form.scss';
 @import 'views/class-link.scss';
+@import 'views/class-invite-link.scss';
 @import 'views/create-professor-modal.scss';
 @import 'views/create-school-modal.scss';
 @import 'views/enrollment-link.scss';
@@ -234,7 +236,6 @@ body {
   }
 }
 
-
 .cn-green {
   color: $cn-color-green;
 }
@@ -331,4 +332,21 @@ body {
   @media only screen and (max-width: 760px) {
     display: none;
   }
+}
+
+.cn-icon-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  width: 100%;
+}
+
+.cn-align-row {
+  display: flex;
+  align-items: center;
+}
+
+.cn-lightning {
+  padding-top: 3px;
+  margin-right: 2px;
 }

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import Grid from '../../../components/Grid/index'
 import {mapProfessor} from '../../../utilities/display'
 import {mapTimeToDisplay} from '../../../utilities/time'
-import UploadDocuments from './UploadDocuments'
 
 const headers = [
   {
@@ -32,7 +31,7 @@ const headers = [
   },
   {
     field: 'enrollment',
-    display: 'Enrollment'
+    display: 'Classmates'
   }
 ]
 
@@ -66,8 +65,7 @@ class ClassList extends React.Component {
       days: days || '',
       beginTime: days === 'Online' ? '' : (startTime ? mapTimeToDisplay(startTime) : (section && !code ? section : '')),
       status: status ? this.mapStatus(status) : '-',
-      enrollment: enrollment || 0,
-      component: this.props.onUpdate ? <UploadDocuments cl={item} onUpdateClass={(cl) => { this.props.onUpdate(cl) }}/> : null
+      enrollment: (enrollment && (enrollment - 1) > 0) ? enrollment - 1 : 0
     }
 
     return row
@@ -100,7 +98,7 @@ class ClassList extends React.Component {
         className='striped'
         headers={headers}
         rows={this.getRows()}
-        disabled={this.props.disabled}
+        disabled={true}
         canDelete={this.props.onDelete ? true : false} // eslint-disable-line no-unneeded-ternary
         canSelect={this.props.onSelect ? true : false} // eslint-disable-line no-unneeded-ternary
         onDelete={this.props.onDelete ? this.props.onDelete() : null}
@@ -114,11 +112,9 @@ class ClassList extends React.Component {
 
 ClassList.propTypes = {
   classes: PropTypes.array,
-  disabled: PropTypes.bool,
   onDelete: PropTypes.func,
   deleteMessage: PropTypes.string,
   emptyMessage: PropTypes.string,
-  onUpdate: PropTypes.func,
   onSelect: PropTypes.func
 }
 

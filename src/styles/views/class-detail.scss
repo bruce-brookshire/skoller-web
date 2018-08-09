@@ -1,0 +1,19 @@
+#cn-class-detail-container {
+  @include internal-layout;
+  padding-top: 0;
+
+  @include breakpoint(medium) {
+    padding-top: 0;
+  }
+
+  #cn-class-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $unit-space;
+
+    .cn-class-detail-header-item {
+      width: calc(50% - .5em)
+    }
+  }
+}

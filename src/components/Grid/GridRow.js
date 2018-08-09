@@ -23,6 +23,10 @@ class GridRow extends React.Component {
       return (
         <td className='center-text'><i className={className}/></td>
       )
+    } else {
+      return (
+        <td></td>
+      )
     }
   }
 

@@ -215,7 +215,6 @@ class AccountInfo extends React.Component {
                 </div>
                 <ClassList
                   classes={this.state.classes}
-                  disabled={true}
                   onDelete={null}
                   onSelect={this.onClassSelect.bind(this)}
                   deleteMessage=""
