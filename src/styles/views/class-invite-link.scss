@@ -14,5 +14,10 @@
     font-size: 18px;
     margin-bottom: $unit-space / 2;
     margin-top: $unit-space / 2;
+
+    #cn-link-copied {
+      font-weight: 400;
+      font-size: 12px;
+    }
   }
 }

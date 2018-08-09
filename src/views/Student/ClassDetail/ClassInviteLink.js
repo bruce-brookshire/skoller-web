@@ -5,6 +5,19 @@ import Card from '../../../components/Card'
 
 @inject('rootStore') @observer
 class ClassInviteLink extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = this.initializeState()
+  }
+
+  /*
+  * Initialize the state
+  */
+  initializeState () {
+    return {
+      copiedPopup: false
+    }
+  }
 
   copyText () {
     const {enrollmentLink} = this.props
@@ -18,10 +31,12 @@ class ClassInviteLink extends React.Component {
     el.select()
     document.execCommand('copy')
     document.body.removeChild(el)
+    this.setState({copiedPopup: true})
   }
 
   renderContent () {
     const {enrollmentLink} = this.props
+    const {copiedPopup} = this.state
 
     return (
       <div id='cn-class-inv-link-content'>
@@ -30,6 +45,7 @@ class ClassInviteLink extends React.Component {
         </div>
         <div id='cn-class-invite-link' onClick={this.copyText.bind(this)}>
           {enrollmentLink}
+          {copiedPopup && this.renderLinkCopied()}
         </div>
         <div id='cn-class-invite-link-classmates' className='cn-grey'>
           <i className='fa fa-users margin-right' />{this.renderEnrollmentCount()}
@@ -46,6 +62,14 @@ class ClassInviteLink extends React.Component {
     } else {
       return (enrollmentCount - 1) + ' classmates'
     }
+  }
+
+  renderLinkCopied () {
+    return (
+      <div id='cn-link-copied'>
+        Link has been copied to your clipboard!
+      </div>
+    )
   }
 
   renderTitle () {
