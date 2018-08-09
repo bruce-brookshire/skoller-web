@@ -1,3 +1,14 @@
 #cn-class-detail-container {
-  @include internal-layout
+  @include internal-layout;
+
+  #cn-class-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $unit-space;
+
+    .cn-class-detail-header-item {
+      width: calc(50% - .5em)
+    }
+  }
 }

@@ -1,0 +1,18 @@
+#cn-class-inv-link-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  #cn-class-invite-link {
+    background-color: $cn-blue-cell-background;
+    font-weight: 600;
+    padding: $unit-space / 2;
+    padding-top: .6rem;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: $unit-space / 2;
+    margin-top: $unit-space / 2;
+  }
+}
