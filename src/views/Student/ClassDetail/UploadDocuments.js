@@ -344,7 +344,7 @@ class UploadDocuments extends React.Component {
   renderFourDoor () {
     return (
       <div id='cn-upload-doc-content'>
-        <div id='cn-project-four-door-box'>
+        <div id='cn-project-four-door-box' className='margin-bottom'>
           <ProjectFourDoor cl={this.props.cl} />
         </div>
         <div id='cn-project-four-door-toolbar'>
