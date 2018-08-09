@@ -61,6 +61,7 @@ class ProjectFourDoor extends React.Component {
   renderNormal () {
     return (
       <div className='cn-project-four-door'>
+        <div className='cn-four-door-header'>Less than 24 hours</div>
         <div className='margin-bottom'>Hang tight while Skoller grabs the important syllabus information.</div>
         {this.renderOr()}
         {this.renderDIYToolCall()}
