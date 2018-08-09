@@ -58,11 +58,19 @@ class ProjectFourDoor extends React.Component {
     )
   }
 
+  renderHangTight () {
+    return (
+      <div>
+        <div className='cn-four-door-header'>Less than 24 hours</div>
+        <div className='margin-bottom'>Hang tight while Skoller grabs the important syllabus information.</div>
+      </div>
+    )
+  }
+
   renderNormal () {
     return (
       <div className='cn-project-four-door'>
-        <div className='cn-four-door-header'>Less than 24 hours</div>
-        <div className='margin-bottom'>Hang tight while Skoller grabs the important syllabus information.</div>
+        {this.renderHangTight()}
         {this.renderOr()}
         {this.renderDIYToolCall()}
       </div>
@@ -73,7 +81,6 @@ class ProjectFourDoor extends React.Component {
     return (
       <div className='cn-project-four-door'>
         {this.renderDIYToolCall()}
-        {this.renderOr()}
         <span><b>Skoller’s team is slammed</b> so waiting on us to finish the syllabus could take a few days.</span>
       </div>
     )
@@ -82,8 +89,7 @@ class ProjectFourDoor extends React.Component {
   renderCompass () {
     return (
       <div className='cn-project-four-door'>
-        <h2>All done!</h2>
-        <span>Hang tight while Skoller reviews your syllabus for you</span>
+        {this.renderHangTight()}
       </div>
     )
   }
@@ -91,9 +97,8 @@ class ProjectFourDoor extends React.Component {
   renderDIY () {
     return (
       <div className='cn-project-four-door'>
-        <button className='button cn-shadow-box' onClick={this.onDIY.bind(this)}>Review syllabus now</button>
-        <div className='margin-bottom'>--- OR ---</div>
-        <span>Wait for a classmate to review the syllabus, but this could take a while...</span>
+        {this.renderDIYToolCall()}
+        <span><b>Skoller is not processing syllabi</b> for this school at the moment.</span>
       </div>
     )
   }
