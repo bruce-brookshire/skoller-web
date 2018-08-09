@@ -10,13 +10,13 @@ class ClassInviteLink extends React.Component {
 
     return (
       <div id='cn-class-inv-link-content'>
-        <div id='cn-class-inv-link-header'>
+        <div id='cn-class-inv-link-header' className='cn-grey'>
           Click to copy this link, then send it to your classmates!
         </div>
         <div id='cn-class-invite-link'>
           {enrollmentLink}
         </div>
-        <div id='cn-class-invite-link-classmates'>
+        <div id='cn-class-invite-link-classmates' className='cn-grey'>
           <i className='fa fa-users margin-right' />{this.renderEnrollmentCount()}
         </div>
       </div>
