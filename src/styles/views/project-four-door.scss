@@ -14,7 +14,7 @@
 
     .line {
       width: 300px;
-      border: solid 2px black;
+      border: solid 2px $cn-font-color;
       height: 2px;
       margin-right: $unit-space / 2;
       margin-left: $unit-space / 2;
@@ -29,5 +29,10 @@
     font-size: 24px;
     font-weight: 700;
     margin-bottom: $unit-space;
+  }
+
+  .subtext {
+    margin-top: $unit-space;
+    font-size: 12px;
   }
 }
