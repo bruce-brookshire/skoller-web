@@ -5,6 +5,21 @@ import Card from '../../../components/Card'
 
 @inject('rootStore') @observer
 class ClassInviteLink extends React.Component {
+
+  copyText () {
+    const {enrollmentLink} = this.props
+    const el = document.createElement('textarea')
+
+    el.value = enrollmentLink
+    el.setAttribute('readonly', '')
+    el.style.position = 'absolute'
+    el.style.left = '-9999px'
+    document.body.appendChild(el)
+    el.select()
+    document.execCommand('copy')
+    document.body.removeChild(el)
+  }
+
   renderContent () {
     const {enrollmentLink} = this.props
 
@@ -13,7 +28,7 @@ class ClassInviteLink extends React.Component {
         <div id='cn-class-inv-link-header' className='cn-grey'>
           Click to copy this link, then send it to your classmates!
         </div>
-        <div id='cn-class-invite-link'>
+        <div id='cn-class-invite-link' onClick={this.copyText.bind(this)}>
           {enrollmentLink}
         </div>
         <div id='cn-class-invite-link-classmates' className='cn-grey'>
