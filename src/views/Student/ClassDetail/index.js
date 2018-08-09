@@ -51,11 +51,12 @@ class ClassDetail extends React.Component {
 
   renderClassLink () {
     const {cl} = this.state
-    const {enrollmentLink} = this.props.location.state
+    const {enrollmentLink, enrollmentCount} = this.props.location.state
     return (
       <ClassInviteLink
         cl={cl}
         enrollmentLink={enrollmentLink}
+        enrollmentCount={enrollmentCount}
       />
     )
   }

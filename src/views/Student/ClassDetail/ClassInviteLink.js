@@ -17,10 +17,20 @@ class ClassInviteLink extends React.Component {
           {enrollmentLink}
         </div>
         <div id='cn-class-invite-link-classmates'>
-
+          <i className='fa fa-users margin-right' />{this.renderEnrollmentCount()}
         </div>
       </div>
     )
+  }
+
+  renderEnrollmentCount () {
+    const {enrollmentCount} = this.props
+
+    if (enrollmentCount === 1) {
+      return 'No classmates yet'
+    } else {
+      return (enrollmentCount - 1) + ' classmates'
+    }
   }
 
   renderTitle () {
@@ -43,7 +53,8 @@ class ClassInviteLink extends React.Component {
 
 ClassInviteLink.propTypes = {
   cl: PropTypes.object,
-  enrollmentLink: PropTypes.string
+  enrollmentLink: PropTypes.string,
+  enrollmentCount: PropTypes.number
 }
 
 export default ClassInviteLink
