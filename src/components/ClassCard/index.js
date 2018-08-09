@@ -132,11 +132,11 @@ class ClassCard extends React.Component {
 export default ClassCard
 
 ClassCard.propTypes = {
-  cl: PropTypes.object,
+  cl: PropTypes.object.isRequired,
   onSubmit: PropTypes.func,
-  schoolName: PropTypes.string,
+  schoolName: PropTypes.string.isRequired,
   professorName: PropTypes.string,
-  semesterName: PropTypes.string,
+  semesterName: PropTypes.string.isRequired,
   onEdit: PropTypes.func,
   isAdmin: PropTypes.bool,
   toggleWrench: PropTypes.func,

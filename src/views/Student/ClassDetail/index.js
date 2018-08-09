@@ -4,6 +4,8 @@ import {inject, observer} from 'mobx-react'
 import UploadDocuments from './UploadDocuments'
 import actions from '../../../actions'
 import Loading from '../../../components/Loading'
+import ClassCard from '../../../components/ClassCard'
+import ClassInviteLink from './ClassInviteLink'
 
 @inject('rootStore') @observer
 class ClassDetail extends React.Component {
@@ -35,13 +37,53 @@ class ClassDetail extends React.Component {
     }).catch(() => this.setState({loading: false}))
   }
 
+  renderClassCard () {
+    const {cl} = this.state
+    let professorName = cl.professor.name_first + ' ' + cl.professor.name_last
+    return (
+      <ClassCard
+        cl={cl}
+        schoolName={cl.school.name}
+        professorName={professorName}
+        semesterName={cl.class_period.name}/>
+    )
+  }
+
+  renderClassLink () {
+    const {cl} = this.state
+    const {enrollmentLink} = this.props.location.state
+    return (
+      <ClassInviteLink
+        cl={cl}
+        enrollmentLink={enrollmentLink}
+      />
+    )
+  }
+
+  renderClassDetails () {
+    const {cl} = this.state
+    return (
+      <div>
+        <div id='cn-class-detail-header'>
+          <div className='cn-class-detail-header-item'>
+            {this.renderClassCard()}
+          </div>
+          <div className='cn-class-detail-header-item'>
+            {this.renderClassLink()}
+          </div>
+        </div>
+        {<UploadDocuments cl={cl} onUpload={this.getClass.bind(this)} />}
+      </div>
+    )
+  }
+
   render () {
-    const {loading, cl} = this.state
+    const {loading} = this.state
     return (
       <div id='cn-class-detail-container'>
         {loading
           ? <Loading />
-          : <UploadDocuments cl={cl} onUpload={this.getClass.bind(this)} />}
+          : this.renderClassDetails()}
       </div>
     )
   }
@@ -49,7 +91,8 @@ class ClassDetail extends React.Component {
 
 ClassDetail.propTypes = {
   params: PropTypes.object,
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  location: PropTypes.object
 }
 
 export default ClassDetail
