@@ -81,7 +81,7 @@ class ProjectFourDoor extends React.Component {
     return (
       <div className='cn-project-four-door'>
         {this.renderDIYToolCall()}
-        <span><b>Skoller’s team is slammed</b> so waiting on us to finish the syllabus could take a few days.</span>
+        <div className='subtext'><b>Skoller’s team is slammed</b> so waiting on us to finish the syllabus could take a few days.</div>
       </div>
     )
   }
@@ -98,7 +98,7 @@ class ProjectFourDoor extends React.Component {
     return (
       <div className='cn-project-four-door'>
         {this.renderDIYToolCall()}
-        <span><b>Skoller is not processing syllabi</b> for this school at the moment.</span>
+        <div className='subtext'><b>Skoller is not processing syllabi</b> for this school at the moment.</div>
       </div>
     )
   }
