@@ -5,4 +5,29 @@
     font-size: 14px;
     margin-bottom: $unit-space;
   }
+
+  #or {
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .line {
+      width: 300px;
+      border: solid 2px black;
+      height: 2px;
+      margin-right: $unit-space / 2;
+      margin-left: $unit-space / 2;
+    }
+
+    .or {
+      padding-top: 5px;
+    }
+  }
+
+  .cn-four-door-header {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: $unit-space;
+  }
 }

@@ -31,7 +31,7 @@ const headers = [
   },
   {
     field: 'enrollment',
-    display: 'Enrollment'
+    display: 'Classmates'
   }
 ]
 
@@ -65,7 +65,7 @@ class ClassList extends React.Component {
       days: days || '',
       beginTime: days === 'Online' ? '' : (startTime ? mapTimeToDisplay(startTime) : (section && !code ? section : '')),
       status: status ? this.mapStatus(status) : '-',
-      enrollment: enrollment || 0
+      enrollment: (enrollment && (enrollment - 1) > 0) ? enrollment - 1 : 0
     }
 
     return row

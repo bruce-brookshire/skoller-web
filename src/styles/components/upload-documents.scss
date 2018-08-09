@@ -2,4 +2,18 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
+  width: 100%;
+}
+#cn-upload-doc-content {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  
+  #cn-project-four-door-box {
+    width: 300px;
+  }
+  #cn-project-four-door-toolbar {
+    width: 100%;
+  }
 }

@@ -38,12 +38,41 @@ class ProjectFourDoor extends React.Component {
     return (cl.status && cl.status.name === 'Help')
   }
 
+  renderOr () {
+    return (
+      <div id='or' className='margin-bottom'>
+        <div className='line' />
+        <div className='or'><b>OR</b></div>
+        <div className='line' />
+      </div>
+    )
+  }
+
+  renderDIYToolCall () {
+    return (
+      <div>
+        <div className='cn-four-door-header'>Less than 5 minutes</div>
+        <div className='margin-bottom'>Finish setting this class up using our <b>Do-It-Yourself</b> tool.</div>
+        <button className='button full-width cn-shadow-box' onClick={this.onDIY.bind(this)}>Start</button>
+      </div>
+    )
+  }
+
+  renderHangTight () {
+    return (
+      <div>
+        <div className='cn-four-door-header'>Less than 24 hours</div>
+        <div className='margin-bottom'>Hang tight while Skoller grabs the important syllabus information.</div>
+      </div>
+    )
+  }
+
   renderNormal () {
     return (
       <div className='cn-project-four-door'>
-        <div className='margin-bottom'>Hang out while the Skoller team takes care of it</div>
-        <div className='margin-bottom'>--- OR ---</div>
-        <button className='button full-width cn-shadow-box' onClick={this.onDIY.bind(this)}>Input your syllabus information now</button>
+        {this.renderHangTight()}
+        {this.renderOr()}
+        {this.renderDIYToolCall()}
       </div>
     )
   }
@@ -51,9 +80,8 @@ class ProjectFourDoor extends React.Component {
   renderInverted () {
     return (
       <div className='cn-project-four-door'>
-        <button className='button full-width cn-shadow-box' onClick={this.onDIY.bind(this)}>Review syllabus now</button>
-        <div className='margin-bottom'>--- OR ---</div>
-        <span>Skoller will automatically review it for you within 24 hours.</span>
+        {this.renderDIYToolCall()}
+        <span><b>Skoller’s team is slammed</b> so waiting on us to finish the syllabus could take a few days.</span>
       </div>
     )
   }
@@ -61,8 +89,7 @@ class ProjectFourDoor extends React.Component {
   renderCompass () {
     return (
       <div className='cn-project-four-door'>
-        <h2>All done!</h2>
-        <span>Hang tight while Skoller reviews your syllabus for you</span>
+        {this.renderHangTight()}
       </div>
     )
   }
@@ -70,9 +97,8 @@ class ProjectFourDoor extends React.Component {
   renderDIY () {
     return (
       <div className='cn-project-four-door'>
-        <button className='button full-width cn-shadow-box' onClick={this.onDIY.bind(this)}>Review syllabus now</button>
-        <div className='margin-bottom'>--- OR ---</div>
-        <span>Wait for a classmate to review the syllabus, but this could take a while...</span>
+        {this.renderDIYToolCall()}
+        <span><b>Skoller is not processing syllabi</b> for this school at the moment.</span>
       </div>
     )
   }
