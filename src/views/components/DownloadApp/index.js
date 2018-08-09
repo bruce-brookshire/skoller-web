@@ -3,9 +3,6 @@ import PropTypes from 'prop-types'
 
 class DownloadApp extends React.Component {
   render () {
-    let scale = 'scale(1)'
-    document.body.style.transform = scale
-
     return (
       <div id='cn-download-app'>
         <h1 className='center-text'>Welcome to Skoller!</h1>

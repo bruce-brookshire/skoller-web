@@ -69,9 +69,6 @@ class Verification extends React.Component {
     const disableClass = disableButton ? 'disabled' : ''
     const {userStore: {user}} = this.props.rootStore
 
-    let scale = 'scale(1)'
-    document.body.style.transform = scale
-
     return (
       <div className='cn-verification-container'>
         <div className='vertical-align'>
