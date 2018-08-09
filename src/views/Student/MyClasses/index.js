@@ -19,10 +19,10 @@ class MyClasses extends React.Component {
     this.updateClasses()
   }
 
-  findEnrollmentLink (classId) {
+  findFullClass (classId) {
     const {classes} = this.state
 
-    return classes.find((cl) => cl.id === classId).enrollment_link
+    return classes.find((cl) => cl.id === classId)
   }
 
   updateClasses () {
@@ -89,10 +89,13 @@ class MyClasses extends React.Component {
   onClassSelect (cl) {
     // Need to get enrollment link from classes
     // because ClassList will not return it
+
+    let fullClass = this.findFullClass(cl.id)
     browserHistory.push({
       pathname: `/student/class/${cl.id}/`,
       state: {
-        enrollmentLink: this.findEnrollmentLink(cl.id)
+        enrollmentLink: fullClass.enrollment_link,
+        enrollmentCount: fullClass.enrollment
       }
     })
   }
