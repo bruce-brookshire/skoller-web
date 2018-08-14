@@ -5,6 +5,7 @@ import Grid from '../../../components/Grid'
 import actions from '../../../actions'
 import Modal from '../../../components/Modal'
 import AdminSignUpForm from './AdminSignUpForm'
+import {CSVDownload} from 'react-csv';
 
 const headers = [
   {
@@ -39,7 +40,8 @@ class Accounts extends React.Component {
     this.state = {
       loading: false,
       users: [],
-      openCreateModal: false
+      openCreateModal: false,
+      csvData: null
     }
   }
 
@@ -51,6 +53,12 @@ class Accounts extends React.Component {
     actions.auth.getUsers(queryString).then(users => {
       this.setState({users, loading: false})
     }).catch(() => false)
+  }
+
+  getCsv () {
+    actions.users.getStudentCsv().then(csvData => {
+      this.setState({csvData})
+    })
   }
 
   /*
@@ -112,6 +120,7 @@ class Accounts extends React.Component {
   }
 
   render () {
+    const {csvData} = this.state
     return (
       <div className='cn-accounts-container'>
         <div className='margin-bottom'>
@@ -119,6 +128,7 @@ class Accounts extends React.Component {
           <AccountSearch {...this.props} loading={this.state.loading} onSearch={this.getAccounts.bind(this)}/>
           <div>
             <a onClick={this.toggleCreateModal.bind(this)}>Create new account</a>
+            <a className='margin-left' onClick={this.getCsv.bind(this)}>Get CSV</a>
             <span className='description'>Manage user account details from this page</span>
             <span className='total-results'>Total Results: {this.state.users.length}</span>
           </div>
@@ -131,6 +141,7 @@ class Accounts extends React.Component {
           disabled={true}
           canDelete={false}
         />
+        {csvData && <CSVDownload data={csvData} target="_blank" />}
         {this.renderCreateAccountModal()}
       </div>
     )
