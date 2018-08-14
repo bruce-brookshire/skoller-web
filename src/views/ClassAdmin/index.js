@@ -651,13 +651,13 @@ class ClassAdmin extends React.Component {
       <div id='cn-class-admin-container'>
         <div id='cn-class-admin'>
           {this.renderClassDetais()}
+          {this.renderNotes()}
           {this.renderGradeScale()}
           {this.renderProfessor()}
-          {this.renderStudents()}
           {this.renderWeights()}
           {this.renderAssignments()}
           {this.renderChat()}
-          {this.renderNotes()}
+          {this.renderStudents()}
         </div>
         {((documents.length !== 0 && !hideDocuments) || openStudentRequestInfo || openHelpInfo) &&
         <div id='cn-half-panel'>
