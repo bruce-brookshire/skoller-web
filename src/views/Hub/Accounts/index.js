@@ -5,7 +5,6 @@ import Grid from '../../../components/Grid'
 import actions from '../../../actions'
 import Modal from '../../../components/Modal'
 import AdminSignUpForm from './AdminSignUpForm'
-import {CSVDownload} from 'react-csv';
 
 const headers = [
   {
@@ -40,8 +39,7 @@ class Accounts extends React.Component {
     this.state = {
       loading: false,
       users: [],
-      openCreateModal: false,
-      csvData: null
+      openCreateModal: false
     }
   }
 
@@ -56,8 +54,9 @@ class Accounts extends React.Component {
   }
 
   getCsv () {
-    actions.users.getStudentCsv().then(csvData => {
-      this.setState({csvData})
+    actions.users.getStudentCsv().then(csv => {
+      let blob = new Blob([csv], {type: 'text/csv'}) // eslint-disable-line no-undef
+      window.location = window.URL.createObjectURL(blob)
     })
   }
 
@@ -141,7 +140,6 @@ class Accounts extends React.Component {
           disabled={true}
           canDelete={false}
         />
-        {csvData && <CSVDownload data={csvData} target="_blank" />}
         {this.renderCreateAccountModal()}
       </div>
     )
