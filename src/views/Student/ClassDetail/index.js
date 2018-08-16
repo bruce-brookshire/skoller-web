@@ -4,7 +4,7 @@ import {inject, observer} from 'mobx-react'
 import UploadDocuments from './UploadDocuments'
 import actions from '../../../actions'
 import Loading from '../../../components/Loading'
-import ClassCard from '../../../components/ClassCard'
+import ClassCard from '../../components/ClassCard'
 import ClassInviteLink from './ClassInviteLink'
 
 @inject('rootStore') @observer
