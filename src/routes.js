@@ -8,6 +8,7 @@ import Landing from './views/Landing'
 import Faq from './views/Faq'
 import ForgotPassword from './views/ForgotPassword'
 import PrivacyPolicy from './views/PrivacyPolicy'
+import UserAgreement from './views/UserAgreement'
 import LearnMore from './views/LearnMore'
 import PeopleTalking from './views/PeopleTalking'
 import OurTeam from './views/OurTeam'
@@ -51,6 +52,7 @@ const router = (
       <Route path='/forgot_password' component={ForgotPassword} />
       <Route path='/reset_password' component={ResetPassword} />
       <Route path='/privacypolicy' component={PrivacyPolicy} />
+      <Route path='/useragreement' component={UserAgreement} />
       <Route path='/learn-more' component={LearnMore} />
       <Route path='/what-people-say' component={PeopleTalking} />
       <Route path='/our-team' component={OurTeam} />
