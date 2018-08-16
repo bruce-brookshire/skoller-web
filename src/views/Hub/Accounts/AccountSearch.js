@@ -2,27 +2,18 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {CheckboxField, InputField, SelectField} from '../../../components/Form'
 import Loading from '../../../components/Loading'
-import actions from '../../../actions'
+import SearchSchool from '../../components/SearchSchool'
 
 class AccountSearch extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       accountType: 100,
-      schools: [],
-      schoolId: '',
+      schoolId: null,
+      schoolName: '',
       searchValue: '',
       suspended: false
     }
-  }
-
-  /*
-  * Fetch data to poplate drop downs.
-  */
-  componentWillMount () {
-    actions.schools.getHubSchoolsMinified().then((schools) => {
-      this.setState({schools})
-    }).catch(() => false)
   }
 
   /*
@@ -38,26 +29,37 @@ class AccountSearch extends React.Component {
     return options
   }
 
-  /*
-  * Populate school drop down.
-  */
-  getSchoolOptions () {
-    return this.state.schools.map(school => {
-      return {value: school.id, name: school.name}
-    })
+  onSubmitSchool (school) {
+    this.setState({schoolId: school.id, schoolName: school.name})
+  }
+
+  resetSchool () {
+    this.setState({schoolId: null, schoolName: ''})
+  }
+
+  renderSchoolName () {
+    let {schoolName} = this.state
+    return (
+      <InputField
+        label='School'
+        name='schoolName'
+        onChange={(name, value) => {
+          this.resetSchool()
+        }}
+        value={schoolName}
+      />
+    )
   }
 
   renderSelectSchoolInput () {
+    const {schoolId} = this.state
     if (this.state.accountType === 100) {
       return (
         <div className='col-xs-12 col-sm-3 margin-top'>
-          <SelectField
-            name='schoolId'
-            label='Select School'
-            options={this.getSchoolOptions()}
-            onChange={this.onChangeSchools.bind(this)}
-            value={this.state.schoolId}
-          />
+          {schoolId ? this.renderSchoolName() : <SearchSchool
+            label='School'
+            onSchoolSelect={this.onSubmitSchool.bind(this)}
+          />}
         </div>
       )
     } else {
