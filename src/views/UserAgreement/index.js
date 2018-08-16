@@ -242,6 +242,102 @@ class UserAgreement extends React.Component {
                   of it.
                 </p>
               </div>
+
+              <span><strong>5.</strong></span><span className='ol-major-section-label'><strong><u>Third-Party Links &amp; Ads; Other Users</u></strong></span>
+              <div className='ol-major-section'>
+                <p>
+                  <span><strong>5.1.</strong></span><span className='ol-major-section-label'><strong>Third-Party Links &amp; Ads. </strong></span>
+                  <span>
+                    The App may contain links to third-party websites and services, and/or display advertisements for third parties
+                    (collectively, <strong>&quot;Third-Party Links &amp; Ads&quot;</strong>). Such Third-Party Links &amp; Ads are not under our control, and we are
+                    not responsible for any Third-Party Links &amp; Ads. We provide access to these Third-Party Links &amp; Ads only as a
+                    convenience to you, and does not review, approve, monitor, endorse, warrant, or make any representations with
+                    respect to Third-Party Links &amp; Ads. You use all Third-Party Links &amp; Ads at your own risk, and should apply a
+                    suitable level of caution and discretion in doing so. When you click on any of the Third-Party Links &amp; Ads,
+                    the applicable third party’s terms and policies apply, including the third party’s privacy and data gathering
+                    practices. You should make whatever investigation you feel necessary or appropriate before proceeding with any
+                    transaction in connection with such Third-Party Links &amp; Ads.
+                  </span>
+                </p>
+                <p>
+                  <span><strong>5.2.</strong></span><span className='ol-major-section-label'><strong>Other Users. </strong></span>
+                  <span>
+                    Each App user is solely responsible for any and all of its own User Content. Because we do not control User Content,
+                    you acknowledge and agree that we are not responsible for any User Content, whether provided by you or by others.
+                    We make no guarantees regarding the accuracy, currency, suitability, or quality of any User Content. Your interactions
+                    with other App users are solely between you and such users. You agree that we will not be responsible for any loss
+                    or damage incurred as the result of any such interactions. If there is a dispute between you and any App user, we
+                    are under no obligation to become involved.
+                  </span>
+                </p>
+                <p>
+                  <span><strong>5.3.</strong></span><span className='ol-major-section-label'><strong>Release. </strong></span>
+                  <span>
+                    You hereby release and forever discharge us (and our officers, employees, agents, successors, and assigns)
+                    from, and hereby waive and relinquish, each and every past, present, and future dispute, claim, controversy,
+                    demand, right, obligation, liability, action, and cause of action of every kind and nature (including personal
+                    injuries, death, and property damage), that has arisen or arises directly or indirectly out of, or that relates
+                    directly or indirectly to, the App (including any interactions with, or act or omission of, other App users or
+                    any Third-Party Links &amp; Ads). IF YOU ARE A CALIFORNIA RESIDENT, YOU HEREBY WAIVE CALIFORNIA CIVIL CODE
+                    SECTION 1542 IN CONNECTION WITH THE FOREGOING, WHICH STATES: “A GENERAL RELEASE DOES NOT EXTEND TO CLAIMS
+                    WHICH THE CREDITOR DOES NOT KNOW OR SUSPECT TO EXIST IN HIS OR HER FAVOR AT THE TIME OF EXECUTING THE RELEASE,
+                    WHICH IF KNOWN BY HIM OR HER MUST HAVE MATERIALLY AFFECTED HIS OR HER SETTLEMENT WITH THE DEBTOR.”
+                  </span>
+                </p>
+              </div>
+
+              <span><strong>6.</strong></span><span className='ol-major-section-label'><strong><u>Disclaimers</u></strong></span>
+              <div className='ol-major-section'>
+                <p>
+                  THE APP IS PROVIDED ON AN “AS-IS” AND “AS AVAILABLE” BASIS, AND WE (AND OUR SUPPLIERS) EXPRESSLY DISCLAIM ANY
+                  AND ALL WARRANTIES AND CONDITIONS OF ANY KIND, WHETHER EXPRESS, IMPLIED, OR STATUTORY, INCLUDING ALL WARRANTIES
+                  OR CONDITIONS OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, QUIET ENJOYMENT, ACCURACY, OR
+                  NON-INFRINGEMENT. WE (AND OUR SUPPLIERS) MAKE NO WARRANTY THAT THE APP WILL MEET YOUR REQUIREMENTS, WILL BE
+                  AVAILABLE ON AN UNINTERRUPTED, TIMELY, SECURE, OR ERROR-FREE BASIS, OR WILL BE ACCURATE, RELIABLE, FREE OF
+                  VIRUSES OR OTHER HARMFUL CODE, COMPLETE, LEGAL, OR SAFE. IF APPLICABLE LAW REQUIRES ANY WARRANTIES WITH RESPECT
+                  TO THE SITE, ALL SUCH WARRANTIES ARE LIMITED IN DURATION TO NINETY (90) DAYS FROM THE DATE OF FIRST USE.
+                </p>
+                <p>
+                  THE FOREGOING DOES NOT AFFECT ANY WARRANTIES WHICH CANNOT BE EXCLUDED OR LIMITED UNDER APPLICABLE LAW.
+                </p>
+              </div>
+
+              <span><strong>7.</strong></span><span className='ol-major-section-label'><strong><u>Limitation on Liability</u></strong></span>
+              <div className='ol-major-section'>
+                <p>
+                  TO THE MAXIMUM EXTENT PERMITTED BY LAW, IN NO EVENT SHALL COMPANY (OR OUR SUPPLIERS) BE LIABLE TO YOU OR ANY
+                  THIRD PARTY FOR ANY LOST PROFITS, LOST DATA, COSTS OF PROCUREMENT OF SUBSTITUTE PRODUCTS, OR ANY INDIRECT,
+                  CONSEQUENTIAL, EXEMPLARY, INCIDENTAL, SPECIAL, OR PUNITIVE DAMAGES ARISING FROM OR RELATING TO THESE TERMS OR
+                  YOUR USE OF, OR INABILITY TO USE, THE SITE, EVEN IF WE HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+                  ACCESS TO, AND USE OF, THE APP IS AT YOUR OWN DISCRETION AND RISK, AND YOU WILL BE SOLELY RESPONSIBLE FOR ANY
+                  DAMAGE TO YOUR DEVICE OR COMPUTER SYSTEM, OR LOSS OF DATA RESULTING THEREFROM.
+                </p>
+                <p>
+                  TO THE MAXIMUM EXTENT PERMITTED BY LAW, NOTWITHSTANDING ANYTHING TO THE CONTRARY CONTAINED HEREIN, OUR
+                  LIABILITY TO YOU FOR ANY DAMAGES ARISING FROM OR RELATED TO THIS AGREEMENT (FOR ANY CAUSE WHATSOEVER AND REGARDLESS
+                  OF THE FORM OF THE ACTION), WILL AT ALL TIMES BE LIMITED TO A MAXIMUM OF FIFTY US DOLLARS (U.S. $50). THE EXISTENCE
+                  OF MORE THAN ONE CLAIM WILL NOT ENLARGE THIS LIMIT. YOU AGREE THAT OUR SUPPLIERS WILL HAVE NO LIABILITY OF ANY KIND
+                  ARISING FROM OR RELATING TO THIS AGREEMENT.
+                </p>
+                <p>
+                  THE FOREGOING DOES NOT AFFECT ANY WARRANTIES WHICH CANNOT BE EXCLUDED OR LIMITED UNDER APPLICABLE LAW.
+                </p>
+              </div>
+
+              <span><strong>8.</strong></span><span className='ol-major-section-label'><strong><u>Term and Termination</u></strong></span>
+              <div className='ol-major-section'>
+                <p>
+                  Subject to this Section, these Terms will remain in full force and effect while you use the App. We may suspend
+                  or terminate your rights to use the App (including your Account) at any time for any reason at our sole discretion,
+                  including for any use of the App in violation of these Terms. Upon termination of your rights under these Terms,
+                  your Account and right to access and use the App will terminate immediately. You understand that any termination
+                  of your Account may involve deletion of your User Content associated with your Account from our live databases.
+                  We will not have any liability whatsoever to you for any termination of your rights under these Terms, including
+                  for termination of your Account or deletion of your User Content. Even after your rights under these Terms are
+                  terminated, the following provisions of these Terms will remain in effect: Sections 2.3 through 2.8, Section 3,
+                  and Sections 4 through 10.
+                </p>
+              </div>
             </div>
           </div>
         </div>
