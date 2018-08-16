@@ -119,7 +119,6 @@ class Accounts extends React.Component {
   }
 
   render () {
-    const {csvData} = this.state
     return (
       <div className='cn-accounts-container'>
         <div className='margin-bottom'>
