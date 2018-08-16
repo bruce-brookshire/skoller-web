@@ -55,7 +55,7 @@ class Grid extends React.Component {
   }
 
   render () {
-    const {className, disabled, canDelete} = this.props
+    const {className, canDelete} = this.props
     const classes = ['cn-table-grid']
     if (className) classes.push(className)
 
