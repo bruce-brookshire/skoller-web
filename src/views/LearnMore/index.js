@@ -17,7 +17,7 @@ class LearnMore extends React.Component {
         <LandingNav rootStore={this.props.rootStore} />
         <div className='cn-learn-more-content'>
           <div className='video'>
-            <iframe src="https://www.youtube.com/embed/SIMVxy0sr74" frameBorder="0" allowFullScreen></iframe>
+            <iframe src="https://www.youtube.com/embed/yAxzn5xaHyI" frameBorder="0" allowFullScreen></iframe>
           </div>
         </div>
         <Purpose/>
