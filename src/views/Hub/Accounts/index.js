@@ -53,6 +53,13 @@ class Accounts extends React.Component {
     }).catch(() => false)
   }
 
+  getCsv () {
+    actions.users.getStudentCsv().then(csv => {
+      let blob = new Blob([csv], {type: 'text/csv'}) // eslint-disable-line no-undef
+      window.location = window.URL.createObjectURL(blob)
+    })
+  }
+
   /*
   * Row data to be passed to the grid
   *
@@ -119,6 +126,7 @@ class Accounts extends React.Component {
           <AccountSearch {...this.props} loading={this.state.loading} onSearch={this.getAccounts.bind(this)}/>
           <div>
             <a onClick={this.toggleCreateModal.bind(this)}>Create new account</a>
+            <a className='margin-left' onClick={this.getCsv.bind(this)}>Get CSV</a>
             <span className='description'>Manage user account details from this page</span>
             <span className='total-results'>Total Results: {this.state.users.length}</span>
           </div>

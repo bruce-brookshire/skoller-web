@@ -33,6 +33,20 @@ export const parseResponse = (response) => {
   }
 }
 
+/*
+* Function to check if http request was successful
+*
+* @param [Object] response. Http response from server.
+* @return [Object] response. Http response from server.
+*/
+export const parseTextResponse = (response) => {
+  if (response.status >= 200 && response.status < 300) {
+    if (response.status !== 204) return response.text()
+  } else {
+    return Promise.reject(response)
+  }
+}
+
 export function get (path, queryString, errMsg) {
   return fetch(`${Environment.SERVER_NAME}${path}${queryString ? '?' + queryString : ''}`, {
     method: 'GET',
@@ -42,6 +56,22 @@ export function get (path, queryString, errMsg) {
     }
   })
     .then(response => parseResponse(response))
+    .catch(error => {
+      if (errMsg) showSnackbar(errMsg)
+      if (Environment.IS_DEV) console.log(error)
+      return Promise.reject(error)
+    })
+}
+
+export function csv (path, errMsg) {
+  return fetch(`${Environment.SERVER_NAME}${path}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': userStore.authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => parseTextResponse(response))
     .catch(error => {
       if (errMsg) showSnackbar(errMsg)
       if (Environment.IS_DEV) console.log(error)
