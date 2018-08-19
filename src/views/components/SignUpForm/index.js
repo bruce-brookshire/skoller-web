@@ -5,6 +5,7 @@ import {InputField} from '../../../components/Form'
 import actions from '../../../actions'
 import {maskPhoneNumber} from '../../../utilities/mask'
 import {wrapTimeHour} from '../../../utilities/time'
+import {browserHistory} from 'react-router'
 
 const requiredFields = {
   'email': {
@@ -54,6 +55,10 @@ class SignUpForm extends React.Component {
     }
   }
 
+  onClickTerms () {
+    browserHistory.push('useragreement')
+  }
+
   onSubmit () {
     const form = this.mapForm()
     if (this.props.validateForm(form, requiredFields)) {
@@ -99,6 +104,14 @@ class SignUpForm extends React.Component {
           placeholder='Optional'
           value={form.student.custom_link}
         />
+      </div>
+    )
+  }
+
+  renderTerms () {
+    return (
+      <div className='cn-terms-of-use margin-bottom'>
+        By signing up, you agree to our <a onClick={this.onClickTerms.bind(this)}>Terms of Use</a>.
       </div>
     )
   }
@@ -180,11 +193,12 @@ class SignUpForm extends React.Component {
           </div>
           <div className='center-text'>
             <button
-              className='button margin-top margin-bottom full-width'
+              className='button margin-top full-width'
               type='button'
               onClick={isAdmin ? this.onSubmitAdmin.bind(this) : this.onSubmit.bind(this)}
             >{buttonText || 'Submit'}</button>
           </div>
+          {this.renderTerms()}
         </form>
       </div>
     )
