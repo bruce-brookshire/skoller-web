@@ -588,6 +588,83 @@ class UserAgreement extends React.Component {
                     the courts located within Davidson County, Tennessee, for such purpose.
                   </span>
                 </p>
+                <p>
+                  <span><strong>10.3.</strong></span><span className='ol-major-section-label'><strong>Governing Law. </strong></span>
+                  <span>
+                    All matters relating to the App and these Terms and any dispute or claim arising
+                    therefrom or related thereto (in each case, including non-contractual disputes or claims),
+                    shall be governed by and construed in accordance with the internal laws of the State of
+                    Tennessee without giving effect to any choice or conflict of law provision or rule (whether
+                    of the State of Tennessee or any other jurisdiction). Notwithstanding the foregoing,
+                    the enforceability and interpretation of Section 10.2 shall be both substantively and
+                    procedurally governed by and construed and enforced in accordance with the Federal
+                    Arbitration Act, 9 U.S.C. § 1 et seq., to the maximum extent permitted by applicable law.
+                  </span>
+                </p>
+                <p>
+                  <span><strong>10.4.</strong></span><span className='ol-major-section-label'><strong>Export. </strong></span>
+                  <span>
+                    The App may be subject to U.S. export control laws and may be subject to export or
+                    import regulations in other countries. You agree not to export, reexport, or transfer,
+                    directly or indirectly, any U.S. technical data acquired from us, or any products utilizing
+                    such data, in violation of the United States export laws or regulations.
+                  </span>
+                </p>
+                <p>
+                  <span><strong>10.5.</strong></span><span className='ol-major-section-label'><strong>Disclosures. </strong></span>
+                  <span>
+                    We are located at the address in Section 10.9. If you are a California resident, you may
+                    report complaints to the Complaint Assistance Unit of the Division of Consumer Product of
+                    the California Department of Consumer Affairs by contacting them in writing at 400 R
+                    Street, Sacramento, CA 95814, or by telephone at (800) 952-5210.
+                  </span>
+                </p>
+                <p>
+                  <span><strong>10.6.</strong></span><span className='ol-major-section-label'><strong>Electronic Communications. </strong></span>
+                  <span>
+                    The communications between you and Company use electronic means, whether you use the
+                    App or send us emails, or whether Company posts notices on the App or communicates with
+                    you via email. For contractual purposes, you (a) consent to receive communications from
+                    Company in an electronic form, and (b) agree that all terms and conditions, agreements,
+                    notices, disclosures, and other communications that Company provides to you electronically
+                    satisfy any legal requirement that such communications would satisfy if it were be in a
+                    hardcopy writing. The foregoing does not affect your non-waivable rights.
+                  </span>
+                </p>
+                <p>
+                  <span><strong>10.7.</strong></span><span className='ol-major-section-label'><strong>Entire Terms. </strong></span>
+                  <span>
+                    These Terms constitute the entire agreement between you and us regarding the use of the
+                    App. Our failure to exercise or enforce any right or provision of these Terms shall not
+                    operate as a waiver of such right or provision. The section titles in these Terms are
+                    for convenience only and have no legal or contractual effect. The word “including” means
+                    “including without limitation”. If any provision of these Terms is, for any reason, held
+                    to be invalid or unenforceable, the other provisions of these Terms will be unimpaired
+                    and the invalid or unenforceable provision will be deemed modified so that it is valid
+                    and enforceable to the maximum extent permitted by law. Your relationship to Company is
+                    that of an independent contractor, and neither party is an agent or partner of the other.
+                    These Terms, and your rights and obligations herein, may not be assigned, subcontracted,
+                    delegated, or otherwise transferred by you without Company’s prior written consent, and
+                    any attempted assignment, subcontract, delegation, or transfer in violation of the foregoing
+                    will be null and void. Company may freely assign these Terms. The terms and conditions set
+                    forth in these Terms shall be binding upon assignees.
+                  </span>
+                </p>
+                <p>
+                  <span><strong>10.8.</strong></span><span className='ol-major-section-label'><strong>Copyright/Trademark Information. </strong></span>
+                  <span>
+                    Copyright © 2018 Skoller, Inc. All rights reserved. All trademarks, logos, and service marks
+                    (<strong>&quot;Marks&quot;</strong>) displayed on the App are our property or the property of other third parties.
+                    You are not permitted to use these Marks without our prior written consent or the consent of
+                    such third party which may own the Marks.
+                  </span>
+                </p>
+                <p>
+                  <span><strong>10.9.</strong></span><span className='ol-major-section-label'><strong>Contact Information: </strong></span>
+                  <p>
+                    To ask questions or comment about these Terms, contact us at: <a href='mailto:support@skoller.co'>support@skoller.co</a>.
+                  </p>
+                </p>
               </div>
             </div>
           </div>
