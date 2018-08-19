@@ -338,6 +338,257 @@ class UserAgreement extends React.Component {
                   and Sections 4 through 10.
                 </p>
               </div>
+
+              <span><strong>9.</strong></span><span className='ol-major-section-label'><strong><u>Copyright Policy</u></strong></span>
+              <div className='ol-major-section'>
+                <p>
+                  We respect the intellectual property of others and ask that users of our App do the same. In connection with our
+                  App, we have adopted and implemented a policy respecting copyright law that provides for the removal of any
+                  infringing materials and for the termination, in appropriate circumstances, of users of our App who are repeat
+                  infringers of intellectual property rights, including copyrights. If you believe that one of our users is, through
+                  the use of our App, unlawfully infringing the copyright(s) in a work, and wish to have the allegedly infringing
+                  material removed, the following information in the form of a written notification (pursuant to 17 U.S.C. § 512(c))
+                  must be provided to support@skoller.co:
+                </p>
+                <ol>
+                  <li>
+                    your physical or electronic signature;
+                  </li>
+                  <li>
+                    identification of the copyrighted work(s) that you claim to have been infringed;
+                  </li>
+                  <li>
+                    identification of the material on our App that you claim is infringing and that you request us to remove;
+                  </li>
+                  <li>
+                    sufficient information to permit us to locate such material;
+                  </li>
+                  <li>
+                    your address, telephone number, and e-mail address;
+                  </li>
+                  <li>
+                    a statement that the information in the notification is accurate, and under penalty of perjury, that you
+                    are either the owner of the copyright that has allegedly been infringed or that you are authorized to act
+                    on behalf of the copyright owner.
+                  </li>
+                </ol>
+                <p>
+                  Please note that, pursuant to 17 U.S.C. § 512(f), any misrepresentation of material fact (falsities) in a
+                  written notification automatically subjects the complaining party to liability for any damages, costs and
+                  attorney’s fees incurred by us in connection with the written notification and allegation of
+                  copyright infringement.
+                </p>
+              </div>
+
+              <span><strong>10.</strong></span><span className='ol-major-section-label'><strong><u>General</u></strong></span>
+              <div className='ol-major-section'>
+                <p>
+                  <span><strong>10.1.</strong></span><span className='ol-major-section-label'><strong>Changes. </strong></span>
+                  <span>
+                    These Terms are subject to occasional revision, and if we make any substantial changes, we may notify
+                    you by sending you an e-mail to the last e-mail address you provided to us (if any). You are responsible
+                    for providing us with your most current e-mail address. In the event that the last e-mail address that
+                    you have provided us is not valid, or for any reason is not capable of delivering to you the notice
+                    described above, our dispatch of the e-mail containing such notice or posting such notice on our App
+                    will nonetheless constitute effective notice of the changes described in the notice. All changes are
+                    effective immediately when we post them, and apply to all access to and use of the App thereafter.
+                    However, any changes to the dispute resolution provisions set forth in Section 10.2 will not apply to any
+                    disputes for which the parties have actual notice on or prior to the date the change is posted on the App.
+                    Continued use of our App following notice of such changes shall indicate your acknowledgement of such
+                    changes and agreement to be bound by the terms and conditions of such changes. You are expected to check
+                    this page from time to time so you are aware of any changes, as they are binding on you.
+                  </span>
+                </p>
+                <p>
+                  <span><strong>10.2.</strong></span><span className='ol-major-section-label'><strong>Dispute Resolution. </strong></span>
+                  <span><strong><u><i>
+                    Please read this Section 10.2 (also referred to as this &quot;Arbitration Agreement&quot;) carefully.
+                    It is part of your contract with us and affects your rights. It contains procedures for MANDATORY
+                    BINDING ARBITRATION AND A CLASS ACTION WAIVER.
+                  </i></u></strong></span>
+                </p>
+                <p>
+                  <span className='ol-minor-section-label'>(a)</span>
+                  <span><i>Applicability of Arbitration Agreement. </i></span>
+                  <span>
+                    All claims and disputes (excluding claims for injunctive or other equitable relief as set forth below)
+                    in connection with the Terms or the use of any product or service provided by us that cannot be
+                    resolved informally or in small claims court shall be resolved by binding arbitration on an individual
+                    basis under the terms of this Arbitration Agreement. Unless otherwise agreed to, all arbitration
+                    proceedings shall be held in Tennessee. This Arbitration Agreement applies to you and us, and to
+                    any subsidiaries, affiliates, agents, employees, predecessors in interest, successors, and assigns,
+                    as well as all authorized or unauthorized users or beneficiaries of services or products provided under
+                    the Terms.
+                  </span>
+                </p>
+                <p>
+                  <span className='ol-minor-section-label'>(b)</span>
+                  <span><i>Notice Requirement and Informal Dispute Resolution. </i></span>
+                  <span>
+                    Before either party may seek arbitration, the party must first send to the other party a written
+                    Notice of Dispute (<strong>&quot;Notice&quot;</strong>) describing the nature and basis of the claim or dispute, and the
+                    requested relief. A Notice to us should be sent to: 530 Church Street, Suite 301, Nashville, TN 37219.
+                    After the Notice is received, you and the Company may attempt to resolve the claim or dispute informally.
+                    If you and the Company do not resolve the claim or dispute within thirty (30) days after the Notice is
+                    received, either party may begin an arbitration proceeding. The amount of any settlement offer made by
+                    any party may not be disclosed to the arbitrator until after the arbitrator has determined the amount of
+                    the award, if any, to which either party is entitled.
+                  </span>
+                </p>
+                <p>
+                  <span className='ol-minor-section-label'>(c)</span>
+                  <span><i>Arbitration Rules. </i></span>
+                  <span>
+                    Arbitration shall be initiated through the American Arbitration Association (<strong>&quot;AAA&quot;</strong>), an established
+                    alternative dispute resolution provider (<strong>&quot;ADR Provider&quot;</strong>) that offers arbitration as set forth in this
+                    section. If AAA is not available to arbitrate, the parties shall agree to select an alternative ADR Provider.
+                    The rules of the ADR Provider shall govern all aspects of the arbitration, including but not limited to the
+                    method of initiating and/or demanding arbitration, except to the extent such rules are in conflict with the
+                    Terms. The AAA Consumer Arbitration Rules (<strong>&quot;Arbitration Rules&quot;</strong>) governing the arbitration are available
+                    online at www.adr.org or by calling the AAA at 1-800-778-7879. The arbitration shall be conducted by a single,
+                    neutral arbitrator. Any claims or disputes where the total amount of the award sought is less than Ten
+                    Thousand U.S. Dollars (US $10,000.00) may be resolved through binding non-appearance-based arbitration,
+                    at the option of the party seeking relief. For claims or disputes where the total amount of the award sought
+                    is Ten Thousand U.S. Dollars (US $10,000.00) or more, the right to a hearing will be determined by the
+                    Arbitration Rules. Any hearing will be held in a location within 100 miles of your residence, unless you
+                    reside outside of the United States, and unless the parties agree otherwise. If you reside outside of the U.S.,
+                    the arbitrator shall give the parties reasonable notice of the date, time and place of any oral hearings.
+                    Any judgment on the award rendered by the arbitrator may be entered in any court of competent jurisdiction.
+                    If the arbitrator grants you an award that is greater than the last settlement offer that the Company made
+                    to you prior to the initiation of arbitration, the Company will pay you the greater of the award or $2,500.00.
+                    Each party shall bear its own costs (including attorney’s fees) and disbursements arising out of the arbitration
+                    and shall pay an equal share of the fees and costs of the ADR Provider.
+                  </span>
+                </p>
+                <p>
+                  <span className='ol-minor-section-label'>(d)</span>
+                  <span><i>Additional Rules for Non-Appearance Based Arbitration. </i></span>
+                  <span>
+                    If non-appearance based arbitration is elected, the arbitration shall be conducted by telephone, online
+                    and/or based solely on written submissions; the specific manner shall be chosen by the party initiating
+                    the arbitration. The arbitration shall not involve any personal appearance by the parties or witnesses unless
+                    otherwise agreed by the parties.
+                  </span>
+                </p>
+                <p>
+                  <span className='ol-minor-section-label'>(e)</span>
+                  <span><i>Time Limits. </i></span>
+                  <span>
+                    If you or the Company pursue arbitration, the arbitration action must be initiated and/or demanded within
+                    the statute of limitations (i.e., the legal deadline for filing a claim) and within any deadline imposed
+                    under the AAA Rules for the pertinent claim.
+                  </span>
+                </p>
+                <p>
+                  <span className='ol-minor-section-label'>(f)</span>
+                  <span><i>Authority of Arbitrator. </i></span>
+                  <span>
+                    If arbitration is initiated, the arbitrator will decide the rights and liabilities, if any, of you and
+                    the Company, and the dispute will not be consolidated with any other matters or joined with any other
+                    cases or parties. The arbitrator shall have the authority to grant motions dispositive of all or part of
+                    any claim. The arbitrator shall have the authority to award monetary damages, and to grant any non-monetary
+                    remedy or relief available to an individual under applicable law, the AAA Rules, and the Terms. The
+                    arbitrator shall issue a written award and statement of decision describing the essential findings and
+                    conclusions on which the award is based, including the calculation of any damages awarded. The arbitrator
+                    has the same authority to award relief on an individual basis that a judge in a court of law would have.
+                    The award of the arbitrator is final and binding upon you and the Company.
+                  </span>
+                </p>
+                <p>
+                  <span className='ol-minor-section-label'>(g)</span>
+                  <span><i>Waiver of Jury Trial. </i></span>
+                  <span>
+                    THE PARTIES HEREBY WAIVE THEIR CONSTITUTIONAL AND STATUTORY RIGHTS TO GO TO COURT AND HAVE A TRIAL IN FRONT
+                    OF A JUDGE OR A JURY, instead electing that all claims and disputes shall be resolved by arbitration under
+                    this Arbitration Agreement. Arbitration procedures are typically more limited, more efficient and less costly
+                    than rules applicable in a court and are subject to very limited review by a court. In the event any litigation
+                    should arise between you and the Company in any state or federal court in a suit to vacate or enforce an
+                    arbitration award or otherwise, YOU AND THE COMPANY WAIVE ALL RIGHTS TO A JURY TRIAL, instead electing that
+                    the dispute be resolved by a judge.
+                  </span>
+                </p>
+                <p>
+                  <span className='ol-minor-section-label'>(h)</span>
+                  <span><i>Waiver of Class or Consolidated Actions. </i></span>
+                  <span>
+                    ALL CLAIMS AND DISPUTES WITHIN THE SCOPE OF THIS ARBITRATION AGREEMENT MUST BE ARBITRATED OR LITIGATED ON AN
+                    INDIVIDUAL BASIS AND NOT ON A CLASS BASIS, AND CLAIMS OF MORE THAN ONE CUSTOMER OR USER CANNOT BE ARBITRATED
+                    OR LITIGATED JOINTLY OR CONSOLIDATED WITH THOSE OF ANY OTHER CUSTOMER OR USER.
+                  </span>
+                </p>
+                <p>
+                  <span className='ol-minor-section-label'>(i)</span>
+                  <span><i>Confidentiality. </i></span>
+                  <span>
+                    All aspects of the arbitration proceeding, including but not limited to the award of the arbitrator and
+                    compliance therewith, shall be strictly confidential. The parties agree to maintain confidentiality unless
+                    otherwise required by law. This paragraph shall not prevent a party from submitting to a court of law any
+                    information necessary to enforce this Agreement, to enforce an arbitration award, or to seek injunctive or
+                    equitable relief.
+                  </span>
+                </p>
+                <p>
+                  <span className='ol-minor-section-label'>(j)</span>
+                  <span><i>Severability. </i></span>
+                  <span>
+                    If any part or parts of this Arbitration Agreement are found under the law to be invalid or unenforceable
+                    by a court of competent jurisdiction, then such specific part or parts shall be of no force and effect
+                    and shall be severed and the remainder of the Agreement shall continue in full force and effect.
+                  </span>
+                </p>
+                <p>
+                  <span className='ol-minor-section-label'>(k)</span>
+                  <span><i>Right to Waive. </i></span>
+                  <span>
+                    Any or all of the rights and limitations set forth in this Arbitration Agreement may be waived by the
+                    party against whom the claim is asserted. Such waiver shall not waive or affect any other portion of
+                    this Arbitration Agreement.
+                  </span>
+                </p>
+                <p>
+                  <span className='ol-minor-section-label'>(l)</span>
+                  <span><i>Survival of Agreement. </i></span>
+                  <span>
+                    This Arbitration Agreement will survive the termination of your relationship with Company.
+                  </span>
+                </p>
+                <p>
+                  <span className='ol-minor-section-label'>(m)</span>
+                  <span><i>Small Claims Court. </i></span>
+                  <span>
+                    Notwithstanding the foregoing, either you or the Company may bring an individual action
+                    in small claims court.
+                  </span>
+                </p>
+                <p>
+                  <span className='ol-minor-section-label'>(n)</span>
+                  <span><i>Emergency Equitable Relief. </i></span>
+                  <span>
+                    Notwithstanding the foregoing, either party may seek emergency equitable relief before a
+                    state or federal court in order to maintain the status quo pending arbitration. A request
+                    for interim measures shall not be deemed a waiver of any other rights or obligations under
+                    this Arbitration Agreement.
+                  </span>
+                </p>
+                <p>
+                  <span className='ol-minor-section-label'>(o)</span>
+                  <span><i>Claims Not Subject to Arbitration. </i></span>
+                  <span>
+                    Notwithstanding the foregoing, claims of defamation, violation of the Computer Fraud and
+                    Abuse Act, and infringement or misappropriation of the other party’s patent, copyright,
+                    trademark or trade secrets shall not be subject to this Arbitration Agreement.
+                  </span>
+                </p>
+                <p>
+                  <span className='ol-minor-section-label'>(p)</span>
+                  <span><i>Courts. </i></span>
+                  <span>
+                    In any circumstances where the foregoing Arbitration Agreement permits the parties to
+                    litigate in court, the parties hereby agree to submit to the personal jurisdiction of
+                    the courts located within Davidson County, Tennessee, for such purpose.
+                  </span>
+                </p>
+              </div>
             </div>
           </div>
         </div>

@@ -24,6 +24,15 @@
           padding-left: 2em;
           padding-right: 1.5em;
         }
+
+        li {
+          padding-left: 1em;
+          padding-bottom: 1em;
+
+          &:last-child {
+            padding-bottom: 0;
+          }
+        }
       }
     }
   }
