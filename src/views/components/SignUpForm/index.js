@@ -64,7 +64,7 @@ class SignUpForm extends React.Component {
     if (this.props.validateForm(form, requiredFields)) {
       actions.auth.registerUser(form).then(() => {
         this.props.resetValidation()
-        this.props.onSubmit()
+        this.props.onSubmit(form.student.custom_link)
       }).catch(() => false)
     }
   }

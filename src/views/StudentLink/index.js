@@ -62,6 +62,7 @@ class StudentLink extends React.Component {
     return (
       <Verification
         onSubmit={() => this.incrementStep()}
+        referralCode={this.props.params.customLink}
       />
     )
   }
