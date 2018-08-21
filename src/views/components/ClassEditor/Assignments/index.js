@@ -52,7 +52,7 @@ class Assignments extends React.Component {
 
   filterAssignments () {
     const {assignments, currentWeightIndex, weights, viewOnly} = this.state
-    return !viewOnly ? assignments.filter((assign) => assign.weight_id === weights[currentWeightIndex].id) : assignments
+    return (!viewOnly && weights.length > 0) ? assignments.filter((assign) => assign.weight_id && assign.weight_id === weights[currentWeightIndex].id) : assignments
   }
 
   /*
@@ -174,13 +174,13 @@ class Assignments extends React.Component {
                 currentWeight={weights[currentWeightIndex]}
               />
             </div>
-          }
-          {!viewOnly && assignments.length === 0 &&
-            <div className='margin-top margin-bottom center-text'>
-              <a onClick={() => this.toggleSkipCategoryModal()}>Skip this category</a>
-            </div>
-          }
-          {(assignments.length !== 0 || viewOnly) &&
+            }
+            {!viewOnly && assignments.length === 0 &&
+              <div className='margin-top margin-bottom center-text'>
+                <a onClick={() => this.toggleSkipCategoryModal()}>Skip this category</a>
+              </div>
+            }
+            {(assignments.length !== 0 || viewOnly) &&
             <div id='cn-assignment-table'>
               <div id='cn-assignment-table-label'>
                 {this.renderSavedMessage(assignments)}
@@ -198,17 +198,17 @@ class Assignments extends React.Component {
                 onEdit={() => this.props.onEdit()}
               />
             </div>
-          }
-          {assignments.length !== 0 && !viewOnly &&
-            <button
-              onClick={() => this.onNext()}
-              className='button full-width margin-top margin-bottom'
-            >
-              Save and continue
-            </button>
-          }
-          {this.renderSkipCategoryModal()}
-        </div>}
+            }
+            {assignments.length !== 0 && !viewOnly &&
+              <button
+                onClick={() => this.onNext()}
+                className='button full-width margin-top margin-bottom'
+              >
+                Save and continue
+              </button>
+            }
+            {this.renderSkipCategoryModal()}
+          </div>}
       </div>
     )
   }
