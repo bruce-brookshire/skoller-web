@@ -12,11 +12,11 @@ class Signup extends React.Component {
     this.cookie = new Cookies()
   }
 
-  onSubmit () {
+  onSubmit (referralCode) {
     const { userStore: { authToken } } = this.props.rootStore
     this.cookie.remove('skollerToken', { path: '/' })
     this.cookie.set('skollerToken', authToken, { maxAge: 84600 * 7, path: '/' })
-    browserHistory.push('/student/verify')
+    browserHistory.push({pathname: '/student/verify', state: {referralCode: referralCode}})
   }
 
   render () {

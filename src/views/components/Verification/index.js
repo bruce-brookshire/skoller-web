@@ -68,6 +68,8 @@ class Verification extends React.Component {
     const disableButton = !this.isValid()
     const disableClass = disableButton ? 'disabled' : ''
     const {userStore: {user}} = this.props.rootStore
+    const {location} = this.props
+    const referralCode = this.props.referralCode || (location.state && location.state.referralCode) || null
 
     return (
       <div className='cn-verification-container'>
@@ -88,7 +90,9 @@ class Verification extends React.Component {
             </div>
           </div>
         </div>
-        {user.student && <img src={`//socialladder.rkiapps.com/socialladderapi/api/v1/campaign/track?Action=SALE&UDF1=${Environment.NAME + user.student.id}&udf3=SKOLLER&udf4=1`} />}
+        {user.student && referralCode &&
+          <img src={`//socialladder.rkiapps.com/socialladderapi/api/v1/campaign/track?Action=SALE&UDF1=${Environment.NAME + user.student.id}&udf3=SKOLLER&udf4=1&UDF5=${referralCode}`} />
+        }
       </div>
     )
   }
@@ -96,7 +100,9 @@ class Verification extends React.Component {
 
 Verification.propTypes = {
   rootStore: PropTypes.object,
-  onSubmit: PropTypes.func
+  onSubmit: PropTypes.func,
+  referralCode: PropTypes.string,
+  location: PropTypes.object
 }
 
 export default Verification
