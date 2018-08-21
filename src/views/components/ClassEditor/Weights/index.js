@@ -136,18 +136,19 @@ class Weights extends React.Component {
             />
           </div>
         }
-        <div id='cn-weights-info'>
-          {weights.length !== 0 && <div>
+        {weights.length !== 0 &&
+        <div id='cn-weights-info' className='margin-bottom'>
+          <div>
             {this.renderExtraCredit()}
             {!cl.is_points && this.renderWeightTotalWarning()}
-          </div>}
-          {(weights.length !== 0 && !cl.is_points) && <div>*The total should be 100%</div>}
-        </div>
+          </div>
+          {!cl.is_points && <div>*The total should be 100%</div>}
+        </div>}
         {(weights.length !== 0 || noWeights) && !isReview &&
           <button
             onClick={() => this.props.onSubmit()}
             disabled={disableButton}
-            className={disableButton ? 'button full-width disabled margin-top margin-bottom' : 'button full-width margin-top margin-bottom'}
+            className={disableButton ? 'button full-width disabled margin-bottom' : 'button full-width margin-bottom'}
           >
             Save and continue
           </button>
