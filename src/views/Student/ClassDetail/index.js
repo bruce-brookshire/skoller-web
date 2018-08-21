@@ -39,7 +39,7 @@ class ClassDetail extends React.Component {
 
   renderClassCard () {
     const {cl} = this.state
-    let professorName = cl.professor.name_first + ' ' + cl.professor.name_last
+    let professorName = cl.professor ? cl.professor.name_first + ' ' + cl.professor.name_last : ''
     return (
       <ClassCard
         cl={cl}
