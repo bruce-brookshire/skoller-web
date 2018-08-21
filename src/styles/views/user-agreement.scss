@@ -1,0 +1,38 @@
+.cn-user-agreement-container {
+  
+    .user-agreement-logo {
+      height: 5rem;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  
+    .user-agreement-content {
+      padding: 2rem;
+      .user-agreement-section {
+        margin: 1rem 0;
+
+        .ol-major-section-label {
+          padding-left: 1em;
+        }
+
+        .ol-major-section {
+          padding-left: 2em;
+        }
+
+        .ol-minor-section-label {
+          padding-left: 2em;
+          padding-right: 1.5em;
+        }
+
+        li {
+          padding-left: 1em;
+          padding-bottom: 1em;
+
+          &:last-child {
+            padding-bottom: 0;
+          }
+        }
+      }
+    }
+  }
