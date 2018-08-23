@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
+import {browserHistory} from 'react-router'
 import UploadDocuments from './UploadDocuments'
 import actions from '../../../actions'
 import Loading from '../../../components/Loading'
@@ -61,10 +62,22 @@ class ClassDetail extends React.Component {
     )
   }
 
+  /*
+  * Render the back button to tab between syllabus sections
+  */
+  renderBackButton () {
+    return (
+      <a className='back-button' onClick={() => browserHistory.push('student/classes')}>
+        <i className='fa fa-angle-left' /> Go Back
+      </a>
+    )
+  }
+
   renderClassDetails () {
     const {cl} = this.state
     return (
       <div>
+        {this.renderBackButton()}
         <div id='cn-class-detail-header'>
           <div className='cn-class-detail-header-item'>
             {this.renderClassCard()}
