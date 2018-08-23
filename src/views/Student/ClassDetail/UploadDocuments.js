@@ -269,27 +269,29 @@ class UploadDocuments extends React.Component {
     return (
       <div className='margin-bottom'>
         {this.renderDuplicateFileMessage()}
-        <UploadHistory
-          disabled={!this.isUploadAllowed() || this.getSyllabusDocuments().length > 0}
-          files={this.getSyllabusDocuments()}
-          unsavedDocuments={unsavedSyllabusDocs}
-          info='Upload your class syllabus.'
-          onUpload={(file) => { this.onUpload(file, true) }}
-          title={!this.isUploadAllowed()
-            ? 'The syllabus for this class has already been submitted.'
-            : (unsavedSyllabusDocs.length === 0 ? 'Drop the main class syllabus here' : '')
-          }
-          onDeleteDocument={(ind) => { this.deleteSyllabus(ind) }}
-        />
-        <UploadHistory
-          disabled={!this.isUploadAllowed()}
-          files={this.getAdditionalDocuments()}
-          unsavedDocuments={unsavedAdditionalDocs}
-          info='If assignment schedules or grading info are provided, drop them here.'
-          onUpload={(file) => { this.onUpload(file, false) }}
-          title='Drop separate assignment/lab schedules here'
-          onDeleteDocument={(ind) => { this.deleteAdditional(ind) }}
-        />
+        <div className='margin-bottom'>
+          <UploadHistory
+            disabled={!this.isUploadAllowed() || this.getSyllabusDocuments().length > 0}
+            files={this.getSyllabusDocuments()}
+            unsavedDocuments={unsavedSyllabusDocs}
+            onUpload={(file) => { this.onUpload(file, true) }}
+            title={!this.isUploadAllowed()
+              ? 'The syllabus for this class has already been submitted.'
+              : (unsavedSyllabusDocs.length === 0 ? 'Drop the main class syllabus here' : '')
+            }
+            onDeleteDocument={(ind) => { this.deleteSyllabus(ind) }}
+          />
+        </div>
+        <div className='margin-bottom'>
+          <UploadHistory
+            disabled={!this.isUploadAllowed()}
+            files={this.getAdditionalDocuments()}
+            unsavedDocuments={unsavedAdditionalDocs}
+            onUpload={(file) => { this.onUpload(file, false) }}
+            title='Drop separate assignment/lab schedules here'
+            onDeleteDocument={(ind) => { this.deleteAdditional(ind) }}
+          />
+        </div>
       </div>
     )
   }
