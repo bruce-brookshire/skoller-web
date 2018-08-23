@@ -29,7 +29,7 @@ class UploadHistory extends React.Component {
   }
 
   render () {
-    const {files, info, title} = this.props
+    const {files, info, title, unsavedDocuments} = this.props
     const containerClasses = ['upload-container']
     if (files.length > 0) containerClasses.push('has-files')
     return (
@@ -41,7 +41,7 @@ class UploadHistory extends React.Component {
             disabled={this.props.disabled}
             onUpload={this.props.onUpload}
           >
-            <span className='header center-text'>{title}</span>
+            {((!files || files.length === 0) && (!unsavedDocuments || unsavedDocuments.length === 0)) && <span className='header center-text'>{title}</span>}
             {this.renderHistory()}
           </FileUpload>
         </div>
