@@ -19,7 +19,11 @@ export function mapTimeToDisplay (timeString) {
   const min = addZero(parseInt(time[1]))
   const meridiem = getMeridiem(h)
 
-  return `${hours}:${min}${meridiem.toLowerCase()}`
+  if (!isNaN(min)) {
+    return `${hours}:${min}${meridiem.toLowerCase()}`
+  } else {
+    return ''
+  }
 }
 
 /*
