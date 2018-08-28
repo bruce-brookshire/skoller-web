@@ -1,5 +1,7 @@
 import {get, post, put, postFile} from '../utilities/api'
 import {showSnackbar} from '../utilities/snackbar'
+import stores from '../stores'
+const {userStore} = stores
 
 /*
 * Get the all schools for signup
@@ -131,6 +133,22 @@ export function uploadSchoolCsv (file) {
     .catch(error => {
       if (error.status === 422) showSnackbar('File name has already been taken.')
       else showSnackbar('Error uploading file. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Get the most common school a student is enrolled in.
+*
+* @params [Object] school. School.
+*/
+export function getMostCommonSchool () {
+  const {user: {student}} = userStore
+  return get(`/api/v1/students/${student.id}/school`, '', 'Error fetching school. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
       return Promise.reject(error)
     })
 }
