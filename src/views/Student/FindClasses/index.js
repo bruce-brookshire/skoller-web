@@ -24,6 +24,13 @@ class FindClasses extends React.Component {
   }
 
   componentWillMount () {
+    this.setState({loading: true})
+    actions.schools.getMostCommonSchool().then(school => {
+      let {searchStore} = this.props.rootStore
+      searchStore.school = school || searchStore.school
+      searchStore.schoolName = school ? school.name : searchStore.schoolName
+      this.setState({loading: false})
+    }).catch(() => this.setState({loading: false}))
   }
 
   initializeState () {
