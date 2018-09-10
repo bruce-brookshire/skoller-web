@@ -59,8 +59,7 @@ class TimeFields extends React.Component {
     }
   }
 
-  mapTime () {
-    const {meetAmpm, meetHour, meetMin} = this.state
+  mapTime (meetHour, meetMin, meetAmpm) {
     if (meetHour && meetMin) {
       let mappedTime = moment(meetHour + ':' + meetMin + meetAmpm, 'h:mma')
       return mappedTime.format('HH:mm:ss')
@@ -69,8 +68,8 @@ class TimeFields extends React.Component {
     }
   }
 
-  onChange () {
-    let time = this.mapTime()
+  onChange (meetHour, meetMin, meetAmpm) {
+    let time = this.mapTime(meetHour, meetMin, meetAmpm)
     console.log(time)
     this.props.onChange(time)
   }
@@ -87,12 +86,12 @@ class TimeFields extends React.Component {
             onBlur={() => {
               if (meetHour.length < 2) {
                 this.setState({meetHour: meetHour.padStart(2, '0')})
-                this.onChange()
+                this.onChange(meetHour.padStart(2, '0'), meetMin, meetAmpm)
               }
             }}
             onChange={(name, value) => {
               this.setState({meetHour: value})
-              this.onChange()
+              this.onChange(value, meetMin, meetAmpm)
             }}
             value={meetHour}
             type='hour'
@@ -110,11 +109,11 @@ class TimeFields extends React.Component {
                 newMeetMin = newMeetMin.padStart(2, '0')
               }
               this.setState({meetMin: newMeetMin})
-              this.onChange()
+              this.onChange(meetHour, newMeetMin, meetAmpm)
             }}
             onChange={(name, value) => {
               this.setState({meetMin: value})
-              this.onChange()
+              this.onChange(meetHour, value, meetAmpm)
             }}
             value={meetMin}
             type='min'
@@ -124,7 +123,7 @@ class TimeFields extends React.Component {
             name='meetAmpm'
             onChange={(name, value) => {
               this.setState({meetAmpm: value})
-              this.onChange()
+              this.onChange(meetHour, meetMin, value)
             }}
             value={meetAmpm}
             options={ampm}
