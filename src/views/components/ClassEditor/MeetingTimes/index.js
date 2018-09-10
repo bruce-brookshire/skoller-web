@@ -60,6 +60,15 @@ class MeetingTimes extends React.Component {
   render () {
     const {time, days} = this.state
 
+    let disabled = (!time && days !== 'Online') || !days
+    let buttonClasses = ['button full-width margin-top']
+
+    if (disabled) {
+      buttonClasses.push('disabled')
+    }
+
+    buttonClasses = buttonClasses.join(' ')
+
     return (
       <div className='cn-meeting-time-container'>
         <div className='cn-meeting-time-header'>
@@ -74,7 +83,8 @@ class MeetingTimes extends React.Component {
             />
           }
           <button
-            className={`button full-width margin-top`}
+            className={buttonClasses}
+            disabled={disabled}
             type='submit'
           >Done</button>
         </form>

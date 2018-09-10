@@ -125,7 +125,7 @@ class DaySelector extends React.Component {
             value={isOnline}
           />
         </div>
-        {!isOnline && <div className='cn-meeting-time-label'>Meet days</div>}
+        {!isOnline && <div className='cn-meeting-time-label'>Select meet days</div>}
         {!isOnline && <div className='cn-day-selector'>
           {this.renderDays()}
         </div>}
