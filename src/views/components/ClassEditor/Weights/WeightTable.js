@@ -79,8 +79,8 @@ class WeightTable extends React.Component {
   */
   renderTotalPercentage () {
     const total = this.getTotalWeight()
-    const {viewOnly, cl} = this.props
-    const totalPoints = viewOnly ? total : `${total}/${this.props.totalPoints}`
+    const {viewOnly, cl, totalPoints} = this.props
+    const totalPointsRatio = (viewOnly || !totalPoints) ? total : `${total}/${totalPoints}`
 
     return (
       <div className='row'>
@@ -92,7 +92,7 @@ class WeightTable extends React.Component {
             {
               !cl.is_points
                 ? `${total.toFixed(2)}%`
-                : totalPoints
+                : totalPointsRatio
             }</span>
         </div>
       </div>
