@@ -41,12 +41,9 @@ class AssignmentTable extends React.Component {
           {!currentWeight && <div className='description'>
             {(weightId && weights && weights.find(w => w.id === weightId).name) || 'N/A'}
           </div>}
-          {isAdmin && <div>Students: {students}</div>}
         </div>
         <div className='col-xs-3 right-text'>
           {due ? this.mapAssignmentDate(due) : ''}
-          {isAdmin && <div>{(fromMod ? 'Mod' : 'Syllabus')}</div>}
-          {isAdmin && <div>Mods: {mods}</div>}
         </div>
       </div>
     )
