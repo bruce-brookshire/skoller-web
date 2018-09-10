@@ -25,6 +25,7 @@ import HelpNeededInfo from './HelpNeededInfo'
 import StatusForm from './StatusForm'
 import DocumentsDeletedModal from './DocumentsDeletedModal'
 import ClassNotes from './ClassNotes'
+import {SliderField} from '../../components/Form'
 
 @inject('rootStore') @observer
 class ClassAdmin extends React.Component {
@@ -308,6 +309,13 @@ class ClassAdmin extends React.Component {
     this.getClass()
   }
 
+  toggleIsPoints () {
+    const {cl} = this.state
+    actions.classes.updateClass({id: cl.id, is_points: !cl.is_points}).then((cl) => {
+      this.updateClass()
+    }).catch(() => false)
+  }
+
   /*
   * Render the editclass modal.
   */
@@ -537,6 +545,14 @@ class ClassAdmin extends React.Component {
               <i className='fa fa-pencil cn-blue cursor' onClick={() => this.setState({isWeightsEditable: !isWeightsEditable})} />
               {cl.change_requests.findIndex((item) => item.change_type.id === 200 && !item.is_completed) > -1 && <i className='fa fa-warning cn-red cursor margin-left' onClick={this.toggleStudentRequestInfo.bind(this)} />}
             </div>
+          </div>
+          <div className='cn-space-between-row margin-bottom'>
+            Points?
+            <SliderField
+              name='isPointSlider'
+              onChange={this.toggleIsPoints.bind(this)}
+              value={cl.is_points}
+            />
           </div>
           <WeightTable
             cl={cl}

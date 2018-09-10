@@ -342,6 +342,13 @@ body {
   width: 100%;
 }
 
+.cn-space-between-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
 .cn-align-row {
   display: flex;
   align-items: center;
