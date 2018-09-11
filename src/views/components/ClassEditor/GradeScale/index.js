@@ -68,19 +68,21 @@ class GradeScale extends React.Component {
     const {isEditable} = this.state
 
     return (
-      <ul className="grade-scale-list">
-        {Object.keys(gradeScale).sort((a, b) => {
-          return parseFloat(gradeScale[a]) < parseFloat(gradeScale[b]) ? 1 : -1
-        }).map((key, idx) =>
-          <li key={idx} className="grade-row">
-            {isEditable && this.renderDeleteButton(key)}
-            <div className="grade">
-              <div className="grade-key">{key}</div>
-              <div className="grade-min">{gradeScale[key]}</div>
-            </div>
-          </li>
-        )}
-      </ul>
+      gradeScale
+        ? <ul className="grade-scale-list">
+          {Object.keys(gradeScale).sort((a, b) => {
+            return parseFloat(gradeScale[a]) < parseFloat(gradeScale[b]) ? 1 : -1
+          }).map((key, idx) =>
+            <li key={idx} className="grade-row">
+              {isEditable && this.renderDeleteButton(key)}
+              <div className="grade">
+                <div className="grade-key">{key}</div>
+                <div className="grade-min">{gradeScale[key]}</div>
+              </div>
+            </li>
+          )}
+        </ul>
+        : <div className='margin-top'>There is no grade scale</div>
     )
   }
 
