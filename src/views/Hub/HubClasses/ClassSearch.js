@@ -21,9 +21,6 @@ class ClassSearch extends React.Component {
   */
   componentWillMount () {
     const {state} = this.props.location
-    actions.schools.getHubSchoolsMinified().then((schools) => {
-      this.setState({schools})
-    }).catch(() => false)
 
     actions.hub.getStatuses().then((statuses) => {
       this.setState({statuses: statuses.statuses})
