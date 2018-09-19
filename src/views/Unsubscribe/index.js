@@ -60,7 +60,6 @@ class Unsubscribe extends React.Component {
 
   renderFields () {
     const {emailPreferences, emailTypes} = this.state
-    const {updateProperty} = this.props
     return emailTypes.map((type) => {
       return (
         <div className='margin-top' key={type.id}>
@@ -70,7 +69,17 @@ class Unsubscribe extends React.Component {
           <CheckboxField
             name={type.name}
             value={emailPreferences.find(pref => pref.email_type_id === type.id).is_unsubscribed}
-            onChange={updateProperty}
+            onChange={(name, value) => {
+              let emailPreferencesNew = emailPreferences
+              let index = emailPreferences.findIndex(pref => pref.email_type_id === type.id)
+              let newPreference = {email_type_id: type.id, is_unsubscribed: value}
+              if (index > -1) {
+                emailPreferencesNew.splice(index, 1, newPreference)
+              } else {
+                emailPreferencesNew.push(newPreference)
+              }
+              this.setState({emailPreferences: emailPreferencesNew})
+            }}
           />
         </div>
       )

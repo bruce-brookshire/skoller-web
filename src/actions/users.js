@@ -1,4 +1,4 @@
-import {csv, get, put, post} from '../utilities/api'
+import {csv, get, put} from '../utilities/api'
 
 /*
 * Gets a CSV of users.
