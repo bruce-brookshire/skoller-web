@@ -26,7 +26,7 @@ import {createSchool, getAllSchools, getHubSchools,
 import {getAutoUpdateInfo, updateAutoUpdateInfo, forecastAutoUpdateInfo, getMinVersionInfo, updateMinVer} from './settings'
 import {createCustomLink, getCustomLinkById, getCustomLinks} from './signup-links'
 import {getNextClass} from './syllabusworkers'
-import {getStudentCsv} from './users'
+import {getStudentCsv, getEmailPreferences, updateEmailPreferences, createEmailPreferences, getEmailTypes} from './users'
 import {createWeight, deleteWeight, getClassWeights, updateWeight} from './weights'
 
 const actions = {
@@ -165,7 +165,11 @@ const actions = {
     getNextClass
   },
   users: {
-    getStudentCsv
+    getStudentCsv,
+    getEmailPreferences,
+    updateEmailPreferences,
+    createEmailPreferences,
+    getEmailTypes
   },
   weights: {
     createWeight,
