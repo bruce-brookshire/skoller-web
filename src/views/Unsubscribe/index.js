@@ -87,10 +87,10 @@ class Unsubscribe extends React.Component {
   }
 
   render () {
-    const {form, loading, userUnsubscribed} = this.state
+    const {form, loading, userUnsubscribed, successful} = this.state
     const {formErrors, updateProperty} = this.props
     return (
-      <div className='cn-forgot-password-container'>
+      <div className='cn-unsubscribe-container'>
         <div className='content-landing'>
           <div>
             <h1>
@@ -123,6 +123,9 @@ class Unsubscribe extends React.Component {
           />
           {!loading && !userUnsubscribed && this.renderFields()}
           <button className='button full-width margin-top' onClick={this.onSubmit.bind(this)}>Unsubscribe</button>
+          {successful && <span>
+              Your settings have been updated!
+          </span>}
         </div>
       </div>
     )
