@@ -27,7 +27,7 @@ class Unsubscribe extends React.Component {
     const {params} = this.props
     this.setState({loading: true})
     actions.users.getEmailPreferences(params.id).then(results => {
-      this.setState({emailPreferences: results.emailPreferences, userUnsubscribed: results.user_unsubscribed})
+      this.setState({emailPreferences: results.email_preferences, userUnsubscribed: results.user_unsubscribed})
     })
     actions.users.getEmailTypes().then(emailTypes => {
       this.setState({emailTypes, loading: false})
@@ -36,9 +36,7 @@ class Unsubscribe extends React.Component {
 
   initializeForm () {
     return {
-      email: '',
-      updates: [],
-      unsubscribeAll: false
+      email: ''
     }
   }
 
@@ -46,23 +44,24 @@ class Unsubscribe extends React.Component {
   * On submit forgot password.
   */
   onSubmit () {
+    const {form, emailPreferences, userUnsubscribed} = this.state
+    const {params} = this.props
     if (this.props.validateForm(this.state.form, requiredFields)) {
-      if (this.state.emailPreferences) {
-        actions.users.updateEmailPreferences(this.state.form).then(() => {
-          this.setState({successful: true})
-        }).catch(() => false)
-      } else {
-        actions.users.createEmailPreferences(this.state.form).then(() => {
-          this.setState({successful: true})
-        }).catch(() => false)
+      let newForm = {
+        email: form.email,
+        email_preferences: emailPreferences,
+        user_unsubscribed: userUnsubscribed
       }
+      actions.users.updateEmailPreferences(params.id, newForm).then(() => {
+        this.setState({successful: true})
+      }).catch(() => false)
     }
   }
 
   renderFields () {
-    const {form} = this.state
+    const {emailPreferences, emailTypes} = this.state
     const {updateProperty} = this.props
-    return this.state.emailTypes.map((type) => {
+    return emailTypes.map((type) => {
       return (
         <div className='margin-top' key={type.id}>
           <div>
@@ -70,7 +69,7 @@ class Unsubscribe extends React.Component {
           </div>
           <CheckboxField
             name={type.name}
-            value={form.updates.find(upd => upd.id === type.id)}
+            value={emailPreferences.find(pref => pref.email_type_id === type.id).is_unsubscribed}
             onChange={updateProperty}
           />
         </div>
@@ -79,7 +78,7 @@ class Unsubscribe extends React.Component {
   }
 
   render () {
-    const {form} = this.state
+    const {form, loading, userUnsubscribed} = this.state
     const {formErrors, updateProperty} = this.props
     return (
       <div className='cn-forgot-password-container'>
@@ -107,12 +106,14 @@ class Unsubscribe extends React.Component {
             Unsubscribe from all marketing emails
           </div>
           <CheckboxField
-            name='unsubscribeAll'
-            value={form.unsubscribeAll}
-            onChange={updateProperty}
+            name='userUnsubscribed'
+            value={userUnsubscribed}
+            onChange={(name, value) => {
+              this.setState({userUnsubscribed: value})
+            }}
           />
-          {this.renderFields()}
-          <button className='button full-width margin-top' onClick={this.onSubmit.bind(this)}>Submit</button>
+          {!loading && !userUnsubscribed && this.renderFields()}
+          <button className='button full-width margin-top' onClick={this.onSubmit.bind(this)}>Unsubscribe</button>
         </div>
       </div>
     )

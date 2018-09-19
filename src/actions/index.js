@@ -168,7 +168,6 @@ const actions = {
     getStudentCsv,
     getEmailPreferences,
     updateEmailPreferences,
-    createEmailPreferences,
     getEmailTypes
   },
   weights: {

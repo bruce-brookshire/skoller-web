@@ -24,16 +24,6 @@ export function getEmailPreferences (userId) {
     })
 }
 
-export function createEmailPreferences (userId, form) {
-  return post(`/api/v1/users/${userId}/email-preferences`, form, 'Error updating preferences. Try again.')
-    .then(data => {
-      return data
-    })
-    .catch(error => {
-      return Promise.reject(error)
-    })
-}
-
 export function updateEmailPreferences (userId, form) {
   return put(`/api/v1/users/${userId}/email-preferences`, form, 'Error updating preferences. Try again.')
     .then(data => {
