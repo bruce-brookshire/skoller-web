@@ -68,7 +68,7 @@ class Unsubscribe extends React.Component {
           </div>
           <CheckboxField
             name={type.name}
-            value={emailPreferences.find(pref => pref.email_type_id === type.id).is_unsubscribed}
+            value={emailPreferences && emailPreferences.find(pref => pref.email_type_id === type.id) ? emailPreferences.find(pref => pref.email_type_id === type.id).is_unsubscribed : false}
             onChange={(name, value) => {
               let emailPreferencesNew = emailPreferences
               let index = emailPreferences.findIndex(pref => pref.email_type_id === type.id)
