@@ -39,7 +39,7 @@ class Post extends React.Component {
             {this.user ? (<a onClick={this.onAccountSelect.bind(this)}>{`${this.student.name_first} ${this.student.name_last}`}</a>) : null}
           </div>
           <div className='col-xs-6 right-text'>
-            {this.post.inserted_at ? (<span>{convertUTCDatetimeToDateString(this.post.inserted_at, 'CST') + ' ' + mapTimeToDisplay(this.post.inserted_at)}</span>) : null}
+            {this.post.inserted_at ? (<span>{convertUTCDatetimeToDateString(this.post.inserted_at, 'America/Chicago') + ' ' + mapTimeToDisplay(this.post.inserted_at)}</span>) : null}
           </div>
         </div>
         <div className='post-content'>

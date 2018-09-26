@@ -1,14 +1,5 @@
 import moment from 'moment-timezone'
 
-/*  Update these as mapTimezone updates */
-export const timezoneOptions = [
-  {name: 'AKDT/AKST', value: 'AKDT'},
-  {name: 'CDT/CST', value: 'CDT'},
-  {name: 'EDT/EST', value: 'EDT'},
-  {name: 'HDT/HST', value: 'HDT'},
-  {name: 'MDT/MST', value: 'MDT'},
-  {name: 'PDT/PST', value: 'PDT'}
-]
 // call on load
 initalizeTimezoneData()
 
@@ -33,8 +24,7 @@ export function mapTimeToDisplay (timeString) {
 * @param [String] tzAbbr. Abbreviation of timezone, i.e. PST
 * @param [String] YYYY-MM-DD
 */
-export function convertUTCDatetimeToDateString (dateTime, tzAbbr) {
-  const tz = mapTimezone(tzAbbr)
+export function convertUTCDatetimeToDateString (dateTime, tz) {
   const d = moment.tz(dateTime, tz).format('YYYY-MM-DD')
   return d
 }
@@ -46,8 +36,7 @@ export function convertUTCDatetimeToDateString (dateTime, tzAbbr) {
 * @param [String] tzAbbr. Abbreviation of timezone, i.e. PST
 * @param [String] YYYY-MM-DD
 */
-export function convertUTCDatetimeToDateTimeString (dateTime, tzAbbr) {
-  const tz = mapTimezone(tzAbbr)
+export function convertUTCDatetimeToDateTimeString (dateTime, tz) {
   const d = moment.tz(dateTime, tz).parseZone().format('ddd, MMM Do YYYY [at] h:mm a')
   return d
 }
@@ -58,8 +47,7 @@ export function convertUTCDatetimeToDateTimeString (dateTime, tzAbbr) {
 * @param [Date] dateTime. Date time. HH:MM:ss.SSSSSS
 * @param [String] tzAbbr. Abbreviation of timezone, i.e. PST
 */
-export function convertUTCTimeToTimeString (dateTime, tzAbbr) {
-  const tz = mapTimezone(tzAbbr)
+export function convertUTCTimeToTimeString (dateTime, tz) {
   const d = moment.tz(dateTime, 'HH:mm:ss.SSSSSS', tz).parseZone().format('HH:mm')
   return d
 }
@@ -71,8 +59,7 @@ export function convertUTCTimeToTimeString (dateTime, tzAbbr) {
 * @param [String] tzAbbr. Abbreviation of timezone, i.e. PST
 * @return [Date]. Date time. YYYY-MM-DDTHH:MM:ss
 */
-export function convertLocalDateToUTC (dateString, tzAbbr) {
-  const tz = mapTimezone(tzAbbr)
+export function convertLocalDateToUTC (dateString, tz) {
   const d = moment.tz(dateString, tz).format()
   return d
 }
@@ -90,30 +77,6 @@ export function wrapTimeHour (date, hour) {
     offsetHour = '0' + offsetHour
   }
   return offsetHour
-}
-
-/*
-* Map timezone to full name
-*
-* @param [String] abbr. Timezone abbr, i.e. PDT
-* @return [String]. Full timezone name, i.e. America/Los_Angeles
-*/
-export function mapTimezone (abbr) {
-  const timezones = {
-    'AKST': 'America/Januea',
-    'AKDT': 'America/Juneau',
-    'CDT': 'America/Chicago',
-    'CST': 'America/Chicago',
-    'EDT': 'America/New_York',
-    'EST': 'America/New_York',
-    'HDT': 'America/Adak',
-    'HST': 'America/Adak',
-    'MDT': 'America/Denver',
-    'MST': 'America/Denver',
-    'PDT': 'America/Los_Angeles',
-    'PST': 'America/Los_Angeles'
-  }
-  return timezones[abbr.toUpperCase()]
 }
 
 /*

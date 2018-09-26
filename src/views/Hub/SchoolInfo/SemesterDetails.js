@@ -68,7 +68,7 @@ class SemesterDetails extends React.Component {
       id: id,
       name: name || '',
       inserted_at: insertedAt
-        ? convertUTCDatetimeToDateTimeString(insertedAt, 'CST') : '',
+        ? convertUTCDatetimeToDateTimeString(insertedAt, 'America/Chicago') : '',
       student_count: studentCount || 0,
       class_count: classCount || 0,
       component: this.props.onUpload ? <div className='col-xs-12 col-md-6 margin-top'>
