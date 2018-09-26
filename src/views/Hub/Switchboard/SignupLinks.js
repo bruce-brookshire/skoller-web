@@ -34,8 +34,8 @@ class SignupLinks extends React.Component {
       id: id,
       name: name,
       link: link,
-      start: start ? convertUTCDatetimeToDateString(start, 'CST') : '',
-      end: end ? convertUTCDatetimeToDateString(end, 'CST') : '',
+      start: start ? convertUTCDatetimeToDateString(start, 'America/Chicago') : '',
+      end: end ? convertUTCDatetimeToDateString(end, 'America/Chicago') : '',
       count: count
     }
     return row

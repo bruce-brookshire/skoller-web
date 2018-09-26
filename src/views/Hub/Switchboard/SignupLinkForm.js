@@ -52,8 +52,8 @@ class SignupLinkForm extends React.Component {
 
   mapForm (form) {
     let newForm = {...this.state.form}
-    if (newForm.start) newForm.start = convertLocalDateToUTC(newForm.start, 'CST')
-    if (newForm.end) newForm.end = convertLocalDateToUTC(newForm.end, 'CST')
+    if (newForm.start) newForm.start = convertLocalDateToUTC(newForm.start, 'America/Chicago')
+    if (newForm.end) newForm.end = convertLocalDateToUTC(newForm.end, 'America/Chicago')
     return newForm
   }
 
