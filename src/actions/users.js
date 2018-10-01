@@ -34,12 +34,3 @@ export function updateEmailPreferences (userId, form) {
     })
 }
 
-export function getEmailTypes () {
-  return get(`/api/v1/email-types`, '', 'Error retrieving types. Try again.')
-    .then(data => {
-      return data
-    })
-    .catch(error => {
-      return Promise.reject(error)
-    })
-}

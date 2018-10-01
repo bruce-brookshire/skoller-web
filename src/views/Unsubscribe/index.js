@@ -29,7 +29,7 @@ class Unsubscribe extends React.Component {
     actions.users.getEmailPreferences(params.id).then(results => {
       this.setState({emailPreferences: results.email_preferences, userUnsubscribed: results.user_unsubscribed})
     })
-    actions.users.getEmailTypes().then(emailTypes => {
+    actions.emailTypes.getMinEmailTypes().then(emailTypes => {
       this.setState({emailTypes, loading: false})
     }).catch(() => this.setState({loading: false}))
   }

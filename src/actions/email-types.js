@@ -14,6 +14,16 @@ export function getEmailTypes () {
     })
 }
 
+export function getMinEmailTypes () {
+  return get(`/api/v1/email-types/list`, '', 'Error retrieving types. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
 /*
 * Update an email type
 */

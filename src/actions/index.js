@@ -10,7 +10,7 @@ import {createClass, dropClass, getClassById, getClassByIdAdmin, getClassByLink,
 import {createIssue, getHelpTypes, resolveIssue, getRequestTypes, resolveChangeRequest, createStudentRequest,
   resolveStudentRequest} from './classhelp'
 import {getClassDocuments, uploadClassCsv, uploadClassDocument, deleteClassDocument} from './documents'
-import {getEmailTypes, updateEmailType} from './email-types'
+import {getEmailTypes, getMinEmailTypes, updateEmailType} from './email-types'
 import {getFieldsOfStudy, uploadFOSCsv} from './fieldsofstudy'
 import {overrideSchool, getFourDoor, updateFourDoor, getFourDoorOverrides, deleteOverride} from './fourdoor'
 import {updateGradeScale} from './gradescales'
@@ -27,7 +27,7 @@ import {createSchool, getAllSchools, getHubSchools,
 import {getAutoUpdateInfo, updateAutoUpdateInfo, forecastAutoUpdateInfo, getMinVersionInfo, updateMinVer} from './settings'
 import {createCustomLink, getCustomLinkById, getCustomLinks} from './signup-links'
 import {getNextClass} from './syllabusworkers'
-import {getStudentCsv, getEmailPreferences, updateEmailPreferences, createEmailPreferences, getEmailTypes} from './users'
+import {getStudentCsv, getEmailPreferences, updateEmailPreferences} from './users'
 import {createWeight, deleteWeight, getClassWeights, updateWeight} from './weights'
 
 const actions = {
@@ -95,7 +95,8 @@ const actions = {
   },
   emailTypes: {
     getEmailTypes,
-    updateEmailType
+    updateEmailType,
+    getMinEmailTypes
   },
   fieldsofstudy: {
     getFieldsOfStudy,
@@ -172,8 +173,7 @@ const actions = {
   users: {
     getStudentCsv,
     getEmailPreferences,
-    updateEmailPreferences,
-    getEmailTypes
+    updateEmailPreferences
   },
   weights: {
     createWeight,
