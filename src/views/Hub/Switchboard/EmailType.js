@@ -30,17 +30,34 @@ class EmailType extends React.Component {
 
   render () {
     return (
-      <div>
-        {this.props.emailType.name}
-        <CheckboxField
-          onChange={(name, value) => {
-            let newForm = this.state.form
-            newForm.is_active_email = value
-            this.onUpdate(newForm)
-          }}
-          name='is_active_email'
-          value={this.state.form.is_active_email}
-        />
+      <div className='cn-email-type'>
+        <b>{this.props.emailType.name}</b>
+        <div className='cn-space-between-row'>
+          <div>
+            <label htmlFor="is_active_email" className='cn-input-label'>Emails?</label>
+            <CheckboxField
+              onChange={(name, value) => {
+                let newForm = this.state.form
+                newForm.is_active_email = value
+                this.onUpdate(newForm)
+              }}
+              name='is_active_email'
+              value={this.state.form.is_active_email}
+            />
+          </div>
+          <div>
+            <label htmlFor="is_active_notification" className='cn-input-label'>Notifications?</label>
+            <CheckboxField
+              onChange={(name, value) => {
+                let newForm = this.state.form
+                newForm.is_active_notification = value
+                this.onUpdate(newForm)
+              }}
+              name='is_active_notifications'
+              value={this.state.form.is_active_notification}
+            />
+          </div>
+        </div>
       </div>
     )
   }

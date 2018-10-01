@@ -469,7 +469,7 @@ class Switchboard extends React.Component {
 
     return emailTypes.map(type => {
       return (
-        <div key={type.id}>
+        <div key={type.id} className='margin-bottom'>
           <EmailType
             emailType={type}
             onUpdate={this.getEmailSwitches.bind(this)}
