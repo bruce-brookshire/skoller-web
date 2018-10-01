@@ -18,6 +18,7 @@ import LinkDetail from './LinkDetail'
 import FourDoor from '../../components/FourDoor'
 import FourDoorOverrides from './FourDoorOverrides'
 import {browserHistory} from 'react-router'
+import EmailType from './EmailType'
 
 @inject('rootStore') @observer
 class Switchboard extends React.Component {
@@ -39,7 +40,8 @@ class Switchboard extends React.Component {
       currentLink: null,
       openLinkModal: false,
       fourDoor: {},
-      fourDoorOverrides: []
+      fourDoorOverrides: [],
+      emailTypes: []
     }
   }
 
@@ -57,6 +59,7 @@ class Switchboard extends React.Component {
       this.setState({fourDoor})
     })
     this.getOverrides()
+    this.getEmailSwitches()
     actions.settings.getAutoUpdateInfo().then((autoUpdateData) => {
       this.setState({autoUpdateData, loading: false})
     }).catch(() => false)
@@ -87,6 +90,12 @@ class Switchboard extends React.Component {
   getOverrides () {
     actions.fourdoor.getFourDoorOverrides().then((fourDoorOverrides) => {
       this.setState({fourDoorOverrides})
+    }).catch(() => false)
+  }
+
+  getEmailSwitches () {
+    actions.emailTypes.getEmailTypes().then((emailTypes) => {
+      this.setState({emailTypes})
     }).catch(() => false)
   }
 
@@ -455,6 +464,32 @@ class Switchboard extends React.Component {
     )
   }
 
+  renderEmailSwitchItems () {
+    const {emailTypes} = this.state
+
+    return emailTypes.map(type => {
+      return (
+        <div key={type.id}>
+          <EmailType
+            emailType={type}
+            onUpdate={this.getEmailSwitches.bind(this)}
+          />
+        </div>
+      )
+    })
+  }
+
+  renderEmailSwitches () {
+    return (
+      <div className='cn-shadow-box margin-top'>
+        <div className='cn-shadow-box-content'>
+          <h3 className='cn-blue center-text'>Auto-Messaging</h3>
+          {this.renderEmailSwitchItems()}
+        </div>
+      </div>
+    )
+  }
+
   render () {
     const {fourDoorOverrides, currentLink} = this.state
     return (
@@ -478,6 +513,9 @@ class Switchboard extends React.Component {
             </div>
             <div className="cn-switchboard-section-item">
               {this.renderFourDoor()}
+            </div>
+            <div className="cn-switchboard-section-item">
+              {this.renderEmailSwitches()}
             </div>
           </div>
           <div className='cn-switchboard-section-large'>

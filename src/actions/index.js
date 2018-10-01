@@ -10,6 +10,7 @@ import {createClass, dropClass, getClassById, getClassByIdAdmin, getClassByLink,
 import {createIssue, getHelpTypes, resolveIssue, getRequestTypes, resolveChangeRequest, createStudentRequest,
   resolveStudentRequest} from './classhelp'
 import {getClassDocuments, uploadClassCsv, uploadClassDocument, deleteClassDocument} from './documents'
+import {getEmailTypes, updateEmailType} from './email-types'
 import {getFieldsOfStudy, uploadFOSCsv} from './fieldsofstudy'
 import {overrideSchool, getFourDoor, updateFourDoor, getFourDoorOverrides, deleteOverride} from './fourdoor'
 import {updateGradeScale} from './gradescales'
@@ -91,6 +92,10 @@ const actions = {
     getClassDocuments,
     uploadClassCsv,
     uploadClassDocument
+  },
+  emailTypes: {
+    getEmailTypes,
+    updateEmailType
   },
   fieldsofstudy: {
     getFieldsOfStudy,
