@@ -82,6 +82,7 @@ class Enroll extends React.Component {
         </div>
         <SignUpForm
           rootStore={this.props.rootStore}
+          enrollmentLink={this.props.location.state.enrollmentLink}
           onSubmit={() => this.onSignUp()}
         />
         <a

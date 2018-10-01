@@ -30,7 +30,7 @@ class NotificationHistory extends React.Component {
       notification_category: category || 'N/A',
       affected_users: users || 0,
       inserted_at: insertedAt
-        ? convertUTCDatetimeToDateTimeString(insertedAt, 'CST') : '',
+        ? convertUTCDatetimeToDateTimeString(insertedAt, 'America/Chicago') : '',
       msg: msg || ''
     }
     return row

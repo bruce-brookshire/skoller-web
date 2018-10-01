@@ -69,7 +69,7 @@ class Verification extends React.Component {
     const disableClass = disableButton ? 'disabled' : ''
     const {userStore: {user}} = this.props.rootStore
     const {location} = this.props
-    const referralCode = this.props.referralCode || (location.state && location.state.referralCode) || null
+    const referralCode = this.props.referralCode || (location && location.state && location.state.referralCode) || null
 
     return (
       <div className='cn-verification-container'>
