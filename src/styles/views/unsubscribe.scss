@@ -1,0 +1,8 @@
+.cn-unsubscribe-container {
+  @include center-viewport-content-container;
+
+  .content-landing {
+    @include center-viewport-content-narrow;
+    text-align: center;
+  }
+}
