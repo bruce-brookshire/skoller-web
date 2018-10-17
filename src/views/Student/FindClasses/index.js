@@ -82,7 +82,8 @@ class FindClasses extends React.Component {
       professor_id: this.state.professor.id,
       code: this.state.code || '',
       section: this.state.section || '',
-      subject: this.state.subject || ''
+      subject: this.state.subject || '',
+      created_on: 'Web'
     }
     return form
   }
