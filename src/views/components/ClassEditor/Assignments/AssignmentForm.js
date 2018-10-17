@@ -87,7 +87,8 @@ class AssignmentForm extends React.Component {
       name: name || '',
       weight_id: weightId || (currentWeight && currentWeight.id) || '',
       due: dueDate ? this.mapAssignmentDate(dueDate) : '',
-      year_due: dueDate ? dueDate.split('-')[0] : date.getFullYear()
+      year_due: dueDate ? dueDate.split('-')[0] : date.getFullYear(),
+      created_on: 'Web'
     })
   }
 

@@ -58,7 +58,8 @@ class WeightForm extends React.Component {
     return ({
       id: id || null,
       name: name || '',
-      weight: weight || ''
+      weight: weight || '',
+      created_on: 'Web'
     })
   }
 

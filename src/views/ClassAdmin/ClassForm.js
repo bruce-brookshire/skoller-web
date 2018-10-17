@@ -67,7 +67,8 @@ class ClassForm extends React.Component {
       meet_start_time: startTime || '',
       meet_days: days || '',
       location: location || '',
-      type: type || ''
+      type: type || '',
+      created_on: 'Web'
     }
   }
 
