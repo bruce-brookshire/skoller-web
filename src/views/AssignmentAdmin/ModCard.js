@@ -37,8 +37,8 @@ const headers = [
 class ModCard extends React.Component {
   getWeight (id) {
     const {weights} = this.props
-
-    return weights.find(item => item.id === id).name
+    let weight = weights.find(item => item.id === id)
+    return weight ? weight.name : ''
   }
 
   getRows () {
