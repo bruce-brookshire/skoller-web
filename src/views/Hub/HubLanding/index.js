@@ -200,7 +200,7 @@ class HubLanding extends React.Component {
 
   renderMaintMenu () {
     const approvalCount = this.getStatusCount('New Class') || 0
-    const changeCount = this.getStatusCount('Change') || 0
+    const changeCount = this.getStatusCount('Class Issue') || 0
     const maintCount = this.getStatusCount('Under Maintenance') || 0
 
     const disableApproval = approvalCount === 0
@@ -260,10 +260,7 @@ class HubLanding extends React.Component {
   }
 
   render () {
-    const syllabiCount = this.getStatusCount('Weights') + this.getStatusCount('Assignments') || 0
-    const helpCount = this.getStatusCount('Help') || 0
-
-    const disableHelp = helpCount === 0
+    const syllabiCount = this.getStatusCount('Syllabus Submitted') || 0
 
     return (
       <div className='cn-hub-landing-container'>
@@ -291,21 +288,6 @@ class HubLanding extends React.Component {
                       )</span>
                     </button>
                   </div>
-
-                  {(this.isAdminUser() || this.isHelpReqUser()) && <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
-                    <button
-                      className={`nav-button button full-width ${disableHelp ? 'disabled' : ''}`}
-                      disabled={disableHelp}
-                      onClick={this.onNeedsHelp.bind(this)}
-                    >
-                      <img src='/src/assets/images/icons/NeedsHelp.png'/>
-                      <span>Help Needed (
-                      {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
-                        : helpCount
-                      }
-                      )</span>
-                    </button>
-                  </div>}
                 </div>
               </div>
               {(this.isChangeReqUser() || this.isAdminUser()) && this.renderMaintMenu()}
