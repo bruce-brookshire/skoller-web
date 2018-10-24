@@ -75,15 +75,6 @@ class HubLanding extends React.Component {
     })
   }
 
-  onNeedsHelp () {
-    browserHistory.push({
-      pathname: '/hub/classes',
-      state: {
-        needsHelp: true
-      }
-    })
-  }
-
   onNeedsApproval () {
     browserHistory.push({
       pathname: '/hub/classes',

@@ -43,7 +43,7 @@ class DocumentsDeletedModal extends React.Component {
 
   needsSyllabusStatus () {
     let arr = this.state.statuses.filter((s) => {
-      return s.name === 'Needs Syllabus'
+      return s.name === 'Needs Setup'
     })
     return arr[0]
   }

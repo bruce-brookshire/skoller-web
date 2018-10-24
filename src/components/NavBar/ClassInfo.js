@@ -56,7 +56,6 @@ class ClassInfo extends React.Component {
 ClassInfo.propTypes = {
   cl: PropTypes.object.isRequired,
   isDIY: PropTypes.bool,
-  toggleHelpResolved: PropTypes.func,
   toggleRequestResolved: PropTypes.func
 }
 

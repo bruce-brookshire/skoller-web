@@ -27,19 +27,6 @@ export function createIssue (cl, helpId, form) {
 }
 
 /*
-* Resolve help ticket
-*/
-export function resolveIssue (helpId) {
-  return post(`/api/v1/help/${helpId}/complete`, null, 'Error resolving help ticket. Try again.')
-    .then(data => {
-      return data
-    })
-    .catch(error => {
-      return Promise.reject(error)
-    })
-}
-
-/*
 * Get request types
 */
 export function getRequestTypes () {

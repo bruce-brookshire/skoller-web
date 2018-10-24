@@ -6,7 +6,6 @@ import Modal from '../../components/Modal'
 import ClassForm from './ClassForm'
 import IssuesModal from '../components/ClassEditor/IssuesModal'
 import GradeScale from '../components/ClassEditor/GradeScale'
-import HelpResolvedModal from './HelpResolvedModal'
 import RequestResolvedModal from './RequestResolvedModal'
 import ClassCard from '../components/ClassCard'
 import Loading from '../../components/Loading'
@@ -21,7 +20,6 @@ import FileViewer from '../../components/FileViewer'
 import {FileTabs, FileTab} from '../../components/FileTab'
 import {browserHistory} from 'react-router'
 import StudentRequestInfo from './StudentRequestInfo'
-import HelpNeededInfo from './HelpNeededInfo'
 import StatusForm from './StatusForm'
 import DocumentsDeletedModal from './DocumentsDeletedModal'
 import ClassNotes from './ClassNotes'
@@ -45,7 +43,6 @@ class ClassAdmin extends React.Component {
     return {
       cl: null,
       openEditClassModal: false,
-      openHelpResolvedModal: false,
       openIssuesModal: false,
       openRequestResolvedModal: false,
       isWeightsEditable: false,
@@ -60,7 +57,6 @@ class ClassAdmin extends React.Component {
       documents: [],
       hideDocuments: false,
       openStudentRequestInfo: false,
-      openHelpInfo: false,
       openNoDocModal: false
     }
   }
@@ -251,13 +247,6 @@ class ClassAdmin extends React.Component {
   /*
   * Toggle the issues resolved modal.
   */
-  toggleHelpResolvedModal () {
-    this.setState({openHelpResolvedModal: !this.state.openHelpResolvedModal})
-  }
-
-  /*
-  * Toggle the issues resolved modal.
-  */
   toggleRequestResolvedModal () {
     this.setState({openRequestResolvedModal: !this.state.openRequestResolvedModal})
   }
@@ -280,10 +269,6 @@ class ClassAdmin extends React.Component {
 
   toggleStudentRequestInfo () {
     this.setState({openStudentRequestInfo: !this.state.openStudentRequestInfo})
-  }
-
-  toggleHelpRequestInfo () {
-    this.setState({openHelpInfo: !this.state.openHelpInfo})
   }
 
   toggleChat () {
@@ -336,23 +321,6 @@ class ClassAdmin extends React.Component {
           onSubmit={this.updateClass.bind(this)}
         />
       </Modal>
-    )
-  }
-
-  /*
-  * Render the help needed info
-  */
-  renderHelpResolvedModal () {
-    const {cl} = this.state
-    return (
-      <HelpResolvedModal
-        cl={cl}
-        open={this.state.openHelpResolvedModal}
-        onClose={this.toggleHelpResolvedModal.bind(this)}
-        onSubmit={() => {
-          this.updateClass()
-        }}
-      />
     )
   }
 
@@ -458,7 +426,6 @@ class ClassAdmin extends React.Component {
           toggleChat={this.toggleChat.bind(this)}
           toggleDocuments={this.toggleDocs.bind(this)}
           onSelectIssue={this.toggleStudentRequestInfo.bind(this)}
-          onSelectHelp={this.toggleHelpRequestInfo.bind(this)}
         />
       </div>
     )
@@ -513,20 +480,6 @@ class ClassAdmin extends React.Component {
           <StudentRequestInfo
             cl={cl}
             onComplete={this.toggleRequestResolvedModal.bind(this)}
-          />
-        </div>
-      </div>
-    )
-  }
-
-  renderHelpInfo () {
-    const {cl} = this.state
-    return (
-      <div className='cn-shadow-box margin-bottom'>
-        <div className='cn-shadow-box-content'>
-          <HelpNeededInfo
-            cl={cl}
-            onComplete={this.toggleHelpResolvedModal.bind(this)}
           />
         </div>
       </div>
@@ -662,7 +615,7 @@ class ClassAdmin extends React.Component {
   }
 
   renderClass () {
-    const {documents, hideDocuments, openStudentRequestInfo, openHelpInfo} = this.state
+    const {documents, hideDocuments, openStudentRequestInfo} = this.state
     return (
       <div id='cn-class-admin-container'>
         <div id='cn-class-admin'>
@@ -675,14 +628,12 @@ class ClassAdmin extends React.Component {
           {this.renderChat()}
           {this.renderStudents()}
         </div>
-        {((documents.length !== 0 && !hideDocuments) || openStudentRequestInfo || openHelpInfo) &&
+        {((documents.length !== 0 && !hideDocuments) || openStudentRequestInfo) &&
         <div id='cn-half-panel'>
           {openStudentRequestInfo && this.renderStudentRequestInfo()}
-          {openHelpInfo && this.renderHelpInfo()}
           {documents.length !== 0 && !hideDocuments && this.renderSyllabus()}
         </div>}
         {this.renderIssuesModal()}
-        {this.renderHelpResolvedModal()}
         {this.renderRequestResolvedModal()}
         {this.renderEditClassModal()}
         {this.renderWeightCreateModal()}
