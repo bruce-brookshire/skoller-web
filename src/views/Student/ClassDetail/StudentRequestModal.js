@@ -43,7 +43,7 @@ class StudentRequestModal extends React.Component {
     const {cl} = this.props
     return (
       <div className="class-status center-text">
-        Current Status: {cl.status.name !== 'Complete' ? 'In Review' : 'Complete'}
+        Current Status: {cl.status.name !== 'Class Setup' ? 'In Review' : 'Complete'}
       </div>
     )
   }
