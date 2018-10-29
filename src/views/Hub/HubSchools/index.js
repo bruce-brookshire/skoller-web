@@ -14,20 +14,12 @@ const headers = [
     display: '# of students'
   },
   {
-    field: 'weights',
-    display: 'Weights'
+    field: 'in_setup',
+    display: 'In Setup'
   },
   {
-    field: 'assignments',
-    display: 'Assignments'
-  },
-  {
-    field: 'review',
-    display: 'Review'
-  },
-  {
-    field: 'help',
-    display: 'Help'
+    field: 'needs_students',
+    display: 'Needs Student Help'
   },
   {
     field: 'complete',
@@ -69,11 +61,9 @@ class HubSchools extends React.Component {
       id: id || '',
       name: name ? <div onClick={() => this.onSchoolSelect(item)}><span style={{display: 'block'}}><strong>{name}</strong></span><span style={{fontSize: '10px'}}>Period</span></div> : 'TBA',
       numberOfStudents: enrollment || 0,
-      weights: this.getCounts(classes, 'Weights') || this.renderCheck(),
-      assignments: this.getCounts(classes, 'Assignments') || this.renderCheck(),
-      review: this.getCounts(classes, 'Review') || this.renderCheck(),
-      help: this.getCounts(classes, 'Help') || this.renderCheck(),
-      complete: this.getCounts(classes, 'Complete') || this.renderCheck()
+      in_setup: this.getCounts(classes, 'Syllabus Submitted') || this.renderCheck(),
+      needs_students: this.getCounts(classes, 'Needs Student Input') || this.renderCheck(),
+      complete: this.getCounts(classes, 'Class Setup') || this.renderCheck()
     }
 
     return row
@@ -111,11 +101,9 @@ class HubSchools extends React.Component {
     actions.schools.getHubSchools(queryString).then(schools => {
       headers[0].display = `Schools (${schools.length})`
       headers[1].display = `# of students (${this.getTotal(schools, 'Students')})`
-      headers[2].display = `Weights (${this.getTotal(schools, 'Weights')})`
-      headers[3].display = `Assignments (${this.getTotal(schools, 'Assignments')})`
-      headers[4].display = `Review (${this.getTotal(schools, 'Review')})`
-      headers[5].display = `Help (${this.getTotal(schools, 'Help')})`
-      headers[6].display = `Complete (${this.getTotal(schools, 'Complete')})`
+      headers[2].display = `In Setup (${this.getTotal(schools, 'Syllabus Submitted')})`
+      headers[3].display = `Needs Student Help (${this.getTotal(schools, 'Needs Student Input')})`
+      headers[4].display = `Complete (${this.getTotal(schools, 'Class Setup')})`
       this.setState({schools, loading: false})
     }).catch(() => this.setState({loading: false}))
   }

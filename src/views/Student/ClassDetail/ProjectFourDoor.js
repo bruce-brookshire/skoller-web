@@ -28,16 +28,6 @@ class ProjectFourDoor extends React.Component {
     })
   }
 
-  /*
-  * Determine if the class is in review status (able to request help)
-  *
-  * @return [Boolean]. boolean indicating if the class is in review
-  */
-  inHelp () {
-    const {cl} = this.props
-    return (cl.status && cl.status.name === 'Help')
-  }
-
   renderOr () {
     return (
       <div id='or' className='margin-bottom'>
@@ -103,14 +93,6 @@ class ProjectFourDoor extends React.Component {
     )
   }
 
-  renderSkollerWorking () {
-    return (
-      <div className='center-text'>
-        <span>Hang tight. Skoller is working on this syllabus right now.</span><br/><br/>
-      </div>
-    )
-  }
-
   renderComplete () {
     return (
       <div className='center-text'>
@@ -121,11 +103,8 @@ class ProjectFourDoor extends React.Component {
 
   renderFourDoor () {
     const {is_auto_syllabus: autoSyllabus, is_diy_enabled: diy, is_diy_preferred: diyPref} = this.props.cl.school
-    // in review
-    if (this.inHelp()) {
-      return this.renderSkollerWorking()
     // complete
-    } else if (this.isComplete()) {
+    if (this.isComplete()) {
       return this.renderComplete()
     // normal
     } else if (diy && !diyPref && autoSyllabus) {

@@ -32,11 +32,7 @@ class ClassSearch extends React.Component {
     const {state} = this.props.location
     let {searchStore} = this.props.rootStore
     if (state) {
-      if (state.needsHelp) {
-        searchStore.searchField = 'class_status'
-        searchStore.searchValue = 600
-        this.onSearch()
-      } else if (state.needsChange) {
+      if (state.needsChange) {
         searchStore.searchField = 'class_status'
         searchStore.searchValue = 800
         this.onSearch()

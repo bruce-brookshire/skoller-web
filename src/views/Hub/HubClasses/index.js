@@ -133,15 +133,15 @@ class HubClasses extends React.Component {
     }
     if (status === 'new class') {
       return <span className='cn-red'>NEEDS APPROVAL</span>
-    } else if (status === 'needs syllabus') {
+    } else if (status === 'needs setup') {
       return <span className='cn-red'>UPLOAD SYLLABUS</span>
-    } else if (status === 'weights' || status === 'assignments' || status === 'review') {
+    } else if (status === 'syllabus submitted') {
       return <span className = 'cn-grey'>RECEIVED</span>
-    } else if (status === 'help') {
-      return <span className='cn-red'> NEEDS HELP</span>
-    } else if (status === 'change') {
+    } else if (status === 'needs student input') {
+      return <span className='cn-red'> NEEDS STUDENT HELP</span>
+    } else if (status === 'class issue') {
       return <span className='cn-red'> CHANGE REQ</span>
-    } else if (status === 'complete' || status === 'change') {
+    } else if (status === 'class setup') {
       return <span className='cn-green' >COMPLETED</span>
     }
     return status
@@ -150,7 +150,6 @@ class HubClasses extends React.Component {
   onCreateClass () {
 
   }
-
   /*
   * On edit class.
   *
@@ -163,9 +162,7 @@ class HubClasses extends React.Component {
   }
 
   getHeaderText (state) {
-    if (state.needsHelp) {
-      return 'Classes in review that need help'
-    } else if (state.needsChange) {
+    if (state.needsChange) {
       return 'Completed classes with a change request'
     } else if (state.needsMaint) {
       return 'Classes currently under maintenance'
@@ -177,7 +174,7 @@ class HubClasses extends React.Component {
   renderHeader () {
     const {state} = this.props.location
     // If the class is in any of these states, don't show the search bar
-    const boole = state && (state.needsHelp || state.needsChange || state.needsMaint || state.needsApproval)
+    const boole = state && (state.needsChange || state.needsMaint || state.needsApproval)
     return boole ? (
       <div className='margin-bottom'>
         <h2 className='center-text' style={{marginBottom: 0}}>{this.getHeaderText(state)}</h2>

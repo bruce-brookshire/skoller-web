@@ -45,12 +45,11 @@ class NavBar extends React.Component {
   }
 
   renderClassInfo () {
-    const {navbarStore: {cl, isDIY, toggleHelpResolved, toggleRequestResolved}} = this.props.rootStore
+    const {navbarStore: {cl, isDIY, toggleRequestResolved}} = this.props.rootStore
     if (cl) {
       return (
         <ClassInfo cl={cl}
           isDIY={isDIY}
-          toggleHelpResolved={toggleHelpResolved}
           toggleRequestResolved={toggleRequestResolved} />
       )
     }

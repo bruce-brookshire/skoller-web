@@ -7,7 +7,7 @@ import {deleteClassPost, getClassPosts, deleteClassComment, deleteClassReply} fr
 import {createClass, dropClass, getClassById, getClassByIdAdmin, getClassByLink, getStudentClassesById,
   enrollByLink, enrollInClass, searchClasses, searchStudentClasses, updateClass, lockClass,
   unlockClass, updateClassStatus, addNote} from './classes'
-import {createIssue, getHelpTypes, resolveIssue, getRequestTypes, resolveChangeRequest, createStudentRequest,
+import {createIssue, getHelpTypes, getRequestTypes, resolveChangeRequest, createStudentRequest,
   resolveStudentRequest} from './classhelp'
 import {getClassDocuments, uploadClassCsv, uploadClassDocument, deleteClassDocument} from './documents'
 import {getEmailTypes, getMinEmailTypes, updateEmailType} from './email-types'
@@ -81,7 +81,6 @@ const actions = {
   classhelp: {
     createIssue,
     getHelpTypes,
-    resolveIssue,
     getRequestTypes,
     resolveChangeRequest,
     createStudentRequest,

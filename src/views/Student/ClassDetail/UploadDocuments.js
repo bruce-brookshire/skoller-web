@@ -212,7 +212,7 @@ class UploadDocuments extends React.Component {
   */
   isUploadAllowed () {
     const {cl} = this.props
-    return (cl.status && cl.status.name !== 'Complete' && cl.status.name !== 'Help' && cl.status.name !== 'Change')
+    return (cl.status && !cl.status.is_complete)
   }
 
   /*
@@ -222,7 +222,7 @@ class UploadDocuments extends React.Component {
   */
   needsSyllabus () {
     const {cl} = this.props
-    return (cl.status && cl.status.name === 'Needs Syllabus')
+    return (cl.status && cl.status.name === 'Needs Setup')
   }
 
   /*

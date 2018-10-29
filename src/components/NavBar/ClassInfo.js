@@ -9,7 +9,7 @@ class ClassInfo extends React.Component {
     const studentRequests = cl.student_requests.filter(c => !c.is_completed)
     const changeRequests = cl.change_requests.filter(c => !c.is_completed)
     const allRequests = studentRequests.concat(changeRequests)
-    const needsChange = allRequests.length > 0 && (cl.status.name === 'Complete' || cl.status.name === 'Change')
+    const needsChange = allRequests.length > 0 && (cl.status.name === 'Class Setup' || cl.status.name === 'Class Issue')
     if (needsChange) {
       return (
         <div className='issue-icon-container' onClick={() => this.props.toggleRequestResolved()}>
@@ -18,25 +18,6 @@ class ClassInfo extends React.Component {
             <div className='triangle-inner' />
           </div>
           <i className='fa fa-refresh cn-red margin-right' />
-        </div>
-      )
-    }
-  }
-
-  renderHelpRequest () {
-    const {cl, isDIY} = this.props
-    const studentRequests = cl.student_requests.filter(h => !h.is_completed)
-    const helpRequests = cl.help_requests.filter(h => !h.is_completed)
-    const allRequests = studentRequests.concat(helpRequests)
-    const needsHelp = allRequests.length > 0 && cl.status.name !== 'Complete' && cl.status.name !== 'Change'
-    if (needsHelp && !isDIY) {
-      return (
-        <div className='issue-icon-container' onClick={() => this.props.toggleHelpResolved()}>
-          <div className='message-bubble triangle-top'>
-            {allRequests[0].note ? allRequests[0].note : (allRequests[0].notes ? allRequests[0].notes : allRequests[0].change_type.name)}
-            <div className='triangle-inner' />
-          </div>
-          <i className='fa fa-exclamation-triangle cn-red margin-right' />
         </div>
       )
     }
@@ -64,7 +45,6 @@ class ClassInfo extends React.Component {
       <div className='header-container'>
         <div className='header'>
           {this.renderChangeRequest()}
-          {this.renderHelpRequest()}
           <h2>{this.props.cl && this.props.cl.name}</h2>
         </div>
         {this.renderClassDetails()}
@@ -76,7 +56,6 @@ class ClassInfo extends React.Component {
 ClassInfo.propTypes = {
   cl: PropTypes.object.isRequired,
   isDIY: PropTypes.bool,
-  toggleHelpResolved: PropTypes.func,
   toggleRequestResolved: PropTypes.func
 }
 

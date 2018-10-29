@@ -43,7 +43,7 @@ class MyClasses extends React.Component {
 
   numberOfClassesNeedingSyllabus () {
     return this.state.classes.filter((item, index) => {
-      return item.status.name === 'Needs Syllabus'
+      return item.status.name === 'Needs Setup'
     }).length
   }
 

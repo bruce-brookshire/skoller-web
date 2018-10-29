@@ -26,7 +26,6 @@ class ClassCard extends React.Component {
         {(cl.student_requests.findIndex((item) => !item.is_completed) > -1 || cl.change_requests.findIndex((item) => !item.is_completed && item.change_type.id === 400) > -1) &&
           <i className='fa fa-warning cn-red cursor margin-left' onClick={this.props.onSelectIssue.bind(this)} />
         }
-        {cl.help_requests.findIndex((item) => !item.is_completed) > -1 && <i className='fa fa-info-circle cn-yellow cursor margin-left' onClick={this.props.onSelectHelp.bind(this)} />}
       </div>
     )
   }
@@ -142,6 +141,5 @@ ClassCard.propTypes = {
   toggleWrench: PropTypes.func,
   toggleChat: PropTypes.func,
   toggleDocuments: PropTypes.func,
-  onSelectIssue: PropTypes.func,
-  onSelectHelp: PropTypes.func
+  onSelectIssue: PropTypes.func
 }
