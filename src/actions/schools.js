@@ -152,3 +152,17 @@ export function getMostCommonSchool () {
       return Promise.reject(error)
     })
 }
+
+/*
+* Get the all schools for signup
+*
+*/
+export function getEmailDomains (schoolId) {
+  return get(`/api/v1/schools/${schoolId}/email_domains`, '', 'Error fetching email domains. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}

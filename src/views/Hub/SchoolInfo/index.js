@@ -8,6 +8,7 @@ import SchoolDetailsForm from './SchoolDetailsForm'
 import actions from '../../../actions'
 import {inject, observer} from 'mobx-react'
 import FourDoor from '../../components/FourDoor'
+import EmailDomainDetails from './EmailDomainDetails'
 
 @inject('rootStore') @observer
 class SchoolInfo extends React.Component {
@@ -153,6 +154,15 @@ class SchoolInfo extends React.Component {
     )
   }
 
+  renderEmailDomains () {
+    const {school} = this.state
+    return (
+      <EmailDomainDetails
+        school={school}
+      />
+    )
+  }
+
   /*
   * Render semester details form
   */
@@ -211,9 +221,13 @@ class SchoolInfo extends React.Component {
           <div className='col-xs-12 col-md-6 margin-top'>
             {this.renderPeriod()}
           </div>
-          <div className='col-xs-12 col-md-3 margin-top'>
+          <div className='col-xs-12 col-md-6 margin-top'>
             <h3>Class Settings</h3>
             {this.renderSchoolSettings()}
+          </div>
+          <div className='col-xs-12 col-md-6 margin-top'>
+            <h3>Email Domains</h3>
+            {this.renderEmailDomains()}
           </div>
         </div>
         {this.renderDetailsFormModal()}
