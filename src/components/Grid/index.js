@@ -28,10 +28,12 @@ class Grid extends React.Component {
     if (!rows || rows.length === 0) {
       return (
         <tbody>
-          <tr colSpan={headers.length}>
+          <tr>
+            <td></td>
             <td className='no-items' colSpan={headers.length}>
               {emptyMessage || 'There are no items to be displayed.'}
             </td>
+            {canDelete ? <td></td> : null}
           </tr>
         </tbody>
       )

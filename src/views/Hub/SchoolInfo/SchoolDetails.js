@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Card from '../../../components/Card'
 
 class SchoolDetails extends React.Component {
   renderSchoolTable () {
@@ -23,25 +24,41 @@ class SchoolDetails extends React.Component {
             <th>Time Zone:</th>
             <td>{school.timezone}</td>
           </tr>
+          <tr>
+            <th>School Color:</th>
+            <td style={{color: `${school.color}`}}>{school.color}</td>
+          </tr>
         </tbody>
       </table>
     )
   }
 
-  render () {
-    const {school, onEdit} = this.props
+  renderTitle () {
+    const {onEdit} = this.props
+    return (
+      <div className='cn-icon-flex'>
+        School Details
+        <i className='fa fa-pencil cn-blue cursor' onClick={() => onEdit() } />
+      </div>
+    )
+  }
 
+  renderContent () {
+    const {school, onEdit} = this.props
     return (
       <div>
-        <div className='edit-header'>
-          <h3>1. School Details</h3>
-          <a onClick={() => onEdit()}>Edit</a>
-        </div>
-
         {school ? this.renderSchoolTable()
-          : <a onClick={() => onEdit()}>Add details</a>
-        }
+          : <a onClick={() => onEdit()}>Add details</a>}
       </div>
+    )
+  }
+
+  render () {
+    return (
+      <Card
+        title={this.renderTitle()}
+        content={this.renderContent()}
+      />
     )
   }
 }

@@ -8,6 +8,8 @@ import SchoolDetailsForm from './SchoolDetailsForm'
 import actions from '../../../actions'
 import {inject, observer} from 'mobx-react'
 import FourDoor from '../../components/FourDoor'
+import EmailDomainDetails from './EmailDomainDetails'
+import EmailDomainForm from './EmailDomainForm'
 
 @inject('rootStore') @observer
 class SchoolInfo extends React.Component {
@@ -32,7 +34,15 @@ class SchoolInfo extends React.Component {
         const periods = school.class_periods
         this.setState({school, periods})
       })
+      this.getEmailDomains()
     }
+  }
+
+  getEmailDomains () {
+    const {school} = this.state
+    actions.schools.getEmailDomains(school.id).then(emailDomains => {
+      this.setState({emailDomains})
+    }).catch(() => false)
   }
 
   initializeState () {
@@ -43,8 +53,10 @@ class SchoolInfo extends React.Component {
     return {
       openDetailsForm: false,
       openPeriodForm: false,
+      openEmailDomainForm: false,
       school: (state && state.school) || null,
-      periods: []
+      periods: [],
+      emailDomains: []
     }
   }
 
@@ -107,7 +119,7 @@ class SchoolInfo extends React.Component {
     const {periods} = this.state
     return (
       <SemesterDetails
-        header="2. Semesters"
+        header="Semesters"
         periods={periods}
         onEdit={this.togglePeriodForm.bind(this)}
         onUpload={this.initializeComponent.bind(this)}
@@ -129,32 +141,6 @@ class SchoolInfo extends React.Component {
               <th>4 Door:</th>
               <td>{this.renderFourDoor()}</td>
             </tr>}
-            <tr>
-              <th>Weights:</th>
-              <td>
-                <div>
-                  <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                    <a>Admin</a>
-                    <a style={{marginLeft: '5px', marginRight: '5px'}}>Worker</a>
-                    <a>DIY</a>
-                  </div>
-                  <img className='four-door-icon' src='/src/assets/images/four_door/skoller_default.png'></img>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <th>Assignments:</th>
-              <td>
-                <div>
-                  <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                    <a>Admin</a>
-                    <a style={{marginLeft: '5px', marginRight: '5px'}}>Worker</a>
-                    <a>DIY</a>
-                  </div>
-                  <img className='four-door-icon' src='/src/assets/images/four_door/skoller_default.png'></img>
-                </div>
-              </td>
-            </tr>
             <tr>
               <th>Chat:</th>
               <td>{this.renderChatEnabled()}</td>
@@ -179,6 +165,19 @@ class SchoolInfo extends React.Component {
     )
   }
 
+  renderEmailDomains () {
+    const {school, emailDomains} = this.state
+    return (
+      <EmailDomainDetails
+        school={school}
+        title={'Email Domains'}
+        onAdd={this.toggleEmailDomainForm.bind(this)}
+        emailDomains={emailDomains}
+        onDelete={this.onDeleteEmailDomain.bind(this)}
+      />
+    )
+  }
+
   /*
   * Render semester details form
   */
@@ -199,6 +198,24 @@ class SchoolInfo extends React.Component {
   }
 
   /*
+  * Render email domain form
+  */
+  renderEmailDomainFormModal () {
+    return (
+      <Modal
+        open={this.state.openEmailDomainForm}
+        onClose={this.toggleEmailDomainForm.bind(this)}
+      >
+        <EmailDomainForm
+          school={this.state.school}
+          onSubmit={this.onEmailDomainSumbit.bind(this)}
+          onClose={this.toggleEmailDomainForm.bind(this)}
+        />
+      </Modal>
+    )
+  }
+
+  /*
   * Call back on school detail form submission.
   */
   onDetailsSumbit (school) {
@@ -208,9 +225,23 @@ class SchoolInfo extends React.Component {
   /*
   * Call back on school period form submission.
   */
-  onPeriodSumbit (period) {
+  onPeriodSumbit () {
     this.setState({openPeriodForm: false})
     this.initializeComponent()
+  }
+
+  /*
+  * Call back on school email domain form submission.
+  */
+  onEmailDomainSumbit () {
+    this.setState({openEmailDomainForm: false})
+    this.getEmailDomains()
+  }
+
+  onDeleteEmailDomain (emailDomain) {
+    actions.schools.deleteEmailDomains(emailDomain.id).then(() => {
+      this.getEmailDomains()
+    }).catch(() => false)
   }
 
   /*
@@ -227,23 +258,35 @@ class SchoolInfo extends React.Component {
     this.setState({openPeriodForm: !this.state.openPeriodForm})
   }
 
+  /*
+  * Toggle schools email domain modal.
+  */
+  toggleEmailDomainForm () {
+    this.setState({openEmailDomainForm: !this.state.openEmailDomainForm})
+  }
+
   render () {
     return (
       <div className='cn-school-info'>
         <div className='row'>
-          <div className='col-xs-12 col-md-6 margin-top'>
+          <div className='col-xs-12 col-md-3 margin-top'>
             {this.renderSchoolDetails()}
           </div>
+          <div className='col-xs-12 col-md-3 margin-top'></div>
           <div className='col-xs-12 col-md-6 margin-top'>
             {this.renderPeriod()}
           </div>
-          <div className='col-xs-12 col-md-3 margin-top'>
-            <h3>5. Class Settings</h3>
+          <div className='col-xs-12 col-md-6 margin-top'>
+            <h3>Class Settings</h3>
             {this.renderSchoolSettings()}
+          </div>
+          <div className='col-xs-12 col-md-3 margin-top'>
+            {this.renderEmailDomains()}
           </div>
         </div>
         {this.renderDetailsFormModal()}
         {this.renderPeriodFormModal()}
+        {this.renderEmailDomainFormModal()}
       </div>
     )
   }

@@ -43,7 +43,7 @@ class SchoolDetailsForm extends React.Component {
   */
   initializeFormData (data) {
     let formData = data || {}
-    const {id, name, adr_zip: zip, adr_region: region, adr_locality: locality, timezone, short_name: shortName} = formData
+    const {id, name, adr_zip: zip, adr_region: region, adr_locality: locality, timezone, short_name: shortName, color} = formData
     return ({
       id: id || '',
       name: name || '',
@@ -51,7 +51,8 @@ class SchoolDetailsForm extends React.Component {
       adr_region: region || '',
       adr_locality: locality || '',
       timezone: timezone || '',
-      short_name: shortName || ''
+      short_name: shortName || '',
+      color: color || ''
     })
   }
 
@@ -156,6 +157,18 @@ class SchoolDetailsForm extends React.Component {
                 onChange={updateProperty}
                 placeholder="School zip code"
                 value={form.adr_zip}
+              />
+            </div>
+            <div className='col-xs-12'>
+              <InputField
+                containerClassName='margin-top'
+                error={formErrors.color}
+                label="School color"
+                name="color"
+                onChange={updateProperty}
+                placeholder="School color"
+                value={form.color}
+                type="color"
               />
             </div>
           </div>

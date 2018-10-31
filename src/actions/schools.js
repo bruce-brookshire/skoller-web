@@ -1,4 +1,4 @@
-import {get, post, put, postFile} from '../utilities/api'
+import {get, post, put, postFile, del} from '../utilities/api'
 import {showSnackbar} from '../utilities/snackbar'
 import stores from '../stores'
 const {userStore} = stores
@@ -145,6 +145,50 @@ export function uploadSchoolCsv (file) {
 export function getMostCommonSchool () {
   const {user: {student}} = userStore
   return get(`/api/v1/students/${student.id}/school`, '', 'Error fetching school. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Get the all schools for signup
+*
+*/
+export function getEmailDomains (schoolId) {
+  return get(`/api/v1/schools/${schoolId}/email_domains`, '', 'Error fetching email domains. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Create a new school
+*
+* @params [Object] form. School form.
+*/
+export function createEmailDomains (schoolId, form) {
+  return post(`/api/v1/schools/${schoolId}/email_domains`, form, 'Error creating email domain. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Create a new school
+*
+* @params [Object] form. School form.
+*/
+export function deleteEmailDomains (id) {
+  return del(`/api/v1/email_domains/${id}`, 'Error deleting email domain. Try again.')
     .then(data => {
       return data
     })
