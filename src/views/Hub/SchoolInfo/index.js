@@ -269,9 +269,10 @@ class SchoolInfo extends React.Component {
     return (
       <div className='cn-school-info'>
         <div className='row'>
-          <div className='col-xs-12 col-md-6 margin-top'>
+          <div className='col-xs-12 col-md-3 margin-top'>
             {this.renderSchoolDetails()}
           </div>
+          <div className='col-xs-12 col-md-3 margin-top'></div>
           <div className='col-xs-12 col-md-6 margin-top'>
             {this.renderPeriod()}
           </div>
@@ -279,7 +280,7 @@ class SchoolInfo extends React.Component {
             <h3>Class Settings</h3>
             {this.renderSchoolSettings()}
           </div>
-          <div className='col-xs-12 col-md-6 margin-top'>
+          <div className='col-xs-12 col-md-3 margin-top'>
             {this.renderEmailDomains()}
           </div>
         </div>
