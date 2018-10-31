@@ -23,7 +23,7 @@ import {attachProfessorToClass, createProfessor, removeProfessorFromClass,
   searchProfessors, updateProfessor} from './professors'
 import {resolveReport, getIncompleteReports} from './reports'
 import {createSchool, getAllSchools, getHubSchools,
-  getHubSchoolsMinified, getSchoolById, updateSchool, searchSchools, getStates, uploadSchoolCsv, getMostCommonSchool, getEmailDomains, createEmailDomains} from './schools'
+  getHubSchoolsMinified, getSchoolById, updateSchool, searchSchools, getStates, uploadSchoolCsv, getMostCommonSchool, getEmailDomains, createEmailDomains, deleteEmailDomains} from './schools'
 import {getAutoUpdateInfo, updateAutoUpdateInfo, forecastAutoUpdateInfo, getMinVersionInfo, updateMinVer} from './settings'
 import {createCustomLink, getCustomLinkById, getCustomLinks} from './signup-links'
 import {getNextClass} from './syllabusworkers'
@@ -154,7 +154,8 @@ const actions = {
     uploadSchoolCsv,
     getMostCommonSchool,
     getEmailDomains,
-    createEmailDomains
+    createEmailDomains,
+    deleteEmailDomains
   },
   settings: {
     getAutoUpdateInfo,

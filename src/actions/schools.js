@@ -1,4 +1,4 @@
-import {get, post, put, postFile} from '../utilities/api'
+import {get, post, put, postFile, del} from '../utilities/api'
 import {showSnackbar} from '../utilities/snackbar'
 import stores from '../stores'
 const {userStore} = stores
@@ -174,6 +174,21 @@ export function getEmailDomains (schoolId) {
 */
 export function createEmailDomains (schoolId, form) {
   return post(`/api/v1/schools/${schoolId}/email_domains`, form, 'Error creating email domain. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Create a new school
+*
+* @params [Object] form. School form.
+*/
+export function deleteEmailDomains (id) {
+  return del(`/api/v1/email_domains/${id}`, 'Error deleting email domain. Try again.')
     .then(data => {
       return data
     })

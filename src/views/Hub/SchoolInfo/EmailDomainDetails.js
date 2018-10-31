@@ -28,6 +28,7 @@ class EmailDomainDetails extends React.Component {
   }
 
   renderEmailDomainTable () {
+    const {onDelete} = this.props
     return (
       <Grid
         className='striped'
@@ -36,6 +37,7 @@ class EmailDomainDetails extends React.Component {
         disabled={true}
         canDelete={true}
         canSelect={false}
+        onDelete={(emailDomain) => onDelete(emailDomain)}
         emptyMessage={'No domains yet.'} />
     )
   }
@@ -64,6 +66,7 @@ EmailDomainDetails.propTypes = {
   school: PropTypes.object,
   title: PropTypes.string,
   onAdd: PropTypes.func,
+  onDelete: PropTypes.func,
   emailDomains: PropTypes.array
 }
 

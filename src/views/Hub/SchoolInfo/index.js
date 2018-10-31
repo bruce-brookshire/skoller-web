@@ -173,6 +173,7 @@ class SchoolInfo extends React.Component {
         title={'Email Domains'}
         onAdd={this.toggleEmailDomainForm.bind(this)}
         emailDomains={emailDomains}
+        onDelete={this.onDeleteEmailDomain.bind(this)}
       />
     )
   }
@@ -235,6 +236,12 @@ class SchoolInfo extends React.Component {
   onEmailDomainSumbit () {
     this.setState({openEmailDomainForm: false})
     this.getEmailDomains()
+  }
+
+  onDeleteEmailDomain (emailDomain) {
+    actions.schools.deleteEmailDomains(emailDomain.id).then(() => {
+      this.getEmailDomains()
+    }).catch(() => false)
   }
 
   /*
