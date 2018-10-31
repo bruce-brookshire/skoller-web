@@ -24,6 +24,10 @@ class SchoolDetails extends React.Component {
             <th>Time Zone:</th>
             <td>{school.timezone}</td>
           </tr>
+          <tr>
+            <th>School Color:</th>
+            <td style={{color: `${school.color}`}}>{school.color}</td>
+          </tr>
         </tbody>
       </table>
     )
