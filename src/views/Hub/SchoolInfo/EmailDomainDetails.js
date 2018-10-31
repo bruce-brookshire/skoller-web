@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Grid from '../../../components/Grid'
-import actions from '../../../actions'
+import Card from '../../../components/Card'
 
 const headers = [
   {
@@ -11,25 +11,6 @@ const headers = [
 ]
 
 class EmailDomainDetails extends React.Component {
-  constructor (props) {
-    super(props)
-
-    this.state = this.initializeState()
-  }
-
-  initializeState () {
-    return {
-      emailDomains: []
-    }
-  }
-
-  componentWillMount () {
-    const {school} = this.props
-    actions.schools.getEmailDomains(school.id).then(emailDomains => {
-      this.setState(emailDomains)
-    }).catch(() => false)
-  }
-
   mapRow (item, index) {
     const {id, email_domain: emailDomain} = item
     const row = {
@@ -40,7 +21,7 @@ class EmailDomainDetails extends React.Component {
   }
 
   getRows () {
-    const {emailDomains} = this.state
+    const {emailDomains} = this.props
     return emailDomains.map((item, index) =>
       this.mapRow(item, index)
     )
@@ -59,17 +40,31 @@ class EmailDomainDetails extends React.Component {
     )
   }
 
+  renderTitle () {
+    const {title} = this.props
+    return (
+      <div className='cn-icon-flex'>
+        {title}
+        <i className='fa fa-plus cn-blue cursor' onClick={() => this.props.onAdd() } />
+      </div>
+    )
+  }
+
   render () {
     return (
-      <div>
-        {this.renderEmailDomainTable()}
-      </div>
+      <Card
+        title={this.renderTitle()}
+        content={this.renderEmailDomainTable()}
+      />
     )
   }
 }
 
 EmailDomainDetails.propTypes = {
-  school: PropTypes.object
+  school: PropTypes.object,
+  title: PropTypes.string,
+  onAdd: PropTypes.func,
+  emailDomains: PropTypes.array
 }
 
 export default EmailDomainDetails

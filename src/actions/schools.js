@@ -166,3 +166,18 @@ export function getEmailDomains (schoolId) {
       return Promise.reject(error)
     })
 }
+
+/*
+* Create a new school
+*
+* @params [Object] form. School form.
+*/
+export function createEmailDomains (schoolId, form) {
+  return post(`/api/v1/schools/${schoolId}/email_domains`, form, 'Error creating email domain. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}

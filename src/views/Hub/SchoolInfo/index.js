@@ -9,6 +9,7 @@ import actions from '../../../actions'
 import {inject, observer} from 'mobx-react'
 import FourDoor from '../../components/FourDoor'
 import EmailDomainDetails from './EmailDomainDetails'
+import EmailDomainForm from './EmailDomainForm'
 
 @inject('rootStore') @observer
 class SchoolInfo extends React.Component {
@@ -33,7 +34,15 @@ class SchoolInfo extends React.Component {
         const periods = school.class_periods
         this.setState({school, periods})
       })
+      this.getEmailDomains()
     }
+  }
+
+  getEmailDomains () {
+    const {school} = this.state
+    actions.schools.getEmailDomains(school.id).then(emailDomains => {
+      this.setState({emailDomains})
+    }).catch(() => false)
   }
 
   initializeState () {
@@ -44,8 +53,10 @@ class SchoolInfo extends React.Component {
     return {
       openDetailsForm: false,
       openPeriodForm: false,
+      openEmailDomainForm: false,
       school: (state && state.school) || null,
-      periods: []
+      periods: [],
+      emailDomains: []
     }
   }
 
@@ -155,10 +166,13 @@ class SchoolInfo extends React.Component {
   }
 
   renderEmailDomains () {
-    const {school} = this.state
+    const {school, emailDomains} = this.state
     return (
       <EmailDomainDetails
         school={school}
+        title={'Email Domains'}
+        onAdd={this.toggleEmailDomainForm.bind(this)}
+        emailDomains={emailDomains}
       />
     )
   }
@@ -183,6 +197,24 @@ class SchoolInfo extends React.Component {
   }
 
   /*
+  * Render email domain form
+  */
+  renderEmailDomainFormModal () {
+    return (
+      <Modal
+        open={this.state.openEmailDomainForm}
+        onClose={this.toggleEmailDomainForm.bind(this)}
+      >
+        <EmailDomainForm
+          school={this.state.school}
+          onSubmit={this.onEmailDomainSumbit.bind(this)}
+          onClose={this.toggleEmailDomainForm.bind(this)}
+        />
+      </Modal>
+    )
+  }
+
+  /*
   * Call back on school detail form submission.
   */
   onDetailsSumbit (school) {
@@ -192,9 +224,17 @@ class SchoolInfo extends React.Component {
   /*
   * Call back on school period form submission.
   */
-  onPeriodSumbit (period) {
+  onPeriodSumbit () {
     this.setState({openPeriodForm: false})
     this.initializeComponent()
+  }
+
+  /*
+  * Call back on school email domain form submission.
+  */
+  onEmailDomainSumbit () {
+    this.setState({openEmailDomainForm: false})
+    this.getEmailDomains()
   }
 
   /*
@@ -209,6 +249,13 @@ class SchoolInfo extends React.Component {
   */
   togglePeriodForm () {
     this.setState({openPeriodForm: !this.state.openPeriodForm})
+  }
+
+  /*
+  * Toggle schools email domain modal.
+  */
+  toggleEmailDomainForm () {
+    this.setState({openEmailDomainForm: !this.state.openEmailDomainForm})
   }
 
   render () {
@@ -226,12 +273,12 @@ class SchoolInfo extends React.Component {
             {this.renderSchoolSettings()}
           </div>
           <div className='col-xs-12 col-md-6 margin-top'>
-            <h3>Email Domains</h3>
             {this.renderEmailDomains()}
           </div>
         </div>
         {this.renderDetailsFormModal()}
         {this.renderPeriodFormModal()}
+        {this.renderEmailDomainFormModal()}
       </div>
     )
   }
