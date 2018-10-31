@@ -34,7 +34,7 @@ class SchoolDetails extends React.Component {
     return (
       <div>
         <div className='edit-header'>
-          <h3>1. School Details</h3>
+          <h3>School Details</h3>
           <a onClick={() => onEdit()}>Edit</a>
         </div>
 

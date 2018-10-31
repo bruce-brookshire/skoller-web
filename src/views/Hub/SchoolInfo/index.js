@@ -107,7 +107,7 @@ class SchoolInfo extends React.Component {
     const {periods} = this.state
     return (
       <SemesterDetails
-        header="2. Semesters"
+        header="Semesters"
         periods={periods}
         onEdit={this.togglePeriodForm.bind(this)}
         onUpload={this.initializeComponent.bind(this)}
@@ -129,32 +129,6 @@ class SchoolInfo extends React.Component {
               <th>4 Door:</th>
               <td>{this.renderFourDoor()}</td>
             </tr>}
-            <tr>
-              <th>Weights:</th>
-              <td>
-                <div>
-                  <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                    <a>Admin</a>
-                    <a style={{marginLeft: '5px', marginRight: '5px'}}>Worker</a>
-                    <a>DIY</a>
-                  </div>
-                  <img className='four-door-icon' src='/src/assets/images/four_door/skoller_default.png'></img>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <th>Assignments:</th>
-              <td>
-                <div>
-                  <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                    <a>Admin</a>
-                    <a style={{marginLeft: '5px', marginRight: '5px'}}>Worker</a>
-                    <a>DIY</a>
-                  </div>
-                  <img className='four-door-icon' src='/src/assets/images/four_door/skoller_default.png'></img>
-                </div>
-              </td>
-            </tr>
             <tr>
               <th>Chat:</th>
               <td>{this.renderChatEnabled()}</td>
@@ -238,7 +212,7 @@ class SchoolInfo extends React.Component {
             {this.renderPeriod()}
           </div>
           <div className='col-xs-12 col-md-3 margin-top'>
-            <h3>5. Class Settings</h3>
+            <h3>Class Settings</h3>
             {this.renderSchoolSettings()}
           </div>
         </div>
