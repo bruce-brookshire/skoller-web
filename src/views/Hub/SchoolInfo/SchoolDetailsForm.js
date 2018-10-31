@@ -168,7 +168,6 @@ class SchoolDetailsForm extends React.Component {
                 onChange={updateProperty}
                 placeholder="School color"
                 value={form.color}
-                type="color"
               />
             </div>
           </div>
