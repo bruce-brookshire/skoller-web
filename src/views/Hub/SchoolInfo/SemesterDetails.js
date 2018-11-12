@@ -154,22 +154,22 @@ class SemesterDetails extends React.Component {
   }
 
   renderTitle () {
-    const {onEdit, header} = this.props
+    const {onCreate, header} = this.props
 
     return (
       <div className='cn-icon-flex'>
         {header}
-        {onEdit ? <i className='fa fa-plus cn-blue cursor' onClick={() => onEdit() } /> : ''}
+        {onCreate ? <i className='fa fa-plus cn-blue cursor' onClick={() => onCreate() } /> : ''}
       </div>
     )
   }
 
   renderContent () {
-    const {periods, onEdit} = this.props
+    const {periods, onCreate} = this.props
     return (
       <div>
         {periods ? this.renderSemesterTable()
-          : onEdit ? <a onClick={() => onEdit()}>Add details</a> : ''
+          : onCreate ? <a onClick={() => onCreate()}>Add details</a> : ''
         }
         {this.renderClassUploadModal()}
       </div>
@@ -189,7 +189,7 @@ class SemesterDetails extends React.Component {
 }
 
 SemesterDetails.propTypes = {
-  onEdit: PropTypes.func,
+  onCreate: PropTypes.func,
   school: PropTypes.object,
   periods: PropTypes.array,
   header: PropTypes.string,

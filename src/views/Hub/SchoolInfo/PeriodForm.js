@@ -1,12 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
-import {InputField} from '../../../components/Form'
+import {InputField, CheckboxField} from '../../../components/Form'
 import actions from '../../../actions'
-import SemesterDetails from './SemesterDetails'
+import {convertLocalDateToUTC} from '../../../utilities/time'
 
 const requiredFields = {
   'name': {
+    type: 'required'
+  },
+  'start_date': {
+    type: 'required'
+  },
+  'end_date': {
     type: 'required'
   }
 }
@@ -37,8 +43,21 @@ class PeriodForm extends React.Component {
   */
   initializeFormData () {
     return ({
-      name: ''
+      name: '',
+      start_date: '',
+      end_date: '',
+      is_main_period: false
     })
+  }
+
+  mapForm (form) {
+    const {school} = this.props
+    let newForm = {...form}
+
+    newForm.start_date = convertLocalDateToUTC(form.start_date, school.timezone)
+    newForm.end_date = convertLocalDateToUTC(form.end_date, school.timezone)
+
+    return newForm
   }
 
   /*
@@ -49,7 +68,8 @@ class PeriodForm extends React.Component {
     event.preventDefault()
 
     if (this.props.validateForm(this.state.form, requiredFields)) {
-      this.onCreatePeriod(this.state.form)
+      let form = this.mapForm(this.state.form)
+      this.onCreatePeriod(form)
     }
   }
 
@@ -64,39 +84,63 @@ class PeriodForm extends React.Component {
 
   render () {
     const {form} = this.state
-    const {formErrors, updateProperty, periods} = this.props
+    const {formErrors, updateProperty} = this.props
 
     return (
-      <div>
-        <div className='margin-top'>
-          <div className='row'>
-            <div className='col-xs-12'>
-              <SemesterDetails
-                periods={periods}
+      <div className='margin-top'>
+        <form onSubmit={this.onSubmit.bind(this)}>
+          <div className='row align-center justify-center margin-top'>
+            <div className='col-xs-12 col-md-4'>
+              <InputField
+                error={formErrors.name}
+                name="name"
+                onChange={updateProperty}
+                placeholder="Semester name"
+                value={form.name}
+                label="Name"
+              />
+            </div>
+            <div className='col-xs-12 col-md-4'>
+              <CheckboxField
+                error={formErrors.is_main_period}
+                name="is_main_period"
+                onChange={updateProperty}
+                value={form.is_main_period}
+                label="Main Period?"
               />
             </div>
           </div>
-          <form onSubmit={this.onSubmit.bind(this)}>
-            <div className='row align-center justify-center margin-top'>
-              <div className='col-xs-12 col-md-8'>
-                <InputField
-                  error={formErrors.name}
-                  name="name"
-                  onChange={updateProperty}
-                  placeholder="Semester name"
-                  value={form.name}
-                />
-              </div>
-              <div className='col-xs-12 col-md-4'>
-                <button
-                  className={`button full-width`}
-                  type="submit"
-                >Add</button>
-              </div>
+          <div className='row align-center justify-center margin-top'>
+            <div className='col-xs-12 col-md-4'>
+              <InputField
+                error={formErrors.start_date}
+                name="start_date"
+                onChange={updateProperty}
+                type="date"
+                value={form.start_date}
+                label="Start"
+              />
             </div>
-          </form>
-          <button className='button-invert full-width margin-top' onClick={() => this.props.onClose()}>Close</button>
-        </div>
+            <div className='col-xs-12 col-md-4'>
+              <InputField
+                error={formErrors.end_date}
+                name="end_date"
+                onChange={updateProperty}
+                type="date"
+                value={form.end_date}
+                label="End"
+              />
+            </div>
+          </div>
+          <div className='row align-center justify-center margin-top'>
+            <div className='col-xs-12 col-md-4'>
+              <button className='button full-width' type="submit" >Add</button>
+            </div>
+            <div className='col-xs-12 col-md-4'>
+              <button className='button-invert full-width' onClick={() => this.props.onClose()}>Close</button>
+            </div>
+          </div>
+        </form>
       </div>
     )
   }
@@ -108,8 +152,7 @@ PeriodForm.propTypes = {
   updateProperty: PropTypes.func,
   validateForm: PropTypes.func,
   onClose: PropTypes.func,
-  onSubmit: PropTypes.func,
-  periods: PropTypes.array
+  onSubmit: PropTypes.func
 }
 
 export default ValidateForm(Form(PeriodForm, 'form'))
