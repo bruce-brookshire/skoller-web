@@ -6,6 +6,7 @@ import UploadHistory from '../../../components/UploadHistory'
 import actions from '../../../actions'
 import ClassUploadInfo from './ClassUploadInfo'
 import Modal from '../../../components/Modal'
+import Card from '../../../components/Card'
 
 const headers = [
   {
@@ -13,8 +14,12 @@ const headers = [
     display: 'Name'
   },
   {
-    field: 'inserted_at',
-    display: 'Created'
+    field: 'start_date',
+    display: 'Start'
+  },
+  {
+    field: 'end_date',
+    display: 'End'
   },
   {
     field: 'student_count',
@@ -23,6 +28,10 @@ const headers = [
   {
     field: 'class_count',
     display: 'Classes'
+  },
+  {
+    field: 'status',
+    display: 'Status'
   }
 ]
 
@@ -63,14 +72,17 @@ class SemesterDetails extends React.Component {
   }
 
   mapRow (item, index) {
-    const {id, name, inserted_at: insertedAt, student_count: studentCount, class_count: classCount} = item
+    const {id, name, start_date: startDate, end_date: endDate, student_count: studentCount, class_count: classCount, class_period_status: status} = item
     const row = {
       id: id,
       name: name || '',
-      inserted_at: insertedAt
-        ? convertUTCDatetimeToDateTimeString(insertedAt, 'America/Chicago') : '',
+      start_date: startDate
+        ? convertUTCDatetimeToDateTimeString(startDate, 'America/Chicago') : '',
+      end_date: endDate
+        ? convertUTCDatetimeToDateTimeString(endDate, 'America/Chicago') : '',
       student_count: studentCount || 0,
       class_count: classCount || 0,
+      status: status ? status.name : '',
       component: this.props.onUpload ? <div className='col-xs-12 col-md-6 margin-top'>
         <h3>Import classes</h3>
         <UploadHistory
@@ -89,7 +101,7 @@ class SemesterDetails extends React.Component {
   getRows () {
     const {periods} = this.props
     return periods.sort((a, b) => {
-      return a.inserted_at < b.inserted_at ? 1 : -1
+      return a.start_date > b.start_date ? 1 : -1
     }).map((item, index) =>
       this.mapRow(item, index)
     )
@@ -141,20 +153,37 @@ class SemesterDetails extends React.Component {
     )
   }
 
-  render () {
-    const {periods, onEdit, header} = this.props
+  renderTitle () {
+    const {onEdit, header} = this.props
+
+    return (
+      <div className='cn-icon-flex'>
+        {header}
+        {onEdit ? <i className='fa fa-plus cn-blue cursor' onClick={() => onEdit() } /> : ''}
+      </div>
+    )
+  }
+
+  renderContent () {
+    const {periods, onEdit} = this.props
     return (
       <div>
-        {header ? <div className='edit-header'>
-          <h3>{this.props.header}</h3>
-          {onEdit ? <a onClick={() => onEdit()}>Edit</a> : ''}
-        </div> : ''}
-
         {periods ? this.renderSemesterTable()
           : onEdit ? <a onClick={() => onEdit()}>Add details</a> : ''
         }
         {this.renderClassUploadModal()}
       </div>
+    )
+  }
+
+  render () {
+    const {header} = this.props
+
+    return (
+      <Card
+        title={header ? this.renderTitle() : null}
+        content={this.renderContent()}
+      />
     )
   }
 }
