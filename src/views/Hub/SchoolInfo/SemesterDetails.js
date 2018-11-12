@@ -14,8 +14,12 @@ const headers = [
     display: 'Name'
   },
   {
-    field: 'inserted_at',
-    display: 'Created'
+    field: 'start_date',
+    display: 'Start'
+  },
+  {
+    field: 'end_date',
+    display: 'End'
   },
   {
     field: 'student_count',
@@ -24,6 +28,10 @@ const headers = [
   {
     field: 'class_count',
     display: 'Classes'
+  },
+  {
+    field: 'status',
+    display: 'Status'
   }
 ]
 
@@ -64,14 +72,17 @@ class SemesterDetails extends React.Component {
   }
 
   mapRow (item, index) {
-    const {id, name, inserted_at: insertedAt, student_count: studentCount, class_count: classCount} = item
+    const {id, name, start_date: startDate, end_date: endDate, student_count: studentCount, class_count: classCount, class_period_status: status} = item
     const row = {
       id: id,
       name: name || '',
-      inserted_at: insertedAt
-        ? convertUTCDatetimeToDateTimeString(insertedAt, 'America/Chicago') : '',
+      start_date: startDate
+        ? convertUTCDatetimeToDateTimeString(startDate, 'America/Chicago') : '',
+      end_date: endDate
+        ? convertUTCDatetimeToDateTimeString(endDate, 'America/Chicago') : '',
       student_count: studentCount || 0,
       class_count: classCount || 0,
+      status: status ? status.name : '',
       component: this.props.onUpload ? <div className='col-xs-12 col-md-6 margin-top'>
         <h3>Import classes</h3>
         <UploadHistory
@@ -90,7 +101,7 @@ class SemesterDetails extends React.Component {
   getRows () {
     const {periods} = this.props
     return periods.sort((a, b) => {
-      return a.inserted_at < b.inserted_at ? 1 : -1
+      return a.start_date > b.start_date ? 1 : -1
     }).map((item, index) =>
       this.mapRow(item, index)
     )
@@ -148,7 +159,7 @@ class SemesterDetails extends React.Component {
     return (
       <div className='cn-icon-flex'>
         {header}
-        {onEdit ? <i className='fa fa-pencil cn-blue cursor' onClick={() => onEdit() } /> : ''}
+        {onEdit ? <i className='fa fa-plus cn-blue cursor' onClick={() => onEdit() } /> : ''}
       </div>
     )
   }

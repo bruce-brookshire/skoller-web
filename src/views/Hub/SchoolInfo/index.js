@@ -45,6 +45,22 @@ class SchoolInfo extends React.Component {
     }).catch(() => false)
   }
 
+  getMainPeriods () {
+    const {periods} = this.state
+
+    return periods ? periods.filter(pr => {
+      return pr.is_main_period
+    }) : []
+  }
+
+  getOtherPeriods () {
+    const {periods} = this.state
+
+    return periods ? periods.filter(pr => {
+      return !pr.is_main_period
+    }) : []
+  }
+
   initializeState () {
     const {state} = this.props.location
     let {navbarStore} = this.props.rootStore
@@ -115,12 +131,25 @@ class SchoolInfo extends React.Component {
   /*
   * Render Semeter details
   */
-  renderPeriod () {
-    const {periods} = this.state
+  renderMainPeriod () {
     return (
       <SemesterDetails
-        header="Semesters"
-        periods={periods}
+        header="Main Semesters"
+        periods={this.getMainPeriods()}
+        onEdit={this.togglePeriodForm.bind(this)}
+        onUpload={this.initializeComponent.bind(this)}
+      />
+    )
+  }
+
+  /*
+  * Render Semeter details
+  */
+  renderOtherPeriod () {
+    return (
+      <SemesterDetails
+        header="Other Semesters"
+        periods={this.getOtherPeriods()}
         onEdit={this.togglePeriodForm.bind(this)}
         onUpload={this.initializeComponent.bind(this)}
       />
@@ -274,12 +303,16 @@ class SchoolInfo extends React.Component {
           </div>
           <div className='col-xs-12 col-md-3 margin-top'></div>
           <div className='col-xs-12 col-md-6 margin-top'>
-            {this.renderPeriod()}
+            {this.renderMainPeriod()}
           </div>
           <div className='col-xs-12 col-md-6 margin-top'>
             <h3>Class Settings</h3>
             {this.renderSchoolSettings()}
           </div>
+          <div className='col-xs-12 col-md-6 margin-top'>
+            {this.renderOtherPeriod()}
+          </div>
+          <div className='col-xs-12 col-md-9 margin-top'></div>
           <div className='col-xs-12 col-md-3 margin-top'>
             {this.renderEmailDomains()}
           </div>
