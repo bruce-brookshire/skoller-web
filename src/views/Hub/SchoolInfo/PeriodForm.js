@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
 import {InputField, CheckboxField} from '../../../components/Form'
 import actions from '../../../actions'
-import {convertLocalDateToUTC} from '../../../utilities/time'
+import {convertLocalDateToUTC, convertUTCDatetimeToDateString} from '../../../utilities/time'
 
 const requiredFields = {
   'name': {
@@ -42,11 +42,12 @@ class PeriodForm extends React.Component {
   * @return [Object]. Form object.
   */
   initializeFormData () {
+    const {period} = this.props
     return ({
-      name: '',
-      start_date: '',
-      end_date: '',
-      is_main_period: false
+      name: period ? period.name : '',
+      start_date: period ? convertUTCDatetimeToDateString(period.start_date) : '',
+      end_date: period ? convertUTCDatetimeToDateString(period.end_date) : '',
+      is_main_period: period ? period.is_main_period : false
     })
   }
 
@@ -65,11 +66,12 @@ class PeriodForm extends React.Component {
   *
   */
   onSubmit (event) {
+    const {period} = this.props
     event.preventDefault()
 
     if (this.props.validateForm(this.state.form, requiredFields)) {
       let form = this.mapForm(this.state.form)
-      this.onCreatePeriod(form)
+      period ? this.onUpdatePeriod(period.id, form) : this.onCreatePeriod(form)
     }
   }
 
@@ -82,9 +84,18 @@ class PeriodForm extends React.Component {
     }).catch(() => false)
   }
 
+  /*
+  * Updates a period
+  */
+  onUpdatePeriod (id, form) {
+    actions.periods.updatePeriod(id, form).then((period) => {
+      this.props.onSubmit()
+    }).catch(() => false)
+  }
+
   render () {
     const {form} = this.state
-    const {formErrors, updateProperty} = this.props
+    const {formErrors, updateProperty, period, onClose} = this.props
 
     return (
       <div className='margin-top'>
@@ -100,7 +111,7 @@ class PeriodForm extends React.Component {
                 label="Name"
               />
             </div>
-            <div className='col-xs-12 col-md-4'>
+            {!period && <div className='col-xs-12 col-md-4'>
               <CheckboxField
                 error={formErrors.is_main_period}
                 name="is_main_period"
@@ -108,7 +119,7 @@ class PeriodForm extends React.Component {
                 value={form.is_main_period}
                 label="Main Period?"
               />
-            </div>
+            </div>}
           </div>
           <div className='row align-center justify-center margin-top'>
             <div className='col-xs-12 col-md-4'>
@@ -134,11 +145,11 @@ class PeriodForm extends React.Component {
           </div>
           <div className='row align-center justify-center margin-top'>
             <div className='col-xs-12 col-md-4'>
-              <button className='button full-width' type="submit" >Add</button>
+              <button className='button full-width' type="submit" >{period ? 'Update' : 'Add'}</button>
             </div>
-            <div className='col-xs-12 col-md-4'>
+            {onClose && <div className='col-xs-12 col-md-4'>
               <button className='button-invert full-width' onClick={() => this.props.onClose()}>Close</button>
-            </div>
+            </div>}
           </div>
         </form>
       </div>
@@ -152,7 +163,8 @@ PeriodForm.propTypes = {
   updateProperty: PropTypes.func,
   validateForm: PropTypes.func,
   onClose: PropTypes.func,
-  onSubmit: PropTypes.func
+  onSubmit: PropTypes.func,
+  period: PropTypes.object
 }
 
 export default ValidateForm(Form(PeriodForm, 'form'))
