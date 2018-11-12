@@ -1,4 +1,4 @@
-import {get, post} from '../utilities/api'
+import {get, post, put} from '../utilities/api'
 
 /*
 * Get school periods.
@@ -23,6 +23,22 @@ export function getSchoolPeriods (schoolId, name) {
 */
 export function createPeriod (schoolId, form) {
   return post(`/api/v1/schools/${schoolId}/periods`, form, 'Error creating period. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Create a new period
+*
+* @params [Object] school. School.
+* @params [Object] form. Period form.
+*/
+export function updatePeriod (id, form) {
+  return put(`/api/v1/periods/${id}`, form, 'Error updating period. Try again.')
     .then(data => {
       return data
     })

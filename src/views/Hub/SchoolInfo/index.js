@@ -136,7 +136,9 @@ class SchoolInfo extends React.Component {
       <SemesterDetails
         header="Main Semesters"
         periods={this.getMainPeriods()}
+        school={this.state.school}
         onCreate={this.togglePeriodForm.bind(this)}
+        onUpdate={this.initializeComponent.bind(this)}
         onUpload={this.initializeComponent.bind(this)}
       />
     )
@@ -150,7 +152,9 @@ class SchoolInfo extends React.Component {
       <SemesterDetails
         header="Other Semesters"
         periods={this.getOtherPeriods()}
+        school={this.state.school}
         onCreate={this.togglePeriodForm.bind(this)}
+        onUpdate={this.initializeComponent.bind(this)}
         onUpload={this.initializeComponent.bind(this)}
       />
     )

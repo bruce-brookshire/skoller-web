@@ -7,6 +7,7 @@ import actions from '../../../actions'
 import ClassUploadInfo from './ClassUploadInfo'
 import Modal from '../../../components/Modal'
 import Card from '../../../components/Card'
+import PeriodForm from './PeriodForm';
 
 const headers = [
   {
@@ -83,17 +84,7 @@ class SemesterDetails extends React.Component {
       student_count: studentCount || 0,
       class_count: classCount || 0,
       status: status ? status.name : '',
-      component: this.props.onUpload ? <div className='col-xs-12 col-md-6 margin-top'>
-        <h3>Import classes</h3>
-        <UploadHistory
-          allow='text/csv'
-          disabled={false}
-          files={[]}
-          info='Upload classes csv.'
-          onUpload={(file) => { this.onUploadClasses(id, file) }}
-          title='Classes'
-        />
-      </div> : ''
+      component: this.props.onUpload ? this.renderDropDownComponent(item) : ''
     }
     return row
   }
@@ -107,13 +98,40 @@ class SemesterDetails extends React.Component {
     )
   }
 
+  renderDropDownComponent (item) {
+    const {id, name} = item
+    const {school} = this.props
+    return (
+      <div className='row margin-bottom'>
+        <div className='col-xs-12 col-md-5 margin-top'>
+          <h3 className='center-text'>Import classes csv</h3>
+          <UploadHistory
+            allow='text/csv'
+            disabled={false}
+            files={[]}
+            onUpload={(file) => { this.onUploadClasses(id, file) }}
+            title={'Drop Classes CSV for ' + name}
+          />
+        </div>
+        <div className='col-xs-12 col-md-7 margin-top'>
+          <h3 className='center-text'>Update Period</h3>
+          <PeriodForm
+            school={school}
+            period={item}
+            onSubmit={this.props.onUpdate.bind(this)}
+          />
+        </div>
+      </div>
+    )
+  }
+
   renderSemesterTable () {
     return (
       <Grid
         className='striped'
         headers={headers}
         rows={this.getRows()}
-        disabled={true}
+        disabled={false}
         canDelete={false}
         canSelect={false}
         emptyMessage={'No semesters yet.'} />
@@ -193,7 +211,8 @@ SemesterDetails.propTypes = {
   school: PropTypes.object,
   periods: PropTypes.array,
   header: PropTypes.string,
-  onUpload: PropTypes.func
+  onUpload: PropTypes.func,
+  onUpdate: PropTypes.func
 }
 
 export default SemesterDetails
