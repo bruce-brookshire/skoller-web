@@ -6,6 +6,7 @@ import UploadHistory from '../../../components/UploadHistory'
 import actions from '../../../actions'
 import ClassUploadInfo from './ClassUploadInfo'
 import Modal from '../../../components/Modal'
+import Card from '../../../components/Card'
 
 const headers = [
   {
@@ -141,20 +142,37 @@ class SemesterDetails extends React.Component {
     )
   }
 
-  render () {
-    const {periods, onEdit, header} = this.props
+  renderTitle () {
+    const {onEdit, header} = this.props
+
+    return (
+      <div className='cn-icon-flex'>
+        {header}
+        {onEdit ? <i className='fa fa-pencil cn-blue cursor' onClick={() => onEdit() } /> : ''}
+      </div>
+    )
+  }
+
+  renderContent () {
+    const {periods, onEdit} = this.props
     return (
       <div>
-        {header ? <div className='edit-header'>
-          <h3>{this.props.header}</h3>
-          {onEdit ? <a onClick={() => onEdit()}>Edit</a> : ''}
-        </div> : ''}
-
         {periods ? this.renderSemesterTable()
           : onEdit ? <a onClick={() => onEdit()}>Add details</a> : ''
         }
         {this.renderClassUploadModal()}
       </div>
+    )
+  }
+
+  render () {
+    const {header} = this.props
+
+    return (
+      <Card
+        title={header ? this.renderTitle() : null}
+        content={this.renderContent()}
+      />
     )
   }
 }
