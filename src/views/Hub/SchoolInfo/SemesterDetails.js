@@ -7,7 +7,7 @@ import actions from '../../../actions'
 import ClassUploadInfo from './ClassUploadInfo'
 import Modal from '../../../components/Modal'
 import Card from '../../../components/Card'
-import PeriodForm from './PeriodForm';
+import PeriodForm from './PeriodForm'
 
 const headers = [
   {

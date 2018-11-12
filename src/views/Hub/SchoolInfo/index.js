@@ -30,7 +30,7 @@ class SchoolInfo extends React.Component {
   initializeComponent () {
     const {state} = this.props.location
     if (state && state.school) {
-      actions.schools.getSchoolById(state.school).then(school => {
+      actions.schools.getSchoolById(state.school.id).then(school => {
         const periods = school.class_periods
         this.setState({school, periods})
       })
