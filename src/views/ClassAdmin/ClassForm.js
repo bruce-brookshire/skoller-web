@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
-import {InputField} from '../../components/Form'
+import {InputField, SelectField} from '../../components/Form'
 import actions from '../../actions'
 import DaySelector from '../components/ClassEditor/MeetingTimes/DaySelector'
 import TimeFields from '../components/ClassEditor/MeetingTimes/TimeFields'
@@ -24,6 +24,9 @@ const requiredFields = {
   },
   'meet_days': {
     type: 'required'
+  },
+  'class_period_id': {
+    type: 'required'
   }
 }
 
@@ -39,8 +42,16 @@ class ClassForm extends React.Component {
   initializeState () {
     return {
       form: this.initializeFormData(),
-      loading: false
+      loading: false,
+      periods: []
     }
+  }
+
+  componentWillMount () {
+    const {classPeriod} = this.props
+    actions.schools.getSchoolById(classPeriod.school_id).then(school => {
+      this.setState({periods: school.class_periods})
+    })
   }
 
   initializeFormData () {
@@ -55,7 +66,7 @@ class ClassForm extends React.Component {
       meet_days: days,
       location,
       type
-    }} = this.props
+    }, classPeriod} = this.props
 
     return {
       id: id || '',
@@ -68,6 +79,7 @@ class ClassForm extends React.Component {
       meet_days: days || '',
       location: location || '',
       type: type || '',
+      class_period_id: classPeriod.id,
       created_on: 'Web'
     }
   }
@@ -167,9 +179,8 @@ class ClassForm extends React.Component {
 
     return (
       <form onSubmit={this.onSubmit.bind(this)}>
-        <div className='class-form-field'>
+        <div className='class-form-field margin-top'>
           <InputField
-            containerClassName='margin-top'
             error={formErrors.name}
             label="Class name"
             name="name"
@@ -178,9 +189,8 @@ class ClassForm extends React.Component {
             value={form.name}
           />
         </div>
-        <div className='class-form-field'>
+        <div className='class-form-field margin-top'>
           <InputField
-            containerClassName='margin-top'
             error={formErrors.subject}
             label="Subject"
             name="subject"
@@ -189,7 +199,6 @@ class ClassForm extends React.Component {
             value={form.subject}
           />
           <InputField
-            containerClassName='margin-top'
             error={formErrors.code}
             label="Code"
             name="code"
@@ -198,7 +207,6 @@ class ClassForm extends React.Component {
             value={form.code}
           />
           <InputField
-            containerClassName='margin-top'
             error={formErrors.section}
             label="Section"
             name="section"
@@ -207,9 +215,8 @@ class ClassForm extends React.Component {
             value={form.section}
           />
         </div>
-        <div className='class-form-field'>
+        <div className='class-form-field margin-top'>
           <InputField
-            containerClassName='margin-top'
             error={formErrors.crn}
             label="Class crn"
             name="crn"
@@ -217,14 +224,24 @@ class ClassForm extends React.Component {
             placeholder="i.e. 48427"
             value={form.crn}
           />
+          <SelectField
+            error={formErrors.class_period_id}
+            label="Class Period"
+            name="class_period_id"
+            onChange={updateProperty}
+            options={this.state.periods.map(period => {
+              return {value: period.id, name: period.name}
+            })}
+            placeholder="Select period"
+            value={form.class_period_id}
+          />
         </div>
         <div id='meeting-info' className='class-form-field margin-top'>
           {this.renderDays()}
           {this.state.form.meet_days !== 'Online' && this.renderTimes()}
         </div>
-        <div className='class-form-field'>
+        <div className='class-form-field margin-top'>
           <InputField
-            containerClassName='margin-top'
             error={formErrors.location}
             label="Location"
             name="location"
@@ -233,9 +250,8 @@ class ClassForm extends React.Component {
             value={form.location}
           />
         </div>
-        <div className='class-form-field'>
+        <div className='class-form-field margin-top'>
           <InputField
-            containerClassName='margin-top'
             error={formErrors.type}
             label="Class type"
             name="location"
@@ -244,9 +260,9 @@ class ClassForm extends React.Component {
             value={form.type}
           />
         </div>
-        <div className='class-form-field'>
+        <div className='class-form-field margin-top'>
           <button
-            className={`button full-width margin-top margin-bottom ${disabledClass}`}
+            className={`button full-width margin-bottom ${disabledClass}`}
             disabled={this.state.loading}
             type="submit"
           >Submit</button>
@@ -263,7 +279,8 @@ ClassForm.propTypes = {
   onSubmit: PropTypes.func,
   open: PropTypes.bool,
   updateProperty: PropTypes.func,
-  validateForm: PropTypes.func
+  validateForm: PropTypes.func,
+  classPeriod: PropTypes.object
 }
 
 export default ValidateForm(Form(ClassForm, 'form'))

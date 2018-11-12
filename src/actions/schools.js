@@ -77,8 +77,8 @@ export function getHubSchools (queryString) {
 *
 * @params [Object] school. School.
 */
-export function getSchoolById (school) {
-  return get(`/api/v1/schools/${school.id}`, '', 'Error fetching school. Try again.')
+export function getSchoolById (schoolId) {
+  return get(`/api/v1/schools/${schoolId}`, '', 'Error fetching school. Try again.')
     .then(data => {
       return data
     })

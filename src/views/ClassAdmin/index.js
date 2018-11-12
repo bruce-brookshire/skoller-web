@@ -313,6 +313,7 @@ class ClassAdmin extends React.Component {
       >
         <ClassForm
           cl={cl}
+          classPeriod={cl.class_period}
           onSubmit={this.updateClass.bind(this)}
           onClose={this.toggleEditClassModal.bind(this)}
         />
