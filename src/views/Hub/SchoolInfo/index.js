@@ -136,7 +136,7 @@ class SchoolInfo extends React.Component {
       <SemesterDetails
         header="Main Semesters"
         periods={this.getMainPeriods()}
-        onEdit={this.togglePeriodForm.bind(this)}
+        onCreate={this.togglePeriodForm.bind(this)}
         onUpload={this.initializeComponent.bind(this)}
       />
     )
@@ -150,7 +150,7 @@ class SchoolInfo extends React.Component {
       <SemesterDetails
         header="Other Semesters"
         periods={this.getOtherPeriods()}
-        onEdit={this.togglePeriodForm.bind(this)}
+        onCreate={this.togglePeriodForm.bind(this)}
         onUpload={this.initializeComponent.bind(this)}
       />
     )
@@ -218,7 +218,6 @@ class SchoolInfo extends React.Component {
       >
         <PeriodForm
           school={this.state.school}
-          periods={this.state.periods}
           onSubmit={this.onPeriodSumbit.bind(this)}
           onClose={this.togglePeriodForm.bind(this)}
         />
@@ -301,15 +300,18 @@ class SchoolInfo extends React.Component {
           <div className='col-xs-12 col-md-3 margin-top'>
             {this.renderSchoolDetails()}
           </div>
-          <div className='col-xs-12 col-md-3 margin-top'></div>
-          <div className='col-xs-12 col-md-6 margin-top'>
+          <div className='col-xs-12 col-md-1 margin-top'></div>
+          <div className='col-xs-12 col-md-8 margin-top'>
             {this.renderMainPeriod()}
           </div>
-          <div className='col-xs-12 col-md-6 margin-top'>
+        </div>
+        <div className='row'>
+          <div className='col-xs-12 col-md-3 margin-top'>
             <h3>Class Settings</h3>
             {this.renderSchoolSettings()}
           </div>
-          <div className='col-xs-12 col-md-6 margin-top'>
+          <div className='col-xs-12 col-md-1 margin-top'></div>
+          <div className='col-xs-12 col-md-8 margin-top'>
             {this.renderOtherPeriod()}
           </div>
           <div className='col-xs-12 col-md-9 margin-top'></div>
