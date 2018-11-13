@@ -23,7 +23,7 @@ class Grid extends React.Component {
   */
   renderTableBody () {
     const { disabled, canSelect, canDelete, onSelect,
-      onDelete, deleteMessage, emptyMessage, rows, headers } = this.props
+      onDelete, deleteMessage, emptyMessage, rows, headers, hiddenFields } = this.props
 
     if (!rows || rows.length === 0) {
       return (
@@ -51,6 +51,7 @@ class Grid extends React.Component {
           onSelect={onSelect}
           onDelete={onDelete}
           deleteMessage={deleteMessage}
+          hiddenFields={hiddenFields}
         />
       )
     })
@@ -86,7 +87,8 @@ Grid.propTypes = {
   onDelete: PropTypes.func,
   onSelect: PropTypes.func,
   rows: PropTypes.array,
-  className: PropTypes.string
+  className: PropTypes.string,
+  hiddenFields: PropTypes.array
 }
 
 export default Grid

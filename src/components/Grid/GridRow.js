@@ -53,7 +53,7 @@ class GridRow extends React.Component {
   */
   renderTableRow (rowData, rowIndex) {
     return Object.keys(rowData).map((key, cellIndex) => {
-      if (key !== 'component' && key !== 'id') {
+      if (key !== 'component' && key !== 'id' && (!this.props.hiddenFields || this.props.hiddenFields.indexOf(key) < 0)) {
         return (
           <td key={`tableData${cellIndex}`}>
             {rowData[key]}
@@ -175,7 +175,8 @@ GridRow.propTypes = {
   index: PropTypes.number,
   onDelete: PropTypes.func,
   onSelect: PropTypes.func,
-  rowData: PropTypes.object
+  rowData: PropTypes.object,
+  hiddenFields: PropTypes.array
 }
 
 export default GridRow
