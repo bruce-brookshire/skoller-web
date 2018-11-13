@@ -43,8 +43,7 @@ class Switchboard extends React.Component {
       openLinkModal: false,
       fourDoor: {},
       fourDoorOverrides: [],
-      emailTypes: [],
-      organizations: []
+      emailTypes: []
     }
   }
 
@@ -63,7 +62,6 @@ class Switchboard extends React.Component {
     })
     this.getOverrides()
     this.getEmailSwitches()
-    this.getOrganizations()
     actions.settings.getAutoUpdateInfo().then((autoUpdateData) => {
       this.setState({autoUpdateData, loading: false})
     }).catch(() => false)
@@ -94,12 +92,6 @@ class Switchboard extends React.Component {
   getOverrides () {
     actions.fourdoor.getFourDoorOverrides().then((fourDoorOverrides) => {
       this.setState({fourDoorOverrides})
-    }).catch(() => false)
-  }
-
-  getOrganizations () {
-    actions.organizations.getOrganizations().then((organizations) => {
-      this.setState({organizations})
     }).catch(() => false)
   }
 
@@ -436,15 +428,6 @@ class Switchboard extends React.Component {
     )
   }
 
-  renderOrganizationsTitle () {
-    return (
-      <div className='cn-icon-flex'>
-        Organizations
-        <i className='fa fa-plus cn-blue cursor margin-left' onClick={() => this.setState({openOrganizationModal: true})} />
-      </div>
-    )
-  }
-
   renderFourDoorOverrides () {
     return (
       <Card
@@ -540,7 +523,7 @@ class Switchboard extends React.Component {
   }
 
   render () {
-    const {fourDoorOverrides, currentLink, organizations} = this.state
+    const {fourDoorOverrides, currentLink} = this.state
     return (
       <div className='cn-switchboard-container'>
         <div className='horizontal-align-row center-text'>
@@ -579,9 +562,7 @@ class Switchboard extends React.Component {
               {fourDoorOverrides && this.renderFourDoorOverrides()}
             </div>
             <div className='margin-top'>
-              <OrganizationsCard
-                organizations={organizations}
-              />
+              <OrganizationsCard />
             </div>
           </div>
         </div>

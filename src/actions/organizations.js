@@ -1,12 +1,25 @@
-import {get} from '../utilities/api'
+import {get, post} from '../utilities/api'
 
 /*
-* Get assignments for class
+* Get organizations
 *
-* @param [int] assignmentId
 */
 export function getOrganizations () {
   return get(`/api/v1/organizations`, '', 'Error fetching organizations. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Create organization
+*
+*/
+export function createOrganizations (form) {
+  return post(`/api/v1/organizations`, form, 'Error creating organizations. Try again.')
     .then(data => {
       return data
     })
