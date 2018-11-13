@@ -31,9 +31,10 @@ class OrganizationForm extends React.Component {
   }
 
   initializeForm () {
+    const {organization: {name, custom_signup_link_id: linkId}} = this.props
     return {
-      name: '',
-      custom_signup_link_id: null
+      name: name || '',
+      custom_signup_link_id: linkId || null
     }
   }
 
@@ -44,7 +45,9 @@ class OrganizationForm extends React.Component {
   }
 
   onUpdateOrganization (form) {
-
+    actions.organizations.updateOrganizations(this.props.organization.id, form).then(organization => {
+      this.props.onSubmit(organization)
+    }).catch(() => false)
   }
 
   /*
@@ -55,7 +58,7 @@ class OrganizationForm extends React.Component {
     event.preventDefault()
 
     if (this.props.validateForm(this.state.form, requiredFields)) {
-      !form.id ? this.onCreateOrganization(form) : this.onUpdateOrganization(form)
+      !this.props.organization.id ? this.onCreateOrganization(form) : this.onUpdateOrganization(form)
     }
   }
 
@@ -106,7 +109,8 @@ OrganizationForm.propTypes = {
   formErrors: PropTypes.object,
   updateProperty: PropTypes.func,
   onSubmit: PropTypes.func.isRequired,
-  validateForm: PropTypes.func
+  validateForm: PropTypes.func,
+  organization: PropTypes.object
 }
 
 export default ValidateForm(Form(OrganizationForm, 'form'))

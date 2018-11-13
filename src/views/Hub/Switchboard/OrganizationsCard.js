@@ -21,7 +21,8 @@ class OrganizationsCard extends React.Component {
     super(props)
     this.state = {
       organizations: [],
-      openOrganizationModal: false
+      openOrganizationModal: false,
+      organization: null
     }
   }
 
@@ -44,16 +45,23 @@ class OrganizationsCard extends React.Component {
 
   onFormSubmit () {
     this.toggleOrganizationModal()
+    this.setState({organization: null})
     this.getOrganizations()
   }
 
+  onSelectOrganization (organization) {
+    this.setState({organization})
+    this.toggleOrganizationModal()
+  }
+
   mapRow (item, index) {
-    const {name, id, custom_signup_link: {link}} = item
+    const {name, id, custom_signup_link: {id: linkId, link}} = item
 
     const row = {
       id: id,
       name: name,
-      link: link
+      link: link,
+      custom_signup_link_id: linkId
     }
     return row
   }
@@ -71,9 +79,11 @@ class OrganizationsCard extends React.Component {
         rows={this.getRows()}
         disabled={true}
         canDelete={false}
-        canSelect={false}
+        canSelect={true}
         emptyMessage={'No organizations exist yet.'}
         deleteMessage={''}
+        onSelect={this.onSelectOrganization.bind(this)}
+        hiddenFields={['custom_signup_link_id']}
       />
     )
   }
@@ -86,6 +96,7 @@ class OrganizationsCard extends React.Component {
       >
         <OrganizationForm
           onSubmit={this.onFormSubmit.bind(this)}
+          organization={this.state.organization}
         />
       </Modal>
     )
