@@ -18,6 +18,7 @@ import {getStatuses, getStatusesHub} from './hub'
 import {getAssignmentMods} from './mods'
 import {sendNeedsSyllabusNotification, getNotificationLogs, sendCustomNotification,
   getAssignmentReminders, deleteAssignmentReminders, addReminderNotification, getAssignmentReminderTopics} from './notifications'
+import {getOrganizations} from './organizations'
 import {getSchoolPeriods, createPeriod, updatePeriod} from './periods'
 import {attachProfessorToClass, createProfessor, removeProfessorFromClass,
   searchProfessors, updateProfessor} from './professors'
@@ -126,6 +127,9 @@ const actions = {
     deleteAssignmentReminders,
     addReminderNotification,
     getAssignmentReminderTopics
+  },
+  organizations: {
+    getOrganizations
   },
   periods: {
     createPeriod,

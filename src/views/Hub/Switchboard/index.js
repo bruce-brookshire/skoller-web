@@ -19,6 +19,8 @@ import FourDoor from '../../components/FourDoor'
 import FourDoorOverrides from './FourDoorOverrides'
 import {browserHistory} from 'react-router'
 import EmailType from './EmailType'
+import Card from '../../../components/Card'
+import OrganizationsCard from './OrganizationsCard'
 
 @inject('rootStore') @observer
 class Switchboard extends React.Component {
@@ -41,7 +43,8 @@ class Switchboard extends React.Component {
       openLinkModal: false,
       fourDoor: {},
       fourDoorOverrides: [],
-      emailTypes: []
+      emailTypes: [],
+      organizations: []
     }
   }
 
@@ -60,6 +63,7 @@ class Switchboard extends React.Component {
     })
     this.getOverrides()
     this.getEmailSwitches()
+    this.getOrganizations()
     actions.settings.getAutoUpdateInfo().then((autoUpdateData) => {
       this.setState({autoUpdateData, loading: false})
     }).catch(() => false)
@@ -90,6 +94,12 @@ class Switchboard extends React.Component {
   getOverrides () {
     actions.fourdoor.getFourDoorOverrides().then((fourDoorOverrides) => {
       this.setState({fourDoorOverrides})
+    }).catch(() => false)
+  }
+
+  getOrganizations () {
+    actions.organizations.getOrganizations().then((organizations) => {
+      this.setState({organizations})
     }).catch(() => false)
   }
 
@@ -184,33 +194,50 @@ class Switchboard extends React.Component {
     return this.state.minAppVersionData.find(x => x.name === key).value
   }
 
+  renderAutoUpdateSettingsContent () {
+    return (
+      <div>
+        <p>Enrollment is {this.findAutoUpdateSetting('auto_upd_enroll_thresh')} or more</p>
+        <p>{Math.round(this.findAutoUpdateSetting('auto_upd_response_thresh') * 100)}% or more responded to the update</p>
+        <p>{Math.round(this.findAutoUpdateSetting('auto_upd_approval_thresh') * 100)}% or more responses were copies</p>
+        <a className="cn-blue" onClick={() => this.setState({openAutoUpdateModal: true})}>See details</a>
+      </div>
+    )
+  }
+
   renderAutoUpdateSettings () {
     return (
-      <div className='cn-shadow-box margin-top'>
-        <div className='cn-shadow-box-content'>
-          <h3 className='cn-blue'>Auto Updates</h3>
-          <p>Enrollment is {this.findAutoUpdateSetting('auto_upd_enroll_thresh')} or more</p>
-          <p>{Math.round(this.findAutoUpdateSetting('auto_upd_response_thresh') * 100)}% or more responded to the update</p>
-          <p>{Math.round(this.findAutoUpdateSetting('auto_upd_approval_thresh') * 100)}% or more responses were copies</p>
-          <a className="cn-blue" onClick={() => this.setState({openAutoUpdateModal: true})}>See details</a>
-        </div>
+      <Card
+        title='Auto Updates'
+        content={this.renderAutoUpdateSettingsContent()}
+      />
+    )
+  }
+
+  renderMinVersionSettingsTitle () {
+    return (
+      <div className='cn-icon-flex'>
+        Minimum App Version
+        <i className='fa fa-pencil cn-blue cursor margin-left' onClick={() => this.setState({openVersionUpdateModal: true})} />
+      </div>
+    )
+  }
+
+  renderMinVersionSettingsContent () {
+    return (
+      <div>
+        <p>iOS Version: {this.findMinVerSetting('min_ios_version')}</p>
+        <p>Android Version: {this.findMinVerSetting('min_android_version')}</p>
       </div>
     )
   }
 
   renderMinVersionSettings () {
     return (
-      <div className='cn-shadow-box margin-top'>
-        <div className='min-ver cn-shadow-box-content'>
-          <div className='min-ver-header'>
-            <h3 className='cn-blue'>Minimum App Version </h3><a className="margin-left" onClick={() => this.setState({openVersionUpdateModal: true})}>Edit</a>
-          </div>
-          <div>
-            <p>iOS Version: {this.findMinVerSetting('min_ios_version')}</p>
-            <p>Android Version: {this.findMinVerSetting('min_android_version')}</p>
-          </div>
-        </div>
-      </div>
+      <Card
+        title={this.renderMinVersionSettingsTitle()}
+        content={this.renderMinVersionSettingsContent()}
+      />
     )
   }
 
@@ -303,109 +330,133 @@ class Switchboard extends React.Component {
     )
   }
 
-  renderNotifications () {
+  renderNotificationsContent () {
     return (
-      <div className='cn-shadow-box'>
-        <div className='cn-shadow-box-content'>
-          <h3 className='cn-blue'>Notifications</h3>
-          <div className="cn-switchboard-section-item">
-            <button className='button' onClick={() => this.send()}>
-              Send &apos;Needs Syllabus&apos; Notification
-            </button>
-          </div>
-          <div className="cn-switchboard-section-item">
-            <button className='button margin-top' onClick={() => this.setState({openCustomNotificationModal: true}) }>
-              Send Custom Notification
-            </button>
-          </div>
+      <div>
+        <div className="cn-switchboard-section-item">
+          <button className='button' onClick={() => this.send()}>
+            Send &apos;Needs Syllabus&apos; Notification
+          </button>
+        </div>
+        <div className="cn-switchboard-section-item">
+          <button className='button margin-top' onClick={() => this.setState({openCustomNotificationModal: true}) }>
+            Send Custom Notification
+          </button>
         </div>
       </div>
+    )
+  }
+
+  renderNotifications () {
+    return (
+      <Card
+        title='Notifications'
+        content={this.renderNotificationsContent()}
+      />
     )
   }
 
   renderFieldOfStudy () {
     return (
-      <div className='cn-shadow-box margin-top'>
-        <div className='cn-shadow-box-content'>
-          <h3 className='cn-blue center-text'>Import fields of study</h3>
+      <Card
+        title='Import fields of study CSV'
+        content={
           <UploadHistory
             allow='text/csv'
             disabled={false}
             files={[]}
-            info='Upload fields of study csv.'
             onUpload={(file) => { this.onUploadFOS(file) }}
-            title='Fields of Study'
+            title='Drop CSV'
           />
-        </div>
-      </div>
+        }
+      />
     )
   }
 
   renderNotificationHistory () {
     return (
-      <div className='cn-shadow-box'>
-        <div className='cn-shadow-box-content'>
-          <h3 className='cn-blue center-text'>History</h3>
-          {this.state.loading
-            ? <div className='center-text'><Loading /></div>
-            : <NotificationHistory logs={this.state.logs} />}
-        </div>
+      <Card
+        title='History'
+        content={this.state.loading
+          ? <div className='center-text'><Loading /></div>
+          : <NotificationHistory logs={this.state.logs} />}
+      />
+    )
+  }
+
+  renderAssignmentRemindersContent () {
+    return (
+      <div>
+        {this.state.loading
+          ? <div className='center-text'><Loading /></div>
+          : <AssignmentReminders
+            reminders={this.state.reminders}
+            onDelete={() => this.onDeleteReminder.bind(this)}
+          />
+        }
+        <AssignmentReminderForm
+          onSubmit={this.getReminders.bind(this)}
+        />
       </div>
     )
   }
 
   renderAssignmentReminders () {
     return (
-      <div className='cn-shadow-box margin-top'>
-        <div className='cn-shadow-box-content'>
-          <h3 className='cn-blue center-text'>Assignment Reminders</h3>
-          {this.state.loading ? <div className='center-text'><Loading /></div>
-            : <AssignmentReminders
-              reminders={this.state.reminders}
-              onDelete={() => this.onDeleteReminder.bind(this)}
-            />
-          }
-          <AssignmentReminderForm
-            onSubmit={this.getReminders.bind(this)}
+      <Card
+        title='Assignment Reminders'
+        content={this.renderAssignmentRemindersContent()}
+      />
+    )
+  }
+
+  renderSignupLinksContent () {
+    return (
+      <div>
+        {this.state.loading
+          ? <div className='center-text'><Loading /></div>
+          : <SignupLinks
+            links={this.state.links}
+            onSelect={this.onSelectLink.bind(this)}
           />
-        </div>
+        }
+        <SignupLinkForm
+          onSubmit={this.getCustomLinks.bind(this)}
+        />
       </div>
     )
   }
 
   renderSignupLinks () {
     return (
-      <div className='cn-shadow-box margin-top'>
-        <div className='cn-shadow-box-content'>
-          <h3 className='cn-blue center-text'>Signup Links</h3>
-          {this.state.loading ? <div className='center-text'><Loading /></div>
-            : <SignupLinks
-              links={this.state.links}
-              onSelect={this.onSelectLink.bind(this)}
-            />
-          }
-          <SignupLinkForm
-            onSubmit={this.getCustomLinks.bind(this)}
-          />
-        </div>
+      <Card
+        title='Signup Links'
+        content={this.renderSignupLinksContent()}
+      />
+    )
+  }
+
+  renderOrganizationsTitle () {
+    return (
+      <div className='cn-icon-flex'>
+        Organizations
+        <i className='fa fa-plus cn-blue cursor margin-left' onClick={() => this.setState({openOrganizationModal: true})} />
       </div>
     )
   }
 
   renderFourDoorOverrides () {
     return (
-      <div className='cn-shadow-box margin-top'>
-        <div className='cn-shadow-box-content'>
-          <h3 className='cn-blue center-text'>Four Door Overrides</h3>
-          {this.state.loading ? <div className='center-text'><Loading /></div>
-            : <FourDoorOverrides
-              schools={this.state.fourDoorOverrides}
-              onDelete={() => this.onDeleteOverride.bind(this)}
-              onSelect={() => this.onSchoolSelect.bind(this)}
-            />
-          }
-        </div>
-      </div>
+      <Card
+        title='Four Door Overrides'
+        content={this.state.loading ? <div className='center-text'><Loading /></div>
+          : <FourDoorOverrides
+            schools={this.state.fourDoorOverrides}
+            onDelete={() => this.onDeleteOverride.bind(this)}
+            onSelect={() => this.onSchoolSelect.bind(this)}
+          />
+        }
+      />
     )
   }
 
@@ -434,23 +485,23 @@ class Switchboard extends React.Component {
   renderFourDoor () {
     const {fourDoor} = this.state
     return (
-      <div className='cn-shadow-box margin-top'>
-        <div className='cn-shadow-box-content'>
-          <h3 className='cn-blue center-text'>Four Door Status</h3>
+      <Card
+        title='Four Door Status'
+        content={
           <FourDoor
             currentValues={fourDoor}
             onChange={this.onFourDoorChange.bind(this)}
           />
-        </div>
-      </div>
+        }
+      />
     )
   }
 
   renderSchoolUpload () {
     return (
-      <div className='cn-shadow-box margin-top'>
-        <div className='cn-shadow-box-content'>
-          <h3 className='cn-blue center-text'>Import schools</h3>
+      <Card
+        title='Import schools'
+        content={
           <UploadHistory
             allow='text/csv'
             disabled={false}
@@ -459,8 +510,8 @@ class Switchboard extends React.Component {
             onUpload={(file) => { this.onUploadSchools(file) }}
             title='Schools'
           />
-        </div>
-      </div>
+        }
+      />
     )
   }
 
@@ -481,48 +532,57 @@ class Switchboard extends React.Component {
 
   renderEmailSwitches () {
     return (
-      <div className='cn-shadow-box margin-top'>
-        <div className='cn-shadow-box-content'>
-          <h3 className='cn-blue center-text'>Auto-Messaging</h3>
-          {this.renderEmailSwitchItems()}
-        </div>
-      </div>
+      <Card
+        title='Auto-Messaging'
+        content={this.renderEmailSwitchItems()}
+      />
     )
   }
 
   render () {
-    const {fourDoorOverrides, currentLink} = this.state
+    const {fourDoorOverrides, currentLink, organizations} = this.state
     return (
       <div className='cn-switchboard-container'>
         <div className='horizontal-align-row center-text'>
           <div className='cn-switchboard-section-small'>
             {this.renderNotifications()}
-            <div className="cn-switchboard-section-item">
+            <div className="cn-switchboard-section-item margin-top">
               {this.state.loading ? <div className='center-text'><Loading /></div>
                 : this.renderAutoUpdateSettings()}
             </div>
-            <div className='cn-switchboard-section-item'>
+            <div className='cn-switchboard-section-item margin-top'>
               {this.renderFieldOfStudy()}
             </div>
-            <div className='cn-switchboard-section-item'>
+            <div className='cn-switchboard-section-item margin-top'>
               {this.renderSchoolUpload()}
             </div>
-            <div className="cn-switchboard-section-item">
+            <div className="cn-switchboard-section-item margin-top">
               {this.state.loading ? <div className='center-text'><Loading /></div>
                 : this.renderMinVersionSettings()}
             </div>
-            <div className="cn-switchboard-section-item">
+            <div className="cn-switchboard-section-item margin-top">
               {this.renderFourDoor()}
             </div>
-            <div className="cn-switchboard-section-item">
+            <div className="cn-switchboard-section-item margin-top">
               {this.renderEmailSwitches()}
             </div>
           </div>
           <div className='cn-switchboard-section-large'>
             {this.renderNotificationHistory()}
-            {this.renderAssignmentReminders()}
-            {this.renderSignupLinks()}
-            {fourDoorOverrides && this.renderFourDoorOverrides()}
+            <div className='margin-top'>
+              {this.renderAssignmentReminders()}
+            </div>
+            <div className='margin-top'>
+              {this.renderSignupLinks()}
+            </div>
+            <div className='margin-top'>
+              {fourDoorOverrides && this.renderFourDoorOverrides()}
+            </div>
+            <div className='margin-top'>
+              <OrganizationsCard
+                organizations={organizations}
+              />
+            </div>
           </div>
         </div>
         {this.renderCustomNotificationModal()}
