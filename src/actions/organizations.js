@@ -1,4 +1,4 @@
-import {get, post, put} from '../utilities/api'
+import {get, post, put, del} from '../utilities/api'
 
 /*
 * Get organizations
@@ -18,7 +18,7 @@ export function getOrganizations () {
 * Create organization
 *
 */
-export function createOrganizations (form) {
+export function createOrganization (form) {
   return post(`/api/v1/organizations`, form, 'Error creating organizations. Try again.')
     .then(data => {
       return data
@@ -32,8 +32,22 @@ export function createOrganizations (form) {
 * Updates an organization
 *
 */
-export function updateOrganizations (id, form) {
-  return put(`/api/v1/organizations/${id}`, form, 'Error creating organizations. Try again.')
+export function updateOrganization (id, form) {
+  return put(`/api/v1/organizations/${id}`, form, 'Error updating organizations. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Deletes an organization
+*
+*/
+export function deleteOrganization (id) {
+  return del(`/api/v1/organizations/${id}`, 'Error deleting organizations. Try again.')
     .then(data => {
       return data
     })

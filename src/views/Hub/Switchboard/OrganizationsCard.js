@@ -43,6 +43,12 @@ class OrganizationsCard extends React.Component {
     )
   }
 
+  onDeleteOrganization (organization) {
+    actions.organizations.deleteOrganization(organization.id).then(() => {
+      this.getOrganizations()
+    }).catch(() => false)
+  }
+
   onFormSubmit () {
     this.toggleOrganizationModal()
     this.setState({organization: null})
@@ -78,11 +84,12 @@ class OrganizationsCard extends React.Component {
         headers={headers}
         rows={this.getRows()}
         disabled={true}
-        canDelete={false}
+        canDelete={true}
         canSelect={true}
         emptyMessage={'No organizations exist yet.'}
-        deleteMessage={''}
+        deleteMessage={'Are you sure you want to delete the organization?'}
         onSelect={this.onSelectOrganization.bind(this)}
+        onDelete={this.onDeleteOrganization.bind(this)}
         hiddenFields={['custom_signup_link_id']}
       />
     )

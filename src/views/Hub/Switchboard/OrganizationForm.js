@@ -39,13 +39,13 @@ class OrganizationForm extends React.Component {
   }
 
   onCreateOrganization (form) {
-    actions.organizations.createOrganizations(form).then(organization => {
+    actions.organizations.createOrganization(form).then(organization => {
       this.props.onSubmit(organization)
     }).catch(() => false)
   }
 
   onUpdateOrganization (form) {
-    actions.organizations.updateOrganizations(this.props.organization.id, form).then(organization => {
+    actions.organizations.updateOrganization(this.props.organization.id, form).then(organization => {
       this.props.onSubmit(organization)
     }).catch(() => false)
   }
