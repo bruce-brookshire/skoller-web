@@ -5,7 +5,7 @@ import {browserHistory} from 'react-router'
 import UploadDocuments from './UploadDocuments'
 import actions from '../../../actions'
 import Loading from '../../../components/Loading'
-import ClassCard from '../../components/ClassCard'
+import ClassCard from '../../Cards/ClassCard'
 import ClassInviteLink from './ClassInviteLink'
 
 @inject('rootStore') @observer

@@ -13,7 +13,7 @@ import MeetingTimes from '../../components/ClassEditor/MeetingTimes'
 import moment from 'moment-timezone'
 import ProfessorModal from '../../components/ClassEditor/Professor/ProfessorModal'
 import { browserHistory } from 'react-router'
-import ClassCard from '../../components/ClassCard'
+import ClassCard from '../../Cards/ClassCard'
 import {inject, observer} from 'mobx-react'
 
 @inject('rootStore') @observer

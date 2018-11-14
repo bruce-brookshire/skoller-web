@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Modal from '../../components/Modal'
-import NoteForm from './NoteForm'
+import Modal from '../../../components/Modal'
+import NoteForm from '../../ClassAdmin/NoteForm'
+import Card from '../../../components/Card'
 
 class ClassNotes extends React.Component {
   constructor (props) {
@@ -59,18 +60,16 @@ class ClassNotes extends React.Component {
 
   render () {
     return (
-      <div className='cn-shadow-box'>
-        <div className='cn-shadow-box-content'>
-          <div className='cn-card-title margin-bottom'>
-            Notes
-            <i className='fa fa-plus cn-blue cursor margin-right' onClick={() => this.toggleNoteModal()} />
-          </div>
-          <div className='notes'>
-            {this.props.cl.notes.length > 0 ? (
-              this.renderNotes()
-            ) : this.renderNoNotes()}
-          </div>
-        </div>
+      <div>
+        <Card
+          title='Notes'
+          content={
+            <div className='notes'>
+              {this.props.cl.notes.length > 0 ? (
+                this.renderNotes()
+              ) : this.renderNoNotes()}
+            </div>}
+        />
         {this.renderNoteModal()}
       </div>
     )

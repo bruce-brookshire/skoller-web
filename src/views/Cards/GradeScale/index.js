@@ -1,10 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
-import {InputField} from '../../../../components/Form'
-import Loading from '../../../../components/Loading'
-import actions from '../../../../actions'
+import {InputField} from '../../../components/Form'
+import Loading from '../../../components/Loading'
+import actions from '../../../actions'
 import CommonScaleModal from './CommonScaleModal'
+import Card from '../../../components/Card'
 
 class GradeScale extends React.Component {
   constructor (props) {
@@ -168,24 +169,37 @@ class GradeScale extends React.Component {
     )
   }
 
-  render () {
+  renderContent () {
+    const {isEditable} = this.state
+    return (
+      <div>
+        {this.renderScale()}
+        {isEditable && this.renderForm()}
+        {isEditable && this.renderSubmitButton()}
+        {isEditable && this.renderOptions()}
+      </div>
+    )
+  }
+
+  renderTitle () {
     const {canEdit, hasIssues} = this.props
     const {isEditable} = this.state
     return (
+      <div className='cn-icon-flex'>
+        Grade Scale
+        {canEdit && <i className='fa fa-pencil cn-blue cursor' onClick={() => this.setState({isEditable: !isEditable})} />}
+        {hasIssues && <i className='fa fa-warning cn-red cursor margin-left' onClick={() => this.props.onSelectIssue()} />}
+      </div>
+    )
+  }
+
+  render () {
+    return (
       <div id='class-editor-grade-scale'>
-        <div id='class-editor-grade-scale-content'>
-          <div className='grade-scale-title'>
-            Grade Scale
-            <div>
-              {canEdit && <i className='fa fa-pencil cn-blue cursor' onClick={() => this.setState({isEditable: !isEditable})} />}
-              {hasIssues && <i className='fa fa-warning cn-red cursor margin-left' onClick={() => this.props.onSelectIssue()} />}
-            </div>
-          </div>
-          {this.renderScale()}
-          {isEditable && this.renderForm()}
-          {isEditable && this.renderSubmitButton()}
-          {isEditable && this.renderOptions()}
-        </div>
+        <Card
+          title={this.renderTitle()}
+          content={this.renderContent()}
+        />
         {this.renderCommonScaleModal()}
       </div>
     )

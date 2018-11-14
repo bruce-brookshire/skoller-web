@@ -5,9 +5,9 @@ import actions from '../../actions'
 import Modal from '../../components/Modal'
 import ClassForm from './ClassForm'
 import IssuesModal from '../components/ClassEditor/IssuesModal'
-import GradeScale from '../components/ClassEditor/GradeScale'
+import GradeScale from '../Cards/GradeScale'
 import RequestResolvedModal from './RequestResolvedModal'
-import ClassCard from '../components/ClassCard'
+import ClassCard from '../Cards/ClassCard'
 import Loading from '../../components/Loading'
 import Professor from '../components/ClassEditor/Professor'
 import StudentList from './StudentList'
@@ -22,7 +22,7 @@ import {browserHistory} from 'react-router'
 import StudentRequestInfo from './StudentRequestInfo'
 import StatusForm from './StatusForm'
 import DocumentsDeletedModal from './DocumentsDeletedModal'
-import ClassNotes from './ClassNotes'
+import ClassNotes from '../Cards/ClassNotes'
 import {SliderField} from '../../components/Form'
 
 @inject('rootStore') @observer
@@ -413,40 +413,6 @@ class ClassAdmin extends React.Component {
     )
   }
 
-  renderClassDetais () {
-    const {cl} = this.state
-    return (
-      <div id='cn-class-details' className='class-card'>
-        <ClassCard
-          cl={cl}
-          schoolName={cl.school.name}
-          semesterName={cl.class_period.name}
-          onEdit={this.toggleEditClassModal.bind(this)}
-          isAdmin={true}
-          toggleWrench={this.toggleWrench.bind(this)}
-          toggleChat={this.toggleChat.bind(this)}
-          toggleDocuments={this.toggleDocs.bind(this)}
-          onSelectIssue={this.toggleStudentRequestInfo.bind(this)}
-        />
-      </div>
-    )
-  }
-
-  renderGradeScale () {
-    const {cl} = this.state
-    return (
-      <div className='class-card'>
-        <GradeScale
-          cl={cl}
-          canEdit={true}
-          onSubmit={() => this.updateClass()}
-          hasIssues={cl.change_requests.findIndex((item) => item.change_type.id === 100 && !item.is_completed) > -1}
-          onSelectIssue={this.toggleStudentRequestInfo.bind(this)}
-        />
-      </div>
-    )
-  }
-
   renderProfessor () {
     const {cl} = this.state
     return (
@@ -616,13 +582,38 @@ class ClassAdmin extends React.Component {
   }
 
   renderClass () {
-    const {documents, hideDocuments, openStudentRequestInfo} = this.state
+    const {documents, hideDocuments, openStudentRequestInfo, cl} = this.state
     return (
       <div id='cn-class-admin-container'>
         <div id='cn-class-admin'>
-          {this.renderClassDetais()}
-          {this.renderNotes()}
-          {this.renderGradeScale()}
+          <div id='cn-class-details' className='class-card'>
+            <ClassCard
+              cl={cl}
+              schoolName={cl.school.name}
+              semesterName={cl.class_period.name}
+              onEdit={this.toggleEditClassModal.bind(this)}
+              isAdmin={true}
+              toggleWrench={this.toggleWrench.bind(this)}
+              toggleChat={this.toggleChat.bind(this)}
+              toggleDocuments={this.toggleDocs.bind(this)}
+              onSelectIssue={this.toggleStudentRequestInfo.bind(this)}
+            />
+          </div>
+          <div className='class-card'>
+            <ClassNotes
+              cl={cl}
+              onCreateNote={(cl) => this.setState({cl})}
+            />
+          </div>
+          <div className='class-card'>
+            <GradeScale
+              cl={cl}
+              canEdit={true}
+              onSubmit={() => this.updateClass()}
+              hasIssues={cl.change_requests.findIndex((item) => item.change_type.id === 100 && !item.is_completed) > -1}
+              onSelectIssue={this.toggleStudentRequestInfo.bind(this)}
+            />
+          </div>
           {this.renderProfessor()}
           {this.renderWeights()}
           {this.renderAssignments()}
