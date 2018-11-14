@@ -4,8 +4,6 @@ import actions from '../../../actions'
 import Loading from '../../../components/Loading'
 import Modal from '../../../components/Modal'
 import {inject, observer} from 'mobx-react'
-import AssignmentReminders from './AssignmentReminders'
-import AssignmentReminderForm from './AssignmentReminderForm'
 import SignupLinks from './SignupLinks'
 import SignupLinkForm from './SignupLinkForm'
 import LinkDetail from './LinkDetail'
@@ -21,6 +19,7 @@ import MinVersionSettings from '../../Cards/MinVersionSettings'
 import FourDoorStatus from '../../Cards/FourDoorStatus'
 import EmailSettings from '../../Cards/EmailSettings'
 import NotificationHistory from '../../Cards/NotificationHistory'
+import AssignmentReminders from '../../Cards/AssignmentReminders'
 
 @inject('rootStore') @observer
 class Switchboard extends React.Component {
@@ -29,14 +28,9 @@ class Switchboard extends React.Component {
     this.state = {
       logs: [],
       loading: false,
-      openVersionUpdateModal: false,
-      autoUpdateData: [],
-      minAppVersionData: [],
-      reminders: [],
       links: [],
       currentLink: null,
       openLinkModal: false,
-      fourDoor: {},
       fourDoorOverrides: []
     }
   }
@@ -44,7 +38,6 @@ class Switchboard extends React.Component {
   initializeComponent () {
     this.setState({loading: true})
     this.getLogs()
-    this.getReminders()
     this.getCustomLinks()
     this.getOverrides()
   }
@@ -63,12 +56,6 @@ class Switchboard extends React.Component {
   getLogs () {
     actions.notifications.getNotificationLogs().then((logs) => {
       this.setState({logs})
-    }).catch(() => false)
-  }
-
-  getReminders () {
-    actions.notifications.getAssignmentReminders().then((reminders) => {
-      this.setState({reminders})
     }).catch(() => false)
   }
 
@@ -97,47 +84,8 @@ class Switchboard extends React.Component {
     browserHistory.push({pathname: '/hub/schools/school/info', state: {school}})
   }
 
-  /*
-  * Method for deleting a message.
-  *
-  * @param [Object] message
-  * @return [Object] null.
-  */
-  onDeleteReminder (item) {
-    actions.notifications.deleteAssignmentReminders(item).then(() => {
-      const newReminders = this.state.reminders.filter(cc => cc.id !== item.id)
-      this.setState({reminders: newReminders})
-    }).catch(() => false)
-  }
-
   onSelectLink (item) {
     this.setState({currentLink: item, openLinkModal: true})
-  }
-
-  renderAssignmentRemindersContent () {
-    return (
-      <div>
-        {this.state.loading
-          ? <div className='center-text'><Loading /></div>
-          : <AssignmentReminders
-            reminders={this.state.reminders}
-            onDelete={() => this.onDeleteReminder.bind(this)}
-          />
-        }
-        <AssignmentReminderForm
-          onSubmit={this.getReminders.bind(this)}
-        />
-      </div>
-    )
-  }
-
-  renderAssignmentReminders () {
-    return (
-      <Card
-        title='Assignment Reminders'
-        content={this.renderAssignmentRemindersContent()}
-      />
-    )
   }
 
   renderSignupLinksContent () {
@@ -234,7 +182,7 @@ class Switchboard extends React.Component {
           <div className='cn-switchboard-section-large'>
             <NotificationHistory logs={this.state.logs} />
             <div className='margin-top'>
-              {this.renderAssignmentReminders()}
+              <AssignmentReminders />
             </div>
             <div className='margin-top'>
               {this.renderSignupLinks()}
