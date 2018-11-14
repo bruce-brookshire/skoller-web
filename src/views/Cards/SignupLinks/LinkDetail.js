@@ -44,7 +44,7 @@ class LinkDetail extends React.Component {
     )
   }
 
-  mapRow (item, index) {
+  mapRow (item) {
     const {name_first: nameFirst, name_last: nameLast, user, id} = item
     const {email} = user
 

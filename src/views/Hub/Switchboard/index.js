@@ -2,11 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import actions from '../../../actions'
 import Loading from '../../../components/Loading'
-import Modal from '../../../components/Modal'
 import {inject, observer} from 'mobx-react'
-import SignupLinks from './SignupLinks'
-import SignupLinkForm from './SignupLinkForm'
-import LinkDetail from './LinkDetail'
+import SignupLinks from '../../Cards/SignupLinks'
 import FourDoorOverrides from './FourDoorOverrides'
 import {browserHistory} from 'react-router'
 import Card from '../../../components/Card'
@@ -28,9 +25,6 @@ class Switchboard extends React.Component {
     this.state = {
       logs: [],
       loading: false,
-      links: [],
-      currentLink: null,
-      openLinkModal: false,
       fourDoorOverrides: []
     }
   }
@@ -38,7 +32,6 @@ class Switchboard extends React.Component {
   initializeComponent () {
     this.setState({loading: true})
     this.getLogs()
-    this.getCustomLinks()
     this.getOverrides()
   }
 
@@ -65,12 +58,6 @@ class Switchboard extends React.Component {
     }).catch(() => this.setState({loading: false}))
   }
 
-  getCustomLinks () {
-    actions.signupLinks.getCustomLinks().then((links) => {
-      this.setState({links})
-    }).catch(() => false)
-  }
-
   onDeleteOverride (item) {
     actions.fourdoor.deleteOverride(item.id).then(() => {
       this.getOverrides()
@@ -82,36 +69,6 @@ class Switchboard extends React.Component {
   */
   onSchoolSelect (school) {
     browserHistory.push({pathname: '/hub/schools/school/info', state: {school}})
-  }
-
-  onSelectLink (item) {
-    this.setState({currentLink: item, openLinkModal: true})
-  }
-
-  renderSignupLinksContent () {
-    return (
-      <div>
-        {this.state.loading
-          ? <div className='center-text'><Loading /></div>
-          : <SignupLinks
-            links={this.state.links}
-            onSelect={this.onSelectLink.bind(this)}
-          />
-        }
-        <SignupLinkForm
-          onSubmit={this.getCustomLinks.bind(this)}
-        />
-      </div>
-    )
-  }
-
-  renderSignupLinks () {
-    return (
-      <Card
-        title='Signup Links'
-        content={this.renderSignupLinksContent()}
-      />
-    )
   }
 
   renderFourDoorOverrides () {
@@ -129,30 +86,8 @@ class Switchboard extends React.Component {
     )
   }
 
-  renderLinkModal () {
-    const {openLinkModal, currentLink} = this.state
-    return (
-      <Modal
-        open={openLinkModal}
-        onClose={() => this.setState({openLinkModal: false, currentLink: null})}
-      >
-        <div>
-          <LinkDetail
-            link={currentLink}
-          />
-          <div className='row'>
-            <button
-              className='button-invert full-width margin-top margin-bottom'
-              onClick={() => this.setState({openLinkModal: false, currentLink: null})}
-            > Close </button>
-          </div>
-        </div>
-      </Modal>
-    )
-  }
-
   render () {
-    const {fourDoorOverrides, currentLink} = this.state
+    const {fourDoorOverrides} = this.state
     return (
       <div className='cn-switchboard-container'>
         <div className='horizontal-align-row center-text'>
@@ -185,7 +120,7 @@ class Switchboard extends React.Component {
               <AssignmentReminders />
             </div>
             <div className='margin-top'>
-              {this.renderSignupLinks()}
+              <SignupLinks />
             </div>
             <div className='margin-top'>
               {fourDoorOverrides && this.renderFourDoorOverrides()}
@@ -195,7 +130,6 @@ class Switchboard extends React.Component {
             </div>
           </div>
         </div>
-        {currentLink && this.renderLinkModal()}
       </div>
     )
   }
