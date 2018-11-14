@@ -25,11 +25,21 @@ class FourDoor extends React.Component {
     const { school } = this.props
 
     let form = {
-      is_diy_enabled: values[nextIdx][0],
-      is_diy_preferred: values[nextIdx][1],
-      is_auto_syllabus: values[nextIdx][2]
+      settings: [
+        {
+          name: 'is_diy_enabled',
+          value: values[nextIdx][0]
+        },
+        {
+          name: 'is_diy_preferred',
+          value: values[nextIdx][1]
+        },
+        {
+          name: 'is_auto_syllabus',
+          value: values[nextIdx][2]
+        }
+      ]
     }
-
     school ? this.props.onChange(school, form) : this.props.onChange(form)
   }
 

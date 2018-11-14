@@ -10,7 +10,6 @@ import AssignmentReminderForm from './AssignmentReminderForm'
 import SignupLinks from './SignupLinks'
 import SignupLinkForm from './SignupLinkForm'
 import LinkDetail from './LinkDetail'
-import FourDoor from '../../components/FourDoor'
 import FourDoorOverrides from './FourDoorOverrides'
 import {browserHistory} from 'react-router'
 import EmailType from './EmailType'
@@ -21,6 +20,7 @@ import AutoUpdateSettings from '../../Cards/AutoUpdateSettings'
 import FieldOfStudyCSV from '../../Cards/FieldOfStudyCSV'
 import SchoolCSV from '../../Cards/SchoolCSV'
 import MinVersionSettings from '../../Cards/MinVersionSettings'
+import FourDoorStatus from '../../Cards/FourDoorStatus'
 
 @inject('rootStore') @observer
 class Switchboard extends React.Component {
@@ -47,9 +47,6 @@ class Switchboard extends React.Component {
     this.getLogs()
     this.getReminders()
     this.getCustomLinks()
-    actions.fourdoor.getFourDoor().then((fourDoor) => {
-      this.setState({fourDoor})
-    })
     this.getOverrides()
     this.getEmailSwitches()
   }
@@ -93,12 +90,6 @@ class Switchboard extends React.Component {
     actions.signupLinks.getCustomLinks().then((links) => {
       this.setState({links})
     }).catch(() => false)
-  }
-
-  onFourDoorChange (form) {
-    actions.fourdoor.updateFourDoor(form).then((fourDoor) => {
-      this.setState({fourDoor})
-    })
   }
 
   onDeleteOverride (item) {
@@ -231,21 +222,6 @@ class Switchboard extends React.Component {
     )
   }
 
-  renderFourDoor () {
-    const {fourDoor} = this.state
-    return (
-      <Card
-        title='Four Door Status'
-        content={
-          <FourDoor
-            currentValues={fourDoor}
-            onChange={this.onFourDoorChange.bind(this)}
-          />
-        }
-      />
-    )
-  }
-
   renderEmailSwitchItems () {
     const {emailTypes} = this.state
 
@@ -292,7 +268,7 @@ class Switchboard extends React.Component {
               <MinVersionSettings />
             </div>
             <div className="cn-switchboard-section-item margin-top">
-              {this.renderFourDoor()}
+              <FourDoorStatus />
             </div>
             <div className="cn-switchboard-section-item margin-top">
               {this.renderEmailSwitches()}
