@@ -12,7 +12,6 @@ import SignupLinkForm from './SignupLinkForm'
 import LinkDetail from './LinkDetail'
 import FourDoorOverrides from './FourDoorOverrides'
 import {browserHistory} from 'react-router'
-import EmailType from './EmailType'
 import Card from '../../../components/Card'
 import OrganizationsCard from '../../Cards/Organizations'
 import SendNotifications from '../../Cards/SendNotifications'
@@ -21,6 +20,7 @@ import FieldOfStudyCSV from '../../Cards/FieldOfStudyCSV'
 import SchoolCSV from '../../Cards/SchoolCSV'
 import MinVersionSettings from '../../Cards/MinVersionSettings'
 import FourDoorStatus from '../../Cards/FourDoorStatus'
+import EmailSettings from '../../Cards/EmailSettings'
 
 @inject('rootStore') @observer
 class Switchboard extends React.Component {
@@ -37,8 +37,7 @@ class Switchboard extends React.Component {
       currentLink: null,
       openLinkModal: false,
       fourDoor: {},
-      fourDoorOverrides: [],
-      emailTypes: []
+      fourDoorOverrides: []
     }
   }
 
@@ -48,7 +47,6 @@ class Switchboard extends React.Component {
     this.getReminders()
     this.getCustomLinks()
     this.getOverrides()
-    this.getEmailSwitches()
   }
 
   componentWillMount () {
@@ -76,13 +74,7 @@ class Switchboard extends React.Component {
 
   getOverrides () {
     actions.fourdoor.getFourDoorOverrides().then((fourDoorOverrides) => {
-      this.setState({fourDoorOverrides})
-    }).catch(() => false)
-  }
-
-  getEmailSwitches () {
-    actions.emailTypes.getEmailTypes().then((emailTypes) => {
-      this.setState({loading: false, emailTypes})
+      this.setState({fourDoorOverrides, loading: false})
     }).catch(() => this.setState({loading: false}))
   }
 
@@ -222,30 +214,6 @@ class Switchboard extends React.Component {
     )
   }
 
-  renderEmailSwitchItems () {
-    const {emailTypes} = this.state
-
-    return emailTypes.map(type => {
-      return (
-        <div key={type.id} className='margin-bottom'>
-          <EmailType
-            emailType={type}
-            onUpdate={this.getEmailSwitches.bind(this)}
-          />
-        </div>
-      )
-    })
-  }
-
-  renderEmailSwitches () {
-    return (
-      <Card
-        title='Auto-Messaging'
-        content={<div>{this.renderEmailSwitchItems()}</div>}
-      />
-    )
-  }
-
   render () {
     const {fourDoorOverrides, currentLink} = this.state
     return (
@@ -271,7 +239,7 @@ class Switchboard extends React.Component {
               <FourDoorStatus />
             </div>
             <div className="cn-switchboard-section-item margin-top">
-              {this.renderEmailSwitches()}
+              <EmailSettings />
             </div>
           </div>
           <div className='cn-switchboard-section-large'>
