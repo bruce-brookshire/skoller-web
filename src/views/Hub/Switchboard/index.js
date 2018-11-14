@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import actions from '../../../actions'
 import Loading from '../../../components/Loading'
 import Modal from '../../../components/Modal'
-import CustomNotificationForm from './CustomNotificationForm'
 import AutoUpdate from './AutoUpdate'
 import MinVerUpdate from './MinVerUpdate'
 import {inject, observer} from 'mobx-react'
@@ -20,7 +19,8 @@ import FourDoorOverrides from './FourDoorOverrides'
 import {browserHistory} from 'react-router'
 import EmailType from './EmailType'
 import Card from '../../../components/Card'
-import OrganizationsCard from './OrganizationsCard'
+import OrganizationsCard from '../../Cards/Organizations'
+import SendNotifications from '../../Cards/SendNotifications'
 
 @inject('rootStore') @observer
 class Switchboard extends React.Component {
@@ -49,9 +49,7 @@ class Switchboard extends React.Component {
 
   initializeComponent () {
     this.setState({loading: true})
-    actions.notifications.getNotificationLogs().then((logs) => {
-      this.setState({logs})
-    }).catch(() => false)
+    this.getLogs()
     actions.settings.getMinVersionInfo().then((minAppVersionData) => {
       this.setState({minAppVersionData})
     }).catch(() => false)
@@ -78,9 +76,10 @@ class Switchboard extends React.Component {
     navbarStore.title = ''
   }
 
-  send () {
-    actions.notifications.sendNeedsSyllabusNotification((r) => console.log(r))
-    this.initializeComponent()
+  getLogs () {
+    actions.notifications.getNotificationLogs().then((logs) => {
+      this.setState({logs})
+    }).catch(() => false)
   }
 
   getReminders () {
@@ -124,23 +123,6 @@ class Switchboard extends React.Component {
   */
   onSchoolSelect (school) {
     browserHistory.push({pathname: '/hub/schools/school/info', state: {school}})
-  }
-
-  /*
-  * Render the custom notification modal.
-  */
-  renderCustomNotificationModal () {
-    return (
-      <Modal
-        open={this.state.openCustomNotificationModal}
-        onClose={() => this.setState({openCustomNotificationModal: false})}
-      >
-        <CustomNotificationForm
-          onClose={() => this.setState({openCustomNotificationModal: false})}
-          onSubmit={this.initializeComponent.bind(this)}
-        />
-      </Modal>
-    )
   }
 
   /*
@@ -339,15 +321,6 @@ class Switchboard extends React.Component {
     )
   }
 
-  renderNotifications () {
-    return (
-      <Card
-        title='Notifications'
-        content={this.renderNotificationsContent()}
-      />
-    )
-  }
-
   renderFieldOfStudy () {
     return (
       <Card
@@ -528,7 +501,9 @@ class Switchboard extends React.Component {
       <div className='cn-switchboard-container'>
         <div className='horizontal-align-row center-text'>
           <div className='cn-switchboard-section-small'>
-            {this.renderNotifications()}
+            <SendNotifications
+              onSendNotification={this.getLogs.bind(this)}
+            />
             <div className="cn-switchboard-section-item margin-top">
               {this.state.loading ? <div className='center-text'><Loading /></div>
                 : this.renderAutoUpdateSettings()}
@@ -566,7 +541,6 @@ class Switchboard extends React.Component {
             </div>
           </div>
         </div>
-        {this.renderCustomNotificationModal()}
         {this.renderAutoUpdateModal()}
         {this.renderVersionUpdateModal()}
         {this.renderFOSUploadModal()}
