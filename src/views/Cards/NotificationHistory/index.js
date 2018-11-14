@@ -1,7 +1,8 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import Grid from '../../../components/Grid'
 import {convertUTCDatetimeToDateTimeString} from '../../../utilities/time'
+import Card from '../../../components/Card'
+import PropTypes from 'prop-types'
 
 const headers = [
   {
@@ -45,7 +46,7 @@ class NotificationHistory extends React.Component {
     )
   }
 
-  render () {
+  renderContent () {
     return (
       <div className='cn-log-table'>
         <Grid
@@ -60,7 +61,17 @@ class NotificationHistory extends React.Component {
       </div>
     )
   }
+
+  render () {
+    return (
+      <Card
+        title='History'
+        content={this.renderContent()}
+      />
+    )
+  }
 }
+
 NotificationHistory.propTypes = {
   logs: PropTypes.array.isRequired
 }

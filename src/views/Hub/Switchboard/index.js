@@ -4,7 +4,6 @@ import actions from '../../../actions'
 import Loading from '../../../components/Loading'
 import Modal from '../../../components/Modal'
 import {inject, observer} from 'mobx-react'
-import NotificationHistory from './NotificationHistory'
 import AssignmentReminders from './AssignmentReminders'
 import AssignmentReminderForm from './AssignmentReminderForm'
 import SignupLinks from './SignupLinks'
@@ -21,6 +20,7 @@ import SchoolCSV from '../../Cards/SchoolCSV'
 import MinVersionSettings from '../../Cards/MinVersionSettings'
 import FourDoorStatus from '../../Cards/FourDoorStatus'
 import EmailSettings from '../../Cards/EmailSettings'
+import NotificationHistory from '../../Cards/NotificationHistory'
 
 @inject('rootStore') @observer
 class Switchboard extends React.Component {
@@ -112,17 +112,6 @@ class Switchboard extends React.Component {
 
   onSelectLink (item) {
     this.setState({currentLink: item, openLinkModal: true})
-  }
-
-  renderNotificationHistory () {
-    return (
-      <Card
-        title='History'
-        content={this.state.loading
-          ? <div className='center-text'><Loading /></div>
-          : <NotificationHistory logs={this.state.logs} />}
-      />
-    )
   }
 
   renderAssignmentRemindersContent () {
@@ -243,7 +232,7 @@ class Switchboard extends React.Component {
             </div>
           </div>
           <div className='cn-switchboard-section-large'>
-            {this.renderNotificationHistory()}
+            <NotificationHistory logs={this.state.logs} />
             <div className='margin-top'>
               {this.renderAssignmentReminders()}
             </div>
