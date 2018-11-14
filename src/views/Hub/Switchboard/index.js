@@ -3,14 +3,12 @@ import PropTypes from 'prop-types'
 import actions from '../../../actions'
 import Loading from '../../../components/Loading'
 import Modal from '../../../components/Modal'
-import AutoUpdate from './AutoUpdate'
 import MinVerUpdate from './MinVerUpdate'
 import {inject, observer} from 'mobx-react'
 import NotificationHistory from './NotificationHistory'
 import AssignmentReminders from './AssignmentReminders'
 import AssignmentReminderForm from './AssignmentReminderForm'
 import UploadHistory from '../../../components/UploadHistory'
-import CSVUploadInfo from './CSVUploadInfo'
 import SignupLinks from './SignupLinks'
 import SignupLinkForm from './SignupLinkForm'
 import LinkDetail from './LinkDetail'
@@ -21,6 +19,8 @@ import EmailType from './EmailType'
 import Card from '../../../components/Card'
 import OrganizationsCard from '../../Cards/Organizations'
 import SendNotifications from '../../Cards/SendNotifications'
+import AutoUpdateSettings from '../../Cards/AutoUpdateSettings'
+import FieldOfStudyCSV from '../../Cards/FieldOfStudyCSV'
 
 @inject('rootStore') @observer
 class Switchboard extends React.Component {
@@ -29,15 +29,10 @@ class Switchboard extends React.Component {
     this.state = {
       logs: [],
       loading: false,
-      openCustomNotificationModal: false,
-      openAutoUpdateModal: false,
       openVersionUpdateModal: false,
       autoUpdateData: [],
       minAppVersionData: [],
       reminders: [],
-      completedItemCount: 0,
-      erroredItem: [],
-      openCSVModal: false,
       links: [],
       currentLink: null,
       openLinkModal: false,
@@ -60,9 +55,6 @@ class Switchboard extends React.Component {
     })
     this.getOverrides()
     this.getEmailSwitches()
-    actions.settings.getAutoUpdateInfo().then((autoUpdateData) => {
-      this.setState({autoUpdateData, loading: false})
-    }).catch(() => false)
   }
 
   componentWillMount () {
@@ -96,8 +88,8 @@ class Switchboard extends React.Component {
 
   getEmailSwitches () {
     actions.emailTypes.getEmailTypes().then((emailTypes) => {
-      this.setState({emailTypes})
-    }).catch(() => false)
+      this.setState({loading: false, emailTypes})
+    }).catch(() => this.setState({loading: false}))
   }
 
   getCustomLinks () {
@@ -126,23 +118,6 @@ class Switchboard extends React.Component {
   }
 
   /*
-  * Render the auto update modal.
-  */
-  renderAutoUpdateModal () {
-    return (
-      <Modal
-        open={this.state.openAutoUpdateModal}
-        onClose={() => this.setState({openAutoUpdateModal: false})}
-      >
-        <AutoUpdate
-          data={this.state.autoUpdateData}
-          onSubmit={this.initializeComponent.bind(this)}
-        />
-      </Modal>
-    )
-  }
-
-  /*
   * Render the version update modal.
   */
   renderVersionUpdateModal () {
@@ -160,32 +135,8 @@ class Switchboard extends React.Component {
     )
   }
 
-  findAutoUpdateSetting (key) {
-    return this.state.autoUpdateData.settings.find(x => x.name === key).value
-  }
-
   findMinVerSetting (key) {
     return this.state.minAppVersionData.find(x => x.name === key).value
-  }
-
-  renderAutoUpdateSettingsContent () {
-    return (
-      <div>
-        <p>Enrollment is {this.findAutoUpdateSetting('auto_upd_enroll_thresh')} or more</p>
-        <p>{Math.round(this.findAutoUpdateSetting('auto_upd_response_thresh') * 100)}% or more responded to the update</p>
-        <p>{Math.round(this.findAutoUpdateSetting('auto_upd_approval_thresh') * 100)}% or more responses were copies</p>
-        <a className="cn-blue" onClick={() => this.setState({openAutoUpdateModal: true})}>See details</a>
-      </div>
-    )
-  }
-
-  renderAutoUpdateSettings () {
-    return (
-      <Card
-        title='Auto Updates'
-        content={this.renderAutoUpdateSettingsContent()}
-      />
-    )
   }
 
   renderMinVersionSettingsTitle () {
@@ -232,23 +183,6 @@ class Switchboard extends React.Component {
     this.setState({currentLink: item, openLinkModal: true})
   }
 
-  handleCSVErrors (items, mapErrors) {
-    const erroredItem = items.filter(f => {
-      let error = f.error || f.errors
-      return error
-    }).map((item, index) => { return mapErrors(item, index) })
-    console.log(erroredItem)
-    const completedItemCount = items.length - erroredItem.length
-    this.setState({ erroredItem, completedItemCount, openCSVModal: true })
-  }
-
-  mapFOSErrors (item, index) {
-    if (item.errors) {
-      item.name = item.field
-    }
-    return item
-  }
-
   /*
   * On upload class fos, show results of upload.
   *
@@ -269,73 +203,6 @@ class Switchboard extends React.Component {
     actions.schools.uploadSchoolCsv(file).then((school) => {
       this.handleCSVErrors(school, (item, index) => { return item })
     })
-  }
-
-  /*
-  * Toggle fos modal.
-  */
-  toggleCSVModal () {
-    this.setState({openCSVModal: !this.state.openCSVModal})
-  }
-
-  /*
-  * Render the fos upload modal
-  */
-  renderFOSUploadModal () {
-    const {openCSVModal, erroredItem, completedItemCount} = this.state
-    return (
-      <Modal
-        open={openCSVModal}
-        onClose={this.toggleCSVModal.bind(this)}
-      >
-        <div>
-          <CSVUploadInfo
-            erroredItem={erroredItem}
-            completedItemCount={completedItemCount}
-          />
-          <div className='row'>
-            <button
-              className='button-invert full-width margin-top margin-bottom'
-              onClick={this.toggleCSVModal.bind(this)}
-            > Close </button>
-          </div>
-        </div>
-      </Modal>
-    )
-  }
-
-  renderNotificationsContent () {
-    return (
-      <div>
-        <div className="cn-switchboard-section-item">
-          <button className='button' onClick={() => this.send()}>
-            Send &apos;Needs Syllabus&apos; Notification
-          </button>
-        </div>
-        <div className="cn-switchboard-section-item">
-          <button className='button margin-top' onClick={() => this.setState({openCustomNotificationModal: true}) }>
-            Send Custom Notification
-          </button>
-        </div>
-      </div>
-    )
-  }
-
-  renderFieldOfStudy () {
-    return (
-      <Card
-        title='Import fields of study CSV'
-        content={
-          <UploadHistory
-            allow='text/csv'
-            disabled={false}
-            files={[]}
-            onUpload={(file) => { this.onUploadFOS(file) }}
-            title='Drop CSV'
-          />
-        }
-      />
-    )
   }
 
   renderNotificationHistory () {
@@ -490,7 +357,7 @@ class Switchboard extends React.Component {
     return (
       <Card
         title='Auto-Messaging'
-        content={this.renderEmailSwitchItems()}
+        content={<div>{this.renderEmailSwitchItems()}</div>}
       />
     )
   }
@@ -505,11 +372,10 @@ class Switchboard extends React.Component {
               onSendNotification={this.getLogs.bind(this)}
             />
             <div className="cn-switchboard-section-item margin-top">
-              {this.state.loading ? <div className='center-text'><Loading /></div>
-                : this.renderAutoUpdateSettings()}
+              <AutoUpdateSettings />
             </div>
             <div className='cn-switchboard-section-item margin-top'>
-              {this.renderFieldOfStudy()}
+              <FieldOfStudyCSV />
             </div>
             <div className='cn-switchboard-section-item margin-top'>
               {this.renderSchoolUpload()}
@@ -541,9 +407,7 @@ class Switchboard extends React.Component {
             </div>
           </div>
         </div>
-        {this.renderAutoUpdateModal()}
         {this.renderVersionUpdateModal()}
-        {this.renderFOSUploadModal()}
         {currentLink && this.renderLinkModal()}
       </div>
     )

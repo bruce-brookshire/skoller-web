@@ -37,7 +37,7 @@ const headers = [
   }
 ]
 
-class AutoUpdate extends React.Component {
+class AutoUpdateDashboard extends React.Component {
   constructor (props) {
     super(props)
     this.state = this.initializeState()
@@ -242,7 +242,7 @@ class AutoUpdate extends React.Component {
   }
 }
 
-AutoUpdate.propTypes = {
+AutoUpdateDashboard.propTypes = {
   data: PropTypes.object,
   formErrors: PropTypes.object,
   updateProperty: PropTypes.func,
@@ -250,4 +250,4 @@ AutoUpdate.propTypes = {
   validateForm: PropTypes.func
 }
 
-export default ValidateForm(Form(AutoUpdate, 'form'))
+export default ValidateForm(Form(AutoUpdateDashboard, 'form'))
