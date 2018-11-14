@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import actions from '../../../actions'
 import Loading from '../../../components/Loading'
 import Modal from '../../../components/Modal'
-import MinVerUpdate from './MinVerUpdate'
 import {inject, observer} from 'mobx-react'
 import NotificationHistory from './NotificationHistory'
 import AssignmentReminders from './AssignmentReminders'
@@ -21,6 +20,7 @@ import SendNotifications from '../../Cards/SendNotifications'
 import AutoUpdateSettings from '../../Cards/AutoUpdateSettings'
 import FieldOfStudyCSV from '../../Cards/FieldOfStudyCSV'
 import SchoolCSV from '../../Cards/SchoolCSV'
+import MinVersionSettings from '../../Cards/MinVersionSettings'
 
 @inject('rootStore') @observer
 class Switchboard extends React.Component {
@@ -45,9 +45,6 @@ class Switchboard extends React.Component {
   initializeComponent () {
     this.setState({loading: true})
     this.getLogs()
-    actions.settings.getMinVersionInfo().then((minAppVersionData) => {
-      this.setState({minAppVersionData})
-    }).catch(() => false)
     this.getReminders()
     this.getCustomLinks()
     actions.fourdoor.getFourDoor().then((fourDoor) => {
@@ -115,55 +112,6 @@ class Switchboard extends React.Component {
   */
   onSchoolSelect (school) {
     browserHistory.push({pathname: '/hub/schools/school/info', state: {school}})
-  }
-
-  /*
-  * Render the version update modal.
-  */
-  renderVersionUpdateModal () {
-    return (
-      <Modal
-        open={this.state.openVersionUpdateModal}
-        onClose={() => this.setState({openVersionUpdateModal: false})}
-      >
-        <MinVerUpdate
-          data={this.state.minAppVersionData}
-          onSubmit={this.initializeComponent.bind(this)}
-          onClose={() => this.setState({openVersionUpdateModal: false})}
-        />
-      </Modal>
-    )
-  }
-
-  findMinVerSetting (key) {
-    return this.state.minAppVersionData.find(x => x.name === key).value
-  }
-
-  renderMinVersionSettingsTitle () {
-    return (
-      <div className='cn-icon-flex'>
-        Minimum App Version
-        <i className='fa fa-pencil cn-blue cursor margin-left' onClick={() => this.setState({openVersionUpdateModal: true})} />
-      </div>
-    )
-  }
-
-  renderMinVersionSettingsContent () {
-    return (
-      <div>
-        <p>iOS Version: {this.findMinVerSetting('min_ios_version')}</p>
-        <p>Android Version: {this.findMinVerSetting('min_android_version')}</p>
-      </div>
-    )
-  }
-
-  renderMinVersionSettings () {
-    return (
-      <Card
-        title={this.renderMinVersionSettingsTitle()}
-        content={this.renderMinVersionSettingsContent()}
-      />
-    )
   }
 
   /*
@@ -341,8 +289,7 @@ class Switchboard extends React.Component {
               <SchoolCSV />
             </div>
             <div className="cn-switchboard-section-item margin-top">
-              {this.state.loading ? <div className='center-text'><Loading /></div>
-                : this.renderMinVersionSettings()}
+              <MinVersionSettings />
             </div>
             <div className="cn-switchboard-section-item margin-top">
               {this.renderFourDoor()}
@@ -367,7 +314,6 @@ class Switchboard extends React.Component {
             </div>
           </div>
         </div>
-        {this.renderVersionUpdateModal()}
         {currentLink && this.renderLinkModal()}
       </div>
     )

@@ -13,7 +13,7 @@ const requiredFields = {
   }
 }
 
-class AutoUpdate extends React.Component {
+class MinVerUpdateDashboard extends React.Component {
   constructor (props) {
     super(props)
     this.state = this.initializeState()
@@ -64,7 +64,6 @@ class AutoUpdate extends React.Component {
 
       actions.settings.updateMinVer(data).then(() => {
         this.props.onSubmit()
-        this.props.onClose()
       }).catch(() => false)
     }
   }
@@ -119,13 +118,12 @@ class AutoUpdate extends React.Component {
   }
 }
 
-AutoUpdate.propTypes = {
+MinVerUpdateDashboard.propTypes = {
   data: PropTypes.array,
   formErrors: PropTypes.object,
   updateProperty: PropTypes.func,
   onSubmit: PropTypes.func,
-  onClose: PropTypes.func,
   validateForm: PropTypes.func
 }
 
-export default ValidateForm(Form(AutoUpdate, 'form'))
+export default ValidateForm(Form(MinVerUpdateDashboard, 'form'))
