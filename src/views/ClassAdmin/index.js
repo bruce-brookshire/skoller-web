@@ -413,21 +413,6 @@ class ClassAdmin extends React.Component {
     )
   }
 
-  renderProfessor () {
-    const {cl} = this.state
-    return (
-      <div className='class-card'>
-        <Professor
-          cl={cl}
-          canEdit={true}
-          onSubmit={() => this.updateClass()}
-          hasIssues={cl.change_requests.findIndex((item) => item.change_type.id === 300 && !item.is_completed) > -1}
-          onSelectIssue={this.toggleStudentRequestInfo.bind(this)}
-        />
-      </div>
-    )
-  }
-
   renderStudents () {
     const {cl} = this.state
     return (
@@ -614,7 +599,15 @@ class ClassAdmin extends React.Component {
               onSelectIssue={this.toggleStudentRequestInfo.bind(this)}
             />
           </div>
-          {this.renderProfessor()}
+          <div className='class-card'>
+            <Professor
+              cl={cl}
+              canEdit={true}
+              onSubmit={() => this.updateClass()}
+              hasIssues={cl.change_requests.findIndex((item) => item.change_type.id === 300 && !item.is_completed) > -1}
+              onSelectIssue={this.toggleStudentRequestInfo.bind(this)}
+            />
+          </div>
           {this.renderWeights()}
           {this.renderAssignments()}
           {this.renderChat()}

@@ -5,6 +5,7 @@ import SearchProfessor from './SearchProfessor'
 import actions from '../../../../actions'
 import ProfessorModal from './ProfessorModal'
 import Modal from '../../../../components/Modal'
+import Card from '../../../../components/Card'
 
 class Professor extends React.Component {
   constructor (props) {
@@ -163,25 +164,40 @@ class Professor extends React.Component {
     )
   }
 
-  render () {
-    const {canEdit, cl, hasIssues} = this.props
+  renderContent () {
     const {isEditable} = this.state
 
     return (
-      <div id='class-editor-professor'>
-        <div id='class-editor-professor-content'>
-          <div id='professor-title'>
-            Professor
-            <div>
-              {canEdit && <i className='fa fa-pencil cn-blue cursor' onClick={() => !cl.professor ? this.setState({isEditable: true}) : this.toggleProfessorModal()} />}
-              {canEdit && cl.professor && <i className='fa fa-trash cn-red cursor margin-left' onClick={() => this.removeProfessorFromClass()} />}
-              {hasIssues && <i className='fa fa-warning cn-red cursor margin-left' onClick={() => this.props.onSelectIssue()} />}
-            </div>
-          </div>
-          {!isEditable && this.renderProfessorInfo()}
-          {isEditable && this.renderProfessorControls()}
-          {isEditable && this.renderOptions()}
+      <div id='class-editor-professor-content'>
+        {!isEditable && this.renderProfessorInfo()}
+        {isEditable && this.renderProfessorControls()}
+        {isEditable && this.renderOptions()}
+      </div>
+    )
+  }
+
+  renderTitle () {
+    const {canEdit, cl, hasIssues} = this.props
+
+    return (
+      <div className='cn-icon-flex'>
+        Professor
+        <div>
+          {canEdit && <i className='fa fa-pencil cn-blue cursor' onClick={() => !cl.professor ? this.setState({isEditable: true}) : this.toggleProfessorModal()} />}
+          {canEdit && cl.professor && <i className='fa fa-trash cn-red cursor margin-left' onClick={() => this.removeProfessorFromClass()} />}
+          {hasIssues && <i className='fa fa-warning cn-red cursor margin-left' onClick={() => this.props.onSelectIssue()} />}
         </div>
+      </div>
+    )
+  }
+
+  render () {
+    return (
+      <div id='class-editor-professor'>
+        <Card
+          title={this.renderTitle()}
+          content={this.renderContent()}
+        />
         {this.renderProfessorModal()}
       </div>
     )

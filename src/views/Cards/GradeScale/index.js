@@ -172,7 +172,7 @@ class GradeScale extends React.Component {
   renderContent () {
     const {isEditable} = this.state
     return (
-      <div>
+      <div id='class-editor-grade-scale-content'>
         {this.renderScale()}
         {isEditable && this.renderForm()}
         {isEditable && this.renderSubmitButton()}

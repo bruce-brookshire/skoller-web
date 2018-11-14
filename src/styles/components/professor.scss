@@ -3,14 +3,6 @@
   min-width: 300px;
 
   #class-editor-professor-content {
-    @include shadow-box-content;
-
-    #professor-title {
-      @include shadow-box-title;
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-    }
 
     .professor-detail-row {
       @include shadow-box-row;

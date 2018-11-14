@@ -3,15 +3,6 @@
   min-width: 200px;
 
   #class-editor-grade-scale-content {
-    @include shadow-box-content;
-
-    .grade-scale-title {
-      @include shadow-box-title;
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-    }
-
     #grade-scale-form {
       display: flex;
       flex-direction: row;
