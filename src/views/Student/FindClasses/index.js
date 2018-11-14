@@ -6,12 +6,12 @@ import {InputField} from '../../../components/Form'
 import SearchSchool from '../../components/SearchSchool'
 import SearchClass from './SearchClass'
 import SearchSemester from './SearchSemester'
-import SearchProfessor from '../../components/ClassEditor/Professor/SearchProfessor'
+import SearchProfessor from '../../components/SearchProfessor'
 import CreateSchoolModal from './CreateSchoolModal'
 import Modal from '../../../components/Modal'
 import MeetingTimes from '../../components/ClassEditor/MeetingTimes'
 import moment from 'moment-timezone'
-import ProfessorModal from '../../components/ClassEditor/Professor/ProfessorModal'
+import ProfessorForm from '../../components/ProfessorForm'
 import { browserHistory } from 'react-router'
 import ClassCard from '../../Cards/ClassCard'
 import {inject, observer} from 'mobx-react'
@@ -372,7 +372,7 @@ class FindClasses extends React.Component {
         open={this.state.openProfessorModal}
         onClose={this.toggleProfessorModal.bind(this)}
       >
-        <ProfessorModal
+        <ProfessorForm
           schoolId={school.id}
           isUniversity={school.is_university}
           onClose={this.toggleProfessorModal.bind(this)}

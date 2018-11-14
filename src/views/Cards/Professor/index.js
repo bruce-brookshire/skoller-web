@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
-import SearchProfessor from './SearchProfessor'
-import actions from '../../../../actions'
-import ProfessorModal from './ProfessorModal'
-import Modal from '../../../../components/Modal'
-import Card from '../../../../components/Card'
+import SearchProfessor from '../../components/SearchProfessor'
+import actions from '../../../actions'
+import ProfessorForm from '../../components/ProfessorForm'
+import Modal from '../../../components/Modal'
+import Card from '../../../components/Card'
 
 class Professor extends React.Component {
   constructor (props) {
@@ -153,7 +153,7 @@ class Professor extends React.Component {
         open={this.state.openModal}
         onClose={this.toggleProfessorModal.bind(this)}
       >
-        <ProfessorModal
+        <ProfessorForm
           schoolId={cl.school.id}
           isUniversity={cl.school.is_university}
           onClose={this.toggleProfessorModal.bind(this)}

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import AutoComplete from '../../../../components/AutoComplete'
-import actions from '../../../../actions'
+import AutoComplete from '../../../components/AutoComplete'
+import actions from '../../../actions'
 
 class SearchProfessor extends React.Component {
   constructor (props) {

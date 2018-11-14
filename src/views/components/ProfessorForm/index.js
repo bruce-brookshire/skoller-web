@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
-import {InputField} from '../../../../components/Form'
-import actions from '../../../../actions'
-import {maskPhoneNumber} from '../../../../utilities/mask'
+import {InputField} from '../../../components/Form'
+import actions from '../../../actions'
+import {maskPhoneNumber} from '../../../utilities/mask'
 
 const requiredFields = {
   'name_first': {
@@ -17,7 +17,7 @@ const requiredFields = {
   }
 }
 
-class ProfessorModal extends React.Component {
+class ProfessorForm extends React.Component {
   constructor (props) {
     super(props)
     this.state = this.initializeState()
@@ -165,7 +165,7 @@ class ProfessorModal extends React.Component {
   }
 }
 
-ProfessorModal.propTypes = {
+ProfessorForm.propTypes = {
   updateProperty: PropTypes.func,
   validateForm: PropTypes.func,
   formErrors: PropTypes.object,
@@ -176,4 +176,4 @@ ProfessorModal.propTypes = {
   professor: PropTypes.object
 }
 
-export default ValidateForm(Form(ProfessorModal, 'form'))
+export default ValidateForm(Form(ProfessorForm, 'form'))
