@@ -8,7 +8,6 @@ import {inject, observer} from 'mobx-react'
 import NotificationHistory from './NotificationHistory'
 import AssignmentReminders from './AssignmentReminders'
 import AssignmentReminderForm from './AssignmentReminderForm'
-import UploadHistory from '../../../components/UploadHistory'
 import SignupLinks from './SignupLinks'
 import SignupLinkForm from './SignupLinkForm'
 import LinkDetail from './LinkDetail'
@@ -21,6 +20,7 @@ import OrganizationsCard from '../../Cards/Organizations'
 import SendNotifications from '../../Cards/SendNotifications'
 import AutoUpdateSettings from '../../Cards/AutoUpdateSettings'
 import FieldOfStudyCSV from '../../Cards/FieldOfStudyCSV'
+import SchoolCSV from '../../Cards/SchoolCSV'
 
 @inject('rootStore') @observer
 class Switchboard extends React.Component {
@@ -183,28 +183,6 @@ class Switchboard extends React.Component {
     this.setState({currentLink: item, openLinkModal: true})
   }
 
-  /*
-  * On upload class fos, show results of upload.
-  *
-  * @param [File] file. File to be uploaded.
-  */
-  onUploadFOS (file) {
-    actions.fieldsofstudy.uploadFOSCsv(file).then((fos) => {
-      this.handleCSVErrors(fos, this.mapFOSErrors)
-    })
-  }
-
-  /*
-  * On upload school, show results of upload.
-  *
-  * @param [File] file. File to be uploaded.
-  */
-  onUploadSchools (file) {
-    actions.schools.uploadSchoolCsv(file).then((school) => {
-      this.handleCSVErrors(school, (item, index) => { return item })
-    })
-  }
-
   renderNotificationHistory () {
     return (
       <Card
@@ -320,24 +298,6 @@ class Switchboard extends React.Component {
     )
   }
 
-  renderSchoolUpload () {
-    return (
-      <Card
-        title='Import schools'
-        content={
-          <UploadHistory
-            allow='text/csv'
-            disabled={false}
-            files={[]}
-            info='Upload school csv.'
-            onUpload={(file) => { this.onUploadSchools(file) }}
-            title='Schools'
-          />
-        }
-      />
-    )
-  }
-
   renderEmailSwitchItems () {
     const {emailTypes} = this.state
 
@@ -378,7 +338,7 @@ class Switchboard extends React.Component {
               <FieldOfStudyCSV />
             </div>
             <div className='cn-switchboard-section-item margin-top'>
-              {this.renderSchoolUpload()}
+              <SchoolCSV />
             </div>
             <div className="cn-switchboard-section-item margin-top">
               {this.state.loading ? <div className='center-text'><Loading /></div>

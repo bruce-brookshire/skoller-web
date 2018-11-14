@@ -5,7 +5,7 @@ import actions from '../../../actions'
 import Modal from '../../../components/Modal'
 import CSVUploadResults from '../../../components/CSVUploadResults'
 
-class FieldOfStudyCSV extends React.Component {
+class SchoolCSV extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -19,24 +19,21 @@ class FieldOfStudyCSV extends React.Component {
     const erroredItem = items.filter(f => {
       let error = f.error || f.errors
       return error
-    }).map((item) => {
-      if (item.errors) {
-        item.name = item.field
-      }
-      return item
     })
+    console.log(erroredItem)
     const completedItemCount = items.length - erroredItem.length
     this.setState({ erroredItem, completedItemCount, openCSVModal: true })
   }
 
   /*
-  * On upload class fos, show results of upload.
+  * On upload school, show results of upload.
   *
   * @param [File] file. File to be uploaded.
   */
-  onUploadFOS (file) {
-    actions.fieldsofstudy.uploadFOSCsv(file).then((fos) => {
-      this.handleCSVErrors(fos, this.mapFOSErrors)
+  onUploadSchools (file) {
+    actions.schools.uploadSchoolCsv(file).then((school) => {
+      console.log("here")
+      this.handleCSVErrors(school)
     })
   }
 
@@ -50,7 +47,7 @@ class FieldOfStudyCSV extends React.Component {
   /*
   * Render the fos upload modal
   */
-  renderFOSUploadModal () {
+  renderCSVUploadModal () {
     const {openCSVModal, erroredItem, completedItemCount} = this.state
     return (
       <Modal
@@ -77,21 +74,21 @@ class FieldOfStudyCSV extends React.Component {
     return (
       <div>
         <Card
-          title='Import fields of study CSV'
+          title='Import schools CSV'
           content={
             <UploadHistory
               allow='text/csv'
               disabled={false}
               files={[]}
-              onUpload={(file) => { this.onUploadFOS(file) }}
+              onUpload={(file) => { this.onUploadSchools(file) }}
               title='Drop CSV'
             />
           }
         />
-        {this.renderFOSUploadModal()}
+        {this.renderCSVUploadModal()}
       </div>
     )
   }
 }
 
-export default FieldOfStudyCSV
+export default SchoolCSV

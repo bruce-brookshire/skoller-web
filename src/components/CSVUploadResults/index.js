@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-class CSVUploadInfo extends React.Component {
-  renderErroredFOS () {
+class CSVUploadResults extends React.Component {
+  renderErroredItems () {
     const {erroredItem} = this.props
     if (erroredItem.length > 0) {
       return (
@@ -46,15 +46,15 @@ class CSVUploadInfo extends React.Component {
         <h5>CSV Upload Results</h5>
         <p className='cn-green'>Completed: {completedItemCount}</p>
         <p className='cn-red'>Errored: {erroredItem.length}</p>
-        {this.renderErroredFOS()}
+        {this.renderErroredItems()}
       </div>
     )
   }
 }
 
-CSVUploadInfo.propTypes = {
+CSVUploadResults.propTypes = {
   completedItemCount: PropTypes.number,
   erroredItem: PropTypes.array
 }
 
-export default CSVUploadInfo
+export default CSVUploadResults
