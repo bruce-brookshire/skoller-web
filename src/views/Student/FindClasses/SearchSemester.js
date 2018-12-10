@@ -77,9 +77,12 @@ class SearchSemester extends React.Component {
 
   emptyMessage (searchText) {
     const {isUniversity} = this.props
+    // <div className='cn-autocomplete-result'>
+    //   <a onClick={() => this.onSemesterCreate(searchText())}>Create a new {isUniversity ? '' : 'year or '}semester called {searchText()}</a>
+    // </div>
     return (
       <div className='cn-autocomplete-result'>
-        <a onClick={() => this.onSemesterCreate(searchText())}>Create a new {isUniversity ? '' : 'year or '}semester called {searchText()}</a>
+        Not found. Please search again.
       </div>
     )
   }

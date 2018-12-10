@@ -29,7 +29,9 @@ class FindClasses extends React.Component {
       let {searchStore} = this.props.rootStore
       searchStore.school = school || searchStore.school
       searchStore.schoolName = school ? school.name : searchStore.schoolName
-      this.setState({loading: false})
+      let mainSemesters = school.periods.filter(function (period) { return period.is_main_period })
+      let foundSemester = mainSemesters.length > 0 ? mainSemesters[0] : school.periods.length > 0 ? school.periods[0] : null
+      this.setState({loading: false, semester: foundSemester})
     }).catch(() => this.setState({loading: false}))
   }
 
@@ -549,7 +551,8 @@ class FindClasses extends React.Component {
         {this.renderSchool()}
         {school ? this.renderClass() : this.renderDisabledField()}
         {(cl || (newCl && clName)) ? this.renderSemester() : this.renderDisabledField()}
-        {(!newCl && cl) || (semester) ? this.renderClassDetail() : this.renderDisabledField()}
+        {/* {(!newCl && cl) || (semester) ? this.renderClassDetail() : this.renderDisabledField()} */}
+        {(cl || (newCl && clName)) ? this.renderClassDetail() : this.renderDisabledField()}
         {(!school || (school && school.is_university)) && ((!newCl && cl) || (section && subject && code) ? this.renderMeeting() : this.renderDisabledField())}
         {(!newCl && cl) || ((time && days) || days === 'Online') || (school && !school.is_university && section) ? this.renderProfessor() : this.renderDisabledField()}
         {((!newCl && cl) || (school && clName && semester && (!school.is_university || (section && subject && code)) && (!school.is_university || ((time && days) || days === 'Online')) && (!newCl || professor))) && this.renderSubmit()}
