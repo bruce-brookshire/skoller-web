@@ -31,10 +31,10 @@ class OrganizationForm extends React.Component {
   }
 
   initializeForm () {
-    const {organization: {name, custom_signup_link_id: linkId}} = this.props
+    const {organization} = this.props
     return {
-      name: name || '',
-      custom_signup_link_id: linkId || null
+      name: organization ? organization.name : '',
+      custom_signup_link_id: organization ?  organization.custom_signup_link_id : null
     }
   }
 
@@ -58,7 +58,7 @@ class OrganizationForm extends React.Component {
     event.preventDefault()
 
     if (this.props.validateForm(this.state.form, requiredFields)) {
-      !this.props.organization.id ? this.onCreateOrganization(form) : this.onUpdateOrganization(form)
+      !(this.props.organization && this.props.organization.id) ? this.onCreateOrganization(form) : this.onUpdateOrganization(form)
     }
   }
 
