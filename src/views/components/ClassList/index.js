@@ -79,7 +79,7 @@ class ClassList extends React.Component {
   mapStatus (status) {
     status = status.name.toLowerCase()
     if (status === 'new class' || status === 'needs setup') {
-      return <span className='cn-red'> Upload Syllabus </span>
+      return <span className='cn-red'> Set Up Class</span>
     } else if (status === 'syllabus submitted') {
       return <span className='cn-grey'>In Review</span>
     } else if (status === 'class setup' || status === 'class issue') {

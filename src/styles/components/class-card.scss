@@ -12,6 +12,13 @@
       display: flex;
       justify-content: space-between;
       align-items: baseline;
+      border-bottom: 0px solid transparent;
+    }
+
+    .cn-class-subtitle {
+      @include shadow-box-title;
+      font-size: 14px;
+      font-weight: 600;
     }
 
     .cn-class-card-row {

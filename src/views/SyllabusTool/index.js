@@ -6,6 +6,7 @@ import actions from '../../actions'
 import Weights from '../components/ClassEditor/Weights'
 import Assignments from '../components/ClassEditor/Assignments'
 import {ProgressBar, ProgressStep} from '../../components/ProgressBar'
+import FileUpload from '../../components/FileUpload'
 import FileViewer from '../../components/FileViewer'
 import IssuesModal from '../components/ClassEditor/IssuesModal'
 import ProblemsModal from './ProblemsModal'
@@ -298,7 +299,7 @@ class SyllabusTool extends React.Component {
   */
   renderDocumentTabs () {
     return (
-      <FileTabs currentIndex={this.state.currentDocumentIndex}>
+      <FileTabs currentIndex={this.state.currentDocumentIndex} addFileClick={this.addFileClick.bind(this)}>
         {
           this.state.documents.map((document, index) => {
             return (
@@ -316,6 +317,9 @@ class SyllabusTool extends React.Component {
         }
       </FileTabs>
     )
+  }
+  addFileClick () {
+    this.setState({currentDocument: null, currentDocumentIndex: null})
   }
 
   /*
@@ -380,6 +384,35 @@ class SyllabusTool extends React.Component {
   }
 
   /*
+  * Renders the document viewer/uploader
+  */
+  renderDocumentViewer () {
+    if (this.state.currentDocument) {
+      return <div className='cn-section-content cn-section-solid-border'>
+        <FileViewer source={this.state.currentDocument} />
+      </div>
+    } else if (this.state.documents.length === 0) {
+      return <div className='cn-section-content'>
+        <FileUpload className={'cn-section-file-upload'}
+          allow={true}
+          disabled={false}
+          onUpload={() => {}}>
+          <span className="cn-blue">Drag-n-drop a file here if you would like to view the syllabus while setting up the class 👌</span>
+        </FileUpload>
+      </div>
+    } else {
+      return <div className='cn-section-content'>
+        <FileUpload className={'cn-section-file-upload'}
+          allow={true}
+          disabled={false}
+          onUpload={() => {}}>
+          <span className="cn-blue">Drag-n-drop an additional file 👌</span>
+        </FileUpload>
+      </div>
+    }
+  }
+
+  /*
   * Update the class in state.
   *
   * @param [Object]. The class to update with
@@ -412,9 +445,7 @@ class SyllabusTool extends React.Component {
             <div className='cn-section-header'>
               {this.renderHavingIssues()}
             </div>
-            <div className='cn-section-content'>
-              {this.state.currentDocument && <FileViewer source={this.state.currentDocument} /> }
-            </div>
+            {this.renderDocumentViewer()}
           </div>
         </div>
         {navbarStore.cl && !navbarStore.isDIY && this.renderIssuesModal()}

@@ -6,6 +6,7 @@ import UploadHistory from '../../../components/UploadHistory'
 import actions from '../../../actions'
 import Card from '../../../components/Card'
 import StudentRequestModal from './StudentRequestModal'
+import {browserHistory} from 'react-router'
 
 class UploadDocuments extends React.Component {
   constructor (props) {
@@ -247,7 +248,7 @@ class UploadDocuments extends React.Component {
     const {viewDocs} = this.state
     if (this.needsSyllabus()) {
       return (
-        <div className='cn-red'>Syllabus Needed</div>
+        <div className='cn-blue'><i className='fa fa-users margin-right' />Set up this class</div>
       )
     } else if (viewDocs) {
       return (
@@ -268,6 +269,12 @@ class UploadDocuments extends React.Component {
     const {unsavedSyllabusDocs, unsavedAdditionalDocs} = this.state
     return (
       <div className='margin-bottom'>
+        <div className='cn-upload-doc-subtitle center-text margin-bottom'>
+          Submit the syllabus
+        </div>
+        <div className='cn-upload-doc-descript cn-grey center-text margin-bottom'>
+          Skoller's team will set up this class within 24 hours of submitting
+        </div>
         {this.renderDuplicateFileMessage()}
         <div className='margin-bottom'>
           <UploadHistory
@@ -296,16 +303,52 @@ class UploadDocuments extends React.Component {
     )
   }
 
+  onInstantStart () {
+    const {cl} = this.props
+    browserHistory.push({
+      pathname: `/class/${cl.id}/syllabus_tool/`,
+      state: {
+        isDIY: true
+      }
+    })
+  }
+
   renderNeedsSyllabus () {
     const {unsavedSyllabusDocs, uploading} = this.state
     let hasUnsavedSyllabi = unsavedSyllabusDocs && unsavedSyllabusDocs.length > 0
-    return (
-      <div>
-        {this.renderDocView()}
-        <button className={`button full-width margin-top cn-shadow-box ${hasUnsavedSyllabi && !uploading ? '' : 'disabled'}`}
-          disabled={!hasUnsavedSyllabi || uploading}
-          onClick={() => { this.uploadDocuments() }}>{uploading ? (<i className='fa fa-circle-o-notch fa-spin'></i>) : 'Submit'}
+    const {is_diy_enabled: diy, is_diy_preferred: diyPref} = this.props.cl.school
+    var firstCol = null
+    var divider = null
+    if (diy || diyPref) {
+      firstCol = <div className="cn-upload-doc-col">
+        <div className='cn-upload-doc-subtitle center-text'>Instant Setup</div>
+        <div className='cn-upload-doc-descript center-text margin-bottom'>Do it yourself without submitting the syllabus!</div>
+        <button className='button margin-top cn-shadow-box button-fixed align-center-self'
+          onClick={this.onInstantStart.bind(this)}>
+          Start
         </button>
+      </div>
+      divider = <div className="cn-upload-doc-divider">
+        <div className="cn-upload-doc-divider-line cn-grey-background">
+        </div>
+        <div className="cn-upload-doc-divider-text cn-grey">
+        OR
+        </div>
+        <div className="cn-upload-doc-divider-line cn-grey-background">
+        </div>
+      </div>
+    }
+    return (
+      <div className="cn-upload-doc-cols">
+        {firstCol}
+        {divider}
+        <div className="cn-upload-doc-col">
+          {this.renderDocView()}
+          <button className={`button button-fixed align-center-self margin-top cn-shadow-box ${hasUnsavedSyllabi && !uploading ? '' : 'disabled'}`}
+            disabled={!hasUnsavedSyllabi || uploading}
+            onClick={() => { this.uploadDocuments() }}>{uploading ? (<i className='fa fa-circle-o-notch fa-spin'></i>) : 'Submit'}
+          </button>
+        </div>
       </div>
     )
   }

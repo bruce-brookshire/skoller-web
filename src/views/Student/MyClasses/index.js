@@ -52,7 +52,7 @@ class MyClasses extends React.Component {
     if (num > 0) {
       return (
         <div className='needs-syllabus-info margin-bottom center-text cn-red'>
-          {`Skoller needs a syllabus for ${num} of your classes.`}
+          {`${num} class${num > 1 ? 'es' : ''} still need${num > 1 ? '' : 's'} to be set up.`}
         </div>
       )
     } else {

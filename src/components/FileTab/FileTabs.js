@@ -13,10 +13,21 @@ class FileTabs extends React.Component {
     })
   }
 
+  renderAddButton () {
+    const {children} = this.props
+    if (children.length > 0) {
+      return <button className='button' onClick={this.props.addFileClick}>+ Add file</button>
+    }
+    else {
+      return null
+    }
+  }
+
   render () {
     return (
       <div className='cn-file-tabs'>
         {this.getFileTabs()}
+        {this.renderAddButton()}
       </div>
     )
   }
@@ -24,7 +35,8 @@ class FileTabs extends React.Component {
 
 FileTabs.propTypes = {
   children: PropTypes.node,
-  currentIndex: PropTypes.number
+  currentIndex: PropTypes.number,
+  addFileClick: () => {}
 }
 
 export default FileTabs

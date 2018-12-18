@@ -86,7 +86,7 @@ class ClassDetail extends React.Component {
             {this.renderClassLink()}
           </div>
         </div>
-        {<UploadDocuments cl={cl} onUpload={this.getClass.bind(this)} />}
+        <UploadDocuments cl={cl} onUpload={this.getClass.bind(this)} />
       </div>
     )
   }

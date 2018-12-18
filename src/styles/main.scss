@@ -180,6 +180,11 @@ body {
   }
 }
 
+.button-fixed {
+  width: 100%;
+  max-width: 200px;
+}
+
 .full-width { width: 100%;}
 
 .space-between-vertical {
@@ -253,6 +258,10 @@ body {
   color: $cn-color-grey;
 }
 
+.cn-grey-background {
+  background-color: $cn-color-grey;
+}
+
 
 // Margins -----------------------------------
 .margin-bottom {
@@ -290,6 +299,14 @@ body {
 
 .align-center {
   align-items: center;
+}
+
+.justify-center-self {
+  justify-self: center;
+}
+
+.align-center-self {
+  align-self: center;
 }
 
 .center-text {

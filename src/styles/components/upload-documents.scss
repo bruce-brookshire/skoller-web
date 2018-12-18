@@ -17,3 +17,44 @@
     width: 100%;
   }
 }
+
+.cn-upload-doc-subtitle {
+  font-size: 30px;
+  font-weight: bold;
+}
+.cn-upload-doc-descript {
+  font-size: 14px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.cn-upload-doc-cols {
+  display: flex;
+  flex-direction: row;
+}
+.cn-upload-doc-col {
+  flex: 1;
+  display: flex; 
+  flex-direction: column;
+}
+.cn-upload-doc-divider {
+  flex: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: 20px;
+  margin-right: 20px;
+
+  .cn-upload-doc-divider-line{
+    flex: 1;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 3px;
+  }
+
+  .cn-upload-doc-divider-text{
+    flex: 0;
+    font-size: 30px;
+  }
+}

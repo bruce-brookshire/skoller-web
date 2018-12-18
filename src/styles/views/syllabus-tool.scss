@@ -88,10 +88,32 @@
 
       .cn-section-content {
         border-radius: 10px;
-        border: 2px solid #a9a9a9;
         display: flex;
         flex-direction: column;
         overflow: hidden;
+      }
+
+      .cn-section-solid-border {
+        border: 2px solid #a9a9a9;
+      }
+
+      .cn-section-file-upload {
+        height: 100%;
+        width: 100%;
+        border: 3px dashed $cn-color-blue;
+        padding: $unit-space;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        input {
+          display: none;
+        }
+
+        span {
+          font-size: 40px;
+          max-width: 500px;
+        }
       }
     }
   }
