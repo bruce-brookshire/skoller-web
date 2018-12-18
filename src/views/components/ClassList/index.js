@@ -42,9 +42,33 @@ class ClassList extends React.Component {
   * @return [Array]. Array of formatted row data.
   */
   getRows () {
-    return this.props.classes.map((item, index) =>
+    return this.props.classes.sort((a, b) => {
+      var aNum = this.getStatusNum(a.status.name.toLowerCase())
+      var bNum = this.getStatusNum(b.status.name.toLowerCase())
+      if (aNum > bNum) {
+        return -1
+      } else if (aNum < bNum) {
+        return 1
+      } else {
+        return 0
+      }
+    }).map((item, index) =>
       this.mapRow(item, index)
     )
+  }
+  getStatusNum (status) {
+    switch (status) {
+      case 'new class':
+      case 'needs setup':
+        return 100
+      case 'syllabus submitted':
+        return 50
+      case 'class setup':
+      case 'class issue':
+        return 25
+      default:
+        return 0
+    }
   }
 
   /*

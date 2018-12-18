@@ -73,7 +73,8 @@ class SyllabusTool extends React.Component {
       loadingClass: true,
       openIssuesModal: false,
       openProblemsModal: false,
-      stepCount: 3
+      stepCount: 3,
+      uploadingDoc: false
     }
   }
 
@@ -393,23 +394,48 @@ class SyllabusTool extends React.Component {
       </div>
     } else if (this.state.documents.length === 0) {
       return <div className='cn-section-content'>
-        <FileUpload className={'cn-section-file-upload'}
+        <FileUpload className={'cn-section-file-upload' + (this.state.uploadingDoc ? ' cn-upload-disabled' : '')}
           allow={true}
-          disabled={false}
-          onUpload={() => {}}>
-          <span className="cn-blue">Drag-n-drop a file here if you would like to view the syllabus while setting up the class 👌</span>
+          disabled={this.state.uploadingDoc}
+          onUpload={(file) => { this.uploadFile.bind(this)(file, true) }}>
+          <span className="cn-blue">
+            {
+              this.state.uploadingDoc
+                ? 'Uploading...'
+                : 'Drag-n-drop a file here if you would like to view the syllabus while setting up the class 👌'
+            }
+          </span>
         </FileUpload>
       </div>
     } else {
       return <div className='cn-section-content'>
-        <FileUpload className={'cn-section-file-upload'}
+        <FileUpload className={'cn-section-file-upload' + (this.state.uploadingDoc ? ' cn-upload-disabled' : '')}
           allow={true}
-          disabled={false}
-          onUpload={() => {}}>
-          <span className="cn-blue">Drag-n-drop an additional file 👌</span>
+          disabled={this.state.uploadingDoc}
+          onUpload={(file) => { this.uploadFile.bind(this)(file, false) }}>
+          <span className="cn-blue">
+            {
+              this.state.uploadingDoc
+                ? 'Uploading...'
+                : 'Drag-n-drop an additional file 👌'
+            }
+          </span>
         </FileUpload>
       </div>
     }
+  }
+
+  /*
+  * Upload the given file
+  */
+  uploadFile (file, isSyllabus) {
+    let {navbarStore} = this.props.rootStore
+    this.setState({uploadingDoc: true})
+    actions.documents.uploadClassDocument(navbarStore.cl, file, isSyllabus).then((document) => {
+      var newDocs = this.state.documents.slice(0)
+      newDocs.push(document)
+      this.setState({documents: newDocs, currentDocument: document.path, currentDocumentIndex: newDocs.length - 1, uploadingDoc: false})
+    }).catch(() => false)
   }
 
   /*
@@ -441,7 +467,9 @@ class SyllabusTool extends React.Component {
           </div>
 
           <div className='cn-section-container cn-file-panel'>
-            {this.renderDocumentTabs()}
+            <div className='cn-syllabus-tool-tabs'>
+              {this.renderDocumentTabs()}
+            </div>
             <div className='cn-section-header'>
               {this.renderHavingIssues()}
             </div>

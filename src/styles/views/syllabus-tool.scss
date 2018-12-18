@@ -8,6 +8,11 @@
     height: 100%;
   }
 
+  .cn-syllabus-tool-tabs {
+    padding-right: 90px;
+    padding-bottom: 5px;
+  }
+
   #cn-review-submit {
     display: flex;
     justify-content: center;
@@ -97,6 +102,13 @@
         border: 2px solid #a9a9a9;
       }
 
+      .cn-upload-disabled {
+        border: 3px dashed $cn-color-grey !important;
+        span {
+          color: $cn-color-grey !important;
+        }
+      }
+
       .cn-section-file-upload {
         height: 100%;
         width: 100%;
@@ -112,7 +124,7 @@
 
         span {
           font-size: 40px;
-          max-width: 500px;
+          max-width: 550px;
         }
       }
     }
