@@ -19,7 +19,7 @@ var _Environments = {
 function getEnvironment () {
   // Insert logic here to get the current platform (e.g. staging, production, etc)
   // var platform = getPlatform()
-  var platform = 'development'
+  var platform = 'staging'
 
   // ...now return the correct environment
   return _Environments[platform]
