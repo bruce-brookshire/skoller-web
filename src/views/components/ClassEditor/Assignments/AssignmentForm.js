@@ -19,7 +19,12 @@ const requiredFields = {
   }
 }
 
-const date = new Date()
+const switchDate = () => {
+  var today = new Date()
+  return new Date(today.getFullYear(), today.getMonth(), today.getDate() + 11)
+}
+
+const date = switchDate()
 
 const yearOpts = [
   {
