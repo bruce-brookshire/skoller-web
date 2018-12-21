@@ -108,6 +108,7 @@ class InputInfoField extends React.Component {
             max={input.max}
             min={input.min}
             pattern={input.pattern}
+            autoComplete={input.autoComplete}
           />
         </div>
         {error && showErrorMessage ? <FormMessage message={error} /> : null}

@@ -136,7 +136,9 @@ class SignUpForm extends React.Component {
                 containerClassName='margin-top'
                 error={formErrors.student && formErrors.student.name_first}
                 label='First name'
+                id='sign-up.student.name_first'
                 name='student.name_first'
+                autoComplete='given-name'
                 onChange={updateProperty}
                 placeholder='First name'
                 value={form.student.name_first}
@@ -147,7 +149,9 @@ class SignUpForm extends React.Component {
                 containerClassName='margin-top'
                 error={formErrors.student && formErrors.student.name_last}
                 label='Last name'
+                id='sign-up.student.name_last'
                 name='student.name_last'
+                autoComplete='family-name'
                 onChange={updateProperty}
                 placeholder='Last name'
                 value={form.student.name_last}
@@ -160,6 +164,8 @@ class SignUpForm extends React.Component {
                 containerClassName='margin-top'
                 error={formErrors.email}
                 label='Email'
+                id='signup.email'
+                autoComplete='email'
                 name='email'
                 onChange={(name, value) => {
                   updateProperty(name, value.trim())
@@ -173,7 +179,9 @@ class SignUpForm extends React.Component {
                 containerClassName='margin-top'
                 error={formErrors.password}
                 label='Password'
+                id='sign-up.password'
                 name='password'
+                autoComplete='new-password'
                 onChange={updateProperty}
                 placeholder='Password'
                 type='password'
@@ -185,7 +193,9 @@ class SignUpForm extends React.Component {
                 containerClassName='margin-top'
                 error={formErrors.student && formErrors.student.phone}
                 label='Phone'
+                id='sign-up.phone'
                 name='student.phone'
+                autoComplete='tel'
                 onChange={(name, value) => {
                   updateProperty(name, maskPhoneNumber(form.student.phone, value))
                 }}
