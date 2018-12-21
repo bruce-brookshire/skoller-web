@@ -1,6 +1,22 @@
 <!doctype html>
 <html>
   <head>
+    <!-- Firebase Set -->
+    <script src="https://www.gstatic.com/firebasejs/5.7.1/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyAjE1OsYlfd2vHbacGLOPwb6fiSixvih3g",
+        authDomain: "classnavapp-e8c9b.firebaseapp.com",
+        databaseURL: "https://classnavapp-e8c9b.firebaseio.com",
+        projectId: "classnavapp-e8c9b",
+        storageBucket: "classnavapp-e8c9b.appspot.com",
+        messagingSenderId: "596122259226"
+      };
+      firebase.initializeApp(config);
+    </script>
+
+    <!-- Meta Tags -->
     <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1">
     <script>
       // Dynamically set viewport maximum_scale to account for form zoom on iPhones
@@ -19,6 +35,8 @@
     <meta name="apple-itunes-app" content="app-id=1314782490">
     <meta name="description" content="Keep up with your classes, together. Reminders for every assignment. Chat with all your classmates. Private and student-powered." />
     <title>Skoller</title>
+
+    <!-- Stylesheets and Depdencies -->
     <link rel="stylesheet" href="./src/assets/styles/flexbox/flexboxgrid.min.css" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">

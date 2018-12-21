@@ -95,7 +95,7 @@ class SearchSemester extends React.Component {
         dataSource={this.getDataSource()}
         emptyMessage={this.emptyMessage.bind(this)}
         updateAutoCompleteResults={this.onUpdateAutoComplete.bind(this)}
-        placeholder={isUniversity ? 'e.g. Fall 2018' : 'e.g. 2018-19 or Fall 2019'}
+        placeholder={isUniversity ? 'e.g. Fall 2019' : 'e.g. 2019-20 or Fall 2020'}
         renderRow={this.renderRow.bind(this)}
         newRow={true}
       />
