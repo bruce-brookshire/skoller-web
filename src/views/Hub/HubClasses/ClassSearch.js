@@ -24,7 +24,7 @@ class ClassSearch extends React.Component {
 
     actions.hub.getStatuses().then((statuses) => {
       this.setState({statuses: statuses.statuses})
-      if (state && (state.needsHelp || state.needsChange || state.needsMaint || state.needsApproval)) this.intitializeParams()
+      if (state && (state.needsHelp || state.needsChange || state.needsMaint)) this.intitializeParams()
     }).catch(() => false)
   }
 
@@ -34,15 +34,11 @@ class ClassSearch extends React.Component {
     if (state) {
       if (state.needsChange) {
         searchStore.searchField = 'class_status'
-        searchStore.searchValue = 800
+        searchStore.searchValue = 1500
         this.onSearch()
       } else if (state.needsMaint) {
         searchStore.searchField = 'class_maint'
         searchStore.searchValue = true
-        this.onSearch()
-      } else if (state.needsApproval) {
-        searchStore.searchField = 'class_status'
-        searchStore.searchValue = 100
         this.onSearch()
       }
     }

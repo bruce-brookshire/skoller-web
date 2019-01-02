@@ -131,9 +131,7 @@ class HubClasses extends React.Component {
     if (status) {
       status = status.toLowerCase()
     }
-    if (status === 'new class') {
-      return <span className='cn-red'>NEEDS APPROVAL</span>
-    } else if (status === 'needs setup') {
+    if (status === 'needs setup') {
       return <span className='cn-red'>UPLOAD SYLLABUS</span>
     } else if (status === 'syllabus submitted') {
       return <span className = 'cn-grey'>RECEIVED</span>
@@ -166,15 +164,13 @@ class HubClasses extends React.Component {
       return 'Completed classes with a change request'
     } else if (state.needsMaint) {
       return 'Classes currently under maintenance'
-    } else if (state.needsApproval) {
-      return 'Classes that need to be approved'
     }
   }
 
   renderHeader () {
     const {state} = this.props.location
     // If the class is in any of these states, don't show the search bar
-    const boole = state && (state.needsChange || state.needsMaint || state.needsApproval)
+    const boole = state && (state.needsChange || state.needsMaint)
     return boole ? (
       <div className='margin-bottom'>
         <h2 className='center-text' style={{marginBottom: 0}}>{this.getHeaderText(state)}</h2>
