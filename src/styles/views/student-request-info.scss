@@ -1,6 +1,15 @@
 .cn-student-request-title {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+
+  .cn-student-request-subtitle {
+    flex: 1;
+    justify-self: flex-start;
+  }
+
+  .cn-student-request-button {
+    justify-self: flex-end;
+  }
 }
 
 .cn-student-request-content {

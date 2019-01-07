@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Card from '../../../components/Card'
 
 class StudentRequestInfo extends React.Component {
   componentWillMount () {
@@ -22,7 +23,7 @@ class StudentRequestInfo extends React.Component {
   renderTitle () {
     return (
       <div className='cn-student-request-title margin-bottom'>
-        <div className='center-text'>
+        <div className='cn-student-request-subtitle center-text'>
           {this.state.studentRequests[0].user && this.state.studentRequests[0].user.email ? (
             <h5 className='margin-zero'>{this.state.studentRequests[0].user.email}</h5>
           ) : null}
@@ -34,7 +35,9 @@ class StudentRequestInfo extends React.Component {
             <h6 className='margin-zero'>{`Note: ${this.state.studentRequests[0].notes}`}</h6>
           ) : null}
         </div>
-        <button className='button' onClick={() => this.props.onComplete()}>Complete</button>
+        <div className='cn-student-request-button'>
+          <button className='button' onClick={() => this.props.onComplete()}>Complete</button>
+        </div>
       </div>
     )
   }
@@ -57,21 +60,21 @@ class StudentRequestInfo extends React.Component {
 
   renderContent () {
     return (
-      <div>
-        {this.renderStudentRequestFields(this.state.studentRequests[0].data)}
-      </div>
+      [this.renderTitle(), this.renderStudentRequestFields(this.state.studentRequests[0].data)]
     )
   }
 
   render () {
     if (this.state.studentRequests && this.state.studentRequests[0]) {
       return (
-        <div>
-          {this.renderTitle()}
-          {this.state.studentRequests[0].data ? (
+        <Card
+          title='Change Request'
+          boxClassName={this.props.boxClassName}
+          contentClassName={this.props.contentClassName}
+          content={
             this.renderContent()
-          ) : null}
-        </div>
+          }
+        />
       )
     } else { return null }
   }
@@ -79,7 +82,9 @@ class StudentRequestInfo extends React.Component {
 
 StudentRequestInfo.propTypes = {
   cl: PropTypes.object.isRequired,
-  onComplete: PropTypes.func
+  onComplete: PropTypes.func,
+  boxClassName: PropTypes.string,
+  contentClassName: PropTypes.string
 }
 
 export default StudentRequestInfo

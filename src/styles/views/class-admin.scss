@@ -1,75 +1,228 @@
 #cn-class-admin-container {
   display: flex;
+  flex-direction: row;
+  height: 100%;
+  min-height: 800px;
+  min-width: 800px;
 
-  #cn-class-admin {
-    flex-basis: 50%;
-    flex-grow: 1;
+  .cn-admin-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    height: 100%;
+    padding-right: $unit-space;
+    padding-left: $unit-space;
+    padding-bottom: $unit-space;
+  }
+
+  #cn-admin-class-title {
+    @include shadow-box-title;
+    border-bottom: 0px solid black;
+  }
+
+  #cn-admin-nav {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
     justify-content: space-between;
-    align-items: center;
+    width: 100%;
 
-    .class-card {
-      margin: $unit-space;
-      min-width: 300px;
-    }
-  
-    #cn-admin-weight-table {
-      @include shadow-box;
-      min-width: calc(250px + 2 * $unit-space);
-  
-      #cn-admin-weight-table-content {
-        @include shadow-box-content;
-  
-        .cn-admin-weight-table-title {
-          @include shadow-box-title;
-          display: flex;
-          justify-content: space-between;
-          align-items: baseline;
-          margin-bottom: $unit-space;
-        }
-      }
-    }
-  
-    #cn-admin-assignment-table {
-      @include shadow-box;
-  
-      #cn-admin-assignment-table-content {
-        @include shadow-box-content;
-  
-        .cn-admin-assignment-table-title {
-          @include shadow-box-title;
-          display: flex;
-          justify-content: space-between;
-          align-items: baseline;
-          margin-bottom: $unit-space;
-        }
-      }
+    .admin-tab {
+      border-radius: 0;
+      flex: 1;
     }
   }
 
-  #cn-half-panel {
-    flex-basis: 50%;
+  #cn-admin-edit-panel {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    width: 100%;
+    padding: $unit-space;
 
-    #cn-class-docs {
-      @include shadow-box;
+    .cn-admin-super-edit-card {
+      flex: 1;
       height: 100%;
-  
-      #cn-doc-container {
-        @include shadow-box-content;
-        height: 100%;
-  
-        #cn-doc-title {
-          @include shadow-box-title;
-          display: flex;
-          justify-content: space-between;
-          align-items: baseline;
-        }
-        #cn-doc-content {
-          height: 92%;
-        }
+    }
+
+    .cn-admin-edit-card {
+      flex: 1;
+      height: 100%;
+      margin-top: 0px;
+    }
+
+    .cn-admin-edit-card-content {
+
+    }
+  }
+
+  #cn-admin-footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding-right: $unit-space;
+    padding-left: $unit-space;
+
+    .cn-admin-footer-card {
+      flex: 1;
+      height: 150px;
+    }
+
+    .cn-admin-footer-card-content {
+      height: 100%;
+      overflow: auto;
+    }
+  }
+
+  #cn-admin-request {
+    flex: 1;
+    align-self: stretch;
+    margin-left: $unit-space;
+
+    .cn-shadow-box-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+  }
+
+  #cn-class-docs {
+    @include shadow-box;
+    height: 100%;
+    width: 100%;
+
+    #cn-doc-container {
+      @include shadow-box-content;
+      height: 100%;
+
+      #cn-doc-title {
+        @include shadow-box-title;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+      #cn-doc-content {
+        height: 92%;
       }
     }
   }
+
+  #cn-admin-weight-table {
+    @include shadow-box;
+    flex: 1;
+    height: 100%;
+
+    #cn-admin-weight-table-content {
+      @include shadow-box-content;
+      overflow: auto;
+
+      .cn-admin-weight-table-title {
+        @include shadow-box-title;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: $unit-space;
+      }
+    }
+  }
+
+  #cn-admin-assignment-table {
+    @include shadow-box;
+    flex: 1;
+    height: 100%;
+
+    #cn-admin-assignment-table-content {
+      @include shadow-box-content;
+      overflow: auto;
+
+      .cn-admin-assignment-table-title {
+        @include shadow-box-title;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: $unit-space;
+      }
+    }
+  }
+
 }
+
+// #cn-class-admin-container {
+//   display: flex;
+
+//   #cn-class-admin {
+//     flex-basis: 50%;
+//     flex-grow: 1;
+//     display: flex;
+//     flex-direction: row;
+//     flex-wrap: wrap;
+//     justify-content: space-between;
+//     align-items: center;
+
+//     .class-card {
+//       margin: $unit-space;
+//       min-width: 300px;
+//     }
+  
+//     #cn-admin-weight-table {
+//       @include shadow-box;
+//       min-width: calc(250px + 2 * $unit-space);
+  
+//       #cn-admin-weight-table-content {
+//         @include shadow-box-content;
+  
+//         .cn-admin-weight-table-title {
+//           @include shadow-box-title;
+//           display: flex;
+//           justify-content: space-between;
+//           align-items: baseline;
+//           margin-bottom: $unit-space;
+//         }
+//       }
+//     }
+  
+//     #cn-admin-assignment-table {
+//       @include shadow-box;
+  
+//       #cn-admin-assignment-table-content {
+//         @include shadow-box-content;
+  
+//         .cn-admin-assignment-table-title {
+//           @include shadow-box-title;
+//           display: flex;
+//           justify-content: space-between;
+//           align-items: baseline;
+//           margin-bottom: $unit-space;
+//         }
+//       }
+//     }
+//   }
+
+//   #cn-half-panel {
+//     flex-basis: 50%;
+
+//     #cn-class-docs {
+//       @include shadow-box;
+//       height: 100%;
+  
+//       #cn-doc-container {
+//         @include shadow-box-content;
+//         height: 100%;
+  
+//         #cn-doc-title {
+//           @include shadow-box-title;
+//           display: flex;
+//           justify-content: space-between;
+//           align-items: baseline;
+//         }
+//         #cn-doc-content {
+//           height: 92%;
+//         }
+//       }
+//     }
+//   }
+// }

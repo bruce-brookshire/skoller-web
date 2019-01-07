@@ -60,25 +60,28 @@ class ClassNotes extends React.Component {
 
   render () {
     return (
-      <div>
-        <Card
-          title='Notes'
-          content={
-            <div className='notes'>
-              {this.props.cl.notes.length > 0 ? (
-                this.renderNotes()
-              ) : this.renderNoNotes()}
-            </div>}
-        />
-        {this.renderNoteModal()}
-      </div>
+      <Card
+        title='Notes'
+        boxClassName={this.props.boxClassName}
+        contentClassName={this.props.contentClassName}
+        content={
+          <div className='notes'>
+            {this.props.cl.notes.length > 0 ? (
+              this.renderNotes()
+            ) : this.renderNoNotes()}
+            {this.renderNoteModal()}
+          </div>
+        }
+      />
     )
   }
 }
 
 ClassNotes.propTypes = {
   cl: PropTypes.object,
-  onCreateNote: PropTypes.func.isRequired
+  onCreateNote: PropTypes.func.isRequired,
+  boxClassName: PropTypes.string,
+  contentClassName: PropTypes.string
 }
 
 export default ClassNotes

@@ -13,6 +13,8 @@ import ProblemsModal from './ProblemsModal'
 import {FileTabs, FileTab} from '../../components/FileTab'
 import {inject, observer} from 'mobx-react'
 
+// TODO: File upload here needs to be replaced with component at ../../components/TabbedFileUpload
+
 const steps = [ 'Weights', 'Assignments', 'Review' ]
 
 const ContentEnum = {

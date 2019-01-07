@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import actions from '../../../../actions'
 import {browserHistory} from 'react-router'
 import Post from './Post'
+import Card from '../../../../components/Card'
 
 class Chat extends React.Component {
   constructor (props) {
@@ -140,24 +141,26 @@ class Chat extends React.Component {
 
   render () {
     return (
-      <div id='class-editor-chat'>
-        <div id='class-editor-chat-content'>
-          <div className='class-editor-chat-title'>
-            Chat
-          </div>
+      <Card
+        title='Chat'
+        content={
           <div className='chat'>
             {this.state.posts.length > 0 ? (
               this.renderPosts()
             ) : this.renderNoPosts()}
           </div>
-        </div>
-      </div>
+        }
+        boxClassName={this.props.boxClassName}
+        contentClassName={this.props.contentClassName}
+      />
     )
   }
 }
 
 Chat.propTypes = {
-  cl: PropTypes.object
+  cl: PropTypes.object,
+  boxClassName: PropTypes.string,
+  contentClassName: PropTypes.string
 }
 
 export default Chat

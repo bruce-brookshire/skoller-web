@@ -172,6 +172,7 @@ class Professor extends React.Component {
         {!isEditable && this.renderProfessorInfo()}
         {isEditable && this.renderProfessorControls()}
         {isEditable && this.renderOptions()}
+        {this.renderProfessorModal()}
       </div>
     )
   }
@@ -193,13 +194,12 @@ class Professor extends React.Component {
 
   render () {
     return (
-      <div id='class-editor-professor'>
-        <Card
-          title={this.renderTitle()}
-          content={this.renderContent()}
-        />
-        {this.renderProfessorModal()}
-      </div>
+      <Card
+        title={this.renderTitle()}
+        content={this.renderContent()}
+        boxClassName={this.props.boxClassName}
+        contentClassName={this.props.contentClassName}
+      />
     )
   }
 }
@@ -209,7 +209,9 @@ Professor.propTypes = {
   onSubmit: PropTypes.func,
   canEdit: PropTypes.bool,
   hasIssues: PropTypes.bool,
-  onSelectIssue: PropTypes.func
+  onSelectIssue: PropTypes.func,
+  boxClassName: PropTypes.string,
+  contentClassName: PropTypes.string
 }
 
 export default ValidateForm(Form(Professor, 'form'))

@@ -195,10 +195,12 @@ class GradeScale extends React.Component {
 
   render () {
     return (
-      <div id='class-editor-grade-scale'>
+      <div id='class-editor-grade-scale' className={this.props.superBoxClassName}>
         <Card
           title={this.renderTitle()}
           content={this.renderContent()}
+          boxClassName={this.props.boxClassName}
+          contentClassName={this.props.contentClassName}
         />
         {this.renderCommonScaleModal()}
       </div>
@@ -213,7 +215,9 @@ GradeScale.propTypes = {
   updateProperty: PropTypes.func,
   canEdit: PropTypes.bool,
   hasIssues: PropTypes.bool,
-  onSelectIssue: PropTypes.func
+  onSelectIssue: PropTypes.func,
+  boxClassName: PropTypes.string,
+  contentClassName: PropTypes.string
 }
 
 export default ValidateForm(Form(GradeScale, 'form'))

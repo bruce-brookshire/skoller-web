@@ -1,29 +1,34 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
+import {browserHistory} from 'react-router'
+
 import actions from '../../actions'
 import Modal from '../../components/Modal'
-import ClassForm from './ClassForm'
-import IssuesModal from '../components/ClassEditor/IssuesModal'
-import GradeScale from '../Cards/GradeScale'
-import RequestResolvedModal from './RequestResolvedModal'
-import ClassCard from '../Cards/ClassCard'
 import Loading from '../../components/Loading'
-import Professor from '../Cards/Professor'
-import StudentList from './StudentList'
+import ClassForm from './ClassForm'
+import StatusForm from './StatusForm'
+import {SliderField} from '../../components/Form'
+
+import IssuesModal from '../components/ClassEditor/IssuesModal'
+import RequestResolvedModal from './RequestResolvedModal'
+import DocumentsDeletedModal from './DocumentsDeletedModal'
+
+import TabbedFileUpload from '../../components/TabbedFileUpload'
 import WeightTable from '../components/ClassEditor/Weights/WeightTable'
 import WeightForm from '../components/ClassEditor/Weights/WeightForm'
 import AssignmentTable from '../components/ClassEditor/Assignments/AssignmentTable'
 import AssignmentForm from '../components/ClassEditor/Assignments/AssignmentForm'
 import Chat from '../components/ClassEditor/Chat'
+import StudentRequestInfo from '../Cards/StudentRequestInfo'
+import GradeScale from '../Cards/GradeScale'
+import ClassNotes from '../Cards/ClassNotes'
+import Professor from '../Cards/Professor'
+import StudentList from '../Cards/StudentList'
+import ClassCard from '../Cards/ClassCard'
+
 import FileViewer from '../../components/FileViewer'
 import {FileTabs, FileTab} from '../../components/FileTab'
-import {browserHistory} from 'react-router'
-import StudentRequestInfo from './StudentRequestInfo'
-import StatusForm from './StatusForm'
-import DocumentsDeletedModal from './DocumentsDeletedModal'
-import ClassNotes from '../Cards/ClassNotes'
-import {SliderField} from '../../components/Form'
 
 @inject('rootStore') @observer
 class ClassAdmin extends React.Component {
@@ -32,6 +37,7 @@ class ClassAdmin extends React.Component {
     let {navbarStore} = this.props.rootStore
     navbarStore.title = 'Class Admin'
     this.state = this.initializeState()
+    this.tabSelect = this.tabSelect.bind(this)
   }
 
   /*
@@ -52,12 +58,10 @@ class ClassAdmin extends React.Component {
       currentAssignment: null,
       assignments: [],
       openAssignmentModal: false,
-      currentDocument: null,
-      currentDocumentIndex: 0,
       documents: [],
-      hideDocuments: false,
-      openStudentRequestInfo: false,
-      openNoDocModal: false
+      openNoDocModal: false,
+      tabState: 'class_info',
+      uploadingDoc: false
     }
   }
 
@@ -85,6 +89,13 @@ class ClassAdmin extends React.Component {
     let {navbarStore} = this.props.rootStore
     navbarStore.title = null
   }
+  
+  /*
+  * Toggle the tab stat
+  */
+  tabSelect (tabName) {
+    this.setState({tabState: tabName})
+  }
 
   /*
   * Fetch the class by id.
@@ -104,7 +115,7 @@ class ClassAdmin extends React.Component {
     const {params: {classId}} = this.props
     actions.documents.getClassDocuments(classId).then((documents) => {
       documents.sort((a, b) => b.is_syllabus)
-      this.setState({documents, currentDocument: (documents[0] && documents[0].path) || null})
+      this.setState({documents})
     }).catch(() => false)
   }
 
@@ -226,6 +237,16 @@ class ClassAdmin extends React.Component {
     }).catch(() => false)
   }
 
+  onDocUpload (document) {
+    const {cl} = this.state
+    this.setState({uploadingDoc: true})
+    actions.documents.uploadClassDocument(cl, document, false).then(() => {
+      const newDocs = this.state.documents.slice()
+      newDocs.push(document)
+      this.setState({documents: newDocs, uploadingDoc: false})
+    })
+  }
+
   onWeightClose () {
     this.setState({currentWeight: null, openWeightCreateModal: false})
   }
@@ -261,14 +282,6 @@ class ClassAdmin extends React.Component {
 
   toggleNoDocModal () {
     this.setState({openNoDocModal: !this.state.openNoDocModal})
-  }
-
-  toggleDocs () {
-    this.setState({hideDocuments: !this.state.hideDocuments})
-  }
-
-  toggleStudentRequestInfo () {
-    this.setState({openStudentRequestInfo: !this.state.openStudentRequestInfo})
   }
 
   toggleChat () {
@@ -355,7 +368,6 @@ class ClassAdmin extends React.Component {
         onClose={this.toggleRequestResolvedModal.bind(this)}
         onSubmit={() => {
           this.updateClass()
-          this.setState({openStudentRequestInfo: false})
         }}
         request={openRequests[0]}
       />
@@ -413,31 +425,9 @@ class ClassAdmin extends React.Component {
     )
   }
 
-  renderStudents () {
-    const {cl} = this.state
-    return (
-      <div className='class-card'>
-        <StudentList
-          students={cl.students}
-        />
-      </div>
-    )
-  }
-
-  renderStudentRequestInfo () {
-    const {cl} = this.state
-    return (
-      <div className='cn-shadow-box margin-bottom'>
-        <div className='cn-shadow-box-content'>
-          <StudentRequestInfo
-            cl={cl}
-            onComplete={this.toggleRequestResolvedModal.bind(this)}
-          />
-        </div>
-      </div>
-    )
-  }
-
+  /*
+  * Render the list of weights
+  */
   renderWeights () {
     const {cl, isWeightsEditable, weights, currentWeight} = this.state
     return (
@@ -472,10 +462,13 @@ class ClassAdmin extends React.Component {
     )
   }
 
+  /*
+  * Render the list of assignments.
+  */
   renderAssignments () {
     const {cl, assignments, weights} = this.state
     return (
-      <div id='cn-admin-assignment-table' className='class-card'>
+      <div id='cn-admin-assignment-table' className='class-card margin-left'>
         <div id='cn-admin-assignment-table-content'>
           <div className='cn-admin-assignment-table-title'>
             Assignments
@@ -495,129 +488,140 @@ class ClassAdmin extends React.Component {
     )
   }
 
+  renderClassInfo () {
+    const {cl} = this.state
+    return (
+      <ClassCard
+        cl={cl}
+        schoolName={cl.school.name}
+        semesterName={cl.class_period.name}
+        onEdit={this.toggleEditClassModal.bind(this)}
+        isAdmin={true}
+        toggleWrench={this.toggleWrench.bind(this)}
+        toggleChat={this.toggleChat.bind(this)}
+        toggleDocuments={null}
+        onSelectIssue={null}
+        boxClassName='cn-admin-edit-card'
+        contentClassName='cn-admin-edit-card-content'
+      />
+    )
+  }
+
+  renderGradeScale () {
+    const {cl} = this.state
+    return (
+      <GradeScale
+        cl={cl}
+        canEdit={true}
+        onSubmit={() => this.updateClass()}
+        hasIssues={false}
+        onSelectIssue={null}
+        superBoxClassName='cn-admin-super-edit-card'
+        boxClassName='cn-admin-edit-card'
+        contentClassName='cn-admin-edit-card-content'
+      />
+    )
+  }
+
+  renderProfessor () {
+    const {cl} = this.state
+    return (
+      <Professor
+        cl={cl}
+        canEdit={true}
+        onSubmit={() => this.updateClass()}
+        hasIssues={false}
+        onSelectIssue={null}
+        boxClassName='cn-admin-edit-card'
+        contentClassName='cn-admin-edit-card-content'
+      />
+    )
+  }
+
+  renderWeightAssignments () {
+    return (
+      [this.renderWeights(), this.renderAssignments()]
+    )
+  }
+
   renderChat () {
     const {cl} = this.state
     return (
-      <div className='class-card'>
-        <Chat
-          cl={cl}
-        />
-      </div>
+      <Chat
+        cl={cl}
+        boxClassName='cn-admin-edit-card'
+        contentClassName='cn-admin-edit-card-content'
+      />
     )
   }
 
-  renderNotes () {
+  renderStudents () {
     const {cl} = this.state
     return (
-      <div className='class-card'>
-        <ClassNotes
-          cl={cl}
-          onCreateNote={(cl) => this.setState({cl})}
-        />
-      </div>
-    )
-  }
-
-  /*
-  * Render the document tabs for the user to tab between documents.
-  */
-  renderDocumentTabs () {
-    const {currentDocumentIndex, documents} = this.state
-    return (
-      <FileTabs currentIndex={currentDocumentIndex}>
-        {
-          documents.map((document, index) => {
-            return (
-              <FileTab
-                key={index}
-                name={document.name}
-                documentId={document.id}
-                removable={true}
-                changed={false}
-                onClick={() =>
-                  this.setState({currentDocument: document.path, currentDocumentIndex: index})
-                }
-                onDelete={() =>
-                  this.onDocDelete(document)
-                }
-              />
-            )
-          })
-        }
-      </FileTabs>
-    )
-  }
-
-  renderSyllabus () {
-    const {currentDocument} = this.state
-    return (
-      <div id='cn-class-docs'>
-        <div id='cn-doc-container'>
-          <div id='cn-doc-title'>
-            Documents
-            <i className='fa fa-eye cn-blue cursor' onClick={() => this.toggleDocs()} />
-          </div>
-          {this.renderDocumentTabs()}
-          <div id='cn-doc-content'>
-            {currentDocument && <FileViewer source={currentDocument} /> }
-          </div>
-        </div>
-      </div>
+      <StudentList
+        students={cl.students}
+        boxClassName='cn-admin-edit-card'
+        contentClassName='cn-admin-edit-card-content'
+      />
     )
   }
 
   renderClass () {
-    const {documents, hideDocuments, openStudentRequestInfo, cl} = this.state
+    const {cl} = this.state
     return (
       <div id='cn-class-admin-container'>
-        <div id='cn-class-admin'>
-          <div id='cn-class-details' className='class-card'>
-            <ClassCard
-              cl={cl}
-              schoolName={cl.school.name}
-              semesterName={cl.class_period.name}
-              onEdit={this.toggleEditClassModal.bind(this)}
-              isAdmin={true}
-              toggleWrench={this.toggleWrench.bind(this)}
-              toggleChat={this.toggleChat.bind(this)}
-              toggleDocuments={this.toggleDocs.bind(this)}
-              onSelectIssue={this.toggleStudentRequestInfo.bind(this)}
-            />
+
+        <div className='cn-admin-col'>
+
+          <div id='cn-admin-class-title'>{cl.name}</div>
+
+          <div id='cn-admin-nav'>
+            <button className='button admin-tab' onClick={() => this.tabSelect('class_info')}>Class Info</button>
+            <button className='button admin-tab' onClick={() => this.tabSelect('grade_scale')}>Grade Scale</button>
+            <button className='button admin-tab' onClick={() => this.tabSelect('professor')}>Professor</button>
+            <button className='button admin-tab' onClick={() => this.tabSelect('weights_assignments')}>Weight/Assignments</button>
+            <button className='button admin-tab' onClick={() => this.tabSelect('chat')}>Chat</button>
+            <button className='button admin-tab' onClick={() => this.tabSelect('students')}>Students</button>
           </div>
-          <div className='class-card'>
+
+          <div id="cn-admin-edit-panel">
+            {this.state.tabState === 'class_info' && this.renderClassInfo()}
+            {this.state.tabState === 'grade_scale' && this.renderGradeScale()}
+            {this.state.tabState === 'professor' && this.renderProfessor()}
+            {this.state.tabState === 'weights_assignments' && this.renderWeightAssignments()}
+            {this.state.tabState === 'chat' && this.renderChat()}
+            {this.state.tabState === 'students' && this.renderStudents()}
+          </div>
+
+          <div id='cn-admin-footer'>
             <ClassNotes
               cl={cl}
+              boxClassName='cn-admin-footer-card'
+              contentClassName='cn-admin-footer-card-content'
               onCreateNote={(cl) => this.setState({cl})}
             />
+            {cl.change_requests &&
+              <StudentRequestInfo
+                cl={cl}
+                boxClassName='cn-admin-footer-card margin-left'
+                contentClassName='cn-admin-footer-card-content'
+                onComplete={this.toggleRequestResolvedModal.bind(this)}
+              />
+            }
           </div>
-          <div className='class-card'>
-            <GradeScale
-              cl={cl}
-              canEdit={true}
-              onSubmit={() => this.updateClass()}
-              hasIssues={cl.change_requests.findIndex((item) => item.change_type.id === 100 && !item.is_completed) > -1}
-              onSelectIssue={this.toggleStudentRequestInfo.bind(this)}
-            />
-          </div>
-          <div className='class-card'>
-            <Professor
-              cl={cl}
-              canEdit={true}
-              onSubmit={() => this.updateClass()}
-              hasIssues={cl.change_requests.findIndex((item) => item.change_type.id === 300 && !item.is_completed) > -1}
-              onSelectIssue={this.toggleStudentRequestInfo.bind(this)}
-            />
-          </div>
-          {this.renderWeights()}
-          {this.renderAssignments()}
-          {this.renderChat()}
-          {this.renderStudents()}
+          
         </div>
-        {((documents.length !== 0 && !hideDocuments) || openStudentRequestInfo) &&
-        <div id='cn-half-panel'>
-          {openStudentRequestInfo && this.renderStudentRequestInfo()}
-          {documents.length !== 0 && !hideDocuments && this.renderSyllabus()}
-        </div>}
+
+        <div className='cn-admin-col'>
+          <TabbedFileUpload
+            documents={this.state.documents ? this.state.documents : []}
+            removable={true}
+            onUpload={(doc) => this.onDocUpload(doc)}
+            onDelete={(doc) => this.onDocDelete(doc)}
+          />
+        </div>
+
+        {this.renderEditClassModal()}
         {this.renderIssuesModal()}
         {this.renderRequestResolvedModal()}
         {this.renderEditClassModal()}
