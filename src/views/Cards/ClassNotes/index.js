@@ -61,11 +61,14 @@ class ClassNotes extends React.Component {
   render () {
     return (
       <Card
-        title='Notes'
+        title={
+          [<span key='cn-class-notes-title'>Notes</span>, <i key='cn-class-notes-icon' className='fa fa-plus cn-blue cursor' onClick={this.toggleNoteModal.bind(this)}/>]
+        }
         boxClassName={this.props.boxClassName}
         contentClassName={this.props.contentClassName}
         content={
           <div className='notes'>
+            
             {this.props.cl.notes.length > 0 ? (
               this.renderNotes()
             ) : this.renderNoNotes()}

@@ -18,13 +18,23 @@ class TabbedFileUpload extends React.Component {
   }
 
   componentWillReceiveProps (props) {
-    console.log("PROPPING")
+    if (props.documents) {
+      var nextIndex = this.state.currentDocumentIndex
+      if (props.documents.length === 0) {
+        nextIndex = null
+      } else if (!nextIndex || !this.props.documents) {
+        nextIndex = 0
+      } else if (props.documents.length - 1 < nextIndex) {
+        nextIndex = nextIndex - 1
+      }
+      this.setState({currentDocument: nextIndex != null ? props.documents[nextIndex].path : null, currentDocumentIndex: nextIndex})
+    }
   }
   
   renderDocumentTabs () {
     return (
       <FileTabs currentIndex={this.state.currentDocumentIndex} 
-      addFileClick={() => this.setState({currentDocument: null, currentDocumentIndex: null})}>
+        addFileClick={() => this.setState({currentDocument: null, currentDocumentIndex: null})}>
         {
           this.props.documents.map((document, index) => {
             return (
@@ -34,9 +44,9 @@ class TabbedFileUpload extends React.Component {
                 removable={this.props.removable}
                 onDelete={() => this.props.onDelete(document)}
                 changed={false}
-                onClick={() =>
+                onClick={() => {
                   this.setState({currentDocument: document.path, currentDocumentIndex: index})
-                }
+                }}
               />
             )
           })

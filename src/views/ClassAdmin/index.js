@@ -240,7 +240,7 @@ class ClassAdmin extends React.Component {
   onDocUpload (document) {
     const {cl} = this.state
     this.setState({uploadingDoc: true})
-    actions.documents.uploadClassDocument(cl, document, false).then(() => {
+    actions.documents.uploadClassDocument(cl, document, false).then((document) => {
       const newDocs = this.state.documents.slice()
       newDocs.push(document)
       this.setState({documents: newDocs, uploadingDoc: false})
@@ -438,7 +438,6 @@ class ClassAdmin extends React.Component {
             <div>
               {isWeightsEditable && <i className='fa fa-plus cn-blue cursor margin-right' onClick={() => this.toggleWeightCreateModal()} />}
               <i className='fa fa-pencil cn-blue cursor' onClick={() => this.setState({isWeightsEditable: !isWeightsEditable})} />
-              {cl.change_requests.findIndex((item) => item.change_type.id === 200 && !item.is_completed) > -1 && <i className='fa fa-warning cn-red cursor margin-left' onClick={this.toggleStudentRequestInfo.bind(this)} />}
             </div>
           </div>
           <div className='cn-space-between-row margin-bottom'>
@@ -566,6 +565,29 @@ class ClassAdmin extends React.Component {
     )
   }
 
+  renderCreatedBy (cl) {
+    var subtitle = ''
+    if (cl.created_by) {
+      subtitle = 'Created by ' + cl.created_by
+    } else {
+      subtitle = 'Unknown creator or scripted'
+    }
+    if (cl.created_on) {
+      subtitle = subtitle + ' on ' + cl.created_on
+    }
+    return subtitle
+  }
+
+  renderUpdatedBy (cl) {
+    var subtitle = ''
+    if (cl.created_by) {
+      subtitle = 'Updated by ' + cl.created_by
+    } else {
+      subtitle = 'Unknown updater or scripted'
+    }
+    return subtitle
+  }
+
   renderClass () {
     const {cl} = this.state
     return (
@@ -574,12 +596,26 @@ class ClassAdmin extends React.Component {
         <div className='cn-admin-col'>
 
           <div id='cn-admin-class-title'>{cl.name}</div>
+          <div className='cn-admin-class-subtitle'>{this.renderCreatedBy(cl)}</div>
+          <div className='cn-admin-class-subtitle'>{this.renderUpdatedBy(cl)}</div>
 
           <div id='cn-admin-nav'>
-            <button className='button admin-tab' onClick={() => this.tabSelect('class_info')}>Class Info</button>
-            <button className='button admin-tab' onClick={() => this.tabSelect('grade_scale')}>Grade Scale</button>
-            <button className='button admin-tab' onClick={() => this.tabSelect('professor')}>Professor</button>
-            <button className='button admin-tab' onClick={() => this.tabSelect('weights_assignments')}>Weight/Assignments</button>
+            <button className='button admin-tab' onClick={() => this.tabSelect('class_info')}>
+              {cl.change_requests.findIndex((item) => item.change_type.id === 400 && !item.is_completed) > -1 && <i className='fa fa-warning'/>}
+              Class Info
+            </button>
+            <button className='button admin-tab' onClick={() => this.tabSelect('grade_scale')}>
+              {cl.change_requests.findIndex((item) => item.change_type.id === 100 && !item.is_completed) > -1 && <i className='fa fa-warning'/>}
+              Grade Scale
+            </button>
+            <button className='button admin-tab' onClick={() => this.tabSelect('professor')}>
+              {cl.change_requests.findIndex((item) => item.change_type.id === 300 && !item.is_completed) > -1 && <i className='fa fa-warning'/>}
+              Professor
+            </button>
+            <button className='button admin-tab' onClick={() => this.tabSelect('weights_assignments')}>
+              {cl.change_requests.findIndex((item) => item.change_type.id === 200 && !item.is_completed) > -1 && <i className='fa fa-warning'/>}
+              Weight/Assignments
+            </button>
             <button className='button admin-tab' onClick={() => this.tabSelect('chat')}>Chat</button>
             <button className='button admin-tab' onClick={() => this.tabSelect('students')}>Students</button>
           </div>

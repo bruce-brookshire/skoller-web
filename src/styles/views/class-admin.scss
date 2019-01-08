@@ -21,6 +21,11 @@
     border-bottom: 0px solid black;
   }
 
+  .cn-admin-class-subtitle {
+    font-size: 12px;
+    color: $cn-color-grey;
+  }
+
   #cn-admin-nav {
     display: flex;
     flex-direction: row;
@@ -115,10 +120,10 @@
     @include shadow-box;
     flex: 1;
     height: 100%;
+    overflow: auto;
 
     #cn-admin-weight-table-content {
       @include shadow-box-content;
-      overflow: auto;
 
       .cn-admin-weight-table-title {
         @include shadow-box-title;
@@ -134,10 +139,10 @@
     @include shadow-box;
     flex: 1;
     height: 100%;
+    overflow: auto;
 
     #cn-admin-assignment-table-content {
       @include shadow-box-content;
-      overflow: auto;
 
       .cn-admin-assignment-table-title {
         @include shadow-box-title;
