@@ -601,7 +601,7 @@ class ClassAdmin extends React.Component {
     } else if (updateUsers.length > 1) {
       subtitle = 'Crowdsourced updates'
     } else {
-      subtitle = 'Updated by ' + cl.created_by
+      subtitle = 'Updated by ' + updateUsers[0]
     }
     console.log(updateUsers)
     return subtitle
