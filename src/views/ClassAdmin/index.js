@@ -568,9 +568,9 @@ class ClassAdmin extends React.Component {
   renderCreatedBy (cl) {
     var subtitle = ''
     if (cl.created_by) {
-      subtitle = 'Created by ' + cl.created_by
+      subtitle = 'Class Created by ' + cl.created_by
     } else {
-      subtitle = 'Unknown creator or scripted'
+      subtitle = 'Unknown class creator or scripted class'
     }
     if (cl.created_on) {
       subtitle = subtitle + ' on ' + cl.created_on
@@ -579,12 +579,31 @@ class ClassAdmin extends React.Component {
   }
 
   renderUpdatedBy (cl) {
-    var subtitle = ''
-    if (cl.created_by) {
-      subtitle = 'Updated by ' + cl.created_by
-    } else {
-      subtitle = 'Unknown updater or scripted'
+    var updateUsers = []
+    if (cl.updated_by) {
+      updateUsers.push(cl.updated_by)
     }
+    for (var index in cl.weights) {
+      var weight = cl.weights[index]
+      if (weight.updated_by && !updateUsers.includes(weight.updated_by)) {
+        updateUsers.push(weight.updated_by)
+      }
+    }
+    for (var index in cl.assignments) {
+      var assignment = cl.assignments[index]
+      if (assignment.updated_by && !updateUsers.includes(assignment.updated_by)) {
+        updateUsers.push(assignment.updated_by)
+      }
+    }
+    var subtitle = ''
+    if (updateUsers.length === 0) {
+      subtitle = 'Unknown updater or scripted'
+    } else if (updateUsers.length > 1) {
+      subtitle = 'Crowdsourced updates'
+    } else {
+      subtitle = 'Updated by ' + cl.created_by
+    }
+    console.log(updateUsers)
     return subtitle
   }
 
