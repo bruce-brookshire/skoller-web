@@ -16,6 +16,16 @@ class ProjectFourDoor extends React.Component {
   }
 
   /*
+  * Determine if the class is in 'needs input' state to render Project4Door.
+  *
+  * @return [Boolean]. boolean indicating if the class is in needs syllabus
+  */
+  needsInput () {
+    const {cl} = this.props
+    return (cl.status && cl.status.name === 'Needs Student Input')
+  }
+
+  /*
   * Handle user DIY.
   */
   onDIY () {
@@ -32,7 +42,7 @@ class ProjectFourDoor extends React.Component {
     return (
       <div id='or' className='margin-bottom'>
         <div className='line' />
-        <div className='or'><b>OR</b></div>
+        <div className='or cn-grey'>Don't want to wait?</div>
         <div className='line' />
       </div>
     )
@@ -93,10 +103,20 @@ class ProjectFourDoor extends React.Component {
     )
   }
 
+  renderNeedsInput () {
+    return (
+      <div className='cn-project-four-door'>
+        <div className='cn-four-door-subheading margin-bottom'><b>The Skoller team</b> received a syllabus but could not find enough info to set up the class.</div>
+        <div className='cn-four-door-subheading'><b>Set up this class</b> using our <b>DIY tool</b> in less than 5 minutes!</div>
+        <button className='button full-width cn-shadow-box' onClick={this.onDIY.bind(this)}>Start</button>
+      </div>
+    )
+  }
+
   renderComplete () {
     return (
-      <div className='center-text'>
-        <span>All done! You and your classmates are good to go.</span><br/><br/>
+      <div className='cn-project-four-door'>
+        <div className='cn-four-door-subheading'>Hop on the app to connect with classmates and <b>Keep Up with Classes, Together</b> 😎</div>
       </div>
     )
   }
@@ -107,6 +127,8 @@ class ProjectFourDoor extends React.Component {
     if (this.isComplete()) {
       return this.renderComplete()
     // normal
+    } else if (this.needsInput()) {
+      return this.renderNeedsInput()
     } else if (diy && !diyPref && autoSyllabus) {
       return this.renderNormal()
     // inverted

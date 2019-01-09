@@ -227,6 +227,16 @@ class UploadDocuments extends React.Component {
   }
 
   /*
+  * Determine if the class is in 'needs input' state to render Project4Door.
+  *
+  * @return [Boolean]. boolean indicating if the class is in needs syllabus
+  */
+  needsInput () {
+    const {cl} = this.props
+    return (cl.status && cl.status.name === 'Needs Student Input')
+  }
+
+  /*
   * Determine if the class is 'complete'.
   *
   * @return [Boolean]. boolean indicating if the class is complete
@@ -248,7 +258,11 @@ class UploadDocuments extends React.Component {
     const {viewDocs} = this.state
     if (this.needsSyllabus()) {
       return (
-        <div className='cn-blue'><i className='fa fa-users margin-right' />Set up this class</div>
+        <div className='cn-blue'><i className='fas fa-user-edit margin-right' />Set up this class</div>
+      )
+    } else if (this.needsInput()) {
+      return (
+        <div className='cn-orange'><i className='fas fa-exclamation-circle margin-right' />We need some help here...</div>
       )
     } else if (viewDocs) {
       return (
@@ -256,11 +270,11 @@ class UploadDocuments extends React.Component {
       )
     } else if (this.isComplete()) {
       return (
-        <div className='cn-green'>Syllabus Completed</div>
+        <div className='cn-green'><i className='fas fa-check-square margin-right' />This class is live</div>
       )
     } else {
       return (
-        <div>Syllabus In Review</div>
+        <div><i className='far fa-clock margin-right' />The syllabus is in-review</div>
       )
     }
   }
@@ -403,6 +417,8 @@ class UploadDocuments extends React.Component {
     const {viewDocs} = this.state
     if (this.needsSyllabus()) {
       return this.renderNeedsSyllabus()
+    } else if (this.needsInput()) {
+      return this.renderFourDoor()
     } else if (viewDocs) {
       return (
         <div>

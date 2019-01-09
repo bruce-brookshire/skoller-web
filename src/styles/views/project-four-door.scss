@@ -13,7 +13,7 @@
     align-items: center;
 
     .line {
-      width: 300px;
+      width: 250px;
       border: solid 2px $cn-font-color;
       height: 2px;
       margin-right: $unit-space / 2;
@@ -21,6 +21,8 @@
     }
 
     .or {
+      min-width: 130px;
+      font-size: 14px;
       padding-top: 5px;
     }
   }
@@ -28,6 +30,12 @@
   .cn-four-door-header {
     font-size: 24px;
     font-weight: 700;
+    margin-bottom: $unit-space;
+  }
+
+  .cn-four-door-subheading {
+    font-size: 24px;
+    font-weight: 200;
     margin-bottom: $unit-space;
   }
 
