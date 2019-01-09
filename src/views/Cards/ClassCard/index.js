@@ -16,7 +16,6 @@ class ClassCard extends React.Component {
     const isEditable = this.props.cl.is_editable
     const isChat = this.props.cl.is_chat_enabled
     const {cl} = this.props
-
     return (
       <div>
         {this.props.toggleDocuments && <i className='fa fa-file-text cn-blue cursor margin-right' onClick={() => this.props.toggleDocuments()} />}
@@ -82,6 +81,7 @@ class ClassCard extends React.Component {
             <div className='cn-class-title'>
               {cl.name}
               {this.props.isAdmin && this.renderAdminHeader()}
+              {this.props.onDelete && <i className='cursor margin-left fas fa-trash-alt cn-red' onClick={() => this.props.onDelete()} />}
             </div>
             <div className='cn-class-subtitle'>
               {cl.subject} {cl.code}{this.renderSectionSuffix()}
@@ -155,6 +155,7 @@ ClassCard.propTypes = {
   toggleWrench: PropTypes.func,
   toggleChat: PropTypes.func,
   toggleDocuments: PropTypes.func,
+  onDelete: PropTypes.func,
   onSelectIssue: PropTypes.func,
   boxClassName: PropTypes.string,
   contentClassName: PropTypes.string

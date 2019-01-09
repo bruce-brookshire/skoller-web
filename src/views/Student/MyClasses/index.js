@@ -51,7 +51,9 @@ class MyClasses extends React.Component {
     let num = this.numberOfClassesNeedingSyllabus()
     if (num > 0) {
       return (
-        <div className='needs-syllabus-info margin-bottom center-text cn-red'>
+        <div className='cn-needs-syllabus-info margin-bottom center-text cn-blue'>
+          <i className='fas fa-user-edit' />
+          <br/>
           {`${num} class${num > 1 ? 'es' : ''} still need${num > 1 ? '' : 's'} to be set up.`}
         </div>
       )
@@ -68,18 +70,16 @@ class MyClasses extends React.Component {
   renderContent () {
     return (
       <div>
-        <div className='margin-bottom center-text'>From this page, you can enroll in your classes, upload syllabi, and check other class details.</div>
+        <div className='margin-bottom center-text'>From this page, you can join classes, set up classes, and check other class details.</div>
         {this.renderNeedsSyllabusInfo()}
         <div className='cn-table-grid-container'>
           <ClassList
             classes={this.state.classes}
-            onDelete={() => this.onDeleteClass.bind(this)}
-            deleteMessage={'Are you sure you want to drop this class?'}
             emptyMessage='You are not enrolled in any classes.'
             onSelect={this.onClassSelect.bind(this)}
           />
-          <button className='button-invert full-width add-button' onClick={() => { browserHistory.push('student/find-classes') }}>
-            Add a Class
+          <button className='button add-button' onClick={() => { browserHistory.push('student/find-classes') }}>
+            Join a class
           </button>
         </div>
       </div>
@@ -98,19 +98,6 @@ class MyClasses extends React.Component {
         enrollmentCount: fullClass.enrollment
       }
     })
-  }
-
-  /*
-  * Method for deleting a class.
-  *
-  * @param [Object] cl. Class user is in.
-  * @return [Object] null.
-  */
-  onDeleteClass (cl) {
-    actions.classes.dropClass(cl.id).then(() => {
-      const newClasses = this.state.classes.filter(cc => cc.id !== cl.id)
-      this.setState({classes: newClasses})
-    }).catch(() => false)
   }
 
   renderTitle () {

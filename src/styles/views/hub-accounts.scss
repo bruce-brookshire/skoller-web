@@ -1,7 +1,12 @@
 $border-color: $cn-color-grey;
 
+.cn-accounts-min-width {
+  min-width: 350px;
+}  
+
 .cn-accounts-container {
   padding: 25px;
+
   .description {
     left: 50%;
     position: absolute;

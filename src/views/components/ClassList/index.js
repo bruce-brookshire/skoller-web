@@ -1,39 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Grid from '../../../components/Grid/index'
 import {mapProfessor} from '../../../utilities/display'
 import {mapTimeToDisplay} from '../../../utilities/time'
-
-const headers = [
-  {
-    field: 'courseNumber',
-    display: 'Class Number'
-  },
-  {
-    field: 'name',
-    display: 'Class Name'
-  },
-  {
-    field: 'professor',
-    display: 'Professor'
-  },
-  {
-    field: 'days',
-    display: 'Days'
-  },
-  {
-    field: 'beginTime',
-    display: 'Start Time'
-  },
-  {
-    field: 'status',
-    display: 'Syllabus Status'
-  },
-  {
-    field: 'enrollment',
-    display: 'Classmates'
-  }
-]
 
 class ClassList extends React.Component {
   /*
@@ -43,8 +11,8 @@ class ClassList extends React.Component {
   */
   getRows () {
     return this.props.classes.sort((a, b) => {
-      var aNum = this.getStatusNum(a.status.name.toLowerCase())
-      var bNum = this.getStatusNum(b.status.name.toLowerCase())
+      var aNum = a.status.is_complete ? 0 : this.getStatusNum(a.status.name.toLowerCase())
+      var bNum = a.status.is_complete ? 0 : this.getStatusNum(b.status.name.toLowerCase())
       if (aNum > bNum) {
         return -1
       } else if (aNum < bNum) {
@@ -61,10 +29,11 @@ class ClassList extends React.Component {
       case 'new class':
       case 'needs setup':
         return 100
-      case 'syllabus submitted':
-        return 50
+      case 'needs student input':
       case 'class setup':
       case 'class issue':
+        return 50
+      case 'syllabus submitted':
         return 25
       default:
         return 0
@@ -101,45 +70,88 @@ class ClassList extends React.Component {
   * @param [String] status. Class status.
   */
   mapStatus (status) {
-    status = status.name.toLowerCase()
-    if (status === 'new class' || status === 'needs setup') {
-      return <span className='cn-red'> Set Up Class</span>
-    } else if (status === 'syllabus submitted') {
-      return <span className='cn-grey'>In Review</span>
-    } else if (status === 'class setup' || status === 'class issue') {
-      return <span className='cn-green' >Complete</span>
+    var statusNameL = status.name.toLowerCase()
+    if (status.is_complete) {
+      return (
+        <div className='cn-class-list-row-icon-container'>
+          <i className='fas fa-check-square cn-class-list-row-icon cn-green' />
+          <span className='cn-class-list-row-icon-text cn-green'>Live</span>
+        </div>
+      )
+    } else if (statusNameL === 'new class' || statusNameL === 'needs setup') {
+      return (
+        <div className='cn-class-list-row-icon-container'>
+          <i className='fas fa-user-edit cn-class-list-row-icon cn-blue' />
+          <span className='cn-class-list-row-icon-text cn-blue'>Set Up Class</span>
+        </div>
+      )
+    } else if (statusNameL === 'syllabus submitted') {
+      return (
+        <div className='cn-class-list-row-icon-container'>
+          <i className='far fa-clock cn-class-list-row-icon cn-grey' />
+          <span className='cn-class-list-row-icon-text cn-grey'>In Review</span>
+        </div>
+      )
+    } else if (statusNameL === 'class setup' || statusNameL === 'class issue' || statusNameL === 'needs student input') {
+      return (
+        <div className='cn-class-list-row-icon-container'>
+          <i className='fas fa-exclamation-circle cn-class-list-row-icon cn-orange' />
+          <span className='cn-class-list-row-icon-text cn-orange'>DIY Required</span>
+        </div>
+      )
+    } else {
+      return (
+        <div className='cn-class-list-row-icon-container'>
+          <i className='fas fa-exclamation cn-class-list-row-icon cn-grey' />
+          <span className='cn-class-list-row-icon-text cn-grey'>status.name</span>
+        </div>
+      )
     }
-    return status
   }
 
   onClassSelect (cl) {
     if (this.props.onSelect) this.props.onSelect(cl)
   }
 
+  renderClassRows () {
+    return this.getRows().map(c => {
+      return (
+        <div key={'cn_class_list_row_' + c.id}
+          className={'cn-class-list-row margin-bottom ' + this.props.rowClassName}
+          onClick={() => this.onClassSelect(c)}
+        >
+          {c.status}
+          <div className='cn-class-list-row-data'>
+            <div className='cn-class-list-row-col cn-class-list-row-col-primary'>
+              <div className='cn-class-list-title'>{c.name}</div>
+              <div className='cn-class-list-text'>{c.professor}</div>
+              <div className='cn-class-list-subtext'>{c.courseNumber}</div>
+            </div>
+            <div className='cn-class-list-row-col'>
+              <div className='cn-class-list-subtext cn-class-list-flex-top cn-class-list-text-right'>{c.enrollment} <i className='fas fa-user' /></div>
+              <div className='cn-class-list-subtext cn-class-list-flex-bottom cn-class-list-text-right'>{c.days + ' ' + c.beginTime}</div>
+            </div>
+          </div>
+        </div>
+      )
+    })
+  }
+
   render () {
     return (
-      <Grid
-        className='striped'
-        headers={headers}
-        rows={this.getRows()}
-        disabled={true}
-        canDelete={this.props.onDelete ? true : false} // eslint-disable-line no-unneeded-ternary
-        canSelect={this.props.onSelect ? true : false} // eslint-disable-line no-unneeded-ternary
-        onDelete={this.props.onDelete ? this.props.onDelete() : null}
-        onSelect={this.onClassSelect.bind(this)}
-        deleteMessage={this.props.deleteMessage}
-        emptyMessage={this.props.emptyMessage}
-      />
+      <div className={'cn-class-list-container ' + this.props.containerClassName}>
+        {this.renderClassRows()}
+      </div>
     )
   }
 }
 
 ClassList.propTypes = {
   classes: PropTypes.array,
-  onDelete: PropTypes.func,
-  deleteMessage: PropTypes.string,
   emptyMessage: PropTypes.string,
-  onSelect: PropTypes.func
+  onSelect: PropTypes.func,
+  containerClassName: PropTypes.string,
+  rowClassName: PropTypes.string
 }
 
 export default ClassList

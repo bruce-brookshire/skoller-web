@@ -83,7 +83,7 @@ class AccountInfo extends React.Component {
     const {user} = this.state
 
     return (
-      <div className='cn-shadow-box'>
+      <div className='cn-shadow-box cn-accounts-min-width'>
         <div className='cn-shadow-box-content'>
           <div className='cn-card-title edit-header'>
             Account Details
@@ -183,7 +183,7 @@ class AccountInfo extends React.Component {
 
   renderReports () {
     return (
-      <div className='cn-shadow-box'>
+      <div className='cn-shadow-box cn-accounts-min-width'>
         <div className='cn-shadow-box-content'>
           <div className='cn-card-title margin-bottom'>
             Reports
@@ -208,7 +208,7 @@ class AccountInfo extends React.Component {
         <div id='cn-account-info'>
           {this.renderAccountDetails()}
           {this.state.user && this.state.user.student &&
-            <div className='cn-shadow-box'>
+            <div className='cn-shadow-box full-width margin-left margin-right'>
               <div className='cn-shadow-box-content'>
                 <div className='cn-card-title margin-bottom'>
                   Classes

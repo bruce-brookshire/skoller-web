@@ -18,16 +18,17 @@
     border-bottom-style: solid;
   }
 
+  .cn-needs-syllabus-info {
+    font-size: 20px;
+  }
+
   .cn-table-grid-container {
-    border: 1px solid darken(#f0f1f3,10);
-    border-radius: $cn-border-radius;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
   }
 
   .add-button {
-    border-radius: 0;
-    font-size: 0.75em;
-    font-weight: 600;
-    padding: 1em 1.5em;
+    width: 200px;
+    align-self: center;
   }
 }
