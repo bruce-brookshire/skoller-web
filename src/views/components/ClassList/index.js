@@ -12,7 +12,7 @@ class ClassList extends React.Component {
   getRows () {
     return this.props.classes.sort((a, b) => {
       var aNum = a.status.is_complete ? 0 : this.getStatusNum(a.status.name.toLowerCase())
-      var bNum = a.status.is_complete ? 0 : this.getStatusNum(b.status.name.toLowerCase())
+      var bNum = b.status.is_complete ? 0 : this.getStatusNum(b.status.name.toLowerCase())
       if (aNum > bNum) {
         return -1
       } else if (aNum < bNum) {

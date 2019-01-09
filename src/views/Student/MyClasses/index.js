@@ -43,7 +43,8 @@ class MyClasses extends React.Component {
 
   numberOfClassesNeedingSyllabus () {
     return this.state.classes.filter((item, index) => {
-      return item.status.name === 'Needs Setup'
+      var nameL = item.status.name.toLowerCase()
+      return ['new class', 'needs setup', 'needs student input', 'class setup', 'class issue'].includes(nameL) && !item.status.is_complete
     }).length
   }
 
