@@ -88,7 +88,7 @@ class AccountInfo extends React.Component {
           <div className='cn-card-title edit-header'>
             Account Details
             <i className={'fa fa-hand-paper-o cursor margin-left ' + (user.is_active ? 'cn-grey' : 'cn-red')} onClick={() => this.toggleactive()} />
-            <i className='fa fa-pencil cn-blue cursor margin-left' onClick={this.toggleAccountForm.bind(this)} />
+            <i className='fas fa-pencil-alt cn-blue cursor margin-left' onClick={this.toggleAccountForm.bind(this)} />
           </div>
           {user
             ? <table className='margin-top roles-table'>

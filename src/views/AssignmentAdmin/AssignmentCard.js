@@ -23,7 +23,7 @@ class AssignmentCard extends React.Component {
         <div className='cn-shadow-box-content'>
           <div className='cn-card-title'>
             Assignment
-            <i className='fa fa-pencil cn-blue cursor' onClick={() => this.props.onClickEdit()} />
+            <i className='fas fa-pencil-alt cn-blue cursor' onClick={() => this.props.onClickEdit()} />
           </div>
           <div className='cn-card-row'>
             <div className='cn-card-field'>

@@ -19,9 +19,9 @@ class ClassCard extends React.Component {
     return (
       <div>
         {this.props.toggleDocuments && <i className='fa fa-file-text cn-blue cursor margin-right' onClick={() => this.props.toggleDocuments()} />}
-        {this.props.onEdit && <i className='fa fa-pencil cn-blue cursor' onClick={() => this.props.onEdit()} />}
+        {this.props.onEdit && <i className='fas fa-pencil-alt cn-blue cursor' onClick={() => this.props.onEdit()} />}
         {this.props.toggleWrench && <i className={'fa fa-wrench cursor margin-left ' + (isEditable ? 'cn-grey' : 'cn-red')} onClick={() => this.props.toggleWrench()} />}
-        {this.props.toggleChat && <i className={'cursor margin-left ' + (isChat ? 'fa fa-comment cn-blue' : 'fa fa-comment-o cn-grey')} onClick={() => this.props.toggleChat()} />}
+        {this.props.toggleChat && <i className={'cursor margin-left ' + (isChat ? 'fas fas-comment cn-blue' : 'fa fas-comment-o cn-grey')} onClick={() => this.props.toggleChat()} />}
         {this.props.onSelectIssue && (cl.student_requests.findIndex((item) => !item.is_completed) > -1 || cl.change_requests.findIndex((item) => !item.is_completed && item.change_type.id === 400) > -1) &&
           <i className='fa fa-warning cn-red cursor margin-left' onClick={this.props.onSelectIssue.bind(this)} />
         }

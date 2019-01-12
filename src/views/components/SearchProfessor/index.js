@@ -49,13 +49,13 @@ class SearchProfessor extends React.Component {
 
   renderTitle (nameFirst, nameLast) {
     const {value} = this.state
-    const idxFirst = nameFirst.toLowerCase().indexOf(value.toLowerCase())
-    const idxLast = nameLast.toLowerCase().indexOf(value.toLowerCase())
+    const idxFirst = nameFirst ? nameFirst.toLowerCase().indexOf(value.toLowerCase()) : ''
+    const idxLast = nameLast ? nameLast.toLowerCase().indexOf(value.toLowerCase()) : ''
 
     return (
       <span className='cn-autocomplete-detail-results-item title'>
-        {idxFirst > -1 ? this.renderName(nameFirst, idxFirst, value) : nameFirst}&nbsp;
-        {idxLast > -1 ? this.renderName(nameLast, idxLast, value) : nameLast}
+        {idxFirst > -1 ? this.renderName(nameFirst ? nameFirst : '', idxFirst, value) : nameFirst}&nbsp;
+        {idxLast > -1 ? this.renderName(nameLast ? nameLast : '', idxLast, value) : nameLast}
       </span>
     )
   }

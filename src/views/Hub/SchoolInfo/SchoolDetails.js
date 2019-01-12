@@ -38,7 +38,7 @@ class SchoolDetails extends React.Component {
     return (
       <div className='cn-icon-flex'>
         School Details
-        <i className='fa fa-pencil cn-blue cursor' onClick={() => onEdit() } />
+        <i className='fas fa-pencil-alt cn-blue cursor' onClick={() => onEdit() } />
       </div>
     )
   }

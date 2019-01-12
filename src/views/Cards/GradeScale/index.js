@@ -187,7 +187,7 @@ class GradeScale extends React.Component {
     return (
       <div className='cn-icon-flex'>
         Grade Scale
-        {canEdit && <i className='fa fa-pencil cn-blue cursor' onClick={() => this.setState({isEditable: !isEditable})} />}
+        {canEdit && <i className='fas fa-pencil-alt cn-blue cursor' onClick={() => this.setState({isEditable: !isEditable})} />}
         {hasIssues && <i className='fa fa-warning cn-red cursor margin-left' onClick={() => this.props.onSelectIssue()} />}
       </div>
     )

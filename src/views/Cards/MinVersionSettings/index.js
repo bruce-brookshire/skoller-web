@@ -48,7 +48,7 @@ class MinVersionSettings extends React.Component {
     return (
       <div className='cn-icon-flex'>
         Minimum App Version
-        <i className='fa fa-pencil cn-blue cursor margin-left' onClick={() => this.setState({openVersionUpdateModal: true})} />
+        <i className='fas fa-pencil-alt cn-blue cursor margin-left' onClick={() => this.setState({openVersionUpdateModal: true})} />
       </div>
     )
   }

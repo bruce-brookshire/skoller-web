@@ -97,8 +97,8 @@ class SchoolInfo extends React.Component {
     return (
       <div>
         <a onClick={this.handleChatStateChange.bind(this)}>
-          {(school && !school.is_chat_enabled) && <i className="fa fa-comment-o fa-2x cn-blue"></i>}
-          {(school == null || school.is_chat_enabled) && <i className="fa fa-comment fa-2x cn-blue"></i>}
+          {(school && !school.is_chat_enabled) && <i className="fas fa-comment-o fa-2x cn-blue"></i>}
+          {(school == null || school.is_chat_enabled) && <i className="fas fa-comment fa-2x cn-blue"></i>}
         </a>
       </div>
     )

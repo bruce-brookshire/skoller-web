@@ -184,7 +184,7 @@ class Professor extends React.Component {
       <div className='cn-icon-flex'>
         Professor
         <div>
-          {canEdit && <i className='fa fa-pencil cn-blue cursor' onClick={() => !cl.professor ? this.setState({isEditable: true}) : this.toggleProfessorModal()} />}
+          {canEdit && <i className='fas fa-pencil-alt cn-blue cursor' onClick={() => !cl.professor ? this.setState({isEditable: true}) : this.toggleProfessorModal()} />}
           {canEdit && cl.professor && <i className='fa fa-trash cn-red cursor margin-left' onClick={() => this.removeProfessorFromClass()} />}
           {hasIssues && <i className='fa fa-warning cn-red cursor margin-left' onClick={() => this.props.onSelectIssue()} />}
         </div>
