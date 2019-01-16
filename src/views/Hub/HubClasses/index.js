@@ -189,6 +189,8 @@ class HubClasses extends React.Component {
           <a onClick={this.onCreateClass.bind(this)}>Create new class </a>
           <span className='description'>Manage classes from this page</span>
           <span className='total right'>Total results: {this.state.classes.length}</span>
+          <br />
+          <span className='max right'>Max Results: 500</span>
         </div>
       </div>
     )

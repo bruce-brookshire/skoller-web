@@ -7,6 +7,10 @@ $border-color: $cn-color-grey;
     position: absolute;
     transform: translateX(-50%);
   }
+  .max {
+    font-size: 10px;
+    color: $cn-color-grey;
+  }
 
   .cn-table-grid {
     border: 1px solid $border-color;
