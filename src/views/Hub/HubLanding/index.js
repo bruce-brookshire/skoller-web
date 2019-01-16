@@ -225,7 +225,7 @@ class HubLanding extends React.Component {
   }
 
   render () {
-    const syllabiCount = this.getStatusCount('Syllabus Submitted') || 0
+    const syllabiCount = this.getStatusCount('Workable Syllabi') || 0
 
     return (
       <div className='cn-hub-landing-container'>
