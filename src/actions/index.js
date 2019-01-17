@@ -30,10 +30,14 @@ import {createCustomLink, getCustomLinkById, getCustomLinks} from './signup-link
 import {getNextClass} from './syllabusworkers'
 import {getStudentCsv, getEmailPreferences, updateEmailPreferences} from './users'
 import {createWeight, deleteWeight, getClassWeights, updateWeight} from './weights'
+import {getStudentByLink} from './students'
 
 const actions = {
   analytics: {
     getAnalytics
+  },
+  students: {
+    getStudentByLink
   },
   assignments: {
     createAssignment,
