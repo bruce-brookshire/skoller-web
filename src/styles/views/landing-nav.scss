@@ -1,9 +1,8 @@
 .cn-landing-navbar {
-  @include navbar();
-  display: none;
-  height: auto;
-  
+
   @include breakpoint(medium) {
+    @include navbar();
+    height: auto;
     display: block;
   }
 
@@ -24,9 +23,9 @@
 
     .logo {
       display: block;
-      height: auto;
-      margin: 1.25rem auto 1.75rem;
-      width: 60%;
+      height: 3rem;
+      margin-top: 5px;
+      margin-left: 5px;
 
       @include breakpoint(medium) {
         display: inline-block;

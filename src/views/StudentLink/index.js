@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import LandingNav from '../components/LandingNav'
 import SignUpForm from '../components/SignUpForm'
 import DownloadApp from '../components/DownloadApp'
+import EnrollLinkSplash from '../components/EnrollLinkSplash'
 import {inject, observer} from 'mobx-react'
 import Verification from '../components/Verification'
 import {browserHistory} from 'react-router'
@@ -18,7 +19,7 @@ class StudentLink extends React.Component {
 
   initializeState () {
     return {
-      step: 1
+      step: 0
     }
   }
 
@@ -37,6 +38,12 @@ class StudentLink extends React.Component {
     this.cookie.remove('skollerToken', { path: '/' })
     this.cookie.set('skollerToken', authToken, { maxAge: 84600 * 7, path: '/' })
     this.incrementStep()
+  }
+
+  renderSplash () {
+    return (
+      <EnrollLinkSplash onSubmit={() => this.incrementStep()} />
+    )
   }
 
   renderSignup () {
@@ -71,6 +78,7 @@ class StudentLink extends React.Component {
     const {step} = this.state
     return (
       <div className='cn-enrollment-link-content'>
+        {step === 0 && this.renderSplash()}
         {step === 1 && this.renderSignup()}
         {step === 2 && this.renderVerification()}
         {step === 3 && this.renderDownload()}
