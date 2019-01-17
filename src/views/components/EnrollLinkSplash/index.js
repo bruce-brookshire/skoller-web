@@ -4,8 +4,8 @@ import PropTypes from 'prop-types'
 class EnrollLinkSplash extends React.Component {
   userImage () {
     const {linkDetail} = this.props
-    if (linkDetail && linkDetail.user_image) {
-      return linkDetail.user_image
+    if (linkDetail && linkDetail.student_image_path) {
+      return linkDetail.student_image_path
     } else {
       return '../src/assets/images/icons/Sammi.png'
     }

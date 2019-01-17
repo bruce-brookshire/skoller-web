@@ -4,6 +4,7 @@ import LandingNav from '../components/LandingNav'
 import SignUpForm from '../components/SignUpForm'
 import DownloadApp from '../components/DownloadApp'
 import EnrollLinkSplash from '../components/EnrollLinkSplash'
+import actions from '../../actions'
 import {inject, observer} from 'mobx-react'
 import Verification from '../components/Verification'
 import {browserHistory} from 'react-router'
@@ -17,9 +18,16 @@ class StudentLink extends React.Component {
     this.state = this.initializeState()
   }
 
+  componentWillMount () {
+    actions.students.getStudentByLink(this.props.params.customLink).then((linkDetail) => {
+      this.setState({linkDetail})
+    }).catch(() => false)
+  }
+
   initializeState () {
     return {
-      step: 0
+      step: 0,
+      linkDetail: null
     }
   }
 
@@ -42,7 +50,7 @@ class StudentLink extends React.Component {
 
   renderSplash () {
     return (
-      <EnrollLinkSplash onSubmit={() => this.incrementStep()} />
+      <EnrollLinkSplash onSubmit={() => this.incrementStep()} linkDetail={this.state.linkDetail} />
     )
   }
 
