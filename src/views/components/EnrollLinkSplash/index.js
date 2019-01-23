@@ -7,7 +7,7 @@ class EnrollLinkSplash extends React.Component {
     if (linkDetail && linkDetail.student_image_path) {
       return linkDetail.student_image_path
     } else {
-      return '../src/assets/images/icons/Sammi.png'
+      return '../src/assets/images/sammi-square.png'
     }
   }
 
@@ -16,7 +16,7 @@ class EnrollLinkSplash extends React.Component {
     if (linkDetail && linkDetail.student_name_first) {
       return linkDetail.student_name_first
     } else {
-      return 'The Skoller Team'
+      return 'A student'
     }
   }
 
@@ -43,7 +43,9 @@ class EnrollLinkSplash extends React.Component {
           </div>
         </div>
         <div className='cn-enrollsplash-content'>
-          <img src='../src/assets/images/confetti_phone.png' className='cn-enrollsplash-image'/>
+          <div className='cn-enrollsplash-image-container'>
+            <img src='../src/assets/images/confetti_phone.png' className='cn-enrollsplash-image'/>
+          </div>
           <div className='cn-enrollsplash-descript'>
             <b>Skoller is a FREE app</b> that makes it easy for classmates to collaborate, stay organized & keep up with classes, together.
           </div>

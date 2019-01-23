@@ -10,11 +10,12 @@
   .cn-enrollsplash-banner {
     display: flex;
     flex-direction: row;
-    background-color: $cn-color-grey;
+    background-color: $cn-color-darkgrey;
     width: 100%;
     height: auto;
     padding: 8px;
-    border-radius: 20px;
+    border-radius: 10px;
+    box-shadow: 3px 3px 10px rgba(#000, .15);
 
     .cn-enrollsplash-userpic-container {
       display: flex;
@@ -36,7 +37,7 @@
     .cn-enrollsplash-bannertxt {
       color: $cn-color-white;
       font-family: $cn-font-family;
-      font-size: $primary-font-size;
+      font-size: 16px;
     }
     
   }
@@ -50,13 +51,24 @@
     justify-content: center;
     align-items: center;
 
-    .cn-enrollsplash-image {
-      width: 90%;
-      height: auto;
+    .cn-enrollsplash-image-container {
+      flex: 1;
+      padding-top: $unit-space;
+      min-height: 200px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+
+      .cn-enrollsplash-image {
+        height: 100%;
+        width: auto;
+        max-height: 300px;
+      }
     }
 
     .cn-enrollsplash-descript {
-      margin-top: $unit-space * 2;
+      padding-top: $unit-space * 2;
       font-family: $cn-font-family;
       font-size: 18px;
     }
