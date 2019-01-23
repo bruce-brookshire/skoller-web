@@ -56,7 +56,16 @@ class Accounts extends React.Component {
   getCsv () {
     actions.users.getStudentCsv().then(csv => {
       let blob = new Blob([csv], {type: 'text/csv'}) // eslint-disable-line no-undef
-      window.location = window.URL.createObjectURL(blob)
+      // window.location = window.URL.createObjectURL(blob)
+      let url = window.URL.createObjectURL(blob)
+      var downloadLink = document.createElement("a")
+      downloadLink.href = url
+      var today = new Date()
+      downloadLink.download = "Users-" + today.getFullYear() + "_" + (today.getMonth() + 1) + "_" + today.getDate() + "_" + today.getHours() + "_" + today.getMinutes() + ".csv"
+
+      document.body.appendChild(downloadLink)
+      downloadLink.click()
+      document.body.removeChild(downloadLink)
     })
   }
 
@@ -126,7 +135,7 @@ class Accounts extends React.Component {
           <AccountSearch {...this.props} loading={this.state.loading} onSearch={this.getAccounts.bind(this)}/>
           <div>
             <a onClick={this.toggleCreateModal.bind(this)}>Create new account</a>
-            <a className='margin-left' onClick={this.getCsv.bind(this)}>Get CSV</a>
+            <a className='margin-left' onClick={this.getCsv.bind(this)}>Get CSV Dude</a>
             <span className='description'>Manage user account details from this page</span>
             <span className='total-results'>Total Results: {this.state.users.length}</span>
           </div>
