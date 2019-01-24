@@ -7,8 +7,10 @@
   }
 
   .cn-navbar-content {
+    display: flex;
     flex-direction: column;
     margin: 0 auto;
+
     @include breakpoint(medium) {
       width: 100%;
       max-width: 1000px;
@@ -16,9 +18,23 @@
       flex-direction: row;
     }
 
-    h1 {
+    .cn-navbar-logo {
       @include reset-box-model;
+      display: flex;
       flex: 1;
+      align-items: center;
+    }
+
+    .cn-navbar-slogan {
+      font-size: 20px;
+      color: $cn-color-blue;
+      font-style: italic;
+      padding-top: 15px;
+      display: none;
+
+      @include breakpoint(medium) {
+        display: block;
+      }
     }
 
     .logo {

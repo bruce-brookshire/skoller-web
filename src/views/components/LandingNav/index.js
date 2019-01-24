@@ -27,9 +27,10 @@ class LandingNav extends React.Component {
     return (
       <div className='cn-landing-navbar'>
         <div className='cn-navbar-content'>
-          <h1>
+          <div className='cn-navbar-logo'>
             <a onClick={() => { browserHistory.push('/landing'); window.scrollTo(0, 0) }} ><img alt="Skoller" className='logo' src={this.props.imgPath || 'src/assets/images/logo-wide-blue@1x.png'} /></a>
-          </h1>
+            <span className='cn-navbar-slogan'>Keep Up with Classes, Together</span>
+          </div>
           {!this.props.noLogin && <LoginForm
             rootStore={this.props.rootStore}
             onSubmit={() => this.onSubmitLogin()}
