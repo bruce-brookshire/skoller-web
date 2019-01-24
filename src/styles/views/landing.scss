@@ -29,17 +29,27 @@ $h2-size-sm: 36px;
 }
 
 @keyframes fade1 {
-  0%, 33%, 100% { opacity:0 }
-  66% { opacity: 1 }
+  3% { opacity: 1 }
+  30% { opacity: 1 }
+  36% { opacity: 0 }
+  97% { opacity: 0 }
+  100% { opacity: 1}
 }
 @keyframes fade2 {
-  0%, 66%, 100% { opacity:0 }
-  33% { opacity: 1 }
+  0% { opacity: 0 }
+  30% { opacity: 0 }
+  36% { opacity: 1 }
+  63% { opacity: 1}
+  69% { opacity: 0}
+  100% { opacity: 0 }
 }
 
 @keyframes fade3 {
-  0%, 100% { opacity:1 }
-  33%, 66% { opacity: 0 }
+  3% { opacity: 0 }
+  63% { opacity: 0 }
+  69% { opacity: 1 }
+  97% { opacity: 1 }
+  100% { opacity: 0 }
 }
 
 // Styles ------------------------
@@ -50,6 +60,11 @@ $h2-size-sm: 36px;
   background-image: url('../../assets/images/background_landing.png');
   background-size: cover;
   background-repeat: no-repeat;
+  background-position: 30% 100%;
+
+  @include breakpoint(medium) {
+    background-position: 0 0;
+  }
 
   .cn-landing-button{
     min-width: 200px;
@@ -74,33 +89,52 @@ $h2-size-sm: 36px;
       @include breakpoint(medium) {
         width: 363px;
       }
-      
     }
   
     .cn-landing-content{
-      @include row;
+      @include breakpoint(medium) {
+        @include row;
+      }
       width: 100%;
 
       .container-landing-message {
-        flex-grow: 1;
         flex-basis: 50%;
-        padding: 30px;
 
-        .image-landing-message {
-          display: block;
-          position: absolute;
-          width: auto;
-          animation-delay: 4s;
-          animation-duration: 20s;
-          animation-iteration-count: infinite;
-          animation-timing-function: ease-in-out;
-          
-          @for $i from 1 through 3 {
-            &:nth-of-type(#{$i}) {
-              background-size: cover;
-              background-position: center;
-              animation-name: fade#{$i};
-            }  
+        .image-container-landing-message {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: relative;
+          width: 100%;
+          height: calc(80vh - 48px);
+
+          @include breakpoint(medium) {
+            height: 100%;
+          }
+
+          .image-landing-message {
+            display: block;
+            opacity: 0;
+            position: absolute;
+            height: auto;
+            width: 100%;
+            animation-duration: 20s;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-in-out;
+
+            @include breakpoint(medium) {
+              max-width: 100%;
+              width: auto;
+              height: 100%;
+            }
+            
+            @for $i from 1 through 3 {
+              &:nth-of-type(#{$i}) {
+                animation-name: fade#{$i};
+              }  
+            }
+
+            &:nth-of-type(1) { opacity: 1; }
           }
         }
       }
