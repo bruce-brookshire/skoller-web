@@ -28,11 +28,32 @@ $h2-size-sm: 36px;
   }
 }
 
+@keyframes fade1 {
+  0%, 33%, 100% { opacity:0 }
+  66% { opacity: 1 }
+}
+@keyframes fade2 {
+  0%, 66%, 100% { opacity:0 }
+  33% { opacity: 1 }
+}
+
+@keyframes fade3 {
+  0%, 100% { opacity:1 }
+  33%, 66% { opacity: 0 }
+}
+
 // Styles ------------------------
 .cn-landing-container {
   overflow-x: hidden;
   height: 100%;
   @include landing-nav-parent();
+  background-image: url('../../assets/images/background_landing.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  .cn-landing-button{
+    min-width: 200px;
+  }
 
   .cn-landing-content-wrapper{
     margin: 0 auto;
@@ -63,31 +84,23 @@ $h2-size-sm: 36px;
       .container-landing-message {
         flex-grow: 1;
         flex-basis: 50%;
+        padding: 30px;
 
-        .landing-message {
-          @include unstyled-list;
-          width: 95%;
-          margin: 0 auto;
-          margin-top: $unit-space;
-          .message-break {
-            display: flex;
-            margin-left: 30px;
-          }
-
-          .message-row {
-            display: flex;
-            align-items: center;
-            font-size: 24px;
-
-            .cn-person {
-              display: flex;
-              width: 69px;
-              margin-right: $unit-space;
-              align-items: center;
-              justify-content: center;
-              margin-bottom: 2px;
-              margin-top: 2px;
-            }
+        .image-landing-message {
+          display: block;
+          position: absolute;
+          width: auto;
+          animation-delay: 4s;
+          animation-duration: 20s;
+          animation-iteration-count: infinite;
+          animation-timing-function: ease-in-out;
+          
+          @for $i from 1 through 3 {
+            &:nth-of-type(#{$i}) {
+              background-size: cover;
+              background-position: center;
+              animation-name: fade#{$i};
+            }  
           }
         }
       }

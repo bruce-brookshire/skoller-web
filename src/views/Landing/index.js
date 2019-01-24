@@ -37,7 +37,7 @@ class Landing extends React.Component {
           </div>
 
           <div className='cn-learn-more'>
-            When one student keeps up, everyone keeps up. <a className='non-styled-link' style={{fontWeight: '500'}} onClick={() => { browserHistory.push('/learn-more'); window.scrollTo(0, 0) }}>Learn more</a>.
+            <button className='button cn-landing-button' onClick={() => { browserHistory.push('/learn-more'); window.scrollTo(0, 0) }}>Explore</button>
           </div>
         </div>
 
