@@ -43,19 +43,23 @@ class StudentRequestInfo extends React.Component {
   }
 
   renderStudentRequestFields (fields) {
-    return Object.keys(fields).map((field, index) => {
-      let val = fields[field]
-      let formattedField = field.replace(/_/g, ' ')
-      let finalFormat = formattedField.charAt(0).toUpperCase() + formattedField.slice(1)
-      if (val && field !== 'id') {
-        return (
-          <div className='cn-student-request-content' key={index}>
-            <em>{finalFormat}</em>
-            <span>{val}</span>
-          </div>
-        )
-      }
-    })
+    if (fields) {
+      return Object.keys(fields).map((field, index) => {
+        let val = fields[field]
+        let formattedField = field.replace(/_/g, ' ')
+        let finalFormat = formattedField.charAt(0).toUpperCase() + formattedField.slice(1)
+        if (val && field !== 'id') {
+          return (
+            <div className='cn-student-request-content' key={index}>
+              <em>{finalFormat}</em>
+              <span>{val}</span>
+            </div>
+          )
+        }
+      })
+    } else {
+      return null
+    }
   }
 
   renderContent () {
