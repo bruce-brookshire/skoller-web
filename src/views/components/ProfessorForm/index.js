@@ -11,9 +11,6 @@ const requiredFields = {
   },
   'name_last': {
     type: 'required'
-  },
-  'email': {
-    type: 'email'
   }
 }
 
