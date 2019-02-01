@@ -21,7 +21,10 @@ class RequestResolvedModal extends React.Component {
     actions.classhelp.resolveChangeRequest(this.props.request.id).then((res) => {
       actions.classes.getClassById(cl.id).then((cl) => {
         this.props.onSubmit(cl)
-        if (!this.props.request) {
+        const sr = cl.student_requests.filter(c => !c.is_completed)
+        const cr = cl.change_requests.filter(c => !c.is_completed)
+        let allRequests = sr.concat(cr)
+        if (allRequests.length === 0) {
           this.navigateToNeedsChange()
         }
       }).catch(() => false)
@@ -33,7 +36,10 @@ class RequestResolvedModal extends React.Component {
     actions.classhelp.resolveStudentRequest(this.props.request.id).then((res) => {
       actions.classes.getClassById(cl.id).then((cl) => {
         this.props.onSubmit(cl)
-        if (!this.props.request) {
+        const sr = cl.student_requests.filter(c => !c.is_completed)
+        const cr = cl.change_requests.filter(c => !c.is_completed)
+        let allRequests = sr.concat(cr)
+        if (allRequests.length === 0) {
           this.navigateToNeedsChange()
         }
       }).catch(() => false)

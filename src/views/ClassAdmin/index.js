@@ -105,7 +105,7 @@ class ClassAdmin extends React.Component {
     actions.classes.getClassByIdAdmin(classId).then((cl) => {
       this.setState({cl, weights: cl.weights, assignments: cl.assignments})
       this.setState({loadingClass: false})
-    }).catch(() => { this.setState({loadingClass: false}) })
+    }).catch(() => { debugger; this.setState({loadingClass: false}) })
   }
 
   /*
@@ -603,7 +603,6 @@ class ClassAdmin extends React.Component {
     } else {
       subtitle = 'Updated by ' + updateUsers[0]
     }
-    console.log(updateUsers)
     return subtitle
   }
 
@@ -657,7 +656,7 @@ class ClassAdmin extends React.Component {
             />
             {cl.change_requests &&
               <StudentRequestInfo
-                cl={cl}
+                cl={this.state.cl}
                 boxClassName='cn-admin-footer-card margin-left'
                 contentClassName='cn-admin-footer-card-content'
                 onComplete={this.toggleRequestResolvedModal.bind(this)}
