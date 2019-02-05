@@ -1,6 +1,7 @@
 @mixin landing-nav-parent {
   position: relative;
   min-height: 100vh;
+  background-color: #f5f7f9;
 
   @include breakpoint(medium) {
     padding-bottom: 69px;
@@ -14,12 +15,13 @@
   font-size: 1em;
   padding: 1rem;
   text-align: center;
+  position: relative;
   z-index: 1;
   height: 300px;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   margin-top: 15px;
-  box-shadow: 0px -10px 25px rgba(0,0,0,.10);
+  box-shadow: 0px -5px 20px rgba(0,0,0,.07);
 
   @include breakpoint(medium) {
     border-top-left-radius: 0px;
