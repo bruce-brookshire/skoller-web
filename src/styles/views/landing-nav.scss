@@ -19,10 +19,21 @@
     }
 
     .cn-navbar-logo {
-      @include reset-box-model;
-      display: flex;
-      flex: 1;
-      align-items: center;
+      display: none;
+      @include breakpoint(medium) {
+        @include reset-box-model;
+        display: flex;
+        flex: 1;
+        align-items: center;
+      }
+    }
+
+    .cn-navbar-logo-alt {
+      display: block;
+      margin: 0 auto;
+      @include breakpoint(medium) {
+        display: none;
+      }
     }
 
     .cn-navbar-slogan {
