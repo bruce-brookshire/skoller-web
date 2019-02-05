@@ -1,9 +1,12 @@
 .cn-landing-navbar {
-
+  background-color: $cn-color-blue;
+  box-shadow: 0px 5px 20px rgba(0,0,0,.08);
   @include breakpoint(medium) {
     @include navbar();
+    background-color: $cn-color-white;
     height: auto;
     display: block;
+    box-shadow: none;
   }
 
   .cn-navbar-content {

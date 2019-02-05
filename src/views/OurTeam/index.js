@@ -57,7 +57,7 @@ class OurTeam extends React.Component {
                 </div>
               </div>
             </div>
-            <div className='teammate-cell'>
+            {/* <div className='teammate-cell'>
               <div className='teammate'>
                 <img className='teammate-image' src='src/assets/images/our_team/tyler.png'></img>
                 <p className='teammate-name'>Tyler Witt</p>
@@ -67,7 +67,7 @@ class OurTeam extends React.Component {
                   <a href='https://www.linkedin.com/in/wittt/'><i className="fa fa-linkedin-square"></i></a> <a href='mailto:tyler@fortyau.com'><i className="fa fa-envelope"></i></a>
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className='teammate-cell'>
               <div className='teammate'>
                 <img className='teammate-image' src='src/assets/images/our_team/trevor.png'></img>
