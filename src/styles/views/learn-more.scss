@@ -248,3 +248,10 @@
     }
   }
 }
+
+.section-cta {
+  margin-bottom: -30px;
+  @include breakpoint(medium) {
+    margin-bottom: 0px;
+  }
+}

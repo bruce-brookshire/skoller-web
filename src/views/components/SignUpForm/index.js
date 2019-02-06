@@ -130,7 +130,7 @@ class SignUpForm extends React.Component {
             {header && <h2>{header}</h2>}
             {referralCode && this.renderReferralCode()}
           </div>
-          <div className='row'>
+          {/* <div className='row'>
             <div className='col-xs-6'>
               <InputField
                 containerClassName='margin-top'
@@ -157,8 +157,34 @@ class SignUpForm extends React.Component {
                 value={form.student.name_last}
               />
             </div>
-          </div>
+          </div> */}
           <div className='row'>
+            <div className='col-xs-12'>
+              <InputField
+                containerClassName='margin-top'
+                error={formErrors.student && formErrors.student.name_first}
+                label='First name'
+                id='sign-up.student.name_first'
+                name='student.name_first'
+                autoComplete='given-name'
+                onChange={updateProperty}
+                placeholder='First name'
+                value={form.student.name_first}
+              />
+            </div>
+            <div className='col-xs-12'>
+              <InputField
+                containerClassName='margin-top'
+                error={formErrors.student && formErrors.student.name_last}
+                label='Last name'
+                id='sign-up.student.name_last'
+                name='student.name_last'
+                autoComplete='family-name'
+                onChange={updateProperty}
+                placeholder='Last name'
+                value={form.student.name_last}
+              />
+            </div>
             <div className='col-xs-12'>
               <InputField
                 containerClassName='margin-top'

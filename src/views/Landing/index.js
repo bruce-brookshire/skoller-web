@@ -9,7 +9,7 @@ import '../../../node_modules/react-smartbanner/src/styles/style.scss'
 
 import LandingNav from '../components/LandingNav'
 import Signup from './Signup'
-import LandingMessage from './LandingMessage'
+import LandingMessageType from './LandingMessageType'
 import LandingFooter from '../components/LandingFooter'
 
 @inject('rootStore') @observer
@@ -32,7 +32,7 @@ class Landing extends React.Component {
         {/* start of section 1 */}
         <div className='cn-landing-content-wrapper'>
           <div className='cn-landing-content'>
-            <LandingMessage rootStore={this.props.rootStore}/>
+            <LandingMessageType rootStore={this.props.rootStore}/>
             <Signup rootStore={this.props.rootStore}/>
           </div>
 

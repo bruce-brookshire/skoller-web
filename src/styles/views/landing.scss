@@ -76,6 +76,10 @@ $h2-size-sm: 36px;
     @include breakpoint(medium) {
       width: 100%;
       max-width: 1000px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
 
     .cn-learn-more {
@@ -84,10 +88,12 @@ $h2-size-sm: 36px;
       margin: 0 auto;
       text-align: center;
       width: 90%;
-      padding-bottom: 20px;
+      padding-bottom: 10px;
+      padding-top: 10px;
 
       @include breakpoint(medium) {
         width: 363px;
+        font-size: 24px;
       }
     }
   
@@ -98,7 +104,11 @@ $h2-size-sm: 36px;
       width: 100%;
 
       .container-landing-message {
-        flex-basis: 50%;
+        margin-top: 35px;
+        @include breakpoint(medium) {
+          margin-top: 0;
+          flex-basis: 50%;
+        }
 
         .landing-image-carousel {
           display: flex;
@@ -106,62 +116,100 @@ $h2-size-sm: 36px;
           align-items: center;
           position: relative;
           width: 100%;
-          height: calc(80vh - 48px);
+          height: 80vh;
 
           @include breakpoint(medium) {
             height: 100%;
+            margin-top: 7px;
           }
 
           .landing-image-carousel-container {
             display: flex;
-            width: 100%;
+            width: auto;
             height: 100%;
             flex-direction: column;
             align-items: center;
             justify-items: center;
-            opacity: 0;
-            position: absolute;
-            animation-duration: 15s;
-            animation-iteration-count: infinite;
-            animation-timing-function: ease-in-out;
 
             @include breakpoint(medium) {
               max-width: 100%;
               width: auto;
               height: 100%;
             }
-            
-            @for $i from 1 through 3 {
-              &:nth-of-type(#{$i}) {
-                animation-name: fade#{$i};
-              }  
-            }
-
-            &:nth-of-type(1) { opacity: 1; }
 
             .landing-image-container {
               display: flex;
               align-items: center;
               justify-content: center;
               flex: 1;
-              height: 100%;
+              margin-bottom: 30px;
+              height: 80%;
+
+              @include breakpoint(medium) {
+                height: 100%;
+                margin-bottom: 20px;
+              }
 
               .landing-image {
+                position: absolute;
+                height: 95%;
+                animation-duration: 15s;
+                animation-iteration-count: infinite;
+                animation-timing-function: ease-in-out;
+                opacity: 0;
+                @for $i from 1 through 3 {
+                  &:nth-of-type(#{$i}) {
+                    animation-name: fade#{$i};
+                  }
+                }
+    
+                &:nth-of-type(1) { opacity: 1; }
                 flex: 0;
-                height: 100%;
                 width: auto;
+
+                @include breakpoint(medium) {
+                  height: 100%;
+                  position: absolute;
+                  margin-top: 0px;
+                  padding-bottom: 0vh;
+                }
               }
             }
 
             .landing-image-text {
-              padding-top: $unit-space;
               flex: 0;
               font-family: $cn-font-family;
               font-size: 30px;
-              text-align: center;
+              font-weight: 200;
               color: $cn-color-white;
+              text-align: center;
+              
+              @include breakpoint(medium) {
+                font-size: 22px;
+              }
+
+              @include breakpoint(980px) {
+                font-size: 30px;
+              }
             }
           }
+        }
+      }
+
+      .typewrite {
+        display: none;
+
+        @include breakpoint(medium) {
+          display: block;
+        }
+      }
+
+      .typewritemobile {
+        display: block;
+        height: 300px;
+
+        @include breakpoint(medium) {
+          display: none;
         }
       }
 
