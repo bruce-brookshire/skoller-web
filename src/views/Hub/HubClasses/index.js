@@ -80,6 +80,21 @@ class HubClasses extends React.Component {
     }).catch(() => { this.setState({loading: false}) })
   }
 
+  getCsv () {
+    actions.classes.getClassesCsv().then(csv => {
+      let blob = new Blob([csv], {type: 'text/csv'}) // eslint-disable-line no-undef
+      let url = window.URL.createObjectURL(blob)
+      var downloadLink = document.createElement("a")
+      downloadLink.href = url
+      var today = new Date()
+      downloadLink.download = "Classes-" + today.getFullYear() + "_" + (today.getMonth() + 1) + "_" + today.getDate() + "_" + today.getHours() + "_" + today.getMinutes() + ".csv"
+
+      document.body.appendChild(downloadLink)
+      downloadLink.click()
+      document.body.removeChild(downloadLink)
+    })
+  }
+
   /*
   * Row data to be passed to the grid
   *
@@ -186,7 +201,8 @@ class HubClasses extends React.Component {
         <ClassSearch {...this.props} loading={this.state.loading}
           onSearch={this.getClasses.bind(this)}/>
         <div className='margin-top'>
-          <a onClick={this.onCreateClass.bind(this)}>Create new class </a>
+          {/* <a onClick={this.onCreateClass.bind(this)}>Create new class </a> */}
+          <a className='margin-left' onClick={this.getCsv.bind(this)}>Get Class CSV</a>
           <span className='description'>Manage classes from this page</span>
           <span className='total right'>Total results: {this.state.classes.length}</span>
           <br />
