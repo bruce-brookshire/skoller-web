@@ -53,9 +53,10 @@ $h2-size-sm: 36px;
 }
 
 // Styles ------------------------
+
 .cn-landing-container {
   overflow-x: hidden;
-  height: 100%;
+  // height: 100%;
   @include landing-nav-parent();
   background-image: url('../../assets/images/background_landing.png');
   background-size: cover;
@@ -73,14 +74,17 @@ $h2-size-sm: 36px;
   .cn-landing-content-wrapper{
     margin: 0 auto;
 
-    @include breakpoint(medium) {
-      width: 100%;
-      max-width: 1000px;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+    @media screen and ( min-height: 730px ) {
+      @include breakpoint(medium) {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
     }
+
+    max-width: 1000px;
+    width: 100%;
 
     .cn-learn-more {
       font-size: 24px;
