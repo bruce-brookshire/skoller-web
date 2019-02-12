@@ -1,4 +1,4 @@
-import {get, post, del, put} from '../utilities/api'
+import {csv, get, post, del, put} from '../utilities/api'
 import {showSnackbar} from '../utilities/snackbar'
 import stores from '../stores'
 const {userStore} = stores
@@ -208,6 +208,20 @@ export function enrollByLink (link) {
 
 export function addNote (cl, form) {
   return post(`/api/v1/classes/${cl.id}/notes`, form, 'Note not added, try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Gets a CSV of classes.
+*
+*/
+export function getClassesCsv () {
+  return csv(`/api/v1/analytics/communities/csv`, 'Error retrieving csv. Try again.')
     .then(data => {
       return data
     })

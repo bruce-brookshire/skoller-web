@@ -4,10 +4,6 @@ import Card from '../../../components/Card'
 
 class StudentRequestInfo extends React.Component {
   componentWillMount () {
-    const open = this.getOpenStudentRequests()
-    this.setState({
-      studentRequests: open
-    })
   }
 
   /*
@@ -21,18 +17,19 @@ class StudentRequestInfo extends React.Component {
   }
 
   renderTitle () {
+    let studentRequests = this.getOpenStudentRequests()
     return (
       <div className='cn-student-request-title margin-bottom'>
         <div className='cn-student-request-subtitle center-text'>
-          {this.state.studentRequests[0].user && this.state.studentRequests[0].user.email ? (
-            <h5 className='margin-zero'>{this.state.studentRequests[0].user.email}</h5>
+          {studentRequests[0].user && studentRequests[0].user.email ? (
+            <h5 className='margin-zero'>{studentRequests[0].user.email}</h5>
           ) : null}
           <h6 className='margin-zero'>Student Request</h6>
-          {this.state.studentRequests[0].change_type && this.state.studentRequests[0].change_type.name ? (
-            <h6 className='margin-zero'>{this.state.studentRequests[0].change_type.name}</h6>
+          {studentRequests[0].change_type && studentRequests[0].change_type.name ? (
+            <h6 className='margin-zero'>{studentRequests[0].change_type.name}</h6>
           ) : null}
-          {this.state.studentRequests[0].notes ? (
-            <h6 className='margin-zero'>{`Note: ${this.state.studentRequests[0].notes}`}</h6>
+          {studentRequests[0].notes ? (
+            <h6 className='margin-zero'>{`Note: ${studentRequests[0].notes}`}</h6>
           ) : null}
         </div>
         <div className='cn-student-request-button'>
@@ -63,13 +60,15 @@ class StudentRequestInfo extends React.Component {
   }
 
   renderContent () {
+    let studentRequests = this.getOpenStudentRequests()
     return (
-      [this.renderTitle(), this.renderStudentRequestFields(this.state.studentRequests[0].data)]
+      [this.renderTitle(), this.renderStudentRequestFields(studentRequests[0].data)]
     )
   }
 
   render () {
-    if (this.state.studentRequests && this.state.studentRequests[0]) {
+    let studentRequests = this.getOpenStudentRequests()
+    if (studentRequests && studentRequests[0]) {
       return (
         <Card
           title='Change Request'
