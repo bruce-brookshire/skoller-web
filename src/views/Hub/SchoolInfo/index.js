@@ -97,8 +97,30 @@ class SchoolInfo extends React.Component {
     return (
       <div>
         <a onClick={this.handleChatStateChange.bind(this)}>
-          {(school && !school.is_chat_enabled) && <i className="fas fa-comment-o fa-2x cn-blue"></i>}
+          {(school && !school.is_chat_enabled) && <i className="far fa-comment fa-2x cn-blue"></i>}
           {(school == null || school.is_chat_enabled) && <i className="fas fa-comment fa-2x cn-blue"></i>}
+        </a>
+      </div>
+    )
+  }
+
+  handleClassStartStateChange () {
+    if (this.state.school) {
+      const {id, is_class_start_enabled: classStart} = this.state.school
+      actions.schools.updateSchool({id: id, is_class_start_enabled: !classStart}).then((school) => {
+        this.setState({school: school})
+      }).catch(() => { this.setState({loading: false}) })
+    }
+  }
+
+  renderClassStartEnabled () {
+    const { school } = this.state
+
+    return (
+      <div>
+        <a onClick={this.handleClassStartStateChange.bind(this)}>
+          {(school && !school.is_class_start_enabled) && <i className="far fa-bell-slash fa-2x cn-blue"></i>}
+          {(school == null || school.is_class_start_enabled) && <i className="fas fa-bell fa-2x cn-blue"></i>}
         </a>
       </div>
     )
@@ -177,6 +199,10 @@ class SchoolInfo extends React.Component {
             <tr>
               <th>Chat:</th>
               <td>{this.renderChatEnabled()}</td>
+            </tr>
+            <tr>
+              <th>Class Start:</th>
+              <td>{this.renderClassStartEnabled()}</td>
             </tr>
           </tbody>
         </table>
