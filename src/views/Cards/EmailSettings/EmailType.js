@@ -33,6 +33,7 @@ class EmailType extends React.Component {
       <div className='cn-email-type'>
         <b>{this.props.emailType.name}</b>
         <div className='cn-space-between-row'>
+          {this.state.form.is_active_email != null &&
           <div>
             <label htmlFor="is_active_email" className='cn-input-label'>Emails?</label>
             <CheckboxField
@@ -44,7 +45,8 @@ class EmailType extends React.Component {
               name='is_active_email'
               value={this.state.form.is_active_email}
             />
-          </div>
+          </div>}
+          {this.state.form.is_active_notification != null &&
           <div>
             <label htmlFor="is_active_notification" className='cn-input-label'>Notifications?</label>
             <CheckboxField
@@ -56,7 +58,7 @@ class EmailType extends React.Component {
               name='is_active_notifications'
               value={this.state.form.is_active_notification}
             />
-          </div>
+          </div>}
         </div>
       </div>
     )

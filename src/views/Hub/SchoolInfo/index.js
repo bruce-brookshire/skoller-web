@@ -104,28 +104,6 @@ class SchoolInfo extends React.Component {
     )
   }
 
-  handleClassStartStateChange () {
-    if (this.state.school) {
-      const {id, is_class_start_enabled: classStart} = this.state.school
-      actions.schools.updateSchool({id: id, is_class_start_enabled: !classStart}).then((school) => {
-        this.setState({school: school})
-      }).catch(() => { this.setState({loading: false}) })
-    }
-  }
-
-  renderClassStartEnabled () {
-    const { school } = this.state
-
-    return (
-      <div>
-        <a onClick={this.handleClassStartStateChange.bind(this)}>
-          {(school && !school.is_class_start_enabled) && <i className="far fa-bell-slash fa-2x cn-blue"></i>}
-          {(school == null || school.is_class_start_enabled) && <i className="fas fa-bell fa-2x cn-blue"></i>}
-        </a>
-      </div>
-    )
-  }
-
   renderFourDoor () {
     return (
       <FourDoor
