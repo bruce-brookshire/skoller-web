@@ -193,6 +193,7 @@ class SyllabusTool extends React.Component {
 
     if (currentIndex !== (stepCount - 1)) {
       this.setState({currentIndex: currentIndex + 1})
+      this.lockClass()
     } else {
       this.unlock(true)
     }
