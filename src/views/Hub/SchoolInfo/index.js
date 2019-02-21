@@ -178,10 +178,6 @@ class SchoolInfo extends React.Component {
               <th>Chat:</th>
               <td>{this.renderChatEnabled()}</td>
             </tr>
-            <tr>
-              <th>Class Start:</th>
-              <td>{this.renderClassStartEnabled()}</td>
-            </tr>
           </tbody>
         </table>
       </div>
