@@ -148,6 +148,12 @@ class AccountInfo extends React.Component {
                     <td className='cn-flex-table-cell'>{user.student.phone}</td>
                   </tr>
                 }
+                {user.student &&
+                  <tr>
+                    <th className='cn-flex-table-cell'>Primary School:</th>
+                    <td className='cn-flex-table-cell'>{user.student.primary_school ? user.student.primary_school.name : ''}</td>
+                  </tr>
+                }
               </tbody>
             </table> : <a onClick={this.toggleAccountForm.bind(this)}>Add details</a>
           }
