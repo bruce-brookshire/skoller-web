@@ -122,6 +122,21 @@ class HubSchools extends React.Component {
     browserHistory.push({pathname: '/hub/schools/school/info', state: {school}})
   }
 
+  getCsv () {
+    actions.schools.getSchoolsCsv().then(csv => {
+      let blob = new Blob([csv], {type: 'text/csv'}) // eslint-disable-line no-undef
+      let url = window.URL.createObjectURL(blob)
+      var downloadLink = document.createElement("a")
+      downloadLink.href = url
+      var today = new Date()
+      downloadLink.download = "Schools-" + today.getFullYear() + "_" + (today.getMonth() + 1) + "_" + today.getDate() + "_" + today.getHours() + "_" + today.getMinutes() + ".csv"
+
+      document.body.appendChild(downloadLink)
+      downloadLink.click()
+      document.body.removeChild(downloadLink)
+    })
+  }
+
   render () {
     return (
       <div className='cn-schools-container'>
@@ -135,6 +150,7 @@ class HubSchools extends React.Component {
           </div>
           <div>
             <a onClick={this.onCreateSchool.bind(this)}>Create new school </a>
+            <a className='margin-left' onClick={this.getCsv.bind(this)}>Get Schools CSV</a>
             <span className='description'>Manage school details from this page</span>
           </div>
         </div>

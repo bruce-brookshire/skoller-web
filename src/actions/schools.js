@@ -1,4 +1,4 @@
-import {get, post, put, postFile, del} from '../utilities/api'
+import {csv, get, post, put, postFile, del} from '../utilities/api'
 import {showSnackbar} from '../utilities/snackbar'
 import stores from '../stores'
 const {userStore} = stores
@@ -133,6 +133,20 @@ export function uploadSchoolCsv (file) {
     .catch(error => {
       if (error.status === 422) showSnackbar('File name has already been taken.')
       else showSnackbar('Error uploading file. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Gets a CSV of schools.
+*
+*/
+export function getSchoolsCsv () {
+  return csv(`/api/v1/schools/csv`, 'Error retrieving csv. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
       return Promise.reject(error)
     })
 }
