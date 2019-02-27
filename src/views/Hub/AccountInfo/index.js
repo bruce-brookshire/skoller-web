@@ -6,6 +6,7 @@ import AccountInfoForm from './AccountInfoForm'
 import actions from '../../../actions'
 import ClassList from '../../components/ClassList'
 import Grid from '../../../components/Grid'
+import DeleteDialog from '../../../components/Grid/DeleteDialog'
 
 const headers = [
   {
@@ -59,6 +60,32 @@ class AccountInfo extends React.Component {
     }).catch(() => false)
   }
 
+  toggleDeleteDialog () {
+    this.setState({openDeleteDialog: !this.state.openDeleteDialog})
+  }
+
+  renderDeleteDialog () {
+    return (
+      <DeleteDialog
+        open={this.state.openDeleteDialog}
+        onClose={this.toggleDeleteDialog.bind(this)}
+        onDelete={this.onDeleteUser.bind(this)}
+        deleteMessage={'Are you sure you want to delete this user? WARNING: This action is irreversible. All data will be lost and irretrievable.'}
+      />
+    )
+  }
+
+  onDeleteUser () {
+    actions.users.deleteUserById(this.state.user).then(_resp => {
+      browserHistory.push({
+        pathname: '/hub/accounts',
+        state: {
+          needsChange: true
+        }
+      })
+    }).catch(() => false)
+  }
+
   toggleactive () {
     const {user} = this.state
     const form = {
@@ -84,11 +111,13 @@ class AccountInfo extends React.Component {
 
     return (
       <div className='cn-shadow-box cn-accounts-min-width'>
+        {this.renderDeleteDialog()}
         <div className='cn-shadow-box-content'>
           <div className='cn-card-title edit-header'>
             Account Details
             <i className={'fa fa-hand-paper-o cursor margin-left ' + (user.is_active ? 'cn-grey' : 'cn-red')} onClick={() => this.toggleactive()} />
             <i className='fas fa-pencil-alt cn-blue cursor margin-left' onClick={this.toggleAccountForm.bind(this)} />
+            <i className='cursor margin-left fas fa-trash-alt cn-red' onClick={() => this.toggleDeleteDialog()} />
           </div>
           {user
             ? <table className='margin-top roles-table'>

@@ -1,4 +1,4 @@
-import {csv, get, put} from '../utilities/api'
+import {csv, get, put, del} from '../utilities/api'
 
 /*
 * Gets a CSV of users.
@@ -34,3 +34,12 @@ export function updateEmailPreferences (userId, form) {
     })
 }
 
+export function deleteUserById (user) {
+  return del(`/api/v1/users/${user.id}`, null, 'Error deleting user. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
