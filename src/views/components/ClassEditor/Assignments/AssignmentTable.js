@@ -47,6 +47,9 @@ class AssignmentTable extends React.Component {
     )
   }
 
+  /* TODO: This is a bit bloated, but when it was unrolled into the rendering code
+      it was crashing as 'undefined' did not have name. Could be more trim.
+  */
   renderWeightName (id) {
     const {weights} = this.props
     if (weights) {
