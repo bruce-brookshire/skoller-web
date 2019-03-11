@@ -54,7 +54,6 @@ class WeightForm extends React.Component {
   initializeFormData (data) {
     let formData = data || {}
     const {id, name, weight} = formData
-
     return ({
       id: id || null,
       name: name || '',

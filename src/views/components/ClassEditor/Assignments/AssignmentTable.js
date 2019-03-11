@@ -38,15 +38,31 @@ class AssignmentTable extends React.Component {
         }
         <div className={!viewOnly ? 'col-xs-8' : 'col-xs-9'}>
           <div>{name}</div>
-          {!currentWeight && <div className='description'>
-            {(weightId && weights && weights.find(w => w.id === weightId).name) || 'N/A'}
-          </div>}
+          {!currentWeight && this.renderWeightName(weightId)}
         </div>
         <div className='col-xs-3 right-text'>
           {due ? this.mapAssignmentDate(due) : ''}
         </div>
       </div>
     )
+  }
+
+  renderWeightName (id) {
+    const {weights} = this.props
+    if (weights) {
+      var weight = weights.find(w => w.id === id)
+      if (weight && weight !== undefined) {
+        return <div className='description'>
+          {weight.name}
+        </div>
+      } else {
+        return <div className='description'>
+           N/A
+        </div>
+      }
+    } else {
+      return null
+    }
   }
 
   /*
