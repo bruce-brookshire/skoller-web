@@ -21,7 +21,7 @@ class ProblemsModal extends React.Component {
             If someone uploaded the wrong documents for this class, you can delete and add files on the <a onClick={() => this.goToDocuments()}>documents page</a> for this class.
           </div>
           <div className='center-text margin-top'>
-          If that’s not your issue, <a className='link' href='mailto:support@skoller.com'>let us know</a> what’s going on and we’ll figure it out.
+          If that’s not your issue, <a className='link' href='mailto:support@skoller.co'>let us know</a> what’s going on and we’ll figure it out.
           </div>
           <button className='button full-width margin-top margin-bottom' onClick={() => this.props.onClose()}>Got it</button>
         </div>

@@ -31,7 +31,7 @@ class OurTeam extends React.Component {
                 <p className='teammate-title'>Founder &amp; COO</p>
                 <p className='teammate-description'> Logan is the recruiter. He oversees external relations, business partnerships, and marketing.</p>
                 <div className='teammate-links'>
-                  <a href='https://www.linkedin.com/in/loganmatthews/'><i className="fa fa-linkedin-square"></i></a> <a href='mailto:logan@skoller.com'><i className="fa fa-envelope"></i></a>
+                  <a href='https://www.linkedin.com/in/loganmatthews/'><i className="fa fa-linkedin-square"></i></a> <a href='mailto:logan@skoller.co'><i className="fa fa-envelope"></i></a>
                 </div>
               </div>
             </div>
