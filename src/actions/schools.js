@@ -142,7 +142,7 @@ export function uploadSchoolCsv (file) {
 *
 */
 export function getSchoolsCsv () {
-  return csv(`/api/v1/schools/csv`, 'Error retrieving csv. Try again.')
+  return csv(`/api/v1/analytics/csv/schools`, 'Error retrieving csv. Try again.')
     .then(data => {
       return data
     })

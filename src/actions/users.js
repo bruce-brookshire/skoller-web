@@ -5,7 +5,7 @@ import {csv, get, put, del} from '../utilities/api'
 *
 */
 export function getStudentCsv () {
-  return csv(`/api/v1/users/csv`, 'Error retrieving csv. Try again.')
+  return csv(`/api/v1/analytics/csv/users`, 'Error retrieving csv. Try again.')
     .then(data => {
       return data
     })

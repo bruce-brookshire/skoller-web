@@ -221,7 +221,7 @@ export function addNote (cl, form) {
 *
 */
 export function getClassesCsv () {
-  return csv(`/api/v1/analytics/communities/csv`, 'Error retrieving csv. Try again.')
+  return csv(`/api/v1/analytics/csv/classes`, 'Error retrieving csv. Try again.')
     .then(data => {
       return data
     })
