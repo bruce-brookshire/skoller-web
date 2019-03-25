@@ -37,7 +37,7 @@ class Landing extends React.Component {
           </div>
 
           <div className='cn-learn-more'>
-            <button className='button cn-landing-button' onClick={() => { browserHistory.push('/learn-more'); window.scrollTo(0, 0) }}>Explore</button>
+            <a className='button cn-landing-button' href='https://blog.skoller.co'>Explore</a>
           </div>
         </div>
 
