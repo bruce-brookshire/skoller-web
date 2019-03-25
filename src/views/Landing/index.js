@@ -37,7 +37,7 @@ class Landing extends React.Component {
           </div>
 
           <div className='cn-learn-more'>
-            <a className='button cn-landing-button' href='https://blog.skoller.co'>Explore</a>
+            <a className='button cn-landing-button' href='https://explore.skoller.co'>Explore</a>
           </div>
         </div>
 
