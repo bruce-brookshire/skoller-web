@@ -18,7 +18,7 @@ class LandingFooter extends React.Component {
             <a className='non-styled-link' href='https://explore.skoller.co/privacy-policy'>Privacy policy</a>
           </div>
           <div className='footer-link'>
-            <a className='non-styled-link' href="mailto:support@skoller.co">Contact us</a>
+            <a className='non-styled-link' href="https://explore.skoller.co/contactus">Contact us</a>
           </div>
           <div className='footer-link'>
             Skoller, Inc. &copy; 2019
