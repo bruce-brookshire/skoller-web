@@ -48,34 +48,38 @@ class ClassList extends React.Component {
   * @return [Object] row. Object of formatted row data for display in grid.
   */
   mapRow (item, index) {
-    const {id, subject, section, code, name, meet_start_time: startTime, meet_days: days, professor, status, enrollment} = item
-
+    const {id, subject, section, code, completion, grade, name, meet_start_time: startTime, meet_days: days, professor, status, enrollment} = item
+    // console.log(item)
     const row = {
       id: id || '',
       courseNumber: (subject ? subject + ' ' : '') + (code ? code : '') + (section && code ? '.' + section : ''), // eslint-disable-line no-unneeded-ternary
       name: name || '-',
       professor: professor ? mapProfessor(professor) : '',
       days: days || '',
+      completion: completion,
+      grade: grade,
       beginTime: days === 'Online' ? '' : (startTime ? mapTimeToDisplay(startTime) : (section && !code ? section : '')),
-      status: status ? this.mapStatus(status) : '-',
+      status: status ? this.mapStatus(item) : '-',
       enrollment: (enrollment && (enrollment - 1) > 0) ? enrollment - 1 : 0
     }
-
+    // console.log(row)
     return row
   }
 
   /*
   * Map the class status to ui
   *
-  * @param [String] status. Class status.
+  * @param [String] item. Class status.
   */
-  mapStatus (status) {
+  mapStatus (item) {
+    console.log(item)
+    const {status} = item
     var statusNameL = status.name.toLowerCase()
     if (status.is_complete) {
       return (
-        <div className='cn-class-list-row-icon-container'>
-          <i className='fas fa-check-square cn-class-list-row-icon cn-green' />
-          <span className='cn-class-list-row-icon-text cn-green'>Live</span>
+        <div className='cn-class-list-row-icon-container cn-green'>
+          {/* <i className='fas fa-check-square cn-class-list-row-icon cn-green' /> */}
+          <span className='cn-class-list-row-grade-text cn-white'>{item.grade > 0 ? item.grade : '98.6'}%</span>
         </div>
       )
     } else if (statusNameL === 'new class' || statusNameL === 'needs setup') {
@@ -115,6 +119,7 @@ class ClassList extends React.Component {
 
   renderClassRows () {
     return this.getRows().map(c => {
+      // console.log(c.status)
       return (
         <div key={'cn_class_list_row_' + c.id}
           className={'cn-class-list-row margin-bottom ' + this.props.rowClassName}
