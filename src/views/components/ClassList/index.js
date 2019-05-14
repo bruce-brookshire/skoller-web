@@ -40,6 +40,14 @@ class ClassList extends React.Component {
     }
   }
 
+  generateRandomColor (brightness) {
+    // Six levels of brightness from 0 to 5, 0 being the darkest
+    var rgb = [Math.random() * 256, Math.random() * 256, Math.random() * 256]
+    var mix = [brightness * 51, brightness * 51, brightness * 51] // 51 => 255/5
+    var mixedrgb = [rgb[0] + mix[0], rgb[1] + mix[1], rgb[2] + mix[2]].map(x => Math.round(x / 2.0))
+    return 'rgb(' + mixedrgb.join(',') + ')'
+  }
+
   /*
   * Formats row data to be passed to the grid for display
   *
@@ -49,7 +57,7 @@ class ClassList extends React.Component {
   */
   mapRow (item, index) {
     const {id, subject, section, code, completion, grade, name, meet_start_time: startTime, meet_days: days, professor, status, enrollment} = item
-    // console.log(item)
+    const classColor = this.generateRandomColor(3)
     const row = {
       id: id || '',
       courseNumber: (subject ? subject + ' ' : '') + (code ? code : '') + (section && code ? '.' + section : ''), // eslint-disable-line no-unneeded-ternary
@@ -58,8 +66,10 @@ class ClassList extends React.Component {
       days: days || '',
       completion: completion,
       grade: grade,
+      color: classColor,
       beginTime: days === 'Online' ? '' : (startTime ? mapTimeToDisplay(startTime) : (section && !code ? section : '')),
-      status: status ? this.mapStatus(item) : '-',
+      status: status ? this.mapStatus(item, classColor) : '-',
+      setupStatus: status,
       enrollment: (enrollment && (enrollment - 1) > 0) ? enrollment - 1 : 0
     }
     // console.log(row)
@@ -71,13 +81,13 @@ class ClassList extends React.Component {
   *
   * @param [String] item. Class status.
   */
-  mapStatus (item) {
+  mapStatus (item, classColor) {
     console.log(item)
     const {status} = item
     var statusNameL = status.name.toLowerCase()
     if (status.is_complete) {
       return (
-        <div className='cn-class-list-row-icon-container cn-green'>
+        <div className='cn-class-list-row-icon-container cn-white' style={{background: classColor}} >
           {/* <i className='fas fa-check-square cn-class-list-row-icon cn-green' /> */}
           <span className='cn-class-list-row-grade-text cn-white'>{item.grade > 0 ? item.grade : '98.6'}%</span>
         </div>
@@ -119,26 +129,47 @@ class ClassList extends React.Component {
 
   renderClassRows () {
     return this.getRows().map(c => {
-      // console.log(c.status)
-      return (
-        <div key={'cn_class_list_row_' + c.id}
-          className={'cn-class-list-row margin-bottom ' + this.props.rowClassName}
-          onClick={() => this.onClassSelect(c)}
-        >
-          {c.status}
-          <div className='cn-class-list-row-data'>
-            <div className='cn-class-list-row-col cn-class-list-row-col-primary'>
-              <div className='cn-class-list-title'>{c.name}</div>
-              <div className='cn-class-list-text'>{c.professor}</div>
-              <div className='cn-class-list-subtext'>{c.courseNumber}</div>
-            </div>
-            <div className='cn-class-list-row-col'>
-              <div className='cn-class-list-subtext cn-class-list-flex-top cn-class-list-text-right'>{c.enrollment} <i className='fas fa-user' /></div>
-              <div className='cn-class-list-subtext cn-class-list-flex-bottom cn-class-list-text-right'>{c.days + ' ' + c.beginTime}</div>
+      // console.log(c)
+      if (c.setupStatus.id === 1400) {
+        return (
+          <div key={'cn_class_list_row_' + c.id}
+            className={'cn-class-list-row margin-bottom ' + this.props.rowClassName}
+            onClick={() => this.onClassSelect(c)}
+          >
+            {c.status}
+            <div className='cn-class-list-row-data'>
+              <div className='cn-class-list-row-col cn-class-list-row-col-primary'>
+                <div className='cn-class-list-title' style={{color: c.color}}>{c.name}</div>
+                <div className='cn-class-list-subtext cn-class-list-flex-top cn-class-list-text-left'><i className='fas fa-user' /> {c.enrollment}</div>
+                <div className='cn-class-list-subtext'><i className="far fa-circle"></i> {c.completion}%</div>
+              </div>
+              <div className='cn-class-list-row-col'>
+                {/* <div className='cn-class-list-subtext cn-class-list-flex-bottom cn-class-list-text-right'>{c.days + ' ' + c.beginTime}</div> */}
+              </div>
             </div>
           </div>
-        </div>
-      )
+        )
+      } else {
+        return (
+          <div key={'cn_class_list_row_' + c.id}
+            className={'cn-class-list-row margin-bottom ' + this.props.rowClassName}
+            onClick={() => this.onClassSelect(c)}
+          >
+            {c.status}
+            <div className='cn-class-list-row-data'>
+              <div className='cn-class-list-row-col cn-class-list-row-col-primary'>
+                <div className='cn-class-list-title'>{c.name}</div>
+                <div className='cn-class-list-text'>{c.professor}</div>
+                <div className='cn-class-list-subtext'>{c.courseNumber}</div>
+              </div>
+              <div className='cn-class-list-row-col'>
+                <div className='cn-class-list-subtext cn-class-list-flex-top cn-class-list-text-right'>{c.enrollment} <i className='fas fa-user' /></div>
+                <div className='cn-class-list-subtext cn-class-list-flex-bottom cn-class-list-text-right'>{c.days + ' ' + c.beginTime}</div>
+              </div>
+            </div>
+          </div>
+        )
+      }
     })
   }
 
