@@ -83,7 +83,7 @@ class ClassDetail extends React.Component {
   renderCurrentClassGrade () {
     const {cl} = this.state
     return (
-      <div className='cn-class-assignments-grade'>{cl.grade ? cl.grade + '%' : '--'}</div>
+      <div className='cn-class-assignments-grade'>{cl.grade ? cl.grade + '%' : '- -'}</div>
     )
   }
 
@@ -182,9 +182,9 @@ class ClassDetail extends React.Component {
   }
 
   renderClassDetails () {
-    // const {cl} = this.state
+    const {cl} = this.state
     return (
-      <div>
+      <div className="cn-class-detail-container margin-bottom">
         {this.renderBackButton()}
         {this.renderClassTitle()}
         <div id='cn-class-detail-header'>
@@ -195,8 +195,8 @@ class ClassDetail extends React.Component {
             {this.renderClassLink()}
           </div>
         </div>
-        {/* <UploadDocuments cl={cl} onUpload={this.getClass.bind(this)} />
-        {this.renderDeleteDialog()} */}
+        <UploadDocuments cl={cl} onUpload={this.getClass.bind(this)} />
+        {this.renderDeleteDialog()}
       </div>
     )
   }
@@ -222,10 +222,10 @@ class ClassDetail extends React.Component {
           style={{background: 'white'}}
         >
           <div className='cn-class-list-row-icon-container' style={gradeSectionBgcolor}>
-            <span className='cn-class-list-row-icon-text'>{a.grade ? a.grade + '%' : '--'}</span>
+            <span className='cn-class-list-row-icon-text'>{a.grade ? a.grade + '%' : '- -'}</span>
           </div>
           <div className='cn-class-list-row-data'>
-            <div className='cn-class-list-row-col cn-class-list-row-col-primary'>
+            <div className='cn-class-list-row-col'>
               <div className='cn-class-list-title'>{a.name}</div>
               <div className='cn-class-list-subtext'>{a.weight * 100}%</div>
             </div>
@@ -242,11 +242,13 @@ class ClassDetail extends React.Component {
     const {loading} = this.state
     return (
       <div>
+        <div id='cn-class-detail-container'>
+          {loading
+            ? <Loading />
+            : this.renderClassDetails()}
+        </div>
         <div className='cn-class-assignments-container'>
           {this.renderClassAssignmentsHeader()}
-          {/* {loading
-            ? <Loading />
-            : this.renderClassDetails()} */}
           <div className='cn-class-list-container margin-top'>
             {loading
               ? <Loading />

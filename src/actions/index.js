@@ -27,7 +27,7 @@ import {createSchool, getAllSchools, getHubSchools,
   getHubSchoolsMinified, getSchoolById, updateSchool, searchSchools, getStates, uploadSchoolCsv, getSchoolsCsv, getMostCommonSchool, getEmailDomains, createEmailDomains, deleteEmailDomains} from './schools'
 import {getAutoUpdateInfo, updateAutoUpdateInfo, forecastAutoUpdateInfo, getMinVersionInfo, updateMinVer} from './settings'
 import {createCustomLink, getCustomLinkById, getCustomLinks} from './signup-links'
-import { getStudentClassAssignments } from './studentclasses'
+import { getStudentClassAssignments, updateClassColor } from './studentclasses'
 import {getNextClass} from './syllabusworkers'
 import {getStudentCsv, getEmailPreferences, updateEmailPreferences, deleteUserById} from './users'
 import {createWeight, deleteWeight, getClassWeights, updateWeight} from './weights'
@@ -185,7 +185,8 @@ const actions = {
     getCustomLinks
   },
   studentClasses: {
-    getStudentClassAssignments
+    getStudentClassAssignments,
+    updateClassColor
   },
   syllabusworkers: {
     getNextClass

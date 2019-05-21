@@ -1,4 +1,6 @@
 import { get, post, put, del } from '../utilities/api'
+import stores from '../stores'
+const { userStore } = stores
 
 /*
 * Get student's assignments for class
@@ -61,6 +63,21 @@ export function deleteStudentAssignment (form) {
 */
 export function deleteStudentAssignmentPost (assignmentId, postId) {
   return del(`/api/v1/assignments/${assignmentId}/posts/${postId}`, 'Error deleting assignment post. Try again.')
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Update Class Color
+*
+*/
+export function updateClassColor (cl) {
+  const { user: { student } } = userStore
+  return put(`/api/v1/student/${student.id}/classes/${cl.id}/`, cl, 'Color not updated, try again.')
+    .then(data => {
+      return data
+    })
     .catch(error => {
       return Promise.reject(error)
     })
