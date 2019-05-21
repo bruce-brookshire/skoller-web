@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import {browserHistory} from 'react-router'
+import moment from 'moment'
 import UploadDocuments from './UploadDocuments'
 import actions from '../../../actions'
 import Loading from '../../../components/Loading'
@@ -15,17 +16,35 @@ class ClassDetail extends React.Component {
     super(props)
     this.state = {
       loading: false,
-      cl: {}
+      cl: {},
+      assignments: []
     }
   }
 
   componentWillMount () {
     this.getClass()
+    console.log('this.props.params:')
+    console.log(this.props.params)
+    console.log('rootStore')
+    console.log(this.props.rootStore)
+    this.getClassAssignmentsForStudent(this.props.params)
   }
 
   componentWillUnmount () {
     let {navbarStore} = this.props.rootStore
     navbarStore.title = ''
+  }
+
+  getClassAssignmentsForStudent (cl) {
+    let {classId} = cl
+    let {userStore} = this.props.rootStore
+    // let currentUser = userStore.user
+    const { user: { student } } = userStore
+    actions.studentClasses.getStudentClassAssignments(classId, student).then(assignments => {
+      console.log('assignments:')
+      // console.log(assignments)
+      this.setState({assignments: assignments})
+    })
   }
 
   getClass () {
@@ -125,13 +144,60 @@ class ClassDetail extends React.Component {
     )
   }
 
+  renderDueDateInfo (dd) {
+    const today = moment()
+    // console.log(today)
+    // console.log(dd)
+    if (dd) {
+      const dueDate = moment(dd)
+      console.log('dueDate')
+      console.log(dueDate)
+      const daysTillDue = dueDate.from(today, 'days')
+      if (today.isSame(dueDate)) return 'Today'
+      if (today.isBefore(dueDate)) return 'In ' + daysTillDue
+      if (today.isAfter(dueDate)) return 'In the Past'
+    }
+  }
+
+  renderClassAssignments () {
+    const assignments = this.state.assignments.assignments
+    console.log(assignments)
+    return assignments && assignments.length ? assignments.map(a => {
+      return (
+        <div key={'cn_class_detail_row_' + a.id}
+          className='cn-class-list-row margin-bottom'
+        >
+          <div className='cn-class-list-row-icon-container'>
+            <span className='cn-class-list-row-icon-text cn-green'>{a.grade ? a.grade : '--'}%</span>
+          </div>
+          <div className='cn-class-list-row-data'>
+            <div className='cn-class-list-row-col cn-class-list-row-col-primary'>
+              <div className='cn-class-list-title'>{a.name}</div>
+              <div className='cn-class-list-subtext'>{a.weight * 100}%</div>
+            </div>
+            <div className='cn-class-list-row-col'>
+              <div className='cn-class-list-subtext cn-class-list-flex-top cn-class-list-text-right'>{this.renderDueDateInfo(a.due)}</div>
+            </div>
+          </div>
+        </div>
+      )
+    }) : ''
+  }
+
   render () {
     const {loading} = this.state
     return (
-      <div id='cn-class-detail-container'>
-        {loading
-          ? <Loading />
-          : this.renderClassDetails()}
+      <div>
+        <div id='cn-class-detail-container'>
+          {loading
+            ? <Loading />
+            : this.renderClassDetails()}
+          <div className='cn-class-list-container margin-top'>
+            {loading
+              ? <Loading />
+              : this.renderClassAssignments()}
+          </div>
+        </div>
       </div>
     )
   }
