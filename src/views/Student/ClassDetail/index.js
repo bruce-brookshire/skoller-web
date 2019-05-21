@@ -73,6 +73,39 @@ class ClassDetail extends React.Component {
     }).catch(() => false)
   }
 
+  renderClassTitle () {
+    const {cl} = this.state
+    return (
+      <div className='cn-class-assignments-title'><span>{cl.name}</span> <i className='fas fa-info-circle'></i></div>
+    )
+  }
+
+  renderCurrentClassGrade () {
+    const {cl} = this.state
+    return (
+      <div className='cn-class-assignments-grade'>{cl.grade ? cl.grade + '%' : '--'}</div>
+    )
+  }
+
+  renderClassAssignmentsHeader () {
+    return (
+      <div className='cn-class-assignments-header'>
+        <div className='cn-class-assignments-header-item'>
+          {this.renderBackButton()}
+          {this.renderSpeculateGradeButton()}
+        </div>
+        <div className='cn-class-assignments-header-item text-center'>
+          {this.renderClassTitle()}
+          {this.renderCurrentClassGrade()}
+        </div>
+        <div className='cn-class-assignments-header-item text-right'>
+          {this.renderAddAssignmentButton()}
+          {this.renderClassEnrollment()}
+        </div>
+      </div>
+    )
+  }
+
   renderClassCard () {
     const {cl} = this.state
     let professorName = cl.professor ? cl.professor.name_first + ' ' + cl.professor.name_last : ''
@@ -99,14 +132,37 @@ class ClassDetail extends React.Component {
     )
   }
 
+  renderSpeculateGradeButton () {
+    return (
+      <a className='spec-grade-button' onClick={() => browserHistory.push('student/classes')}>
+        % Speculate Grade
+      </a>
+    )
+  }
+
   /*
   * Render the back button to tab between syllabus sections
   */
   renderBackButton () {
     return (
       <a className='back-button' onClick={() => browserHistory.push('student/classes')}>
-        <i className='fa fa-angle-left' /> Go Back
+        <i className='fa fa-angle-left' /> Back to Classes
       </a>
+    )
+  }
+
+  renderAddAssignmentButton () {
+    return (
+      <a className='add-assignment-button' onClick={() => browserHistory.push('student/classes')}>
+        + Add Assignment
+      </a>
+    )
+  }
+
+  renderClassEnrollment () {
+    const {cl} = this.state
+    return (
+      <span><i className="fas fa-users"></i> {cl.enrollment} Student{cl.enrollment > 1 ? 's' : ''}</span>
     )
   }
 
@@ -126,10 +182,11 @@ class ClassDetail extends React.Component {
   }
 
   renderClassDetails () {
-    const {cl} = this.state
+    // const {cl} = this.state
     return (
       <div>
         {this.renderBackButton()}
+        {this.renderClassTitle()}
         <div id='cn-class-detail-header'>
           <div className='cn-class-detail-header-item'>
             {this.renderClassCard()}
@@ -138,37 +195,34 @@ class ClassDetail extends React.Component {
             {this.renderClassLink()}
           </div>
         </div>
-        <UploadDocuments cl={cl} onUpload={this.getClass.bind(this)} />
-        {this.renderDeleteDialog()}
+        {/* <UploadDocuments cl={cl} onUpload={this.getClass.bind(this)} />
+        {this.renderDeleteDialog()} */}
       </div>
     )
   }
 
   renderDueDateInfo (dd) {
     const today = moment()
-    // console.log(today)
-    // console.log(dd)
     if (dd) {
       const dueDate = moment(dd)
-      console.log('dueDate')
-      console.log(dueDate)
       const daysTillDue = dueDate.from(today, 'days')
       if (today.isSame(dueDate)) return 'Today'
       if (today.isBefore(dueDate)) return 'In ' + daysTillDue
       if (today.isAfter(dueDate)) return 'In the Past'
-    }
+    } else { console.warn('This assignment needs a due date!') }
   }
 
   renderClassAssignments () {
     const assignments = this.state.assignments.assignments
-    console.log(assignments)
     return assignments && assignments.length ? assignments.map(a => {
+      const gradeSectionBgcolor = { background: a.grade ? '#57b9e4ff' : 'grey' }
       return (
         <div key={'cn_class_detail_row_' + a.id}
           className='cn-class-list-row margin-bottom'
+          style={{background: 'white'}}
         >
-          <div className='cn-class-list-row-icon-container'>
-            <span className='cn-class-list-row-icon-text cn-green'>{a.grade ? a.grade : '--'}%</span>
+          <div className='cn-class-list-row-icon-container' style={gradeSectionBgcolor}>
+            <span className='cn-class-list-row-icon-text'>{a.grade ? a.grade + '%' : '--'}</span>
           </div>
           <div className='cn-class-list-row-data'>
             <div className='cn-class-list-row-col cn-class-list-row-col-primary'>
@@ -188,10 +242,11 @@ class ClassDetail extends React.Component {
     const {loading} = this.state
     return (
       <div>
-        <div id='cn-class-detail-container'>
-          {loading
+        <div className='cn-class-assignments-container'>
+          {this.renderClassAssignmentsHeader()}
+          {/* {loading
             ? <Loading />
-            : this.renderClassDetails()}
+            : this.renderClassDetails()} */}
           <div className='cn-class-list-container margin-top'>
             {loading
               ? <Loading />
