@@ -1,9 +1,24 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import actions from '../../../actions'
 import {mapProfessor} from '../../../utilities/display'
 import {mapTimeToDisplay} from '../../../utilities/time'
 
 class ClassList extends React.Component {
+  state = {
+    colorsInUse: [],
+    colors: [
+      '#dd4a63ff', // red
+      '#ffae42ff', // orange
+      '#f7d300ff', // yellow
+      '#4add58ff', // green
+      '#4cd8bdff', // mint
+      '#57b9e4ff', // blue
+      '#ff71a8ff', // pink
+      '#9b55e5ff' // purple
+    ],
+    chosenColor: ''
+  }
   /*
   * Row data to be passed to the grid
   *
@@ -48,6 +63,24 @@ class ClassList extends React.Component {
     return 'rgb(' + mixedrgb.join(',') + ')'
   }
 
+  updateClassColor (cl) {
+    this.setState({ chosenColor: '' })
+    const colorsInUse = this.state.colorsInUse
+    const colors = this.state.colors
+    if (!cl.color) {
+      for (let i = 0; i < colors.length; i++) {
+        if (colorsInUse.indexOf(colors[i]) === -1) {
+          cl.color = colors[i]
+          // actions.studentclasses.updateClassColor(cl).then(c => {
+          // }).catch((error) => console.error(error))
+          colorsInUse.push(colors[i])
+          this.setState({ chosenColor: colors[i] })
+          return colors[i]
+        }
+      }
+    }
+  }
+
   /*
   * Formats row data to be passed to the grid for display
   *
@@ -57,7 +90,10 @@ class ClassList extends React.Component {
   */
   mapRow (item, index) {
     const {id, subject, section, code, completion, grade, name, meet_start_time: startTime, meet_days: days, professor, status, enrollment} = item
-    const classColor = this.generateRandomColor(3)
+    let {color} = item
+    if (!color) {
+      color = this.updateClassColor(item)
+    }
     const row = {
       id: id || '',
       courseNumber: (subject ? subject + ' ' : '') + (code ? code : '') + (section && code ? '.' + section : ''), // eslint-disable-line no-unneeded-ternary
@@ -66,9 +102,9 @@ class ClassList extends React.Component {
       days: days || '',
       completion: completion,
       grade: grade,
-      color: classColor,
+      color: color,
       beginTime: days === 'Online' ? '' : (startTime ? mapTimeToDisplay(startTime) : (section && !code ? section : '')),
-      status: status ? this.mapStatus(item, classColor) : '-',
+      status: status ? this.mapStatus(item, color) : '-',
       setupStatus: status,
       enrollment: (enrollment && (enrollment - 1) > 0) ? enrollment - 1 : 0
     }
