@@ -5,20 +5,6 @@ import {mapProfessor} from '../../../utilities/display'
 import {mapTimeToDisplay} from '../../../utilities/time'
 
 class ClassList extends React.Component {
-  state = {
-    colorsInUse: [],
-    colors: [
-      '#9b55e5ff', // purple
-      '#ff71a8ff', // pink
-      '#57b9e4ff', // blue
-      '#4cd8bdff', // mint
-      '#4add58ff', // green
-      '#f7d300ff', // yellow
-      '#ffae42ff', // orange
-      '#dd4a63ff' // red
-    ],
-    chosenColor: ''
-  }
   /*
   * Row data to be passed to the grid
   *
@@ -55,25 +41,6 @@ class ClassList extends React.Component {
     }
   }
 
-  updateClassColor (cl) {
-    const colorsInUse = this.state.colorsInUse
-    const colors = this.state.colors
-    if (!cl.color) {
-      let chosenColor
-      for (let i = 0; i < colors.length; i++) {
-        if (colorsInUse.indexOf(colors[i]) === -1) {
-          cl.color = colors[i]
-          colorsInUse.push(colors[i])
-          chosenColor = colors[i]
-          return chosenColor
-        }
-      }
-      actions.studentclasses.updateClassColor(cl, chosenColor).then(res => {
-        console.log(res)
-      })
-    }
-  }
-
   /*
   * Formats row data to be passed to the grid for display
   *
@@ -82,11 +49,7 @@ class ClassList extends React.Component {
   * @return [Object] row. Object of formatted row data for display in grid.
   */
   mapRow (item, index) {
-    const {id, subject, section, code, completion, grade, name, meet_start_time: startTime, meet_days: days, professor, status, enrollment} = item
-    let {color} = item
-    if (!color) {
-      color = this.updateClassColor(item)
-    }
+    const {id, subject, section, code, color, completion, grade, name, meet_start_time: startTime, meet_days: days, professor, status, enrollment} = item
     const row = {
       id: id || '',
       courseNumber: (subject ? subject + ' ' : '') + (code ? code : '') + (section && code ? '.' + section : ''), // eslint-disable-line no-unneeded-ternary
@@ -101,7 +64,6 @@ class ClassList extends React.Component {
       setupStatus: status,
       enrollment: (enrollment && (enrollment - 1) > 0) ? enrollment - 1 : 0
     }
-    // console.log(row)
     return row
   }
 
