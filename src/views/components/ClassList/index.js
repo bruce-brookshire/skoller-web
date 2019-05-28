@@ -49,7 +49,10 @@ class ClassList extends React.Component {
   * @return [Object] row. Object of formatted row data for display in grid.
   */
   mapRow (item, index) {
-    const {id, subject, section, code, color, completion, grade, name, meet_start_time: startTime, meet_days: days, professor, status, enrollment} = item
+    const {id, subject, section, code, getColor, completion, grade, name, meet_start_time: startTime, meet_days: days, professor, status, enrollment} = item
+    // TODO for Matt: Anytime you need to use a color on a class, use the getColor() property, and it will return (and save if needed) the correct color
+    const color = getColor()
+
     const row = {
       id: id || '',
       courseNumber: (subject ? subject + ' ' : '') + (code ? code : '') + (section && code ? '.' + section : ''), // eslint-disable-line no-unneeded-ternary

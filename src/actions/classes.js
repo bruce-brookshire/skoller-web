@@ -1,7 +1,7 @@
-import {csv, get, post, del, put} from '../utilities/api'
-import {showSnackbar} from '../utilities/snackbar'
+import { csv, get, post, del, put } from '../utilities/api'
+import { showSnackbar } from '../utilities/snackbar'
 import stores from '../stores'
-const {userStore} = stores
+const { userStore } = stores
 
 /*
 * Search classes by param
@@ -63,6 +63,10 @@ export function getClassByIdAdmin (classId) {
     })
 }
 
+class TempStudentClass {
+  static currentClasses = {}
+}
+
 /*
 * Get classes for students by student id
 *
@@ -70,27 +74,41 @@ export function getClassByIdAdmin (classId) {
 export function getStudentClassesById (studentId) {
   return get(`/api/v1/students/${studentId}/classes/`, '', 'Error fetching classes. Try again.')
     .then(data => {
-      const colorsInUse = []
-      const colors = [
-        '#9b55e5ff', // purple
-        '#ff71a8ff', // pink
-        '#57b9e4ff', // blue
-        '#4cd8bdff', // mint
-        '#4add58ff', // green
-        '#f7d300ff', // yellow
-        '#ffae42ff', // orange
-        '#dd4a63ff' // red
-      ]
-      data.forEach(cl => {
-        if (!cl.color) {
-          for (let i = 0; i < colors.length; i++) {
-            if (colorsInUse.indexOf(colors[i]) === -1) {
-              cl.color = colors[i]
-              colorsInUse.push(colors[i])
-              return
+      var processColor = function () {
+        if (this.color) {
+          return '#' + this.color
+        } else {
+          var usedColors = {
+            '9b55e5ff': false, // purple
+            'ff71a8ff': false, // pink
+            '57b9e4ff': false, // blue
+            '4cd8bdff': false, // mint
+            '4add58ff': false, // green
+            'f7d300ff': false, // yellow
+            'ffae42ff': false, // orange
+            'dd4a63ff': false // red
+          }
+
+          for (var studentClass in TempStudentClass.currentClasses) {
+            if (studentClass.color) {
+              usedColors[studentClass.color] = true
+            }
+          }
+
+          for (var newColor in Object.keys(usedColors)) {
+            console.log(newColor)
+            if (!usedColors[newColor]) {
+              this.color = newColor
+              // TODO for Matt: save the color to the API now that we have selected it. (do this in an async, but do not await for it)
+              return '#' + newColor
             }
           }
         }
+      }
+
+      data.forEach(cl => {
+        TempStudentClass.currentClasses[cl.id] = cl
+        cl.getColor = processColor.bind(cl)
       })
       return data
     })
@@ -105,7 +123,7 @@ export function getStudentClassesById (studentId) {
 * @param [Object] classId. The id of the class for the student to enroll in.
 */
 export function enrollInClass (classId) {
-  const {user: {student}} = userStore
+  const { user: { student } } = userStore
   return post(`/api/v1/students/${student.id}/classes/${classId}`, null, 'Error enrolling in class. Try again.')
     .then(data => {
       return data
@@ -119,7 +137,7 @@ export function enrollInClass (classId) {
 * Drop class
 */
 export function dropClass (classId) {
-  const {user: {student}} = userStore
+  const { user: { student } } = userStore
   return del(`/api/v1/students/${student.id}/classes/${classId}`, 'Error dropping class. Try again.')
     .catch(error => {
       return Promise.reject(error)
