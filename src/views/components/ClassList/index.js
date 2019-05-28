@@ -8,14 +8,14 @@ class ClassList extends React.Component {
   state = {
     colorsInUse: [],
     colors: [
-      '#dd4a63ff', // red
-      '#ffae42ff', // orange
-      '#f7d300ff', // yellow
-      '#4add58ff', // green
-      '#4cd8bdff', // mint
-      '#57b9e4ff', // blue
+      '#9b55e5ff', // purple
       '#ff71a8ff', // pink
-      '#9b55e5ff' // purple
+      '#57b9e4ff', // blue
+      '#4cd8bdff', // mint
+      '#4add58ff', // green
+      '#f7d300ff', // yellow
+      '#ffae42ff', // orange
+      '#dd4a63ff' // red
     ],
     chosenColor: ''
   }
@@ -55,29 +55,22 @@ class ClassList extends React.Component {
     }
   }
 
-  generateRandomColor (brightness) {
-    // Six levels of brightness from 0 to 5, 0 being the darkest
-    var rgb = [Math.random() * 256, Math.random() * 256, Math.random() * 256]
-    var mix = [brightness * 51, brightness * 51, brightness * 51] // 51 => 255/5
-    var mixedrgb = [rgb[0] + mix[0], rgb[1] + mix[1], rgb[2] + mix[2]].map(x => Math.round(x / 2.0))
-    return 'rgb(' + mixedrgb.join(',') + ')'
-  }
-
   updateClassColor (cl) {
-    this.setState({ chosenColor: '' })
     const colorsInUse = this.state.colorsInUse
     const colors = this.state.colors
     if (!cl.color) {
+      let chosenColor
       for (let i = 0; i < colors.length; i++) {
         if (colorsInUse.indexOf(colors[i]) === -1) {
           cl.color = colors[i]
-          // actions.studentclasses.updateClassColor(cl).then(c => {
-          // }).catch((error) => console.error(error))
           colorsInUse.push(colors[i])
-          this.setState({ chosenColor: colors[i] })
-          return colors[i]
+          chosenColor = colors[i]
+          return chosenColor
         }
       }
+      actions.studentclasses.updateClassColor(cl, chosenColor).then(res => {
+        console.log(res)
+      })
     }
   }
 
