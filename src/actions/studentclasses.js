@@ -72,9 +72,9 @@ export function deleteStudentAssignmentPost (assignmentId, postId) {
 * Update Class Color
 *
 */
-export function updateClassColor (cl) {
+export function updateClassColor (cl, color) {
   const { user: { student } } = userStore
-  return put(`/api/v1/student/${student.id}/classes/${cl.id}/`, cl, 'Color not updated, try again.')
+  return put(`/api/v1/student/${student.id}/classes/${cl.id}/`, { color: color }, 'Color not updated, try again.')
     .then(data => {
       return data
     })

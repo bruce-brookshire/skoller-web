@@ -44,7 +44,7 @@ import DownloadApp from './views/components/DownloadApp'
 
 import actions from './actions'
 import stores from './stores'
-const {userStore} = stores
+const {userStore, studentClassesStore} = stores
 
 const router = (
   <Router history={browserHistory}>
@@ -159,7 +159,9 @@ function authenticateStudent (user) {
   if (user.student) {
     if (user.student.is_verified) {
       return actions.classes.getStudentClassesById(user.student.id).then((classes) => {
-        if (classes.length === 0) browserHistory.push('/student/find-classes')
+        if (classes.length === 0) {
+          browserHistory.push('/student/find-classes')
+        }
       }).catch(() => false)
     } else {
       return new Promise((resolve, reject) => {

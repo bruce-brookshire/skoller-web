@@ -41,6 +41,36 @@ class MyClasses extends React.Component {
     }).catch(() => false)
   }
 
+  assignColors () {
+    const { classes } = this.state
+    if (classes) {
+      const colorsInUse = []
+      const colors = [
+        '#9b55e5ff', // purple
+        '#ff71a8ff', // pink
+        '#57b9e4ff', // blue
+        '#4cd8bdff', // mint
+        '#4add58ff', // green
+        '#f7d300ff', // yellow
+        '#ffae42ff', // orange
+        '#dd4a63ff' // red
+      ]
+      classes.forEach(cl => {
+        if (!cl.color) {
+          colors.forEach(async color => {
+            if (colorsInUse.indexOf(color) !== -1) {
+              cl.color = color
+              await actions.studentclasses.updateClassColor(cl).then((res) => {
+                console.log(res)
+              }).catch(() => false)
+              colorsInUse.push(color)
+            }
+          })
+        }
+      })
+    }
+  }
+
   numberOfClassesNeedingSyllabus () {
     return this.state.classes.filter((item, index) => {
       var nameL = item.status.name.toLowerCase()

@@ -70,6 +70,28 @@ export function getClassByIdAdmin (classId) {
 export function getStudentClassesById (studentId) {
   return get(`/api/v1/students/${studentId}/classes/`, '', 'Error fetching classes. Try again.')
     .then(data => {
+      const colorsInUse = []
+      const colors = [
+        '#9b55e5ff', // purple
+        '#ff71a8ff', // pink
+        '#57b9e4ff', // blue
+        '#4cd8bdff', // mint
+        '#4add58ff', // green
+        '#f7d300ff', // yellow
+        '#ffae42ff', // orange
+        '#dd4a63ff' // red
+      ]
+      data.forEach(cl => {
+        if (!cl.color) {
+          for (let i = 0; i < colors.length; i++) {
+            if (colorsInUse.indexOf(colors[i]) === -1) {
+              cl.color = colors[i]
+              colorsInUse.push(colors[i])
+              return
+            }
+          }
+        }
+      })
       return data
     })
     .catch(error => {
