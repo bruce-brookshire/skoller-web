@@ -23,10 +23,6 @@ class ClassDetail extends React.Component {
 
   componentWillMount () {
     this.getClass()
-    console.log('this.props.params:')
-    console.log(this.props.params)
-    console.log('rootStore')
-    console.log(this.props.rootStore)
     this.getClassAssignmentsForStudent(this.props.params)
   }
 
@@ -221,11 +217,11 @@ class ClassDetail extends React.Component {
     const {loading} = this.state
     return (
       <div>
-        <div id='cn-class-detail-container'>
+        {/* <div id='cn-class-detail-container'>
           {loading
             ? <Loading />
             : this.renderClassDetails()}
-        </div>
+        </div> */}
         <div className='cn-class-assignments-container'>
           {this.renderClassAssignmentsHeader()}
           <div className='cn-class-list-container margin-top'>
