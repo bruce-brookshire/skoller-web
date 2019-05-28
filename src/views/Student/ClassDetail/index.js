@@ -2,13 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import {browserHistory} from 'react-router'
-import moment from 'moment'
 import UploadDocuments from './UploadDocuments'
 import actions from '../../../actions'
 import Loading from '../../../components/Loading'
 import ClassCard from '../../Cards/ClassCard'
 import ClassInviteLink from './ClassInviteLink'
 import DeleteDialog from '../../../components/Grid/DeleteDialog'
+import AssignmentList from '../../components/AssignmentList'
 
 @inject('rootStore') @observer
 class ClassDetail extends React.Component {
@@ -103,6 +103,15 @@ class ClassDetail extends React.Component {
           {this.renderClassEnrollment()}
         </div>
       </div>
+    )
+  }
+
+  renderAssignmentList () {
+    return (
+      <AssignmentList
+        assignments={this.state.assignments.assignments}
+        onSelect={this.onAssignmentSelect.bind(this)}
+      />
     )
   }
 
@@ -201,41 +210,11 @@ class ClassDetail extends React.Component {
     )
   }
 
-  renderDueDateInfo (dd) {
-    const today = moment()
-    if (dd) {
-      const dueDate = moment(dd)
-      const daysTillDue = dueDate.from(today, 'days')
-      if (today.isSame(dueDate)) return 'Today'
-      if (today.isBefore(dueDate)) return 'In ' + daysTillDue
-      if (today.isAfter(dueDate)) return 'In the Past'
-    } else { console.warn('This assignment needs a due date!') }
-  }
-
-  renderClassAssignments () {
-    const assignments = this.state.assignments.assignments
-    return assignments && assignments.length ? assignments.map(a => {
-      const gradeSectionBgcolor = { background: a.grade ? '#57b9e4ff' : 'grey' }
-      return (
-        <div key={'cn_class_detail_row_' + a.id}
-          className='cn-class-list-row margin-bottom'
-          style={{background: 'white'}}
-        >
-          <div className='cn-class-list-row-icon-container' style={gradeSectionBgcolor}>
-            <span className='cn-class-list-row-icon-text'>{a.grade ? a.grade + '%' : '- -'}</span>
-          </div>
-          <div className='cn-class-list-row-data'>
-            <div className='cn-class-list-row-col'>
-              <div className='cn-class-list-title'>{a.name}</div>
-              <div className='cn-class-list-subtext'>{a.weight * 100}%</div>
-            </div>
-            <div className='cn-class-list-row-col'>
-              <div className='cn-class-list-subtext cn-class-list-flex-top cn-class-list-text-right'>{this.renderDueDateInfo(a.due)}</div>
-            </div>
-          </div>
-        </div>
-      )
-    }) : ''
+  onAssignmentSelect (assignment) {
+    const { cl } = this.state
+    browserHistory.push({
+      pathname: `/student/class/${cl.id}/assignments/${assignment.assignment_id}`
+    })
   }
 
   render () {
@@ -252,7 +231,7 @@ class ClassDetail extends React.Component {
           <div className='cn-class-list-container margin-top'>
             {loading
               ? <Loading />
-              : this.renderClassAssignments()}
+              : this.renderAssignmentList()}
           </div>
         </div>
       </div>
