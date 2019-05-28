@@ -63,7 +63,7 @@ export function getClassByIdAdmin (classId) {
     })
 }
 
-class TempStudentClass {
+class StudentClass {
   static currentClasses = {}
 }
 
@@ -89,7 +89,7 @@ export function getStudentClassesById (studentId) {
             'dd4a63ff': false // red
           }
 
-          for (var studentClass in TempStudentClass.currentClasses) {
+          for (var studentClass in StudentClass.currentClasses) {
             if (studentClass.color) {
               usedColors[studentClass.color] = true
             }
@@ -107,7 +107,7 @@ export function getStudentClassesById (studentId) {
       }
 
       data.forEach(cl => {
-        TempStudentClass.currentClasses[cl.id] = cl
+        StudentClass.currentClasses[cl.id] = cl
         cl.getColor = processColor.bind(cl)
       })
       return data
