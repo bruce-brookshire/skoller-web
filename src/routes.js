@@ -16,6 +16,7 @@ import OurTeam from './views/OurTeam'
 import PitchDeck from './views/PitchDeck'
 import ResetPassword from './views/ResetPassword'
 
+import Home from './views/Student/Home'
 import MyClasses from './views/Student/MyClasses'
 import FindClasses from './views/Student/FindClasses'
 import Verification from './views/components/Verification'
@@ -70,6 +71,7 @@ const router = (
         <IndexRedirect to='/student/classes' />
         <Route path='/student'>
           <IndexRedirect to='/student/classes'/>
+          <Route path='/student/home' component={Home} />
           <Route path='/student/find-classes' component={FindClasses} />
           <Route path='/student/verify' component={Verification} onEnter={authOnboard} />
           <Route path='/student/class-link' component={ClassLink} />

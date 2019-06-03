@@ -4,6 +4,7 @@ import userStore from './user_store'
 import navbarStore from './navbar_store'
 import searchStore from './search_store'
 import studentClassesStore from './student_classes_store'
+import studentNavStore from './student_nav_store'
 
 class ApplicationStore {
   constructor () {
@@ -12,7 +13,8 @@ class ApplicationStore {
       userStore,
       navbarStore,
       searchStore,
-      studentClassesStore
+      studentClassesStore,
+      studentNavStore
     })
   }
 }

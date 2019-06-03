@@ -1,0 +1,34 @@
+.s-nav-wrapper {
+  width: 200px;
+  margin-right: 32px;
+  height: calc(100vh - 64px - 32px);
+  z-index: 1000;
+
+  .s-nav {
+    width: 200px;
+    height: calc(100vh - 64px);
+    background-color: rgba(60,60,60,1);
+    position: fixed;
+    top: 64px;
+
+    .s-nav-item {
+      margin: 16px 0px;
+      padding: 8px 8px;
+      
+      //display
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      justify-content: left;
+
+      a {
+        font-size: 18px;
+        color: white;
+      }
+    }
+
+    .active {
+      background-color: $cn-color-blue;
+    }
+  }
+}
