@@ -10,25 +10,46 @@
     background-color: rgba(60,60,60,1);
     position: fixed;
     top: 64px;
+    padding-top: 16px;
 
     .s-nav-item {
       margin: 16px 0px;
-      padding: 8px 8px;
+      padding: 12px 8px 8px 8px;
+      cursor: pointer;
       
       //display
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       align-content: center;
       justify-content: left;
 
       a {
         font-size: 18px;
+        font-weight: 300;
         color: white;
+        margin: 4px 0 0 8px;
+      }
+
+      span {
+        position: absolute;
+        margin: -12px 0 0 0;
+        left: 0;
+        width: 100%;
+        height: 46px;
+        float: left;
+
+        &:hover {
+          background-color: rgba(255,255,255,.15);
+        }
       }
     }
 
     .active {
       background-color: $cn-color-blue;
+
+      a {
+        font-weight: 400;
+      }
     }
   }
 }

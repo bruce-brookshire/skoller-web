@@ -2,8 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import NavItem from './NavItem'
-// import {browserHistory} from 'react-router'
-// import actions from '../../../actions'
 
 @inject('rootStore') @observer
 class StudentNav extends React.Component {
