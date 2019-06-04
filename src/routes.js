@@ -17,6 +17,7 @@ import PitchDeck from './views/PitchDeck'
 import ResetPassword from './views/ResetPassword'
 
 import Home from './views/Student/Home'
+import Calendar from './views/Student/Calendar'
 import MyClasses from './views/Student/MyClasses'
 import FindClasses from './views/Student/FindClasses'
 import Verification from './views/components/Verification'
@@ -75,6 +76,7 @@ const router = (
           <Route path='/student/find-classes' component={FindClasses} />
           <Route path='/student/verify' component={Verification} onEnter={authOnboard} />
           <Route path='/student/class-link' component={ClassLink} />
+          <Route path='/student/calendar' component={Calendar}/>
           <Route path='/student/classes' component={MyClasses}/>
           <Route path='/student/class/:classId' component={ClassDetail} />
           <Route path='/student/class/:classId/assignments/:assignmentId' component={AssignmentDetail} />

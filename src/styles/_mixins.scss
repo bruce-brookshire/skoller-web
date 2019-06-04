@@ -73,3 +73,10 @@
     li { flex: 1 0 33%; }
   }
 }
+
+// standard box styling
+@mixin skoller-cell {
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0px 8px 15px rgba(0,0,0,.05);
+}
