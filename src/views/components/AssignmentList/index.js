@@ -4,26 +4,23 @@ import moment from 'moment'
 
 class AssignmentList extends React.Component {
   renderInsertWeightsBar () {
-    var weightDensity = {}
-    for (var weight in this.props.weights) {
-      weightDensity[weight.id] = 0
-    }
-
-    for (var assignment in this.props.assignments) {
-      weightDensity[assignment.weight_id]++
-      console.log('Assignment Found!')
-    }
-
     let needsAssignments = 0
-    for (var weightId in Object.keys(weightDensity)) {
-      if (weightDensity[weightId] === 0) {
+    const weightIDs = this.props.weights.map(w => w.id)
+    const assignments = [...this.props.assignments]
+    assignments.forEach(a => {
+      if (weightIDs.indexOf(a.weight_id) > -1) {
         needsAssignments++
-        console.log('Needs Assignment Added!')
       }
-    }
-    if (needsAssignments > 0) {
-      console.log('Needs Banner')
-    }
+    })
+    if (needsAssignments === 1) {
+      return (
+        <div className="">{needsAssignments} category needs assignments. Click to add them!</div>
+      )
+    } else if (needsAssignments > 0) {
+      return (
+        <div className="">{needsAssignments} categories need assignments. Click to add them!</div>
+      )
+    } else return null
   }
 
   renderDueDateInfo (dd) {
