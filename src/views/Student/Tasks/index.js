@@ -6,7 +6,10 @@ import actions from '../../../actions'
 // import { browserHistory } from 'react-router'
 
 @inject('rootStore') @observer
+
 class Tasks extends React.Component {
+  static studentClasses = {}
+
   constructor (props) {
     super(props)
     this.state = {
@@ -24,26 +27,39 @@ class Tasks extends React.Component {
     const {user: {student}} = this.props.rootStore.userStore
 
     actions.classes.getStudentClassesById(student.id).then((classes) => {
-      this.setState({classes: classes})
+      classes.forEach(studentClass => { Tasks.studentClasses[studentClass.id] = studentClass })
+      this.setState({classes})
     }).catch(() => false)
 
     actions.assignments.getTaskAssignments(student.id).then((tasks) => {
+      const parentClassGetter = function () {
+        return Tasks.studentClasses[this.class_id]
+      }
+      tasks.forEach(task => {
+        task.getParentClass = parentClassGetter.bind(task)
+      })
       this.setState({tasks})
     }).catch(() => false)
   }
 
   render () {
-    return (
-      <StudentLayout>
-        <div className="task-container">
-          <div className="task">
-            <h1>Task Name</h1>
-            <div className="task-content">
-              <p>Content</p>
-            </div>
+    const card = this.state.tasks.map((task) =>
+      <div className="task-container" key={task.class_id}>
+        <div className="task">
+          <h1>{task.parentClassGetter}</h1>
+          <div className="task-content">
+            <p>{task.name}</p>
           </div>
         </div>
-        {/* console.log(this.props.rootStore) */}
+      </div>
+    )
+    console.log('see below')
+    console.log(card)
+    console.log(this.state.tasks)
+
+    return (
+      <StudentLayout>
+        {card}
       </StudentLayout>
     )
   }
