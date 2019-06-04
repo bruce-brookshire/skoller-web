@@ -94,7 +94,6 @@ class AssignmentDetail extends React.Component {
           <h1></h1>
         </div>
         <div className='cn-class-assignments-container'>
-          
           <div className='cn-class-list-container margin-top'>
             {loading
               ? <Loading />
