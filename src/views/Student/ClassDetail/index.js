@@ -34,11 +34,8 @@ class ClassDetail extends React.Component {
   getClassAssignmentsForStudent (cl) {
     let {classId} = cl
     let {userStore} = this.props.rootStore
-    // let currentUser = userStore.user
     const { user: { student } } = userStore
     actions.studentClasses.getStudentClassAssignments(classId, student).then(assignments => {
-      console.log('assignments:')
-      // console.log(assignments)
       this.setState({assignments: assignments})
     })
   }
@@ -46,12 +43,22 @@ class ClassDetail extends React.Component {
   getClass () {
     const {classId} = this.props.params
     let {navbarStore} = this.props.rootStore
-
     this.setState({loading: true})
     actions.classes.getClassById(classId).then(cl => {
-      this.setState({cl, loading: false})
+      this.getClassColor(cl)
       navbarStore.title = cl.name
     }).catch(() => this.setState({loading: false}))
+  }
+
+  getClassColor (cl) {
+    const { userStore } = this.props.rootStore
+    const { user: { student } } = userStore
+    actions.studentClasses.getStudentClassById(cl.id, student).then(c => {
+      const newClass = {...cl}
+      newClass.color = c.color
+      console.log(newClass)
+      this.setState({ cl: newClass, loading: false })
+    }).catch(() => this.setState({ loading: false }))
   }
 
   /*
@@ -72,14 +79,14 @@ class ClassDetail extends React.Component {
   renderClassTitle () {
     const {cl} = this.state
     return (
-      <div className='cn-class-assignments-title'><span>{cl.name}</span> <i className='fas fa-info-circle'></i></div>
+      <div className='cn-class-assignments-title' style={{ color: '#' + cl.color }}><span>{cl.name}</span> <i className='fas fa-info-circle'></i></div>
     )
   }
 
   renderCurrentClassGrade () {
     const {cl} = this.state
     return (
-      <div className='cn-class-assignments-grade'>{cl.grade ? cl.grade + '%' : '- -'}</div>
+      <div className='cn-class-assignments-grade' style={{background: '#' + cl.color}}>{cl.grade ? cl.grade + '%' : '- -'}</div>
     )
   }
 
@@ -103,10 +110,13 @@ class ClassDetail extends React.Component {
   }
 
   renderAssignmentList () {
+    const {cl} = this.state
     return (
       <AssignmentList
         assignments={this.state.assignments.assignments}
+        weights={this.state.assignments.weights}
         onSelect={this.onAssignmentSelect.bind(this)}
+        classColor={cl.color}
       />
     )
   }
@@ -214,22 +224,24 @@ class ClassDetail extends React.Component {
   }
 
   render () {
-    const {loading} = this.state
+    const {loading, cl} = this.state
     return (
       <div>
-        {/* <div id='cn-class-detail-container'>
-          {loading
-            ? <Loading />
-            : this.renderClassDetails()}
-        </div> */}
-        <div className='cn-class-assignments-container'>
-          {this.renderClassAssignmentsHeader()}
-          <div className='cn-class-list-container margin-top'>
-            {loading
-              ? <Loading />
-              : this.renderAssignmentList()}
+        {loading
+          ? <Loading />
+          : <div>
+            {cl.status.id === 1100 || cl.status.id === 1200 || cl.status.id === 1300
+              ? <div id='cn-class-detail-container'>
+                {this.renderClassDetails()}
+              </div>
+              : <div className='cn-class-assignments-container'>
+                {this.renderClassAssignmentsHeader()}
+                <div className='cn-class-list-container margin-top'>
+                  {this.renderAssignmentList()}
+                </div>
+              </div>}
           </div>
-        </div>
+        }
       </div>
     )
   }

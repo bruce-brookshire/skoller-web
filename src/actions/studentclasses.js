@@ -2,6 +2,22 @@ import { get, post, put, del } from '../utilities/api'
 import stores from '../stores'
 const { userStore } = stores
 
+
+/*
+* Get student class by id
+*
+* @param [Number] classId. The id of the class to get.
+*/
+export function getStudentClassById (classId, student) {
+  return get(`/api/v1/students/${student.id}/classes/${classId}`, '', 'Error fetching class. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
 /*
 * Get student's assignments for class
 *
