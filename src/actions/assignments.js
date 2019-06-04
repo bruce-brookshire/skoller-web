@@ -64,3 +64,10 @@ export function deleteAssignmentPost (assignmentId, postId) {
       return Promise.reject(error)
     })
 }
+
+export function getTaskAssignments (studentId) {
+  let date = new Date()
+  let dateStr = new Date(date.getFullYear(), date.getMonth(), date.getDate()).toISOString()
+
+  return get(`/api/v1/students/${studentId}/assignments?is_complete=false&date=${dateStr}`)
+}
