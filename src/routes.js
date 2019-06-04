@@ -18,6 +18,7 @@ import ResetPassword from './views/ResetPassword'
 
 import Home from './views/Student/Home'
 import MyClasses from './views/Student/MyClasses'
+import Tasks from './views/Student/Tasks'
 import FindClasses from './views/Student/FindClasses'
 import Verification from './views/components/Verification'
 import ClassLink from './views/Student/ClassLink'
@@ -72,6 +73,7 @@ const router = (
         <Route path='/student'>
           <IndexRedirect to='/student/classes'/>
           <Route path='/student/home' component={Home} />
+          <Route path='/student/tasks' component={Tasks} />
           <Route path='/student/find-classes' component={FindClasses} />
           <Route path='/student/verify' component={Verification} onEnter={authOnboard} />
           <Route path='/student/class-link' component={ClassLink} />
