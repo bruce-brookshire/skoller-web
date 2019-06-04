@@ -123,7 +123,6 @@ class ClassList extends React.Component {
 
   renderClassRows () {
     return this.getRows().map(c => {
-      // console.log(c)
       if (c.setupStatus.id === 1400) {
         return (
           <div key={'cn_class_list_row_' + c.id}
@@ -136,9 +135,6 @@ class ClassList extends React.Component {
                 <div className='cn-class-list-title' style={{color: c.color}}>{c.name}</div>
                 <div className='cn-class-list-subtext cn-class-list-flex-top cn-class-list-text-left'><i className='fas fa-user' /> {c.enrollment}</div>
                 <div className='cn-class-list-subtext'><i className="far fa-circle"></i> {c.completion}%</div>
-              </div>
-              <div className='cn-class-list-row-col'>
-                {/* <div className='cn-class-list-subtext cn-class-list-flex-bottom cn-class-list-text-right'>{c.days + ' ' + c.beginTime}</div> */}
               </div>
             </div>
           </div>
