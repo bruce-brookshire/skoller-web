@@ -46,9 +46,12 @@ class ClassDetail extends React.Component {
   getClass () {
     const {classId} = this.props.params
     let {navbarStore} = this.props.rootStore
-
+    let { userStore } = this.props.rootStore
+    const { user: { student } } = userStore
     this.setState({loading: true})
-    actions.classes.getClassById(classId).then(cl => {
+    actions.studentClasses.getStudentClassById(classId, student).then(cl => {
+      console.log('Cuurrent Class:')
+      console.log(cl)
       this.setState({cl, loading: false})
       navbarStore.title = cl.name
     }).catch(() => this.setState({loading: false}))
@@ -72,14 +75,14 @@ class ClassDetail extends React.Component {
   renderClassTitle () {
     const {cl} = this.state
     return (
-      <div className='cn-class-assignments-title'><span>{cl.name}</span> <i className='fas fa-info-circle'></i></div>
+      <div className='cn-class-assignments-title' style={{ color: '#' + cl.color }}><span>{cl.name}</span> <i className='fas fa-info-circle'></i></div>
     )
   }
 
   renderCurrentClassGrade () {
     const {cl} = this.state
     return (
-      <div className='cn-class-assignments-grade'>{cl.grade ? cl.grade + '%' : '- -'}</div>
+      <div className='cn-class-assignments-grade' style={{background: '#' + cl.color}}>{cl.grade ? cl.grade + '%' : '- -'}</div>
     )
   }
 
@@ -103,10 +106,13 @@ class ClassDetail extends React.Component {
   }
 
   renderAssignmentList () {
+    const {cl} = this.state
     return (
       <AssignmentList
         assignments={this.state.assignments.assignments}
+        weights={this.state.assignments.weights}
         onSelect={this.onAssignmentSelect.bind(this)}
+        classColor={cl.color}
       />
     )
   }

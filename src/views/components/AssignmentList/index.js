@@ -3,6 +3,29 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 
 class AssignmentList extends React.Component {
+  renderInsertWeightsBar () {
+    var weightDensity = {}
+    for (var weight in this.props.weights) {
+      weightDensity[weight.id] = 0
+    }
+
+    for (var assignment in this.props.assignments) {
+      weightDensity[assignment.weight_id]++
+      console.log('Assignment Found!')
+    }
+
+    let needsAssignments = 0
+    for (var weightId in Object.keys(weightDensity)) {
+      if (weightDensity[weightId] === 0) {
+        needsAssignments++
+        console.log('Needs Assignment Added!')
+      }
+    }
+    if (needsAssignments > 0) {
+      console.log('Needs Banner')
+    }
+  }
+
   renderDueDateInfo (dd) {
     const today = moment()
     if (dd) {
@@ -17,7 +40,7 @@ class AssignmentList extends React.Component {
   renderClassAssignments () {
     const assignments = this.props.assignments
     return assignments && assignments.length ? assignments.map(a => {
-      const gradeSectionBgcolor = { background: a.grade ? '#57b9e4ff' : 'grey' }
+      const gradeSectionBgcolor = { background: a.grade ? '#' + this.props.classColor : 'grey' }
       return (
         <div key={'cn_class_detail_row_' + a.id}
           className='cn-class-list-row margin-bottom'
@@ -48,6 +71,7 @@ class AssignmentList extends React.Component {
   render () {
     return (
       <div className={'cn-class-list-container'}>
+        {this.renderInsertWeightsBar()}
         {this.renderClassAssignments()}
       </div>
     )
@@ -56,7 +80,9 @@ class AssignmentList extends React.Component {
 
 AssignmentList.propTypes = {
   assignments: PropTypes.array,
-  onSelect: PropTypes.func
+  weights: PropTypes.array,
+  onSelect: PropTypes.func,
+  classColor: PropTypes.string
 }
 
 export default AssignmentList
