@@ -21,9 +21,15 @@ class Tasks extends React.Component {
   render () {
     return (
       <StudentLayout>
-        {/* TODO Kevin: Make the student tasks view */}
-        {console.log(this.props.rootStore)}
-        {/* <p>What is happening</p> */}
+        <div className="task-container">
+          <div className="task">
+            <h1>Task Name</h1>
+            <div className="task-content">
+              <p>Content</p>
+            </div>
+          </div>
+        </div>
+        {/* console.log(this.props.rootStore) */}
       </StudentLayout>
     )
   }

@@ -1,0 +1,26 @@
+.task-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100vw;
+
+  .task {
+    width: calc(((100vw - 200px) / 2) - 36px);
+    margin: 16px;
+    border-radius: 16px;
+    box-shadow: 0px 8px 15px rgba(0,0,0,0.05);
+  }
+
+  h1 {
+    color: rgb(156, 85, 230);
+    padding: 16px 16px 0px 16px;
+    margin: 0px;
+    width: 100%;
+  }
+
+  .task-content {
+
+  }
+}
