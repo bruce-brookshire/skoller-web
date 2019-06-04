@@ -47,9 +47,9 @@ class ClassDetail extends React.Component {
     const {classId} = this.props.params
     let {navbarStore} = this.props.rootStore
     let { userStore } = this.props.rootStore
-    const { user: { student } } = userStore
+    // const { user: { student } } = userStore
     this.setState({loading: true})
-    actions.studentClasses.getStudentClassById(classId, student).then(cl => {
+    actions.classes.getClassById(classId).then(cl => {
       console.log('Cuurrent Class:')
       console.log(cl)
       this.setState({cl, loading: false})
@@ -223,11 +223,11 @@ class ClassDetail extends React.Component {
     const {loading} = this.state
     return (
       <div>
-        {/* <div id='cn-class-detail-container'>
+        <div id='cn-class-detail-container'>
           {loading
             ? <Loading />
             : this.renderClassDetails()}
-        </div> */}
+        </div>
         <div className='cn-class-assignments-container'>
           {this.renderClassAssignmentsHeader()}
           <div className='cn-class-list-container margin-top'>
