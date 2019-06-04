@@ -103,6 +103,8 @@ export function getStudentClassesById (studentId) {
               return '#' + newColor
             }
           }
+
+          // TODO get a random color, all are used
         }
       }
 
