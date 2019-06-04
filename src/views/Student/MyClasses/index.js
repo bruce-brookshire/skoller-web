@@ -5,6 +5,7 @@ import ClassList from '../../components/ClassList'
 import actions from '../../../actions'
 import { browserHistory } from 'react-router'
 import Card from '../../../components/Card'
+import StudentLayout from '../../components/StudentLayout'
 
 @inject('rootStore') @observer
 class MyClasses extends React.Component {
@@ -16,6 +17,7 @@ class MyClasses extends React.Component {
   }
 
   componentWillMount () {
+    this.props.rootStore.studentNavStore.setActivePage('classes')
     this.updateClasses()
   }
 
@@ -142,12 +144,14 @@ class MyClasses extends React.Component {
 
   render () {
     return (
-      <div className='cn-my-classes-container'>
-        <Card
-          title={this.renderTitle()}
-          content={this.renderContent()}
-        />
-      </div>
+      <StudentLayout>
+        <div className='cn-my-classes-container'>
+          <Card
+            title={this.renderTitle()}
+            content={this.renderContent()}
+          />
+        </div>
+      </StudentLayout>
     )
   }
 }
