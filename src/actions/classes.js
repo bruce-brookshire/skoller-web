@@ -103,7 +103,6 @@ export function getStudentClassesById (studentId, cl) {
                 .catch(error => {
                   return Promise.reject(error)
                 })
-              // TODO for Matt: save the color to the API now that we have selected it. (do this in an async, but do not await for it)
               return '#' + newColor
             }
           }
