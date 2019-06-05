@@ -5,7 +5,7 @@
   justify-content: center;
 
   .home-shadow-box {
-    @include skoller-cell
+    @include skoller-cell;
     width: calc(((100vw - 200px) / 2) - 36px);
     max-width: 464px;
     margin: 16px 16px;

@@ -2,8 +2,38 @@
   display: flex;
   justify-content: center;
 
-  h1 {
-    width: 100%;
-    text-align: center;
+  .calendar {
+    @include skoller-cell;
+    width: calc(100vw - 200px - 8rem);
+    max-width: 800px;
+    height: calc(100vh - 96px - 2rem);
+
+    .calendar-header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 16px;
+      
+      h1 {
+        text-align: center;
+        margin: 9px 0 0 0; // accounts for text space under baseline
+      }
+
+      .calendar-nav-item {
+        cursor: pointer;
+      }
+    }
+
+    .calendar-body {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+
+      div {
+        flex: 1 1 calc(100% / 7); // fixes day cells to the correct width to force flexbox into 7 columns
+        border: 1px solid black;
+      }
+    }
   }
 }
