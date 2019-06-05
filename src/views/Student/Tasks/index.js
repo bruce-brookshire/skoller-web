@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import moment from 'moment'
 import {inject, observer} from 'mobx-react'
 import StudentLayout from '../../components/StudentLayout'
 import actions from '../../../actions'
-// import { browserHistory } from 'react-router'
 
 @inject('rootStore') @observer
 
@@ -42,20 +42,33 @@ class Tasks extends React.Component {
     }).catch(() => false)
   }
 
+  formatDueDate (dd) {
+    const today = moment()
+    const dueDate = moment(dd)
+    const daysTillDue = dueDate.diff(today, 'days')
+    if (today.isSame(dueDate)) {
+      return 'Today'
+    } else {
+      console.log(moment.weekdays((dueDate.diff(today, 'days') + today.weekday()) % 7))
+      return daysTillDue >= 7 ? dueDate.from(today, 'days') : moment.weekdays((daysTillDue + today.weekday()) % 7)
+    }
+  }
+
   render () {
-    const card = this.state.tasks.map((task) =>
-      <div className="task-container" key={task.class_id}>
+    const card = this.state.tasks.map(task =>
+      <div className="task-container" key={task.id}>
         <div className="task">
-          <h1>{task.parentClassGetter}</h1>
+          <div className="task-heading">
+            <h1 className="alignleft">{Tasks.studentClasses[task.class_id].name}</h1>
+            <p className="alignright">{this.formatDueDate(task.due)}</p>
+          </div>
           <div className="task-content">
-            <p>{task.name}</p>
+            <p className="alignleft">{task.name}</p>
+            <p className="alignright">{task.weight * 100 + '%'}</p>
           </div>
         </div>
       </div>
     )
-    console.log('see below')
-    console.log(card)
-    console.log(this.state.tasks)
 
     return (
       <StudentLayout>

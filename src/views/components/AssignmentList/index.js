@@ -14,7 +14,7 @@ class AssignmentList extends React.Component {
         }
       })
     })
-  
+
     if (weights.length === 1) {
       return (
         <div className="">{weights.length} category needs assignments. Click to add them!</div>
