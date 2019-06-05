@@ -14,14 +14,10 @@ class AssignmentList extends React.Component {
         }
       })
     })
-  
-    if (weights.length === 1) {
+
+    if (weights.length > 1) {
       return (
-        <div className="">{weights.length} category needs assignments. Click to add them!</div>
-      )
-    } else if (weights.length > 1) {
-      return (
-        <div className="">{weights.length} categories need assignments. Click to add them!</div>
+        <div className="">{weights.length} categor{weights.length === 1 ? 'y' : 'ies'} needs assignment{weights.length === 1 ? '' : 's'}. Click to add them!</div>
       )
     } else if (weights.length <= 0) return null
   }
