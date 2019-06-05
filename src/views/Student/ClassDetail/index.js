@@ -56,6 +56,7 @@ class ClassDetail extends React.Component {
     actions.studentClasses.getStudentClassById(cl.id, student).then(c => {
       const newClass = {...cl}
       newClass.color = c.color
+      newClass.grade = c.grade
       console.log(newClass)
       this.setState({ cl: newClass, loading: false })
     }).catch(() => this.setState({ loading: false }))

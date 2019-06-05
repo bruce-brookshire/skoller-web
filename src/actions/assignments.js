@@ -31,6 +31,36 @@ export function createAssignment (cl, form) {
 }
 
 /*
+* Add a grade to an assignment
+*
+* @params [Object] grade. Assignment grade.
+*/
+export function gradeAssignment (assignmentId, grade) {
+  return post(`/api/v1/assignments/${assignmentId}/grades`, {grade: grade}, 'Error grading assignment. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Remove a grade from an assignment
+*
+* @params [Object] grade. Assignment grade.
+*/
+export function removeGradeFromAssignment (assignmentId) {
+  return post(`/api/v1/assignments/${assignmentId}/grades`, { grade: null }, 'Error removing grade assignment. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
 * Update an assignment
 *
 * @params [Object] form. Assignment form.

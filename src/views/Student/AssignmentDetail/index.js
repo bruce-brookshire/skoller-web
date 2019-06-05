@@ -14,7 +14,9 @@ class AssignmentDetail extends React.Component {
       assignments: [],
       currentAssignment: {},
       currentWeight: {},
-      cl: {}
+      cl: {},
+      toggleAddGrade: false,
+      newGrade: null
     }
   }
 
@@ -63,13 +65,47 @@ class AssignmentDetail extends React.Component {
     this.setState({currentWeight: currentWeight})
   }
 
+  // Assignment Grading Handlers
+
+  toggleAddGradeHandler () {
+    let toggle = this.state.toggleAddGrade
+    this.setState({ toggleAddGrade: !toggle })
+  }
+
+  addGradeOnChangeHandler (event) {
+    this.setState({ newGrade: event.target.value })
+  }
+
+  addGradeOnSubmitHandler () {
+    const { currentAssignment, newGrade } = this.state
+    const assignment = { ...currentAssignment }
+    assignment.grade = newGrade
+    actions.assignments.gradeAssignment(currentAssignment.id, newGrade)
+    this.setState({
+      toggleAddGrade: false,
+      currentAssignment: assignment
+    })
+  }
+
+  removeGradeHandler () {
+    const { currentAssignment } = this.state
+    const assignment = { ...currentAssignment }
+    assignment.grade = null
+    actions.assignments.removeGradeFromAssignment(currentAssignment.id)
+    this.setState({
+      newGrade: null,
+      currentAssignment: assignment
+    })
+  }
+
+  // Redner Methods
+
   renderDueDate (dd) {
-    const today = moment()
     return moment(dd)
   }
 
   renderAssignmentDetails (assignment) {
-    const { currentWeight } = this.state
+    const { currentWeight, toggleAddGrade } = this.state
     return (
       <div>
         <h1>Assignment Details</h1>
@@ -78,6 +114,17 @@ class AssignmentDetail extends React.Component {
           : <p>No weight given.</p>}
         <p>Grading Category: {currentWeight.name}</p>
         <p>Due Date: {assignment.due}</p>
+        <h2>Personal Details</h2>
+        <p>Grade Earned: {assignment.grade ? assignment.grade : '--'}</p>
+        {assignment.grade
+          ? <a onClick={this.removeGradeHandler.bind(this)} >Remove Grade</a>
+          : <a onClick={this.toggleAddGradeHandler.bind(this)}>Add Grade</a>}
+        {toggleAddGrade
+          ? <div className="add-grade">
+            <input type="text" onChange={this.addGradeOnChangeHandler.bind(this)} /><br />
+            <button onClick={this.addGradeOnSubmitHandler.bind(this)}>Save Grade</button>
+          </div>
+          : null}
       </div>
     )
   }
