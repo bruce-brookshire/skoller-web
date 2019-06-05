@@ -22,8 +22,7 @@ class Calendar extends React.Component {
         firstOfMonth.getMonth(),
         1
       ),
-      assignments: {},
-      classes: {}
+      assignments: {}
     }
   }
 
@@ -35,8 +34,15 @@ class Calendar extends React.Component {
   getAssignments () {
     const {user: {student}} = this.props.rootStore.userStore
     actions.classes.getStudentClassesById(student.id).then((classes) => {
-      this.setState({classes})
-      console.log(classes[0].assignments)
+      const assignmentsObject = {}
+      classes.forEach(function (element) {
+        element.assignments.forEach(function (element) {
+          if (element.name != null) {
+            assignmentsObject[ element.id ] = (element)
+          }
+        })
+      })
+      this.setState({assignments: assignmentsObject})
     }).catch(() => false)
   }
 
@@ -54,19 +60,31 @@ class Calendar extends React.Component {
 
   renderBody () {
     const days = Array.apply(null, {length: 42}).map(Number.call, Number) // there should always be 42 cells
-    const renderedDays = []
-
-    days.forEach(function (element) {
-      renderedDays.push('ok')
-    })
+    const assignments = this.state.assignments
 
     return (
       <div className="calendar-body">
-        {renderedDays.map((value, index) => {
-          return <div key={index}>{value}</div>
-        })}
+        { Object.keys(assignments).map((item, i) => (
+          <div className="calendar-assignment" key={i}>
+            {assignments[item].name}
+          </div>
+        )) }
       </div>
     )
+
+    // const renderedDays = []
+
+    // days.forEach(function (element) {
+    //   renderedDays.push('ok')
+    // })
+
+    // return (
+    //   <div className="calendar-body">
+    //     {renderedDays.map((value, index) => {
+    //       return <div key={index}>{value}</div>
+    //     })}
+    //   </div>
+    // )
   }
 
   renderContent () {

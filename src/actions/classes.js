@@ -74,7 +74,7 @@ class StudentClass {
 export function getStudentClassesById (studentId, cl) {
   return get(`/api/v1/students/${studentId}/classes/`, '', 'Error fetching classes. Try again.')
     .then(data => {
-      console.log(data)
+      // console.log(data)
       var processColor = function () {
         if (this.color) {
           return '#' + this.color

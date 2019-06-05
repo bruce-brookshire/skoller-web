@@ -2,13 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 class BackArrow extends React.Component {
-  getDefaultProps () {
-    return {
-      width: '12',
-      height: '17'
-    }
-  }
-
   render () {
     return (
       <svg

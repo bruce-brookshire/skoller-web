@@ -17,9 +17,9 @@
     h1 {
       padding: 16px 16px 0px 16px;
       margin: 0;
-      background-color: rgba(0,0,0,.05);
+      background-color: rgba(0,0,0,.07);
       width: 100%;
-      border-radius: 16px 16px 0 0;
+      border-radius: $skoller-cell-border-radius $skoller-cell-border-radius 0 0;
     }
   
     .home-card-content {
