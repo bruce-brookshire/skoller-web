@@ -95,14 +95,15 @@ export function getStudentClassesById (studentId) {
             }
           }
 
-          for (var newColor in Object.keys(usedColors)) {
-            console.log(newColor)
+          for (var newColor in usedColors) {
             if (!usedColors[newColor]) {
               this.color = newColor
               // TODO for Matt: save the color to the API now that we have selected it. (do this in an async, but do not await for it)
               return '#' + newColor
             }
           }
+
+          // TODO get a random color, all are used
         }
       }
 
