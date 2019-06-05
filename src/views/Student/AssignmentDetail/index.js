@@ -101,7 +101,6 @@ class AssignmentDetail extends React.Component {
   // Redner Methods
 
   renderDueDate (dd) {
-    const today = moment()
     return moment(dd)
   }
 
