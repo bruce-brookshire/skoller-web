@@ -71,9 +71,10 @@ class StudentClass {
 * Get classes for students by student id
 *
 */
-export function getStudentClassesById (studentId) {
+export function getStudentClassesById (studentId, cl) {
   return get(`/api/v1/students/${studentId}/classes/`, '', 'Error fetching classes. Try again.')
     .then(data => {
+      console.log(data)
       var processColor = function () {
         if (this.color) {
           return '#' + this.color
@@ -98,6 +99,10 @@ export function getStudentClassesById (studentId) {
           for (var newColor in usedColors) {
             if (!usedColors[newColor]) {
               this.color = newColor
+              put(`/api/v1/students/${studentId}/classes/${this.id}`, { color: newColor }, 'Error fetching class. Try again.')
+                .catch(error => {
+                  return Promise.reject(error)
+                })
               // TODO for Matt: save the color to the API now that we have selected it. (do this in an async, but do not await for it)
               return '#' + newColor
             }
