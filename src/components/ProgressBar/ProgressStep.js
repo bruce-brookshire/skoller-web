@@ -4,19 +4,21 @@ import PropTypes from 'prop-types'
 class ProgressStep extends React.Component {
   render () {
     const {active, label, index} = this.props
-    const classes = ['cn-progress-bar']
+    const icons = ['cn-progress-bar']
+    const headers = ['progress-bar-title']
     if (active) {
-      classes.push('active')
+      icons.push('active')
+      headers.push('active')
     }
 
     return (
       <div className='cn-progress-step'>
-        <div className={classes.join(' ')}>
+        <div className={icons.join(' ')}>
           <div className='cn-progress-divider-left'></div>
           {index + 1}
           <div className='cn-progress-divider-right'></div>
         </div>
-        <p className='progress-bar-title'><strong>{label}</strong></p>
+        <p className={headers.join(' ')}><strong>{label}</strong></p>
       </div>
     )
   }

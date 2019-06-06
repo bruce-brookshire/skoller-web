@@ -49,7 +49,6 @@ class Tasks extends React.Component {
     if (today.isSame(dueDate)) {
       return 'Today'
     } else {
-      console.log(moment.weekdays((dueDate.diff(today, 'days') + today.weekday()) % 7))
       return daysTillDue >= 7 ? dueDate.from(today, 'days') : moment.weekdays((daysTillDue + today.weekday()) % 7)
     }
   }
