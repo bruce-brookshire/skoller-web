@@ -15,32 +15,45 @@ class WeightType extends React.Component {
     return (
       <div className='cn-weight-type'>
         <div className='cn-section-content-header'>
-          Is this class based on points or percentages?
+          Step 1: Set Up Weights
         </div>
-        <CheckboxField
-          containerClassName='margin-top margin-right'
-          label='Points (e.g. 100/500)'
-          name='isPoints'
-          onChange={(name, value) => {
-            this.setState({isPoints: value})
-          }}
-          value={this.state.isPoints}
-        />
-        <CheckboxField
-          containerClassName='margin-top margin-right'
-          label='Percentage (e.g. 20%)'
-          name='isPercentage'
-          onChange={(name, value) => {
-            this.setState({isPoints: !value})
-          }}
-          value={!this.state.isPoints}
-        />
-        <button
-          className='margin-top margin-bottom button full-width'
-          onClick={() => this.props.onSubmit(this.state.isPoints)}
-        >
-          Next Step
-        </button>
+        <div id='cn-weight-form-instructions'>
+          Weights are how much a certain group of assignments contribute to your final grade.
+        </div>
+        <hr />
+        <div className='cn-section-content-subheader'>
+          Is this class based on percentages or points?
+        </div>
+        <div className="checkbox-container">
+          <div className="checkboxes">
+            <CheckboxField
+              containerClassName='margin-top margin-right'
+              label='Percentage (20%)'
+              name='isPercentage'
+              onChange={(value) => {
+                this.setState({isPoints: !value})
+              }}
+              value={!this.state.isPoints}
+            />
+            <CheckboxField
+              containerClassName='margin-top margin-right'
+              label='Points (100/500)'
+              name='isPoints'
+              onChange={(value) => {
+                this.setState({isPoints: value})
+              }}
+              value={this.state.isPoints}
+            />
+          </div>
+        </div>
+        <div className='button-container'>
+          <button
+            className='margin-top margin-bottom button full-width'
+            onClick={() => this.props.onSubmit(this.state.isPoints)}
+          >
+            Next
+          </button>
+        </div>
       </div>
     )
   }

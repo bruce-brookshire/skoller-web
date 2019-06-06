@@ -80,8 +80,7 @@ class CheckboxField extends React.Component {
           onFocus={this.onFocus.bind(this)}
           type='checkbox'
           checked={input.value}
-        >
-        </input>
+        />
         {label
           ? <label className={labelClasses.join(' ')} htmlFor={id}>
             {label} {this.renderInfo()}
