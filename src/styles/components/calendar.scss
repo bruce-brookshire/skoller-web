@@ -1,6 +1,7 @@
 .calendar-container {
   display: flex;
   justify-content: center;
+  padding: 0 0 4px 0;
 
   .calendar {
     @include skoller-cell;
@@ -9,19 +10,67 @@
     min-width: 600px;
 
     .calendar-header {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px 16px;
+      position: -webkit-sticky;
+      position: sticky;
+      top: 0px;
+      padding: 8px 16px 16px 16px;
+      background-color: rgba(255,255,255,.9);
+      border-radius: $skoller-cell-border-radius;
       
       h1 {
         text-align: center;
         margin: 9px 0 0 0; // accounts for text space under baseline
       }
 
-      .calendar-nav-item {
-        cursor: pointer;
+      .calendar-controls {
+        display: flex;
+        flex: row;
+        justify-content: space-between;
+        margin-top: -34px;
+
+        .calendar-nav-item {
+          cursor: pointer;
+        }
+  
+        .calendar-controls-left {
+          display: flex;
+          flex: row;
+        }
+  
+        .calendar-controls-right {
+          display: flex;
+          flex: row;
+  
+          .calendar-today {
+            background-color: $cn-color-blue;
+            margin: -4px 1rem 0 0;
+            color: white;
+            padding: 4px 8px 0 8px;
+            border-radius: 3px;
+
+            p {
+              margin: 2px 0 0 0;
+            }
+          }
+        }
+      }
+    }
+
+    .calendar-week-row {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 61.75px;
+      background-color: rgba(255,255,255,.9);
+      display: flex;
+      flex-direction: row;
+      padding: 0 16px;
+      width: 100%;
+      margin-bottom: -12px;
+
+      .calendar-week-day {
+        flex: 1 1 calc(100% / 7 - 8px);
+        min-width: 0;
+        font-weight: 600;
       }
     }
 
@@ -29,11 +78,13 @@
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
-      padding: 0 16px;
+      padding: 0 16px 16px 16px;
+      font-size: 14px;
 
       .calendar-day-cell-container {
         flex: 1 1 calc(100% / 7 - 8px);
         min-width: 0;
+        padding: 12px 0 0 0;
 
         .calendar-day-cell-wrapper {
           height: 100%;
@@ -53,23 +104,27 @@
           }
 
           .current-day {
-            margin: 0px 0 4px 0;
+            margin: -4px 0 0 0;
             width: 20px;
             height: 20px;
             color: white;
             font-weight: 500;
             text-align: center;
-            background-color: red;
+            background-color: $cn-error-color;
             padding: 3px 2px 0px 2px;
             border-radius: 5px;
+            position: absolute;
+            z-index: 1000;
           }
 
           .calendar-day-cell {
             background-color: rgba(0,0,0,.05);
             border-radius: 7px;
             padding: 4px;
-            margin: 4px 4px 12px 4px;
-            height: 64px;
+            margin: 4px 4px 0px 4px;
+            height: 60px;
+            min-height: 55px;
+            max-height: 64px;
             overflow-y: scroll;
             scrollbar-width: none;
   
@@ -85,7 +140,7 @@
                 margin-bottom: 4px;
                 border-radius: 7px;
                 color: white;
-                font-weight: 200;
+                font-weight: 500;
                 padding: 4px 4px 0 4px;
                 white-space: nowrap;
                 overflow: hidden;
@@ -93,6 +148,10 @@
                 cursor: pointer;
               }
             }
+          }
+
+          .current-day-cell {
+            margin-top: 20px;
           }
         }
       }

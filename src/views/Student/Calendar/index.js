@@ -6,6 +6,7 @@ import BackArrow from '../../../assets/sk-icons/navigation/BackArrow'
 import ForwardArrow from '../../../assets/sk-icons/navigation/ForwardArrow'
 import actions from '../../../actions'
 import moment from 'moment'
+import { browserHistory } from 'react-router'
 
 @inject('rootStore')
 @observer
@@ -29,6 +30,7 @@ class Calendar extends React.Component {
 
   componentWillMount () {
     this.props.rootStore.studentNavStore.setActivePage('calendar')
+    this.props.rootStore.navbarStore.title = ''
     this.getAssignments()
   }
 
@@ -39,11 +41,14 @@ class Calendar extends React.Component {
       const classColors = {}
       classes.forEach(function (element) {
         classColors[ element.id ] = element.getColor()
-        element.assignments.forEach(function (element) {
-          if (element.name != null) {
-            assignmentsObject[ element.id ] = (element)
-          }
+        element.assignments.forEach((i, index) => {
+          console.log(i.class_id, index, i)
+          let assignmentIndex = i.class_id.toString() + '000' + index.toString()
+          assignmentsObject[ assignmentIndex ] = (i)
         })
+        // element.assignments.forEach(function (element, index) {
+        //   assignmentsObject[ index ] = (element)
+        // })
       })
       this.setState({
         assignments: assignmentsObject,
@@ -52,18 +57,22 @@ class Calendar extends React.Component {
     }).catch(() => false)
   }
 
+  goToAssignment (assignment) {
+    browserHistory.push('/student/class/' + assignment.class_id + '/assignments/' + assignment.assignment_id)
+  }
+
   renderAssignment (assignment) {
     const assignmentStyle = {
       backgroundColor: this.state.classColors[assignment.class_id]
     }
     return (
-      <div className="calendar-assignment" style={assignmentStyle}>
+      <div className="calendar-assignment" style={assignmentStyle} onClick={() => this.goToAssignment(assignment)}>
         {assignment.name}
       </div>
     )
   }
 
-  dayCell (day) {
+  renderDayCell (day) {
     // const isCurMonth = this.state.firstOfMonth.getMonth() === new Date(day).getMonth()
     // const isCurDay = isCurMonth && new Date().getDate() === new Date(day).getDate()
 
@@ -106,7 +115,7 @@ class Calendar extends React.Component {
             {day.format('D')}
           </p>
         </div>
-        <div className="calendar-day-cell">
+        <div className={'calendar-day-cell ' + (isCurrentDay ? 'current-day-cell' : '')}>
           {dayAssignments.map((item, i) => {
             return (
               <div key={i} className="calendar-assignment-container">
@@ -126,7 +135,7 @@ class Calendar extends React.Component {
     for (let i = 0; i < 42; i++) {
       let day = moment(this.state.firstOfMonth).add(i, 'd')
       if (day.month() === this.state.firstOfMonth.getMonth()) {
-        renderedDays.push(this.dayCell(day))
+        renderedDays.push(this.renderDayCell(day))
         lastDay = day
       } else {
         break
@@ -135,13 +144,13 @@ class Calendar extends React.Component {
 
     for (let i = 1; i < this.state.firstOfMonth.getDay() + 1; ++i) {
       let day = moment(this.state.firstOfMonth).subtract(i, 'd')
-      renderedDays.splice(0, 0, this.dayCell(day))
+      renderedDays.splice(0, 0, this.renderDayCell(day))
     }
 
     while (renderedDays.length < 42) {
       let day = moment(lastDay).add(1, 'd')
       lastDay = day
-      renderedDays.push(this.dayCell(day))
+      renderedDays.push(this.renderDayCell(day))
     }
 
     return (
@@ -156,15 +165,11 @@ class Calendar extends React.Component {
   }
 
   nextMonth () {
-    const thisMonth = this.state.firstOfMonth
-    const nextMonth = new Date(
-      thisMonth.getFullYear(),
-      thisMonth.getMonth() + 1,
-      1
-    )
+    const thisMonth = moment(this.state.firstOfMonth)
+    const nextMonth = new Date(thisMonth.add(1, 'M'))
 
     this.setState({
-      firstOfMonth: nextMonth,
+      firstOfMonth: new Date(nextMonth),
       startDate: new Date(
         nextMonth.getFullYear(),
         nextMonth.getMonth(),
@@ -190,15 +195,53 @@ class Calendar extends React.Component {
   }
 
   renderContent () {
+    let isCurrentYear = true
+
+    if (moment().year() !== moment(this.state.firstOfMonth).year()) {
+      isCurrentYear = false
+    }
+
     return (
       <div className="calendar">
         <div className="calendar-header">
-          <div className="calendar-nav-item" onClick={() => this.prevMonth()}>
-            <BackArrow />
+          <h1>{(isCurrentYear ? moment(this.state.firstOfMonth).format('MMMM') : moment(this.state.firstOfMonth).format('MMMM YYYY'))}</h1>
+          <div className="calendar-controls">
+            <div className="calendar-controls-right">
+              <div className="calendar-nav-item" onClick={() => this.prevMonth()}>
+                <BackArrow />
+              </div>
+            </div>
+            <div className="calendar-controls-right">
+              <div className="calendar-nav-item calendar-today" onClick={() => this.setState({firstOfMonth: new Date(moment().startOf('month'))})}>
+                <p>Today</p>
+              </div>
+              <div className="calendar-nav-item" onClick={() => this.nextMonth()}>
+                <ForwardArrow />
+              </div>
+            </div>
           </div>
-          <h1>{moment(this.state.firstOfMonth).format('MMMM YYYY')}</h1>
-          <div className="calendar-nav-item" onClick={() => this.nextMonth()}>
-            <ForwardArrow />
+        </div>
+        <div className="calendar-week-row">
+          <div className="calendar-week-day">
+            Sun
+          </div>
+          <div className="calendar-week-day">
+            Mon
+          </div>
+          <div className="calendar-week-day">
+            Tue
+          </div>
+          <div className="calendar-week-day">
+            Wed
+          </div>
+          <div className="calendar-week-day">
+            Thu
+          </div>
+          <div className="calendar-week-day">
+            Fri
+          </div>
+          <div className="calendar-week-day">
+            Sat
           </div>
         </div>
         {this.renderBody()}
