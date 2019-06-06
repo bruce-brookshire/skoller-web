@@ -6,7 +6,7 @@
     @include skoller-cell;
     width: calc(100vw - 200px - 8rem);
     max-width: 800px;
-    height: calc(100vh - 96px - 2rem);
+    min-width: 600px;
 
     .calendar-header {
       display: flex;
@@ -29,10 +29,72 @@
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
+      padding: 0 16px;
 
-      div {
-        flex: 1 1 calc(100% / 7); // fixes day cells to the correct width to force flexbox into 7 columns
-        border: 1px solid black;
+      .calendar-day-cell-container {
+        flex: 1 1 calc(100% / 7 - 8px);
+        min-width: 0;
+
+        .calendar-day-cell-wrapper {
+          height: 100%;
+          overflow: hidden;
+          
+          .calendar-date {
+            color: rgba(0,0,0,.1);
+
+            p {
+              margin: 0;
+            }
+          }
+
+          .current-month {
+            color: #4a4a4a;
+            font-weight: 500;
+          }
+
+          .current-day {
+            margin: 0px 0 4px 0;
+            width: 20px;
+            height: 20px;
+            color: white;
+            font-weight: 500;
+            text-align: center;
+            background-color: red;
+            padding: 3px 2px 0px 2px;
+            border-radius: 5px;
+          }
+
+          .calendar-day-cell {
+            background-color: rgba(0,0,0,.05);
+            border-radius: 7px;
+            padding: 4px;
+            margin: 4px 4px 12px 4px;
+            height: 64px;
+            overflow-y: scroll;
+            scrollbar-width: none;
+  
+            ::-webkit-scrollbar {
+              width: 0px;  /* Remove scrollbar space */
+              background: transparent;  /* Optional: just make scrollbar invisible */
+            }
+  
+            .calendar-assignment-container {
+              width: 100%;
+
+              .calendar-assignment {
+                margin-bottom: 4px;
+                border-radius: 7px;
+                color: white;
+                font-weight: 200;
+                padding: 4px 4px 0 4px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                cursor: pointer;
+              }
+            }
+          }
+        }
       }
     }
   }
