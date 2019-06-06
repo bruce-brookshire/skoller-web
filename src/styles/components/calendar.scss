@@ -45,7 +45,7 @@
             background-color: $cn-color-blue;
             margin: -4px 1rem 0 0;
             color: white;
-            padding: 4px 8px 0 8px;
+            padding: 6px 8px 0 8px;
             border-radius: 3px;
 
             p {
@@ -63,7 +63,7 @@
       background-color: rgba(255,255,255,.9);
       display: flex;
       flex-direction: row;
-      padding: 0 16px;
+      padding: 0 16px 8px;
       width: 100%;
       margin-bottom: -12px;
 
@@ -71,6 +71,7 @@
         flex: 1 1 calc(100% / 7 - 8px);
         min-width: 0;
         font-weight: 600;
+        margin-left: 4px;
       }
     }
 
@@ -92,6 +93,7 @@
           
           .calendar-date {
             color: rgba(0,0,0,.1);
+            margin-left: 8px;
 
             p {
               margin: 0;
@@ -104,14 +106,14 @@
           }
 
           .current-day {
-            margin: -4px 0 0 0;
+            margin: -4px 0 0 5px;
             width: 20px;
             height: 20px;
             color: white;
             font-weight: 500;
             text-align: center;
-            background-color: $cn-error-color;
-            padding: 3px 2px 0px 2px;
+            background-color: $cn-color-blue;
+            padding: 4px 2px 0px 2px;
             border-radius: 5px;
             position: absolute;
             z-index: 1000;
@@ -122,9 +124,9 @@
             border-radius: 7px;
             padding: 4px;
             margin: 4px 4px 0px 4px;
-            height: 60px;
-            min-height: 55px;
-            max-height: 64px;
+            height: 78px;
+            min-height: 45px;
+            max-height: 84px;
             overflow-y: scroll;
             scrollbar-width: none;
   
@@ -138,10 +140,10 @@
 
               .calendar-assignment {
                 margin-bottom: 4px;
-                border-radius: 7px;
+                border-radius: 5px;
                 color: white;
                 font-weight: 500;
-                padding: 4px 4px 0 4px;
+                padding: 4px 4px 0 6px;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
