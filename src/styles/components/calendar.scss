@@ -7,12 +7,13 @@
     @include skoller-cell;
     width: calc(100vw - 200px - 8rem);
     max-width: 800px;
-    min-width: 600px;
+    min-width: 500px;
 
     .calendar-header {
       position: -webkit-sticky;
       position: sticky;
       top: 0px;
+      z-index: 2;
       padding: 8px 16px 16px 16px;
       background-color: rgba(255,255,255,.9);
       border-radius: $skoller-cell-border-radius;
@@ -60,6 +61,7 @@
       position: -webkit-sticky;
       position: sticky;
       top: 61.75px;
+      z-index: 2;
       background-color: rgba(255,255,255,.9);
       display: flex;
       flex-direction: row;
@@ -116,7 +118,7 @@
             padding: 4px 2px 0px 2px;
             border-radius: 5px;
             position: absolute;
-            z-index: 1000;
+            z-index: 1;
           }
 
           .calendar-day-cell {
@@ -124,9 +126,9 @@
             border-radius: 7px;
             padding: 4px;
             margin: 4px 4px 0px 4px;
-            height: 78px;
-            min-height: 45px;
-            max-height: 84px;
+            height: calc((100vh - 420px) / 6);
+            min-height: 56px;
+            max-height: 128px;
             overflow-y: scroll;
             scrollbar-width: none;
   
