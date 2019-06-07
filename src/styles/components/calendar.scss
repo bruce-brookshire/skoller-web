@@ -9,6 +9,12 @@
     max-width: 800px;
     min-width: 300px;
 
+    @media only screen and (max-width: $sk-mobile-break-point) {
+      box-sizing: border-box;
+      margin: 0 1rem 1rem 1rem;
+      width: 100vw;
+    }
+
     .calendar-header {
       position: -webkit-sticky;
       position: sticky;
@@ -70,7 +76,7 @@
       margin-bottom: -12px;
 
       .calendar-week-day {
-        flex: 1 1 calc(100% / 7 - 8px);
+        flex: 1 1 calc(100% / 7);
         min-width: 0;
         font-weight: 600;
         margin-left: 4px;
@@ -85,7 +91,7 @@
       font-size: 14px;
 
       .calendar-day-cell-container {
-        flex: 1 1 calc(100% / 7 - 8px);
+        flex: 1 1 calc(100% / 7);
         min-width: 0;
         padding: 12px 0 0 0;
 
