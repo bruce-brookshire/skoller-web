@@ -1,4 +1,4 @@
-import {createAssignment, deleteAssignment, deleteAssignmentPost, getClassAssignments, updateAssignment, getTaskAssignments, gradeAssignment, removeGradeFromAssignment} from './assignments'
+import {createAssignment, deleteAssignment, deleteAssignmentPost, getAllStudentAssignments, getClassAssignments, updateAssignment, getTaskAssignments, gradeAssignment, removeGradeFromAssignment} from './assignments'
 import {getAnalytics} from './analytics'
 import {authenticateUser, forgotPassword, getRoles,
   getUserById, getUserByToken, getUsers, registerUser, registerUserAdmin, resetPassword,
@@ -48,7 +48,8 @@ const actions = {
     updateAssignment,
     getTaskAssignments,
     gradeAssignment,
-    removeGradeFromAssignment
+    removeGradeFromAssignment,
+    getAllStudentAssignments
   },
   auth: {
     authenticateUser,

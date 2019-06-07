@@ -1,10 +1,21 @@
 import {get, post, put, del} from '../utilities/api'
+import stores from '../stores'
 
 /*
 * Get assignments for class
 *
 * @param [Object] cl. Class
 */
+export function getAllStudentAssignments (studentId) {
+  return get(`/api/v1/students/${studentId}/assignments`)
+    .then((assignments) => {
+      stores.studentAssignmentsStore.setAssignments(assignments)
+      return assignments
+    }).catch(error => {
+      return Promise.reject(error)
+    })
+}
+
 export function getClassAssignments (cl) {
   return get(`/api/v1/classes/${cl.id}/assignments`, '', 'Error fetching assignments. Try again.')
     .then(data => {

@@ -1,7 +1,6 @@
 import React from 'react'
 import { observer, inject, propTypes } from 'mobx-react'
 import StudentLayout from '../../components/StudentLayout'
-// import moment from 'moment'
 import BackArrow from '../../../assets/sk-icons/navigation/BackArrow'
 import ForwardArrow from '../../../assets/sk-icons/navigation/ForwardArrow'
 import actions from '../../../actions'
@@ -23,7 +22,7 @@ class Calendar extends React.Component {
         firstOfMonth.getMonth(),
         1
       ),
-      assignments: {},
+      assignments: this.props.rootStore.studentAssignmentsStore.assignments,
       classColors: {}
     }
   }
@@ -34,26 +33,26 @@ class Calendar extends React.Component {
     this.getAssignments()
   }
 
-  getAssignments () {
+  getClassColors () {
     const {user: {student}} = this.props.rootStore.userStore
+
     actions.classes.getStudentClassesById(student.id).then((classes) => {
-      const assignmentsObject = {}
       const classColors = {}
       classes.forEach(function (element) {
         classColors[ element.id ] = element.getColor()
-        element.assignments.forEach((i, index) => {
-          console.log(i.class_id, index, i)
-          let assignmentIndex = i.class_id.toString() + '000' + index.toString()
-          assignmentsObject[ assignmentIndex ] = (i)
-        })
-        // element.assignments.forEach(function (element, index) {
-        //   assignmentsObject[ index ] = (element)
-        // })
       })
       this.setState({
-        assignments: assignmentsObject,
         classColors: classColors
       })
+    }).catch(() => false)
+  }
+
+  getAssignments () {
+    const {user: {student}} = this.props.rootStore.userStore
+    this.getClassColors()
+
+    actions.assignments.getAllStudentAssignments(student.id).then((data) => {
+      this.setState({assignments: data})
     }).catch(() => false)
   }
 
@@ -179,7 +178,6 @@ class Calendar extends React.Component {
   }
 
   prevMonth () {
-    console.log('button pushed')
     let thisMonth = moment(this.state.firstOfMonth)
     let nextMonth = new Date(thisMonth.subtract(1, 'M'))
 
@@ -191,7 +189,6 @@ class Calendar extends React.Component {
         1 - nextMonth.getDay()
       )
     })
-    console.log(moment(this.state.firstOfMonth).format('MMMM'))
   }
 
   renderContent () {
