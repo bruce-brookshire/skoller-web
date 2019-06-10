@@ -157,6 +157,13 @@
                 text-overflow: ellipsis;
                 cursor: pointer;
               }
+
+              .add-new {
+                background-color: rgba(0,0,0,.1);
+                font-weight: 900;
+                color: rgba(0,0,0,.2);
+                cursor: pointer;
+              }
             }
           }
 
