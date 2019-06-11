@@ -23,6 +23,7 @@ import Verification from './views/components/Verification'
 import ClassLink from './views/Student/ClassLink'
 import ClassDetail from './views/Student/ClassDetail'
 import AssignmentDetail from './views/Student/AssignmentDetail'
+import AddAssignment from './views/Student/Assignments/AddAssignment'
 
 import SyllabusTool from './views/SyllabusTool'
 import ClassAdmin from './views/ClassAdmin'
@@ -78,6 +79,7 @@ const router = (
           <Route path='/student/classes' component={MyClasses}/>
           <Route path='/student/class/:classId' component={ClassDetail} />
           <Route path='/student/class/:classId/assignments/:assignmentId' component={AssignmentDetail} />
+          <Route path='/student/class/:classId/add-assignment' component={AddAssignment} />
         </Route>
 
         <Route path='/hub'>
