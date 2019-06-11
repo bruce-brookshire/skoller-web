@@ -25,12 +25,13 @@ class DayCell extends React.Component {
   }
 
   launchModal () {
-    this.setState({showAddAssignmentModal: true})
     this.setState({ isHover: false })
+    this.setState({showAddAssignmentModal: true})
   }
 
   addAssignmentModalCallBack = (showModal) => {
-    this.setState({showAddAssignmentModal: false})
+    this.setState({showAddAssignmentModal: showModal})
+    this.setState({ isHover: false })
   }
 
   // return the rendered calendar day cell
@@ -73,7 +74,14 @@ class DayCell extends React.Component {
           ? <SkModal title={moment(this.props.day).format('MMMM DD, YYYY')} callbackFromParent={this.addAssignmentModalCallBack}>
             <form>
               <p>example form</p>
-              <input type="text"></input>
+              <input type="text" />
+              <p>example form</p>
+              <input type="text" />
+              <p>example form</p>
+              <input type="text" />
+              <p>example form</p>
+              <input type="text" /> <br />
+              <input type="submit" value="Submit" />
             </form>
           </SkModal>
           : null
