@@ -208,6 +208,20 @@ export function lockClass (classId, form) {
 }
 
 /*
+* Lock the class for assignment creation of a single weight
+*
+* @param [Number] classId. Class to lock
+* @param [Number] weightId. Weight to lock
+*/
+export function lockClassWeight (classId, weightId) {
+  return post(`/api/v1/classes/${classId}/lock/weights`, {'subsection': weightId}, '')
+    .catch(error => {
+      if (error.status !== 422) showSnackbar('Error locking class. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
 * Unlock the class for DIY
 *
 * @param [Number] classId. Class to unlock
