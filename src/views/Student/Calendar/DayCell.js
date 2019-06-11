@@ -2,6 +2,7 @@ import React from 'react'
 import { propTypes, observer, inject } from 'mobx-react'
 import CalendarAssignment from './CalendarAssignment'
 import moment from 'moment'
+import SkModal from '../../components/SkModal/SkModal'
 
 @inject('rootStore')
 @observer
@@ -10,12 +11,26 @@ class DayCell extends React.Component {
     super(props)
 
     this.state = {
-      isHover: false
+      isHover: false,
+      showAddAssignmentModal: false
     }
   }
 
-  changeHoverState () {
-    this.setState({ isHover: !this.state.isHover })
+  setHoverStateTrue () {
+    this.setState({ isHover: true })
+  }
+
+  setHoverStateFalse () {
+    this.setState({ isHover: false })
+  }
+
+  launchModal () {
+    this.setState({showAddAssignmentModal: true})
+    this.setState({ isHover: false })
+  }
+
+  addAssignmentModalCallBack = (showModal) => {
+    this.setState({showAddAssignmentModal: false})
   }
 
   // return the rendered calendar day cell
@@ -53,7 +68,16 @@ class DayCell extends React.Component {
     }
 
     return (
-      <div className="calendar-day-cell-wrapper" onMouseEnter={() => this.changeHoverState()} onMouseLeave={() => this.changeHoverState()}>
+      <div className="calendar-day-cell-wrapper" onMouseEnter={() => this.setHoverStateTrue()} onMouseLeave={() => this.setHoverStateFalse()}>
+        { this.state.showAddAssignmentModal
+          ? <SkModal title={moment(this.props.day).format('MMMM DD, YYYY')} callbackFromParent={this.addAssignmentModalCallBack}>
+            <form>
+              <p>example form</p>
+              <input type="text"></input>
+            </form>
+          </SkModal>
+          : null
+        }
         <div className={'calendar-date ' + (isCurrentMonth ? 'current-month ' : '') + (isCurrentDay ? 'current-day' : '')}>
           <p>
             {this.props.day.format('D')}
@@ -69,7 +93,9 @@ class DayCell extends React.Component {
           })}
           { this.state.isHover
             ? <div className="calendar-assignment-container">
-              <div className="calendar-assignment add-new" onClick={() => console.log('add new button')}>
+              <div key={this.state.isHover} className="calendar-assignment add-new " onClick={() =>
+                this.launchModal()
+              }>
                 +
               </div>
             </div>
