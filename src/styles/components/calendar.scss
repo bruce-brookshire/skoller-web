@@ -1,0 +1,177 @@
+.calendar-container {
+  display: flex;
+  justify-content: center;
+  padding: 0 0 4px 0;
+
+  .calendar {
+    @include skoller-cell;
+    width: calc(100vw - 200px - 8rem);
+    max-width: 800px;
+    min-width: 300px;
+
+    @media only screen and (max-width: $sk-mobile-break-point) {
+      box-sizing: border-box;
+      margin: 0 1rem 1rem 1rem;
+      width: 100vw;
+    }
+
+    .calendar-header {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 0px;
+      z-index: 2;
+      padding: 8px 16px 16px 16px;
+      background-color: rgba(255,255,255,.9);
+      border-radius: $skoller-cell-border-radius;
+      
+      h1 {
+        text-align: center;
+        margin: 9px 0 0 0; // accounts for text space under baseline
+      }
+
+      .calendar-controls {
+        display: flex;
+        flex: row;
+        justify-content: space-between;
+        margin-top: -34px;
+
+        .calendar-nav-item {
+          cursor: pointer;
+        }
+  
+        .calendar-controls-left {
+          display: flex;
+          flex: row;
+        }
+  
+        .calendar-controls-right {
+          display: flex;
+          flex: row;
+  
+          .calendar-today {
+            background-color: $cn-color-blue;
+            margin: -4px 1rem 0 0;
+            color: white;
+            padding: 6px 8px 0 8px;
+            border-radius: 3px;
+
+            p {
+              margin: 2px 0 0 0;
+            }
+          }
+        }
+      }
+    }
+
+    .calendar-week-row {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 61.75px;
+      z-index: 2;
+      background-color: rgba(255,255,255,.9);
+      display: flex;
+      flex-direction: row;
+      padding: 0 16px 8px;
+      width: 100%;
+      margin-bottom: -12px;
+
+      .calendar-week-day {
+        flex: 1 1 calc(100% / 7);
+        min-width: 0;
+        font-weight: 600;
+        margin-left: 4px;
+      }
+    }
+
+    .calendar-body {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      padding: 0 16px 16px 16px;
+      font-size: 14px;
+
+      .calendar-day-cell-container {
+        flex: 1 1 calc(100% / 7);
+        min-width: 0;
+        padding: 12px 0 0 0;
+
+        .calendar-day-cell-wrapper {
+          height: 100%;
+          overflow: hidden;
+          
+          .calendar-date {
+            color: rgba(0,0,0,.1);
+            margin-left: 8px;
+
+            p {
+              margin: 0;
+            }
+          }
+
+          .current-month {
+            color: #4a4a4a;
+            font-weight: 500;
+          }
+
+          .current-day {
+            margin: -4px 0 0 5px;
+            width: 20px;
+            height: 20px;
+            color: white;
+            font-weight: 500;
+            text-align: center;
+            background-color: $cn-color-blue;
+            padding: 4px 2px 0px 2px;
+            border-radius: 5px;
+            position: absolute;
+            z-index: 1;
+          }
+
+          .calendar-day-cell {
+            background-color: rgba(0,0,0,.05);
+            border-radius: 7px;
+            padding: 4px;
+            margin: 4px 4px 0px 4px;
+            height: calc((100vh - 420px) / 6);
+            min-height: 56px;
+            max-height: 128px;
+            overflow-y: scroll;
+            scrollbar-width: none;
+  
+            ::-webkit-scrollbar {
+              width: 0px;  /* Remove scrollbar space */
+              background: transparent;  /* Optional: just make scrollbar invisible */
+            }
+  
+            .calendar-assignment-container {
+              width: 100%;
+
+              .calendar-assignment {
+                margin-bottom: 4px;
+                border-radius: 5px;
+                color: white;
+                font-weight: 500;
+                padding: 4px 4px 0 6px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                cursor: pointer;
+              }
+
+              .add-new {
+                background-color: rgba(0,0,0,.1);
+                font-weight: 900;
+                color: rgba(0,0,0,.2);
+                cursor: pointer;
+              }
+            }
+          }
+
+          .current-day-cell {
+            margin-top: 20px;
+          }
+        }
+      }
+    }
+  }
+}

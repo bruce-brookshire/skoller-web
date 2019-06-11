@@ -52,32 +52,36 @@ class Home extends React.Component {
       <StudentLayout>
         {console.log(this.props.rootStore)}
         <div className="home-container">
-          <div className="home-shadow-box">
-            <h1>Tasks</h1>
-            <div className="home-card-content">
-              <p>content</p>
+          <div className="home-column">
+            <div className="home-shadow-box">
+              <h1>Classes</h1>
+              <div className="home-card-content">
+                <ClassList
+                  classes={this.state.classes}
+                  emptyMessage='You are not enrolled in any classes.'
+                  onSelect={this.onClassSelect.bind(this)}
+                />
+              </div>
+            </div>
+            <div className="home-shadow-box">
+              <h1>Activity</h1>
+              <div className="home-card-content">
+                <p>content</p>
+              </div>
             </div>
           </div>
-          <div className="home-shadow-box">
-            <h1>Classes</h1>
-            <div className="home-card-content">
-              <ClassList
-                classes={this.state.classes}
-                emptyMessage='You are not enrolled in any classes.'
-                onSelect={this.onClassSelect.bind(this)}
-              />
+          <div className="home-column">
+            <div className="home-shadow-box">
+              <h1>Tasks</h1>
+              <div className="home-card-content">
+                <p>content</p>
+              </div>
             </div>
-          </div>
-          <div className="home-shadow-box">
-            <h1>Activity</h1>
-            <div className="home-card-content">
-              <p>content</p>
-            </div>
-          </div>
-          <div className="home-shadow-box">
-            <h1>Chat</h1>
-            <div className="home-card-content">
-              <p>content</p>
+            <div className="home-shadow-box">
+              <h1>Chat</h1>
+              <div className="home-card-content">
+                <p>content</p>
+              </div>
             </div>
           </div>
         </div>

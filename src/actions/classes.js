@@ -74,7 +74,7 @@ class StudentClass {
 export function getStudentClassesById (studentId, cl) {
   return get(`/api/v1/students/${studentId}/classes/`, '', 'Error fetching classes. Try again.')
     .then(data => {
-      console.log(data)
+      // console.log(data)
       var processColor = function () {
         if (this.color) {
           return '#' + this.color
@@ -201,6 +201,20 @@ export function updateClassStatus (cl, form) {
 */
 export function lockClass (classId, form) {
   return post(`/api/v1/classes/${classId}/lock`, form, '')
+    .catch(error => {
+      if (error.status !== 422) showSnackbar('Error locking class. Try again.')
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Lock the class for assignment creation of a single weight
+*
+* @param [Number] classId. Class to lock
+* @param [Number] weightId. Weight to lock
+*/
+export function lockClassWeight (classId, weightId) {
+  return post(`/api/v1/classes/${classId}/lock/weights`, {'subsection': weightId}, '')
     .catch(error => {
       if (error.status !== 422) showSnackbar('Error locking class. Try again.')
       return Promise.reject(error)

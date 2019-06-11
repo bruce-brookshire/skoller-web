@@ -24,6 +24,7 @@ $cn-form-border: #CCC;
 $cn-color-hover-grey: #e9e9e9;
 
 $cn-border-radius: 3px;
+$skoller-cell-border-radius: 12px;
 
 $cn-info-color: $cn-color-blue;
 $cn-error-color: red;
@@ -46,3 +47,8 @@ $unit-app-width: 800px;
 $unit-tab-max-width: 300px;
 
 $primary-font-size: 16px;
+
+// Skoller student layout variables
+$sk-mobile-break-point: 520px;
+$sk-mobile-nav-height: 64px;
+$sk-desktop-nav-width: 200px;

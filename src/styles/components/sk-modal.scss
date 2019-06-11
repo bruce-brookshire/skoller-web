@@ -1,0 +1,43 @@
+.sk-modal-wrapper {
+  background-color: rgba(0,0,0,.25);
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  margin: 0;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .sk-modal-container {
+
+    .sk-modal {
+      @include skoller-cell;
+      padding: 1rem;
+      width: 100%;
+      min-width: 350px;
+
+      .sk-modal-exit {
+        width: 100%;
+        display: flex;
+        justify-content: left;
+        cursor: pointer;
+
+        svg {
+          fill: $cn-color-blue;
+        }
+      }
+
+      .sk-modal-header {
+        width: 100%;
+        text-align: center;
+
+        h1{
+          margin: 4px 0;
+        }
+      }
+    }
+  }
+}
