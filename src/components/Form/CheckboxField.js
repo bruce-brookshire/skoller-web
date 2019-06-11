@@ -71,14 +71,13 @@ class CheckboxField extends React.Component {
     const input = this.props
     return (
       <div className={containerClasses.join(' ')}>
-        <input
+        <div
           className={inputClasses.join(' ')}
           id={input.id}
           name={input.name}
           onBlur={this.onBlur.bind(this)}
           onChange={this.onChange.bind(this)}
           onFocus={this.onFocus.bind(this)}
-          type='checkbox'
           checked={input.value}
         />
         {label
