@@ -33,8 +33,14 @@ class SkModal extends React.Component {
 
 SkModal.propTypes = {
   title: PropTypes.string,
-  callbackFromParent: PropTypes.function,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  callbackFromParent: PropTypes.function
+  // use the callbackFromParent function to close the modal from the parent component.
+  // The callbackFromParent could look like:
+  //  callbackFromParent = (bool) => {
+  //    this.setState({showAddAssignmentModal: bool})
+  // and within this component you would call:
+  //  this.props.callbackFromParent(false)
 }
 
 export default SkModal

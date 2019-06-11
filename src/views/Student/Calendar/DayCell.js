@@ -18,6 +18,7 @@ class DayCell extends React.Component {
 
   setHoverStateTrue () {
     this.setState({ isHover: true })
+    this.toggleAddAssignmentButton()
   }
 
   setHoverStateFalse () {
@@ -29,7 +30,7 @@ class DayCell extends React.Component {
     this.setState({showAddAssignmentModal: true})
   }
 
-  addAssignmentModalCallBack = (showModal) => {
+  callbackFromParent = (showModal) => {
     this.setState({showAddAssignmentModal: showModal})
     this.setState({ isHover: false })
   }
@@ -71,15 +72,15 @@ class DayCell extends React.Component {
     return (
       <div className="calendar-day-cell-wrapper" onMouseEnter={() => this.setHoverStateTrue()} onMouseLeave={() => this.setHoverStateFalse()}>
         { this.state.showAddAssignmentModal
-          ? <SkModal title={moment(this.props.day).format('MMMM DD, YYYY')} callbackFromParent={this.addAssignmentModalCallBack}>
+          ? <SkModal title='Example Form' callbackFromParent={this.callbackFromParent}>
             <form>
-              <p>example form</p>
+              <p>field</p>
               <input type="text" />
-              <p>example form</p>
+              <p>date</p>
+              <input type="text" value={moment(this.props.day).format('MMMM DD, YYYY')} />
+              <p>field</p>
               <input type="text" />
-              <p>example form</p>
-              <input type="text" />
-              <p>example form</p>
+              <p>field</p>
               <input type="text" /> <br />
               <input type="submit" value="Submit" />
             </form>
@@ -100,7 +101,7 @@ class DayCell extends React.Component {
             )
           })}
           { this.state.isHover
-            ? <div className="calendar-assignment-container">
+            ? <div className="calendar-assignment-container add-new-assignment">
               <div key={this.state.isHover} className="calendar-assignment add-new " onClick={() =>
                 this.launchModal()
               }>
