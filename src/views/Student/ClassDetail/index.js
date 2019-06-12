@@ -19,6 +19,8 @@ class ClassDetail extends React.Component {
       cl: {},
       assignments: []
     }
+
+    this.props.rootStore.studentNavStore.location = this.props.location // set active page route location for access from assignment detail
   }
 
   componentWillMount () {

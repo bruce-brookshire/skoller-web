@@ -8,8 +8,9 @@ import CalendarComponent from './CalendarComponent'
 class Calendar extends React.Component {
   constructor (props) {
     super(props)
-    this.props.rootStore.studentNavStore.setActivePage('calendar')
-    this.props.rootStore.navbarStore.title = ''
+    this.props.rootStore.studentNavStore.setActivePage('calendar') // set active page state for navbar
+    this.props.rootStore.navbarStore.title = '' // clear the 'title' at the top of the page (let's remove this later, probably)
+    this.props.rootStore.studentNavStore.location = this.props.location // set active page route location for access from other components
   }
 
   render () {
@@ -24,6 +25,7 @@ class Calendar extends React.Component {
 }
 
 Calendar.propTypes = {
+  location: propTypes.object,
   rootStore: propTypes.object
 }
 
