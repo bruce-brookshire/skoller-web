@@ -6,7 +6,7 @@ import { browserHistory } from 'react-router'
 @observer
 class DayCell extends React.Component {
   goToAssignment (assignment) {
-    browserHistory.push('/student/class/' + assignment.class_id + '/assignments/' + assignment.assignment_id)
+    browserHistory.push({pathname: '/student/class/' + assignment.class_id + '/assignments/' + assignment.assignment_id, state: { prevPath: this.props.rootStore.studentNavStore.location.pathname }})
   }
 
   // return the rendered calendar day cell

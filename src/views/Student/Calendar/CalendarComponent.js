@@ -3,6 +3,8 @@ import { observer, inject, propTypes } from 'mobx-react'
 import moment from 'moment'
 import BackArrow from '../../../assets/sk-icons/navigation/BackArrow'
 import ForwardArrow from '../../../assets/sk-icons/navigation/ForwardArrow'
+import Agenda from '../../../assets/sk-icons/calendar/Agenda'
+import CalendarSmall from '../../../assets/sk-icons/calendar/CalendarSmall'
 import CalendarBody from './CalendarBody'
 import actions from '../../../actions'
 
@@ -11,127 +13,172 @@ import actions from '../../../actions'
 class Calendar extends React.Component {
   constructor (props) {
     super(props)
-    let firstOfMonth = new Date(moment().startOf('month'))
+    let thisMonth = new Date(moment().startOf('month'))
+    let thisWeek = new Date(moment().startOf('week'))
 
     this.state = {
       loading: false,
-      firstOfMonth: firstOfMonth,
-      startDate: new Date(
-        firstOfMonth.getFullYear(),
-        firstOfMonth.getMonth(),
-        1
-      ),
+      thisMonth: thisMonth,
+      thisWeek: thisWeek,
       assignments: this.props.rootStore.studentAssignmentsStore.assignments,
-      classColors: {}
+      classColors: {},
+      isWeek: false
     }
-  }
 
-  componentWillMount () {
     this.getAssignments()
   }
 
   getClassColors () {
-    const {user: {student}} = this.props.rootStore.userStore
+    const {
+      user: { student }
+    } = this.props.rootStore.userStore
 
-    actions.classes.getStudentClassesById(student.id).then((classes) => {
-      const classColors = {}
-      classes.forEach(function (element) {
-        classColors[ element.id ] = element.getColor()
+    actions.classes
+      .getStudentClassesById(student.id)
+      .then(classes => {
+        const classColors = {}
+        classes.forEach(function (element) {
+          classColors[element.id] = element.getColor()
+        })
+        this.setState({
+          classColors: classColors
+        })
       })
-      this.setState({
-        classColors: classColors
-      })
-    }).catch(() => false)
+      .catch(() => false)
   }
 
   getAssignments () {
-    const {user: {student}} = this.props.rootStore.userStore
+    const {
+      user: { student }
+    } = this.props.rootStore.userStore
     this.getClassColors()
 
-    actions.assignments.getAllStudentAssignments(student.id).then((data) => {
-      this.setState({assignments: data})
-    }).catch(() => false)
+    actions.assignments
+      .getAllStudentAssignments(student.id)
+      .then(data => {
+        this.setState({ assignments: data })
+      })
+      .catch(() => false)
   }
 
   nextMonth () {
-    const thisMonth = moment(this.state.firstOfMonth)
-    const nextMonth = new Date(thisMonth.add(1, 'M'))
+    const thisMonth = moment(this.state.thisMonth)
+    const thisWeek = moment(this.state.thisWeek)
 
-    this.setState({
-      firstOfMonth: new Date(nextMonth),
-      startDate: new Date(
-        nextMonth.getFullYear(),
-        nextMonth.getMonth(),
-        1 - nextMonth.getDay()
-      )
-    })
+    if (this.state.isWeek) {
+      this.setState({
+        thisWeek: new Date(thisWeek.add(7, 'days')),
+        thisMonth: new Date(thisWeek.add(7, 'days').startOf('month'))
+      })
+    } else {
+      this.setState({
+        thisMonth: new Date(thisMonth.add(1, 'M'))
+      })
+    }
   }
 
   prevMonth () {
-    let thisMonth = moment(this.state.firstOfMonth)
-    let nextMonth = new Date(thisMonth.subtract(1, 'M'))
+    const thisMonth = moment(this.state.thisMonth)
+    const thisWeek = moment(this.state.thisWeek)
 
+    if (this.state.isWeek) {
+      this.setState({
+        thisWeek: new Date(thisWeek.subtract(7, 'days')),
+        thisMonth: new Date(thisWeek.subtract(7, 'days').startOf('month'))
+      })
+    } else {
+      this.setState({
+        thisMonth: new Date(thisMonth.subtract(1, 'M'))
+      })
+    }
+  }
+
+  toggleWeekView () {
+    this.setState({ isWeek: !this.state.isWeek })
+  }
+
+  jumpToToday () {
     this.setState({
-      firstOfMonth: new Date(nextMonth),
-      startDate: new Date(
-        nextMonth.getFullYear(),
-        nextMonth.getMonth(),
-        1 - nextMonth.getDay()
-      )
+      thisMonth: new Date(moment().startOf('month')),
+      thisWeek: new Date(moment().startOf('week'))
     })
   }
 
   render () {
     let isCurrentYear = true
 
-    if (moment().year() !== moment(this.state.firstOfMonth).year()) {
+    if (moment().year() !== moment(this.state.thisMonth).year()) {
       isCurrentYear = false
     }
 
     return (
       <div className="calendar">
         <div className="calendar-header">
-          <h1>{(isCurrentYear ? moment(this.state.firstOfMonth).format('MMMM') : moment(this.state.firstOfMonth).format('MMMM YYYY'))}</h1>
+          <h1>
+            { this.state.isWeek
+              ? isCurrentYear
+                ? 'Week of ' + moment(this.state.thisWeek).format('MMMM D')
+                : 'Week of ' + moment(this.state.thisWeek).format('MMMM D, YYYY')
+              : isCurrentYear
+                ? moment(this.state.thisMonth).format('MMMM')
+                : moment(this.state.thisMonth).format('MMMM YYYY')
+            }
+          </h1>
           <div className="calendar-controls">
             <div className="calendar-controls-right">
-              <div className="calendar-nav-item" onClick={() => this.prevMonth()}>
+              <div
+                className="calendar-nav-item"
+                onClick={() => this.prevMonth()}
+              >
                 <BackArrow />
               </div>
             </div>
             <div className="calendar-controls-right">
-              <div className="calendar-nav-item calendar-today" onClick={() => this.setState({firstOfMonth: new Date(moment().startOf('month'))})}>
+              <div
+                className="calendar-nav-item calendar-agenda"
+                onClick={() => this.toggleWeekView()}
+              >
+                {this.state.isWeek ? (
+                  <CalendarSmall height="22" width="22" />
+                ) : (
+                  <Agenda fill="white" height="22" width="19" />
+                )}
+              </div>
+              <div
+                className="calendar-nav-item calendar-today"
+                onClick={() => this.jumpToToday()}
+              >
                 <p>Today</p>
               </div>
-              <div className="calendar-nav-item" onClick={() => this.nextMonth()}>
+              <div
+                className="calendar-nav-item"
+                onClick={() => this.nextMonth()}
+              >
                 <ForwardArrow />
               </div>
             </div>
           </div>
         </div>
-        <div className="calendar-week-row">
-          <div className="calendar-week-day">
-            Sun
+        {this.state.isWeek ? (
+          ''
+        ) : (
+          <div className="calendar-week-row">
+            <div className="calendar-week-day">Sun</div>
+            <div className="calendar-week-day">Mon</div>
+            <div className="calendar-week-day">Tue</div>
+            <div className="calendar-week-day">Wed</div>
+            <div className="calendar-week-day">Thu</div>
+            <div className="calendar-week-day">Fri</div>
+            <div className="calendar-week-day">Sat</div>
           </div>
-          <div className="calendar-week-day">
-            Mon
-          </div>
-          <div className="calendar-week-day">
-            Tue
-          </div>
-          <div className="calendar-week-day">
-            Wed
-          </div>
-          <div className="calendar-week-day">
-            Thu
-          </div>
-          <div className="calendar-week-day">
-            Fri
-          </div>
-          <div className="calendar-week-day">
-            Sat
-          </div>
-        </div>
-        <CalendarBody firstOfMonth={this.state.firstOfMonth} classColors={this.state.classColors} assignments={this.state.assignments}/>
+        )}
+        <CalendarBody
+          isWeek={this.state.isWeek}
+          thisWeek={this.state.thisWeek}
+          thisMonth={this.state.thisMonth}
+          classColors={this.state.classColors}
+          assignments={this.state.assignments}
+        />
       </div>
     )
   }

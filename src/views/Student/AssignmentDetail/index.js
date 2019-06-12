@@ -4,6 +4,8 @@ import {inject, observer} from 'mobx-react'
 import actions from '../../../actions'
 import Loading from '../../../components/Loading'
 import moment from 'moment'
+import StudentLayout from '../../components/StudentLayout'
+import { browserHistory } from 'react-router'
 
 @inject('rootStore') @observer
 class AssignmentDetail extends React.Component {
@@ -18,13 +20,21 @@ class AssignmentDetail extends React.Component {
       toggleAddGrade: false,
       newGrade: null
     }
+
+    this.getData()
   }
 
-  async componentWillMount () {
+  async getData () {
     this.getClass()
     await this.getAssignment()
     await this.getWeightInfo()
   }
+
+  // async componentWillMount () {
+  //   this.getClass()
+  //   await this.getAssignment()
+  //   await this.getWeightInfo()
+  // }
 
   getClass () {
     const { classId } = this.props.params
@@ -44,24 +54,18 @@ class AssignmentDetail extends React.Component {
     const { user: { student } } = userStore
     const { assignmentId } = this.props.params
     const { assignments } = await actions.studentClasses.getStudentClassAssignments(classId, student).then(assignments => {
-      console.log('assignments:')
-      console.log(assignments)
       this.setState({ assignments: assignments })
       return assignments
     })
     const currentAssignment = assignments.find(a => parseInt(a.assignment_id) === parseInt(assignmentId))
-    console.log('current assignment')
-    console.log(currentAssignment)
     this.setState({currentAssignment: currentAssignment})
   }
 
   async getWeightInfo () {
     const { cl } = this.state
-    const { weight_id } = this.state.currentAssignment
+    const { weightId } = this.state.currentAssignment
     const weights = await actions.weights.getClassWeights(cl).then(res => res)
-    const currentWeight = weights.find(w => parseInt(w.id) === parseInt(weight_id))
-    console.log('current weight category')
-    console.log(currentWeight)
+    const currentWeight = weights.find(w => parseInt(w.id) === parseInt(weightId))
     this.setState({currentWeight: currentWeight})
   }
 
@@ -98,7 +102,7 @@ class AssignmentDetail extends React.Component {
     })
   }
 
-  // Redner Methods
+  // Render Methods
 
   renderDueDate (dd) {
     return moment(dd)
@@ -133,7 +137,8 @@ class AssignmentDetail extends React.Component {
     const { loading } = this.state
     const assignment = this.state.currentAssignment
     return (
-      <div>
+      <StudentLayout>
+        <div className='back-button' onClick={() => browserHistory.push(this.props.rootStore.studentNavStore.location.pathname)}>Back</div>
         <div id='cn-class-detail-container'>
           {/* {loading
             ? <Loading />
@@ -147,7 +152,7 @@ class AssignmentDetail extends React.Component {
               : this.renderAssignmentDetails(assignment)}
           </div>
         </div>
-      </div>
+      </StudentLayout>
     )
   }
 }

@@ -18,7 +18,6 @@ class DayCell extends React.Component {
 
   setHoverStateTrue () {
     this.setState({ isHover: true })
-    this.toggleAddAssignmentButton()
   }
 
   setHoverStateFalse () {
@@ -59,7 +58,7 @@ class DayCell extends React.Component {
 
     // check to see if date is in month for purposes of formatting the date
     let isCurrentMonth = false
-    if (day.month() === moment(this.props.firstOfMonth).month()) {
+    if (day.month() === moment(this.props.thisMonth).month()) {
       isCurrentMonth = true
     }
 
@@ -118,7 +117,7 @@ class DayCell extends React.Component {
 DayCell.propTypes = {
   day: propTypes.object,
   classColors: propTypes.object,
-  firstOfMonth: propTypes.object,
+  thisMonth: propTypes.object,
   assignments: propTypes.object
 }
 
