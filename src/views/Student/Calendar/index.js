@@ -6,7 +6,8 @@ import CalendarComponent from './CalendarComponent'
 @inject('rootStore')
 @observer
 class Calendar extends React.Component {
-  componentWillMount () {
+  constructor (props) {
+    super(props)
     this.props.rootStore.studentNavStore.setActivePage('calendar')
     this.props.rootStore.navbarStore.title = ''
   }

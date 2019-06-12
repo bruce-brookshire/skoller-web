@@ -47,6 +47,6 @@ CalendarIcon.propTypes = {
   fill: PropTypes.string,
   width: PropTypes.string,
   height: PropTypes.string
-};
+}
 
-export default CalendarIcon;
+export default CalendarIcon

@@ -18,7 +18,6 @@ class DayCell extends React.Component {
 
   setHoverStateTrue () {
     this.setState({ isHover: true })
-    this.toggleAddAssignmentButton()
   }
 
   setHoverStateFalse () {
