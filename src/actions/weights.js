@@ -16,6 +16,21 @@ export function getClassWeights (cl) {
 }
 
 /*
+* Get weigths for class by Calss ID
+*
+* @param [Object] classId. Class ID
+*/
+export function getClassWeightsByClassId (classId) {
+  return get(`/api/v1/classes/${classId}/weights`, '', 'Error fetching weights. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
 * Create a new weight
 *
 * @params [Object] form. Weight form.

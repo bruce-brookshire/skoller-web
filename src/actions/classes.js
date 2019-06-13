@@ -214,7 +214,7 @@ export function lockClass (classId, form) {
 * @param [Number] weightId. Weight to lock
 */
 export function lockClassWeight (classId, weightId) {
-  return post(`/api/v1/classes/${classId}/lock/weights`, {'subsection': weightId}, '')
+  return post(`/api/v1/classes/${classId}/lock/assignments`, {'subsection': weightId}, '')
     .catch(error => {
       if (error.status !== 422) showSnackbar('Error locking class. Try again.')
       return Promise.reject(error)

@@ -39,8 +39,8 @@ export function getStudentClassAssignments (classId, student) {
 *
 * @params [Object] form. Assignment form.
 */
-export function createStudentAssignment (cl, form) {
-  return post(`/api/v1/classes/${cl.id}/assignments`, form, 'Error creating assignment. Try again.')
+export function createStudentAssignment (cl, student, form) {
+  return post(`/api/v1/students/${student.id}/classes/${cl.id}/assignments`, form, 'Error creating assignment. Try again.')
     .then(data => {
       return data
     })
