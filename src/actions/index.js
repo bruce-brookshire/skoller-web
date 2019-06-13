@@ -1,4 +1,4 @@
-import {createAssignment, deleteAssignment, deleteAssignmentPost, getAllStudentAssignments, getClassAssignments, updateAssignment, getTaskAssignments, gradeAssignment, removeGradeFromAssignment} from './assignments'
+import {createAssignment, createAssignmentByClassId, deleteAssignment, deleteAssignmentPost, getAllStudentAssignments, getClassAssignments, updateAssignment, getTaskAssignments, gradeAssignment, removeGradeFromAssignment} from './assignments'
 import {getAnalytics} from './analytics'
 import {authenticateUser, forgotPassword, getRoles,
   getUserById, getUserByToken, getUsers, registerUser, registerUserAdmin, resetPassword,
@@ -30,7 +30,7 @@ import {createCustomLink, getCustomLinkById, getCustomLinks} from './signup-link
 import {getStudentClassById, getStudentClassAssignments, updateClassColor} from './studentclasses'
 import {getNextClass} from './syllabusworkers'
 import {getStudentCsv, getEmailPreferences, updateEmailPreferences, deleteUserById} from './users'
-import {createWeight, deleteWeight, getClassWeights, updateWeight} from './weights'
+import {createWeight, deleteWeight, getClassWeights, getClassWeightsByClassId, updateWeight} from './weights'
 import {getStudentByLink} from './students'
 
 const actions = {
@@ -42,6 +42,7 @@ const actions = {
   },
   assignments: {
     createAssignment,
+    createAssignmentByClassId,
     deleteAssignment,
     deleteAssignmentPost,
     getClassAssignments,
@@ -207,6 +208,7 @@ const actions = {
     createWeight,
     deleteWeight,
     getClassWeights,
+    getClassWeightsByClassId,
     updateWeight
   }
 }
