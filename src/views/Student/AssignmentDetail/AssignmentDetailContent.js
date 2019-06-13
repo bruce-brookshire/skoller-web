@@ -16,29 +16,35 @@ class AssignmentDetailContent extends React.Component {
       currentAssignment: this.props.assignment,
       assignmentWeightCategory: this.props.assignmentWeightCategory,
       toggleAddGrade: false,
+      toggleEditGrade: false,
       newGrade: null
     }
   }
   // Assignment Grading Handlers
 
-  toggleAddGradeHandler () {
+  toggleAddGradeHandler = () => {
     let toggle = this.state.toggleAddGrade
     this.setState({ toggleAddGrade: !toggle })
   }
 
-  addGradeOnChangeHandler (event) {
+  addGradeOnChangeHandler = (event) => {
     this.setState({ newGrade: event.target.value })
   }
 
-  addGradeOnSubmitHandler () {
-    const { currentAssignment, newGrade } = this.state
-    const assignment = { ...currentAssignment }
-    assignment.grade = newGrade
+  addGradeOnSubmitHandler = () => {
+    const newGrade = this.state.newGrade
+    const currentAssignment = this.state.currentAssignment
+    currentAssignment.grade = newGrade
     actions.assignments.gradeAssignment(currentAssignment.id, newGrade)
     this.setState({
       toggleAddGrade: false,
-      currentAssignment: assignment
+      toggleEditGrade: false,
+      currentAssignment: currentAssignment
     })
+  }
+
+  toggleEditGradeHandler = () => {
+    this.setState({ toggleEditGrade: !this.state.toggleEditGrade })
   }
 
   removeGradeHandler () {
@@ -85,18 +91,26 @@ class AssignmentDetailContent extends React.Component {
           </div>
           <div className='sk-assignment-detail-content-row'>
             <p>Grade earned</p>
-            <p>{assignment.grade
-              ? assignment.grade
-              : <a className="sk-assignment-detail-add-grade" onClick={this.toggleAddGradeHandler.bind(this)}>Add Grade</a>}
-            </p>
+            <div>{assignment.grade && !this.state.toggleEditGrade
+              ? <div onClick={() => this.toggleEditGradeHandler()}>{assignment.grade}</div>
+              : this.state.toggleAddGrade
+                ? <div>
+                  <input type="text" onChange={this.addGradeOnChangeHandler} /><br />
+                  <button onClick={this.addGradeOnSubmitHandler}>Save Grade</button>
+                </div>
+                : !this.state.toggleEditGrade
+                  ? <a className="sk-assignment-detail-add-grade" onClick={this.toggleAddGradeHandler}>Add Grade</a>
+                  : null}
+            </div>
           </div>
+          {this.state.toggleEditGrade
+            ? <div>
+              <input type="text" onChange={this.addGradeOnChangeHandler} /><br />
+              <button onClick={this.addGradeOnSubmitHandler}>Save New Grade</button>
+            </div>
+            : null
+          }
           <div className='sk-assignment-detail-content-row'>
-            {this.state.toggleAddGrade
-              ? <div>
-                <input type="text" onChange={this.addGradeOnChangeHandler.bind(this)} /><br />
-                <button onClick={this.addGradeOnSubmitHandler.bind(this)}>Save Grade</button>
-              </div>
-              : null}
           </div>
         </div>
       </div>
@@ -117,7 +131,6 @@ class AssignmentDetailContent extends React.Component {
 }
 
 AssignmentDetailContent.propTypes = {
-  params: PropTypes.object,
   rootStore: PropTypes.object,
   location: PropTypes.object,
   assignment: PropTypes.object,

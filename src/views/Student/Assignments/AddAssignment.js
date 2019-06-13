@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import StudentLayout from '../../components/StudentLayout'
+import SkModal from '../../components/SkModal/SkModal'
 import actions from '../../../actions'
 // import Loading from '../../../components/Loading'
 import moment from 'moment'
+import PropTypes from 'prop-types'
 
 class AddAssignment extends Component {
   state = {
@@ -106,7 +107,7 @@ class AddAssignment extends Component {
     })
   }
 
-  renderSubmitAssigmentButton = () => {
+  renderSubmitAssignmentButton = () => {
     const { newAssignments } = this.state
     return (
       <button onClick={this.submitNewAssignmentsHandler} disabled={ newAssignments.length ? null : 'disabled'} >Submit New Assignment{ (newAssignments.length > 1) ? 's' : null}</button>
@@ -115,7 +116,7 @@ class AddAssignment extends Component {
 
   render () {
     return (
-      <StudentLayout>
+      <SkModal closeModal={this.props.closeModal}>
         <div id='cn-class-detail-container'>
           <h1>Add Assignment</h1>
           {this.renderWeightSelection()}
@@ -125,12 +126,16 @@ class AddAssignment extends Component {
           <button onClick={this.addAssignmentSubmitHandler} >Add Assignment</button>
           <div className='cn-class-assignments-container'>
             {this.renderNewAssignments()}
-            {this.renderSubmitAssigmentButton()}
+            {this.renderSubmitAssignmentButton()}
           </div>
         </div>
-      </StudentLayout>
+      </SkModal>
     )
   }
+}
+
+AddAssignment.propTypes = {
+  closeModal: PropTypes.function
 }
 
 export default AddAssignment

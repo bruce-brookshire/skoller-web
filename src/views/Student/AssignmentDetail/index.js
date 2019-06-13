@@ -17,9 +17,7 @@ class AssignmentDetail extends React.Component {
       assignments: [],
       currentAssignment: {},
       assignmentWeightCategory: {},
-      cl: {},
-      toggleAddGrade: false,
-      newGrade: null
+      cl: {}
     }
 
     this.getData()
@@ -57,39 +55,6 @@ class AssignmentDetail extends React.Component {
     const weightId = this.state.currentAssignment.weight_id
     const weights = await actions.weights.getClassWeightsByClassId(this.props.params.classId).then(res => res)
     await this.setState({assignmentWeightCategory: weights.find(w => parseInt(w.id) === parseInt(weightId)), loading: false})
-  }
-
-  // Assignment Grading Handlers
-
-  toggleAddGradeHandler () {
-    let toggle = this.state.toggleAddGrade
-    this.setState({ toggleAddGrade: !toggle })
-  }
-
-  addGradeOnChangeHandler (event) {
-    this.setState({ newGrade: event.target.value })
-  }
-
-  addGradeOnSubmitHandler () {
-    const { currentAssignment, newGrade } = this.state
-    const assignment = { ...currentAssignment }
-    assignment.grade = newGrade
-    actions.assignments.gradeAssignment(currentAssignment.id, newGrade)
-    this.setState({
-      toggleAddGrade: false,
-      currentAssignment: assignment
-    })
-  }
-
-  removeGradeHandler () {
-    const { currentAssignment } = this.state
-    const assignment = { ...currentAssignment }
-    assignment.grade = null
-    actions.assignments.removeGradeFromAssignment(currentAssignment.id)
-    this.setState({
-      newGrade: null,
-      currentAssignment: assignment
-    })
   }
 
   render () {
