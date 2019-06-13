@@ -1,0 +1,29 @@
+.sk-assignment-detail-wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .sk-assignment-detail-container {
+    @include skoller-cell;
+    padding: 2rem;
+
+    .sk-assignment-detail-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: $unit-space;
+
+      .sk-assignment-detail-back-button {
+        display: flex;
+        flex-direction: row;
+        justify-content: left;
+  
+        p {
+          margin: 2px 0 0 4px;
+          color: $cn-color-blue;
+        }
+      }
+    }
+  }
+}

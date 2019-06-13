@@ -9,6 +9,7 @@ import ClassCard from '../../Cards/ClassCard'
 import ClassInviteLink from './ClassInviteLink'
 import DeleteDialog from '../../../components/Grid/DeleteDialog'
 import AssignmentList from '../../components/AssignmentList'
+import StudentLayout from '../../components/StudentLayout'
 
 @inject('rootStore') @observer
 class ClassDetail extends React.Component {
@@ -229,23 +230,25 @@ class ClassDetail extends React.Component {
   render () {
     const {loading, cl} = this.state
     return (
-      <div>
-        {loading
-          ? <Loading />
-          : <div>
-            {cl.status.id === 1100 || cl.status.id === 1200 || cl.status.id === 1300
-              ? <div id='cn-class-detail-container'>
-                {this.renderClassDetails()}
-              </div>
-              : <div className='cn-class-assignments-container'>
-                {this.renderClassAssignmentsHeader()}
-                <div className='cn-class-list-container margin-top'>
-                  {this.renderAssignmentList()}
+      <StudentLayout>
+        <div>
+          {loading
+            ? <Loading />
+            : <div>
+              {cl.status.id === 1100 || cl.status.id === 1200 || cl.status.id === 1300
+                ? <div id='cn-class-detail-container'>
+                  {this.renderClassDetails()}
                 </div>
-              </div>}
-          </div>
-        }
-      </div>
+                : <div className='cn-class-assignments-container'>
+                  {this.renderClassAssignmentsHeader()}
+                  <div className='cn-class-list-container margin-top'>
+                    {this.renderAssignmentList()}
+                  </div>
+                </div>}
+            </div>
+          }
+        </div>
+      </StudentLayout>
     )
   }
 }

@@ -4,7 +4,6 @@ import {inject, observer} from 'mobx-react'
 import actions from '../../../actions'
 import Loading from '../../../components/Loading'
 import moment from 'moment'
-import StudentLayout from '../../components/StudentLayout'
 import { browserHistory } from 'react-router'
 import BackArrow from '../../../assets/sk-icons/navigation/BackArrow'
 
@@ -30,12 +29,6 @@ class AssignmentDetail extends React.Component {
     await this.getAssignment()
     await this.getWeightInfo()
   }
-
-  // async componentWillMount () {
-  //   this.getClass()
-  //   await this.getAssignment()
-  //   await this.getWeightInfo()
-  // }
 
   getClass () {
     const { classId } = this.props.params
@@ -138,21 +131,25 @@ class AssignmentDetail extends React.Component {
     const { loading } = this.state
     const assignment = this.state.currentAssignment
     return (
-      <StudentLayout>
-        <div className='sk-assignment-detail-wrapper'>
-          <div className='sk-assignment-detail-container'>
-            <div className='sk-assignment-detail-header'>
-              <div className='sk-assignment-detail-back-button' onClick={() => browserHistory.push(this.props.rootStore.studentNavStore.location.pathname)}>
-                <BackArrow width="14" height="14" />
-                <p>Back</p>
-              </div>
+      <div className='sk-assignment-detail-wrapper'>
+        <div className='sk-assignment-detail-container'>
+          <div className='sk-assignment-detail-header'>
+            <div className='sk-assignment-detail-back-button' onClick={() => browserHistory.push(this.props.rootStore.studentNavStore.location.pathname)}>
+              <BackArrow width="14" height="14" />
+              <p>Back</p>
             </div>
-            {loading
-              ? <Loading />
-              : this.renderAssignmentDetails(assignment)}
           </div>
+          {loading
+            ? <Loading />
+            : this.renderAssignmentDetails(assignment)}
+          {this.state.toggleAddGrade
+            ? <div className="add-grade">
+              <input type="text" onChange={this.addGradeOnChangeHandler.bind(this)} /><br />
+              <button onClick={this.addGradeOnSubmitHandler.bind(this)}>Save Grade</button>
+            </div>
+            : null}
         </div>
-      </StudentLayout>
+      </div>
     )
   }
 }
