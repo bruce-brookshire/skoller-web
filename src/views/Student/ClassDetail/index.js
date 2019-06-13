@@ -21,6 +21,7 @@ class ClassDetail extends React.Component {
       assignments: []
     }
 
+    this.props.rootStore.studentNavStore.setActivePage('classes')
     this.props.rootStore.studentNavStore.location = this.props.location // set active page route location for access from assignment detail
   }
 
@@ -47,7 +48,7 @@ class ClassDetail extends React.Component {
     const {classId} = this.props.params
     let {navbarStore} = this.props.rootStore
     this.setState({loading: true})
-    actions.classes.getClassById(classId).then(cl => {
+    actions.classes.getClassById(this.props.rootStore.userStore.user.student.id, classId).then(cl => {
       this.getClassColor(cl)
       navbarStore.title = cl.name
     }).catch(() => this.setState({loading: false}))

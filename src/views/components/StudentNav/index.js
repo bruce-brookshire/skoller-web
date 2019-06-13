@@ -12,9 +12,7 @@ class StudentNav extends React.Component {
     this.state = {
       isMobile: false
     }
-  }
 
-  componentWillMount () {
     this.checkForMobile()
   }
 
