@@ -117,7 +117,7 @@ class AssignmentDetailContent extends React.Component {
                     ? <a className="sk-assignment-detail-add-grade" onClick={this.toggleAddGradeHandler}>Add Grade</a>
                     : this.state.toggleEditGrade
                       ? <div className="sk-assignment-detail-edit-grade">
-                        <input className="sk-assignment-detail-edit-grade-input" type="text" placeholder={assignment.grade} onChange={this.addGradeOnChangeHandler} /><br />
+                        <input className="sk-assignment-detail-edit-grade-input" type="text" placeholder={assignment.grade} onChange={this.addGradeOnChangeHandler} />
                         <button className="sk-assignment-detail-edit-grade-save" onClick={this.addGradeOnSubmitHandler}>Save grade</button>
                       </div>
                       : null}

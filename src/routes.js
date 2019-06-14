@@ -71,9 +71,9 @@ const router = (
       <Route path='/download' component={DownloadApp} />
       <Route path='/pitch-deck' component={PitchDeck} />
       <Route path='/app' component={Layout} onEnter={requireAuth}>
-        <IndexRedirect to='/student/classes' />
+        <IndexRedirect to='/student/home' />
         <Route path='/student'>
-          <IndexRedirect to='/student/classes'/>
+          <IndexRedirect to='/student/home'/>
           <Route path='/student/home' component={Home} />
           <Route path='/student/tasks' component={Tasks} />
           <Route path='/student/find-classes' component={FindClasses} />
