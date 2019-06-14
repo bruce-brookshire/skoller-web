@@ -45,8 +45,9 @@ export function searchStudentClasses (schoolId, name) {
  * Get class by id
  *
  * @param [Number] classId. The id of the class to get.
+ * @param [Number] classId. The id of the student.
  */
-export function getClassById (studentId, classId) {
+export function getStudentClass (studentId, classId) {
   return get(
     `/api/v1/students/${studentId}/classes/${classId}`,
     '',
@@ -98,6 +99,26 @@ export function getClassById (studentId, classId) {
       // StudentClass.currentClasses[data.id] = data
 
       data.getColor = processColor.bind(data)
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
+ * Get class by id
+ *
+ * @param [Number] classId. The id of the class to get.
+ * @param [Number] classId. The id of the student.
+ */
+export function getClassById (classId) {
+  return get(
+    `/api/v1/classes/${classId}`,
+    '',
+    'Error fetching class. Try again.'
+  )
+    .then(data => {
       return data
     })
     .catch(error => {

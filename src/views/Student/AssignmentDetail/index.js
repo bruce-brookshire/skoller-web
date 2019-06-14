@@ -33,7 +33,7 @@ class AssignmentDetail extends React.Component {
     const { classId } = this.props.params
 
     this.setState({ loading: true })
-    actions.classes.getClassById(this.props.rootStore.userStore.user.student.id, classId).then(cl => {
+    actions.classes.getStudentClass(this.props.rootStore.userStore.user.student.id, classId).then(cl => {
       this.setState({ cl, classColor: cl.getColor() })
     }).catch(() => this.setState({ loading: false }))
   }

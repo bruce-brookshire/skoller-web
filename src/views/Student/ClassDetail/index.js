@@ -48,7 +48,8 @@ class ClassDetail extends React.Component {
     const {classId} = this.props.params
     let {navbarStore} = this.props.rootStore
     this.setState({loading: true})
-    actions.classes.getClassById(this.props.rootStore.userStore.user.student.id, classId).then(cl => {
+    actions.classes.getClassById(classId).then(cl => {
+      console.log(cl)
       this.getClassColor(cl)
       navbarStore.title = cl.name
     }).catch(() => this.setState({loading: false}))
