@@ -96,6 +96,7 @@ class WeekCell extends React.Component {
           className={
             'calendar-week-cell ' + (isCurrentDay ? 'current-week-cell' : '')
           }
+          onClick={() => this.launchModal()}
         >
           {dayAssignments.map((item, i) => {
             return (

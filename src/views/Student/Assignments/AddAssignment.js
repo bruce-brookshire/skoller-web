@@ -24,7 +24,7 @@ class AddAssignment extends Component {
         this.setState({weights: weights})
       })
   }
-    
+
   selectWeightHandler = async (event) => {
     const { newAssignment } = this.state
     newAssignment.weight_id = parseInt(event.target.value)
