@@ -4,8 +4,6 @@ import {inject, observer} from 'mobx-react'
 import actions from '../../../actions'
 import Loading from '../../../components/Loading'
 import moment from 'moment'
-// import { browserHistory } from 'react-router'
-// import BackArrow from '../../../assets/sk-icons/navigation/BackArrow'
 
 @inject('rootStore') @observer
 class AssignmentDetailContent extends React.Component {
@@ -34,13 +32,29 @@ class AssignmentDetailContent extends React.Component {
   addGradeOnSubmitHandler = () => {
     const newGrade = this.state.newGrade
     const currentAssignment = this.state.currentAssignment
-    currentAssignment.grade = newGrade
-    actions.assignments.gradeAssignment(currentAssignment.id, newGrade)
-    this.setState({
-      toggleAddGrade: false,
-      toggleEditGrade: false,
-      currentAssignment: currentAssignment
-    })
+    if (isNaN(newGrade)) {
+      window.confirm('Please enter a valid number')
+      document.getElementById('add-grade-form').reset()
+      this.setState({newGrade: this.state.currentAssignment.grade})
+    } else if (newGrade !== currentAssignment.grade && newGrade !== null) {
+      currentAssignment.grade = newGrade
+      actions.assignments.gradeAssignment(currentAssignment.id, newGrade)
+      this.setState({
+        toggleAddGrade: false,
+        toggleEditGrade: false,
+        currentAssignment: currentAssignment
+      })
+    } else if (newGrade === currentAssignment.grade) {
+      this.setState({
+        toggleAddGrade: false,
+        toggleEditGrade: false
+      })
+    } else {
+      this.setState({
+        toggleAddGrade: false,
+        toggleEditGrade: false
+      })
+    }
   }
 
   toggleEditGradeHandler = () => {
@@ -91,26 +105,23 @@ class AssignmentDetailContent extends React.Component {
           </div>
           <div className='sk-assignment-detail-content-row'>
             <p>Grade earned</p>
-            <div>{assignment.grade && !this.state.toggleEditGrade
-              ? <div onClick={() => this.toggleEditGradeHandler()}>{assignment.grade}</div>
-              : this.state.toggleAddGrade
-                ? <div>
-                  <input type="text" onChange={this.addGradeOnChangeHandler} /><br />
-                  <button onClick={this.addGradeOnSubmitHandler}>Save Grade</button>
-                </div>
-                : !this.state.toggleEditGrade
-                  ? <a className="sk-assignment-detail-add-grade" onClick={this.toggleAddGradeHandler}>Add Grade</a>
-                  : null}
+            <div>
+              {assignment.grade && !this.state.toggleEditGrade
+                ? <div className="sk-assignment-detail-grade" onClick={() => this.toggleEditGradeHandler()}>{assignment.grade}</div>
+                : this.state.toggleAddGrade
+                  ? <div className="sk-assignment-detail-edit-grade" id="edit-grade-form">
+                    <input type="text" className="sk-assignment-detail-edit-grade-input" onChange={this.addGradeOnChangeHandler} /><br />
+                    <button className="sk-assignment-detail-edit-grade-save" onClick={this.addGradeOnSubmitHandler}>Save Grade</button>
+                  </div>
+                  : !this.state.toggleEditGrade
+                    ? <a className="sk-assignment-detail-add-grade" onClick={this.toggleAddGradeHandler}>Add Grade</a>
+                    : this.state.toggleEditGrade
+                      ? <div className="sk-assignment-detail-edit-grade">
+                        <input className="sk-assignment-detail-edit-grade-input" type="text" placeholder={assignment.grade} onChange={this.addGradeOnChangeHandler} /><br />
+                        <button className="sk-assignment-detail-edit-grade-save" onClick={this.addGradeOnSubmitHandler}>Save grade</button>
+                      </div>
+                      : null}
             </div>
-          </div>
-          {this.state.toggleEditGrade
-            ? <div>
-              <input type="text" onChange={this.addGradeOnChangeHandler} /><br />
-              <button onClick={this.addGradeOnSubmitHandler}>Save New Grade</button>
-            </div>
-            : null
-          }
-          <div className='sk-assignment-detail-content-row'>
           </div>
         </div>
       </div>

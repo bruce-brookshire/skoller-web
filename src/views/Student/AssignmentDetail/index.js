@@ -66,10 +66,13 @@ class AssignmentDetail extends React.Component {
             ? <Loading />
             : <div className='sk-assignment-detail'>
               <div className='sk-assignment-detail-outer-container'>
-                <div className='sk-assignment-detail-back-button' onClick={() => browserHistory.push(this.props.rootStore.studentNavStore.location.pathname)}>
-                  <BackArrow width="14" height="14" />
-                  <p>Back</p>
-                </div>
+                {this.props.rootStore.studentNavStore.location.pathname
+                  ? <div className='sk-assignment-detail-back-button' onClick={() => browserHistory.push(this.props.rootStore.studentNavStore.location.pathname)}>
+                    <BackArrow width="14" height="14" />
+                    <p>Back</p>
+                  </div>
+                  : null
+                }
                 <h2 style={{color: this.state.classColor}} onClick={() => browserHistory.push('/student/class/' + this.state.cl.id)}>
                   {this.state.cl.name}
                 </h2>
