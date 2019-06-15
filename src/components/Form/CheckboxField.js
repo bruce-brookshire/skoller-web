@@ -4,10 +4,14 @@ import PropTypes from 'prop-types'
 class CheckboxField extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {isFocused: false}
+    this.state = {
+      isFocused: false,
+      isChecked: false,
+      bgColor: ''
+    }
   }
 
-  onBlur (event) {
+  onBlur () {
     this.setState({isFocused: false})
     if (this.props.onBlur) this.props.onBlur()
   }
@@ -19,6 +23,13 @@ class CheckboxField extends React.Component {
   onFocus () {
     this.setState({isFocused: true})
     if (this.props.onFocus) this.props.onFocus()
+  }
+
+  onClick () {
+    this.setState({
+      isChecked: !this.state.isChecked,
+      bgColor: this.state.isChecked ? '#57B9E4' : 'transparent'
+    })
   }
 
   renderInfo () {
@@ -75,9 +86,11 @@ class CheckboxField extends React.Component {
           className={inputClasses.join(' ')}
           id={input.id}
           name={input.name}
+          style={{backgroundColor: this.state.bgColor}}
           onBlur={this.onBlur.bind(this)}
           onChange={this.onChange.bind(this)}
           onFocus={this.onFocus.bind(this)}
+          onClick={this.onClick.bind(this)}
           checked={input.value}
         />
         {label
@@ -106,6 +119,7 @@ CheckboxField.propTypes = {
   onBlur: PropTypes.func,
   onChange: PropTypes.func.isRequired,
   onFocus: PropTypes.func,
+  onClick: PropTypes.func.isRequired,
   value: PropTypes.bool.isRequired,
   error: PropTypes.bool,
   info: PropTypes.bool
