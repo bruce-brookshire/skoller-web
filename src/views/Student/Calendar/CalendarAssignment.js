@@ -24,6 +24,7 @@ class DayCell extends React.Component {
 }
 
 DayCell.propTypes = {
+  rootStore: propTypes.object,
   assignment: propTypes.object,
   classColors: propTypes.object
 }

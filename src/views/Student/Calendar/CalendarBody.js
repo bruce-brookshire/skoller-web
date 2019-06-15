@@ -50,7 +50,6 @@ class CalendarBody extends React.Component {
   }
 
   renderWeekDaysArray () {
-    console.log('run this')
     const weekDays = []
     let lastDay = null
     for (let i = 0; i < 7; i++) {
@@ -62,8 +61,6 @@ class CalendarBody extends React.Component {
         break
       }
     }
-
-    console.log(weekDays)
 
     for (let i = 1; i < this.props.thisWeek.getDay() + 1; ++i) {
       let day = moment(this.props.thisMonth).subtract(i, 'd')

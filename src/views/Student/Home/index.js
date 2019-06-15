@@ -13,9 +13,7 @@ class Home extends React.Component {
     this.state = {
       classes: []
     }
-  }
 
-  componentWillMount () {
     this.updateClasses()
     this.props.rootStore.studentNavStore.setActivePage('home')
   }
@@ -54,7 +52,7 @@ class Home extends React.Component {
         <div className="home-container">
           <div className="home-column">
             <div className="home-shadow-box">
-              <h1>Classes</h1>
+              <h1 onClick={() => browserHistory.push('/student/classes')}>Classes</h1>
               <div className="home-card-content">
                 <ClassList
                   classes={this.state.classes}
@@ -63,26 +61,28 @@ class Home extends React.Component {
                 />
               </div>
             </div>
+            {/* // this is for activity once we get it ready
             <div className="home-shadow-box">
               <h1>Activity</h1>
               <div className="home-card-content">
                 <p>content</p>
               </div>
-            </div>
+            </div> */}
           </div>
           <div className="home-column">
             <div className="home-shadow-box">
-              <h1>Tasks</h1>
+              <h1 onClick={() => browserHistory.push('/student/tasks')}>Tasks</h1>
               <div className="home-card-content">
                 <p>content</p>
               </div>
             </div>
+            {/* // this is for chat once we get it ready
             <div className="home-shadow-box">
               <h1>Chat</h1>
               <div className="home-card-content">
                 <p>content</p>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </StudentLayout>

@@ -27,6 +27,13 @@
       h1 {
         text-align: center;
         margin: 9px 0 0 0; // accounts for text space under baseline
+
+        @media only screen and (max-width: $sk-mobile-break-point) {
+          font-size: 18px;
+          text-align: left;
+          margin: 0 0 10px 24px;
+          padding: 16px 0 0 0;
+        }
       }
 
       .calendar-controls {
@@ -64,6 +71,10 @@
             margin: -2px 1rem 0 0;
             color: white;
             border-radius: 3px;
+
+            @media only screen and (max-width: $sk-mobile-break-point) {
+              display: none;
+            }
           }
         }
       }

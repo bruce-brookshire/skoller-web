@@ -1,10 +1,10 @@
-import {createAssignment, deleteAssignment, deleteAssignmentPost, getAllStudentAssignments, getClassAssignments, updateAssignment, getTaskAssignments, gradeAssignment, removeGradeFromAssignment} from './assignments'
+import {createAssignment, createAssignmentByClassId, deleteAssignment, deleteAssignmentPost, getAllStudentAssignments, getClassAssignments, updateAssignment, getTaskAssignments, gradeAssignment, removeGradeFromAssignment} from './assignments'
 import {getAnalytics} from './analytics'
 import {authenticateUser, forgotPassword, getRoles,
   getUserById, getUserByToken, getUsers, registerUser, registerUserAdmin, resetPassword,
   resendVerification, updateAccount, verifyPhoneNumber} from './auth'
 import {deleteClassPost, getClassPosts, deleteClassComment, deleteClassReply} from './chat'
-import {createClass, dropClass, getClassById, getClassByIdAdmin, getClassByLink, getStudentClassesById,
+import {createClass, dropClass, getClassById, getStudentClass, getClassByIdAdmin, getClassByLink, getStudentClassesById,
   enrollByLink, enrollInClass, searchClasses, searchStudentClasses, updateClass, lockClass, lockClassWeight,
   unlockClass, updateClassStatus, addNote, getClassesCsv} from './classes'
 import {createIssue, getHelpTypes, getRequestTypes, resolveChangeRequest, createStudentRequest,
@@ -30,7 +30,7 @@ import {createCustomLink, getCustomLinkById, getCustomLinks} from './signup-link
 import {getStudentClassById, getStudentClassAssignments, updateClassColor} from './studentclasses'
 import {getNextClass} from './syllabusworkers'
 import {getStudentCsv, getEmailPreferences, updateEmailPreferences, deleteUserById} from './users'
-import {createWeight, deleteWeight, getClassWeights, updateWeight} from './weights'
+import {createWeight, deleteWeight, getClassWeights, getClassWeightsByClassId, updateWeight} from './weights'
 import {getStudentByLink} from './students'
 
 const actions = {
@@ -42,6 +42,7 @@ const actions = {
   },
   assignments: {
     createAssignment,
+    createAssignmentByClassId,
     deleteAssignment,
     deleteAssignmentPost,
     getClassAssignments,
@@ -78,6 +79,7 @@ const actions = {
     enrollByLink,
     enrollInClass,
     getClassById,
+    getStudentClass,
     getClassByIdAdmin,
     getClassByLink,
     getStudentClassesById,
@@ -207,6 +209,7 @@ const actions = {
     createWeight,
     deleteWeight,
     getClassWeights,
+    getClassWeightsByClassId,
     updateWeight
   }
 }

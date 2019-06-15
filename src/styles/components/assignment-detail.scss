@@ -1,0 +1,133 @@
+.sk-assignment-detail-wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  .sk-assignment-detail {
+    width: calc(100vw - 200px - 2rem);
+    max-width: 504px;
+
+    @media only screen and (max-width: $sk-mobile-break-point) {
+      width: calc(100vw - 1rem);
+    }
+
+    .sk-assignment-detail-outer-container {
+      width: 100%;
+      margin: 0 0 1rem 0;
+
+      h2 {
+        width: calc(100% - 96px);
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin: 0 auto;
+        cursor: pointer;
+      }
+  
+      .sk-assignment-detail-back-button {
+        transform: translate(0,28px);
+        display: flex;
+        flex-direction: row;
+        justify-content: left;
+        width: 48px;
+        cursor: pointer;
+  
+        p {
+          margin: 0;
+          color: $cn-color-blue;
+        }
+      }
+    }
+  
+    .sk-assignment-detail-container {
+      @include skoller-cell;
+      padding: 2rem;
+
+      .sk-assignment-detail-content {
+
+        .sk-assignment-detail-content-header {
+          text-align: center;
+          margin: 0 0 1rem 0;
+
+          h1 {
+            margin: 0;
+          }
+          
+          p {
+            margin: 0;
+          }
+        }
+
+        .sk-assignment-detail-content-section {
+          border: 1px solid;
+          border-radius: 7px;
+          margin: 0 0 1.5rem 0;
+
+          .sk-assignment-detail-content-section-title {
+            margin: -8px 0 0 4px;
+
+            p {
+              font-weight: bold;
+              margin: 0;
+              padding: 0 4px;
+              background-color: white;
+              display:inline-block;
+            }
+          }
+
+          .sk-assignment-detail-content-row {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 8px;
+
+            p {
+              margin: 0;
+            }
+
+            .sk-assignment-detail-grade {
+              color: $cn-color-blue;
+              cursor: pointer;
+            }
+
+            .sk-assignment-detail-edit-grade {
+              /* remove default form styling */
+              @include remove-form-styling;
+              display: flex;
+              flex-direction: column;
+              align-content: right;
+              justify-content: right;
+              margin-right: -4px;
+
+              .sk-assignment-detail-edit-grade-input {
+                text-align: right;
+                margin: -4px 0 4px 0;
+                border-radius: 5px;
+                background-color: rgba(85,185,229,.1);
+                font-size: 13px;
+                font-weight: 500;
+                width: 80px;
+                padding: 4px;
+              }
+
+              .sk-assignment-detail-edit-grade-save {
+                background-color: none;
+                text-align: center;
+                color: $cn-color-blue;
+                cursor: pointer;
+              }
+            }
+          }
+
+          .sk-assignment-detail-add-grade {
+            flex-grow: 1;
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+}

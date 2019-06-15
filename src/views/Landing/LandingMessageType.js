@@ -1,6 +1,6 @@
 import React from 'react'
 
-var TxtType = function(el, toRotate, period) {
+var TxtType = function (el, toRotate, period) {
   this.toRotate = toRotate
   this.el = el
   this.loopNum = 0
@@ -10,54 +10,59 @@ var TxtType = function(el, toRotate, period) {
   this.isDeleting = false
 }
 
-TxtType.prototype.tick = function() {
+TxtType.prototype.tick = function () {
   var i = this.loopNum % this.toRotate.length
   var fullTxt = this.toRotate[i]
 
   if (this.isDeleting) {
-  this.txt = fullTxt.substring(0, this.txt.length - 1)
+    this.txt = fullTxt.substring(0, this.txt.length - 1)
   } else {
-  this.txt = fullTxt.substring(0, this.txt.length + 1)
+    this.txt = fullTxt.substring(0, this.txt.length + 1)
   }
 
-  this.el.innerHTML = '<span class="wrap">A better way for students to<b>'+this.txt+'</b></span>'
+  this.el.innerHTML =
+    '<span class="wrap">A better way for students to<b>' +
+    this.txt +
+    '</b></span>'
 
   var that = this
-  var delta = (1967 / parseInt(fullTxt.length))
+  var delta = 1967 / parseInt(fullTxt.length)
 
-  if (this.isDeleting) { delta /= 2 }
-
-  if (!this.isDeleting && this.txt === fullTxt) {
-  delta = this.period
-  this.isDeleting = true
-  } else if (this.isDeleting && this.txt === '') {
-  this.isDeleting = false
-  this.loopNum++
-  delta = 360
+  if (this.isDeleting) {
+    delta /= 2
   }
 
-  setTimeout(function() {
-  that.tick()
+  if (!this.isDeleting && this.txt === fullTxt) {
+    delta = this.period
+    this.isDeleting = true
+  } else if (this.isDeleting && this.txt === '') {
+    this.isDeleting = false
+    this.loopNum++
+    delta = 360
+  }
+
+  setTimeout(function () {
+    that.tick()
   }, delta)
 }
 
-function writeMessage() {
+function writeMessage () {
   var elements = document.getElementsByClassName('typewrite')
-  for (var i=0; i<elements.length; i++) {
-      var toRotate = elements[i].getAttribute('data-type')
-      var period = elements[i].getAttribute('data-period')
-      if (toRotate) {
-        new TxtType(elements[i], JSON.parse(toRotate), period)
-      }
+  for (var i = 0; i < elements.length; i++) {
+    var toRotate = elements[i].getAttribute('data-type')
+    var period = elements[i].getAttribute('data-period')
+    if (toRotate) {
+      new TxtType (elements[i], JSON.parse(toRotate), period)
+    }
   }
   // INJECT CSS
-  var css = document.createElement("style")
-  css.type = "text/css"
-  css.innerHTML = ".typewrite > .wrap { border-right: 0.08em solid #fff}"
+  var css = document.createElement('style')
+  css.type = 'text/css'
+  css.innerHTML = '.typewrite > .wrap { border-right: 0.08em solid #fff}'
   document.body.appendChild(css)
 }
 
-var TxtTypeMobile = function(el, toRotate, period) {
+var TxtTypeMobile = function (el, toRotate, period) {
   this.toRotate = toRotate
   this.el = el
   this.loopNum = 0
@@ -67,55 +72,60 @@ var TxtTypeMobile = function(el, toRotate, period) {
   this.isDeleting = false
 }
 
-TxtTypeMobile.prototype.tick = function() {
+TxtTypeMobile.prototype.tick = function () {
   var i = this.loopNum % this.toRotate.length
   var fullTxt = this.toRotate[i]
 
   if (this.isDeleting) {
-  this.txt = fullTxt.substring(0, this.txt.length - 1)
+    this.txt = fullTxt.substring(0, this.txt.length - 1)
   } else {
-  this.txt = fullTxt.substring(0, this.txt.length + 1)
+    this.txt = fullTxt.substring(0, this.txt.length + 1)
   }
 
-  this.el.innerHTML = '<span class="wrap">A better way for students to<br>&nbsp;<b>'+this.txt+'</b></span>'
+  this.el.innerHTML =
+    '<span class="wrap">A better way for students to<br>&nbsp;<b>' +
+    this.txt +
+    '</b></span>'
 
   var that = this
-  var delta = (1967 / parseInt(fullTxt.length))
+  var delta = 1967 / parseInt(fullTxt.length)
 
-  if (this.isDeleting) { delta /= 2 }
-
-  if (!this.isDeleting && this.txt === fullTxt) {
-  delta = this.period
-  this.isDeleting = true
-  } else if (this.isDeleting && this.txt === '') {
-  this.isDeleting = false
-  this.loopNum++
-  delta = 360
+  if (this.isDeleting) {
+    delta /= 2
   }
 
-  setTimeout(function() {
-  that.tick()
+  if (!this.isDeleting && this.txt === fullTxt) {
+    delta = this.period
+    this.isDeleting = true
+  } else if (this.isDeleting && this.txt === '') {
+    this.isDeleting = false
+    this.loopNum++
+    delta = 360
+  }
+
+  setTimeout(function () {
+    that.tick()
   }, delta)
 }
 
-function writeMessageMobile() {
+function writeMessageMobile () {
   var elements = document.getElementsByClassName('typewritemobile')
-  for (var i=0; i<elements.length; i++) {
-      var toRotate = elements[i].getAttribute('data-type')
-      var period = elements[i].getAttribute('data-period')
-      if (toRotate) {
-        new TxtTypeMobile(elements[i], JSON.parse(toRotate), period)
-      }
+  for (var i = 0; i < elements.length; i++) {
+    var toRotate = elements[i].getAttribute('data-type')
+    var period = elements[i].getAttribute('data-period')
+    if (toRotate) {
+      new TxtTypeMobile(elements[i], JSON.parse(toRotate), period)
+    }
   }
 }
 
 var nIntervalId
 
-function runWriteMessage() {
+function runWriteMessage () {
   nIntervalId = setInterval(writeMessage(), 15000)
 }
 
-function runWriteMessageMobile() {
+function runWriteMessageMobile () {
   nIntervalId = setInterval(writeMessageMobile(), 15000)
 }
 
@@ -128,26 +138,43 @@ class LandingMessageType extends React.Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     runWriteMessage()
     runWriteMessageMobile()
   }
 
   render () {
     return (
-      <div className='container-landing-message'>
-        <div className='landing-image-carousel'>
-          <div className='landing-image-carousel-container'>
-            <div className='landing-image-container'>
-              <img src={require('../../assets/images/landing_collaborate.png')} className='landing-image' />
-              <img src={require('../../assets/images/landing_organize.png')} className='landing-image' />
-              <img src={require('../../assets/images/landing_keepup.png')} className='landing-image' />
+      <div className="container-landing-message">
+        <div className="landing-image-carousel">
+          <div className="landing-image-carousel-container">
+            <div className="landing-image-container">
+              <img
+                src={require('../../assets/images/landing_collaborate.png')}
+                className="landing-image"
+              />
+              <img
+                src={require('../../assets/images/landing_organize.png')}
+                className="landing-image"
+              />
+              <img
+                src={require('../../assets/images/landing_keepup.png')}
+                className="landing-image"
+              />
             </div>
-            <div className='landing-image-text typewrite' data-period="2000" data-type='[ " Collaborate", " Organize", " Keep Up" ]'>
-              <span className="wrap"></span>
+            <div
+              className="landing-image-text typewrite"
+              data-period="2000"
+              data-type='[ " Collaborate", " Organize", " Keep Up" ]'
+            >
+              <span className="wrap" />
             </div>
-            <div className='landing-image-text typewritemobile' data-period="2000" data-type='[ "Collaborate", "Organize", "Keep Up" ]'>
-              <span className="wrap"></span>
+            <div
+              className="landing-image-text typewritemobile"
+              data-period="2000"
+              data-type='[ "Collaborate", "Organize", "Keep Up" ]'
+            >
+              <span className="wrap" />
             </div>
           </div>
         </div>

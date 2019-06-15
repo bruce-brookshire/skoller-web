@@ -2,7 +2,7 @@ import React from 'react'
 import { propTypes, observer, inject } from 'mobx-react'
 import CalendarAssignment from './CalendarAssignment'
 import moment from 'moment'
-import SkModal from '../../components/SkModal/SkModal'
+import AddAssignment from '../Assignments/AddAssignment'
 
 @inject('rootStore')
 @observer
@@ -29,8 +29,8 @@ class DayCell extends React.Component {
     this.setState({showAddAssignmentModal: true})
   }
 
-  callbackFromParent = (showModal) => {
-    this.setState({showAddAssignmentModal: showModal})
+  closeModal = () => {
+    this.setState({showAddAssignmentModal: false})
     this.setState({ isHover: false })
   }
 
@@ -71,19 +71,7 @@ class DayCell extends React.Component {
     return (
       <div className="calendar-day-cell-wrapper" onMouseEnter={() => this.setHoverStateTrue()} onMouseLeave={() => this.setHoverStateFalse()}>
         { this.state.showAddAssignmentModal
-          ? <SkModal title='Example Form' callbackFromParent={this.callbackFromParent}>
-            <form>
-              <p>field</p>
-              <input type="text" />
-              <p>date</p>
-              <input type="text" value={moment(this.props.day).format('MMMM DD, YYYY')} />
-              <p>field</p>
-              <input type="text" />
-              <p>field</p>
-              <input type="text" /> <br />
-              <input type="submit" value="Submit" />
-            </form>
-          </SkModal>
+          ? <AddAssignment closeModal={this.closeModal} params={{classId: 4}}/>
           : null
         }
         <div className={'calendar-date ' + (isCurrentMonth ? 'current-month ' : '') + (isCurrentDay ? 'current-day' : '')}>

@@ -22,10 +22,18 @@ class Calendar extends React.Component {
       thisWeek: thisWeek,
       assignments: this.props.rootStore.studentAssignmentsStore.assignments,
       classColors: {},
-      isWeek: false
+      isWeek: this.checkForMobile() // force calendar into week mode if viewed from mobile device
     }
 
     this.getAssignments()
+  }
+
+  checkForMobile () {
+    if (window.innerWidth <= 720) {
+      return true
+    } else {
+      return false
+    }
   }
 
   getClassColors () {
