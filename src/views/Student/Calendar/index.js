@@ -2,6 +2,7 @@ import React from 'react'
 import { observer, inject, propTypes } from 'mobx-react'
 import StudentLayout from '../../components/StudentLayout'
 import CalendarComponent from './CalendarComponent'
+import Helmet from 'react-helmet'
 
 @inject('rootStore')
 @observer
@@ -16,6 +17,10 @@ class Calendar extends React.Component {
   render () {
     return (
       <StudentLayout>
+        {/* use react-helmet here to prevent Chrome from trying to translate the abbreviation "Fri" ヽ(ಠ_ಠ)ノ */}
+        <Helmet>
+          <meta name="google" value="notranslate" />
+        </Helmet>
         <div className="calendar-container">
           <CalendarComponent />
         </div>

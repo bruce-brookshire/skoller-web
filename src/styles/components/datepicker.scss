@@ -1,0 +1,81 @@
+.datepicker-container {
+  @include skoller-cell;
+  position: absolute;
+  transform: translateX(-96px);
+  width: 192px;
+  padding: 4px;
+  border: 1px solid $cn-color-hover-grey;
+  font-size: 14px;
+  
+  // disable selecting text
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+  user-select: none;          /* Likely future */   
+
+  .datepicker-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .datepicker-nav-item {
+      height: 30px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin: 0;
+
+      svg {
+        margin: 4px;
+        cursor: pointer;
+      }
+
+      h2 {
+        margin: 4px 0 0 0;
+      }
+    }
+  }
+
+  .datepicker-body {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    .datepicker-day-container {
+      width: 14.29%;
+      cursor: pointer;
+
+      .datepicker-day {
+        padding: 4px;
+        text-align: center;
+        color: rgba(0,0,0,.15);
+      }
+
+      .is-current-month {
+        color: $cn-font-color;
+      }
+
+      .is-today {
+        font-weight: 600;
+      }
+
+      .is-selection {
+        font-weight: 500;
+        color: white;
+        background-color: $cn-color-blue;
+        border-radius: 5px;
+      }
+    }
+  }
+
+  .datepicker-done-button {
+    @include sk-standard-button;
+    display: flex;
+    justify-content: center;
+
+    p {
+      width: 50px;
+      margin: 0 auto;
+    }
+  }
+}

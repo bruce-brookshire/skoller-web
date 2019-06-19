@@ -12,12 +12,19 @@
   align-items: center;
 
   .sk-modal-container {
+    box-sizing: content-box;
 
     .sk-modal {
       @include skoller-cell;
       padding: 1rem;
       width: 100%;
       min-width: 350px;
+
+      @media only screen and (max-width: $sk-mobile-break-point) {
+        min-width: 80vw;
+        max-width: 100vw;
+        box-sizing: border-box;
+      }
 
       .sk-modal-exit {
         width: 100%;
@@ -31,7 +38,6 @@
       }
 
       .sk-modal-header {
-        width: 100%;
         text-align: center;
 
         h1{

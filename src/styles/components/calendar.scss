@@ -8,6 +8,12 @@
     width: calc(100vw - 200px - 8rem);
     max-width: 800px;
     min-width: 300px;
+    
+    // disable selecting text
+    -webkit-user-select: none;  /* Chrome all / Safari all */
+    -moz-user-select: none;     /* Firefox all */
+    -ms-user-select: none;      /* IE 10+ */
+    user-select: none;          /* Likely future */   
 
     @media only screen and (max-width: $sk-mobile-break-point) {
       box-sizing: border-box;
