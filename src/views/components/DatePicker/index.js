@@ -60,7 +60,7 @@ class DatePicker extends React.Component {
 
   render () {
     return (
-      <div className='datepicker-container'>
+      <div className={'datepicker-container' + ((this.props.inline === true) ? ' inline' : '')}>
         <div className='datepicker-header'>
           <div className='datepicker-nav-item' onClick={() => this.prevMonth()}>
             <BackArrow height="12" width="10"/>
@@ -83,7 +83,8 @@ class DatePicker extends React.Component {
 
 DatePicker.propTypes = {
   givenDate: PropTypes.object,
-  returnSelectedDay: PropTypes.function
+  returnSelectedDay: PropTypes.func,
+  inline: PropTypes.bool
 }
 
 export default DatePicker

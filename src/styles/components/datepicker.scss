@@ -1,11 +1,22 @@
 .datepicker-container {
   @include skoller-cell;
+  box-sizing: border-box;
   position: absolute;
-  transform: translateX(-96px);
   width: 192px;
+  height: 228px;
   padding: 4px;
   border: 1px solid $cn-color-hover-grey;
   font-size: 14px;
+  z-index: 1;
+
+  @media only screen and (max-width: $sk-mobile-break-point) , screen and (max-height: 750px) {
+    box-shadow: 0 8px 30px rgba(0,0,0,.2);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-left: -96px;
+    margin-top: -124px;
+  }
   
   // disable selecting text
   -webkit-user-select: none;  /* Chrome all / Safari all */
@@ -42,7 +53,7 @@
     flex-wrap: wrap;
 
     .datepicker-day-container {
-      width: 14.29%;
+      width: 14.27%;
       cursor: pointer;
 
       .datepicker-day {
@@ -78,4 +89,9 @@
       margin: 0 auto;
     }
   }
+}
+
+.inline {
+  position: relative;
+  box-shadow: none;
 }

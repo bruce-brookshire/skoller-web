@@ -8,7 +8,8 @@ import { observer, inject } from 'mobx-react'
 import DatePicker from '../../components/DatePicker'
 import NewAssignment from './NewAssignment'
 
-@inject('rootStore') @observer
+@inject('rootStore')
+@observer
 class AddAssignment extends Component {
   state = {
     // student info state
@@ -17,7 +18,8 @@ class AddAssignment extends Component {
       name: null,
       weight_id: null,
       class: null,
-      created_on: 'web'
+      created_on: 'web',
+      share: true
     },
     newAssignments: {},
     weights: [],
@@ -30,19 +32,22 @@ class AddAssignment extends Component {
     showWeightsField: false,
     showNameField: false,
     showAddButton: false,
-    showSubmitButton: false,
+    showSaveButton: false,
     showDateField: false,
     showDatePicker: false,
     hideAddAssignmentForm: false,
+    notWeighted: false,
+    showShareField: false,
     // batch adding assignments when there are none
     needLock: false
   }
 
   // create the class list after component mounts
   componentDidMount () {
-    actions.classes.getStudentClassesById(this.state.studentId)
+    actions.classes
+      .getStudentClassesById(this.state.studentId)
       .then(classes => {
-        this.setState({classes: classes})
+        this.setState({ classes: classes })
       })
 
     if (this.props.assignmentParams.classId) {
@@ -51,16 +56,18 @@ class AddAssignment extends Component {
   }
 
   // get the class user selects
-  selectClassHandler = (event) => {
+  selectClassHandler = event => {
     const selectedClassId = event.target.value
     let newAssignment = this.state.newAssignment
-    actions.classes.getStudentClass(this.state.studentId, selectedClassId).then(selectedStudentClass => {
-      newAssignment.class = selectedStudentClass
-      this.setState({
-        selectedStudentClass: selectedStudentClass,
-        newAssignment: newAssignment
+    actions.classes
+      .getStudentClass(this.state.studentId, selectedClassId)
+      .then(selectedStudentClass => {
+        newAssignment.class = selectedStudentClass
+        this.setState({
+          selectedStudentClass: selectedStudentClass,
+          newAssignment: newAssignment
+        })
       })
-    })
     actions.classes.getClassById(selectedClassId).then(selectedClass => {
       this.getClassWeights(selectedClass.id)
       this.setState({
@@ -71,24 +78,43 @@ class AddAssignment extends Component {
   }
 
   getClassWeights (classId) {
-    actions.weights.getClassWeightsByClassId(classId)
-      .then(weights => {
-        this.setState({weights: weights})
-      })
+    actions.weights.getClassWeightsByClassId(classId).then(weights => {
+      this.setState({ weights: weights })
+    })
   }
 
-  selectWeightHandler = (event) => {
+  selectWeightHandler = event => {
     let newAssignment = this.state.newAssignment
-    newAssignment.weight_id = parseInt(event.target.value)
-    this.setState({ newAssignment: newAssignment, showNameField: true, showDateField: true })
+    if (event.target.value === 'notWeighted') {
+      newAssignment.weight_id = 'notWeighted'
+      this.setState({
+        notWeighted: true,
+        showNameField: true,
+        newAssignment: newAssignment,
+        showDateField: true,
+        showShareField: true
+      })
+    } else {
+      newAssignment.weight_id = parseInt(event.target.value)
+      this.setState({
+        notWeighted: false,
+        newAssignment: newAssignment,
+        showNameField: true,
+        showDateField: true,
+        showShareField: true
+      })
+    }
 
     if (this.state.selectedStudentClass.assignments.length <= 0) {
-      actions.classes.lockClassWeight(this.state.selectedClass.id, newAssignment.weight_id)
-      this.setState({needLock: true})
+      actions.classes.lockClassWeight(
+        this.state.selectedClass.id,
+        newAssignment.weight_id
+      )
+      this.setState({ needLock: true })
     }
   }
 
-  addAssignmentNameHandler = (event) => {
+  addAssignmentNameHandler = event => {
     let newAssignment = this.state.newAssignment
     newAssignment.name = event.target.value
     this.setState({ newAssignment: newAssignment, showAddButton: true })
@@ -98,7 +124,6 @@ class AddAssignment extends Component {
     const { newAssignments, newAssignment } = this.state
     if (newAssignment.name) {
       newAssignments[newAssignment.name + newAssignment.due + newAssignment.class] = newAssignment
-      console.log(newAssignments)
       this.setState({
         newAssignment: {
           name: null,
@@ -107,7 +132,7 @@ class AddAssignment extends Component {
           class: null
         },
         newAssignments: newAssignments,
-        showSubmitButton: true,
+        showSaveButton: true,
         selectedClass: null,
         hideAddAssignmentForm: true
       })
@@ -117,11 +142,16 @@ class AddAssignment extends Component {
     }
   }
 
-  submitNewAssignmentsHandler = async () => {
+  saveNewAssignmentsHandler = async () => {
+    this.props.closeModal()
     const newAssignments = this.state.newAssignments
+    console.log(newAssignments)
     newAssignments.forEach(async newAssignment => {
       if (newAssignment.weight_id) {
-        await actions.assignments.createAssignment(this.state.selectedClass, newAssignment)
+        await actions.assignments.createAssignment(
+          this.state.selectedClass,
+          newAssignment
+        )
       } else {
         console.error('You must select a weight!')
       }
@@ -131,25 +161,46 @@ class AddAssignment extends Component {
     }
   }
 
-  getDateSelection = (selectedDate) => {
+  getDateSelection = selectedDate => {
     let newAssignment = this.state.newAssignment
     newAssignment.due = new Date(selectedDate)
-    this.setState({newAssignment: newAssignment, showDatePicker: false})
-    console.log(newAssignment)
+    this.setState({ newAssignment: newAssignment, showDatePicker: false })
   }
 
   clearForm () {
-    this.setState({givenDate: null, newAssignment: {due: null, class: null}, showNameField: false, showDateField: false, showAddButton: false, showClassField: false, showWeightsField: false})
+    this.setState({
+      givenDate: null,
+      showNameField: false,
+      showDateField: false,
+      showAddButton: false,
+      showClassField: false,
+      showWeightsField: false,
+      showDatePicker: false,
+      showShareField: false
+    })
   }
 
   renderClassSelection = () => {
     const classes = this.state.classes
     return (
-      <select onChange={this.selectClassHandler} style={this.state.selectedStudentClass ? {color: this.state.selectedStudentClass.getColor()} : null}>
+      <select
+        onChange={this.selectClassHandler}
+        style={
+          this.state.selectedStudentClass
+            ? { color: this.state.selectedStudentClass.getColor() }
+            : null
+        }
+      >
         <option value="null">Select a Class</option>
         {classes.map(studentClass => {
           return (
-            <option value={studentClass.id} key={studentClass.id}>{studentClass.name}</option>
+            <option
+              style={{ color: studentClass.getColor }}
+              value={studentClass.id}
+              key={studentClass.id}
+            >
+              {studentClass.name}
+            </option>
           )
         })}
       </select>
@@ -163,9 +214,12 @@ class AddAssignment extends Component {
         <option value="null">Select a Grading Category</option>
         {weights.map(weight => {
           return (
-            <option value={weight.id} key={weight.id}>{weight.name}</option>
+            <option value={weight.id} key={weight.id}>
+              {weight.name}
+            </option>
           )
         })}
+        <option value="notWeighted">Not weighted</option>
       </select>
     )
   }
@@ -174,101 +228,185 @@ class AddAssignment extends Component {
     const { newAssignments } = this.state
     return Object.keys(newAssignments).map((key, index) => {
       return (
-        <NewAssignment key={index} assignment={newAssignments[key]} removeNewAssignment={this.removeNewAssignment} />
+        <NewAssignment
+          key={index}
+          assignment={newAssignments[key]}
+          removeNewAssignment={this.removeNewAssignment}
+        />
       )
     })
   }
 
-  renderSubmitAssignmentButton = () => {
+  renderSaveAssignmentButton = () => {
     const newAssignments = this.state.newAssignments
     return (
-      <div className='add-assignment-submit-button'>
-        <p onClick={this.submitNewAssignmentsHandler}>Submit new assignment{ (Object.keys(newAssignments).length > 1) ? 's' : null}</p>
+      <div className="add-assignment-save-button">
+        <p onClick={this.saveNewAssignmentsHandler}>
+          Save new assignment
+          {Object.keys(newAssignments).length > 1 ? 's' : null}
+        </p>
       </div>
     )
   }
 
-  removeNewAssignment = (assignment) => {
+  removeNewAssignment = assignment => {
     let newAssignments = this.state.newAssignments
     delete newAssignments[assignment.name + assignment.due + assignment.class]
     if (Object.keys(newAssignments).length === 0) {
-      this.setState({hideAddAssignmentForm: false, showSubmitButton: false, showClassField: true})
+      this.setState({
+        hideAddAssignmentForm: false,
+        showSaveButton: false,
+        showClassField: true
+      })
     }
     // newAssignments = newAssignments.removeElement(assignment.id, 1)
-    this.setState({newAssignments: newAssignments})
+    this.setState({ newAssignments: newAssignments })
+  }
+
+  toggleShareOption = () => {
+    let newAssignment = this.state.newAssignment
+    newAssignment.share = !newAssignment.share
+    this.setState({newAssignment: newAssignment})
   }
 
   render () {
     return (
       <SkModal closeModal={this.props.closeModal}>
-        <div className='add-assignment-container'>
-          { this.state.hideAddAssignmentForm
-            ? null
-            : <div className='add-assignment-form'>
+        <div className="add-assignment-container">
+          {this.state.hideAddAssignmentForm ? null : (
+            <div className="add-assignment-form">
               <h1>Add Assignment</h1>
-              {this.state.showClassField
-                ? <div className='add-assignment-form-row'>
+              {this.state.showClassField ? (
+                <div className="add-assignment-form-row">
                   <p>Class</p>
                   {this.renderClassSelection()}
                 </div>
-                : null
-              }
-              {this.state.showWeightsField
-                ? <div className='add-assignment-form-row'>
+              ) : null}
+              {this.state.showWeightsField ? (
+                <div className="add-assignment-form-row">
                   <p>Weight</p>
                   {this.renderWeightSelection()}
+                  {this.state.notWeighted ? (
+                    <small>This assignment will not affect your grade.</small>
+                  ) : null}
                 </div>
-                : null
-              }
-              {this.state.showNameField
-                ? <div className='add-assignment-form-row'>
+              ) : null}
+              {this.state.showNameField ? (
+                <div className="add-assignment-form-row">
                   <label htmlFor="assignmentName">Assignment name</label>
-                  <input autoComplete="off" type="text" name="assignmentName" onChange={this.addAssignmentNameHandler} />
+                  <input
+                    autoComplete="off"
+                    type="text"
+                    name="assignmentName"
+                    onChange={this.addAssignmentNameHandler}
+                  />
                 </div>
-                : null
-              }
-              {this.state.showDateField
-                ? <div className='add-assignment-form-row'>
+              ) : null}
+              {this.state.showDateField ? (
+                <div className="add-assignment-form-row">
                   <p>Due date</p>
-                  {this.state.newAssignment.due
-                    ? <div>
-                      <p className='add-assignment-due-date' onClick={() => this.setState({showDatePicker: true})}>{moment(this.state.newAssignment.due).format('MMMM D, YYYY')}</p>
-                      {this.state.showDatePicker
-                        ? <DatePicker givenDate={this.state.newAssignment.due} returnSelectedDay={this.getDateSelection}/>
-                        : null}
+                  {this.state.newAssignment.due ? (
+                    <div>
+                      <p
+                        className="add-assignment-due-date"
+                        onClick={ () => this.setState({ showDatePicker: true })}
+                      >
+                        {moment(this.state.newAssignment.due).format(
+                          'MMMM D, YYYY'
+                        )}
+                      </p>
+                      {this.state.showDatePicker ? (
+                        <DatePicker
+                          givenDate={this.state.newAssignment.due}
+                          returnSelectedDay={this.getDateSelection}
+                          inline={false}
+                        />
+                      ) : null}
                     </div>
-                    : <div>
-                      <p className='add-assignment-due-date' onClick={() => this.setState({showDatePicker: true})}>Select due date</p>
-                      {this.state.showDatePicker
-                        ? <DatePicker givenDate={this.state.newAssignment.due} returnSelectedDay={this.getDateSelection}/>
-                        : null}
+                  ) : (
+                    <div>
+                      <p
+                        className="add-assignment-due-date"
+                        onClick={ () => this.setState({ showDatePicker: true })}
+                      >
+                        Select due date
+                      </p>
+                      {this.state.showDatePicker ? (
+                        <DatePicker
+                          givenDate={this.state.newAssignment.due}
+                          returnSelectedDay={this.getDateSelection}
+                        />
+                      ) : null}
                     </div>
-                  }
+                  )}
+                </div>
+              ) : null}
+              {this.state.showShareField
+                ? <div className="add-assignment-form-row">
+                  <p>Share</p>
+                  <div className="add-assignment-share-row">
+                    <label>
+                      <input
+                        type="radio"
+                        value={true}
+                        checked={this.state.newAssignment.share === true}
+                        onChange={() => this.toggleShareOption()}
+                      />
+                      <div className="radio-button" />
+                      <p>Share with class as update</p>
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value={false}
+                        checked={this.state.newAssignment.share === false}
+                        onChange={() => this.toggleShareOption()}
+                      />
+                      <div className="radio-button" />
+                      <p>Keep Private</p>
+                    </label>
+                  </div>
                 </div>
                 : null
               }
-              <div className="add-assignment-add-button" onClick={this.addAssignmentButtonHandler} >
-                <p className={this.state.showAddButton ? '' : 'not-available'}>Add Assignment</p>
+              <div
+                className="add-assignment-add-button"
+                onClick={this.addAssignmentButtonHandler}
+              >
+                <p className={this.state.showAddButton ? '' : 'not-available'}>
+                  Add Assignment
+                </p>
               </div>
-            </div> }
-          {(Object.keys(this.state.newAssignments).length !== 0)
-            ? <div className="add-assignment-new-assignments-container">
-              <h2>New assignments</h2>
+            </div>
+          )}
+          {Object.keys(this.state.newAssignments).length !== 0 ? (
+            <div className="add-assignment-new-assignments-container">
+              <h2>
+                New assignment
+                {Object.keys(this.state.newAssignments).length > 1 ? 's' : null}
+              </h2>
               <div className="add-assignment-new-assignments">
                 {this.renderNewAssignments()}
               </div>
             </div>
-            : null
-          }
-          {this.state.showSubmitButton
-            ? <div className="add-assignment-submit-row">
-              {this.renderSubmitAssignmentButton()}
+          ) : null}
+          {this.state.showSaveButton ? (
+            <div className="add-assignment-save-row">
+              {this.renderSaveAssignmentButton()}
               <div className="add-assignment-add-another-button">
-                <p onClick={() => this.setState({showClassField: true, hideAddAssignmentForm: false})}>Add another assignment</p>
+                <p
+                  onClick={ () =>
+                    this.setState({
+                      showClassField: true,
+                      hideAddAssignmentForm: false
+                    })
+                  }
+                >
+                  Add another assignment
+                </p>
               </div>
             </div>
-            : null
-          }
+          ) : null}
         </div>
       </SkModal>
     )

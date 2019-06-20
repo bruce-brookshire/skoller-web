@@ -27,7 +27,9 @@
       }
 
       .sk-modal-exit {
-        width: 100%;
+        width: 24px;
+        padding: 4px;
+        margin: -4px 0 0 -4px;
         display: flex;
         justify-content: left;
         cursor: pointer;
