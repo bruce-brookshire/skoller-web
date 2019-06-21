@@ -147,9 +147,9 @@ class Calendar extends React.Component {
                 onClick={() => this.toggleWeekView()}
               >
                 {this.state.isWeek ? (
-                  <CalendarSmall height="22" width="22" />
+                  <CalendarSmall height="26" width="26" />
                 ) : (
-                  <Agenda fill="white" height="22" width="19" />
+                  <Agenda fill="white" height="26" width="22" />
                 )}
               </div>
               <div

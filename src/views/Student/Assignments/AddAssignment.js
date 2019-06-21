@@ -106,10 +106,7 @@ class AddAssignment extends Component {
     }
 
     if (this.state.selectedStudentClass.assignments.length <= 0) {
-      actions.classes.lockClassWeight(
-        this.state.selectedClass.id,
-        newAssignment.weight_id
-      )
+      // TODO stuff here to get lock
       this.setState({ needLock: true })
     }
   }
@@ -144,22 +141,31 @@ class AddAssignment extends Component {
   }
 
   saveNewAssignmentsHandler = async () => {
-    this.props.closeModal()
     const newAssignments = this.state.newAssignments
-    console.log(newAssignments)
-    newAssignments.forEach(async newAssignment => {
-      if (newAssignment.weight_id) {
-        await actions.assignments.createAssignment(
-          this.state.selectedClass,
-          newAssignment
-        )
+    Object.keys(newAssignments).forEach(async newAssignment => {
+      let assignment = newAssignments[newAssignment]
+      if (assignment.weight_id && assignment.name && assignment.due && assignment.share) {
+
+        // TODO use actions.assignments.creatAssignment to actually create the assignment
+
+        console.log(assignment.name, assignment.class.name, assignment.weight_id, moment(assignment.due).format('MMMM D YYYY'))
+
+        //  TODO if (needLock === true) do stuff here to unlock
       } else {
-        console.error('You must select a weight!')
+        if (!assignment.weight_id) {
+          console.log('Please select a weight for the assignment.')
+        } else if (!assignment.name) {
+          console.log('Please give the assignment a name.')
+        } else if (!assignment.class.name) {
+          console.log('Please select a class for the assignment.')
+        } else if (!assignment.class.due) {
+          console.log('Please select a due date for the assignment.')
+        } else {
+          console.log('error creating assignment')
+        }
       }
     })
-    if (this.state.needLock) {
-      await actions.classes.unlockClass(this.state.selectedClass.id)
-    }
+    this.props.closeModal()
   }
 
   getDateSelection = selectedDate => {
