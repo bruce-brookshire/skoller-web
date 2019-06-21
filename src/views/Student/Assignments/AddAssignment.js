@@ -129,7 +129,8 @@ class AddAssignment extends Component {
           name: null,
           due: moment(this.props.assignmentParams.due),
           weight_id: null,
-          class: null
+          class: null,
+          share: true
         },
         newAssignments: newAssignments,
         showSaveButton: true,
@@ -176,7 +177,9 @@ class AddAssignment extends Component {
       showClassField: false,
       showWeightsField: false,
       showDatePicker: false,
-      showShareField: false
+      showShareField: false,
+      selectedClass: null,
+      selectedStudentClass: null
     })
   }
 
@@ -263,150 +266,182 @@ class AddAssignment extends Component {
     this.setState({ newAssignments: newAssignments })
   }
 
-  toggleShareOption = () => {
+  toggleShareOption = (bool) => {
     let newAssignment = this.state.newAssignment
-    newAssignment.share = !newAssignment.share
+    newAssignment.share = bool
     this.setState({newAssignment: newAssignment})
+  }
+
+  renderForm () {
+    return (
+      <div className="add-assignment-form">
+        <h1>Add Assignment</h1>
+        {(Object.keys(this.state.newAssignments).length > 0)
+          ? <p
+            className="add-assignment-back-button"
+            onClick={() => {
+              this.setState({hideAddAssignmentForm: true})
+              this.clearForm()
+            }}
+          >
+            <span>👈</span> Go back
+          </p>
+          : null
+        }
+        {this.state.showClassField ? (
+          <div className="add-assignment-form-row">
+            <p>Class</p>
+            {this.renderClassSelection()}
+          </div>
+        ) : null}
+        {this.state.showWeightsField ? (
+          <div className="add-assignment-form-row">
+            <p>Weight</p>
+            {this.renderWeightSelection()}
+            {this.state.notWeighted ? (
+              <small>This assignment will not affect your grade.</small>
+            ) : null}
+          </div>
+        ) : null}
+        {this.state.showNameField ? (
+          <div className="add-assignment-form-row">
+            <label htmlFor="assignmentName">Assignment name</label>
+            <input
+              autoComplete="off"
+              type="text"
+              name="assignmentName"
+              onChange={this.addAssignmentNameHandler}
+            />
+          </div>
+        ) : null}
+        {this.state.showDateField ? (
+          <div className="add-assignment-form-row">
+            <p>Due date</p>
+            {this.state.newAssignment.due ? (
+              <div>
+                <p
+                  className="add-assignment-due-date"
+                  onClick={ () => this.setState({ showDatePicker: true })}
+                >
+                  {moment(this.state.newAssignment.due).format(
+                    'MMMM D, YYYY'
+                  )}
+                </p>
+                {this.state.showDatePicker ? (
+                  <DatePicker
+                    givenDate={this.state.newAssignment.due}
+                    returnSelectedDay={this.getDateSelection}
+                    inline={false}
+                  />
+                ) : null}
+              </div>
+            ) : (
+              <div>
+                <p
+                  className="add-assignment-due-date"
+                  onClick={ () => this.setState({ showDatePicker: true })}
+                >
+                  Select due date
+                </p>
+                {this.state.showDatePicker ? (
+                  <DatePicker
+                    givenDate={this.state.newAssignment.due}
+                    returnSelectedDay={this.getDateSelection}
+                  />
+                ) : null}
+              </div>
+            )}
+          </div>
+        ) : null}
+        {this.state.showShareField
+          ? <div className="add-assignment-form-row">
+            <p>Share</p>
+            <div className="add-assignment-share-row">
+              <label
+                className={this.state.newAssignment.share === true ? 'is-active' : null}
+              >
+                <input
+                  type="radio"
+                  value={true}
+                  checked={this.state.newAssignment.share === true}
+                  onChange={() => this.toggleShareOption(true)}
+                />
+                <div className="radio-button" />
+                <p>Share with class as update</p>
+              </label>
+              <label
+                className={this.state.newAssignment.share === false ? 'is-active' : null}
+              >
+                <input
+                  type="radio"
+                  value={false}
+                  checked={this.state.newAssignment.share === false}
+                  onChange={() => this.toggleShareOption(false)}
+                />
+                <div className="radio-button" />
+                <p>Keep Private</p>
+              </label>
+            </div>
+          </div>
+          : null
+        }
+        <div
+          className="add-assignment-add-button"
+          onClick={this.addAssignmentButtonHandler}
+        >
+          <p className={this.state.showAddButton ? '' : 'not-available'}>
+            Add Assignment
+          </p>
+        </div>
+      </div>
+    )
+  }
+
+  renderFormHandler () {
+    return (
+      <div>
+        {Object.keys(this.state.newAssignments).length !== 0 ? (
+          <div className="add-assignment-new-assignments-container">
+            <h1>
+              New assignment
+              {Object.keys(this.state.newAssignments).length > 1 ? 's' : null}
+            </h1>
+            <div className="add-assignment-new-assignments">
+              {this.renderNewAssignments()}
+            </div>
+          </div>
+        ) : null}
+        {this.state.showSaveButton ? (
+          <div
+            className="add-assignment-save-row"
+            style={Object.keys(this.state.newAssignments).length >= 4 ? {boxShadow: '0 -4px 12px rgba(0,0,0,.05)'} : null}
+          >
+            {this.renderSaveAssignmentButton()}
+            <div className="add-assignment-add-another-button">
+              <p
+                onClick={ () =>
+                  this.setState({
+                    showClassField: true,
+                    hideAddAssignmentForm: false
+                  })
+                }
+              >
+                Add another assignment
+              </p>
+            </div>
+          </div>
+        ) : null}
+      </div>
+    )
   }
 
   render () {
     return (
       <SkModal closeModal={this.props.closeModal}>
         <div className="add-assignment-container">
-          {this.state.hideAddAssignmentForm ? null : (
-            <div className="add-assignment-form">
-              <h1>Add Assignment</h1>
-              {this.state.showClassField ? (
-                <div className="add-assignment-form-row">
-                  <p>Class</p>
-                  {this.renderClassSelection()}
-                </div>
-              ) : null}
-              {this.state.showWeightsField ? (
-                <div className="add-assignment-form-row">
-                  <p>Weight</p>
-                  {this.renderWeightSelection()}
-                  {this.state.notWeighted ? (
-                    <small>This assignment will not affect your grade.</small>
-                  ) : null}
-                </div>
-              ) : null}
-              {this.state.showNameField ? (
-                <div className="add-assignment-form-row">
-                  <label htmlFor="assignmentName">Assignment name</label>
-                  <input
-                    autoComplete="off"
-                    type="text"
-                    name="assignmentName"
-                    onChange={this.addAssignmentNameHandler}
-                  />
-                </div>
-              ) : null}
-              {this.state.showDateField ? (
-                <div className="add-assignment-form-row">
-                  <p>Due date</p>
-                  {this.state.newAssignment.due ? (
-                    <div>
-                      <p
-                        className="add-assignment-due-date"
-                        onClick={ () => this.setState({ showDatePicker: true })}
-                      >
-                        {moment(this.state.newAssignment.due).format(
-                          'MMMM D, YYYY'
-                        )}
-                      </p>
-                      {this.state.showDatePicker ? (
-                        <DatePicker
-                          givenDate={this.state.newAssignment.due}
-                          returnSelectedDay={this.getDateSelection}
-                          inline={false}
-                        />
-                      ) : null}
-                    </div>
-                  ) : (
-                    <div>
-                      <p
-                        className="add-assignment-due-date"
-                        onClick={ () => this.setState({ showDatePicker: true })}
-                      >
-                        Select due date
-                      </p>
-                      {this.state.showDatePicker ? (
-                        <DatePicker
-                          givenDate={this.state.newAssignment.due}
-                          returnSelectedDay={this.getDateSelection}
-                        />
-                      ) : null}
-                    </div>
-                  )}
-                </div>
-              ) : null}
-              {this.state.showShareField
-                ? <div className="add-assignment-form-row">
-                  <p>Share</p>
-                  <div className="add-assignment-share-row">
-                    <label>
-                      <input
-                        type="radio"
-                        value={true}
-                        checked={this.state.newAssignment.share === true}
-                        onChange={() => this.toggleShareOption()}
-                      />
-                      <div className="radio-button" />
-                      <p>Share with class as update</p>
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        value={false}
-                        checked={this.state.newAssignment.share === false}
-                        onChange={() => this.toggleShareOption()}
-                      />
-                      <div className="radio-button" />
-                      <p>Keep Private</p>
-                    </label>
-                  </div>
-                </div>
-                : null
-              }
-              <div
-                className="add-assignment-add-button"
-                onClick={this.addAssignmentButtonHandler}
-              >
-                <p className={this.state.showAddButton ? '' : 'not-available'}>
-                  Add Assignment
-                </p>
-              </div>
-            </div>
-          )}
-          {Object.keys(this.state.newAssignments).length !== 0 ? (
-            <div className="add-assignment-new-assignments-container">
-              <h2>
-                New assignment
-                {Object.keys(this.state.newAssignments).length > 1 ? 's' : null}
-              </h2>
-              <div className="add-assignment-new-assignments">
-                {this.renderNewAssignments()}
-              </div>
-            </div>
-          ) : null}
-          {this.state.showSaveButton ? (
-            <div className="add-assignment-save-row">
-              {this.renderSaveAssignmentButton()}
-              <div className="add-assignment-add-another-button">
-                <p
-                  onClick={ () =>
-                    this.setState({
-                      showClassField: true,
-                      hideAddAssignmentForm: false
-                    })
-                  }
-                >
-                  Add another assignment
-                </p>
-              </div>
-            </div>
-          ) : null}
+          {(this.state.hideAddAssignmentForm)
+            ? this.renderFormHandler()
+            : this.renderForm()}
         </div>
       </SkModal>
     )
