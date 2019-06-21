@@ -123,7 +123,7 @@ class AddAssignment extends Component {
   addAssignmentButtonHandler = () => {
     const { newAssignments, newAssignment } = this.state
     if (newAssignment.name) {
-      newAssignments[newAssignment.name + newAssignment.due + newAssignment.class] = newAssignment
+      newAssignments[newAssignment.name + newAssignment.due + newAssignment.class.id + newAssignment.weight_id + newAssignment.share] = newAssignment
       this.setState({
         newAssignment: {
           name: null,
@@ -179,7 +179,8 @@ class AddAssignment extends Component {
       showDatePicker: false,
       showShareField: false,
       selectedClass: null,
-      selectedStudentClass: null
+      selectedStudentClass: null,
+      notWeighted: false
     })
   }
 
@@ -254,7 +255,7 @@ class AddAssignment extends Component {
 
   removeNewAssignment = assignment => {
     let newAssignments = this.state.newAssignments
-    delete newAssignments[assignment.name + assignment.due + assignment.class]
+    delete newAssignments[assignment.name + assignment.due + assignment.class.id + assignment.weight_id + assignment.share]
     if (Object.keys(newAssignments).length === 0) {
       this.setState({
         hideAddAssignmentForm: false,
