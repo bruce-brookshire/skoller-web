@@ -12,7 +12,7 @@ class SkModal extends React.Component {
         <div className="sk-modal-container">
           <div className="sk-modal">
             <div className="sk-modal-exit" onClick={() => this.props.closeModal()}>
-              <Exit width="18" height="18"/>
+              <Exit width="18" height="18" fill="$cn-color-blue"/>
             </div>
             <div className="sk-modal-header">
               <h1>{this.props.title}</h1>

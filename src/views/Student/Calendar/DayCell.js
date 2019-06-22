@@ -71,7 +71,7 @@ class DayCell extends React.Component {
     return (
       <div className="calendar-day-cell-wrapper" onMouseEnter={() => this.setHoverStateTrue()} onMouseLeave={() => this.setHoverStateFalse()}>
         { this.state.showAddAssignmentModal
-          ? <AddAssignment closeModal={this.closeModal} params={{classId: 4}}/>
+          ? <AddAssignment closeModal={this.closeModal} assignmentParams={{due: this.props.day}}/>
           : null
         }
         <div className={'calendar-date ' + (isCurrentMonth ? 'current-month ' : '') + (isCurrentDay ? 'current-day' : '')}>

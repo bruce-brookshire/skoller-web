@@ -1,0 +1,267 @@
+.add-assignment-container {
+  max-width: 100vw;
+  min-width: 270px;
+  max-height: 100vh;
+  overflow: scroll;
+  box-sizing: border-box;
+
+  .add-assignment-form {
+    max-height: 80vh;
+    overflow: scroll;
+    box-sizing: border-box;
+    max-width: 100vw;
+    box-sizing: content-box;
+    @include remove-form-styling;
+    display: flex;
+    flex-direction: column;
+
+    h1 {
+      text-align: center;
+      margin: 16px 0 0 0;
+    }
+
+    .add-assignment-back-button {
+      margin: 0 0 0 -8px;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 500;
+      color: $cn-color-blue;
+      cursor: pointer;
+
+      span {
+        font-size: 17px;
+      }
+    }
+
+    .add-assignment-form-row {
+      display: flex;
+      flex-direction: column;
+      justify-content: left;
+      margin: 4px 0;
+
+      // get rid of annoying focus highlighting
+      input:focus,
+      select:focus,
+      textarea:focus,
+      button:focus {
+        outline: none;
+      }
+
+      p {
+        margin: 0;
+      }
+
+      select {
+        border: 1px solid $cn-color-blue;
+        border-radius: 5px;
+        padding: 4px;
+        font-size: 13px;
+        max-width: 100vw;
+        -webkit-appearance: none;
+        height: 31px;
+        color: $cn-color-blue;
+        cursor: pointer;
+      }
+
+      input {
+        border: 1px solid $cn-color-blue;
+        padding: 9px 5px;
+        height: 13px;
+        max-width: 100vw;
+        border-radius: 5px;
+        font-size: 13px;
+        font-weight: 500;
+      }
+
+      small {
+        margin-top: 4px;
+      }
+
+      .add-assignment-due-date {
+        border: 1px solid $cn-color-blue;
+        padding: 9px 5px;
+        height: 13px;
+        max-width: 100vw;
+        border-radius: 5px;
+        color: $cn-color-blue;
+        cursor: pointer;
+      }
+
+      .add-assignment-share-row {
+        max-width: 70vw;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+
+        label {
+          margin: 4px 8px 0 0;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          border: 1px solid $cn-form-border;
+          padding: 9px 5px 6px 5px;
+          height: 13px;
+          max-width: 100vw;
+          border-radius: 5px;
+          color: $cn-color-blue;
+          cursor: pointer;
+
+          &:hover {
+            input {
+              background-color: $cn-form-border;
+            }
+          }
+
+          input {
+            position: absolute;
+            width: 0;
+            height: 0;
+            opacity: 0;
+            cursor: pointer;
+          }
+
+          .radio-button {
+            position: relative;
+            height: 16px;
+            width: 16px;
+            background-color: rgba(0,0,0,.05);
+            border-radius: 50%;
+            margin: -3px 8px 0 0;
+
+            &:after {
+              content: "";
+              position: absolute;
+              display: none;
+              top: 5px;
+              left: 5px;
+              width: 6px;
+              height: 6px;
+              border-radius: 50%;
+              background: white;
+            }
+          }
+
+          input:checked ~ .radio-button {
+            background-color: $cn-color-blue;
+          }
+
+          input:checked ~ .radio-button:after {
+            display: block;
+          }
+        }
+
+        .is-active {
+          border-color: $cn-color-blue;
+        }
+      }
+    }
+
+    .add-assignment-add-button {
+      @include sk-standard-button;
+
+      p {
+        width: 120px;
+      }
+
+      .not-available {
+        display: none;
+        background-color: rgba(0,0,0,.10);
+        cursor: default;
+      }
+    }
+  }
+
+  .add-assignment-new-assignments-container {
+    padding: 8px;
+
+    h1 {
+      text-align: center;
+      margin: 0 0 1rem 0;
+    }
+
+    .add-assignment-new-assignments {
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      max-height: 200px;
+      overflow: scroll;
+      margin: 0 0 -16px 0;
+      padding: 12px;
+
+      .add-assignment-assignment {
+        border: 1px solid;
+        margin: 0 0 16px 0;
+        padding: 4px;
+        border-radius: 5px;
+
+        .add-assignment-remove {
+          background-color: white;
+          border: solid 1px;
+          padding: 2px;
+          margin-bottom: -12px;
+          border-radius: 50%;
+          width: 18px;
+          height: 18px;
+          transform: translate(-14px, -14px);
+          cursor: pointer;
+
+          svg {
+            margin: 1px 0 0 1px;
+          }
+        }
+
+        .add-assignment-row {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+
+          h2 {
+            max-width: calc(100% - 72px);
+            font-size: 17px;
+            font-weight: 500;
+            margin: 0;
+            text-align: left;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+    }
+  }
+
+  .add-assignment-save-row {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row-reverse;
+    justify-content: center;
+    background-color: white;
+    margin-top: 12px;
+
+    @media only screen and (max-width: $sk-mobile-break-point) {
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .add-assignment-add-another-button {
+      @include sk-standard-button;
+
+      p {
+        width: 164px;
+      }
+    }
+
+    .add-assignment-save-button {
+      @include sk-standard-button;
+
+      p {
+        width: 164px;
+      }
+    }
+  }
+}
