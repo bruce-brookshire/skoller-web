@@ -34,7 +34,7 @@ class WeightType extends React.Component {
               onChange={(value) => {
                 this.setState({isPoints: !value})
               }}
-              value={this.state.isPoints}
+              value={!this.state.isPoints}
             />
             <CheckboxField
               containerClassName='margin-top margin-right'

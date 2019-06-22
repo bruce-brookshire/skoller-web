@@ -1,4 +1,4 @@
-.cn-input-container {
+.cn-input-container-checkbox {
   display: flex;
   flex-direction: row;
   .cn-form-checkbox {
@@ -6,6 +6,7 @@
     width: 24px;
     border-radius: 5px;
     border: 2px solid #C7C7CD;
+    background-color: transparent;
     &.error {
       outline: 1px solid $cn-error-color;
     }

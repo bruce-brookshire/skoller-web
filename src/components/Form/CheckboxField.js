@@ -28,7 +28,7 @@ class CheckboxField extends React.Component {
   onClick () {
     this.setState({
       isChecked: !this.state.isChecked,
-      bgColor: this.state.isChecked ? '#57B9E4' : 'transparent'
+      bgColor: !this.state.isChecked ? '#57B9E4' : 'transparent'
     })
   }
 
@@ -47,7 +47,7 @@ class CheckboxField extends React.Component {
   }
 
   render () {
-    const containerClasses = ['cn-input-container']
+    const containerClasses = ['cn-input-container-checkbox']
     const labelClasses = ['cn-checkbox-label']
     const inputClasses = ['cn-form-checkbox']
 
@@ -82,7 +82,8 @@ class CheckboxField extends React.Component {
     const input = this.props
     return (
       <div className={containerClasses.join(' ')}>
-        <div
+        <input
+          type={'checkbox'}
           className={inputClasses.join(' ')}
           id={input.id}
           name={input.name}
