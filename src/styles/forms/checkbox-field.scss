@@ -1,6 +1,7 @@
 .cn-input-container-checkbox {
   display: flex;
   flex-direction: row;
+
   .cn-form-checkbox {
     height: 24px;
     width: 24px;
@@ -13,7 +14,7 @@
   }
   .cn-checkbox-label {
     @include form-label;
-    margin: 5px 0px 0px 10px;
+    margin: 6px 0px 0px 10px;
     font-size: 12pt !important;
   }
   .cn-big-checkbox {

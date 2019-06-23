@@ -82,8 +82,7 @@ class CheckboxField extends React.Component {
     const input = this.props
     return (
       <div className={containerClasses.join(' ')}>
-        <input
-          type={'checkbox'}
+        <div
           className={inputClasses.join(' ')}
           id={input.id}
           name={input.name}
@@ -93,7 +92,7 @@ class CheckboxField extends React.Component {
           onFocus={this.onFocus.bind(this)}
           onClick={this.onClick.bind(this)}
           checked={input.value}
-        />
+        ></div>
         {label
           ? <label className={labelClasses.join(' ')} htmlFor={id}>
             {label} {this.renderInfo()}
@@ -120,7 +119,7 @@ CheckboxField.propTypes = {
   onBlur: PropTypes.func,
   onChange: PropTypes.func.isRequired,
   onFocus: PropTypes.func,
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
   value: PropTypes.bool.isRequired,
   error: PropTypes.bool,
   info: PropTypes.bool
