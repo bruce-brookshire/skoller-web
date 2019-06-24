@@ -21,6 +21,7 @@ class Calendar extends React.Component {
       thisMonth: thisMonth,
       thisWeek: thisWeek,
       classColors: {},
+      assignments: {},
       isWeek: this.checkForMobile() // force calendar into week mode if viewed from mobile device
     }
 
@@ -54,18 +55,17 @@ class Calendar extends React.Component {
       .catch(() => false)
   }
 
-  getAssignments () {
+  async getAssignments () {
     const {
       user: { student }
     } = this.props.rootStore.userStore
-    this.getClassColors()
-
-    actions.assignments
-      .getAllStudentAssignments(student.id)
-      .then(data => {
-        this.setState({ assignments: data })
-      })
-      .catch(() => false)
+    let assignments = {}
+    await this.getClassColors()
+    await actions.assignments.getAllStudentAssignments(student.id)
+    this.props.rootStore.studentAssignmentsStore.getAssignments().map((item) => {
+      assignments[item.id] = item
+    })
+    this.setState({assignments: assignments})
   }
 
   nextMonth () {
@@ -117,11 +117,6 @@ class Calendar extends React.Component {
     if (moment().year() !== moment(this.state.thisMonth).year()) {
       isCurrentYear = false
     }
-
-    let assignments = {}
-    this.props.rootStore.studentAssignmentsStore.getAssignments().map((item) => {
-      assignments[item.id] = item
-    })
 
     return (
       <div className="calendar">
@@ -189,7 +184,7 @@ class Calendar extends React.Component {
           thisWeek={this.state.thisWeek}
           thisMonth={this.state.thisMonth}
           classColors={this.state.classColors}
-          assignments={assignments}
+          assignments={this.state.assignments}
         />
       </div>
     )

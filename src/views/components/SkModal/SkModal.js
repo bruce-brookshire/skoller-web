@@ -30,7 +30,7 @@ class SkModal extends React.Component {
 SkModal.propTypes = {
   title: PropTypes.string,
   children: PropTypes.node.isRequired,
-  closeModal: PropTypes.function
+  closeModal: PropTypes.func
   // use the closeModal function to close the modal from the parent component.
 }
 
