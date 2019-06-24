@@ -32,4 +32,9 @@
     background-color: $cn-snackbar-info;
     color: $cn-snackbar-info-text;
   }
+
+  &.success {
+    background-color: $cn-color-blue;
+    color: $cn-snackbar-info-text;
+  }
 }

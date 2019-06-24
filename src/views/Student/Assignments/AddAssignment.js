@@ -7,6 +7,7 @@ import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
 import DatePicker from '../../components/DatePicker'
 import NewAssignment from './NewAssignment'
+import {showSnackbar} from '../../../utilities/snackbar'
 
 @inject('rootStore')
 @observer
@@ -86,7 +87,6 @@ class AddAssignment extends Component {
 
   // get the class user selects
   selectClassHandler = event => {
-    console.log(event)
     const selectedClassId = event.target.value
     let newAssignment = this.state.newAssignment
     actions.classes
@@ -149,16 +149,15 @@ class AddAssignment extends Component {
 
   addAssignmentButtonHandler = () => {
     const { newAssignments, newAssignment } = this.state
-    console.log(newAssignment)
 
     if (!newAssignment.weight_id) {
-      console.log('Please select a weight for the assignment.')
+      showSnackbar('Please select a weight for the assignment.')
     } else if (!newAssignment.name) {
-      console.log('Please give the assignment a name.')
+      showSnackbar('Please give the assignment a name.')
     } else if (!newAssignment.class.name) {
-      console.log('Please select a class for the assignment.')
+      showSnackbar('Please select a class for the assignment.')
     } else if (!moment(newAssignment.class.due)) {
-      console.log('Please select a due date for the assignment.')
+      showSnackbar('Please select a due date for the assignment.')
     } else {
       newAssignments[newAssignment.name + newAssignment.due + newAssignment.class.id + newAssignment.weight_id + newAssignment.share] = newAssignment
       this.setState({
@@ -217,27 +216,21 @@ class AddAssignment extends Component {
     const newAssignments = this.state.newAssignments
     Object.keys(newAssignments).forEach(async newAssignment => {
       let assignment = newAssignments[newAssignment]
-      if (assignment.weight_id && assignment.name && assignment.due && assignment.share) {
 
-        // TODO use actions.assignments.creatAssignment to actually create the assignment
-
-        console.log(assignment.name, assignment.class.name, assignment.weight_id, moment(assignment.due).format('MMMM D YYYY'))
-
-        //  TODO if (needLock === true) do stuff here to unlock
-      } else {
-        if (!assignment.weight_id) {
-          console.log('Please select a weight for the assignment.')
-        } else if (!assignment.name) {
-          console.log('Please give the assignment a name.')
-        } else if (!assignment.class.name) {
-          console.log('Please select a class for the assignment.')
-        } else if (!assignment.class.due) {
-          console.log('Please select a due date for the assignment.')
-        } else {
-          console.log('error creating assignment')
-        }
+      let assignmentToSubmit = {
+        name: assignment.name,
+        weight_id: assignment.weight_id,
+        due: new Date(assignment.due),
+        is_completed: false,
+        is_private: !assignment.share,
+        created_on: 'web'
       }
+
+      actions.assignments.createStudentAssignment(this.state.studentId, assignment.class.id, assignmentToSubmit).then(actions.assignments.getAllStudentAssignments(this.state.studentId))
+      //  TODO if (needLock === true) do stuff here to unlock
     })
+    let successMessage = 'Created ' + Object.keys(this.state.newAssignments).length.toString() + ' new assignment' + ((Object.keys(this.state.newAssignments).length > 1) ? 's' : '') + '.'
+    showSnackbar(successMessage, 'success')
     this.props.closeModal()
   }
 

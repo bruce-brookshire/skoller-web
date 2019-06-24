@@ -11,6 +11,10 @@ class StudentAssignmentsStore {
   setAssignments (assignments) {
     this.assignments = assignments
   }
+
+  getAssignments () {
+    return this.assignments
+  }
 }
 
 const studentAssignmentsStore = new StudentAssignmentsStore()

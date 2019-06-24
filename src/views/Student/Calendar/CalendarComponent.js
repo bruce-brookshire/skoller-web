@@ -20,7 +20,6 @@ class Calendar extends React.Component {
       loading: false,
       thisMonth: thisMonth,
       thisWeek: thisWeek,
-      assignments: this.props.rootStore.studentAssignmentsStore.assignments,
       classColors: {},
       isWeek: this.checkForMobile() // force calendar into week mode if viewed from mobile device
     }
@@ -119,6 +118,11 @@ class Calendar extends React.Component {
       isCurrentYear = false
     }
 
+    let assignments = {}
+    this.props.rootStore.studentAssignmentsStore.getAssignments().map((item) => {
+      assignments[item.id] = item
+    })
+
     return (
       <div className="calendar">
         <div className="calendar-header">
@@ -185,7 +189,7 @@ class Calendar extends React.Component {
           thisWeek={this.state.thisWeek}
           thisMonth={this.state.thisMonth}
           classColors={this.state.classColors}
-          assignments={this.state.assignments}
+          assignments={assignments}
         />
       </div>
     )
