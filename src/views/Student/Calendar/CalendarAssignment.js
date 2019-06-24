@@ -1,6 +1,7 @@
 import React from 'react'
-import { propTypes, observer, inject } from 'mobx-react'
+import { observer, inject } from 'mobx-react'
 import { browserHistory } from 'react-router'
+import PropTypes from 'prop-types'
 
 @inject('rootStore')
 @observer
@@ -24,9 +25,9 @@ class DayCell extends React.Component {
 }
 
 DayCell.propTypes = {
-  rootStore: propTypes.object,
-  assignment: propTypes.object,
-  classColors: propTypes.object
+  rootStore: PropTypes.object,
+  assignment: PropTypes.object,
+  classColors: PropTypes.object
 }
 
 export default DayCell

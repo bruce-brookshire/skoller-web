@@ -1,8 +1,9 @@
 import React from 'react'
-import { propTypes, observer, inject } from 'mobx-react'
+import { observer, inject } from 'mobx-react'
 import CalendarAssignment from './CalendarAssignment'
 import moment from 'moment'
 import AddAssignment from '../../Student/Assignments/AddAssignment'
+import PropTypes from 'prop-types'
 
 @inject('rootStore')
 @observer
@@ -128,10 +129,10 @@ class WeekCell extends React.Component {
 }
 
 WeekCell.propTypes = {
-  day: propTypes.object,
-  classColors: propTypes.object,
-  thisWeek: propTypes.object,
-  assignments: propTypes.object
+  day: PropTypes.object,
+  classColors: PropTypes.object,
+  thisWeek: PropTypes.object,
+  assignments: PropTypes.object
 }
 
 export default WeekCell

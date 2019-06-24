@@ -1,8 +1,9 @@
 import React from 'react'
-import { propTypes, observer, inject } from 'mobx-react'
+import { observer, inject } from 'mobx-react'
 import moment from 'moment'
 import DayCell from './DayCell'
 import WeekCell from './WeekCell'
+import PropTypes from 'prop-types'
 
 @inject('rootStore')
 @observer
@@ -99,11 +100,11 @@ class CalendarBody extends React.Component {
 }
 
 CalendarBody.propTypes = {
-  thisMonth: propTypes.object,
-  classColors: propTypes.object,
-  assignments: propTypes.object,
-  isWeek: propTypes.bool,
-  thisWeek: propTypes.object
+  thisMonth: PropTypes.object,
+  classColors: PropTypes.object,
+  assignments: PropTypes.object,
+  isWeek: PropTypes.bool,
+  thisWeek: PropTypes.object
 }
 
 export default CalendarBody

@@ -560,7 +560,7 @@ class AddAssignment extends Component {
 
 AddAssignment.propTypes = {
   rootStore: PropTypes.object,
-  closeModal: PropTypes.function,
+  closeModal: PropTypes.func,
   assignmentParams: PropTypes.object
 }
 

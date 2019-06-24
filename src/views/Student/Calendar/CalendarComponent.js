@@ -1,5 +1,5 @@
 import React from 'react'
-import { observer, inject, propTypes } from 'mobx-react'
+import { observer, inject } from 'mobx-react'
 import moment from 'moment'
 import BackArrow from '../../../assets/sk-icons/navigation/BackArrow'
 import ForwardArrow from '../../../assets/sk-icons/navigation/ForwardArrow'
@@ -7,6 +7,7 @@ import Agenda from '../../../assets/sk-icons/calendar/Agenda'
 import CalendarSmall from '../../../assets/sk-icons/calendar/CalendarSmall'
 import CalendarBody from './CalendarBody'
 import actions from '../../../actions'
+import PropTypes from 'prop-types'
 
 @inject('rootStore')
 @observer
@@ -16,16 +17,36 @@ class Calendar extends React.Component {
     let thisMonth = new Date(moment().startOf('month'))
     let thisWeek = new Date(moment().startOf('week'))
 
+    let assignments = {}
+    if (this.props.rootStore.studentAssignmentsStore.getAssignments) {
+      this.props.rootStore.studentAssignmentsStore.assignments.map((assignment) => {
+        assignments[assignment.id] = assignment
+      })
+    }
+
+    this.getClassColors()
+
     this.state = {
       loading: false,
       thisMonth: thisMonth,
       thisWeek: thisWeek,
       classColors: {},
-      assignments: {},
       isWeek: this.checkForMobile() // force calendar into week mode if viewed from mobile device
     }
 
+    console.log('this.state.assignments: ', this.state.assignments)
+
     this.getAssignments()
+  }
+
+  async getAssignments () {
+    const {
+      user: { student }
+    } = this.props.rootStore.userStore
+    let assignments = {}
+    await this.getClassColors()
+    assignments = actions.assignments.getAllStudentAssignments(student.id)
+    return assignments
   }
 
   checkForMobile () {
@@ -53,19 +74,6 @@ class Calendar extends React.Component {
         })
       })
       .catch(() => false)
-  }
-
-  async getAssignments () {
-    const {
-      user: { student }
-    } = this.props.rootStore.userStore
-    let assignments = {}
-    await this.getClassColors()
-    await actions.assignments.getAllStudentAssignments(student.id)
-    this.props.rootStore.studentAssignmentsStore.getAssignments().map((item) => {
-      assignments[item.id] = item
-    })
-    this.setState({assignments: assignments})
   }
 
   nextMonth () {
@@ -184,7 +192,7 @@ class Calendar extends React.Component {
           thisWeek={this.state.thisWeek}
           thisMonth={this.state.thisMonth}
           classColors={this.state.classColors}
-          assignments={this.state.assignments}
+          assignments={this.props.rootStore.studentAssignmentsStore.getAssignments}
         />
       </div>
     )
@@ -192,7 +200,7 @@ class Calendar extends React.Component {
 }
 
 Calendar.propTypes = {
-  rootStore: propTypes.object
+  rootStore: PropTypes.object
 }
 
 export default Calendar

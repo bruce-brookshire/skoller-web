@@ -3,6 +3,7 @@ import { propTypes, observer, inject } from 'mobx-react'
 import CalendarAssignment from './CalendarAssignment'
 import moment from 'moment'
 import AddAssignment from '../Assignments/AddAssignment'
+import PropTypes from 'prop-types'
 
 @inject('rootStore')
 @observer
@@ -103,10 +104,10 @@ class DayCell extends React.Component {
 }
 
 DayCell.propTypes = {
-  day: propTypes.object,
-  classColors: propTypes.object,
-  thisMonth: propTypes.object,
-  assignments: propTypes.object
+  day: PropTypes.object,
+  classColors: PropTypes.object,
+  thisMonth: PropTypes.object,
+  assignments: PropTypes.object
 }
 
 export default DayCell

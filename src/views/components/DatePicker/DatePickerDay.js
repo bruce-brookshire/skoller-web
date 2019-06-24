@@ -68,7 +68,7 @@ DatePickerDay.propTypes = {
   day: PropTypes.object,
   currentMonth: PropTypes.object,
   selectedDay: PropTypes.object,
-  changeSelectedDay: PropTypes.function
+  changeSelectedDay: PropTypes.func
 }
 
 export default DatePickerDay
