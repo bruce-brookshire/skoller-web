@@ -11,35 +11,64 @@ import NewAssignment from './NewAssignment'
 @inject('rootStore')
 @observer
 class AddAssignment extends Component {
-  state = {
-    // student info state
-    newAssignment: {
-      due: this.props.assignmentParams.due,
-      name: null,
-      weight_id: null,
-      class: null,
-      created_on: 'web',
-      share: true
-    },
-    newAssignments: {},
-    weights: [],
-    classes: [],
-    selectedClass: {},
-    selectedStudentClass: null,
-    studentId: this.props.rootStore.userStore.user.student.id,
-    // visibility state
-    showClassField: true,
-    showWeightsField: false,
-    showNameField: false,
-    showAddButton: false,
-    showSaveButton: false,
-    showDateField: false,
-    showDatePicker: false,
-    hideAddAssignmentForm: false,
-    notWeighted: false,
-    showShareField: false,
-    // batch adding assignments when there are none
-    needLock: false
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      // student info stuff
+      newAssignment: {
+        due: this.props.assignmentParams.due,
+        name: null,
+        weight_id: null,
+        class: this.props.assignmentParams.class,
+        created_on: 'web',
+        share: true
+      },
+      newAssignments: {},
+      weights: [],
+      classes: [],
+      selectedClass: {},
+      selectedStudentClass: null,
+      studentId: this.props.rootStore.userStore.user.student.id,
+
+      // visibility stuff
+      showClassField: true,
+      showWeightsField: false,
+      showNameField: false,
+      showAddButton: false,
+      showSaveButton: false,
+      showDateField: false,
+      showDatePicker: false,
+      hideAddAssignmentForm: false,
+      notWeighted: false,
+      showShareField: false,
+
+      // batch adding assignments when there are none
+      needLock: false
+    }
+
+    // get the student class and class objects from the class passed through assignmentParams
+    if (this.props.assignmentParams.class) {
+      this.setState({selectedStudentClass: this.props.assignmentParams.class})
+      let selectedClassId = this.props.assignmentParams.class.id
+      let newAssignment = this.state.newAssignment
+      actions.classes
+        .getStudentClass(this.state.studentId, selectedClassId)
+        .then(selectedStudentClass => {
+          newAssignment.class = selectedStudentClass
+          this.setState({
+            selectedStudentClass: selectedStudentClass,
+            newAssignment: newAssignment
+          })
+        })
+      actions.classes.getClassById(selectedClassId).then(selectedClass => {
+        this.getClassWeights(selectedClass.id)
+        this.setState({
+          selectedClass: selectedClass,
+          showWeightsField: true
+        })
+      })
+    }
   }
 
   // create the class list after component mounts
@@ -57,6 +86,7 @@ class AddAssignment extends Component {
 
   // get the class user selects
   selectClassHandler = event => {
+    console.log(event)
     const selectedClassId = event.target.value
     let newAssignment = this.state.newAssignment
     actions.classes
@@ -119,7 +149,17 @@ class AddAssignment extends Component {
 
   addAssignmentButtonHandler = () => {
     const { newAssignments, newAssignment } = this.state
-    if (newAssignment.name) {
+    console.log(newAssignment)
+
+    if (!newAssignment.weight_id) {
+      console.log('Please select a weight for the assignment.')
+    } else if (!newAssignment.name) {
+      console.log('Please give the assignment a name.')
+    } else if (!newAssignment.class.name) {
+      console.log('Please select a class for the assignment.')
+    } else if (!moment(newAssignment.class.due)) {
+      console.log('Please select a due date for the assignment.')
+    } else {
       newAssignments[newAssignment.name + newAssignment.due + newAssignment.class.id + newAssignment.weight_id + newAssignment.share] = newAssignment
       this.setState({
         newAssignment: {
@@ -132,11 +172,44 @@ class AddAssignment extends Component {
         newAssignments: newAssignments,
         showSaveButton: true,
         selectedClass: null,
+        selectedStudentClass: null,
         hideAddAssignmentForm: true
+      }).then(this.resetFormState())
+    }
+  }
+
+  addAnotherAssignmentButtonHandler = () => {
+    this.setState({
+      showClassField: true,
+      showWeightsField: false,
+      showDateField: false,
+      showNameField: false,
+      showAddButton: false,
+      showShareField: false,
+      notWeighted: false,
+      hideAddAssignmentForm: false
+    })
+
+    if (this.props.assignmentParams.class) {
+      this.setState({selectedStudentClass: this.props.assignmentParams.class})
+      let selectedClassId = this.props.assignmentParams.class.id
+      let newAssignment = this.state.newAssignment
+      actions.classes
+        .getStudentClass(this.state.studentId, selectedClassId)
+        .then(selectedStudentClass => {
+          newAssignment.class = selectedStudentClass
+          this.setState({
+            selectedStudentClass: selectedStudentClass,
+            newAssignment: newAssignment
+          })
+        })
+      actions.classes.getClassById(selectedClassId).then(selectedClass => {
+        this.getClassWeights(selectedClass.id)
+        this.setState({
+          selectedClass: selectedClass,
+          showWeightsField: true
+        })
       })
-      this.clearForm()
-    } else {
-      console.error('This assignment needs a name!')
     }
   }
 
@@ -174,43 +247,82 @@ class AddAssignment extends Component {
     this.setState({ newAssignment: newAssignment, showDatePicker: false })
   }
 
-  clearForm () {
+  resetFormState () {
     this.setState({
-      givenDate: null,
-      showNameField: false,
-      showDateField: false,
-      showAddButton: false,
-      showClassField: false,
-      showWeightsField: false,
-      showDatePicker: false,
-      showShareField: false,
-      selectedClass: null,
+      // student info stuff
+      newAssignment: {
+        due: this.props.assignmentParams.due,
+        name: null,
+        weight_id: null,
+        class: this.props.assignmentParams.class,
+        created_on: 'web',
+        share: true
+      },
+      selectedClass: {},
       selectedStudentClass: null,
-      notWeighted: false
+
+      // visibility stuff
+      showClassField: true,
+      showWeightsField: false,
+      showNameField: false,
+      showAddButton: false,
+      showSaveButton: true,
+      showDateField: false,
+      showDatePicker: false,
+      hideAddAssignmentForm: true,
+      notWeighted: false,
+      showShareField: false
     })
   }
 
   renderClassSelection = () => {
     const classes = this.state.classes
+    let givenClass = null
+    if (this.props.assignmentParams.class) {
+      givenClass = this.props.assignmentParams.class
+    } else {
+      givenClass = false
+    }
     return (
       <select
+        className="add-assignment-class-select"
         onChange={this.selectClassHandler}
         style={
           this.state.selectedStudentClass
             ? { color: this.state.selectedStudentClass.getColor() }
-            : null
-        }
+            : { color: '#57B9E4' }}
+        defaultValue={this.props.assignmentParams.class}
       >
-        <option value="null">Select a Class</option>
+        {givenClass
+          ? <option
+            value={givenClass.id}
+            style={{color: givenClass.getColor}}
+          >
+            {givenClass.name}
+          </option>
+          : <option value={null}>
+            Select a Class
+          </option>
+        }
         {classes.map(studentClass => {
           return (
-            <option
-              style={{ color: studentClass.getColor }}
-              value={studentClass.id}
-              key={studentClass.id}
-            >
-              {studentClass.name}
-            </option>
+            (givenClass)
+              ? (studentClass.id === givenClass.id)
+                ? null
+                : <option
+                  style={{color: studentClass.getColor}}
+                  value={studentClass.id}
+                  key={studentClass.id}
+                >
+                  {studentClass.name}
+                </option>
+              : <option
+                style={{color: studentClass.getColor}}
+                value={studentClass.id}
+                key={studentClass.id}
+              >
+                {studentClass.name}
+              </option>
           )
         })}
       </select>
@@ -288,10 +400,11 @@ class AddAssignment extends Component {
             className="add-assignment-back-button"
             onClick={() => {
               this.setState({hideAddAssignmentForm: true})
-              this.clearForm()
+              this.resetFormState()
             }}
           >
-            <span>👈</span> Go back
+            <span>👈 </span>
+            Go back ({Object.keys(this.state.newAssignments).length.toString()} assignment{Object.keys(this.state.newAssignments).length > 1 ? 's' : ''} unsaved)
           </p>
           : null
         }
@@ -301,7 +414,7 @@ class AddAssignment extends Component {
             {this.renderClassSelection()}
           </div>
         ) : null}
-        {this.state.showWeightsField ? (
+        {(this.state.showWeightsField === true || this.props.assignmentParams.class) ? (
           <div className="add-assignment-form-row">
             <p>Weight</p>
             {this.renderWeightSelection()}
@@ -421,16 +534,13 @@ class AddAssignment extends Component {
         {this.state.showSaveButton ? (
           <div
             className="add-assignment-save-row"
-            style={Object.keys(this.state.newAssignments).length >= 4 ? {boxShadow: '0 -4px 12px rgba(0,0,0,.05)'} : null}
+            style={Object.keys(this.state.newAssignments).length >= 4 ? {boxShadow: '0 -4px 12px rgba(0,0,0,.05)', paddingBottom: '8px'} : null}
           >
             {this.renderSaveAssignmentButton()}
             <div className="add-assignment-add-another-button">
               <p
                 onClick={ () =>
-                  this.setState({
-                    showClassField: true,
-                    hideAddAssignmentForm: false
-                  })
+                  this.addAnotherAssignmentButtonHandler()
                 }
               >
                 Add another assignment
