@@ -12,10 +12,9 @@ class StudentAssignmentsStore {
     this.assignments = assignments
   }
 
-  @computed get getAssignments () {
+  @computed get getFormattedAssignments () {
     let assignmentsObj = {}
     try {
-      console.log('running getassignments from store')
       this.assignments.map((item) => {
         assignmentsObj[item.id] = item
       })

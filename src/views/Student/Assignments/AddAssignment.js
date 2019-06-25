@@ -232,6 +232,7 @@ class AddAssignment extends Component {
     let successMessage = 'Created ' + Object.keys(this.state.newAssignments).length.toString() + ' new assignment' + ((Object.keys(this.state.newAssignments).length > 1) ? 's' : '') + '.'
     showSnackbar(successMessage, 'success')
     this.props.closeModal()
+    actions.assignments.getAllStudentAssignments()
   }
 
   getDateSelection = selectedDate => {

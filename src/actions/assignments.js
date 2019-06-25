@@ -126,6 +126,17 @@ export function deleteAssignment (form) {
     })
 }
 
+// TODO: get the params for deleting a student assignment
+// /*
+// * Delete a student's assignment
+// */
+// export function deleteStudentAssignment (form) {
+//   return del(`/api/v1/class/assignments/${form.id}`, 'Error deleting assignment. Try again.')
+//     .catch(error => {
+//       return Promise.reject(error)
+//     })
+// }
+
 /*
 * Delete an assignment post
 */

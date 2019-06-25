@@ -18,7 +18,7 @@ class Calendar extends React.Component {
     let thisWeek = new Date(moment().startOf('week'))
 
     let assignments = {}
-    if (this.props.rootStore.studentAssignmentsStore.getAssignments) {
+    if (this.props.rootStore.studentAssignmentsStore.getFormattedAssignments) {
       this.props.rootStore.studentAssignmentsStore.assignments.map((assignment) => {
         assignments[assignment.id] = assignment
       })
@@ -33,8 +33,6 @@ class Calendar extends React.Component {
       classColors: {},
       isWeek: this.checkForMobile() // force calendar into week mode if viewed from mobile device
     }
-
-    console.log('this.state.assignments: ', this.state.assignments)
 
     this.getAssignments()
   }
@@ -87,14 +85,15 @@ class Calendar extends React.Component {
       })
     } else {
       this.setState({
-        thisMonth: new Date(thisMonth.add(1, 'M'))
+        thisMonth: new Date(thisMonth.add(1, 'M')),
+        thisWeek: new Date(moment(thisMonth.startOf('month').startOf('week')))
       })
     }
   }
 
   prevMonth () {
-    const thisMonth = moment(this.state.thisMonth)
-    const thisWeek = moment(this.state.thisWeek)
+    let thisMonth = moment(this.state.thisMonth)
+    let thisWeek = moment(this.state.thisWeek)
 
     if (this.state.isWeek) {
       this.setState({
@@ -103,7 +102,8 @@ class Calendar extends React.Component {
       })
     } else {
       this.setState({
-        thisMonth: new Date(thisMonth.subtract(1, 'M'))
+        thisMonth: new Date(thisMonth.subtract(1, 'M')),
+        thisWeek: new Date(moment(thisMonth.startOf('month').startOf('week')))
       })
     }
   }
@@ -192,8 +192,9 @@ class Calendar extends React.Component {
           thisWeek={this.state.thisWeek}
           thisMonth={this.state.thisMonth}
           classColors={this.state.classColors}
-          assignments={this.props.rootStore.studentAssignmentsStore.getAssignments}
+          assignments={this.props.rootStore.studentAssignmentsStore.getFormattedAssignments}
         />
+        {console.log(this.props.rootStore.studentAssignmentsStore.assignments)}
       </div>
     )
   }
