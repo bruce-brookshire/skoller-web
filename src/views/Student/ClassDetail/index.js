@@ -16,6 +16,7 @@ import AddAssignment from '../Assignments/AddAssignment'
 class ClassDetail extends React.Component {
   constructor (props) {
     super(props)
+
     this.state = {
       loading: false,
       cl: {},
@@ -31,20 +32,6 @@ class ClassDetail extends React.Component {
   componentWillMount () {
     this.getClass()
     this.getClassAssignmentsForStudent(this.props.params)
-  }
-
-  componentWillUnmount () {
-    let {navbarStore} = this.props.rootStore
-    navbarStore.title = ''
-  }
-
-  getClassAssignmentsForStudent (cl) {
-    let {classId} = cl
-    let {userStore} = this.props.rootStore
-    const { user: { student } } = userStore
-    actions.studentClasses.getStudentClassAssignments(classId, student).then(assignments => {
-      this.setState({assignments: assignments})
-    })
   }
 
   getClass () {
@@ -66,6 +53,20 @@ class ClassDetail extends React.Component {
       newClass.grade = c.grade
       this.setState({ cl: newClass, studentClass: c, loading: false })
     }).catch(() => this.setState({ loading: false }))
+  }
+
+  getClassAssignmentsForStudent (cl) {
+    let {classId} = cl
+    let {userStore} = this.props.rootStore
+    const { user: { student } } = userStore
+    actions.studentClasses.getStudentClassAssignments(classId, student).then(assignments => {
+      this.setState({assignments: assignments})
+    })
+  }
+
+  componentWillUnmount () {
+    let {navbarStore} = this.props.rootStore
+    navbarStore.title = ''
   }
 
   /*

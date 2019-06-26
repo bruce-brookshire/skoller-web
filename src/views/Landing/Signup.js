@@ -12,11 +12,10 @@ class Signup extends React.Component {
     this.cookie = new Cookies()
   }
 
-  onSubmit (referralCode) {
-    const { userStore: { authToken } } = this.props.rootStore
-    this.cookie.remove('skollerToken', { path: '/' })
-    this.cookie.set('skollerToken', authToken, { maxAge: 86400 * 1000 * 180, path: '/' })
-    browserHistory.push({pathname: '/student/verify', state: {referralCode: referralCode}})
+  onSubmit (form) {
+    console.log(this.props.rootStore)
+    console.log(form)
+    browserHistory.push({pathname: '/onboard'})
   }
 
   render () {
@@ -25,10 +24,14 @@ class Signup extends React.Component {
         <div className='container-form-register'>
           <div id='sign-up-form'>
             <SignUpForm {...this.props}
-              header={<div>Sign up <small className='sub-header'>(it&apos;s free!)</small></div>}
+              header={
+                <div>
+                  <h1>Get started!</h1>
+                  <small>You&apos;re a few clicks away from the easiest semester of your life.</small>
+                </div>
+              }
               buttonText='Sign Up'
               onSubmit={this.onSubmit.bind(this)}
-              referralCode={true}
             />
           </div>
         </div>

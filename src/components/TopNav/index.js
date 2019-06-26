@@ -6,14 +6,22 @@ class TopNav extends React.Component {
   render () {
     return (
       <div className='cn-top-nav'>
-        <Menu {...this.props} />
+        {this.props.onboard
+          ? <div className={`onboard-top-nav-menu-item`} style={{alignItems: 'right'}}>
+            <a>
+              Log out
+            </a>
+          </div>
+          : <Menu {...this.props} />
+        }
       </div>
     )
   }
 }
 
 TopNav.propTypes = {
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  onboard: PropTypes.bool
 }
 
 export default TopNav

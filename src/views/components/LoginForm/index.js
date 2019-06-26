@@ -42,19 +42,6 @@ class LoginForm extends React.Component {
     actions.auth.verifyStudentPhoneNumber(this.state.form).then(() => {
       this.setState({showLoginVerificationModal: true})
     }).catch(() => false)
-    // if (this.props.validateForm(this.state.form, requiredFields)) {
-    //   console.log(this.state.form)
-    //   actions.auth.authenticateUser(this.state.form).then(() => {
-    //     this.props.resetValidation()
-
-    //     const { userStore: { authToken } } = this.props.rootStore
-    //     this.cookie.remove('skollerToken', { path: '/' })
-    //     this.cookie.set('skollerToken', authToken, { maxAge: 86400 * 7, path: '/' })
-    //     if (this.props.onSubmit) {
-    //       this.props.onSubmit()
-    //     }
-    //   }).catch(() => false)
-    // }
   }
 
   render () {

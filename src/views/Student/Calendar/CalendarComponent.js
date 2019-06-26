@@ -24,17 +24,31 @@ class Calendar extends React.Component {
       })
     }
 
-    this.getClassColors()
+    let classColors
+    if (this.props.onboardData) {
+      classColors = {
+        '1': '#DD4A63',
+        '2': '#4CD8BD',
+        '3': '#57B9E4',
+        '4': '#4CCC58',
+        '5': '#FFAE42'
+      }
+    } else {
+      classColors = {}
+    }
 
     this.state = {
       loading: false,
       thisMonth: thisMonth,
       thisWeek: thisWeek,
-      classColors: {},
+      classColors: classColors,
       isWeek: this.checkForMobile() // force calendar into week mode if viewed from mobile device
     }
 
-    this.getAssignments()
+    if (!this.props.onboardData) {
+      this.getClassColors()
+      this.getAssignments()
+    }
   }
 
   async getAssignments () {
@@ -122,6 +136,13 @@ class Calendar extends React.Component {
   render () {
     let isCurrentYear = true
 
+    let assignments = null
+    if (this.props.onboardData) {
+      assignments = this.props.onboardData
+    } else {
+      assignments = this.props.rootStore.studentAssignmentsStore.getFormattedAssignments
+    }
+
     if (moment().year() !== moment(this.state.thisMonth).year()) {
       isCurrentYear = false
     }
@@ -192,16 +213,17 @@ class Calendar extends React.Component {
           thisWeek={this.state.thisWeek}
           thisMonth={this.state.thisMonth}
           classColors={this.state.classColors}
-          assignments={this.props.rootStore.studentAssignmentsStore.getFormattedAssignments}
+          assignments={assignments}
         />
-        {console.log(this.props.rootStore.studentAssignmentsStore.assignments)}
+        {console.log(this.props.rootStore.studentAssignmentsStore.getFormattedAssignments)}
       </div>
     )
   }
 }
 
 Calendar.propTypes = {
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  onboardData: PropTypes.object
 }
 
 export default Calendar

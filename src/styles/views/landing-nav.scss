@@ -77,14 +77,16 @@
     }
 
     .form-control {
-      margin: 0 0 .5rem 0;
-
-      @include breakpoint(medium) {
-        margin: 0 .5rem;
-      }
+      @include remove-form-styling;
+      height: 32px;
+      margin: 0 8px 0 0;
+      box-sizing: border-box;
+      border: 1px solid $cn-form-border;
+      border-radius: 3px;
 
       input {
-        margin-top: 0;
+        margin: 6px 0 0 0;
+        padding: 4px;
       }
     }
 

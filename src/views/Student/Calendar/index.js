@@ -23,7 +23,7 @@ class Calendar extends React.Component {
           <meta name="google" value="notranslate" />
         </Helmet>
         <div className="calendar-container">
-          <CalendarComponent />
+          <CalendarComponent onboardData={this.props.onboardData} />
         </div>
       </StudentLayout>
     )
@@ -32,7 +32,8 @@ class Calendar extends React.Component {
 
 Calendar.propTypes = {
   location: PropTypes.object,
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  onboardData: PropTypes.object
 }
 
 export default Calendar

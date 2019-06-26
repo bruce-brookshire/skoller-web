@@ -16,6 +16,7 @@ import OurTeam from './views/OurTeam'
 import PitchDeck from './views/PitchDeck'
 import ResetPassword from './views/ResetPassword'
 
+import Onboard from './views/Student/Onboard'
 import Home from './views/Student/Home'
 import Calendar from './views/Student/Calendar'
 import MyClasses from './views/Student/MyClasses'
@@ -70,6 +71,7 @@ const router = (
       <Route path='/c/:customLink' component={StudentLink} />
       <Route path='/download' component={DownloadApp} />
       <Route path='/pitch-deck' component={PitchDeck} />
+      <Route path='/onboard/:step' component={Onboard} />
       <Route path='/app' component={Layout} onEnter={requireAuth}>
         <IndexRedirect to='/student/home' />
         <Route path='/student'>

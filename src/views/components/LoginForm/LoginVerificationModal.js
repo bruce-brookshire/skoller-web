@@ -50,7 +50,6 @@ class Verification extends React.Component {
   * Sumbit the verification code for authorization.
   */
   onSubmit () {
-    console.log(this.getForm())
     actions.auth.loginStudentWithPhone(this.getForm().phone, this.getForm().verification_code).then((response) => {
       browserHistory.push('/student')
       const { userStore: { authToken } } = this.props.rootStore

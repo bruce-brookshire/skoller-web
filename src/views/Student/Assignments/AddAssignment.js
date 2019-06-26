@@ -226,13 +226,16 @@ class AddAssignment extends Component {
         created_on: 'web'
       }
 
-      actions.assignments.createStudentAssignment(this.state.studentId, assignment.class.id, assignmentToSubmit).then(actions.assignments.getAllStudentAssignments(this.state.studentId))
+      actions.assignments.createStudentAssignment(this.state.studentId, assignment.class.id, assignmentToSubmit)
+        .then(() => {
+          actions.assignments.getAllStudentAssignments(this.state.studentId)
+          let formattedAssignments = this.props.rootStore.studentAssignmentsStore.getFormattedAssignments
+        })
       //  TODO if (needLock === true) do stuff here to unlock
     })
     let successMessage = 'Created ' + Object.keys(this.state.newAssignments).length.toString() + ' new assignment' + ((Object.keys(this.state.newAssignments).length > 1) ? 's' : '') + '.'
     showSnackbar(successMessage, 'success')
     this.props.closeModal()
-    actions.assignments.getAllStudentAssignments()
   }
 
   getDateSelection = selectedDate => {

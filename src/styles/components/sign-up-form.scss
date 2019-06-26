@@ -14,14 +14,17 @@
   }
 }
 
-.cn-sign-up-form {
-  #cn-sign-up-form-header{
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
+#cn-sign-up-form-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
 
-    #cn-referral-code {
-      width: 150px;
-    }
+  h1 {
+    margin: 0 0 0 0;
+  }
+
+  small {
+    font-size: 13px;
+    color: $cn-color-grey;
   }
 }
