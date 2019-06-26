@@ -1,8 +1,8 @@
 import {createAssignment, createStudentAssignment, createAssignmentByClassId, deleteAssignment, deleteAssignmentPost, getAllStudentAssignments, getClassAssignments, updateAssignment, getTaskAssignments, gradeAssignment, removeGradeFromAssignment} from './assignments'
 import {getAnalytics} from './analytics'
-import {authenticateUser, forgotPassword, getRoles,
+import {authenticateUser, loginStudentWithPhone, forgotPassword, getRoles,
   getUserById, getUserByToken, getUsers, registerUser, registerUserAdmin, resetPassword,
-  resendVerification, updateAccount, verifyPhoneNumber} from './auth'
+  resendVerification, updateAccount, verifyPhoneNumber, verifyStudentPhoneNumber} from './auth'
 import {deleteClassPost, getClassPosts, deleteClassComment, deleteClassReply} from './chat'
 import {createClass, dropClass, getClassById, getStudentClass, getClassByIdAdmin, getClassByLink, getStudentClassesById,
   enrollByLink, enrollInClass, searchClasses, searchStudentClasses, updateClass, lockClass, lockClassWeight,
@@ -55,6 +55,7 @@ const actions = {
   },
   auth: {
     authenticateUser,
+    loginStudentWithPhone,
     getRoles,
     getUserById,
     getUserByToken,
@@ -65,6 +66,7 @@ const actions = {
     resetPassword,
     resendVerification,
     verifyPhoneNumber,
+    verifyStudentPhoneNumber,
     updateAccount
   },
   chat: {

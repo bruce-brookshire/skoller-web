@@ -29,6 +29,45 @@ export function authenticateUser (form) {
 }
 
 /*
+* Authenticate login credentials. Set the user.
+*
+* @params [Object] form. Login form data.
+*/
+export function loginStudentWithPhone (phone, verificationCode) {
+  userStore.loading = true
+  const form = {
+    phone: phone,
+    verification_code: verificationCode
+  }
+
+  return post(`/api/v1/students/login`, form)
+    .then(data => {
+      userStore.authToken = `Bearer ${data.token}`
+      userStore.user = data.user
+      userStore.loading = false
+    })
+    .catch(error => {
+      userStore.loading = false
+      if (error.status !== 401 && error.status !== 404) {
+        showSnackbar('Error logging in. Try again.')
+      } else {
+        showSnackbar('Incorrect verification code.')
+      }
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Verify student phone number
+*/
+export function verifyStudentPhoneNumber (phone) {
+  return post(`/api/v1/students/login`, phone, 'Error logging in. Please try again.')
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
 *  Full sign up. Set the user.
 *
 * @params [Object] form. Sign up form data.
