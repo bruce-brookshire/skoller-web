@@ -7,15 +7,18 @@ import Calendar from '../../Student/Calendar'
 import PropTypes from 'prop-types'
 import { inject, observer } from 'mobx-react'
 import moment from 'moment'
+import LoginVerificationModal from '../../components/LoginForm/LoginVerificationModal'
+import {Cookies} from 'react-cookie'
+import actions from '../../../actions'
+import {browserHistory} from 'react-router'
 
 @inject('rootStore') @observer
 class OnboardLayout extends React.Component {
   render () {
     return (
       <div>
-        {/* <NavBar /> */}
-        <NavBar onboard={true} name='Test Name' initials='TN'/>
-        <TopNav onboard={true} />
+        <NavBar />
+        <TopNav />
         <div className='layout'>
           {this.props.children}
         </div>
@@ -25,7 +28,8 @@ class OnboardLayout extends React.Component {
 }
 
 OnboardLayout.propTypes = {
-  children: PropTypes.object
+  children: PropTypes.object,
+  rootStore: PropTypes.object
 }
 
 @inject('rootStore') @observer
@@ -35,10 +39,17 @@ class Onboard extends React.Component {
 
     this.state = {
       step: this.props.params.step,
-      calendarData: this.generateCalendarData()
+      calendarData: this.generateCalendarData(),
+      loading: true
     }
 
+    this.cookie = new Cookies()
+
     this.props.rootStore.studentNavStore.setActivePage('calendar')
+  }
+
+  componentDidMount () {
+    this.loginStudent()
   }
 
   randomDate (start, end) {
@@ -58,26 +69,65 @@ class Onboard extends React.Component {
     return onboardData
   }
 
+  onVerificationSubmit = () => {
+    console.log('onVerificationSubmit: setting state')
+    this.setState({step: 'select-school'})
+  }
+
+  loginStudent () {
+    console.log('logging in')
+    if (this.cookie.get('skollerToken')) {
+      console.log('there is a cookie')
+      actions.auth.getUserByToken(this.cookie.get('skollerToken')).then(() => {
+        console.log('getting user by token and setting loading false')
+        this.setState({loading: false})
+      }).catch((r) => console.log(r))
+    } else {
+      console.log('no cook, setting loading false')
+      this.setState({loading: false})
+      // browserHistory.push('/landing')
+    }
+  }
+
+  renderVerify () {
+    return (
+      <LoginVerificationModal phone={this.props.rootStore.userStore.user.student.phone} closeModal={null} onSubmit={this.onVerificationSubmit}/>
+    )
+  }
+
+  renderSelectSchool () {
+    return (
+      <SkModal>
+        <div className='onboard-select-school'>
+          <h1>Meet Sammi 👋</h1>
+          <div className="onboard-select-school-sammi-container">
+            <div className="sammi-message"><p>I found your school!</p></div>
+            <img src='/src/assets/images/sammi/Smile@3x.png' />
+          </div>
+        </div>
+      </SkModal>
+    )
+  }
+
   render () {
     return (
-      <OnboardLayout>
-        <SkModal>
-          <div className='onboard-container'>
+      (this.state.loading)
+        ? null
+        : <div className='onboard-container'>
+          <NavBar />
+          <TopNav />
+          <div className='layout'>
             {this.state.step === 'verify'
-              ? <div>
-                <h1>verify</h1>
-                <div onClick={() => this.setState({step: 'find school'})}>
-                  next
-                </div>
-              </div>
-              : <div onClick={() => this.setState({step: 'verify'})}>
-                <h1>{this.state.step}</h1>
-              </div>
+              ? this.renderVerify()
+              : null
             }
+            {this.state.step === 'select-school'
+              ? this.renderSelectSchool()
+              : null
+            }
+            <Calendar onboardData={this.state.calendarData} />
           </div>
-        </SkModal>
-        <Calendar onboardData={this.state.calendarData} />
-      </OnboardLayout>
+        </div>
     )
   }
 }

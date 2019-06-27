@@ -49,13 +49,23 @@ class Verification extends React.Component {
   /*
   * Sumbit the verification code for authorization.
   */
-  onSubmit () {
+  onSubmit = () => {
+    console.log('running loginverificationmodal onSubmit')
     actions.auth.loginStudentWithPhone(this.getForm().phone, this.getForm().verification_code).then((response) => {
-      browserHistory.push('/student')
       const { userStore: { authToken } } = this.props.rootStore
       this.cookie.remove('skollerToken', { path: '/' })
       this.cookie.set('skollerToken', authToken, { maxAge: 86400 * 7, path: '/' })
-    }).catch(() => false)
+      if (this.props.rootStore.userStore.user.student.primary_school) {
+        console.log('inside this.props.rootStore.userStore.student.primary_school')
+        browserHistory.push('/student')
+      } else if (this.props.onSubmit) {
+        console.log('running this.props.onSubmit')
+        this.props.onSubmit()
+      } else {
+        console.log('inside browserHistory.push select school')
+        browserHistory.push('/onboard/select-school')
+      }
+    }).catch((r) => console.log('error town', r))
   }
 
   /*
@@ -84,7 +94,7 @@ class Verification extends React.Component {
               </div>
               <button
                 className={`sk-verification-button ${disableClass}`}
-                onClick={this.onSubmit.bind(this)}
+                onClick={() => this.onSubmit()}
                 disabled={disableButton}
               >Continue</button>
             </div>
@@ -98,7 +108,8 @@ class Verification extends React.Component {
 Verification.propTypes = {
   rootStore: PropTypes.object,
   phone: PropTypes.string,
-  closeModal: PropTypes.func
+  closeModal: PropTypes.func,
+  onSubmit: PropTypes.func
 }
 
 export default Verification

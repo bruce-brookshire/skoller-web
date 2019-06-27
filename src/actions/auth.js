@@ -78,8 +78,9 @@ export function registerUser (form) {
   return post(`/api/v1/users`, form, '')
     .then(data => {
       userStore.authToken = `Bearer ${data.token}`
-      userStore.user = data.user
+      userStore.user = data
       userStore.loading = false
+      console.log(userStore)
     })
     .catch(error => {
       userStore.loading = false
@@ -132,15 +133,29 @@ export function registerUserAdmin (form) {
 /*
 * Fetch user to set state.
 */
-export function getUserByToken () {
-  return post(`/api/v1/users/token-login`, null, '')
-    .then(data => {
-      userStore.user = data.user
-      return data
-    })
-    .catch(error => {
-      return Promise.reject(error)
-    })
+export function getUserByToken (token) {
+  console.log('running getUserByToken')
+  console.log(token)
+  if (token) {
+    return post(`/api/v1/users/token-login`, '', '', token)
+      .then(data => {
+        console.log(data)
+        userStore.user = data.user
+        return data
+      })
+      .catch(error => {
+        return Promise.reject(error)
+      })
+  } else {
+    return post(`/api/v1/users/token-login`, '')
+      .then(data => {
+        userStore.user = data.user
+        return data
+      })
+      .catch(error => {
+        return Promise.reject(error)
+      })
+  }
 }
 
 /*

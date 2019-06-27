@@ -57,47 +57,28 @@ class NavBar extends React.Component {
 
   render () {
     const {userStore: {user}, navbarStore: {title}} = this.props.rootStore
-    if (this.props.onboard) {
-      return (
-        <div className='cn-navbar'>
-          <div>
-            <img alt="Skoller" className='logo' src='/src/assets/images/logo-wide-blue@1x.png' />
+    return (
+      <div className='cn-navbar'>
+        <div>
+          <img alt="Skoller" className='logo' src='/src/assets/images/logo-wide-blue@1x.png' />
+        </div>
+        <div className='class-info'>
+          {title && <h2>{title}</h2>}
+          {this.renderClassInfo()}
+        </div>
+        <div className='user-info'>
+          <div className='left'>
+            <p>{this.getName()}</p>
+            <span>{this.getDescription()}</span>
           </div>
-          <div className='user-info'>
-            <div className='left'>
-              <p>{this.props.name}</p>
-              <span>Student</span>
-            </div>
-            <div className='right'>
-              <div className='profile-img vertical-align profile-initials'>{this.props.initials}</div>
-            </div>
+          <div className='right'>
+            {user.avatar
+              ? <img className='profile-img' src={user.avatar}/>
+              : <div className='profile-img vertical-align profile-initials'>{this.getInitials()}</div>}
           </div>
         </div>
-      )
-    } else {
-      return (
-        <div className='cn-navbar'>
-          <div>
-            <img alt="Skoller" className='logo' src='/src/assets/images/logo-wide-blue@1x.png' />
-          </div>
-          <div className='class-info'>
-            {title && <h2>{title}</h2>}
-            {this.renderClassInfo()}
-          </div>
-          <div className='user-info'>
-            <div className='left'>
-              <p>{this.getName()}</p>
-              <span>{this.getDescription()}</span>
-            </div>
-            <div className='right'>
-              {user.avatar
-                ? <img className='profile-img' src={user.avatar}/>
-                : <div className='profile-img vertical-align profile-initials'>{this.getInitials()}</div>}
-            </div>
-          </div>
-        </div>
-      )
-    }
+      </div>
+    )
   }
 }
 

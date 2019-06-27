@@ -58,10 +58,6 @@ class SignUpForm extends React.Component {
   onSubmit () {
     const form = this.mapForm()
     if (this.props.validateForm(form, requiredFields)) {
-      // actions.auth.registerUser(form).then(() => {
-      //   this.props.resetValidation()
-      //   this.props.onSubmit(form.student.custom_link)
-      // }).catch(() => false)
       this.props.onSubmit(form)
     }
   }

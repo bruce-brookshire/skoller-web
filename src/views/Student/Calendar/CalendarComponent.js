@@ -215,7 +215,6 @@ class Calendar extends React.Component {
           classColors={this.state.classColors}
           assignments={assignments}
         />
-        {console.log(this.props.rootStore.studentAssignmentsStore.getFormattedAssignments)}
       </div>
     )
   }
