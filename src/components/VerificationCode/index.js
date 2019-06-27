@@ -68,7 +68,7 @@ class VerificationCode extends React.Component {
 
   render () {
     return (
-      <div className='cn-verification-code-container'>
+      <div className='cn-verification-code'>
         {this.renderInputs()}
       </div>
     )
@@ -95,6 +95,7 @@ class VerifitcationInput extends React.Component {
 
     return (
       <input
+        size='1'
         ref={(component) => { this.input = component }}
         key={`input-${index}`}
         className={classes.join(' ')}

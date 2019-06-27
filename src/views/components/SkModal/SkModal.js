@@ -11,9 +11,12 @@ class SkModal extends React.Component {
       <div className="sk-modal-wrapper">
         <div className="sk-modal-container">
           <div className="sk-modal">
-            <div className="sk-modal-exit" onClick={() => this.props.closeModal()}>
-              <Exit width="18" height="18" fill="$cn-color-blue"/>
-            </div>
+            {this.props.closeModal
+              ? <div className="sk-modal-exit" onClick={() => this.props.closeModal()}>
+                <Exit width="18" height="18" fill="$cn-color-blue"/>
+              </div>
+              : null
+            }
             <div className="sk-modal-header">
               <h1>{this.props.title}</h1>
             </div>
@@ -30,7 +33,7 @@ class SkModal extends React.Component {
 SkModal.propTypes = {
   title: PropTypes.string,
   children: PropTypes.node.isRequired,
-  closeModal: PropTypes.function
+  closeModal: PropTypes.func
   // use the closeModal function to close the modal from the parent component.
 }
 

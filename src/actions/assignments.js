@@ -57,6 +57,21 @@ export function createAssignmentByClassId (classId, form) {
 }
 
 /*
+* Create a new assignment by Class ID
+*
+* @params [Object] form. Assignment form.
+*/
+export function createStudentAssignment (studentId, classId, form) {
+  return post(`/api/v1/students/${studentId}/classes/${classId}/assignments`, form, 'Error creating assignment. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
 * Add a grade to an assignment
 *
 * @params [Object] grade. Assignment grade.
@@ -110,6 +125,17 @@ export function deleteAssignment (form) {
       return Promise.reject(error)
     })
 }
+
+// TODO: get the params for deleting a student assignment
+// /*
+// * Delete a student's assignment
+// */
+// export function deleteStudentAssignment (form) {
+//   return del(`/api/v1/class/assignments/${form.id}`, 'Error deleting assignment. Try again.')
+//     .catch(error => {
+//       return Promise.reject(error)
+//     })
+// }
 
 /*
 * Delete an assignment post

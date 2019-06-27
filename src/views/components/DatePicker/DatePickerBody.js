@@ -29,7 +29,7 @@ DatePickerBody.propTypes = {
   days: PropTypes.object,
   currentMonth: PropTypes.object,
   selectedDay: PropTypes.object,
-  changeSelectedDay: PropTypes.function
+  changeSelectedDay: PropTypes.func
 }
 
 export default DatePickerBody

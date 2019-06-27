@@ -1,8 +1,9 @@
 import React from 'react'
-import { observer, inject, propTypes } from 'mobx-react'
+import { observer, inject } from 'mobx-react'
 import StudentLayout from '../../components/StudentLayout'
 import CalendarComponent from './CalendarComponent'
 import Helmet from 'react-helmet'
+import PropTypes from 'prop-types'
 
 @inject('rootStore')
 @observer
@@ -22,7 +23,7 @@ class Calendar extends React.Component {
           <meta name="google" value="notranslate" />
         </Helmet>
         <div className="calendar-container">
-          <CalendarComponent />
+          <CalendarComponent onboardData={this.props.onboardData} />
         </div>
       </StudentLayout>
     )
@@ -30,8 +31,9 @@ class Calendar extends React.Component {
 }
 
 Calendar.propTypes = {
-  location: propTypes.object,
-  rootStore: propTypes.object
+  location: PropTypes.object,
+  rootStore: PropTypes.object,
+  onboardData: PropTypes.object
 }
 
 export default Calendar

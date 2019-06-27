@@ -10,15 +10,19 @@ import ClassInviteLink from './ClassInviteLink'
 import DeleteDialog from '../../../components/Grid/DeleteDialog'
 import AssignmentList from '../../components/AssignmentList'
 import StudentLayout from '../../components/StudentLayout'
+import AddAssignment from '../Assignments/AddAssignment'
 
 @inject('rootStore') @observer
 class ClassDetail extends React.Component {
   constructor (props) {
     super(props)
+
     this.state = {
       loading: false,
       cl: {},
-      assignments: []
+      assignments: [],
+      showAddAssignmentModal: false,
+      studentClass: {}
     }
 
     this.props.rootStore.studentNavStore.setActivePage('classes')
@@ -30,26 +34,11 @@ class ClassDetail extends React.Component {
     this.getClassAssignmentsForStudent(this.props.params)
   }
 
-  componentWillUnmount () {
-    let {navbarStore} = this.props.rootStore
-    navbarStore.title = ''
-  }
-
-  getClassAssignmentsForStudent (cl) {
-    let {classId} = cl
-    let {userStore} = this.props.rootStore
-    const { user: { student } } = userStore
-    actions.studentClasses.getStudentClassAssignments(classId, student).then(assignments => {
-      this.setState({assignments: assignments})
-    })
-  }
-
   getClass () {
     const {classId} = this.props.params
     let {navbarStore} = this.props.rootStore
     this.setState({loading: true})
     actions.classes.getClassById(classId).then(cl => {
-      console.log(cl)
       this.getClassColor(cl)
       navbarStore.title = cl.name
     }).catch(() => this.setState({loading: false}))
@@ -62,9 +51,22 @@ class ClassDetail extends React.Component {
       const newClass = {...cl}
       newClass.color = c.color
       newClass.grade = c.grade
-      console.log(newClass)
-      this.setState({ cl: newClass, loading: false })
+      this.setState({ cl: newClass, studentClass: c, loading: false })
     }).catch(() => this.setState({ loading: false }))
+  }
+
+  getClassAssignmentsForStudent (cl) {
+    let {classId} = cl
+    let {userStore} = this.props.rootStore
+    const { user: { student } } = userStore
+    actions.studentClasses.getStudentClassAssignments(classId, student).then(assignments => {
+      this.setState({assignments: assignments})
+    })
+  }
+
+  componentWillUnmount () {
+    let {navbarStore} = this.props.rootStore
+    navbarStore.title = ''
   }
 
   /*
@@ -172,11 +174,21 @@ class ClassDetail extends React.Component {
     )
   }
 
+  closeModal = () => {
+    this.setState({showAddAssignmentModal: false})
+  }
+
   renderAddAssignmentButton () {
     return (
-      <a className='add-assignment-button' onClick={() => browserHistory.push('student/classes')}>
-        + Add Assignment
-      </a>
+      <div>
+        <a className='add-assignment-button' onClick={() => this.setState({showAddAssignmentModal: true})}>
+          + Add Assignment
+        </a>
+        { this.state.showAddAssignmentModal
+          ? <AddAssignment closeModal={this.closeModal} assignmentParams={{class: this.state.studentClass}}/>
+          : null
+        }
+      </div>
     )
   }
 

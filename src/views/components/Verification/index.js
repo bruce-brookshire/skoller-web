@@ -51,7 +51,7 @@ class Verification extends React.Component {
       if (this.props.onSubmit) {
         this.props.onSubmit()
       } else {
-        browserHistory.push('/student/find-classes')
+        browserHistory.push('/student')
       }
     }).catch(() => false)
   }

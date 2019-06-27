@@ -32,13 +32,32 @@
       
       h1 {
         text-align: center;
+        padding: 4px 0;
         margin: 9px 0 0 0; // accounts for text space under baseline
+        // transform: translateY(2px);
+
+        @media only screen and (max-width: 900px) {
+          text-align: left;
+          margin: 0 0 10px 24px;
+          transform: translateY(6px);
+          font-size: 24px;
+          max-width: calc(100% - 140px);
+        }
+
+        @media only screen and (max-width: 740px) {
+          text-align: left;
+          margin: 0 0 10px 24px;
+          transform: translateY(4px);
+          font-size: 20px;
+          max-width: calc(100% - 160px);
+        }
 
         @media only screen and (max-width: $sk-mobile-break-point) {
           font-size: 18px;
           text-align: left;
           margin: 0 0 10px 24px;
           padding: 16px 0 0 0;
+          transform: translateY(-2px);
         }
       }
 
@@ -74,7 +93,7 @@
           }
 
           .calendar-agenda {
-            margin: -2px 1rem 0 0;
+            margin: -5px 1rem 0 0;
             color: white;
             border-radius: 3px;
 
@@ -238,7 +257,7 @@
             border-radius: 7px;
             padding: 4px;
             margin: 4px 4px 0px 4px;
-            height: calc((100vh - 300px) / 2);
+            height: calc((100vh - 350px) / 2);
             min-height: 56px;
             max-height: 364px;
             overflow-y: scroll;

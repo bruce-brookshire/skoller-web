@@ -2,7 +2,7 @@
   flex: 0 0 200px;
   min-width: 200px;
   height: calc(100vh - 64px - 32px);
-  z-index: 1000;
+  z-index: 4;
 
   @media only screen and (max-width: $sk-mobile-break-point) {
     flex: 0 0 $sk-mobile-nav-height;

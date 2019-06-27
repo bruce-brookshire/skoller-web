@@ -11,9 +11,6 @@ const requiredFields = {
   'email': {
     type: 'email'
   },
-  'password': {
-    type: 'required'
-  },
   'student.name_first': {
     type: 'required'
   },
@@ -42,7 +39,6 @@ class SignUpForm extends React.Component {
 
     return {
       email: '',
-      password: '',
       student: {
         name_first: '',
         name_last: '',
@@ -62,10 +58,7 @@ class SignUpForm extends React.Component {
   onSubmit () {
     const form = this.mapForm()
     if (this.props.validateForm(form, requiredFields)) {
-      actions.auth.registerUser(form).then(() => {
-        this.props.resetValidation()
-        this.props.onSubmit(form.student.custom_link)
-      }).catch(() => false)
+      this.props.onSubmit(form)
     }
   }
 
@@ -127,37 +120,8 @@ class SignUpForm extends React.Component {
       <div className='cn-sign-up-form'>
         <form className='form-padding'>
           <div id='cn-sign-up-form-header'>
-            {header && <h2>{header}</h2>}
-            {referralCode && this.renderReferralCode()}
+            {header && <div>{header}</div>}
           </div>
-          {/* <div className='row'>
-            <div className='col-xs-6'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.student && formErrors.student.name_first}
-                label='First name'
-                id='sign-up.student.name_first'
-                name='student.name_first'
-                autoComplete='given-name'
-                onChange={updateProperty}
-                placeholder='First name'
-                value={form.student.name_first}
-              />
-            </div>
-            <div className='col-xs-6'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.student && formErrors.student.name_last}
-                label='Last name'
-                id='sign-up.student.name_last'
-                name='student.name_last'
-                autoComplete='family-name'
-                onChange={updateProperty}
-                placeholder='Last name'
-                value={form.student.name_last}
-              />
-            </div>
-          </div> */}
           <div className='row'>
             <div className='col-xs-12'>
               <InputField
@@ -198,20 +162,6 @@ class SignUpForm extends React.Component {
                 }}
                 placeholder='Email'
                 value={form.email}
-              />
-            </div>
-            <div className='col-xs-12'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.password}
-                label='Password'
-                id='sign-up.password'
-                name='password'
-                autoComplete='new-password'
-                onChange={updateProperty}
-                placeholder='Password'
-                type='password'
-                value={form.password}
               />
             </div>
             <div className='col-xs-12'>

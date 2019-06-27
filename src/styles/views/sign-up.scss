@@ -1,6 +1,6 @@
 .container-promo-signup {
   align-items: center;
-  display: hidden;
+  display: block;
   @include breakpoint(medium) {
     display: flex;
     flex-grow: 1;
@@ -18,7 +18,7 @@
   }
 
   .container-form-register {
-    display: none;
+    display: block;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -34,10 +34,17 @@
     }
 
     #sign-up-form {
+      padding: 4px 0;
+      margin: 2rem 0;
       @include shadow-box;
       border-radius: 16px;
       min-height: 100%;
       width: 100%;
+
+      @include breakpoint(medium) {
+        padding: 0;
+        margin: 0;
+      }
 
       .cn-sign-up-form {
         margin-top: 2rem;

@@ -4,6 +4,8 @@
   max-height: 100vh;
   overflow: scroll;
   box-sizing: border-box;
+  text-align: left;
+  font-size: 14px;
 
   .add-assignment-form {
     max-height: 80vh;
@@ -63,6 +65,10 @@
         cursor: pointer;
       }
 
+      .add-assignment-class-select {
+        color: default;
+      }
+
       input {
         border: 1px solid $cn-color-blue;
         padding: 9px 5px;
@@ -104,7 +110,7 @@
           justify-content: space-between;
           align-items: center;
           border: 1px solid $cn-form-border;
-          padding: 9px 5px 6px 5px;
+          padding: 10px 5px 6px 5px;
           height: 13px;
           max-width: 100vw;
           border-radius: 5px;
@@ -188,9 +194,9 @@
       display: flex;
       flex-direction: column;
       align-content: center;
-      max-height: 200px;
+      max-height: 216px;
       overflow: scroll;
-      margin: 0 0 -16px 0;
+      margin: 0 0 -20px 0;
       padding: 12px;
 
       .add-assignment-assignment {

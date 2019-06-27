@@ -1,4 +1,4 @@
-import { extendObservable } from 'mobx'
+import { extendObservable, computed } from 'mobx'
 
 class StudentAssignmentsStore {
   constructor () {
@@ -10,6 +10,18 @@ class StudentAssignmentsStore {
 
   setAssignments (assignments) {
     this.assignments = assignments
+  }
+
+  @computed get getFormattedAssignments () {
+    let assignmentsObj = {}
+    try {
+      this.assignments.map((item) => {
+        assignmentsObj[item.id] = item
+      })
+      return assignmentsObj
+    } catch (error) {
+      return false
+    }
   }
 }
 

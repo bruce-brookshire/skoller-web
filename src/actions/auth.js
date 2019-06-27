@@ -29,6 +29,45 @@ export function authenticateUser (form) {
 }
 
 /*
+* Authenticate login credentials. Set the user.
+*
+* @params [Object] form. Login form data.
+*/
+export function loginStudentWithPhone (phone, verificationCode) {
+  userStore.loading = true
+  const form = {
+    phone: phone,
+    verification_code: verificationCode
+  }
+
+  return post(`/api/v1/students/login`, form)
+    .then(data => {
+      userStore.authToken = `Bearer ${data.token}`
+      userStore.user = data.user
+      userStore.loading = false
+    })
+    .catch(error => {
+      userStore.loading = false
+      if (error.status !== 401 && error.status !== 404) {
+        showSnackbar('Error logging in. Try again.')
+      } else {
+        showSnackbar('Incorrect verification code.')
+      }
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Verify student phone number
+*/
+export function verifyStudentPhoneNumber (phone) {
+  return post(`/api/v1/students/login`, phone, 'Error logging in. Please try again.')
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
 *  Full sign up. Set the user.
 *
 * @params [Object] form. Sign up form data.
@@ -39,8 +78,9 @@ export function registerUser (form) {
   return post(`/api/v1/users`, form, '')
     .then(data => {
       userStore.authToken = `Bearer ${data.token}`
-      userStore.user = data.user
+      userStore.user = data
       userStore.loading = false
+      console.log(userStore)
     })
     .catch(error => {
       userStore.loading = false
@@ -93,15 +133,29 @@ export function registerUserAdmin (form) {
 /*
 * Fetch user to set state.
 */
-export function getUserByToken () {
-  return post(`/api/v1/users/token-login`, null, '')
-    .then(data => {
-      userStore.user = data.user
-      return data
-    })
-    .catch(error => {
-      return Promise.reject(error)
-    })
+export function getUserByToken (token) {
+  console.log('running getUserByToken')
+  console.log(token)
+  if (token) {
+    return post(`/api/v1/users/token-login`, '', '', token)
+      .then(data => {
+        console.log(data)
+        userStore.user = data.user
+        return data
+      })
+      .catch(error => {
+        return Promise.reject(error)
+      })
+  } else {
+    return post(`/api/v1/users/token-login`, '')
+      .then(data => {
+        userStore.user = data.user
+        return data
+      })
+      .catch(error => {
+        return Promise.reject(error)
+      })
+  }
 }
 
 /*

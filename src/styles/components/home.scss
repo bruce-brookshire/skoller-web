@@ -35,6 +35,11 @@
         border-radius: $skoller-cell-border-radius $skoller-cell-border-radius 0 0;
         cursor: pointer;
       }
+
+      .home-sub-heading {
+        text-align: right;
+        margin: -24px 8px 0 0;
+      }
     
       .home-card-content {
         margin: 16px 0 0 0;
