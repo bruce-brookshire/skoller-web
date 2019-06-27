@@ -1,13 +1,21 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {CheckboxField} from '../../../../components/Form'
+import {Form, ValidateForm} from 'react-form-library'
+import {InputField, CheckboxField} from '../../../../components/Form'
+
+const pointField = {
+  pointTotal: {
+    validate: (value) => { return value && value > 0 }
+  }
+}
 
 class WeightType extends React.Component {
   constructor (props) {
     super(props)
 
     this.state = {
-      isPoints: this.props.isPoints || false
+      isPoints: this.props.isPoints || false,
+      pointTotal: this.props.isPoints ? props.pointTotal || 0 : 0
     }
   }
 
@@ -63,6 +71,7 @@ class WeightType extends React.Component {
 
 WeightType.propTypes = {
   isPoints: PropTypes.bool,
+  pointTotal: PropTypes.number,
   onSubmit: PropTypes.func
 }
 
