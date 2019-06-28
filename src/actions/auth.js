@@ -141,6 +141,7 @@ export function getUserByToken (token) {
       .then(data => {
         console.log(data)
         userStore.user = data.user
+        userStore.authToken = token
         return data
       })
       .catch(error => {

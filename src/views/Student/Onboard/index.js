@@ -10,7 +10,11 @@ import moment from 'moment'
 import LoginVerificationModal from '../../components/LoginForm/LoginVerificationModal'
 import {Cookies} from 'react-cookie'
 import actions from '../../../actions'
-import {browserHistory} from 'react-router'
+// import SkProgressBar from '../../components/SkProgressBar'
+import SelectSchool from './SelectSchool'
+import FindAClass from './FindAClass'
+import FirstClass from './FirstClass'
+// import {browserHistory} from 'react-router'
 
 @inject('rootStore') @observer
 class OnboardLayout extends React.Component {
@@ -70,22 +74,16 @@ class Onboard extends React.Component {
   }
 
   onVerificationSubmit = () => {
-    console.log('onVerificationSubmit: setting state')
     this.setState({step: 'select-school'})
   }
 
   loginStudent () {
-    console.log('logging in')
     if (this.cookie.get('skollerToken')) {
-      console.log('there is a cookie')
       actions.auth.getUserByToken(this.cookie.get('skollerToken')).then(() => {
-        console.log('getting user by token and setting loading false')
         this.setState({loading: false})
       }).catch((r) => console.log(r))
     } else {
-      console.log('no cook, setting loading false')
       this.setState({loading: false})
-      // browserHistory.push('/landing')
     }
   }
 
@@ -95,17 +93,37 @@ class Onboard extends React.Component {
     )
   }
 
-  renderSelectSchool () {
+  renderOnboardContent (children) {
     return (
       <SkModal>
-        <div className='onboard-select-school'>
-          <h1>Meet Sammi 👋</h1>
-          <div className="onboard-select-school-sammi-container">
-            <div className="sammi-message"><p>I found your school!</p></div>
-            <img src='/src/assets/images/sammi/Smile@3x.png' />
-          </div>
+        <div className='onboard-content'>
+          {children}
         </div>
       </SkModal>
+    )
+  }
+
+  renderSelectSchool () {
+    return (
+      this.renderOnboardContent(
+        <SelectSchool onSubmit={() => this.setState({step: 'find-a-class'})}/>
+      )
+    )
+  }
+
+  renderFindAClass () {
+    return (
+      this.renderOnboardContent(
+        <FindAClass onSubmit={() => this.setState({step: 'first-class'})}/>
+      )
+    )
+  }
+
+  renderFirstClass () {
+    return (
+      this.renderOnboardContent(
+        <FirstClass onSubmit={() => this.setState({step: 'select-school'})} />
+      )
     )
   }
 
@@ -123,6 +141,14 @@ class Onboard extends React.Component {
             }
             {this.state.step === 'select-school'
               ? this.renderSelectSchool()
+              : null
+            }
+            {this.state.step === 'find-a-class'
+              ? this.renderFindAClass()
+              : null
+            }
+            {this.state.step === 'first-class'
+              ? this.renderFirstClass()
               : null
             }
             <Calendar onboardData={this.state.calendarData} />

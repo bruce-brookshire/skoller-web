@@ -17,8 +17,7 @@
     .sk-modal {
       @include skoller-cell;
       padding: 1rem;
-      width: 100%;
-      min-width: 350px;
+      min-width: 352px;
 
       @media only screen and (max-width: $sk-mobile-break-point) {
         min-width: 80vw;

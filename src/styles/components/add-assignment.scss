@@ -168,6 +168,7 @@
     }
 
     .add-assignment-add-button {
+      padding: 8px;
       @include sk-standard-button;
 
       p {
@@ -242,6 +243,7 @@
   }
 
   .add-assignment-save-row {
+    padding: 8px;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row-reverse;

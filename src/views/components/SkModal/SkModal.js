@@ -17,9 +17,12 @@ class SkModal extends React.Component {
               </div>
               : null
             }
-            <div className="sk-modal-header">
-              <h1>{this.props.title}</h1>
-            </div>
+            {this.props.title
+              ? <div className="sk-modal-header">
+                <h1>{this.props.title}</h1>
+              </div>
+              : null
+            }
             <div className="sk-modal-content">
               {this.props.children}
             </div>
