@@ -23,7 +23,7 @@
     display: flex;
     flex-direction: column;
     padding-right: 1em;
-    padding-left: 1em;
+    padding-left: 0.5em;
     overflow-y: hidden;
 
     @include breakpoint(medium) {
@@ -40,6 +40,7 @@
 
       &.cn-control-panel {
         padding-left: 0;
+        padding-right: 1.5em;
         .cn-section-header{
           position: absolute;
           margin-top: 4px;
@@ -50,8 +51,7 @@
           background-color: #FFFFFF;
           border: 1px solid #4A4A4A;
           overflow-y: auto;
-          padding: 1em;
-          padding-bottom: 0px;
+          padding: 1em 1em 0em 1.5em;
           margin-top: 0px;
 
           .cn-section-content-header {
