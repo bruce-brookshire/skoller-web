@@ -15,7 +15,7 @@ import {inject, observer} from 'mobx-react'
 
 // TODO: File upload here needs to be replaced with component at ../../components/TabbedFileUpload
 
-const steps = [ 'Weights', 'Assignments', 'Review' ]
+const steps = [ 'Weights', 'Assignments' ]
 
 const ContentEnum = {
   WEIGHTS: 0,
@@ -463,8 +463,8 @@ class SyllabusTool extends React.Component {
             <div className='cn-section-header'>
               {this.renderBackButton()}
             </div>
-            {this.renderProgressBar()}
             <div className='cn-section-content'>
+              {this.renderProgressBar()}
               {this.renderContent()}
             </div>
           </div>

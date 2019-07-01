@@ -8,35 +8,65 @@ import Loading from '../../../components/Loading'
 import ClassCard from '../../Cards/ClassCard'
 import ClassInviteLink from './ClassInviteLink'
 import DeleteDialog from '../../../components/Grid/DeleteDialog'
+import AssignmentList from '../../components/AssignmentList'
+import StudentLayout from '../../components/StudentLayout'
+import AddAssignment from '../Assignments/AddAssignment'
 
 @inject('rootStore') @observer
 class ClassDetail extends React.Component {
   constructor (props) {
     super(props)
+
     this.state = {
       loading: false,
-      cl: {}
+      cl: {},
+      assignments: [],
+      showAddAssignmentModal: false,
+      studentClass: {}
     }
+
+    this.props.rootStore.studentNavStore.setActivePage('classes')
+    this.props.rootStore.studentNavStore.location = this.props.location // set active page route location for access from assignment detail
   }
 
   componentWillMount () {
     this.getClass()
-  }
-
-  componentWillUnmount () {
-    let {navbarStore} = this.props.rootStore
-    navbarStore.title = ''
+    this.getClassAssignmentsForStudent(this.props.params)
   }
 
   getClass () {
     const {classId} = this.props.params
     let {navbarStore} = this.props.rootStore
-
     this.setState({loading: true})
     actions.classes.getClassById(classId).then(cl => {
-      this.setState({cl, loading: false})
+      this.getClassColor(cl)
       navbarStore.title = cl.name
     }).catch(() => this.setState({loading: false}))
+  }
+
+  getClassColor (cl) {
+    const { userStore } = this.props.rootStore
+    const { user: { student } } = userStore
+    actions.studentClasses.getStudentClassById(cl.id, student).then(c => {
+      const newClass = {...cl}
+      newClass.color = c.color
+      newClass.grade = c.grade
+      this.setState({ cl: newClass, studentClass: c, loading: false })
+    }).catch(() => this.setState({ loading: false }))
+  }
+
+  getClassAssignmentsForStudent (cl) {
+    let {classId} = cl
+    let {userStore} = this.props.rootStore
+    const { user: { student } } = userStore
+    actions.studentClasses.getStudentClassAssignments(classId, student).then(assignments => {
+      this.setState({assignments: assignments})
+    })
+  }
+
+  componentWillUnmount () {
+    let {navbarStore} = this.props.rootStore
+    navbarStore.title = ''
   }
 
   /*
@@ -52,6 +82,51 @@ class ClassDetail extends React.Component {
         pathname: `/student/classes`
       })
     }).catch(() => false)
+  }
+
+  renderClassTitle () {
+    const {cl} = this.state
+    return (
+      <div className='cn-class-assignments-title' style={{ color: '#' + cl.color }}><span>{cl.name}</span> <i className='fas fa-info-circle'></i></div>
+    )
+  }
+
+  renderCurrentClassGrade () {
+    const {cl} = this.state
+    return (
+      <div className='cn-class-assignments-grade' style={{background: '#' + cl.color}}>{cl.grade ? cl.grade + '%' : '- -'}</div>
+    )
+  }
+
+  renderClassAssignmentsHeader () {
+    return (
+      <div className='cn-class-assignments-header'>
+        <div className='cn-class-assignments-header-item'>
+          {this.renderBackButton()}
+          {this.renderSpeculateGradeButton()}
+        </div>
+        <div className='cn-class-assignments-header-item text-center'>
+          {this.renderClassTitle()}
+          {this.renderCurrentClassGrade()}
+        </div>
+        <div className='cn-class-assignments-header-item text-right'>
+          {this.renderAddAssignmentButton()}
+          {this.renderClassEnrollment()}
+        </div>
+      </div>
+    )
+  }
+
+  renderAssignmentList () {
+    const {cl} = this.state
+    return (
+      <AssignmentList
+        assignments={this.state.assignments.assignments}
+        weights={this.state.assignments.weights}
+        onSelect={this.onAssignmentSelect.bind(this)}
+        classColor={cl.color}
+      />
+    )
   }
 
   renderClassCard () {
@@ -80,14 +155,47 @@ class ClassDetail extends React.Component {
     )
   }
 
+  renderSpeculateGradeButton () {
+    return (
+      <a className='spec-grade-button' onClick={() => browserHistory.push('student/classes')}>
+        % Speculate Grade
+      </a>
+    )
+  }
+
   /*
   * Render the back button to tab between syllabus sections
   */
   renderBackButton () {
     return (
       <a className='back-button' onClick={() => browserHistory.push('student/classes')}>
-        <i className='fa fa-angle-left' /> Go Back
+        <i className='fa fa-angle-left' /> Back to Classes
       </a>
+    )
+  }
+
+  closeModal = () => {
+    this.setState({showAddAssignmentModal: false})
+  }
+
+  renderAddAssignmentButton () {
+    return (
+      <div>
+        <a className='add-assignment-button' onClick={() => this.setState({showAddAssignmentModal: true})}>
+          + Add Assignment
+        </a>
+        { this.state.showAddAssignmentModal
+          ? <AddAssignment closeModal={this.closeModal} assignmentParams={{class: this.state.studentClass}}/>
+          : null
+        }
+      </div>
+    )
+  }
+
+  renderClassEnrollment () {
+    const {cl} = this.state
+    return (
+      <span><i className="fas fa-users"></i> {cl.enrollment} Student{cl.enrollment > 1 ? 's' : ''}</span>
     )
   }
 
@@ -109,8 +217,9 @@ class ClassDetail extends React.Component {
   renderClassDetails () {
     const {cl} = this.state
     return (
-      <div>
+      <div className="cn-class-detail-container margin-bottom">
         {this.renderBackButton()}
+        {this.renderClassTitle()}
         <div id='cn-class-detail-header'>
           <div className='cn-class-detail-header-item'>
             {this.renderClassCard()}
@@ -125,14 +234,35 @@ class ClassDetail extends React.Component {
     )
   }
 
+  onAssignmentSelect (assignment) {
+    const { cl } = this.state
+    browserHistory.push({
+      pathname: `/student/class/${cl.id}/assignments/${assignment.assignment_id}`
+    })
+  }
+
   render () {
-    const {loading} = this.state
+    const {loading, cl} = this.state
     return (
-      <div id='cn-class-detail-container'>
-        {loading
-          ? <Loading />
-          : this.renderClassDetails()}
-      </div>
+      <StudentLayout>
+        <div>
+          {loading
+            ? <Loading />
+            : <div>
+              {cl.status.id === 1100 || cl.status.id === 1200 || cl.status.id === 1300
+                ? <div id='cn-class-detail-container'>
+                  {this.renderClassDetails()}
+                </div>
+                : <div className='cn-class-assignments-container'>
+                  {this.renderClassAssignmentsHeader()}
+                  <div className='cn-class-list-container margin-top'>
+                    {this.renderAssignmentList()}
+                  </div>
+                </div>}
+            </div>
+          }
+        </div>
+      </StudentLayout>
     )
   }
 }

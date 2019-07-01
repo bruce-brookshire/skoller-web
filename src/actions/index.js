@@ -1,11 +1,11 @@
-import {createAssignment, deleteAssignment, deleteAssignmentPost, getClassAssignments, updateAssignment} from './assignments'
+import {createAssignment, createStudentAssignment, createAssignmentByClassId, deleteAssignment, deleteAssignmentPost, getAllStudentAssignments, getClassAssignments, updateAssignment, getTaskAssignments, gradeAssignment, removeGradeFromAssignment} from './assignments'
 import {getAnalytics} from './analytics'
-import {authenticateUser, forgotPassword, getRoles,
+import {authenticateUser, loginStudentWithPhone, forgotPassword, getRoles,
   getUserById, getUserByToken, getUsers, registerUser, registerUserAdmin, resetPassword,
-  resendVerification, updateAccount, verifyPhoneNumber} from './auth'
+  resendVerification, updateAccount, verifyPhoneNumber, verifyStudentPhoneNumber} from './auth'
 import {deleteClassPost, getClassPosts, deleteClassComment, deleteClassReply} from './chat'
-import {createClass, dropClass, getClassById, getClassByIdAdmin, getClassByLink, getStudentClassesById,
-  enrollByLink, enrollInClass, searchClasses, searchStudentClasses, updateClass, lockClass,
+import {createClass, dropClass, getClassById, getStudentClass, getClassByIdAdmin, getClassByLink, getStudentClassesById,
+  enrollByLink, enrollInClass, searchClasses, searchStudentClasses, updateClass, lockClass, lockClassWeight,
   unlockClass, updateClassStatus, addNote, getClassesCsv} from './classes'
 import {createIssue, getHelpTypes, getRequestTypes, resolveChangeRequest, createStudentRequest,
   resolveStudentRequest} from './classhelp'
@@ -27,9 +27,10 @@ import {createSchool, getAllSchools, getHubSchools,
   getHubSchoolsMinified, getSchoolById, updateSchool, searchSchools, getStates, uploadSchoolCsv, getSchoolsCsv, getMostCommonSchool, getEmailDomains, createEmailDomains, deleteEmailDomains} from './schools'
 import {getAutoUpdateInfo, updateAutoUpdateInfo, forecastAutoUpdateInfo, getMinVersionInfo, updateMinVer} from './settings'
 import {createCustomLink, getCustomLinkById, getCustomLinks} from './signup-links'
+import {getStudentClassById, getStudentClassAssignments, updateClassColor} from './studentclasses'
 import {getNextClass} from './syllabusworkers'
 import {getStudentCsv, getEmailPreferences, updateEmailPreferences, deleteUserById} from './users'
-import {createWeight, deleteWeight, getClassWeights, updateWeight} from './weights'
+import {createWeight, deleteWeight, getClassWeights, getClassWeightsByClassId, updateWeight} from './weights'
 import {getStudentByLink} from './students'
 
 const actions = {
@@ -41,13 +42,20 @@ const actions = {
   },
   assignments: {
     createAssignment,
+    createStudentAssignment,
+    createAssignmentByClassId,
     deleteAssignment,
     deleteAssignmentPost,
     getClassAssignments,
-    updateAssignment
+    updateAssignment,
+    getTaskAssignments,
+    gradeAssignment,
+    removeGradeFromAssignment,
+    getAllStudentAssignments
   },
   auth: {
     authenticateUser,
+    loginStudentWithPhone,
     getRoles,
     getUserById,
     getUserByToken,
@@ -58,6 +66,7 @@ const actions = {
     resetPassword,
     resendVerification,
     verifyPhoneNumber,
+    verifyStudentPhoneNumber,
     updateAccount
   },
   chat: {
@@ -73,10 +82,12 @@ const actions = {
     enrollByLink,
     enrollInClass,
     getClassById,
+    getStudentClass,
     getClassByIdAdmin,
     getClassByLink,
     getStudentClassesById,
     lockClass,
+    lockClassWeight,
     searchClasses,
     searchStudentClasses,
     unlockClass,
@@ -183,6 +194,11 @@ const actions = {
     getCustomLinkById,
     getCustomLinks
   },
+  studentClasses: {
+    getStudentClassById,
+    getStudentClassAssignments,
+    updateClassColor
+  },
   syllabusworkers: {
     getNextClass
   },
@@ -196,6 +212,7 @@ const actions = {
     createWeight,
     deleteWeight,
     getClassWeights,
+    getClassWeightsByClassId,
     updateWeight
   }
 }

@@ -16,11 +16,17 @@ import OurTeam from './views/OurTeam'
 import PitchDeck from './views/PitchDeck'
 import ResetPassword from './views/ResetPassword'
 
+import Onboard from './views/Student/Onboard'
+import Home from './views/Student/Home'
+import Calendar from './views/Student/Calendar'
 import MyClasses from './views/Student/MyClasses'
+import Tasks from './views/Student/Tasks'
 import FindClasses from './views/Student/FindClasses'
 import Verification from './views/components/Verification'
 import ClassLink from './views/Student/ClassLink'
 import ClassDetail from './views/Student/ClassDetail'
+import AssignmentDetail from './views/Student/AssignmentDetail'
+import AddAssignment from './views/Student/Assignments/AddAssignment'
 
 import SyllabusTool from './views/SyllabusTool'
 import ClassAdmin from './views/ClassAdmin'
@@ -65,15 +71,21 @@ const router = (
       <Route path='/c/:customLink' component={StudentLink} />
       <Route path='/download' component={DownloadApp} />
       <Route path='/pitch-deck' component={PitchDeck} />
+      <Route path='/onboard/:step' component={Onboard} />
       <Route path='/app' component={Layout} onEnter={requireAuth}>
-        <IndexRedirect to='/student/classes' />
+        <IndexRedirect to='/student/home' />
         <Route path='/student'>
-          <IndexRedirect to='/student/classes'/>
+          <IndexRedirect to='/student/home'/>
+          <Route path='/student/home' component={Home} />
+          <Route path='/student/tasks' component={Tasks} />
           <Route path='/student/find-classes' component={FindClasses} />
           <Route path='/student/verify' component={Verification} onEnter={authOnboard} />
           <Route path='/student/class-link' component={ClassLink} />
+          <Route path='/student/calendar' component={Calendar}/>
           <Route path='/student/classes' component={MyClasses}/>
           <Route path='/student/class/:classId' component={ClassDetail} />
+          <Route path='/student/class/:classId/assignments/:assignmentId' component={AssignmentDetail} />
+          <Route path='/student/class/:classId/add-assignment' component={AddAssignment} />
         </Route>
 
         <Route path='/hub'>
@@ -155,15 +167,11 @@ function requireAuth (nextState, replaceState) {
 */
 function authenticateStudent (user) {
   if (user.student) {
-    if (user.student.is_verified) {
-      return actions.classes.getStudentClassesById(user.student.id).then((classes) => {
-        if (classes.length === 0) browserHistory.push('/student/find-classes')
-      }).catch(() => false)
-    } else {
-      return new Promise((resolve, reject) => {
-        resolve(browserHistory.push('/student/verify'))
-      })
-    }
+    return actions.classes.getStudentClassesById(user.student.id).then((classes) => {
+      if (classes.length === 0) {
+        browserHistory.push('/student/find-classes')
+      }
+    }).catch(() => false)
   }
   return new Promise((resolve, reject) => {
     resolve()

@@ -1,0 +1,17 @@
+.sk-layout {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+
+  main {
+    flex: 0 0 calc(100% - 200px);
+
+    @media only screen and (max-width: $sk-mobile-break-point) {
+      flex: 0 0 0;
+    }
+  }
+
+  @media only screen and (max-width: $sk-mobile-break-point) {
+    flex-direction: column;
+  }
+}

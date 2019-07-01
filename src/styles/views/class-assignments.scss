@@ -1,0 +1,66 @@
+.cn-class-assignments-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  @include shadow-box;
+
+  .cn-class-assignments-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $unit-space;
+
+
+    .cn-class-assignments-header-item {
+      width: calc(33% - .5em);
+
+      .cn-class-assignments-title {
+        span {
+          font-size: 1.8em;
+          // color: #57b9e4ff;
+          font-weight: bold;
+          margin-right: 1rem;
+        }
+      }
+
+      .cn-class-assignments-grade {
+        display: block;
+        padding: 1rem;
+        font-size: 1.2em;
+        color: white;
+        // background-color: #57b9e4ff;
+        margin: 1rem;
+        border-radius: 8px;
+        box-shadow: 0px 15px 35px 0px rgba(0, 0, 0, 0.07);
+        box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .text-right {
+      text-align: right;
+    }
+
+    .spec-grade-button {
+      display: block;
+      margin-top: 1rem;
+    }
+
+    .add-assignment-button {
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+  }
+  .cn-class-list-row-icon-text {
+    color: white;
+    font-size: 1.8em !important;
+  }
+
+  .cn-class-list-row {
+    @include shadow-box;
+  }
+}

@@ -1,0 +1,88 @@
+.onboard-top-nav-menu-item {
+  float: right;
+}
+
+.onboard-container {
+  .layout{  
+    .onboard-content {
+      width: 352px;
+
+      @media only screen and (max-width: $sk-mobile-break-point) {
+        max-width: 80vw;
+      }
+
+      .onboard-next {
+        @include sk-standard-button;
+      }
+
+      .onboard-select-school {
+        h1 {
+          margin-bottom: 0;
+        }
+
+        .onboard-select-school-sammi-container {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          padding: 16px;
+
+          .sammi-message {
+            @include sammi-message-right;
+          }
+
+          img {
+            float: right;
+            width: 48px;
+          }
+        }
+      }
+
+      .onboard-find-class {
+        h1 {
+          margin-bottom: 0;
+        }
+
+        .onboard-find-class-sammi-container {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          padding: 16px;
+  
+          .sammi-message {
+            @include sammi-message-left;
+          }
+  
+          img {
+            float: right;
+            width: 48px;
+          }
+        }
+      }
+
+      .onboard-first-class {
+        h1 {
+          margin-bottom: 0;
+        }
+
+        .onboard-first-class-sammi-container {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          padding: 16px;
+
+          .sammi-message {
+            @include sammi-message-right;
+          }
+
+          img {
+            float: right;
+            width: 48px;
+          }
+        }
+      }
+    }
+  }
+}

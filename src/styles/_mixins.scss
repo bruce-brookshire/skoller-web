@@ -73,3 +73,222 @@
     li { flex: 1 0 33%; }
   }
 }
+
+// standard box styling
+@mixin skoller-cell {
+  background-color: white;
+  border-radius: $skoller-cell-border-radius;
+  box-shadow: 0px 8px 15px rgba(0,0,0,.05);
+}
+
+// for forms, remove all the default styling
+@mixin remove-form-styling {
+  input,
+  label,
+  select,
+  button,
+  textarea
+  {
+    margin:0;
+    border:0;
+    padding:0;
+    display:inline-block;
+    vertical-align:middle;
+    white-space:normal;
+    background:none;
+    line-height:1;
+  }
+
+  /* Remove the stupid outer glow in Webkit */
+  input:focus
+  {
+    outline:0;
+  }
+
+  /* Box Sizing Reset
+  -----------------------------------------------*/
+
+  /* All of our custom controls should be what we expect them to be */
+  input,
+  textarea
+  {
+    -webkit-box-sizing:content-box;
+    -moz-box-sizing:content-box;
+    box-sizing:content-box;
+  }
+
+  /* These elements are usually rendered a certain way by the browser */
+  button,
+  input[type=reset],
+  input[type=button],
+  input[type=submit],
+  input[type=checkbox],
+  input[type=radio],
+  select
+  {
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    box-sizing:border-box;
+  }
+
+  /* Button Controls
+  -----------------------------------------------*/
+
+  input[type=checkbox],
+  input[type=radio]
+  {
+    width:13px;
+    height:13px;
+  }
+
+  /* Search Input
+  -----------------------------------------------*/
+
+  /* Make webkit render the search input like a normal text field */
+  input[type=search]
+  {
+    -webkit-appearance: textfield;
+    -webkit-box-sizing: content-box;
+  }
+
+  /* Turn off the recent search for webkit. It adds about 15px padding on the left */
+  ::-webkit-search-decoration
+  {
+    display:none;
+  }
+
+  /* Buttons
+  -----------------------------------------------*/
+
+  button,
+  input[type="reset"],
+  input[type="button"],
+  input[type="submit"]
+  {
+    /* Fix IE7 display bug */
+    overflow:visible;
+    width:auto;
+  }
+
+  /* IE8 and FF freak out if this rule is within another selector */
+  ::-webkit-file-upload-button
+  {	
+    padding:0;
+    border:0;
+    background:none;
+  }
+
+  /* Textarea
+  -----------------------------------------------*/
+
+  textarea 
+  {
+    /* Move the label to the top */
+    vertical-align:top;
+    
+    /* Turn off scroll bars in IE unless needed */
+    overflow:auto;
+  }
+
+  /* Selects
+  -----------------------------------------------*/
+
+  select
+  {
+
+  }
+
+  select[multiple] 
+  {
+    /* Move the label to the top */
+    vertical-align:top;
+  }
+}
+
+// standard button
+@mixin sk-standard-button {
+  text-align: center;
+  margin: 0 auto;
+  // padding: 8px;
+
+  p {
+    box-sizing: border-box;
+    cursor: pointer;
+    margin: 0 auto;
+    font-weight: 500;
+    padding: 8px 8px 4px 8px;
+    border-radius: 5px;
+    background: $cn-color-blue;
+    color: white;
+    width: 100%;
+  }
+}
+
+// sammi speech bubble
+@mixin sammi-message-right {
+  @include skoller-cell;
+  max-width: 256px;
+  min-height: 40px;
+  background: white;
+  position: relative;
+  border: 1px solid $cn-form-border;
+  border-radius: 5px;
+  margin: 0 8px 0 0;
+  display:flex;
+  align-items: center;
+
+  p {
+    margin: 0.25rem 1.5rem 0rem 1.5rem;
+    padding: 8px 0;
+    width: 100%;
+  }
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: calc(50% - 8px);
+    left: 100%;
+    height: 8px;
+    width: 8px;
+    background: white;
+    transform: rotate(-45deg) translate(-50%) translateY(-1px);
+    border-radius: 1px;
+    border-bottom: inherit;
+    border-right: inherit;
+    box-shadow: inherit;
+  }
+}
+
+@mixin sammi-message-left {
+  @include skoller-cell;
+  max-width: 256px;
+  min-height: 40px;
+  background: white;
+  position: relative;
+  border: 1px solid $cn-form-border;
+  border-radius: 5px;
+  margin: 0 0 0 8px;
+  display:flex;
+  align-items: center;
+
+  p {
+    margin: 0.25rem 1.5rem 0rem 1.5rem;
+    padding: 8px 0;
+    width: 100%;
+  }
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: calc(50% - 2px);
+    left: -8.25px;
+    height: 8px;
+    width: 8px;
+    background: white;
+    transform: rotate(135deg) translate(-50%);
+    border-radius: 1px;
+    border-bottom: inherit;
+    border-right: inherit;
+    box-shadow: inherit;
+  }
+}

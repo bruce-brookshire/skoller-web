@@ -17,6 +17,9 @@ class Snackbar extends React.Component {
       case 'error':
         classes.push('error')
         break
+      case 'success':
+        classes.push('success')
+        break
       default:
         break
     }

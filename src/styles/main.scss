@@ -24,17 +24,22 @@
 @import 'forms/slider-field';
 
 // Components ----------------------------
+@import 'components/add-assignment';
 @import 'components/enroll-link-splash';
+@import 'components/sk-modal.scss';
 @import 'components/assignments';
+@import 'components/assignment-detail';
 @import 'components/assignment-card';
 @import 'components/assignment-table';
 @import 'components/autocomplete';
 @import 'components/autocomplete-detail';
+@import 'components/calendar';
 @import 'components/card';
 @import 'components/chat';
 @import 'components/chat-post';
 @import 'components/class-card.scss';
 @import 'components/common-scale-modal.scss';
+@import 'components/datepicker.scss';
 @import 'components/day-selector';
 @import 'components/file-tab';
 @import 'components/file-viewer';
@@ -42,6 +47,7 @@
 @import 'components/flex-table';
 @import 'components/grade-scale';
 @import 'components/grid';
+@import 'components/login-verification.scss';
 @import 'components/modal';
 @import 'components/navbar';
 @import 'components/professor';
@@ -62,6 +68,10 @@
 @import 'components/weight-form';
 @import 'components/weight-table';
 @import 'components/weight-type';
+@import 'components/student-nav';
+@import 'components/student-layout';
+@import 'components/home';
+@import 'components/task';
 
 // Composed Views ------------------------
 @import 'views/mixins/onboarding.scss';
@@ -71,6 +81,7 @@
 @import 'views/call-to-action.scss';
 @import 'views/class-admin.scss';
 @import 'views/class-detail.scss';
+@import 'views/class-assignments.scss';
 @import 'views/class-form.scss';
 @import 'views/class-link.scss';
 @import 'views/class-list.scss';
@@ -94,6 +105,7 @@
 @import 'views/onboarding.scss';
 @import 'views/people-talking.scss';
 @import 'views/pitch-deck.scss';
+@import 'views/onboard.scss';
 @import 'views/our-team.scss';
 @import 'views/privacy-policy.scss';
 @import 'views/project-four-door.scss';

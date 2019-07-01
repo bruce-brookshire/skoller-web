@@ -106,11 +106,15 @@ class WeightForm extends React.Component {
     return (
       <div id='cn-weight-form'>
         <div className='cn-section-content-header'>
-          Step 1: Add Weights
+          Step 1: Set Up Weights
         </div>
         <div id='cn-weight-form-instructions'>
           Weights are how much a certain group of assignments contribute to your final grade.
-           For example: <i className='cn-blue'>Exams are worth 25% of your final grade</i>
+        </div>
+        <hr />
+        <div className="weight-type">
+          <div>Percentage</div>
+          <div>Points</div>
         </div>
         <InputField
           containerClassName='margin-top'
@@ -118,7 +122,7 @@ class WeightForm extends React.Component {
           label="Weight name"
           name="name"
           onChange={updateProperty}
-          placeholder="e.g. Exams"
+          placeholder="Exams"
           value={form.name}
         />
         <div id='cn-weight-form-value'>
@@ -128,7 +132,7 @@ class WeightForm extends React.Component {
             label="Value"
             name="weight"
             onChange={updateProperty}
-            placeholder="e.g. 25"
+            placeholder="25"
             type="number"
             value={form.weight}
           />
@@ -136,7 +140,7 @@ class WeightForm extends React.Component {
             {!cl.is_points ? '%' : 'pts'}
           </div>
         </div>
-        {numWeights === 0 &&
+        {/* {numWeights === 0 &&
           <CheckboxField
             name='noWeights'
             onChange={(name, value) => {
@@ -147,13 +151,13 @@ class WeightForm extends React.Component {
             inputClassName='margin-right'
             label={'Weights were not provided on the syllabus.'}
           />
-        }
+        } */}
         {<button
           className={'button full-width margin-top ' + (this.state.loading || noWeights ? 'disabled' : '')}
           disabled={this.state.loading || noWeights}
           onClick={this.onSubmit.bind(this)}
         >
-          Add weight
+          Add Weight
           {this.state.loading ? <Loading /> : null}
         </button>}
         <div className='margin-bottom margin-top'>

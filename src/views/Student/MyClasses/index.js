@@ -5,6 +5,7 @@ import ClassList from '../../components/ClassList'
 import actions from '../../../actions'
 import { browserHistory } from 'react-router'
 import Card from '../../../components/Card'
+import StudentLayout from '../../components/StudentLayout'
 
 @inject('rootStore') @observer
 class MyClasses extends React.Component {
@@ -16,6 +17,7 @@ class MyClasses extends React.Component {
   }
 
   componentWillMount () {
+    this.props.rootStore.studentNavStore.setActivePage('classes')
     this.updateClasses()
   }
 
@@ -39,6 +41,36 @@ class MyClasses extends React.Component {
       newClasses[index] = cl
       this.setState({classes: newClasses})
     }).catch(() => false)
+  }
+
+  assignColors () {
+    const { classes } = this.state
+    if (classes) {
+      const colorsInUse = []
+      const colors = [
+        '#9b55e5ff', // purple
+        '#ff71a8ff', // pink
+        '#57b9e4ff', // blue
+        '#4cd8bdff', // mint
+        '#4add58ff', // green
+        '#f7d300ff', // yellow
+        '#ffae42ff', // orange
+        '#dd4a63ff' // red
+      ]
+      classes.forEach(cl => {
+        if (!cl.color) {
+          colors.forEach(async color => {
+            if (colorsInUse.indexOf(color) !== -1) {
+              cl.color = color
+              await actions.studentclasses.updateClassColor(cl).then((res) => {
+                console.log(res)
+              }).catch(() => false)
+              colorsInUse.push(color)
+            }
+          })
+        }
+      })
+    }
   }
 
   numberOfClassesNeedingSyllabus () {
@@ -112,12 +144,14 @@ class MyClasses extends React.Component {
 
   render () {
     return (
-      <div className='cn-my-classes-container'>
-        <Card
-          title={this.renderTitle()}
-          content={this.renderContent()}
-        />
-      </div>
+      <StudentLayout>
+        <div className='cn-my-classes-container'>
+          <Card
+            title={this.renderTitle()}
+            content={this.renderContent()}
+          />
+        </div>
+      </StudentLayout>
     )
   }
 }

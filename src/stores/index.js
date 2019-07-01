@@ -3,6 +3,9 @@ import snackbarStore from './snackbar_store'
 import userStore from './user_store'
 import navbarStore from './navbar_store'
 import searchStore from './search_store'
+import studentAssignmentsStore from './student_assignments_store'
+import studentClassesStore from './student_classes_store'
+import studentNavStore from './student_nav_store'
 
 class ApplicationStore {
   constructor () {
@@ -10,7 +13,10 @@ class ApplicationStore {
       snackbarStore,
       userStore,
       navbarStore,
-      searchStore
+      searchStore,
+      studentAssignmentsStore,
+      studentClassesStore,
+      studentNavStore
     })
   }
 }

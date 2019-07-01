@@ -1,12 +1,21 @@
-.cn-input-container {
+.cn-input-container-checkbox {
+  display: flex;
+  flex-direction: row;
+
   .cn-form-checkbox {
-    border: 0;
+    height: 24px;
+    width: 24px;
+    border-radius: 5px;
+    border: 2px solid #C7C7CD;
+    background-color: transparent;
     &.error {
       outline: 1px solid $cn-error-color;
     }
   }
   .cn-checkbox-label {
     @include form-label;
+    margin: 5px 0px 0px 10px;
+    font-size: 13pt !important;
   }
   .cn-big-checkbox {
     height: 2em;
