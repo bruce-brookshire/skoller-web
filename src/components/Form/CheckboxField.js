@@ -4,14 +4,10 @@ import PropTypes from 'prop-types'
 class CheckboxField extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {
-      isFocused: false,
-      isChecked: false,
-      bgColor: ''
-    }
+    this.state = {isFocused: false}
   }
 
-  onBlur () {
+  onBlur (event) {
     this.setState({isFocused: false})
     if (this.props.onBlur) this.props.onBlur()
   }
@@ -23,13 +19,6 @@ class CheckboxField extends React.Component {
   onFocus () {
     this.setState({isFocused: true})
     if (this.props.onFocus) this.props.onFocus()
-  }
-
-  onClick () {
-    this.setState({
-      isChecked: !this.state.isChecked,
-      bgColor: !this.state.isChecked ? '#57B9E4' : 'transparent'
-    })
   }
 
   renderInfo () {
@@ -47,7 +36,7 @@ class CheckboxField extends React.Component {
   }
 
   render () {
-    const containerClasses = ['cn-input-container-checkbox']
+    const containerClasses = ['cn-input-container']
     const labelClasses = ['cn-checkbox-label']
     const inputClasses = ['cn-form-checkbox']
 
@@ -82,17 +71,17 @@ class CheckboxField extends React.Component {
     const input = this.props
     return (
       <div className={containerClasses.join(' ')}>
-        <div
+        <input
           className={inputClasses.join(' ')}
           id={input.id}
           name={input.name}
-          style={{backgroundColor: this.state.bgColor}}
           onBlur={this.onBlur.bind(this)}
           onChange={this.onChange.bind(this)}
           onFocus={this.onFocus.bind(this)}
-          onClick={this.onClick.bind(this)}
+          type='checkbox'
           checked={input.value}
-        ></div>
+        >
+        </input>
         {label
           ? <label className={labelClasses.join(' ')} htmlFor={id}>
             {label} {this.renderInfo()}
@@ -119,7 +108,6 @@ CheckboxField.propTypes = {
   onBlur: PropTypes.func,
   onChange: PropTypes.func.isRequired,
   onFocus: PropTypes.func,
-  onClick: PropTypes.func,
   value: PropTypes.bool.isRequired,
   error: PropTypes.bool,
   info: PropTypes.bool
