@@ -5,6 +5,7 @@ import App from './containers/App'
 import Layout from './containers/Layout'
 
 import Landing from './views/Landing'
+import AdminLanding from './views/AdminLanding'
 import Faq from './views/Faq'
 import ForgotPassword from './views/ForgotPassword'
 import Unsubscribe from './views/Unsubscribe'
@@ -56,6 +57,7 @@ const router = (
     <Route path="/" component={App}>
       <IndexRedirect to="/app"/>
       <Route path='/landing' component={Landing} />
+      <Route path='/admin-login' component={AdminLanding} />
       <Route path='/forgot_password' component={ForgotPassword} />
       <Route path='/unsubscribe/:id' component={Unsubscribe} />
       <Route path='/reset_password' component={ResetPassword} />
