@@ -19,11 +19,6 @@ class WeightType extends React.Component {
     }
   }
 
-  printer (event, value) {
-    console.log(event)
-    console.log(value)
-  }
-
   render () {
     return (
       <div className='cn-weight-type'>
@@ -46,7 +41,6 @@ class WeightType extends React.Component {
               <div
                 style={{ width: 20, height: 20, backgroundColor: this.state.isPoints ? 'transparent' : '#57b9e4', borderRadius: 5, borderColor: '#4a4a4a', borderWidth: 1, borderStyle: 'solid' }}
                 onClick={(value) => {
-                  console.log('hi')
                   this.setState({ isPoints: false })
                 }}
               />
