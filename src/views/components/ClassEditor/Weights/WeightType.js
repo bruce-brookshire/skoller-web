@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Form, ValidateForm} from 'react-form-library'
-import {InputField, CheckboxField} from '../../../../components/Form'
+import { Form, ValidateForm } from 'react-form-library'
+import { InputField } from '../../../../components/Form'
 
 const pointField = {
   pointTotal: {
@@ -34,26 +34,44 @@ class WeightType extends React.Component {
         </div>
         <div className="checkbox-container">
           <div className="checkboxes">
-            <CheckboxField
+            <div
+              style={{ flexDirection: 'row' }}
+            >
+              {/* TODO Kevin: make these components into a row and ensure proper padding. convert this to CSS where possible (i dont know how to, this is my first time doing web dev ui) */}
+              <div
+                style={{ width: 20, height: 20, backgroundColor: this.state.isPoints ? 'transparent' : '#57b9e4', borderRadius: 5, borderColor: '#4a4a4a', borderWidth: 1, borderStyle: 'solid' }}
+                onClick={(value) => {
+                  this.setState({ isPoints: false })
+                }}
+              />
+              <div>
+                Percentage (20%)
+              </div>
+            </div>
+            <div
+              style={{ flexDirection: 'row' }}
+            >
+              {/* TODO Kevin: make these components into a row and ensure proper padding. convert this to CSS where possible (i dont know how to, this is my first time doing web dev ui) */}
+              <div
+                style={{ width: 20, height: 20, backgroundColor: !this.state.isPoints ? 'transparent' : '#57b9e4', borderRadius: 5, borderColor: '#4a4a4a', borderWidth: 1, borderStyle: 'solid' }}
+                onClick={(value) => {
+                  this.setState({ isPoints: true })
+                }}
+              />
+              <div>
+                Points (100/500)
+              </div>
+            </div>
+            {/* <CheckboxField
               containerClassName='margin-top margin-right'
-              label='Percentage (20%)'
-              name='isPercentage'
-              id='checkbox-id'
-              onChange={(value) => {
-                this.setState({isPoints: !value})
-              }}
-              value={!this.state.isPoints}
-            />
-            <CheckboxField
-              containerClassName='margin-top margin-right'
-              label='Points (100/500)'
+              label=''
               name='isPoints'
               id='checkbox-id'
               onChange={(value) => {
-                this.setState({isPoints: value})
+                this.setState({ isPoints: value })
               }}
               value={this.state.isPoints}
-            />
+            /> */}
           </div>
         </div>
         <div className='button-container'>
