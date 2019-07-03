@@ -30,23 +30,16 @@
     width: 100%;
 
     .progress-bar-title {
-      font-size: 10px;
-      font-weight: 200;
-      color: #EEEEEE;
-      margin-top: 5px;
+      font-size: 12px;
       margin-bottom: 5px;
       text-align: center;
-
-      &.active {
-        color: #000000;
-      }
+      font-weight: 200;
     }
 
     .cn-progress-bar {
-      width: 25px;
-      height: 25px;
-      border: 1px solid #EEEEEE;
-      color: #EEEEEE;
+      width: 20px;
+      height: 20px;
+      border: 1px solid black;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -59,25 +52,24 @@
       &.active {
         background-color: $cn-color-blue;
         color: $cn-color-white;
-        border-color: #000000;
       }
 
       .cn-progress-divider-left {
         position: absolute;
-        left: -1/2 * 300px / 2 - 1px;
+        left: -1/3 * 300px / 2;
         top: 50%;
         height: 1px;
         border-top: 1px solid black;
-        width: 1/2 * 300px / 2;
+        width: 1/3 * 300px / 2;
       }
 
       .cn-progress-divider-right {
         position: absolute;
-        right: -1/2 * 300px / 2 - 1px;
+        right: -1/3 * 300px / 2;
         top: 50%;
         height: 1px;
         border-top: 1px solid black;
-        width: 1/2 * 300px / 2;
+        width: 1/3 * 300px / 2;
       }
     }
   }

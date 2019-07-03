@@ -52,7 +52,7 @@ class InputInfoField extends React.Component {
   }
 
   render () {
-    const containerClasses = ['cn-input-container-weights']
+    const containerClasses = ['cn-input-container']
     const labelClasses = ['cn-input-label']
     const inputClasses = ['cn-form-input']
 
