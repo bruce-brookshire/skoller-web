@@ -7,7 +7,7 @@
   align-self: center;
 
   .cn-progress-step:first-child {
-    .cn-progress-bar {
+    .cn-progress-bar, .cn-syllabus-progress-bar {
       .cn-progress-divider-left {
         display: none;
       }
@@ -15,7 +15,7 @@
   }
 
   .cn-progress-step:last-child {
-    .cn-progress-bar {
+    .cn-progress-bar, .cn-syllabus-progress-bar {
       .cn-progress-divider-right {
         display: none;
       }
@@ -34,6 +34,18 @@
       margin-bottom: 5px;
       text-align: center;
       font-weight: 200;
+    }
+
+    .syllabus-progress-bar-title {
+      font-size: 10px;
+      font-weight: 200;
+      color: #EEEEEE;
+      margin: 5px 0px 5px 0px;
+      text-align: center;
+
+      &.active {
+        color: #000000;
+      }
     }
 
     .cn-progress-bar {
@@ -70,6 +82,45 @@
         height: 1px;
         border-top: 1px solid black;
         width: 1/3 * 300px / 2;
+      }
+    }
+
+    .cn-syllabus-progress-bar {
+      width: 25px;
+      height: 25px;
+      border: 1px solid #EEEEEE;
+      color: #EEEEEE;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-top: 4.5px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 3px;
+      position: relative;
+
+      &.active {
+        background-color: $cn-color-blue;
+        color: $cn-color-white;
+        border-color: #000000;
+      }
+
+      .cn-progress-divider-left {
+        position: absolute;
+        left: -1/2 * 300px / 2 - 1px;
+        top: 50%;
+        height: 1px;
+        border-top: 1px solid black;
+        width: 1/2 * 300px / 2;
+      }
+
+      .cn-progress-divider-right {
+        position: absolute;
+        right: -1/2 * 300px / 2 - 1px;
+        top: 50%;
+        height: 1px;
+        border-top: 1px solid black;
+        width: 1/2 * 300px / 2;
       }
     }
   }

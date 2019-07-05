@@ -5,7 +5,7 @@ import Loading from '../../components/Loading'
 import actions from '../../actions'
 import Weights from '../components/ClassEditor/Weights'
 import Assignments from '../components/ClassEditor/Assignments'
-import {ProgressBar, ProgressStep} from '../../components/ProgressBar'
+import {ProgressBar, SyllabusProgressStep} from '../../components/ProgressBar'
 import FileUpload from '../../components/FileUpload'
 import FileViewer from '../../components/FileViewer'
 import IssuesModal from '../components/ClassEditor/IssuesModal'
@@ -381,7 +381,7 @@ class SyllabusTool extends React.Component {
     return (
       <ProgressBar currentStep={this.state.currentIndex}>
         {steps.map((step, index) => {
-          return <ProgressStep key={`step-${index}`} label={step} index={index} />
+          return <SyllabusProgressStep key={`step-${index}`} label={step} index={index} />
         })}
       </ProgressBar>
     )
