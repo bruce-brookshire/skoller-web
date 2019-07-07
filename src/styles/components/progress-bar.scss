@@ -88,15 +88,15 @@
     .cn-syllabus-progress-bar {
       width: 25px;
       height: 25px;
-      border: 1px solid #EEEEEE;
-      color: #EEEEEE;
+      border: 1px solid #C7C7CD;
+      color: #C7C7CD;
       display: flex;
       justify-content: center;
       align-items: center;
       padding-top: 4.5px;
       font-size: 12px;
       font-weight: 600;
-      border-radius: 3px;
+      border-radius: 5px;
       position: relative;
 
       &.active {

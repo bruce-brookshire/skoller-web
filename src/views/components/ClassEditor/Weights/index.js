@@ -50,17 +50,25 @@ class Weights extends React.Component {
       return (
         <WeightType
           isPoints={cl.is_points}
+          pointTotal={cl.is_points ? totalPoints : 0}
+          onChange={this.onChangeTotalPoints.bind(this)}
           onSubmit={this.onTypeSelection.bind(this)}
         />
       )
     } else if (cl.is_points && !totalPoints && !isReview) {
       // ask for total points
       return (
-        <PointTotal
+        <WeightType
+          isPoints={cl.is_points}
+          pointTotal={cl.is_points ? totalPoints : 0}
           onChange={this.onChangeTotalPoints.bind(this)}
-          totalPoints={totalPoints}
-          reset={() => this.setState({reset: true})}
+          onSubmit={this.onTypeSelection.bind(this)}
         />
+        // <PointTotal
+        //   onChange={this.onChangeTotalPoints.bind(this)}
+        //   totalPoints={totalPoints} // should be pointTotal={totalPoints}
+        //   reset={() => this.setState({reset: true})}
+        // />
       )
     } else {
       return this.renderWeightsContent()
@@ -202,7 +210,7 @@ class Weights extends React.Component {
   /*
   * Toggle the weights from percentages to points or vice versa.
   */
-  onTypeSelection (isPoints) {
+  onTypeSelection (isPoints, points) {
     const {cl} = this.props
 
     if (isPoints) {
