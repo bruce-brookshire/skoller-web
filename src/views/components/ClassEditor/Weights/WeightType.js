@@ -44,7 +44,7 @@ class WeightType extends React.Component {
             <div className="indiv-checkbox">
               <div className="checkbox-appearance"
                 style={{ backgroundColor: this.state.isPoints ? 'transparent' : '#57b9e4' }}
-                onClick={(value) => {
+                onClick={() => {
                   this.setState({ isPoints: false })
                 }}
               />
@@ -55,7 +55,7 @@ class WeightType extends React.Component {
             <div className="indiv-checkbox">
               <div className="checkbox-appearance"
                 style={{ backgroundColor: !this.state.isPoints ? 'transparent' : '#57b9e4' }}
-                onClick={(value) => {
+                onClick={() => {
                   this.setState({ isPoints: true })
                 }}
               />

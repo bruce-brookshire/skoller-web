@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import PointTotal from './PointTotal'
+// import PointTotal from './PointTotal'
 import WeightForm from './WeightForm'
 import WeightTable from './WeightTable'
 import WeightType from './WeightType'
@@ -214,7 +214,7 @@ class Weights extends React.Component {
     const {cl} = this.props
 
     if (isPoints) {
-      this.setState({totalPoints: 0, reset: false})
+      this.setState({totalPoints: points, reset: false})
     } else {
       this.setState({totalPoints: 100, reset: false})
     }
