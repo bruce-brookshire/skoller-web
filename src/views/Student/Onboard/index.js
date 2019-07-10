@@ -10,11 +10,9 @@ import moment from 'moment'
 import LoginVerificationModal from '../../components/LoginForm/LoginVerificationModal'
 import {Cookies} from 'react-cookie'
 import actions from '../../../actions'
-// import SkProgressBar from '../../components/SkProgressBar'
 import SelectSchool from './SelectSchool'
 import FindAClass from './FindAClass'
 import FirstClass from './FirstClass'
-// import {browserHistory} from 'react-router'
 
 @inject('rootStore') @observer
 class OnboardLayout extends React.Component {
@@ -135,7 +133,7 @@ class Onboard extends React.Component {
           <NavBar />
           <TopNav />
           <div className='layout'>
-            {this.state.step === 'verify'
+            {(this.state.step === 'verify')
               ? this.renderVerify()
               : null
             }

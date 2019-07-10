@@ -65,7 +65,7 @@ class skProgressBar extends React.Component {
 
     const markerStyle = {
       position: 'absolute',
-      transform: `translate(${(this.state.measureWidth * this.props.progress) - 16}px, -4px)`,
+      transform: `translate(${(this.state.measureWidth * this.props.progress) - 16}px, -5px)`,
       width: '16px',
       height: '16px',
       boxSizing: 'border-box',
