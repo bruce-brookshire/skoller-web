@@ -15,6 +15,13 @@
         @include sk-standard-button;
       }
 
+      .disabled {
+        p {
+          background-color: $cn-form-border;
+          cursor: auto;
+        }
+      }
+
       .onboard-select-school {
         h1 {
           margin-bottom: 0;

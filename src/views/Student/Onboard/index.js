@@ -104,7 +104,12 @@ class Onboard extends React.Component {
   renderSelectSchool () {
     return (
       this.renderOnboardContent(
-        <SelectSchool onSubmit={() => this.setState({step: 'find-a-class'})}/>
+        <SelectSchool onSubmit={(data) => {
+          this.setState({
+            step: 'find-a-class',
+            selectSchoolData: data
+          })
+        }}/>
       )
     )
   }
@@ -112,7 +117,7 @@ class Onboard extends React.Component {
   renderFindAClass () {
     return (
       this.renderOnboardContent(
-        <FindAClass onSubmit={() => this.setState({step: 'first-class'})}/>
+        <FindAClass onSubmit={() => this.setState({step: 'first-class'})} params={this.state.selectSchoolData}/>
       )
     )
   }

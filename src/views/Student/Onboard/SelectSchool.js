@@ -5,6 +5,7 @@ import { observer, inject } from 'mobx-react'
 import actions from '../../../actions'
 import CreateSchoolModal from '../FindClasses/CreateSchoolModal'
 import SkModal from '../../components/SkModal/SkModal'
+import moment from 'moment'
 
 @inject('rootStore') @observer
 class SelectSchool extends React.Component {
@@ -16,11 +17,14 @@ class SelectSchool extends React.Component {
       loading: true,
       loadingAutocomplete: true,
       schoolChoice: null,
+      termChoice: null,
       showCreateSchoolModal: false,
       input: null,
       foundSchools: null,
       showSchoolOptions: false,
-      sammiMessage: null
+      showTermOptions: false,
+      sammiMessage: null,
+      activeTerm: null
     }
   }
 
@@ -40,6 +44,7 @@ class SelectSchool extends React.Component {
         sammiMessage: sammiMessage,
         loading: false,
         schoolChoice: (response.length === 1) ? response[0] : null,
+        activeTerm: (response.length === 1) ? this.findActiveTerm(response[0]) : null,
         showSchoolOptions: (response.length > 1)
       })
     })
@@ -78,9 +83,9 @@ class SelectSchool extends React.Component {
                 onClick={() => {
                   this.setState({
                     schools: [],
-                    schoolChoice: school,
                     input: null
                   })
+                  this.setSchoolChoice(school)
                   this.schoolField.innerHTML = null
                 }}
               >
@@ -113,7 +118,7 @@ class SelectSchool extends React.Component {
       <div className='sk-select-school'>
         <div className='sk-select-school-label'>School</div>
         {this.state.schoolChoice
-          ? <div className='sk-select-school-field' onClick={() => this.setState({schoolChoice: null})}>
+          ? <div className='sk-select-school-field' onClick={() => this.setState({schoolChoice: null, activeTerm: null, termChoice: null, showTermOptions: false})}>
             {this.renderSchoolChoice()}
           </div>
           : <div
@@ -145,10 +150,12 @@ class SelectSchool extends React.Component {
             <div
               key={school.id}
               className='sk-select-school-selected-school sk-select-school-option'
-              onClick={() => this.setState({
-                schoolChoice: school,
-                showSchoolOptions: false
-              })}
+              onClick={() => {
+                this.setSchoolChoice(school)
+                this.setState({
+                  showSchoolOptions: false
+                })
+              }}
             >
               <h3 className='sk-select-school-selected-school-name' style={{color: school.color ? ('#' + school.color) : null}}>
                 {school.name}
@@ -176,25 +183,111 @@ class SelectSchool extends React.Component {
     )
   }
 
+  findActiveTerm = (school) => {
+    let activeTerm = null
+    school.periods.forEach(term => {
+      if (term.class_period_status.name === 'Active') {
+        activeTerm = term
+      }
+    })
+    return activeTerm
+  }
+
+  setSchoolChoice = (school) => {
+    this.setState({schoolChoice: school, activeTerm: this.findActiveTerm(school)})
+  }
+
   renderTermField () {
     return (
       <div className='sk-select-school-term'>
-        <div>
+        <div className='sk-select-school-term-label'>
           Select Term
         </div>
-        <div className='sk-select-school-selected-school'>
-          thing
-        </div>
+        {this.state.termChoice
+          ? <div
+            className='sk-select-school-term-field'
+            onClick={() => this.setState({showTermOptions: !this.state.showTermOptions})}
+            ref={termField => { this.termField = termField } }
+          >
+            <div key={this.state.termChoice.id} className='sk-select-school-term-choice'>
+              <h3>{this.state.termChoice.name}</h3>
+              <div className='sk-select-school-term-dates'>
+                {moment(this.state.termChoice.start_date).format('MMMM')} - {moment(this.state.termChoice.end_date).format('MMMM')}
+              </div>
+            </div>
+          </div>
+          : <div
+            className='sk-select-school-term-field'
+            onClick={() => this.setState({showTermOptions: !this.state.showTermOptions})}
+            ref={termField => { this.termField = termField } }
+          >
+            <div key={this.state.activeTerm.id} className='sk-select-school-term-choice'>
+              <h3>{this.state.activeTerm.name}</h3>
+              <div className='sk-select-school-term-dates'>
+                {moment(this.state.activeTerm.start_date).format('MMMM')} - {moment(this.state.activeTerm.end_date).format('MMMM')}
+              </div>
+            </div>
+          </div>
+        }
+        {this.state.showTermOptions
+          ? this.renderTermOptions()
+          : null
+        }
+      </div>
+    )
+  }
+
+  renderTermOptions () {
+    let terms = this.state.schoolChoice.periods
+    let termFieldWidth = this.termField.offsetWidth
+    return (
+      <div
+        className='sk-select-school-term-options'
+      >
+        {terms.map(term => {
+          if (term.class_period_status.name !== 'Past') {
+            return (
+              <div
+                key={term.id}
+                className='sk-select-school-term-option'
+                style={{
+                  width: (termFieldWidth - 10).toString() + 'px'
+                }}
+                onClick={() => {
+                  this.setState({
+                    termChoice: term,
+                    showTermOptions: false
+                  })
+                }}
+              >
+                <h3>{term.name}</h3>
+                <div className='sk-select-school-term-dates'>
+                  {moment(term.start_date).format('MMMM')} - {moment(term.end_date).format('MMMM')}
+                </div>
+              </div>
+            )
+          }
+        })}
       </div>
     )
   }
 
   onSubmitSchool () {
-    actions.students.setStudentPrimarySchool(this.props.rootStore.userStore.user.id, this.state.schoolChoice.id)
-    // this.props.onSubmit()
+    actions.students.setStudentPrimarySchool(this.props.rootStore.userStore.user.id, this.props.rootStore.userStore.user.student.id, this.state.schoolChoice.id)
+      .then(() => {
+        if (!this.state.termChoice) {
+          this.setState({termChoice: this.state.activeTerm})
+        }
+        this.props.onSubmit(this.state)
+        console.log(this.state)
+      })
   }
 
   render () {
+    let disableNext = false
+    if ((!this.state.termChoice || !this.state.activeTerm) && (!this.state.schoolChoice)) {
+      disableNext = true
+    }
     return (
       <div>
         <SkProgressBar progress={0.25} width={'100%'} backgroundColor={'$cn-color-blue'}/>
@@ -214,7 +307,10 @@ class SelectSchool extends React.Component {
               ? this.renderSchoolOptions()
               : this.renderSchool()
             }
-            <div className='onboard-next' onClick={() => this.onSubmitSchool()}>
+            <div
+              className={'onboard-next' + (disableNext ? ' disabled' : '')}
+              onClick={(disableNext ? null : () => this.onSubmitSchool())}
+            >
               <p>Next</p>
             </div>
             {this.state.showCreateSchoolModal

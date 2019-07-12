@@ -21,9 +21,8 @@ export function getStudentByLink (link) {
 * @param [string] userId. Student ID
 * @param [string] schoolId. School ID
 */
-export function setStudentPrimarySchool (userId, schoolId) {
-  let form = {'student': {'primary_school_id': schoolId}}
-  console.log(form)
+export function setStudentPrimarySchool (userId, studentId, schoolId) {
+  let form = {'student': {'id': studentId, 'primary_school_id': schoolId}}
   return put(`/api/v1/users/${userId}`, form, 'Error setting school. Try again.')
     .then(response => {
       return response
