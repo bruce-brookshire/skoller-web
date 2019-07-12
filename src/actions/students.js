@@ -1,4 +1,4 @@
-import {get} from '../utilities/api'
+import {get, put} from '../utilities/api'
 
 /*
 * Get student and link details
@@ -9,6 +9,24 @@ export function getStudentByLink (link) {
   return get(`/api/v1/student-link/${link}`, '', 'Error finding student. Try again.')
     .then(data => {
       return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Get student and link details
+*
+* @param [string] userId. Student ID
+* @param [string] schoolId. School ID
+*/
+export function setStudentPrimarySchool (userId, schoolId) {
+  let form = {'student': {'primary_school_id': schoolId}}
+  console.log(form)
+  return put(`/api/v1/users/${userId}`, form, 'Error setting school. Try again.')
+    .then(response => {
+      return response
     })
     .catch(error => {
       return Promise.reject(error)

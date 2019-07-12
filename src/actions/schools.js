@@ -168,6 +168,20 @@ export function getMostCommonSchool () {
 }
 
 /*
+* Get the all the schools for given email domain
+*
+*/
+export function getSchoolsByEmailDomain (domain) {
+  return get(`/api/v1/email_domains/${domain}/check`, '', 'Error fetching schools. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
 * Get the all schools for signup
 *
 */

@@ -10,14 +10,12 @@ const {userStore} = stores
 */
 export function authenticateUser (form) {
   userStore.loading = true
-  console.log(form)
 
   return post(`/api/v1/users/login`, form, '')
     .then(data => {
       userStore.authToken = `Bearer ${data.token}`
       userStore.user = data.user
       userStore.loading = false
-      console.log('hi')
     })
     .catch(error => {
       userStore.loading = false
@@ -82,7 +80,6 @@ export function registerUser (form) {
       userStore.authToken = `Bearer ${data.token}`
       userStore.user = data
       userStore.loading = false
-      console.log(userStore)
     })
     .catch(error => {
       userStore.loading = false
@@ -136,12 +133,9 @@ export function registerUserAdmin (form) {
 * Fetch user to set state.
 */
 export function getUserByToken (token) {
-  console.log('running getUserByToken')
-  console.log(token)
   if (token) {
     return post(`/api/v1/users/token-login`, '', '', token)
       .then(data => {
-        console.log(data)
         userStore.user = data.user
         userStore.authToken = token
         return data
