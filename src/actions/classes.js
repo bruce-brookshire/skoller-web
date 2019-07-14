@@ -42,6 +42,25 @@ export function searchStudentClasses (schoolId, name) {
 }
 
 /*
+ * Search classes by param
+ *
+ * @params [Object] param. Search parameters.
+ */
+export function searchSchoolStudentClasses (periodId, name) {
+  return get(
+    `/api/v1/periods/${periodId}/classes`,
+    `class_name=${name}`,
+    'Error searching classes. Try again.'
+  )
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
  * Get class by id
  *
  * @param [Number] classId. The id of the class to get.
