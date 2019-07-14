@@ -30,7 +30,7 @@ class Weights extends React.Component {
   initializeState () {
     return {
       currentWeight: null,
-      noWeights: null,
+      noWeights: false,
       totalPoints: null,
       weights: [],
       reset: false
@@ -45,30 +45,15 @@ class Weights extends React.Component {
     const {cl, isReview} = this.props
     const {totalPoints, reset, weights} = this.state
 
-    if (((!cl.is_points && !totalPoints && weights.length === 0) || reset) && !isReview) {
+    if (((!totalPoints && weights.length === 0) || reset) && !isReview) {
       // ask for weights or points
       return (
         <WeightType
           isPoints={cl.is_points}
-          pointTotal={cl.is_points ? totalPoints : 0}
+          pointTotal={totalPoints || 0}
           onChange={this.onChangeTotalPoints.bind(this)}
           onSubmit={this.onTypeSelection.bind(this)}
         />
-      )
-    } else if (cl.is_points && !totalPoints && !isReview) {
-      // ask for total points
-      return (
-        <WeightType
-          isPoints={cl.is_points}
-          pointTotal={cl.is_points ? totalPoints : 0}
-          onChange={this.onChangeTotalPoints.bind(this)}
-          onSubmit={this.onTypeSelection.bind(this)}
-        />
-        // <PointTotal
-        //   onChange={this.onChangeTotalPoints.bind(this)}
-        //   totalPoints={totalPoints} // should be pointTotal={totalPoints}
-        //   reset={() => this.setState({reset: true})}
-        // />
       )
     } else {
       return this.renderWeightsContent()

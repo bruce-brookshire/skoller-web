@@ -102,8 +102,9 @@ class WeightForm extends React.Component {
 
   render () {
     const {form} = this.state
-    const {formErrors, updateProperty, numWeights, noWeights, cl} = this.props
-    console.log(this.state)
+    const {formErrors, updateProperty, numWeights, noWeights} = this.props
+    // console.log(this.props)
+    // console.log(updateProperty)
 
     return (
       <div id='cn-weight-form'>
@@ -115,7 +116,7 @@ class WeightForm extends React.Component {
         </div>
         <hr />
         <div className="weight-type">
-          <div
+          <div className='selector'
             style={{
               backgroundColor: this.state.isPoints ? 'transparent' : '#57b9e4',
               color: this.state.isPoints ? '#57b9e4' : '#ffffff'
@@ -125,7 +126,7 @@ class WeightForm extends React.Component {
             }}>
             Percentage
           </div>
-          <div
+          <div className='selector'
             style={{
               backgroundColor: this.state.isPoints ? '#57b9e4' : 'transparent',
               color: this.state.isPoints ? '#ffffff' : '#57b9e4'

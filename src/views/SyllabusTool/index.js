@@ -19,8 +19,7 @@ const steps = [ 'Weights', 'Assignments' ]
 
 const ContentEnum = {
   WEIGHTS: 0,
-  ASSIGNMENTS: 1,
-  REVIEW: 2
+  ASSIGNMENTS: 1
 }
 
 @inject('rootStore') @observer
