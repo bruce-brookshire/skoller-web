@@ -105,6 +105,7 @@ class SyllabusTool extends React.Component {
   onUpdateClass (form) {
     let {navbarStore} = this.props.rootStore
     actions.classes.updateClass(form).then((cl) => {
+      console.log('onUpdateClass:', cl.is_points)
       navbarStore.cl = cl
     }).catch(() => false)
   }

@@ -40,7 +40,7 @@ class WeightForm extends React.Component {
     const {weight} = this.props
     return {
       form: this.initializeFormData(weight),
-      isPoints: this.props.cl.is_points,
+      isPoints: this.props.boolPoints, // should be boolPoints from index
       loading: false
     }
   }
@@ -100,11 +100,12 @@ class WeightForm extends React.Component {
     }).catch(() => { this.setState({loading: false}) })
   }
 
-  render () {
+  render () { // issue: renders before onUpdateClass finishes --solved
     const {form} = this.state
     const {formErrors, updateProperty, numWeights, noWeights} = this.props
     // console.log(this.props)
     // console.log(updateProperty)
+    // console.log('WeightForm: ', this.state.isPoints)
 
     return (
       <div id='cn-weight-form'>
@@ -123,6 +124,7 @@ class WeightForm extends React.Component {
             }}
             onClick={() => {
               this.setState({ isPoints: false })
+              // this.props.onClick(false)
             }}>
             Percentage
           </div>
@@ -133,6 +135,7 @@ class WeightForm extends React.Component {
             }}
             onClick={() => {
               this.setState({ isPoints: true })
+              // this.props.onClick(true)
             }}>
             Points
           </div>
@@ -202,7 +205,8 @@ WeightForm.propTypes = {
   noWeights: PropTypes.bool,
   numWeights: PropTypes.number,
   onNoWeightChecked: PropTypes.func,
-  reset: PropTypes.func
+  reset: PropTypes.func,
+  boolPoints: PropTypes.bool
 }
 
 export default ValidateForm(Form(WeightForm, 'form'))

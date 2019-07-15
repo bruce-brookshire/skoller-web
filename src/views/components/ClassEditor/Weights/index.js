@@ -33,7 +33,8 @@ class Weights extends React.Component {
       noWeights: false,
       totalPoints: null,
       weights: [],
-      reset: false
+      reset: false,
+      boolPoints: this.props.cl.is_points
     }
   }
 
@@ -50,7 +51,7 @@ class Weights extends React.Component {
       return (
         <WeightType
           isPoints={cl.is_points}
-          pointTotal={totalPoints || 0}
+          pointTotal={totalPoints || 100}
           onChange={this.onChangeTotalPoints.bind(this)}
           onSubmit={this.onTypeSelection.bind(this)}
         />
@@ -108,6 +109,7 @@ class Weights extends React.Component {
             onNoWeightChecked={(checked) => {
               this.setState({noWeights: checked})
             }}
+            boolPoints={this.state.boolPoints}
             reset={() => this.setState({reset: true})}
           />
         }
@@ -197,11 +199,10 @@ class Weights extends React.Component {
   */
   onTypeSelection (isPoints, points) {
     const {cl} = this.props
-
     if (isPoints) {
-      this.setState({totalPoints: points, reset: false})
+      this.setState({totalPoints: points, reset: false, boolPoints: true})
     } else {
-      this.setState({totalPoints: 100, reset: false})
+      this.setState({totalPoints: 100, reset: false, boolPoints: false})
     }
     this.props.onUpdateClass({id: cl.id, is_points: isPoints})
   }
