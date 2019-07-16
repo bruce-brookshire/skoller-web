@@ -4,6 +4,9 @@ import PropTypes from 'prop-types'
 import { inject, observer } from 'mobx-react'
 import actions from '../../../actions'
 import moment from 'moment'
+import ProfessorForm from '../../../views/components/ProfessorForm'
+import SkModal from '../../components/SkModal/SkModal'
+import { action } from 'mobx';
 
 @inject('rootStore') @observer
 class SelectSchool extends React.Component {
@@ -15,10 +18,13 @@ class SelectSchool extends React.Component {
       classChoice: null,
       classes: [],
       loadingAutocompleteClasses: false,
-      input: null,
+      loadingAutocompleteProfessors: false,
+      loadingSubmit: false,
+      name: null,
       showSubjectCodeSectionField: false,
       showMeetTimesDaysField: false,
       showProfessorField: false,
+      showProfessorAutocomplete: false,
       subject: null,
       code: null,
       section: null,
@@ -32,7 +38,13 @@ class SelectSchool extends React.Component {
         'F': false,
         'Sa': false
       },
-      isOnline: false
+      isOnline: false,
+      professor: null,
+      professorChoice: null,
+      professors: null,
+      meetTimeHour: '1',
+      meetTimeMinute: '00',
+      isNewClass: false
     }
   }
 
@@ -45,6 +57,18 @@ class SelectSchool extends React.Component {
       }).catch(() => { this.setState({loadingAutocompleteClasses: false}) })
     } else {
       this.setState({classes: [], loadingAutocompleteClasses: false})
+    }
+  }
+
+  searchProfessors (value) {
+    this.setState({loadingAutocompleteProfessors: true})
+    if (value) {
+      this.setState({loadingAutocompleteProfessors: true})
+      actions.professors.searchProfessors(value, this.props.params.schoolChoice.id).then((professors) => {
+        this.setState({professors, loadingAutocompleteProfessors: false})
+      }).catch(() => { this.setState({loadingAutocompleteProfessors: false}) })
+    } else {
+      this.setState({professors: [], loadingAutocompleteProfessors: false})
     }
   }
 
@@ -91,7 +115,7 @@ class SelectSchool extends React.Component {
           onClick={() => {
             this.setState({
               isNewClass: true,
-              classChoice: {'name': this.state.input},
+              classChoice: {'name': this.state.name},
               showClassNameAutocomplete: false,
               showSubjectCodeSectionField: true
             })
@@ -101,7 +125,7 @@ class SelectSchool extends React.Component {
             padding: '8px 4px 0 4px'
           }}
         >
-          Can&apos;t find your class? Click to add <b style={{color: '#57B9E4'}}>{this.state.input}</b> to the Skoller Cloud! ☁️
+          Can&apos;t find your class? Click to add <b style={{color: '#57B9E4'}}>{this.state.name}</b> to the Skoller Cloud! ☁️
         </div>
       </div>
     )
@@ -159,11 +183,11 @@ class SelectSchool extends React.Component {
               contentEditable={true}
               onInput={e => {
                 this.searchClasses(e.currentTarget.textContent)
-                this.setState({input: e.currentTarget.textContent, showClassNameAutocomplete: true})
+                this.setState({name: e.currentTarget.textContent, showClassNameAutocomplete: true})
               }}
             />
         }
-        {(this.state.classes && this.state.input && this.state.showClassNameAutocomplete)
+        {(this.state.classes && this.state.name && this.state.showClassNameAutocomplete)
           ? this.renderClassNameAutocomplete()
           : null
         }
@@ -336,8 +360,10 @@ class SelectSchool extends React.Component {
                   key={day}
                   className={className}
                   onClick={() => {
-                    meetDays[day] = !this.state.meetDays[day]
-                    this.setState({meetDays})
+                    if (!this.state.isOnline) {
+                      meetDays[day] = !this.state.meetDays[day]
+                      this.setState({meetDays})
+                    }
                   }}
                 >
                   {day}
@@ -371,10 +397,222 @@ class SelectSchool extends React.Component {
     )
   }
 
+  renderProfessorAutocomplete () {
+    return (
+      <div
+        className='sk-find-class-p-autocomplete-container'
+        style={{
+          width: this.professorField.offsetWidth.toString() + 'px'
+        }}
+      >
+        {this.state.professors.map(professor => {
+          return (
+            <div
+              className='sk-find-class-p-autocomplete-option'
+              key={professor.id}
+              onClick={() => {
+                let classChoice = this.state.classChoice
+                classChoice.professor = professor
+                this.setState({
+                  professorChoice: professor,
+                  classChoice: classChoice,
+                  showProfessorAutocomplete: false
+                })
+              }}
+            >
+              {professor.name_first} {professor.name_last} <span className='sk-find-class-p-email'>{professor.email}</span>
+            </div>
+          )
+        })}
+        <div
+          className='sk-find-class-p-autocomplete-option sk-blue'
+          style={{
+            border: 'none',
+            padding: '8px 4px 0 4px'
+          }}
+          onClick={() => this.setState({showNewProfessorModal: true})}
+        >
+          Create a new professor
+        </div>
+      </div>
+    )
+  }
+
+  renderNewProfessorModal () {
+    let classChoice = this.state.classChoice
+    return (
+      <SkModal closeModal={() => this.setState({showNewProfessorModal: false})}>
+        <ProfessorForm
+          schoolId={this.props.params.schoolChoice.id}
+          isUniversity={this.props.params.schoolChoice.is_university}
+          onSubmit={(professor) => {
+            classChoice.professor = professor
+            this.setState({
+              showNewProfessorModal: false,
+              classChoice: classChoice,
+              professorChoice: professor,
+              showProfessorAutocomplete: false
+            })
+          }}
+        />
+      </SkModal>
+    )
+  }
+
+  clearProfessor () {
+    let classChoice = this.state.classChoice
+    delete classChoice.professor
+    this.setState({
+      classChoice: classChoice,
+      professor: null,
+      professorChoice: null
+    })
+  }
+
   renderProfessorField () {
     return (
-      <div>professor</div>
+      <div className='sk-find-class-p-container'>
+        {this.state.showNewProfessorModal
+          ? this.renderNewProfessorModal()
+          : null
+        }
+        <div className='sk-find-class-p-item'>
+          <div className='sk-find-class-p-label'>
+            Professor
+          </div>
+          <div
+            className='sk-find-class-p-field'
+            ref={professorField => { this.professorField = professorField } }
+            onClick={() => this.clearProfessor()}
+          >
+            {this.state.professorChoice === null
+              ? <input
+                type='string'
+                placeholder='e.g. Smith'
+                value={this.state.professor}
+                onChange={(e) => {
+                  this.searchProfessors(e.target.value)
+                  this.setState({professor: e.target.value, showProfessorAutocomplete: true})
+                }}
+              />
+              : <p>
+                {this.state.professorChoice.name_first} {this.state.professorChoice.name_last}
+              </p>
+            }
+          </div>
+          {(this.state.showProfessorAutocomplete && this.state.professor && this.state.professors)
+            ? this.renderProfessorAutocomplete()
+            : null
+          }
+        </div>
+      </div>
     )
+  }
+
+  renderForm () {
+    let meetDaysChecked = false
+    Object.keys(this.state.meetDays).forEach(day => {
+      if (this.state.meetDays[day]) {
+        meetDaysChecked = true
+      }
+    })
+    return (
+      <div>
+        {this.state.showSubjectCodeSectionField
+          ? this.renderSubjectCodeSectionField()
+          : null
+        }
+        {(this.state.showMeetTimesDaysField || (this.state.subject && this.state.code && this.state.section))
+          ? this.renderMeetTimesDaysField()
+          : null
+        }
+        {this.state.showProfessorField || (meetDaysChecked || this.state.isOnline)
+          ? this.renderProfessorField()
+          : null
+        }
+      </div>
+    )
+  }
+
+  getMeetDays () {
+    let meetDays = ''
+    Object.keys(this.state.meetDays).forEach(day => {
+      let abbrDay
+      if (this.state.meetDays[day]) {
+        if (day === 'Su') {
+          abbrDay = 'U'
+        } else if (day === 'Tu') {
+          abbrDay = 'T'
+        } else if (day === 'Th') {
+          abbrDay = 'R'
+        } else if (day === 'Sa') {
+          abbrDay = 'S'
+        } else {
+          abbrDay = day
+        }
+        meetDays = meetDays + abbrDay
+      }
+    })
+    return meetDays
+  }
+
+  getMeetStartTime () {
+    let meetStartTime = ''
+    let hour = this.state.meetTimeHour
+    if (!this.state.isAm) {
+      hour = (parseInt(this.state.meetTimeHour) + 12).toString()
+    }
+    if (parseInt(hour) < 10) {
+      hour = '0' + hour.toString()
+    }
+    meetStartTime = hour + ':' + this.state.meetTimeMinute + ':00'
+    return meetStartTime
+  }
+
+  validateForm () {
+    if (
+      this.state.name &&
+      (
+        this.state.subject &&
+        this.state.code &&
+        this.state.section
+      ) &&
+      (
+        (
+          this.state.meetTimeHour &&
+          this.state.meetTimeMinute
+        ) ||
+        this.state.isOnline
+      ) &&
+        this.state.professorChoice
+    ) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  handleSubmit () {
+    const form = {
+      'name': this.state.name,
+      'subject': this.state.subject.toUpperCase(),
+      'code': this.state.code,
+      'section': this.state.section,
+      'crn': null,
+      'meet_start_time': this.state.isOnline ? null : this.getMeetStartTime(),
+      'meet_days': this.state.isOnline ? 'Online' : this.getMeetDays(),
+      'location': null,
+      'type': null,
+      'class_period_id': this.props.params.termChoice.id,
+      'professor': this.state.classChoice.professor
+    }
+    if (this.validateForm()) {
+      this.setState({loadingSubmit: true})
+      actions.classes.createClass(form, this.props.params.termChoice.id).then((response) => {
+        this.setState({loadingSubmit: false})
+        this.props.onSubmit()
+      })
+    }
   }
 
   render () {
@@ -397,27 +635,25 @@ class SelectSchool extends React.Component {
           </h3>
           <div className="onboard-find-class-sammi-container">
             <img src='/src/assets/images/sammi/Wow@3x.png' />
-            <div className="sammi-message"><p>Find your first class!</p></div>
+            <div className="sammi-message" >
+              <p>Find your first class!</p>
+            </div>
           </div>
         </div>
         <div className='sk-find-class-form'>
           {this.renderClassNameField()}
-          {this.state.showSubjectCodeSectionField
-            ? this.renderSubjectCodeSectionField()
-            : null
-          }
-          {(this.state.showMeetTimesDaysField || (this.state.subject && this.state.code && this.state.section))
-            ? this.renderMeetTimesDaysField()
-            : null
-          }
-          {this.state.showProfessorField
-            ? this.renderProfessorField()
+          {this.state.isNewClass
+            ? this.renderForm()
             : null
           }
         </div>
         <div
-          className={'onboard-next' + ((this.state.classChoice && !this.state.isNewClass) || (this.state.classChoice) ? '' : ' disabled')}
-          onClick={() => this.props.onSubmit()}
+          className={'onboard-next' + ((this.validateForm()) ? '' : ' disabled')}
+          onClick={() => {
+            if (this.validateForm && !this.state.loadingSubmit) {
+              this.handleSubmit()
+            }
+          }}
         >
           <p>Next</p>
         </div>

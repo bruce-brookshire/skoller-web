@@ -72,6 +72,10 @@
         }
       }
     }
+
+    .sk-blue {
+      color: $cn-color-blue;
+    }
   }
 
   .sk-find-class-scs-container {
@@ -120,6 +124,7 @@
         display: flex;
         flex-direction: row;
         justify-content: left;
+        @include not-selectable;
 
         .sk-find-class-mtd-time {
           display: flex;
@@ -178,7 +183,7 @@
         .disabled {
           background-color: rgba(0,0,0,.12);
           color: white;
-          cursor: inherit;
+          cursor: auto;
 
           select {
             color: white;
@@ -200,6 +205,7 @@
         margin: 0 0 0.5rem 0;
 
         .sk-find-class-mtd-day {
+          @include not-selectable;
           margin-right: -1px;
           border: 1px solid $cn-form-border;
           height: 36px;
@@ -235,14 +241,79 @@
         }
       }
     }
+
     .sk-find-class-mtd-item-online {
       flex: 0 0 100%;
       display: inline-flex;
       justify-content: right;
-      margin: -4px 0 0.25rem 0;
+      margin: -4px 0 0 0;
+      @include not-selectable;
 
       p {
         margin: 4px 0 0 0;
+      }
+    }
+  }
+
+  .sk-find-class-p-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+
+    .sk-find-class-p-item {
+      margin: 0 0 0.5rem 0;
+      width: 100%;
+      box-sizing: border-box;
+
+      .sk-find-class-p-field {
+        @include remove-form-styling;
+        border: 1px solid $cn-form-border;
+        border-radius: 5px;
+        height: 36px;
+        padding: 4px;
+        width: 100%;
+        cursor: pointer;
+  
+        input {
+          width: 100%;
+          padding: 6px 20px 15px 0;
+          margin-bottom: 0.5rem;
+        }
+
+        p {
+          margin: 6px 0 0 0;
+        }
+      }
+
+      .sk-find-class-p-autocomplete-container {
+        cursor: pointer;
+        box-sizing: border-box;
+        padding: 4px;
+        background-color: white;
+        border: 1px solid $cn-form-border;
+        border-radius: 5px;
+        position: absolute;
+        margin-top: -1px;
+        max-height: 120px;
+        overflow: scroll;
+    
+        .sk-find-class-p-autocomplete-option {
+          padding: 4px 12px 4px 4px;
+          border-bottom: 1px solid $cn-form-border;
+    
+          &:hover {
+            background-color: rgba(0,0,0,.05);
+          }
+    
+          .sk-find-class-p-email {
+            color: $cn-form-border;
+          }
+        }
+    
+        .sk-blue {
+          color: $cn-color-blue;
+        }
       }
     }
   }

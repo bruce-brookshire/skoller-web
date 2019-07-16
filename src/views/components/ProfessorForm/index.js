@@ -76,6 +76,12 @@ class ProfessorForm extends React.Component {
     }
   }
 
+  exportProfessor (professor) {
+    if (this.props.exportProfessor) {
+      this.props.exportProfessor(professor)
+    }
+  }
+
   render () {
     const {form, editMode} = this.state
     const {formErrors, updateProperty, isUniversity} = this.props
@@ -170,7 +176,8 @@ ProfessorForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   schoolId: PropTypes.number.isRequired,
   isUniversity: PropTypes.bool,
-  professor: PropTypes.object
+  professor: PropTypes.object,
+  exportProfessor: PropTypes.func
 }
 
 export default ValidateForm(Form(ProfessorForm, 'form'))
