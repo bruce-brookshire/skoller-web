@@ -618,9 +618,13 @@ class SelectSchool extends React.Component {
         actions.classes.createClass(form, this.props.params.termChoice.id).then((response) => {
           this.setState({loadingSubmit: false})
           this.props.onSubmit()
+          actions.classes.enrollInClass(response.id)
         })
       }
     } else {
+      actions.classes.enrollInClass(this.state.classChoice.id).then(response => {
+        console.log(response)
+      })
       this.props.onSubmit()
     }
   }

@@ -13,6 +13,7 @@
 
       .onboard-next {
         @include sk-standard-button;
+        @include not-selectable;
       }
 
       .disabled {
@@ -85,7 +86,7 @@
           flex-direction: row;
           justify-content: center;
           align-items: center;
-          padding: 16px;
+          padding: 0 0 16px 0;
 
           .sammi-message {
             @include sammi-message-right;

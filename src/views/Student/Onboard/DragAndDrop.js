@@ -61,36 +61,39 @@ class DragAndDrop extends React.Component {
     div.removeEventListener('drop', this.handleDrop)
   }
 
+  handleClick () {
+    this.fileUploader.click()
+  }
+
   render () {
     return (
       <div
         className='sk-drag-and-drop'
         ref={dropRef => { this.dropRef = dropRef }}
+        onClick={() => this.handleClick()}
       >
-        {this.state.dragging &&
-          <div
-            className='sk-drag-and-drop-overlaw'
-            style={{
-              border: 'dashed grey 1px',
-              backgroundColor: 'rgba(255,255,255,.8)',
-              position: 'absolute',
-              top: 0,
-              bottom: 0,
-              left: 0,
-              right: 0,
-              zIndex: 1
-            }}
-          >
-          </div>
-        }
         {this.props.children}
+        <input
+          type="file"
+          id="file"
+          ref={fileUploader => { this.fileUploader = fileUploader }}
+          style={{display: 'none'}}
+          onChange={(e) => this.props.handleDrop(e.target.files)}
+        />
+        {this.props.disabled
+          ? null
+          : this.state.dragging &&
+          <div className='sk-drag-and-drop-overlay' />
+        }
       </div>
     )
   }
 }
 
 DragAndDrop.propTypes = {
-  children: PropTypes.object
+  children: PropTypes.object,
+  disabled: PropTypes.bool,
+  handleDrop: PropTypes.func
 }
 
 export default DragAndDrop

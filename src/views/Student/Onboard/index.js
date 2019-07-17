@@ -13,6 +13,7 @@ import actions from '../../../actions'
 import SelectSchool from './SelectSchool'
 import FindAClass from './FindAClass'
 import FirstClass from './FirstClass'
+import { browserHistory } from 'react-router'
 
 @inject('rootStore') @observer
 class OnboardLayout extends React.Component {
@@ -125,7 +126,7 @@ class Onboard extends React.Component {
   renderFirstClass () {
     return (
       this.renderOnboardContent(
-        <FirstClass onSubmit={() => this.setState({step: 'select-school'})} />
+        <FirstClass onSubmit={() => browserHistory.push('/student')} />
       )
     )
   }

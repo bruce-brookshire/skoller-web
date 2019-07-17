@@ -2,10 +2,15 @@
   .sk-onboard-first-class-row {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     margin: 0 0 1rem 0;
 
-    .sk-onboard-first-class-checklist-container {
+    .sk-onboard-first-class-mobile-message {
+      margin: 0;
+      text-align: center;
+    }
+
+    .sk-onboard-first-class-info-container {
       flex-shrink: 0;
       margin-right: 8px;
       background-image: url('/src/assets/images/onboarding/onboard-background.png');
@@ -17,10 +22,33 @@
       flex-direction: column;
       justify-content: center;
 
-      .sk-onboard-first-class-checklist {
+      .sk-onboard-first-class-info {
         padding: 0px 12px;
+        color: white;
 
-        .sk-onboard-first-class-checklist-item {
+        .sk-onboard-first-class-info-status {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          height: 100%;
+
+          i {
+            margin-bottom: 4px;
+          }
+
+          h3 {
+            text-align: center;
+            margin: 4px 0;
+            line-height: 18px;
+          }
+          
+          .orange {
+            color: #ffb163;
+          }
+        }
+
+        .sk-onboard-first-class-info-item {
           display: flex;
           flex-direction: row;
           justify-content: left;
@@ -35,6 +63,10 @@
             color: $cn-color-green;
           }
 
+          .yellow {
+            color: $cn-color-yellow;
+          }
+
           p {
             font-size: 12px;
             color: white;
@@ -44,33 +76,79 @@
       }
     }
 
-    .sk-onboard-first-class-file-drop-container {
+    .sk-onboard-first-class-action-container {
+      height: 168px;
       width: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
 
-      .sk-drag-and-drop {
-        height: 100%;
-        width: 100%;
+      .sk-onboard-first-class-action-detail {
+        height: 168px;
         display: flex;
+        flex-direction: column;
         justify-content: center;
-        align-items: center;
         text-align: center;
-        border: 1px dashed $cn-form-border;
-        border-radius: 5px;
-        position: relative;
-
-        .sk-drag-and-drop-overlay {
-          border: dashed grey 1px;
-          background-color: rgba(255,255,255,.8);
-          position: absolute;
-          z-index: 1;
-        }
       }
 
-      .sk-blue {
-        color: blue;
+      .sk-onboard-first-class-file-drop-container {
+        height: 168px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+  
+        .sk-onboard-first-class-file-drop-files {
+          color: #4a4a4a;
+          max-height: 100%;
+          overflow: scroll;
+  
+          .sk-onboard-first-class-file-drop-file {
+            display: flex;
+            flex-direction: row;
+            padding: 2px;
+  
+            i {
+              margin: -2px 4px 0 0;
+            }
+  
+            p {
+              max-width: 136px;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              margin: 0;
+            }
+          }
+        }
+  
+        .sk-drag-and-drop {
+          height: 48%;
+          padding: 8px;
+          box-sizing: border-box;
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          border: 1px dashed $cn-color-blue;
+          color: rgba(0,0,0,.45);
+          cursor: pointer;
+          border-radius: 5px;
+          position: relative;
+          background-color: rgba(0,0,0,0.02);
+  
+          &:hover {
+            background-color: rgba(0,0,0,0.05);
+          }
+  
+          .sk-drag-and-drop-overlay {
+            background-color: rgba(0,0,0,.05);
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1;
+          }
+        }
       }
     }
   }
