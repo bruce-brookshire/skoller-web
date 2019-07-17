@@ -6,6 +6,7 @@ import actions from '../../../actions'
 import CreateSchoolModal from '../FindClasses/CreateSchoolModal'
 import SkModal from '../../components/SkModal/SkModal'
 import moment from 'moment'
+import SkLoader from '../../../assets/sk-icons/SkLoader';
 
 @inject('rootStore') @observer
 class SelectSchool extends React.Component {
@@ -290,7 +291,10 @@ class SelectSchool extends React.Component {
     }
     return (
       <div>
-        <SkProgressBar progress={0.25} width={'100%'} backgroundColor={'$cn-color-blue'}/>
+        {this.state.loading
+          ? <SkLoader />
+          : <SkProgressBar progress={0.25} width={'100%'} backgroundColor={'$cn-color-blue'}/>
+        }
         {this.state.loading
           ? null
           : <div>

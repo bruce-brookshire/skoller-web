@@ -570,22 +570,28 @@ class SelectSchool extends React.Component {
   }
 
   validateForm () {
-    if (
-      this.state.name &&
-      (
-        this.state.subject &&
-        this.state.code &&
-        this.state.section
-      ) &&
-      (
+    if (this.state.isNewClass) {
+      if (
+        this.state.name &&
         (
-          this.state.meetTimeHour &&
-          this.state.meetTimeMinute
-        ) ||
-        this.state.isOnline
-      ) &&
-        this.state.professorChoice
-    ) {
+          this.state.subject &&
+          this.state.code &&
+          this.state.section
+        ) &&
+        (
+          (
+            this.state.meetTimeHour &&
+            this.state.meetTimeMinute
+          ) ||
+          this.state.isOnline
+        ) &&
+          this.state.professorChoice
+      ) {
+        return true
+      } else {
+        return false
+      }
+    } else if (this.state.classChoice) {
       return true
     } else {
       return false
@@ -593,25 +599,29 @@ class SelectSchool extends React.Component {
   }
 
   handleSubmit () {
-    const form = {
-      'name': this.state.name,
-      'subject': this.state.subject.toUpperCase(),
-      'code': this.state.code,
-      'section': this.state.section,
-      'crn': null,
-      'meet_start_time': this.state.isOnline ? null : this.getMeetStartTime(),
-      'meet_days': this.state.isOnline ? 'Online' : this.getMeetDays(),
-      'location': null,
-      'type': null,
-      'class_period_id': this.props.params.termChoice.id,
-      'professor': this.state.classChoice.professor
-    }
-    if (this.validateForm()) {
-      this.setState({loadingSubmit: true})
-      actions.classes.createClass(form, this.props.params.termChoice.id).then((response) => {
-        this.setState({loadingSubmit: false})
-        this.props.onSubmit()
-      })
+    if (this.state.isNewClass) {
+      const form = {
+        'name': this.state.name,
+        'subject': this.state.subject.toUpperCase(),
+        'code': this.state.code,
+        'section': this.state.section,
+        'crn': null,
+        'meet_start_time': this.state.isOnline ? null : this.getMeetStartTime(),
+        'meet_days': this.state.isOnline ? 'Online' : this.getMeetDays(),
+        'location': null,
+        'type': null,
+        'class_period_id': this.props.params.termChoice.id,
+        'professor': this.state.classChoice.professor
+      }
+      if (this.validateForm()) {
+        this.setState({loadingSubmit: true})
+        actions.classes.createClass(form, this.props.params.termChoice.id).then((response) => {
+          this.setState({loadingSubmit: false})
+          this.props.onSubmit()
+        })
+      }
+    } else {
+      this.props.onSubmit()
     }
   }
 
@@ -650,7 +660,7 @@ class SelectSchool extends React.Component {
         <div
           className={'onboard-next' + ((this.validateForm()) ? '' : ' disabled')}
           onClick={() => {
-            if (this.validateForm && !this.state.loadingSubmit) {
+            if (this.validateForm() && !this.state.loadingSubmit) {
               this.handleSubmit()
             }
           }}
