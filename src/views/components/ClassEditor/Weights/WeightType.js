@@ -83,6 +83,7 @@ class WeightType extends React.Component {
                 onChange={updateProperty}
                 type="number"
                 value={form.pointTotal}
+                min={0}
               />
             </div> : null}
         </div>

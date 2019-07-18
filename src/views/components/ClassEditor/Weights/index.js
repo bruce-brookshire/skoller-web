@@ -47,7 +47,6 @@ class Weights extends React.Component {
 
     if (((!totalPoints && weights.length === 0) || reset) && !isReview) {
       // ask for weights or points
-      console.log(this.state.totalPoints)
       return (
         <WeightType
           isPoints={cl.is_points}
@@ -260,7 +259,7 @@ class Weights extends React.Component {
   */
   onChangeTotalPoints (totalPoints) {
     this.setState({totalPoints})
-  }
+  } // unused
 
   render () {
     return (
