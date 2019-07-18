@@ -40,7 +40,7 @@ class WeightForm extends React.Component {
     const {weight} = this.props
     return {
       form: this.initializeFormData(weight),
-      isPoints: this.props.boolPoints, // should be boolPoints from index
+      isPoints: this.props.boolPoints,
       loading: false
     }
   }
@@ -124,7 +124,7 @@ class WeightForm extends React.Component {
             }}
             onClick={() => {
               this.setState({ isPoints: false })
-              // this.props.onClick(false)
+              this.props.onClick(false)
             }}>
             Percentage
           </div>
@@ -135,7 +135,7 @@ class WeightForm extends React.Component {
             }}
             onClick={() => {
               this.setState({ isPoints: true })
-              // this.props.onClick(true)
+              this.props.onClick(true)
             }}>
             Points
           </div>
@@ -206,7 +206,8 @@ WeightForm.propTypes = {
   numWeights: PropTypes.number,
   onNoWeightChecked: PropTypes.func,
   reset: PropTypes.func,
-  boolPoints: PropTypes.bool
+  boolPoints: PropTypes.bool,
+  onClick: PropTypes.func
 }
 
 export default ValidateForm(Form(WeightForm, 'form'))

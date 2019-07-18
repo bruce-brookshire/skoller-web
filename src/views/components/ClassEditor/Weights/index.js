@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-// import PointTotal from './PointTotal'
 import WeightForm from './WeightForm'
 import WeightTable from './WeightTable'
 import WeightType from './WeightType'
@@ -48,6 +47,7 @@ class Weights extends React.Component {
 
     if (((!totalPoints && weights.length === 0) || reset) && !isReview) {
       // ask for weights or points
+      console.log(this.state.totalPoints)
       return (
         <WeightType
           isPoints={cl.is_points}
@@ -110,6 +110,7 @@ class Weights extends React.Component {
               this.setState({noWeights: checked})
             }}
             boolPoints={this.state.boolPoints}
+            onClick={this.onChangeType.bind(this)}
             reset={() => this.setState({reset: true})}
           />
         }
@@ -207,6 +208,16 @@ class Weights extends React.Component {
     this.props.onUpdateClass({id: cl.id, is_points: isPoints})
   }
 
+  onChangeType (isPoints) {
+    const {cl} = this.props
+    if (isPoints) {
+      this.setState({boolPoints: true})
+    } else {
+      this.setState({boolPoints: false})
+    }
+    this.props.onUpdateClass({id: cl.id, is_points: isPoints})
+  }
+
   /*
   * On create weight, push weight onto array
   *
@@ -245,7 +256,7 @@ class Weights extends React.Component {
 
   /*
   * If weights are in points, update the total points.
-  * Call back from PointTotal.
+  * Call back from WeightType.
   */
   onChangeTotalPoints (totalPoints) {
     this.setState({totalPoints})

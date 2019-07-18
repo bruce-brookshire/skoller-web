@@ -16,18 +16,21 @@ class WeightType extends React.Component {
     this.state = {
       isPoints: this.props.isPoints,
       form: {
-        pointTotal: props.pointTotal
+        pointTotal: this.props.pointTotal
       }
+    }
+  }
+
+  onSubmit () {
+    if (this.props.validateForm(this.state.form, pointField)) {
+      this.props.onSubmit(this.state.isPoints, this.state.form.pointTotal)
     }
   }
 
   render () {
     const {form} = this.state
-    // console.log(this.state.isPoints)
-    // console.log(this.state)
     const {formErrors, updateProperty} = this.props
-    // console.log(this.props)
-    // console.log(updateProperty)
+    console.log(typeof (this.state.form.pointTotal), this.state.form.pointTotal)
     return (
       <div className='cn-weight-type'>
         <div className='cn-section-content-header'>
@@ -75,9 +78,8 @@ class WeightType extends React.Component {
               <InputField
                 containerClassName='input-container'
                 inputClassName='point-value-input'
-                // error={formErrors.pointTotal}
                 name="pointTotal"
-                error={formErrors.name}
+                error={formErrors.pointTotal}
                 onChange={updateProperty}
                 type="number"
                 value={form.pointTotal}
@@ -87,7 +89,7 @@ class WeightType extends React.Component {
         <div className='button-container'>
           <button
             className='margin-top margin-bottom button full-width'
-            onClick={() => this.props.onSubmit(this.state.isPoints, this.state.form.pointTotal)}
+            onClick={this.onSubmit.bind(this)}
           >
             Next
           </button>
