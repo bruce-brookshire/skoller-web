@@ -317,6 +317,7 @@ class SelectSchool extends React.Component {
             >
               <p>Next</p>
             </div>
+            {this.props.renderPartner()}
             {this.state.showCreateSchoolModal
               ? <SkModal closeModal={() => this.setState({showCreateSchoolModal: false})}>
                 <CreateSchoolModal
@@ -334,7 +335,8 @@ class SelectSchool extends React.Component {
 
 SelectSchool.propTypes = {
   onSubmit: PropTypes.func,
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  renderPartner: PropTypes.func
 }
 
 export default SelectSchool

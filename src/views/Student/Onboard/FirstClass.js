@@ -43,8 +43,9 @@ class SelectSchool extends React.Component {
         let status
         let sammiMessage
         let mobileMessage
-        // let id = cl.status.id
-        let id = 1100
+        let id = cl.status.id
+        // let id = 1100
+        // ^ for testing
         if (id === 1100) {
           status = 'needSyllabus'
           sammiMessage = `Yay! You're in your first class. Let's get it set up!`
@@ -320,6 +321,7 @@ class SelectSchool extends React.Component {
           : null
         }
         {this.renderNextButton()}
+        {this.props.renderPartner()}
       </div>
     )
   }
@@ -338,7 +340,8 @@ class SelectSchool extends React.Component {
 
 SelectSchool.propTypes = {
   onSubmit: PropTypes.func,
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  renderPartner: PropTypes.func
 }
 
 export default SelectSchool

@@ -2,6 +2,14 @@
   float: right;
 }
 
+.onboard-loading {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .onboard-container {
   .layout{  
     .onboard-content {
@@ -14,6 +22,28 @@
       .onboard-next {
         @include sk-standard-button;
         @include not-selectable;
+      }
+
+      .onboard-partner {
+        @include not-selectable;
+        text-align: center;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin: 8px 0 -2px 0;
+
+        p {
+          font-size: 14px;
+          font-weight: 200;
+          margin: 4px 0 0 0;
+        }
+
+        img {
+          margin-left: 4px;
+          max-width: 64px;
+          max-height: 48px;
+        }
       }
 
       .disabled {

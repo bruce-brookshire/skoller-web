@@ -671,6 +671,7 @@ class SelectSchool extends React.Component {
         >
           <p>Next</p>
         </div>
+        {this.props.renderPartner()}
       </div>
     )
   }
@@ -679,7 +680,8 @@ class SelectSchool extends React.Component {
 SelectSchool.propTypes = {
   onSubmit: PropTypes.func,
   rootStore: PropTypes.object,
-  params: PropTypes.object
+  params: PropTypes.object,
+  renderPartner: PropTypes.func
 }
 
 export default SelectSchool

@@ -4,16 +4,25 @@ import Menu from './Menu'
 
 class TopNav extends React.Component {
   render () {
-    return (
-      <div className='cn-top-nav'>
-        <Menu {...this.props} />
-      </div>
-    )
+    if (this.props.onboard) {
+      return (
+        <div className='cn-top-nav'>
+          fake data
+        </div>
+      )
+    } else {
+      return (
+        <div className='cn-top-nav'>
+          <Menu {...this.props} />
+        </div>
+      )
+    }
   }
 }
 
 TopNav.propTypes = {
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  onboard: PropTypes.bool
 }
 
 export default TopNav

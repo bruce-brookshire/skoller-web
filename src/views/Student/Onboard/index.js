@@ -1,5 +1,6 @@
 import React from 'react'
 import calendarData from './calendarData'
+import partners from './partners'
 import NavBar from '../../../components/NavBar'
 import TopNav from '../../../components/TopNav'
 import SkModal from '../../components/SkModal/SkModal'
@@ -10,10 +11,12 @@ import moment from 'moment'
 import LoginVerificationModal from '../../components/LoginForm/LoginVerificationModal'
 import {Cookies} from 'react-cookie'
 import actions from '../../../actions'
+import SignUp from './SignUp'
 import SelectSchool from './SelectSchool'
 import FindAClass from './FindAClass'
 import FirstClass from './FirstClass'
 import { browserHistory } from 'react-router'
+import SkLoader from '../../../assets/sk-icons/SkLoader'
 
 @inject('rootStore') @observer
 class OnboardLayout extends React.Component {
@@ -40,11 +43,17 @@ class Onboard extends React.Component {
   constructor (props) {
     super(props)
 
+    this.loginStudent()
+
     this.state = {
-      step: this.props.params.step,
+      step: 'sign-up',
       calendarData: this.generateCalendarData(),
-      loading: true
+      partner: this.getPartner(),
+      loading: true,
+      user: this.props.rootStore.userStore.user !== undefined ? this.props.rootStore.userStore.user : null
     }
+
+    console.log(this.state)
 
     this.cookie = new Cookies()
 
@@ -53,6 +62,60 @@ class Onboard extends React.Component {
 
   componentDidMount () {
     this.loginStudent()
+  }
+
+  async loginStudent () {
+    if (this.cookie.get('skollerToken')) {
+      await actions.auth.getUserByToken(this.cookie.get('skollerToken')).catch((r) => console.log(r))
+      this.getStep()
+      console.log('has token')
+    } else {
+      if (this.state.user) {
+        console.log('setting step: verify')
+        this.setState({step: 'verify', loading: false})
+      } else if (this.state.partner !== null) {
+        console.log('setting step: sign-up')
+        this.setState({step: 'sign-up', loading: false})
+      } else {
+        browserHistory.push('/landing')
+      }
+      console.log('does not have token')
+    }
+  }
+
+  async getStep () {
+    const user = this.state.user
+    let classNumber = 0
+    if (user) {
+      await actions.classes.getStudentClassesById(user.student.id).then(classes => {
+        classNumber = classes.length
+      }).catch(r => console.log(r))
+      if (classNumber > 1) {
+        browserHistory.push('/student')
+      }
+      if (!user.student.primary_school) {
+        this.setState({step: 'select-school'})
+      } else if (classNumber === 0) {
+        this.setState({step: 'select-school'})
+      } else if (classNumber === 1) {
+        this.setState({step: 'first-class'})
+      } else {
+        browserHistory.push('/student')
+      }
+    } else {
+      browserHistory.push('/landing')
+    }
+    this.setState({loading: false})
+  }
+
+  getPartner () {
+    let partner = null
+    Object.keys(partners).forEach(partnerKey => {
+      if (partners[partnerKey].slug === this.props.params.partner) {
+        partner = partners[partnerKey]
+      }
+    })
+    return partner
   }
 
   randomDate (start, end) {
@@ -76,17 +139,8 @@ class Onboard extends React.Component {
     this.setState({step: 'select-school'})
   }
 
-  loginStudent () {
-    if (this.cookie.get('skollerToken')) {
-      actions.auth.getUserByToken(this.cookie.get('skollerToken')).then(() => {
-        this.setState({loading: false})
-      }).catch((r) => console.log(r))
-    } else {
-      this.setState({loading: false})
-    }
-  }
-
   renderVerify () {
+    console.log('trying to render verify')
     return (
       <LoginVerificationModal phone={this.props.rootStore.userStore.user.student.phone} closeModal={null} onSubmit={this.onVerificationSubmit}/>
     )
@@ -102,15 +156,44 @@ class Onboard extends React.Component {
     )
   }
 
+  renderPartner = () => {
+    if (this.state.partner) {
+      return (
+        <div className='onboard-partner'>
+          <p>in partnership with</p> <img src={this.state.partner.logo} />
+        </div>
+      )
+    }
+  }
+
+  renderSignUp () {
+    return (
+      this.renderOnboardContent(
+        <SignUp
+          onSubmit={() => {
+            this.setState({
+              step: 'select-school'
+            })
+          }}
+          renderPartner={this.renderPartner}
+          partner={this.state.partner}
+        />
+      )
+    )
+  }
+
   renderSelectSchool () {
     return (
       this.renderOnboardContent(
-        <SelectSchool onSubmit={(data) => {
-          this.setState({
-            step: 'find-a-class',
-            selectSchoolData: data
-          })
-        }}/>
+        <SelectSchool
+          onSubmit={(data) => {
+            this.setState({
+              step: 'find-a-class',
+              selectSchoolData: data
+            })
+          }}
+          renderPartner={this.renderPartner}
+        />
       )
     )
   }
@@ -118,7 +201,11 @@ class Onboard extends React.Component {
   renderFindAClass () {
     return (
       this.renderOnboardContent(
-        <FindAClass onSubmit={() => this.setState({step: 'first-class'})} params={this.state.selectSchoolData}/>
+        <FindAClass
+          onSubmit={() => this.setState({step: 'first-class'})}
+          params={this.state.selectSchoolData}
+          renderPartner={this.renderPartner}
+        />
       )
     )
   }
@@ -126,7 +213,10 @@ class Onboard extends React.Component {
   renderFirstClass () {
     return (
       this.renderOnboardContent(
-        <FirstClass onSubmit={() => browserHistory.push('/student')} />
+        <FirstClass
+          onSubmit={() => browserHistory.push('/student')}
+          renderPartner={this.renderPartner}
+        />
       )
     )
   }
@@ -134,11 +224,23 @@ class Onboard extends React.Component {
   render () {
     return (
       (this.state.loading)
-        ? null
+        ? <div className='onboard-loading'>
+          <SkLoader />
+        </div>
         : <div className='onboard-container'>
-          <NavBar />
-          <TopNav />
+          {this.state.step === 'sign-up'
+            ? <NavBar onboard={true} />
+            : <NavBar />
+          }
+          {this.state.step === 'sign-up'
+            ? <TopNav onboard={true} />
+            : <TopNav />
+          }
           <div className='layout'>
+            {(this.state.step === 'sign-up')
+              ? this.renderSignUp()
+              : null
+            }
             {(this.state.step === 'verify')
               ? this.renderVerify()
               : null
