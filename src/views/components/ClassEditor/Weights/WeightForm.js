@@ -173,7 +173,7 @@ class WeightForm extends React.Component {
               this.props.onNoWeightChecked(value)
             }}
             value={noWeights}
-            containerClassName='margin-top'
+            containerClassName='margin-top no-weights'
             inputClassName='margin-right'
             label={'Weights were not provided on the syllabus.'}
           />
