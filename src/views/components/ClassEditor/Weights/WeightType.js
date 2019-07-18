@@ -30,6 +30,7 @@ class WeightType extends React.Component {
   render () {
     const {form} = this.state
     const {formErrors, updateProperty} = this.props
+
     console.log(typeof (this.state.form.pointTotal), this.state.form.pointTotal)
     return (
       <div className='cn-weight-type'>

@@ -199,6 +199,9 @@ class Weights extends React.Component {
   */
   onTypeSelection (isPoints, points) {
     const {cl} = this.props
+    if (typeof (points) === 'string') {
+      points = parseInt(points, 10)
+    }
     if (isPoints) {
       this.setState({totalPoints: points, reset: false, boolPoints: true})
     } else {
