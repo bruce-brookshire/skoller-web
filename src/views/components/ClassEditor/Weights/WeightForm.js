@@ -117,7 +117,7 @@ class WeightForm extends React.Component {
         </div>
         <hr />
         <div className="weight-type">
-          <div className='selector'
+          <div className='selector percentage'
             style={{
               backgroundColor: this.state.isPoints ? 'transparent' : '#57b9e4',
               color: this.state.isPoints ? '#57b9e4' : '#ffffff'
@@ -128,7 +128,7 @@ class WeightForm extends React.Component {
             }}>
             Percentage
           </div>
-          <div className='selector'
+          <div className='selector points'
             style={{
               backgroundColor: this.state.isPoints ? '#57b9e4' : 'transparent',
               color: this.state.isPoints ? '#ffffff' : '#57b9e4'

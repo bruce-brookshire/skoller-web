@@ -1,10 +1,19 @@
 #cn-weights {
   #cn-weight-table {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid $cn-color-grey;
+    border-radius: 5px;
+
     #cn-weight-table-label {
-      font-size: 14px;
-      margin-bottom: $unit-space / 2;
+      font-size: 17px;
+      font-weight: 600;
+      color: #4a4a4a;
+      background-color: #bdbdbd;
+      border-radius: 4px 4px 0 0;
       display: flex;
       justify-content: space-between;
+      padding: 10px 0px 3px 10px;
     }
   }
 
@@ -59,6 +68,28 @@
         .message-bubble {
           display: block;
         }
+      }
+    }
+  }
+
+  .submit-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+
+    .submit-weights {
+      border-radius: 4px;
+      width: 70%;
+      height: 1.5em;
+      min-height: 1.5em;
+      background-color: #36bf36;
+      font-size: 18px;
+      padding-top: 6px;
+      box-shadow: 0px 2px 4px #888888;
+
+      &.disabled {
+        color: #ffffff !important;
       }
     }
   }

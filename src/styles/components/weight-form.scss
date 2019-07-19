@@ -48,9 +48,16 @@
       padding-top: 4px;
       padding-bottom: 1px;
       border: 1px solid #57B9E4;
-      border-radius: 5px;
       color: #59B9E4;
       font-size: 9pt;
+    }
+
+    .percentage {
+      border-radius: 5px 0 0 5px;
+    }
+
+    .points {
+      border-radius: 0 5px 5px 0;
     }
   }
 
@@ -74,10 +81,11 @@
     font-size: 14pt;
     height: 1.6em;
     min-height: 1.6em;
+    user-select: none;
   }
 
   .pct {
     font-size: 20px;
-    margin: 0px 0px -2.5px 8px !important;
+    margin: 0px 0px -2.5px 5px !important;
   }
 }

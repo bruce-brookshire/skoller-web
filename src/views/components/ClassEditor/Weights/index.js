@@ -116,7 +116,7 @@ class Weights extends React.Component {
         {weights.length !== 0 &&
           <div id='cn-weight-table'>
             <div id='cn-weight-table-label'>
-              {isReview ? 'Weights' : 'Saved weights'}
+              {isReview ? 'Weights' : 'Saved Weights'}
               {isReview && <a onClick={() => this.props.onEdit()}>Edit</a>}
             </div>
             <WeightTable
@@ -129,6 +129,17 @@ class Weights extends React.Component {
               totalPoints={totalPoints}
               onEdit={() => this.props.onEdit()}
             />
+            {(weights.length !== 0 || noWeights) && !isReview &&
+              <div className='submit-container'>
+                <button
+                  onClick={() => this.props.onSubmit()}
+                  disabled={disableButton}
+                  className={`submit-weights button margin-bottom ${disableButton ? 'disabled' : ''}`}
+                >
+                  Submit Weights
+                </button>
+              </div>
+            }
           </div>
         }
         {weights.length !== 0 &&
@@ -137,17 +148,7 @@ class Weights extends React.Component {
             {this.renderExtraCredit()}
             {!cl.is_points && this.renderWeightTotalWarning()}
           </div>
-          {!cl.is_points && <div>*The total should be 100%</div>}
         </div>}
-        {(weights.length !== 0 || noWeights) && !isReview &&
-          <button
-            onClick={() => this.props.onSubmit()}
-            disabled={disableButton}
-            className={disableButton ? 'button full-width disabled margin-bottom' : 'button full-width margin-bottom'}
-          >
-            Submit Weights
-          </button>
-        }
       </div>
     )
   }

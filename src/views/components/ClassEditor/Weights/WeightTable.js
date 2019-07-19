@@ -84,14 +84,14 @@ class WeightTable extends React.Component {
 
     return (
       <div className='row'>
-        <div className='col-xs-9'>
-          <span>Total*:</span>
+        <div className='col-xs-4'>
+          <span>Total:</span>
         </div>
-        <div className='col-xs-3 right-text'>
+        <div className='col-xs-8 right-text'>
           <span>
             {
               !cl.is_points
-                ? `${total.toFixed(2)}%`
+                ? `${(Math.round(total) === total ? total : total.toFixed(2))}% / 100%`
                 : totalPointsRatio
             }</span>
         </div>
