@@ -96,7 +96,7 @@ class Weights extends React.Component {
 
     let disableButton = !this.isTotalWeightSecure() && !noWeights
     return (
-      <div>
+      <div className='cn-weights-subcontainer'>
         {!isReview &&
           <WeightForm
             cl={cl}
@@ -134,7 +134,7 @@ class Weights extends React.Component {
                 <button
                   onClick={() => this.props.onSubmit()}
                   disabled={disableButton}
-                  className={`submit-weights button margin-bottom ${disableButton ? 'disabled' : ''}`}
+                  className={`submit-weights button ${disableButton ? 'disabled' : ''}`}
                 >
                   Submit Weights
                 </button>

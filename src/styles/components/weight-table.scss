@@ -19,15 +19,22 @@
 
   .table-row {
     cursor: pointer;
-    padding: 0.5em;
+    padding: 0.4em 0.5em 0em 0.3em;
     padding-right: 0;
-    font-size: 14px;
+    font-size: 17.5px;
     display: flex;
     flex-direction: row;
     width: 100%;
+
     .bold {
       font-weight: 600;
     }
+
+    img {
+      height: 15px;
+      width: 15px;
+    }
+
     &:hover {
       background-color: darken($cn-color-white, 10%);
     }
@@ -37,9 +44,25 @@
     }
   }
 
-  #class-weights-total {
-    border-top: 1px solid $cn-color-grey;
-    padding: 0.5em;
-    font-size: 14px;
+  #weight-table-container {
+    height: 100%;
+
+    #weight-rows-only {
+      height: 83%;
+      padding-top: 0.4em;
+    }
+
+    #class-weights-total {
+      border-top: 1px solid $cn-color-grey;
+      padding: 0.8em 0.5em 0.5em 0.6em;
+
+      .total-label {
+        font-size: 17px;
+      }
+
+      .total-value {
+        font-size: 17px;
+      }
+    }
   }
 }
