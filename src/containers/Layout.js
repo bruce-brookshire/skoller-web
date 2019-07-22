@@ -6,12 +6,32 @@ import TopNav from '../components/TopNav'
 
 @inject('rootStore') @observer
 class Layout extends React.Component {
+  isStudent () {
+    const roles = this.props.rootStore.userStore.user.roles
+    let isStudent = false
+    roles.forEach(role => {
+      if (role.name === 'Student') {
+        isStudent = true
+      }
+    })
+    return isStudent
+  }
+
   render () {
+    let layoutStyle = {
+      top: this.isStudent() ? '64px' : '96px'
+    }
+
     return (
       <div>
         <NavBar />
-        <TopNav />
-        <div className='layout'>
+        {!this.isStudent() &&
+          <TopNav />
+        }
+        <div
+          className='layout'
+          style={layoutStyle}
+        >
           {this.props.children}
         </div>
       </div>

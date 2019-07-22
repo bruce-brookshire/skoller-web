@@ -7,19 +7,23 @@
     flex-direction: column;
   }
 
+  box-sizing: border-box;
+  padding: 1rem;
+
   .home-column {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 0 0.5rem;
 
     .home-shadow-box {
-      width: calc((100vw - 200px) / 2 - 36px);
+      box-sizing: border-box;
+      width: calc(((100vw - 200px) / 2) - 2rem);
       @include skoller-cell;
       max-width: 464px;
-      margin: 16px 16px;
 
       @media only screen and (max-width: $sk-home-break-point) {
-        width: calc((100vw - 232px));
+        width: calc((100vw - 200px) - 5rem);
         margin: 16px 16px;
       }
   

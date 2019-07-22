@@ -6,9 +6,7 @@ class TopNav extends React.Component {
   render () {
     if (this.props.onboard) {
       return (
-        <div className='cn-top-nav'>
-          fake data
-        </div>
+        <div className='cn-top-nav' />
       )
     } else {
       return (
