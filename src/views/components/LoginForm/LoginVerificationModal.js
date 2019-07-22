@@ -50,7 +50,6 @@ class Verification extends React.Component {
   * Sumbit the verification code for authorization.
   */
   onSubmit = () => {
-    console.log('running loginverificationmodal onSubmit')
     actions.auth.loginStudentWithPhone(this.getForm().phone, this.getForm().verification_code).then((response) => {
       const { userStore: { authToken } } = this.props.rootStore
       this.cookie.remove('skollerToken', { path: '/' })
