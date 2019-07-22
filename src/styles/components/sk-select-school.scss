@@ -1,0 +1,115 @@
+.sk-select-school {
+  .sk-select-school-label {
+  }
+
+  .sk-select-school-field {
+    @include onboard-form-field;
+
+    .sk-select-school-selected-school {
+      cursor: pointer;
+
+      .sk-select-school-selected-school-name {
+        margin: 0;
+      }
+    }
+
+    .sk-select-school-option {
+      padding: 4px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgba(0,0,0,.05);
+      }
+    }
+  }
+
+  .sk-select-school-term {
+    .sk-select-school-term-field {
+      @include onboard-form-field;
+      cursor: pointer;
+
+      .sk-select-school-term-choice {
+        h3 {
+          margin: 0;
+        }
+
+        .sk-select-school-term-dates {
+          float: right;
+          margin: -20px 0 0 0;
+          color: rgba(0,0,0,0.25);
+        }
+      }
+    }
+
+    .sk-select-school-term-options {
+      cursor: pointer;
+      box-sizing: border-box;
+      padding: 4px;
+      background-color: white;
+      border: 1px solid $cn-form-border;
+      border-radius: 5px;
+      position: absolute;
+      margin-top: -9px;
+      max-height: 200px;
+      overflow: scroll;
+
+      .sk-select-school-term-option {
+        padding: 4px;
+
+        &:hover {
+          background-color: rgba(0,0,0,.05);
+        }
+
+        h3 {
+          margin: 0;
+        }
+
+        .sk-select-school-term-dates {
+          float: right;
+          margin: -20px 0 0 0;
+          color: rgba(0,0,0,0.25);
+        }
+      }
+    }
+  }
+
+  .sk-select-school-autocomplete-container {
+    cursor: pointer;
+    box-sizing: border-box;
+    padding: 4px;
+    background-color: white;
+    border: 1px solid $cn-form-border;
+    border-radius: 5px;
+    position: absolute;
+    margin-top: -9px;
+    max-height: 200px;
+    overflow: scroll;
+
+    .sk-select-school-choice {
+      padding: 4px;
+      box-sizing: border-box;
+
+      h3 {
+        margin: 0;
+      }
+  
+      p {
+        margin: 0;
+      }
+
+      &:hover {
+        background-color: rgba(0,0,0,.05);
+      }
+    }
+
+    .sk-select-school-create-new {
+      padding: 4px 4px 0 4px;
+      color: $cn-color-blue;
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgba(0,0,0,.05);
+      }
+    }
+  }
+}

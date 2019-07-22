@@ -1,0 +1,52 @@
+{
+  "0": {
+    "id": 0,
+    "name": "AOII",
+    "logo": "https://i.imgur.com/gpqZH53.png",
+    "donationAmount": 1,
+    "philanthropy": "The Arthritis Foundation",
+    "primaryColor": "c40030",
+    "secondaryColor": "ef456c",
+    "slug": "aoii"
+  },
+  "1": {
+    "id": 1,
+    "name": "Camp Kesem",
+    "logo": "https://i.imgur.com/AtYGhBN.png",
+    "donationAmount": 1,
+    "philanthropy": "Camp Kesem",
+    "primaryColor": "0091ba",
+    "secondaryColor": "81bd41",
+    "slug": "kesem"
+  },
+  "2": {
+    "id": 2,
+    "name": "ASA",
+    "logo": "https://i.imgur.com/OrQ9XA4.png",
+    "donationAmount": 1,
+    "philanthropy": "The Alpha Sigma Alpha Foundation",
+    "primaryColor": "a02824",
+    "secondaryColor": "be5450",
+    "slug": "asa"
+  },
+  "3": {
+    "id": 3,
+    "name": "Up 'til Dawn",
+    "logo": "https://i.imgur.com/lDcuzf6.png",
+    "donationAmount": 1,
+    "philanthropy": "St. Jude Children's Research Hospital",
+    "primaryColor": "000000",
+    "secondaryColor": "000000",
+    "slug": "utd"
+  },
+  "4": {
+    "id": 4,
+    "name": "Millie",
+    "logo": "https://i.imgur.com/bCaWxLi.png",
+    "donationAmount": 100,
+    "philanthropy": "Millie's Retirement Fund",
+    "primaryColor": "ebd759",
+    "secondaryColor": "eb6ed8",
+    "slug": "millie"
+  }
+}

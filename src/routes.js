@@ -73,7 +73,8 @@ const router = (
       <Route path='/c/:customLink' component={StudentLink} />
       <Route path='/download' component={DownloadApp} />
       <Route path='/pitch-deck' component={PitchDeck} />
-      <Route path='/onboard/:step' component={Onboard} />
+      <Route path='/onboard(/:partner)' component={Onboard} />
+      {/* ^ when we update to React Router v4+, optional params like 'partner' will change to this notation --> /:pathParam? */}
       <Route path='/app' component={Layout} onEnter={requireAuth}>
         <IndexRedirect to='/student/home' />
         <Route path='/student'>

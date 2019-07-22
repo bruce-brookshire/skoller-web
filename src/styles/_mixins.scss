@@ -227,7 +227,7 @@
 // sammi speech bubble
 @mixin sammi-message-right {
   @include skoller-cell;
-  max-width: 256px;
+  max-width: 83%;
   min-height: 40px;
   background: white;
   position: relative;
@@ -238,7 +238,7 @@
   align-items: center;
 
   p {
-    margin: 0.25rem 1.5rem 0rem 1.5rem;
+    margin: 0.25rem 0.5rem 0rem 0.5rem;
     padding: 8px 0;
     width: 100%;
   }
@@ -261,7 +261,7 @@
 
 @mixin sammi-message-left {
   @include skoller-cell;
-  max-width: 256px;
+  max-width: 83%;
   min-height: 40px;
   background: white;
   position: relative;
@@ -272,7 +272,7 @@
   align-items: center;
 
   p {
-    margin: 0.25rem 1.5rem 0rem 1.5rem;
+    margin: 0.25rem 0.5rem 0rem 0.5rem;
     padding: 8px 0;
     width: 100%;
   }
@@ -291,4 +291,26 @@
     border-right: inherit;
     box-shadow: inherit;
   }
+}
+
+@mixin onboard-form-field {
+  height: 100%;
+  min-height: 36px;
+  width: 100%;
+  border: 1px solid $cn-form-border;
+  border-radius: 5px;
+  box-sizing: border-box;
+  margin: 0 0 0.5rem 0;
+  padding: 8px 4px 6px 4px;
+  
+  &:focus {
+    outline: none;
+  }
+}
+
+@mixin not-selectable {
+  -webkit-user-select: none; /* Safari */        
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
 }

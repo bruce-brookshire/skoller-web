@@ -12,6 +12,9 @@
 
 @import 'fonts';
 
+// Assets ----------------------------------------------------------------------
+@import 'assets/sk-loader.scss';
+
 // Forms ----------------------------------------------------------------------
 @import 'forms/mixins/input';
 @import 'forms/checkbox-field';
@@ -54,6 +57,11 @@
 @import 'components/progress-bar.scss';
 @import 'components/search';
 @import 'components/shadow-box';
+@import 'components/sk-select-school.scss';
+@import 'components/sk-find-class-form.scss';
+@import 'components/sk-onboard-first-class.scss';
+@import 'components/sk-onboard-share-partner.scss';
+@import 'components/sk-onboard-sign-up.scss';
 @import 'components/sign-up-form';
 @import 'components/time-fields';
 @import 'components/topnav';
