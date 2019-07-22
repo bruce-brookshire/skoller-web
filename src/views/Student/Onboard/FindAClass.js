@@ -9,7 +9,7 @@ import SkModal from '../../components/SkModal/SkModal'
 import { action } from 'mobx';
 
 @inject('rootStore') @observer
-class SelectSchool extends React.Component {
+class FindAClass extends React.Component {
   constructor (props) {
     super(props)
 
@@ -677,11 +677,11 @@ class SelectSchool extends React.Component {
   }
 }
 
-SelectSchool.propTypes = {
+FindAClass.propTypes = {
   onSubmit: PropTypes.func,
   rootStore: PropTypes.object,
   params: PropTypes.object,
   renderPartner: PropTypes.func
 }
 
-export default SelectSchool
+export default FindAClass

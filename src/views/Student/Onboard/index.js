@@ -17,6 +17,7 @@ import FindAClass from './FindAClass'
 import FirstClass from './FirstClass'
 import { browserHistory } from 'react-router'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
+import SharePartner from './SharePartner'
 
 @inject('rootStore') @observer
 class OnboardLayout extends React.Component {
@@ -53,8 +54,6 @@ class Onboard extends React.Component {
       user: this.props.rootStore.userStore.user !== undefined ? this.props.rootStore.userStore.user : null
     }
 
-    console.log(this.state)
-
     this.cookie = new Cookies()
 
     this.props.rootStore.studentNavStore.setActivePage('calendar')
@@ -67,14 +66,13 @@ class Onboard extends React.Component {
   async loginStudent () {
     if (this.cookie.get('skollerToken')) {
       await actions.auth.getUserByToken(this.cookie.get('skollerToken')).catch((r) => console.log(r))
+      this.setState({user: this.props.rootStore.userStore.user})
       this.getStep()
       console.log('has token')
     } else {
       if (this.state.user) {
-        console.log('setting step: verify')
         this.setState({step: 'verify', loading: false})
       } else if (this.state.partner !== null) {
-        console.log('setting step: sign-up')
         this.setState({step: 'sign-up', loading: false})
       } else {
         browserHistory.push('/landing')
@@ -103,7 +101,7 @@ class Onboard extends React.Component {
         browserHistory.push('/student')
       }
     } else {
-      browserHistory.push('/landing')
+      browserHistory.push('/student')
     }
     this.setState({loading: false})
   }
@@ -140,7 +138,6 @@ class Onboard extends React.Component {
   }
 
   renderVerify () {
-    console.log('trying to render verify')
     return (
       <LoginVerificationModal phone={this.props.rootStore.userStore.user.student.phone} closeModal={null} onSubmit={this.onVerificationSubmit}/>
     )
@@ -172,7 +169,7 @@ class Onboard extends React.Component {
         <SignUp
           onSubmit={() => {
             this.setState({
-              step: 'select-school'
+              step: 'verify'
             })
           }}
           renderPartner={this.renderPartner}
@@ -205,6 +202,7 @@ class Onboard extends React.Component {
           onSubmit={() => this.setState({step: 'first-class'})}
           params={this.state.selectSchoolData}
           renderPartner={this.renderPartner}
+          partner={this.state.partner}
         />
       )
     )
@@ -214,8 +212,31 @@ class Onboard extends React.Component {
     return (
       this.renderOnboardContent(
         <FirstClass
-          onSubmit={() => browserHistory.push('/student')}
+          onSubmit={
+            (this.state.partner)
+              ? () => {
+                this.setState({step: 'share-partner'})
+              }
+              : () => {
+                browserHistory.push('/student')
+              }
+          }
           renderPartner={this.renderPartner}
+          partner={this.state.partner}
+        />
+      )
+    )
+  }
+
+  renderSharePartner () {
+    return (
+      this.renderOnboardContent(
+        <SharePartner
+          onSubmit={() => {
+            browserHistory.push('/student')
+          }}
+          renderPartner={this.renderPartner}
+          partner={this.state.partner}
         />
       )
     )
@@ -255,6 +276,10 @@ class Onboard extends React.Component {
             }
             {this.state.step === 'first-class'
               ? this.renderFirstClass()
+              : null
+            }
+            {this.state.step === 'share-partner'
+              ? this.renderSharePartner()
               : null
             }
             <Calendar onboardData={this.state.calendarData} />

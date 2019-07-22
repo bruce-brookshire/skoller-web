@@ -36,7 +36,17 @@
     "donationAmount": 1,
     "philanthropy": "St. Jude Children's Research Hospital",
     "primaryColor": "000000",
-    "secondaryColor": "4a4a4a",
+    "secondaryColor": "000000",
     "slug": "utd"
+  },
+  "4": {
+    "id": 4,
+    "name": "Millie",
+    "logo": "https://i.imgur.com/bCaWxLi.png",
+    "donationAmount": 100,
+    "philanthropy": "Millie's Retirement Fund",
+    "primaryColor": "ebd759",
+    "secondaryColor": "eb6ed8",
+    "slug": "millie"
   }
 }

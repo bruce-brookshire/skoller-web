@@ -9,7 +9,7 @@ import DragAndDrop from './DragAndDrop'
 import {mobileCheck} from '../../../utilities/display'
 
 @inject('rootStore') @observer
-class SelectSchool extends React.Component {
+class FirstClass extends React.Component {
   constructor (props) {
     super(props)
 
@@ -36,8 +36,6 @@ class SelectSchool extends React.Component {
       }
       if (classes.length > 1) {
         browserHistory.push('/student')
-      } else if (classes.length === 0) {
-        browserHistory.push('/onboard/select-school')
       } else {
         let cl = classes[0]
         let status
@@ -274,11 +272,15 @@ class SelectSchool extends React.Component {
     } else if (this.state.status === 'diy') {
       console.log(`let's DIY`)
     }
-    // this.props.onSubmit()
   }
 
   renderNextButton () {
-    let buttonText = 'Enter Skoller 👉'
+    let buttonText
+    if (this.props.partner) {
+      buttonText = 'Next'
+    } else {
+      buttonText = 'Enter Skoller 👉'
+    }
     if (this.state.status === 'needSyllabus') {
       buttonText = 'Submit'
     } else if (this.state.status === 'diy') {
@@ -338,10 +340,11 @@ class SelectSchool extends React.Component {
   }
 }
 
-SelectSchool.propTypes = {
+FirstClass.propTypes = {
   onSubmit: PropTypes.func,
   rootStore: PropTypes.object,
-  renderPartner: PropTypes.func
+  renderPartner: PropTypes.func,
+  partner: PropTypes.object
 }
 
-export default SelectSchool
+export default FirstClass
