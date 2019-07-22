@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import LoginVerificationModal from './LoginVerificationModal'
-import SkModal from '../../components/SkModal/SkModal'
 import {Cookies} from 'react-cookie'
 import actions from '../../../actions'
 
@@ -39,6 +38,7 @@ class LoginForm extends React.Component {
 
   onSubmit = (event) => {
     event.preventDefault()
+    this.setState({showLoginVerificationModal: true})
     actions.auth.verifyStudentPhoneNumber(this.state.form).then(() => {
       this.setState({showLoginVerificationModal: true})
     }).catch(() => false)

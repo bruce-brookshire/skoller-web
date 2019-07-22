@@ -98,7 +98,9 @@ class Onboard extends React.Component {
       } else if (classNumber === 1) {
         this.setState({step: 'first-class'})
       } else {
-        browserHistory.push('/student')
+        this.setState({step: 'share-partner'})
+        // remove after testing ^^
+        // browserHistory.push('/student')
       }
     } else {
       browserHistory.push('/student')

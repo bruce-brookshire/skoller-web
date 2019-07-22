@@ -1,7 +1,7 @@
 .calendar-container {
   display: flex;
   justify-content: center;
-  padding: 0 0 4px 0;
+  padding: 1rem;
 
   .calendar {
     @include skoller-cell;

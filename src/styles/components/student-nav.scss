@@ -16,7 +16,7 @@
     background-color: rgba(60,60,60,1);
     position: fixed;
     top: 64px;
-    padding-top: 16px;
+    padding-top: 1rem;
     display: flex;
     flex-direction: column;
 
@@ -81,6 +81,32 @@
         @media only screen and (max-width: $sk-mobile-break-point) {
           display: none;
         }
+      }
+    }
+
+    .bottom {
+      margin-top: auto;
+
+      color: white;
+
+      i {
+        margin-top: 4px;
+
+        @media only screen and (max-width: $sk-mobile-break-point) {
+          font-size: 24px;
+          margin: 23px;
+        }
+      }
+
+      @media only screen and (max-width: $sk-mobile-break-point) {
+        flex-direction: column;
+        align-items: center;
+        height: 64px;
+        margin: 0;
+        font-size: 14px;
+        text-align: center;
+        padding: 0;
+        width: calc(100vw / 4);
       }
     }
 
