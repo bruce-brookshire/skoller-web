@@ -265,8 +265,21 @@ class Weights extends React.Component {
     this.setState({totalPoints})
   } // unused
 
+  goBack () {
+    this.setState({reset: true})
+  }
+
   render () {
     return (
+      // <div id='cn-weights-main-container'>
+      //   <div className='margin-bottom margin-top'>
+      //     {/* <a onClick={this.goBack()}>Go back</a> */}
+      //     <a>Go back</a>
+      //   </div>
+      //   <div id='cn-weights'>
+      //     {this.renderContent()}
+      //   </div>
+      // </div>
       <div id='cn-weights'>
         {this.renderContent()}
       </div>

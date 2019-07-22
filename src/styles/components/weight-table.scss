@@ -31,8 +31,12 @@
     }
 
     img {
-      height: 15px;
-      width: 15px;
+      height: 17px;
+      width: 17px;
+    }
+
+    .weight-label {
+      padding-top: 1.5px;
     }
 
     &:hover {
@@ -50,6 +54,7 @@
     #weight-rows-only {
       height: 83%;
       padding-top: 0.4em;
+      overflow-y: auto;
     }
 
     #class-weights-total {

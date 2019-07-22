@@ -36,7 +36,7 @@ class WeightTable extends React.Component {
             </div>
           </div>
         }
-        <div className={viewOnly ? 'col-xs-9' : 'col-xs-8'}>
+        <div className={`weight-label ${viewOnly ? 'col-xs-9' : 'col-xs-8'}`}>
           <span>{name}</span>
         </div>
         <div className='col-xs-3 right-text'>

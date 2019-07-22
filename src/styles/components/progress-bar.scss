@@ -7,7 +7,17 @@
   align-self: center;
 
   .cn-progress-step:first-child {
-    .cn-progress-bar, .cn-syllabus-progress-bar {
+    .cn-progress-bar {
+      .cn-progress-divider-left {
+        display: none;
+      }
+    }
+  }
+
+  .cn-syllabus-progress-step:first-child {
+    padding-left: 20%;
+
+    .cn-syllabus-progress-bar {
       .cn-progress-divider-left {
         display: none;
       }
@@ -15,7 +25,17 @@
   }
 
   .cn-progress-step:last-child {
-    .cn-progress-bar, .cn-syllabus-progress-bar {
+    .cn-progress-bar {
+      .cn-progress-divider-right {
+        display: none;
+      }
+    }
+  }
+
+  .cn-syllabus-progress-step:last-child {
+    padding-right: 20%;
+
+    .cn-syllabus-progress-bar {
       .cn-progress-divider-right {
         display: none;
       }
@@ -34,18 +54,6 @@
       margin-bottom: 5px;
       text-align: center;
       font-weight: 200;
-    }
-
-    .syllabus-progress-bar-title {
-      font-size: 10px;
-      font-weight: 200;
-      color: #C7C7CD;
-      margin: 5px 0px 5px 0px;
-      text-align: center;
-
-      &.active {
-        color: #000000;
-      }
     }
 
     .cn-progress-bar {
@@ -84,6 +92,26 @@
         width: 1/3 * 300px / 2;
       }
     }
+  }
+  
+  .cn-syllabus-progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    .syllabus-progress-bar-title {
+      font-size: 10px;
+      font-weight: 200;
+      color: #C7C7CD;
+      margin: 5px 0px 5px 0px;
+      text-align: center;
+
+      &.active {
+        color: #000000;
+      }
+    }
 
     .cn-syllabus-progress-bar {
       width: 25px;
@@ -107,20 +135,20 @@
 
       .cn-progress-divider-left {
         position: absolute;
-        left: -1/2 * 300px / 2 - 1px;
+        left: -1/2 * 75px - 1px;
         top: 50%;
         height: 1px;
         border-top: 1px solid black;
-        width: 1/2 * 300px / 2;
+        width: 1/2 * 75px;
       }
 
       .cn-progress-divider-right {
         position: absolute;
-        right: -1/2 * 300px / 2 - 1px;
+        right: -1/2 * 75px - 1px;
         top: 50%;
         height: 1px;
         border-top: 1px solid black;
-        width: 1/2 * 300px / 2;
+        width: 1/2 * 75px;
       }
     }
   }

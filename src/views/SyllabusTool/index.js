@@ -217,7 +217,7 @@ class SyllabusTool extends React.Component {
     if (currentIndex > ContentEnum.WEIGHTS) {
       return (
         <a className='back-button' onClick={this.onPrevious.bind(this)}>
-          <i className='fa fa-angle-left' /> Go Back
+          <i className='fa fa-angle-left' /> Back to weights
         </a>
       )
     }

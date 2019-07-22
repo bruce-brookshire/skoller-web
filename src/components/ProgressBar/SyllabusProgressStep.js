@@ -12,7 +12,7 @@ class SyllabusProgressStep extends React.Component {
     }
 
     return (
-      <div className='cn-progress-step'>
+      <div className='cn-syllabus-progress-step'>
         <div className={classes.join(' ')}>
           <div className='cn-progress-divider-left'></div>
           {index + 1}
