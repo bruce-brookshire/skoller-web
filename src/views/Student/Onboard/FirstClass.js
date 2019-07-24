@@ -7,6 +7,7 @@ import { browserHistory } from 'react-router'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import DragAndDrop from './DragAndDrop'
 import {mobileCheck} from '../../../utilities/display'
+import Sammi from '../../components/Sammi'
 
 @inject('rootStore') @observer
 class FirstClass extends React.Component {
@@ -307,15 +308,15 @@ class FirstClass extends React.Component {
   renderModalContent () {
     return (
       <div>
-        <SkProgressBar progress={0.75} width={'100%'} backgroundColor={'$cn-color-blue'}/>
+        {this.props.renderPartner()}
         <div className='onboard-first-class'>
           <h1>{this.state.firstClass.name}</h1>
-          <div className="onboard-first-class-sammi-container">
-            <div className="sammi-message">
-              <p>{this.state.sammiMessage}</p>
-            </div>
-            <img src='/src/assets/images/sammi/Smile@3x.png' />
-          </div>
+          <Sammi
+            message={this.state.sammiMessage}
+            position='right'
+            emotion='happy'
+          />
+          <SkProgressBar progress={0.75} width={'100%'} backgroundColor={'$cn-color-blue'}/>
         </div>
         {this.renderFirstClass()}
         {this.state.mobile && this.state.mobileMessage
@@ -323,7 +324,6 @@ class FirstClass extends React.Component {
           : null
         }
         {this.renderNextButton()}
-        {this.props.renderPartner()}
       </div>
     )
   }

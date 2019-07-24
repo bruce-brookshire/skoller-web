@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
 import Cloud from '../../../assets/sk-icons/Cloud'
 import SkProgressBar from '../../components/SkProgressBar'
+import Sammi from '../../components/Sammi'
 
 @inject('rootStore') @observer
 class SharePartner extends React.Component {
@@ -46,14 +47,15 @@ class SharePartner extends React.Component {
   render () {
     return (
       <div>
-        <SkProgressBar progress={1} width={'100%'} backgroundColor={'$cn-color-blue'}/>
+        {this.props.renderPartner()}
         <div className='sk-onboard-share-partner'>
-          <div className="sk-onboard-share-partner-sammi-container">
-            <img src='/src/assets/images/sammi/Wow@3x.png' />
-            <div className="sammi-message" >
-              <p>Congratulations! Because of you, <b>$1 was just donated to {this.props.partner.philanthropy}.</b></p>
-            </div>
-          </div>
+          <Sammi
+            emotion='wow'
+            position='left'
+          >
+            <p>Congratulations! Because of you, <b>$1 was just donated to {this.props.partner.philanthropy}.</b></p>
+          </Sammi>
+          <SkProgressBar progress={1} width={'100%'} backgroundColor={'$cn-color-blue'}/>
           <div className='sk-onboard-share-partner-cloud-container'>
             <div className='sk-onboard-share-partner-cloud-1'>
               <Cloud fill={this.props.partner.primaryColor} width="120" height="90" />
@@ -77,7 +79,6 @@ class SharePartner extends React.Component {
           >
             <p>Enter Skoller</p>
           </div>
-          {this.props.renderPartner()}
         </div>
       </div>
     )

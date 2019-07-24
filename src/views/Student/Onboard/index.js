@@ -18,6 +18,7 @@ import FirstClass from './FirstClass'
 import { browserHistory } from 'react-router'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import SharePartner from './SharePartner'
+import { mobileCheck } from '../../../utilities/display'
 
 @inject('rootStore') @observer
 class OnboardLayout extends React.Component {
@@ -251,15 +252,15 @@ class Onboard extends React.Component {
           <SkLoader />
         </div>
         : <div className='onboard-container'>
+          {mobileCheck() && this.state.step !== 'sign-up'
+            ? null
+            : <div className='onboard-logo-text'>Keep Up With Classes, Together</div>
+          }
           {this.state.step === 'sign-up'
             ? <NavBar onboard={true} />
             : <NavBar />
           }
-          {this.state.step === 'sign-up'
-            ? <TopNav onboard={true} />
-            : <TopNav />
-          }
-          <div className='layout'>
+          <div className='layout' style={{top: '64px'}}>
             {(this.state.step === 'sign-up')
               ? this.renderSignUp()
               : null

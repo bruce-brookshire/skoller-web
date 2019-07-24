@@ -4,6 +4,7 @@ import { observer, inject } from 'mobx-react'
 import actions from '../../../actions'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import Cloud from '../../../assets/sk-icons/Cloud'
+import NumberFormat from 'react-number-format'
 
 @inject('rootStore') @observer
 class SignUp extends React.Component {
@@ -59,7 +60,8 @@ class SignUp extends React.Component {
         name_last: this.state.lastName,
         phone: this.stripPhone(this.state.phone),
         future_reminder_notification_time: '22:00:00',
-        notification_time: '12:00:00'
+        notification_time: '12:00:00',
+        customLink: this.props.partner.slug
       }
     }
     actions.auth
@@ -120,12 +122,14 @@ class SignUp extends React.Component {
           </div>
           <div className='sk-onboard-sign-up-row'>
             <label>Phone</label>
-            <input
+            <NumberFormat
               value={this.state.phone}
-              maxLength="12"
-              onChange={(e) => {
+              format="+1 (###) ###-####"
+              mask=" "
+              onValueChange={(values) => {
+                const {value} = values
                 this.setState({
-                  phone: this.validatePhone(e.target.value)
+                  phone: this.validatePhone(value)
                 })
               }}
             />
@@ -134,9 +138,8 @@ class SignUp extends React.Component {
             className={'onboard-next' + (disableNext ? ' disabled' : '')}
             onClick={(disableNext ? null : () => this.onSubmitSignUp())}
           >
-            <p>Next</p>
+            <p>Sign Up</p>
           </div>
-          {this.props.renderPartner()}
         </div>
       )
     )

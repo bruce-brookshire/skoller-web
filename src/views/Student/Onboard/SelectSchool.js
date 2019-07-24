@@ -6,7 +6,8 @@ import actions from '../../../actions'
 import CreateSchoolModal from '../FindClasses/CreateSchoolModal'
 import SkModal from '../../components/SkModal/SkModal'
 import moment from 'moment'
-import SkLoader from '../../../assets/sk-icons/SkLoader';
+import SkLoader from '../../../assets/sk-icons/SkLoader'
+import Sammi from '../../components/Sammi';
 
 @inject('rootStore') @observer
 class SelectSchool extends React.Component {
@@ -117,28 +118,35 @@ class SelectSchool extends React.Component {
   renderSchool () {
     return (
       <div className='sk-select-school'>
-        <div className='sk-select-school-label'>School</div>
-        {this.state.schoolChoice
-          ? <div className='sk-select-school-field' onClick={() => this.setState({schoolChoice: null, activeTerm: null, termChoice: null, showTermOptions: false})}>
-            {this.renderSchoolChoice()}
-          </div>
-          : <div
-            className='sk-select-school-field'
-            ref={schoolField => { this.schoolField = schoolField } }
-            contentEditable={true}
-            onInput={e => {
-              this.searchSchools(e.currentTarget.textContent)
-              this.setState({input: e.currentTarget.textContent})
-            }}
-          />
-        }
+        <div className='sk-select-school-row'>
+          <div className='sk-select-school-label'>School</div>
+          {this.state.schoolChoice
+            ? <div className='sk-select-school-field' onClick={() => this.setState({schoolChoice: null, activeTerm: null, termChoice: null, showTermOptions: false})}>
+              {this.renderSchoolChoice()}
+            </div>
+            : <div
+              className='sk-select-school-field'
+              ref={schoolField => { this.schoolField = schoolField } }
+              contentEditable={true}
+              onInput={e => {
+                this.searchSchools(e.currentTarget.textContent)
+                this.setState({input: e.currentTarget.textContent})
+              }}
+            />
+          }
+        </div>
         {((this.state.schools.length > 0 || this.state.input) && !this.state.loadingAutocomplete)
           ? <div className='sk-select-school-autocomplete-container' contentEditable={false}>
             {this.renderAutoComplete()}
           </div>
           : null
         }
-        {(this.state.schoolChoice) ? this.renderTermField() : null}
+        {(this.state.schoolChoice)
+          ? <div className='sk-select-school-row'>
+            {this.renderTermField()}
+          </div>
+          : null
+        }
       </div>
     )
   }
@@ -293,19 +301,26 @@ class SelectSchool extends React.Component {
       <div>
         {this.state.loading
           ? <SkLoader />
-          : <SkProgressBar progress={0.25} width={'100%'} backgroundColor={'$cn-color-blue'}/>
+          : <div>
+            {this.props.renderPartner()}
+          </div>
         }
         {this.state.loading
           ? null
           : <div>
             <div className='onboard-select-school'>
               <h1>Meet Sammi 👋</h1>
-              <div className="onboard-select-school-sammi-container">
-                <div className="sammi-message">
-                  <p>{this.state.sammiMessage}</p>
-                </div>
-                <img src='/src/assets/images/sammi/Smile@3x.png' />
-              </div>
+              <Sammi
+                message={this.state.sammiMessage}
+                emotion='happy'
+                position='right'
+                align='right'
+              />
+              <SkProgressBar
+                progress={0.25}
+                width={'100%'}
+                backgroundColor={'$cn-color-blue'}
+              />
             </div>
             {(this.state.showSchoolOptions)
               ? this.renderSchoolOptions()
@@ -317,7 +332,6 @@ class SelectSchool extends React.Component {
             >
               <p>Next</p>
             </div>
-            {this.props.renderPartner()}
             {this.state.showCreateSchoolModal
               ? <SkModal closeModal={() => this.setState({showCreateSchoolModal: false})}>
                 <CreateSchoolModal

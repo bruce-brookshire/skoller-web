@@ -86,7 +86,7 @@ class skProgressBar extends React.Component {
     }
 
     return (
-      <div className='sk-progress-container' style={{boxSizing: 'border-box'}}>
+      <div className='sk-progress-container' style={{boxSizing: 'border-box', margin: '1rem 0'}}>
         <div className='sk-progress-measure' ref={measure => { this.measure = measure } } style={measureStyle}>
           {this.state.loading
             ? null
