@@ -18,8 +18,8 @@ class SelectSchool extends React.Component {
       schools: [],
       loading: true,
       loadingAutocomplete: true,
-      schoolChoice: null,
-      termChoice: null,
+      schoolChoice: this.props.backData ? this.props.backData.schoolChoice : null,
+      termChoice: this.props.backData ? this.props.backData.schoolChoice : null,
       showCreateSchoolModal: false,
       input: null,
       foundSchools: null,
@@ -27,6 +27,24 @@ class SelectSchool extends React.Component {
       showTermOptions: false,
       sammiMessage: null,
       activeTerm: null
+    }
+
+    if (this.props.backData) {
+      this.setState({
+        schoolChoice: this.props.backData.schoolChoice,
+        termChoice: this.props.backData.termChoice
+      })
+    }
+  }
+
+  checkBackData () {
+    if (this.props.backData) {
+      console.log('backData')
+      this.setState({
+        schoolChoice: this.props.backData.schoolChoice,
+        termChoice: this.props.backData.termChoice
+      })
+      console.log(this.state)
     }
   }
 
@@ -49,6 +67,7 @@ class SelectSchool extends React.Component {
         activeTerm: (response.length === 1) ? this.findActiveTerm(response[0]) : null,
         showSchoolOptions: (response.length > 1)
       })
+      this.checkBackData()
     })
   }
 
@@ -350,7 +369,8 @@ class SelectSchool extends React.Component {
 SelectSchool.propTypes = {
   onSubmit: PropTypes.func,
   rootStore: PropTypes.object,
-  renderPartner: PropTypes.func
+  renderPartner: PropTypes.func,
+  backData: PropTypes.object
 }
 
 export default SelectSchool

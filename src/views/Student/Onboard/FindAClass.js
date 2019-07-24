@@ -653,6 +653,14 @@ class FindAClass extends React.Component {
           >
             {this.props.params.termChoice.name}
           </h3>
+          <p style={{textAlign: 'center', margin: '0'}}>
+            <small
+              style={{color: '#57B9E4', cursor: 'pointer', width: '100%'}}
+              onClick={() => this.props.onBack(this.props.params.schoolChoice, this.props.params.termChoice)}
+            >
+              Edit school or term
+            </small>
+          </p>
           <Sammi
             message='Find your first class!'
             emotion='wow'
@@ -688,7 +696,8 @@ FindAClass.propTypes = {
   onSubmit: PropTypes.func,
   rootStore: PropTypes.object,
   params: PropTypes.object,
-  renderPartner: PropTypes.func
+  renderPartner: PropTypes.func,
+  onBack: PropTypes.func
 }
 
 export default FindAClass

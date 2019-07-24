@@ -52,7 +52,8 @@ class Onboard extends React.Component {
       calendarData: this.generateCalendarData(),
       partner: this.getPartner(),
       loading: true,
-      user: this.props.rootStore.userStore.user !== undefined ? this.props.rootStore.userStore.user : null
+      user: this.props.rootStore.userStore.user !== undefined ? this.props.rootStore.userStore.user : null,
+      backData: null
     }
 
     this.cookie = new Cookies()
@@ -193,6 +194,7 @@ class Onboard extends React.Component {
             })
           }}
           renderPartner={this.renderPartner}
+          backData={this.state.backData}
         />
       )
     )
@@ -203,6 +205,15 @@ class Onboard extends React.Component {
       this.renderOnboardContent(
         <FindAClass
           onSubmit={() => this.setState({step: 'first-class'})}
+          onBack={(school, term) => {
+            this.setState({
+              step: 'select-school',
+              backData: {
+                schoolChoice: school,
+                termChoice: term
+              }
+            })
+          }}
           params={this.state.selectSchoolData}
           renderPartner={this.renderPartner}
           partner={this.state.partner}
