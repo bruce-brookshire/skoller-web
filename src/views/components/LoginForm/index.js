@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import LoginVerificationModal from './LoginVerificationModal'
 import {Cookies} from 'react-cookie'
 import actions from '../../../actions'
+import NumberFormat from 'react-number-format'
 
 class LoginForm extends React.Component {
   static propTypes = {
@@ -38,7 +39,6 @@ class LoginForm extends React.Component {
 
   onSubmit = (event) => {
     event.preventDefault()
-    this.setState({showLoginVerificationModal: true})
     actions.auth.verifyStudentPhoneNumber(this.state.form).then(() => {
       this.setState({showLoginVerificationModal: true})
     }).catch(() => false)
@@ -46,22 +46,31 @@ class LoginForm extends React.Component {
 
   render () {
     return (
-      <form className="form-login" onSubmit={this.onSubmit}>
-        <div className='form-control' >
-          <input
-            onChange={this.handlePhoneChange}
-            type='text'
-            placeholder='Phone number'
-          />
-        </div>
+      <div>
+        <form className="form-login" onSubmit={this.onSubmit}>
+          <div className='form-control' >
+            <NumberFormat
+              placeholder='Phone number'
+              format="+1 (###) ###-####"
+              mask=" "
+              onValueChange={(values) => {
+                const {value} = values
+                this.setState({
+                  form: {
+                    phone: value
+                  }
+                })
+              }}
+            />
+          </div>
 
-        <button type="submit" className="button">Login</button>
+          <button type="submit" className="button">Login</button>
+        </form>
         {this.state.showLoginVerificationModal
-          // ? <SkModal><p>cool modal</p></SkModal>
           ? <LoginVerificationModal phone={this.state.form.phone} closeModal={this.closeModal}/>
           : null
         }
-      </form>
+      </div>
     )
   }
 }

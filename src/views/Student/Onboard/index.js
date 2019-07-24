@@ -18,6 +18,7 @@ import FirstClass from './FirstClass'
 import { browserHistory } from 'react-router'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import SharePartner from './SharePartner'
+import { mobileCheck } from '../../../utilities/display'
 
 @inject('rootStore') @observer
 class OnboardLayout extends React.Component {
@@ -51,7 +52,8 @@ class Onboard extends React.Component {
       calendarData: this.generateCalendarData(),
       partner: this.getPartner(),
       loading: true,
-      user: this.props.rootStore.userStore.user !== undefined ? this.props.rootStore.userStore.user : null
+      user: this.props.rootStore.userStore.user !== undefined ? this.props.rootStore.userStore.user : null,
+      backData: null
     }
 
     this.cookie = new Cookies()
@@ -192,6 +194,7 @@ class Onboard extends React.Component {
             })
           }}
           renderPartner={this.renderPartner}
+          backData={this.state.backData}
         />
       )
     )
@@ -202,6 +205,15 @@ class Onboard extends React.Component {
       this.renderOnboardContent(
         <FindAClass
           onSubmit={() => this.setState({step: 'first-class'})}
+          onBack={(school, term) => {
+            this.setState({
+              step: 'select-school',
+              backData: {
+                schoolChoice: school,
+                termChoice: term
+              }
+            })
+          }}
           params={this.state.selectSchoolData}
           renderPartner={this.renderPartner}
           partner={this.state.partner}
@@ -251,15 +263,15 @@ class Onboard extends React.Component {
           <SkLoader />
         </div>
         : <div className='onboard-container'>
+          {mobileCheck() && this.state.step !== 'sign-up'
+            ? null
+            : <div className='onboard-logo-text'>Keep Up With Classes, Together</div>
+          }
           {this.state.step === 'sign-up'
             ? <NavBar onboard={true} />
             : <NavBar />
           }
-          {this.state.step === 'sign-up'
-            ? <TopNav onboard={true} />
-            : <TopNav />
-          }
-          <div className='layout'>
+          <div className='layout' style={{top: '64px'}}>
             {(this.state.step === 'sign-up')
               ? this.renderSignUp()
               : null

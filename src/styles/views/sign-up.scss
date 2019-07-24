@@ -10,6 +10,11 @@
     margin-right: 2rem;
   }
 
+  @media only screen and (max-width: 765px) {
+    max-width: 90vw;
+    margin: 0 auto;
+  }
+
   .cn-terms-of-use {
     margin-top: $unit-space / 2;
     font-size: 12px;

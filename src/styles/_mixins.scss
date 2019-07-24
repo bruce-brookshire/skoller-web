@@ -228,7 +228,7 @@
 @mixin sammi-message-right {
   @include skoller-cell;
   max-width: 83%;
-  min-height: 40px;
+  min-height: 36px;
   background: white;
   position: relative;
   border: 1px solid $cn-form-border;
@@ -238,9 +238,11 @@
   align-items: center;
 
   p {
-    margin: 0.25rem 0.5rem 0rem 0.5rem;
-    padding: 8px 0;
+    font-size: 18px;
+    margin: 0.25rem 1rem 0rem 1rem;
+    padding: 4px 0;
     width: 100%;
+    line-height: 15px;
   }
 
   &:before {
@@ -262,7 +264,7 @@
 @mixin sammi-message-left {
   @include skoller-cell;
   max-width: 83%;
-  min-height: 40px;
+  min-height: 36px;
   background: white;
   position: relative;
   border: 1px solid $cn-form-border;
@@ -272,9 +274,10 @@
   align-items: center;
 
   p {
-    margin: 0.25rem 0.5rem 0rem 0.5rem;
-    padding: 8px 0;
+    margin: 0.25rem 1rem 0rem 1rem;
+    padding: 4px 0;
     width: 100%;
+    line-height: 15px;
   }
 
   &:before {

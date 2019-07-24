@@ -6,6 +6,7 @@ import actions from '../../../actions'
 import {maskPhoneNumber} from '../../../utilities/mask'
 import {wrapTimeHour} from '../../../utilities/time'
 import {browserHistory} from 'react-router'
+import NumberFormat from 'react-number-format'
 
 const requiredFields = {
   'email': {

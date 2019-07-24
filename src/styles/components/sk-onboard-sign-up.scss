@@ -48,7 +48,11 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin: 0 0 0.5rem 0;
+    margin: 0 0 1rem 0;
+
+    @media only screen and (max-width: $sk-mobile-break-point) {
+      margin: 0 0 0.5rem 0;
+    }
 
     h1 {
       margin: 24px 0 0 0;

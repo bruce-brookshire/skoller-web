@@ -6,7 +6,7 @@ import actions from '../../../actions'
 import moment from 'moment'
 import ProfessorForm from '../../../views/components/ProfessorForm'
 import SkModal from '../../components/SkModal/SkModal'
-import { action } from 'mobx';
+import Sammi from '../../components/Sammi'
 
 @inject('rootStore') @observer
 class FindAClass extends React.Component {
@@ -125,7 +125,7 @@ class FindAClass extends React.Component {
             padding: '8px 4px 0 4px'
           }}
         >
-          Can&apos;t find your class? Click to add <b style={{color: '#57B9E4'}}>{this.state.name}</b> to the Skoller Cloud! ☁️
+          Can&apos;t find your class? Click here to add <b style={{color: '#57B9E4'}}>{this.state.name}</b> to Skoller!
         </div>
       </div>
     )
@@ -519,15 +519,21 @@ class FindAClass extends React.Component {
     return (
       <div>
         {this.state.showSubjectCodeSectionField
-          ? this.renderSubjectCodeSectionField()
+          ? <div className='sk-find-class-form-row'>
+            {this.renderSubjectCodeSectionField()}
+          </div>
           : null
         }
         {(this.state.showMeetTimesDaysField || (this.state.subject && this.state.code && this.state.section))
-          ? this.renderMeetTimesDaysField()
+          ? <div className='sk-find-class-form-row'>
+            {this.renderMeetTimesDaysField()}
+          </div>
           : null
         }
         {this.state.showProfessorField || (meetDaysChecked || this.state.isOnline)
-          ? this.renderProfessorField()
+          ? <div className='sk-find-class-form-row'>
+            {this.renderProfessorField()}
+          </div>
           : null
         }
       </div>
@@ -632,7 +638,7 @@ class FindAClass extends React.Component {
   render () {
     return (
       <div>
-        <SkProgressBar progress={0.5} width={'100%'} backgroundColor={'$cn-color-blue'}/>
+        {this.props.renderPartner()}
         <div className='onboard-find-class'>
           <h1
             className='onboard-find-class-school'
@@ -647,15 +653,25 @@ class FindAClass extends React.Component {
           >
             {this.props.params.termChoice.name}
           </h3>
-          <div className="onboard-find-class-sammi-container">
-            <img src='/src/assets/images/sammi/Wow@3x.png' />
-            <div className="sammi-message" >
-              <p>Find your first class!</p>
-            </div>
-          </div>
+          <p style={{textAlign: 'center', margin: '0'}}>
+            <small
+              style={{color: '#57B9E4', cursor: 'pointer', width: '100%'}}
+              onClick={() => this.props.onBack(this.props.params.schoolChoice, this.props.params.termChoice)}
+            >
+              Edit school or term
+            </small>
+          </p>
+          <Sammi
+            message='Find your first class!'
+            emotion='wow'
+            position='left'
+          />
+          <SkProgressBar progress={0.5} width={'100%'} backgroundColor={'$cn-color-blue'}/>
         </div>
         <div className='sk-find-class-form'>
-          {this.renderClassNameField()}
+          <div className='sk-find-class-form-row'>
+            {this.renderClassNameField()}
+          </div>
           {this.state.isNewClass
             ? this.renderForm()
             : null
@@ -671,7 +687,6 @@ class FindAClass extends React.Component {
         >
           <p>Next</p>
         </div>
-        {this.props.renderPartner()}
       </div>
     )
   }
@@ -681,7 +696,8 @@ FindAClass.propTypes = {
   onSubmit: PropTypes.func,
   rootStore: PropTypes.object,
   params: PropTypes.object,
-  renderPartner: PropTypes.func
+  renderPartner: PropTypes.func,
+  onBack: PropTypes.func
 }
 
 export default FindAClass

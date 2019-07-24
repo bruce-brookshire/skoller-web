@@ -9,6 +9,9 @@ class Layout extends React.Component {
   isStudent () {
     const roles = this.props.rootStore.userStore.user.roles
     let isStudent = false
+    if (this.props.rootStore.userStore.user.roles === undefined) {
+      isStudent = true
+    }
     roles.forEach(role => {
       if (role.name === 'Student') {
         isStudent = true

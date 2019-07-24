@@ -7,6 +7,7 @@ import { browserHistory } from 'react-router'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import DragAndDrop from './DragAndDrop'
 import {mobileCheck} from '../../../utilities/display'
+import Sammi from '../../components/Sammi'
 
 @inject('rootStore') @observer
 class FirstClass extends React.Component {
@@ -46,14 +47,14 @@ class FirstClass extends React.Component {
         // ^ for testing
         if (id === 1100) {
           status = 'needSyllabus'
-          sammiMessage = `Yay! You're in your first class. Let's get it set up!`
+          sammiMessage = `Let's get you set up!`
           mobileMessage = `Head over to skoller.co on your computer to upload your syllabus.`
         } else if (id === 1200) {
           status = 'inReview'
-          sammiMessage = `Someone has already uploaded the syllabus for this class!`
+          sammiMessage = `Someone already uploaded the syllabus!`
         } else if (id === 1300) {
           status = 'diy'
-          sammiMessage = `Someone already submitted the syllabus for this class, but we need a little help.`
+          sammiMessage = `Someone already uploaded the syllabus, but we need a little help.`
           mobileMessage = `Head over to skoller.co on your computer to finish setting up your class.`
         } else if (id >= 1400) {
           status = 'live'
@@ -138,7 +139,7 @@ class FirstClass extends React.Component {
         <div className='sk-onboard-first-class-info'>
           <div className='sk-onboard-first-class-info-status'>
             <i className='far fa-clock fa-3x' />
-            <h3>SYLLABUS UNDER REVIEW</h3>
+            <h3>SYLLABUS IN REVIEW</h3>
           </div>
         </div>
       )
@@ -265,7 +266,7 @@ class FirstClass extends React.Component {
       this.setState({
         loading: false,
         status: 'inReview',
-        sammiMessage: `WOOHOO! You've submitted your syllabus.`
+        sammiMessage: `Woohoo! You've submitted your syllabus.`
       })
     } else if (this.state.status === 'inReview' || this.state.status === 'live') {
       this.props.onSubmit()
@@ -307,15 +308,15 @@ class FirstClass extends React.Component {
   renderModalContent () {
     return (
       <div>
-        <SkProgressBar progress={0.75} width={'100%'} backgroundColor={'$cn-color-blue'}/>
+        {this.props.renderPartner()}
         <div className='onboard-first-class'>
           <h1>{this.state.firstClass.name}</h1>
-          <div className="onboard-first-class-sammi-container">
-            <div className="sammi-message">
-              <p>{this.state.sammiMessage}</p>
-            </div>
-            <img src='/src/assets/images/sammi/Smile@3x.png' />
-          </div>
+          <Sammi
+            message={this.state.sammiMessage}
+            position='right'
+            emotion='happy'
+          />
+          <SkProgressBar progress={0.75} width={'100%'} backgroundColor={'$cn-color-blue'}/>
         </div>
         {this.renderFirstClass()}
         {this.state.mobile && this.state.mobileMessage
@@ -323,7 +324,10 @@ class FirstClass extends React.Component {
           : null
         }
         {this.renderNextButton()}
-        {this.props.renderPartner()}
+        {this.state.status === 'inReview' && !mobileCheck()
+          ? <p style={{margin: '6px 0 0 0', textAlign: 'center'}}><small>Don&apos;t want to wait? <span style={{color: '#57B9E4'}}>Click here to do it yourself!</span></small></p>
+          : null
+        }
       </div>
     )
   }
