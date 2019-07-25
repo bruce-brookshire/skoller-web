@@ -27,19 +27,19 @@ class WeightTable extends React.Component {
         {!viewOnly &&
           <div className='col-xs-1'>
             <div
-              className='button-delete-x center-content'
+              className='button-delete-x-light center-content'
               onClick={(event) => {
                 event.stopPropagation()
                 /* if (disabled) return */
                 this.props.onDeleteWeight(item)
-              }}><i className='fa fa-times' />
+              }}><img src='/src/assets/images/syllabus_tool/circle_x.png' />
             </div>
           </div>
         }
-        <div className={viewOnly ? 'col-xs-10' : 'col-xs-9'}>
+        <div className={`weight-label ${viewOnly ? 'col-xs-9' : 'col-xs-8'}`}>
           <span>{name}</span>
         </div>
-        <div className='col-xs-2 right-text'>
+        <div className='col-xs-3 right-text'>
           <span>{weight}{!cl.is_points ? '%' : ''}</span>
         </div>
       </div>
@@ -84,14 +84,14 @@ class WeightTable extends React.Component {
 
     return (
       <div className='row'>
-        <div className='col-xs-9'>
-          <span>Total*:</span>
+        <div className='col-xs-4 total-label'>
+          <span>Total</span>
         </div>
-        <div className='col-xs-3 right-text'>
+        <div className='col-xs-8 total-value right-text'>
           <span>
             {
               !cl.is_points
-                ? `${total.toFixed(2)}%`
+                ? `${(Math.round(total) === total ? total : total.toFixed(2))}% / 100%`
                 : totalPointsRatio
             }</span>
         </div>
@@ -104,8 +104,10 @@ class WeightTable extends React.Component {
 
     return (
       <div id='class-editor-weight-table' className={`${viewOnly ? 'view-only' : ''}`}>
-        <div ref={(field) => { this.sectionControl = field }}>
-          {this.renderWeights()}
+        <div id='weight-table-container' ref={(field) => { this.sectionControl = field }}>
+          <div id='weight-rows-only'>
+            {this.renderWeights()}
+          </div>
           <div id='class-weights-total'>
             {this.renderTotalPercentage()}
           </div>

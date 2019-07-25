@@ -5,7 +5,7 @@ import Loading from '../../components/Loading'
 import actions from '../../actions'
 import Weights from '../components/ClassEditor/Weights'
 import Assignments from '../components/ClassEditor/Assignments'
-import {ProgressBar, ProgressStep} from '../../components/ProgressBar'
+import {ProgressBar, SyllabusProgressStep} from '../../components/ProgressBar'
 import FileUpload from '../../components/FileUpload'
 import FileViewer from '../../components/FileViewer'
 import IssuesModal from '../components/ClassEditor/IssuesModal'
@@ -19,8 +19,7 @@ const steps = [ 'Weights', 'Assignments' ]
 
 const ContentEnum = {
   WEIGHTS: 0,
-  ASSIGNMENTS: 1,
-  REVIEW: 2
+  ASSIGNMENTS: 1
 }
 
 @inject('rootStore') @observer
@@ -106,6 +105,7 @@ class SyllabusTool extends React.Component {
   onUpdateClass (form) {
     let {navbarStore} = this.props.rootStore
     actions.classes.updateClass(form).then((cl) => {
+      console.log('onUpdateClass:', cl.is_points)
       navbarStore.cl = cl
     }).catch(() => false)
   }
@@ -217,7 +217,7 @@ class SyllabusTool extends React.Component {
     if (currentIndex > ContentEnum.WEIGHTS) {
       return (
         <a className='back-button' onClick={this.onPrevious.bind(this)}>
-          <i className='fa fa-angle-left' /> Go Back
+          <i className='fa fa-angle-left' /> Back to weights
         </a>
       )
     }
@@ -381,7 +381,7 @@ class SyllabusTool extends React.Component {
     return (
       <ProgressBar currentStep={this.state.currentIndex}>
         {steps.map((step, index) => {
-          return <ProgressStep key={`step-${index}`} label={step} index={index} />
+          return <SyllabusProgressStep key={`step-${index}`} label={step} index={index} />
         })}
       </ProgressBar>
     )

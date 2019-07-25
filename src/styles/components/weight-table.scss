@@ -1,7 +1,6 @@
 #class-editor-weight-table {
   background-color: $cn-color-white;
-  border: 1px solid $cn-color-grey;
-  border-radius: $cn-border-radius;
+  border-top: 1px solid $cn-color-grey;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -20,15 +19,26 @@
 
   .table-row {
     cursor: pointer;
-    padding: 0.5em;
+    padding: 0.4em 0.5em 0em 0.3em;
     padding-right: 0;
-    font-size: 14px;
+    font-size: 17.5px;
     display: flex;
     flex-direction: row;
     width: 100%;
+
     .bold {
       font-weight: 600;
     }
+
+    img {
+      height: 17px;
+      width: 17px;
+    }
+
+    .weight-label {
+      padding-top: 1.5px;
+    }
+
     &:hover {
       background-color: darken($cn-color-white, 10%);
     }
@@ -38,9 +48,26 @@
     }
   }
 
-  #class-weights-total {
-    border-top: 1px solid $cn-color-grey;
-    padding: 0.5em;
-    font-size: 14px;
+  #weight-table-container {
+    height: 100%;
+
+    #weight-rows-only {
+      height: 83%;
+      padding-top: 0.4em;
+      overflow-y: auto;
+    }
+
+    #class-weights-total {
+      border-top: 1px solid $cn-color-grey;
+      padding: 0.8em 0.5em 0.5em 0.6em;
+
+      .total-label {
+        font-size: 17px;
+      }
+
+      .total-value {
+        font-size: 17px;
+      }
+    }
   }
 }

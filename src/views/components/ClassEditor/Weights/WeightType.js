@@ -14,12 +14,24 @@ class WeightType extends React.Component {
     super(props)
 
     this.state = {
-      isPoints: this.props.isPoints || false,
-      pointTotal: this.props.isPoints ? props.pointTotal || 0 : 0
+      isPoints: this.props.isPoints,
+      form: {
+        pointTotal: this.props.pointTotal
+      }
+    }
+  }
+
+  onSubmit () {
+    if (this.props.validateForm(this.state.form, pointField)) {
+      this.props.onSubmit(this.state.isPoints, this.state.form.pointTotal)
     }
   }
 
   render () {
+    const {form} = this.state
+    const {formErrors, updateProperty} = this.props
+
+    console.log(typeof (this.state.form.pointTotal), this.state.form.pointTotal)
     return (
       <div className='cn-weight-type'>
         <div className='cn-section-content-header'>
@@ -34,50 +46,52 @@ class WeightType extends React.Component {
         </div>
         <div className="checkbox-container">
           <div className="checkboxes">
-            <div
-              style={{ flexDirection: 'row' }}
-            >
-              {/* TODO Kevin: make these components into a row and ensure proper padding. convert this to CSS where possible (i dont know how to, this is my first time doing web dev ui) */}
-              <div
-                style={{ width: 20, height: 20, backgroundColor: this.state.isPoints ? 'transparent' : '#57b9e4', borderRadius: 5, borderColor: '#4a4a4a', borderWidth: 1, borderStyle: 'solid' }}
-                onClick={(value) => {
+            <div className="indiv-checkbox">
+              <div className="checkbox-appearance"
+                style={{ backgroundColor: this.state.isPoints ? 'transparent' : '#57b9e4' }}
+                onClick={() => {
                   this.setState({ isPoints: false })
                 }}
               />
-              <div>
+              <div className="checkbox-label">
                 Percentage (20%)
               </div>
             </div>
-            <div
-              style={{ flexDirection: 'row' }}
-            >
-              {/* TODO Kevin: make these components into a row and ensure proper padding. convert this to CSS where possible (i dont know how to, this is my first time doing web dev ui) */}
-              <div
-                style={{ width: 20, height: 20, backgroundColor: !this.state.isPoints ? 'transparent' : '#57b9e4', borderRadius: 5, borderColor: '#4a4a4a', borderWidth: 1, borderStyle: 'solid' }}
-                onClick={(value) => {
+            <div className="indiv-checkbox">
+              <div className="checkbox-appearance"
+                style={{ backgroundColor: !this.state.isPoints ? 'transparent' : '#57b9e4' }}
+                onClick={() => {
                   this.setState({ isPoints: true })
                 }}
               />
-              <div>
+              <div className="checkbox-label">
                 Points (100/500)
               </div>
             </div>
-            {/* <CheckboxField
-              containerClassName='margin-top margin-right'
-              label=''
-              name='isPoints'
-              id='checkbox-id'
-              onChange={(value) => {
-                this.setState({ isPoints: value })
-              }}
-              value={this.state.isPoints}
-            /> */}
           </div>
+        </div>
+        <div className='point-value'>
+          {this.state.isPoints
+            ? <div className='point-container'>
+              <div className='point-value-label'>
+                Total Points Available
+              </div>
+              <InputField
+                containerClassName='input-container'
+                inputClassName='point-value-input'
+                name="pointTotal"
+                error={formErrors.pointTotal}
+                onChange={updateProperty}
+                type="number"
+                value={form.pointTotal}
+                min={0}
+              />
+            </div> : null}
         </div>
         <div className='button-container'>
           <button
             className='margin-top margin-bottom button full-width'
-            onClick={() => this.props.onSubmit(this.state.isPoints)}
+            onClick={this.onSubmit.bind(this)}
           >
             Next
           </button>
@@ -90,7 +104,12 @@ class WeightType extends React.Component {
 WeightType.propTypes = {
   isPoints: PropTypes.bool,
   pointTotal: PropTypes.number,
-  onSubmit: PropTypes.func
+  onSubmit: PropTypes.func,
+  formErrors: PropTypes.object,
+  onChange: PropTypes.func.isRequired,
+  updateProperty: PropTypes.func,
+  validateForm: PropTypes.func,
+  reset: PropTypes.func
 }
 
-export default WeightType
+export default ValidateForm(Form(WeightType, 'form'))
