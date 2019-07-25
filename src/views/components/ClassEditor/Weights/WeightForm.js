@@ -40,6 +40,7 @@ class WeightForm extends React.Component {
     const {weight} = this.props
     return {
       form: this.initializeFormData(weight),
+      isPoints: this.props.boolPoints,
       loading: false
     }
   }
@@ -99,9 +100,12 @@ class WeightForm extends React.Component {
     }).catch(() => { this.setState({loading: false}) })
   }
 
-  render () {
+  render () { // issue: renders before onUpdateClass finishes --solved
     const {form} = this.state
-    const {formErrors, updateProperty, numWeights, noWeights, cl} = this.props
+    const {formErrors, updateProperty, numWeights, noWeights} = this.props
+    // console.log(this.props)
+    // console.log(updateProperty)
+    // console.log('WeightForm: ', this.state.isPoints)
 
     return (
       <div id='cn-weight-form'>
@@ -113,11 +117,32 @@ class WeightForm extends React.Component {
         </div>
         <hr />
         <div className="weight-type">
-          <div>Percentage</div>
-          <div>Points</div>
+          <div className='selector percentage'
+            style={{
+              backgroundColor: this.state.isPoints ? 'transparent' : '#57b9e4',
+              color: this.state.isPoints ? '#57b9e4' : '#ffffff'
+            }}
+            onClick={() => {
+              this.setState({ isPoints: false })
+              this.props.onClick(false)
+            }}>
+            Percentage
+          </div>
+          <div className='selector points'
+            style={{
+              backgroundColor: this.state.isPoints ? '#57b9e4' : 'transparent',
+              color: this.state.isPoints ? '#ffffff' : '#57b9e4'
+            }}
+            onClick={() => {
+              this.setState({ isPoints: true })
+              this.props.onClick(true)
+            }}>
+            Points
+          </div>
         </div>
         <InputField
           containerClassName='margin-top'
+          inputClassName='input-box'
           error={formErrors.name}
           label="Weight name"
           name="name"
@@ -128,6 +153,7 @@ class WeightForm extends React.Component {
         <div id='cn-weight-form-value'>
           <InputField
             containerClassName='margin-top hide-spinner'
+            inputClassName='input-box'
             error={formErrors.weight}
             label="Value"
             name="weight"
@@ -137,21 +163,21 @@ class WeightForm extends React.Component {
             value={form.weight}
           />
           <div className='pct'>
-            {!cl.is_points ? '%' : 'pts'}
+            {!this.state.isPoints ? '%' : 'pts'}
           </div>
         </div>
-        {/* {numWeights === 0 &&
+        {numWeights === 0 &&
           <CheckboxField
             name='noWeights'
             onChange={(name, value) => {
               this.props.onNoWeightChecked(value)
             }}
             value={noWeights}
-            containerClassName='margin-top'
+            containerClassName='margin-top no-weights'
             inputClassName='margin-right'
             label={'Weights were not provided on the syllabus.'}
           />
-        } */}
+        }
         {<button
           className={'button full-width margin-top ' + (this.state.loading || noWeights ? 'disabled' : '')}
           disabled={this.state.loading || noWeights}
@@ -160,9 +186,9 @@ class WeightForm extends React.Component {
           Add Weight
           {this.state.loading ? <Loading /> : null}
         </button>}
-        <div className='margin-bottom margin-top'>
+        {/* <div className='margin-bottom margin-top'>
           <a onClick={() => this.props.reset()}>Go back</a>
-        </div>
+        </div> */}
       </div>
     )
   }
@@ -179,7 +205,9 @@ WeightForm.propTypes = {
   noWeights: PropTypes.bool,
   numWeights: PropTypes.number,
   onNoWeightChecked: PropTypes.func,
-  reset: PropTypes.func
+  reset: PropTypes.func,
+  boolPoints: PropTypes.bool,
+  onClick: PropTypes.func
 }
 
 export default ValidateForm(Form(WeightForm, 'form'))

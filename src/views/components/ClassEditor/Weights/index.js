@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import PointTotal from './PointTotal'
 import WeightForm from './WeightForm'
 import WeightTable from './WeightTable'
 import WeightType from './WeightType'
@@ -30,10 +29,11 @@ class Weights extends React.Component {
   initializeState () {
     return {
       currentWeight: null,
-      noWeights: null,
+      noWeights: false,
       totalPoints: null,
       weights: [],
-      reset: false
+      reset: false,
+      boolPoints: this.props.cl.is_points
     }
   }
 
@@ -45,21 +45,14 @@ class Weights extends React.Component {
     const {cl, isReview} = this.props
     const {totalPoints, reset, weights} = this.state
 
-    if (((!cl.is_points && !totalPoints && weights.length === 0) || reset) && !isReview) {
+    if (((!totalPoints && weights.length === 0) || reset) && !isReview) {
       // ask for weights or points
       return (
         <WeightType
           isPoints={cl.is_points}
-          onSubmit={this.onTypeSelection.bind(this)}
-        />
-      )
-    } else if (cl.is_points && !totalPoints && !isReview) {
-      // ask for total points
-      return (
-        <PointTotal
+          pointTotal={totalPoints || 100}
           onChange={this.onChangeTotalPoints.bind(this)}
-          totalPoints={totalPoints}
-          reset={() => this.setState({reset: true})}
+          onSubmit={this.onTypeSelection.bind(this)}
         />
       )
     } else {
@@ -103,7 +96,7 @@ class Weights extends React.Component {
 
     let disableButton = !this.isTotalWeightSecure() && !noWeights
     return (
-      <div>
+      <div className='cn-weights-subcontainer'>
         {!isReview &&
           <WeightForm
             cl={cl}
@@ -115,13 +108,15 @@ class Weights extends React.Component {
             onNoWeightChecked={(checked) => {
               this.setState({noWeights: checked})
             }}
+            boolPoints={this.state.boolPoints}
+            onClick={this.onChangeType.bind(this)}
             reset={() => this.setState({reset: true})}
           />
         }
         {weights.length !== 0 &&
           <div id='cn-weight-table'>
             <div id='cn-weight-table-label'>
-              {isReview ? 'Weights' : 'Saved weights'}
+              {isReview ? 'Weights' : 'Saved Weights'}
               {isReview && <a onClick={() => this.props.onEdit()}>Edit</a>}
             </div>
             <WeightTable
@@ -134,6 +129,17 @@ class Weights extends React.Component {
               totalPoints={totalPoints}
               onEdit={() => this.props.onEdit()}
             />
+            {(weights.length !== 0 || noWeights) && !isReview &&
+              <div className='submit-container'>
+                <button
+                  onClick={() => this.props.onSubmit()}
+                  disabled={disableButton}
+                  className={`submit-weights button ${disableButton ? 'disabled' : ''}`}
+                >
+                  Submit Weights
+                </button>
+              </div>
+            }
           </div>
         }
         {weights.length !== 0 &&
@@ -142,17 +148,7 @@ class Weights extends React.Component {
             {this.renderExtraCredit()}
             {!cl.is_points && this.renderWeightTotalWarning()}
           </div>
-          {!cl.is_points && <div>*The total should be 100%</div>}
         </div>}
-        {(weights.length !== 0 || noWeights) && !isReview &&
-          <button
-            onClick={() => this.props.onSubmit()}
-            disabled={disableButton}
-            className={disableButton ? 'button full-width disabled margin-bottom' : 'button full-width margin-bottom'}
-          >
-            Save and continue
-          </button>
-        }
       </div>
     )
   }
@@ -202,13 +198,25 @@ class Weights extends React.Component {
   /*
   * Toggle the weights from percentages to points or vice versa.
   */
-  onTypeSelection (isPoints) {
+  onTypeSelection (isPoints, points) {
     const {cl} = this.props
-
+    if (typeof (points) === 'string') {
+      points = parseInt(points, 10)
+    }
     if (isPoints) {
-      this.setState({totalPoints: 0, reset: false})
+      this.setState({totalPoints: points, reset: false, boolPoints: true})
     } else {
-      this.setState({totalPoints: 100, reset: false})
+      this.setState({totalPoints: 100, reset: false, boolPoints: false})
+    }
+    this.props.onUpdateClass({id: cl.id, is_points: isPoints})
+  }
+
+  onChangeType (isPoints) {
+    const {cl} = this.props
+    if (isPoints) {
+      this.setState({boolPoints: true})
+    } else {
+      this.setState({boolPoints: false})
     }
     this.props.onUpdateClass({id: cl.id, is_points: isPoints})
   }
@@ -251,14 +259,27 @@ class Weights extends React.Component {
 
   /*
   * If weights are in points, update the total points.
-  * Call back from PointTotal.
+  * Call back from WeightType.
   */
   onChangeTotalPoints (totalPoints) {
     this.setState({totalPoints})
+  } // unused
+
+  goBack () {
+    this.setState({reset: true})
   }
 
   render () {
     return (
+      // <div id='cn-weights-main-container'>
+      //   <div className='margin-bottom margin-top'>
+      //     {/* <a onClick={this.goBack()}>Go back</a> */}
+      //     <a>Go back</a>
+      //   </div>
+      //   <div id='cn-weights'>
+      //     {this.renderContent()}
+      //   </div>
+      // </div>
       <div id='cn-weights'>
         {this.renderContent()}
       </div>
