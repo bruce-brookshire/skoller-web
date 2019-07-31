@@ -19,16 +19,17 @@
     font-style: italic;
     color: $cn-color-blue;
 
-    @media only screen and (max-width: $sk-mobile-break-point) {
+    @media only screen and (max-width: 700px) {
       font-size: 16px;
       top: 32px;
     }
 
     @media only screen and (max-width: 370px) {
-      font-size: 12px;
+      font-size: 11px;
       top: 32px;
     }
   }
+
   .layout{  
     .onboard-content {
       padding: 1.5rem 2.5rem;

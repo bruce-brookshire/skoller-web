@@ -64,6 +64,7 @@ class SignUp extends React.Component {
         customLink: this.props.partner.slug
       }
     }
+    console.log(newUser)
     actions.auth
       .registerUser(newUser)
       .then(() => {

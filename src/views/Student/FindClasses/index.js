@@ -108,6 +108,7 @@ class FindClasses extends React.Component {
     this.setState({loading: true})
     if (newCl) {
       let clForm = this.mapForm()
+      console.log(clForm)
       actions.classes.createClass(clForm, semester.id).then((cl) => {
         this.enroll(cl)
       }).catch(() => { this.setState({loading: false}) })

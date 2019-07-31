@@ -1,4 +1,6 @@
 .sk-select-school {
+  @include hide-scrollbar;
+
   .sk-select-school-row {
     margin-bottom: 1rem;
     
@@ -51,6 +53,7 @@
       }
   
       .sk-select-school-term-options {
+        @include hide-scrollbar;
         cursor: pointer;
         box-sizing: border-box;
         padding: 4px;
@@ -84,6 +87,7 @@
   }
 
   .sk-select-school-autocomplete-container {
+    @include hide-scrollbar;
     cursor: pointer;
     box-sizing: border-box;
     padding: 4px;

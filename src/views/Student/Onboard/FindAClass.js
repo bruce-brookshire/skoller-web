@@ -617,7 +617,7 @@ class FindAClass extends React.Component {
         'location': null,
         'type': null,
         'class_period_id': this.props.params.termChoice.id,
-        'professor': this.state.classChoice.professor
+        'professor_id': this.state.professorChoice.id
       }
       if (this.validateForm()) {
         this.setState({loadingSubmit: true})
