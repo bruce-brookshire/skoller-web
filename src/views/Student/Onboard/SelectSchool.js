@@ -7,7 +7,7 @@ import CreateSchoolModal from '../FindClasses/CreateSchoolModal'
 import SkModal from '../../components/SkModal/SkModal'
 import moment from 'moment'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
-import Sammi from '../../components/Sammi';
+import Sammi from '../../components/Sammi'
 
 @inject('rootStore') @observer
 class SelectSchool extends React.Component {
@@ -155,7 +155,7 @@ class SelectSchool extends React.Component {
           }
         </div>
         {((this.state.schools.length > 0 || this.state.input) && !this.state.loadingAutocomplete)
-          ? <div className='sk-select-school-autocomplete-container' contentEditable={false}>
+          ? <div className='sk-select-school-autocomplete-container' style={{width: this.schoolField.offsetWidth.toString() + 'px'}} contentEditable={false}>
             {this.renderAutoComplete()}
           </div>
           : null
@@ -173,26 +173,28 @@ class SelectSchool extends React.Component {
   renderSchoolOptions () {
     return (
       <div className='sk-select-school'>
-        <div className='sk-select-school-field'>
-          {this.state.foundSchools.map((school) =>
-            <div
-              key={school.id}
-              className='sk-select-school-selected-school sk-select-school-option'
-              onClick={() => {
-                this.setSchoolChoice(school)
-                this.setState({
-                  showSchoolOptions: false
-                })
-              }}
-            >
-              <h3 className='sk-select-school-selected-school-name' style={{color: school.color ? ('#' + school.color) : null}}>
-                {school.name}
-              </h3>
-              <div className='sk-select-school-selected-school-location'>
-                {school.adr_locality}, {school.adr_region}
+        <div className='sk-select-school-row'>
+          <div className='sk-select-school-field'>
+            {this.state.foundSchools.map((school) =>
+              <div
+                key={school.id}
+                className='sk-select-school-selected-school sk-select-school-option'
+                onClick={() => {
+                  this.setSchoolChoice(school)
+                  this.setState({
+                    showSchoolOptions: false
+                  })
+                }}
+              >
+                <h3 className='sk-select-school-selected-school-name' style={{color: school.color ? ('#' + school.color) : null}}>
+                  {school.name}
+                </h3>
+                <div className='sk-select-school-selected-school-location'>
+                  {school.adr_locality}, {school.adr_region}
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     )
