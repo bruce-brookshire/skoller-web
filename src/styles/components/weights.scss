@@ -3,7 +3,7 @@
 }
 
 #cn-weights {
-  height: 100%;
+  height: 93%;
 
   .cn-weights-subcontainer {
     height: 90%;
@@ -103,6 +103,7 @@
 
       &.disabled {
         color: #ffffff !important;
+        cursor: default;
       }
     }
   }
