@@ -5,17 +5,45 @@ import StudentLayout from '../../components/StudentLayout'
 import ClassList from '../../components/ClassList'
 import actions from '../../../actions'
 import { browserHistory } from 'react-router'
+import PopUp from './PopUp'
 
 @inject('rootStore') @observer
 class Home extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      classes: []
+      classes: [],
+      showPopUp: false
     }
 
     this.updateClasses()
     this.props.rootStore.studentNavStore.setActivePage('home')
+  }
+
+  async componentDidMount () {
+    if (this.props.rootStore.userStore.showPopUps) {
+      this.showFirstClassPopUp()
+    }
+  }
+
+  async showFirstClassPopUp () {
+    let showPopUp = false
+    await actions.classes.getStudentClassesById(this.props.rootStore.userStore.user.student.id)
+      .then((classes) => {
+        if (classes.length > 1) {
+          showPopUp = false
+        } else {
+          let cl = classes[0]
+          let id = cl.status.id
+          if (id === 1100) {
+            showPopUp = true
+          }
+        }
+      })
+      .catch(() => false)
+    if (showPopUp) {
+      this.setState({showPopUp: true})
+    }
   }
 
   updateClasses () {
@@ -49,6 +77,9 @@ class Home extends React.Component {
     return (
       <StudentLayout>
         {console.log(this.props.rootStore)}
+        {this.state.showPopUp &&
+          <PopUp closeModal={() => this.setState({showPopUp: false})} />
+        }
         <div className="home-container">
           <div className="home-column">
             <div className="home-shadow-box">

@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import ClassInfo from './ClassInfo'
+import { browserHistory } from 'react-router';
 
 @inject('rootStore') @observer
 class NavBar extends React.Component {
@@ -74,7 +75,7 @@ class NavBar extends React.Component {
       const {userStore: {user}, navbarStore: {title}} = this.props.rootStore
       return (
         <div className='cn-navbar'>
-          <div>
+          <div onClick={() => browserHistory.push('/')}>
             <img alt="Skoller" className='logo' src='/src/assets/images/logo-wide-blue@1x.png' />
           </div>
           <div className='class-info'>
