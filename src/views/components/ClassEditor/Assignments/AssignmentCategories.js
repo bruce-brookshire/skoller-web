@@ -27,12 +27,15 @@ class AssignmentCategories extends React.Component {
             {weight.name}
           </div>
           <div className='add-assignments'>
-            <div>
+            <div onClick={() => this.props.onClick(weight)}>
               Add assignments
             </div>
           </div>
         </div>
-        <div className='arrow'>
+        <div
+          className='arrow'
+          onClick={() => this.props.onClick(weight)}
+        >
           <i className='fa fa-angle-right' />
         </div>
       </div>
@@ -54,7 +57,9 @@ class AssignmentCategories extends React.Component {
           <hr />
           <div id='next-step'>
             {this.renderNextStep(this.state.noAssignments)}
-            <button className='next-button button'>
+            <button
+              className='next-button button'
+            >
               {this.state.noAssignments ? 'Next Syllabus' : 'Finished with this Syllabus'}
             </button>
           </div>
@@ -67,7 +72,8 @@ class AssignmentCategories extends React.Component {
 AssignmentCategories.propTypes = {
   cl: PropTypes.object.isRequired,
   weights: PropTypes.array,
-  noAssignments: PropTypes.array
+  noAssignments: PropTypes.array,
+  onClick: PropTypes.func
 }
 
 export default AssignmentCategories

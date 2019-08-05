@@ -24,7 +24,7 @@
       flex-direction: column;
       margin-left: 2px;
       padding-top: 2px;
-      height: 78%;
+      height: 95%;
 
       .weight {
         display: flex;
@@ -42,7 +42,8 @@
           }
 
           .add-assignments {
-            font-size: 16px;
+            font-size: 15px;
+            font-weight: 600;
             color: $cn-color-blue;
             padding-left: 1.1em;
 

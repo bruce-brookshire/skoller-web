@@ -65,7 +65,6 @@ class AssignmentForm extends React.Component {
   */
   initializeState () {
     const {assignment} = this.props
-    console.log(assignment) // check
     return {
       form: this.initializeFormData(assignment),
       due_null: false,
@@ -163,17 +162,23 @@ class AssignmentForm extends React.Component {
     return `${dateParts[1]}/${dateParts[2]}`
   }
 
+  verifyData (form) {
+    const nameCheck = form.name.trim() !== ''
+    const dateCheck = form.due.trim().length === 5 &&
+                      !isNaN(form.due.substring(0, 2)) && !isNaN(form.due.substring(3)) &&
+                      !isNaN(form.year_due) && form.year_due.length !== 0
+    return nameCheck && (this.state.due_null ? true : dateCheck)
+  }
+
   render () {
     const {form} = this.state
-    const {formErrors, updateProperty, isAdmin, weights} = this.props
+    const {formErrors, updateProperty, isAdmin, weights, currentWeight} = this.props
+    const disableButton = !this.verifyData(form)
 
-    console.log(this.state)
-
-    let disableButton = form.name.trim() === '' || ((form.due.trim() === '' || !isNaN(form.year_due)) && !this.state.due_null)
     return (
       <div id='cn-assignment-form'>
         <div className='cn-section-content-header'>
-          Add: (Temporary Text) {}
+          Add: {currentWeight.name}
         </div>
         <hr />
         <div className='row'>
@@ -185,21 +190,10 @@ class AssignmentForm extends React.Component {
               label='Assignment name'
               name='name'
               onChange={updateProperty}
-              placeholder='e.g. (Temporary Text) 1'
+              placeholder={`e.g. ${currentWeight.name} 1`}
               value={form.name}
             />
           </div>
-          {isAdmin && <div className='col-xs-12'>
-            <SelectField
-              containerClassName='margin-top'
-              error={formErrors.weight_id}
-              label='Weight'
-              name='weight_id'
-              onChange={updateProperty}
-              options={weights}
-              value={form.weight_id}
-            />
-          </div>}
           <div className='col-xs-4'>
             {!this.state.due_null && <InputField
               containerClassName='margin-top'

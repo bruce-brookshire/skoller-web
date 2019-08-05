@@ -47,6 +47,7 @@ class Assignments extends React.Component {
       viewOnly: isReview,
       weights: [],
       currentWeightIndex: 0,
+      currentWeight: null,
       openSkipCategoryModal: false,
       addAssignment: false
     }
@@ -104,7 +105,7 @@ class Assignments extends React.Component {
     }).catch(() => false)
   }
 
-  onNext () {
+  onNext () { // TODO
     const {currentWeightIndex, weights} = this.state
     if (weights[currentWeightIndex + 1]) {
       this.setState({currentWeightIndex: currentWeightIndex + 1})
@@ -134,20 +135,23 @@ class Assignments extends React.Component {
     )
   }
 
-  renderSavedMessage (assignments) {
-    const {viewOnly, weights, currentWeightIndex} = this.state
-    return (
-      <span>
-        {!viewOnly && <span>Saved assignments</span>}
-        {!viewOnly && weights[currentWeightIndex] && <span> for <i className='cn-blue'>{weights[currentWeightIndex].name}</i></span>}
-        {viewOnly && `Assignments (${assignments.length})`}
-      </span>
-    )
+  // renderSavedMessage (assignments) {
+  //   const {viewOnly} = this.state
+  //   return (
+  //     <span>
+  //       {!viewOnly && <span>Saved assignments</span>}
+  //       {viewOnly && `Assignments (${assignments.length})`}
+  //     </span>
+  //   )
+  // }
+
+  toAssignmentForm (weight) {
+    this.setState({ addAssignment: true, currentWeight: weight })
   }
 
   render () {
     const {viewOnly, loadingAssignments, loadingWeights, currentAssignment,
-      currentWeightIndex, weights, addAssignment} = this.state
+      currentWeightIndex, currentWeight, weights, addAssignment} = this.state
     const {cl} = this.props
 
     let assignments = this.filterAssignments()
@@ -160,9 +164,10 @@ class Assignments extends React.Component {
           : <div id='cn-assignment-window'>
             {!viewOnly && !addAssignment &&
             <AssignmentCategories
+              cl={cl}
               weights={weights}
               noAssignments={this.state.assignments}
-              cl={cl}
+              onClick={this.toAssignmentForm.bind(this)}
             />
             }
             {!viewOnly && addAssignment &&
@@ -175,7 +180,7 @@ class Assignments extends React.Component {
                 cl={cl}
                 onCreateAssignment={this.onCreateAssignment.bind(this)}
                 onUpdateAssignment={this.onUpdateAssignment.bind(this)}
-                currentWeight={weights[currentWeightIndex]}
+                currentWeight={currentWeight}
               />
             </div>
             }
@@ -184,10 +189,10 @@ class Assignments extends React.Component {
                 <a onClick={() => this.toggleSkipCategoryModal()}>Skip this category</a>
               </div>
             } */}
-            {(assignments.length !== 0 || viewOnly) &&
+            {(assignments.length !== 0 || viewOnly) && addAssignment &&
             <div id='cn-assignment-table'>
               <div id='cn-assignment-table-label'>
-                {this.renderSavedMessage(assignments)}
+                Saved Assignments
                 {viewOnly && <a onClick={() => this.props.onEdit()}>Edit</a>}
               </div>
               <AssignmentTable
@@ -200,17 +205,18 @@ class Assignments extends React.Component {
                 cl={cl}
                 currentWeight={weights[currentWeightIndex]}
                 onEdit={() => this.props.onEdit()}
+                // onSubmit={() => }
               />
             </div>
             }
-            {assignments.length !== 0 && !viewOnly &&
+            {/* {assignments.length !== 0 && !viewOnly &&
               <button
                 onClick={() => this.onNext()}
                 className='button full-width margin-top margin-bottom'
               >
                 Save and continue
               </button>
-            }
+            } */}
             {this.renderSkipCategoryModal()}
           </div>}
       </div>
