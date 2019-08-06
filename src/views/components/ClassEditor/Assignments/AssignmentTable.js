@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {convertUTCDatetimeToDateString} from '../../../../utilities/time'
+import moment from 'moment'
 
 class AssignmentTable extends React.Component {
   /*
@@ -11,8 +11,7 @@ class AssignmentTable extends React.Component {
   */
   getRow (item, index) {
     const {id, name, weight_id: weightId, due} = item
-    const {currentAssignment, viewOnly, weights, currentWeight} = this.props
-
+    const {currentAssignment, viewOnly, currentWeight} = this.props
     const activeClass = (currentAssignment && currentAssignment.id) === id
       ? 'active' : ''
 
@@ -25,22 +24,25 @@ class AssignmentTable extends React.Component {
           this.props.onSelectAssignment(item)
         }}
       >
-        {!viewOnly &&
-          <div className='col-xs-1'>
-            <div className='button-delete-x center-content'
-              onClick={(event) => {
-                event.stopPropagation()
-                // if (disabled) return
-                this.props.onDeleteAssignment(item)
-              }}><i className='fa fa-times' />
+        <div className='col-xs-7 assignment-name-container'>
+          {!viewOnly &&
+            <div className='col-xs-2'>
+              <div
+                className='button-delete-x-light center-content'
+                onClick={(event) => {
+                  event.stopPropagation()
+                  /* if (disabled) return */
+                  this.props.onDeleteAssignment(item)
+                }}><img src='/src/assets/images/syllabus_tool/circle_x.png' />
+              </div>
             </div>
+          }
+          <div className={`assignment-label ${!viewOnly ? 'col-xs-9' : 'col-xs-10'}`}>
+            <div>{name}</div>
+            {!currentWeight && this.renderWeightName(weightId)}
           </div>
-        }
-        <div className={!viewOnly ? 'col-xs-8' : 'col-xs-9'}>
-          <div>{name}</div>
-          {!currentWeight && this.renderWeightName(weightId)}
         </div>
-        <div className='col-xs-3 right-text'>
+        <div className='col-xs-5 right-text'>
           {due ? this.mapAssignmentDate(due) : ''}
         </div>
       </div>
@@ -52,6 +54,7 @@ class AssignmentTable extends React.Component {
   */
   renderWeightName (id) {
     const {weights} = this.props
+    console.log(weights)
     if (weights) {
       var weight = weights.find(w => w.id === id)
       if (weight && weight !== undefined) {
@@ -76,9 +79,10 @@ class AssignmentTable extends React.Component {
   */
   mapAssignmentDate (date) {
     const {cl} = this.props
-    const datePretty = convertUTCDatetimeToDateString(date, cl.school.timezone)
-    const dateParts = datePretty.split('-')
-    return `${dateParts[1]}/${dateParts[2]}`
+    const today = moment.tz(Date.now(), cl.school.timezone)
+    const due = moment.tz(date, cl.school.timezone)
+    return today.format('YYYY-MM-DD') === due.format('YYYY-MM-DD') ? 'Today'
+      : `${due.format('ddd')}, ${due.format('MMM')} ${due.format('Do')}`
   }
 
   /*
@@ -89,9 +93,29 @@ class AssignmentTable extends React.Component {
 
     // sort by due date.
     return assignments.sort((a, b) => {
-      return a.inserted_at > b.inserted_at
+      return new Date(b.due) - new Date(a.due)
     }).map((assignment, index) =>
       this.getRow(assignment, index)
+    )
+  }
+
+  renderSubmit () {
+    const {assignments} = this.props
+    const disableButton = assignments.length === 0
+
+    return (
+      <div id='submit-container'>
+        <div id='notification'>
+          Be sure to add all assignments for this category!
+        </div>
+        <button
+          onClick={() => this.props.onSubmit()}
+          disabled={disableButton}
+          className={`submit-assignments button ${disableButton ? 'disabled' : ''}`}
+        >
+          Submit Assignments ({assignments.length})
+        </button>
+      </div>
     )
   }
 
@@ -100,7 +124,10 @@ class AssignmentTable extends React.Component {
 
     return (
       <div id='class-editor-assignments-table' className={`${viewOnly ? 'view-only' : ''}`} ref={(field) => { this.sectionControl = field }} >
-        {this.renderAssignments()}
+        <div id='assignment-rows'>
+          {this.renderAssignments()}
+        </div>
+        {this.renderSubmit()}
       </div>
     )
   }
@@ -115,7 +142,8 @@ AssignmentTable.propTypes = {
   weights: PropTypes.array,
   cl: PropTypes.object,
   currentWeight: PropTypes.object,
-  isAdmin: PropTypes.bool
+  isAdmin: PropTypes.bool,
+  onSubmit: PropTypes.func
 }
 
 export default AssignmentTable

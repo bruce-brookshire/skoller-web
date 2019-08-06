@@ -1,7 +1,18 @@
+#cn-assignment-table-label {
+  font-size: 17.5px;
+  font-weight: 600;
+  color: #4a4a4a;
+  background-color: #bdbdbd;
+  border-radius: 4px 4px 0 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0px 4px 10px;
+}
+
 #class-editor-assignments-table {
   background-color: $cn-color-white;
-  border: 1px solid $cn-color-grey;
-  border-radius: $cn-border-radius;
+  border-top: 1px solid $cn-color-grey;
+  border-radius: 0px 0px 4px 4px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -20,21 +31,78 @@
 
   .table-row {
     cursor: pointer;
-    padding: 0.5em;
+    padding: 0.4em 0.5em 0em 0.3em;
     padding-right: 0;
-    font-size: 14px;
+    font-size: 17.5px;
     display: flex;
     flex-direction: row;
     width: 100%;
+
     .bold {
       font-weight: 600;
     }
+
+    .assignment-name-container {
+      height: 100%;
+      display: flex;
+      flex-direction: row;
+
+      img {
+        height: 17px;
+        width: 17px;
+      }
+
+      .assignment-label {
+        padding-top: 1.5px;
+      }
+    }
+
     &:hover {
       background-color: darken($cn-color-white, 10%);
     }
 
     &.active {
       background-color: $cn-blue-cell-background;
+    }
+
+    .right-text {
+      padding-right: 10px;
+    }
+  }
+
+  #assignment-rows {
+    height: 100%;
+    padding: 0.4em 0;
+    overflow-y: auto;
+  }
+
+  #submit-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1.1em;
+
+    #notification {
+      color: #c7c7cd;
+      font-size: 13px;
+      margin-bottom: 0.7em;
+    }
+
+    .submit-assignments {
+      border-radius: 4px;
+      width: 65%;
+      height: 1.6em;
+      min-height: 1.6em;
+      background-color: #36bf36;
+      font-size: 18px;
+      padding-top: 6px;
+      box-shadow: 0px 2px 4px #888888;
+
+      &.disabled {
+        color: #ffffff !important;
+        cursor: default;
+      }
     }
   }
 }

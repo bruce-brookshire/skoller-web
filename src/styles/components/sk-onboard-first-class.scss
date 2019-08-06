@@ -1,3 +1,27 @@
+.onboard-first-class {
+  h1 {
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .onboard-first-class-sammi-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0 0 16px 0;
+
+    .sammi-message {
+      @include sammi-message-right;
+    }
+
+    img {
+      float: right;
+      width: 48px;
+    }
+  }
+}
+
 .sk-onboard-first-class-container {
   margin: 2rem 0 2rem 0;
   .sk-onboard-first-class-row {
@@ -91,4 +115,9 @@
       }
     }
   }
+}
+
+.onboard-next {
+  @include sk-standard-button;
+  @include not-selectable;
 }

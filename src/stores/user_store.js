@@ -1,4 +1,4 @@
-import { extendObservable } from 'mobx'
+import { extendObservable, action } from 'mobx'
 
 class UserStore {
   constructor () {
@@ -7,7 +7,8 @@ class UserStore {
       fetchingUser: null,
       authToken: null,
       user: null,
-      enrollmentLink: null
+      enrollmentLink: null,
+      showPopUps: true
     })
   }
 
@@ -33,6 +34,10 @@ class UserStore {
 
   isStudent () {
     return this.user.roles.findIndex(r => r.name.toLowerCase() === 'student') > -1
+  }
+
+  @action setPopUpState (bool) {
+    this.showPopUps = bool
   }
 }
 

@@ -48,7 +48,7 @@ class FirstClass extends React.Component {
         // ^ for testing
         if (id === 1100) {
           status = 'needSyllabus'
-          sammiMessage = `Let's get you set up!`
+          sammiMessage = `Let's get your first class set up!`
           mobileMessage = `Head over to skoller.co on your computer to upload your syllabus.`
         } else if (id === 1200) {
           status = 'inReview'
@@ -194,6 +194,15 @@ class FirstClass extends React.Component {
     )
   }
 
+  sendToDiy () {
+    browserHistory.push({
+      pathname: `/class/${this.state.firstClass.id}/syllabus_tool/`,
+      state: {
+        isDIY: true
+      }
+    })
+  }
+
   async handleSubmit () {
     if (this.state.status === 'needSyllabus' && this.state.syllabus) {
       this.setState({loading: true})
@@ -212,7 +221,8 @@ class FirstClass extends React.Component {
     } else if (this.state.status === 'inReview' || this.state.status === 'live') {
       this.props.onSubmit()
     } else if (this.state.status === 'diy') {
-      console.log(`let's DIY`)
+      console.log('TODO: this should send you to syllabus tool')
+      this.sendToDiy()
     }
   }
 
@@ -249,7 +259,7 @@ class FirstClass extends React.Component {
   renderModalContent () {
     return (
       <div>
-        {this.props.renderPartner()}
+        {this.props.renderPartner ? this.props.renderPartner() : null}
         <div className='onboard-first-class'>
           <h1>{this.state.firstClass.name}</h1>
           <Sammi
@@ -264,9 +274,26 @@ class FirstClass extends React.Component {
           ? this.renderMobileMessage()
           : null
         }
-        {this.renderNextButton()}
+        {!this.props.disableNext && this.renderNextButton()}
+        {this.state.status === 'diy' &&
+          <div
+            className='sk-onboard-alt'
+            onClick={() => browserHistory.push('/student')}
+          >
+            Not the right time? Enter Skoller instead.
+          </div>
+        }
         {this.state.status === 'inReview' && !mobileCheck()
-          ? <p style={{margin: '6px 0 0 0', textAlign: 'center'}}><small>Don&apos;t want to wait? <span style={{color: '#57B9E4'}}>Click here to do it yourself!</span></small></p>
+          ? <p
+            style={{margin: '6px 0 0 0', textAlign: 'center', cursor: 'pointer'}}
+            onClick={() => {
+              this.sendToDiy()
+            }}
+          >
+            <small>
+              Don&apos;t want to wait? <span style={{color: '#57B9E4'}}>Click here to do it yourself!</span>
+            </small>
+          </p>
           : null
         }
       </div>
@@ -289,7 +316,8 @@ FirstClass.propTypes = {
   onSubmit: PropTypes.func,
   rootStore: PropTypes.object,
   renderPartner: PropTypes.func,
-  partner: PropTypes.object
+  partner: PropTypes.object,
+  disableNext: PropTypes.bool
 }
 
 export default FirstClass
