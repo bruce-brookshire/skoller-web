@@ -1,0 +1,92 @@
+#cn-assignment-categories {
+  overflow-y: hidden;
+  overflow-x: hidden;
+  padding: 0em 0.4em;
+  height: 100%;
+  user-select: none;
+
+  #cn-assignment-instructions {
+    font-size: 9pt;
+    font-weight: 500;
+  }
+
+  hr {
+    background-color: #aaaaaa;
+    border: none;
+    height: 1px;
+  }
+
+  #content-container {
+    height: 80%;
+  
+    #weight-container {
+      display: flex;
+      flex-direction: column;
+      margin-left: 2px;
+      padding-top: 2px;
+      height: 95%;
+
+      .weight {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 1em;
+        width: 100%;
+
+        .text {
+          width: 93%;
+
+          .weight-name {
+            font-weight: 600;
+            font-size: 20px;
+          }
+
+          .add-assignments {
+            font-size: 15px;
+            font-weight: 600;
+            color: $cn-color-blue;
+            padding-left: 1.1em;
+
+            :first-child {
+              width: fit-content;
+              cursor: pointer;
+            }
+          }
+        }
+
+        .arrow {
+          width: 7%;
+          display: flex;
+          cursor: pointer;
+
+          i {
+            color: #c7c7cd;
+            align-items: center;
+          }
+        }
+      }
+    }
+
+    #next-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      #next-label {
+        padding-top: 4px;
+      }
+
+      .next-button {
+        cursor: pointer;
+        border: 1px solid $cn-color-blue;
+        border-radius: 3px;
+        background-color: transparent;
+        font-weight: 600;
+        color: $cn-color-blue;
+        margin-top: 0.5rem;
+        padding-top: 7px;
+        width: 60%;
+      }
+    }
+  }
+}

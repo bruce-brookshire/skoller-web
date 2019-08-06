@@ -109,6 +109,9 @@ class WeightForm extends React.Component {
 
     return (
       <div id='cn-weight-form'>
+        {/* <div className='margin-bottom margin-top'>
+          <a onClick={() => this.props.reset()}>Go back</a>
+        </div> */}
         <div className='cn-section-content-header'>
           Step 1: Set Up Weights
         </div>
@@ -179,16 +182,13 @@ class WeightForm extends React.Component {
           />
         }
         {<button
-          className={'button full-width margin-top ' + (this.state.loading || noWeights ? 'disabled' : '')}
+          className={'button margin-top ' + (this.state.loading || noWeights ? 'disabled' : '')}
           disabled={this.state.loading || noWeights}
           onClick={this.onSubmit.bind(this)}
         >
           Add Weight
           {this.state.loading ? <Loading /> : null}
         </button>}
-        {/* <div className='margin-bottom margin-top'>
-          <a onClick={() => this.props.reset()}>Go back</a>
-        </div> */}
       </div>
     )
   }

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
-import {InputField, CheckboxField, SelectField} from '../../../../components/Form'
+import {InputField, SelectField} from '../../../../components/Form'
 import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
 import {convertLocalDateToUTC, convertUTCDatetimeToDateString} from '../../../../utilities/time'
@@ -162,40 +162,43 @@ class AssignmentForm extends React.Component {
     return `${dateParts[1]}/${dateParts[2]}`
   }
 
+  verifyData (form) {
+    const nameCheck = form.name.trim() !== ''
+    const dateCheck = form.due.trim().length === 5 &&
+                      !isNaN(form.due.substring(0, 2)) && !isNaN(form.due.substring(3)) &&
+                      !isNaN(form.year_due) && form.year_due.length !== 0
+    return nameCheck && (this.state.due_null ? true : dateCheck)
+  }
+
   render () {
     const {form} = this.state
-    const {formErrors, updateProperty, isAdmin, weights} = this.props
+    const {formErrors, updateProperty, isAdmin, weights, currentWeight} = this.props
+    const disableButton = !this.verifyData(form)
+
     return (
-      <div>
+      <div id='cn-assignment-form'>
+        <div className='cn-section-content-header'>
+          Add: {currentWeight.name}
+        </div>
+        <hr />
         <div className='row'>
           <div className='col-xs-12'>
             <InputField
               containerClassName='margin-top'
               error={formErrors.name}
-              info={'Be sure to add the assignment name exactly how it appears in the syllabus. Hint: use copy and paste to minimize typ-o\'s'}
+              // info={'Be sure to add the assignment name exactly how it appears in the syllabus. Hint: use copy and paste to minimize typ-o\'s'}
               label='Assignment name'
               name='name'
               onChange={updateProperty}
-              placeholder='e.g. Exam 1'
+              placeholder={`e.g. ${currentWeight.name} 1`}
               value={form.name}
             />
           </div>
-          {isAdmin && <div className='col-xs-12'>
-            <SelectField
-              containerClassName='margin-top'
-              error={formErrors.weight_id}
-              label='Weight'
-              name='weight_id'
-              onChange={updateProperty}
-              options={weights}
-              value={form.weight_id}
-            />
-          </div>}
           <div className='col-xs-4'>
             {!this.state.due_null && <InputField
               containerClassName='margin-top'
               error={formErrors.due}
-              info={`Due date unknown for an assignment? No worries-you can always add one later. Go ahead and create the assignment for everyone in your class.`}
+              // info={`Due date unknown for an assignment? No worries-you can always add one later. Go ahead and create the assignment for everyone in your class.`}
               label='Due date'
               name='due'
               onChange={(name, value) => {
@@ -221,29 +224,27 @@ class AssignmentForm extends React.Component {
             />}
           </div>
           <div className='col-xs-4'>
-            <div className='cn-input-container margin-top center-xs'>
+            <div className='cn-input-container margin-top unknown-due'>
               <label htmlFor="due_null" className='cn-input-label'>Unknown?</label>
-              <CheckboxField
-                inputClassName='cn-big-checkbox'
-                tabIndex="-1"
-                type="checkbox"
-                name="due_null"
-                value={this.state.due_null}
-                onChange={(name, value) => {
-                  this.setState({due_null: value})
+              <div className="checkbox-appearance"
+                style={{ backgroundColor: this.state.due_null ? '#57b9e4' : 'transparent' }}
+                onClick={() => {
+                  this.state.due_null ? this.setState({ due_null: false }) : this.setState({ due_null: true })
                 }}
               />
             </div>
           </div>
         </div>
-        <button
-          className='button full-width margin-top'
-          disabled={this.state.loading}
-          onClick={this.onSubmit.bind(this)}
-        >
-          {this.state.form.id ? 'Edit assignment' : 'Add assignment'}
-          {this.state.loading ? <Loading /> : null}
-        </button>
+        <div id='button-container'>
+          <button
+            className={`button ${disableButton ? 'disabled' : ''}`}
+            disabled={this.state.loading || disableButton}
+            onClick={this.onSubmit.bind(this)}
+          >
+            Add assignment
+            {this.state.loading ? <Loading /> : null}
+          </button>
+        </div>
       </div>
     )
   }

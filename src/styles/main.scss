@@ -15,6 +15,7 @@
 // Assets ----------------------------------------------------------------------
 @import 'assets/sk-loader.scss';
 
+
 // Forms ----------------------------------------------------------------------
 @import 'forms/mixins/input';
 @import 'forms/checkbox-field';
@@ -31,8 +32,10 @@
 @import 'components/enroll-link-splash';
 @import 'components/sk-modal.scss';
 @import 'components/assignments';
+@import 'components/assignment-categories.scss';
 @import 'components/assignment-detail';
 @import 'components/assignment-card';
+@import 'components/assignment-form.scss';
 @import 'components/assignment-table';
 @import 'components/autocomplete';
 @import 'components/autocomplete-detail';
@@ -63,7 +66,6 @@
 @import 'components/sk-find-class-form.scss';
 @import 'components/sk-onboard-first-class.scss';
 @import 'components/sk-onboard-share-partner.scss';
-@import 'components/sk-onboard-sign-up.scss';
 @import 'components/sign-up-form';
 @import 'components/time-fields';
 @import 'components/topnav';
