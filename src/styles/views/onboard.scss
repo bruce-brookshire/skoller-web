@@ -63,7 +63,7 @@
         text-align: center;
         display: flex;
         flex-direction: row;
-        justify-content: left;
+        justify-content: flex-start;
         align-items: center;
         margin: 0px 0 1rem 0;
 
@@ -94,23 +94,6 @@
       .onboard-select-school {
         h1 {
           margin-bottom: -16px;
-        }
-
-        .onboard-select-school-sammi-container {
-          display: flex;
-          flex-direction: row;
-          justify-content: center;
-          align-items: center;
-          padding: 0px 0px 8px 0px;
-
-          .sammi-message {
-            @include sammi-message-right;
-          }
-
-          img {
-            float: right;
-            width: 48px;
-          }
         }
       }
 

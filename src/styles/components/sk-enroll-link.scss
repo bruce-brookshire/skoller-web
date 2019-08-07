@@ -1,0 +1,103 @@
+.sk-enroll-link-container {
+  h1 {
+    text-align: center;
+    margin: 0.5rem 0;
+  }
+
+  p {
+    text-align: center;
+
+    .sk-enroll-link-switch {
+      color: $cn-color-blue;
+      cursor: pointer;
+    }
+  }
+
+  .sk-enroll-link-call-out {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    .sk-enroll-link-img-container {
+      box-sizing: border-box;
+      display: flex;
+      width: 40px;
+      border-radius: 50%;
+      border: 1px solid $cn-form-border;
+      flex-shrink: 0;
+      margin-top: -8px;
+
+      img {
+        width: 100%;
+        border-radius: 50%;
+        display: block;
+      }
+    }
+
+    p {
+      flex-shrink: 1;
+      font-size: 18px;
+      margin: 0 0 0 8px;
+      width: auto;
+      display: inline-block;
+    }
+  }
+
+  .sk-enroll-link-enroll-form {
+
+    .sk-enroll-link-class-container {
+      border: 1px solid $cn-color-grey;
+      border-radius: 5px;
+      padding: 8px 8px 4px 8px;
+
+      .sk-enroll-link-class-header {        
+        .sk-enroll-link-class-header-item {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+
+          h2 {
+            margin: 8px 0 0 0;
+          }
+
+          p {
+            margin: 0;
+          }
+        }
+      }
+
+      hr {
+        border: 1px solid $cn-color-grey;
+      }
+
+      .sk-enroll-link-class-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        .el-left {
+          text-align: left;
+        }
+
+        .el-right {
+          text-align: right;
+        }
+
+        .sk-enroll-link-class-label {
+          color: rgba(0,0,0,0.35);
+        }
+
+        p {
+          margin: 0 0 4px 0;
+        }
+      }
+    }
+
+    .sk-enroll-link-enroll-form-button {
+      @include sk-standard-button;
+      margin-top: 1rem;
+    }
+  }
+}

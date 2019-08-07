@@ -30,7 +30,7 @@ class Signup extends React.Component {
       .then(() => {
         actions.auth.verifyStudentPhoneNumber({phone: newUser.student.phone}).then(() => {
           console.log(this.props.rootStore.userStore)
-          browserHistory.push({ pathname: '/onboard' })
+          browserHistory.push({ pathname: '/o' })
         })
       })
       .catch(error => console.log(error))

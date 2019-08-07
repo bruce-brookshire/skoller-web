@@ -18,10 +18,11 @@
   }
 }
 
-.align-right {
-  justify-content: right;
-}
 
 .align-left {
-  justify-content: left;
+  justify-content: flex-start;
+}
+
+.align-right {
+  justify-content: flex-end;
 }

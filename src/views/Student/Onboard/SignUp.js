@@ -111,7 +111,7 @@ class SignUp extends React.Component {
           </div>
           <div className='sk-onboard-sign-up-row'>
             <label>First Name</label>
-            <input type='string' value={this.state.firstName} onChange={(e) => this.setState({firstName: e.target.value})} />
+            <input autoFocus={true} type='string' value={this.state.firstName} onChange={(e) => this.setState({firstName: e.target.value})} />
           </div>
           <div className='sk-onboard-sign-up-row'>
             <label>Last Name</label>

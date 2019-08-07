@@ -6,7 +6,7 @@ class VerificationCode extends React.Component {
     super(props)
     this.state = this.initializeState()
     this.inputs = []
-  } 
+  }
 
   initializeState () {
     return {
@@ -32,6 +32,7 @@ class VerificationCode extends React.Component {
     for (let i = 0; i < numberOfDigits; i++) {
       inputs.push(
         <VerifitcationInput
+          autoFocus={i === 0}
           ref={(component) => { if (component) this.inputs[i] = component }}
           key={`input-${i}`}
           index={i}
@@ -95,6 +96,7 @@ class VerifitcationInput extends React.Component {
 
     return (
       <input
+        autoFocus={this.props.autoFocus}
         size='1'
         ref={(component) => { this.input = component }}
         key={`input-${index}`}
@@ -113,5 +115,6 @@ class VerifitcationInput extends React.Component {
 VerifitcationInput.propTypes = {
   index: PropTypes.number,
   onChange: PropTypes.func,
-  value: PropTypes.string
+  value: PropTypes.string,
+  autoFocus: PropTypes.bool
 }

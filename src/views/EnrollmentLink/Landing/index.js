@@ -25,6 +25,7 @@ class EnrollmentLink extends React.Component {
 
   componentWillMount () {
     actions.classes.getClassByLink(this.props.params.link).then((linkDetail) => {
+      console.log(linkDetail)
       this.setState({linkDetail})
     }).catch(() => false)
   }
