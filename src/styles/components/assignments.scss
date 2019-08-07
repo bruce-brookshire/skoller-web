@@ -1,12 +1,15 @@
 #cn-assignments {
-  #cn-assignment-table {
-    margin-top: $unit-space;
+  height: 93.5%;
 
-    #cn-assignment-table-label {
-      font-size: 14px;
-      margin-bottom: $unit-space / 2;
+  #cn-assignment-window {
+    height: 100%;
+
+    #cn-assignment-table {
       display: flex;
-      justify-content: space-between;
+      height: 60%;
+      flex-direction: column;
+      border: 1px solid $cn-color-grey;
+      border-radius: 5px;
     }
   }
 }

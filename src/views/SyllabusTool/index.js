@@ -105,7 +105,7 @@ class SyllabusTool extends React.Component {
   onUpdateClass (form) {
     let {navbarStore} = this.props.rootStore
     actions.classes.updateClass(form).then((cl) => {
-      console.log('onUpdateClass:', cl.is_points)
+      console.log('Weights onUpdateClass:', cl.is_points)
       navbarStore.cl = cl
     }).catch(() => false)
   }
@@ -460,9 +460,6 @@ class SyllabusTool extends React.Component {
       <div className='cn-syllabus-tool-container'>
         <div className='cn-body-container'>
           <div className='cn-section-container cn-control-panel'>
-            <div className='cn-section-header'>
-              {this.renderBackButton()}
-            </div>
             <div className='cn-section-content'>
               {this.renderProgressBar()}
               {this.renderContent()}
