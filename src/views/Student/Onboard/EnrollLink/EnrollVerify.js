@@ -4,7 +4,6 @@ import VerificationCode from '../../../../components/VerificationCode'
 import {formatPhone} from '../../../../utilities/display'
 import PropTypes from 'prop-types'
 import actions from '../../../../actions'
-import { browserHistory } from 'react-router'
 import {Cookies} from 'react-cookie'
 
 @inject('rootStore') @observer

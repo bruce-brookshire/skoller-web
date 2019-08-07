@@ -9,6 +9,7 @@ import Layout from '../Layout'
 import EnrollSignUp from './EnrollSignUp'
 import EnrollVerify from './EnrollVerify'
 import EnrollLogin from './EnrollLogin'
+import moment from 'moment'
 @inject('rootStore') @observer
 class EnrollLink extends React.Component {
   constructor (props) {
@@ -35,6 +36,7 @@ class EnrollLink extends React.Component {
   async componentWillMount () {
     await actions.classes.getClassByLink(this.props.params.link).then((linkDetail) => {
       this.setState({linkDetail})
+      console.log(linkDetail)
     }).catch((e) => {
       console.log(e)
       this.setState({loading: false, classNotFound: true, formState: 'sign-up'})
@@ -81,8 +83,8 @@ class EnrollLink extends React.Component {
 
   className () {
     const {linkDetail} = this.state
-    if (linkDetail && linkDetail.class_name) {
-      return linkDetail.class_name
+    if (linkDetail && linkDetail.student_class.name) {
+      return linkDetail.student_class.name
     } else {
       return 'Skoller'
     }
@@ -118,6 +120,7 @@ class EnrollLink extends React.Component {
 
   onEnroll () {
     this.setState({loading: true})
+    console.log(this.props.params.link)
     actions.classes.enrollByLink(this.props.params.link)
       .then(() => browserHistory.push('/student'))
       .catch(e => {
@@ -131,16 +134,17 @@ class EnrollLink extends React.Component {
   }
 
   renderEnrollForm () {
+    const cl = this.state.linkDetail.student_class
     return (
       <div className='sk-enroll-link-enroll-form'>
         <div className='sk-enroll-link-class-container'>
           <div className='sk-enroll-link-class-header'>
             <div className='sk-enroll-link-class-header-item'>
-              <h2>{this.state.linkDetail.class_name}</h2>
+              <h2>{cl.name}</h2>
             </div>
             <div className='sk-enroll-link-class-header-item'>
-              <p>SUB CODE SECTION</p>
-              <p>ENROLLMENT</p>
+              <p>{cl.subject + ' ' + cl.code + '.' + cl.section}</p>
+              <p><i className='fas fa-user' style={{fontSize: '12px'}}/> {cl.enrollment}</p>
             </div>
           </div>
           <hr />
@@ -150,7 +154,7 @@ class EnrollLink extends React.Component {
                 Meet time
               </p>
               <p>
-                MEET
+                {cl.meet_days} {cl.meet_start_time ? moment(cl.meet_start_time, 'HH:mm:ss').format('hh:mmA') : ''}
               </p>
             </div>
             <div className='sk-enroll-link-class-item el-right'>
@@ -158,7 +162,10 @@ class EnrollLink extends React.Component {
                 Professor
               </p>
               <p>
-                PROF
+                {cl.professor
+                  ? cl.professor.name_first + ' ' + cl.professor.name_last
+                  : '--'
+                }
               </p>
             </div>
           </div>
@@ -168,7 +175,7 @@ class EnrollLink extends React.Component {
                 School
               </p>
               <p>
-                SCHOOL
+                {cl.school.name}
               </p>
             </div>
             <div className='sk-enroll-link-class-item el-right'>
@@ -176,7 +183,7 @@ class EnrollLink extends React.Component {
                 Term
               </p>
               <p>
-                TERM
+                {cl.class_period.name}
               </p>
             </div>
           </div>

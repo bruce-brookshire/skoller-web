@@ -116,7 +116,7 @@ class FindAClass extends React.Component {
                 </p>
               </div>
               <div className='sk-find-class-autocomplete-option-row'>
-                <p>{cl.meet_days} {moment(cl.meet_start_time, 'HH:mm:ss').format('hh:mmA')}</p>
+                <p>{cl.meet_days} {cl.meet_start_time ? moment(cl.meet_start_time, 'HH:mm:ss').format('hh:mmA') : ''}</p>
                 <p>{cl.subject} {cl.code}.{cl.section}</p>
               </div>
             </div>
