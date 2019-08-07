@@ -44,7 +44,6 @@ class SelectSchool extends React.Component {
         schoolChoice: this.props.backData.schoolChoice,
         termChoice: this.props.backData.termChoice
       })
-      console.log(this.state)
     }
   }
 
@@ -102,6 +101,7 @@ class SelectSchool extends React.Component {
                   width: (schoolFieldWidth - 10).toString() + 'px'
                 }}
                 onClick={() => {
+                  console.log('state: ', this.state, 'onClick')
                   this.setState({
                     schools: [],
                     input: null
@@ -214,10 +214,15 @@ class SelectSchool extends React.Component {
   }
 
   findActiveTerm = (school) => {
-    let activeTerm = null
-    school.periods.forEach(term => {
-      if (term.class_period_status.name === 'Active') {
-        activeTerm = term
+    let terms = school.periods
+    let activeTerm = terms[0]
+    terms.forEach(term => {
+      let startDate = moment(term.start_date)
+      let endDate = moment(term.endDate)
+      if (endDate.isAfter(moment())) {
+        if (startDate.isBefore(activeTerm.startDate)) {
+          activeTerm = term
+        }
       }
     })
     return activeTerm
@@ -246,18 +251,28 @@ class SelectSchool extends React.Component {
               </div>
             </div>
           </div>
-          : <div
-            className='sk-select-school-term-field'
-            onClick={() => this.setState({showTermOptions: !this.state.showTermOptions})}
-            ref={termField => { this.termField = termField } }
-          >
-            <div key={this.state.activeTerm.id} className='sk-select-school-term-choice'>
-              <h3>{this.state.activeTerm.name}</h3>
-              <div className='sk-select-school-term-dates'>
-                {moment(this.state.activeTerm.start_date).format('MMMM')} - {moment(this.state.activeTerm.end_date).format('MMMM')}
+          : this.state.activeTerm
+            ? <div
+              className='sk-select-school-term-field'
+              onClick={() => this.setState({showTermOptions: !this.state.showTermOptions})}
+              ref={termField => { this.termField = termField } }
+            >
+              <div key={this.state.activeTerm.id} className='sk-select-school-term-choice'>
+                <h3>{this.state.activeTerm.name}</h3>
+                <div className='sk-select-school-term-dates'>
+                  {moment(this.state.activeTerm.start_date).format('MMMM')} - {moment(this.state.activeTerm.end_date).format('MMMM')}
+                </div>
               </div>
             </div>
-          </div>
+            : <div
+              className='sk-select-school-term-field'
+              onClick={() => this.setState({showTermOptions: !this.state.showTermOptions})}
+              ref={termField => { this.termField = termField } }
+            >
+              <div className='sk-select-school-term-choice'>
+                <h3>Select Term</h3>
+              </div>
+            </div>
         }
         {this.state.showTermOptions
           ? this.renderTermOptions()
@@ -302,15 +317,20 @@ class SelectSchool extends React.Component {
     )
   }
 
-  onSubmitSchool () {
-    actions.students.setStudentPrimarySchool(this.props.rootStore.userStore.user.id, this.props.rootStore.userStore.user.student.id, this.state.schoolChoice.id)
-      .then(() => {
-        if (!this.state.termChoice) {
-          this.setState({termChoice: this.state.activeTerm})
-        }
-        this.props.onSubmit(this.state)
-        console.log(this.state)
-      })
+  async onSubmitSchool () {
+    const userId = this.props.rootStore.userStore.user.id
+    const studentId = this.props.rootStore.userStore.user.student.id
+    let termChoice = this.state.termChoice
+    if (this.state.termChoice === null) {
+      termChoice = this.state.activeTerm
+      this.setState({termChoice: termChoice})
+    }
+    this.setState({loading: true})
+    await actions.students.setStudentPrimarySchool(userId, studentId, this.state.schoolChoice.id)
+      .catch(e => console.log('stuck on setting primary school', e))
+    await actions.students.setStudentPrimaryPeriod(userId, studentId, termChoice.id)
+      .catch(e => console.log('stuck on setting primary period', e))
+    this.props.onSubmit(this.state)
   }
 
   render () {

@@ -43,7 +43,7 @@
     .sk-checklist-item {
       display: flex;
       flex-direction: row;
-      justify-content: left;
+      justify-content: flex-start;
       margin: 8px 0;
 
       i {

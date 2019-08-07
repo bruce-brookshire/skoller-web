@@ -13,6 +13,16 @@ class FindAClass extends React.Component {
   constructor (props) {
     super(props)
 
+    let termChoice
+    let schoolChoice
+    if (this.props.params) {
+      termChoice = this.props.params.termChoice
+      schoolChoice = this.props.params.schoolChoice
+    } else {
+      termChoice = this.props.rootStore.userStore.user.student.primary_period
+      schoolChoice = this.props.rootStore.userStore.user.student.primary_school
+    }
+
     this.state = {
       showClassNameAutocomplete: false,
       classChoice: null,
@@ -44,7 +54,9 @@ class FindAClass extends React.Component {
       professors: null,
       meetTimeHour: '1',
       meetTimeMinute: '00',
-      isNewClass: false
+      isNewClass: false,
+      termChoice: termChoice,
+      schoolChoice: schoolChoice
     }
   }
 
@@ -52,7 +64,7 @@ class FindAClass extends React.Component {
     this.setState({loadingAutocompleteClasses: true})
     if (value) {
       this.setState({loadingAutocompleteClasses: true})
-      actions.classes.searchSchoolStudentClasses(this.props.params.termChoice.id, value).then((classes) => {
+      actions.classes.searchSchoolStudentClasses(this.state.termChoice.id, value).then((classes) => {
         this.setState({classes, loadingAutocompleteClasses: false})
       }).catch(() => { this.setState({loadingAutocompleteClasses: false}) })
     } else {
@@ -64,7 +76,7 @@ class FindAClass extends React.Component {
     this.setState({loadingAutocompleteProfessors: true})
     if (value) {
       this.setState({loadingAutocompleteProfessors: true})
-      actions.professors.searchProfessors(value, this.props.params.schoolChoice.id).then((professors) => {
+      actions.professors.searchProfessors(value, this.state.schoolChoice.id).then((professors) => {
         this.setState({professors, loadingAutocompleteProfessors: false})
       }).catch(() => { this.setState({loadingAutocompleteProfessors: false}) })
     } else {
@@ -104,7 +116,7 @@ class FindAClass extends React.Component {
                 </p>
               </div>
               <div className='sk-find-class-autocomplete-option-row'>
-                <p>{cl.meet_days} {moment(cl.meet_start_time, 'HH:mm:ss').format('hh:mmA')}</p>
+                <p>{cl.meet_days} {cl.meet_start_time ? moment(cl.meet_start_time, 'HH:mm:ss').format('hh:mmA') : ''}</p>
                 <p>{cl.subject} {cl.code}.{cl.section}</p>
               </div>
             </div>
@@ -443,8 +455,8 @@ class FindAClass extends React.Component {
     return (
       <SkModal closeModal={() => this.setState({showNewProfessorModal: false})}>
         <ProfessorForm
-          schoolId={this.props.params.schoolChoice.id}
-          isUniversity={this.props.params.schoolChoice.is_university}
+          schoolId={this.state.schoolChoice.id}
+          isUniversity={this.state.schoolChoice.is_university}
           onSubmit={(professor) => {
             classChoice.professor = professor
             this.setState({
@@ -616,12 +628,12 @@ class FindAClass extends React.Component {
         'meet_days': this.state.isOnline ? 'Online' : this.getMeetDays(),
         'location': null,
         'type': null,
-        'class_period_id': this.props.params.termChoice.id,
+        'class_period_id': this.state.termChoice.id,
         'professor_id': this.state.professorChoice.id
       }
       if (this.validateForm()) {
         this.setState({loadingSubmit: true})
-        actions.classes.createClass(form, this.props.params.termChoice.id).then((response) => {
+        actions.classes.createClass(form, this.state.termChoice.id).then((response) => {
           this.setState({loadingSubmit: false})
           actions.classes.enrollInClass(response.id).then(() => {
             this.props.onSubmit()
@@ -643,20 +655,20 @@ class FindAClass extends React.Component {
           <h1
             className='onboard-find-class-school'
             style={{
-              color: this.props.params.schoolChoice.color ? '#' + this.props.params.schoolChoice.color : null
+              color: this.state.schoolChoice.color ? '#' + this.state.schoolChoice.color : null
             }}
           >
-            {this.props.params.schoolChoice.name}
+            {this.state.schoolChoice.name}
           </h1>
           <h3
             className='onboard-find-class-term'
           >
-            {this.props.params.termChoice.name}
+            {this.state.termChoice.name}
           </h3>
           <p style={{textAlign: 'center', margin: '0'}}>
             <small
               style={{color: '#57B9E4', cursor: 'pointer', width: '100%'}}
-              onClick={() => this.props.onBack(this.props.params.schoolChoice, this.props.params.termChoice)}
+              onClick={() => this.props.onBack(this.state.schoolChoice, this.state.termChoice)}
             >
               Edit school or term
             </small>

@@ -38,7 +38,7 @@
     .add-assignment-form-row {
       display: flex;
       flex-direction: column;
-      justify-content: left;
+      justify-content: flex-start;
       margin: 4px 0;
 
       // get rid of annoying focus highlighting

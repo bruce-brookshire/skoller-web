@@ -1,0 +1,27 @@
+.sk-onboard-sign-up-form-container {
+  .sk-onboard-sign-up-row {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 0 1rem 0;
+
+    @media only screen and (max-width: $sk-mobile-break-point) {
+      margin: 0 0 0.5rem 0;
+    }
+
+    h1 {
+      margin: 24px 0 0 0;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    input {
+      @include onboard-form-field;
+      width: 100%;
+      height: 24px;
+      margin-bottom: 0;
+    }
+  }
+}
