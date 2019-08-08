@@ -1,34 +1,69 @@
-.cn-my-classes-container {
-  @include internal-layout;
-  .cn-my-classes-header {
-    display: inline-block;
-    width: 100%;
+.cn-my-classes-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  box-sizing: border-box;
 
-    h2, h4 {
-      display: inline-block;
-      margin-bottom: 5px;
+  .cn-my-classes-container {
+    margin: 2rem;
+    @include skoller-cell;
+    max-width: 600px;
+    min-width: 40vw;
+    
+    @media only screen and (max-width: $sk-mobile-break-point) {
+      margin: 2rem 1rem;
+    }
+    
+    h1 {
+      padding: 16px 16px 0px 16px;
+      margin: 0;
+      // background-color: rgba(0,0,0,.07);
+      width: 100%;
+      border-radius: $skoller-cell-border-radius $skoller-cell-border-radius 0 0;
     }
 
-    h4 {
-      font-weight: 400;
-      margin-left: $unit-space * 4;
+    .cn-my-classes-add-new {
+      float: right;
+      padding: 1rem;
+      margin-top: -48px;
+      cursor: pointer;
+      color: $cn-color-blue;
     }
-    border-bottom-width: 1px;
-    border-bottom-color: darken(#f0f1f3,10);
-    border-bottom-style: solid;
-  }
 
-  .cn-needs-syllabus-info {
-    font-size: 20px;
-  }
-
-  .cn-table-grid-container {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .add-button {
-    width: 200px;
-    align-self: center;
-  }
+    .cn-my-classes-content {
+      padding: 1rem;
+      .cn-my-classes-header {
+        display: inline-block;
+        width: 100%;
+    
+        h2, h4 {
+          display: inline-block;
+          margin-bottom: 5px;
+        }
+    
+        h4 {
+          font-weight: 400;
+          margin-left: $unit-space * 4;
+        }
+        border-bottom-width: 1px;
+        border-bottom-color: darken(#f0f1f3,10);
+        border-bottom-style: solid;
+      }
+    
+      .cn-needs-syllabus-info {
+        font-size: 18px;
+      }
+    
+      .cn-table-grid-container {
+        display: flex;
+        flex-direction: column;
+      }
+    
+      .add-button {
+        width: 200px;
+        align-self: center;
+      }
+    }
+  }  
 }

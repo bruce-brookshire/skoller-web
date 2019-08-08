@@ -108,7 +108,7 @@ class Assignments extends React.Component {
   onNext () { // TODO
     const {currentWeightIndex, weights} = this.state
     if (weights[currentWeightIndex + 1]) {
-      this.setState({currentWeightIndex: currentWeightIndex + 1})
+      this.setState({currentWeightIndex: currentWeightIndex + 1, currentWeight: weights[currentWeightIndex + 1], addAssignment: true})
     } else {
       this.props.onSubmit()
     }
@@ -155,7 +155,6 @@ class Assignments extends React.Component {
     const {cl} = this.props
 
     let assignments = this.filterAssignments()
-    // console.log(addAssignment)
 
     return (
       <div id='cn-assignments'>
@@ -168,46 +167,52 @@ class Assignments extends React.Component {
               weights={weights}
               noAssignments={this.state.assignments}
               onClick={this.toAssignmentForm.bind(this)}
+              onSubmit={() => this.props.onSubmit()}
             />
             }
             {!viewOnly && addAssignment &&
-            <div id='class-editor-assignment-form'>
-              {/* <div className='cn-section-content-header center-text cn-blue margin-top'>
-                {weights[currentWeightIndex] ? weights[currentWeightIndex].name : 'for this class'}
-              </div> */}
-              <AssignmentForm
-                assignment={currentAssignment}
-                cl={cl}
-                onCreateAssignment={this.onCreateAssignment.bind(this)}
-                onUpdateAssignment={this.onUpdateAssignment.bind(this)}
-                currentWeight={currentWeight}
-              />
-            </div>
+              <div id='class-editor-assignment-form'>
+                {/* <div className='cn-section-content-header center-text cn-blue margin-top'>
+                  {weights[currentWeightIndex] ? weights[currentWeightIndex].name : 'for this class'}
+                </div> */}
+                <AssignmentForm
+                  assignment={currentAssignment}
+                  cl={cl}
+                  onCreateAssignment={this.onCreateAssignment.bind(this)}
+                  onUpdateAssignment={this.onUpdateAssignment.bind(this)}
+                  currentWeight={currentWeight}
+                />
+                {(assignments.length === 0) &&
+                  <div>
+                    No assignments for this weight? <span style={{color: '#57B9E4', cursor: 'pointer'}} onClick={() => this.onNext()}>Continue to the next one.</span>
+                  </div>
+                }
+              </div>
             }
             {/* {!viewOnly && assignments.length === 0 &&
               <div className='margin-top margin-bottom center-text'>
                 <a onClick={() => this.toggleSkipCategoryModal()}>Skip this category</a>
               </div>
             } */}
-            {(assignments.length !== 0 || viewOnly) && addAssignment &&
-            <div id='cn-assignment-table'>
-              <div id='cn-assignment-table-label'>
-                Saved Assignments
-                {viewOnly && <a onClick={() => this.props.onEdit()}>Edit</a>}
+            {(assignments.length !== 0 || viewOnly) &&
+              <div id='cn-assignment-table'>
+                <div id='cn-assignment-table-label'>
+                  Assignments
+                  {viewOnly && <a onClick={() => this.props.onEdit()}>Edit</a>}
+                </div>
+                <AssignmentTable
+                  viewOnly={viewOnly}
+                  assignments={this.state.assignments}
+                  currentAssignment={currentAssignment}
+                  onSelectAssignment={this.onSelectAssignment.bind(this)}
+                  onDeleteAssignment={this.onDeleteAssignment.bind(this)}
+                  weights={weights}
+                  cl={cl}
+                  currentWeight={weights[currentWeightIndex]}
+                  onEdit={() => this.props.onEdit()}
+                  onSubmit={() => this.onNext()}
+                />
               </div>
-              <AssignmentTable
-                viewOnly={viewOnly}
-                assignments={assignments}
-                currentAssignment={currentAssignment}
-                onSelectAssignment={this.onSelectAssignment.bind(this)}
-                onDeleteAssignment={this.onDeleteAssignment.bind(this)}
-                weights={weights}
-                cl={cl}
-                currentWeight={weights[currentWeightIndex]}
-                onEdit={() => this.props.onEdit()}
-                // onSubmit={() => }
-              />
-            </div>
             }
             {/* {assignments.length !== 0 && !viewOnly &&
               <button

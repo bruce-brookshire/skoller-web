@@ -19,7 +19,8 @@ const steps = [ 'Weights', 'Assignments' ]
 
 const ContentEnum = {
   WEIGHTS: 0,
-  ASSIGNMENTS: 1
+  ASSIGNMENTS: 1,
+  REVIEW: 2
 }
 
 @inject('rootStore') @observer
@@ -236,6 +237,7 @@ class SyllabusTool extends React.Component {
   * Render the syllabus section content.
   */
   renderContent () {
+    console.log(ContentEnum, this.state)
     const {navbarStore} = this.props.rootStore
     switch (this.state.currentIndex) {
       case ContentEnum.WEIGHTS:
@@ -392,7 +394,7 @@ class SyllabusTool extends React.Component {
   */
   renderDocumentViewer () {
     if (this.state.currentDocument) {
-      return <div className='cn-section-content cn-section-solid-border'>
+      return <div className='cn-section-content'>
         <FileViewer source={this.state.currentDocument} />
       </div>
     } else if (this.state.documents.length === 0) {
@@ -451,6 +453,14 @@ class SyllabusTool extends React.Component {
     navbarStore.cl = cl
   }
 
+  renderBackToClasses () {
+    return (
+      <div className='cn-syllabus-tool-back-button' onClick={() => browserHistory.push('/student/classes')}>
+        <span>👈</span> Back to classes
+      </div>
+    )
+  }
+
   render () {
     const {loadingClass} = this.state
     const {navbarStore} = this.props.rootStore
@@ -458,6 +468,7 @@ class SyllabusTool extends React.Component {
     if (loadingClass || navbarStore.cl == null) return <Loading />
     return (
       <div className='cn-syllabus-tool-container'>
+        {this.renderBackToClasses()}
         <div className='cn-body-container'>
           <div className='cn-section-container cn-control-panel'>
             <div className='cn-section-content'>

@@ -107,23 +107,6 @@
           margin: -8px 0 0 0;
           text-align: center;
         }
-
-        .onboard-find-class-sammi-container {
-          display: flex;
-          flex-direction: row;
-          justify-content: center;
-          align-items: center;
-          padding: 16px;
-  
-          .sammi-message {
-            @include sammi-message-left;
-          }
-  
-          img {
-            float: right;
-            width: 48px;
-          }
-        }
       }
 
       .onboard-first-class {

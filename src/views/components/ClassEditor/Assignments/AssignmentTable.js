@@ -103,20 +103,24 @@ class AssignmentTable extends React.Component {
     const {assignments} = this.props
     const disableButton = assignments.length === 0
 
-    return (
-      <div id='submit-container'>
-        <div id='notification'>
-          Be sure to add all assignments for this category!
+    if (!this.props.viewOnly) {
+      return (
+        <div id='submit-container'>
+          <div id='notification'>
+            Be sure to add all assignments for this category!
+          </div>
+          <button
+            onClick={() => this.props.onSubmit()}
+            disabled={disableButton}
+            className={`submit-assignments button ${disableButton ? 'disabled' : ''}`}
+          >
+            Submit Assignments ({assignments.length})
+          </button>
         </div>
-        <button
-          onClick={() => this.props.onSubmit()}
-          disabled={disableButton}
-          className={`submit-assignments button ${disableButton ? 'disabled' : ''}`}
-        >
-          Submit Assignments ({assignments.length})
-        </button>
-      </div>
-    )
+      )
+    } else {
+      return null
+    }
   }
 
   render () {

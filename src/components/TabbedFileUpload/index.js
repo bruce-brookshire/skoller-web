@@ -61,7 +61,7 @@ class TabbedFileUpload extends React.Component {
   renderDocumentViewer () {
     if (this.state.currentDocument) {
       return (
-        <div className='cn-section-content cn-section-solid-border'>
+        <div className='cn-section-content'>
           <FileViewer source={this.state.currentDocument} />
         </div>
       )

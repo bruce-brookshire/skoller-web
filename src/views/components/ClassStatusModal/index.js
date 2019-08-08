@@ -1,88 +1,81 @@
 import React from 'react'
-import SkProgressBar from '../../../components/SkProgressBar'
+import SkProgressBar from '../SkProgressBar'
 import PropTypes from 'prop-types'
-import actions from '../../../../actions'
+import actions from '../../../actions'
 import { inject, observer } from 'mobx-react'
 import { browserHistory } from 'react-router'
-import SkLoader from '../../../../assets/sk-icons/SkLoader'
-import DragAndDrop from '../../../components/DragAndDrop/DragAndDrop'
-import {mobileCheck} from '../../../../utilities/display'
-import Sammi from '../../../components/Sammi'
+import SkLoader from '../../../assets/sk-icons/SkLoader'
+import DragAndDrop from '../DragAndDrop/DragAndDrop'
+import {mobileCheck} from '../../../utilities/display'
+import Sammi from '../Sammi'
 import Checklist from './Checklist'
+import SkModal from '../SkModal/SkModal'
 
 @inject('rootStore') @observer
-class FirstClass extends React.Component {
+class ClassStatusModal extends React.Component {
   constructor (props) {
     super(props)
 
+    let initState = this.getClass(this.props.cl)
+    let status = initState.status
+    let sammiMessage = initState.sammiMessage
+    let mobileMessage = initState.mobileMessage
+    let cl = initState.cl
+
     this.state = {
-      loading: true,
-      firstClass: null,
+      cl: cl,
       uploadingDoc: false,
       syllabus: null,
       additionalFiles: [],
-      sammiMessage: null,
-      status: null,
+      sammiMessage: sammiMessage,
+      status: status,
       mobile: false,
-      mobileMessage: null
+      mobileMessage: mobileMessage
     }
-
-    this.getFirstClass()
   }
 
-  getFirstClass () {
-    this.setState({loading: true})
-    actions.classes.getStudentClassesById(this.props.rootStore.userStore.user.student.id).then((classes) => {
-      if (mobileCheck()) {
-        this.setState({mobile: true})
-      }
-      if (classes.length > 1) {
-        browserHistory.push('/student')
-      } else {
-        let cl = classes[0]
-        let status
-        let sammiMessage
-        let mobileMessage
-        let id = cl.status.id
-        // let id = 1100
-        // ^ for testing
-        if (id === 1100) {
-          status = 'needSyllabus'
-          sammiMessage = `Let's get your first class set up!`
-          mobileMessage = `Head over to skoller.co on your computer to upload your syllabus.`
-        } else if (id === 1200) {
-          status = 'inReview'
-          sammiMessage = `Someone already uploaded the syllabus!`
-        } else if (id === 1300) {
-          status = 'diy'
-          sammiMessage = `Someone already uploaded the syllabus, but we need a little help.`
-          mobileMessage = `Head over to skoller.co on your computer to finish setting up your class.`
-        } else if (id >= 1400) {
-          status = 'live'
-          sammiMessage = `WOOHOO! Your class is live ⚡️`
-        }
-        this.setState({
-          firstClass: cl,
-          status: status,
-          sammiMessage: sammiMessage,
-          mobileMessage: mobileMessage,
-          loading: false
-        })
-      }
+  getClass (cl) {
+    let status
+    let sammiMessage
+    let mobileMessage
+    console.log('running getClass')
+    let id = cl.status.id
+    if (id === 1100) {
+      status = 'needSyllabus'
+      sammiMessage = `Let's get your class set up!`
+      mobileMessage = `Head over to skoller.co on your computer to upload your syllabus.`
+    } else if (id === 1200) {
+      status = 'inReview'
+      sammiMessage = `Someone already uploaded the syllabus!`
+    } else if (id === 1300) {
+      status = 'diy'
+      sammiMessage = `Someone already uploaded the syllabus, but we need a little help.`
+      mobileMessage = `Head over to skoller.co on your computer to finish setting up your class.`
+    } else if (id >= 1400) {
+      status = 'live'
+      sammiMessage = `WOOHOO! Your class is live ⚡️`
+    }
+    console.log('got to setState in getClass')
+    return ({
+      cl: cl,
+      status: status,
+      sammiMessage: sammiMessage,
+      mobileMessage: mobileMessage,
+      loading: false
     })
   }
 
   renderNeedSyllabus () {
     if (!this.state.mobile) {
       return (
-        <div className='sk-onboard-first-class-file-drop-container'>
+        <div className='sk-class-status-modal-file-drop-container'>
           <DragAndDrop
             disabled={(this.state.syllabus !== null)}
             handleDrop={(file) => { this.setState({syllabus: file}) }}
           >
             {this.state.syllabus
-              ? <div className='sk-onboard-first-class-file-drop-files'>
-                <div className='sk-onboard-first-class-file-drop-file'>
+              ? <div className='sk-class-status-modal-file-drop-files'>
+                <div className='sk-class-status-modal-file-drop-file'>
                   <i
                     className='far fa-times-circle'
                     onClick={(e) => {
@@ -93,7 +86,7 @@ class FirstClass extends React.Component {
                   <p>{this.state.syllabus[0].name}</p>
                 </div>
               </div>
-              : <div className='sk-onboard-first-class-file-drop-message'>Drop your syllabus here!</div>
+              : <div className='sk-class-status-modal-file-drop-message'>Drop your syllabus here!</div>
             }
           </DragAndDrop>
           <DragAndDrop
@@ -105,10 +98,10 @@ class FirstClass extends React.Component {
             }}
           >
             {this.state.additionalFiles.length > 0
-              ? <div className='sk-onboard-first-class-file-drop-files'>
+              ? <div className='sk-class-status-modal-file-drop-files'>
                 {this.state.additionalFiles.map(file => {
                   return (
-                    <div key={file.name} className='sk-onboard-first-class-file-drop-file'>
+                    <div key={file.name} className='sk-class-status-modal-file-drop-file'>
                       <i
                         className='far fa-times-circle'
                         onClick={(e) => {
@@ -124,7 +117,7 @@ class FirstClass extends React.Component {
                   )
                 })}
               </div>
-              : <div className='sk-onboard-first-class-file-drop-message'>
+              : <div className='sk-class-status-modal-file-drop-message'>
                 Drop any separate assignment/lab schedules here
               </div>
             }
@@ -136,38 +129,38 @@ class FirstClass extends React.Component {
 
   renderChecklist () {
     return (
-      <div className='sk-onboard-first-class-checklist-container'>
-        <Checklist status={this.state.status} cl={this.state.firstClass} />
+      <div className='sk-class-status-modal-checklist-container'>
+        <Checklist status={this.state.status} cl={this.state.cl} />
       </div>
     )
   }
 
-  renderFirstClass () {
+  renderClass () {
     return (
-      <div className='sk-onboard-first-class-container'>
-        <div className='sk-onboard-first-class-row'>
+      <div className='sk-class-status-modal-container'>
+        <div className='sk-class-status-modal-row'>
           {this.renderChecklist()}
           {this.state.status === 'needSyllabus' && this.state.mobile
             ? null
-            : <div className='sk-onboard-first-class-action-container'>
+            : <div className='sk-class-status-modal-action-container'>
               {this.state.status === 'needSyllabus'
                 ? this.renderNeedSyllabus()
                 : null
               }
               {this.state.status === 'inReview'
-                ? <div className='sk-onboard-first-class-action-detail'>
+                ? <div className='sk-class-status-modal-action-detail'>
                   <div>Check back in a few short hours and we&apos;ll have your class all ready for you.</div>
                 </div>
                 : null
               }
               {this.state.status === 'diy'
-                ? <div className='sk-onboard-first-class-action-detail'>
+                ? <div className='sk-class-status-modal-action-detail'>
                   <div>We weren&apos;t able to properly review your syllabus. Help us set up your class!</div>
                 </div>
                 : null
               }
               {this.state.status === 'live'
-                ? <div className='sk-onboard-first-class-action-detail'>
+                ? <div className='sk-class-status-modal-action-detail'>
                   <h3>This class is already LIVE on Skoller!</h3>
                 </div>
                 : null
@@ -181,14 +174,14 @@ class FirstClass extends React.Component {
 
   renderMobileMessage () {
     return (
-      <div className='sk-onboard-first-class-container'>
+      <div className='sk-class-status-modal-container'>
         <div
-          className='sk-onboard-first-class-row'
+          className='sk-class-status-modal-row'
           style={{
             marginBottom: '0px'
           }}
         >
-          <p className='sk-onboard-first-class-mobile-message'>{this.state.mobileMessage}</p>
+          <p className='sk-class-status-modal-mobile-message'>{this.state.mobileMessage}</p>
         </div>
       </div>
     )
@@ -196,7 +189,7 @@ class FirstClass extends React.Component {
 
   sendToDiy () {
     browserHistory.push({
-      pathname: `/class/${this.state.firstClass.id}/syllabus_tool/`,
+      pathname: `/class/${this.state.cl.id}/syllabus_tool/`,
       state: {
         isDIY: true
       }
@@ -206,11 +199,11 @@ class FirstClass extends React.Component {
   async handleSubmit () {
     if (this.state.status === 'needSyllabus' && this.state.syllabus) {
       this.setState({loading: true})
-      await actions.documents.uploadClassDocument(this.state.firstClass, this.state.syllabus[0], true)
+      await actions.documents.uploadClassDocument(this.state.cl, this.state.syllabus[0], true)
       if (this.state.additionalFiles) {
         await this.state.additionalFiles.forEach(file => {
           console.log(file)
-          actions.documents.uploadClassDocument(this.state.firstClass, file, false)
+          actions.documents.uploadClassDocument(this.state.cl, file, false)
         })
       }
       this.setState({
@@ -228,11 +221,7 @@ class FirstClass extends React.Component {
 
   renderNextButton () {
     let buttonText
-    if (this.props.partner) {
-      buttonText = 'Next'
-    } else {
-      buttonText = 'Enter Skoller 👉'
-    }
+    buttonText = 'Done'
     if (this.state.status === 'needSyllabus') {
       buttonText = 'Submit'
     } else if (this.state.status === 'diy') {
@@ -258,10 +247,9 @@ class FirstClass extends React.Component {
 
   renderModalContent () {
     return (
-      <div>
-        {this.props.renderPartner ? this.props.renderPartner() : null}
-        <div className='onboard-first-class'>
-          <h1>{this.state.firstClass.name}</h1>
+      <div className='sk-class-status-modal'>
+        <div className='sk-class-status-modal-header'>
+          <h1>{this.state.cl.name}</h1>
           <Sammi
             message={this.state.sammiMessage}
             position='right'
@@ -269,20 +257,12 @@ class FirstClass extends React.Component {
           />
           <SkProgressBar progress={0.75} width={'100%'} backgroundColor={'$cn-color-blue'}/>
         </div>
-        {this.renderFirstClass()}
+        {this.renderClass()}
         {this.state.mobile && this.state.mobileMessage
           ? this.renderMobileMessage()
           : null
         }
         {!this.props.disableNext && this.renderNextButton()}
-        {this.state.status === 'diy' &&
-          <div
-            className='sk-onboard-alt'
-            onClick={() => browserHistory.push('/student')}
-          >
-            Not the right time? Enter Skoller instead.
-          </div>
-        }
         {this.state.status === 'inReview' && !mobileCheck()
           ? <p
             style={{margin: '6px 0 0 0', textAlign: 'center', cursor: 'pointer'}}
@@ -302,22 +282,22 @@ class FirstClass extends React.Component {
 
   render () {
     return (
-      <div>
+      <SkModal closeModal={() => this.props.closeModal()}>
         {this.state.loading
           ? <SkLoader />
           : this.renderModalContent()
         }
-      </div>
+      </SkModal>
     )
   }
 }
 
-FirstClass.propTypes = {
-  onSubmit: PropTypes.func,
+ClassStatusModal.propTypes = {
+  onSubmit: PropTypes.function,
   rootStore: PropTypes.object,
-  renderPartner: PropTypes.func,
-  partner: PropTypes.object,
-  disableNext: PropTypes.bool
+  disableNext: PropTypes.bool,
+  cl: PropTypes.object,
+  closeModal: PropTypes.function
 }
 
-export default FirstClass
+export default ClassStatusModal

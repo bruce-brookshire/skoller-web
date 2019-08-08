@@ -650,7 +650,7 @@ class FindAClass extends React.Component {
   render () {
     return (
       <div>
-        {this.props.renderPartner()}
+        {this.props.renderPartner ? this.props.renderPartner() : null}
         <div className='onboard-find-class'>
           <h1
             className='onboard-find-class-school'
@@ -673,12 +673,17 @@ class FindAClass extends React.Component {
               Edit school or term
             </small>
           </p>
-          <Sammi
-            message='Find your first class!'
-            emotion='wow'
-            position='left'
-          />
-          <SkProgressBar progress={0.5} width={'100%'} backgroundColor={'$cn-color-blue'}/>
+          {this.props.hideOnboard
+            ? null
+            : <div>
+              <Sammi
+                message='Find your first class!'
+                emotion='wow'
+                position='left'
+              />
+              <SkProgressBar progress={0.5} width={'100%'} backgroundColor={'$cn-color-blue'}/>
+            </div>
+          }
         </div>
         <div className='sk-find-class-form'>
           <div className='sk-find-class-form-row'>
@@ -709,7 +714,8 @@ FindAClass.propTypes = {
   rootStore: PropTypes.object,
   params: PropTypes.object,
   renderPartner: PropTypes.func,
-  onBack: PropTypes.func
+  onBack: PropTypes.func,
+  hideOnboard: PropTypes.bool
 }
 
 export default FindAClass
