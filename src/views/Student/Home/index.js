@@ -6,6 +6,7 @@ import ClassList from '../../components/ClassList'
 import actions from '../../../actions'
 import { browserHistory } from 'react-router'
 import PopUp from './PopUp'
+import ClassStatusModal from '../../components/ClassStatusModal'
 
 @inject('rootStore') @observer
 class Home extends React.Component {
@@ -13,7 +14,8 @@ class Home extends React.Component {
     super(props)
     this.state = {
       classes: [],
-      showPopUp: false
+      showPopUp: false,
+      classStatusModal: {show: false, cl: null}
     }
 
     this.updateClasses()
@@ -64,13 +66,24 @@ class Home extends React.Component {
     // because ClassList will not return it
 
     let fullClass = this.findFullClass(cl.id)
-    browserHistory.push({
-      pathname: `/student/class/${cl.id}/`,
-      state: {
-        enrollmentLink: fullClass.enrollment_link,
-        enrollmentCount: fullClass.enrollment
-      }
-    })
+    console.log(fullClass.status.id < 1400)
+    if (fullClass.status.id < 1400) {
+      this.setState({classStatusModal: {show: true, cl: fullClass}})
+    } else {
+      browserHistory.push({
+        pathname: `/student/class/${cl.id}/`,
+        state: {
+          enrollmentLink: fullClass.enrollment_link,
+          enrollmentCount: fullClass.enrollment
+        }
+      })
+    }
+  }
+
+  closeClassStatusModal () {
+    console.log('closing modal')
+    this.setState({classStatusModal: {show: false, cl: null}})
+    this.updateClasses()
   }
 
   render () {
@@ -79,6 +92,9 @@ class Home extends React.Component {
         {console.log(this.props.rootStore)}
         {this.state.showPopUp &&
           <PopUp closeModal={() => this.setState({showPopUp: false})} />
+        }
+        {this.state.classStatusModal.show &&
+          <ClassStatusModal closeModal={() => this.closeClassStatusModal()} onSubmit={() => this.closeClassStatusModal()} cl={this.state.classStatusModal.cl} />
         }
         <div className="home-container">
           <div className="home-column">

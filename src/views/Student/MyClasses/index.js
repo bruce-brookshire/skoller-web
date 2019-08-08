@@ -3,10 +3,11 @@ import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import ClassList from '../../components/ClassList'
 import actions from '../../../actions'
-import { browserHistory } from 'react-router'
 import StudentLayout from '../../components/StudentLayout'
 import AddClassModal from './AddClassModal'
-import SkLoader from '../../../assets/sk-icons/SkLoader';
+import ClassStatusModal from '../../components/ClassStatusModal'
+import SkLoader from '../../../assets/sk-icons/SkLoader'
+import {browserHistory} from 'react-router'
 
 @inject('rootStore') @observer
 class MyClasses extends React.Component {
@@ -15,6 +16,7 @@ class MyClasses extends React.Component {
     this.state = {
       classes: [],
       showAddClassModal: false,
+      classStatusModal: {show: false, cl: null},
       loading: true
     }
   }
@@ -126,17 +128,28 @@ class MyClasses extends React.Component {
     // because ClassList will not return it
 
     let fullClass = this.findFullClass(cl.id)
-    browserHistory.push({
-      pathname: `/student/class/${cl.id}/`,
-      state: {
-        enrollmentLink: fullClass.enrollment_link,
-        enrollmentCount: fullClass.enrollment
-      }
-    })
+    console.log(fullClass.status.id < 1400)
+    if (fullClass.status.id < 1400) {
+      this.setState({classStatusModal: {show: true, cl: fullClass}})
+    } else {
+      browserHistory.push({
+        pathname: `/student/class/${cl.id}/`,
+        state: {
+          enrollmentLink: fullClass.enrollment_link,
+          enrollmentCount: fullClass.enrollment
+        }
+      })
+    }
   }
 
   closeAddClassModal () {
     this.setState({showAddClassModal: false})
+    this.updateClasses()
+  }
+
+  closeClassStatusModal () {
+    console.log('closing modal')
+    this.setState({classStatusModal: {show: false, cl: null}})
     this.updateClasses()
   }
 
@@ -152,6 +165,9 @@ class MyClasses extends React.Component {
         </div>
         {this.state.showAddClassModal &&
           <AddClassModal closeModal={() => this.closeAddClassModal()} />
+        }
+        {this.state.classStatusModal.show &&
+          <ClassStatusModal closeModal={() => this.closeClassStatusModal()} onSubmit={() => this.closeClassStatusModal()} cl={this.state.classStatusModal.cl} />
         }
       </div>
     )

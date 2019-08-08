@@ -1,0 +1,112 @@
+.sk-class-status-modal {
+  max-width: 380px;
+
+  .sk-class-status-modal-header {
+    h1 {
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+  }
+  
+  .sk-class-status-modal-container {
+    margin: 2rem 0 2rem 0;
+    box-sizing: border-box;
+  
+    .sk-class-status-modal-row {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      margin: 0 0 1rem 0;
+  
+      .sk-class-status-modal-mobile-message {
+        margin: 0;
+        text-align: center;
+      }
+  
+      .sk-class-status-modal-checklist-container {
+        margin-right: 8px;
+      }
+  
+      .sk-class-status-modal-action-container {
+        height: 168px;
+        width: 100%;
+  
+        .sk-class-status-modal-action-detail {
+          height: 168px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          text-align: center;
+        }
+  
+        .sk-class-status-modal-file-drop-container {
+          height: 168px;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+    
+          .sk-class-status-modal-file-drop-files {
+            color: #4a4a4a;
+            max-height: 100%;
+            overflow: scroll;
+    
+            .sk-class-status-modal-file-drop-file {
+              display: flex;
+              flex-direction: row;
+              padding: 2px;
+    
+              i {
+                margin: -2px 4px 0 0;
+              }
+    
+              p {
+                max-width: 136px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                margin: 0;
+              }
+            }
+          }
+    
+          .sk-drag-and-drop {
+            height: 48%;
+            padding: 8px;
+            box-sizing: border-box;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border: 1px dashed $cn-color-blue;
+            color: rgba(0,0,0,.45);
+            cursor: pointer;
+            border-radius: 5px;
+            position: relative;
+            background-color: rgba(0,0,0,0.02);
+    
+            &:hover {
+              background-color: rgba(0,0,0,0.05);
+            }
+    
+            .sk-drag-and-drop-overlay {
+              background-color: rgba(0,0,0,.05);
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              left: 0;
+              right: 0;
+              z-index: 1;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  .onboard-next {
+    @include sk-standard-button;
+    @include not-selectable;
+  }  
+}
