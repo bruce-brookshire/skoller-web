@@ -146,7 +146,8 @@ class Assignments extends React.Component {
   // }
 
   toAssignmentForm (weight) {
-    this.setState({ addAssignment: true, currentWeight: weight })
+    console.log(weight)
+    this.setState({ addAssignment: true, currentWeight: weight, currentWeightIndex: this.state.weights.indexOf(weight) })
   }
 
   render () {
@@ -162,16 +163,18 @@ class Assignments extends React.Component {
           ? <Loading />
           : <div id='cn-assignment-window'>
             {!viewOnly && !addAssignment &&
-            <AssignmentCategories
-              cl={cl}
-              weights={weights}
-              noAssignments={this.state.assignments}
-              onClick={this.toAssignmentForm.bind(this)}
-              onSubmit={() => this.props.onSubmit()}
-            />
+              <AssignmentCategories
+                cl={cl}
+                weights={weights}
+                noAssignments={this.state.assignments}
+                assignments={this.state.assignments}
+                onClick={this.toAssignmentForm.bind(this)}
+                onSubmit={() => this.props.onSubmit()}
+              />
             }
             {!viewOnly && addAssignment &&
               <div id='class-editor-assignment-form'>
+                <div onClick={() => this.setState({addAssignment: false})}>Back to weight categories</div>
                 {/* <div className='cn-section-content-header center-text cn-blue margin-top'>
                   {weights[currentWeightIndex] ? weights[currentWeightIndex].name : 'for this class'}
                 </div> */}
@@ -184,7 +187,7 @@ class Assignments extends React.Component {
                 />
                 {(assignments.length === 0) &&
                   <div>
-                    No assignments for this weight? <span style={{color: '#57B9E4', cursor: 'pointer'}} onClick={() => this.onNext()}>Continue to the next one.</span>
+                    No assignments for this weight? <span style={{color: '#57B9E4', cursor: 'pointer'}} onClick={() => this.setState({addAssignment: false})}>Continue to the next one.</span>
                   </div>
                 }
               </div>
@@ -194,7 +197,27 @@ class Assignments extends React.Component {
                 <a onClick={() => this.toggleSkipCategoryModal()}>Skip this category</a>
               </div>
             } */}
-            {(assignments.length !== 0 || viewOnly) &&
+            {(assignments.length !== 0 && !viewOnly && addAssignment) &&
+              <div id='cn-assignment-table'>
+                <div id='cn-assignment-table-label'>
+                  Assignments
+                  {viewOnly && <a onClick={() => this.props.onEdit()}>Edit</a>}
+                </div>
+                <AssignmentTable
+                  viewOnly={viewOnly}
+                  assignments={assignments}
+                  currentAssignment={currentAssignment}
+                  onSelectAssignment={this.onSelectAssignment.bind(this)}
+                  onDeleteAssignment={this.onDeleteAssignment.bind(this)}
+                  weights={weights}
+                  cl={cl}
+                  currentWeight={weights[currentWeightIndex]}
+                  onEdit={() => this.props.onEdit()}
+                  onSubmit={() => this.setState({addAssignment: false})}
+                />
+              </div>
+            }
+            {viewOnly &&
               <div id='cn-assignment-table'>
                 <div id='cn-assignment-table-label'>
                   Assignments
@@ -214,14 +237,14 @@ class Assignments extends React.Component {
                 />
               </div>
             }
-            {/* {assignments.length !== 0 && !viewOnly &&
+            {assignments.length !== 0 && !viewOnly && !addAssignment &&
               <button
-                onClick={() => this.onNext()}
+                onClick={() => this.props.onSubmit()}
                 className='button full-width margin-top margin-bottom'
               >
-                Save and continue
+                Submit and Continue
               </button>
-            } */}
+            }
             {this.renderSkipCategoryModal()}
           </div>}
       </div>
