@@ -107,6 +107,8 @@ class AssignmentForm extends React.Component {
     }
     if (this.props.validateForm(this.state.form, requiredFields)) {
       const form = this.mapForm(this.state.form)
+      console.log(this.state)
+      console.log(form)
       !form.id ? this.onCreateAssignment(form) : this.onUpdateAssignment(form)
     }
   }
