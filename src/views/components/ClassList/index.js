@@ -82,8 +82,7 @@ class ClassList extends React.Component {
     if (status.is_complete) {
       return (
         <div className='cn-class-list-row-icon-container cn-white' style={{background: classColor}} >
-          {/* <i className='fas fa-check-square cn-class-list-row-icon cn-green' /> */}
-          <span className='cn-class-list-row-grade-text cn-white'>{item.grade > 0 ? item.grade : '98.6'}%</span>
+          <span className='cn-class-list-row-grade-text cn-white'>{item.grade > 0 ? item.grade + '%' : '--'}</span>
         </div>
       )
     } else if (statusNameL === 'new class' || statusNameL === 'needs setup') {

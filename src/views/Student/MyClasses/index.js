@@ -4,15 +4,18 @@ import {inject, observer} from 'mobx-react'
 import ClassList from '../../components/ClassList'
 import actions from '../../../actions'
 import { browserHistory } from 'react-router'
-import Card from '../../../components/Card'
 import StudentLayout from '../../components/StudentLayout'
+import AddClassModal from './AddClassModal'
+import SkLoader from '../../../assets/sk-icons/SkLoader';
 
 @inject('rootStore') @observer
 class MyClasses extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      classes: []
+      classes: [],
+      showAddClassModal: false,
+      loading: true
     }
   }
 
@@ -30,7 +33,7 @@ class MyClasses extends React.Component {
   updateClasses () {
     const {user: {student}} = this.props.rootStore.userStore
     actions.classes.getStudentClassesById(student.id).then((classes) => {
-      this.setState({classes})
+      this.setState({classes, loading: false})
     }).catch(() => false)
   }
 
@@ -103,7 +106,6 @@ class MyClasses extends React.Component {
   renderContent () {
     return (
       <div>
-        <div className='margin-bottom center-text'>From this page, you can join classes, set up classes, and check other class details.</div>
         {this.renderNeedsSyllabusInfo()}
         <div className='cn-table-grid-container'>
           <ClassList
@@ -111,8 +113,8 @@ class MyClasses extends React.Component {
             emptyMessage='You are not enrolled in any classes.'
             onSelect={this.onClassSelect.bind(this)}
           />
-          <button className='button add-button' onClick={() => { browserHistory.push('student/find-classes') }}>
-            Join a class
+          <button className='button add-button' onClick={() => this.setState({showAddClassModal: true})}>
+            Join a Class
           </button>
         </div>
       </div>
@@ -133,11 +135,24 @@ class MyClasses extends React.Component {
     })
   }
 
-  renderTitle () {
+  closeAddClassModal () {
+    this.setState({showAddClassModal: false})
+    this.updateClasses()
+  }
+
+  renderView () {
     return (
-      <div className='cn-icon-flex'>
-        My classes
-        <i className='fa fa-plus cn-blue cursor' onClick={() => browserHistory.push('student/find-classes') } />
+      <div className='cn-my-classes-wrapper'>
+        <div className='cn-my-classes-container'>
+          <h1>My Classes</h1>
+          <i className='fas fa-plus cn-my-classes-add-new' onClick={() => this.setState({showAddClassModal: true})} />
+          <div className='cn-my-classes-content'>
+            {this.renderContent()}
+          </div>
+        </div>
+        {this.state.showAddClassModal &&
+          <AddClassModal closeModal={() => this.closeAddClassModal()} />
+        }
       </div>
     )
   }
@@ -145,12 +160,9 @@ class MyClasses extends React.Component {
   render () {
     return (
       <StudentLayout>
-        <div className='cn-my-classes-container'>
-          <Card
-            title={this.renderTitle()}
-            content={this.renderContent()}
-          />
-        </div>
+        {this.state.loading
+          ? <SkLoader />
+          : this.renderView()}
       </StudentLayout>
     )
   }
