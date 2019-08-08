@@ -32,6 +32,12 @@
         align-items: center;
         margin-bottom: 1em;
         width: 100%;
+        cursor: pointer;
+        padding: 4px;
+
+        &:hover {
+          background-color: rgba(0,0,0,0.05);
+        }
 
         .text {
           width: 93%;
@@ -83,7 +89,7 @@
         background-color: transparent;
         font-weight: 600;
         color: $cn-color-blue;
-        margin-top: 0.5rem;
+        // margin: 0.5rem 0;
         padding-top: 7px;
         width: 60%;
       }

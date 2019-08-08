@@ -121,7 +121,7 @@ class Home extends React.Component {
               <h1 onClick={() => browserHistory.push('/student/tasks')}>Tasks</h1>
               <div className="home-sub-heading">Due soon</div>
               <div className="home-card-content">
-                <p>content</p>
+                <p style={{textAlign: 'center', color: 'rgba(0,0,0,0.25)', minHeight: '60vh'}}>No tasks yet.</p>
               </div>
             </div>
             {/* // this is for chat once we get it ready

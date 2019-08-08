@@ -1,5 +1,4 @@
 .cn-weight-type {
-  height: 100%;
   padding: 0em 0.5em;
 
   #cn-weight-form-instructions {
@@ -21,7 +20,6 @@
 
     .button {
       width: 45%;
-      box-shadow: 0px 2px 5px rgb(136, 136, 136);
       border-radius: 5px;
       font-weight: 500;
       font-size: 18px;
@@ -52,7 +50,7 @@
           height: 23px;
           width: 23px;
           border-radius: 5px;
-          border: 1px solid #4a4a4a;
+          border: 1px solid $cn-form-border;
 
           cursor: pointer;
         }

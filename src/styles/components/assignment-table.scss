@@ -2,7 +2,7 @@
   font-size: 17.5px;
   font-weight: 600;
   color: #4a4a4a;
-  background-color: #bdbdbd;
+  background-color: rgba(0, 0, 0, 0.07);
   border-radius: 4px 4px 0 0;
   display: flex;
   justify-content: space-between;
@@ -10,13 +10,15 @@
 }
 
 #class-editor-assignments-table {
-  background-color: $cn-color-white;
-  border-top: 1px solid $cn-color-grey;
-  border-radius: 0px 0px 4px 4px;
+  background-color: none;
+  border-top: 1px solid $cn-form-border;
+  border-radius: 0px 0px 5px 5px;
   height: 100%;
   display: flex;
   flex-direction: column;
   min-width: 250px;
+  overflow: hidden;
+  padding-bottom: 1rem;
 
   &.view-only {
     height: 100%;
@@ -74,6 +76,7 @@
     height: 100%;
     padding: 0.4em 0;
     overflow-y: auto;
+    border-radius: 5px;
   }
 
   #submit-container {
@@ -81,7 +84,7 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    margin-bottom: 1.1em;
+    border-radius: 5px;
 
     #notification {
       color: #c7c7cd;
@@ -90,14 +93,13 @@
     }
 
     .submit-assignments {
-      border-radius: 4px;
+      border-radius: 5px;
       width: 65%;
       height: 1.6em;
       min-height: 1.6em;
-      background-color: #36bf36;
+      background-color: $cn-color-green;
       font-size: 18px;
       padding-top: 6px;
-      box-shadow: 0px 2px 4px #888888;
 
       &.disabled {
         color: #ffffff !important;

@@ -4,6 +4,12 @@
   flex-direction: column;
   min-height: 100%;
 
+  .cn-syllabus-tool-back-button {
+    color: $cn-color-blue;
+    cursor: pointer;
+    margin: 1rem 0 -1rem 1rem;
+  }
+
   @include breakpoint(medium) {
     height: 100%;
   }
@@ -22,8 +28,7 @@
   .cn-body-container {
     display: flex;
     flex-direction: column;
-    padding-right: 1em;
-    padding-left: 0.5em;
+    margin: 1rem;
     overflow-y: hidden;
 
     @include breakpoint(medium) {
@@ -35,25 +40,25 @@
       display: flex;
       flex: 1;
       flex-direction: column;
-      padding: 1em;
-      padding-top: 0;
+      margin: 1rem;
+      @include skoller-cell;
 
       &.cn-control-panel {
-        padding-left: 0;
-        padding-right: 1.5em;
+        padding: 1rem;
+
         .cn-section-header{
           position: absolute;
           margin-top: 4px;
           display: flex;
           align-items: center;
         }
+
         .cn-section-content {
           background-color: #FFFFFF;
-          border: 1px solid #4A4A4A;
-          box-shadow: 0px 2px 3px #888888;
+          // border: 1px solid #4A4A4A;
+          // box-shadow: 0px 2px 3px #888888;
+          border-radius: 5px;
           overflow-y: auto;
-          padding: 0.6em;
-          margin-top: 0px;
 
           .cn-section-content-header {
             font-size: 24px;
@@ -77,10 +82,10 @@
       }
 
       &.cn-file-panel {
-        background-color: $cn-color-white;
-        border-radius: 10px;
-        border: 1px solid #4A4A4A;
-        box-shadow: 0px 2px 3px #888888;
+        // background-color: $cn-color-white;
+        // border-radius: 10px;
+        // border: 1px solid #4A4A4A;
+        // box-shadow: 0px 2px 3px #888888;
 
         .cn-section-header{
           position: absolute;
@@ -88,11 +93,13 @@
           display: flex;
           align-items: center;
           align-self: flex-end;
+          padding: 8px;
         }
         
         .cn-section-content {
           height: 300px;
           flex: 1;
+          padding: 4px;
         }
 
         @include breakpoint(medium) {
