@@ -61,7 +61,7 @@ class SignUpForm extends React.Component {
         phone: this.stripPhone(this.state.phone),
         future_reminder_notification_time: '22:00:00',
         notification_time: '12:00:00',
-        customLink: this.props.partner.slug
+        customLink: this.props.partner ? this.props.partner.slug : null
       }
     }
     console.log(newUser)

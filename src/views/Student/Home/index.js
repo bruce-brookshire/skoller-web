@@ -7,6 +7,8 @@ import actions from '../../../actions'
 import { browserHistory } from 'react-router'
 import PopUp from './PopUp'
 import ClassStatusModal from '../../components/ClassStatusModal'
+import AddClassModal from '../MyClasses/AddClassModal'
+import {Cookies} from 'react-cookie'
 
 @inject('rootStore') @observer
 class Home extends React.Component {
@@ -14,9 +16,12 @@ class Home extends React.Component {
     super(props)
     this.state = {
       classes: [],
-      showPopUp: false,
-      classStatusModal: {show: false, cl: null}
+      popUp: {show: false, type: null},
+      classStatusModal: {show: false, cl: null},
+      addClassModal: {show: false}
     }
+
+    this.cookie = new Cookies()
 
     this.updateClasses()
     this.props.rootStore.studentNavStore.setActivePage('home')
@@ -25,6 +30,7 @@ class Home extends React.Component {
   async componentDidMount () {
     if (this.props.rootStore.userStore.showPopUps) {
       this.showFirstClassPopUp()
+      this.showPrimarySchoolPopUp()
     }
   }
 
@@ -44,7 +50,14 @@ class Home extends React.Component {
       })
       .catch(() => false)
     if (showPopUp) {
-      this.setState({showPopUp: true})
+      this.setState({popUp: {type: 'needSyllabus', show: true}})
+    }
+  }
+
+  async showPrimarySchoolPopUp () {
+    const student = this.props.rootStore.userStore.user.student
+    if (!student.primary_school && !student.primary_period) {
+      this.setState({popUp: {type: 'needPrimarySchool', show: true}})
     }
   }
 
@@ -80,21 +93,38 @@ class Home extends React.Component {
     }
   }
 
+  async updateStudent () {
+    console.log('async login student')
+    await actions.auth.getUserByToken(this.cookie.get('skollerToken')).catch((r) => console.log(r))
+  }
+
   closeClassStatusModal () {
-    console.log('closing modal')
     this.setState({classStatusModal: {show: false, cl: null}})
     this.updateClasses()
+  }
+
+  closeAddClassModal () {
+    this.setState({addClassModal: {show: false}})
+    this.updateClasses()
+  }
+
+  closePopUp () {
+    this.updateStudent()
+    this.setState({popUp: {show: false}})
   }
 
   render () {
     return (
       <StudentLayout>
         {console.log(this.props.rootStore)}
-        {this.state.showPopUp &&
-          <PopUp closeModal={() => this.setState({showPopUp: false})} />
+        {this.state.popUp.show &&
+          <PopUp closeModal={() => this.closePopUp()} type={this.state.popUp.type}/>
         }
         {this.state.classStatusModal.show &&
           <ClassStatusModal closeModal={() => this.closeClassStatusModal()} onSubmit={() => this.closeClassStatusModal()} cl={this.state.classStatusModal.cl} />
+        }
+        {this.state.addClassModal.show &&
+          <AddClassModal closeModal={() => this.closeAddClassModal()} />
         }
         <div className="home-container">
           <div className="home-column">
@@ -106,6 +136,13 @@ class Home extends React.Component {
                   emptyMessage='You are not enrolled in any classes.'
                   onSelect={this.onClassSelect.bind(this)}
                 />
+                {this.state.classes.length === 0 &&
+                  <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', margin: '1rem 0'}}>
+                    <button className='button add-button' onClick={() => this.setState({addClassModal: {show: true}})}>
+                      Join a Class
+                    </button>
+                  </div>
+                }
               </div>
             </div>
             {/* // this is for activity once we get it ready
@@ -121,7 +158,7 @@ class Home extends React.Component {
               <h1 onClick={() => browserHistory.push('/student/tasks')}>Tasks</h1>
               <div className="home-sub-heading">Due soon</div>
               <div className="home-card-content">
-                <p style={{textAlign: 'center', color: 'rgba(0,0,0,0.25)', minHeight: '60vh'}}>No tasks yet.</p>
+                <p style={{textAlign: 'center', color: 'rgba(0,0,0,0.30)', margin: '3rem 0'}}>No tasks yet.</p>
               </div>
             </div>
             {/* // this is for chat once we get it ready

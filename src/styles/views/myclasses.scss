@@ -6,13 +6,16 @@
   box-sizing: border-box;
 
   .cn-my-classes-container {
-    margin: 2rem;
+    box-sizing: border-box;
+    margin: 2rem 2.5rem;
     @include skoller-cell;
+    width: calc((100vw - 200px) - 5rem);
     max-width: 600px;
-    min-width: 40vw;
     
     @media only screen and (max-width: $sk-mobile-break-point) {
+      box-sizing: border-box;
       margin: 2rem 1rem;
+      width: 100vw;
     }
     
     h1 {

@@ -292,7 +292,7 @@ class ChangeSchool extends React.Component {
       this.setState({termChoice: termChoice})
     }
     console.log('state of change school: ', this.state)
-    this.props.onSubmit({termChoice: this.state.activeTerm, schoolChoice: this.state.schoolChoice})
+    this.props.onSubmit({termChoice: this.state.termChoice ? this.state.termChoice : this.props.backData.termChoice, schoolChoice: this.state.schoolChoice ? this.state.schoolChoice : this.props.backData.schoolChoice})
   }
 
   render () {
@@ -320,6 +320,10 @@ class ChangeSchool extends React.Component {
               ? <SkModal closeModal={() => this.setState({showCreateSchoolModal: false})}>
                 <CreateSchoolModal
                   name={this.state.input}
+                  onSubmit={(school) => {
+                    this.setState({schoolChoice: school, input: null})
+                  }}
+                  onClose={() => this.setState({showCreateSchoolModal: false})}
                 />
               </SkModal>
               : null
