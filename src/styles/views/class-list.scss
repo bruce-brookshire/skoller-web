@@ -3,6 +3,12 @@
   flex-direction: column;
   width: 100%;
 
+  .cn-class-list-empty-message {
+    padding: 1rem;
+    color: rgba(0,0,0,0.30);
+    text-align: center;
+  }
+
   .cn-class-list-row {
     display: flex;
     flex-direction: row;

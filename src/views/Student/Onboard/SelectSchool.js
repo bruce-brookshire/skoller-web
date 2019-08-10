@@ -39,7 +39,6 @@ class SelectSchool extends React.Component {
 
   checkBackData () {
     if (this.props.backData) {
-      console.log('backData')
       this.setState({
         schoolChoice: this.props.backData.schoolChoice,
         termChoice: this.props.backData.termChoice
@@ -101,7 +100,6 @@ class SelectSchool extends React.Component {
                   width: (schoolFieldWidth - 10).toString() + 'px'
                 }}
                 onClick={() => {
-                  console.log('state: ', this.state, 'onClick')
                   this.setState({
                     schools: [],
                     input: null
@@ -352,7 +350,7 @@ class SelectSchool extends React.Component {
             <div className='onboard-select-school'>
               <h1>Meet Sammi 👋</h1>
               <Sammi
-                message={this.state.sammiMessage}
+                message={this.props.customMessage ? this.props.customMessage : this.state.sammiMessage}
                 emotion='happy'
                 position='right'
                 align='right'
@@ -377,6 +375,10 @@ class SelectSchool extends React.Component {
               ? <SkModal closeModal={() => this.setState({showCreateSchoolModal: false})}>
                 <CreateSchoolModal
                   name={this.state.input}
+                  onSubmit={(school) => {
+                    this.setState({schoolChoice: school, input: null})
+                  }}
+                  onClose={() => this.setState({showCreateSchoolModal: false})}
                 />
               </SkModal>
               : null
@@ -392,7 +394,8 @@ SelectSchool.propTypes = {
   onSubmit: PropTypes.func,
   rootStore: PropTypes.object,
   renderPartner: PropTypes.func,
-  backData: PropTypes.object
+  backData: PropTypes.object,
+  customMessage: PropTypes.string
 }
 
 export default SelectSchool

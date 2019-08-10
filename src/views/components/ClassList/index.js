@@ -166,6 +166,11 @@ class ClassList extends React.Component {
     return (
       <div className={'cn-class-list-container ' + this.props.containerClassName}>
         {this.renderClassRows()}
+        {this.props.classes.length === 0 &&
+          <div className='cn-class-list-empty-message'>
+            {"Looks like you don't have any classes yet. Join one now!"}
+          </div>
+        }
       </div>
     )
   }

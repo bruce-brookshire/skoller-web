@@ -6,6 +6,8 @@ import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
 import {convertLocalDateToUTC, convertUTCDatetimeToDateString} from '../../../../utilities/time'
 import {maskAssignmentDate} from '../../../../utilities/mask'
+import DatePicker from '../../../components/DatePicker/index'
+import moment from 'moment'
 
 const requiredFields = {
   'name': {
@@ -68,7 +70,8 @@ class AssignmentForm extends React.Component {
     return {
       form: this.initializeFormData(assignment),
       due_null: false,
-      loading: false
+      loading: false,
+      showDatePicker: false
     }
   }
 
@@ -166,9 +169,7 @@ class AssignmentForm extends React.Component {
 
   verifyData (form) {
     const nameCheck = form.name.trim() !== ''
-    const dateCheck = form.due.trim().length === 5 &&
-                      !isNaN(form.due.substring(0, 2)) && !isNaN(form.due.substring(3)) &&
-                      !isNaN(form.year_due) && form.year_due.length !== 0
+    const dateCheck = form.due !== null
     return nameCheck && (this.state.due_null ? true : dateCheck)
   }
 
@@ -197,7 +198,7 @@ class AssignmentForm extends React.Component {
             />
           </div>
           <div className='col-xs-4'>
-            {!this.state.due_null && <InputField
+            {/* {!this.state.due_null && <InputField
               containerClassName='margin-top'
               error={formErrors.due}
               // info={`Due date unknown for an assignment? No worries-you can always add one later. Go ahead and create the assignment for everyone in your class.`}
@@ -209,7 +210,31 @@ class AssignmentForm extends React.Component {
               placeholder='MM/DD'
               value={form.due}
               disabled={this.state.due_null === true}
-            />}
+            />} */}
+            {!this.state.due_null &&
+              <div>
+                <div onClick={() => this.setState({showDatePicker: true})} >
+                  <InputField
+                    containerClassName='margin-top'
+                    error={formErrors.due}
+                    label='Due date'
+                    name='due'
+                    placeholder='MM/DD'
+                    value={form.due ? moment(form.due).format('MM/DD') : 'Select date'}
+                    disabled={true}
+                  />
+                </div>
+                {this.state.showDatePicker &&
+                  <DatePicker
+                    givenDate={Date.now()}
+                    returnSelectedDay={(day) => {
+                      form.due = day.format('MM/DD')
+                      this.setState({showDatePicker: false})
+                    }}
+                  />
+                }
+              </div>
+            }
           </div>
           <div className='col-xs-4'>
             {!this.state.due_null && <SelectField
