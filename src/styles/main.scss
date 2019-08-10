@@ -142,9 +142,10 @@
 html {
   box-sizing: border-box;
   overflow: hidden;
-  @media only screen and (max-width: 765px) {
-    overflow: scroll;
-  }
+}
+
+.layout {
+  overflow: scroll;
 }
 
 * {

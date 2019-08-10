@@ -15,7 +15,7 @@ class PopUp extends React.Component {
   renderNeedSyllabusPopUp () {
     return (
       <div style={{padding: '2rem', maxWidth: '380px'}}>
-        <FirstClass disableNext={true} />
+        <FirstClass disableNext={false} />
       </div>
     )
   }
