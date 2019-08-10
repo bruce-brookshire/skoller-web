@@ -141,7 +141,10 @@
 
 html {
   box-sizing: border-box;
-  // overflow: hidden;
+}
+
+.sk-app-container {
+  overflow: hidden;
 }
 
 .layout {
