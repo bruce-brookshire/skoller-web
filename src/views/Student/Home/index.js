@@ -56,7 +56,7 @@ class Home extends React.Component {
 
   async showPrimarySchoolPopUp () {
     const student = this.props.rootStore.userStore.user.student
-    if (!student.primary_school && !student.primary_period) {
+    if (!student.primary_school || !student.primary_period) {
       this.setState({popUp: {type: 'needPrimarySchool', show: true}})
     }
   }
