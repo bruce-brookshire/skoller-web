@@ -73,6 +73,7 @@ $h2-size-sm: 36px;
 
   .cn-landing-content-wrapper{
     margin: 0 auto;
+    overflow: scroll;
 
     @media screen and ( min-height: 730px ) {
       @include breakpoint(medium) {
