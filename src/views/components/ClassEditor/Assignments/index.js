@@ -49,7 +49,8 @@ class Assignments extends React.Component {
       currentWeightIndex: 0,
       currentWeight: null,
       openSkipCategoryModal: false,
-      addAssignment: false
+      addAssignment: false,
+      lastAssignmentDate: Date.now()
     }
   }
 
@@ -150,6 +151,10 @@ class Assignments extends React.Component {
     this.setState({ addAssignment: true, currentWeight: weight, currentWeightIndex: this.state.weights.indexOf(weight) })
   }
 
+  updateLastAssignmentDate (date) {
+    this.setState({lastAssignmentDate: date})
+  }
+
   render () {
     const {viewOnly, loadingAssignments, loadingWeights, currentAssignment,
       currentWeightIndex, currentWeight, weights, addAssignment} = this.state
@@ -163,18 +168,21 @@ class Assignments extends React.Component {
           ? <Loading />
           : <div id='cn-assignment-window'>
             {!viewOnly && !addAssignment &&
-              <AssignmentCategories
-                cl={cl}
-                weights={weights}
-                noAssignments={this.state.assignments}
-                assignments={this.state.assignments}
-                onClick={this.toAssignmentForm.bind(this)}
-                onSubmit={() => this.props.onSubmit()}
-              />
+              <div>
+                <div onClick={() => this.props.onBack()} style={{marginTop: '8px', color: '#57B9E4', cursor: 'pointer'}}>Back to weights</div>
+                <AssignmentCategories
+                  cl={cl}
+                  weights={weights}
+                  noAssignments={this.state.assignments}
+                  assignments={this.state.assignments}
+                  onClick={this.toAssignmentForm.bind(this)}
+                  onSubmit={() => this.props.onSubmit()}
+                />
+              </div>
             }
             {!viewOnly && addAssignment &&
               <div id='class-editor-assignment-form'>
-                <div onClick={() => this.setState({addAssignment: false})}>Back to weight categories</div>
+                <div onClick={() => this.setState({addAssignment: false})} style={{marginTop: '8px', color: '#57B9E4', cursor: 'pointer'}}>Back to weight categories</div>
                 {/* <div className='cn-section-content-header center-text cn-blue margin-top'>
                   {weights[currentWeightIndex] ? weights[currentWeightIndex].name : 'for this class'}
                 </div> */}
@@ -184,6 +192,8 @@ class Assignments extends React.Component {
                   onCreateAssignment={this.onCreateAssignment.bind(this)}
                   onUpdateAssignment={this.onUpdateAssignment.bind(this)}
                   currentWeight={currentWeight}
+                  updateLastAssignmentDate={(date) => this.updateLastAssignmentDate(date)}
+                  lastAssignmentDate={this.state.lastAssignmentDate}
                 />
                 {(assignments.length === 0) &&
                   <div>
@@ -256,7 +266,8 @@ Assignments.propTypes = {
   cl: PropTypes.object,
   isReview: PropTypes.bool,
   onSubmit: PropTypes.func,
-  onEdit: PropTypes.func
+  onEdit: PropTypes.func,
+  onBack: PropTypes.func
 }
 
 export default Assignments

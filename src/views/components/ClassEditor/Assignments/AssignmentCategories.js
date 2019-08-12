@@ -42,7 +42,33 @@ class AssignmentCategories extends React.Component {
     }
   }
 
-  render () {
+  renderCategory (weight, assignmentsCount) {
+    return (
+      <div className='weight' key={weight.id} onClick={() => this.props.onClick(weight)}>
+        <div className='text'>
+          <div className='weight-name'>
+            {weight.name}
+          </div>
+          <div className='add-assignments'>
+            <div>
+              {assignmentsCount > 0
+                ? <p style={{color: 'rgba(0,0,0,.2)', fontWeight: '500', margin: '0'}}>{assignmentsCount} Assignment{assignmentsCount > 1 ? 's' : ''}</p>
+                : <p>Add assignments</p>
+              }
+            </div>
+          </div>
+        </div>
+        <div
+          className='arrow'
+          onClick={() => this.props.onClick(weight)}
+        >
+          <i className='fa fa-angle-right' />
+        </div>
+      </div>
+    )
+  }
+
+  renderCategoriesWithoutAssignments () {
     const assignments = this.props.assignments
     const category = this.state.weights.map(weight => {
       let i = 0
@@ -51,32 +77,36 @@ class AssignmentCategories extends React.Component {
           i += 1
         }
       })
-      return (
-        <div className='weight' key={weight.id} onClick={() => this.props.onClick(weight)}>
-          <div className='text'>
-            <div className='weight-name'>
-              {weight.name}
-            </div>
-            <div className='add-assignments'>
-              <div>
-                {i > 0
-                  ? <p>{i} Assignment{i > 1 ? 's' : ''}</p>
-                  : <p>Add assignments</p>
-                }
-              </div>
-            </div>
-          </div>
-          <div
-            className='arrow'
-            onClick={() => this.props.onClick(weight)}
-          >
-            <i className='fa fa-angle-right' />
-          </div>
-        </div>
-      )
-    }
-    )
+      if (i === 0) {
+        return (
+          this.renderCategory(weight, i)
+        )
+      }
+    })
 
+    return category
+  }
+
+  renderCategoriesWithAssignments () {
+    const assignments = this.props.assignments
+    const category = this.state.weights.map(weight => {
+      let i = 0
+      assignments.forEach(assignment => {
+        if (assignment.weight_id === weight.id) {
+          i += 1
+        }
+      })
+      if (i !== 0) {
+        return (
+          this.renderCategory(weight, i)
+        )
+      }
+    })
+
+    return category
+  }
+
+  render () {
     return (
       <div id='cn-assignment-categories'>
         <div className='cn-section-content-header'>
@@ -88,7 +118,8 @@ class AssignmentCategories extends React.Component {
         <hr />
         <div id='content-container'>
           <div id='weight-container'>
-            {category}
+            {this.renderCategoriesWithoutAssignments()}
+            {this.renderCategoriesWithAssignments()}
           </div>
           <hr />
           <div id='next-step'>
@@ -106,7 +137,8 @@ AssignmentCategories.propTypes = {
   noAssignments: PropTypes.array,
   onClick: PropTypes.function,
   rootStore: PropTypes.object,
-  onSubmit: PropTypes.function
+  onSubmit: PropTypes.function,
+  assignments: PropTypes.array
 }
 
 export default AssignmentCategories

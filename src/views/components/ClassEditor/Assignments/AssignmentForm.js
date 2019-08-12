@@ -101,7 +101,7 @@ class AssignmentForm extends React.Component {
   }
 
   /*
-  * Determine whether the user is submiting updated assignment or a new assignment.
+  * Determine whether the user is submitting updated assignment or a new assignment.
   *
   */
   onSubmit () {
@@ -113,6 +113,12 @@ class AssignmentForm extends React.Component {
       console.log(this.state)
       console.log(form)
       !form.id ? this.onCreateAssignment(form) : this.onUpdateAssignment(form)
+    }
+    if (this.props.updateLastAssignmentDate) {
+      console.log(this.state.form)
+      const date = this.state.form.due + '/' + this.state.form.year_due
+      this.props.updateLastAssignmentDate(date)
+      console.log(date)
     }
   }
 
@@ -167,9 +173,21 @@ class AssignmentForm extends React.Component {
     return `${dateParts[1]}/${dateParts[2]}`
   }
 
+  validateDate (d) {
+    if (Object.prototype.toString.call(d) === '[object Date]') {
+      if (isNaN(d.getTime())) {
+        return false
+      } else {
+        return true
+      }
+    } else {
+      return false
+    }
+  }
+
   verifyData (form) {
     const nameCheck = form.name.trim() !== ''
-    const dateCheck = form.due !== null
+    const dateCheck = (form.due !== null) && (this.validateDate(new Date(form.due)))
     return nameCheck && (this.state.due_null ? true : dateCheck)
   }
 
@@ -195,6 +213,7 @@ class AssignmentForm extends React.Component {
               onChange={updateProperty}
               placeholder={`e.g. ${currentWeight.name} 1`}
               value={form.name}
+              onBlur={() => this.setState({showDatePicker: true})}
             />
           </div>
           <div className='col-xs-4'>
@@ -226,7 +245,7 @@ class AssignmentForm extends React.Component {
                 </div>
                 {this.state.showDatePicker &&
                   <DatePicker
-                    givenDate={Date.now()}
+                    givenDate={this.props.lastAssignmentDate ? moment(this.props.lastAssignmentDate) : Date.now()}
                     returnSelectedDay={(day) => {
                       form.due = day.format('MM/DD')
                       this.setState({showDatePicker: false})
@@ -281,14 +300,16 @@ AssignmentForm.propTypes = {
   assignment: PropTypes.object,
   cl: PropTypes.object.isRequired,
   formErrors: PropTypes.object,
-  onCreateAssignment: PropTypes.func,
+  onCreateAssignment: PropTypes.function,
   onUpdateAssignment: PropTypes.func.isRequired,
-  updateProperty: PropTypes.func,
-  validateForm: PropTypes.func,
+  updateProperty: PropTypes.function,
+  validateForm: PropTypes.function,
   currentWeight: PropTypes.object,
-  resetValidation: PropTypes.func,
+  resetValidation: PropTypes.function,
   isAdmin: PropTypes.bool,
-  weights: PropTypes.array
+  weights: PropTypes.array,
+  lastAssignmentDate: PropTypes.string,
+  updateLastAssignmentDate: PropTypes.function
 }
 
 export default ValidateForm(Form(AssignmentForm, 'form'))
