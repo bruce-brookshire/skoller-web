@@ -216,7 +216,7 @@ class EnrollLink extends React.Component {
   renderEnrollContent () {
     return (
       <div className='sk-enroll-link-container'>
-        <h1>Your classmates are waiting on you! 🎉🥳</h1>
+        <h1>Your classmates are waiting on you! 🎉🎊</h1>
         <div className='sk-enroll-link-call-out'>
           <div className='sk-enroll-link-img-container'>
             <img src={this.userImage()} className='sk-enroll-link-img' />
