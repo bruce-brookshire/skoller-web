@@ -36,21 +36,26 @@ class Home extends React.Component {
 
   async showFirstClassPopUp () {
     let showPopUp = false
+    let type
     await actions.classes.getStudentClassesById(this.props.rootStore.userStore.user.student.id)
       .then((classes) => {
         if (classes.length > 1) {
           showPopUp = false
-        } else {
+        } else if (classes.length === 1) {
           let cl = classes[0]
           let id = cl.status.id
           if (id === 1100) {
             showPopUp = true
+            type = 'needSyllabus'
           }
+        } else if (classes.length === 0) {
+          showPopUp = true
+          type = 'findClass'
         }
       })
       .catch(() => false)
     if (showPopUp) {
-      this.setState({popUp: {type: 'needSyllabus', show: true}})
+      this.setState({popUp: {type: type, show: true}})
     }
   }
 

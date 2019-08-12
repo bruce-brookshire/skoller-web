@@ -3,7 +3,8 @@ import { inject, observer } from 'mobx-react'
 import SkModal from '../../components/SkModal/SkModal'
 import PropTypes from 'prop-types'
 import FirstClass from '../Onboard/FirstClass/index'
-import SelectSchool from '../Onboard/SelectSchool';
+import SelectSchool from '../Onboard/SelectSchool'
+import AddClassModal from '../MyClasses/AddClassModal'
 
 @inject('rootStore') @observer
 class PopUp extends React.Component {
@@ -32,6 +33,14 @@ class PopUp extends React.Component {
     )
   }
 
+  renderFindClassPopUp () {
+    return (
+      <div style={{padding: '2rem', maxWidth: '380px'}}>
+        <AddClassModal closeModal={() => this.props.closeModal()} />
+      </div>
+    )
+  }
+
   render () {
     return (
       <div>
@@ -43,6 +52,11 @@ class PopUp extends React.Component {
         {this.props.type === 'needPrimarySchool' &&
           <SkModal>
             {this.renderSetPrimarySchoolPopUp()}
+          </SkModal>
+        }
+        {this.props.type === 'findClass' &&
+          <SkModal>
+            {this.renderFindClassPopUp()}
           </SkModal>
         }
       </div>
