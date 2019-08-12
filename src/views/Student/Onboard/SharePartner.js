@@ -64,7 +64,7 @@ class SharePartner extends React.Component {
               <Cloud width="200" height="150" />
               <div className='sk-onboard-share-partner-cloud-content'>
                 <p>
-                  It doens&apos;t have to<br /> stop here. Money<br />is donated when <b>ANY<br />STUDENT</b> uses the <b style={{color: '#' + this.props.partner.primaryColor}}>{this.props.partner.name}</b> link to sign up for Skoller!
+                  It doesn&apos;t have to<br /> stop here. Money<br />is donated when <b>ANY<br />STUDENT</b> uses the <b style={{color: '#' + this.props.partner.primaryColor}}>{this.props.partner.name}</b> link to sign up for Skoller!
                 </p>
               </div>
             </div>
