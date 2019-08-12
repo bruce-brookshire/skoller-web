@@ -50,8 +50,8 @@
     flex-direction: row;
     justify-content: center;
     width: 100%;
-    margin-bottom: 18px;
     user-select: none;
+    margin: 8px 0 0 0;
 
     .selector {
       cursor: pointer;
@@ -73,6 +73,52 @@
 
     .points {
       border-radius: 0 5px 5px 0;
+    }
+  }
+
+  .cn-weight-form-points {
+    width: 100%;
+    text-align: center;
+    margin-top: 8px;
+
+    .cn-weight-form-points-form {
+      @include remove-form-styling;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      margin: 0 10px;
+
+      .cn-weight-form-points-label {
+        margin-top: 6px;
+      }
+
+      .cn-weight-form-points-field {
+        display: flex;
+        flex-direction: row;
+
+        .cn-weight-form-points-display {
+          margin-right: 8px;
+          margin-top: 6px;
+          font-weight: 600;
+        }
+
+        input {
+          width: 64px;
+          height: 22px;
+          border: 1px solid $cn-form-border;
+          border-radius: 5px;
+          margin-right: 8px;
+          padding: 4px;
+          box-sizing: border-box;
+        }
+
+        button {
+          
+          @include primary-button;
+        }
+      }
     }
   }
 

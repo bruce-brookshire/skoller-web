@@ -41,7 +41,9 @@ class WeightForm extends React.Component {
     return {
       form: this.initializeFormData(weight),
       isPoints: this.props.boolPoints,
-      loading: false
+      loading: false,
+      totalPointsFormValue: null,
+      editPoints: false
     }
   }
 
@@ -100,12 +102,44 @@ class WeightForm extends React.Component {
     }).catch(() => { this.setState({loading: false}) })
   }
 
+  changePoints () {
+    this.setState({editPoints: false})
+    this.props.onTypeSelection(true, this.state.totalPointsFormValue)
+  }
+
+  renderPointsOptions () {
+    return (
+      <div className='cn-weight-form-points'>
+        {this.props.totalPoints && !this.state.editPoints
+          ? <div className='cn-weight-form-points-form'>
+            <div className='cn-weight-form-points-label'>
+              Total available points:
+            </div>
+            <div className='cn-weight-form-points-field'>
+              <div className='cn-weight-form-points-display'>{this.props.totalPoints}</div>
+              <button onClick={() => this.setState({editPoints: true})}>
+                Edit
+              </button>
+            </div>
+          </div>
+          : <div className='cn-weight-form-points-form'>
+            <div className='cn-weight-form-points-label'>Total available points:</div>
+            <div className='cn-weight-form-points-field'>
+              <input onChange={(e) => this.setState({totalPointsFormValue: e.target.value})} />
+              <button onClick={() => this.changePoints()}>Save</button>
+            </div>
+          </div>
+        }
+      </div>
+    )
+  }
+
   render () { // issue: renders before onUpdateClass finishes --solved
     const {form} = this.state
     const {formErrors, updateProperty, numWeights, noWeights} = this.props
     // console.log(this.props)
     // console.log(updateProperty)
-    // console.log('WeightForm: ', this.state.isPoints)
+    // console.log('WeightForm: ', this.props.boolPoints)
 
     return (
       <div id='cn-weight-form'>
@@ -118,31 +152,32 @@ class WeightForm extends React.Component {
         <div id='cn-weight-form-instructions'>
           Weights are how much a certain group of assignments contribute to your final grade.
         </div>
-        <hr />
         <div className="weight-type">
           <div className='selector percentage'
             style={{
-              backgroundColor: this.state.isPoints ? 'transparent' : '#57b9e4',
-              color: this.state.isPoints ? '#57b9e4' : '#ffffff'
+              backgroundColor: this.props.boolPoints ? 'transparent' : '#57b9e4',
+              color: this.props.boolPoints ? '#57b9e4' : '#ffffff'
             }}
             onClick={() => {
-              this.setState({ isPoints: false })
               this.props.onClick(false)
             }}>
             Percentage
           </div>
           <div className='selector points'
             style={{
-              backgroundColor: this.state.isPoints ? '#57b9e4' : 'transparent',
-              color: this.state.isPoints ? '#ffffff' : '#57b9e4'
+              backgroundColor: this.props.boolPoints ? '#57b9e4' : 'transparent',
+              color: this.props.boolPoints ? '#ffffff' : '#57b9e4'
             }}
             onClick={() => {
-              this.setState({ isPoints: true })
               this.props.onClick(true)
             }}>
             Points
           </div>
         </div>
+        {this.props.boolPoints &&
+          this.renderPointsOptions()
+        }
+        <hr />
         <InputField
           containerClassName='margin-top'
           inputClassName='input-box'
@@ -166,7 +201,7 @@ class WeightForm extends React.Component {
             value={form.weight}
           />
           <div className='pct'>
-            {!this.state.isPoints ? '%' : 'pts'}
+            {!this.props.boolPoints ? '%' : 'pts'}
           </div>
         </div>
         {numWeights === 0 &&
@@ -207,7 +242,9 @@ WeightForm.propTypes = {
   onNoWeightChecked: PropTypes.func,
   reset: PropTypes.func,
   boolPoints: PropTypes.bool,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  togglePoints: PropTypes.func,
+  totalPoints: PropTypes.number
 }
 
 export default ValidateForm(Form(WeightForm, 'form'))
