@@ -141,10 +141,12 @@
 
 html {
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .sk-app-container {
   overflow: hidden;
+  overscroll-behavior: contain;
 }
 
 .layout {
