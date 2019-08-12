@@ -20,6 +20,7 @@ class AddClassModal extends React.Component {
   }
 
   changeParams (data) {
+    console.log(data)
     this.setState({
       params: data,
       formState: 'findClass'
