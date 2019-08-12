@@ -1,6 +1,14 @@
 .sk-class-status-modal {
   max-width: 380px;
 
+  .sk-class-status-modal-drop-container {
+    margin-top: -20px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+
   .sk-class-status-modal-header {
     h1 {
       margin-bottom: 1rem;
