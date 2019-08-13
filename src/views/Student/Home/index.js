@@ -2,13 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import StudentLayout from '../../components/StudentLayout'
-import ClassList from '../../components/ClassList'
 import actions from '../../../actions'
 import { browserHistory } from 'react-router'
 import PopUp from './PopUp'
 import ClassStatusModal from '../../components/ClassStatusModal'
 import AddClassModal from '../MyClasses/AddClassModal'
 import {Cookies} from 'react-cookie'
+import HomeClasses from './HomeClasses';
 
 @inject('rootStore') @observer
 class Home extends React.Component {
@@ -121,7 +121,11 @@ class Home extends React.Component {
           <PopUp closeModal={() => this.closePopUp()} type={this.state.popUp.type}/>
         }
         {this.state.classStatusModal.show &&
-          <ClassStatusModal closeModal={() => this.closeClassStatusModal()} onSubmit={() => this.closeClassStatusModal()} cl={this.state.classStatusModal.cl} />
+          <ClassStatusModal
+            closeModal={() => this.closeClassStatusModal()}
+            onSubmit={() => this.closeClassStatusModal()}
+            cl={this.state.classStatusModal.cl}
+          />
         }
         {this.state.addClassModal.show &&
           <AddClassModal closeModal={() => this.closeAddClassModal()} />
@@ -131,18 +135,7 @@ class Home extends React.Component {
             <div className="home-shadow-box">
               <h1 onClick={() => browserHistory.push('/student/classes')}>Classes</h1>
               <div className="home-card-content">
-                <ClassList
-                  classes={this.state.classes}
-                  emptyMessage='You are not enrolled in any classes.'
-                  onSelect={this.onClassSelect.bind(this)}
-                />
-                {this.state.classes.length === 0 &&
-                  <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', margin: '1rem 0'}}>
-                    <button className='button add-button' onClick={() => this.setState({addClassModal: {show: true}})}>
-                      Join a Class
-                    </button>
-                  </div>
-                }
+                <HomeClasses classes={this.state.classes} onClick={() => this.setState({addClassModal: {show: true}})} onClassSelect={() => this.onClassSelect()} />
               </div>
             </div>
             {/* // this is for activity once we get it ready
