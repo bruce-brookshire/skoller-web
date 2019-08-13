@@ -53,6 +53,12 @@ class Onboard extends React.Component {
     }
   }
 
+  updateStudent () {
+    if (this.cookie.get('skollerToken')) {
+      actions.auth.getUserByToken(this.cookie.get('skollerToken')).catch((r) => console.log(r))
+    }
+  }
+
   async getStep () {
     const user = this.state.user
     let classNumber = 0
@@ -133,6 +139,7 @@ class Onboard extends React.Component {
       this.renderOnboardContent(
         <SelectSchool
           onSubmit={(data) => {
+            this.updateStudent()
             this.setState({
               step: 'find-a-class',
               selectSchoolData: data
@@ -149,7 +156,10 @@ class Onboard extends React.Component {
     return (
       this.renderOnboardContent(
         <FindAClass
-          onSubmit={() => this.setState({step: 'first-class'})}
+          onSubmit={() => {
+            this.updateStudent()
+            this.setState({step: 'first-class'})
+          }}
           onBack={(school, term) => {
             this.setState({
               step: 'select-school',
@@ -177,6 +187,7 @@ class Onboard extends React.Component {
                 this.setState({step: 'share-partner'})
               }
               : () => {
+                this.updateStudent()
                 browserHistory.push('/student')
               }
           }

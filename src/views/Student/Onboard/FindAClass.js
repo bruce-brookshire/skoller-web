@@ -160,7 +160,7 @@ class FindAClass extends React.Component {
           </p>
         </div>
         <div className='sk-find-class-selected-class-row'>
-          <p>{cl.meet_days} {moment(cl.meet_start_time, 'HH:mm:ss').format('hh:mmA')}</p>
+          <p>{cl.meet_days} {cl.meet_days === 'Online' ? '' : moment(cl.meet_start_time, 'HH:mm:ss').format('hh:mmA')}</p>
           <p>{cl.subject} {cl.code}.{cl.section}</p>
         </div>
       </div>
