@@ -9,6 +9,7 @@ import PopUp from './PopUp'
 import ClassStatusModal from '../../components/ClassStatusModal'
 import AddClassModal from '../MyClasses/AddClassModal'
 import {Cookies} from 'react-cookie'
+import SkLoader from '../../../assets/sk-icons/SkLoader';
 
 @inject('rootStore') @observer
 class Home extends React.Component {
@@ -18,13 +19,21 @@ class Home extends React.Component {
       classes: [],
       popUp: {show: false, type: null},
       classStatusModal: {show: false, cl: null},
-      addClassModal: {show: false}
+      addClassModal: {show: false},
+      loading: false
     }
-
-    this.cookie = new Cookies()
-
     this.updateClasses()
+    this.updateStudent()
+    this.cookie = new Cookies()
     this.props.rootStore.studentNavStore.setActivePage('home')
+  }
+
+  async updateStudent () {
+    this.setState({loading: true})
+    if (this.cookie.get('skollerToken')) {
+      await actions.auth.getUserByToken(this.cookie.get('skollerToken')).catch((r) => console.log(r))
+    }
+    this.setState({loading: false})
   }
 
   async componentDidMount () {
@@ -66,9 +75,9 @@ class Home extends React.Component {
     }
   }
 
-  updateClasses () {
+  async updateClasses () {
     const {user: {student}} = this.props.rootStore.userStore
-    actions.classes.getStudentClassesById(student.id).then((classes) => {
+    await actions.classes.getStudentClassesById(student.id).then((classes) => {
       this.setState({classes})
     }).catch(() => false)
   }
@@ -98,10 +107,10 @@ class Home extends React.Component {
     }
   }
 
-  async updateStudent () {
-    console.log('async login student')
-    await actions.auth.getUserByToken(this.cookie.get('skollerToken')).catch((r) => console.log(r))
-  }
+  // async updateStudent () {
+  //   console.log('async login student')
+  //   await actions.auth.getUserByToken(this.cookie.get('skollerToken')).catch((r) => console.log(r))
+  // }
 
   closeClassStatusModal () {
     this.setState({classStatusModal: {show: false, cl: null}})
@@ -118,9 +127,9 @@ class Home extends React.Component {
     this.setState({popUp: {show: false}})
   }
 
-  render () {
+  renderContent () {
     return (
-      <StudentLayout>
+      <div>
         {console.log(this.props.rootStore)}
         {this.state.popUp.show &&
           <PopUp closeModal={() => this.closePopUp()} type={this.state.popUp.type}/>
@@ -175,6 +184,17 @@ class Home extends React.Component {
             </div> */}
           </div>
         </div>
+      </div>
+    )
+  }
+
+  render () {
+    return (
+      <StudentLayout>
+        {this.state.loading
+          ? <SkLoader />
+          : this.renderContent()
+        }
       </StudentLayout>
     )
   }
