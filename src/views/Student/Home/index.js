@@ -17,10 +17,11 @@ class Home extends React.Component {
     super(props)
     this.state = {
       classes: [],
+      assignments: [],
       popUp: {show: false, type: null},
       classStatusModal: {show: false, cl: null},
       addClassModal: {show: false},
-      loading: false
+      loading: true
     }
     this.updateClasses()
     this.updateStudent()
@@ -29,11 +30,9 @@ class Home extends React.Component {
   }
 
   async updateStudent () {
-    this.setState({loading: true})
     if (this.cookie.get('skollerToken')) {
       await actions.auth.getUserByToken(this.cookie.get('skollerToken')).catch((r) => console.log(r))
     }
-    this.setState({loading: false})
   }
 
   async componentDidMount () {
@@ -79,7 +78,9 @@ class Home extends React.Component {
     const {user: {student}} = this.props.rootStore.userStore
     await actions.classes.getStudentClassesById(student.id).then((classes) => {
       this.setState({classes})
+      console.log(classes)
     }).catch(() => false)
+    this.setState({loading: false})
   }
 
   findFullClass (classId) {
@@ -88,7 +89,7 @@ class Home extends React.Component {
     return classes.find((cl) => cl.id === classId)
   }
 
-  onClassSelect (cl) {
+  onClassSelect = (cl) => {
     // Need to get enrollment link from classes
     // because ClassList will not return it
 
@@ -149,7 +150,7 @@ class Home extends React.Component {
             <div className="home-shadow-box">
               <h1 onClick={() => browserHistory.push('/student/classes')}>Classes</h1>
               <div className="home-card-content">
-                <HomeClasses classes={this.state.classes} onClick={() => this.setState({addClassModal: {show: true}})} onClassSelect={() => this.onClassSelect()} />
+                <HomeClasses classes={this.state.classes} onAddClass={() => this.setState({addClassModal: {show: true}})} onClassSelect={this.onClassSelect} />
               </div>
             </div>
             {/* // this is for activity once we get it ready

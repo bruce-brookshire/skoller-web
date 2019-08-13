@@ -10,6 +10,7 @@ import EnrollSignUp from './EnrollSignUp'
 import EnrollVerify from './EnrollVerify'
 import EnrollLogin from './EnrollLogin'
 import moment from 'moment'
+
 @inject('rootStore') @observer
 class EnrollLink extends React.Component {
   constructor (props) {
@@ -118,9 +119,12 @@ class EnrollLink extends React.Component {
     )
   }
 
-  onEnroll () {
+  async onEnroll () {
     this.setState({loading: true})
-    console.log(this.props.params.link)
+    const user = this.props.rootStore.userStore.user
+    await actions.students.setStudentPrimaryPeriod(user.id, user.student.id, this.state.linkDetail.student_class.class_period.id)
+    await actions.students.setStudentPrimarySchool(user.id, user.student.id, this.state.linkDetail.student_class.school.id)
+    await this.loginStudent()
     actions.classes.enrollByLink(this.props.params.link)
       .then(() => browserHistory.push('/student'))
       .catch(e => {

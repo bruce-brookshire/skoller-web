@@ -1,0 +1,17 @@
+.home-classes {
+  .home-classes-sammi-container {
+    margin-bottom: 1rem;
+
+    .home-classes-sammi-message {
+      padding: 8px;
+      
+      p {
+        margin: 0;
+      }
+  
+      .home-classes-sammi-button {
+        @include sk-standard-button;
+      }
+    }
+  }
+}
