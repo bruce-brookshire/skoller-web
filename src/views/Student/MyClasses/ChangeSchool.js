@@ -197,7 +197,7 @@ class ChangeSchool extends React.Component {
   }
 
   setSchoolChoice = (school) => {
-    this.setState({schoolChoice: school, activeTerm: this.findActiveTerm(school)})
+    this.setState({schoolChoice: school, activeTerm: this.findActiveTerm(school), termChoice: this.findActiveTerm(school)})
   }
 
   renderTermField () {

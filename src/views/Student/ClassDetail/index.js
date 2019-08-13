@@ -41,7 +41,6 @@ class ClassDetail extends React.Component {
     this.setState({loading: true})
     actions.classes.getClassById(classId).then(cl => {
       this.getClassColor(cl)
-      navbarStore.title = cl.name
     }).catch(() => this.setState({loading: false}))
   }
 

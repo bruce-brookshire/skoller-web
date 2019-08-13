@@ -11,6 +11,7 @@ import {Cookies} from 'react-cookie'
 import HomeClasses from './HomeClasses'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 
+
 @inject('rootStore') @observer
 class Home extends React.Component {
   constructor (props) {
