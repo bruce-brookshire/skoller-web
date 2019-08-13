@@ -1,0 +1,28 @@
+.sk-drop-class {
+  color: $cn-color-red;
+
+  p {
+    margin: 0;
+    padding: 8px 4px 4px 4px;
+    cursor: pointer;
+  }
+}
+
+.sk-drop-class-modal {
+  h3 {
+    text-align: center;
+  }
+
+  .sk-drop-class-modal-yes {
+    @include sk-standard-button;
+
+    p {
+      background-color: $cn-color-red;
+    }
+    margin-bottom: 8px;
+  }
+
+  .sk-drop-class-modal-no {
+    @include sk-standard-button;
+  }
+}

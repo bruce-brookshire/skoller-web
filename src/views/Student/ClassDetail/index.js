@@ -11,6 +11,7 @@ import DeleteDialog from '../../../components/Grid/DeleteDialog'
 import AssignmentList from '../../components/AssignmentList'
 import StudentLayout from '../../components/StudentLayout'
 import AddAssignment from '../Assignments/AddAssignment'
+import DropClassButton from '../../components/DropClassButton';
 
 @inject('rootStore') @observer
 class ClassDetail extends React.Component {
@@ -97,6 +98,12 @@ class ClassDetail extends React.Component {
     )
   }
 
+  renderDropClassButton () {
+    return (
+      <DropClassButton onDropClass={() => browserHistory.push('/student/classes')} cl={this.state.cl} />
+    )
+  }
+
   renderClassAssignmentsHeader () {
     return (
       <div className='cn-class-assignments-header'>
@@ -107,6 +114,7 @@ class ClassDetail extends React.Component {
         <div className='cn-class-assignments-header-item text-center'>
           {this.renderClassTitle()}
           {this.renderCurrentClassGrade()}
+          {this.renderDropClassButton()}
         </div>
         <div className='cn-class-assignments-header-item text-right'>
           {this.renderAddAssignmentButton()}

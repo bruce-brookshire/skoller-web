@@ -10,6 +10,7 @@ import {mobileCheck} from '../../../utilities/display'
 import Sammi from '../Sammi'
 import Checklist from './Checklist'
 import SkModal from '../SkModal/SkModal'
+import DropClassButton from '../DropClassButton'
 
 @inject('rootStore') @observer
 class ClassStatusModal extends React.Component {
@@ -30,7 +31,8 @@ class ClassStatusModal extends React.Component {
       sammiMessage: sammiMessage,
       status: status,
       mobile: false,
-      mobileMessage: mobileMessage
+      mobileMessage: mobileMessage,
+      showDropClassConfirm: false
     }
   }
 
@@ -245,9 +247,58 @@ class ClassStatusModal extends React.Component {
     }
   }
 
+  async onDropClass () {
+    this.setState({showDropClassConfirm: true})
+  }
+
+  async onDropClassConfirm () {
+    this.setState({loading: true})
+    await actions.classes.dropClass(this.state.cl.id).catch(r => console.log(r))
+    this.props.closeModal()
+  }
+
+  renderDropClassConfirm () {
+    return (
+      <SkModal>
+        <div className='sk-class-status-modal-drop-modal'>
+          <h3>Are you sure you want to drop this class?</h3>
+          <div
+            className='sk-class-status-modal-drop-modal-yes'
+            onClick={() => this.onDropClassConfirm()}
+          >
+            <p>Yes, drop class.</p>
+          </div>
+          <div
+            className='sk-class-status-modal-drop-modal-no'
+            onClick={() => this.setState({showDropClassConfirm: false})}
+          >
+            <p>No, stay in this class.</p>
+          </div>
+        </div>
+      </SkModal>
+    )
+  }
+
+  renderDropButton () {
+    return (
+      <div
+        className='sk-class-status-modal-drop-class'
+      >
+        <p
+          onClick={() => this.onDropClass()}
+        >
+          Drop class
+        </p>
+      </div>
+    )
+  }
+
   renderModalContent () {
     return (
       <div className='sk-class-status-modal'>
+        <div className='sk-class-status-modal-drop-container'>
+          <DropClassButton onDropClass={() => this.props.closeModal()} cl={this.state.cl} />
+        </div>
         <div className='sk-class-status-modal-header'>
           <h1>{this.state.cl.name}</h1>
           <Sammi

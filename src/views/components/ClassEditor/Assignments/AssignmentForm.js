@@ -5,7 +5,6 @@ import {InputField, SelectField} from '../../../../components/Form'
 import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
 import {convertLocalDateToUTC, convertUTCDatetimeToDateString} from '../../../../utilities/time'
-import {maskAssignmentDate} from '../../../../utilities/mask'
 import DatePicker from '../../../components/DatePicker/index'
 import moment from 'moment'
 

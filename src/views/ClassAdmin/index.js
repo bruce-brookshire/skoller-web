@@ -18,7 +18,7 @@ import TabbedFileUpload from '../../components/TabbedFileUpload'
 import WeightTable from '../components/ClassEditor/Weights/WeightTable'
 import WeightForm from '../components/ClassEditor/Weights/WeightForm'
 import AssignmentTable from '../components/ClassEditor/Assignments/AssignmentTable'
-import AssignmentForm from '../components/ClassEditor/Assignments/AssignmentForm'
+import AdminAssignmentForm from '../components/ClassEditor/Assignments/AdminAssignmentForm'
 import Chat from '../components/ClassEditor/Chat'
 import StudentRequestInfo from '../Cards/StudentRequestInfo'
 import GradeScale from '../Cards/GradeScale'
@@ -29,6 +29,7 @@ import ClassCard from '../Cards/ClassCard'
 
 import FileViewer from '../../components/FileViewer'
 import {FileTabs, FileTab} from '../../components/FileTab'
+import SkModal from '../components/SkModal/SkModal';
 
 @inject('rootStore') @observer
 class ClassAdmin extends React.Component {
@@ -408,21 +409,22 @@ class ClassAdmin extends React.Component {
 
   renderAssignmentModal () {
     const {cl, currentAssignment, weights} = this.state
-    return (
-      <Modal
-        open={this.state.openAssignmentModal}
-        onClose={this.toggleAssignmentModal.bind(this)}
-      >
-        <AssignmentForm
-          cl={cl}
-          assignment={currentAssignment}
-          onCreateAssignment={this.onCreateAssignment.bind(this)}
-          onUpdateAssignment={this.onUpdateAssignment.bind(this)}
-          isAdmin={true}
-          weights={weights}
-        />
-      </Modal>
-    )
+    if (this.state.openAssignmentModal) {
+      return (
+        <SkModal
+          closeModal={this.toggleAssignmentModal.bind(this)}
+        >
+          <AdminAssignmentForm
+            cl={cl}
+            assignment={currentAssignment}
+            onCreateAssignment={this.onCreateAssignment.bind(this)}
+            onUpdateAssignment={this.onUpdateAssignment.bind(this)}
+            isAdmin={true}
+            weights={weights}
+          />
+        </SkModal>
+      )
+    }
   }
 
   /*

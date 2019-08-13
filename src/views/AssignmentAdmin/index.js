@@ -4,10 +4,10 @@ import {inject, observer} from 'mobx-react'
 import AssignmentCard from './AssignmentCard'
 import actions from '../../actions'
 import ModCard from './ModCard'
-import Modal from '../../components/Modal'
+import SkModal from '../../views/components/SkModal/SkModal'
 import ModDetail from './ModDetail'
 import AssignmentPosts from './AssignmentPosts'
-import AssignmentForm from '../components/ClassEditor/Assignments/AssignmentForm'
+import AdminAssignmentForm from '../components/ClassEditor/Assignments/AdminAssignmentForm'
 
 @inject('rootStore') @observer
 class AssignmentAdmin extends React.Component {
@@ -106,20 +106,21 @@ class AssignmentAdmin extends React.Component {
   renderAssignmentModal () {
     const {openAssignmentModal, assignment} = this.state
     const {cl, weights} = this.props.location.state
-    return (
-      <Modal
-        open={openAssignmentModal}
-        onClose={() => this.toggleAssignmentModal()}
-      >
-        <AssignmentForm
-          assignment={assignment}
-          cl={cl}
-          onUpdateAssignment={(assignment) => this.setState({assignment: assignment, openAssignmentModal: !openAssignmentModal})}
-          isAdmin={true}
-          weights={weights}
-        />
-      </Modal>
-    )
+    if (openAssignmentModal) {
+      return (
+        <SkModal
+          closeModal={() => this.toggleAssignmentModal()}
+        >
+          <AdminAssignmentForm
+            assignment={assignment}
+            cl={cl}
+            onUpdateAssignment={(assignment) => this.setState({assignment: assignment, openAssignmentModal: !openAssignmentModal})}
+            isAdmin={true}
+            weights={weights}
+          />
+        </SkModal>
+      )
+    }
   }
 
   render () {
