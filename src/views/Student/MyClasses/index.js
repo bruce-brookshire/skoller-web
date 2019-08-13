@@ -157,7 +157,7 @@ class MyClasses extends React.Component {
     return (
       <div className='cn-my-classes-wrapper'>
         <div className='cn-my-classes-container'>
-          <h1>My Classes</h1>
+          <h1>Classes</h1>
           <i className='fas fa-plus cn-my-classes-add-new' onClick={() => this.setState({showAddClassModal: true})} />
           <div className='cn-my-classes-content'>
             {this.renderContent()}

@@ -150,10 +150,6 @@
             }
           }
 
-          .calendar-day-cell {
-            @include hide-scrollbar;
-          }
-
           .current-month {
             color: #4a4a4a;
             font-weight: 500;
@@ -182,12 +178,7 @@
             min-height: 56px;
             max-height: 128px;
             overflow-y: scroll;
-            scrollbar-width: none;
-  
-            ::-webkit-scrollbar {
-              width: 0px;  /* Remove scrollbar space */
-              background: transparent;  /* Optional: just make scrollbar invisible */
-            }
+            @include hide-scrollbar;
   
             .calendar-assignment-container {
               width: 100%;

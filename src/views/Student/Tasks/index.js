@@ -1,9 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import moment from 'moment'
 import {inject, observer} from 'mobx-react'
 import StudentLayout from '../../components/StudentLayout'
 import actions from '../../../actions'
+import TaskCard from './TaskCard'
+import SkLoader from '../../../assets/sk-icons/SkLoader';
 
 @inject('rootStore') @observer
 
@@ -14,11 +15,10 @@ class Tasks extends React.Component {
     super(props)
     this.state = {
       classes: [],
-      tasks: []
+      tasks: [],
+      loading: true
     }
-  }
 
-  componentWillMount () {
     this.getStudentTasks()
     this.props.rootStore.studentNavStore.setActivePage('tasks')
   }
@@ -38,40 +38,47 @@ class Tasks extends React.Component {
       tasks.forEach(task => {
         task.getParentClass = parentClassGetter.bind(task)
       })
-      this.setState({tasks})
+      this.setState({tasks, loading: false})
     }).catch(() => false)
   }
 
-  formatDueDate (dd) {
-    const today = moment()
-    const dueDate = moment(dd)
-    const daysTillDue = dueDate.diff(today, 'days')
-    if (today.isSame(dueDate, 'date')) {
-      return 'Today'
-    } else {
-      return daysTillDue >= 7 ? dueDate.from(today, 'days') : moment.weekdays((daysTillDue + today.weekday()) % 7)
-    }
+  getClassForTask (task) {
+    let clName, clColor
+    this.state.classes.forEach(cl => {
+      if (cl.id === task.class_id) {
+        clName = cl.name
+        clColor = cl.color
+      }
+    })
+    return {clName, clColor}
+  }
+
+  renderTasks () {
+    return (
+      this.state.tasks.map(task => {
+        let cl = this.getClassForTask(task)
+        return (
+          <div key={task.id}>
+            <TaskCard task={task} clName={cl.clName} clColor={cl.clColor} />
+          </div>
+        )
+      })
+    )
+  }
+
+  renderContent () {
+    return (
+      <div className='tasks-container'>
+        {this.renderTasks()}
+      </div>
+    )
   }
 
   render () {
-    const card = this.state.tasks.map(task =>
-      <div className="task-container" key={task.id}>
-        <div className="task">
-          <div className="task-heading">
-            <h1 className="alignleft">{Tasks.studentClasses[task.class_id].name}</h1>
-            <p className="alignright">{this.formatDueDate(task.due)}</p>
-          </div>
-          <div className="task-content">
-            <p className="alignleft">{task.name}</p>
-            <p className="alignright">{task.weight * 100 + '%'}</p>
-          </div>
-        </div>
-      </div>
-    )
-
     return (
       <StudentLayout>
-        {card}
+        {this.state.loading && <SkLoader />}
+        {!this.state.loading && this.renderContent()}
       </StudentLayout>
     )
   }
