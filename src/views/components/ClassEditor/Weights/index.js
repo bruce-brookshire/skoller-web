@@ -63,11 +63,11 @@ class Weights extends React.Component {
   renderExtraCredit () {
     return (
       <div className='cn-info-container cn-blue'>Extra Credit?
-      <div className='message-bubble triangle-bottom'>
-        <b><u>Do not</u></b> worry about adding extra credit, as this is the grade calculator&apos;s
-        foundations for everyone in the class. You can add extra credit to assignments in the app as you enter grades throughout the semester.
-        <div className='triangle-inner' />
-      </div>
+        <div className='message-bubble triangle-bottom'>
+          <b><u>Do not</u></b> worry about adding extra credit, as this is the grade calculator&apos;s
+          foundations for everyone in the class. You can add extra credit to assignments in the app as you enter grades throughout the semester.
+          <div className='triangle-inner' />
+        </div>
       </div>
     )
   }
@@ -76,12 +76,12 @@ class Weights extends React.Component {
     return (
       <div>
         <div className='cn-info-container cn-blue'>Weights &ne; 100%?
-        <div className='message-bubble triangle-bottom'>
-          There are two options here.<br /><br />
-          1. <b><u>Politely</u></b> approach the professor to reconcile the situation.<br /><br />
-          2. Add a weight named &quot;Additional x&#37;&quot; with the value needed to reach 100%
-          <div className='triangle-inner' />
-        </div>
+          <div className='message-bubble triangle-bottom'>
+            There are two options here.<br /><br />
+            1. <b><u>Politely</u></b> approach the professor to reconcile the situation.<br /><br />
+            2. Add a weight named &quot;Additional x&#37;&quot; with the value needed to reach 100%
+            <div className='triangle-inner' />
+          </div>
         </div>
       </div>
     )
@@ -111,6 +111,8 @@ class Weights extends React.Component {
             boolPoints={this.state.boolPoints}
             onClick={this.onChangeType.bind(this)}
             reset={() => this.setState({reset: true})}
+            onTypeSelection={this.onTypeSelection.bind(this)}
+            totalPoints={this.state.totalPoints}
           />
         }
         {weights.length !== 0 &&

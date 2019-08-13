@@ -249,6 +249,7 @@ class SyllabusTool extends React.Component {
         />
       case ContentEnum.ASSIGNMENTS:
         return <Assignments
+          onBack={() => this.setState({currentIndex: 0})}
           cl={navbarStore.cl}
           isReview={false}
           onSubmit={this.onNext.bind(this)} />
@@ -454,11 +455,14 @@ class SyllabusTool extends React.Component {
   }
 
   renderBackToClasses () {
-    return (
-      <div className='cn-syllabus-tool-back-button' onClick={() => browserHistory.push('/student/classes')}>
-        <span>👈</span> Back to classes
-      </div>
-    )
+    const {navbarStore} = this.props.rootStore
+    if (navbarStore.isDIY) {
+      return (
+        <div className='cn-syllabus-tool-back-button' onClick={() => browserHistory.push('/student/classes')}>
+          <span>👈</span> Back to classes
+        </div>
+      )
+    }
   }
 
   render () {
