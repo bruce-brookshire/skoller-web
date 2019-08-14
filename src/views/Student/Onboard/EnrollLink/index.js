@@ -249,9 +249,8 @@ class EnrollLink extends React.Component {
         ? <div className='onboard-loading'>
           <SkLoader />
         </div>
-        : <Layout hideModal={this.state.step === 'verify'} loggedIn={!this.state.userNotFound}>
+        : <Layout hideModal={this.state.step === 'verify'} loggedIn={!this.state.userNotFound} >
           {this.renderEnrollContent()}
-          {console.log(this.state.linkDetail)}
         </Layout>
     )
   }

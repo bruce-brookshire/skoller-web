@@ -126,6 +126,7 @@ $h2-size-sm: 36px;
             position: relative;
             width: 100%;
             height: 80vh;
+            margin: 1rem 0;
   
             @include breakpoint(medium) {
               height: 100%;
@@ -139,6 +140,7 @@ $h2-size-sm: 36px;
               flex-direction: column;
               align-items: center;
               justify-items: center;
+              width: 100%;
   
               @include breakpoint(medium) {
                 max-width: 100%;
@@ -171,6 +173,10 @@ $h2-size-sm: 36px;
                       animation-name: fade#{$i};
                     }
                   }
+
+                  @media only screen and (max-width: 320px) {
+                    height: 87%;
+                  }
       
                   &:nth-of-type(1) { opacity: 1; }
                   flex: 0;
@@ -199,6 +205,10 @@ $h2-size-sm: 36px;
   
                 @include breakpoint(980px) {
                   font-size: 30px;
+                }
+
+                @media only screen and (max-width: 320px) {
+                  font-size: 22px;
                 }
               }
             }

@@ -1,7 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
+import {browserHistory} from 'react-router'
+import {inject, observer} from 'mobx-react'
 
+@inject('rootStore') @observer
 class TaskCard extends React.Component {
   formatDueDate (dd) {
     const today = moment()
@@ -14,13 +17,18 @@ class TaskCard extends React.Component {
     }
   }
 
+  goToAssignment () {
+    browserHistory.push({pathname: '/student/class/' + this.props.task.class_id + '/assignments/' + this.props.task.assignment_id, state: { prevPath: this.props.rootStore.studentNavStore.location.pathname }})
+  }
+
   renderCard () {
     const task = this.props.task
+    const color = '#' + this.props.clColor
     return (
-      <div className="task-card-container" key={task.id}>
-        <div className="task-card">
+      <div className="task-card-container" key={task.id} onClick={() => this.goToAssignment()} >
+        <div className="task-card" style={{border: '1px solid', borderColor: color, borderRadius: '5px'}}>
           <div className="task-card-heading">
-            <h2 className="task-card-left" style={{color: '#' + this.props.clColor}}>{this.props.clName}</h2>
+            <h2 className="task-card-left" style={{color: color}}>{this.props.clName}</h2>
             <p className="task-card-right">{this.formatDueDate(task.due)}</p>
           </div>
           <div className="task-card-content">
@@ -42,7 +50,8 @@ class TaskCard extends React.Component {
 TaskCard.propTypes = {
   task: PropTypes.object,
   clName: PropTypes.string,
-  clColor: PropTypes.string
+  clColor: PropTypes.string,
+  rootStore: PropTypes.object
 }
 
 export default TaskCard

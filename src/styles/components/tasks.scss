@@ -1,10 +1,26 @@
-.tasks-container {
-  box-sizing: border-box;
+.tasks-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   padding: 2rem 1rem 1rem 1rem;
-  width: 100%;
 
-  @media only screen and (max-width: $sk-mobile-break-point) {
-    width: 100vw;
-    margin: 1rem;
+  .tasks-container {
+    box-sizing: border-box;
+    width: 100%;
+    @include skoller-cell;
+    padding: 1rem;
+    width: calc((100vw - 200px) - 5rem);
+    max-width: 600px;
+    
+    @media only screen and (max-width: $sk-mobile-break-point) {
+      box-sizing: border-box;
+      margin: 0 1rem;
+      width: calc(100vw - 2rem);
+    }
+
+    h1 {
+      margin: 0 0 1rem 0;
+    }
   }
 }

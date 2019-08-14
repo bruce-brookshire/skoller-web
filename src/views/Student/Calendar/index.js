@@ -22,7 +22,7 @@ class Calendar extends React.Component {
         <Helmet>
           <meta name="google" value="notranslate" />
         </Helmet>
-        <div className="calendar-container">
+        <div className="calendar-container" style={this.props.onboardData ? {marginTop: '64px'} : null}>
           <CalendarComponent onboardData={this.props.onboardData} />
         </div>
       </StudentLayout>
