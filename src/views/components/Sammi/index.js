@@ -30,7 +30,7 @@ class Sammi extends React.Component {
         {this.props.position === 'left' &&
           <img src={this.getSammi()} />
         }
-        <div className={`sammi-${this.props.position}`}>
+        <div className={`sammi-${this.props.position}` + (this.props.children ? ' sammi-children' : '')}>
           {this.props.message !== undefined
             ? <p>{this.props.message}</p>
             : null

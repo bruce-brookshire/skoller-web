@@ -1,0 +1,11 @@
+.sammi-prompt-message {
+  padding: 8px;
+  
+  p {
+    margin: 0;
+  }
+
+  .sammi-prompt-button {
+    @include sk-standard-button;
+  }
+}

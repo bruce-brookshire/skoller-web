@@ -248,7 +248,7 @@ class ClassDetail extends React.Component {
         <div>
           {loading
             ? <Loading />
-            : <div>
+            : <div className='cn-class-assignments-wrapper'>
               {cl.status.id === 1100 || cl.status.id === 1200 || cl.status.id === 1300
                 ? <div id='cn-class-detail-container'>
                   {this.renderClassDetails()}

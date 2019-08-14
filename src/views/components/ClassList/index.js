@@ -81,7 +81,7 @@ class ClassList extends React.Component {
     var statusNameL = status.name.toLowerCase()
     if (status.is_complete) {
       return (
-        <div className='cn-class-list-row-icon-container cn-white' style={{background: classColor}} >
+        <div className='cn-class-list-row-icon-container cn-white' style={{background: classColor, borderColor: classColor}} >
           <span className='cn-class-list-row-grade-text cn-white'>{item.grade > 0 ? item.grade + '%' : '--'}</span>
         </div>
       )

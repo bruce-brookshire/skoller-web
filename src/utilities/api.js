@@ -90,7 +90,13 @@ export function post (path, form, errMsg, token = userStore.authToken) {
   })
     .then(response => parseResponse(response))
     .catch(error => {
-      if (errMsg) showSnackbar(errMsg)
+      if (errMsg) {
+        if (typeof errMsg === 'function') {
+          showSnackbar(errMsg(error))
+        } else {
+          showSnackbar(errMsg)
+        }
+      }
       if (Environment.IS_DEV) console.log(error)
       return Promise.reject(error)
     })

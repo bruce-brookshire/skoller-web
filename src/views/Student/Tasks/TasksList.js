@@ -31,7 +31,7 @@ class TasksList extends React.Component {
 
     actions.assignments.getTaskAssignments(student.id).then((tasks) => {
       const parentClassGetter = function () {
-        return Tasks.studentClasses[this.class_id]
+        return TasksList.studentClasses[this.class_id]
       }
       tasks.forEach(task => {
         task.getParentClass = parentClassGetter.bind(task)
@@ -51,21 +51,36 @@ class TasksList extends React.Component {
     return {clName, clColor}
   }
 
+  renderNoTasks () {
+    return (
+      <div style={{color: 'rgba(0,0,0,0.3', width: '100%', textAlign: 'center', padding: '2rem'}}>
+        No tasks yet.
+      </div>
+    )
+  }
+
   renderTasks () {
     let i = 0
-    return (
-      this.state.tasks.map(task => {
-        let cl = this.getClassForTask(task)
-        i += 1
-        if (!this.props.maxTasks || (i <= this.props.maxTasks)) {
-          return (
-            <div key={task.id}>
-              <TaskCard task={task} clName={cl.clName} clColor={cl.clColor} />
-            </div>
-          )
-        }
-      })
-    )
+    if (this.state.tasks.length === 0) {
+      console.log('no tasks')
+      return (
+        this.renderNoTasks()
+      )
+    } else {
+      return (
+        this.state.tasks.map(task => {
+          let cl = this.getClassForTask(task)
+          i += 1
+          if (!this.props.maxTasks || (i <= this.props.maxTasks)) {
+            return (
+              <div key={task.id}>
+                <TaskCard task={task} clName={cl.clName} clColor={cl.clColor} />
+              </div>
+            )
+          }
+        })
+      )
+    }
   }
 
   renderContent () {

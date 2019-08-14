@@ -10,9 +10,7 @@ import AddClassModal from '../MyClasses/AddClassModal'
 import {Cookies} from 'react-cookie'
 import HomeClasses from './HomeClasses'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
-import TasksList from '../Tasks/TasksList'
-import HomeTasks from './HomeTasks';
-
+import HomeTasks from './HomeTasks'
 
 @inject('rootStore') @observer
 class Home extends React.Component {
@@ -23,7 +21,6 @@ class Home extends React.Component {
       assignments: [],
       popUp: {show: false, type: null},
       classStatusModal: {show: false, cl: null},
-      addClassModal: {show: false},
       loading: true
     }
     this.updateClasses()
@@ -112,23 +109,18 @@ class Home extends React.Component {
     }
   }
 
-  // async updateStudent () {
-  //   console.log('async login student')
-  //   await actions.auth.getUserByToken(this.cookie.get('skollerToken')).catch((r) => console.log(r))
-  // }
-
   closeClassStatusModal () {
     this.setState({classStatusModal: {show: false, cl: null}})
     this.updateClasses()
   }
 
   closeAddClassModal () {
-    this.setState({addClassModal: {show: false}})
     this.updateClasses()
   }
 
   closePopUp () {
     this.updateStudent()
+    this.updateClasses()
     this.setState({popUp: {show: false}})
   }
 
@@ -146,15 +138,12 @@ class Home extends React.Component {
             cl={this.state.classStatusModal.cl}
           />
         }
-        {this.state.addClassModal.show &&
-          <AddClassModal closeModal={() => this.closeAddClassModal()} />
-        }
         <div className="home-container">
           <div className="home-column">
             <div className="home-shadow-box">
-              <h1 onClick={() => browserHistory.push('/student/classes')}>Classes</h1>
+              <h1 className='home-heading' onClick={() => browserHistory.push('/student/classes')}>Classes</h1>
               <div className="home-card-content">
-                <HomeClasses classes={this.state.classes} onAddClass={() => this.setState({addClassModal: {show: true}})} onClassSelect={this.onClassSelect} />
+                <HomeClasses classes={this.state.classes} onAddClass={() => this.closeAddClassModal()} onClassSelect={this.onClassSelect} />
               </div>
             </div>
             {/* // this is for activity once we get it ready
@@ -167,7 +156,7 @@ class Home extends React.Component {
           </div>
           <div className="home-column">
             <div className="home-shadow-box">
-              <h1 onClick={() => browserHistory.push('/student/tasks')}>Tasks</h1>
+              <h1 className='home-heading' onClick={() => browserHistory.push('/student/tasks')}>Tasks</h1>
               <div className="home-sub-heading">Due soon</div>
               <div className="home-card-content">
                 <HomeTasks />

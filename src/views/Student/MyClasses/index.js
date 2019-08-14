@@ -8,6 +8,8 @@ import AddClassModal from './AddClassModal'
 import ClassStatusModal from '../../components/ClassStatusModal'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import {browserHistory} from 'react-router'
+import SecondClassPrompt from '../../components/Sammi/Prompts/SecondClassPrompt'
+import JoinFirstClassPrompt from '../../components/Sammi/Prompts/JoinFirstClassPrompt'
 
 @inject('rootStore') @observer
 class MyClasses extends React.Component {
@@ -116,9 +118,13 @@ class MyClasses extends React.Component {
             emptyMessage='You are not enrolled in any classes.'
             onSelect={this.onClassSelect.bind(this)}
           />
-          <button className='button add-button' onClick={() => this.setState({showAddClassModal: true})}>
-            Join a Class
-          </button>
+          {this.state.classes.length > 1 &&
+            <button className='button add-button' onClick={() => this.setState({showAddClassModal: true})}>
+              Join a Class
+            </button>
+          }
+          <JoinFirstClassPrompt onAddClass={() => this.updateClasses()} show={this.state.classes.length === 0} />
+          <SecondClassPrompt onAddClass={() => this.updateClasses()} show={this.state.classes.length === 1} />
         </div>
       </div>
     )
