@@ -10,9 +10,7 @@ import AddClassModal from '../MyClasses/AddClassModal'
 import {Cookies} from 'react-cookie'
 import HomeClasses from './HomeClasses'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
-import TasksList from '../Tasks/TasksList'
-import HomeTasks from './HomeTasks';
-
+import HomeTasks from './HomeTasks'
 
 @inject('rootStore') @observer
 class Home extends React.Component {
@@ -112,11 +110,6 @@ class Home extends React.Component {
     }
   }
 
-  // async updateStudent () {
-  //   console.log('async login student')
-  //   await actions.auth.getUserByToken(this.cookie.get('skollerToken')).catch((r) => console.log(r))
-  // }
-
   closeClassStatusModal () {
     this.setState({classStatusModal: {show: false, cl: null}})
     this.updateClasses()
@@ -129,6 +122,7 @@ class Home extends React.Component {
 
   closePopUp () {
     this.updateStudent()
+    this.updateClasses()
     this.setState({popUp: {show: false}})
   }
 
