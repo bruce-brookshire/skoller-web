@@ -10,6 +10,8 @@ import AddClassModal from '../MyClasses/AddClassModal'
 import {Cookies} from 'react-cookie'
 import HomeClasses from './HomeClasses'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
+import TasksList from '../Tasks/TasksList'
+import HomeTasks from './HomeTasks';
 
 @inject('rootStore') @observer
 class Home extends React.Component {
@@ -27,6 +29,7 @@ class Home extends React.Component {
     this.updateStudent()
     this.cookie = new Cookies()
     this.props.rootStore.studentNavStore.setActivePage('home')
+    this.props.rootStore.studentNavStore.location = this.props.location
   }
 
   async updateStudent () {
@@ -166,7 +169,7 @@ class Home extends React.Component {
               <h1 onClick={() => browserHistory.push('/student/tasks')}>Tasks</h1>
               <div className="home-sub-heading">Due soon</div>
               <div className="home-card-content">
-                <p style={{textAlign: 'center', color: 'rgba(0,0,0,0.30)', margin: '3rem 0'}}>No tasks yet.</p>
+                <HomeTasks />
               </div>
             </div>
             {/* // this is for chat once we get it ready
@@ -195,7 +198,8 @@ class Home extends React.Component {
 }
 
 Home.propTypes = {
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  location: PropTypes.object
 }
 
 export default Home

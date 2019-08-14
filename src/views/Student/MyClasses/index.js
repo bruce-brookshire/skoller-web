@@ -19,6 +19,7 @@ class MyClasses extends React.Component {
       classStatusModal: {show: false, cl: null},
       loading: true
     }
+    this.props.rootStore.studentNavStore.location = this.props.location
   }
 
   componentWillMount () {
@@ -185,7 +186,8 @@ class MyClasses extends React.Component {
 }
 
 MyClasses.propTypes = {
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  location: PropTypes.object
 }
 
 export default MyClasses

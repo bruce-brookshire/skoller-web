@@ -28,6 +28,8 @@
       border: 1px solid $cn-form-border;
       flex-shrink: 0;
       margin-top: -8px;
+      min-width: 40px;
+      max-height: 40px;
 
       img {
         width: 100%;

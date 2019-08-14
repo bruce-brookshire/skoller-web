@@ -11,7 +11,7 @@ import DeleteDialog from '../../../components/Grid/DeleteDialog'
 import AssignmentList from '../../components/AssignmentList'
 import StudentLayout from '../../components/StudentLayout'
 import AddAssignment from '../Assignments/AddAssignment'
-import DropClassButton from '../../components/DropClassButton';
+import DropClassButton from '../../components/DropClassButton'
 
 @inject('rootStore') @observer
 class ClassDetail extends React.Component {
@@ -41,7 +41,6 @@ class ClassDetail extends React.Component {
     this.setState({loading: true})
     actions.classes.getClassById(classId).then(cl => {
       this.getClassColor(cl)
-      navbarStore.title = cl.name
     }).catch(() => this.setState({loading: false}))
   }
 
@@ -165,7 +164,7 @@ class ClassDetail extends React.Component {
 
   renderSpeculateGradeButton () {
     return (
-      <a className='spec-grade-button' onClick={() => browserHistory.push('student/classes')}>
+      <a className='spec-grade-button'>
         % Speculate Grade
       </a>
     )
@@ -176,8 +175,13 @@ class ClassDetail extends React.Component {
   */
   renderBackButton () {
     return (
-      <a className='back-button' onClick={() => browserHistory.push('student/classes')}>
-        <i className='fa fa-angle-left' /> Back to Classes
+      <a
+        className='back-button'
+        onClick={() => {
+          browserHistory.push('/student/classes')
+        }}
+      >
+        <i className='fa fa-angle-left' /> All Classes
       </a>
     )
   }
@@ -211,17 +215,6 @@ class ClassDetail extends React.Component {
     this.setState({openDeleteDialog: !this.state.openDeleteDialog})
   }
 
-  renderDeleteDialog () {
-    return (
-      <DeleteDialog
-        open={this.state.openDeleteDialog}
-        onClose={this.toggleDeleteDialog.bind(this)}
-        onDelete={this.onDeleteClass.bind(this)}
-        deleteMessage={'Are you sure you want to drop this class?'}
-      />
-    )
-  }
-
   renderClassDetails () {
     const {cl} = this.state
     return (
@@ -237,7 +230,6 @@ class ClassDetail extends React.Component {
           </div>
         </div>
         <UploadDocuments cl={cl} onUpload={this.getClass.bind(this)} />
-        {this.renderDeleteDialog()}
       </div>
     )
   }
