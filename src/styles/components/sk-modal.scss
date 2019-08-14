@@ -11,12 +11,12 @@
   justify-content: center;
   align-items: center;
   overflow: scroll;
-  @include hide-scrollbar;
+  // @include hide-scrollbar;
 
   // overflow-y: scroll;
   // padding-right: 17px;
   // padding-bottom: 17px;
-  box-sizing: content-box;
+  // box-sizing: content-box;
 
   .sk-modal-container {
     box-sizing: content-box;

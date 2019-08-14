@@ -229,7 +229,7 @@ class Calendar extends React.Component {
 
   render () {
     return (
-      <div>
+      <div className='calendar-component-container'>
         <SecondClassPrompt show={this.state.classes.length === 1} onAddClass={() => this.updateClasses()} />
         {this.renderCalendar()}
       </div>
