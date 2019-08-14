@@ -2,7 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import ClassList from '../../components/ClassList'
-import Sammi from '../../components/Sammi'
+import JoinFirstClassPrompt from '../../components/Sammi/Prompts/JoinFirstClassPrompt'
+import SecondClassPrompt from '../../components/Sammi/Prompts/SecondClassPrompt'
 
 @inject('rootStore') @observer
 class HomeClasses extends React.Component {
@@ -14,27 +15,10 @@ class HomeClasses extends React.Component {
           emptyMessage='You are not enrolled in any classes.'
           onSelect={this.props.onClassSelect}
         />
-        {this.props.classes.length === 0 &&
-          <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', margin: '1rem 0'}}>
-            <button className='button add-button' onClick={() => this.props.onAddClass()}>
-              Join a Class
-            </button>
-          </div>
-        }
-        {this.props.classes.length === 1 &&
-          <div className='home-classes-sammi-container'>
-            <Sammi
-              emotion='wow'
-              position='left'
-            >
-              <div className='home-classes-sammi-message'>
-                <p>You&apos;ve joined your first class!</p>
-                <div className='home-classes-sammi-button'>
-                  <p onClick={() => this.props.onAddClass()}>Click here to join another.</p>
-                </div>
-              </div>
-            </Sammi>
-          </div>
+        <JoinFirstClassPrompt onAddClass={() => this.props.onAddClass()} show={this.props.classes.length === 0} />
+        <SecondClassPrompt onAddClass={() => this.props.onAddClass()} show={this.props.classes.length === 1} />
+        {this.props.classes.length < 2 &&
+          <br />
         }
       </div>
     )

@@ -21,7 +21,6 @@ class Home extends React.Component {
       assignments: [],
       popUp: {show: false, type: null},
       classStatusModal: {show: false, cl: null},
-      addClassModal: {show: false},
       loading: true
     }
     this.updateClasses()
@@ -116,7 +115,6 @@ class Home extends React.Component {
   }
 
   closeAddClassModal () {
-    this.setState({addClassModal: {show: false}})
     this.updateClasses()
   }
 
@@ -140,15 +138,12 @@ class Home extends React.Component {
             cl={this.state.classStatusModal.cl}
           />
         }
-        {this.state.addClassModal.show &&
-          <AddClassModal closeModal={() => this.closeAddClassModal()} />
-        }
         <div className="home-container">
           <div className="home-column">
             <div className="home-shadow-box">
-              <h1 onClick={() => browserHistory.push('/student/classes')}>Classes</h1>
+              <h1 className='home-heading' onClick={() => browserHistory.push('/student/classes')}>Classes</h1>
               <div className="home-card-content">
-                <HomeClasses classes={this.state.classes} onAddClass={() => this.setState({addClassModal: {show: true}})} onClassSelect={this.onClassSelect} />
+                <HomeClasses classes={this.state.classes} onAddClass={() => this.closeAddClassModal()} onClassSelect={this.onClassSelect} />
               </div>
             </div>
             {/* // this is for activity once we get it ready
@@ -161,7 +156,7 @@ class Home extends React.Component {
           </div>
           <div className="home-column">
             <div className="home-shadow-box">
-              <h1 onClick={() => browserHistory.push('/student/tasks')}>Tasks</h1>
+              <h1 className='home-heading' onClick={() => browserHistory.push('/student/tasks')}>Tasks</h1>
               <div className="home-sub-heading">Due soon</div>
               <div className="home-card-content">
                 <HomeTasks />
