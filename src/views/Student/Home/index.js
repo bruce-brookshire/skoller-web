@@ -13,6 +13,7 @@ import SkLoader from '../../../assets/sk-icons/SkLoader'
 import TasksList from '../Tasks/TasksList'
 import HomeTasks from './HomeTasks';
 
+
 @inject('rootStore') @observer
 class Home extends React.Component {
   constructor (props) {

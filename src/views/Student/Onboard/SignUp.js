@@ -68,9 +68,9 @@ class SignUp extends React.Component {
     actions.auth
       .registerUser(newUser)
       .then(() => {
-        actions.auth.verifyStudentPhoneNumber({phone: newUser.student.phone}).then(() => {
-          this.props.onSubmit()
-        })
+        // actions.auth.verifyStudentPhoneNumber({phone: newUser.student.phone}).then(() => {
+        this.props.onSubmit()
+        // })
       })
       .catch(error => console.log(error))
   }

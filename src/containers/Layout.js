@@ -26,7 +26,7 @@ class Layout extends React.Component {
     }
 
     return (
-      <div>
+      <div className='sk-app-container'>
         <NavBar />
         {!this.isStudent() &&
           <TopNav />
