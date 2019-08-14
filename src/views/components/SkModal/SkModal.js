@@ -9,9 +9,9 @@ import { mobileCheck } from '../../../utilities/display'
 class SkModal extends React.Component {
   render () {
     const modalStyle = {}
-    if (mobileCheck()) {
-      modalStyle.marginTop = '64px'
-    }
+    // if (mobileCheck()) {
+    //   modalStyle.marginTop = '64px'
+    // }
     return (
       <div className="sk-modal-wrapper">
         <div className="sk-modal-container">

@@ -309,6 +309,12 @@
   &:focus {
     outline: none;
   }
+
+  @media only screen and (max-height: 568px) {
+    max-height: 24px;
+    min-height: 0;
+    height: 24px;
+  }
 }
 
 @mixin not-selectable {

@@ -3,6 +3,11 @@
   justify-content: center;
   padding: 1rem;
 
+  .calendar-component-container {
+    max-width: 100vw;
+    box-sizing: border-box;
+  }
+
   .calendar {
     @include skoller-cell;
     width: calc(100vw - 200px - 8rem);
@@ -17,8 +22,9 @@
 
     @media only screen and (max-width: $sk-mobile-break-point) {
       box-sizing: border-box;
-      margin: 0 1rem 1rem 1rem;
-      width: 100vw;
+      margin: 0 auto;
+      width: 100%;
+      max-width: calc(100vw - 4rem);
     }
 
     .calendar-header {
