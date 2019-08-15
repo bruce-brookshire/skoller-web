@@ -31,7 +31,8 @@ class SignUpForm extends React.Component {
 
   initializeState () {
     return {
-      form: this.initializeFormData()
+      form: this.initializeFormData(),
+      phoneFocus: false
     }
   }
 
@@ -165,7 +166,7 @@ class SignUpForm extends React.Component {
                 value={form.email}
               />
             </div>
-            <div className='col-xs-12'>
+            {/* <div className='col-xs-12'>
               <InputField
                 containerClassName='margin-top'
                 error={formErrors.student && formErrors.student.phone}
@@ -178,6 +179,27 @@ class SignUpForm extends React.Component {
                 }}
                 placeholder='Phone'
                 value={form.student.phone}
+              />
+            </div> */}
+            <div className='col-xs-12 cn-sign-up-form-phone'>
+              <label className={'cn-input-label' + (formErrors.student && formErrors.student.phone ? ' error' : '') + (this.state.phoneFocus ? ' active' : '')}>Phone</label>
+              <NumberFormat
+                style={{width: '100%', borderColor: formErrors.student && formErrors.student.phone ? 'red' : 'null'}}
+                error={formErrors.student && formErrors.student.phone}
+                placeholder='Phone'
+                format="+1 (###) ###-####"
+                mask=" "
+                onFocus={() => this.setState({phoneFocus: true})}
+                onBlur={() => this.setState({phoneFocus: false})}
+                autoComplete='tel'
+                onValueChange={(values) => {
+                  let form = this.state.form
+                  form.student.phone = values.value
+                  console.log(values.value)
+                  this.setState({
+                    form
+                  })
+                }}
               />
             </div>
           </div>

@@ -266,6 +266,7 @@
 
     .add-assignment-save-button {
       @include sk-standard-button;
+      margin: 8px;
 
       p {
         width: 164px;

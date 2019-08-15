@@ -2,7 +2,7 @@
   background-color: $cn-color-white;
   box-shadow: 0px 5px 20px rgba(0,0,0,.08);
   @include breakpoint(medium) {
-    @include navbar();
+    // @include navbar();
     background-color: $cn-color-white;
     height: auto;
     display: block;

@@ -2,16 +2,12 @@ import React from 'react'
 import { observer, inject } from 'mobx-react'
 import PropTypes from 'prop-types'
 import Exit from '../../../assets/sk-icons/navigation/Exit'
-import { mobileCheck } from '../../../utilities/display'
 
 @inject('rootStore')
 @observer
 class SkModal extends React.Component {
   render () {
     const modalStyle = {}
-    // if (mobileCheck()) {
-    //   modalStyle.marginTop = '64px'
-    // }
     return (
       <div className="sk-modal-wrapper">
         <div className="sk-modal-container">
