@@ -54,13 +54,12 @@ $h2-size-sm: 36px;
 
 // Styles ------------------------
 .cn-landing-wrapper {
-  overflow: scroll;
-  height: 100vh;
+  height: 100%;
 
   .cn-landing-container {
     overflow-x: hidden;
     // height: 100%;
-    @include landing-nav-parent();
+    @include landing-nav-parent;
     background-image: url('../../assets/images/background_landing.png');
     background-size: cover;
     background-repeat: no-repeat;
