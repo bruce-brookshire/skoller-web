@@ -61,11 +61,12 @@ $h2-size-sm: 36px;
     // height: 100%;
     // position: relative;
     // min-height: 100vh;
-    height: calc(100vh - 69px);
+    
     background-color: #f5f7f9;
   
     @include breakpoint(medium) {
       padding-bottom: 69px;
+      height: calc(100vh - 69px);
     }
     background-image: url('../../assets/images/background_landing.png');
     background-size: cover;
