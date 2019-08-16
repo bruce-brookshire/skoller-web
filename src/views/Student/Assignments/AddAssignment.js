@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import SkModal from '../../components/SkModal/SkModal'
 import actions from '../../../actions'
-// import Loading from '../../../components/Loading'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
 import DatePicker from '../../components/DatePicker'
 import NewAssignment from './NewAssignment'
 import {showSnackbar} from '../../../utilities/snackbar'
+import AutoCompleteDropDown from './AutocompleteDropDown'
 
 @inject('rootStore')
 @observer
@@ -40,9 +40,10 @@ class AddAssignment extends Component {
       showSaveButton: false,
       showDateField: false,
       showDatePicker: false,
-      hideAddAssignmentForm: false,
+      formView: false,
       notWeighted: false,
       showShareField: false,
+      autoComplete: {weights: false, classes: false},
 
       // batch adding assignments when there are none
       needLock: false
@@ -113,10 +114,11 @@ class AddAssignment extends Component {
     })
   }
 
-  selectWeightHandler = event => {
+  selectWeightHandler = weight => {
+    this.setState({autoComplete: {weights: false}})
     let newAssignment = this.state.newAssignment
-    if (event.target.value === 'notWeighted') {
-      newAssignment.weight_id = 'notWeighted'
+    if (weight === 'notWeighted') {
+      newAssignment.weight_id = null
       this.setState({
         notWeighted: true,
         showNameField: true,
@@ -125,7 +127,7 @@ class AddAssignment extends Component {
         showShareField: true
       })
     } else {
-      newAssignment.weight_id = parseInt(event.target.value)
+      newAssignment.weight_id = weight.id
       this.setState({
         notWeighted: false,
         newAssignment: newAssignment,
@@ -150,7 +152,7 @@ class AddAssignment extends Component {
   addAssignmentButtonHandler = () => {
     const { newAssignments, newAssignment } = this.state
 
-    if (!newAssignment.weight_id) {
+    if (!newAssignment.weight_id && !this.state.notWeighted) {
       showSnackbar('Please select a weight for the assignment.')
     } else if (!newAssignment.name) {
       showSnackbar('Please give the assignment a name.')
@@ -172,7 +174,7 @@ class AddAssignment extends Component {
         showSaveButton: true,
         selectedClass: null,
         selectedStudentClass: null,
-        hideAddAssignmentForm: true
+        formView: true
       }).then(this.resetFormState())
     }
   }
@@ -186,7 +188,7 @@ class AddAssignment extends Component {
       showAddButton: false,
       showShareField: false,
       notWeighted: false,
-      hideAddAssignmentForm: false
+      formView: false
     })
 
     if (this.props.assignmentParams.class) {
@@ -229,7 +231,6 @@ class AddAssignment extends Component {
       actions.assignments.createStudentAssignment(this.state.studentId, assignment.class.id, assignmentToSubmit)
         .then(() => {
           actions.assignments.getAllStudentAssignments(this.state.studentId)
-          let formattedAssignments = this.props.rootStore.studentAssignmentsStore.getFormattedAssignments
         })
       //  TODO if (needLock === true) do stuff here to unlock
     })
@@ -257,6 +258,7 @@ class AddAssignment extends Component {
       },
       selectedClass: {},
       selectedStudentClass: null,
+      autoComplete: {weights: false, classes: false},
 
       // visibility stuff
       showClassField: true,
@@ -266,7 +268,7 @@ class AddAssignment extends Component {
       showSaveButton: true,
       showDateField: false,
       showDatePicker: false,
-      hideAddAssignmentForm: true,
+      formView: true,
       notWeighted: false,
       showShareField: false
     })
@@ -326,20 +328,87 @@ class AddAssignment extends Component {
     )
   }
 
-  renderWeightSelection = () => {
-    const { weights } = this.state
+  renderWeightsOptions = () => {
+    const weights = this.state.weights
+    let sortedWeights = []
+    weights.forEach(weight => {
+      let assignmentsCount = 0
+      this.state.selectedStudentClass.assignments.forEach(assignment => {
+        if (assignment.weight_id === weight.id) {
+          assignmentsCount += 1
+        }
+      })
+      if (assignmentsCount > 0) {
+        sortedWeights.push({weight, hasAssignments: true})
+      } else {
+        sortedWeights.unshift({weight, hasAssignments: false})
+      }
+    })
     return (
-      <select onChange={this.selectWeightHandler}>
-        <option value="null">Select a Grading Category</option>
-        {weights.map(weight => {
+      <div>
+        {sortedWeights.map(sortedWeight => {
+          let weight = sortedWeight.weight
+          let hasAssignments = sortedWeight.hasAssignments
           return (
-            <option value={weight.id} key={weight.id}>
-              {weight.name}
-            </option>
+            <div
+              className='add-assignment-autocomplete-option'
+              key={weight.id}
+              onClick={() => {
+                this.selectWeightHandler(weight)
+              }}
+            >
+              <div>
+                {weight.name}
+              </div>
+              <span>
+                {!hasAssignments &&
+                  'hold up this bitch needs assignments'
+                }
+              </span>
+            </div>
           )
         })}
-        <option value="notWeighted">Not weighted</option>
-      </select>
+        <div
+          className='add-assignment-autocomplete-option'
+          onClick={() => {
+            this.selectWeightHandler('notWeighted')
+          }}
+        >
+          <div>
+            Not weighted
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  toggleWeights (bool) {
+    this.setState({autoComplete: {weights: bool}})
+  }
+
+  renderWeightSelection = () => {
+    let weightName = 'Select a Weight'
+    if (this.state.selectedStudentClass && this.state.newAssignment.weight_id) {
+      if (this.state.notWeighted) {
+        weightName = 'Not weighted'
+      } else {
+        weightName = this.state.selectedStudentClass.weights.find(weight => weight.id === this.state.newAssignment.weight_id).name
+      }
+    }
+    console.log(weightName)
+    return (
+      <div>
+        <div onClick={() => this.toggleWeights(true)}>
+          <div className='add-assignment-weight-selection'>
+            {weightName}
+          </div>
+        </div>
+        <AutoCompleteDropDown
+          optionsMap={this.renderWeightsOptions}
+          toggle={() => this.toggleWeights(false)}
+          show={this.state.autoComplete.weights}
+        />
+      </div>
     )
   }
 
@@ -373,7 +442,7 @@ class AddAssignment extends Component {
     delete newAssignments[assignment.name + assignment.due + assignment.class.id + assignment.weight_id + assignment.share]
     if (Object.keys(newAssignments).length === 0) {
       this.setState({
-        hideAddAssignmentForm: false,
+        formView: false,
         showSaveButton: false,
         showClassField: true
       })
@@ -396,7 +465,7 @@ class AddAssignment extends Component {
           ? <p
             className="add-assignment-back-button"
             onClick={() => {
-              this.setState({hideAddAssignmentForm: true})
+              this.setState({formView: true})
               this.resetFormState()
             }}
           >
@@ -553,7 +622,7 @@ class AddAssignment extends Component {
     return (
       <SkModal closeModal={this.props.closeModal}>
         <div className="add-assignment-container">
-          {(this.state.hideAddAssignmentForm)
+          {(this.state.formView)
             ? this.renderFormHandler()
             : this.renderForm()}
         </div>

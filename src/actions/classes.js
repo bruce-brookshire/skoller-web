@@ -61,6 +61,54 @@ export function searchSchoolStudentClasses (periodId, name) {
 }
 
 /*
+ * function for processing class color or generating a random one
+ * TODO: make sure it is correctly grabbing current class colors and
+ * not using one of those when it assigns random color.
+ */
+const processColor = (cl, studentId) => {
+  console.log(cl, studentId)
+  if (cl.color) {
+    return '#' + cl.color
+  } else {
+    var colors = {
+      '9b55e5ff': false, // purple
+      'ff71a8ff': false, // pink
+      '57b9e4ff': false, // blue
+      '4cd8bdff': false, // mint
+      '4add58ff': false, // green
+      'f7d300ff': false, // yellow
+      'ffae42ff': false, // orange
+      'dd4a63ff': false // red
+    }
+
+    for (var studentClass in StudentClass.currentClasses) {
+      if (studentClass.color) {
+        colors[studentClass.color] = true
+      }
+    }
+
+    const freeColors = []
+    Object.keys(colors).forEach(colorKey => {
+      if (!colors[colorKey]) {
+        freeColors.push(colorKey)
+      }
+    })
+
+    console.log('freeColors: ', freeColors)
+    const randomFreeColor = freeColors[Math.floor(Math.random() * freeColors.length)]
+    console.log(randomFreeColor)
+    put(
+      `/api/v1/students/${studentId}/classes/${cl.id}`,
+      { color: randomFreeColor },
+      'Error fetching class. Try again.'
+    ).catch(error => {
+      return Promise.reject(error)
+    })
+    return '#' + randomFreeColor
+  }
+}
+
+/*
  * Get class by id
  *
  * @param [Number] classId. The id of the class to get.
@@ -73,51 +121,7 @@ export function getStudentClass (studentId, classId) {
     'Error fetching class. Try again.'
   )
     .then(data => {
-      var processColor = function () {
-        if (data.color) {
-          return '#' + data.color
-        } else {
-          var usedColors = {
-            '9b55e5ff': false, // purple
-            'ff71a8ff': false, // pink
-            '57b9e4ff': false, // blue
-            '4cd8bdff': false, // mint
-            '4add58ff': false, // green
-            'f7d300ff': false, // yellow
-            'ffae42ff': false, // orange
-            'dd4a63ff': false // red
-          }
-
-          for (var studentClass in StudentClass.currentClasses) {
-            if (studentClass.color) {
-              usedColors[studentClass.color] = true
-            }
-          }
-
-          for (var newColor in usedColors) {
-            if (!usedColors[newColor]) {
-              this.color = newColor
-            }
-          }
-
-          if (this.color == null) {
-            this.color = Object.keys(usedColors)[Math.floor(Math.random() * 8)]
-          }
-
-          put(
-            `/api/v1/students/${studentId}/classes/${this.id}`,
-            { color: this.color },
-            'Error fetching class. Try again.'
-          ).catch(error => {
-            return Promise.reject(error)
-          })
-          return '#' + this.color
-        }
-      }
-
-      // StudentClass.currentClasses[data.id] = data
-
-      data.getColor = processColor.bind(data)
+      data.getColor = () => processColor(data, studentId)
       return data
     })
     .catch(error => {
@@ -179,49 +183,10 @@ export function getStudentClassesById (studentId, cl) {
     'Error fetching classes. Try again.'
   )
     .then(data => {
-      // console.log(data)
-      var processColor = function () {
-        if (this.color) {
-          return '#' + this.color
-        } else {
-          var usedColors = {
-            '9b55e5ff': false, // purple
-            'ff71a8ff': false, // pink
-            '57b9e4ff': false, // blue
-            '4cd8bdff': false, // mint
-            '4add58ff': false, // green
-            'f7d300ff': false, // yellow
-            'ffae42ff': false, // orange
-            'dd4a63ff': false // red
-          }
-
-          for (var studentClass in StudentClass.currentClasses) {
-            if (studentClass.color) {
-              usedColors[studentClass.color] = true
-            }
-          }
-
-          for (var newColor in usedColors) {
-            if (!usedColors[newColor]) {
-              this.color = newColor
-              put(
-                `/api/v1/students/${studentId}/classes/${this.id}`,
-                { color: newColor },
-                'Error fetching class. Try again.'
-              ).catch(error => {
-                return Promise.reject(error)
-              })
-              return '#' + newColor
-            }
-          }
-
-          // TODO get a random color, all are used
-        }
-      }
-
       data.forEach(cl => {
+        console.log(cl)
         StudentClass.currentClasses[cl.id] = cl
-        cl.getColor = processColor.bind(cl)
+        cl.getColor = () => processColor(cl, studentId)
       })
       return data
     })
