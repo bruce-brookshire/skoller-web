@@ -28,6 +28,7 @@ class Home extends React.Component {
     this.cookie = new Cookies()
     this.props.rootStore.studentNavStore.setActivePage('home')
     this.props.rootStore.studentNavStore.location = this.props.location
+    console.log(this.props.rootStore)
   }
 
   async updateStudent () {

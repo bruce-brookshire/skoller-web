@@ -114,7 +114,7 @@ class AssignmentTable extends React.Component {
             disabled={disableButton}
             className={`submit-assignments button ${disableButton ? 'disabled' : ''}`}
           >
-            Done ({assignments.length} Assignments Added)
+            Save
           </button>
         </div>
       )

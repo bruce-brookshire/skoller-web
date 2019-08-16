@@ -52,7 +52,7 @@ class FindAClass extends React.Component {
       professor: null,
       professorChoice: null,
       professors: null,
-      meetTimeHour: '1',
+      meetTimeHour: '9',
       meetTimeMinute: '00',
       isNewClass: false,
       termChoice: termChoice,
@@ -219,7 +219,8 @@ class FindAClass extends React.Component {
               type='string'
               placeholder='e.g. MKT'
               value={this.state.subject}
-              onChange={(event) => this.setState({subject: event.target.value})}
+              style={{textTransform: 'uppercase'}}
+              onChange={(event) => this.setState({subject: event.target.value.toUpperCase()})}
             />
           </div>
         </div>
@@ -232,7 +233,8 @@ class FindAClass extends React.Component {
               type='string'
               placeholder='e.g. 101'
               value={this.state.code}
-              onChange={(event) => this.setState({code: event.target.value})}
+              style={{textTransform: 'uppercase'}}
+              onChange={(event) => this.setState({code: event.target.value.toUpperCase()})}
             />
           </div>
         </div>
@@ -245,7 +247,8 @@ class FindAClass extends React.Component {
               type='string'
               placeholder='e.g. 01'
               value={this.state.section}
-              onChange={(event) => this.setState({section: event.target.value})}
+              style={{textTransform: 'uppercase'}}
+              onChange={(event) => this.setState({section: event.target.value.toUpperCase()})}
             />
           </div>
         </div>
