@@ -87,9 +87,15 @@ class AddAssignment extends Component {
   }
 
   // get the class user selects
-  selectClassHandler = event => {
-    const selectedClassId = event.target.value
+  selectClassHandler = cl => {
     let newAssignment = this.state.newAssignment
+    newAssignment.weight_id = null
+    this.setState({newAssignment: newAssignment})
+    this.toggleClasses(false)
+    const selectedClassId = cl.id
+    if (this.state.selectedClass.id === selectedClassId) {
+      newAssignment.weight_id = null
+    }
     actions.classes
       .getStudentClass(this.state.studentId, selectedClassId)
       .then(selectedStudentClass => {
@@ -115,6 +121,7 @@ class AddAssignment extends Component {
   }
 
   selectWeightHandler = weight => {
+    console.log('select weight handler')
     this.setState({autoComplete: {weights: false}})
     let newAssignment = this.state.newAssignment
     if (weight === 'notWeighted') {
@@ -274,59 +281,129 @@ class AddAssignment extends Component {
     })
   }
 
-  renderClassSelection = () => {
+  renderClassOptions = () => {
     const classes = this.state.classes
+    return (
+      <div>
+        {classes.map(studentClass => {
+          return (
+            <div
+              className='add-assignment-autocomplete-option'
+              key={studentClass.id}
+              onClick={() => {
+                console.log('clicked!')
+                this.selectClassHandler(studentClass)
+              }}
+              style={{color: studentClass.getColor()}}
+            >
+              {studentClass.name}
+            </div>
+          )
+        })}
+      </div>
+    )
+  }
+
+  toggleClasses (bool) {
+    this.setState({autoComplete: {classes: bool}})
+  }
+
+  renderClassSelection () {
     let givenClass = null
     if (this.props.assignmentParams.class) {
       givenClass = this.props.assignmentParams.class
     } else {
       givenClass = false
     }
+    let classSelection = this.state.selectedStudentClass
+    let classSelectionName
+    if (this.state.selectedStudentClass) {
+      classSelectionName = this.state.selectedStudentClass.name
+    } else {
+      classSelectionName = 'Select a Class'
+    }
     return (
-      <select
-        className="add-assignment-class-select"
-        onChange={this.selectClassHandler}
-        style={
-          this.state.selectedStudentClass
-            ? { color: this.state.selectedStudentClass.getColor() }
-            : { color: '#57B9E4' }}
-        defaultValue={this.props.assignmentParams.class}
-      >
-        {givenClass
-          ? <option
-            value={givenClass.id}
-            style={{color: givenClass.getColor}}
-          >
-            {givenClass.name}
-          </option>
-          : <option value={null}>
-            Select a Class
-          </option>
-        }
-        {classes.map(studentClass => {
-          return (
-            (givenClass)
-              ? (studentClass.id === givenClass.id)
-                ? null
-                : <option
-                  style={{color: studentClass.getColor}}
-                  value={studentClass.id}
-                  key={studentClass.id}
-                >
-                  {studentClass.name}
-                </option>
-              : <option
-                style={{color: studentClass.getColor}}
-                value={studentClass.id}
-                key={studentClass.id}
-              >
-                {studentClass.name}
-              </option>
-          )
-        })}
-      </select>
+      <div>
+        <div>
+          {givenClass
+            ? <div
+              className='add-assignment-field-selection'
+              style={{color: givenClass.getColor}}
+            >
+              {givenClass.name}
+            </div>
+            : <div
+              value={null}
+              onClick={() => this.toggleClasses(true)}
+              className='add-assignment-field-selection'
+              style={{color: classSelection ? classSelection.getColor() : null}}
+            >
+              {classSelectionName}
+            </div>
+          }
+        </div>
+        <AutoCompleteDropDown
+          optionsMap={this.renderClassOptions}
+          toggle={() => this.toggleClasses(false)}
+          show={this.state.autoComplete.classes}
+        />
+      </div>
     )
   }
+
+  // renderClassSelection = () => {
+  //   const classes = this.state.classes
+  //   let givenClass = null
+  //   if (this.props.assignmentParams.class) {
+  //     givenClass = this.props.assignmentParams.class
+  //   } else {
+  //     givenClass = false
+  //   }
+  //   return (
+  //     <select
+  //       className="add-assignment-class-select"
+  //       onChange={this.selectClassHandler}
+  //       style={
+  //         this.state.selectedStudentClass
+  //           ? { color: this.state.selectedStudentClass.getColor() }
+  //           : { color: '#57B9E4' }}
+  //       defaultValue={this.props.assignmentParams.class}
+  //     >
+  //       {givenClass
+  //         ? <option
+  //           value={givenClass.id}
+  //           style={{color: givenClass.getColor}}
+  //         >
+  //           {givenClass.name}
+  //         </option>
+  //         : <option value={null}>
+  //           Select a Class
+  //         </option>
+  //       }
+  //       {classes.map(studentClass => {
+  //         return (
+  //           (givenClass)
+  //             ? (studentClass.id === givenClass.id)
+  //               ? null
+  //               : <option
+  //                 style={{color: studentClass.getColor}}
+  //                 value={studentClass.id}
+  //                 key={studentClass.id}
+  //               >
+  //                 {studentClass.name}
+  //               </option>
+  //             : <option
+  //               style={{color: studentClass.getColor}}
+  //               value={studentClass.id}
+  //               key={studentClass.id}
+  //             >
+  //               {studentClass.name}
+  //             </option>
+  //         )
+  //       })}
+  //     </select>
+  //   )
+  // }
 
   renderWeightsOptions = () => {
     const weights = this.state.weights
@@ -362,7 +439,7 @@ class AddAssignment extends Component {
               </div>
               <span>
                 {!hasAssignments &&
-                  'hold up this bitch needs assignments'
+                  'Add assignments'
                 }
               </span>
             </div>
@@ -388,18 +465,17 @@ class AddAssignment extends Component {
 
   renderWeightSelection = () => {
     let weightName = 'Select a Weight'
-    if (this.state.selectedStudentClass && this.state.newAssignment.weight_id) {
+    if (this.state.selectedStudentClass && (this.state.newAssignment.weight_id !== null)) {
       if (this.state.notWeighted) {
         weightName = 'Not weighted'
       } else {
         weightName = this.state.selectedStudentClass.weights.find(weight => weight.id === this.state.newAssignment.weight_id).name
       }
     }
-    console.log(weightName)
     return (
       <div>
-        <div onClick={() => this.toggleWeights(true)}>
-          <div className='add-assignment-weight-selection'>
+        <div>
+          <div onClick={() => this.toggleWeights(true)} className='add-assignment-field-selection'>
             {weightName}
           </div>
         </div>
