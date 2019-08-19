@@ -135,6 +135,16 @@ class Onboard extends React.Component {
   }
 
   renderSelectSchool () {
+    console.log(this.props.rootStore.userStore.user.student)
+    actions.students.getStudentSignupOrganization(
+      this.props.rootStore.userStore.user.student.id
+    )
+      .then((r) => {
+        console.log(r)
+      })
+      .catch(r => {
+        console.log(r)
+      })
     return (
       this.renderOnboardContent(
         <SelectSchool
