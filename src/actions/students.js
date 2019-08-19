@@ -41,7 +41,7 @@ export function setStudentPrimarySchool (userId, studentId, schoolId) {
 * @param [string] studentId. Student ID
 */
 export function getStudentSignupOrganization (studentId) {
-  return get(`/api/v1/students/${studentId}/signup-organization`, null, 'Organization not found.')
+  return get(`/api/v1/students/${studentId}/signup-organization`, null, null)
     .then(response => {
       return response
     })
