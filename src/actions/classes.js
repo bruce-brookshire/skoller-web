@@ -66,7 +66,6 @@ export function searchSchoolStudentClasses (periodId, name) {
  * not using one of those when it assigns random color.
  */
 const processColor = (cl, studentId) => {
-  console.log(cl, studentId)
   if (cl.color) {
     return '#' + cl.color
   } else {
@@ -94,9 +93,7 @@ const processColor = (cl, studentId) => {
       }
     })
 
-    console.log('freeColors: ', freeColors)
     const randomFreeColor = freeColors[Math.floor(Math.random() * freeColors.length)]
-    console.log(randomFreeColor)
     put(
       `/api/v1/students/${studentId}/classes/${cl.id}`,
       { color: randomFreeColor },
@@ -184,7 +181,6 @@ export function getStudentClassesById (studentId, cl) {
   )
     .then(data => {
       data.forEach(cl => {
-        console.log(cl)
         StudentClass.currentClasses[cl.id] = cl
         cl.getColor = () => processColor(cl, studentId)
       })

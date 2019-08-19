@@ -1,9 +1,11 @@
-.autocomplete-dropdown-container {
+.sk-select-dropdown-container {
   width: 100%;
 
-  .autocomplete-dropdown {
+  .sk-select-dropdown {
     position: fixed;
+    z-index: 5;
     background-color: white;
+    overflow: scroll;
 
     border: 1px solid $cn-form-border;
     border-radius: 5px;

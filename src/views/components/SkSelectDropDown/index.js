@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import AutoCompleteOptions from './AutoCompleteOptions'
+import SkSelectOptions from './SkSelectOptions'
 
-class AutoCompleteDropDown extends React.Component {
+class SkSelectDropDown extends React.Component {
   handleClickOutside = () => {
     this.props.toggle(false)
   }
@@ -10,11 +10,11 @@ class AutoCompleteDropDown extends React.Component {
   render () {
     return (
       <div
-        className='autocomplete-dropdown-container'
+        className='sk-select-dropdown-container'
         ref={(ref) => { this.ref = ref }}
       >
         {this.props.show &&
-          <AutoCompleteOptions
+          <SkSelectOptions
             refWidth={this.ref.offsetWidth.toString() + 'px'}
             toggle={this.props.toggle}
             optionsMap={this.props.optionsMap}
@@ -25,10 +25,10 @@ class AutoCompleteDropDown extends React.Component {
   }
 }
 
-AutoCompleteDropDown.propTypes = {
+SkSelectDropDown.propTypes = {
   optionsMap: PropTypes.function,
   show: PropTypes.bool,
   toggle: PropTypes.func
 }
 
-export default AutoCompleteDropDown
+export default SkSelectDropDown

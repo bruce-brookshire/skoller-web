@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import OutsideClickHandler from 'react-outside-click-handler'
 
-class AutoCompleteDropDown extends React.Component {
+class SkSelectOptions extends React.Component {
   handleClickOutside = () => {
     this.props.toggle(false)
   }
@@ -12,7 +12,7 @@ class AutoCompleteDropDown extends React.Component {
       <OutsideClickHandler
         onOutsideClick={() => this.handleClickOutside()}
       >
-        <div style={{width: this.props.refWidth}} className='autocomplete-dropdown'>
+        <div style={{width: this.props.refWidth}} className='sk-select-dropdown'>
           {this.props.optionsMap()}
         </div>
       </OutsideClickHandler>
@@ -20,11 +20,11 @@ class AutoCompleteDropDown extends React.Component {
   }
 }
 
-AutoCompleteDropDown.propTypes = {
-  optionsMap: PropTypes.function,
+SkSelectOptions.propTypes = {
+  optionsMap: PropTypes.func,
   show: PropTypes.bool,
-  toggle: PropTypes.function,
+  toggle: PropTypes.func,
   refWidth: PropTypes.string
 }
 
-export default AutoCompleteDropDown
+export default SkSelectOptions

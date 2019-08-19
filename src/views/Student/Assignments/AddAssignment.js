@@ -7,7 +7,7 @@ import { observer, inject } from 'mobx-react'
 import DatePicker from '../../components/DatePicker'
 import NewAssignment from './NewAssignment'
 import {showSnackbar} from '../../../utilities/snackbar'
-import AutoCompleteDropDown from './AutocompleteDropDown'
+import SkSelectDropDown from '../../components/SkSelectDropDown'
 
 @inject('rootStore')
 @observer
@@ -121,7 +121,6 @@ class AddAssignment extends Component {
   }
 
   selectWeightHandler = weight => {
-    console.log('select weight handler')
     this.setState({autoComplete: {weights: false}})
     let newAssignment = this.state.newAssignment
     if (weight === 'notWeighted') {
@@ -291,7 +290,6 @@ class AddAssignment extends Component {
               className='add-assignment-autocomplete-option'
               key={studentClass.id}
               onClick={() => {
-                console.log('clicked!')
                 this.selectClassHandler(studentClass)
               }}
               style={{color: studentClass.getColor()}}
@@ -305,7 +303,11 @@ class AddAssignment extends Component {
   }
 
   toggleClasses (bool) {
-    this.setState({autoComplete: {classes: bool}})
+    console.log('toggle classes: ', bool)
+    let autoComplete = this.state.autoComplete
+    autoComplete.classes = bool
+    console.log('new autocomplete: ', autoComplete)
+    this.setState({autoComplete})
   }
 
   renderClassSelection () {
@@ -328,13 +330,15 @@ class AddAssignment extends Component {
           {givenClass
             ? <div
               className='add-assignment-field-selection'
-              style={{color: givenClass.getColor}}
+              style={{color: '#' + givenClass.color, cursor: 'default'}}
             >
               {givenClass.name}
             </div>
             : <div
               value={null}
-              onClick={() => this.toggleClasses(true)}
+              onClick={() => {
+                this.toggleClasses(true)
+              }}
               className='add-assignment-field-selection'
               style={{color: classSelection ? classSelection.getColor() : null}}
             >
@@ -342,7 +346,7 @@ class AddAssignment extends Component {
             </div>
           }
         </div>
-        <AutoCompleteDropDown
+        <SkSelectDropDown
           optionsMap={this.renderClassOptions}
           toggle={() => this.toggleClasses(false)}
           show={this.state.autoComplete.classes}
@@ -350,60 +354,6 @@ class AddAssignment extends Component {
       </div>
     )
   }
-
-  // renderClassSelection = () => {
-  //   const classes = this.state.classes
-  //   let givenClass = null
-  //   if (this.props.assignmentParams.class) {
-  //     givenClass = this.props.assignmentParams.class
-  //   } else {
-  //     givenClass = false
-  //   }
-  //   return (
-  //     <select
-  //       className="add-assignment-class-select"
-  //       onChange={this.selectClassHandler}
-  //       style={
-  //         this.state.selectedStudentClass
-  //           ? { color: this.state.selectedStudentClass.getColor() }
-  //           : { color: '#57B9E4' }}
-  //       defaultValue={this.props.assignmentParams.class}
-  //     >
-  //       {givenClass
-  //         ? <option
-  //           value={givenClass.id}
-  //           style={{color: givenClass.getColor}}
-  //         >
-  //           {givenClass.name}
-  //         </option>
-  //         : <option value={null}>
-  //           Select a Class
-  //         </option>
-  //       }
-  //       {classes.map(studentClass => {
-  //         return (
-  //           (givenClass)
-  //             ? (studentClass.id === givenClass.id)
-  //               ? null
-  //               : <option
-  //                 style={{color: studentClass.getColor}}
-  //                 value={studentClass.id}
-  //                 key={studentClass.id}
-  //               >
-  //                 {studentClass.name}
-  //               </option>
-  //             : <option
-  //               style={{color: studentClass.getColor}}
-  //               value={studentClass.id}
-  //               key={studentClass.id}
-  //             >
-  //               {studentClass.name}
-  //             </option>
-  //         )
-  //       })}
-  //     </select>
-  //   )
-  // }
 
   renderWeightsOptions = () => {
     const weights = this.state.weights
@@ -460,26 +410,29 @@ class AddAssignment extends Component {
   }
 
   toggleWeights (bool) {
-    this.setState({autoComplete: {weights: bool}})
+    let autoComplete = this.state.autoComplete
+    autoComplete.weights = bool
+    this.setState({autoComplete})
   }
 
   renderWeightSelection = () => {
     let weightName = 'Select a Weight'
     if (this.state.selectedStudentClass && (this.state.newAssignment.weight_id !== null)) {
-      if (this.state.notWeighted) {
-        weightName = 'Not weighted'
-      } else {
+      if (!this.state.notWeighted) {
         weightName = this.state.selectedStudentClass.weights.find(weight => weight.id === this.state.newAssignment.weight_id).name
       }
+    }
+    if (this.state.notWeighted) {
+      weightName = 'Not weighted'
     }
     return (
       <div>
         <div>
-          <div onClick={() => this.toggleWeights(true)} className='add-assignment-field-selection'>
+          <div onClick={() => this.toggleWeights(!this.state.autoComplete.weights)} className='add-assignment-field-selection'>
             {weightName}
           </div>
         </div>
-        <AutoCompleteDropDown
+        <SkSelectDropDown
           optionsMap={this.renderWeightsOptions}
           toggle={() => this.toggleWeights(false)}
           show={this.state.autoComplete.weights}
