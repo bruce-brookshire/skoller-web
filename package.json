@@ -46,6 +46,7 @@
     "react-joyride": "^1.11.1",
     "react-motion": "^0.5.2",
     "react-number-format": "^4.0.8",
+    "react-outside-click-handler": "^1.2.4",
     "react-router": "^2.5.1",
     "react-smartbanner": "^5.0.1",
     "resolve-url-loader": "^2.1.1",

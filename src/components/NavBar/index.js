@@ -72,14 +72,14 @@ class NavBar extends React.Component {
         </div>
       )
     } else {
-      const {userStore: {user}, navbarStore: {title}} = this.props.rootStore
+      const {userStore: {user}} = this.props.rootStore
       return (
         <div className='cn-navbar'>
           <div onClick={() => browserHistory.push('/')}>
             <img alt="Skoller" className='logo' src='/src/assets/images/logo-wide-blue@1x.png' />
+            <div className='cn-navbar-message'>Keep Up with Classes, Together.</div>
           </div>
           <div className='class-info'>
-            {title && <h2>{title}</h2>}
             {this.renderClassInfo()}
           </div>
           <div className='user-info'>

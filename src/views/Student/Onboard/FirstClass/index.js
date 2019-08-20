@@ -301,6 +301,7 @@ class FirstClass extends React.Component {
   }
 
   render () {
+    console.log(this.props.rootStore.userStore.user)
     return (
       <div>
         {this.state.loading

@@ -11,26 +11,27 @@
 }
 
 .onboard-container {
-  .onboard-logo-text {
-    position: absolute;
-    left: 156px;
-    top: 28px;
-    font-size: 22px;
-    font-style: italic;
-    color: $cn-color-blue;
-
-    @media only screen and (max-width: 700px) {
-      font-size: 16px;
-      top: 32px;
-    }
-
-    @media only screen and (max-width: 370px) {
-      font-size: 11px;
-      top: 32px;
-    }
-  }
-
   .onboard-layout {
+    .onboard-logo-text {
+      position: absolute;
+      left: 156px;
+      top: 28px;
+      font-size: 22px;
+      font-style: italic;
+      color: $cn-color-blue;
+      z-index: 5;
+  
+      @media only screen and (max-width: 700px) {
+        font-size: 16px;
+        top: 32px;
+      }
+  
+      @media only screen and (max-width: 370px) {
+        font-size: 11px;
+        top: 32px;
+      }
+    }
+
     .onboard-content {
       padding: 1.5rem 2.5rem;
       width: 352px;

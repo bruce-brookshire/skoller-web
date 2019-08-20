@@ -54,7 +54,6 @@ class AssignmentTable extends React.Component {
   */
   renderWeightName (id) {
     const {weights} = this.props
-    console.log(weights)
     if (weights) {
       var weight = weights.find(w => w.id === id)
       if (weight && weight !== undefined) {
@@ -99,6 +98,14 @@ class AssignmentTable extends React.Component {
     )
   }
 
+  handleSubmit () {
+    if (this.props.onSubmitSingleWeight) {
+      this.props.onSubmitSingleWeight()
+    } else {
+      this.props.onSubmit()
+    }
+  }
+
   renderSubmit () {
     const {assignments} = this.props
     const disableButton = assignments.length === 0
@@ -110,11 +117,11 @@ class AssignmentTable extends React.Component {
             Be sure to add all assignments for this category!
           </div>
           <button
-            onClick={() => this.props.onSubmit()}
+            onClick={() => this.handleSubmit()}
             disabled={disableButton}
             className={`submit-assignments button ${disableButton ? 'disabled' : ''}`}
           >
-            Done ({assignments.length} Assignments Added)
+            Save{this.props.onSubmitSingleWeight && ' and Submit'}
           </button>
         </div>
       )
@@ -147,7 +154,8 @@ AssignmentTable.propTypes = {
   cl: PropTypes.object,
   currentWeight: PropTypes.object,
   isAdmin: PropTypes.bool,
-  onSubmit: PropTypes.func
+  onSubmit: PropTypes.func,
+  onSubmitSingleWeight: PropTypes
 }
 
 export default AssignmentTable
