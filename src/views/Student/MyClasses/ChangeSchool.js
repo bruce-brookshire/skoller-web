@@ -335,7 +335,7 @@ class ChangeSchool extends React.Component {
               className={'onboard-next' + (disableNext ? ' disabled' : '')}
               onClick={(disableNext ? null : () => this.onSubmitSchool())}
             >
-              <p>Next</p>
+              <p>Save</p>
             </div>
             {this.state.showCreateSchoolModal
               ? <SkModal closeModal={() => this.setState({showCreateSchoolModal: false})}>
