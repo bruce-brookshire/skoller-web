@@ -144,7 +144,8 @@ import {
   getStudentCsv,
   getEmailPreferences,
   updateEmailPreferences,
-  deleteUserById
+  deleteUserById,
+  refreshUser
 } from './users'
 import {
   createWeight,
@@ -333,7 +334,8 @@ const actions = {
     getStudentCsv,
     getEmailPreferences,
     updateEmailPreferences,
-    deleteUserById
+    deleteUserById,
+    refreshUser
   },
   weights: {
     createWeight,

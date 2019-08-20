@@ -312,7 +312,15 @@ class ChangeSchool extends React.Component {
       termChoice = this.state.activeTerm
       this.setState({termChoice: termChoice})
     }
-    console.log('state of change school: ', this.state)
+    const userId = this.props.rootStore.userStore.user.id
+    const studentId = this.props.rootStore.userStore.user.student.id
+    this.setState({loading: true})
+    await actions.students.setStudentPrimarySchool(userId, studentId, this.state.schoolChoice.id)
+      .catch(e => console.log(e))
+    await actions.students.setStudentPrimaryPeriod(userId, studentId, termChoice.id)
+      .catch(e => console.log(e))
+    await actions.users.refreshUser()
+      .catch(e => console.log(e))
     this.props.onSubmit({termChoice: this.state.termChoice ? this.state.termChoice : this.props.backData.termChoice, schoolChoice: this.state.schoolChoice ? this.state.schoolChoice : this.props.backData.schoolChoice})
   }
 
