@@ -28,6 +28,7 @@ import ClassLink from './views/Student/ClassLink'
 import ClassDetail from './views/Student/ClassDetail'
 import AssignmentDetail from './views/Student/AssignmentDetail'
 import AddAssignment from './views/Student/Assignments/AddAssignment'
+import SharePartnerLink from './views/Student/MiscViews/SharePartnerLink'
 
 import SyllabusTool from './views/SyllabusTool'
 import ClassAdmin from './views/ClassAdmin'
@@ -68,22 +69,20 @@ const router = (
       <Route path='/our-team' component={OurTeam} />
       <Route path='/faq' component={Faq} />
       <Route path='/enroll' component={Enroll} />
-      {/* <Route path='/e/:link' component={EnrollmentLinkLanding} /> */}
       <Route path='/s/:link' component={StudentLink} />
       <Route path='/c(/:partner)' component={Onboard} type='onboard' />
       <Route path='/download' component={DownloadApp} />
       <Route path='/pitch-deck' component={PitchDeck} />
       <Route path='/o(/:partner)' component={Onboard} type='onboard' />
       <Route path='/e/:link' component={Onboard} type='e' />
-      {/* <Route path='/onboard(/:partner)' component={Onboard} /> */}
-      {/* ^ when we update to React Router v4+, optional params like 'partner' will change to this notation --> /:pathParam? */}
       <Route path='/app' component={Layout} onEnter={requireAuth}>
         <IndexRedirect to='/student/home' />
         <Route path='/student'>
           <IndexRedirect to='/student/home'/>
           <Route path='/student/home' component={Home} />
           <Route path='/student/tasks' component={Tasks} />
-          <Route path='/student/find-classes' component={FindClasses} />
+          {/* <Route path='/student/find-classes' component={FindClasses} /> */}
+          <Route path='/student/share/:partner' component={SharePartnerLink} />
           <Route path='/student/verify' component={Verification} onEnter={authOnboard} />
           <Route path='/student/class-link' component={ClassLink} />
           <Route path='/student/calendar' component={Calendar}/>

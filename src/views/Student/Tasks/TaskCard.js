@@ -28,11 +28,11 @@ class TaskCard extends React.Component {
       <div className="task-card-container" key={task.id} onClick={() => this.goToAssignment()} >
         <div className="task-card" style={{border: '1px solid', borderColor: color, borderRadius: '5px'}}>
           <div className="task-card-heading">
-            <h2 className="task-card-left" style={{color: color}}>{this.props.clName}</h2>
+            <h2 className="task-card-left" style={{color: color}}>{task.name}</h2>
             <p className="task-card-right">{this.formatDueDate(task.due)}</p>
           </div>
           <div className="task-card-content">
-            <p className="task-card-left">{task.name}</p>
+            <p className="task-card-left">{this.props.clName}</p>
             <p className="task-card-left">{task.weight * 100 + '%'}</p>
           </div>
         </div>

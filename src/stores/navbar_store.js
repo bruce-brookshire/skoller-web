@@ -6,7 +6,8 @@ class NavBarStore {
       cl: null,
       isDIY: false,
       toggleRequestResolved: null,
-      title: null
+      title: null,
+      weightId: null
     })
   }
 }

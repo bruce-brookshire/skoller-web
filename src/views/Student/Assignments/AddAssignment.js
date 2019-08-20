@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import SkModal from '../../components/SkModal/SkModal'
 import actions from '../../../actions'
-// import Loading from '../../../components/Loading'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
 import DatePicker from '../../components/DatePicker'
 import NewAssignment from './NewAssignment'
 import {showSnackbar} from '../../../utilities/snackbar'
+import SkSelectDropDown from '../../components/SkSelectDropDown'
+import Sammi from '../../components/Sammi';
+import { browserHistory } from 'react-router';
 
 @inject('rootStore')
 @observer
@@ -40,9 +42,11 @@ class AddAssignment extends Component {
       showSaveButton: false,
       showDateField: false,
       showDatePicker: false,
-      hideAddAssignmentForm: false,
+      formView: false,
+      lockView: false,
       notWeighted: false,
       showShareField: false,
+      autoComplete: {weights: false, classes: false},
 
       // batch adding assignments when there are none
       needLock: false
@@ -86,9 +90,15 @@ class AddAssignment extends Component {
   }
 
   // get the class user selects
-  selectClassHandler = event => {
-    const selectedClassId = event.target.value
+  selectClassHandler = cl => {
     let newAssignment = this.state.newAssignment
+    newAssignment.weight_id = null
+    this.setState({newAssignment: newAssignment})
+    this.toggleClasses(false)
+    const selectedClassId = cl.id
+    if (this.state.selectedClass.id === selectedClassId) {
+      newAssignment.weight_id = null
+    }
     actions.classes
       .getStudentClass(this.state.studentId, selectedClassId)
       .then(selectedStudentClass => {
@@ -113,10 +123,11 @@ class AddAssignment extends Component {
     })
   }
 
-  selectWeightHandler = event => {
+  selectWeightHandler = weight => {
+    this.setState({autoComplete: {weights: false}})
     let newAssignment = this.state.newAssignment
-    if (event.target.value === 'notWeighted') {
-      newAssignment.weight_id = 'notWeighted'
+    if (weight === 'notWeighted') {
+      newAssignment.weight_id = null
       this.setState({
         notWeighted: true,
         showNameField: true,
@@ -125,7 +136,16 @@ class AddAssignment extends Component {
         showShareField: true
       })
     } else {
-      newAssignment.weight_id = parseInt(event.target.value)
+      let i = 0
+      this.state.selectedStudentClass.assignments.forEach(assignment => {
+        if (assignment.weight_id === weight.id) {
+          i += 1
+        }
+      })
+      if (i === 0) {
+        this.setState({lockView: true})
+      }
+      newAssignment.weight_id = weight.id
       this.setState({
         notWeighted: false,
         newAssignment: newAssignment,
@@ -133,11 +153,6 @@ class AddAssignment extends Component {
         showDateField: true,
         showShareField: true
       })
-    }
-
-    if (this.state.selectedStudentClass.assignments.length <= 0) {
-      // TODO stuff here to get lock
-      this.setState({ needLock: true })
     }
   }
 
@@ -150,7 +165,12 @@ class AddAssignment extends Component {
   addAssignmentButtonHandler = () => {
     const { newAssignments, newAssignment } = this.state
 
-    if (!newAssignment.weight_id) {
+    let givenClass = false
+    if (this.props.assignmentParams.class) {
+      givenClass = true
+    }
+
+    if (!newAssignment.weight_id && !this.state.notWeighted) {
       showSnackbar('Please select a weight for the assignment.')
     } else if (!newAssignment.name) {
       showSnackbar('Please give the assignment a name.')
@@ -170,9 +190,9 @@ class AddAssignment extends Component {
         },
         newAssignments: newAssignments,
         showSaveButton: true,
-        selectedClass: null,
-        selectedStudentClass: null,
-        hideAddAssignmentForm: true
+        selectedClass: givenClass ? this.state.selectedClass : null,
+        selectedStudentClass: givenClass ? this.state.selectedStudentClass : null,
+        formView: true
       }).then(this.resetFormState())
     }
   }
@@ -186,7 +206,7 @@ class AddAssignment extends Component {
       showAddButton: false,
       showShareField: false,
       notWeighted: false,
-      hideAddAssignmentForm: false
+      formView: false
     })
 
     if (this.props.assignmentParams.class) {
@@ -229,7 +249,6 @@ class AddAssignment extends Component {
       actions.assignments.createStudentAssignment(this.state.studentId, assignment.class.id, assignmentToSubmit)
         .then(() => {
           actions.assignments.getAllStudentAssignments(this.state.studentId)
-          let formattedAssignments = this.props.rootStore.studentAssignmentsStore.getFormattedAssignments
         })
       //  TODO if (needLock === true) do stuff here to unlock
     })
@@ -245,6 +264,10 @@ class AddAssignment extends Component {
   }
 
   resetFormState () {
+    let givenClass = false
+    if (this.props.assignmentParams.class) {
+      givenClass = true
+    }
     this.setState({
       // student info stuff
       newAssignment: {
@@ -255,8 +278,9 @@ class AddAssignment extends Component {
         created_on: 'web',
         share: true
       },
-      selectedClass: {},
-      selectedStudentClass: null,
+      selectedClass: givenClass ? this.state.selectedClass : {},
+      selectedStudentClass: givenClass ? this.state.selectedStudentClass : null,
+      autoComplete: {weights: false, classes: false},
 
       // visibility stuff
       showClassField: true,
@@ -266,80 +290,175 @@ class AddAssignment extends Component {
       showSaveButton: true,
       showDateField: false,
       showDatePicker: false,
-      hideAddAssignmentForm: true,
+      formView: true,
       notWeighted: false,
       showShareField: false
     })
   }
 
-  renderClassSelection = () => {
+  renderClassOptions = () => {
     const classes = this.state.classes
+    return (
+      <div>
+        {classes.map(studentClass => {
+          return (
+            <div
+              className='add-assignment-autocomplete-option'
+              key={studentClass.id}
+              onClick={() => {
+                this.selectClassHandler(studentClass)
+              }}
+              style={{color: studentClass.getColor()}}
+            >
+              {studentClass.name}
+            </div>
+          )
+        })}
+      </div>
+    )
+  }
+
+  toggleClasses (bool) {
+    console.log('toggle classes: ', bool)
+    let autoComplete = this.state.autoComplete
+    autoComplete.classes = bool
+    console.log('new autocomplete: ', autoComplete)
+    this.setState({autoComplete})
+  }
+
+  renderClassSelection () {
     let givenClass = null
     if (this.props.assignmentParams.class) {
       givenClass = this.props.assignmentParams.class
     } else {
       givenClass = false
     }
+    let classSelection = this.state.selectedStudentClass
+    let classSelectionName
+    if (this.state.selectedStudentClass) {
+      classSelectionName = this.state.selectedStudentClass.name
+    } else {
+      classSelectionName = 'Select a Class'
+    }
     return (
-      <select
-        className="add-assignment-class-select"
-        onChange={this.selectClassHandler}
-        style={
-          this.state.selectedStudentClass
-            ? { color: this.state.selectedStudentClass.getColor() }
-            : { color: '#57B9E4' }}
-        defaultValue={this.props.assignmentParams.class}
-      >
-        {givenClass
-          ? <option
-            value={givenClass.id}
-            style={{color: givenClass.getColor}}
-          >
-            {givenClass.name}
-          </option>
-          : <option value={null}>
-            Select a Class
-          </option>
-        }
-        {classes.map(studentClass => {
-          return (
-            (givenClass)
-              ? (studentClass.id === givenClass.id)
-                ? null
-                : <option
-                  style={{color: studentClass.getColor}}
-                  value={studentClass.id}
-                  key={studentClass.id}
-                >
-                  {studentClass.name}
-                </option>
-              : <option
-                style={{color: studentClass.getColor}}
-                value={studentClass.id}
-                key={studentClass.id}
-              >
-                {studentClass.name}
-              </option>
-          )
-        })}
-      </select>
+      <div>
+        <div>
+          {givenClass
+            ? <div
+              className='add-assignment-field-selection'
+              style={{color: '#' + givenClass.color, cursor: 'default'}}
+            >
+              {givenClass.name}
+            </div>
+            : <div
+              value={null}
+              onClick={() => {
+                this.toggleClasses(true)
+              }}
+              className='add-assignment-field-selection'
+              style={{color: classSelection ? classSelection.getColor() : null}}
+            >
+              {classSelectionName}
+            </div>
+          }
+        </div>
+        <SkSelectDropDown
+          optionsMap={this.renderClassOptions}
+          toggle={() => this.toggleClasses(false)}
+          show={this.state.autoComplete.classes}
+        />
+      </div>
     )
   }
 
-  renderWeightSelection = () => {
-    const { weights } = this.state
+  sortWeights (weightsArray) {
+    let sortedWeights = []
+    weightsArray.forEach(weight => {
+      let assignmentsCount = 0
+      this.state.selectedStudentClass.assignments.forEach(assignment => {
+        if (assignment.weight_id === weight.id) {
+          assignmentsCount += 1
+        }
+      })
+      if (assignmentsCount > 0) {
+        sortedWeights.push({weight, hasAssignments: true})
+      } else {
+        sortedWeights.unshift({weight, hasAssignments: false})
+      }
+    })
+    return sortedWeights
+  }
+
+  renderWeightsOptions = () => {
+    const weights = this.state.weights
+    let sortedWeights = this.sortWeights(weights)
     return (
-      <select onChange={this.selectWeightHandler}>
-        <option value="null">Select a Grading Category</option>
-        {weights.map(weight => {
+      <div>
+        {sortedWeights.map(sortedWeight => {
+          let weight = sortedWeight.weight
+          let hasAssignments = sortedWeight.hasAssignments
           return (
-            <option value={weight.id} key={weight.id}>
-              {weight.name}
-            </option>
+            <div
+              className='add-assignment-autocomplete-option'
+              key={weight.id}
+              onClick={() => {
+                this.selectWeightHandler(weight)
+              }}
+            >
+              <div>
+                {weight.name}
+              </div>
+              <span>
+                {!hasAssignments &&
+                  'Add assignments'
+                }
+              </span>
+            </div>
           )
         })}
-        <option value="notWeighted">Not weighted</option>
-      </select>
+        <div
+          className='add-assignment-autocomplete-option'
+          onClick={() => {
+            this.selectWeightHandler('notWeighted')
+          }}
+        >
+          <div>
+            Not weighted
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  toggleWeights (bool) {
+    let autoComplete = this.state.autoComplete
+    autoComplete.weights = bool
+    this.setState({autoComplete})
+  }
+
+  renderWeightSelection = () => {
+    let weightName = 'Select a Weight'
+    if (this.state.selectedStudentClass && (this.state.newAssignment.weight_id !== null)) {
+      if (!this.state.notWeighted) {
+        weightName = this.state.selectedStudentClass.weights.find(weight => weight.id === this.state.newAssignment.weight_id).name
+      }
+    }
+    if (this.state.notWeighted) {
+      weightName = 'Not weighted'
+    }
+    return (
+      <div>
+        <div>
+          <div onClick={() => this.toggleWeights(!this.state.autoComplete.weights)} className='add-assignment-field-selection'>
+            {weightName}
+          </div>
+        </div>
+        <SkSelectDropDown
+          optionsMap={this.renderWeightsOptions}
+          toggle={() => this.toggleWeights(false)}
+          show={this.state.autoComplete.weights}
+        />
+      </div>
     )
   }
 
@@ -373,7 +492,7 @@ class AddAssignment extends Component {
     delete newAssignments[assignment.name + assignment.due + assignment.class.id + assignment.weight_id + assignment.share]
     if (Object.keys(newAssignments).length === 0) {
       this.setState({
-        hideAddAssignmentForm: false,
+        formView: false,
         showSaveButton: false,
         showClassField: true
       })
@@ -396,7 +515,7 @@ class AddAssignment extends Component {
           ? <p
             className="add-assignment-back-button"
             onClick={() => {
-              this.setState({hideAddAssignmentForm: true})
+              this.setState({formView: true})
               this.resetFormState()
             }}
           >
@@ -549,13 +668,75 @@ class AddAssignment extends Component {
     )
   }
 
+  cancelLock = () => {
+    let newAssignment = this.state.newAssignment
+    newAssignment.weight_id = null
+    this.setState({
+      newAssignment,
+      lockView: false,
+      showDateField: false,
+      showShareField: false,
+      showNameField: false
+    })
+  }
+
+  sendToDiy () {
+    browserHistory.push({
+      pathname: `/class/${this.state.selectedClass.id}/syllabus_tool/`,
+      state: {
+        isDIY: true,
+        weightId: this.state.newAssignment.weight_id
+      }
+    })
+  }
+
+  submitLock = () => {
+    if (Object.keys(this.state.newAssignments).length > 0) {
+      this.saveNewAssignmentsHandler()
+    }
+    this.sendToDiy()
+  }
+
+  renderLockView () {
+    let newAssignmentsCount = Object.keys(this.state.newAssignments).length
+    return (
+      <div className='add-assignment-lock-view'>
+        <Sammi
+          position='left'
+          emotion='ooo'
+          message='Looks like there are no assignments for this category. Use the syllabus to add them all!'
+        />
+        <div className='add-assignment-syllabus-control'>
+          <div
+            onClick={() => this.cancelLock()}
+            className='add-assignment-syllabus-button'
+          >
+            <p>Cancel</p>
+          </div>
+          <div
+            onClick={() => this.submitLock()}
+            className='add-assignment-syllabus-cancel'
+          >
+            <p>Start adding assignments</p>
+            {newAssignmentsCount > 0 &&
+              <small>(And save the {newAssignmentsCount} new assignment{newAssignmentsCount > 1 ? 's' : ''})</small>
+            }
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   render () {
     return (
       <SkModal closeModal={this.props.closeModal}>
         <div className="add-assignment-container">
-          {(this.state.hideAddAssignmentForm)
-            ? this.renderFormHandler()
-            : this.renderForm()}
+          {this.state.lockView
+            ? this.renderLockView()
+            : this.state.formView
+              ? this.renderFormHandler()
+              : this.renderForm()
+          }
         </div>
       </SkModal>
     )

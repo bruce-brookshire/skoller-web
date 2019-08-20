@@ -109,15 +109,11 @@ class AssignmentForm extends React.Component {
     }
     if (this.props.validateForm(this.state.form, requiredFields)) {
       const form = this.mapForm(this.state.form)
-      console.log(this.state)
-      console.log(form)
       !form.id ? this.onCreateAssignment(form) : this.onUpdateAssignment(form)
     }
     if (this.props.updateLastAssignmentDate) {
-      console.log(this.state.form)
       const date = this.state.form.due + '/' + this.state.form.year_due
       this.props.updateLastAssignmentDate(date)
-      console.log(date)
     }
   }
 
@@ -125,11 +121,16 @@ class AssignmentForm extends React.Component {
   * Create a new assignment
   */
   onCreateAssignment (form) {
-    this.setState({loading: true})
-    actions.assignments.createAssignment(this.props.cl, form).then((assignment) => {
+    if (this.props.onCreateAssignment) {
       this.setState({form: this.initializeFormData(), loading: false, due_null: false})
-      if (this.props.onCreateAssignment) this.props.onCreateAssignment(assignment)
-    }).catch(() => { this.setState({loading: false}) })
+      this.props.onCreateAssignment(form)
+    } else {
+      this.setState({loading: true})
+      actions.assignments.createAssignment(this.props.cl, form).then((assignment) => {
+        this.setState({form: this.initializeFormData(), loading: false, due_null: false})
+        if (this.props.onCreateAssignment) this.props.onCreateAssignment(assignment)
+      }).catch(() => { this.setState({loading: false}) })
+    }
   }
 
   /*
@@ -249,6 +250,7 @@ class AssignmentForm extends React.Component {
                       form.due = day.format('MM/DD')
                       this.setState({showDatePicker: false})
                     }}
+                    close={() => this.setState({showDatePicker: false})}
                   />
                 }
               </div>

@@ -318,6 +318,21 @@
   }
 }
 
+@mixin onboard-form-field-tall {
+  height: 100%;
+  min-height: 36px;
+  width: 100%;
+  border: 1px solid $cn-form-border;
+  border-radius: 5px;
+  box-sizing: border-box;
+  margin: 0 0 0.5rem 0;
+  padding: 8px 4px 6px 4px;
+  
+  &:focus {
+    outline: none;
+  }
+}
+
 @mixin not-selectable {
   -webkit-user-select: none; /* Safari */        
   -moz-user-select: none; /* Firefox */

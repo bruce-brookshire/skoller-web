@@ -37,11 +37,10 @@ class Layout extends React.Component {
   render () {
     return (
       <div className='onboard-container'>
-        {mobileCheck() || this.props.loggedIn
-          ? null
-          : <div className='onboard-logo-text'>Keep Up With Classes, Together</div>
-        }
         <div className='onboard-layout' style={{zIndex: '5'}}>
+          <div className='onboard-logo-text'>
+            Keep Up with Classes, Together.
+          </div>
           <NavBar onboard={this.props.loggedIn ? !this.props.loggedIn : true} />
           {this.props.hideModal
             ? this.renderContent()

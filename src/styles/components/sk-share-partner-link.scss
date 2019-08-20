@@ -1,0 +1,27 @@
+.sk-share-partner-link-container {
+  margin: 2rem 1rem;
+  
+  @media only screen and (max-width: $sk-mobile-break-point) {
+    margin: 1rem;
+  }
+
+  .sk-share-partner-link {
+    @include skoller-cell;
+    padding: 1rem;
+    max-width: 480px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .sk-share-partner-link-copy-box {
+      margin: 1rem 0;
+    }
+
+    .sk-share-partner-link-logo {
+      max-width: 64px;
+      max-height: 48px;
+      margin: 0 auto;
+    }
+  }
+}
