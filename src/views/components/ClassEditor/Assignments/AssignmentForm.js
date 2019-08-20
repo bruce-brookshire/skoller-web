@@ -174,6 +174,7 @@ class AssignmentForm extends React.Component {
   }
 
   validateDate (d) {
+    console.log('date', d)
     if (Object.prototype.toString.call(d) === '[object Date]') {
       if (isNaN(d.getTime())) {
         return false
@@ -187,7 +188,8 @@ class AssignmentForm extends React.Component {
 
   verifyData (form) {
     const nameCheck = form.name.trim() !== ''
-    const dateCheck = (form.due !== null) && (this.validateDate(new Date(form.due)))
+    const dateCheck = (form.due !== null) && (this.validateDate(new Date(form.due + '/' + form.year_due)))
+    console.log('form.due: ', form.due)
     return nameCheck && (this.state.due_null ? true : dateCheck)
   }
 
@@ -195,6 +197,7 @@ class AssignmentForm extends React.Component {
     const {form} = this.state
     const {formErrors, updateProperty, isAdmin, weights, currentWeight} = this.props
     const disableButton = !this.verifyData(form)
+    console.log(this.state.form)
 
     return (
       <div id='cn-assignment-form'>
@@ -239,7 +242,7 @@ class AssignmentForm extends React.Component {
                     label='Due date'
                     name='due'
                     placeholder='MM/DD'
-                    value={form.due ? moment(form.due).format('MM/DD') : 'Select date'}
+                    value={form.due ? form.due : 'Select date'}
                     disabled={true}
                   />
                 </div>
@@ -247,7 +250,7 @@ class AssignmentForm extends React.Component {
                   <DatePicker
                     givenDate={this.props.lastAssignmentDate ? moment(this.props.lastAssignmentDate) : Date.now()}
                     returnSelectedDay={(day) => {
-                      form.due = day.format('MM/DD')
+                      form.due = moment(day).format('MM/DD')
                       this.setState({showDatePicker: false})
                     }}
                     close={() => this.setState({showDatePicker: false})}
