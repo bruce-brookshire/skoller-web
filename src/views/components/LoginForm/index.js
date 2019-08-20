@@ -61,6 +61,7 @@ class LoginForm extends React.Component {
                   }
                 })
               }}
+              type="tel"
             />
           </div>
 

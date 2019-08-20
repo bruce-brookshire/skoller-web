@@ -184,6 +184,7 @@ class SignUpForm extends React.Component {
                     form
                   })
                 }}
+                type="tel"
               />
             </div>
           </div>

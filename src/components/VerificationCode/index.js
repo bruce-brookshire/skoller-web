@@ -106,7 +106,7 @@ class VerifitcationInput extends React.Component {
         onFocus={(event) => this.setState({isFocused: true})}
         maxLength={1}
         value={value}
-        type='tel'
+        pattern="[0-9]*"
       />
     )
   }

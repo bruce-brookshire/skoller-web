@@ -19,6 +19,10 @@ class Onboard extends React.Component {
   constructor (props) {
     super(props)
 
+    if (this.props.params.partner) {
+      this.props.params.partner = this.props.params.partner.toLowerCase()
+    }
+
     this.state = {
       step: 'sign-up',
       partner: this.getPartner(this.props.params.partner),
