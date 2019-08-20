@@ -118,7 +118,7 @@ class SignUpForm extends React.Component {
                 phone: this.validatePhone(value)
               })
             }}
-            pattern="[0-9]*"
+            type="tel"
           />
         </div>
         <div

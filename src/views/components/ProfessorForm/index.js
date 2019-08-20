@@ -134,7 +134,6 @@ class ProfessorForm extends React.Component {
               }}
               placeholder='Phone Number'
               value={form.phone}
-              pattern="[0-9]*"
             />
           </div>
           <div className='cn-create-professor-row'>

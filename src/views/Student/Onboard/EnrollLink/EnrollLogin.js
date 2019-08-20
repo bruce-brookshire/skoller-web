@@ -50,7 +50,7 @@ class EnrollLogin extends React.Component {
                   }
                 })
               }}
-              pattern="[0-9]*"
+              type="tel"
             />
           </div>
 

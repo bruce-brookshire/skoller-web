@@ -34,7 +34,10 @@ class AddClassModal extends React.Component {
   render () {
     return (
       <div className='sk-add-class-modal-wrapper'>
-        <SkModal title='Join a Class' closeModal={() => this.props.closeModal()}>
+        <SkModal
+          title={this.state.formState === 'editSchool' ? 'Join a School' : 'Join a Class'}
+          closeModal={() => this.props.closeModal()}
+        >
           <div className='sk-add-class-modal'>
             {this.state.formState === 'findClass' &&
               <FindAClass
