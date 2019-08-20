@@ -186,15 +186,41 @@ class ClassDetail extends React.Component {
     )
   }
 
+  /*
+  * Close the Add Assignment modal
+  */
   closeModal = () => {
     this.setState({showAddAssignmentModal: false})
   }
 
+  /*
+  * Find class weight categories that don't have assignments
+  */
+  getEmptyWeights () {
+    let weights = this.state.studentClass.weights
+    let emptyWeights = []
+    let assignments = this.state.studentClass.assignments
+    console.log(weights, assignments)
+    weights.forEach(weight => {
+      let assignmentCount = 0
+      assignments.forEach(assignment => {
+        if (assignment.weight_id === weight.id) {
+          assignmentCount += 1
+        }
+      })
+      if (assignmentCount === 0) {
+        emptyWeights.push(weight)
+      }
+    })
+    return emptyWeights
+  }
+
   renderAddAssignmentButton () {
+    let emptyWeights = this.getEmptyWeights()
     return (
       <div>
         <a className='add-assignment-button' onClick={() => this.setState({showAddAssignmentModal: true})}>
-          + Add Assignment
+          + Add Assignment{emptyWeights.length > 0 ? <div className='add-assignment-button-alert'><div className='add-assignment-button-alert-count'>{emptyWeights.length}</div></div> : null}
         </a>
         { this.state.showAddAssignmentModal
           ? <AddAssignment closeModal={this.closeModal} assignmentParams={{class: this.state.studentClass}}/>
