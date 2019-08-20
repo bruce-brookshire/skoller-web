@@ -200,7 +200,6 @@ class ClassDetail extends React.Component {
     let weights = this.state.studentClass.weights
     let emptyWeights = []
     let assignments = this.state.studentClass.assignments
-    console.log(weights, assignments)
     weights.forEach(weight => {
       let assignmentCount = 0
       assignments.forEach(assignment => {

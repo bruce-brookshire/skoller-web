@@ -54,7 +54,6 @@ class AssignmentTable extends React.Component {
   */
   renderWeightName (id) {
     const {weights} = this.props
-    console.log(weights)
     if (weights) {
       var weight = weights.find(w => w.id === id)
       if (weight && weight !== undefined) {

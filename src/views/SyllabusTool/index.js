@@ -36,7 +36,6 @@ class SyllabusTool extends React.Component {
   */
   componentWillMount () {
     this.intializeComponent()
-    console.log(this.props.rootStore.navbarStore)
   }
 
   /*
@@ -109,7 +108,6 @@ class SyllabusTool extends React.Component {
   onUpdateClass (form) {
     let {navbarStore} = this.props.rootStore
     actions.classes.updateClass(form).then((cl) => {
-      console.log('Weights onUpdateClass:', cl.is_points)
       navbarStore.cl = cl
     }).catch(() => false)
   }
@@ -240,7 +238,6 @@ class SyllabusTool extends React.Component {
   * Render the syllabus section content.
   */
   renderContent () {
-    console.log(ContentEnum, this.state)
     const {navbarStore} = this.props.rootStore
     switch (this.state.currentIndex) {
       case ContentEnum.WEIGHTS:

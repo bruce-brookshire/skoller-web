@@ -181,7 +181,6 @@ class Assignments extends React.Component {
   // }
 
   toAssignmentForm (weight) {
-    console.log(weight)
     this.setState({ addAssignment: true, currentWeight: weight, currentWeightIndex: this.state.weights.indexOf(weight) })
   }
 
@@ -192,7 +191,6 @@ class Assignments extends React.Component {
   getSingleWeight () {
     let singleWeight = this.props.singleWeight
     let weights = []
-    console.log(this.state.weights)
     if (singleWeight) {
       this.state.weights.forEach(weight => {
         if (weight.id === singleWeight) {
@@ -220,7 +218,6 @@ class Assignments extends React.Component {
   async handleSubmit () {
     this.setState({loading: true})
     await this.state.assignments.forEach(async form => {
-      console.log(form)
       await actions.assignments.createAssignment(this.props.cl, form).then((assignment) => {
         this.setState({form: this.initializeFormData(), due_null: false})
       }).catch(() => { this.setState({loading: false}) })
@@ -245,8 +242,6 @@ class Assignments extends React.Component {
       weights = this.getSingleWeight()
     }
 
-    console.log(weights)
-
     return (
       <div id='cn-assignments'>
         {loadingAssignments || loadingWeights
@@ -268,7 +263,6 @@ class Assignments extends React.Component {
             }
             {!viewOnly && addAssignment &&
               <div id='class-editor-assignment-form'>
-                {console.log(this.props.singleWeight)}
                 {this.renderBackButton()}
                 <AssignmentForm
                   assignment={currentAssignment}
