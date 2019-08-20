@@ -36,6 +36,7 @@ class SyllabusTool extends React.Component {
   */
   componentWillMount () {
     this.intializeComponent()
+    console.log(this.props.rootStore.navbarStore)
   }
 
   /*
@@ -66,17 +67,19 @@ class SyllabusTool extends React.Component {
     let {navbarStore} = this.props.rootStore
     navbarStore.cl = null
     navbarStore.isDIY = state.isDIY || false
+    navbarStore.weightId = state.weightId || false
     return {
       currentDocumentIndex: 0,
       currentDocument: null,
-      currentIndex: ContentEnum.WEIGHTS,
+      currentIndex: state.weightId ? ContentEnum.ASSIGNMENTS : ContentEnum.WEIGHTS,
       documents: [],
       gettingClass: false,
       loadingClass: true,
       openIssuesModal: false,
       openProblemsModal: false,
       stepCount: 3,
-      uploadingDoc: false
+      uploadingDoc: false,
+      singleWeight: state.weightId ? state.weightId : false
     }
   }
 
@@ -252,7 +255,9 @@ class SyllabusTool extends React.Component {
           onBack={() => this.setState({currentIndex: 0})}
           cl={navbarStore.cl}
           isReview={false}
-          onSubmit={this.onNext.bind(this)} />
+          onSubmit={this.onNext.bind(this)}
+          singleWeight={this.state.singleWeight}
+        />
       case ContentEnum.REVIEW:
         return (
           <div>
@@ -279,6 +284,7 @@ class SyllabusTool extends React.Component {
               onEdit={() => {
                 this.setState({currentIndex: ContentEnum.ASSIGNMENTS})
               }}
+              singleWeight={this.state.singleWeight}
             />
             <button
               id='cn-review-submit'
@@ -381,13 +387,17 @@ class SyllabusTool extends React.Component {
   * Render the progress bar for DIY.
   */
   renderProgressBar () {
-    return (
-      <ProgressBar currentStep={this.state.currentIndex}>
-        {steps.map((step, index) => {
-          return <SyllabusProgressStep key={`step-${index}`} label={step} index={index} />
-        })}
-      </ProgressBar>
-    )
+    if (!this.state.singleWeight) {
+      return (
+        <ProgressBar currentStep={this.state.currentIndex}>
+          {steps.map((step, index) => {
+            return <SyllabusProgressStep key={`step-${index}`} label={step} index={index} />
+          })}
+        </ProgressBar>
+      )
+    } else {
+      return null
+    }
   }
 
   /*

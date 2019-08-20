@@ -8,6 +8,8 @@ import DatePicker from '../../components/DatePicker'
 import NewAssignment from './NewAssignment'
 import {showSnackbar} from '../../../utilities/snackbar'
 import SkSelectDropDown from '../../components/SkSelectDropDown'
+import Sammi from '../../components/Sammi';
+import { browserHistory } from 'react-router';
 
 @inject('rootStore')
 @observer
@@ -41,6 +43,7 @@ class AddAssignment extends Component {
       showDateField: false,
       showDatePicker: false,
       formView: false,
+      lockView: false,
       notWeighted: false,
       showShareField: false,
       autoComplete: {weights: false, classes: false},
@@ -133,6 +136,15 @@ class AddAssignment extends Component {
         showShareField: true
       })
     } else {
+      let i = 0
+      this.state.selectedStudentClass.assignments.forEach(assignment => {
+        if (assignment.weight_id === weight.id) {
+          i += 1
+        }
+      })
+      if (i === 0) {
+        this.setState({lockView: true})
+      }
       newAssignment.weight_id = weight.id
       this.setState({
         notWeighted: false,
@@ -141,11 +153,6 @@ class AddAssignment extends Component {
         showDateField: true,
         showShareField: true
       })
-    }
-
-    if (this.state.selectedStudentClass.assignments.length <= 0) {
-      // TODO stuff here to get lock
-      this.setState({ needLock: true })
     }
   }
 
@@ -157,6 +164,11 @@ class AddAssignment extends Component {
 
   addAssignmentButtonHandler = () => {
     const { newAssignments, newAssignment } = this.state
+
+    let givenClass = false
+    if (this.props.assignmentParams.class) {
+      givenClass = true
+    }
 
     if (!newAssignment.weight_id && !this.state.notWeighted) {
       showSnackbar('Please select a weight for the assignment.')
@@ -178,8 +190,8 @@ class AddAssignment extends Component {
         },
         newAssignments: newAssignments,
         showSaveButton: true,
-        selectedClass: null,
-        selectedStudentClass: null,
+        selectedClass: givenClass ? this.state.selectedClass : null,
+        selectedStudentClass: givenClass ? this.state.selectedStudentClass : null,
         formView: true
       }).then(this.resetFormState())
     }
@@ -252,6 +264,10 @@ class AddAssignment extends Component {
   }
 
   resetFormState () {
+    let givenClass = false
+    if (this.props.assignmentParams.class) {
+      givenClass = true
+    }
     this.setState({
       // student info stuff
       newAssignment: {
@@ -262,8 +278,8 @@ class AddAssignment extends Component {
         created_on: 'web',
         share: true
       },
-      selectedClass: {},
-      selectedStudentClass: null,
+      selectedClass: givenClass ? this.state.selectedClass : {},
+      selectedStudentClass: givenClass ? this.state.selectedStudentClass : null,
       autoComplete: {weights: false, classes: false},
 
       // visibility stuff
@@ -355,10 +371,9 @@ class AddAssignment extends Component {
     )
   }
 
-  renderWeightsOptions = () => {
-    const weights = this.state.weights
+  sortWeights (weightsArray) {
     let sortedWeights = []
-    weights.forEach(weight => {
+    weightsArray.forEach(weight => {
       let assignmentsCount = 0
       this.state.selectedStudentClass.assignments.forEach(assignment => {
         if (assignment.weight_id === weight.id) {
@@ -371,6 +386,12 @@ class AddAssignment extends Component {
         sortedWeights.unshift({weight, hasAssignments: false})
       }
     })
+    return sortedWeights
+  }
+
+  renderWeightsOptions = () => {
+    const weights = this.state.weights
+    let sortedWeights = this.sortWeights(weights)
     return (
       <div>
         {sortedWeights.map(sortedWeight => {
@@ -647,13 +668,75 @@ class AddAssignment extends Component {
     )
   }
 
+  cancelLock = () => {
+    let newAssignment = this.state.newAssignment
+    newAssignment.weight_id = null
+    this.setState({
+      newAssignment,
+      lockView: false,
+      showDateField: false,
+      showShareField: false,
+      showNameField: false
+    })
+  }
+
+  sendToDiy () {
+    browserHistory.push({
+      pathname: `/class/${this.state.selectedClass.id}/syllabus_tool/`,
+      state: {
+        isDIY: true,
+        weightId: this.state.newAssignment.weight_id
+      }
+    })
+  }
+
+  submitLock = () => {
+    if (Object.keys(this.state.newAssignments).length > 0) {
+      this.saveNewAssignmentsHandler()
+    }
+    this.sendToDiy()
+  }
+
+  renderLockView () {
+    let newAssignmentsCount = Object.keys(this.state.newAssignments).length
+    return (
+      <div className='add-assignment-lock-view'>
+        <Sammi
+          position='left'
+          emotion='ooo'
+          message='Looks like there are no assignments for this category. Use the syllabus to add them all!'
+        />
+        <div className='add-assignment-syllabus-control'>
+          <div
+            onClick={() => this.cancelLock()}
+            className='add-assignment-syllabus-button'
+          >
+            <p>Cancel</p>
+          </div>
+          <div
+            onClick={() => this.submitLock()}
+            className='add-assignment-syllabus-cancel'
+          >
+            <p>Start adding assignments</p>
+            {newAssignmentsCount > 0 &&
+              <small>(And save the {newAssignmentsCount} new assignment{newAssignmentsCount > 1 ? 's' : ''})</small>
+            }
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   render () {
     return (
       <SkModal closeModal={this.props.closeModal}>
         <div className="add-assignment-container">
-          {(this.state.formView)
-            ? this.renderFormHandler()
-            : this.renderForm()}
+          {this.state.lockView
+            ? this.renderLockView()
+            : this.state.formView
+              ? this.renderFormHandler()
+              : this.renderForm()
+          }
         </div>
       </SkModal>
     )

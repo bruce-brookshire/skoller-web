@@ -4,8 +4,10 @@ import AssignmentCategories from './AssignmentCategories'
 import AssignmentForm from './AssignmentForm'
 import AssignmentTable from './AssignmentTable'
 import SkipCategoryModal from './SkipCategoryModal'
-import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
+import SkLoader from '../../../../assets/sk-icons/SkLoader'
+import moment from 'moment'
+import { browserHistory } from 'react-router';
 
 class Assignments extends React.Component {
   constructor (props) {
@@ -16,20 +18,38 @@ class Assignments extends React.Component {
   /*
   * Fetch the weights for a given class
   */
-  componentWillMount () {
+  async componentWillMount () {
     const {cl} = this.props
     this.setState({loadingAssignments: true})
-    actions.assignments.getClassAssignments(cl).then((assignments) => {
+    await actions.assignments.getClassAssignments(cl).then((assignments) => {
       this.setState({assignments, loadingAssignments: false})
     }).then(() => { this.setState({loadingAssignments: false}) })
 
     this.setState({loadingWeights: true})
-    actions.weights.getClassWeights(cl).then((weights) => {
+    await actions.weights.getClassWeights(cl).then((weights) => {
       weights = weights.sort((a, b) => {
         return a.weight < b.weight
       })
       this.setState({weights, loadingWeights: false})
     }).then(() => { this.setState({loadingWeights: false}) })
+
+    this.getSingleWeightCurrentWeight()
+  }
+
+  getSingleWeightCurrentWeight () {
+    let addAssignment = false
+    let currentWeight = null
+    let currentWeightIndex = 0
+    if (this.props.singleWeight) {
+      this.state.weights.forEach(weight => {
+        if (weight.id === this.props.singleWeight) {
+          currentWeight = weight
+        }
+      })
+      addAssignment = true
+      currentWeightIndex = this.state.weights.indexOf(currentWeight)
+    }
+    this.setState({addAssignment: addAssignment, currentWeightIndex: currentWeightIndex, currentWeight: currentWeight})
   }
 
   /*
@@ -74,10 +94,10 @@ class Assignments extends React.Component {
   * @param [Object] assignment. Assignment.
   */
   onCreateAssignment (assignment) {
+    this.updateLastAssignmentDate(moment(assignment.due).format('MM/DD/YYYY'))
     const newAssignments = this.state.assignments
     newAssignments.push(assignment)
     this.setState({assignments: newAssignments, currentAssignment: null})
-    this.sectionControl.scrollTop = this.sectionControl.scrollHeight
   }
 
   /*
@@ -99,11 +119,25 @@ class Assignments extends React.Component {
   * @param [Object] assignment. The assignment to be deleted.
   */
   onDeleteAssignment (assignment) {
-    const {assignments} = this.state
-    actions.assignments.deleteAssignment(assignment).then(() => {
-      const newAssignments = assignments.filter(a => a.id !== assignment.id)
-      this.setState({assignments: newAssignments})
-    }).catch(() => false)
+    let assignments = this.state.assignments
+    let safeAssignments = []
+    assignments.forEach(a => {
+      if (
+        a.due !== assignment.due ||
+        a.name !== assignment.name ||
+        a.weight_id !== assignment.weight_id ||
+        a.created_on !== assignment.created_on
+      ) {
+        safeAssignments.push(a)
+      }
+    })
+    this.setState({assignments: safeAssignments})
+    // const newAssignments = assignments.filter(a => a.id !== assignment.id)
+    // this.setState({assignments: newAssignments})
+    // actions.assignments.deleteAssignment(assignment).then(() => {
+    //   const newAssignments = assignments.filter(a => a.id !== assignment.id)
+    //   this.setState({assignments: newAssignments})
+    // }).catch(() => false)
   }
 
   onNext () { // TODO
@@ -155,24 +189,76 @@ class Assignments extends React.Component {
     this.setState({lastAssignmentDate: date})
   }
 
+  getSingleWeight () {
+    let singleWeight = this.props.singleWeight
+    let weights = []
+    console.log(this.state.weights)
+    if (singleWeight) {
+      this.state.weights.forEach(weight => {
+        if (weight.id === singleWeight) {
+          weights.push(weight)
+        }
+      })
+      return weights
+    } else {
+      return false
+    }
+  }
+
+  renderBackButton () {
+    return (
+      !this.props.singleWeight &&
+        <div
+          onClick={() => this.setState({addAssignment: false})}
+          style={{marginTop: '8px', color: '#57B9E4', cursor: 'pointer'}}
+        >
+          Back to weight categories
+        </div>
+    )
+  }
+
+  async handleSubmit () {
+    this.setState({loading: true})
+    await this.state.assignments.forEach(async form => {
+      console.log(form)
+      await actions.assignments.createAssignment(this.props.cl, form).then((assignment) => {
+        this.setState({form: this.initializeFormData(), due_null: false})
+      }).catch(() => { this.setState({loading: false}) })
+    })
+    this.setState({loading: false})
+    this.props.onSubmit()
+  }
+
+  onSubmitSingleWeight () {
+    this.handleSubmit()
+    browserHistory.push('/student/class/' + this.props.cl.id.toString())
+  }
+
   render () {
-    const {viewOnly, loadingAssignments, loadingWeights, currentAssignment,
+    let {viewOnly, loadingAssignments, loadingWeights, currentAssignment,
       currentWeightIndex, currentWeight, weights, addAssignment} = this.state
     const {cl} = this.props
 
     let assignments = this.filterAssignments()
 
+    if (this.props.singleWeight) {
+      weights = this.getSingleWeight()
+    }
+
+    console.log(weights)
+
     return (
       <div id='cn-assignments'>
         {loadingAssignments || loadingWeights
-          ? <Loading />
+          ? <SkLoader />
           : <div id='cn-assignment-window'>
             {!viewOnly && !addAssignment &&
               <div>
-                <div onClick={() => this.props.onBack()} style={{marginTop: '8px', color: '#57B9E4', cursor: 'pointer'}}>Back to weights</div>
+                {this.renderBackButton()}
                 <AssignmentCategories
                   cl={cl}
                   weights={weights}
+                  singleWeight={this.props.singleWeight}
                   noAssignments={this.state.assignments}
                   assignments={this.state.assignments}
                   onClick={this.toAssignmentForm.bind(this)}
@@ -182,10 +268,8 @@ class Assignments extends React.Component {
             }
             {!viewOnly && addAssignment &&
               <div id='class-editor-assignment-form'>
-                <div onClick={() => this.setState({addAssignment: false})} style={{marginTop: '8px', color: '#57B9E4', cursor: 'pointer'}}>Back to weight categories</div>
-                {/* <div className='cn-section-content-header center-text cn-blue margin-top'>
-                  {weights[currentWeightIndex] ? weights[currentWeightIndex].name : 'for this class'}
-                </div> */}
+                {console.log(this.props.singleWeight)}
+                {this.renderBackButton()}
                 <AssignmentForm
                   assignment={currentAssignment}
                   cl={cl}
@@ -195,7 +279,7 @@ class Assignments extends React.Component {
                   updateLastAssignmentDate={(date) => this.updateLastAssignmentDate(date)}
                   lastAssignmentDate={this.state.lastAssignmentDate}
                 />
-                {(assignments.length === 0) &&
+                {(assignments.length === 0) && !this.props.singleWeight &&
                   <div>
                     No assignments for this weight? <span style={{color: '#57B9E4', cursor: 'pointer'}} onClick={() => this.setState({addAssignment: false})}>Continue to the next one.</span>
                   </div>
@@ -224,6 +308,11 @@ class Assignments extends React.Component {
                   currentWeight={weights[currentWeightIndex]}
                   onEdit={() => this.props.onEdit()}
                   onSubmit={() => this.setState({addAssignment: false})}
+                  onSubmitSingleWeight={
+                    this.props.singleWeight
+                      ? () => this.onSubmitSingleWeight()
+                      : null
+                  }
                 />
               </div>
             }
@@ -249,7 +338,7 @@ class Assignments extends React.Component {
             }
             {assignments.length !== 0 && !viewOnly && !addAssignment &&
               <button
-                onClick={() => this.props.onSubmit()}
+                onClick={() => this.handleSubmit()}
                 className='button full-width margin-top margin-bottom'
               >
                 Submit and Continue
@@ -267,7 +356,8 @@ Assignments.propTypes = {
   isReview: PropTypes.bool,
   onSubmit: PropTypes.func,
   onEdit: PropTypes.func,
-  onBack: PropTypes.func
+  onBack: PropTypes.func,
+  singleWeight: PropTypes.number
 }
 
 export default Assignments

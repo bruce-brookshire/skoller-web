@@ -297,4 +297,26 @@
       }
     }
   }
+
+  .add-assignment-lock-view {
+    max-width: 360px;
+
+    .add-assignment-syllabus-control {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      .add-assignment-syllabus-button {
+        width: 100%;
+        @include sk-standard-button;
+        margin: 4px;
+      }
+
+      .add-assignment-syllabus-cancel {
+        width: 100%;
+        @include sk-standard-button;
+        margin: 4px;
+      }
+    }
+  }
 }

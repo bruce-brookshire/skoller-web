@@ -125,11 +125,16 @@ class AssignmentForm extends React.Component {
   * Create a new assignment
   */
   onCreateAssignment (form) {
-    this.setState({loading: true})
-    actions.assignments.createAssignment(this.props.cl, form).then((assignment) => {
+    if (this.props.onCreateAssignment) {
       this.setState({form: this.initializeFormData(), loading: false, due_null: false})
-      if (this.props.onCreateAssignment) this.props.onCreateAssignment(assignment)
-    }).catch(() => { this.setState({loading: false}) })
+      this.props.onCreateAssignment(form)
+    } else {
+      this.setState({loading: true})
+      actions.assignments.createAssignment(this.props.cl, form).then((assignment) => {
+        this.setState({form: this.initializeFormData(), loading: false, due_null: false})
+        if (this.props.onCreateAssignment) this.props.onCreateAssignment(assignment)
+      }).catch(() => { this.setState({loading: false}) })
+    }
   }
 
   /*
@@ -249,6 +254,7 @@ class AssignmentForm extends React.Component {
                       form.due = day.format('MM/DD')
                       this.setState({showDatePicker: false})
                     }}
+                    close={() => this.setState({showDatePicker: false})}
                   />
                 }
               </div>
