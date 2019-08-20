@@ -107,6 +107,7 @@ class VerifitcationInput extends React.Component {
         maxLength={1}
         value={value}
         type='tel'
+        pattern="[0-9]*"
       />
     )
   }

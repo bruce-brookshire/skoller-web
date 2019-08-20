@@ -340,6 +340,7 @@ class AccountInfoForm extends React.Component {
                   onChange={updateProperty}
                   placeholder="Phone number"
                   value={form.student.phone}
+                  pattern="[0-9]*"
                 />
               </div>
             }

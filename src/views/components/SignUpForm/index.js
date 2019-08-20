@@ -184,6 +184,7 @@ class SignUpForm extends React.Component {
                     form
                   })
                 }}
+                pattern="[0-9]*"
               />
             </div>
           </div>

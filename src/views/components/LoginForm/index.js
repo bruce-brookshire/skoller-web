@@ -61,6 +61,7 @@ class LoginForm extends React.Component {
                   }
                 })
               }}
+              pattern="[0-9]*"
             />
           </div>
 
