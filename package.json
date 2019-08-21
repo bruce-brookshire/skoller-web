@@ -49,6 +49,7 @@
     "react-outside-click-handler": "^1.2.4",
     "react-router": "^2.5.1",
     "react-smartbanner": "^5.0.1",
+    "react-tooltip": "^3.10.0",
     "resolve-url-loader": "^2.1.1",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
