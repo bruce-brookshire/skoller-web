@@ -160,7 +160,7 @@ class ClassStatusModal extends React.Component {
   renderChecklist () {
     return (
       <div className='sk-class-status-modal-checklist-container'>
-        <Checklist status={this.state.status} cl={this.state.cl} />
+        <Checklist cl={this.state.cl} />
       </div>
     )
   }

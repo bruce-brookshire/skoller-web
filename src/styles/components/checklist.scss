@@ -39,6 +39,10 @@
     .item-disabled {
       color: #FFFFFF75;
     }
+
+    .completed-checklist {
+      color: $cn-font-color;
+    }
   
     .sk-checklist-item {
       display: flex;
@@ -89,36 +93,41 @@
 
         .sk-checklist-cf-graphic {
           font-size: 12px;
+          margin-top: -8px;
+          display: flex;
+          flex-direction: row;
 
-          .checked {
-            color: $cn-color-green;
-          }
+          p {
+            font-size: 15px;
+            margin: 18px 0 0 0;
+            .fa-unlock {
+              margin-left: 2px;
+            }
   
-          .fa-user {
-            margin-right: 1px;
-          }
-      
-          .fa-user-check {
-            margin-right: 0px;
-          }
-  
-          .fa-unlock {
-            margin-left: 2px;
+            .fa-lock {
+              margin-left: 2px;
+            }
           }
 
           .item-disabled {
             color: #FFFFFF75;
           }
+
+          svg {
+            margin-right: 4px;
+            margin-top: 8px;
+          }
         }
 
         .sk-checklist-you {
           font-size: 10px;
+          letter-spacing: -0.5px;
           margin-top: -4px;
         }
 
         .sk-checklist-cta {
           font-size: 10px;
-          margin-top: -2px;
+          margin-top: 2px;
         }
       }
     }

@@ -8,7 +8,7 @@ import SkLoader from '../../../../assets/sk-icons/SkLoader'
 import DragAndDrop from '../../../components/DragAndDrop/DragAndDrop'
 import {mobileCheck} from '../../../../utilities/display'
 import Sammi from '../../../components/Sammi'
-import Checklist from './Checklist'
+import Checklist from '../../../components/ClassStatusModal/Checklist'
 import ToolTip from '../../../components/ToolTip'
 
 @inject('rootStore') @observer
@@ -138,7 +138,7 @@ class FirstClass extends React.Component {
   renderChecklist () {
     return (
       <div className='sk-onboard-first-class-checklist-container'>
-        <Checklist status={this.state.status} cl={this.state.firstClass} />
+        <Checklist cl={this.state.firstClass} />
       </div>
     )
   }
