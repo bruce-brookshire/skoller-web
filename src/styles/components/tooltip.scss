@@ -1,0 +1,13 @@
+.tooltip-container {
+
+  .tooltip {
+    color: $cn-font-color;
+    @include skoller-cell;
+    box-shadow: 0px 12px 32px rgba(0,0,0,0.25);
+    background-color: rgba(255,255,255,1) !important;
+
+    .tooltip-content {
+      padding: 8px;
+    }
+  }
+}

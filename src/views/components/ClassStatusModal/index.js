@@ -11,6 +11,7 @@ import Sammi from '../Sammi'
 import Checklist from './Checklist'
 import SkModal from '../SkModal/SkModal'
 import DropClassButton from '../DropClassButton'
+import ToolTip from '../ToolTip'
 
 @inject('rootStore') @observer
 class ClassStatusModal extends React.Component {
@@ -65,6 +66,33 @@ class ClassStatusModal extends React.Component {
       mobileMessage: mobileMessage,
       loading: false
     })
+  }
+
+  renderSyllabusToolTip () {
+    return (
+      <div className='sk-class-status-modal-file-drop-tip'>
+        <div>Be sure to submit the</div>
+        <ToolTip
+          tip={
+            <div>
+              <h3>Here&apos;s what Skoller looks for on the documents you submit...</h3>
+              <ol>
+                <li>
+                  <h3>Grade Weights</h3>
+                  <p>(Exams = 60% of final grade)</p>
+                </li>
+                <li>
+                  <h3>Tentative Assignment Schedule</h3>
+                  <p>(Exam 1 due August 19th)</p>
+                </li>
+              </ol>
+            </div>
+          }
+        >
+          <div className='sk-class-status-modal-file-drop-tip-text'>correct documents.</div>
+        </ToolTip>
+      </div>
+    )
   }
 
   renderNeedSyllabus () {
@@ -132,7 +160,7 @@ class ClassStatusModal extends React.Component {
   renderChecklist () {
     return (
       <div className='sk-class-status-modal-checklist-container'>
-        <Checklist status={this.state.status} cl={this.state.cl} />
+        <Checklist cl={this.state.cl} status={this.state.status === 'inReview' ? 'inReview' : null} />
       </div>
     )
   }
@@ -170,6 +198,10 @@ class ClassStatusModal extends React.Component {
             </div>
           }
         </div>
+        {this.state.status === 'needSyllabus' && !mobileCheck()
+          ? this.renderSyllabusToolTip()
+          : null
+        }
       </div>
     )
   }
@@ -323,6 +355,19 @@ class ClassStatusModal extends React.Component {
           >
             <small>
               Don&apos;t want to wait? <span style={{color: '#57B9E4'}}>Click here to do it yourself!</span>
+            </small>
+          </p>
+          : null
+        }
+        {this.state.status === 'needSyllabus' && !mobileCheck()
+          ? <p
+            style={{margin: '6px 0 0 0', textAlign: 'center', cursor: 'pointer'}}
+            onClick={() => {
+              this.sendToDiy()
+            }}
+          >
+            <small>
+              No syllabus? <span style={{color: '#57B9E4'}}>Click here to add assignments without one!</span>
             </small>
           </p>
           : null

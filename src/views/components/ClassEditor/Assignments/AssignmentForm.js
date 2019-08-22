@@ -220,19 +220,6 @@ class AssignmentForm extends React.Component {
             />
           </div>
           <div className='col-xs-4'>
-            {/* {!this.state.due_null && <InputField
-              containerClassName='margin-top'
-              error={formErrors.due}
-              // info={`Due date unknown for an assignment? No worries-you can always add one later. Go ahead and create the assignment for everyone in your class.`}
-              label='Due date'
-              name='due'
-              onChange={(name, value) => {
-                updateProperty(name, maskAssignmentDate(form.due, value))
-              }}
-              placeholder='MM/DD'
-              value={form.due}
-              disabled={this.state.due_null === true}
-            />} */}
             {!this.state.due_null &&
               <div>
                 <div onClick={() => this.setState({showDatePicker: true})} >
@@ -291,7 +278,7 @@ class AssignmentForm extends React.Component {
             disabled={this.state.loading || disableButton}
             onClick={this.onSubmit.bind(this)}
           >
-            Add assignment
+            {this.props.assignment ? 'Update' : 'Add'} assignment
             {this.state.loading ? <Loading /> : null}
           </button>
         </div>

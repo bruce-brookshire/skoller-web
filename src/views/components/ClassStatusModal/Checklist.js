@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { inject, observer } from 'mobx-react'
+import AddUser from '../../../assets/sk-icons/misc/AddUser'
+import User from '../../../assets/sk-icons/misc/User'
 
 @inject('rootStore') @observer
 class Checklist extends React.Component {
@@ -14,6 +16,10 @@ class Checklist extends React.Component {
     }
   }
 
+  componentDidUpdate () {
+    this.setState({status: this.props.status ? this.props.status : this.getStatus(this.props.cl)})
+  }
+
   getStatus (cl) {
     let status
     let id = cl.status.id
@@ -24,9 +30,11 @@ class Checklist extends React.Component {
     } else if (id === 1300) {
       status = 'diy'
     } else if (id >= 1400) {
-      status = 'live'
-    } else if (cl.enrollment > 3) {
-      status = 'complete'
+      if (cl.enrollment > 4) {
+        status = 'complete'
+      } else {
+        status = 'live'
+      }
     }
     return status
   }
@@ -66,24 +74,43 @@ class Checklist extends React.Component {
     if (this.state.status !== 'live' && this.state.status !== 'diy' && this.state.status !== 'complete') {
       disabled = true
     }
+    console.log(this.state.status)
     if (this.state.status === 'complete') {
       complete = true
     }
+    let studentsLeft = 'get 3 classmates to join!'
+    if (enrollment === 2) {
+      studentsLeft = 'get 2 classmates to join!'
+    } else if (enrollment === 3) {
+      studentsLeft = 'get 1 classmate to join!'
+    } else if (enrollment === 4) {
+      studentsLeft = ''
+    }
     return (
       <div className={'sk-checklist-item' + (disabled ? ' item-disabled' : '')}>
-        <i className={'far fa' + (disabled ? '-circle item-disabled' : '') + (complete ? '-check-circle checked' : '')} />
+        <i className={'far fa' + (disabled ? '-circle item-disabled' : '') + (complete ? '-check-circle checked' : '-circle')} />
         <div className='sk-checklist-cf'>
           <p className={(disabled ? 'item-disabled' : '')}>Unlock community features</p>
+          <div className='sk-checklist-cta'>{studentsLeft}</div>
           <div className='sk-checklist-cf-graphic'>
-            <i className={'fas fa-user-check checked' + (disabled ? ' item-disabled' : '')} />
-            <i className={'fas fa-user' + (enrollment > 1 ? '-check checked' : '') + (disabled ? ' item-disabled' : '')} />
-            <i className={'fas fa-user' + (enrollment > 2 ? '-check checked' : '') + (disabled ? ' item-disabled' : '')} />
-            <i className={'fas fa-user' + (enrollment > 3 ? '-check checked' : '') + (disabled ? ' item-disabled' : '')} />
-            <small>→</small>
-            <i className={'fas fa-unlock ' + (disabled ? ' item-disabled' : ' yellow')} />
+            <User fill={'7ed321' + (disabled ? '75' : '')} width='12px' />
+            {enrollment > 1
+              ? <User fill={'7ed321' + (disabled ? '75' : '')} width='12px' />
+              : <AddUser fill={'7ed32175'} width='12px' />
+            }
+            {enrollment > 2
+              ? <User fill={'7ed321' + (disabled ? '75' : '')} width='12px' />
+              : <AddUser fill={'7ed32175'} width='12px' />
+            }
+            {enrollment > 3
+              ? <User fill={'7ed321' + (disabled ? '75' : '')} width='12px' />
+              : <AddUser fill={'7ed32175'} width='12px' />
+            }
+            <p>
+              <i className={'fas ' + (enrollment > 3 ? 'fa-unlock' : 'fa-lock')} style={{color: '#FDBA22' + (disabled || enrollment < 4 ? '75' : '')}} />
+            </p>
           </div>
-          <div className='sk-checklist-you'>you</div>
-          <div className='sk-checklist-cta'>get 3 classmates to join!</div>
+          <div className='sk-checklist-you'>{this.state.status !== 'complete' ? 'you' : null}</div>
         </div>
       </div>
     )
