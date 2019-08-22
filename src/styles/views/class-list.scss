@@ -77,6 +77,14 @@
           min-width: 0;
         }
 
+        .cn-class-list-subtext-completion {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          justify-content: flex-start;
+          margin: 4px 0 0 -2px;
+        }
+
         .cn-class-list-flex-bottom {
           justify-self: flex-end;
         }

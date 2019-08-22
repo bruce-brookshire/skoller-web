@@ -62,6 +62,7 @@
           color: #4a4a4a;
           max-height: 100%;
           overflow: scroll;
+          -webkit-overflow-scrolling: touch;
   
           .sk-onboard-first-class-file-drop-file {
             display: flex;

@@ -277,6 +277,7 @@
           margin-top: -1px;
           max-height: 120px;
           overflow: scroll;
+          -webkit-overflow-scrolling: touch;
       
           .sk-find-class-p-autocomplete-option {
             padding: 4px 12px 4px 4px;
@@ -311,6 +312,7 @@
     margin-top: -9px;
     max-height: 200px;
     overflow: scroll;
+    -webkit-overflow-scrolling: touch;
 
     .sk-find-class-autocomplete-option {
       padding: 4px 12px 4px 4px;

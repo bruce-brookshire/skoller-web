@@ -46,6 +46,7 @@
 @import 'components/checklist.scss';
 @import 'components/class-card.scss';
 @import 'components/common-scale-modal.scss';
+@import 'components/completion-circle';
 @import 'components/copy-box';
 @import 'components/datepicker.scss';
 @import 'components/day-selector';
@@ -159,6 +160,7 @@ html {
 
 .layout {
   overflow: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
 * {
