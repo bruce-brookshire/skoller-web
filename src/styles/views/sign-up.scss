@@ -53,6 +53,20 @@
 
       .cn-sign-up-form {
         margin-top: 2rem;
+
+        .cn-sign-up-form-phone {
+          margin-top: 8px;
+          @include remove-form-styling;
+
+          input {
+            width: 100%;
+            border: 1px solid $cn-form-border;
+            border-radius: 3px;
+            height: 32px;
+            padding: 1px 10px;
+            box-sizing: border-box;
+          }
+        }
         
         .form-padding {
           width: 95%;

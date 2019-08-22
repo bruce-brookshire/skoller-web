@@ -212,13 +212,13 @@ class SelectSchool extends React.Component {
   }
 
   findActiveTerm = (school) => {
-    let terms = school.periods
-    let activeTerm = terms[0]
+    let terms = this.sortTerms(school.periods)
+    let activeTerm
     terms.forEach(term => {
       let startDate = moment(term.start_date)
-      let endDate = moment(term.endDate)
+      let endDate = moment(term.end_date)
       if (endDate.isAfter(moment())) {
-        if (startDate.isBefore(activeTerm.startDate)) {
+        if (activeTerm ? startDate.isBefore(activeTerm.startDate) : true) {
           activeTerm = term
         }
       }
@@ -280,36 +280,57 @@ class SelectSchool extends React.Component {
     )
   }
 
+  getUnixDate (dateString) {
+    const unixDate = moment(dateString).format('x')
+    return parseInt(unixDate)
+  }
+
+  sortTerms (terms) {
+    return terms.sort((a, b) => {
+      if (a.start_date !== null && b.start_date !== null) {
+        return this.getUnixDate(a.start_date) - this.getUnixDate(b.start_date)
+      } else {
+        return a.name === b.name ? 1 : -1
+      }
+    })
+  }
+
   renderTermOptions () {
     let terms = this.state.schoolChoice.periods
+    terms = this.sortTerms(terms)
+    let currentTerms = []
+    terms.forEach(term => {
+      if (moment(term.end_date).isAfter(moment())) {
+        currentTerms.push(term)
+      }
+    })
+    console.log(currentTerms)
     let termFieldWidth = this.termField.offsetWidth
     return (
       <div
         className='sk-select-school-term-options'
       >
-        {terms.map(term => {
-          if (term.class_period_status.name !== 'Past') {
-            return (
-              <div
-                key={term.id}
-                className='sk-select-school-term-option'
-                style={{
-                  width: (termFieldWidth - 10).toString() + 'px'
-                }}
-                onClick={() => {
-                  this.setState({
-                    termChoice: term,
-                    showTermOptions: false
-                  })
-                }}
-              >
-                <h3>{term.name}</h3>
-                <div className='sk-select-school-term-dates'>
-                  {moment(term.start_date).format('MMMM')} - {moment(term.end_date).format('MMMM')}
-                </div>
+        {currentTerms.map(term => {
+          return (
+            <div
+              key={term.id}
+              className='sk-select-school-term-option'
+              style={{
+                width: (termFieldWidth - 10).toString() + 'px'
+              }}
+              onClick={() => {
+                this.setState({
+                  termChoice: term,
+                  showTermOptions: false
+                })
+              }}
+            >
+              <h3>{term.name}</h3>
+              <div className='sk-select-school-term-dates'>
+                {moment(term.start_date).format('MMMM')} - {moment(term.end_date).format('MMMM')}
               </div>
-            )
-          }
+            </div>
+          )
         })}
       </div>
     )

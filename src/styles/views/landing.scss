@@ -53,194 +53,215 @@ $h2-size-sm: 36px;
 }
 
 // Styles ------------------------
+.cn-landing-wrapper {
+  height: 100%;
 
-.cn-landing-container {
-  overflow-x: hidden;
-  // height: 100%;
-  @include landing-nav-parent();
-  background-image: url('../../assets/images/background_landing.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: 30% 100%;
-
-  @include breakpoint(medium) {
-    background-position: 0 0;
-  }
-
-  .cn-landing-button{
-    min-width: 200px;
-  }
-
-  .cn-landing-content-wrapper{
-    margin: 0 auto;
-
-    @media screen and ( min-height: 730px ) {
-      @include breakpoint(medium) {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
+  .cn-landing-container {
+    overflow-x: hidden;
+    // height: 100%;
+    // position: relative;
+    // min-height: 100vh;
+    
+    background-color: #f5f7f9;
+  
+    @include breakpoint(medium) {
+      padding-bottom: 69px;
+      height: calc(100vh - 69px);
     }
-
-    max-width: 1000px;
-    width: 100%;
-
-    .cn-learn-more {
-      font-size: 24px;
-      font-weight: 300;
-      margin: 0 auto;
-      text-align: center;
-      width: 90%;
-      padding-bottom: 10px;
-      padding-top: 10px;
-      margin-bottom: 2rem;
-
-      @include breakpoint(medium) {
-        width: 363px;
-        font-size: 24px;
-        margin-bottom: 0;
-      }
+    background-image: url('../../assets/images/background_landing.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 30% 100%;
+  
+    @include breakpoint(medium) {
+      background-position: 0 0;
     }
   
-    .cn-landing-content{
-      @include breakpoint(medium) {
-        @include row;
-      }
-      width: 100%;
-
-      .container-landing-message {
-        margin-top: 35px;
+    .cn-landing-button{
+      min-width: 200px;
+    }
+  
+    .cn-landing-content-wrapper{
+      margin: 0 auto;
+  
+      @media screen and ( min-height: 730px ) {
         @include breakpoint(medium) {
-          margin-top: 0;
-          flex-basis: 50%;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
         }
-
-        .landing-image-carousel {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          position: relative;
-          width: 100%;
-          height: 80vh;
-
+      }
+  
+      max-width: 1000px;
+      width: 100%;
+  
+      .cn-learn-more {
+        font-size: 24px;
+        font-weight: 300;
+        margin: 0 auto;
+        text-align: center;
+        width: 90%;
+        padding-bottom: 10px;
+        padding-top: 10px;
+        margin-bottom: 2rem;
+  
+        @include breakpoint(medium) {
+          width: 363px;
+          font-size: 24px;
+          margin-bottom: 0;
+        }
+      }
+    
+      .cn-landing-content{
+        @include breakpoint(medium) {
+          @include row;
+        }
+        width: 100%;
+  
+        .container-landing-message {
+          margin-top: 35px;
           @include breakpoint(medium) {
-            height: 100%;
-            margin-top: 7px;
+            margin-top: 0;
+            flex-basis: 50%;
           }
-
-          .landing-image-carousel-container {
+  
+          .landing-image-carousel {
             display: flex;
-            width: auto;
-            height: 100%;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            justify-items: center;
-
+            position: relative;
+            width: 100%;
+            height: 80vh;
+            margin: 1rem 0;
+  
             @include breakpoint(medium) {
-              max-width: 100%;
+              height: 100%;
+              margin-top: 7px;
+            }
+  
+            .landing-image-carousel-container {
+              display: flex;
               width: auto;
               height: 100%;
-            }
-
-            .landing-image-container {
-              display: flex;
+              flex-direction: column;
               align-items: center;
-              justify-content: center;
-              flex: 1;
-              margin-bottom: 30px;
-              height: 80%;
-
+              justify-items: center;
+              width: 100%;
+  
               @include breakpoint(medium) {
-                height: 100%;
-                margin-bottom: 20px;
-              }
-
-              .landing-image {
-                position: absolute;
-                height: 95%;
-                animation-duration: 15s;
-                animation-iteration-count: infinite;
-                animation-timing-function: ease-in-out;
-                opacity: 0;
-                @for $i from 1 through 3 {
-                  &:nth-of-type(#{$i}) {
-                    animation-name: fade#{$i};
-                  }
-                }
-    
-                &:nth-of-type(1) { opacity: 1; }
-                flex: 0;
+                max-width: 100%;
                 width: auto;
-
+                height: 100%;
+              }
+  
+              .landing-image-container {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex: 1;
+                margin-bottom: 30px;
+                height: 80%;
+  
                 @include breakpoint(medium) {
                   height: 100%;
+                  margin-bottom: 20px;
+                }
+  
+                .landing-image {
                   position: absolute;
-                  margin-top: 0px;
-                  padding-bottom: 0vh;
+                  height: 95%;
+                  animation-duration: 15s;
+                  animation-iteration-count: infinite;
+                  animation-timing-function: ease-in-out;
+                  opacity: 0;
+                  @for $i from 1 through 3 {
+                    &:nth-of-type(#{$i}) {
+                      animation-name: fade#{$i};
+                    }
+                  }
+
+                  @media only screen and (max-width: 320px) {
+                    height: 87%;
+                  }
+      
+                  &:nth-of-type(1) { opacity: 1; }
+                  flex: 0;
+                  width: auto;
+  
+                  @include breakpoint(medium) {
+                    height: 100%;
+                    position: absolute;
+                    margin-top: 0px;
+                    padding-bottom: 0vh;
+                  }
                 }
               }
-            }
-
-            .landing-image-text {
-              flex: 0;
-              font-family: $cn-font-family;
-              font-size: 30px;
-              font-weight: 200;
-              color: $cn-color-white;
-              text-align: center;
-              
-              @include breakpoint(medium) {
-                font-size: 22px;
-              }
-
-              @include breakpoint(980px) {
+  
+              .landing-image-text {
+                flex: 0;
+                font-family: $cn-font-family;
                 font-size: 30px;
+                font-weight: 200;
+                color: $cn-color-white;
+                text-align: center;
+                
+                @include breakpoint(medium) {
+                  font-size: 22px;
+                }
+  
+                @include breakpoint(980px) {
+                  font-size: 30px;
+                }
+
+                @media only screen and (max-width: 320px) {
+                  font-size: 22px;
+                }
               }
             }
           }
         }
-      }
-
-      .typewrite {
-        display: none;
-
-        @include breakpoint(medium) {
-          display: block;
-        }
-      }
-
-      .typewritemobile {
-        display: block;
-        height: 300px;
-
-        @include breakpoint(medium) {
+  
+        .typewrite {
           display: none;
+  
+          @include breakpoint(medium) {
+            display: block;
+          }
         }
-      }
-
-      h2 {
-        font-size: 36px;
-        margin: 0;
-        padding: 0;
-        text-align: center;
-        font-weight: bold;
-
-        @include breakpoint(medium) {
+  
+        .typewritemobile {
+          display: block;
+          height: 300px;
+  
+          @include breakpoint(medium) {
+            display: none;
+          }
+        }
+  
+        h2 {
           font-size: 36px;
-          text-align: left;
+          margin: 0;
+          padding: 0;
+          text-align: center;
+          font-weight: bold;
+  
+          @include breakpoint(medium) {
+            font-size: 36px;
+            text-align: left;
+          }
         }
-      }
-      .sub-header {
-        font-size:  18px;
-        color: $cn-color-grey;
-        font-weight: normal;
+        .sub-header {
+          font-size:  18px;
+          color: $cn-color-grey;
+          font-weight: normal;
+        }
       }
     }
   }
+  
+  .muted-text { color: $cn-color-grey; }
+  
+  .blue-text { color: $cn-color-blue; }
+    
 }
-
-.muted-text { color: $cn-color-grey; }
-
-.blue-text { color: $cn-color-blue; }
-

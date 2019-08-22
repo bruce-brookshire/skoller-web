@@ -60,9 +60,17 @@ export function loginStudentWithPhone (phone, verificationCode) {
 /*
 * Verify student phone number
 */
+const verifyStudentPhoneNumberError = (e) => {
+  if (e.status === 404) {
+    return 'Phone number not found. Create an account.'
+  } else {
+    return 'Error logging in. Try again later.'
+  }
+}
 export function verifyStudentPhoneNumber (phone) {
-  return post(`/api/v1/students/login`, phone, 'Error logging in. Please try again.')
+  return post(`/api/v1/students/login`, phone, verifyStudentPhoneNumberError)
     .catch(error => {
+      console.log(error)
       return Promise.reject(error)
     })
 }

@@ -309,6 +309,28 @@
   &:focus {
     outline: none;
   }
+
+  @media only screen and (max-height: 568px) {
+    max-height: 24px;
+    min-height: 0;
+    height: 24px;
+    padding: 4px 4px 6px 4px;
+  }
+}
+
+@mixin onboard-form-field-tall {
+  height: 100%;
+  min-height: 36px;
+  width: 100%;
+  border: 1px solid $cn-form-border;
+  border-radius: 5px;
+  box-sizing: border-box;
+  margin: 0 0 0.5rem 0;
+  padding: 8px 4px 6px 4px;
+  
+  &:focus {
+    outline: none;
+  }
 }
 
 @mixin not-selectable {
@@ -319,7 +341,7 @@
 }
 
 @mixin hide-scrollbar {
-  overflow: auto;
+  overflow: auto -moz-scrollbars-none;
   -ms-overflow-style: none; /* IE 11 */
   scrollbar-width: none; /* Firefox 64 */
 }

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import {Form, ValidateForm} from 'react-form-library'
 import {InputField} from '../../../components/Form'
 import actions from '../../../actions'
-import {maskPhoneNumber} from '../../../utilities/mask'
 import {wrapTimeHour} from '../../../utilities/time'
 import {browserHistory} from 'react-router'
 import NumberFormat from 'react-number-format'
@@ -31,7 +30,8 @@ class SignUpForm extends React.Component {
 
   initializeState () {
     return {
-      form: this.initializeFormData()
+      form: this.initializeFormData(),
+      phoneFocus: false
     }
   }
 
@@ -165,19 +165,26 @@ class SignUpForm extends React.Component {
                 value={form.email}
               />
             </div>
-            <div className='col-xs-12'>
-              <InputField
-                containerClassName='margin-top'
+            <div className='col-xs-12 cn-sign-up-form-phone'>
+              <label className={'cn-input-label' + (formErrors.student && formErrors.student.phone ? ' error' : '') + (this.state.phoneFocus ? ' active' : '')}>Phone</label>
+              <NumberFormat
+                style={{width: '100%', borderColor: formErrors.student && formErrors.student.phone ? 'red' : 'null'}}
                 error={formErrors.student && formErrors.student.phone}
-                label='Phone'
-                id='sign-up.phone'
-                name='student.phone'
-                autoComplete='tel'
-                onChange={(name, value) => {
-                  updateProperty(name, maskPhoneNumber(form.student.phone, value))
-                }}
                 placeholder='Phone'
-                value={form.student.phone}
+                format="+1 (###) ###-####"
+                mask=" "
+                onFocus={() => this.setState({phoneFocus: true})}
+                onBlur={() => this.setState({phoneFocus: false})}
+                autoComplete='tel'
+                onValueChange={(values) => {
+                  let form = this.state.form
+                  form.student.phone = values.value
+                  console.log(values.value)
+                  this.setState({
+                    form
+                  })
+                }}
+                type="tel"
               />
             </div>
           </div>

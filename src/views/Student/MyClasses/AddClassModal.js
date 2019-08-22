@@ -20,6 +20,7 @@ class AddClassModal extends React.Component {
   }
 
   changeParams (data) {
+    console.log(data)
     this.setState({
       params: data,
       formState: 'findClass'
@@ -32,21 +33,26 @@ class AddClassModal extends React.Component {
 
   render () {
     return (
-      <SkModal title='Join a Class' closeModal={() => this.props.closeModal()}>
-        <div className='sk-add-class-modal'>
-          {this.state.formState === 'findClass' &&
-            <FindAClass
-              hideOnboard={true}
-              onBack={() => this.setState({formState: 'editSchool'})}
-              params={this.state.params}
-              onSubmit={() => this.onSubmit()}
-            />
-          }
-          {this.state.formState === 'editSchool' &&
-            <ChangeSchool backData={this.state.params} onSubmit={(data) => this.changeParams(data)} />
-          }
-        </div>
-      </SkModal>
+      <div className='sk-add-class-modal-wrapper'>
+        <SkModal
+          title={this.state.formState === 'editSchool' ? 'Join a School' : 'Join a Class'}
+          closeModal={() => this.props.closeModal()}
+        >
+          <div className='sk-add-class-modal'>
+            {this.state.formState === 'findClass' &&
+              <FindAClass
+                hideOnboard={true}
+                onBack={() => this.setState({formState: 'editSchool'})}
+                params={this.state.params}
+                onSubmit={() => this.onSubmit()}
+              />
+            }
+            {this.state.formState === 'editSchool' &&
+              <ChangeSchool backData={this.state.params} onSubmit={(data) => this.changeParams(data)} />
+            }
+          </div>
+        </SkModal>
+      </div>
     )
   }
 }

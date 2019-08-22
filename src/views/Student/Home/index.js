@@ -2,14 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import StudentLayout from '../../components/StudentLayout'
-import ClassList from '../../components/ClassList'
 import actions from '../../../actions'
 import { browserHistory } from 'react-router'
 import PopUp from './PopUp'
 import ClassStatusModal from '../../components/ClassStatusModal'
 import AddClassModal from '../MyClasses/AddClassModal'
 import {Cookies} from 'react-cookie'
-import SkLoader from '../../../assets/sk-icons/SkLoader';
+import HomeClasses from './HomeClasses'
+import SkLoader from '../../../assets/sk-icons/SkLoader'
+import HomeTasks from './HomeTasks'
 
 @inject('rootStore') @observer
 class Home extends React.Component {
@@ -17,23 +18,23 @@ class Home extends React.Component {
     super(props)
     this.state = {
       classes: [],
+      assignments: [],
       popUp: {show: false, type: null},
       classStatusModal: {show: false, cl: null},
-      addClassModal: {show: false},
-      loading: false
+      loading: true
     }
     this.updateClasses()
     this.updateStudent()
     this.cookie = new Cookies()
     this.props.rootStore.studentNavStore.setActivePage('home')
+    this.props.rootStore.studentNavStore.location = this.props.location
+    console.log(this.props.rootStore)
   }
 
   async updateStudent () {
-    this.setState({loading: true})
     if (this.cookie.get('skollerToken')) {
       await actions.auth.getUserByToken(this.cookie.get('skollerToken')).catch((r) => console.log(r))
     }
-    this.setState({loading: false})
   }
 
   async componentDidMount () {
@@ -79,7 +80,9 @@ class Home extends React.Component {
     const {user: {student}} = this.props.rootStore.userStore
     await actions.classes.getStudentClassesById(student.id).then((classes) => {
       this.setState({classes})
+      console.log(classes)
     }).catch(() => false)
+    this.setState({loading: false})
   }
 
   findFullClass (classId) {
@@ -88,7 +91,7 @@ class Home extends React.Component {
     return classes.find((cl) => cl.id === classId)
   }
 
-  onClassSelect (cl) {
+  onClassSelect = (cl) => {
     // Need to get enrollment link from classes
     // because ClassList will not return it
 
@@ -107,23 +110,18 @@ class Home extends React.Component {
     }
   }
 
-  // async updateStudent () {
-  //   console.log('async login student')
-  //   await actions.auth.getUserByToken(this.cookie.get('skollerToken')).catch((r) => console.log(r))
-  // }
-
   closeClassStatusModal () {
     this.setState({classStatusModal: {show: false, cl: null}})
     this.updateClasses()
   }
 
   closeAddClassModal () {
-    this.setState({addClassModal: {show: false}})
     this.updateClasses()
   }
 
   closePopUp () {
     this.updateStudent()
+    this.updateClasses()
     this.setState({popUp: {show: false}})
   }
 
@@ -135,28 +133,18 @@ class Home extends React.Component {
           <PopUp closeModal={() => this.closePopUp()} type={this.state.popUp.type}/>
         }
         {this.state.classStatusModal.show &&
-          <ClassStatusModal closeModal={() => this.closeClassStatusModal()} onSubmit={() => this.closeClassStatusModal()} cl={this.state.classStatusModal.cl} />
-        }
-        {this.state.addClassModal.show &&
-          <AddClassModal closeModal={() => this.closeAddClassModal()} />
+          <ClassStatusModal
+            closeModal={() => this.closeClassStatusModal()}
+            onSubmit={() => this.closeClassStatusModal()}
+            cl={this.state.classStatusModal.cl}
+          />
         }
         <div className="home-container">
           <div className="home-column">
             <div className="home-shadow-box">
-              <h1 onClick={() => browserHistory.push('/student/classes')}>Classes</h1>
+              <h1 className='home-heading' onClick={() => browserHistory.push('/student/classes')}>Classes</h1>
               <div className="home-card-content">
-                <ClassList
-                  classes={this.state.classes}
-                  emptyMessage='You are not enrolled in any classes.'
-                  onSelect={this.onClassSelect.bind(this)}
-                />
-                {this.state.classes.length === 0 &&
-                  <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', margin: '1rem 0'}}>
-                    <button className='button add-button' onClick={() => this.setState({addClassModal: {show: true}})}>
-                      Join a Class
-                    </button>
-                  </div>
-                }
+                <HomeClasses classes={this.state.classes} onAddClass={() => this.closeAddClassModal()} onClassSelect={this.onClassSelect} />
               </div>
             </div>
             {/* // this is for activity once we get it ready
@@ -169,10 +157,10 @@ class Home extends React.Component {
           </div>
           <div className="home-column">
             <div className="home-shadow-box">
-              <h1 onClick={() => browserHistory.push('/student/tasks')}>Tasks</h1>
+              <h1 className='home-heading' onClick={() => browserHistory.push('/student/tasks')}>Tasks</h1>
               <div className="home-sub-heading">Due soon</div>
               <div className="home-card-content">
-                <p style={{textAlign: 'center', color: 'rgba(0,0,0,0.30)', margin: '3rem 0'}}>No tasks yet.</p>
+                <HomeTasks />
               </div>
             </div>
             {/* // this is for chat once we get it ready
@@ -201,7 +189,8 @@ class Home extends React.Component {
 }
 
 Home.propTypes = {
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  location: PropTypes.object
 }
 
 export default Home

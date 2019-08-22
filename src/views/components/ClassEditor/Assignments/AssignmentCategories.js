@@ -110,7 +110,7 @@ class AssignmentCategories extends React.Component {
     return (
       <div id='cn-assignment-categories'>
         <div className='cn-section-content-header'>
-          Step 2: Add Assignments
+          {this.props.singleWeight ? '' : 'Step 2: '}Add Assignments
         </div>
         <div id='cn-assignment-instructions'>
           Add assignments by their respective categories.
@@ -138,7 +138,8 @@ AssignmentCategories.propTypes = {
   onClick: PropTypes.function,
   rootStore: PropTypes.object,
   onSubmit: PropTypes.function,
-  assignments: PropTypes.array
+  assignments: PropTypes.array,
+  singleWeight: PropTypes.number
 }
 
 export default AssignmentCategories

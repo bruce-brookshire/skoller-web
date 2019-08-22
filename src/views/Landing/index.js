@@ -13,9 +13,10 @@ import LandingFooter from '../components/LandingFooter'
 
 @inject('rootStore') @observer
 class Landing extends React.Component {
+
   render () {
     const meta = { // eslint-disable-line no-unused-vars
-      title: 'Skoller',
+      title: `Skoller`,
       meta: {
         name: {
           'apple-itunes-app': 'app-id=1314782490'
@@ -25,22 +26,26 @@ class Landing extends React.Component {
     }
 
     return (
-      <div className='cn-landing-container'>
-        <LandingNav rootStore={this.props.rootStore}/>
+      <div className='cn-landing-wrapper'>
+        {window.innerWidth > 767 && <LandingNav rootStore={this.props.rootStore}/>}
+        <div className='cn-landing-container'>
 
-        {/* start of section 1 */}
-        <div className='cn-landing-content-wrapper'>
-          <div className='cn-landing-content'>
-            <LandingMessageType rootStore={this.props.rootStore}/>
-            <Signup rootStore={this.props.rootStore}/>
+          <div className='cn-landing-content-wrapper'>
+
+            <div className='cn-landing-content'>
+              {window.innerWidth <= 767 && <LandingNav rootStore={this.props.rootStore}/>}
+              <LandingMessageType rootStore={this.props.rootStore}/>
+              <Signup rootStore={this.props.rootStore}/>
+            </div>
+
+            <div className='cn-learn-more'>
+              <a className='button cn-landing-button' href='https://explore.skoller.co'>Explore</a>
+            </div>
           </div>
 
-          <div className='cn-learn-more'>
-            <a className='button cn-landing-button' href='https://explore.skoller.co'>Explore</a>
-          </div>
+          <LandingFooter />
+
         </div>
-
-        <LandingFooter />
 
       </div>
     )

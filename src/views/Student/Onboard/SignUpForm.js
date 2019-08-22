@@ -2,8 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
 import actions from '../../../actions'
-import SkLoader from '../../../assets/sk-icons/SkLoader'
-import Cloud from '../../../assets/sk-icons/Cloud'
 import NumberFormat from 'react-number-format'
 
 @inject('rootStore') @observer
@@ -61,16 +59,13 @@ class SignUpForm extends React.Component {
         phone: this.stripPhone(this.state.phone),
         future_reminder_notification_time: '22:00:00',
         notification_time: '12:00:00',
-        customLink: this.props.partner ? this.props.partner.slug : null
+        custom_link: this.props.partner ? ('http://localhost:8080/c/' + this.props.partner.slug) : null
       }
     }
-    console.log(newUser)
     actions.auth
       .registerUser(newUser)
       .then(() => {
-        actions.auth.verifyStudentPhoneNumber({phone: newUser.student.phone}).then(() => {
-          this.props.onSubmit()
-        })
+        this.props.onSubmit()
       })
       .catch(error => console.log(error))
   }
@@ -115,6 +110,7 @@ class SignUpForm extends React.Component {
                 phone: this.validatePhone(value)
               })
             }}
+            type="tel"
           />
         </div>
         <div

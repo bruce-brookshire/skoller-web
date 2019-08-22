@@ -46,6 +46,7 @@
 @import 'components/checklist.scss';
 @import 'components/class-card.scss';
 @import 'components/common-scale-modal.scss';
+@import 'components/copy-box';
 @import 'components/datepicker.scss';
 @import 'components/day-selector';
 @import 'components/file-tab';
@@ -60,20 +61,26 @@
 @import 'components/professor';
 @import 'components/progress-bar.scss';
 @import 'components/sammi.scss';
+@import 'components/sammi-prompt.scss';
 @import 'components/search';
 @import 'components/shadow-box';
 @import 'components/sk-add-class-modal.scss';
 @import 'components/sk-class-status-modal.scss';
+@import 'components/sk-drop-class-button.scss';
 @import 'components/sk-enroll-link.scss';
+@import 'components/sk-enroll-login.scss';
 @import 'components/sk-select-school.scss';
 @import 'components/sk-find-class-form.scss';
 @import 'components/sk-onboard-first-class.scss';
 @import 'components/sk-onboard-share-partner.scss';
 @import 'components/sk-onboard-sign-up.scss';
 @import 'components/sk-onboard-sign-up-form.scss';
+@import 'components/sk-select-dropdown';
+@import 'components/sk-share-partner-link';
 @import 'components/sign-up-form';
 @import 'components/time-fields';
 @import 'components/topnav';
+@import 'components/tooltip';
 @import 'components/snackbar';
 @import 'components/student-request-modal';
 @import 'components/upload-history';
@@ -87,7 +94,9 @@
 @import 'components/student-nav';
 @import 'components/student-layout';
 @import 'components/home';
-@import 'components/task';
+@import 'components/home-classes';
+@import 'components/tasks';
+@import 'components/task-card';
 
 // Composed Views ------------------------
 @import 'views/mixins/onboarding.scss';
@@ -141,10 +150,15 @@
 
 html {
   box-sizing: border-box;
-  overflow: hidden;
-  @media only screen and (max-width: 765px) {
-    overflow: scroll;
-  }
+}
+
+// .sk-app-container {
+//   overflow: hidden;
+//   overscroll-behavior: contain;
+// }
+
+.layout {
+  overflow: scroll;
 }
 
 * {

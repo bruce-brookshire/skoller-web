@@ -66,9 +66,9 @@ class SignUpForm extends React.Component {
     actions.auth
       .registerUser(newUser)
       .then(() => {
-        actions.auth.verifyStudentPhoneNumber({phone: newUser.student.phone}).then(() => {
-          this.props.onSubmit(newUser)
-        })
+        // actions.auth.verifyStudentPhoneNumber({phone: newUser.student.phone}).then(() => {
+        this.props.onSubmit(newUser)
+        // })
       })
       .catch(error => console.log(error))
   }
@@ -118,6 +118,7 @@ class SignUpForm extends React.Component {
                 phone: this.validatePhone(value)
               })
             }}
+            type="tel"
           />
         </div>
         <div

@@ -50,6 +50,7 @@ class EnrollLogin extends React.Component {
                   }
                 })
               }}
+              type="tel"
             />
           </div>
 

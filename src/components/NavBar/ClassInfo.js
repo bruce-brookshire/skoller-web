@@ -45,7 +45,6 @@ class ClassInfo extends React.Component {
       <div className='header-container'>
         <div className='header'>
           {this.renderChangeRequest()}
-          <h2>{this.props.cl && this.props.cl.name}</h2>
         </div>
         {this.renderClassDetails()}
       </div>

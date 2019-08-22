@@ -14,7 +14,7 @@
     text-align: center;
     border-radius: 3px;
     border: 1px solid $cn-form-border;
-    margin: $unit-space;
+    margin: 8px;
 
     @include breakpoint(medium) {
       margin: $unit-space;

@@ -1,5 +1,16 @@
-.sk-add-class-modal {
-  h2 {
-    text-align: center;
+.sk-add-class-modal-wrapper {
+  h1 {
+    margin: 0;
+    padding: 0;
+    background-color: none;
+    border: none;
+    border-radius: 0;
+    box-sizing: border-box;
+  }
+
+  .sk-add-class-modal {
+    h2 {
+      text-align: center;
+    }
   }
 }

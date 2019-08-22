@@ -13,6 +13,12 @@
     @include sammi-message-left
   }
 
+  .sammi-children {
+    &:before {
+      left: -7px;
+    }
+  }
+
   img {
     width: 40px;
   }

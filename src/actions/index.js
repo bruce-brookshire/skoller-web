@@ -144,7 +144,8 @@ import {
   getStudentCsv,
   getEmailPreferences,
   updateEmailPreferences,
-  deleteUserById
+  deleteUserById,
+  refreshUser
 } from './users'
 import {
   createWeight,
@@ -153,7 +154,7 @@ import {
   getClassWeightsByClassId,
   updateWeight
 } from './weights'
-import { getStudentByLink, setStudentPrimarySchool, setStudentPrimaryPeriod } from './students'
+import { getStudentByLink, setStudentPrimarySchool, setStudentPrimaryPeriod, getStudentSignupOrganization } from './students'
 
 const actions = {
   analytics: {
@@ -162,7 +163,8 @@ const actions = {
   students: {
     getStudentByLink,
     setStudentPrimarySchool,
-    setStudentPrimaryPeriod
+    setStudentPrimaryPeriod,
+    getStudentSignupOrganization
   },
   assignments: {
     createAssignment,
@@ -332,7 +334,8 @@ const actions = {
     getStudentCsv,
     getEmailPreferences,
     updateEmailPreferences,
-    deleteUserById
+    deleteUserById,
+    refreshUser
   },
   weights: {
     createWeight,

@@ -10,6 +10,8 @@ import {mobileCheck} from '../../../utilities/display'
 import Sammi from '../Sammi'
 import Checklist from './Checklist'
 import SkModal from '../SkModal/SkModal'
+import DropClassButton from '../DropClassButton'
+import ToolTip from '../ToolTip'
 
 @inject('rootStore') @observer
 class ClassStatusModal extends React.Component {
@@ -30,7 +32,8 @@ class ClassStatusModal extends React.Component {
       sammiMessage: sammiMessage,
       status: status,
       mobile: false,
-      mobileMessage: mobileMessage
+      mobileMessage: mobileMessage,
+      showDropClassConfirm: false
     }
   }
 
@@ -63,6 +66,33 @@ class ClassStatusModal extends React.Component {
       mobileMessage: mobileMessage,
       loading: false
     })
+  }
+
+  renderSyllabusToolTip () {
+    return (
+      <div className='sk-class-status-modal-file-drop-tip'>
+        <div>Be sure to submit the</div>
+        <ToolTip
+          tip={
+            <div>
+              <h3>Here&apos;s what Skoller looks for on the documents you submit...</h3>
+              <ol>
+                <li>
+                  <h3>Grade Weights</h3>
+                  <p>(Exams = 60% of final grade)</p>
+                </li>
+                <li>
+                  <h3>Tentative Assignment Schedule</h3>
+                  <p>(Exam 1 due August 19th)</p>
+                </li>
+              </ol>
+            </div>
+          }
+        >
+          <div className='sk-class-status-modal-file-drop-tip-text'>correct documents.</div>
+        </ToolTip>
+      </div>
+    )
   }
 
   renderNeedSyllabus () {
@@ -130,7 +160,7 @@ class ClassStatusModal extends React.Component {
   renderChecklist () {
     return (
       <div className='sk-class-status-modal-checklist-container'>
-        <Checklist status={this.state.status} cl={this.state.cl} />
+        <Checklist cl={this.state.cl} />
       </div>
     )
   }
@@ -168,6 +198,10 @@ class ClassStatusModal extends React.Component {
             </div>
           }
         </div>
+        {this.state.status === 'needSyllabus' && !mobileCheck()
+          ? this.renderSyllabusToolTip()
+          : null
+        }
       </div>
     )
   }
@@ -245,9 +279,58 @@ class ClassStatusModal extends React.Component {
     }
   }
 
+  async onDropClass () {
+    this.setState({showDropClassConfirm: true})
+  }
+
+  async onDropClassConfirm () {
+    this.setState({loading: true})
+    await actions.classes.dropClass(this.state.cl.id).catch(r => console.log(r))
+    this.props.closeModal()
+  }
+
+  renderDropClassConfirm () {
+    return (
+      <SkModal>
+        <div className='sk-class-status-modal-drop-modal'>
+          <h3>Are you sure you want to drop this class?</h3>
+          <div
+            className='sk-class-status-modal-drop-modal-yes'
+            onClick={() => this.onDropClassConfirm()}
+          >
+            <p>Yes, drop class.</p>
+          </div>
+          <div
+            className='sk-class-status-modal-drop-modal-no'
+            onClick={() => this.setState({showDropClassConfirm: false})}
+          >
+            <p>No, stay in this class.</p>
+          </div>
+        </div>
+      </SkModal>
+    )
+  }
+
+  renderDropButton () {
+    return (
+      <div
+        className='sk-class-status-modal-drop-class'
+      >
+        <p
+          onClick={() => this.onDropClass()}
+        >
+          Drop class
+        </p>
+      </div>
+    )
+  }
+
   renderModalContent () {
     return (
       <div className='sk-class-status-modal'>
+        <div className='sk-class-status-modal-drop-container'>
+          <DropClassButton onDropClass={() => this.props.closeModal()} cl={this.state.cl} />
+        </div>
         <div className='sk-class-status-modal-header'>
           <h1>{this.state.cl.name}</h1>
           <Sammi
@@ -272,6 +355,19 @@ class ClassStatusModal extends React.Component {
           >
             <small>
               Don&apos;t want to wait? <span style={{color: '#57B9E4'}}>Click here to do it yourself!</span>
+            </small>
+          </p>
+          : null
+        }
+        {this.state.status === 'needSyllabus' && !mobileCheck()
+          ? <p
+            style={{margin: '6px 0 0 0', textAlign: 'center', cursor: 'pointer'}}
+            onClick={() => {
+              this.sendToDiy()
+            }}
+          >
+            <small>
+              No syllabus? <span style={{color: '#57B9E4'}}>Click here to add assignments without one!</span>
             </small>
           </p>
           : null

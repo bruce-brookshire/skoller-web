@@ -19,9 +19,13 @@ class Onboard extends React.Component {
   constructor (props) {
     super(props)
 
+    if (this.props.params.partner) {
+      this.props.params.partner = this.props.params.partner.toLowerCase()
+    }
+
     this.state = {
       step: 'sign-up',
-      partner: this.getPartner(),
+      partner: this.getPartner(this.props.params.partner),
       loading: true,
       user: this.props.rootStore.userStore.user !== undefined ? this.props.rootStore.userStore.user : null,
       backData: null
@@ -36,10 +40,28 @@ class Onboard extends React.Component {
     this.loginStudent()
   }
 
+  async getPartnerByUser () {
+    await actions.students.getStudentSignupOrganization(this.props.rootStore.userStore.user.student.id)
+      .then((r) => {
+        let slug = r.link.replace(/(.+)(\/c\/)/g, '')
+        this.setState({partner: this.getPartner(slug)})
+        if (this.props.params.partner && (this.props.params.partner !== slug)) {
+          browserHistory.push(('/student/share/' + this.props.params.partner))
+        }
+      })
+      .catch(r => {
+        if (this.props.params.partner) {
+          this.setState({partner: null})
+          browserHistory.push(('/student/share/' + this.props.params.partner))
+        }
+      })
+  }
+
   async loginStudent () {
     if (this.cookie.get('skollerToken')) {
       console.log('async login student')
       await actions.auth.getUserByToken(this.cookie.get('skollerToken')).catch((r) => console.log(r))
+      this.getPartnerByUser() // <-- sets onboard to partner state if user signed up through custom link
       this.setState({user: this.props.rootStore.userStore.user})
       this.getStep()
     } else {
@@ -63,6 +85,7 @@ class Onboard extends React.Component {
     const user = this.state.user
     let classNumber = 0
     if (user) {
+      console.log('user found', user)
       await actions.classes.getStudentClassesById(user.student.id).then(classes => {
         classNumber = classes.length
       }).catch(r => console.log(r))
@@ -84,10 +107,10 @@ class Onboard extends React.Component {
     this.setState({loading: false})
   }
 
-  getPartner () {
+  getPartner (partnerSlug) {
     let partner = null
     Object.keys(partners).forEach(partnerKey => {
-      if (partners[partnerKey].slug === this.props.params.partner) {
+      if (partners[partnerKey].slug === partnerSlug) {
         partner = partners[partnerKey]
       }
     })

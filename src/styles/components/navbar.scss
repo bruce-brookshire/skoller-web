@@ -6,9 +6,12 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
+  position: fixed;
+  top: 0;
 }
 
 .cn-navbar {
+  overflow: hidden;
   @include navbar();
 
   .class-info {
@@ -142,5 +145,28 @@
   .logo {
     height: 3rem;
     cursor: pointer;
+  }
+
+  .cn-navbar-message {
+    position: absolute;
+    left: 156px;
+    top: 28px;
+    font-size: 22px;
+    font-style: italic;
+    color: $cn-color-blue;
+
+    @media only screen and (max-width: 800px) {
+      font-size: 18px;
+      top: 32px;
+    }
+
+    @media only screen and (max-width: 600px) {
+      font-size: 16px;
+      top: 32px;
+    }
+
+    @media only screen and (max-width: $sk-mobile-break-point) {
+      display: none;
+    }
   }
 }

@@ -8,6 +8,7 @@ import Loading from '../../../components/Loading'
 import ClassCard from '../../Cards/ClassCard'
 import ClassInviteLink from './ClassInviteLink'
 import DeleteDialog from '../../../components/Grid/DeleteDialog'
+import DropClassButton from '../../components/DropClassButton';
 
 @inject('rootStore') @observer
 class ClassDetail extends React.Component {

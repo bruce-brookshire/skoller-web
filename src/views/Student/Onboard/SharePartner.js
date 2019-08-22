@@ -4,46 +4,10 @@ import { observer, inject } from 'mobx-react'
 import Cloud from '../../../assets/sk-icons/Cloud'
 import SkProgressBar from '../../components/SkProgressBar'
 import Sammi from '../../components/Sammi'
+import CopyBox from '../../components/CopyBox'
 
 @inject('rootStore') @observer
 class SharePartner extends React.Component {
-  constructor (props) {
-    super(props)
-
-    this.state = {
-      copyStatus: false
-    }
-
-    console.log('constructing share-partner')
-  }
-
-  copyToClipboard = (e) => {
-    this.textArea.select()
-    document.execCommand('copy')
-    e.target.focus()
-    this.setState({ copyStatus: true })
-  }
-
-  renderCopySection () {
-    return (
-      <div
-        className='sk-onboard-share-partner-copy'
-        onClick={this.copyToClipboard}
-      >
-        <form>
-          <textarea
-            ref={(textArea) => { this.textArea = textArea }}
-            value={'https://skoller.co/onboard/' + this.props.partner.slug}
-            readOnly={true}
-          />
-        </form>
-        {this.state.copyStatus &&
-          <p>link copied to clipboard! 📋</p>
-        }
-      </div>
-    )
-  }
-
   render () {
     return (
       <div>
@@ -64,7 +28,7 @@ class SharePartner extends React.Component {
               <Cloud width="200" height="150" />
               <div className='sk-onboard-share-partner-cloud-content'>
                 <p>
-                  It doens&apos;t have to<br /> stop here. Money<br />is donated when <b>ANY<br />STUDENT</b> uses the <b style={{color: '#' + this.props.partner.primaryColor}}>{this.props.partner.name}</b> link to sign up for Skoller!
+                  It doesn&apos;t have to<br /> stop here. Money<br />is donated when <b>ANY<br />STUDENT</b> uses the <b style={{color: '#' + this.props.partner.primaryColor}}>{this.props.partner.name}</b> link to sign up for Skoller!
                 </p>
               </div>
             </div>
@@ -72,7 +36,7 @@ class SharePartner extends React.Component {
               <Cloud fill={this.props.partner.secondaryColor} width="140" height="105" />
             </div>
           </div>
-          {this.renderCopySection()}
+          <CopyBox linkValue={'https://skoller.co/c/' + this.props.partner.slug} />
           <div
             className={'onboard-next'}
             onClick={() => this.props.onSubmit()}

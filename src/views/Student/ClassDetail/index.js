@@ -11,6 +11,7 @@ import DeleteDialog from '../../../components/Grid/DeleteDialog'
 import AssignmentList from '../../components/AssignmentList'
 import StudentLayout from '../../components/StudentLayout'
 import AddAssignment from '../Assignments/AddAssignment'
+import DropClassButton from '../../components/DropClassButton'
 
 @inject('rootStore') @observer
 class ClassDetail extends React.Component {
@@ -40,7 +41,6 @@ class ClassDetail extends React.Component {
     this.setState({loading: true})
     actions.classes.getClassById(classId).then(cl => {
       this.getClassColor(cl)
-      navbarStore.title = cl.name
     }).catch(() => this.setState({loading: false}))
   }
 
@@ -98,6 +98,12 @@ class ClassDetail extends React.Component {
     )
   }
 
+  renderDropClassButton () {
+    return (
+      <DropClassButton onDropClass={() => browserHistory.push('/student/classes')} cl={this.state.cl} />
+    )
+  }
+
   renderClassAssignmentsHeader () {
     return (
       <div className='cn-class-assignments-header'>
@@ -108,6 +114,7 @@ class ClassDetail extends React.Component {
         <div className='cn-class-assignments-header-item text-center'>
           {this.renderClassTitle()}
           {this.renderCurrentClassGrade()}
+          {this.renderDropClassButton()}
         </div>
         <div className='cn-class-assignments-header-item text-right'>
           {this.renderAddAssignmentButton()}
@@ -157,7 +164,7 @@ class ClassDetail extends React.Component {
 
   renderSpeculateGradeButton () {
     return (
-      <a className='spec-grade-button' onClick={() => browserHistory.push('student/classes')}>
+      <a className='spec-grade-button'>
         % Speculate Grade
       </a>
     )
@@ -168,21 +175,51 @@ class ClassDetail extends React.Component {
   */
   renderBackButton () {
     return (
-      <a className='back-button' onClick={() => browserHistory.push('student/classes')}>
-        <i className='fa fa-angle-left' /> Back to Classes
+      <a
+        className='back-button'
+        onClick={() => {
+          browserHistory.push('/student/classes')
+        }}
+      >
+        <i className='fa fa-angle-left' /> All Classes
       </a>
     )
   }
 
+  /*
+  * Close the Add Assignment modal
+  */
   closeModal = () => {
     this.setState({showAddAssignmentModal: false})
   }
 
+  /*
+  * Find class weight categories that don't have assignments
+  */
+  getEmptyWeights () {
+    let weights = this.state.studentClass.weights
+    let emptyWeights = []
+    let assignments = this.state.studentClass.assignments
+    weights.forEach(weight => {
+      let assignmentCount = 0
+      assignments.forEach(assignment => {
+        if (assignment.weight_id === weight.id) {
+          assignmentCount += 1
+        }
+      })
+      if (assignmentCount === 0) {
+        emptyWeights.push(weight)
+      }
+    })
+    return emptyWeights
+  }
+
   renderAddAssignmentButton () {
+    let emptyWeights = this.getEmptyWeights()
     return (
       <div>
         <a className='add-assignment-button' onClick={() => this.setState({showAddAssignmentModal: true})}>
-          + Add Assignment
+          + Add Assignment{emptyWeights.length > 0 ? <div className='add-assignment-button-alert'><div className='add-assignment-button-alert-count'>{emptyWeights.length}</div></div> : null}
         </a>
         { this.state.showAddAssignmentModal
           ? <AddAssignment closeModal={this.closeModal} assignmentParams={{class: this.state.studentClass}}/>
@@ -203,17 +240,6 @@ class ClassDetail extends React.Component {
     this.setState({openDeleteDialog: !this.state.openDeleteDialog})
   }
 
-  renderDeleteDialog () {
-    return (
-      <DeleteDialog
-        open={this.state.openDeleteDialog}
-        onClose={this.toggleDeleteDialog.bind(this)}
-        onDelete={this.onDeleteClass.bind(this)}
-        deleteMessage={'Are you sure you want to drop this class?'}
-      />
-    )
-  }
-
   renderClassDetails () {
     const {cl} = this.state
     return (
@@ -229,7 +255,6 @@ class ClassDetail extends React.Component {
           </div>
         </div>
         <UploadDocuments cl={cl} onUpload={this.getClass.bind(this)} />
-        {this.renderDeleteDialog()}
       </div>
     )
   }
@@ -248,7 +273,7 @@ class ClassDetail extends React.Component {
         <div>
           {loading
             ? <Loading />
-            : <div>
+            : <div className='cn-class-assignments-wrapper'>
               {cl.status.id === 1100 || cl.status.id === 1200 || cl.status.id === 1300
                 ? <div id='cn-class-detail-container'>
                   {this.renderClassDetails()}

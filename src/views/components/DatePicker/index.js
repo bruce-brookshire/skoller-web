@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import DatePickerBody from './DatePickerBody'
 import BackArrow from '../../../assets/sk-icons/navigation/BackArrow'
 import ForwardArrow from '../../../assets/sk-icons/navigation/ForwardArrow'
+import OutsideClickHandler from 'react-outside-click-handler'
 
 class DatePicker extends React.Component {
   constructor (props) {
@@ -60,31 +61,36 @@ class DatePicker extends React.Component {
 
   render () {
     return (
-      <div className={'datepicker-container' + ((this.props.inline === true) ? ' inline' : '')}>
-        <div className='datepicker-header'>
-          <div className='datepicker-nav-item' onClick={() => this.prevMonth()}>
-            <BackArrow height="12" width="10"/>
+      <OutsideClickHandler
+        onOutsideClick={() => this.props.close ? this.props.close() : null}
+      >
+        <div className={'datepicker-container' + ((this.props.inline === true) ? ' inline' : '')}>
+          <div className='datepicker-header'>
+            <div className='datepicker-nav-item' onClick={() => this.prevMonth()}>
+              <BackArrow height="12" width="10"/>
+            </div>
+            <div className='datepicker-nav-item'>
+              <h2>{moment(this.state.currentMonth).format('MMMM')}</h2>
+            </div>
+            <div className='datepicker-nav-item' onClick={() => this.nextMonth()}>
+              <ForwardArrow height="12" width="10"/>
+            </div>
           </div>
-          <div className='datepicker-nav-item'>
-            <h2>{moment(this.state.currentMonth).format('MMMM')}</h2>
-          </div>
-          <div className='datepicker-nav-item' onClick={() => this.nextMonth()}>
-            <ForwardArrow height="12" width="10"/>
+          <DatePickerBody days={this.renderDaysArray()} currentMonth={this.state.currentMonth} selectedDay={this.state.selectedDay} changeSelectedDay={this.changeSelectedDay}/>
+          <div className='datepicker-done-button' onClick={() => this.props.returnSelectedDay(this.state.selectedDay)}>
+            <p>Done</p>
           </div>
         </div>
-        <DatePickerBody days={this.renderDaysArray()} currentMonth={this.state.currentMonth} selectedDay={this.state.selectedDay} changeSelectedDay={this.changeSelectedDay}/>
-        <div className='datepicker-done-button' onClick={() => this.props.returnSelectedDay(this.state.selectedDay)}>
-          <p>Done</p>
-        </div>
-      </div>
+      </OutsideClickHandler>
     )
   }
 }
 
 DatePicker.propTypes = {
   givenDate: PropTypes.object,
-  returnSelectedDay: PropTypes.func,
-  inline: PropTypes.bool
+  returnSelectedDay: PropTypes.function,
+  inline: PropTypes.bool,
+  close: PropTypes.function
 }
 
 export default DatePicker

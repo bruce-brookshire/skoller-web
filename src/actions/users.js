@@ -1,4 +1,6 @@
-import {csv, get, put, del} from '../utilities/api'
+import {csv, get, put, del, post} from '../utilities/api'
+import stores from '../stores'
+const {userStore} = stores
 
 /*
 * Gets a CSV of users.
@@ -37,6 +39,17 @@ export function updateEmailPreferences (userId, form) {
 export function deleteUserById (user) {
   return del(`/api/v1/users/${user.id}`, null, 'Error deleting user. Try again.')
     .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+export function refreshUser () {
+  return post(`/api/v1/users/token-login`, '')
+    .then(data => {
+      userStore.user = data.user
       return data
     })
     .catch(error => {

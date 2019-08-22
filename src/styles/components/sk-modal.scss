@@ -7,11 +7,17 @@
   top: 0;
   left: 0;
   z-index: 5;
+  position: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: scroll;
-  @include hide-scrollbar;
+  // @include hide-scrollbar;
+
+  // overflow-y: scroll;
+  // padding-right: 17px;
+  // padding-bottom: 17px;
+  // box-sizing: content-box;
 
   .sk-modal-container {
     box-sizing: content-box;

@@ -81,7 +81,7 @@ class ClassList extends React.Component {
     var statusNameL = status.name.toLowerCase()
     if (status.is_complete) {
       return (
-        <div className='cn-class-list-row-icon-container cn-white' style={{background: classColor}} >
+        <div className='cn-class-list-row-icon-container cn-white' style={{background: classColor, borderColor: classColor}} >
           <span className='cn-class-list-row-grade-text cn-white'>{item.grade > 0 ? item.grade + '%' : '--'}</span>
         </div>
       )
@@ -122,11 +122,13 @@ class ClassList extends React.Component {
 
   renderClassRows () {
     return this.getRows().map(c => {
+      console.log(c)
       if (c.setupStatus.id === 1400) {
         return (
           <div key={'cn_class_list_row_' + c.id}
             className={'cn-class-list-row margin-bottom ' + this.props.rowClassName}
             onClick={() => this.onClassSelect(c)}
+            style={{border: '1px solid', borderColor: c.color ? c.color : '#4a4a4a', borderRadius: '5px'}}
           >
             {c.status}
             <div className='cn-class-list-row-data'>

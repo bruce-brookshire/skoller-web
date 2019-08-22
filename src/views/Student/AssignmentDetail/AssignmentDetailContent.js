@@ -92,7 +92,7 @@ class AssignmentDetailContent extends React.Component {
           </div>
           <div className='sk-assignment-detail-content-row'>
             <p>Grading category</p>
-            <p>{this.props.assignmentWeightCategory.name}</p>
+            <p>{this.props.assignmentWeightCategory ? this.props.assignmentWeightCategory.name : 'Not weighted'}</p>
           </div>
           <div className='sk-assignment-detail-content-row'>
             <p>Due date</p>

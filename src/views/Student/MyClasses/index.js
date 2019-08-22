@@ -8,6 +8,8 @@ import AddClassModal from './AddClassModal'
 import ClassStatusModal from '../../components/ClassStatusModal'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import {browserHistory} from 'react-router'
+import SecondClassPrompt from '../../components/Sammi/Prompts/SecondClassPrompt'
+import JoinFirstClassPrompt from '../../components/Sammi/Prompts/JoinFirstClassPrompt'
 
 @inject('rootStore') @observer
 class MyClasses extends React.Component {
@@ -19,6 +21,7 @@ class MyClasses extends React.Component {
       classStatusModal: {show: false, cl: null},
       loading: true
     }
+    this.props.rootStore.studentNavStore.location = this.props.location
   }
 
   componentWillMount () {
@@ -115,9 +118,13 @@ class MyClasses extends React.Component {
             emptyMessage='You are not enrolled in any classes.'
             onSelect={this.onClassSelect.bind(this)}
           />
-          <button className='button add-button' onClick={() => this.setState({showAddClassModal: true})}>
-            Join a Class
-          </button>
+          {this.state.classes.length > 1 &&
+            <button className='button add-button' onClick={() => this.setState({showAddClassModal: true})}>
+              Join a Class
+            </button>
+          }
+          <JoinFirstClassPrompt onAddClass={() => this.updateClasses()} show={this.state.classes.length === 0} />
+          <SecondClassPrompt onAddClass={() => this.updateClasses()} show={this.state.classes.length === 1} />
         </div>
       </div>
     )
@@ -157,7 +164,7 @@ class MyClasses extends React.Component {
     return (
       <div className='cn-my-classes-wrapper'>
         <div className='cn-my-classes-container'>
-          <h1>My Classes</h1>
+          <h1>Classes</h1>
           <i className='fas fa-plus cn-my-classes-add-new' onClick={() => this.setState({showAddClassModal: true})} />
           <div className='cn-my-classes-content'>
             {this.renderContent()}
@@ -185,7 +192,8 @@ class MyClasses extends React.Component {
 }
 
 MyClasses.propTypes = {
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  location: PropTypes.object
 }
 
 export default MyClasses

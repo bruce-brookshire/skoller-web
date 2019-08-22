@@ -8,6 +8,7 @@ import CalendarSmall from '../../../assets/sk-icons/calendar/CalendarSmall'
 import CalendarBody from './CalendarBody'
 import actions from '../../../actions'
 import PropTypes from 'prop-types'
+import SecondClassPrompt from '../../components/Sammi/Prompts/SecondClassPrompt'
 
 @inject('rootStore')
 @observer
@@ -42,6 +43,7 @@ class Calendar extends React.Component {
       thisMonth: thisMonth,
       thisWeek: thisWeek,
       classColors: classColors,
+      classes: [],
       isWeek: this.checkForMobile() // force calendar into week mode if viewed from mobile device
     }
 
@@ -49,6 +51,11 @@ class Calendar extends React.Component {
       this.getClassColors()
       this.getAssignments()
     }
+  }
+
+  updateClasses () {
+    this.getClassColors()
+    this.getAssignments()
   }
 
   async getAssignments () {
@@ -77,6 +84,7 @@ class Calendar extends React.Component {
     actions.classes
       .getStudentClassesById(student.id)
       .then(classes => {
+        this.setState({classes: classes})
         const classColors = {}
         classes.forEach(function (element) {
           classColors[element.id] = element.getColor()
@@ -133,7 +141,7 @@ class Calendar extends React.Component {
     })
   }
 
-  render () {
+  renderCalendar () {
     let isCurrentYear = true
 
     let assignments = null
@@ -215,6 +223,15 @@ class Calendar extends React.Component {
           classColors={this.state.classColors}
           assignments={assignments}
         />
+      </div>
+    )
+  }
+
+  render () {
+    return (
+      <div className='calendar-component-container'>
+        <SecondClassPrompt show={this.state.classes.length === 1} onAddClass={() => this.updateClasses()} />
+        {this.renderCalendar()}
       </div>
     )
   }
