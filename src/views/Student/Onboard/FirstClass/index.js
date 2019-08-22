@@ -138,7 +138,7 @@ class FirstClass extends React.Component {
   renderChecklist () {
     return (
       <div className='sk-onboard-first-class-checklist-container'>
-        <Checklist cl={this.state.firstClass} />
+        <Checklist cl={this.state.firstClass} status={this.state.status === 'inReview' ? 'inReview' : null} />
       </div>
     )
   }

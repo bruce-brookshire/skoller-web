@@ -16,6 +16,10 @@ class Checklist extends React.Component {
     }
   }
 
+  componentDidUpdate () {
+    this.setState({status: this.props.status ? this.props.status : this.getStatus(this.props.cl)})
+  }
+
   getStatus (cl) {
     let status
     let id = cl.status.id
