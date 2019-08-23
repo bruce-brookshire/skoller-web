@@ -31,6 +31,14 @@ class AddClassModal extends React.Component {
     this.props.closeModal()
   }
 
+  launchClassStatusModal (cl) {
+    if (this.props.launchClassStatusModal) {
+      this.props.launchClassStatusModal(cl)
+    } else {
+      return null
+    }
+  }
+
   render () {
     return (
       <div className='sk-add-class-modal-wrapper'>
@@ -45,6 +53,7 @@ class AddClassModal extends React.Component {
                 onBack={() => this.setState({formState: 'editSchool'})}
                 params={this.state.params}
                 onSubmit={() => this.onSubmit()}
+                launchClassStatusModal={(cl) => this.launchClassStatusModal(cl)}
               />
             }
             {this.state.formState === 'editSchool' &&
@@ -59,7 +68,8 @@ class AddClassModal extends React.Component {
 
 AddClassModal.propTypes = {
   closeModal: PropTypes.function,
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  launchClassStatusModal: PropTypes.function
 }
 
 export default AddClassModal
