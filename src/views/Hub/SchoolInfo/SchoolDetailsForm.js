@@ -68,7 +68,7 @@ class SchoolDetailsForm extends React.Component {
   */
   onSubmit () {
     let form = this.state.form
-    form.color = form.color.replace(/[^A-Z0-9]/ig, '')
+    form.color = '#' + form.color.replace(/[^A-Z0-9]/ig, '')
     console.log(form.color)
     if (this.props.validateForm(form, requiredFields)) {
       !this.state.form.id ? this.onCreateSchool() : this.onUpdateSchool()
