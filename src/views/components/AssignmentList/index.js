@@ -51,7 +51,7 @@ class AssignmentList extends React.Component {
           <div className='cn-class-list-row-data'>
             <div className='cn-class-list-row-col'>
               <div className='cn-class-list-title'>{a.name}</div>
-              <div className='cn-class-list-subtext'>{a.weight * 100}%</div>
+              <div className='cn-class-list-subtext'>{(a.weight * 100).toFixed(2)}%</div>
             </div>
             <div className='cn-class-list-row-col'>
               <div className='cn-class-list-subtext cn-class-list-flex-top cn-class-list-text-right'>{this.renderDueDateInfo(a.due)}</div>
