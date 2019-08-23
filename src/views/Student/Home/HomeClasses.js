@@ -7,6 +7,13 @@ import SecondClassPrompt from '../../components/Sammi/Prompts/SecondClassPrompt'
 
 @inject('rootStore') @observer
 class HomeClasses extends React.Component {
+  launchClassStatusModal (cl) {
+    if (this.props.launchClassStatusModal) {
+      this.props.launchClassStatusModal(cl)
+    } else {
+      return null
+    }
+  }
   render () {
     return (
       <div className='home-classes'>
@@ -15,8 +22,8 @@ class HomeClasses extends React.Component {
           emptyMessage='You are not enrolled in any classes.'
           onSelect={this.props.onClassSelect}
         />
-        <JoinFirstClassPrompt onAddClass={() => this.props.onAddClass()} show={this.props.classes.length === 0} />
-        <SecondClassPrompt onAddClass={() => this.props.onAddClass()} show={this.props.classes.length === 1} />
+        <JoinFirstClassPrompt onAddClass={() => this.props.onAddClass()} show={this.props.classes.length === 0} launchClassStatusModal={(cl) => this.launchClassStatusModal(cl)} />
+        <SecondClassPrompt onAddClass={() => this.props.onAddClass()} show={this.props.classes.length === 1} launchClassStatusModal={(cl) => this.launchClassStatusModal(cl)} />
         {this.props.classes.length < 2 &&
           <br />
         }

@@ -63,6 +63,7 @@
         margin-top: -9px;
         max-height: 200px;
         overflow: scroll;
+        -webkit-overflow-scrolling: touch;
   
         .sk-select-school-term-option {
           padding: 4px;
@@ -97,6 +98,7 @@
     margin-top: -17px;
     max-height: 200px;
     overflow: scroll;
+    -webkit-overflow-scrolling: touch;
 
     .sk-select-school-choice {
       padding: 4px;

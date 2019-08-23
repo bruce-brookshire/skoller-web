@@ -8,8 +8,8 @@ import DatePicker from '../../components/DatePicker'
 import NewAssignment from './NewAssignment'
 import {showSnackbar} from '../../../utilities/snackbar'
 import SkSelectDropDown from '../../components/SkSelectDropDown'
-import Sammi from '../../components/Sammi';
-import { browserHistory } from 'react-router';
+import Sammi from '../../components/Sammi'
+import { browserHistory } from 'react-router'
 
 @inject('rootStore')
 @observer

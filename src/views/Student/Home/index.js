@@ -6,7 +6,6 @@ import actions from '../../../actions'
 import { browserHistory } from 'react-router'
 import PopUp from './PopUp'
 import ClassStatusModal from '../../components/ClassStatusModal'
-import AddClassModal from '../MyClasses/AddClassModal'
 import {Cookies} from 'react-cookie'
 import HomeClasses from './HomeClasses'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
@@ -125,6 +124,10 @@ class Home extends React.Component {
     this.setState({popUp: {show: false}})
   }
 
+  launchClassStatusModal (cl) {
+    this.setState({classStatusModal: {show: true, cl: cl}})
+  }
+
   renderContent () {
     return (
       <div>
@@ -144,7 +147,7 @@ class Home extends React.Component {
             <div className="home-shadow-box">
               <h1 className='home-heading' onClick={() => browserHistory.push('/student/classes')}>Classes</h1>
               <div className="home-card-content">
-                <HomeClasses classes={this.state.classes} onAddClass={() => this.closeAddClassModal()} onClassSelect={this.onClassSelect} />
+                <HomeClasses classes={this.state.classes} onAddClass={() => this.closeAddClassModal()} onClassSelect={this.onClassSelect} launchClassStatusModal={(cl) => this.launchClassStatusModal(cl)} />
               </div>
             </div>
             {/* // this is for activity once we get it ready

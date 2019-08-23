@@ -1,0 +1,14 @@
+.completion-circle-container {
+  margin: -3px 4px 0 0;
+
+  .completion-circle {
+    // border: 2px solid $cn-font-color;
+    border-radius: 50%;
+  
+    .completion-circle__circle {
+      transition: 0.35s stroke-dashoffset;
+      transform: rotate(-90deg);
+      transform-origin: 50% 50%;
+    }
+  }
+}

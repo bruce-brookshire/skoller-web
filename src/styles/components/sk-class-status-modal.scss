@@ -58,6 +58,7 @@
             color: #4a4a4a;
             max-height: 100%;
             overflow: scroll;
+            -webkit-overflow-scrolling: touch;
     
             .sk-class-status-modal-file-drop-file {
               display: flex;
