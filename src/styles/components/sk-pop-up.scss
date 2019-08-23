@@ -1,0 +1,10 @@
+.sk-pop-up-container {
+  .sk-pop-up {
+    padding: 2rem;
+    max-width: 380px;
+
+    @media only screen and (max-width: $sk-mobile-break-point) {
+      padding: 0;
+    }
+  }
+}

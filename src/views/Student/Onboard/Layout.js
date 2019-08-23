@@ -41,7 +41,7 @@ class Layout extends React.Component {
           <div className='onboard-logo-text'>
             Keep Up with Classes, Together.
           </div>
-          <NavBar onboard={this.props.loggedIn ? !this.props.loggedIn : true} />
+          <NavBar onboard={true} />
           {this.props.hideModal
             ? this.renderContent()
             : <SkModal>

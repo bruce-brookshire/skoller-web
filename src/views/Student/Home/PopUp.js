@@ -15,7 +15,7 @@ class PopUp extends React.Component {
 
   renderNeedSyllabusPopUp () {
     return (
-      <div style={{padding: '2rem', maxWidth: '380px'}}>
+      <div className='sk-pop-up'>
         <FirstClass disableNext={false} />
       </div>
     )
@@ -23,7 +23,7 @@ class PopUp extends React.Component {
 
   renderSetPrimarySchoolPopUp () {
     return (
-      <div style={{padding: '2rem', maxWidth: '380px'}}>
+      <div className='sk-pop-up'>
         <SelectSchool
           renderPartner={() => { return null }}
           onSubmit={() => this.closeModal()}
@@ -35,7 +35,7 @@ class PopUp extends React.Component {
 
   renderFindClassPopUp () {
     return (
-      <div style={{padding: '2rem', maxWidth: '380px'}}>
+      <div className='sk-pop-up'>
         <AddClassModal closeModal={() => this.props.closeModal()} />
       </div>
     )
@@ -43,7 +43,7 @@ class PopUp extends React.Component {
 
   render () {
     return (
-      <div>
+      <div className='sk-pop-up-container'>
         {this.props.type === 'needSyllabus' &&
           <SkModal closeModal={() => this.closeModal()}>
             {this.renderNeedSyllabusPopUp()}
