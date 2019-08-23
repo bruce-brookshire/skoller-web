@@ -135,8 +135,8 @@ class ClassList extends React.Component {
             <div className='cn-class-list-row-data'>
               <div className='cn-class-list-row-col cn-class-list-row-col-primary'>
                 <div className='cn-class-list-title' style={{color: c.color}}>{c.name}</div>
-                <div className='cn-class-list-subtext cn-class-list-flex-top cn-class-list-text-left'><i className='fas fa-user' /> {c.enrollment}</div>
-                <div className='cn-class-list-subtext cn-class-list-subtext-completion'><CompletionCircle completion={c.completion * 100}/> <div>{c.completion * 100}%</div></div>
+                <div className='cn-class-list-subtext cn-class-list-flex-top cn-class-list-text-left'><i className='fas fa-user' /> {c.enrollment} classmates</div>
+                <div className='cn-class-list-subtext cn-class-list-subtext-completion'><CompletionCircle completion={c.completion * 100}/> <div>{Math.round(c.completion * 100)}% complete</div></div>
               </div>
             </div>
           </div>
