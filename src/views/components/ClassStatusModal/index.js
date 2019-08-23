@@ -31,17 +31,20 @@ class ClassStatusModal extends React.Component {
       additionalFiles: [],
       sammiMessage: sammiMessage,
       status: status,
-      mobile: false,
+      mobile: mobileCheck(),
       mobileMessage: mobileMessage,
       showDropClassConfirm: false
     }
+  }
+
+  componentWillMount () {
+    console.log(mobileCheck())
   }
 
   getClass (cl) {
     let status
     let sammiMessage
     let mobileMessage
-    console.log('running getClass')
     let id = cl.status.id
     if (id === 1100) {
       status = 'needSyllabus'
@@ -58,7 +61,6 @@ class ClassStatusModal extends React.Component {
       status = 'live'
       sammiMessage = `WOOHOO! Your class is live ⚡️`
     }
-    console.log('got to setState in getClass')
     return ({
       cl: cl,
       status: status,
