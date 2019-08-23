@@ -10,6 +10,7 @@ import EnrollSignUp from './EnrollSignUp'
 import EnrollVerify from './EnrollVerify'
 import EnrollLogin from './EnrollLogin'
 import moment from 'moment'
+import EnrollDownload from './EnrollDownload'
 
 @inject('rootStore') @observer
 class EnrollLink extends React.Component {
@@ -26,7 +27,8 @@ class EnrollLink extends React.Component {
       formState: null,
       signUpData: null,
       classNotFound: false,
-      loginPhone: null
+      loginPhone: null,
+      newUser: false
     }
 
     this.cookie = new Cookies()
@@ -92,7 +94,7 @@ class EnrollLink extends React.Component {
   }
 
   onSubmitSignUpForm = (form) => {
-    this.setState({formState: 'verify', signUpData: form})
+    this.setState({formState: 'verify', signUpData: form, newUser: true})
   }
 
   renderSignUpForm () {
@@ -115,7 +117,10 @@ class EnrollLink extends React.Component {
   renderVerificationForm () {
     console.log('truly what is going on')
     return (
-      <EnrollVerify onSubmit={this.onSubmitVerifyForm} phone={this.state.loginPhone ? this.state.loginPhone : this.state.signUpData.student.phone} />
+      <EnrollVerify
+        onSubmit={this.onSubmitVerifyForm}
+        phone={this.state.loginPhone ? this.state.loginPhone : this.state.signUpData.student.phone}
+      />
     )
   }
 
@@ -126,7 +131,13 @@ class EnrollLink extends React.Component {
     await actions.students.setStudentPrimarySchool(user.id, user.student.id, this.state.linkDetail.student_class.school.id)
     await this.loginStudent()
     actions.classes.enrollByLink(this.props.params.link)
-      .then(() => browserHistory.push('/student'))
+      .then(() => {
+        if (this.state.newUser) {
+          this.setState({formState: 'download'})
+        } else {
+          browserHistory.push('/student')
+        }
+      })
       .catch(e => {
         console.log(e)
         if (e.status === 422) {
@@ -217,6 +228,12 @@ class EnrollLink extends React.Component {
     )
   }
 
+  renderDownload () {
+    return (
+      <EnrollDownload onNext={() => browserHistory.push('/student/home')} />
+    )
+  }
+
   renderEnrollContent () {
     return (
       <div className='sk-enroll-link-container'>
@@ -250,7 +267,10 @@ class EnrollLink extends React.Component {
           <SkLoader />
         </div>
         : <Layout hideModal={this.state.step === 'verify'} loggedIn={!this.state.userNotFound} >
-          {this.renderEnrollContent()}
+          {(this.state.formState === 'download')
+            ? this.renderDownload()
+            : this.renderEnrollContent()
+          }
         </Layout>
     )
   }

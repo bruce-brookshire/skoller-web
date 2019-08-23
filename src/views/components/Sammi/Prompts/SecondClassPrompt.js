@@ -20,6 +20,14 @@ class SecondClassPrompt extends React.Component {
     this.setState({showAddClassModal: false})
   }
 
+  launchClassStatusModal (cl) {
+    if (this.props.launchClassStatusModal) {
+      this.props.launchClassStatusModal(cl)
+    } else {
+      return null
+    }
+  }
+
   render () {
     if (this.props.show) {
       return (
@@ -36,7 +44,7 @@ class SecondClassPrompt extends React.Component {
             </div>
           </Sammi>
           {this.state.showAddClassModal &&
-            <AddClassModal closeModal={() => this.closeAddClassModal()} />
+            <AddClassModal closeModal={() => this.closeAddClassModal()} launchClassStatusModal={(cl) => this.launchClassStatusModal(cl)} />
           }
         </div>
       )

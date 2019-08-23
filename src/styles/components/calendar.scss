@@ -23,8 +23,7 @@
     @media only screen and (max-width: $sk-mobile-break-point) {
       box-sizing: border-box;
       margin: 0 auto;
-      width: 100%;
-      max-width: calc(100vw - 4rem);
+      width: calc(100vw - 2rem);
     }
 
     .calendar-header {
@@ -64,6 +63,16 @@
           margin: 0 0 10px 24px;
           padding: 16px 0 0 0;
           transform: translateY(-2px);
+          max-width: calc(100% - 120px);
+        }
+
+        @media only screen and (max-width: 400px) {
+          font-size: 16px;
+          text-align: left;
+          margin: 0 0 10px 24px;
+          padding: 16px 0 0 0;
+          transform: translateY(-2px);
+          max-width: calc(100% - 100px);
         }
       }
 
@@ -95,6 +104,11 @@
               background-color: $cn-color-blue;
               padding: 6px 8px 2px 8px;
               margin: 2px 0 0 0;
+            }
+
+            @media only screen and (max-width: 400px) {
+              font-size: 12px;
+              margin-top: -4px;
             }
           }
 

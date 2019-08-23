@@ -58,6 +58,7 @@
             color: #4a4a4a;
             max-height: 100%;
             overflow: scroll;
+            -webkit-overflow-scrolling: touch;
     
             .sk-class-status-modal-file-drop-file {
               display: flex;
@@ -109,6 +110,35 @@
             }
           }
         }
+      }
+    }
+
+    .sk-class-status-modal-file-drop-tip {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      margin-bottom: -1rem;
+
+      h3 {
+        margin: 0 0 0 8px;
+        max-width: 208px;
+      }
+
+      p {
+        margin: 0 0 0 8px;
+        max-width: 208px;
+      }
+
+      ol {
+        margin: 0.5rem 0.5rem 0 1.5rem;
+        max-width: 208px;
+        padding: 0;
+      }
+
+      .sk-class-status-modal-file-drop-tip-text {
+        color: $cn-color-blue;
+        cursor: pointer;
+        margin-left: 4px;
       }
     }
   }

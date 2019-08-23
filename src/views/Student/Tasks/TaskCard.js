@@ -33,7 +33,7 @@ class TaskCard extends React.Component {
           </div>
           <div className="task-card-content">
             <p className="task-card-left">{this.props.clName}</p>
-            <p className="task-card-left">{task.weight * 100 + '%'}</p>
+            <p className="task-card-left">{(task.weight * 100).toFixed(2) + '%'}</p>
           </div>
         </div>
       </div>

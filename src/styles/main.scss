@@ -46,6 +46,7 @@
 @import 'components/checklist.scss';
 @import 'components/class-card.scss';
 @import 'components/common-scale-modal.scss';
+@import 'components/completion-circle';
 @import 'components/copy-box';
 @import 'components/datepicker.scss';
 @import 'components/day-selector';
@@ -67,6 +68,7 @@
 @import 'components/sk-add-class-modal.scss';
 @import 'components/sk-class-status-modal.scss';
 @import 'components/sk-drop-class-button.scss';
+@import 'components/sk-enroll-download.scss';
 @import 'components/sk-enroll-link.scss';
 @import 'components/sk-enroll-login.scss';
 @import 'components/sk-select-school.scss';
@@ -80,6 +82,7 @@
 @import 'components/sign-up-form';
 @import 'components/time-fields';
 @import 'components/topnav';
+@import 'components/tooltip';
 @import 'components/snackbar';
 @import 'components/student-request-modal';
 @import 'components/upload-history';
@@ -158,6 +161,7 @@ html {
 
 .layout {
   overflow: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
 * {
