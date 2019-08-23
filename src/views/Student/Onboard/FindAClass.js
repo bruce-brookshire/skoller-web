@@ -661,7 +661,7 @@ class FindAClass extends React.Component {
           <h1
             className='onboard-find-class-school'
             style={{
-              color: this.state.schoolChoice.color ? '#' + this.state.schoolChoice.color : null
+              color: this.state.schoolChoice.color ? this.state.schoolChoice.color : null
             }}
           >
             {this.state.schoolChoice.name}
