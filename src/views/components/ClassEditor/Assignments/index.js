@@ -7,7 +7,8 @@ import SkipCategoryModal from './SkipCategoryModal'
 import actions from '../../../../actions'
 import SkLoader from '../../../../assets/sk-icons/SkLoader'
 import moment from 'moment'
-import { browserHistory } from 'react-router';
+import { browserHistory } from 'react-router'
+import {showSnackbar} from '../../../../utilities/snackbar'
 
 class Assignments extends React.Component {
   constructor (props) {
@@ -259,15 +260,18 @@ class Assignments extends React.Component {
   async submitAssignments () {
     console.log('submit assignments')
     this.setState({loading: true})
+    let assignmentCount = 0
     await this.state.assignments.forEach(async form => {
       if (!form.id) {
         console.log('creating: ', form.name)
+        assignmentCount += 1
         await actions.assignments.createAssignment(this.props.cl, form).then(() => {
           this.setState({form: this.initializeFormData(), due_null: false})
           this.updateAssignments()
         }).catch(() => { this.setState({loading: false}) })
       }
     })
+    showSnackbar(`Created ${assignmentCount} new assignment` + (assignmentCount > 1 ? 's' : ''), 'success')
     this.setState({loadingAssignments: true})
     await actions.assignments.getClassAssignments(this.props.cl).then((assignments) => {
       this.setState({assignments, loadingAssignments: false})
@@ -280,6 +284,7 @@ class Assignments extends React.Component {
   }
 
   onSubmitSingleWeight () {
+    this.submitAssignments()
     this.handleSubmit()
     browserHistory.push('/student/class/' + this.props.cl.id.toString())
   }
