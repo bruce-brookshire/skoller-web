@@ -164,9 +164,9 @@ class HubLanding extends React.Component {
               browserHistory.push({pathname: '/hub/reports', state: {reports: this.state.reports}})}>
               <img src='/src/assets/images/icons/School.png'/>
               <span>Reports (
-              {this.state.loadingReports ? <Loading style={{color: 'white'}}/>
-                : this.state.reports.length
-              }
+                {this.state.loadingReports ? <Loading style={{color: 'white'}}/>
+                  : this.state.reports.length
+                }
               )</span>
             </button>
           </div>
@@ -213,9 +213,9 @@ class HubLanding extends React.Component {
             >
               <img src='/src/assets/images/icons/repair.png'/>
               <span>Under Maintenance (
-              {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
-                : maintCount
-              }
+                {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
+                  : maintCount
+                }
               )</span>
             </button>
           </div>}
@@ -247,9 +247,9 @@ class HubLanding extends React.Component {
                     >
                       <img src='/src/assets/images/icons/Assignments.png'/>
                       <span>Syllabi (
-                      {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
-                        : syllabiCount
-                      }
+                        {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
+                          : syllabiCount
+                        }
                       )</span>
                     </button>
                   </div>
