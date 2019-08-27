@@ -124,9 +124,9 @@ class HubLanding extends React.Component {
             <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/schools')}>
               <img src='/src/assets/images/icons/School.png'/>
               <span>Schools (
-              {this.state.loadingStatuses ? <Loading style={{color: 'white'}}/>
-                : this.state.schoolCount
-              }
+                {this.state.loadingStatuses ? <Loading style={{color: 'white'}}/>
+                  : this.state.schoolCount
+                }
               )</span>
             </button>
           </div>
@@ -199,9 +199,9 @@ class HubLanding extends React.Component {
             >
               <img src='/src/assets/images/icons/change_requests.png'/>
               <span>Change Request (
-              {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
-                : changeCount
-              }
+                {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
+                  : changeCount
+                }
               )</span>
             </button>
           </div>}
