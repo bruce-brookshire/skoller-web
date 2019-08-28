@@ -20,7 +20,6 @@ class StudentLink extends React.Component {
 
   componentWillMount () {
     actions.students.getStudentByLink(this.props.params.link).then((linkDetail) => {
-      console.log(linkDetail)
       this.setState({linkDetail})
     }).catch(() => false)
   }

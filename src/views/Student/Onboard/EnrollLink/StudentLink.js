@@ -36,7 +36,6 @@ class StudentLink extends React.Component {
 
   async componentWillMount () {
     actions.students.getStudentByLink(this.props.params.link).then((linkDetail) => {
-      console.log(linkDetail)
       this.setState({linkDetail})
     }).catch(() => false)
   }
@@ -50,8 +49,7 @@ class StudentLink extends React.Component {
       if (this.cookie.get('skollerToken')) {
         await actions.auth.getUserByToken(this.cookie.get('skollerToken'))
           .then(() => browserHistory.push('/student'))
-          .catch((r) => {
-            console.log(r)
+          .catch(() => {
             this.setState({loading: false, userNotFound: true, formState: 'sign-up'})
           })
       } else {
@@ -96,7 +94,6 @@ class StudentLink extends React.Component {
   }
 
   renderVerificationForm () {
-    console.log('truly what is going on')
     return (
       <EnrollVerify
         onSubmit={this.onSubmitVerifyForm}
