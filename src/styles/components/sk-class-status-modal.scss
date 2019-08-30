@@ -17,14 +17,17 @@
   }
   
   .sk-class-status-modal-container {
-    margin: 2rem 0 2rem 0;
+    margin: 1rem 0 1rem 0;
     box-sizing: border-box;
+    height: 100%;
   
     .sk-class-status-modal-row {
       display: flex;
       flex-direction: row;
       justify-content: center;
       margin: 0 0 1rem 0;
+      width: 380px;
+      height: 100%;
   
       .sk-class-status-modal-mobile-message {
         margin: 0;
@@ -36,7 +39,8 @@
       }
   
       .sk-class-status-modal-action-container {
-        height: 168px;
+        min-height: 168px;
+        height: 100%;
         width: 100%;
   
         .sk-class-status-modal-action-detail {

@@ -7,7 +7,6 @@ import actions from '../../../actions'
 import Loading from '../../../components/Loading'
 import ClassCard from '../../Cards/ClassCard'
 import ClassInviteLink from './ClassInviteLink'
-import DeleteDialog from '../../../components/Grid/DeleteDialog'
 import AssignmentList from '../../components/AssignmentList'
 import StudentLayout from '../../components/StudentLayout'
 import AddAssignment from '../Assignments/AddAssignment'
@@ -37,7 +36,6 @@ class ClassDetail extends React.Component {
 
   getClass () {
     const {classId} = this.props.params
-    let {navbarStore} = this.props.rootStore
     this.setState({loading: true})
     actions.classes.getClassById(classId).then(cl => {
       this.getClassColor(cl)
@@ -243,9 +241,7 @@ class ClassDetail extends React.Component {
   renderClassDetails () {
     const {cl} = this.state
     return (
-      <div className="cn-class-detail-container margin-bottom">
-        {this.renderBackButton()}
-        {this.renderClassTitle()}
+      <div className="cn-class-detail-container">
         <div id='cn-class-detail-header'>
           <div className='cn-class-detail-header-item'>
             {this.renderClassCard()}
@@ -284,6 +280,7 @@ class ClassDetail extends React.Component {
                     {this.renderAssignmentList()}
                   </div>
                 </div>}
+              {this.renderClassDetails()}
             </div>
           }
         </div>
