@@ -124,7 +124,7 @@ class ClassList extends React.Component {
   renderClassRows () {
     return this.getRows().map(c => {
       console.log(c)
-      if (c.setupStatus.id === 1400) {
+      if (c.setupStatus.id >= 1400) {
         return (
           <div key={'cn_class_list_row_' + c.id}
             className={'cn-class-list-row margin-bottom ' + this.props.rowClassName}

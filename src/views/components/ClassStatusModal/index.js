@@ -12,6 +12,7 @@ import Checklist from './Checklist'
 import SkModal from '../SkModal/SkModal'
 import DropClassButton from '../DropClassButton'
 import ToolTip from '../ToolTip'
+import UploadAdditionalDocuments from './UploadAdditionalDocuments'
 
 @inject('rootStore') @observer
 class ClassStatusModal extends React.Component {
@@ -26,6 +27,7 @@ class ClassStatusModal extends React.Component {
 
     this.state = {
       cl: cl,
+      fullClass: null,
       uploadingDoc: false,
       syllabus: null,
       additionalFiles: [],
@@ -33,12 +35,18 @@ class ClassStatusModal extends React.Component {
       status: status,
       mobile: mobileCheck(),
       mobileMessage: mobileMessage,
-      showDropClassConfirm: false
+      showDropClassConfirm: false,
+      uploadAdditionalDocumentsView: false
     }
   }
 
   componentWillMount () {
     console.log(mobileCheck())
+    actions.classes.getClassById(this.props.cl.id)
+      .then((r) => {
+        this.setState({fullClass: r})
+      })
+      .catch(() => false)
   }
 
   getClass (cl) {
@@ -161,10 +169,45 @@ class ClassStatusModal extends React.Component {
 
   renderChecklist () {
     return (
+      !this.state.uploadAdditionalDocumentsView &&
       <div className='sk-class-status-modal-checklist-container'>
         <Checklist cl={this.state.cl} status={this.state.status === 'inReview' ? 'inReview' : null} />
       </div>
     )
+  }
+
+  renderInReview () {
+    if (this.state.uploadAdditionalDocumentsView) {
+      return (
+        <div style={{marginBottom: '-2rem'}}>
+          <UploadAdditionalDocuments
+            cl={this.state.fullClass}
+            onUpload={() => console.log('upload')}
+            onSubmit={() => this.props.closeModal()}
+          />
+        </div>
+      )
+    } else {
+      return (
+        <div className='sk-class-status-modal-action-detail'>
+          <div>Check back in a few short hours and we&apos;ll have your class all ready for you.</div>
+          <div
+            onClick={() => {
+              console.log(this.props.cl)
+              this.setState({
+                uploadAdditionalDocumentsView: true
+              })
+            }}
+            style={{
+              color: '#57B9E4',
+              cursor: 'pointer'
+            }}
+          >
+            📄Upload additional documents.
+          </div>
+        </div>
+      )
+    }
   }
 
   renderClass () {
@@ -180,9 +223,7 @@ class ClassStatusModal extends React.Component {
                 : null
               }
               {this.state.status === 'inReview'
-                ? <div className='sk-class-status-modal-action-detail'>
-                  <div>Check back in a few short hours and we&apos;ll have your class all ready for you.</div>
-                </div>
+                ? this.renderInReview()
                 : null
               }
               {this.state.status === 'diy'
@@ -250,7 +291,6 @@ class ClassStatusModal extends React.Component {
     } else if (this.state.status === 'inReview' || this.state.status === 'live') {
       this.props.onSubmit()
     } else if (this.state.status === 'diy') {
-      console.log('TODO: this should send you to syllabus tool')
       this.sendToDiy()
     }
   }
@@ -327,53 +367,78 @@ class ClassStatusModal extends React.Component {
     )
   }
 
+  renderControl () {
+    if (this.state.uploadAdditionalDocumentsView) {
+      return null
+    } else {
+      return (
+        <div>
+          {!this.props.disableNext && this.renderNextButton()}
+          {this.state.status === 'inReview' && !mobileCheck()
+            ? <p
+              style={{margin: '6px 0 0 0', textAlign: 'center', cursor: 'pointer'}}
+              onClick={() => {
+                this.sendToDiy()
+              }}
+            >
+              <small>
+                Don&apos;t want to wait? <span style={{color: '#57B9E4'}}>Click here to do it yourself!</span>
+              </small>
+            </p>
+            : null
+          }
+          {this.state.status === 'needSyllabus' && !mobileCheck()
+            ? <p
+              style={{margin: '6px 0 0 0', textAlign: 'center', cursor: 'pointer'}}
+              onClick={() => {
+                this.sendToDiy()
+              }}
+            >
+              <small>
+                No syllabus? <span style={{color: '#57B9E4'}}>Click here to add assignments without one!</span>
+              </small>
+            </p>
+            : null
+          }
+        </div>
+      )
+    }
+  }
+
+  renderSammi () {
+    if (!this.state.uploadAdditionalDocumentsView) {
+      return (
+        <Sammi
+          message={this.state.sammiMessage}
+          position='right'
+          emotion='happy'
+        />
+      )
+    }
+  }
+
+  renderHeader () {
+    return (
+      <div className='sk-class-status-modal-header'>
+        <h1>{this.state.cl.name}</h1>
+        {this.renderSammi()}
+      </div>
+    )
+  }
+
   renderModalContent () {
     return (
       <div className='sk-class-status-modal'>
         <div className='sk-class-status-modal-drop-container'>
           <DropClassButton onDropClass={() => this.props.closeModal()} cl={this.state.cl} />
         </div>
-        <div className='sk-class-status-modal-header'>
-          <h1>{this.state.cl.name}</h1>
-          <Sammi
-            message={this.state.sammiMessage}
-            position='right'
-            emotion='happy'
-          />
-          <SkProgressBar progress={0.75} width={'100%'} backgroundColor={'$cn-color-blue'}/>
-        </div>
+        {this.renderHeader()}
         {this.renderClass()}
         {this.state.mobile && this.state.mobileMessage
           ? this.renderMobileMessage()
           : null
         }
-        {!this.props.disableNext && this.renderNextButton()}
-        {this.state.status === 'inReview' && !mobileCheck()
-          ? <p
-            style={{margin: '6px 0 0 0', textAlign: 'center', cursor: 'pointer'}}
-            onClick={() => {
-              this.sendToDiy()
-            }}
-          >
-            <small>
-              Don&apos;t want to wait? <span style={{color: '#57B9E4'}}>Click here to do it yourself!</span>
-            </small>
-          </p>
-          : null
-        }
-        {this.state.status === 'needSyllabus' && !mobileCheck()
-          ? <p
-            style={{margin: '6px 0 0 0', textAlign: 'center', cursor: 'pointer'}}
-            onClick={() => {
-              this.sendToDiy()
-            }}
-          >
-            <small>
-              No syllabus? <span style={{color: '#57B9E4'}}>Click here to add assignments without one!</span>
-            </small>
-          </p>
-          : null
-        }
+        {this.renderControl()}
       </div>
     )
   }

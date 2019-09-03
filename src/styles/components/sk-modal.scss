@@ -7,21 +7,15 @@
   top: 0;
   left: 0;
   z-index: 5;
-  position: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: scroll;
   -webkit-overflow-scrolling: touch;
-  // @include hide-scrollbar;
-
-  // overflow-y: scroll;
-  // padding-right: 17px;
-  // padding-bottom: 17px;
-  // box-sizing: content-box;
 
   .sk-modal-container {
-    box-sizing: content-box;
+    box-sizing: border-box;
+    max-height: 100vh;
+    overflow: scroll;
 
     .sk-modal {
       @include skoller-cell;

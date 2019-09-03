@@ -8,7 +8,6 @@ import actions from '../../../../actions'
 import SkLoader from '../../../../assets/sk-icons/SkLoader'
 import moment from 'moment'
 import { browserHistory } from 'react-router'
-import {showSnackbar} from '../../../../utilities/snackbar'
 
 class Assignments extends React.Component {
   constructor (props) {
