@@ -85,7 +85,10 @@ class ClassDetail extends React.Component {
   renderClassTitle () {
     const {cl} = this.state
     return (
-      <div className='cn-class-assignments-title' style={{ color: '#' + cl.color }}><span>{cl.name}</span> <i className='fas fa-info-circle'></i></div>
+      <div className='cn-class-assignments-title' style={{ color: '#' + cl.color }}>
+        <span>{cl.name}</span>
+        {/* <i className='fas fa-info-circle'></i> */}
+      </div>
     )
   }
 
@@ -280,7 +283,6 @@ class ClassDetail extends React.Component {
                     {this.renderAssignmentList()}
                   </div>
                 </div>}
-              {this.renderClassDetails()}
             </div>
           }
         </div>

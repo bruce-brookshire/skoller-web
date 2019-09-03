@@ -92,5 +92,19 @@
         cursor: default;
       }
     }
+    
+    .sk-upload-additional-docs-help {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      margin: 1rem 0 0 0;
+
+      p {
+        color: $cn-color-blue;
+        cursor: pointer;
+        text-align: center;
+        margin: 0;
+      }
+    }
   }
 }

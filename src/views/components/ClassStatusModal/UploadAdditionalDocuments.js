@@ -5,6 +5,7 @@ import actions from '../../../actions'
 import DragAndDrop from '../DragAndDrop/DragAndDrop'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import {showSnackbar} from '../../../utilities/snackbar'
+import StudentRequestModal from '../../Student/ClassDetail/StudentRequestModal'
 
 @inject('rootStore') @observer
 class UploadAdditionalDocuments extends React.Component {
@@ -15,7 +16,8 @@ class UploadAdditionalDocuments extends React.Component {
       loading: true,
       documents: [],
       newDocuments: [],
-      syllabus: null
+      syllabus: null,
+      showStudentRequestModal: false
     }
 
     actions.documents.getClassDocuments(this.props.cl.id)
@@ -51,7 +53,6 @@ class UploadAdditionalDocuments extends React.Component {
   }
 
   renderDocs () {
-    console.log(this.state)
     return (
       <div className='sk-upload-additional-docs-previous-container'>
         <p>Here&apos;s what we have so far:</p>
@@ -85,7 +86,6 @@ class UploadAdditionalDocuments extends React.Component {
         handleDrop={(file) => {
           let newDocuments = this.state.newDocuments
           newDocuments.push(file[0])
-          console.log(newDocuments)
           this.setState({newDocuments: newDocuments})
         }}
       >
@@ -143,6 +143,31 @@ class UploadAdditionalDocuments extends React.Component {
     )
   }
 
+  renderNeedHelp () {
+    return (
+      <div
+        className='sk-upload-additional-docs-help'
+      >
+        <p
+          onClick={() => this.setState({showStudentRequestModal: true})}
+        >
+          Need help?
+        </p>
+        {this.state.showStudentRequestModal &&
+          <StudentRequestModal
+            open={true}
+            onClose={() => {
+              this.setState({showStudentRequestModal: !this.state.showStudentRequestModal})
+            }}
+            cl={this.props.cl}
+            onSuccess={() => console.log('success')}
+            onError={() => console.log('error')}
+          />
+        }
+      </div>
+    )
+  }
+
   renderContent () {
     return (
       <div className='sk-upload-additional-docs-container'>
@@ -151,6 +176,7 @@ class UploadAdditionalDocuments extends React.Component {
           {this.renderDocs()}
           {this.renderDragAndDrop()}
           {this.renderSubmit()}
+          {this.renderNeedHelp()}
         </div>
       </div>
     )
