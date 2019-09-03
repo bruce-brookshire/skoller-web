@@ -11,6 +11,8 @@ import AssignmentList from '../../components/AssignmentList'
 import StudentLayout from '../../components/StudentLayout'
 import AddAssignment from '../Assignments/AddAssignment'
 import DropClassButton from '../../components/DropClassButton'
+import UploadAdditionalDocuments from '../../components/ClassStatusModal/UploadAdditionalDocuments'
+import SkModal from '../../components/SkModal/SkModal'
 
 @inject('rootStore') @observer
 class ClassDetail extends React.Component {
@@ -22,6 +24,7 @@ class ClassDetail extends React.Component {
       cl: {},
       assignments: [],
       showAddAssignmentModal: false,
+      showUploadAdditionalDocuments: false,
       studentClass: {}
     }
 
@@ -110,7 +113,8 @@ class ClassDetail extends React.Component {
       <div className='cn-class-assignments-header'>
         <div className='cn-class-assignments-header-item'>
           {this.renderBackButton()}
-          {this.renderSpeculateGradeButton()}
+          {/* {this.renderSpeculateGradeButton()} */}
+          {this.renderDocumentUploadButton()}
         </div>
         <div className='cn-class-assignments-header-item text-center'>
           {this.renderClassTitle()}
@@ -168,6 +172,31 @@ class ClassDetail extends React.Component {
       <a className='spec-grade-button'>
         % Speculate Grade
       </a>
+    )
+  }
+
+  renderDocumentUploadButton () {
+    return (
+      <div>
+        <a
+          className='spec-grade-button'
+          onClick={() => this.setState({showUploadAdditionalDocuments: true})}
+        >
+          📄Documents
+        </a>
+        {this.state.showUploadAdditionalDocuments &&
+          <SkModal
+            title={this.state.cl.name}
+            closeModal={() => this.setState({showUploadAdditionalDocuments: false})}
+          >
+            <div style={{marginBottom: '1rem'}} />
+            <UploadAdditionalDocuments
+              cl={this.state.cl}
+              onSubmit={() => this.setState({showUploadAdditionalDocuments: false})}
+            />
+          </SkModal>
+        }
+      </div>
     )
   }
 

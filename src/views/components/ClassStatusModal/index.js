@@ -179,11 +179,13 @@ class ClassStatusModal extends React.Component {
   renderInReview () {
     if (this.state.uploadAdditionalDocumentsView) {
       return (
-        <UploadAdditionalDocuments
-          cl={this.state.fullClass}
-          onUpload={() => console.log('upload')}
-          onSubmit={() => this.props.closeModal()}
-        />
+        <div style={{marginBottom: '-2rem'}}>
+          <UploadAdditionalDocuments
+            cl={this.state.fullClass}
+            onUpload={() => console.log('upload')}
+            onSubmit={() => this.props.closeModal()}
+          />
+        </div>
       )
     } else {
       return (

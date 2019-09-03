@@ -53,7 +53,7 @@ class StudentRequestModal extends React.Component {
     const {cl} = this.props
     return (
       <div className="class-status center-text">
-        Current Status: {cl.status.name !== 'Class Setup' ? 'In Review' : 'Complete'}
+        Current Status: {cl.status.name}
       </div>
     )
   }
@@ -177,6 +177,25 @@ class StudentRequestModal extends React.Component {
     }
   }
 
+  renderSubmit () {
+    let disabled = true
+    console.log(this.state)
+    if (this.state.step1Val && this.state.step2Val && this.state.step2Val.length !== 0) {
+      disabled = false
+    }
+    return (
+      <button
+        className={`button full-width margin-top ${disabled ? 'disabled' : ''}`}
+        onClick={() => {
+          if (!disabled) {
+            this.onSubmit()
+          }
+        }}>
+        {this.state.loading ? (<Loading style={{color: 'white'}} />) : 'Submit' }
+      </button>
+    )
+  }
+
   render () {
     if (this.props.open) {
       return (
@@ -186,11 +205,7 @@ class StudentRequestModal extends React.Component {
           {this.renderTitle()}
           {this.renderStatus()}
           {this.renderContent()}
-          <button
-            className={`button full-width margin-top ${this.state.step1Val && this.state.step2Val && this.state.step2Val.length !== 0 ? '' : 'disabled'}`}
-            onClick={() => { this.onSubmit() }}>
-            {this.state.loading ? (<Loading style={{color: 'white'}} />) : 'Submit' }
-          </button>
+          {this.renderSubmit()}
         </SkModal>
       )
     } else {

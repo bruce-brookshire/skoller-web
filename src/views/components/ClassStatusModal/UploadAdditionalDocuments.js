@@ -17,7 +17,8 @@ class UploadAdditionalDocuments extends React.Component {
       documents: [],
       newDocuments: [],
       syllabus: null,
-      showStudentRequestModal: false
+      showStudentRequestModal: false,
+      isCompleteClass: this.props.cl.status.id > 1300
     }
 
     actions.documents.getClassDocuments(this.props.cl.id)
@@ -66,7 +67,7 @@ class UploadAdditionalDocuments extends React.Component {
             {this.state.documents.map(doc => {
               if (!doc.is_syllabus) {
                 return (
-                  <a href={doc.path}>{doc.name}</a>
+                  <a href={doc.path} target='_blank' rel='noopener noreferrer'>{doc.name}</a>
                 )
               } else if (this.state.documents.length === 1) {
                 return (
@@ -160,8 +161,11 @@ class UploadAdditionalDocuments extends React.Component {
               this.setState({showStudentRequestModal: !this.state.showStudentRequestModal})
             }}
             cl={this.props.cl}
-            onSuccess={() => console.log('success')}
-            onError={() => console.log('error')}
+            onSuccess={() => {
+              showSnackbar('Request for assistance submitted successfully.', 'success')
+              this.setState({showStudentRequestModal: !this.state.showStudentRequestModal})
+            }}
+            onError={() => this.setState({showStudentRequestModal: !this.state.showStudentRequestModal})}
           />
         }
       </div>
@@ -172,10 +176,15 @@ class UploadAdditionalDocuments extends React.Component {
     return (
       <div className='sk-upload-additional-docs-container'>
         <div className='sk-upload-additional-docs'>
-          <h2>Upload additional documents</h2>
+          <h2>
+            {this.state.isCompleteClass
+              ? 'Documents'
+              : 'Upload additional documents'
+            }
+          </h2>
           {this.renderDocs()}
-          {this.renderDragAndDrop()}
-          {this.renderSubmit()}
+          {!this.state.isCompleteClass && this.renderDragAndDrop()}
+          {!this.state.isCompleteClass && this.renderSubmit()}
           {this.renderNeedHelp()}
         </div>
       </div>
