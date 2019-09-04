@@ -42,7 +42,6 @@ class Assignments extends React.Component {
     let unsavedAssignments = []
     this.state.assignments.forEach(a => {
       if (!a.id) {
-        console.log(`pushing ${a.name} to unsaved assignments`)
         unsavedAssignments.push(a)
       }
     })
@@ -87,7 +86,8 @@ class Assignments extends React.Component {
       currentWeight: null,
       openSkipCategoryModal: false,
       addAssignment: false,
-      lastAssignmentDate: Date.now()
+      lastAssignmentDate: Date.now(),
+      addingAssignment: false
     }
   }
 
@@ -186,6 +186,13 @@ class Assignments extends React.Component {
   }
 
   /*
+  * Toggle the problems modal.
+  */
+  toggleAddingAssignment (bool = !this.state.addingAssignment) {
+    this.setState({addingAssignment: bool})
+  }
+
+  /*
   * Render the having issues modal.
   */
   renderSkipCategoryModal () {
@@ -258,12 +265,10 @@ class Assignments extends React.Component {
   }
 
   async submitAssignments () {
-    console.log('submit assignments')
     this.setState({loading: true})
     let assignmentCount = 0
     await this.state.assignments.forEach(async form => {
       if (!form.id) {
-        console.log('creating: ', form.name)
         assignmentCount += 1
         await actions.assignments.createAssignment(this.props.cl, form).then(() => {
           this.setState({form: this.initializeFormData(), due_null: false})
@@ -330,6 +335,7 @@ class Assignments extends React.Component {
                   currentWeight={currentWeight}
                   updateLastAssignmentDate={(date) => this.updateLastAssignmentDate(date)}
                   lastAssignmentDate={this.state.lastAssignmentDate}
+                  toggleAddingAssignment={(bool) => this.toggleAddingAssignment(bool)}
                 />
                 {(assignments.length === 0) && !this.props.singleWeight &&
                   <div>
@@ -351,6 +357,7 @@ class Assignments extends React.Component {
                 </div>
                 <AssignmentTable
                   viewOnly={viewOnly}
+                  addingAssignment={this.state.addingAssignment}
                   assignments={assignments}
                   currentAssignment={currentAssignment}
                   onSelectAssignment={this.onSelectAssignment.bind(this)}
