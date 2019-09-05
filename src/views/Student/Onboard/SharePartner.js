@@ -8,35 +8,59 @@ import CopyBox from '../../components/CopyBox'
 
 @inject('rootStore') @observer
 class SharePartner extends React.Component {
+  renderSharePartner () {
+    return (
+      <div>
+        <Sammi
+          emotion='wow'
+          position='left'
+        >
+          <p>Congratulations! Because of you, <b>$1 was just donated to {this.props.partner.philanthropy}.</b></p>
+        </Sammi>
+        <SkProgressBar progress={1} width={'100%'} backgroundColor={'$cn-color-blue'}/>
+        <div className='sk-onboard-share-partner-cloud-container'>
+          <div className='sk-onboard-share-partner-cloud-1'>
+            <Cloud fill={this.props.partner.primaryColor} width="120" height="90" />
+          </div>
+          <div className='sk-onboard-share-partner-cloud-2'>
+            <Cloud width="200" height="150" />
+            <div className='sk-onboard-share-partner-cloud-content'>
+              <p>
+                It doesn&apos;t have to<br /> stop here. Money<br />is donated when <b>ANY<br />STUDENT</b> uses the <b style={{color: '#' + this.props.partner.primaryColor}}>{this.props.partner.name}</b> link to sign up for Skoller!
+              </p>
+            </div>
+          </div>
+          <div className='sk-onboard-share-partner-cloud-3'>
+            <Cloud fill={this.props.partner.secondaryColor} width="140" height="105" />
+          </div>
+        </div>
+        <CopyBox linkValue={'https://skoller.co/c/' + this.props.partner.slug} />
+      </div>
+    )
+  }
+
+  renderNonSharingPartner () {
+    return (
+      <div>
+        <Sammi
+          emotion='wow'
+          position='left'
+        >
+          <p>You did it! Thanks for signing up for Skoller through {this.props.partner.name}.</p>
+        </Sammi>
+        <SkProgressBar progress={1} width={'100%'} backgroundColor={'$cn-color-blue'}/>
+      </div>
+    )
+  }
   render () {
     return (
       <div>
         {this.props.renderPartner()}
         <div className='sk-onboard-share-partner'>
-          <Sammi
-            emotion='wow'
-            position='left'
-          >
-            <p>Congratulations! Because of you, <b>$1 was just donated to {this.props.partner.philanthropy}.</b></p>
-          </Sammi>
-          <SkProgressBar progress={1} width={'100%'} backgroundColor={'$cn-color-blue'}/>
-          <div className='sk-onboard-share-partner-cloud-container'>
-            <div className='sk-onboard-share-partner-cloud-1'>
-              <Cloud fill={this.props.partner.primaryColor} width="120" height="90" />
-            </div>
-            <div className='sk-onboard-share-partner-cloud-2'>
-              <Cloud width="200" height="150" />
-              <div className='sk-onboard-share-partner-cloud-content'>
-                <p>
-                  It doesn&apos;t have to<br /> stop here. Money<br />is donated when <b>ANY<br />STUDENT</b> uses the <b style={{color: '#' + this.props.partner.primaryColor}}>{this.props.partner.name}</b> link to sign up for Skoller!
-                </p>
-              </div>
-            </div>
-            <div className='sk-onboard-share-partner-cloud-3'>
-              <Cloud fill={this.props.partner.secondaryColor} width="140" height="105" />
-            </div>
-          </div>
-          <CopyBox linkValue={'https://skoller.co/c/' + this.props.partner.slug} />
+          {this.props.partner.philanthropy
+            ? this.renderSharePartner()
+            : this.renderNonSharingPartner()
+          }
           <div
             className={'onboard-next'}
             onClick={() => this.props.onSubmit()}
