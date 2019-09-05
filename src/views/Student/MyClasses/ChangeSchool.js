@@ -1,5 +1,4 @@
 import React from 'react'
-import SkProgressBar from '../../components/SkProgressBar'
 import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
 import actions from '../../../actions'
@@ -7,7 +6,6 @@ import CreateSchoolModal from '../FindClasses/CreateSchoolModal'
 import SkModal from '../../components/SkModal/SkModal'
 import moment from 'moment'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
-import Sammi from '../../components/Sammi'
 
 @inject('rootStore') @observer
 class ChangeSchool extends React.Component {
@@ -110,7 +108,7 @@ class ChangeSchool extends React.Component {
               >
                 <h3
                   style={{
-                    color: school.color ? '#' + school.color : null
+                    color: school.color ? school.color : null
                   }}
                 >
                   {school.name}
@@ -171,7 +169,7 @@ class ChangeSchool extends React.Component {
   renderSchoolChoice () {
     return (
       <div className='sk-select-school-selected-school'>
-        <h3 className='sk-select-school-selected-school-name' style={{color: this.state.schoolChoice.color ? ('#' + this.state.schoolChoice.color) : null}}>
+        <h3 className='sk-select-school-selected-school-name' style={{color: this.state.schoolChoice.color ? this.state.schoolChoice.color : null}}>
           {this.state.schoolChoice.name}
         </h3>
         <div className='sk-select-school-selected-school-location'>

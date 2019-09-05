@@ -67,7 +67,10 @@ class SchoolDetailsForm extends React.Component {
   *
   */
   onSubmit () {
-    if (this.props.validateForm(this.state.form, requiredFields)) {
+    let form = this.state.form
+    form.color = '#' + form.color.replace(/[^A-Z0-9]/ig, '')
+    console.log(form.color)
+    if (this.props.validateForm(form, requiredFields)) {
       !this.state.form.id ? this.onCreateSchool() : this.onUpdateSchool()
     }
   }
@@ -163,18 +166,21 @@ class SchoolDetailsForm extends React.Component {
               <InputField
                 containerClassName='margin-top'
                 error={formErrors.color}
-                label="School color"
+                label="School color (HEX value)"
                 name="color"
                 onChange={updateProperty}
-                placeholder="School color"
+                placeholder="School color (e.g. 57B9E4)"
                 value={form.color}
               />
+              <p style={{fontSize: '10px', marginTop: '4px'}}>e.g. 57B9E4</p>
             </div>
           </div>
           <button
             className={`button full-width margin-top ${disabledClass}`}
             disabled={this.state.loading}
-            onClick={this.onSubmit.bind(this)}>Submit school</button>
+            onClick={this.onSubmit.bind(this)}>
+            Submit school
+          </button>
           <button className='button-invert full-width margin-top margin-bottom' onClick={() => this.props.onClose()}>Close</button>
         </div>
       </div>

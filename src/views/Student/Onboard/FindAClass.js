@@ -640,6 +640,9 @@ class FindAClass extends React.Component {
           this.setState({loadingSubmit: false})
           actions.classes.enrollInClass(response.id).then(() => {
             this.props.onSubmit()
+            if (this.props.launchClassStatusModal) {
+              this.props.launchClassStatusModal(response)
+            }
           })
         })
       }
@@ -658,7 +661,7 @@ class FindAClass extends React.Component {
           <h1
             className='onboard-find-class-school'
             style={{
-              color: this.state.schoolChoice.color ? '#' + this.state.schoolChoice.color : null
+              color: this.state.schoolChoice.color ? this.state.schoolChoice.color : null
             }}
           >
             {this.state.schoolChoice.name}
@@ -718,7 +721,8 @@ FindAClass.propTypes = {
   params: PropTypes.object,
   renderPartner: PropTypes.func,
   onBack: PropTypes.func,
-  hideOnboard: PropTypes.bool
+  hideOnboard: PropTypes.bool,
+  launchClassStatusModal: PropTypes.func
 }
 
 export default FindAClass

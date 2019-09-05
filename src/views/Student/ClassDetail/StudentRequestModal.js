@@ -2,9 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import actions from '../../../actions'
 import Loading from '../../../components/Loading'
-import Modal from '../../../components/Modal/index'
 import {CheckboxField, TextAreaField} from '../../../components/Form'
 import UploadHistory from '../../../components/UploadHistory'
+import SkModal from '../../components/SkModal/SkModal'
 
 class StudentRequestModal extends React.Component {
   constructor (props) {
@@ -21,8 +21,18 @@ class StudentRequestModal extends React.Component {
   componentDidMount () {
     // Get possible option values on load
     actions.classhelp.getRequestTypes().then((res) => {
+      let options = res
+      if (this.props.cl.status.id < 1400) {
+        let additionalDocOption = res.find((option) => option.id === 200)
+        console.log(additionalDocOption)
+        let index = options.indexOf(additionalDocOption)
+        console.log(index)
+        if (index > -1) {
+          options.splice(index, 1)
+        }
+      }
       this.setState({
-        options: res
+        options: options
       })
     })
   }
@@ -43,7 +53,7 @@ class StudentRequestModal extends React.Component {
     const {cl} = this.props
     return (
       <div className="class-status center-text">
-        Current Status: {cl.status.name !== 'Class Setup' ? 'In Review' : 'Complete'}
+        Current Status: {cl.status.name}
       </div>
     )
   }
@@ -117,7 +127,7 @@ class StudentRequestModal extends React.Component {
         <TextAreaField
           name='explanation'
           onChange={(name, val) => { this.onStep2Change(name, val) }}
-          placeholder='Describe your feelings...'
+          placeholder='Describe your issue'
           rows={50}>
         </TextAreaField>
       </div>
@@ -167,21 +177,48 @@ class StudentRequestModal extends React.Component {
     }
   }
 
-  render () {
+  renderSubmit () {
+    let disabled = true
+    console.log(this.state)
+    if (this.state.step1Val && this.state.step2Val && this.state.step2Val.length !== 0) {
+      disabled = false
+    }
     return (
-      <Modal
-        open={this.props.open}
-        onClose={this.props.onClose()}>
-        {this.renderTitle()}
-        {this.renderStatus()}
-        {this.renderContent()}
-        <button
-          className={`button full-width margin-top ${this.state.step1Val && this.state.step2Val && this.state.step2Val.length !== 0 ? '' : 'disabled'}`}
-          onClick={() => { this.onSubmit() }}>
-          {this.state.loading ? (<Loading style={{color: 'white'}} />) : 'Submit' }
-        </button>
-      </Modal>
+      <button
+        className={`button full-width margin-top ${disabled ? 'disabled' : ''}`}
+        onClick={() => {
+          if (!disabled) {
+            this.onSubmit()
+          }
+        }}>
+        {this.state.loading ? (<Loading style={{color: 'white'}} />) : 'Submit' }
+      </button>
     )
+  }
+
+  render () {
+    if (this.props.open) {
+      return (
+        <SkModal
+          closeModal={this.props.onClose}
+        >
+          {this.renderTitle()}
+          {this.renderStatus()}
+          {this.renderContent()}
+          {this.renderSubmit()}
+        </SkModal>
+      )
+    } else {
+      return null
+    }
+    // return (
+    //   <Modal
+    //     open={this.props.open}
+    //     onClose={this.props.onClose()}
+    //   >
+
+    //   </Modal>
+    // )
   }
 }
 

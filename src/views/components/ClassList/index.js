@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import actions from '../../../actions'
 import {mapProfessor} from '../../../utilities/display'
 import {mapTimeToDisplay} from '../../../utilities/time'
+import CompletionCircle from '../../components/CompletionCircle'
 
 class ClassList extends React.Component {
   /*
@@ -123,7 +124,7 @@ class ClassList extends React.Component {
   renderClassRows () {
     return this.getRows().map(c => {
       console.log(c)
-      if (c.setupStatus.id === 1400) {
+      if (c.setupStatus.id >= 1400) {
         return (
           <div key={'cn_class_list_row_' + c.id}
             className={'cn-class-list-row margin-bottom ' + this.props.rowClassName}
@@ -134,8 +135,8 @@ class ClassList extends React.Component {
             <div className='cn-class-list-row-data'>
               <div className='cn-class-list-row-col cn-class-list-row-col-primary'>
                 <div className='cn-class-list-title' style={{color: c.color}}>{c.name}</div>
-                <div className='cn-class-list-subtext cn-class-list-flex-top cn-class-list-text-left'><i className='fas fa-user' /> {c.enrollment}</div>
-                <div className='cn-class-list-subtext'><i className="far fa-circle"></i> {c.completion}%</div>
+                <div className='cn-class-list-subtext cn-class-list-flex-top cn-class-list-text-left'><i className='fas fa-user' /> {c.enrollment} classmates</div>
+                <div className='cn-class-list-subtext cn-class-list-subtext-completion'><CompletionCircle completion={c.completion * 100}/> <div>{Math.round(c.completion * 100)}% complete</div></div>
               </div>
             </div>
           </div>

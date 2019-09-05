@@ -124,9 +124,9 @@ class HubLanding extends React.Component {
             <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/schools')}>
               <img src='/src/assets/images/icons/School.png'/>
               <span>Schools (
-              {this.state.loadingStatuses ? <Loading style={{color: 'white'}}/>
-                : this.state.schoolCount
-              }
+                {this.state.loadingStatuses ? <Loading style={{color: 'white'}}/>
+                  : this.state.schoolCount
+                }
               )</span>
             </button>
           </div>
@@ -164,9 +164,9 @@ class HubLanding extends React.Component {
               browserHistory.push({pathname: '/hub/reports', state: {reports: this.state.reports}})}>
               <img src='/src/assets/images/icons/School.png'/>
               <span>Reports (
-              {this.state.loadingReports ? <Loading style={{color: 'white'}}/>
-                : this.state.reports.length
-              }
+                {this.state.loadingReports ? <Loading style={{color: 'white'}}/>
+                  : this.state.reports.length
+                }
               )</span>
             </button>
           </div>
@@ -199,9 +199,9 @@ class HubLanding extends React.Component {
             >
               <img src='/src/assets/images/icons/change_requests.png'/>
               <span>Change Request (
-              {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
-                : changeCount
-              }
+                {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
+                  : changeCount
+                }
               )</span>
             </button>
           </div>}
@@ -213,9 +213,9 @@ class HubLanding extends React.Component {
             >
               <img src='/src/assets/images/icons/repair.png'/>
               <span>Under Maintenance (
-              {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
-                : maintCount
-              }
+                {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
+                  : maintCount
+                }
               )</span>
             </button>
           </div>}
@@ -247,9 +247,9 @@ class HubLanding extends React.Component {
                     >
                       <img src='/src/assets/images/icons/Assignments.png'/>
                       <span>Syllabi (
-                      {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
-                        : syllabiCount
-                      }
+                        {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
+                          : syllabiCount
+                        }
                       )</span>
                     </button>
                   </div>

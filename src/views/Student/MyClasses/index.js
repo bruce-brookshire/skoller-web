@@ -160,6 +160,10 @@ class MyClasses extends React.Component {
     this.updateClasses()
   }
 
+  launchClassStatusModal = (cl) => {
+    this.setState({classStatusModal: {show: true, cl: cl}})
+  }
+
   renderView () {
     return (
       <div className='cn-my-classes-wrapper'>
@@ -171,7 +175,7 @@ class MyClasses extends React.Component {
           </div>
         </div>
         {this.state.showAddClassModal &&
-          <AddClassModal closeModal={() => this.closeAddClassModal()} />
+          <AddClassModal closeModal={() => this.closeAddClassModal()} launchClassStatusModal={cl => this.launchClassStatusModal(cl)} />
         }
         {this.state.classStatusModal.show &&
           <ClassStatusModal closeModal={() => this.closeClassStatusModal()} onSubmit={() => this.closeClassStatusModal()} cl={this.state.classStatusModal.cl} />

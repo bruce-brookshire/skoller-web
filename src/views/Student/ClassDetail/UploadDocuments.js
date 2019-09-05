@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import ProjectFourDoor from './ProjectFourDoor'
 import UploadHistory from '../../../components/UploadHistory'
 import actions from '../../../actions'
-import Card from '../../../components/Card'
 import StudentRequestModal from './StudentRequestModal'
 import {browserHistory} from 'react-router'
 
@@ -415,9 +414,7 @@ class UploadDocuments extends React.Component {
 
   renderContent () {
     const {viewDocs} = this.state
-    if (this.needsSyllabus()) {
-      return this.renderNeedsSyllabus()
-    } else if (this.needsInput()) {
+    if (this.needsInput()) {
       return this.renderFourDoor()
     } else if (viewDocs) {
       return (
@@ -461,10 +458,7 @@ class UploadDocuments extends React.Component {
 
   render () {
     return (
-      <Card
-        title={this.renderTitle()}
-        content={this.renderContent()}
-      />
+      this.renderContent()
     )
   }
 }
