@@ -19,7 +19,7 @@ class AccountInfoForm extends React.Component {
   }
 
   /*
-  * Intialize state
+  * Initialize state
   */
   initializeState () {
     let userRoles = []
@@ -37,7 +37,7 @@ class AccountInfoForm extends React.Component {
   }
 
   /*
-  * Method for intializing form data.
+  * Method for initializing form data.
   * User form data.
   *
   * @param [Object] data. initial data
@@ -109,7 +109,7 @@ class AccountInfoForm extends React.Component {
   /*
   * On checkbox input change.
   *
-  * @param [Boolean] value. Value idicating if checked.
+  * @param [Boolean] value. Value indicating if checked.
   * @param [Object] role. Role to add or remove to user.
   */
   onInputChange (value, role) {

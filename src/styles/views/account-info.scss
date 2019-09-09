@@ -1,4 +1,16 @@
 #cn-account-info {
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 1rem;
+
+  .cn-account-info-box {
+    @include skoller-cell;
+    padding: 1rem;
+    min-width: 300px;
+    margin: 0 0.25rem 1rem 0.25rem;
+    flex-grow: 1;
+  }
 }
