@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import FirstClass from '../Onboard/FirstClass/index'
 import SelectSchool from '../Onboard/SelectSchool'
 import AddClassModal from '../MyClasses/AddClassModal'
+import MajorForm from '../MiscViews/MajorForm'
 
 @inject('rootStore') @observer
 class PopUp extends React.Component {
@@ -41,6 +42,14 @@ class PopUp extends React.Component {
     )
   }
 
+  renderGetMajor () {
+    return (
+      <div className='sk-pop-up'>
+        <MajorForm onSubmit={() => this.props.closeModal()} />
+      </div>
+    )
+  }
+
   render () {
     return (
       <div className='sk-pop-up-container'>
@@ -57,6 +66,11 @@ class PopUp extends React.Component {
         {this.props.type === 'findClass' &&
           <SkModal>
             {this.renderFindClassPopUp()}
+          </SkModal>
+        }
+        {this.props.type === 'getMajor' &&
+          <SkModal closeModal={() => this.closeModal()}>
+            {this.renderGetMajor()}
           </SkModal>
         }
       </div>

@@ -77,7 +77,6 @@ class ClassList extends React.Component {
   * @param [String] item. Class status.
   */
   mapStatus (item, classColor) {
-    console.log(item)
     const {status} = item
     var statusNameL = status.name.toLowerCase()
     if (status.is_complete) {
@@ -123,7 +122,6 @@ class ClassList extends React.Component {
 
   renderClassRows () {
     return this.getRows().map(c => {
-      console.log(c)
       if (c.setupStatus.id >= 1400) {
         return (
           <div key={'cn_class_list_row_' + c.id}

@@ -1,0 +1,34 @@
+.sk-major-form {
+  min-width: 300px;
+
+  @media only screen and (max-width: $sk-mobile-break-point) {
+    min-width: 0px;
+    width: 100%;
+  }
+
+  .sk-major-form-input {
+    @include sk-form-field;
+    width: 100%;
+    margin-bottom: -1px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .sk-major-form-option {
+    @include sk-autocomplete-option;
+  }
+
+  .sk-major-form-submit {
+    padding-top: 1rem;
+    @include sk-standard-button;
+  }
+
+  .disabled {
+    p {
+      background-color: rgba(0,0,0,.12);
+      color: white;
+      cursor: auto;
+   }
+  }
+}
