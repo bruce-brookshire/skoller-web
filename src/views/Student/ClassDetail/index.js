@@ -7,11 +7,12 @@ import actions from '../../../actions'
 import Loading from '../../../components/Loading'
 import ClassCard from '../../Cards/ClassCard'
 import ClassInviteLink from './ClassInviteLink'
-import DeleteDialog from '../../../components/Grid/DeleteDialog'
 import AssignmentList from '../../components/AssignmentList'
 import StudentLayout from '../../components/StudentLayout'
 import AddAssignment from '../Assignments/AddAssignment'
 import DropClassButton from '../../components/DropClassButton'
+import UploadAdditionalDocuments from '../../components/ClassStatusModal/UploadAdditionalDocuments'
+import SkModal from '../../components/SkModal/SkModal'
 
 @inject('rootStore') @observer
 class ClassDetail extends React.Component {
@@ -23,6 +24,7 @@ class ClassDetail extends React.Component {
       cl: {},
       assignments: [],
       showAddAssignmentModal: false,
+      showUploadAdditionalDocuments: false,
       studentClass: {}
     }
 
@@ -37,7 +39,6 @@ class ClassDetail extends React.Component {
 
   getClass () {
     const {classId} = this.props.params
-    let {navbarStore} = this.props.rootStore
     this.setState({loading: true})
     actions.classes.getClassById(classId).then(cl => {
       this.getClassColor(cl)
@@ -87,7 +88,10 @@ class ClassDetail extends React.Component {
   renderClassTitle () {
     const {cl} = this.state
     return (
-      <div className='cn-class-assignments-title' style={{ color: '#' + cl.color }}><span>{cl.name}</span> <i className='fas fa-info-circle'></i></div>
+      <div className='cn-class-assignments-title' style={{ color: '#' + cl.color }}>
+        <span>{cl.name}</span>
+        {/* <i className='fas fa-info-circle'></i> */}
+      </div>
     )
   }
 
@@ -109,7 +113,8 @@ class ClassDetail extends React.Component {
       <div className='cn-class-assignments-header'>
         <div className='cn-class-assignments-header-item'>
           {this.renderBackButton()}
-          {this.renderSpeculateGradeButton()}
+          {/* {this.renderSpeculateGradeButton()} */}
+          {this.renderDocumentUploadButton()}
         </div>
         <div className='cn-class-assignments-header-item text-center'>
           {this.renderClassTitle()}
@@ -167,6 +172,31 @@ class ClassDetail extends React.Component {
       <a className='spec-grade-button'>
         % Speculate Grade
       </a>
+    )
+  }
+
+  renderDocumentUploadButton () {
+    return (
+      <div>
+        <a
+          className='spec-grade-button'
+          onClick={() => this.setState({showUploadAdditionalDocuments: true})}
+        >
+          📄Documents
+        </a>
+        {this.state.showUploadAdditionalDocuments &&
+          <SkModal
+            title={this.state.cl.name}
+            closeModal={() => this.setState({showUploadAdditionalDocuments: false})}
+          >
+            <div style={{marginBottom: '1rem'}} />
+            <UploadAdditionalDocuments
+              cl={this.state.cl}
+              onSubmit={() => this.setState({showUploadAdditionalDocuments: false})}
+            />
+          </SkModal>
+        }
+      </div>
     )
   }
 
@@ -243,9 +273,7 @@ class ClassDetail extends React.Component {
   renderClassDetails () {
     const {cl} = this.state
     return (
-      <div className="cn-class-detail-container margin-bottom">
-        {this.renderBackButton()}
-        {this.renderClassTitle()}
+      <div className="cn-class-detail-container">
         <div id='cn-class-detail-header'>
           <div className='cn-class-detail-header-item'>
             {this.renderClassCard()}

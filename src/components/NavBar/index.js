@@ -80,7 +80,7 @@ class NavBar extends React.Component {
             <div className='cn-navbar-message'>Keep Up with Classes, Together.</div>
           </div>
           <div className='class-info'>
-            {this.renderClassInfo()}
+            {/* {this.renderClassInfo()} */}
           </div>
           <div className='user-info'>
             <div className='left'>

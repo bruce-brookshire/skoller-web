@@ -78,7 +78,8 @@ class SyllabusTool extends React.Component {
       openProblemsModal: false,
       stepCount: 3,
       uploadingDoc: false,
-      singleWeight: state.weightId ? state.weightId : false
+      singleWeight: state.weightId ? state.weightId : false,
+      assignments: []
     }
   }
 
@@ -216,7 +217,7 @@ class SyllabusTool extends React.Component {
   renderBackButton () {
     const {currentIndex} = this.state
 
-    if (currentIndex > ContentEnum.WEIGHTS) {
+    if (currentIndex === ContentEnum.ASSIGNMENTS) {
       return (
         <a className='back-button' onClick={this.onPrevious.bind(this)}>
           <i className='fa fa-angle-left' /> Back to weights

@@ -38,18 +38,24 @@ class Home extends React.Component {
 
   async componentDidMount () {
     if (this.props.rootStore.userStore.showPopUps) {
-      this.showFirstClassPopUp()
+      this.runPopUpLogic()
       this.showPrimarySchoolPopUp()
     }
   }
 
-  async showFirstClassPopUp () {
+  async runPopUpLogic () {
     let showPopUp = false
     let type
-    await actions.classes.getStudentClassesById(this.props.rootStore.userStore.user.student.id)
+    let student = this.props.rootStore.userStore.user.student
+    await actions.classes.getStudentClassesById(student.id)
       .then((classes) => {
         if (classes.length > 1) {
           showPopUp = false
+          if (student.fields_of_study[0] === undefined) {
+            console.log('no fields of study :(')
+            showPopUp = true
+            type = 'getMajor'
+          }
         } else if (classes.length === 1) {
           let cl = classes[0]
           let id = cl.status.id

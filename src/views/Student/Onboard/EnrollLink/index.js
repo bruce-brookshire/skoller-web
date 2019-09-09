@@ -39,9 +39,7 @@ class EnrollLink extends React.Component {
   async componentWillMount () {
     await actions.classes.getClassByLink(this.props.params.link).then((linkDetail) => {
       this.setState({linkDetail})
-      console.log(linkDetail)
-    }).catch((e) => {
-      console.log(e)
+    }).catch(() => {
       this.setState({loading: false, classNotFound: true, formState: 'sign-up'})
       this.loginStudent()
     })
@@ -115,7 +113,6 @@ class EnrollLink extends React.Component {
   }
 
   renderVerificationForm () {
-    console.log('truly what is going on')
     return (
       <EnrollVerify
         onSubmit={this.onSubmitVerifyForm}
@@ -139,7 +136,6 @@ class EnrollLink extends React.Component {
         }
       })
       .catch(e => {
-        console.log(e)
         if (e.status === 422) {
           browserHistory.push('/student')
         } else {
