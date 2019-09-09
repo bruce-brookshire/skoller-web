@@ -9,7 +9,7 @@
     }
   
     .sk-select-school-field {
-      @include onboard-form-field-tall;
+      @include sk-form-field-tall;
   
       .sk-select-school-selected-school {
         cursor: pointer;
@@ -35,7 +35,7 @@
       }
   
       .sk-select-school-term-field {
-        @include onboard-form-field-tall;
+        @include sk-form-field-tall;
         cursor: pointer;
   
         .sk-select-school-term-choice {

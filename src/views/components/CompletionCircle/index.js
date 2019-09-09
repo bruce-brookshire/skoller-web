@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 
 class CompletionCircle extends React.Component {
   render () {
-    console.log(this.props)
     let completion
     if (this.props.completion === 0) {
       completion = 0

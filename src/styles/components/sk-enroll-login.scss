@@ -4,7 +4,7 @@
   flex-direction: row;
   justify-content: center;
   .sk-enroll-login-number {
-    @include onboard-form-field;
+    @include sk-form-field;
 
     input {
       width: 100%;

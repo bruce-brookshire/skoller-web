@@ -21,13 +21,13 @@
     }
 
     .sk-find-class-field {
-      @include onboard-form-field;
+      @include sk-form-field;
       width: 100%;
       height: 24px;
     }
   
     .sk-find-class-selected-name {
-      @include onboard-form-field;
+      @include sk-form-field;
       width: 100%;
       height: 24px;
       cursor: pointer;

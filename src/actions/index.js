@@ -154,7 +154,7 @@ import {
   getClassWeightsByClassId,
   updateWeight
 } from './weights'
-import { getStudentByLink, setStudentPrimarySchool, setStudentPrimaryPeriod, getStudentSignupOrganization } from './students'
+import { getStudentByLink, setStudentPrimarySchool, setStudentPrimaryPeriod, getStudentSignupOrganization, setStudentMajor } from './students'
 
 const actions = {
   analytics: {
@@ -164,7 +164,8 @@ const actions = {
     getStudentByLink,
     setStudentPrimarySchool,
     setStudentPrimaryPeriod,
-    getStudentSignupOrganization
+    getStudentSignupOrganization,
+    setStudentMajor
   },
   assignments: {
     createAssignment,
