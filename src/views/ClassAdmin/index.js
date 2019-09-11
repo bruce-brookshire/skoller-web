@@ -17,7 +17,7 @@ import DocumentsDeletedModal from './DocumentsDeletedModal'
 import TabbedFileUpload from '../../components/TabbedFileUpload'
 import WeightTable from '../components/ClassEditor/Weights/WeightTable'
 import WeightForm from '../components/ClassEditor/Weights/WeightForm'
-import AssignmentTable from '../components/ClassEditor/Assignments/AssignmentTable'
+import AdminAssignmentTable from '../components/ClassEditor/Assignments/AdminAssignmentTable'
 import AdminAssignmentForm from '../components/ClassEditor/Assignments/AdminAssignmentForm'
 import Chat from '../components/ClassEditor/Chat'
 import StudentRequestInfo from '../Cards/StudentRequestInfo'
@@ -473,7 +473,7 @@ class ClassAdmin extends React.Component {
             Assignments
             <i className='fa fa-plus cn-blue cursor margin-right' onClick={() => this.toggleAssignmentModal()} />
           </div>
-          <AssignmentTable
+          <AdminAssignmentTable
             cl={cl}
             assignments={assignments}
             viewOnly={false}
