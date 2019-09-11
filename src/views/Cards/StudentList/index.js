@@ -50,12 +50,13 @@ class StudentList extends React.Component {
   mapRow (item, index) {
     const {id, email, is_active: isActive} = item.user
     const student = item
+    const style = {maxWidth: '60px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}
 
     const row = {
       id: id || '',
-      firstName: student ? (<div onClick={() => { this.onAccountSelect(item) }}><span>{student.name_first}</span></div>) : (<div><span>-</span></div>),
-      lastName: student ? (<div onClick={() => { this.onAccountSelect(item) }}><span>{student.name_last}</span></div>) : (<div><span>-</span></div>),
-      email: email ? <div onClick={() => { this.onAccountSelect(item) }}><span>{email}</span></div> : '',
+      firstName: student ? (<div style={style} onClick={() => { this.onAccountSelect(item) }}><span>{student.name_first}</span></div>) : (<div><span>-</span></div>),
+      lastName: student ? (<div style={style} onClick={() => { this.onAccountSelect(item) }}><span>{student.name_last}</span></div>) : (<div><span>-</span></div>),
+      email: email ? <div style={style} onClick={() => { this.onAccountSelect(item) }}><span>{email}</span></div> : '',
       status: isActive ? (<a onClick={() => { this.onAccountSelect(item) }}>Active</a>) : (<a className='cn-red'>Suspended</a>),
       is_dropped: !student.is_dropped ? (<a onClick={() => { this.onAccountSelect(item) }}>Active</a>) : (<a className='cn-red'>Dropped</a>)
     }
@@ -74,6 +75,7 @@ class StudentList extends React.Component {
         title='Students'
         content={
           <Grid
+            smallSpacer={true}
             emptyMessage={'No enrolled students'}
             headers={headers}
             rows={this.getRows()}
