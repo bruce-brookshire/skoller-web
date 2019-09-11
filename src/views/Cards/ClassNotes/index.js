@@ -68,11 +68,14 @@ class ClassNotes extends React.Component {
         contentClassName={this.props.contentClassName}
         content={
           <div className='notes'>
-            
-            {this.props.cl.notes.length > 0 ? (
-              this.renderNotes()
-            ) : this.renderNoNotes()}
-            {this.renderNoteModal()}
+            {this.props.cl.notes &&
+              <div>
+                {this.props.cl.notes.length > 0 ? (
+                  this.renderNotes()
+                ) : this.renderNoNotes()}
+                {this.renderNoteModal()}
+              </div>
+            }
           </div>
         }
       />

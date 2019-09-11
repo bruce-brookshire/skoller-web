@@ -5,11 +5,24 @@
   min-height: 800px;
   min-width: 800px;
 
-  .cn-admin-col {
+  .cn-admin-col-lg {
     display: flex;
     flex-direction: column;
     align-items: center;
-    flex: 1;
+    flex: 1 1 100%;
+    height: 100%;
+    padding-right: $unit-space;
+    padding-left: $unit-space;
+    padding-bottom: $unit-space;
+  }
+
+  .cn-admin-col-md {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 380px;
+    max-width: 380px;
+    flex: 1 1 380px;
     height: 100%;
     padding-right: $unit-space;
     padding-left: $unit-space;
@@ -29,12 +42,17 @@
   #cn-admin-nav {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: left;
     width: 100%;
+    flex-wrap: wrap;
 
     .admin-tab {
+      flex: 0 1 33.3333%;
       border-radius: 0;
-      flex: 1;
+    }
+
+    .active {
+      background-color: $cn-color-yellow;
     }
   }
 
@@ -43,7 +61,7 @@
     flex: 1;
     flex-direction: row;
     width: 100%;
-    padding: $unit-space;
+    padding: $unit-space 0;
 
     .cn-admin-super-edit-card {
       flex: 1;
@@ -63,21 +81,19 @@
 
   #cn-admin-footer {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding-right: $unit-space;
-    padding-left: $unit-space;
 
     .cn-admin-footer-card {
       flex: 1;
-      height: 150px;
-    }
+      width: 100%;
 
-    .cn-admin-footer-card-content {
-      height: 100%;
-      overflow: auto;
+      .cn-admin-footer-card-content {
+        height: 100%;
+        width: 100%;
+      }
     }
   }
 

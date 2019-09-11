@@ -23,7 +23,7 @@ class GradeScale extends React.Component {
       showCommonGradeScales: false,
       form: this.initializeForm(),
       loading: false,
-      currentGradeScale: this.props.cl.grade_scale || '',
+      currentGradeScale: this.props.cl.grade_scale || {},
       isEditable: false
     }
   }
