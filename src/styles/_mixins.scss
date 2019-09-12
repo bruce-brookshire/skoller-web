@@ -296,7 +296,7 @@
   }
 }
 
-@mixin onboard-form-field {
+@mixin sk-form-field {
   height: 100%;
   min-height: 36px;
   width: 100%;
@@ -318,7 +318,7 @@
   }
 }
 
-@mixin onboard-form-field-tall {
+@mixin sk-form-field-tall {
   height: 100%;
   min-height: 36px;
   width: 100%;
@@ -344,4 +344,14 @@
   overflow: auto -moz-scrollbars-none;
   -ms-overflow-style: none; /* IE 11 */
   scrollbar-width: none; /* Firefox 64 */
+}
+
+@mixin sk-autocomplete-option {
+  padding: 0.75rem 0 0.25rem 0;
+  border-bottom: 1px solid $cn-form-border;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $cn-color-hover-grey;
+  }
 }

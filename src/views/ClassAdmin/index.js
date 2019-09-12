@@ -17,7 +17,7 @@ import DocumentsDeletedModal from './DocumentsDeletedModal'
 import TabbedFileUpload from '../../components/TabbedFileUpload'
 import WeightTable from '../components/ClassEditor/Weights/WeightTable'
 import WeightForm from '../components/ClassEditor/Weights/WeightForm'
-import AssignmentTable from '../components/ClassEditor/Assignments/AssignmentTable'
+import AdminAssignmentTable from '../components/ClassEditor/Assignments/AdminAssignmentTable'
 import AdminAssignmentForm from '../components/ClassEditor/Assignments/AdminAssignmentForm'
 import Chat from '../components/ClassEditor/Chat'
 import StudentRequestInfo from '../Cards/StudentRequestInfo'
@@ -27,9 +27,7 @@ import Professor from '../Cards/Professor'
 import StudentList from '../Cards/StudentList'
 import ClassCard from '../Cards/ClassCard'
 
-import FileViewer from '../../components/FileViewer'
-import {FileTabs, FileTab} from '../../components/FileTab'
-import SkModal from '../components/SkModal/SkModal';
+import SkModal from '../components/SkModal/SkModal'
 
 @inject('rootStore') @observer
 class ClassAdmin extends React.Component {
@@ -469,13 +467,13 @@ class ClassAdmin extends React.Component {
   renderAssignments () {
     const {cl, assignments, weights} = this.state
     return (
-      <div id='cn-admin-assignment-table' className='class-card margin-left'>
+      <div id='cn-admin-assignment-table' className='class-card'>
         <div id='cn-admin-assignment-table-content'>
           <div className='cn-admin-assignment-table-title'>
             Assignments
             <i className='fa fa-plus cn-blue cursor margin-right' onClick={() => this.toggleAssignmentModal()} />
           </div>
-          <AssignmentTable
+          <AdminAssignmentTable
             cl={cl}
             assignments={assignments}
             viewOnly={false}
@@ -536,12 +534,6 @@ class ClassAdmin extends React.Component {
         boxClassName='cn-admin-edit-card'
         contentClassName='cn-admin-edit-card-content'
       />
-    )
-  }
-
-  renderWeightAssignments () {
-    return (
-      [this.renderWeights(), this.renderAssignments()]
     )
   }
 
@@ -613,38 +605,43 @@ class ClassAdmin extends React.Component {
     return (
       <div id='cn-class-admin-container'>
 
-        <div className='cn-admin-col'>
+        <div className='cn-admin-col-md'>
 
           <div id='cn-admin-class-title'>{cl.name}</div>
           <div className='cn-admin-class-subtitle'>{this.renderCreatedBy(cl)}</div>
           <div className='cn-admin-class-subtitle'>{this.renderUpdatedBy(cl)}</div>
 
           <div id='cn-admin-nav'>
-            <button className='button admin-tab' onClick={() => this.tabSelect('class_info')}>
+            <button className={'button admin-tab' + (this.state.tabState === 'class_info' ? ' active' : '')} onClick={() => this.tabSelect('class_info')}>
               {cl.change_requests.findIndex((item) => item.change_type.id === 400 && !item.is_completed) > -1 && <i className='fa fa-warning'/>}
               Class Info
             </button>
-            <button className='button admin-tab' onClick={() => this.tabSelect('grade_scale')}>
+            <button className={'button admin-tab' + (this.state.tabState === 'grade_scale' ? ' active' : '')} onClick={() => this.tabSelect('grade_scale')}>
               {cl.change_requests.findIndex((item) => item.change_type.id === 100 && !item.is_completed) > -1 && <i className='fa fa-warning'/>}
               Grade Scale
             </button>
-            <button className='button admin-tab' onClick={() => this.tabSelect('professor')}>
+            <button className={'button admin-tab' + (this.state.tabState === 'professor' ? ' active' : '')} onClick={() => this.tabSelect('professor')}>
               {cl.change_requests.findIndex((item) => item.change_type.id === 300 && !item.is_completed) > -1 && <i className='fa fa-warning'/>}
               Professor
             </button>
-            <button className='button admin-tab' onClick={() => this.tabSelect('weights_assignments')}>
+            <button className={'button admin-tab' + (this.state.tabState === 'weights' ? ' active' : '')} onClick={() => this.tabSelect('weights')}>
               {cl.change_requests.findIndex((item) => item.change_type.id === 200 && !item.is_completed) > -1 && <i className='fa fa-warning'/>}
-              Weight/Assignments
+              Weights
             </button>
-            <button className='button admin-tab' onClick={() => this.tabSelect('chat')}>Chat</button>
-            <button className='button admin-tab' onClick={() => this.tabSelect('students')}>Students</button>
+            <button className={'button admin-tab' + (this.state.tabState === 'assignments' ? ' active' : '')} onClick={() => this.tabSelect('assignments')}>
+              {cl.change_requests.findIndex((item) => item.change_type.id === 200 && !item.is_completed) > -1 && <i className='fa fa-warning'/>}
+              Assignments
+            </button>
+            <button className={'button admin-tab' + (this.state.tabState === 'chat' ? ' active' : '')} onClick={() => this.tabSelect('chat')}>Chat</button>
+            <button className={'button admin-tab' + (this.state.tabState === 'students' ? ' active' : '')} onClick={() => this.tabSelect('students')}>Students</button>
           </div>
 
           <div id="cn-admin-edit-panel">
             {this.state.tabState === 'class_info' && this.renderClassInfo()}
             {this.state.tabState === 'grade_scale' && this.renderGradeScale()}
             {this.state.tabState === 'professor' && this.renderProfessor()}
-            {this.state.tabState === 'weights_assignments' && this.renderWeightAssignments()}
+            {this.state.tabState === 'weights' && this.renderWeights()}
+            {this.state.tabState === 'assignments' && this.renderAssignments()}
             {this.state.tabState === 'chat' && this.renderChat()}
             {this.state.tabState === 'students' && this.renderStudents()}
           </div>
@@ -659,16 +656,15 @@ class ClassAdmin extends React.Component {
             {cl.change_requests &&
               <StudentRequestInfo
                 cl={this.state.cl}
-                boxClassName='cn-admin-footer-card margin-left'
+                boxClassName='cn-admin-footer-card margin-top margin-bottom'
                 contentClassName='cn-admin-footer-card-content'
                 onComplete={this.toggleRequestResolvedModal.bind(this)}
               />
             }
           </div>
-          
         </div>
 
-        <div className='cn-admin-col'>
+        <div className='cn-admin-col-lg'>
           <TabbedFileUpload
             documents={this.state.documents ? this.state.documents : []}
             removable={true}

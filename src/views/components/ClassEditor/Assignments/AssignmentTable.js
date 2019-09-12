@@ -106,7 +106,7 @@ class AssignmentTable extends React.Component {
     }
   }
 
-  renderSubmit () {
+  renderSubmit (addingAssignment = false) {
     const {assignments} = this.props
     const disableButton = assignments.length === 0
 
@@ -116,13 +116,16 @@ class AssignmentTable extends React.Component {
           <div id='notification'>
             Be sure to add all assignments for this category!
           </div>
-          <button
-            onClick={() => this.handleSubmit()}
-            disabled={disableButton}
-            className={`submit-assignments button ${disableButton ? 'disabled' : ''}`}
-          >
-            Save{this.props.onSubmitSingleWeight && ' and Submit'}
-          </button>
+          {addingAssignment
+            ? <small>Finish adding the current assignment before moving on</small>
+            : <button
+              onClick={() => this.handleSubmit()}
+              disabled={disableButton}
+              className={`submit-assignments button ${disableButton ? 'disabled' : ''}`}
+            >
+              Save{this.props.onSubmitSingleWeight && ' and Submit'}
+            </button>
+          }
         </div>
       )
     } else {
@@ -132,13 +135,22 @@ class AssignmentTable extends React.Component {
 
   render () {
     const {viewOnly} = this.props
+    let addingAssignment
+    if (this.props.addingAssignment === null) {
+      addingAssignment = false
+    } else {
+      addingAssignment = this.props.addingAssignment
+    }
 
     return (
       <div id='class-editor-assignments-table' className={`${viewOnly ? 'view-only' : ''}`} ref={(field) => { this.sectionControl = field }} >
         <div id='assignment-rows'>
           {this.renderAssignments()}
         </div>
-        {this.renderSubmit()}
+        {addingAssignment
+          ? this.renderSubmit(true)
+          : this.renderSubmit(false)
+        }
       </div>
     )
   }
@@ -147,6 +159,7 @@ class AssignmentTable extends React.Component {
 AssignmentTable.propTypes = {
   viewOnly: PropTypes.bool,
   assignments: PropTypes.array.isRequired,
+  addingAssignment: PropTypes.bool,
   currentAssignment: PropTypes.object,
   onSelectAssignment: PropTypes.func,
   onDeleteAssignment: PropTypes.func,

@@ -66,7 +66,7 @@ class Grid extends React.Component {
       <table className={classes.join(' ')}>
         <thead>
           <tr >
-            <th className='th-spacer'></th>
+            <th className='th-spacer' style={this.props.smallSpacer ? {width: '1px'} : null}></th>
             {this.renderTableHeaders()}
             {canDelete ? <th className='th-spacer'></th> : null}
           </tr>
@@ -88,7 +88,8 @@ Grid.propTypes = {
   onSelect: PropTypes.func,
   rows: PropTypes.array,
   className: PropTypes.string,
-  hiddenFields: PropTypes.array
+  hiddenFields: PropTypes.array,
+  smallSpacer: PropTypes.bool
 }
 
 export default Grid

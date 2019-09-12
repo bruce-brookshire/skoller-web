@@ -122,39 +122,43 @@ class HubLanding extends React.Component {
 
           <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 margin-top'>
             <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/schools')}>
-              <img src='/src/assets/images/icons/School.png'/>
+              {/* <img src='/src/assets/images/icons/School.png'/> */}
+              <i className='fas fa-university' style={{color: '#FEFEFE', fontSize: '1.4rem', paddingBottom: '4px'}} />
               <span>Schools (
-              {this.state.loadingStatuses ? <Loading style={{color: 'white'}}/>
-                : this.state.schoolCount
-              }
+                {this.state.loadingStatuses ? <Loading style={{color: 'white'}}/>
+                  : this.state.schoolCount
+                }
               )</span>
             </button>
           </div>
 
           <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 margin-top'>
             <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/classes')}>
-              <img src='/src/assets/images/icons/Search.png'/>
+              {/* <img src='/src/assets/images/icons/Search.png'/> */}
+              <i className='fas fa-search' style={{color: '#FEFEFE', fontSize: '1.4rem', paddingBottom: '4px'}} />
               <span>Class Search</span>
             </button>
           </div>
 
           <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 margin-top'>
             <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/accounts')}>
-              <img src='/src/assets/images/icons/Accounts.png'/>
+              {/* <img src='/src/assets/images/icons/Accounts.png'/> */}
+              <i className='fas fa-users' style={{color: '#FEFEFE', fontSize: '1.4rem', paddingBottom: '4px'}} />
               <span>Accounts</span>
             </button>
           </div>
 
           <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 margin-top'>
             <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/analytics')}>
-              <img src='/src/assets/images/icons/analytics.png'/>
+              {/* <img src='/src/assets/images/icons/analytics.png'/> */}
+              <i className='fas fa-chart-line' style={{color: '#FEFEFE', fontSize: '1.4rem', paddingBottom: '4px'}} />
               <span>Analytics</span>
             </button>
           </div>
 
           <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 margin-top'>
             <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/switchboard')}>
-              <i className='fa fa-toggle-on' style={{color: '#FEFEFE', fontSize: '1.9rem'}}></i>
+              <i className='fa fa-toggle-on' style={{color: '#FEFEFE', fontSize: '1.4rem', paddingBottom: '4px'}}></i>
               <span>Switchboard</span>
             </button>
           </div>
@@ -162,11 +166,12 @@ class HubLanding extends React.Component {
           <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 margin-top'>
             <button className='nav-button admin button full-width' onClick={() =>
               browserHistory.push({pathname: '/hub/reports', state: {reports: this.state.reports}})}>
-              <img src='/src/assets/images/icons/School.png'/>
+              {/* <img src='/src/assets/images/icons/School.png'/> */}
+              <i className='fa fa-file-csv' style={{color: '#FEFEFE', fontSize: '1.4rem', paddingBottom: '4px'}}></i>
               <span>Reports (
-              {this.state.loadingReports ? <Loading style={{color: 'white'}}/>
-                : this.state.reports.length
-              }
+                {this.state.loadingReports ? <Loading style={{color: 'white'}}/>
+                  : this.state.reports.length
+                }
               )</span>
             </button>
           </div>
@@ -199,9 +204,9 @@ class HubLanding extends React.Component {
             >
               <img src='/src/assets/images/icons/change_requests.png'/>
               <span>Change Request (
-              {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
-                : changeCount
-              }
+                {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
+                  : changeCount
+                }
               )</span>
             </button>
           </div>}
@@ -213,9 +218,9 @@ class HubLanding extends React.Component {
             >
               <img src='/src/assets/images/icons/repair.png'/>
               <span>Under Maintenance (
-              {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
-                : maintCount
-              }
+                {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
+                  : maintCount
+                }
               )</span>
             </button>
           </div>}
@@ -247,9 +252,9 @@ class HubLanding extends React.Component {
                     >
                       <img src='/src/assets/images/icons/Assignments.png'/>
                       <span>Syllabi (
-                      {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
-                        : syllabiCount
-                      }
+                        {this.state.loadingStatuses ? <Loading style={{color: '#a0a0a0'}} />
+                          : syllabiCount
+                        }
                       )</span>
                     </button>
                   </div>

@@ -44,6 +44,11 @@ class AssignmentForm extends React.Component {
     this.state = this.initializeState()
   }
 
+  toggleAddingAssignment () {
+    let formEmpty = (this.state.form.name === '')
+    this.props.toggleAddingAssignment(!formEmpty)
+  }
+
   /*
   * If new assignment is received, update form.
   */
@@ -115,6 +120,7 @@ class AssignmentForm extends React.Component {
       const date = this.state.form.due + '/' + this.state.form.year_due
       this.props.updateLastAssignmentDate(date)
     }
+    this.props.toggleAddingAssignment(false)
   }
 
   /*
@@ -195,10 +201,8 @@ class AssignmentForm extends React.Component {
 
   render () {
     const {form} = this.state
-    const {formErrors, updateProperty, isAdmin, weights, currentWeight} = this.props
+    const {formErrors, updateProperty, currentWeight} = this.props
     const disableButton = !this.verifyData(form)
-    console.log(this.state.form)
-
     return (
       <div id='cn-assignment-form'>
         <div className='cn-section-content-header'>
@@ -207,17 +211,24 @@ class AssignmentForm extends React.Component {
         <hr />
         <div className='row'>
           <div className='col-xs-12'>
-            <InputField
-              containerClassName='margin-top'
-              error={formErrors.name}
-              // info={'Be sure to add the assignment name exactly how it appears in the syllabus. Hint: use copy and paste to minimize typ-o\'s'}
-              label='Assignment name'
-              name='name'
-              onChange={updateProperty}
-              placeholder={`e.g. ${currentWeight.name} 1`}
-              value={form.name}
-              onBlur={() => this.setState({showDatePicker: true})}
-            />
+            <div className='cn-input-container margin-top'>
+              <label
+                className='cn-input-label'
+              >
+                Assignment name
+              </label>
+              <input
+                className='cn-form-input'
+                autoFocus={true}
+                onChange={(e) => {
+                  form.name = e.target.value
+                  this.toggleAddingAssignment()
+                }}
+                onBlur={() => this.setState({showDatePicker: true})}
+                placeholder={`e.g. ${currentWeight.name} 1`}
+                value={form.name}
+              />
+            </div>
           </div>
           <div className='col-xs-4'>
             {!this.state.due_null &&
@@ -239,8 +250,12 @@ class AssignmentForm extends React.Component {
                     returnSelectedDay={(day) => {
                       form.due = moment(day).format('MM/DD')
                       this.setState({showDatePicker: false})
+                      this.toggleAddingAssignment()
                     }}
-                    close={() => this.setState({showDatePicker: false})}
+                    close={() => {
+                      this.setState({showDatePicker: false})
+                      this.toggleAddingAssignment()
+                    }}
                   />
                 }
               </div>
@@ -300,7 +315,8 @@ AssignmentForm.propTypes = {
   isAdmin: PropTypes.bool,
   weights: PropTypes.array,
   lastAssignmentDate: PropTypes.string,
-  updateLastAssignmentDate: PropTypes.function
+  updateLastAssignmentDate: PropTypes.function,
+  toggleAddingAssignment: PropTypes.function
 }
 
 export default ValidateForm(Form(AssignmentForm, 'form'))

@@ -41,12 +41,22 @@
   },
   "4": {
     "id": 4,
-    "name": "Millie",
-    "logo": "https://i.imgur.com/bCaWxLi.png",
-    "donationAmount": 100,
-    "philanthropy": "Millie's Retirement Fund",
-    "primaryColor": "ebd759",
-    "secondaryColor": "eb6ed8",
-    "slug": "millie"
+    "name": "Michigan Advertising and Marketing",
+    "logo": "https://i.imgur.com/M8NFHGh.png",
+    "donationAmount": 0,
+    "philanthropy": null,
+    "primaryColor": "df4142",
+    "secondaryColor": "334a4d",
+    "slug": "mam"
+  },
+  "5": {
+    "id": 5,
+    "name": "American Marketing Association",
+    "logo": "https://i.imgur.com/w4uu8dt.png",
+    "donationAmount": 0,
+    "philanthropy": null,
+    "primaryColor": "1c3050",
+    "secondaryColor": "1c3050",
+    "slug": "ama"
   }
 }

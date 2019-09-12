@@ -69,19 +69,19 @@ const router = (
       <Route path='/our-team' component={OurTeam} />
       <Route path='/faq' component={Faq} />
       <Route path='/enroll' component={Enroll} />
-      <Route path='/s/:link' component={StudentLink} />
+      {/* <Route path='/s/:link' component={StudentLink} /> */}
       <Route path='/c(/:partner)' component={Onboard} type='onboard' />
       <Route path='/download' component={DownloadApp} />
       <Route path='/pitch-deck' component={PitchDeck} />
       <Route path='/o(/:partner)' component={Onboard} type='onboard' />
       <Route path='/e/:link' component={Onboard} type='e' />
+      <Route path='/s/:link' component={Onboard} type='s' />
       <Route path='/app' component={Layout} onEnter={requireAuth}>
         <IndexRedirect to='/student/home' />
         <Route path='/student'>
           <IndexRedirect to='/student/home'/>
           <Route path='/student/home' component={Home} />
           <Route path='/student/tasks' component={Tasks} />
-          {/* <Route path='/student/find-classes' component={FindClasses} /> */}
           <Route path='/student/share/:partner' component={SharePartnerLink} />
           <Route path='/student/verify' component={Verification} onEnter={authOnboard} />
           <Route path='/student/class-link' component={ClassLink} />
