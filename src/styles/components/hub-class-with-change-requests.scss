@@ -1,0 +1,18 @@
+.hub-class-with-change-requests {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  position: relative;
+
+  .hub-class-with-change-requests-card {
+    flex-basis: 0 1 50%;
+    width: 100%;
+  }
+
+  .hub-class-with-change-requests-crs {
+    flex-basis: 0 1 50%;
+    width: 100%;
+    z-index: 1;
+  }
+}

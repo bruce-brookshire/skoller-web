@@ -26,8 +26,10 @@ import ClassNotes from '../Cards/ClassNotes'
 import Professor from '../Cards/Professor'
 import StudentList from '../Cards/StudentList'
 import ClassCard from '../Cards/ClassCard'
+import ClassWithChangeRequests from './ClassWithChangeRequests'
 
 import SkModal from '../components/SkModal/SkModal'
+import SkLoader from '../../assets/sk-icons/SkLoader';
 
 @inject('rootStore') @observer
 class ClassAdmin extends React.Component {
@@ -37,6 +39,7 @@ class ClassAdmin extends React.Component {
     navbarStore.title = 'Class Admin'
     this.state = this.initializeState()
     this.tabSelect = this.tabSelect.bind(this)
+    console.log(this.props.rootStore)
   }
 
   /*
@@ -60,7 +63,8 @@ class ClassAdmin extends React.Component {
       documents: [],
       openNoDocModal: false,
       tabState: 'class_info',
-      uploadingDoc: false
+      uploadingDoc: false,
+      loadingClass: true
     }
   }
 
@@ -82,13 +86,22 @@ class ClassAdmin extends React.Component {
   }
 
   /*
+  * Reload the component
+  */
+  reloadComponent = () => {
+    this.setState(this.initializeState())
+    this.getClass()
+    this.getDocuments()
+  }
+
+  /*
   * Unlock the class on component will mount
   */
   componentWillUnmount () {
     let {navbarStore} = this.props.rootStore
     navbarStore.title = null
   }
-  
+
   /*
   * Toggle the tab stat
   */
@@ -100,11 +113,12 @@ class ClassAdmin extends React.Component {
   * Fetch the class by id.
   */
   getClass () {
+    this.setState({loadingClass: true})
     const {params: {classId}} = this.props
     actions.classes.getClassByIdAdmin(classId).then((cl) => {
       this.setState({cl, weights: cl.weights, assignments: cl.assignments})
       this.setState({loadingClass: false})
-    }).catch(() => { debugger; this.setState({loadingClass: false}) })
+    }).catch(() => { this.setState({loadingClass: false}) })
   }
 
   /*
@@ -489,21 +503,40 @@ class ClassAdmin extends React.Component {
 
   renderClassInfo () {
     const {cl} = this.state
-    return (
-      <ClassCard
-        cl={cl}
-        schoolName={cl.school.name}
-        semesterName={cl.class_period.name}
-        onEdit={this.toggleEditClassModal.bind(this)}
-        isAdmin={true}
-        toggleWrench={this.toggleWrench.bind(this)}
-        toggleChat={this.toggleChat.bind(this)}
-        toggleDocuments={null}
-        onSelectIssue={null}
-        boxClassName='cn-admin-edit-card'
-        contentClassName='cn-admin-edit-card-content'
-      />
-    )
+    if (this.state.loadingClass) {
+      return <SkLoader />
+    } else {
+      return (
+        cl.change_requests.filter(c => !c.is_completed).length > 0
+          ? <ClassWithChangeRequests
+            cl={cl}
+            schoolName={cl.school.name}
+            semesterName={cl.class_period.name}
+            onEdit={this.toggleEditClassModal.bind(this)}
+            isAdmin={true}
+            toggleWrench={this.toggleWrench.bind(this)}
+            toggleChat={this.toggleChat.bind(this)}
+            toggleDocuments={null}
+            onSelectIssue={null}
+            boxClassName='cn-admin-edit-card'
+            contentClassName='cn-admin-edit-card-content'
+            onChange={() => this.reloadComponent()}
+          />
+          : <ClassCard
+            cl={cl}
+            schoolName={cl.school.name}
+            semesterName={cl.class_period.name}
+            onEdit={this.toggleEditClassModal.bind(this)}
+            isAdmin={true}
+            toggleWrench={this.toggleWrench.bind(this)}
+            toggleChat={this.toggleChat.bind(this)}
+            toggleDocuments={null}
+            onSelectIssue={null}
+            boxClassName='cn-admin-edit-card'
+            contentClassName='cn-admin-edit-card-content'
+          />
+      )
+    }
   }
 
   renderGradeScale () {
@@ -605,7 +638,7 @@ class ClassAdmin extends React.Component {
     return (
       <div id='cn-class-admin-container'>
 
-        <div className='cn-admin-col-md'>
+        <div className={cl.change_requests.length > 0 ? 'cn-admin-col-lg' : 'cn-admin-col-md'}>
 
           <div id='cn-admin-class-title'>{cl.name}</div>
           <div className='cn-admin-class-subtitle'>{this.renderCreatedBy(cl)}</div>
