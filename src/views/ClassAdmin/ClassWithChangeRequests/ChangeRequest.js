@@ -13,8 +13,7 @@ class ChangeRequest extends React.Component {
 
     this.state = {
       focus: false,
-      loading: false,
-      show: true
+      loading: false
     }
   }
   renderArrow () {
@@ -39,7 +38,6 @@ class ChangeRequest extends React.Component {
       .then((res) => {
         this.props.onChange()
         showSnackbar(`Successfully adopted user change: ${this.props.cr.data[key]}`, 'success')
-        this.setState({show: false})
       })
       .catch(e => {
         console.log(e)
@@ -51,7 +49,6 @@ class ChangeRequest extends React.Component {
       .then((res) => {
         this.props.onChange()
         showSnackbar(`Successfully declined user change`, 'success')
-        this.setState({show: false})
       })
       .catch(e => {
         console.log(e)
@@ -125,10 +122,9 @@ class ChangeRequest extends React.Component {
       <OutsideClickHandler
         onOutsideClick={() => this.setState({focus: false})}
       >
-        {this.state.show &&
-          (this.state.loading
-            ? <SkLoader />
-            : this.renderContent())
+        {this.state.loading
+          ? <SkLoader />
+          : this.renderContent()
         }
       </OutsideClickHandler>
     )

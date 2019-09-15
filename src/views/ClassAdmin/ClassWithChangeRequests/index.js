@@ -199,6 +199,10 @@ class ClassWithChangeRequests extends React.Component {
         'term': {
           ref: this.termRef,
           crs: []
+        },
+        'section': {
+          ref: this.sectionRef,
+          crs: []
         }
       }
     }
@@ -229,6 +233,8 @@ class ClassWithChangeRequests extends React.Component {
             crs.classInfo.meet_days.crs.push(cr)
           } else if (Object.keys(cr.data)[0] === 'term') {
             crs.classInfo.term.crs.push(cr)
+          } else if (Object.keys(cr.data)[0] === 'section') {
+            crs.classInfo.section.crs.push(cr)
           }
         }
       }

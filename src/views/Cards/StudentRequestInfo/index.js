@@ -12,8 +12,8 @@ class StudentRequestInfo extends React.Component {
   getOpenStudentRequests () {
     const {cl} = this.props
     const sr = cl.student_requests.filter(c => !c.is_completed)
-    // const cr = cl.change_requests.filter(c => !c.is_completed)
-    return sr
+    const cr = cl.change_requests.filter(c => !c.is_completed)
+    return sr.concat(cr)
   }
 
   renderTitle () {
