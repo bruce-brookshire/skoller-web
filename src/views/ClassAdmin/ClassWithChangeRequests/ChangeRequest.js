@@ -95,7 +95,6 @@ class ChangeRequest extends React.Component {
         multipleCrsAdjustmentY = ((this.props.multipleCrs.position - 1) * -16) + 38
       }
     }
-    console.log(this.props.offsetTop)
     return (
       <div
         onClick={() => this.setState({focus: true})}

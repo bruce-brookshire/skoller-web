@@ -207,10 +207,9 @@ class ClassWithChangeRequests extends React.Component {
       }
     }
     cl.change_requests.filter(c => !c.is_completed).forEach(cr => {
-      console.log(cr)
       if ((Object.keys(cr.data).length > 1)) {
-        console.log('skip it')
-        showSnackbar('One or more change requests contain multiple change types and can\'t be displayed.', 'error', 6000)
+        console.log(cr)
+        showSnackbar('One or more change requests contain multiple changes. View in the Change Request cell.', 'error', 6000)
       } else {
         if (cr.change_type.id === 100) {
           crs.gradeScale.crs.push(cr)
