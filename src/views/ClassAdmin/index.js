@@ -30,6 +30,7 @@ import ClassWithChangeRequests from './ClassWithChangeRequests'
 
 import SkModal from '../components/SkModal/SkModal'
 import SkLoader from '../../assets/sk-icons/SkLoader';
+import ChangeRequestHistory from './ChangeRequestHistory';
 
 @inject('rootStore') @observer
 class ClassAdmin extends React.Component {
@@ -592,45 +593,51 @@ class ClassAdmin extends React.Component {
     )
   }
 
-  renderCreatedBy (cl) {
-    var subtitle = ''
-    if (cl.created_by) {
-      subtitle = 'Class Created by ' + cl.created_by
-    } else {
-      subtitle = 'Unknown class creator or scripted class'
-    }
-    if (cl.created_on) {
-      subtitle = subtitle + ' on ' + cl.created_on
-    }
-    return subtitle
-  }
+  // renderCreatedBy (cl) {
+  //   var subtitle = ''
+  //   if (cl.created_by) {
+  //     subtitle = 'Class Created by ' + cl.created_by
+  //   } else {
+  //     subtitle = 'Unknown class creator or scripted class'
+  //   }
+  //   if (cl.created_on) {
+  //     subtitle = subtitle + ' on ' + cl.created_on
+  //   }
+  //   return subtitle
+  // }
 
-  renderUpdatedBy (cl) {
-    var updateUsers = []
-    if (cl.updated_by) {
-      updateUsers.push(cl.updated_by)
-    }
-    for (var index in cl.weights) {
-      var weight = cl.weights[index]
-      if (weight.updated_by && !updateUsers.includes(weight.updated_by)) {
-        updateUsers.push(weight.updated_by)
-      }
-    }
-    for (var index in cl.assignments) {
-      var assignment = cl.assignments[index]
-      if (assignment.updated_by && !updateUsers.includes(assignment.updated_by)) {
-        updateUsers.push(assignment.updated_by)
-      }
-    }
-    var subtitle = ''
-    if (updateUsers.length === 0) {
-      subtitle = 'Unknown updater or scripted'
-    } else if (updateUsers.length > 1) {
-      subtitle = 'Crowdsourced updates'
-    } else {
-      subtitle = 'Updated by ' + updateUsers[0]
-    }
-    return subtitle
+  // renderUpdatedBy (cl) {
+  //   var updateUsers = []
+  //   if (cl.updated_by) {
+  //     updateUsers.push(cl.updated_by)
+  //   }
+  //   for (var index in cl.weights) {
+  //     var weight = cl.weights[index]
+  //     if (weight.updated_by && !updateUsers.includes(weight.updated_by)) {
+  //       updateUsers.push(weight.updated_by)
+  //     }
+  //   }
+  //   for (var index in cl.assignments) {
+  //     var assignment = cl.assignments[index]
+  //     if (assignment.updated_by && !updateUsers.includes(assignment.updated_by)) {
+  //       updateUsers.push(assignment.updated_by)
+  //     }
+  //   }
+  //   var subtitle = ''
+  //   if (updateUsers.length === 0) {
+  //     subtitle = 'Unknown updater or scripted'
+  //   } else if (updateUsers.length > 1) {
+  //     subtitle = 'Crowdsourced updates'
+  //   } else {
+  //     subtitle = 'Updated by ' + updateUsers[0]
+  //   }
+  //   return subtitle
+  // }
+
+  renderHistory () {
+    return (
+      <ChangeRequestHistory cl={this.state.cl} />
+    )
   }
 
   renderClass () {
@@ -641,8 +648,8 @@ class ClassAdmin extends React.Component {
         <div className={cl.change_requests.length > 0 ? 'cn-admin-col-lg' : 'cn-admin-col-md'}>
 
           <div id='cn-admin-class-title'>{cl.name}</div>
-          <div className='cn-admin-class-subtitle'>{this.renderCreatedBy(cl)}</div>
-          <div className='cn-admin-class-subtitle'>{this.renderUpdatedBy(cl)}</div>
+          {/* <div className='cn-admin-class-subtitle'>{this.renderCreatedBy(cl)}</div> */}
+          {/* <div className='cn-admin-class-subtitle'>{this.renderUpdatedBy(cl)}</div> */}
 
           <div id='cn-admin-nav'>
             <button className={'button admin-tab' + (this.state.tabState === 'class_info' ? ' active' : '')} onClick={() => this.tabSelect('class_info')}>
@@ -667,6 +674,9 @@ class ClassAdmin extends React.Component {
             </button>
             <button className={'button admin-tab' + (this.state.tabState === 'chat' ? ' active' : '')} onClick={() => this.tabSelect('chat')}>Chat</button>
             <button className={'button admin-tab' + (this.state.tabState === 'students' ? ' active' : '')} onClick={() => this.tabSelect('students')}>Students</button>
+            <button className={'button admin-tab' + (this.state.tabState === 'history' ? ' active' : '')} onClick={() => this.tabSelect('history')}>History</button>
+            <div className='admin-tab-hidden' />
+            <div className='admin-tab-hidden' />
           </div>
 
           <div id="cn-admin-edit-panel">
@@ -677,6 +687,7 @@ class ClassAdmin extends React.Component {
             {this.state.tabState === 'assignments' && this.renderAssignments()}
             {this.state.tabState === 'chat' && this.renderChat()}
             {this.state.tabState === 'students' && this.renderStudents()}
+            {this.state.tabState === 'history' && this.renderHistory()}
           </div>
 
           <div id='cn-admin-footer'>
