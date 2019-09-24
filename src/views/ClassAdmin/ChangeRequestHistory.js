@@ -25,6 +25,12 @@ class ChangeRequestHistory extends React.Component {
     )
   }
 
+  renderClassInfoCr () {
+    return (
+      null
+    )
+  }
+
   renderChangeRequests () {
     let changeRequests = this.props.cl.change_requests.filter(a => a.is_completed === true)
     if (this.state.filter !== 'all') {
@@ -38,6 +44,7 @@ class ChangeRequestHistory extends React.Component {
         <div className='hub-change-request-history-list'>
           {changeRequests.map(cr => {
             let i = 0
+            console.log(cr.change_type.id, cr)
             return (
               <div key={cr.id}>
                 {Object.keys(cr.data).map(data => {

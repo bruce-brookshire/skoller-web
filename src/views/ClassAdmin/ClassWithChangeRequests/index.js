@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment-timezone'
 import ChangeRequest from './ChangeRequest'
-import { showSnackbar } from '../../../utilities/snackbar';
+import {changeRequestIsComplete} from '../../../utilities/changeRequests'
 
 class ClassWithChangeRequests extends React.Component {
   constructor (props) {
@@ -32,7 +32,7 @@ class ClassWithChangeRequests extends React.Component {
         {this.props.onEdit && <i className='fas fa-pencil-alt cn-blue cursor' onClick={() => this.props.onEdit()} />}
         {this.props.toggleWrench && <i className={'fa fa-wrench cursor margin-left ' + (isEditable ? 'cn-grey' : 'cn-red')} onClick={() => this.props.toggleWrench()} />}
         {this.props.toggleChat && <i className={'cursor margin-left ' + (isChat ? 'fas fa-comment cn-blue' : 'far fa-comment cn-grey')} onClick={() => this.props.toggleChat()} />}
-        {this.props.onSelectIssue && (cl.student_requests.findIndex((item) => !item.is_completed) > -1 || cl.change_requests.findIndex((item) => !item.is_completed && item.change_type.id === 400) > -1) &&
+        {this.props.onSelectIssue && (cl.student_requests.findIndex((item) => !changeRequestIsComplete(item)) > -1 || cl.change_requests.findIndex((item) => !changeRequestIsComplete(item) && item.change_type.id === 400) > -1) &&
           <i className='fa fa-warning cn-red cursor margin-left' onClick={this.props.onSelectIssue.bind(this)} />
         }
       </div>
@@ -206,37 +206,36 @@ class ClassWithChangeRequests extends React.Component {
         }
       }
     }
-    cl.change_requests.filter(c => !c.is_completed).forEach(cr => {
-      if ((Object.keys(cr.data).length > 1)) {
-        console.log(cr)
-        showSnackbar('One or more change requests contain multiple changes. View in the Change Request cell.', 'error', 6000)
-      } else {
-        if (cr.change_type.id === 100) {
-          crs.gradeScale.crs.push(cr)
-        } else if (cr.change_type.id === 200) {
-          crs.weights.crs.push(cr)
-        } else if (cr.change_type.id === 300) {
-          crs.professor.crs.push(cr)
-        } else if (cr.change_type.id === 400) {
-          if (Object.keys(cr.data)[0] === 'name') {
-            crs.classInfo.name.crs.push(cr)
-          } else if (Object.keys(cr.data)[0] === 'code') {
-            crs.classInfo.code.crs.push(cr)
-          } else if (Object.keys(cr.data)[0] === 'subject') {
-            crs.classInfo.subject.crs.push(cr)
-          } else if (Object.keys(cr.data)[0] === 'location') {
-            crs.classInfo.location.crs.push(cr)
-          } else if (Object.keys(cr.data)[0] === 'meet_start_time') {
-            crs.classInfo.meet_start_time.crs.push(cr)
-          } else if (Object.keys(cr.data)[0] === 'meet_days') {
-            crs.classInfo.meet_days.crs.push(cr)
-          } else if (Object.keys(cr.data)[0] === 'term') {
-            crs.classInfo.term.crs.push(cr)
-          } else if (Object.keys(cr.data)[0] === 'section') {
-            crs.classInfo.section.crs.push(cr)
+    cl.change_requests.filter(c => !changeRequestIsComplete(c)).forEach(cr => {
+      cr.members.forEach(member => {
+        if (!member.is_completed) {
+          if (cr.change_type.id === 100) {
+            crs.gradeScale.crs.push({member: member, cr: cr})
+          } else if (cr.change_type.id === 200) {
+            crs.weights.crs.push({member: member, cr: cr})
+          } else if (cr.change_type.id === 300) {
+            crs.professor.crs.push({member: member, cr: cr})
+          } else if (cr.change_type.id === 400) {
+            if (member.member_name === 'name') {
+              crs.classInfo.name.crs.push({member: member, cr: cr})
+            } else if (member.member_name === 'code') {
+              crs.classInfo.code.crs.push({member: member, cr: cr})
+            } else if (member.member_name === 'subject') {
+              crs.classInfo.subject.crs.push({member: member, cr: cr})
+            } else if (member.member_name === 'location') {
+              crs.classInfo.location.crs.push({member: member, cr: cr})
+            } else if (member.member_name === 'meet_start_time') {
+              crs.classInfo.meet_start_time.crs.push({member: member, cr: cr})
+            } else if (member.member_name === 'meet_days') {
+              crs.classInfo.meet_days.crs.push({member: member, cr: cr})
+            } else if (member.member_name === 'term') {
+              crs.classInfo.term.crs.push({member: member, cr: cr})
+            } else if (member.member_name === 'section') {
+              crs.classInfo.section.crs.push({member: member, cr: cr})
+            }
           }
         }
-      }
+      })
     })
     let crsToRender = []
     Object.keys(crs).forEach(category => {
@@ -251,7 +250,8 @@ class ClassWithChangeRequests extends React.Component {
               crsToRender.push(
                 <ChangeRequest
                   cl={this.props.cl}
-                  cr={cr}
+                  cr={cr.cr}
+                  member={cr.member}
                   yPosition={ref.getBoundingClientRect().y - (ref.getBoundingClientRect().height / 2)}
                   width={this.cardRef.offsetWidth}
                   onChange={() => this.props.onChange()}
