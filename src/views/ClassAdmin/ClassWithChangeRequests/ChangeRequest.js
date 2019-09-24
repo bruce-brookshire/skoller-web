@@ -25,19 +25,25 @@ class ChangeRequest extends React.Component {
   }
 
   async onAccept () {
-    let key = Object.keys(this.props.cr.data)[0]
+    let key = this.props.member.member_name
     let form = {
       'id': this.props.cl.id
     }
-    form[key] = this.props.cr.data[key]
+    if (this.props.cr.change_type.id === 100) {
+      form['grade_scale'] = this.props.cl.grade_scale
+      form['grade_scale'][this.props.member.member_name] = this.props.member.member_value
+      console.log(form)
+    } else {
+      form[key] = this.props.member.member_value
+    }
     await actions.classes.updateClass(form)
       .catch(e => {
         console.log(e)
       })
-    await actions.classhelp.resolveChangeRequest(this.props.cr.id)
+    await actions.classhelp.resolveChangeRequestMember(this.props.member.id)
       .then((res) => {
         this.props.onChange()
-        showSnackbar(`Successfully adopted user change: ${this.props.cr.data[key]}`, 'success')
+        showSnackbar(`Successfully adopted user change: ${this.props.member.member_name} ${this.props.member.member_value}`, 'success')
       })
       .catch(e => {
         console.log(e)
@@ -45,9 +51,10 @@ class ChangeRequest extends React.Component {
   }
 
   async onDecline () {
-    await actions.classhelp.resolveChangeRequest(this.props.cr.id)
+    await actions.classhelp.resolveChangeRequestMember(this.props.member.id)
       .then((res) => {
         this.props.onChange()
+        console.log(res)
         showSnackbar(`Successfully declined user change`, 'success')
       })
       .catch(e => {
@@ -57,16 +64,19 @@ class ChangeRequest extends React.Component {
 
   renderInfo () {
     const cr = this.props.cr
+    const member = this.props.member
     return (
-      <div className='hub-change-request-content'>
+      <div
+        className='hub-change-request-content'
+      >
         <div style={{color: '#4a4a4a75'}}>
-          NEW {(Object.keys(cr.data)[0]).replace('_', ' ')}
+          NEW {(member.member_name).replace('_', ' ')}
         </div>
         {this.props.multipleCrs.count > 1 &&
           <div style={{float: 'right', marginTop: '-16px'}}>{this.props.multipleCrs.position.toString()} of {this.props.multipleCrs.count.toString()}</div>
         }
         <div style={{fontSize: '26px', fontWeight: '600'}}>
-          {cr.data[Object.keys(cr.data)[0]]}
+          {member.member_value}
         </div>
         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
           <div className='hub-change-request-accept' onClick={() => this.onAccept()}>
@@ -117,6 +127,7 @@ class ChangeRequest extends React.Component {
   }
 
   render () {
+    console.log(this.props.cl)
     return (
       <OutsideClickHandler
         onOutsideClick={() => this.setState({focus: false})}
@@ -133,11 +144,13 @@ class ChangeRequest extends React.Component {
 ChangeRequest.propTypes = {
   cl: PropTypes.object,
   cr: PropTypes.object,
+  member: PropTypes.object,
   yPosition: PropTypes.number,
   width: PropTypes.number,
   onChange: PropTypes.func,
   multipleCrs: PropTypes.object,
-  offsetTop: PropTypes.number
+  offsetTop: PropTypes.number,
+  gradeScaleCr: PropTypes.object
 }
 
 export default ChangeRequest

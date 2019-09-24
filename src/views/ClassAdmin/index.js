@@ -29,8 +29,9 @@ import ClassCard from '../Cards/ClassCard'
 import ClassWithChangeRequests from './ClassWithChangeRequests'
 
 import SkModal from '../components/SkModal/SkModal'
-import SkLoader from '../../assets/sk-icons/SkLoader';
-import ChangeRequestHistory from './ChangeRequestHistory';
+import SkLoader from '../../assets/sk-icons/SkLoader'
+import ChangeRequestHistory from './ChangeRequestHistory'
+import { changeRequestIsComplete } from '../../utilities/changeRequests'
 
 @inject('rootStore') @observer
 class ClassAdmin extends React.Component {
@@ -138,8 +139,8 @@ class ClassAdmin extends React.Component {
   */
   openStudentRequests () {
     let {cl} = this.state
-    const sr = cl.student_requests.filter(c => !c.is_completed)
-    const cr = cl.change_requests.filter(c => !c.is_completed)
+    const sr = cl.student_requests.filter(c => !changeRequestIsComplete(c))
+    const cr = cl.change_requests.filter(c => !changeRequestIsComplete(c))
     return sr.concat(cr)
   }
 
@@ -508,7 +509,7 @@ class ClassAdmin extends React.Component {
       return <SkLoader />
     } else {
       return (
-        cl.change_requests.filter(c => !c.is_completed).length > 0
+        cl.change_requests.filter(c => !changeRequestIsComplete(c)).length > 0
           ? <ClassWithChangeRequests
             cl={cl}
             schoolName={cl.school.name}
@@ -544,6 +545,7 @@ class ClassAdmin extends React.Component {
     const {cl} = this.state
     return (
       <GradeScale
+        onChange={() => this.reloadComponent()}
         cl={cl}
         canEdit={true}
         onSubmit={() => this.updateClass()}
@@ -653,11 +655,11 @@ class ClassAdmin extends React.Component {
 
           <div id='cn-admin-nav'>
             <button className={'button admin-tab' + (this.state.tabState === 'class_info' ? ' active' : '')} onClick={() => this.tabSelect('class_info')}>
-              {cl.change_requests.findIndex((item) => item.change_type.id === 400 && !item.is_completed) > -1 && <i className='fa fa-warning'/>}
+              {cl.change_requests.findIndex((item) => item.change_type.id === 400 && !changeRequestIsComplete(item)) > -1 && <i className='fa fa-warning'/>}
               Class Info
             </button>
             <button className={'button admin-tab' + (this.state.tabState === 'grade_scale' ? ' active' : '')} onClick={() => this.tabSelect('grade_scale')}>
-              {cl.change_requests.findIndex((item) => item.change_type.id === 100 && !item.is_completed) > -1 && <i className='fa fa-warning'/>}
+              {cl.change_requests.findIndex((item) => item.change_type.id === 100 && !changeRequestIsComplete(item)) > -1 && <i className='fa fa-warning'/>}
               Grade Scale
             </button>
             <button className={'button admin-tab' + (this.state.tabState === 'professor' ? ' active' : '')} onClick={() => this.tabSelect('professor')}>

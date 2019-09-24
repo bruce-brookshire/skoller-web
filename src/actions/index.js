@@ -60,6 +60,7 @@ import {
   getHelpTypes,
   getRequestTypes,
   resolveChangeRequest,
+  resolveChangeRequestMember,
   createStudentRequest,
   resolveStudentRequest
 } from './classhelp'
@@ -228,6 +229,7 @@ const actions = {
     getHelpTypes,
     getRequestTypes,
     resolveChangeRequest,
+    resolveChangeRequestMember,
     createStudentRequest,
     resolveStudentRequest
   },
