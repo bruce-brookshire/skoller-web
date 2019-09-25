@@ -48,6 +48,7 @@ class ClassAdmin extends React.Component {
   * Initialize state
   */
   initializeState () {
+    console.log(this.props.params)
     let {navbarStore} = this.props.rootStore
     navbarStore.isDIY = false
     return {
@@ -64,7 +65,7 @@ class ClassAdmin extends React.Component {
       openAssignmentModal: false,
       documents: [],
       openNoDocModal: false,
-      tabState: 'class_info',
+      tabState: this.props.params.tabState ? this.props.params.tabState : 'class_info',
       uploadingDoc: false,
       loadingClass: true
     }
@@ -109,6 +110,7 @@ class ClassAdmin extends React.Component {
   */
   tabSelect (tabName) {
     this.setState({tabState: tabName})
+    this.props.history.push(`/class/${this.state.cl.id}/admin/${tabName}`)
   }
 
   /*
@@ -740,7 +742,8 @@ class ClassAdmin extends React.Component {
 ClassAdmin.propTypes = {
   location: PropTypes.object,
   params: PropTypes.object,
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  history: PropTypes.object
 }
 
 export default ClassAdmin

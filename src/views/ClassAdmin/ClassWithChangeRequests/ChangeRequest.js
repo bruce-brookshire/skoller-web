@@ -127,7 +127,6 @@ class ChangeRequest extends React.Component {
   }
 
   render () {
-    console.log(this.props.cl)
     return (
       <OutsideClickHandler
         onOutsideClick={() => this.setState({focus: false})}
