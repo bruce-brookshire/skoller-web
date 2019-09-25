@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Card from '../../components/Card'
 import moment from 'moment'
+import { changeRequestIsComplete } from '../../utilities/changeRequests';
 
 class ChangeRequestHistory extends React.Component {
   constructor (props) {
@@ -15,12 +16,23 @@ class ChangeRequestHistory extends React.Component {
     return (
       <select value={this.state.filter} onChange={(e) => this.setState({filter: e.target.value})}>
         <option value={'all'}>All change requests</option>
-        <option value={'name'}>Class name</option>
-        <option value={'meet_start_time'}>Meeting times</option>
-        <option value={'meet_days'}>Meeting days</option>
-        <option value={'subject'}>Subject</option>
-        <option value={'section'}>Section</option>
-        <option value={'code'}>Code</option>
+        <optgroup label="Class info">
+          <option value={'name'}>Class name</option>
+          <option value={'meet_start_time'}>Meeting times</option>
+          <option value={'meet_days'}>Meeting days</option>
+          <option value={'subject'}>Subject</option>
+          <option value={'section'}>Section</option>
+          <option value={'code'}>Code</option>
+        </optgroup>
+        <optgroup label="Grade scale">
+          <option value={'gradeScale'}>Grade scale</option>
+        </optgroup>
+        <optgroup label="Weights">
+          <option value={'weights'}>Weights</option>
+        </optgroup>
+        <optgroup label="Professor">
+          <option value={'professor'}>Professor</option>
+        </optgroup>
       </select>
     )
   }
@@ -32,40 +44,53 @@ class ChangeRequestHistory extends React.Component {
   }
 
   renderChangeRequests () {
-    let changeRequests = this.props.cl.change_requests.filter(a => a.is_completed === true)
+    let changeRequestMembers = []
+    this.props.cl.change_requests.filter(cr => changeRequestIsComplete(cr)).forEach(cr => {
+      cr.members.forEach(member => {
+        if (member.is_completed) {
+          changeRequestMembers.push({m: member, cr: cr})
+        }
+      })
+    })
     if (this.state.filter !== 'all') {
-      changeRequests = changeRequests.filter(a => Object.keys(a.data)[0] === this.state.filter)
+      if (this.state.filter === 'gradeScale') {
+        changeRequestMembers = changeRequestMembers.filter(member => member.cr.change_type.id === 100)
+      } else if (this.state.filter === 'gradeScale') {
+        changeRequestMembers = changeRequestMembers.filter(member => member.cr.change_type.id === 200)
+      } else if (this.state.filter === 'gradeScale') {
+        changeRequestMembers = changeRequestMembers.filter(member => member.cr.change_type.id === 300)
+      } else {
+        changeRequestMembers = changeRequestMembers.filter(member => member.m.member_name === this.state.filter)
+      }
     }
-    changeRequests.sort((a, b) => moment(a.updated_at).isBefore(b.updated_at) ? 1 : -1)
+    changeRequestMembers.sort((a, b) => moment(a.cr.updated_at).isBefore(b.cr.updated_at) ? 1 : -1)
     return (
       <div className='hub-change-request-history'>
         <div className='hub-change-request-history-shadow' />
         <div className='hub-change-request-history-shadow-bottom' />
         <div className='hub-change-request-history-list'>
-          {changeRequests.map(cr => {
+          {changeRequestMembers.map(member => {
             let i = 0
-            console.log(cr.change_type.id, cr)
             return (
-              <div key={cr.id}>
-                {Object.keys(cr.data).map(data => {
-                  i += 1
-                  return (
-                    <div key={i} className='hub-change-request-history-cr'>
-                      <div className='hub-change-request-history-cr-row'>
-                        <p>Change type:</p>
-                        <p>{data.replace('_', ' ')}</p>
-                      </div>
-                      <div className='hub-change-request-history-cr-row'>
-                        <p>Data:</p>
-                        <h2>{cr.data[data]}</h2>
-                      </div>
-                      <div className='hub-change-request-history-cr-row'>
-                        <p>Updated:</p>
-                        <p>{moment(moment.utc(cr.updated_at).toDate()).local().format('MM/DD/YY h:mma')}</p>
-                      </div>
-                    </div>
-                  )
-                })}
+              <div key={member.m.id}>
+                <div key={i} className='hub-change-request-history-cr'>
+                  <div className='hub-change-request-history-cr-row'>
+                    <p>Change type:</p>
+                    <p>{member.m.member_name.replace('_', ' ')}</p>
+                  </div>
+                  <div className='hub-change-request-history-cr-row'>
+                    <p>Data:</p>
+                    <h2>{member.m.member_value}</h2>
+                  </div>
+                  <div className='hub-change-request-history-cr-row'>
+                    <p>Updated:</p>
+                    <p>{moment(moment.utc(member.cr.updated_at).toDate()).local().format('MM/DD/YY h:mma')}</p>
+                  </div>
+                  <div className='hub-change-request-history-cr-row'>
+                    <p>Submitted by:</p>
+                    <p>{member.cr.user.email}</p>
+                  </div>
+                </div>
               </div>
             )
           })}
@@ -75,11 +100,19 @@ class ChangeRequestHistory extends React.Component {
   }
 
   renderContent () {
+    let totalChangeRequestsComplete = 0
+    this.props.cl.change_requests.forEach(cr => {
+      cr.members.forEach(member => {
+        if (member.is_completed) {
+          totalChangeRequestsComplete += 1
+        }
+      })
+    })
     return (
       <div>
-        <h3>{this.props.cl.change_requests.filter(a => a.is_completed === true).length.toString()} past change requests completed</h3>
         {this.renderListFilter()}
         {this.renderChangeRequests()}
+        <p className='hub-change-request-history-info'>{totalChangeRequestsComplete.toString()} total change requests completed.</p>
       </div>
     )
   }

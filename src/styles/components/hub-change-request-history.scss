@@ -1,8 +1,10 @@
 .hub-change-request-history-container {
   width: 100%;
 
-  h3 {
+  .hub-change-request-history-info {
     text-align: center;
+    margin: 1rem 0 0 0;
+    font-weight: 400;
   }
 
   select {
