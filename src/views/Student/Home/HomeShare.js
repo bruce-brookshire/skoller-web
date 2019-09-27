@@ -30,12 +30,36 @@ class HomeShare extends React.Component {
     return partner
   }
 
+  hasCompletedClass () {
+    let hasCompletedClass = false
+    if (this.props.classes) {
+      this.props.classes.forEach(cl => {
+        if (cl.status.id > 1200) {
+          hasCompletedClass = true
+        }
+      })
+    }
+    return hasCompletedClass
+  }
+
   async getPartnerByUser () {
     await actions.students.getStudentSignupOrganization(this.props.rootStore.userStore.user.student.id)
       .then((r) => {
         let slug = r.link.replace(/(.+)(\/c\/)/g, '')
         this.setState({partner: this.getPartner(slug), show: true})
-        console.log(r)
+        if (this.hasCompletedClass()) {
+          this.setState({
+            partner: this.getPartner(slug),
+            show: true,
+            hasCompletedClass: true
+          })
+        } else {
+          this.setState({
+            partner: this.getPartner(slug),
+            show: true,
+            hasCompletedClass: false
+          })
+        }
       })
       .catch(r => {
         this.setState({show: false})
@@ -55,7 +79,10 @@ class HomeShare extends React.Component {
                   emotion='happy'
                   position='left'
                 >
-                  <p>Because of you, <b>$1 was donated to {partner.philanthropy}.</b> Share this link to raise even more money!</p>
+                  {this.state.hasCompletedClass
+                    ? <p>Because of you, <b>$1 was donated to {partner.philanthropy}.</b> Share this link to raise even more money!</p>
+                    : <p>Upload your syllabus to get <b>$1 donated to {partner.philanthropy}.</b> Share this link to raise even more money!</p>
+                  }
                 </Sammi>
                 <div className='home-share-copy-box'>
                   <CopyBox linkValue={('https://skoller.co/c/' + partner.slug)} />
