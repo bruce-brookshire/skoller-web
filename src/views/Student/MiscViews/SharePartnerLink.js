@@ -24,7 +24,7 @@ class SharePartnerLink extends React.Component {
     return (
       <div className='sk-share-partner-link-container'>
         <div className='sk-share-partner-link'>
-          <h1>Share {partner.name}'s Skoller link!</h1>
+          <h1>Share {partner.name}&apos;s Skoller link!</h1>
           <Sammi
             emotion='wow'
             position='left'

@@ -48,12 +48,14 @@ class Onboard extends React.Component {
         if (this.props.params.partner && (this.props.params.partner !== slug)) {
           browserHistory.push(('/student/share/' + this.props.params.partner))
         }
+        console.log('getPartnerByUser .then', r)
       })
       .catch(r => {
         if (this.props.params.partner) {
           this.setState({partner: null})
           browserHistory.push(('/student/share/' + this.props.params.partner))
         }
+        console.log('getPartnerByUser .catch', r)
       })
   }
 
