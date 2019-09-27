@@ -34,7 +34,7 @@ class HomeShare extends React.Component {
     let hasCompletedClass = false
     if (this.props.classes) {
       this.props.classes.forEach(cl => {
-        if (cl.status.id > 1200) {
+        if (cl.status.id > 1100) {
           hasCompletedClass = true
         }
       })
