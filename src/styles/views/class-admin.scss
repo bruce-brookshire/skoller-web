@@ -90,6 +90,32 @@
     .cn-admin-edit-card-content {
 
     }
+
+    .cn-admin-edit-class {
+      @include skoller-cell;
+      padding: 1rem;
+
+      .cn-admin-edit-class-header {
+        .cn-admin-edit-class-header-border {
+          border-bottom: 1px solid $cn-font-color;
+        }
+
+        .cn-admin-edit-class-title {
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-start;
+
+          h2 {
+            margin: 0 0 0 8px;
+          }
+    
+          h4 {
+            margin: 0 0 0px 8px;
+            font-size: 14px;
+          }
+        }
+      }
+    }
   }
 
   #cn-admin-footer {

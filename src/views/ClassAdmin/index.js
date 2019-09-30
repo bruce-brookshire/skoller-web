@@ -28,7 +28,6 @@ import StudentList from '../Cards/StudentList'
 import ClassCard from '../Cards/ClassCard'
 import ClassWithChangeRequests from './ClassWithChangeRequests'
 
-import SkModal from '../components/SkModal/SkModal'
 import SkLoader from '../../assets/sk-icons/SkLoader'
 import ChangeRequestHistory from './ChangeRequestHistory'
 import { changeRequestIsComplete } from '../../utilities/changeRequests'
@@ -337,21 +336,22 @@ class ClassAdmin extends React.Component {
   renderEditClassModal () {
     const {cl} = this.state
     return (
-      <Modal
-        open={this.state.openEditClassModal}
-        onClose={this.toggleEditClassModal.bind(this)}
-      >
-        <ClassForm
-          cl={cl}
-          classPeriod={cl.class_period}
-          onSubmit={this.updateClass.bind(this)}
-          onClose={this.toggleEditClassModal.bind(this)}
-        />
-        <StatusForm
-          cl={cl}
-          onSubmit={this.updateClass.bind(this)}
-        />
-      </Modal>
+      // <Modal
+      //   open={this.state.openEditClassModal}
+      //   onClose={this.toggleEditClassModal.bind(this)}
+      // >
+      //   <ClassForm
+      //     cl={cl}
+      //     classPeriod={cl.class_period}
+      //     onSubmit={this.updateClass.bind(this)}
+      //     onClose={this.toggleEditClassModal.bind(this)}
+      //   />
+      //   <StatusForm
+      //     cl={cl}
+      //     onSubmit={this.updateClass.bind(this)}
+      //   />
+      // </Modal>
+      null
     )
   }
 
@@ -427,18 +427,19 @@ class ClassAdmin extends React.Component {
     const {cl, currentAssignment, weights} = this.state
     if (this.state.openAssignmentModal) {
       return (
-        <SkModal
-          closeModal={this.toggleAssignmentModal.bind(this)}
-        >
-          <AdminAssignmentForm
-            cl={cl}
-            assignment={currentAssignment}
-            onCreateAssignment={this.onCreateAssignment.bind(this)}
-            onUpdateAssignment={this.onUpdateAssignment.bind(this)}
-            isAdmin={true}
-            weights={weights}
-          />
-        </SkModal>
+        // <SkModal
+        //   closeModal={this.toggleAssignmentModal.bind(this)}
+        // >
+        //   <AdminAssignmentForm
+        //     cl={cl}
+        //     assignment={currentAssignment}
+        //     onCreateAssignment={this.onCreateAssignment.bind(this)}
+        //     onUpdateAssignment={this.onUpdateAssignment.bind(this)}
+        //     isAdmin={true}
+        //     weights={weights}
+        //   />
+        // </SkModal>
+        null
       )
     }
   }
@@ -483,14 +484,27 @@ class ClassAdmin extends React.Component {
   * Render the list of assignments.
   */
   renderAssignments () {
-    const {cl, assignments, weights} = this.state
+    const {cl, assignments, weights, currentAssignment} = this.state
     return (
       <div id='cn-admin-assignment-table' className='class-card'>
         <div id='cn-admin-assignment-table-content'>
           <div className='cn-admin-assignment-table-title'>
             Assignments
-            <i className='fa fa-plus cn-blue cursor margin-right' onClick={() => this.toggleAssignmentModal()} />
+            {this.state.openAssignmentModal
+              ? <i className='fa fa-times cn-blue cursor margin-right' onClick={() => this.toggleAssignmentModal()} />
+              : <i className='fa fa-plus cn-blue cursor margin-right' onClick={() => this.toggleAssignmentModal()} />
+            }
           </div>
+          {this.state.openAssignmentModal &&
+            <AdminAssignmentForm
+              cl={cl}
+              assignment={currentAssignment}
+              onCreateAssignment={this.onCreateAssignment.bind(this)}
+              onUpdateAssignment={this.onUpdateAssignment.bind(this)}
+              isAdmin={true}
+              weights={weights}
+            />
+          }
           <AdminAssignmentTable
             cl={cl}
             assignments={assignments}
@@ -505,6 +519,77 @@ class ClassAdmin extends React.Component {
     )
   }
 
+  renderClassInfoEditPanel () {
+    const {cl} = this.state
+    return (
+      <div className='cn-admin-edit-class'>
+        <div className='cn-admin-edit-class-header'>
+          <div className='cn-admin-edit-class-title'>
+            <i className='fas fa-times' style={{color: '#57B9E4', cursor: 'pointer'}} onClick={() => this.toggleEditClassModal()} />
+            <div>
+              <h2>Edit class: {cl.name}</h2>
+              <h4>{cl.subject} {cl.code}.{cl.section}</h4>
+            </div>
+          </div>
+          <div className='cn-admin-edit-class-header-border' />
+        </div>
+        <ClassForm
+          cl={cl}
+          classPeriod={cl.class_period}
+          onSubmit={this.updateClass.bind(this)}
+          onClose={this.toggleEditClassModal.bind(this)}
+        />
+        <StatusForm
+          cl={cl}
+          onSubmit={this.updateClass.bind(this)}
+        />
+      </div>
+    )
+  }
+
+  renderClassInfoWithChangeRequests () {
+    const {cl} = this.state
+    return (
+      this.state.openEditClassModal
+        ? this.renderClassInfoEditPanel()
+        : <ClassWithChangeRequests
+          cl={cl}
+          schoolName={cl.school.name}
+          semesterName={cl.class_period.name}
+          onEdit={this.toggleEditClassModal.bind(this)}
+          isAdmin={true}
+          toggleWrench={this.toggleWrench.bind(this)}
+          toggleChat={this.toggleChat.bind(this)}
+          toggleDocuments={null}
+          onSelectIssue={null}
+          boxClassName='cn-admin-edit-card'
+          contentClassName='cn-admin-edit-card-content'
+          onChange={() => this.reloadComponent()}
+        />
+    )
+  }
+
+  renderClassInfoWithoutChangeRequests () {
+    const {cl} = this.state
+    return (
+      this.state.openEditClassModal
+        ? this.renderClassInfoEditPanel()
+        : <ClassCard
+          cl={cl}
+          schoolName={cl.school.name}
+          semesterName={cl.class_period.name}
+          onEdit={this.toggleEditClassModal.bind(this)}
+          isAdmin={true}
+          toggleWrench={this.toggleWrench.bind(this)}
+          toggleChat={this.toggleChat.bind(this)}
+          toggleDocuments={null}
+          onSelectIssue={null}
+          boxClassName='cn-admin-edit-card'
+          contentClassName='cn-admin-edit-card-content'
+        />
+    )
+  }
+
   renderClassInfo () {
     const {cl} = this.state
     if (this.state.loadingClass) {
@@ -512,33 +597,8 @@ class ClassAdmin extends React.Component {
     } else {
       return (
         cl.change_requests.filter(c => !changeRequestIsComplete(c)).length > 0
-          ? <ClassWithChangeRequests
-            cl={cl}
-            schoolName={cl.school.name}
-            semesterName={cl.class_period.name}
-            onEdit={this.toggleEditClassModal.bind(this)}
-            isAdmin={true}
-            toggleWrench={this.toggleWrench.bind(this)}
-            toggleChat={this.toggleChat.bind(this)}
-            toggleDocuments={null}
-            onSelectIssue={null}
-            boxClassName='cn-admin-edit-card'
-            contentClassName='cn-admin-edit-card-content'
-            onChange={() => this.reloadComponent()}
-          />
-          : <ClassCard
-            cl={cl}
-            schoolName={cl.school.name}
-            semesterName={cl.class_period.name}
-            onEdit={this.toggleEditClassModal.bind(this)}
-            isAdmin={true}
-            toggleWrench={this.toggleWrench.bind(this)}
-            toggleChat={this.toggleChat.bind(this)}
-            toggleDocuments={null}
-            onSelectIssue={null}
-            boxClassName='cn-admin-edit-card'
-            contentClassName='cn-admin-edit-card-content'
-          />
+          ? this.renderClassInfoWithChangeRequests()
+          : this.renderClassInfoWithoutChangeRequests()
       )
     }
   }
@@ -597,51 +657,20 @@ class ClassAdmin extends React.Component {
     )
   }
 
-  // renderCreatedBy (cl) {
-  //   var subtitle = ''
-  //   if (cl.created_by) {
-  //     subtitle = 'Class Created by ' + cl.created_by
-  //   } else {
-  //     subtitle = 'Unknown class creator or scripted class'
-  //   }
-  //   if (cl.created_on) {
-  //     subtitle = subtitle + ' on ' + cl.created_on
-  //   }
-  //   return subtitle
-  // }
-
-  // renderUpdatedBy (cl) {
-  //   var updateUsers = []
-  //   if (cl.updated_by) {
-  //     updateUsers.push(cl.updated_by)
-  //   }
-  //   for (var index in cl.weights) {
-  //     var weight = cl.weights[index]
-  //     if (weight.updated_by && !updateUsers.includes(weight.updated_by)) {
-  //       updateUsers.push(weight.updated_by)
-  //     }
-  //   }
-  //   for (var index in cl.assignments) {
-  //     var assignment = cl.assignments[index]
-  //     if (assignment.updated_by && !updateUsers.includes(assignment.updated_by)) {
-  //       updateUsers.push(assignment.updated_by)
-  //     }
-  //   }
-  //   var subtitle = ''
-  //   if (updateUsers.length === 0) {
-  //     subtitle = 'Unknown updater or scripted'
-  //   } else if (updateUsers.length > 1) {
-  //     subtitle = 'Crowdsourced updates'
-  //   } else {
-  //     subtitle = 'Updated by ' + updateUsers[0]
-  //   }
-  //   return subtitle
-  // }
-
   renderHistory () {
     return (
       <ChangeRequestHistory cl={this.state.cl} />
     )
+  }
+
+  getIncompleteChangeRequestCount () {
+    let incompleteChangeRequestCount = 0
+    this.state.cl.change_requests.forEach(cr => {
+      if (!changeRequestIsComplete(cr)) {
+        incompleteChangeRequestCount += 1
+      }
+    })
+    return incompleteChangeRequestCount
   }
 
   renderClass () {
@@ -649,33 +678,40 @@ class ClassAdmin extends React.Component {
     return (
       <div id='cn-class-admin-container'>
 
-        <div className={cl.change_requests.length > 0 ? 'cn-admin-col-lg' : 'cn-admin-col-md'}>
+        <div className={this.getIncompleteChangeRequestCount() > 0 ? 'cn-admin-col-lg' : 'cn-admin-col-md'}>
 
           <div id='cn-admin-class-title'>{cl.name}</div>
-          {/* <div className='cn-admin-class-subtitle'>{this.renderCreatedBy(cl)}</div> */}
-          {/* <div className='cn-admin-class-subtitle'>{this.renderUpdatedBy(cl)}</div> */}
 
           <div id='cn-admin-nav'>
             <button className={'button admin-tab' + (this.state.tabState === 'class_info' ? ' active' : '')} onClick={() => this.tabSelect('class_info')}>
-              {cl.change_requests.findIndex((item) => item.change_type.id === 400 && !changeRequestIsComplete(item)) > -1 && <i className='fa fa-warning'/>}
+              {
+                cl.change_requests.filter((item) => item.change_type.id === 400 && !changeRequestIsComplete(item)).length > 0 &&
+                <i className='fas fa-exclamation-circle' style={{marginRight: '4px'}}/>
+              }
               Class Info
             </button>
             <button className={'button admin-tab' + (this.state.tabState === 'grade_scale' ? ' active' : '')} onClick={() => this.tabSelect('grade_scale')}>
-              {cl.change_requests.findIndex((item) => item.change_type.id === 100 && !changeRequestIsComplete(item)) > -1 && <i className='fa fa-warning'/>}
+              {
+                cl.change_requests.filter((item) => item.change_type.id === 100 && !changeRequestIsComplete(item)).length > 0 &&
+                <i className='fas fa-exclamation-circle' style={{marginRight: '4px'}}/>
+              }
               Grade Scale
             </button>
             <button className={'button admin-tab' + (this.state.tabState === 'professor' ? ' active' : '')} onClick={() => this.tabSelect('professor')}>
-              {cl.change_requests.findIndex((item) => item.change_type.id === 300 && !item.is_completed) > -1 && <i className='fa fa-warning'/>}
+              {
+                cl.change_requests.filter((item) => item.change_type.id === 300 && !changeRequestIsComplete(item)).length > 0 &&
+                <i className='fas fa-exclamation-circle' style={{marginRight: '4px'}}/>
+              }
               Professor
             </button>
             <button className={'button admin-tab' + (this.state.tabState === 'weights' ? ' active' : '')} onClick={() => this.tabSelect('weights')}>
-              {cl.change_requests.findIndex((item) => item.change_type.id === 200 && !item.is_completed) > -1 && <i className='fa fa-warning'/>}
+              {
+                cl.change_requests.filter((item) => item.change_type.id === 200 && !changeRequestIsComplete(item)).length > 0 &&
+                <i className='fas fa-exclamation-circle' style={{marginRight: '4px'}}/>
+              }
               Weights
             </button>
-            <button className={'button admin-tab' + (this.state.tabState === 'assignments' ? ' active' : '')} onClick={() => this.tabSelect('assignments')}>
-              {cl.change_requests.findIndex((item) => item.change_type.id === 200 && !item.is_completed) > -1 && <i className='fa fa-warning'/>}
-              Assignments
-            </button>
+            <button className={'button admin-tab' + (this.state.tabState === 'assignments' ? ' active' : '')} onClick={() => this.tabSelect('assignments')}>Assignments</button>
             <button className={'button admin-tab' + (this.state.tabState === 'chat' ? ' active' : '')} onClick={() => this.tabSelect('chat')}>Chat</button>
             <button className={'button admin-tab' + (this.state.tabState === 'students' ? ' active' : '')} onClick={() => this.tabSelect('students')}>Students</button>
             <button className={'button admin-tab' + (this.state.tabState === 'history' ? ' active' : '')} onClick={() => this.tabSelect('history')}>History</button>

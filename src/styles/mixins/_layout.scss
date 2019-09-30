@@ -10,7 +10,7 @@
 
 @mixin center-viewport-content-container-internal {
   @include center-viewport-content-container;
-  height: calc(100vh - 86.3px);
+  height: calc(100vh - 96px);
 }
 
 @mixin center-viewport-content-narrow {

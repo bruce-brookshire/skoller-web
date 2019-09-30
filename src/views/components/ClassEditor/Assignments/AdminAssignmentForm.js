@@ -177,8 +177,8 @@ class AdminAssignmentForm extends React.Component {
     const disableButton = !this.verifyData(form)
 
     return (
-      <div id='cn-assignment-form'>
-        <div className='cn-section-content-header'>
+      <div id='hub-assignment-form'>
+        <div className='hub-section-content-header'>
           Add assignments
         </div>
         <hr />
@@ -251,8 +251,8 @@ class AdminAssignmentForm extends React.Component {
             />}
           </div>
           <div className='col-xs-4'>
-            <div className='cn-input-container margin-top unknown-due'>
-              <label htmlFor="due_null" className='cn-input-label'>Unknown?</label>
+            <div className='hub-input-container margin-top unknown-due'>
+              <label htmlFor="due_null" className='hub-input-label'>Unknown?</label>
               <div className="checkbox-appearance"
                 style={{ backgroundColor: this.state.due_null ? '#57b9e4' : 'transparent' }}
                 onClick={() => {

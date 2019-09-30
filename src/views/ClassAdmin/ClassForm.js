@@ -238,6 +238,8 @@ class ClassForm extends React.Component {
         </div>
         <div id='meeting-info' className='class-form-field margin-top'>
           {this.renderDays()}
+        </div>
+        <div id='meeting-info' className='class-form-field'>
           {this.state.form.meet_days !== 'Online' && this.renderTimes()}
         </div>
         <div className='class-form-field margin-top'>

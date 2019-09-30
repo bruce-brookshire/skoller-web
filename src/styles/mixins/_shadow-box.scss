@@ -10,7 +10,7 @@
 }
 
 @mixin shadow-box-title {
-  border-bottom: 2px solid black;
+  border-bottom: 1px solid $cn-font-color;
   font-size: 24px;
   font-weight: 600;
 }
