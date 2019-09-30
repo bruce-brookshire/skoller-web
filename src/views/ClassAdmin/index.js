@@ -28,7 +28,6 @@ import StudentList from '../Cards/StudentList'
 import ClassCard from '../Cards/ClassCard'
 import ClassWithChangeRequests from './ClassWithChangeRequests'
 
-import SkModal from '../components/SkModal/SkModal'
 import SkLoader from '../../assets/sk-icons/SkLoader'
 import ChangeRequestHistory from './ChangeRequestHistory'
 import { changeRequestIsComplete } from '../../utilities/changeRequests'
@@ -658,51 +657,20 @@ class ClassAdmin extends React.Component {
     )
   }
 
-  // renderCreatedBy (cl) {
-  //   var subtitle = ''
-  //   if (cl.created_by) {
-  //     subtitle = 'Class Created by ' + cl.created_by
-  //   } else {
-  //     subtitle = 'Unknown class creator or scripted class'
-  //   }
-  //   if (cl.created_on) {
-  //     subtitle = subtitle + ' on ' + cl.created_on
-  //   }
-  //   return subtitle
-  // }
-
-  // renderUpdatedBy (cl) {
-  //   var updateUsers = []
-  //   if (cl.updated_by) {
-  //     updateUsers.push(cl.updated_by)
-  //   }
-  //   for (var index in cl.weights) {
-  //     var weight = cl.weights[index]
-  //     if (weight.updated_by && !updateUsers.includes(weight.updated_by)) {
-  //       updateUsers.push(weight.updated_by)
-  //     }
-  //   }
-  //   for (var index in cl.assignments) {
-  //     var assignment = cl.assignments[index]
-  //     if (assignment.updated_by && !updateUsers.includes(assignment.updated_by)) {
-  //       updateUsers.push(assignment.updated_by)
-  //     }
-  //   }
-  //   var subtitle = ''
-  //   if (updateUsers.length === 0) {
-  //     subtitle = 'Unknown updater or scripted'
-  //   } else if (updateUsers.length > 1) {
-  //     subtitle = 'Crowdsourced updates'
-  //   } else {
-  //     subtitle = 'Updated by ' + updateUsers[0]
-  //   }
-  //   return subtitle
-  // }
-
   renderHistory () {
     return (
       <ChangeRequestHistory cl={this.state.cl} />
     )
+  }
+
+  getIncompleteChangeRequestCount () {
+    let incompleteChangeRequestCount = 0
+    this.state.cl.change_requests.forEach(cr => {
+      if (!changeRequestIsComplete(cr)) {
+        incompleteChangeRequestCount += 1
+      }
+    })
+    return incompleteChangeRequestCount
   }
 
   renderClass () {
@@ -710,11 +678,9 @@ class ClassAdmin extends React.Component {
     return (
       <div id='cn-class-admin-container'>
 
-        <div className={cl.change_requests.length > 0 ? 'cn-admin-col-lg' : 'cn-admin-col-md'}>
+        <div className={this.getIncompleteChangeRequestCount() > 0 ? 'cn-admin-col-lg' : 'cn-admin-col-md'}>
 
           <div id='cn-admin-class-title'>{cl.name}</div>
-          {/* <div className='cn-admin-class-subtitle'>{this.renderCreatedBy(cl)}</div> */}
-          {/* <div className='cn-admin-class-subtitle'>{this.renderUpdatedBy(cl)}</div> */}
 
           <div id='cn-admin-nav'>
             <button className={'button admin-tab' + (this.state.tabState === 'class_info' ? ' active' : '')} onClick={() => this.tabSelect('class_info')}>
