@@ -4,6 +4,7 @@ import {inject, observer} from 'mobx-react'
 import PropTypes from 'prop-types'
 import Modal from '../../components/Modal'
 import actions from '../../actions'
+import SkModal from '../components/SkModal/SkModal';
 
 @inject('rootStore') @observer
 class RequestResolvedModal extends React.Component {
@@ -82,13 +83,18 @@ class RequestResolvedModal extends React.Component {
   }
 
   render () {
-    return (
-      <Modal
-        open={this.props.open}
-        onClose={() => this.props.onClose()}>
-        {this.renderContent()}
-      </Modal>
-    )
+    if (this.props.open) {
+      return (
+        <SkModal
+          open={this.props.open}
+          closeModal={() => this.props.onClose()}
+        >
+          {this.renderContent()}
+        </SkModal>
+      )
+    } else {
+      return null
+    }
   }
 }
 

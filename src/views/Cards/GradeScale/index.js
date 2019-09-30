@@ -6,11 +6,51 @@ import Loading from '../../../components/Loading'
 import actions from '../../../actions'
 import CommonScaleModal from './CommonScaleModal'
 import Card from '../../../components/Card'
+import ChangeRequest from '../../ClassAdmin/ClassWithChangeRequests/ChangeRequest'
+import { changeRequestIsComplete } from '../../../utilities/changeRequests'
+import { resolveChangeRequestMember } from '../../../actions/classhelp'
 
 class GradeScale extends React.Component {
   constructor (props) {
     super(props)
     this.state = this.initializeState()
+    this.gradeRefs = {}
+    this.initializeComponent()
+  }
+
+  async initializeComponent () {
+    const cl = this.props.cl
+    cl.change_requests.filter(cr => cr.change_type.id === 100).forEach(cr => {
+      cr.members.forEach(member => {
+        if (cl.grade_scale) {
+          if (cl.grade_scale[member.member_name]) {
+            if ((cl.grade_scale[member.member_name] === member.member_value) && !member.is_completed) {
+              resolveChangeRequestMember(member.id)
+              this.props.onChange()
+            }
+          }
+        }
+      })
+    })
+  }
+
+  componentDidMount () {
+    this.setState({
+      mounted: true,
+      changeRequests: this.checkForChangeRequests()
+    })
+  }
+
+  checkForChangeRequests () {
+    let i = 0
+    if (this.props.cl.change_requests) {
+      this.props.cl.change_requests.forEach(cr => {
+        if (cr.change_type.id === 100 && changeRequestIsComplete(cr) === false) {
+          i += 1
+        }
+      })
+    }
+    return i > 0
   }
 
   /*
@@ -23,15 +63,17 @@ class GradeScale extends React.Component {
       showCommonGradeScales: false,
       form: this.initializeForm(),
       loading: false,
-      currentGradeScale: this.props.cl.grade_scale || '',
-      isEditable: false
+      currentGradeScale: this.props.cl.grade_scale || {},
+      isEditable: false,
+      gradeRefs: [],
+      mounted: false
     }
   }
 
   initializeForm () {
     return {
-      grade: '',
-      min: ''
+      grade: null,
+      min: null
     }
   }
 
@@ -65,26 +107,95 @@ class GradeScale extends React.Component {
   }
 
   renderScale () {
-    const gradeScale = this.props.cl.grade_scale
-    const {isEditable} = this.state
+    console.log(this.props.cl)
+    if (this.props.cl.grade_scale) {
+      let gradeScale = {}
+      Object.keys(this.props.cl.grade_scale).forEach(grade => {
+        gradeScale[grade] = {grade: this.props.cl.grade_scale[grade], known: true}
+      })
+      const {isEditable} = this.state
+      let crs = this.props.cl.change_requests.filter(cr => cr.change_type.id === 100 && !changeRequestIsComplete(cr))
+      crs.forEach(cr => {
+        let knownGrade = null
+        cr.members.forEach(member => {
+          if (!member.is_completed) {
+            knownGrade = {grade: gradeScale[member.member_name], known: true}
+            if (knownGrade.grade === undefined) {
+              gradeScale[member.member_name] = {grade: member.member_value, known: false}
+            }
+          }
+        })
+      })
+      let gradeScaleArray = Object.keys(gradeScale).sort((a, b) => {
+        return gradeScale[b].grade > gradeScale[a].grade ? 1 : -1
+      })
 
-    return (
-      gradeScale
-        ? <ul className="grade-scale-list">
-          {Object.keys(gradeScale).sort((a, b) => {
-            return parseFloat(gradeScale[a]) < parseFloat(gradeScale[b]) ? 1 : -1
-          }).map((key, idx) =>
-            <li key={idx} className="grade-row">
-              {isEditable && this.renderDeleteButton(key)}
-              <div className="grade">
-                <div className="grade-key">{key}</div>
-                <div className="grade-min">{gradeScale[key]}</div>
-              </div>
-            </li>
+      return (
+        <ul className="grade-scale-list">
+          {gradeScaleArray.map((key, idx) =>
+            isEditable
+              ? gradeScale[key].known &&
+                <li key={idx} className={'grade-row'}>
+                  {this.renderDeleteButton(key)}
+                  <div className="grade" ref={ref => { this.gradeRefs[key] = ref }} style={{fontStyle: gradeScale[key].known ? '' : 'italic'}}>
+                    <div className="grade-key">{key}</div>
+                    <div className="grade-min">{gradeScale[key].grade} {gradeScale[key].known ? '' : ' (new)'}</div>
+                  </div>
+                </li>
+              : <li key={idx} className={'grade-row'}>
+                <div className="grade" ref={ref => { this.gradeRefs[key] = ref }} style={{fontStyle: gradeScale[key].known ? '' : 'italic'}}>
+                  <div className="grade-key">{key}</div>
+                  <div className="grade-min">{gradeScale[key].grade} {gradeScale[key].known ? '' : ' (new)'}</div>
+                </div>
+              </li>
           )}
         </ul>
-        : <div className='margin-top'>There is no grade scale</div>
-    )
+      )
+    } else if (this.props.cl.change_requests.filter(cr => cr.change_type.id === 100 && !changeRequestIsComplete(cr)).length > 0) {
+      let gradeScale = {}
+      let crs = this.props.cl.change_requests.filter(cr => cr.change_type.id === 100 && !changeRequestIsComplete(cr))
+      crs.forEach(cr => {
+        let knownGrade = null
+        cr.members.forEach(member => {
+          if (!member.is_completed) {
+            knownGrade = {grade: gradeScale[member.member_name], known: true}
+            if (knownGrade.grade === undefined) {
+              gradeScale[member.member_name] = {grade: member.member_value, known: false}
+            }
+          }
+        })
+      })
+      let gradeScaleArray = Object.keys(gradeScale).sort((a, b) => {
+        return gradeScale[b].grade > gradeScale[a].grade ? 1 : -1
+      })
+      const {isEditable} = this.state
+
+      return (
+        <ul className="grade-scale-list">
+          {gradeScaleArray.map((key, idx) =>
+            isEditable
+              ? gradeScale[key].known &&
+                <li key={idx} className={'grade-row'}>
+                  {this.renderDeleteButton(key)}
+                  <div className="grade" ref={ref => { this.gradeRefs[key] = ref }} style={{fontStyle: gradeScale[key].known ? '' : 'italic'}}>
+                    <div className="grade-key">{key}</div>
+                    <div className="grade-min">{gradeScale[key].grade} {gradeScale[key].known ? '' : ' (new)'}</div>
+                  </div>
+                </li>
+              : <li key={idx} className={'grade-row'}>
+                <div className="grade" ref={ref => { this.gradeRefs[key] = ref }} style={{fontStyle: gradeScale[key].known ? '' : 'italic'}}>
+                  <div className="grade-key">{key}</div>
+                  <div className="grade-min">{gradeScale[key].grade} {gradeScale[key].known ? '' : ' (new)'}</div>
+                </div>
+              </li>
+          )}
+        </ul>
+      )
+    } else {
+      return (
+        <div className='margin-top'>There is no grade scale</div>
+      )
+    }
   }
 
   renderSubmitButton () {
@@ -173,7 +284,9 @@ class GradeScale extends React.Component {
     const {isEditable} = this.state
     return (
       <div id='class-editor-grade-scale-content'>
-        {this.renderScale()}
+        {
+          this.renderScale()
+        }
         {isEditable && this.renderForm()}
         {isEditable && this.renderSubmitButton()}
         {isEditable && this.renderOptions()}
@@ -193,15 +306,86 @@ class GradeScale extends React.Component {
     )
   }
 
+  renderChangeRequests () {
+    let gradeScaleCrs = []
+    let crsToRender = []
+    let allGradeScaleCrData = {}
+    this.props.cl.change_requests.filter(cr => cr.change_type.id === 100 && changeRequestIsComplete(cr) === false).forEach(cr => {
+      cr.members.forEach(member => {
+        if (!member.is_completed) {
+          if (Array.isArray(allGradeScaleCrData[member.member_name])) {
+            allGradeScaleCrData[member.member_name].push({minimum: member.member_value, cr: cr, member: member})
+          } else {
+            allGradeScaleCrData[member.member_name] = [{minimum: member.member_value, cr: cr, member: member}]
+          }
+        }
+      })
+    })
+    if (this.props.cl.change_requests) {
+      this.props.cl.change_requests.forEach(cr => {
+        if (cr.change_type.id === 100 && changeRequestIsComplete(cr) === false) {
+          gradeScaleCrs.push(cr)
+        }
+      })
+    }
+    if (gradeScaleCrs.length > 0) {
+      Object.keys(allGradeScaleCrData).forEach(letterGrade => {
+        let ref = null
+        Object.keys(this.gradeRefs).forEach(refKey => {
+          if (this.gradeRefs[refKey].children[0].innerHTML === letterGrade) {
+            ref = this.gradeRefs[refKey]
+          }
+        })
+        let position = 0
+        allGradeScaleCrData[letterGrade].sort((a, b) => a.minimum > b.minimum ? 1 : -1)
+        allGradeScaleCrData[letterGrade].forEach(dataPoint => {
+          position += 1
+          crsToRender.push(
+            <ChangeRequest
+              cl={this.props.cl}
+              cr={dataPoint.cr}
+              member={dataPoint.member}
+              gradeScaleCr={{grade: letterGrade, minimum: dataPoint.minimum}}
+              yPosition={ref.getBoundingClientRect().y - (ref.getBoundingClientRect().height / 2)}
+              width={this.cardRef.offsetWidth / 2}
+              onChange={() => this.props.onChange()}
+              offsetTop={ref.offsetTop}
+              multipleCrs={{count: allGradeScaleCrData[letterGrade].length, position: position}}
+            />
+          )
+        })
+      })
+      let i = 0
+      crsToRender.sort((a, b) => a.props.member.member_value < b.props.member.member_value ? 1 : -1)
+      return (
+        crsToRender.map(cr => {
+          i += 1
+          return (
+            <div key={i}>
+              {cr}
+            </div>
+          )
+        })
+      )
+    }
+  }
+
   render () {
     return (
       <div id='class-editor-grade-scale' className={this.props.superBoxClassName}>
-        <Card
-          title={this.renderTitle()}
-          content={this.renderContent()}
-          boxClassName={this.props.boxClassName}
-          contentClassName={this.props.contentClassName}
-        />
+        <div className='class-editor-grade-scale-card' ref={cardRef => { this.cardRef = cardRef }}>
+          <Card
+            title={this.renderTitle()}
+            content={this.renderContent()}
+            boxClassName={this.props.boxClassName}
+            contentClassName={this.props.contentClassName}
+          />
+        </div>
+        {this.state.mounted && this.state.changeRequests && !this.state.isEditable &&
+          <div className='class-editor-grade-scale-crs'>
+            {this.renderChangeRequests()}
+          </div>
+        }
         {this.renderCommonScaleModal()}
       </div>
     )
@@ -217,7 +401,9 @@ GradeScale.propTypes = {
   hasIssues: PropTypes.bool,
   onSelectIssue: PropTypes.func,
   boxClassName: PropTypes.string,
-  contentClassName: PropTypes.string
+  contentClassName: PropTypes.string,
+  superBoxClassName: PropTypes.string,
+  onChange: PropTypes.func
 }
 
 export default ValidateForm(Form(GradeScale, 'form'))

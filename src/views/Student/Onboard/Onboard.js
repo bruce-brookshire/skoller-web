@@ -139,7 +139,7 @@ class Onboard extends React.Component {
     if (this.state.partner) {
       return (
         <div className='onboard-partner'>
-          <p>in partnership with</p> <img src={this.state.partner.logo} />
+          <p>in partnership with</p> <img src={this.state.partner.logo} alt={this.state.partner.name} />
         </div>
       )
     }

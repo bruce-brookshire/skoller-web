@@ -4,6 +4,7 @@ import {Form, ValidateForm} from 'react-form-library'
 import {InputField, MultiselectField} from '../../../components/Form'
 import Loading from '../../../components/Loading'
 import actions from '../../../actions'
+import NumberFormat from 'react-number-format'
 
 class AccountInfoForm extends React.Component {
   constructor (props) {
@@ -19,7 +20,7 @@ class AccountInfoForm extends React.Component {
   }
 
   /*
-  * Intialize state
+  * Initialize state
   */
   initializeState () {
     let userRoles = []
@@ -32,12 +33,13 @@ class AccountInfoForm extends React.Component {
       loadingRoles: false,
       rolesError: '',
       userRoles,
-      form: this.initializeFormData(this.props.user)
+      form: this.initializeFormData(this.props.user),
+      phoneFocus: false
     }
   }
 
   /*
-  * Method for intializing form data.
+  * Method for initializing form data.
   * User form data.
   *
   * @param [Object] data. initial data
@@ -109,7 +111,7 @@ class AccountInfoForm extends React.Component {
   /*
   * On checkbox input change.
   *
-  * @param [Boolean] value. Value idicating if checked.
+  * @param [Boolean] value. Value indicating if checked.
   * @param [Object] role. Role to add or remove to user.
   */
   onInputChange (value, role) {
@@ -332,15 +334,32 @@ class AccountInfoForm extends React.Component {
             }
             { this.hasStudentRole() &&
               <div className='col-xs-12'>
-                <InputField
-                  containerClassName='margin-top'
-                  error={formErrors.student && formErrors.student.phone}
-                  label="Phone Number"
-                  name="student.phone"
-                  onChange={updateProperty}
-                  placeholder="Phone number"
-                  value={form.student.phone}
-                />
+                <div className='form-element relative'>
+                  <div className='cn-input-container margin-top'>
+                    <label className={'cn-input-label' + (formErrors.student && formErrors.student.phone ? ' error' : '') + (this.state.phoneFocus ? ' active' : '')}>Phone</label>
+                    <NumberFormat
+                      value={form.student.phone}
+                      className='cn-form-input'
+                      style={{width: '100%', borderColor: formErrors.student && formErrors.student.phone ? 'red' : 'null'}}
+                      error={formErrors.student && formErrors.student.phone}
+                      placeholder='Phone'
+                      format="+1 (###) ###-####"
+                      mask=" "
+                      onFocus={() => this.setState({phoneFocus: true})}
+                      onBlur={() => this.setState({phoneFocus: false})}
+                      autoComplete='tel'
+                      onValueChange={(values) => {
+                        let form = this.state.form
+                        form.student.phone = values.value
+                        console.log(values.value)
+                        this.setState({
+                          form
+                        })
+                      }}
+                      type="tel"
+                    />
+                  </div>
+                </div>
               </div>
             }
             { this.hasStudentRole() &&

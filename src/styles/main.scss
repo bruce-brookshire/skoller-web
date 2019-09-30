@@ -37,6 +37,7 @@
 @import 'components/assignment-card';
 @import 'components/assignment-form.scss';
 @import 'components/assignment-table';
+@import 'components/admin-assignment-table';
 @import 'components/autocomplete';
 @import 'components/autocomplete-detail';
 @import 'components/calendar';
@@ -45,6 +46,7 @@
 @import 'components/chat-post';
 @import 'components/checklist.scss';
 @import 'components/class-card.scss';
+@import 'components/class-cr-card.scss';
 @import 'components/common-scale-modal.scss';
 @import 'components/completion-circle';
 @import 'components/copy-box';
@@ -56,6 +58,9 @@
 @import 'components/flex-table';
 @import 'components/grade-scale';
 @import 'components/grid';
+@import 'components/hub-class-with-change-requests';
+@import 'components/hub-change-request';
+@import 'components/hub-change-request-history';
 @import 'components/login-verification.scss';
 @import 'components/modal';
 @import 'components/navbar';

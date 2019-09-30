@@ -1,0 +1,100 @@
+#class-editor-admin-assignments-table {
+  background-color: none;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-width: 250px;
+  overflow: hidden;
+  font-size: 14px;
+  max-height: 380px;
+  overflow: scroll;
+
+  &.view-only {
+    height: 100%;
+    .table-row {
+      cursor: auto;
+      &:hover {
+        background-color: $cn-color-white;
+      }
+    }
+
+  }
+
+  .table-row {
+    cursor: pointer;
+    padding: 0.4em 0.5em 0em 0.3em;
+    padding-right: 0;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+
+    .bold {
+      font-weight: 600;
+    }
+
+    .assignment-name-container {
+      height: 100%;
+      display: flex;
+      flex-direction: row;
+
+      img {
+        height: 17px;
+        width: 17px;
+      }
+
+      .assignment-label {
+        padding-top: 1.5px;
+      }
+
+      .description {
+        color: $cn-form-border;
+      }
+    }
+
+    &:hover {
+      background-color: darken($cn-color-white, 10%);
+    }
+
+    &.active {
+      background-color: $cn-blue-cell-background;
+    }
+
+    .right-text {
+      padding-right: 10px;
+    }
+  }
+
+  #assignment-rows {
+    height: 100%;
+    padding: 0.4em 0;
+    overflow-y: auto;
+    border-radius: 5px;
+  }
+
+  #submit-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    border-radius: 5px;
+
+    #notification {
+      color: #c7c7cd;
+      margin-bottom: 0.7em;
+    }
+
+    .submit-assignments {
+      border-radius: 5px;
+      height: 1.6em;
+      min-height: 1.6em;
+      background-color: $cn-color-green;
+      font-size: 18px;
+      padding-top: 6px;
+
+      &.disabled {
+        color: #ffffff !important;
+        cursor: default;
+      }
+    }
+  }
+}

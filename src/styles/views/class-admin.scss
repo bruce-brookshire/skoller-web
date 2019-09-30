@@ -5,11 +5,24 @@
   min-height: 800px;
   min-width: 800px;
 
-  .cn-admin-col {
+  .cn-admin-col-lg {
     display: flex;
     flex-direction: column;
     align-items: center;
-    flex: 1;
+    flex: 1 1 100%;
+    height: 100%;
+    padding-right: $unit-space;
+    padding-left: $unit-space;
+    padding-bottom: $unit-space;
+  }
+
+  .cn-admin-col-md {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 380px;
+    max-width: 380px;
+    flex: 1 1 380px;
     height: 100%;
     padding-right: $unit-space;
     padding-left: $unit-space;
@@ -19,6 +32,7 @@
   #cn-admin-class-title {
     @include shadow-box-title;
     border-bottom: 0px solid black;
+    font-size: 32px;
   }
 
   .cn-admin-class-subtitle {
@@ -30,11 +44,28 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 100%;
+    width: calc(100% + 1rem);
+    flex-wrap: wrap;
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
 
     .admin-tab {
-      border-radius: 0;
-      flex: 1;
+      flex: 1 1 128px;
+      min-width: 128px;
+      border-radius: 5px;
+      margin: 0.25rem 0.5rem;
+      border: 1px solid $cn-font-color;
+    }
+
+    .admin-tab-hidden {
+      flex: 1 1 128px;
+      min-width: 128px;
+      margin: 0.25rem 0.5rem;
+      height: 0;
+    }
+
+    .active {
+      background-color: $cn-color-yellow;
     }
   }
 
@@ -43,7 +74,7 @@
     flex: 1;
     flex-direction: row;
     width: 100%;
-    padding: $unit-space;
+    padding: $unit-space 0;
 
     .cn-admin-super-edit-card {
       flex: 1;
@@ -63,21 +94,19 @@
 
   #cn-admin-footer {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding-right: $unit-space;
-    padding-left: $unit-space;
 
     .cn-admin-footer-card {
       flex: 1;
-      height: 150px;
-    }
+      width: 100%;
 
-    .cn-admin-footer-card-content {
-      height: 100%;
-      overflow: auto;
+      .cn-admin-footer-card-content {
+        height: 100%;
+        width: 100%;
+      }
     }
   }
 

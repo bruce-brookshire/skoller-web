@@ -73,14 +73,23 @@ class NavBar extends React.Component {
       )
     } else {
       const {userStore: {user}} = this.props.rootStore
+      const admin = this.props.rootStore.userStore.isAdmin()
       return (
         <div className='cn-navbar'>
-          <div onClick={() => browserHistory.push('/')}>
+          <div
+            onClick={() => {
+              if (admin) {
+                browserHistory.push('/hub/landing')
+              } else {
+                browserHistory.push('/')
+              }
+            }}
+          >
             <img alt="Skoller" className='logo' src='/src/assets/images/logo-wide-blue@1x.png' />
             <div className='cn-navbar-message'>Keep Up with Classes, Together.</div>
           </div>
           <div className='class-info'>
-            {this.renderClassInfo()}
+            {/* {this.renderClassInfo()} */}
           </div>
           <div className='user-info'>
             <div className='left'>

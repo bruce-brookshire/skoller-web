@@ -7,7 +7,7 @@
   .cn-syllabus-tool-back-button {
     color: $cn-color-blue;
     cursor: pointer;
-    margin: 1rem 0 -1rem 1rem;
+    margin: 1rem 0 0rem 1rem;
   }
 
   @include breakpoint(medium) {
@@ -16,7 +16,7 @@
 
   .cn-syllabus-tool-tabs {
     padding-right: 90px;
-    padding-bottom: 5px;
+    margin-bottom: -4px;
   }
 
   #cn-review-submit {
@@ -28,7 +28,6 @@
   .cn-body-container {
     display: flex;
     flex-direction: column;
-    margin: 1rem;
     overflow-y: hidden;
 
     @include breakpoint(medium) {
@@ -40,11 +39,11 @@
       display: flex;
       flex: 1;
       flex-direction: column;
-      margin: 1rem;
       @include skoller-cell;
 
       &.cn-control-panel {
         padding: 1rem;
+        margin: 0 0.5rem 0.5rem 1rem;
 
         .cn-section-header{
           position: absolute;
@@ -86,6 +85,7 @@
         // border-radius: 10px;
         // border: 1px solid #4A4A4A;
         // box-shadow: 0px 2px 3px #888888;
+        margin: 0 1rem 0.5rem 0.5rem;
 
         .cn-section-header{
           position: absolute;

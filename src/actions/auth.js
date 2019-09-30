@@ -270,7 +270,8 @@ export function getRoles () {
 * @params [Object] form. User form data.
 */
 export function updateAccount (form) {
-  return put(`/api/v1/users/${form.id}/update`, form, 'Error updating user. Try again.')
+  console.log(form)
+  return put(`/api/v1/users/${form.id}`, form, 'Error updating user. Try again.')
     .then(data => {
       return data
     })

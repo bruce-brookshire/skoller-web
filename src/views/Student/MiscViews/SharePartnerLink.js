@@ -25,12 +25,14 @@ class SharePartnerLink extends React.Component {
       <div className='sk-share-partner-link-container'>
         <div className='sk-share-partner-link'>
           <h1>Share {partner.name}&apos;s Skoller link!</h1>
-          <Sammi
-            emotion='wow'
-            position='left'
-          >
-            <p>You&apos;re already signed up for Skoller, but you can still share this link to get <b>$1 donated to {partner.philanthropy}.</b></p>
-          </Sammi>
+          {partner.philanthropy &&
+            <Sammi
+              emotion='wow'
+              position='left'
+            >
+              <p>You&apos;re already signed up for Skoller, but you can still share this link to get <b>$1 donated to {partner.philanthropy}.</b></p>
+            </Sammi>
+          }
           <div className='sk-share-partner-link-copy-box'>
             <CopyBox linkValue={('https://skoller.co/c/' + partner.slug)} />
           </div>

@@ -24,9 +24,7 @@ class StudentRequestModal extends React.Component {
       let options = res
       if (this.props.cl.status.id < 1400) {
         let additionalDocOption = res.find((option) => option.id === 200)
-        console.log(additionalDocOption)
         let index = options.indexOf(additionalDocOption)
-        console.log(index)
         if (index > -1) {
           options.splice(index, 1)
         }
@@ -179,7 +177,6 @@ class StudentRequestModal extends React.Component {
 
   renderSubmit () {
     let disabled = true
-    console.log(this.state)
     if (this.state.step1Val && this.state.step2Val && this.state.step2Val.length !== 0) {
       disabled = false
     }
@@ -211,14 +208,6 @@ class StudentRequestModal extends React.Component {
     } else {
       return null
     }
-    // return (
-    //   <Modal
-    //     open={this.props.open}
-    //     onClose={this.props.onClose()}
-    //   >
-
-    //   </Modal>
-    // )
   }
 }
 

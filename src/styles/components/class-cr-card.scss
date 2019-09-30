@@ -1,0 +1,38 @@
+// TODO: Maybe make a class for shadow stuff
+.cn-class-cr-card {
+  @include shadow-box;
+  width: 100%;
+  margin-top: $unit-space;
+
+  .cn-class-cr-card-content {
+    @include shadow-box-content;
+
+    .cn-class-title {
+      @include shadow-box-title;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 0px solid transparent;
+    }
+
+    .cn-class-subtitle {
+      @include shadow-box-title;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .cn-class-cr-card-row {
+      @include shadow-box-row;
+
+      .cn-class-cr-card-field {
+        @include shadow-box-field;
+        text-align: left;
+
+        .cn-class-cr-card-label {
+          @include shadow-box-label;
+          text-align: left;
+        }
+      }
+    }
+  }
+}
