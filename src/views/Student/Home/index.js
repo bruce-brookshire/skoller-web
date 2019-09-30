@@ -10,6 +10,7 @@ import {Cookies} from 'react-cookie'
 import HomeClasses from './HomeClasses'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import HomeTasks from './HomeTasks'
+import HomeShare from './HomeShare'
 
 @inject('rootStore') @observer
 class Home extends React.Component {
@@ -156,6 +157,7 @@ class Home extends React.Component {
                 <HomeClasses classes={this.state.classes} onAddClass={() => this.closeAddClassModal()} onClassSelect={this.onClassSelect} launchClassStatusModal={(cl) => this.launchClassStatusModal(cl)} />
               </div>
             </div>
+            {this.state.classes.length <= 2 && <HomeShare classes={this.state.classes} />}
             {/* // this is for activity once we get it ready
             <div className="home-shadow-box">
               <h1>Activity</h1>
@@ -172,6 +174,7 @@ class Home extends React.Component {
                 <HomeTasks />
               </div>
             </div>
+            {this.state.classes.length > 2 && <HomeShare classes={this.state.classes} />}
             {/* // this is for chat once we get it ready
             <div className="home-shadow-box">
               <h1>Chat</h1>

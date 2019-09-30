@@ -13,6 +13,7 @@ import AddAssignment from '../Assignments/AddAssignment'
 import DropClassButton from '../../components/DropClassButton'
 import UploadAdditionalDocuments from '../../components/ClassStatusModal/UploadAdditionalDocuments'
 import SkModal from '../../components/SkModal/SkModal'
+import CopyBox from '../../components/CopyBox';
 
 @inject('rootStore') @observer
 class ClassDetail extends React.Component {
@@ -270,6 +271,16 @@ class ClassDetail extends React.Component {
     this.setState({openDeleteDialog: !this.state.openDeleteDialog})
   }
 
+  renderClassShareCell () {
+    return (
+      <div className='sk-class-detail-share-cell'>
+        <h1>Share {this.state.studentClass.name}⚡️️</h1>
+        <p>Copy this link for {this.state.studentClass.name} and share it with your classmates.</p>
+        <CopyBox linkValue={this.state.studentClass.enrollment_link} />
+      </div>
+    )
+  }
+
   renderClassDetails () {
     const {cl} = this.state
     return (
@@ -306,10 +317,13 @@ class ClassDetail extends React.Component {
                 ? <div id='cn-class-detail-container'>
                   {this.renderClassDetails()}
                 </div>
-                : <div className='cn-class-assignments-container'>
-                  {this.renderClassAssignmentsHeader()}
-                  <div className='cn-class-list-container margin-top'>
-                    {this.renderAssignmentList()}
+                : <div>
+                  {this.renderClassShareCell()}
+                  <div className='cn-class-assignments-container'>
+                    {this.renderClassAssignmentsHeader()}
+                    <div className='cn-class-list-container margin-top'>
+                      {this.renderAssignmentList()}
+                    </div>
                   </div>
                 </div>}
             </div>
