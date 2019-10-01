@@ -409,7 +409,10 @@ class ClassAdmin extends React.Component {
                 ? <i className='fa fa-times cn-blue cursor margin-right' onClick={() => this.toggleWeightCreateModal()} />
                 : <i className='fa fa-plus cn-blue cursor margin-right' onClick={() => this.toggleWeightCreateModal()} />
               }
-              <i className='fas fa-pencil-alt cn-blue cursor' onClick={() => this.setState({isWeightsEditable: !isWeightsEditable})} />
+              {this.state.isWeightsEditable
+                ? <i className='fas fa-pencil-alt cn-blue cursor' onClick={() => this.setState({isWeightsEditable: !isWeightsEditable})} />
+                : <i className='fas fa-pencil-alt cursor' style={{color: 'rgba(0,0,0,0.3)'}} onClick={() => this.setState({isWeightsEditable: !isWeightsEditable})} />
+              }
             </div>
           </div>
           {this.state.openWeightCreateModal &&
