@@ -16,7 +16,7 @@ import DocumentsDeletedModal from './DocumentsDeletedModal'
 
 import TabbedFileUpload from '../../components/TabbedFileUpload'
 import WeightTable from '../components/ClassEditor/Weights/WeightTable'
-import WeightForm from '../components/ClassEditor/Weights/WeightForm'
+import AdminWeightForm from '../components/ClassEditor/Weights/AdminWeightForm'
 import AdminAssignmentTable from '../components/ClassEditor/Assignments/AdminAssignmentTable'
 import AdminAssignmentForm from '../components/ClassEditor/Assignments/AdminAssignmentForm'
 import Chat from '../components/ClassEditor/Chat'
@@ -331,31 +331,6 @@ class ClassAdmin extends React.Component {
   }
 
   /*
-  * Render the editclass modal.
-  */
-  renderEditClassModal () {
-    const {cl} = this.state
-    return (
-      // <Modal
-      //   open={this.state.openEditClassModal}
-      //   onClose={this.toggleEditClassModal.bind(this)}
-      // >
-      //   <ClassForm
-      //     cl={cl}
-      //     classPeriod={cl.class_period}
-      //     onSubmit={this.updateClass.bind(this)}
-      //     onClose={this.toggleEditClassModal.bind(this)}
-      //   />
-      //   <StatusForm
-      //     cl={cl}
-      //     onSubmit={this.updateClass.bind(this)}
-      //   />
-      // </Modal>
-      null
-    )
-  }
-
-  /*
   * Render the having issues modal.
   */
   renderIssuesModal () {
@@ -391,20 +366,15 @@ class ClassAdmin extends React.Component {
     )
   }
 
-  renderWeightCreateModal () {
+  renderWeightForm () {
     const {cl, currentWeight} = this.state
     return (
-      <Modal
-        open={this.state.openWeightCreateModal}
-        onClose={this.onWeightClose.bind(this)}
-      >
-        <WeightForm
-          cl={cl}
-          weight={currentWeight}
-          onCreateWeight={this.onCreateWeight.bind(this)}
-          onUpdateWeight={this.onUpdateWeight.bind(this)}
-        />
-      </Modal>
+      <AdminWeightForm
+        cl={cl}
+        weight={currentWeight}
+        onCreateWeight={this.onCreateWeight.bind(this)}
+        onUpdateWeight={this.onUpdateWeight.bind(this)}
+      />
     )
   }
 
@@ -423,27 +393,6 @@ class ClassAdmin extends React.Component {
     )
   }
 
-  renderAssignmentModal () {
-    const {cl, currentAssignment, weights} = this.state
-    if (this.state.openAssignmentModal) {
-      return (
-        // <SkModal
-        //   closeModal={this.toggleAssignmentModal.bind(this)}
-        // >
-        //   <AdminAssignmentForm
-        //     cl={cl}
-        //     assignment={currentAssignment}
-        //     onCreateAssignment={this.onCreateAssignment.bind(this)}
-        //     onUpdateAssignment={this.onUpdateAssignment.bind(this)}
-        //     isAdmin={true}
-        //     weights={weights}
-        //   />
-        // </SkModal>
-        null
-      )
-    }
-  }
-
   /*
   * Render the list of weights
   */
@@ -455,10 +404,17 @@ class ClassAdmin extends React.Component {
           <div className='cn-admin-weight-table-title'>
             Weights
             <div>
-              {isWeightsEditable && <i className='fa fa-plus cn-blue cursor margin-right' onClick={() => this.toggleWeightCreateModal()} />}
+              {/* {isWeightsEditable && <i className='fa fa-plus cn-blue cursor margin-right' onClick={() => this.toggleWeightCreateModal()} />} */}
+              {this.state.openWeightCreateModal
+                ? <i className='fa fa-times cn-blue cursor margin-right' onClick={() => this.toggleWeightCreateModal()} />
+                : <i className='fa fa-plus cn-blue cursor margin-right' onClick={() => this.toggleWeightCreateModal()} />
+              }
               <i className='fas fa-pencil-alt cn-blue cursor' onClick={() => this.setState({isWeightsEditable: !isWeightsEditable})} />
             </div>
           </div>
+          {this.state.openWeightCreateModal &&
+            this.renderWeightForm()
+          }
           <div className='cn-space-between-row margin-bottom'>
             Points?
             <SliderField
@@ -757,12 +713,8 @@ class ClassAdmin extends React.Component {
           />
         </div>
 
-        {this.renderEditClassModal()}
         {this.renderIssuesModal()}
         {this.renderRequestResolvedModal()}
-        {this.renderEditClassModal()}
-        {this.renderWeightCreateModal()}
-        {this.renderAssignmentModal()}
         {this.renderNoDocModal()}
       </div>
     )
