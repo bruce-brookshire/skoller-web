@@ -148,20 +148,23 @@ class Professor extends React.Component {
 
   renderProfessorModal () {
     const {cl} = this.props
-    return (
-      <Modal
-        open={this.state.openModal}
-        onClose={this.toggleProfessorModal.bind(this)}
-      >
-        <ProfessorForm
-          schoolId={cl.school.id}
-          isUniversity={cl.school.is_university}
-          onClose={this.toggleProfessorModal.bind(this)}
-          onSubmit={this.onAttachProfessorToClass.bind(this)}
-          professor={cl.professor}
-        />
-      </Modal>
-    )
+    if (this.state.openModal) {
+      return (
+        <div
+          className='hub-professor-form-container'
+        >
+          <ProfessorForm
+            schoolId={cl.school.id}
+            isUniversity={cl.school.is_university}
+            onClose={this.toggleProfessorModal.bind(this)}
+            onSubmit={this.onAttachProfessorToClass.bind(this)}
+            professor={cl.professor}
+          />
+        </div>
+      )
+    } else {
+      return null
+    }
   }
 
   renderContent () {
@@ -169,10 +172,10 @@ class Professor extends React.Component {
 
     return (
       <div id='class-editor-professor-content'>
+        {this.renderProfessorModal()}
         {!isEditable && this.renderProfessorInfo()}
         {isEditable && this.renderProfessorControls()}
         {isEditable && this.renderOptions()}
-        {this.renderProfessorModal()}
       </div>
     )
   }
