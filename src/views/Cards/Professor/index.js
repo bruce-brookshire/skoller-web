@@ -4,13 +4,21 @@ import {Form, ValidateForm} from 'react-form-library'
 import SearchProfessor from '../../components/SearchProfessor'
 import actions from '../../../actions'
 import ProfessorForm from '../../components/ProfessorForm'
-import Modal from '../../../components/Modal'
 import Card from '../../../components/Card'
+import { changeRequestIsComplete } from '../../../utilities/changeRequests'
+import { resolveChangeRequestMember } from '../../../actions/classhelp'
+import ChangeRequest from '../../ClassAdmin/ClassWithChangeRequests/ChangeRequest'
+import moment from 'moment'
 
 class Professor extends React.Component {
   constructor (props) {
     super(props)
     this.state = this.initializeState()
+    this.professorRefs = {}
+  }
+
+  componentDidMount () {
+    this.setState({mounted: true})
   }
 
   /*
@@ -21,7 +29,9 @@ class Professor extends React.Component {
   initializeState () {
     return {
       isEditable: false,
-      openModal: false
+      openModal: false,
+      mounted: false,
+      changeRequests: this.props.cl.change_requests.filter(cr => cr.change_type.id === 300).filter(cr => !changeRequestIsComplete(cr))
     }
   }
 
@@ -110,14 +120,77 @@ class Professor extends React.Component {
     )
   }
 
-  renderProfessorInfo () {
+  renderChangeRequestProfessorInfo () {
     const {professor} = this.props.cl
 
     return (
       <div>
-        {!professor ? this.renderNoProfessor() : this.renderProfessor()}
+        <div className='professor-detail-row' ref={firstNameRef => { this.professorRefs.name_first = firstNameRef }}>
+          <div className='professor-detail-field'>
+            <div className='professor-detail-label'>
+              First Name
+            </div>
+            {professor.name_first ? professor.name_first : 'N/A'}
+          </div>
+        </div>
+        <div className='professor-detail-row' ref={lastNameRef => { this.professorRefs.name_last = lastNameRef }}>
+          <div className='professor-detail-field'>
+            <div className='professor-detail-label'>
+              Last Name
+            </div>
+            {professor.name_last ? professor.name_last : 'N/A'}
+          </div>
+        </div>
+        <div className='professor-detail-row' ref={phoneRef => { this.professorRefs.phone = phoneRef }}>
+          <div className='professor-detail-field'>
+            <div className='professor-detail-label'>
+              Phone
+            </div>
+            {professor.phone ? professor.phone : 'N/A'}
+          </div>
+        </div>
+        <div className='professor-detail-row' ref={emailRef => { this.professorRefs.email = emailRef }}>
+          <div className='professor-detail-field'>
+            <div className='professor-detail-label'>
+              Email
+            </div>
+            {professor.email ? professor.email : 'N/A'}
+          </div>
+        </div>
+        <div className='professor-detail-row' ref={locationRef => { this.professorRefs.office_location = locationRef }}>
+          <div className='professor-detail-field'>
+            <div className='professor-detail-label'>
+              Location
+            </div>
+            {professor.office_location ? professor.office_location : 'N/A'}
+          </div>
+        </div>
+        <div className='professor-detail-row' ref={hoursRef => { this.professorRefs.office_availability = hoursRef }}>
+          <div className='professor-detail-field'>
+            <div className='professor-detail-label'>
+              Hours
+            </div>
+            {professor.office_availability ? professor.office_availability : 'N/A'}
+          </div>
+        </div>
       </div>
     )
+  }
+
+  renderProfessorInfo () {
+    const {professor} = this.props.cl
+
+    if (this.state.changeRequests.length === 0) {
+      return (
+        <div>
+          {!professor ? this.renderNoProfessor() : this.renderProfessor()}
+        </div>
+      )
+    } else {
+      return (
+        this.renderChangeRequestProfessorInfo()
+      )
+    }
   }
 
   renderProfessorControls () {
@@ -195,14 +268,77 @@ class Professor extends React.Component {
     )
   }
 
+  renderChangeRequests () {
+    let crs = this.state.changeRequests
+    let crsToRender = []
+    let allCrData = {}
+    if (crs.length > 0) {
+      crs.forEach(cr => {
+        cr.members.forEach(member => {
+          if (!member.is_completed) {
+            if (Array.isArray(allCrData[member.member_name])) {
+              allCrData[member.member_name].push({member: member, cr: cr})
+            } else {
+              allCrData[member.member_name] = [{member: member, cr: cr}]
+            }
+          }
+        })
+      })
+      Object.keys(allCrData).forEach(key => {
+        let membersCount = 0
+        allCrData[key].forEach(dataPoint => {
+          membersCount += 1
+          if (dataPoint.member.member_value === this.props.cl.professor[dataPoint.member.member_name]) {
+            resolveChangeRequestMember(dataPoint.member.id)
+              .then(this.props.onChange())
+              .catch(e => console.log(e))
+          } else {
+            crsToRender.push({
+              jsx: <ChangeRequest
+                cl={this.props.cl}
+                cr={dataPoint.cr}
+                member={dataPoint.member}
+                width={this.cardRef.offsetWidth / 2}
+                onChange={() => this.props.onChange()}
+                offsetTop={this.professorRefs[dataPoint.member.member_name].offsetTop}
+                multipleCrs={{count: allCrData[key].length, position: membersCount}}
+              />,
+              cr: dataPoint.cr,
+              member: dataPoint.member
+            })
+          }
+        })
+      })
+      let i = 0
+      crsToRender.sort((a, b) => moment(a.cr.inserted_at).isBefore(b.cr.inserted_at) ? 1 : -1)
+      return (
+        <div className='hub-professor-cr-container'>
+          {crsToRender.map(dataPoint => {
+            i += 1
+            return (
+              <div key={i}>
+                {dataPoint.jsx}
+              </div>
+            )
+          })}
+        </div>
+      )
+    }
+  }
+
   render () {
     return (
-      <Card
-        title={this.renderTitle()}
-        content={this.renderContent()}
-        boxClassName={this.props.boxClassName}
-        contentClassName={this.props.contentClassName}
-      />
+      <div className='hub-professor'>
+        <div className='hub-professor-card-container' ref={cardRef => { this.cardRef = cardRef }}>
+          <Card
+            title={this.renderTitle()}
+            content={this.renderContent()}
+          />
+        </div>
+        {this.state.mounted && !this.state.openModal &&
+          this.renderChangeRequests()
+        }
+      </div>
     )
   }
 }
@@ -214,7 +350,8 @@ Professor.propTypes = {
   hasIssues: PropTypes.bool,
   onSelectIssue: PropTypes.func,
   boxClassName: PropTypes.string,
-  contentClassName: PropTypes.string
+  contentClassName: PropTypes.string,
+  onChange: PropTypes.func
 }
 
 export default ValidateForm(Form(Professor, 'form'))

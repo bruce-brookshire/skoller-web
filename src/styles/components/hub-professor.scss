@@ -1,7 +1,46 @@
-.hub-professor-form-container {
-  padding: 1rem;
-  margin: 1rem;
-  border: 1px solid $cn-form-border;
-  border-radius: 10px;
-  margin-bottom: 1rem;
+.hub-professor {
+  min-width: 200px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+
+  .hub-professor-card-container {
+    flex: 1 1 50%;
+    height: 100%;
+
+    .hub-professor-form-container {
+      padding: 1rem;
+      margin: 1rem;
+      border: 1px solid $cn-form-border;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+    }
+  
+    #class-editor-professor-content {
+  
+      .professor-detail-row {
+        @include shadow-box-row;
+  
+        .professor-detail-field {
+          @include shadow-box-field;
+  
+          .professor-detail-label {
+            @include shadow-box-label;
+          }
+        }
+  
+        .professor-detail-field:last-child {
+          text-align: right;
+        }
+  
+        .professor-detail-field:first-child {
+          text-align: left;
+        }
+      }
+    }
+  }
+
+  .hub-professor-cr-container {
+    width: 50%;
+  }
 }
