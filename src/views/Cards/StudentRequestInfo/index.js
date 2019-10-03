@@ -9,7 +9,7 @@ class StudentRequestInfo extends React.Component {
   getOpenStudentRequests () {
     const {cl} = this.props
     const sr = cl.student_requests.filter(c => !c.is_completed)
-    const cr = cl.change_requests.filter(c => c.change_type.id === 200 || c.change_type.id === 300)
+    const cr = cl.change_requests.filter(c => c.change_type.id === 200)
     return sr.concat(cr)
   }
 
