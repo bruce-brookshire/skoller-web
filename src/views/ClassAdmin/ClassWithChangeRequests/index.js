@@ -252,7 +252,6 @@ class ClassWithChangeRequests extends React.Component {
                   cl={this.props.cl}
                   cr={cr.cr}
                   member={cr.member}
-                  yPosition={ref.getBoundingClientRect().y - (ref.getBoundingClientRect().height / 2)}
                   width={this.cardRef.offsetWidth}
                   onChange={() => this.props.onChange()}
                   multipleCrs={{count: categoryChangeRequests.length, position: crCount}}

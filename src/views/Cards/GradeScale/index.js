@@ -346,7 +346,6 @@ class GradeScale extends React.Component {
               cr={dataPoint.cr}
               member={dataPoint.member}
               gradeScaleCr={{grade: letterGrade, minimum: dataPoint.minimum}}
-              yPosition={ref.getBoundingClientRect().y - (ref.getBoundingClientRect().height / 2)}
               width={this.cardRef.offsetWidth / 2}
               onChange={() => this.props.onChange()}
               offsetTop={ref.offsetTop}

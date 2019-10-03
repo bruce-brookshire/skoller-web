@@ -47,7 +47,6 @@ class ClassAdmin extends React.Component {
   * Initialize state
   */
   initializeState () {
-    console.log(this.props.params)
     let {navbarStore} = this.props.rootStore
     navbarStore.isDIY = false
     return {
@@ -590,6 +589,7 @@ class ClassAdmin extends React.Component {
         onSelectIssue={null}
         boxClassName='cn-admin-edit-card'
         contentClassName='cn-admin-edit-card-content'
+        onChange={() => this.reloadComponent()}
       />
     )
   }
