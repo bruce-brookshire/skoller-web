@@ -10,6 +10,7 @@ import LandingNav from '../components/LandingNav'
 import Signup from './Signup'
 import LandingMessageType from './LandingMessageType'
 import LandingFooter from '../components/LandingFooter'
+import LandingBanner from './LandingBanner';
 
 @inject('rootStore') @observer
 class Landing extends React.Component {
@@ -27,6 +28,7 @@ class Landing extends React.Component {
 
     return (
       <div className='cn-landing-wrapper'>
+        <LandingBanner />
         {window.innerWidth > 767 && <LandingNav rootStore={this.props.rootStore}/>}
         <div className='cn-landing-container'>
 
@@ -43,10 +45,10 @@ class Landing extends React.Component {
             </div>
           </div>
 
-          <LandingFooter />
+          {/* <LandingFooter /> */}
 
         </div>
-
+        <LandingFooter />
       </div>
     )
   }
