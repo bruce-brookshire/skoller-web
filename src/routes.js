@@ -116,6 +116,7 @@ const router = (
 * Require users to not be students
 */
 function requireAdmin (nextState, replaceState) {
+  console.log('requireAdmin')
   if (!userStore.user) {
     userStore.setFetchingUser(true)
     userStore.authToken = cookie.get('skollerToken')
@@ -140,10 +141,21 @@ function requireAdmin (nextState, replaceState) {
   }
 }
 
+function isAdmin (roles) {
+  let isAdmin = false
+  roles.forEach(role => {
+    if (role.id === 200) {
+      isAdmin = true
+    }
+  })
+  return isAdmin
+}
+
 /*
 * Handle strongly typed url
 */
 function requireAuth (nextState, replaceState) {
+  console.log('requireAuth')
   if (!userStore.user) {
     userStore.setFetchingUser(true)
     userStore.authToken = cookie.get('skollerToken')
@@ -154,6 +166,10 @@ function requireAuth (nextState, replaceState) {
         }).catch(() => { userStore.setFetchingUser(false) })
 
         userStore.setFetchingUser(false)
+
+        if (isAdmin(user.user.roles)) {
+          browserHistory.push('/hub/landing')
+        }
       })
       .catch(() => {
         browserHistory.push('/landing')
@@ -167,6 +183,7 @@ function requireAuth (nextState, replaceState) {
 * to the onboarding page.
 */
 function authenticateStudent (user) {
+  console.log('authenticateStudent')
   if (user.student) {
     // return actions.classes.getStudentClassesById(user.student.id).then((classes) => {
     //   if (classes.length === 0) {
@@ -183,6 +200,7 @@ function authenticateStudent (user) {
 * If the user has not been verified, allow access to onboarding.
 */
 function authOnboard () {
+  console.log('authOnboard')
   if (userStore.user) {
     if (userStore.user.student) {
       if (userStore.user.student.is_verified) {
