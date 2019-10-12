@@ -164,10 +164,6 @@ function requireAuth (nextState, replaceState) {
         }).catch(() => { userStore.setFetchingUser(false) })
 
         userStore.setFetchingUser(false)
-
-        if (isAdmin(user.user.roles)) {
-          browserHistory.push('/hub/landing')
-        }
       })
       .catch(() => {
         browserHistory.push('/landing')

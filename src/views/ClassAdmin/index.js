@@ -4,7 +4,6 @@ import {inject, observer} from 'mobx-react'
 import {browserHistory} from 'react-router'
 
 import actions from '../../actions'
-import Modal from '../../components/Modal'
 import Loading from '../../components/Loading'
 import ClassForm from './ClassForm'
 import StatusForm from './StatusForm'
@@ -15,7 +14,7 @@ import RequestResolvedModal from './RequestResolvedModal'
 import DocumentsDeletedModal from './DocumentsDeletedModal'
 
 import TabbedFileUpload from '../../components/TabbedFileUpload'
-import WeightTable from '../components/ClassEditor/Weights/WeightTable'
+import AdminWeightTable from '../components/ClassEditor/Weights/AdminWeightTable'
 import AdminWeightForm from '../components/ClassEditor/Weights/AdminWeightForm'
 import AdminAssignmentTable from '../components/ClassEditor/Assignments/AdminAssignmentTable'
 import AdminAssignmentForm from '../components/ClassEditor/Assignments/AdminAssignmentForm'
@@ -27,6 +26,7 @@ import Professor from '../Cards/Professor'
 import StudentList from '../Cards/StudentList'
 import ClassCard from '../Cards/ClassCard'
 import ClassWithChangeRequests from './ClassWithChangeRequests'
+import Weights from './Weights'
 
 import SkLoader from '../../assets/sk-icons/SkLoader'
 import ChangeRequestHistory from './ChangeRequestHistory'
@@ -396,45 +396,52 @@ class ClassAdmin extends React.Component {
   * Render the list of weights
   */
   renderWeights () {
-    const {cl, isWeightsEditable, weights, currentWeight} = this.state
+    // const {cl, isWeightsEditable, weights, currentWeight} = this.state
+    // return (
+    //   <div id='cn-admin-weight-table' className='class-card'>
+    //     <div id='cn-admin-weight-table-content'>
+    //       <div className='cn-admin-weight-table-title'>
+    //         Weights
+    //         <div>
+    //           {/* {isWeightsEditable && <i className='fa fa-plus cn-blue cursor margin-right' onClick={() => this.toggleWeightCreateModal()} />} */}
+    //           {this.state.openWeightCreateModal
+    //             ? <i className='fa fa-times cn-blue cursor margin-right' onClick={() => this.toggleWeightCreateModal()} />
+    //             : <i className='fa fa-plus cn-blue cursor margin-right' onClick={() => this.toggleWeightCreateModal()} />
+    //           }
+    //           {this.state.isWeightsEditable
+    //             ? <i className='fas fa-pencil-alt cn-blue cursor' onClick={() => this.setState({isWeightsEditable: !isWeightsEditable})} />
+    //             : <i className='fas fa-pencil-alt cursor' style={{color: 'rgba(0,0,0,0.3)'}} onClick={() => this.setState({isWeightsEditable: !isWeightsEditable})} />
+    //           }
+    //         </div>
+    //       </div>
+    //       {this.state.openWeightCreateModal &&
+    //         this.renderWeightForm()
+    //       }
+    //       <div className='cn-space-between-row margin-bottom'>
+    //         Points?
+    //         <SliderField
+    //           name='isPointSlider'
+    //           onChange={this.toggleIsPoints.bind(this)}
+    //           value={cl.is_points}
+    //         />
+    //       </div>
+    //       <AdminWeightTable
+    //         cl={cl}
+    //         viewOnly={!isWeightsEditable}
+    //         weights={weights}
+    //         onDeleteWeight={this.onDeleteWeight.bind(this)}
+    //         currentWeight={currentWeight}
+    //         onSelectWeight={this.onSelectWeight.bind(this)}
+    //       />
+    //     </div>
+    //   </div>
+    // )
     return (
-      <div id='cn-admin-weight-table' className='class-card'>
-        <div id='cn-admin-weight-table-content'>
-          <div className='cn-admin-weight-table-title'>
-            Weights
-            <div>
-              {/* {isWeightsEditable && <i className='fa fa-plus cn-blue cursor margin-right' onClick={() => this.toggleWeightCreateModal()} />} */}
-              {this.state.openWeightCreateModal
-                ? <i className='fa fa-times cn-blue cursor margin-right' onClick={() => this.toggleWeightCreateModal()} />
-                : <i className='fa fa-plus cn-blue cursor margin-right' onClick={() => this.toggleWeightCreateModal()} />
-              }
-              {this.state.isWeightsEditable
-                ? <i className='fas fa-pencil-alt cn-blue cursor' onClick={() => this.setState({isWeightsEditable: !isWeightsEditable})} />
-                : <i className='fas fa-pencil-alt cursor' style={{color: 'rgba(0,0,0,0.3)'}} onClick={() => this.setState({isWeightsEditable: !isWeightsEditable})} />
-              }
-            </div>
-          </div>
-          {this.state.openWeightCreateModal &&
-            this.renderWeightForm()
-          }
-          <div className='cn-space-between-row margin-bottom'>
-            Points?
-            <SliderField
-              name='isPointSlider'
-              onChange={this.toggleIsPoints.bind(this)}
-              value={cl.is_points}
-            />
-          </div>
-          <WeightTable
-            cl={cl}
-            viewOnly={!isWeightsEditable}
-            weights={weights}
-            onDeleteWeight={this.onDeleteWeight.bind(this)}
-            currentWeight={currentWeight}
-            onSelectWeight={this.onSelectWeight.bind(this)}
-          />
-        </div>
-      </div>
+      <Weights
+        cl={this.state.cl}
+        getClass={() => this.getClass()}
+        onChange={() => this.reloadComponent()}
+      />
     )
   }
 

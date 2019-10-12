@@ -1,0 +1,28 @@
+.hub-weights {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+
+  #cn-admin-weight-table {
+    @include shadow-box;
+    flex: 1;
+    height: 100%;
+    overflow: auto;
+
+    #cn-admin-weight-table-content {
+      @include shadow-box-content;
+
+      .cn-admin-weight-table-title {
+        @include shadow-box-title;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: $unit-space;
+      }
+    }
+  }
+
+  .hub-weights-change-requests {
+    width: 50%;
+  }
+}
