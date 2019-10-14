@@ -6,33 +6,14 @@ import Loading from '../../../components/Loading'
 import actions from '../../../actions'
 import CommonScaleModal from './CommonScaleModal'
 import Card from '../../../components/Card'
-import ChangeRequest from '../../ClassAdmin/ClassWithChangeRequests/ChangeRequest'
 import { changeRequestIsComplete } from '../../../utilities/changeRequests'
-import { resolveChangeRequestMember } from '../../../actions/classhelp'
-import AdminGradeScaleChangeRequest from './AdminGradeScaleChangeRequest';
+import AdminGradeScaleChangeRequest from './AdminGradeScaleChangeRequest'
 
 class GradeScale extends React.Component {
   constructor (props) {
     super(props)
     this.state = this.initializeState()
     this.gradeRefs = {}
-    this.initializeComponent()
-  }
-
-  async initializeComponent () {
-    const cl = this.props.cl
-    cl.change_requests.filter(cr => cr.change_type.id === 100).forEach(cr => {
-      cr.members.forEach(member => {
-        if (cl.grade_scale) {
-          if (cl.grade_scale[member.member_name]) {
-            if ((cl.grade_scale[member.member_name] === member.member_value) && !member.is_completed) {
-              resolveChangeRequestMember(member.id)
-              this.props.onChange()
-            }
-          }
-        }
-      })
-    })
   }
 
   componentDidMount () {
