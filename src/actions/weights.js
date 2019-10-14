@@ -51,7 +51,6 @@ export function createWeight (cl, form) {
 * @params [Object] form. Weight form.
 */
 export function updateWeight (cl, form) {
-  console.log('updateWeight', form)
   return put(`/api/v1/weights/${form.id}`, form, 'Error updating weight. Try again.')
     .then(data => {
       return data

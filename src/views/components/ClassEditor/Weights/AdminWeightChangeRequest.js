@@ -12,8 +12,6 @@ class AdminWeightChangeRequest extends React.Component {
       currentCr: this.props.crs[0],
       deletedWeights: []
     }
-
-    console.log('is this re-rendering or something')
   }
 
   componentDidMount () {
@@ -21,7 +19,6 @@ class AdminWeightChangeRequest extends React.Component {
   }
 
   renderRows () {
-    console.log('class', this.props.cl)
     return (
       this.state.currentCr.members.map(member => {
         return (
