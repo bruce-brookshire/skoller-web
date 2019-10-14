@@ -20,7 +20,7 @@
   height: 300px;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  margin-top: 15px;
+  // margin-top: 15px;
   box-shadow: 0px -5px 20px rgba(0,0,0,.07);
 
   @include breakpoint(medium) {
@@ -29,8 +29,8 @@
     margin-top: 0px;
     height: 69px;
     text-align: left;
-    position: absolute !important;
-    bottom: 0;
+    // position: absolute !important;
+    // bottom: 0;
   }
 
   .footer-content {
