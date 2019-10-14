@@ -7,14 +7,12 @@ import actions from '../../actions'
 import Loading from '../../components/Loading'
 import ClassForm from './ClassForm'
 import StatusForm from './StatusForm'
-import {SliderField} from '../../components/Form'
 
 import IssuesModal from '../components/ClassEditor/IssuesModal'
 import RequestResolvedModal from './RequestResolvedModal'
 import DocumentsDeletedModal from './DocumentsDeletedModal'
 
 import TabbedFileUpload from '../../components/TabbedFileUpload'
-import AdminWeightTable from '../components/ClassEditor/Weights/AdminWeightTable'
 import AdminWeightForm from '../components/ClassEditor/Weights/AdminWeightForm'
 import AdminAssignmentTable from '../components/ClassEditor/Assignments/AdminAssignmentTable'
 import AdminAssignmentForm from '../components/ClassEditor/Assignments/AdminAssignmentForm'
@@ -41,6 +39,7 @@ class ClassAdmin extends React.Component {
     this.state = this.initializeState()
     this.tabSelect = this.tabSelect.bind(this)
     console.log(this.props.rootStore)
+    console.log(this.props.rootStore.userStore.authToken)
   }
 
   /*
