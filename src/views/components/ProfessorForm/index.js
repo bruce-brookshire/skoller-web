@@ -6,9 +6,6 @@ import actions from '../../../actions'
 import {maskPhoneNumber} from '../../../utilities/mask'
 
 const requiredFields = {
-  'name_first': {
-    type: 'required'
-  },
   'name_last': {
     type: 'required'
   }
@@ -111,6 +108,7 @@ class ProfessorForm extends React.Component {
                 onChange={updateProperty}
                 placeholder='Last name'
                 value={form.name_last}
+                required={true}
               />
             </div>
           </div>
@@ -161,7 +159,7 @@ class ProfessorForm extends React.Component {
           >{!editMode ? 'Save new ' : 'Update '}{isUniversity ? 'professor' : 'teacher'}</button>
         </form>
         <div className='cn-create-professor-footer'>
-          {!editMode && `We'll use this info for the ${isUniversity ? 'professor' : 'teacher'}'s other classes.`}
+          {!editMode && `We'll use this info for the ${isUniversity ? 'professor' : 'teacher'}'s other classes. Only last name is required.`}
         </div>
       </div>
     )
