@@ -15,7 +15,7 @@ class MajorForm extends React.Component {
     this.state = {
       loadingFieldsOfStudy: false,
       options: [],
-      selection: null,
+      selections: [],
       showDropDown: false,
       query: null
     }
@@ -40,7 +40,9 @@ class MajorForm extends React.Component {
             className='sk-major-form-option'
             key={i}
             onClick={() => {
-              this.setState({selection: option, query: null})
+              let selections = this.state.selections
+              selections.push(option)
+              this.setState({selections: selections, query: null})
               this.toggleDropDown()
             }}
           >
@@ -84,41 +86,54 @@ class MajorForm extends React.Component {
   }
 
   renderSelection () {
+    let i = 0
     return (
       <div
-        style={{color: '#57B9E4', cursor: 'pointer'}}
-        className='sk-major-form-input'
-        onClick={() => {
-          this.setState({selection: null})
-        }}
+        className='sk-major-form-selections'
       >
-        <div
-          style={{marginTop: '4px', marginBottom: '-4px'}}
-        >
-          {this.state.selection.field}
-        </div>
+        <p>
+          {this.state.selections.map(major => {
+            i += 1
+            return (
+              <span
+                key={i}
+                className='sk-major-form-selection'
+                onClick={() => {
+                  let selections = this.state.selections
+                  selections.splice(selections.indexOf(major), 1)
+                  this.setState({selections: selections})
+                }}
+              >
+                {major.field}{this.state.selections.length > 1 && i !== this.state.selections.length ? ', ' : ''}
+              </span>
+            )
+          })}
+        </p>
       </div>
     )
   }
 
   renderInput () {
     return (
-      <input
-        ref = {input => { this.input = input }}
-        className='sk-major-form-input'
-        placeholder='Find your major'
-        onClick={() => this.toggleDropDown()}
-        value={this.state.query}
-        onChange={(e) => {
-          this.onInputChange(e)
-        }}
-      />
+      <div className='sk-major-form-search'>
+        <i className='fas fa-search' />
+        <input
+          ref = {input => { this.input = input }}
+          className='sk-major-form-input'
+          placeholder='Search for your major'
+          onClick={() => this.toggleDropDown()}
+          value={this.state.query}
+          onChange={(e) => {
+            this.onInputChange(e)
+          }}
+        />
+      </div>
     )
   }
 
   renderSubmit () {
     let disabled = true
-    if (this.state.selection) {
+    if (this.state.selections.length > 0) {
       disabled = false
     }
     return (
@@ -146,15 +161,15 @@ class MajorForm extends React.Component {
       return (
         <div className='sk-major-form'>
           <Sammi
-            message='Add your major to Skoller!'
+            message='Add your major(s) to Skoller!'
             position='left'
             emotion='happy'
           />
-          {this.state.selection
-            ? this.renderSelection()
-            : this.renderInput()
-          }
+          {this.renderInput()}
           {this.renderDropDown()}
+          {this.state.selections.length > 0 &&
+            this.renderSelection()
+          }
           {this.renderSubmit()}
         </div>
       )
