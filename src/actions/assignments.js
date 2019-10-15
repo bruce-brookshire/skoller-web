@@ -117,6 +117,21 @@ export function updateAssignment (cl, form) {
 }
 
 /*
+* Update an assignment name
+*
+* @params [Object] grade. Assignment grade.
+*/
+export function updateAssignmentName (assignmentId, name, isPrivate = true) {
+  return post(`/api/v1/class/assignments/${assignmentId}`, {id: assignmentId, name: name, is_private: isPrivate}, 'Error updating assignment. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
 * Delete an assignment
 */
 export function deleteAssignment (form) {
