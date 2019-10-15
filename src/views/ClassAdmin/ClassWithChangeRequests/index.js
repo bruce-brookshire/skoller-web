@@ -209,13 +209,7 @@ class ClassWithChangeRequests extends React.Component {
     cl.change_requests.filter(c => !changeRequestIsComplete(c)).forEach(cr => {
       cr.members.forEach(member => {
         if (!member.is_completed) {
-          if (cr.change_type.id === 100) {
-            crs.gradeScale.crs.push({member: member, cr: cr})
-          } else if (cr.change_type.id === 200) {
-            crs.weights.crs.push({member: member, cr: cr})
-          } else if (cr.change_type.id === 300) {
-            crs.professor.crs.push({member: member, cr: cr})
-          } else if (cr.change_type.id === 400) {
+          if (cr.change_type.id === 400) {
             if (member.member_name === 'name') {
               crs.classInfo.name.crs.push({member: member, cr: cr})
             } else if (member.member_name === 'code') {

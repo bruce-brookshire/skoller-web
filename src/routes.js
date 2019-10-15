@@ -140,6 +140,16 @@ function requireAdmin (nextState, replaceState) {
   }
 }
 
+function isAdmin (roles) {
+  let isAdmin = false
+  roles.forEach(role => {
+    if (role.id === 200) {
+      isAdmin = true
+    }
+  })
+  return isAdmin
+}
+
 /*
 * Handle strongly typed url
 */

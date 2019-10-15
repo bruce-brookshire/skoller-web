@@ -16,6 +16,7 @@ class ChangeRequest extends React.Component {
       loading: false
     }
   }
+
   renderArrow () {
     return (
       <div className='hub-change-request-arrow'>
