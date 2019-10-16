@@ -65,14 +65,14 @@ class MajorForm extends React.Component {
   async onSubmit () {
     this.setState({loading: true})
     const user = this.props.rootStore.userStore.user
-    await actions.students.setStudentMajor(user.id, user.student.id, this.state.selection.id)
-      .then(() => {
-        this.props.onSubmit()
-        showSnackbar('Successfully added your major!', 'success')
-      })
-      .catch(() => {
-        this.setState({loading: false})
-      })
+    await this.state.selections.forEach(major => {
+      actions.students.setStudentMajor(user.id, user.student.id, major.id)
+        .catch(() => {
+          this.setState({loading: false})
+        })
+    })
+    this.props.onSubmit()
+    showSnackbar('Successfully added your major!', 'success')
   }
 
   renderDropDown () {
