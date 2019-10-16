@@ -117,12 +117,14 @@ export function updateAssignment (cl, form) {
 }
 
 /*
-* Update an assignment name
+* Update a student assignment
 *
-* @params [Object] grade. Assignment grade.
+* @params [Object] form. Assignment form.
+* @params [Boolean] isPrivate. Update is private.
 */
-export function updateAssignmentName (assignmentId, name, isPrivate = true) {
-  return post(`/api/v1/class/assignments/${assignmentId}`, {id: assignmentId, name: name, is_private: isPrivate}, 'Error updating assignment. Try again.')
+export function updateStudentAssignment (form, isPrivate = true) {
+  form.is_private = isPrivate
+  return put(`/api/v1/assignments/${form.id}`, form, 'Error updating assignment. Try again.')
     .then(data => {
       return data
     })

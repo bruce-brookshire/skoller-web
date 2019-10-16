@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import actions from '../../../actions'
-import Loading from '../../../components/Loading'
+import SkLoader from '../../../assets/sk-icons/SkLoader'
 import moment from 'moment'
 
 @inject('rootStore') @observer
@@ -23,8 +23,8 @@ class AssignmentDetailContent extends React.Component {
       newName: null
     }
   }
-  // Assignment Grading Handlers
 
+  // Assignment Grading Handlers
   addGradeHandler = () => {
     let toggle = this.state.addGrade
     this.setState({ addGrade: !toggle })
@@ -77,15 +77,29 @@ class AssignmentDetailContent extends React.Component {
     })
   }
 
-  handleSaveName () {
-    console.log(this.state.newName)
+  async updateAssignment () {
     this.setState({loading: true})
-    actions.assignments.updateAssignmentName(this.props.assignment.id, this.state.newName, true)
+    await actions.assignments.getAllStudentAssignments(this.props.rootStore.userStore.user.student.id)
+      .then(r => {
+        let currentAssignment = r.filter(a => a.id === this.state.currentAssignment.id)[0]
+        currentAssignment.name = this.state.newName
+        this.setState({currentAssignment, loading: false, newName: null, editName: false})
+      })
+      .catch(e => console.log(e))
+  }
+
+  handleSaveName () {
+    this.setState({loading: true})
+    let form = {
+      name: this.state.newName,
+      id: this.state.currentAssignment.id
+    }
+    actions.assignments.updateStudentAssignment(form)
       .then(() => {
-        this.setState({loading: false})
+        this.updateAssignment()
       })
       .catch((e) => {
-        this.setState({loading: false})
+        this.setState({loading: false, editName: false, newName: null})
         console.log(e)
       })
   }
@@ -93,7 +107,7 @@ class AssignmentDetailContent extends React.Component {
   // Render Methods
 
   renderAssignmentTitle () {
-    const assignment = this.props.assignment
+    const assignment = this.state.currentAssignment
 
     if (this.state.editName) {
       return (
@@ -172,7 +186,7 @@ class AssignmentDetailContent extends React.Component {
     return (
       <div className='sk-assignment-detail-content'>
         {loading
-          ? <Loading />
+          ? <SkLoader />
           : this.renderAssignmentDetails(assignment)}
       </div>
     )

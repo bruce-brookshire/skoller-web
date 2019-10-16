@@ -10,7 +10,7 @@ import {
   getTaskAssignments,
   gradeAssignment,
   removeGradeFromAssignment,
-  updateAssignmentName
+  updateStudentAssignment
 } from './assignments'
 import { getAnalytics } from './analytics'
 import {
@@ -181,7 +181,7 @@ const actions = {
     gradeAssignment,
     removeGradeFromAssignment,
     getAllStudentAssignments,
-    updateAssignmentName
+    updateStudentAssignment
   },
   auth: {
     authenticateUser,
