@@ -67,12 +67,15 @@ const router = (
       <Route path='/our-team' component={OurTeam} />
       <Route path='/faq' component={Faq} />
       <Route path='/enroll' component={Enroll} />
+
       <Route path='/c(/:partner)' component={Onboard} type='onboard' />
-      <Route path='/download' component={DownloadApp} />
-      <Route path='/pitch-deck' component={PitchDeck} />
       <Route path='/o(/:partner)' component={Onboard} type='onboard' />
       <Route path='/e/:link' component={Onboard} type='e' />
       <Route path='/s/:link' component={Onboard} type='s' />
+
+      <Route path='/download' component={DownloadApp} />
+      <Route path='/pitch-deck' component={PitchDeck} />
+
       <Route path='/app' component={Layout} onEnter={requireAuth}>
         <IndexRedirect to='/student/home' />
         <Route path='/student'>
