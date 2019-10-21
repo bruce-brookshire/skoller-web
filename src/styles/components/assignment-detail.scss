@@ -52,12 +52,61 @@
           text-align: center;
           margin: 0 0 1rem 0;
 
-          h1 {
-            margin: 0;
+          .sk-assignment-detail-name {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-content: space-between;
+            width: 100%;
+
+            h1 {
+              margin: 0;
+              flex-grow: 1;
+            }
+
+            i {
+              flex-grow: 0;
+              font-size: 18px;
+              cursor: pointer;
+              color: $cn-color-blue;
+              float: right;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+            }
           }
           
           p {
             margin: 0;
+          }
+
+          .sk-assignment-detail-edit-name {
+            /* remove default form styling */
+            @include remove-form-styling;
+            display: flex;
+            flex-direction: column;
+            align-content: right;
+            justify-content: right;
+            margin-right: -4px;
+
+            .sk-assignment-detail-edit-name-input {
+              text-align: center;
+              font-size: 26px;
+              font-weight: 800;
+              margin: -4px 0 4px 0;
+              border-radius: 5px;
+              background-color: rgba(85,185,229,.1);
+              width: 100%;
+              padding: 4px;
+            }
+
+            .sk-assignment-detail-edit-name-save {
+              background-color: none;
+              text-align: center;
+              color: $cn-color-blue;
+              cursor: pointer;
+              margin: 0 0 0.5rem 0;
+            }
           }
         }
 

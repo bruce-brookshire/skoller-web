@@ -6,13 +6,34 @@
     width: 100%;
   }
 
-  .sk-major-form-input {
-    @include sk-form-field;
-    width: 100%;
-    margin-bottom: -1px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  .sk-major-form-search {
+    position: relative;
+
+    i {
+      position: absolute;
+      left: 8px;
+      top: 10px;
+      color: #00000085;
+    }
+
+    .sk-major-form-input {
+      @include sk-form-field;
+      padding-left: 28px;
+      width: 100%;
+      margin-bottom: -1px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .sk-major-form-selections {
+    margin: 1rem 0 0 0;
+
+    .sk-major-form-selection {
+      color: $cn-color-blue;
+      cursor: pointer;
+    }
   }
 
   .sk-major-form-option {
