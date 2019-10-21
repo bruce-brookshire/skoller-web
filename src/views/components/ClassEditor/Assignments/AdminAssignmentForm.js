@@ -66,16 +66,22 @@ class AdminAssignmentForm extends React.Component {
   */
   initializeState () {
     const {assignment} = this.props
+    let dueNull = false
+    if (assignment) {
+      if (!assignment.due) {
+        dueNull = true
+      }
+    }
     return {
       form: this.initializeFormData(assignment),
-      due_null: false,
+      due_null: dueNull,
       loading: false,
       showDatePicker: false
     }
   }
 
   /*
-  * Method for intializing form data.
+  * Method for initializing form data.
   * Assignment form data.
   *
   * @param [Object] data. initial data
@@ -100,11 +106,10 @@ class AdminAssignmentForm extends React.Component {
   }
 
   /*
-  * Determine whether the user is submiting updated assignment or a new assignment.
+  * Determine whether the user is submitting updated assignment or a new assignment.
   *
   */
   onSubmit () {
-    console.log(this.state.form)
     if (this.state.due_null) {
       requiredFields.due = {}
     }
