@@ -10,6 +10,7 @@ class AdminWeightChangeRequest extends React.Component {
 
     this.state = {
       currentCr: this.props.crs[0],
+      isPoints: this.crIsPoints(this.props.crs[0]),
       deletedWeights: []
     }
   }
@@ -18,16 +19,32 @@ class AdminWeightChangeRequest extends React.Component {
     this.setState({deletedWeights: this.getDeletedWeights()})
   }
 
+  crIsPoints (cr) {
+    let isPoints = true
+    cr.members.forEach(member => {
+      if (member.member_name === 'is_points') {
+        if (member.member_value === 'false') {
+          isPoints = false
+        }
+      }
+    })
+    return isPoints
+  }
+
   renderRows () {
     return (
       this.state.currentCr.members.map(member => {
-        return (
-          <tr key={member.id}>
-            <td>{member.member_name}</td>
-            <td>{member.member_value}</td>
-            <td>{this.getWeight(member.member_name) ? 'Updated' : 'New'}</td>
-          </tr>
-        )
+        if (member.member_name !== 'is_points') {
+          return (
+            <tr key={member.id}>
+              <td>{member.member_name}</td>
+              <td>{member.member_value}{this.renderPercent()}</td>
+              <td>{this.getWeight(member.member_name) ? 'Updated' : 'New'}</td>
+            </tr>
+          )
+        } else {
+          return null
+        }
       })
     )
   }
@@ -43,8 +60,14 @@ class AdminWeightChangeRequest extends React.Component {
       })
       return deleted
     })
-    // this.setState({deleteWeights: currentWeights})
     return currentWeights
+  }
+
+  renderPercent () {
+    let isPoints = this.state.isPoints
+    return (
+      isPoints ? '' : '%'
+    )
   }
 
   renderDeletedWeights () {
@@ -54,11 +77,18 @@ class AdminWeightChangeRequest extends React.Component {
         return (
           <tr key={weight.id}>
             <td><s>{weight.name}</s></td>
-            <td><s>{weight.weight}</s></td>
+            <td><s>{weight.weight}{this.renderPercent()}</s></td>
             <td>Deleted</td>
           </tr>
         )
       })
+    )
+  }
+
+  renderIsPoints () {
+    let isPoints = this.state.isPoints
+    return (
+      <p><b>Weights Type: </b>{isPoints ? 'Points' : 'Percentage'}</p>
     )
   }
 
@@ -105,13 +135,15 @@ class AdminWeightChangeRequest extends React.Component {
       actions.weights.deleteWeight(weight)
     })
     await this.state.currentCr.members.forEach(member => {
-      let existingWeight = this.getWeight(member.member_name)
-      if (existingWeight) {
-        actions.weights.updateWeight(this.props.cl, {name: existingWeight.name, weight: member.member_value, id: parseInt(existingWeight.id)})
-          .catch((r) => console.log(r))
-      } else {
-        actions.weights.createWeight(this.props.cl, {name: member.member_name, weight: member.member_value})
-          .catch((r) => console.log(r))
+      if (member.member_name !== 'is_points') {
+        let existingWeight = this.getWeight(member.member_name)
+        if (existingWeight) {
+          actions.weights.updateWeight(this.props.cl, {name: existingWeight.name, weight: member.member_value, id: parseInt(existingWeight.id)})
+            .catch((r) => console.log(r))
+        } else {
+          actions.weights.createWeight(this.props.cl, {name: member.member_name, weight: member.member_value})
+            .catch((r) => console.log(r))
+        }
       }
     })
     await this.state.currentCr.members.forEach(member => {
@@ -138,7 +170,9 @@ class AdminWeightChangeRequest extends React.Component {
     let cr = this.state.currentCr
     let crs = this.props.crs
     cr.members.forEach(member => {
-      total = total + parseFloat(member.member_value)
+      if (member.member_name !== 'is_points') {
+        total = total + parseFloat(member.member_value)
+      }
     })
     return (
       <div className='hub-panel-change-request'>
@@ -146,7 +180,11 @@ class AdminWeightChangeRequest extends React.Component {
         {crs.length > 1 &&
           <div>
             <select value={cr.id} onChange={(e) => {
-              this.setState({currentCr: this.getCr(e.target.value)})
+              let cr = this.getCr(e.target.value)
+              this.setState({
+                currentCr: cr,
+                isPoints: this.crIsPoints(cr)
+              })
             }}>
               {this.renderCrOptions()}
             </select>
@@ -155,6 +193,7 @@ class AdminWeightChangeRequest extends React.Component {
         }
         <p><b>Submitted: </b>{moment(moment.utc(cr.updated_at).toDate()).local().format('MM/DD h:mma')}</p>
         <p><b>By: </b>{cr.user.email}</p>
+        {this.renderIsPoints()}
         <p>Proposed weights:</p>
         <table>
           <tr>
@@ -165,7 +204,7 @@ class AdminWeightChangeRequest extends React.Component {
           {this.renderRows()}
           {this.renderDeletedWeights()}
           <tr className='hub-panel-change-request-total'>
-            <td colSpan='3'>Weights total: {total}</td>
+            <td colSpan='3'>Weights total: {total}{this.renderPercent()}</td>
           </tr>
         </table>
         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>

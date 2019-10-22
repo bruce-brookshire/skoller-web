@@ -4,8 +4,8 @@ import AdminWeightForm from '../components/ClassEditor/Weights/AdminWeightForm'
 import {SliderField} from '../../components/Form'
 import PropTypes from 'prop-types'
 import actions from '../../actions'
-import AdminWeightChangeRequest from '../components/ClassEditor/Weights/AdminWeightChangeRequest';
-import { changeRequestIsComplete } from '../../utilities/changeRequests';
+import AdminWeightChangeRequest from '../components/ClassEditor/Weights/AdminWeightChangeRequest'
+import { changeRequestIsComplete } from '../../utilities/changeRequests'
 
 class Weights extends React.Component {
   constructor (props) {
