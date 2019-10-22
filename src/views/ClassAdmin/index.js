@@ -352,15 +352,16 @@ class ClassAdmin extends React.Component {
     const {cl} = this.state
     let openRequests = this.openStudentRequests()
     return (
-      <RequestResolvedModal
-        cl={cl}
-        open={this.state.openRequestResolvedModal}
-        onClose={this.toggleRequestResolvedModal.bind(this)}
-        onSubmit={() => {
-          this.updateClass()
-        }}
-        request={openRequests[0]}
-      />
+      null
+      // <RequestResolvedModal
+      //   cl={cl}
+      //   open={this.state.openRequestResolvedModal}
+      //   onClose={this.toggleRequestResolvedModal.bind(this)}
+      //   onSubmit={() => {
+      //     this.updateClass()
+      //   }}
+      //   request={openRequests[0]}
+      // />
     )
   }
 
@@ -702,14 +703,14 @@ class ClassAdmin extends React.Component {
               contentClassName='cn-admin-footer-card-content'
               onCreateNote={(cl) => this.setState({cl})}
             />
-            {cl.change_requests &&
+            {/* {cl.change_requests &&
               <StudentRequestInfo
                 cl={this.state.cl}
                 boxClassName='cn-admin-footer-card margin-top margin-bottom'
                 contentClassName='cn-admin-footer-card-content'
                 onComplete={this.toggleRequestResolvedModal.bind(this)}
               />
-            }
+            } */}
           </div>
         </div>
 
