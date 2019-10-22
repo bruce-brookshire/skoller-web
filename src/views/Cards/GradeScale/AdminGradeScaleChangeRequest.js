@@ -109,10 +109,17 @@ class AdminGradeScaleChangeRequest extends React.Component {
     form['grade_scale'] = gradeScale
     await actions.gradescales.updateGradeScale(this.props.cl, form).then(() => {
       showSnackbar('Successfully adopted grade scale. Refresh page if changes have not yet appeared.', 'success', 5000)
-      this.props.onChange()
     }).catch((r) => {
       showSnackbar('Error adopting grade scale.')
+      throw new Error('error adopting grade scale.')
     })
+    await this.state.currentCr.members.forEach(member => {
+      actions.classhelp.resolveChangeRequestMember(member.id)
+        .catch(e => {
+          console.log(e)
+        })
+    })
+    this.props.onChange()
   }
 
   async onDecline () {

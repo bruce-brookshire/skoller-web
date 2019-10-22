@@ -27,7 +27,7 @@ class GradeScale extends React.Component {
     let i = 0
     if (this.props.cl.change_requests) {
       this.props.cl.change_requests.forEach(cr => {
-        if (cr.change_type.id === 100 && changeRequestIsComplete(cr) === false) {
+        if (cr.change_type.id === 100 && !changeRequestIsComplete(cr)) {
           i += 1
         }
       })
