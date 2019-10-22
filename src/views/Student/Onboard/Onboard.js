@@ -61,9 +61,11 @@ class Onboard extends React.Component {
   }
 
   async loginStudent () {
+    console.log('damnit')
     if (this.cookie.get('skollerToken')) {
+      console.log('0')
       await actions.auth.getUserByToken(this.cookie.get('skollerToken')).catch((r) => console.log(r))
-      await this.getPartnerByUser() // <-- sets onboard to partner state if user signed up through custom link
+      this.getPartnerByUser() // <-- sets onboard to partner state if user signed up through custom link
       this.setState({user: this.props.rootStore.userStore.user})
       this.getStep()
     } else {
@@ -84,6 +86,7 @@ class Onboard extends React.Component {
   }
 
   async getStep () {
+    console.log('getStep')
     const user = this.state.user
     let classNumber = 0
     if (user) {

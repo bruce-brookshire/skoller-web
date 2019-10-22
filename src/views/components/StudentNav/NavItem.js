@@ -20,6 +20,13 @@ class NavItem extends React.Component {
   }
 
   getNavIcon () {
+    const iconStyle = {
+      width: '30px',
+      height: '22px',
+      color: 'white',
+      marginRight: '-8px',
+      marginTop: '3px'
+    }
     if (this.props.pageName.includes('home')) {
       return <HomeIcon fill="white" width="22px" height="22px" />
     } else if (this.props.pageName.includes('tasks')) {
@@ -32,6 +39,8 @@ class NavItem extends React.Component {
       return <ChatIcon fill="white" width="22px" height="22px" />
     } else if (this.props.pageName.includes('activity')) {
       return <ActivityIcon fill="white" width="22px" height="22px" />
+    } else if (this.props.pageName.includes('share')) {
+      return <i className='fas fa-users' style={iconStyle} />
     } else {
       return null
     }
