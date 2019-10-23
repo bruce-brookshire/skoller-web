@@ -120,20 +120,6 @@ class AdminWeightChangeRequest extends React.Component {
   }
 
   async onAccept () {
-    let form = {
-      'id': this.props.cl.id
-    }
-    let weights = []
-    this.state.currentCr.members.forEach(member => {
-      weights.push({
-        name: member.member_name,
-        value: member.member_value
-      })
-    })
-    form['weights'] = weights
-    await this.state.deletedWeights.forEach(weight => {
-      actions.weights.deleteWeight(weight)
-    })
     await this.state.currentCr.members.forEach(member => {
       if (member.member_name !== 'is_points') {
         let existingWeight = this.getWeight(member.member_name)
@@ -146,6 +132,11 @@ class AdminWeightChangeRequest extends React.Component {
         }
       }
     })
+    await this.state.deletedWeights.forEach(weight => {
+      actions.weights.deleteWeight(weight)
+    })
+    await actions.classes.updateClass({id: this.props.cl.id, is_points: this.state.currentCr.members.filter(m => m.member_name === 'is_points')[0].member_value})
+      .catch(e => console.log(e))
     await this.state.currentCr.members.forEach(member => {
       actions.classhelp.resolveChangeRequestMember(member.id)
         .catch(e => console.log(e))
