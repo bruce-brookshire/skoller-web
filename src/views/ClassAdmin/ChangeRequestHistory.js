@@ -55,9 +55,9 @@ class ChangeRequestHistory extends React.Component {
     if (this.state.filter !== 'all') {
       if (this.state.filter === 'gradeScale') {
         changeRequestMembers = changeRequestMembers.filter(member => member.cr.change_type.id === 100)
-      } else if (this.state.filter === 'gradeScale') {
+      } else if (this.state.filter === 'weights') {
         changeRequestMembers = changeRequestMembers.filter(member => member.cr.change_type.id === 200)
-      } else if (this.state.filter === 'gradeScale') {
+      } else if (this.state.filter === 'professor') {
         changeRequestMembers = changeRequestMembers.filter(member => member.cr.change_type.id === 300)
       } else {
         changeRequestMembers = changeRequestMembers.filter(member => member.m.member_name === this.state.filter)
