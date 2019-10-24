@@ -42,6 +42,7 @@ class Onboard extends React.Component {
   }
 
   async getPartnerByUser () {
+    let hasPartner = true
     await actions.students.getStudentSignupOrganization(this.props.rootStore.userStore.user.student.id)
       .then((r) => {
         let slug = r.link.replace(/(.+)(\/c\/)/g, '')
@@ -55,17 +56,23 @@ class Onboard extends React.Component {
         if (this.props.params.partner) {
           this.setState({partner: null, redirect: true})
           browserHistory.push(('/student/share/' + this.props.params.partner))
+          console.log('but')
+          hasPartner = false
         }
       })
-    return new Promise(resolve => true)
+    return new Promise(resolve => resolve(hasPartner))
   }
 
   async loginStudent () {
     if (this.cookie.get('skollerToken')) {
       await actions.auth.getUserByToken(this.cookie.get('skollerToken')).catch((r) => console.log(r))
       await this.getPartnerByUser() // <-- sets onboard to partner state if user signed up through custom link
-      this.setState({user: this.props.rootStore.userStore.user})
-      this.getStep()
+        .then(r => {
+          if (r) {
+            this.setState({user: this.props.rootStore.userStore.user})
+            this.getStep()
+          }
+        })
     } else {
       if (this.state.user) {
         this.setState({step: 'verify', loading: false})
