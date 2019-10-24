@@ -27,6 +27,15 @@ class Professor extends React.Component {
   * @return [Object]. State object.
   */
   initializeState () {
+    let changeRequests = this.props.cl.change_requests.filter(cr => cr.change_type.id === 300).filter(cr => !changeRequestIsComplete(cr))
+    changeRequests.forEach(cr => {
+      cr.members.forEach(member => {
+        console.log(member.member_name)
+        if (member.member_name === 'id' && member.is_completed === false) {
+          resolveChangeRequestMember(member.id)
+        }
+      })
+    })
     return {
       isEditable: false,
       openModal: false,
@@ -141,7 +150,7 @@ class Professor extends React.Component {
             {professor.name_last ? professor.name_last : 'N/A'}
           </div>
         </div>
-        <div className='professor-detail-row' ref={phoneRef => { this.professorRefs.phone = phoneRef }}>
+        <div className='professor-detail-row' ref={phoneRef => { this.professorRefs.phone_number = phoneRef }}>
           <div className='professor-detail-field'>
             <div className='professor-detail-label'>
               Phone
@@ -275,7 +284,7 @@ class Professor extends React.Component {
     if (crs.length > 0) {
       crs.forEach(cr => {
         cr.members.forEach(member => {
-          if (!member.is_completed) {
+          if (!member.is_completed && member.member_name !== 'id') {
             if (Array.isArray(allCrData[member.member_name])) {
               allCrData[member.member_name].push({member: member, cr: cr})
             } else {
@@ -284,6 +293,8 @@ class Professor extends React.Component {
           }
         })
       })
+      console.log('allCrData', allCrData)
+      console.log('professorRefs', this.professorRefs)
       Object.keys(allCrData).forEach(key => {
         let membersCount = 0
         allCrData[key].forEach(dataPoint => {

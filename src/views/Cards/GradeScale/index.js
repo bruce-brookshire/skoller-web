@@ -241,7 +241,7 @@ class GradeScale extends React.Component {
       <AdminGradeScaleChangeRequest
         crs={crs}
         cl={this.props.cl}
-        onChange={() => this.props.onChange()}
+        onChange={this.props.onChange}
       />
     )
   }

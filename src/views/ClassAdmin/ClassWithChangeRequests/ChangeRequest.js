@@ -58,6 +58,7 @@ class ChangeRequest extends React.Component {
   }
 
   async onDecline () {
+    console.log(this.props.member)
     await actions.classhelp.resolveChangeRequestMember(this.props.member.id)
       .then((res) => {
         this.props.onChange()

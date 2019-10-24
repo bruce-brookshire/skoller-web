@@ -9,7 +9,6 @@ import ClassForm from './ClassForm'
 import StatusForm from './StatusForm'
 
 import IssuesModal from '../components/ClassEditor/IssuesModal'
-import RequestResolvedModal from './RequestResolvedModal'
 import DocumentsDeletedModal from './DocumentsDeletedModal'
 
 import TabbedFileUpload from '../../components/TabbedFileUpload'
@@ -17,7 +16,6 @@ import AdminWeightForm from '../components/ClassEditor/Weights/AdminWeightForm'
 import AdminAssignmentTable from '../components/ClassEditor/Assignments/AdminAssignmentTable'
 import AdminAssignmentForm from '../components/ClassEditor/Assignments/AdminAssignmentForm'
 import Chat from '../components/ClassEditor/Chat'
-import StudentRequestInfo from '../Cards/StudentRequestInfo'
 import GradeScale from '../Cards/GradeScale'
 import ClassNotes from '../Cards/ClassNotes'
 import Professor from '../Cards/Professor'
@@ -29,6 +27,8 @@ import Weights from './Weights'
 import SkLoader from '../../assets/sk-icons/SkLoader'
 import ChangeRequestHistory from './ChangeRequestHistory'
 import { changeRequestIsComplete } from '../../utilities/changeRequests'
+import StudentRequestInfo from '../Cards/StudentRequestInfo'
+import RequestResolvedModal from './RequestResolvedModal'
 
 @inject('rootStore') @observer
 class ClassAdmin extends React.Component {
@@ -88,10 +88,29 @@ class ClassAdmin extends React.Component {
   /*
   * Reload the component
   */
-  reloadComponent = () => {
+  reloadComponent = (lastCr = false) => {
+    console.log(lastCr)
     this.setState(this.initializeState())
-    this.getClass()
     this.getDocuments()
+    this.getClass()
+      .then(cl => {
+        let incompleteChangeRequests = false
+        if (this.state.cl.change_requests) {
+          this.state.cl.change_requests.forEach(cr => {
+            if (!changeRequestIsComplete(cr)) {
+              incompleteChangeRequests = true
+            }
+          })
+        }
+        if (!incompleteChangeRequests || lastCr) {
+          browserHistory.push({
+            pathname: '/hub/classes',
+            state: {
+              needsChange: true
+            }
+          })
+        }
+      })
   }
 
   /*
@@ -113,13 +132,15 @@ class ClassAdmin extends React.Component {
   /*
   * Fetch the class by id.
   */
-  getClass () {
+  async getClass () {
     this.setState({loadingClass: true})
     const {params: {classId}} = this.props
-    actions.classes.getClassByIdAdmin(classId).then((cl) => {
+    await actions.classes.getClassByIdAdmin(classId).then((cl) => {
       this.setState({cl, weights: cl.weights, assignments: cl.assignments})
       this.setState({loadingClass: false})
     }).catch(() => { this.setState({loadingClass: false}) })
+    console.log(this.state.cl)
+    return new Promise(resolve => resolve(this.state.cl))
   }
 
   /*
@@ -352,16 +373,15 @@ class ClassAdmin extends React.Component {
     const {cl} = this.state
     let openRequests = this.openStudentRequests()
     return (
-      null
-      // <RequestResolvedModal
-      //   cl={cl}
-      //   open={this.state.openRequestResolvedModal}
-      //   onClose={this.toggleRequestResolvedModal.bind(this)}
-      //   onSubmit={() => {
-      //     this.updateClass()
-      //   }}
-      //   request={openRequests[0]}
-      // />
+      <RequestResolvedModal
+        cl={cl}
+        open={this.state.openRequestResolvedModal}
+        onClose={this.toggleRequestResolvedModal.bind(this)}
+        onSubmit={() => {
+          this.updateClass()
+        }}
+        request={openRequests[0]}
+      />
     )
   }
 
@@ -396,51 +416,11 @@ class ClassAdmin extends React.Component {
   * Render the list of weights
   */
   renderWeights () {
-    // const {cl, isWeightsEditable, weights, currentWeight} = this.state
-    // return (
-    //   <div id='cn-admin-weight-table' className='class-card'>
-    //     <div id='cn-admin-weight-table-content'>
-    //       <div className='cn-admin-weight-table-title'>
-    //         Weights
-    //         <div>
-    //           {/* {isWeightsEditable && <i className='fa fa-plus cn-blue cursor margin-right' onClick={() => this.toggleWeightCreateModal()} />} */}
-    //           {this.state.openWeightCreateModal
-    //             ? <i className='fa fa-times cn-blue cursor margin-right' onClick={() => this.toggleWeightCreateModal()} />
-    //             : <i className='fa fa-plus cn-blue cursor margin-right' onClick={() => this.toggleWeightCreateModal()} />
-    //           }
-    //           {this.state.isWeightsEditable
-    //             ? <i className='fas fa-pencil-alt cn-blue cursor' onClick={() => this.setState({isWeightsEditable: !isWeightsEditable})} />
-    //             : <i className='fas fa-pencil-alt cursor' style={{color: 'rgba(0,0,0,0.3)'}} onClick={() => this.setState({isWeightsEditable: !isWeightsEditable})} />
-    //           }
-    //         </div>
-    //       </div>
-    //       {this.state.openWeightCreateModal &&
-    //         this.renderWeightForm()
-    //       }
-    //       <div className='cn-space-between-row margin-bottom'>
-    //         Points?
-    //         <SliderField
-    //           name='isPointSlider'
-    //           onChange={this.toggleIsPoints.bind(this)}
-    //           value={cl.is_points}
-    //         />
-    //       </div>
-    //       <AdminWeightTable
-    //         cl={cl}
-    //         viewOnly={!isWeightsEditable}
-    //         weights={weights}
-    //         onDeleteWeight={this.onDeleteWeight.bind(this)}
-    //         currentWeight={currentWeight}
-    //         onSelectWeight={this.onSelectWeight.bind(this)}
-    //       />
-    //     </div>
-    //   </div>
-    // )
     return (
       <Weights
         cl={this.state.cl}
         getClass={() => this.getClass()}
-        onChange={() => this.reloadComponent()}
+        onChange={this.reloadComponent}
       />
     )
   }
@@ -529,7 +509,7 @@ class ClassAdmin extends React.Component {
           onSelectIssue={null}
           boxClassName='cn-admin-edit-card'
           contentClassName='cn-admin-edit-card-content'
-          onChange={() => this.reloadComponent()}
+          onChange={this.reloadComponent}
         />
     )
   }
@@ -572,7 +552,7 @@ class ClassAdmin extends React.Component {
     const {cl} = this.state
     return (
       <GradeScale
-        onChange={() => this.reloadComponent()}
+        onChange={this.reloadComponent}
         cl={cl}
         canEdit={true}
         onSubmit={() => this.updateClass()}
@@ -596,7 +576,7 @@ class ClassAdmin extends React.Component {
         onSelectIssue={null}
         boxClassName='cn-admin-edit-card'
         contentClassName='cn-admin-edit-card-content'
-        onChange={() => this.reloadComponent()}
+        onChange={this.reloadComponent}
       />
     )
   }
@@ -703,14 +683,12 @@ class ClassAdmin extends React.Component {
               contentClassName='cn-admin-footer-card-content'
               onCreateNote={(cl) => this.setState({cl})}
             />
-            {/* {cl.change_requests &&
-              <StudentRequestInfo
-                cl={this.state.cl}
-                boxClassName='cn-admin-footer-card margin-top margin-bottom'
-                contentClassName='cn-admin-footer-card-content'
-                onComplete={this.toggleRequestResolvedModal.bind(this)}
-              />
-            } */}
+            <StudentRequestInfo
+              cl={this.state.cl}
+              boxClassName='cn-admin-footer-card margin-top margin-bottom'
+              contentClassName='cn-admin-footer-card-content'
+              onComplete={this.toggleRequestResolvedModal.bind(this)}
+            />
           </div>
         </div>
 

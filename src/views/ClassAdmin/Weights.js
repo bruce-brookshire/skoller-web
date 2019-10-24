@@ -147,7 +147,7 @@ class Weights extends React.Component {
           <AdminWeightChangeRequest
             cl={this.props.cl}
             crs={crs}
-            onChange={() => this.props.onChange()}
+            onChange={this.props.onChange}
           />
         </div>
       )

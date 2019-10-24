@@ -13,6 +13,8 @@ class AdminWeightChangeRequest extends React.Component {
       isPoints: this.crIsPoints(this.props.crs[0]),
       deletedWeights: []
     }
+
+    console.log(this.props.crs.length)
   }
 
   componentDidMount () {
@@ -119,21 +121,15 @@ class AdminWeightChangeRequest extends React.Component {
     return false
   }
 
-  async onAccept () {
-    let form = {
-      'id': this.props.cl.id
+  onChange () {
+    if (this.props.crs.length === 1) {
+      this.props.onChange(true)
+    } else {
+      this.props.onChange(false)
     }
-    let weights = []
-    this.state.currentCr.members.forEach(member => {
-      weights.push({
-        name: member.member_name,
-        value: member.member_value
-      })
-    })
-    form['weights'] = weights
-    await this.state.deletedWeights.forEach(weight => {
-      actions.weights.deleteWeight(weight)
-    })
+  }
+
+  async onAccept () {
     await this.state.currentCr.members.forEach(member => {
       if (member.member_name !== 'is_points') {
         let existingWeight = this.getWeight(member.member_name)
@@ -146,12 +142,17 @@ class AdminWeightChangeRequest extends React.Component {
         }
       }
     })
+    await this.state.deletedWeights.forEach(weight => {
+      actions.weights.deleteWeight(weight)
+    })
+    await actions.classes.updateClass({id: this.props.cl.id, is_points: this.state.currentCr.members.filter(m => m.member_name === 'is_points')[0].member_value})
+      .catch(e => console.log(e))
     await this.state.currentCr.members.forEach(member => {
       actions.classhelp.resolveChangeRequestMember(member.id)
         .catch(e => console.log(e))
     })
     showSnackbar('Successfully adopted weights. Refresh page if changes have not yet appeared.', 'success', 5000)
-    this.props.onChange()
+    this.onChange()
   }
 
   async onDecline () {
@@ -162,7 +163,7 @@ class AdminWeightChangeRequest extends React.Component {
         })
     })
     showSnackbar(`Successfully declined user change`, 'success')
-    this.props.onChange()
+    this.onChange()
   }
 
   render () {

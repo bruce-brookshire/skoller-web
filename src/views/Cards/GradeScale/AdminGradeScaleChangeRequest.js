@@ -37,36 +37,44 @@ class AdminGradeScaleChangeRequest extends React.Component {
   getDeletedGrades () {
     let currentGrades = this.props.cl.grade_scale
     let deletedGradesArray = []
-    let deletedGradeKeys = Object.keys(currentGrades).filter(weightKey => {
-      let deleted = true
-      this.state.currentCr.members.forEach(member => {
-        if (member.member_name === weightKey) {
-          deleted = false
-        }
+    if (currentGrades) {
+      let deletedGradeKeys = Object.keys(currentGrades).filter(weightKey => {
+        let deleted = true
+        this.state.currentCr.members.forEach(member => {
+          if (member.member_name === weightKey) {
+            deleted = false
+          }
+        })
+        return deleted
       })
-      return deleted
-    })
-    deletedGradeKeys.forEach(gradeKey => {
-      deletedGradesArray.push({grade: gradeKey, min: currentGrades[gradeKey]})
-    })
-    return deletedGradesArray
+      deletedGradeKeys.forEach(gradeKey => {
+        deletedGradesArray.push({grade: gradeKey, min: currentGrades[gradeKey]})
+      })
+      return deletedGradesArray
+    } else {
+      return []
+    }
   }
 
   renderDeletedGrades () {
     let deletedGrades = this.getDeletedGrades()
     let i = 0
-    return (
-      deletedGrades.map(grade => {
-        i += 1
-        return (
-          <tr key={i}>
-            <td><s>{grade.grade}</s></td>
-            <td><s>{grade.min}</s></td>
-            <td>Deleted</td>
-          </tr>
-        )
-      })
-    )
+    if (deletedGrades) {
+      return (
+        deletedGrades.map(grade => {
+          i += 1
+          return (
+            <tr key={i}>
+              <td><s>{grade.grade}</s></td>
+              <td><s>{grade.min}</s></td>
+              <td>Deleted</td>
+            </tr>
+          )
+        })
+      )
+    } else {
+      return null
+    }
   }
 
   renderCrOptions () {
@@ -90,14 +98,24 @@ class AdminGradeScaleChangeRequest extends React.Component {
 
   getGrade (g) {
     let gradesArray = []
-    Object.keys(this.props.cl.grade_scale).forEach(gradeKey => {
-      gradesArray.push({grade: gradeKey, min: this.props.cl.grade_scale[gradeKey]})
-    })
-    let grade = this.props.cl.grade_scale[g]
-    if (grade) {
-      return grade
+    if (this.props.cl.grade_scale) {
+      Object.keys(this.props.cl.grade_scale).forEach(gradeKey => {
+        gradesArray.push({grade: gradeKey, min: this.props.cl.grade_scale[gradeKey]})
+      })
+      let grade = this.props.cl.grade_scale[g]
+      if (grade) {
+        return grade
+      }
     }
     return false
+  }
+
+  onChange () {
+    if (this.props.crs.length === 1) {
+      this.props.onChange(true)
+    } else {
+      this.props.onChange(false)
+    }
   }
 
   async onAccept () {
@@ -118,8 +136,10 @@ class AdminGradeScaleChangeRequest extends React.Component {
         .catch(e => {
           console.log(e)
         })
+        .then(() => {
+          this.onChange()
+        })
     })
-    this.props.onChange()
   }
 
   async onDecline () {
@@ -130,7 +150,7 @@ class AdminGradeScaleChangeRequest extends React.Component {
         })
     })
     showSnackbar(`Successfully declined user change. Refresh page if changes have not yet appeared.`, 'success', 5000)
-    this.props.onChange()
+    this.onChange()
   }
 
   render () {
@@ -151,7 +171,7 @@ class AdminGradeScaleChangeRequest extends React.Component {
         }
         <p><b>Submitted: </b>{moment(moment.utc(cr.updated_at).toDate()).local().format('MM/DD h:mma')}</p>
         <p><b>By: </b>{cr.user.email}</p>
-        <p>Proposed weights:</p>
+        <p>Proposed grade scale:</p>
         <table>
           <tr>
             <th>Grade</th>
