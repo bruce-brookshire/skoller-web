@@ -110,6 +110,14 @@ class AdminGradeScaleChangeRequest extends React.Component {
     return false
   }
 
+  onChange () {
+    if (this.props.crs.length === 1) {
+      this.props.onChange(true)
+    } else {
+      this.props.onChange(false)
+    }
+  }
+
   async onAccept () {
     let form = {}
     let gradeScale = {}
@@ -129,7 +137,7 @@ class AdminGradeScaleChangeRequest extends React.Component {
           console.log(e)
         })
         .then(() => {
-          this.props.onChange()
+          this.onChange()
         })
     })
   }
@@ -142,7 +150,7 @@ class AdminGradeScaleChangeRequest extends React.Component {
         })
     })
     showSnackbar(`Successfully declined user change. Refresh page if changes have not yet appeared.`, 'success', 5000)
-    this.props.onChange()
+    this.onChange()
   }
 
   render () {
