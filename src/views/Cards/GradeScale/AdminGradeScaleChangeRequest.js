@@ -128,8 +128,10 @@ class AdminGradeScaleChangeRequest extends React.Component {
         .catch(e => {
           console.log(e)
         })
+        .then(() => {
+          this.props.onChange()
+        })
     })
-    this.props.onChange()
   }
 
   async onDecline () {

@@ -9,7 +9,6 @@ import ClassForm from './ClassForm'
 import StatusForm from './StatusForm'
 
 import IssuesModal from '../components/ClassEditor/IssuesModal'
-// import RequestResolvedModal from './RequestResolvedModal'
 import DocumentsDeletedModal from './DocumentsDeletedModal'
 
 import TabbedFileUpload from '../../components/TabbedFileUpload'
@@ -17,7 +16,6 @@ import AdminWeightForm from '../components/ClassEditor/Weights/AdminWeightForm'
 import AdminAssignmentTable from '../components/ClassEditor/Assignments/AdminAssignmentTable'
 import AdminAssignmentForm from '../components/ClassEditor/Assignments/AdminAssignmentForm'
 import Chat from '../components/ClassEditor/Chat'
-// import StudentRequestInfo from '../Cards/StudentRequestInfo'
 import GradeScale from '../Cards/GradeScale'
 import ClassNotes from '../Cards/ClassNotes'
 import Professor from '../Cards/Professor'
@@ -29,6 +27,8 @@ import Weights from './Weights'
 import SkLoader from '../../assets/sk-icons/SkLoader'
 import ChangeRequestHistory from './ChangeRequestHistory'
 import { changeRequestIsComplete } from '../../utilities/changeRequests'
+import StudentRequestInfo from '../Cards/StudentRequestInfo'
+import RequestResolvedModal from './RequestResolvedModal'
 
 @inject('rootStore') @observer
 class ClassAdmin extends React.Component {
@@ -90,24 +90,26 @@ class ClassAdmin extends React.Component {
   */
   reloadComponent = () => {
     this.setState(this.initializeState())
-    this.getClass()
     this.getDocuments()
-    let incompleteChangeRequests = false
-    if (this.state.cl.change_requests) {
-      this.state.cl.change_requests.forEach(cr => {
-        if (!changeRequestIsComplete(cr)) {
-          incompleteChangeRequests = true
+    this.getClass()
+      .then(cl => {
+        let incompleteChangeRequests = false
+        if (this.state.cl.change_requests) {
+          this.state.cl.change_requests.forEach(cr => {
+            if (!changeRequestIsComplete(cr)) {
+              incompleteChangeRequests = true
+            }
+          })
+        }
+        if (!incompleteChangeRequests) {
+          browserHistory.push({
+            pathname: '/hub/classes',
+            state: {
+              needsChange: true
+            }
+          })
         }
       })
-    }
-    if (!incompleteChangeRequests) {
-      browserHistory.push({
-        pathname: '/hub/classes',
-        state: {
-          needsChange: true
-        }
-      })
-    }
   }
 
   /*
@@ -129,13 +131,15 @@ class ClassAdmin extends React.Component {
   /*
   * Fetch the class by id.
   */
-  getClass () {
+  async getClass () {
     this.setState({loadingClass: true})
     const {params: {classId}} = this.props
-    actions.classes.getClassByIdAdmin(classId).then((cl) => {
+    await actions.classes.getClassByIdAdmin(classId).then((cl) => {
       this.setState({cl, weights: cl.weights, assignments: cl.assignments})
       this.setState({loadingClass: false})
     }).catch(() => { this.setState({loadingClass: false}) })
+    console.log(this.state.cl)
+    return new Promise(resolve => resolve(this.state.cl))
   }
 
   /*
@@ -368,16 +372,15 @@ class ClassAdmin extends React.Component {
     const {cl} = this.state
     let openRequests = this.openStudentRequests()
     return (
-      null
-      // <RequestResolvedModal
-      //   cl={cl}
-      //   open={this.state.openRequestResolvedModal}
-      //   onClose={this.toggleRequestResolvedModal.bind(this)}
-      //   onSubmit={() => {
-      //     this.updateClass()
-      //   }}
-      //   request={openRequests[0]}
-      // />
+      <RequestResolvedModal
+        cl={cl}
+        open={this.state.openRequestResolvedModal}
+        onClose={this.toggleRequestResolvedModal.bind(this)}
+        onSubmit={() => {
+          this.updateClass()
+        }}
+        request={openRequests[0]}
+      />
     )
   }
 
@@ -719,14 +722,12 @@ class ClassAdmin extends React.Component {
               contentClassName='cn-admin-footer-card-content'
               onCreateNote={(cl) => this.setState({cl})}
             />
-            {/* {cl.change_requests &&
-              <StudentRequestInfo
-                cl={this.state.cl}
-                boxClassName='cn-admin-footer-card margin-top margin-bottom'
-                contentClassName='cn-admin-footer-card-content'
-                onComplete={this.toggleRequestResolvedModal.bind(this)}
-              />
-            } */}
+            <StudentRequestInfo
+              cl={this.state.cl}
+              boxClassName='cn-admin-footer-card margin-top margin-bottom'
+              contentClassName='cn-admin-footer-card-content'
+              onComplete={this.toggleRequestResolvedModal.bind(this)}
+            />
           </div>
         </div>
 
