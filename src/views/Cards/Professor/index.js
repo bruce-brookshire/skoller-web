@@ -27,6 +27,15 @@ class Professor extends React.Component {
   * @return [Object]. State object.
   */
   initializeState () {
+    let changeRequests = this.props.cl.change_requests.filter(cr => cr.change_type.id === 300).filter(cr => !changeRequestIsComplete(cr))
+    changeRequests.forEach(cr => {
+      cr.members.forEach(member => {
+        console.log(member.member_name)
+        if (member.member_name === 'id' && member.is_completed === false) {
+          resolveChangeRequestMember(member.id)
+        }
+      })
+    })
     return {
       isEditable: false,
       openModal: false,
