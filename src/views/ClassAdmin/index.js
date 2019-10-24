@@ -92,6 +92,22 @@ class ClassAdmin extends React.Component {
     this.setState(this.initializeState())
     this.getClass()
     this.getDocuments()
+    let incompleteChangeRequests = false
+    if (this.state.cl.change_requests) {
+      this.state.cl.change_requests.forEach(cr => {
+        if (!changeRequestIsComplete(cr)) {
+          incompleteChangeRequests = true
+        }
+      })
+    }
+    if (!incompleteChangeRequests) {
+      browserHistory.push({
+        pathname: '/hub/classes',
+        state: {
+          needsChange: true
+        }
+      })
+    }
   }
 
   /*
