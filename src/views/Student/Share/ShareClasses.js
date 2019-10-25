@@ -8,7 +8,8 @@ class ShareClasses extends React.Component {
     super(props)
 
     this.state = {
-      classSelection: this.props.classes.length > 0 ? this.props.classes[0] : null
+      classSelection: this.props.classes[0],
+      showClassDropDown: false
     }
   }
 
@@ -17,8 +18,7 @@ class ShareClasses extends React.Component {
   }
 
   renderClassOptions = () => {
-    let classes = this.state.classes
-    classes = classes.filter(c => c.status.id >= 1400)
+    let classes = this.props.classes
     return (
       <div>
         {classes.map(studentClass => {
@@ -91,7 +91,7 @@ class ShareClasses extends React.Component {
 
   render () {
     return (
-      <div></div>
+      this.renderShareForm()
     )
   }
 }
