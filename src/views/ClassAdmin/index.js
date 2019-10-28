@@ -4,34 +4,31 @@ import {inject, observer} from 'mobx-react'
 import {browserHistory} from 'react-router'
 
 import actions from '../../actions'
-import Modal from '../../components/Modal'
 import Loading from '../../components/Loading'
 import ClassForm from './ClassForm'
 import StatusForm from './StatusForm'
-import {SliderField} from '../../components/Form'
 
 import IssuesModal from '../components/ClassEditor/IssuesModal'
-import RequestResolvedModal from './RequestResolvedModal'
 import DocumentsDeletedModal from './DocumentsDeletedModal'
 
 import TabbedFileUpload from '../../components/TabbedFileUpload'
-import WeightTable from '../components/ClassEditor/Weights/WeightTable'
-import WeightForm from '../components/ClassEditor/Weights/WeightForm'
+import AdminWeightForm from '../components/ClassEditor/Weights/AdminWeightForm'
 import AdminAssignmentTable from '../components/ClassEditor/Assignments/AdminAssignmentTable'
 import AdminAssignmentForm from '../components/ClassEditor/Assignments/AdminAssignmentForm'
 import Chat from '../components/ClassEditor/Chat'
-import StudentRequestInfo from '../Cards/StudentRequestInfo'
 import GradeScale from '../Cards/GradeScale'
 import ClassNotes from '../Cards/ClassNotes'
 import Professor from '../Cards/Professor'
 import StudentList from '../Cards/StudentList'
 import ClassCard from '../Cards/ClassCard'
 import ClassWithChangeRequests from './ClassWithChangeRequests'
+import Weights from './Weights'
 
-import SkModal from '../components/SkModal/SkModal'
 import SkLoader from '../../assets/sk-icons/SkLoader'
 import ChangeRequestHistory from './ChangeRequestHistory'
 import { changeRequestIsComplete } from '../../utilities/changeRequests'
+import StudentRequestInfo from '../Cards/StudentRequestInfo'
+import RequestResolvedModal from './RequestResolvedModal'
 
 @inject('rootStore') @observer
 class ClassAdmin extends React.Component {
@@ -42,13 +39,13 @@ class ClassAdmin extends React.Component {
     this.state = this.initializeState()
     this.tabSelect = this.tabSelect.bind(this)
     console.log(this.props.rootStore)
+    console.log(this.props.rootStore.userStore.authToken)
   }
 
   /*
   * Initialize state
   */
   initializeState () {
-    console.log(this.props.params)
     let {navbarStore} = this.props.rootStore
     navbarStore.isDIY = false
     return {
@@ -91,10 +88,29 @@ class ClassAdmin extends React.Component {
   /*
   * Reload the component
   */
-  reloadComponent = () => {
+  reloadComponent = (lastCr = false) => {
+    console.log(lastCr)
     this.setState(this.initializeState())
-    this.getClass()
     this.getDocuments()
+    this.getClass()
+      .then(cl => {
+        let incompleteChangeRequests = false
+        if (this.state.cl.change_requests) {
+          this.state.cl.change_requests.forEach(cr => {
+            if (!changeRequestIsComplete(cr)) {
+              incompleteChangeRequests = true
+            }
+          })
+        }
+        if (!incompleteChangeRequests || lastCr) {
+          browserHistory.push({
+            pathname: '/hub/classes',
+            state: {
+              needsChange: true
+            }
+          })
+        }
+      })
   }
 
   /*
@@ -116,13 +132,15 @@ class ClassAdmin extends React.Component {
   /*
   * Fetch the class by id.
   */
-  getClass () {
+  async getClass () {
     this.setState({loadingClass: true})
     const {params: {classId}} = this.props
-    actions.classes.getClassByIdAdmin(classId).then((cl) => {
+    await actions.classes.getClassByIdAdmin(classId).then((cl) => {
       this.setState({cl, weights: cl.weights, assignments: cl.assignments})
       this.setState({loadingClass: false})
     }).catch(() => { this.setState({loadingClass: false}) })
+    console.log(this.state.cl)
+    return new Promise(resolve => resolve(this.state.cl))
   }
 
   /*
@@ -332,30 +350,6 @@ class ClassAdmin extends React.Component {
   }
 
   /*
-  * Render the editclass modal.
-  */
-  renderEditClassModal () {
-    const {cl} = this.state
-    return (
-      <Modal
-        open={this.state.openEditClassModal}
-        onClose={this.toggleEditClassModal.bind(this)}
-      >
-        <ClassForm
-          cl={cl}
-          classPeriod={cl.class_period}
-          onSubmit={this.updateClass.bind(this)}
-          onClose={this.toggleEditClassModal.bind(this)}
-        />
-        <StatusForm
-          cl={cl}
-          onSubmit={this.updateClass.bind(this)}
-        />
-      </Modal>
-    )
-  }
-
-  /*
   * Render the having issues modal.
   */
   renderIssuesModal () {
@@ -391,20 +385,15 @@ class ClassAdmin extends React.Component {
     )
   }
 
-  renderWeightCreateModal () {
+  renderWeightForm () {
     const {cl, currentWeight} = this.state
     return (
-      <Modal
-        open={this.state.openWeightCreateModal}
-        onClose={this.onWeightClose.bind(this)}
-      >
-        <WeightForm
-          cl={cl}
-          weight={currentWeight}
-          onCreateWeight={this.onCreateWeight.bind(this)}
-          onUpdateWeight={this.onUpdateWeight.bind(this)}
-        />
-      </Modal>
+      <AdminWeightForm
+        cl={cl}
+        weight={currentWeight}
+        onCreateWeight={this.onCreateWeight.bind(this)}
+        onUpdateWeight={this.onUpdateWeight.bind(this)}
+      />
     )
   }
 
@@ -423,59 +412,16 @@ class ClassAdmin extends React.Component {
     )
   }
 
-  renderAssignmentModal () {
-    const {cl, currentAssignment, weights} = this.state
-    if (this.state.openAssignmentModal) {
-      return (
-        <SkModal
-          closeModal={this.toggleAssignmentModal.bind(this)}
-        >
-          <AdminAssignmentForm
-            cl={cl}
-            assignment={currentAssignment}
-            onCreateAssignment={this.onCreateAssignment.bind(this)}
-            onUpdateAssignment={this.onUpdateAssignment.bind(this)}
-            isAdmin={true}
-            weights={weights}
-          />
-        </SkModal>
-      )
-    }
-  }
-
   /*
   * Render the list of weights
   */
   renderWeights () {
-    const {cl, isWeightsEditable, weights, currentWeight} = this.state
     return (
-      <div id='cn-admin-weight-table' className='class-card'>
-        <div id='cn-admin-weight-table-content'>
-          <div className='cn-admin-weight-table-title'>
-            Weights
-            <div>
-              {isWeightsEditable && <i className='fa fa-plus cn-blue cursor margin-right' onClick={() => this.toggleWeightCreateModal()} />}
-              <i className='fas fa-pencil-alt cn-blue cursor' onClick={() => this.setState({isWeightsEditable: !isWeightsEditable})} />
-            </div>
-          </div>
-          <div className='cn-space-between-row margin-bottom'>
-            Points?
-            <SliderField
-              name='isPointSlider'
-              onChange={this.toggleIsPoints.bind(this)}
-              value={cl.is_points}
-            />
-          </div>
-          <WeightTable
-            cl={cl}
-            viewOnly={!isWeightsEditable}
-            weights={weights}
-            onDeleteWeight={this.onDeleteWeight.bind(this)}
-            currentWeight={currentWeight}
-            onSelectWeight={this.onSelectWeight.bind(this)}
-          />
-        </div>
-      </div>
+      <Weights
+        cl={this.state.cl}
+        getClass={() => this.getClass()}
+        onChange={this.reloadComponent}
+      />
     )
   }
 
@@ -483,14 +429,27 @@ class ClassAdmin extends React.Component {
   * Render the list of assignments.
   */
   renderAssignments () {
-    const {cl, assignments, weights} = this.state
+    const {cl, assignments, weights, currentAssignment} = this.state
     return (
       <div id='cn-admin-assignment-table' className='class-card'>
         <div id='cn-admin-assignment-table-content'>
           <div className='cn-admin-assignment-table-title'>
             Assignments
-            <i className='fa fa-plus cn-blue cursor margin-right' onClick={() => this.toggleAssignmentModal()} />
+            {this.state.openAssignmentModal
+              ? <i className='fa fa-times cn-blue cursor margin-right' onClick={() => this.toggleAssignmentModal()} />
+              : <i className='fa fa-plus cn-blue cursor margin-right' onClick={() => this.toggleAssignmentModal()} />
+            }
           </div>
+          {this.state.openAssignmentModal &&
+            <AdminAssignmentForm
+              cl={cl}
+              assignment={currentAssignment}
+              onCreateAssignment={this.onCreateAssignment.bind(this)}
+              onUpdateAssignment={this.onUpdateAssignment.bind(this)}
+              isAdmin={true}
+              weights={weights}
+            />
+          }
           <AdminAssignmentTable
             cl={cl}
             assignments={assignments}
@@ -505,6 +464,77 @@ class ClassAdmin extends React.Component {
     )
   }
 
+  renderClassInfoEditPanel () {
+    const {cl} = this.state
+    return (
+      <div className='cn-admin-edit-class'>
+        <div className='cn-admin-edit-class-header'>
+          <div className='cn-admin-edit-class-title'>
+            <i className='fas fa-times' style={{color: '#57B9E4', cursor: 'pointer'}} onClick={() => this.toggleEditClassModal()} />
+            <div>
+              <h2>Edit class: {cl.name}</h2>
+              <h4>{cl.subject} {cl.code}.{cl.section}</h4>
+            </div>
+          </div>
+          <div className='cn-admin-edit-class-header-border' />
+        </div>
+        <ClassForm
+          cl={cl}
+          classPeriod={cl.class_period}
+          onSubmit={this.updateClass.bind(this)}
+          onClose={this.toggleEditClassModal.bind(this)}
+        />
+        <StatusForm
+          cl={cl}
+          onSubmit={this.updateClass.bind(this)}
+        />
+      </div>
+    )
+  }
+
+  renderClassInfoWithChangeRequests () {
+    const {cl} = this.state
+    return (
+      this.state.openEditClassModal
+        ? this.renderClassInfoEditPanel()
+        : <ClassWithChangeRequests
+          cl={cl}
+          schoolName={cl.school.name}
+          semesterName={cl.class_period.name}
+          onEdit={this.toggleEditClassModal.bind(this)}
+          isAdmin={true}
+          toggleWrench={this.toggleWrench.bind(this)}
+          toggleChat={this.toggleChat.bind(this)}
+          toggleDocuments={null}
+          onSelectIssue={null}
+          boxClassName='cn-admin-edit-card'
+          contentClassName='cn-admin-edit-card-content'
+          onChange={this.reloadComponent}
+        />
+    )
+  }
+
+  renderClassInfoWithoutChangeRequests () {
+    const {cl} = this.state
+    return (
+      this.state.openEditClassModal
+        ? this.renderClassInfoEditPanel()
+        : <ClassCard
+          cl={cl}
+          schoolName={cl.school.name}
+          semesterName={cl.class_period.name}
+          onEdit={this.toggleEditClassModal.bind(this)}
+          isAdmin={true}
+          toggleWrench={this.toggleWrench.bind(this)}
+          toggleChat={this.toggleChat.bind(this)}
+          toggleDocuments={null}
+          onSelectIssue={null}
+          boxClassName='cn-admin-edit-card'
+          contentClassName='cn-admin-edit-card-content'
+        />
+    )
+  }
+
   renderClassInfo () {
     const {cl} = this.state
     if (this.state.loadingClass) {
@@ -512,33 +542,8 @@ class ClassAdmin extends React.Component {
     } else {
       return (
         cl.change_requests.filter(c => !changeRequestIsComplete(c)).length > 0
-          ? <ClassWithChangeRequests
-            cl={cl}
-            schoolName={cl.school.name}
-            semesterName={cl.class_period.name}
-            onEdit={this.toggleEditClassModal.bind(this)}
-            isAdmin={true}
-            toggleWrench={this.toggleWrench.bind(this)}
-            toggleChat={this.toggleChat.bind(this)}
-            toggleDocuments={null}
-            onSelectIssue={null}
-            boxClassName='cn-admin-edit-card'
-            contentClassName='cn-admin-edit-card-content'
-            onChange={() => this.reloadComponent()}
-          />
-          : <ClassCard
-            cl={cl}
-            schoolName={cl.school.name}
-            semesterName={cl.class_period.name}
-            onEdit={this.toggleEditClassModal.bind(this)}
-            isAdmin={true}
-            toggleWrench={this.toggleWrench.bind(this)}
-            toggleChat={this.toggleChat.bind(this)}
-            toggleDocuments={null}
-            onSelectIssue={null}
-            boxClassName='cn-admin-edit-card'
-            contentClassName='cn-admin-edit-card-content'
-          />
+          ? this.renderClassInfoWithChangeRequests()
+          : this.renderClassInfoWithoutChangeRequests()
       )
     }
   }
@@ -547,7 +552,7 @@ class ClassAdmin extends React.Component {
     const {cl} = this.state
     return (
       <GradeScale
-        onChange={() => this.reloadComponent()}
+        onChange={this.reloadComponent}
         cl={cl}
         canEdit={true}
         onSubmit={() => this.updateClass()}
@@ -571,6 +576,7 @@ class ClassAdmin extends React.Component {
         onSelectIssue={null}
         boxClassName='cn-admin-edit-card'
         contentClassName='cn-admin-edit-card-content'
+        onChange={this.reloadComponent}
       />
     )
   }
@@ -597,51 +603,20 @@ class ClassAdmin extends React.Component {
     )
   }
 
-  // renderCreatedBy (cl) {
-  //   var subtitle = ''
-  //   if (cl.created_by) {
-  //     subtitle = 'Class Created by ' + cl.created_by
-  //   } else {
-  //     subtitle = 'Unknown class creator or scripted class'
-  //   }
-  //   if (cl.created_on) {
-  //     subtitle = subtitle + ' on ' + cl.created_on
-  //   }
-  //   return subtitle
-  // }
-
-  // renderUpdatedBy (cl) {
-  //   var updateUsers = []
-  //   if (cl.updated_by) {
-  //     updateUsers.push(cl.updated_by)
-  //   }
-  //   for (var index in cl.weights) {
-  //     var weight = cl.weights[index]
-  //     if (weight.updated_by && !updateUsers.includes(weight.updated_by)) {
-  //       updateUsers.push(weight.updated_by)
-  //     }
-  //   }
-  //   for (var index in cl.assignments) {
-  //     var assignment = cl.assignments[index]
-  //     if (assignment.updated_by && !updateUsers.includes(assignment.updated_by)) {
-  //       updateUsers.push(assignment.updated_by)
-  //     }
-  //   }
-  //   var subtitle = ''
-  //   if (updateUsers.length === 0) {
-  //     subtitle = 'Unknown updater or scripted'
-  //   } else if (updateUsers.length > 1) {
-  //     subtitle = 'Crowdsourced updates'
-  //   } else {
-  //     subtitle = 'Updated by ' + updateUsers[0]
-  //   }
-  //   return subtitle
-  // }
-
   renderHistory () {
     return (
       <ChangeRequestHistory cl={this.state.cl} />
     )
+  }
+
+  getIncompleteChangeRequestCount () {
+    let incompleteChangeRequestCount = 0
+    this.state.cl.change_requests.forEach(cr => {
+      if (!changeRequestIsComplete(cr)) {
+        incompleteChangeRequestCount += 1
+      }
+    })
+    return incompleteChangeRequestCount
   }
 
   renderClass () {
@@ -649,33 +624,40 @@ class ClassAdmin extends React.Component {
     return (
       <div id='cn-class-admin-container'>
 
-        <div className={cl.change_requests.length > 0 ? 'cn-admin-col-lg' : 'cn-admin-col-md'}>
+        <div className={this.getIncompleteChangeRequestCount() > 0 ? 'cn-admin-col-lg' : 'cn-admin-col-md'}>
 
           <div id='cn-admin-class-title'>{cl.name}</div>
-          {/* <div className='cn-admin-class-subtitle'>{this.renderCreatedBy(cl)}</div> */}
-          {/* <div className='cn-admin-class-subtitle'>{this.renderUpdatedBy(cl)}</div> */}
 
           <div id='cn-admin-nav'>
             <button className={'button admin-tab' + (this.state.tabState === 'class_info' ? ' active' : '')} onClick={() => this.tabSelect('class_info')}>
-              {cl.change_requests.findIndex((item) => item.change_type.id === 400 && !changeRequestIsComplete(item)) > -1 && <i className='fa fa-warning'/>}
+              {
+                cl.change_requests.filter((item) => item.change_type.id === 400 && !changeRequestIsComplete(item)).length > 0 &&
+                <i className='fas fa-exclamation-circle' style={{marginRight: '4px'}}/>
+              }
               Class Info
             </button>
             <button className={'button admin-tab' + (this.state.tabState === 'grade_scale' ? ' active' : '')} onClick={() => this.tabSelect('grade_scale')}>
-              {cl.change_requests.findIndex((item) => item.change_type.id === 100 && !changeRequestIsComplete(item)) > -1 && <i className='fa fa-warning'/>}
+              {
+                cl.change_requests.filter((item) => item.change_type.id === 100 && !changeRequestIsComplete(item)).length > 0 &&
+                <i className='fas fa-exclamation-circle' style={{marginRight: '4px'}}/>
+              }
               Grade Scale
             </button>
             <button className={'button admin-tab' + (this.state.tabState === 'professor' ? ' active' : '')} onClick={() => this.tabSelect('professor')}>
-              {cl.change_requests.findIndex((item) => item.change_type.id === 300 && !item.is_completed) > -1 && <i className='fa fa-warning'/>}
+              {
+                cl.change_requests.filter((item) => item.change_type.id === 300 && !changeRequestIsComplete(item)).length > 0 &&
+                <i className='fas fa-exclamation-circle' style={{marginRight: '4px'}}/>
+              }
               Professor
             </button>
             <button className={'button admin-tab' + (this.state.tabState === 'weights' ? ' active' : '')} onClick={() => this.tabSelect('weights')}>
-              {cl.change_requests.findIndex((item) => item.change_type.id === 200 && !item.is_completed) > -1 && <i className='fa fa-warning'/>}
+              {
+                cl.change_requests.filter((item) => item.change_type.id === 200 && !changeRequestIsComplete(item)).length > 0 &&
+                <i className='fas fa-exclamation-circle' style={{marginRight: '4px'}}/>
+              }
               Weights
             </button>
-            <button className={'button admin-tab' + (this.state.tabState === 'assignments' ? ' active' : '')} onClick={() => this.tabSelect('assignments')}>
-              {cl.change_requests.findIndex((item) => item.change_type.id === 200 && !item.is_completed) > -1 && <i className='fa fa-warning'/>}
-              Assignments
-            </button>
+            <button className={'button admin-tab' + (this.state.tabState === 'assignments' ? ' active' : '')} onClick={() => this.tabSelect('assignments')}>Assignments</button>
             <button className={'button admin-tab' + (this.state.tabState === 'chat' ? ' active' : '')} onClick={() => this.tabSelect('chat')}>Chat</button>
             <button className={'button admin-tab' + (this.state.tabState === 'students' ? ' active' : '')} onClick={() => this.tabSelect('students')}>Students</button>
             <button className={'button admin-tab' + (this.state.tabState === 'history' ? ' active' : '')} onClick={() => this.tabSelect('history')}>History</button>
@@ -701,14 +683,12 @@ class ClassAdmin extends React.Component {
               contentClassName='cn-admin-footer-card-content'
               onCreateNote={(cl) => this.setState({cl})}
             />
-            {cl.change_requests &&
-              <StudentRequestInfo
-                cl={this.state.cl}
-                boxClassName='cn-admin-footer-card margin-top margin-bottom'
-                contentClassName='cn-admin-footer-card-content'
-                onComplete={this.toggleRequestResolvedModal.bind(this)}
-              />
-            }
+            <StudentRequestInfo
+              cl={this.state.cl}
+              boxClassName='cn-admin-footer-card margin-top margin-bottom'
+              contentClassName='cn-admin-footer-card-content'
+              onComplete={this.toggleRequestResolvedModal.bind(this)}
+            />
           </div>
         </div>
 
@@ -721,12 +701,8 @@ class ClassAdmin extends React.Component {
           />
         </div>
 
-        {this.renderEditClassModal()}
         {this.renderIssuesModal()}
         {this.renderRequestResolvedModal()}
-        {this.renderEditClassModal()}
-        {this.renderWeightCreateModal()}
-        {this.renderAssignmentModal()}
         {this.renderNoDocModal()}
       </div>
     )

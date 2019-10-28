@@ -3,6 +3,7 @@
   min-width: 300px;
 
   #class-editor-professor-content {
+    background-color: pink;
 
     .professor-detail-row {
       @include shadow-box-row;

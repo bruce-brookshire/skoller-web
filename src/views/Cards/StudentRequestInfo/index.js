@@ -3,17 +3,13 @@ import PropTypes from 'prop-types'
 import Card from '../../../components/Card'
 
 class StudentRequestInfo extends React.Component {
-  componentWillMount () {
-  }
-
   /*
   * Get the open change requests.
   */
   getOpenStudentRequests () {
     const {cl} = this.props
     const sr = cl.student_requests.filter(c => !c.is_completed)
-    const cr = cl.change_requests.filter(c => !c.is_completed)
-    return sr.concat(cr)
+    return sr
   }
 
   renderTitle () {

@@ -16,6 +16,7 @@ class ChangeRequest extends React.Component {
       loading: false
     }
   }
+
   renderArrow () {
     return (
       <div className='hub-change-request-arrow'>
@@ -27,19 +28,25 @@ class ChangeRequest extends React.Component {
   async onAccept () {
     let key = this.props.member.member_name
     let form = {
-      'id': this.props.cl.id
+      'id': this.props.cr.change_type.id === 300 ? this.props.cl.professor.id : this.props.cl.id
     }
     if (this.props.cr.change_type.id === 100) {
       form['grade_scale'] = this.props.cl.grade_scale
       form['grade_scale'][this.props.member.member_name] = this.props.member.member_value
-      console.log(form)
     } else {
       form[key] = this.props.member.member_value
     }
-    await actions.classes.updateClass(form)
-      .catch(e => {
-        console.log(e)
-      })
+    if (this.props.cr.change_type.id === 300) {
+      await actions.professors.updateProfessor(form)
+        .catch(e => {
+          console.log(e)
+        })
+    } else {
+      await actions.classes.updateClass(form)
+        .catch(e => {
+          console.log(e)
+        })
+    }
     await actions.classhelp.resolveChangeRequestMember(this.props.member.id)
       .then((res) => {
         this.props.onChange()
@@ -51,10 +58,10 @@ class ChangeRequest extends React.Component {
   }
 
   async onDecline () {
+    console.log(this.props.member)
     await actions.classhelp.resolveChangeRequestMember(this.props.member.id)
       .then((res) => {
         this.props.onChange()
-        console.log(res)
         showSnackbar(`Successfully declined user change`, 'success')
       })
       .catch(e => {
@@ -144,7 +151,6 @@ ChangeRequest.propTypes = {
   cl: PropTypes.object,
   cr: PropTypes.object,
   member: PropTypes.object,
-  yPosition: PropTypes.number,
   width: PropTypes.number,
   onChange: PropTypes.func,
   multipleCrs: PropTypes.object,
