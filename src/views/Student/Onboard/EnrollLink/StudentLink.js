@@ -15,7 +15,7 @@ class StudentLink extends React.Component {
   constructor (props) {
     super(props)
 
-    this.loginStudent()
+    this.getLinkDetail()
 
     this.state = {
       loading: true,
@@ -34,9 +34,13 @@ class StudentLink extends React.Component {
     this.props.rootStore.studentNavStore.setActivePage('calendar')
   }
 
-  async componentWillMount () {
+  getLinkDetail () {
+    this.setState({loading: true})
     actions.students.getStudentByLink(this.props.params.link).then((linkDetail) => {
-      this.setState({linkDetail})
+      this.setState({
+        linkDetail,
+        loading: false
+      })
     }).catch(() => false)
   }
 
@@ -50,10 +54,10 @@ class StudentLink extends React.Component {
         await actions.auth.getUserByToken(this.cookie.get('skollerToken'))
           .then(() => browserHistory.push('/student'))
           .catch(() => {
-            this.setState({loading: false, userNotFound: true, formState: 'sign-up'})
+            this.setState({userNotFound: true, formState: 'sign-up'})
           })
       } else {
-        this.setState({loading: false, userNotFound: true, formState: 'sign-up'})
+        this.setState({userNotFound: true, formState: 'sign-up'})
       }
     }
   }
@@ -83,7 +87,7 @@ class StudentLink extends React.Component {
   renderSignUpForm () {
     return (
       <div>
-        <EnrollSignUp studentLink={this.props.params.link} onSubmit={this.onSubmitSignUpForm} />
+        <EnrollSignUp enrolledBy={this.state.linkDetail.student_id} onSubmit={this.onSubmitSignUpForm} />
         <p>Already have an account? <span className='sk-enroll-link-switch' onClick={() => this.setState({formState: 'login'})}>Login.</span></p>
       </div>
     )
