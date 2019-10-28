@@ -66,6 +66,19 @@ class HomeShare extends React.Component {
       })
   }
 
+  renderShareMessage () {
+    let partner = this.state.partner
+    if (this.state.hasCompletedClass) {
+      return (
+        <p>Because of you, <b>$1 was donated to {partner.philanthropy}.</b> Share this link to raise even more money!</p>
+      )
+    } else {
+      return (
+        <p>Upload your {this.state.classes.length > 1 ? 'syllabi' : 'syllabus'} to get <b>$1 donated to {partner.philanthropy}.</b> Share this link to raise even more money!</p>
+      )
+    }
+  }
+
   render () {
     let partner = this.state.partner
     if (this.state.show) {
