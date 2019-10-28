@@ -150,7 +150,7 @@ class Professor extends React.Component {
             {professor.name_last ? professor.name_last : 'N/A'}
           </div>
         </div>
-        <div className='professor-detail-row' ref={phoneRef => { this.professorRefs.phone_number = phoneRef }}>
+        <div className='professor-detail-row' ref={phoneRef => { this.professorRefs.phone = phoneRef }}>
           <div className='professor-detail-field'>
             <div className='professor-detail-label'>
               Phone
@@ -285,16 +285,22 @@ class Professor extends React.Component {
       crs.forEach(cr => {
         cr.members.forEach(member => {
           if (!member.is_completed && member.member_name !== 'id') {
-            if (Array.isArray(allCrData[member.member_name])) {
-              allCrData[member.member_name].push({member: member, cr: cr})
+            let memberName = member.member_name
+            if (member.member_name === 'availability') {
+              memberName = 'office_availability'
+              member.member_name = memberName
+            } else if (member.member_name === 'phone_number') {
+              memberName = 'phone'
+              member.member_name = memberName
+            }
+            if (Array.isArray(allCrData[memberName])) {
+              allCrData[memberName].push({member: member, cr: cr})
             } else {
-              allCrData[member.member_name] = [{member: member, cr: cr}]
+              allCrData[memberName] = [{member: member, cr: cr}]
             }
           }
         })
       })
-      console.log('allCrData', allCrData)
-      console.log('professorRefs', this.professorRefs)
       Object.keys(allCrData).forEach(key => {
         let membersCount = 0
         allCrData[key].forEach(dataPoint => {
