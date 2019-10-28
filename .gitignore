@@ -2,5 +2,6 @@ node_modules
 *.vim
 .DS_Store
 package-lock.json
+bundle.js
 # ASDF version  management
 .tool-versions
