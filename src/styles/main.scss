@@ -58,9 +58,15 @@
 @import 'components/flex-table';
 @import 'components/grade-scale';
 @import 'components/grid';
+@import 'components/hub-assignment-form';
 @import 'components/hub-class-with-change-requests';
 @import 'components/hub-change-request';
 @import 'components/hub-change-request-history';
+@import 'components/hub-panel-change-request';
+@import 'components/hub-professor';
+@import 'components/hub-weight-form';
+@import 'components/hub-weights';
+@import 'components/landing-banner.scss';
 @import 'components/login-verification.scss';
 @import 'components/modal';
 @import 'components/navbar';
@@ -130,6 +136,7 @@
 @import 'views/find-classes.scss';
 @import 'views/forgot-password.scss';
 @import 'views/hub-accounts.scss';
+@import 'views/hub-admin-login.scss';
 @import 'views/hub-classes.scss';
 @import 'views/hub-landing.scss';
 @import 'views/hub-schools.scss';

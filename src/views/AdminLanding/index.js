@@ -75,29 +75,33 @@ class AdminLanding extends React.Component {
 
   render () {
     return (
-      <form className="form-login" onSubmit={this.onSubmit.bind(this)}>
-        <div className='form-control'>
-          <input
-            label=''
-            name='email'
-            placeholder='Email'
-            onChange={this.setEmail}
-          />
-        </div>
+      <div className='hub-admin-login'>
+        <img alt="Skoller" className='logo' src='/src/assets/images/logo-wide-blue@1x.png' />
+        <h1>Login to the Hub <i className="em em-crystal_ball"></i></h1>
+        <form className="form-login" onSubmit={this.onSubmit.bind(this)}>
+          <div className='form-control'>
+            <input
+              label=''
+              name='email'
+              placeholder='Email'
+              onChange={this.setEmail}
+            />
+          </div>
 
-        <div className='form-control' >
-          <input
-            label=''
-            name='password'
-            placeholder='Password'
-            type='password'
-            onChange={this.setPassword}
-          />
-          <a className='right forgot-password' onClick={this.onForgotPassword.bind(this)}>Forgot password?</a>
-        </div>
+          <div className='form-control' >
+            <input
+              label=''
+              name='password'
+              placeholder='Password'
+              type='password'
+              onChange={this.setPassword}
+            />
+            <a className='right forgot-password' onClick={this.onForgotPassword.bind(this)}>Forgot password?</a>
+          </div>
 
-        <button type="submit" className="button" onClick={this.onSubmit.bind(this)}>Login</button>
-      </form>
+          <button type="submit" className="button" onClick={this.onSubmit.bind(this)}>Login</button>
+        </form>
+      </div>
     )
   }
 }

@@ -58,20 +58,16 @@ $h2-size-sm: 36px;
 
   .cn-landing-container {
     overflow-x: hidden;
-    // height: 100%;
-    // position: relative;
-    // min-height: 100vh;
-    
     background-color: #f5f7f9;
-  
-    @include breakpoint(medium) {
-      padding-bottom: 69px;
-      height: calc(100vh - 69px);
-    }
     background-image: url('../../assets/images/background_landing.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: 30% 100%;
+    min-height: calc(100vh - 69px - 64px);
+    padding: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   
     @include breakpoint(medium) {
       background-position: 0 0;
@@ -83,16 +79,6 @@ $h2-size-sm: 36px;
   
     .cn-landing-content-wrapper{
       margin: 0 auto;
-  
-      @media screen and ( min-height: 730px ) {
-        @include breakpoint(medium) {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-        }
-      }
-  
       max-width: 1000px;
       width: 100%;
   

@@ -65,7 +65,6 @@ export function resolveChangeRequestMember (memberId) {
     })
 }
 
-
 /*
 * Create student request
 */

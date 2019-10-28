@@ -66,16 +66,22 @@ class AdminAssignmentForm extends React.Component {
   */
   initializeState () {
     const {assignment} = this.props
+    let dueNull = false
+    if (assignment) {
+      if (!assignment.due) {
+        dueNull = true
+      }
+    }
     return {
       form: this.initializeFormData(assignment),
-      due_null: false,
+      due_null: dueNull,
       loading: false,
       showDatePicker: false
     }
   }
 
   /*
-  * Method for intializing form data.
+  * Method for initializing form data.
   * Assignment form data.
   *
   * @param [Object] data. initial data
@@ -100,11 +106,10 @@ class AdminAssignmentForm extends React.Component {
   }
 
   /*
-  * Determine whether the user is submiting updated assignment or a new assignment.
+  * Determine whether the user is submitting updated assignment or a new assignment.
   *
   */
   onSubmit () {
-    console.log(this.state.form)
     if (this.state.due_null) {
       requiredFields.due = {}
     }
@@ -177,8 +182,8 @@ class AdminAssignmentForm extends React.Component {
     const disableButton = !this.verifyData(form)
 
     return (
-      <div id='cn-assignment-form'>
-        <div className='cn-section-content-header'>
+      <div id='hub-assignment-form'>
+        <div className='hub-section-content-header'>
           Add assignments
         </div>
         <hr />
@@ -251,8 +256,8 @@ class AdminAssignmentForm extends React.Component {
             />}
           </div>
           <div className='col-xs-4'>
-            <div className='cn-input-container margin-top unknown-due'>
-              <label htmlFor="due_null" className='cn-input-label'>Unknown?</label>
+            <div className='hub-input-container margin-top unknown-due'>
+              <label htmlFor="due_null" className='hub-input-label'>Unknown?</label>
               <div className="checkbox-appearance"
                 style={{ backgroundColor: this.state.due_null ? '#57b9e4' : 'transparent' }}
                 onClick={() => {

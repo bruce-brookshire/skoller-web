@@ -1,0 +1,36 @@
+.hub-admin-login {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: 240px;
+  }
+
+  .form-login {
+    min-width: 300px;
+
+    .form-control {
+      display: flex;
+      flex-direction: column;
+
+      input {
+        @include remove-form-styling;
+        @include sk-form-field;
+      }
+
+      .right {
+        text-align: right;
+      }
+    }
+
+    button {
+      width: 100%;
+      text-align: center;
+      margin-top: 1rem;
+    }
+  }
+}
