@@ -60,7 +60,7 @@ class SignUpForm extends React.Component {
         phone: this.stripPhone(this.state.phone),
         future_reminder_notification_time: '22:00:00',
         notification_time: '12:00:00',
-        enrolled_by: this.props.studentLink ? this.props.studentLink : ''
+        enrolled_by: this.props.enrolledBy ? this.props.enrolledBy : ''
       }
     }
     console.log(newUser)
@@ -144,7 +144,7 @@ SignUpForm.propTypes = {
   rootStore: PropTypes.object,
   renderPartner: PropTypes.func,
   partner: PropTypes.object,
-  studentLink: PropTypes.string
+  enrolledBy: PropTypes.string
 }
 
 export default SignUpForm
