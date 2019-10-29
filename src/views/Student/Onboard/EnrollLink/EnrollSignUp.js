@@ -59,11 +59,14 @@ class SignUpForm extends React.Component {
         name_last: this.state.lastName,
         phone: this.stripPhone(this.state.phone),
         future_reminder_notification_time: '22:00:00',
-        notification_time: '12:00:00',
-        enrolled_by: this.props.enrolledBy ? this.props.enrolledBy : ''
+        notification_time: '12:00:00'
       }
     }
-    console.log(newUser)
+    if (this.props.enrolledBy) {
+      newUser.student.link = this.props.enrolledBy
+    } else if (this.props.enrollmentLink) {
+      newUser.student.enrollment_link = this.props.enrollmentLink
+    }
     actions.auth
       .registerUser(newUser)
       .then(() => {
@@ -144,7 +147,8 @@ SignUpForm.propTypes = {
   rootStore: PropTypes.object,
   renderPartner: PropTypes.func,
   partner: PropTypes.object,
-  enrolledBy: PropTypes.string
+  enrolledBy: PropTypes.string,
+  enrollmentLink: PropTypes.string
 }
 
 export default SignUpForm
