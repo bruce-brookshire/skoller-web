@@ -5,7 +5,8 @@ import StudentLayout from '../../components/StudentLayout'
 import actions from '../../../actions'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import ShareClasses from './ShareClasses'
-import ShareNoClasses from './ShareNoClasses';
+import ShareNoClasses from './ShareNoClasses'
+import partners from '../Onboard/partners'
 
 @inject('rootStore') @observer
 class Share extends React.Component {
@@ -15,11 +16,34 @@ class Share extends React.Component {
     this.state = {
       user: this.props.rootStore.userStore.user,
       classes: [],
-      loading: true
+      loading: true,
+      partner: null
     }
 
     this.getClasses()
     this.props.rootStore.studentNavStore.setActivePage('share')
+  }
+
+  getPartner (partnerSlug) {
+    let partner = null
+    Object.keys(partners).forEach(partnerKey => {
+      if (partners[partnerKey].slug === partnerSlug) {
+        partner = partners[partnerKey]
+      }
+    })
+    return partner
+  }
+
+  async getPartnerByUser () {
+    await actions.students.getStudentSignupOrganization(this.props.rootStore.userStore.user.student.id)
+      .then((r) => {
+        let slug = r.link.replace(/(.+)(\/c\/)/g, '')
+        this.setState({partner: this.getPartner(slug), show: true})
+      })
+      .catch(r => {
+        this.setState({partner: false})
+      })
+    console.log(this.state.partner)
   }
 
   getClasses () {
@@ -38,7 +62,13 @@ class Share extends React.Component {
         <h1>Share with Your Community</h1>
         <p>Inviting classmates to Skoller helps you keep up with classes and earn points!</p>
         <div className='sk-share-points'>
-          <p>Your points: {this.state.user.student.points}</p>
+          {this.state.partner
+            ? <div>
+              <p>Your raise: ${this.state.user.student.points}</p>
+              <p>{this.state.partner.name} raise: ${this.state.user.student.points}</p>
+            </div>
+            : <p>Your points: {this.state.user.student.points}</p>
+          }
         </div>
       </div>
     )

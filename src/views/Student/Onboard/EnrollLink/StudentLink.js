@@ -73,7 +73,6 @@ class StudentLink extends React.Component {
 
   userName () {
     const {linkDetail} = this.state
-    console.log(linkDetail)
     if (linkDetail && linkDetail.student_name_first) {
       return linkDetail.student_name_first
     } else {

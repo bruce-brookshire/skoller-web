@@ -63,7 +63,6 @@ class SignUpForm extends React.Component {
         enrolled_by: this.props.enrolledBy ? this.props.enrolledBy : ''
       }
     }
-    console.log(newUser)
     actions.auth
       .registerUser(newUser)
       .then(() => {
