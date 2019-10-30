@@ -174,13 +174,6 @@ function requireAuth (nextState, replaceState) {
 * to the onboarding page.
 */
 function authenticateStudent (user) {
-  if (user.student) {
-    // return actions.classes.getStudentClassesById(user.student.id).then((classes) => {
-    //   if (classes.length === 0) {
-    //     browserHistory.push('/student/find-classes')
-    //   }
-    // }).catch(() => false)
-  }
   return new Promise((resolve, reject) => {
     resolve()
   })

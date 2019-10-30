@@ -7,10 +7,17 @@ class ShareNoClasses extends React.Component {
     return (
       <div className='sk-share-no-classes'>
         <h2>Send Your Link to Classmates</h2>
-        <p>Click the box to copy your personal Skoller link!</p>
+        {this.props.partner
+          ? <p
+            style={{color: '#' + this.props.partner.primaryColor, margin: '0'}}
+          >
+            Money is donated every time a student signs up with this link!
+          </p>
+          : <p>Click the box to copy your personal Skoller link!</p>
+        }
         <div>
           <CopyBox
-            linkValue={this.props.user.student.enrollment_link}
+            linkValue={this.props.partner ? 'https://skoller.co/c/' + this.props.partner.slug : this.props.user.student.enrollment_link}
           />
         </div>
       </div>
@@ -25,7 +32,8 @@ class ShareNoClasses extends React.Component {
 }
 
 ShareNoClasses.propTypes = {
-  user: PropTypes.object
+  user: PropTypes.object,
+  partner: PropTypes.object
 }
 
 export default ShareNoClasses

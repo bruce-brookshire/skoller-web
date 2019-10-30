@@ -20,6 +20,7 @@ class Share extends React.Component {
       partner: null
     }
 
+    this.getPartnerByUser()
     this.getClasses()
     this.props.rootStore.studentNavStore.setActivePage('share')
   }
@@ -37,6 +38,7 @@ class Share extends React.Component {
   async getPartnerByUser () {
     await actions.students.getStudentSignupOrganization(this.props.rootStore.userStore.user.student.id)
       .then((r) => {
+        console.log(r)
         let slug = r.link.replace(/(.+)(\/c\/)/g, '')
         this.setState({partner: this.getPartner(slug), show: true})
       })
@@ -44,6 +46,7 @@ class Share extends React.Component {
         this.setState({partner: false})
       })
     console.log(this.state.partner)
+    console.log(this.state.user)
   }
 
   getClasses () {
@@ -61,7 +64,10 @@ class Share extends React.Component {
       <div className='sk-share-header'>
         <h1>Share with Your Community</h1>
         <p>Inviting classmates to Skoller helps you keep up with classes and earn points!</p>
-        <div className='sk-share-points'>
+        <div
+          className='sk-share-points'
+          style={{backgroundColor: this.state.partner ? '#' + this.state.partner.primaryColor : ''}}
+        >
           {this.state.partner
             ? <div>
               <p>Your raise: ${this.state.user.student.points}</p>
@@ -82,9 +88,11 @@ class Share extends React.Component {
           ? <ShareClasses
             classes={this.state.classes}
             user={this.state.user}
+            partner={this.state.partner}
           />
           : <ShareNoClasses
             user={this.state.user}
+            partner={this.state.partner}
           />
         }
       </div>

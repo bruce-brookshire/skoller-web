@@ -59,17 +59,33 @@ class ShareClasses extends React.Component {
 
   renderShareMessage () {
     const name = this.state.classSelection.name
-    return (
-      'Ditch your paper planner. Skoller unlocks academic organization and keeps you on track all year long. Our class ' +
-      name + " is already set up. Sign up through the link you'll automatically be enrolled in our class.\n" +
-      '\n' + this.state.classSelection.enrollment_link
-    )
+    const cl = this.state.classSelection
+    if (cl.id % 2 === 0) {
+      return (
+        'Ditch your paper planner. Skoller unlocks academic organization and keeps you on track all year long. Our class ' +
+        name + " is already set up. Sign up through the link you'll automatically be enrolled in our class.\n" +
+        '\n' + this.state.classSelection.enrollment_link
+      )
+    } else {
+      return (
+        'This new app takes our syllabus and sends reminders about upcoming due dates, organizes assignments into a calendar, and much more. Our class ' +
+        name + " is already set up. Sign up through the link you'll automatically be enrolled in our class.\n" +
+        '\n' + this.state.classSelection.enrollment_link
+      )
+    }
   }
 
   renderShareForm () {
     return (
       <div className='sk-share-form'>
         <h2>Send Link to Classmates</h2>
+        {this.props.partner &&
+          <p
+            style={{color: '#' + this.props.partner.primaryColor, margin: '0'}}
+          >
+            Money is donated every time a student signs up with these links!
+          </p>
+        }
         <div className='sk-share-form-section'>
           <h4>1. Select a class</h4>
           {this.renderSelect()}
@@ -98,7 +114,8 @@ class ShareClasses extends React.Component {
 
 ShareClasses.propTypes = {
   classes: PropTypes.array,
-  user: PropTypes.object
+  user: PropTypes.object,
+  partner: PropTypes.object
 }
 
 export default ShareClasses
