@@ -87,7 +87,7 @@ class StudentLink extends React.Component {
   renderSignUpForm () {
     return (
       <div>
-        <EnrollSignUp enrolledBy={this.state.linkDetail.student_id} onSubmit={this.onSubmitSignUpForm} />
+        <EnrollSignUp enrolledBy={this.props.params.link} onSubmit={this.onSubmitSignUpForm} />
         <p>Already have an account? <span className='sk-enroll-link-switch' onClick={() => this.setState({formState: 'login'})}>Login.</span></p>
       </div>
     )
