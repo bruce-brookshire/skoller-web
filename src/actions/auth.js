@@ -70,7 +70,6 @@ const verifyStudentPhoneNumberError = (e) => {
 export function verifyStudentPhoneNumber (phone) {
   return post(`/api/v1/students/login`, phone, verifyStudentPhoneNumberError)
     .catch(error => {
-      console.log(error)
       return Promise.reject(error)
     })
 }
@@ -270,7 +269,6 @@ export function getRoles () {
 * @params [Object] form. User form data.
 */
 export function updateAccount (form) {
-  console.log(form)
   return put(`/api/v1/users/${form.id}`, form, 'Error updating user. Try again.')
     .then(data => {
       return data

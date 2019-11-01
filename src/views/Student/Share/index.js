@@ -38,15 +38,12 @@ class Share extends React.Component {
   async getPartnerByUser () {
     await actions.students.getStudentSignupOrganization(this.props.rootStore.userStore.user.student.id)
       .then((r) => {
-        console.log(r)
         let slug = r.link.replace(/(.+)(\/c\/)/g, '')
         this.setState({partner: this.getPartner(slug), show: true})
       })
       .catch(r => {
         this.setState({partner: false})
       })
-    console.log(this.state.partner)
-    console.log(this.state.user)
   }
 
   getClasses () {
@@ -60,6 +57,7 @@ class Share extends React.Component {
   }
 
   renderHeader () {
+    console.log(this.state.user.student.raise_effort)
     return (
       <div className='sk-share-header'>
         <h1>Share with Your Community</h1>
@@ -70,8 +68,8 @@ class Share extends React.Component {
         >
           {this.state.partner
             ? <div>
-              <p>Your raise: ${this.state.user.student.points}</p>
-              <p>{this.state.partner.name} raise: ${this.state.user.student.points}</p>
+              <p>Your raise: ${this.state.user.student.raise_effort.personal_signups}</p>
+              <p>{this.state.partner.name} raise: ${this.state.user.student.raise_effort.org_singups}</p>
             </div>
             : <p>Your points: {this.state.user.student.points}</p>
           }
