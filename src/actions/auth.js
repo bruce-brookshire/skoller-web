@@ -1,7 +1,7 @@
 import {post, get, put} from '../utilities/api'
 import {showSnackbar} from '../utilities/snackbar'
 import stores from '../stores'
-const {userStore} = stores
+const {userStore, studentClassesStore} = stores
 
 /*
 * Authenticate login credentials. Set the user.
@@ -45,6 +45,7 @@ export function loginStudentWithPhone (phone, verificationCode) {
       userStore.authToken = `Bearer ${data.token}`
       userStore.user = data.user
       userStore.loading = false
+      studentClassesStore.getClasses()
     })
     .catch(error => {
       userStore.loading = false
@@ -145,6 +146,7 @@ export function getUserByToken (token) {
       .then(data => {
         userStore.user = data.user
         userStore.authToken = token
+        studentClassesStore.getClasses()
         return data
       })
       .catch(error => {
@@ -154,6 +156,7 @@ export function getUserByToken (token) {
     return post(`/api/v1/users/token-login`, '')
       .then(data => {
         userStore.user = data.user
+        studentClassesStore.getClasses()
         return data
       })
       .catch(error => {

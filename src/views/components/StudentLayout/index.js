@@ -1,39 +1,34 @@
 import React from 'react'
 import StudentNav from '../StudentNav'
 import PropTypes from 'prop-types'
-import {browserHistory} from 'react-router'
-import actions from '../../../actions'
 import SkBanner from './SkBanner'
+import {inject, observer} from 'mobx-react'
+import SkLoader from '../../../assets/sk-icons/SkLoader'
 
+@inject('rootStore') @observer
 class StudentLayout extends React.Component {
-  onSubmitLogin () {
-    const { userStore: { user } } = this.props.rootStore
-
-    if (user.student) {
-      if (user.student.is_verified) {
-        actions.classes.getStudentClassesById(user.student.id).then((classes) => {
-          classes.length > 0
-            ? browserHistory.push('/student/classes')
-            : browserHistory.push('/student/find-classes')
-        }).catch(() => false)
-      } else {
-        browserHistory.push('/student/verify')
-      }
+  gettingData () {
+    if (this.props.rootStore.studentClassesStore.loading) {
+      return true
     } else {
-      browserHistory.push('/hub')
+      return false
     }
   }
 
   render () {
-    return (
-      <div className='sk-layout'>
-        <StudentNav />
-        <main>
-          <SkBanner />
-          {this.props.children}
-        </main>
-      </div>
-    )
+    if (this.gettingData()) {
+      return <SkLoader />
+    } else {
+      return (
+        <div className='sk-layout'>
+          <StudentNav />
+          <main>
+            <SkBanner />
+            {this.props.children}
+          </main>
+        </div>
+      )
+    }
   }
 }
 

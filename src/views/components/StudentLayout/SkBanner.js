@@ -3,7 +3,6 @@ import { inject, observer } from 'mobx-react'
 import PropTypes from 'prop-types'
 import partners from '../../../views/Student/Onboard/partners'
 import { browserHistory } from 'react-router'
-import actions from '../../../actions';
 
 @inject('rootStore') @observer
 class SkBanner extends React.Component {
@@ -23,14 +22,12 @@ class SkBanner extends React.Component {
     }
   }
 
-  async hasCompletedClass () {
-    let classes = []
-    await actions.classes.getStudentClassesById(this.props.rootStore.userStore.user.student.id)
-      .then((data) => { classes = data })
+  hasCompletedClass () {
+    let classes = this.props.rootStore.studentClassesStore.classes
     let hasCompletedClass = false
     if (classes) {
       classes.forEach(cl => {
-        if (cl.status.id > 1100) {
+        if (cl.status.id > 1300) {
           hasCompletedClass = true
         }
       })
@@ -38,10 +35,13 @@ class SkBanner extends React.Component {
     return hasCompletedClass
   }
 
-  async partnerLogic () {
-    console.log('has completed class')
-    let hasCompletedClass = await this.hasCompletedClass()
-    if (this.props.rootStore.userStore.user.student.raise_effort && hasCompletedClass) {
+  partnerLogic () {
+    let hasCompletedClass = this.hasCompletedClass()
+    if (
+      this.props.rootStore.userStore.user.student.raise_effort &&
+      hasCompletedClass &&
+      this.props.rootStore.studentNavStore.activePage !== 'share'
+    ) {
       return true
     } else {
       return false
@@ -60,7 +60,6 @@ class SkBanner extends React.Component {
 
   renderPartnerBanner () {
     const partner = this.getPartner(this.props.rootStore.userStore.user.student.raise_effort.org_name)
-    console.log(partner)
     return (
       <div className='sk-banner-partner'>
         <div className='sk-banner-partner-logo'>

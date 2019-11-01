@@ -28,6 +28,7 @@ class AddClassModal extends React.Component {
   }
 
   onSubmit () {
+    this.props.rootStore.studentClassesStore.updateClasses()
     this.props.closeModal()
   }
 
