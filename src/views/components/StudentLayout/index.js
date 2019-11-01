@@ -3,6 +3,7 @@ import StudentNav from '../StudentNav'
 import PropTypes from 'prop-types'
 import {browserHistory} from 'react-router'
 import actions from '../../../actions'
+import SkBanner from './SkBanner'
 
 class StudentLayout extends React.Component {
   onSubmitLogin () {
@@ -27,7 +28,10 @@ class StudentLayout extends React.Component {
     return (
       <div className='sk-layout'>
         <StudentNav />
-        <main>{this.props.children}</main>
+        <main>
+          <SkBanner />
+          {this.props.children}
+        </main>
       </div>
     )
   }

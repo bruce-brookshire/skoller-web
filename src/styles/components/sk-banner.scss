@@ -1,0 +1,56 @@
+.sk-banner-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  .sk-banner {
+    @include skoller-cell;
+    margin: 1rem 1rem 0 1rem;
+    padding: 1rem;
+    text-align: center;
+
+    .sk-banner-partner {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      
+      .sk-banner-partner-logo {
+        img {
+          width: 50px;
+        }
+      }
+
+      .sk-banner-partner-content {
+        padding-left: 1rem;
+
+        p {
+          margin: 0;
+        }
+
+        .sk-banner-partner-content-headline {
+          font-weight: 600;
+        }
+
+        .sk-banner-partner-content-action {
+          display: flex;
+          flex-direction: row;
+
+          .sk-banner-partner-content-button {
+            @include sk-standard-button;
+            margin: 0;
+
+            p {
+              font-weight: 600;
+            }
+          }
+
+          p {
+            padding: 8px 0 0 4px;
+            font-weight: 200;
+          }
+        }
+      }
+    }
+  }
+}
