@@ -53,6 +53,19 @@ export function resolveChangeRequest (requestId) {
 }
 
 /*
+* Resolve change request member
+*/
+export function resolveChangeRequestMember (memberId) {
+  return post(`/api/v1/changes/member/${memberId}/complete`, null, 'Error resolving change request. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
 * Create student request
 */
 export function createStudentRequest (classId, requestTypeId, data) {

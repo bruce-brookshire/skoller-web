@@ -22,7 +22,6 @@ import Home from './views/Student/Home'
 import Calendar from './views/Student/Calendar'
 import MyClasses from './views/Student/MyClasses'
 import Tasks from './views/Student/Tasks'
-import FindClasses from './views/Student/FindClasses'
 import Verification from './views/components/Verification'
 import ClassLink from './views/Student/ClassLink'
 import ClassDetail from './views/Student/ClassDetail'
@@ -44,8 +43,6 @@ import Analytics from './views/Hub/Analytics'
 import Switchboard from './views/Hub/Switchboard'
 import ReportList from './views/Hub/ReportList'
 
-import EnrollmentLinkLanding from './views/EnrollmentLink/Landing'
-import StudentLink from './views/StudentLink'
 import Enroll from './views/EnrollmentLink/Enroll'
 import DownloadApp from './views/components/DownloadApp'
 
@@ -69,13 +66,15 @@ const router = (
       <Route path='/our-team' component={OurTeam} />
       <Route path='/faq' component={Faq} />
       <Route path='/enroll' component={Enroll} />
-      {/* <Route path='/s/:link' component={StudentLink} /> */}
+
       <Route path='/c(/:partner)' component={Onboard} type='onboard' />
-      <Route path='/download' component={DownloadApp} />
-      <Route path='/pitch-deck' component={PitchDeck} />
       <Route path='/o(/:partner)' component={Onboard} type='onboard' />
       <Route path='/e/:link' component={Onboard} type='e' />
       <Route path='/s/:link' component={Onboard} type='s' />
+
+      <Route path='/download' component={DownloadApp} />
+      <Route path='/pitch-deck' component={PitchDeck} />
+
       <Route path='/app' component={Layout} onEnter={requireAuth}>
         <IndexRedirect to='/student/home' />
         <Route path='/student'>
@@ -106,7 +105,7 @@ const router = (
         </Route>
 
         <Route path='/class/:classId/syllabus_tool' component={SyllabusTool} />
-        <Route path='/class/:classId/admin' component={ClassAdmin} onEnter={requireAdmin} />
+        <Route path='/class/:classId/admin(/:tabState)' component={ClassAdmin} onEnter={requireAdmin} />
         <Route path='/assignment/:assignmentId/admin' component={AssignmentAdmin} onEnter={requireAdmin} />
       </Route>
       <Route path="/logout" onEnter={logout} />

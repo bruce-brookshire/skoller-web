@@ -134,7 +134,7 @@ class AdminAssignmentTable extends React.Component {
         id='class-editor-admin-assignments-table'
         className={`${viewOnly ? 'view-only' : ''}`}
         ref={(field) => { this.sectionControl = field }}
-        style={{boxShadow: this.state.showScrollIndicator ? 'inset 0 -10px 10px -10px #00000050' : ''}}
+        style={{boxShadow: this.state.showScrollIndicator ? 'inset 0 -10px 10px -10px #00000025' : ''}}
       >
         <div id='assignment-rows'>
           {this.renderAssignments()}

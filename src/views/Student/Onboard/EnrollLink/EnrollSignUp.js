@@ -62,13 +62,15 @@ class SignUpForm extends React.Component {
         notification_time: '12:00:00'
       }
     }
-    console.log(newUser)
+    if (this.props.enrolledBy) {
+      newUser.student.link = this.props.enrolledBy
+    } else if (this.props.enrollmentLink) {
+      newUser.student.enrollment_link = this.props.enrollmentLink
+    }
     actions.auth
       .registerUser(newUser)
       .then(() => {
-        // actions.auth.verifyStudentPhoneNumber({phone: newUser.student.phone}).then(() => {
         this.props.onSubmit(newUser)
-        // })
       })
       .catch(error => console.log(error))
   }
@@ -144,7 +146,9 @@ SignUpForm.propTypes = {
   onSubmit: PropTypes.func,
   rootStore: PropTypes.object,
   renderPartner: PropTypes.func,
-  partner: PropTypes.object
+  partner: PropTypes.object,
+  enrolledBy: PropTypes.string,
+  enrollmentLink: PropTypes.string
 }
 
 export default SignUpForm

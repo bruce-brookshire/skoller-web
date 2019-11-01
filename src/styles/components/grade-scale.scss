@@ -1,41 +1,57 @@
 #class-editor-grade-scale {
-  @include shadow-box;
   min-width: 200px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
 
-  #class-editor-grade-scale-content {
-    #grade-scale-form {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
+  .class-editor-grade-scale-card {
+    flex: 1 1 50%;
 
-      .grade-scale-input {
-        width: 5em;
+    #class-editor-grade-scale-content {
+      #grade-scale-form {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+  
+        .grade-scale-input {
+          width: 5em;
+        }
       }
     }
-  }
-
-  .cn-grade-scale-options {
-    display: flex;
-    justify-content: center;
-  }
-
-  .grade-scale-list {
-    list-style: none;
-    width: 7em;
-
-    .grade-row {
+  
+    .cn-grade-scale-options {
       display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: baseline;
-
-      .grade {
-        width: 100%;
+      justify-content: center;
+    }
+  
+    .grade-scale-list {
+      list-style: none;
+      width: 9em;
+  
+      .grade-row {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        align-items: center;
+        align-items: baseline;
+        margin: 2rem 0;
+        width: 100%;
+  
+        .grade {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+
+          .grade-min {
+            width: 60px;
+          }
+        }
       }
     }
+  }
+  
+  .class-editor-grade-scale-crs {
+    width: 50%;
   }
 }

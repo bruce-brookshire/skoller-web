@@ -32,6 +32,7 @@
   #cn-admin-class-title {
     @include shadow-box-title;
     border-bottom: 0px solid black;
+    font-size: 32px;
   }
 
   .cn-admin-class-subtitle {
@@ -42,13 +43,25 @@
   #cn-admin-nav {
     display: flex;
     flex-direction: row;
-    justify-content: left;
-    width: 100%;
+    justify-content: space-between;
+    width: calc(100% + 1rem);
     flex-wrap: wrap;
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
 
     .admin-tab {
-      flex: 0 1 33.3333%;
-      border-radius: 0;
+      flex: 1 1 128px;
+      min-width: 128px;
+      border-radius: 5px;
+      margin: 0.25rem 0.5rem;
+      border: 1px solid $cn-font-color;
+    }
+
+    .admin-tab-hidden {
+      flex: 1 1 128px;
+      min-width: 128px;
+      margin: 0.25rem 0.5rem;
+      height: 0;
     }
 
     .active {
@@ -76,6 +89,32 @@
 
     .cn-admin-edit-card-content {
 
+    }
+
+    .cn-admin-edit-class {
+      @include skoller-cell;
+      padding: 1rem;
+
+      .cn-admin-edit-class-header {
+        .cn-admin-edit-class-header-border {
+          border-bottom: 1px solid $cn-font-color;
+        }
+
+        .cn-admin-edit-class-title {
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-start;
+
+          h2 {
+            margin: 0 0 0 8px;
+          }
+    
+          h4 {
+            margin: 0 0 0px 8px;
+            font-size: 14px;
+          }
+        }
+      }
     }
   }
 

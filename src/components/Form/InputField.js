@@ -59,7 +59,7 @@ class InputInfoField extends React.Component {
     const {containerClassName, labelClassName, inputClassName,
       containerActiveClassName, labelActiveClassName, inputActiveClassName,
       containerErrorClassName, labelErrorClassName, inputErrorClassName,
-      id, label, error, showErrorMessage
+      id, label, error, showErrorMessage, required
     } = this.props
 
     if (containerClassName) containerClasses.push(containerClassName)
@@ -90,7 +90,7 @@ class InputInfoField extends React.Component {
         <div className={containerClasses.join(' ')}>
           {label
             ? <label className={labelClasses.join(' ')} htmlFor={id}>
-              {label} {this.renderInfo()}
+              {label}{required ? <span style={{color: 'red'}}>*</span> : ''} {this.renderInfo()}
             </label> : null
           }
           <input
@@ -135,6 +135,7 @@ InputInfoField.propTypes = {
   onChange: PropTypes.func.isRequired,
   onFocus: PropTypes.func,
   placeholder: PropTypes.string,
+  required: PropTypes.bool,
   type: PropTypes.string,
   size: PropTypes.number,
   max: PropTypes.number,

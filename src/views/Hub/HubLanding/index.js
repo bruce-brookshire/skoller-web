@@ -167,7 +167,7 @@ class HubLanding extends React.Component {
             <button className='nav-button admin button full-width' onClick={() =>
               browserHistory.push({pathname: '/hub/reports', state: {reports: this.state.reports}})}>
               {/* <img src='/src/assets/images/icons/School.png'/> */}
-              <i className='fa fa-file-csv' style={{color: '#FEFEFE', fontSize: '1.4rem', paddingBottom: '4px'}}></i>
+              <i className='fa fa-flag' style={{color: '#FEFEFE', fontSize: '1.4rem', paddingBottom: '4px'}}></i>
               <span>Reports (
                 {this.state.loadingReports ? <Loading style={{color: 'white'}}/>
                   : this.state.reports.length

@@ -9,7 +9,8 @@ import {
   updateAssignment,
   getTaskAssignments,
   gradeAssignment,
-  removeGradeFromAssignment
+  removeGradeFromAssignment,
+  updateStudentAssignment
 } from './assignments'
 import { getAnalytics } from './analytics'
 import {
@@ -60,6 +61,7 @@ import {
   getHelpTypes,
   getRequestTypes,
   resolveChangeRequest,
+  resolveChangeRequestMember,
   createStudentRequest,
   resolveStudentRequest
 } from './classhelp'
@@ -178,7 +180,8 @@ const actions = {
     getTaskAssignments,
     gradeAssignment,
     removeGradeFromAssignment,
-    getAllStudentAssignments
+    getAllStudentAssignments,
+    updateStudentAssignment
   },
   auth: {
     authenticateUser,
@@ -228,6 +231,7 @@ const actions = {
     getHelpTypes,
     getRequestTypes,
     resolveChangeRequest,
+    resolveChangeRequestMember,
     createStudentRequest,
     resolveStudentRequest
   },

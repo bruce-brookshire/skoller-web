@@ -50,14 +50,14 @@ class FirstClass extends React.Component {
         if (id === 1100) {
           status = 'needSyllabus'
           sammiMessage = `Let's get your first class set up!`
-          mobileMessage = `Head over to skoller.co on your computer to upload your syllabus.`
+          mobileMessage = `Head over to skoller.co on your computer to login and upload your syllabus.`
         } else if (id === 1200) {
           status = 'inReview'
           sammiMessage = `Someone already uploaded the syllabus!`
         } else if (id === 1300) {
           status = 'diy'
           sammiMessage = `Someone already uploaded the syllabus, but we need a little help.`
-          mobileMessage = `Head over to skoller.co on your computer to finish setting up your class.`
+          mobileMessage = `Head over to skoller.co on your computer to login and finish setting up your class.`
         } else if (id >= 1400) {
           status = 'live'
           sammiMessage = `WOOHOO! Your class is live ⚡️`

@@ -6,11 +6,33 @@ import Loading from '../../../components/Loading'
 import actions from '../../../actions'
 import CommonScaleModal from './CommonScaleModal'
 import Card from '../../../components/Card'
+import { changeRequestIsComplete } from '../../../utilities/changeRequests'
+import AdminGradeScaleChangeRequest from './AdminGradeScaleChangeRequest'
 
 class GradeScale extends React.Component {
   constructor (props) {
     super(props)
     this.state = this.initializeState()
+    this.gradeRefs = {}
+  }
+
+  componentDidMount () {
+    this.setState({
+      mounted: true,
+      changeRequests: this.checkForChangeRequests()
+    })
+  }
+
+  checkForChangeRequests () {
+    let i = 0
+    if (this.props.cl.change_requests) {
+      this.props.cl.change_requests.forEach(cr => {
+        if (cr.change_type.id === 100 && !changeRequestIsComplete(cr)) {
+          i += 1
+        }
+      })
+    }
+    return i > 0
   }
 
   /*
@@ -24,14 +46,16 @@ class GradeScale extends React.Component {
       form: this.initializeForm(),
       loading: false,
       currentGradeScale: this.props.cl.grade_scale || {},
-      isEditable: false
+      isEditable: false,
+      gradeRefs: [],
+      mounted: false
     }
   }
 
   initializeForm () {
     return {
-      grade: '',
-      min: ''
+      grade: null,
+      min: null
     }
   }
 
@@ -65,26 +89,42 @@ class GradeScale extends React.Component {
   }
 
   renderScale () {
-    const gradeScale = this.props.cl.grade_scale
-    const {isEditable} = this.state
+    if (this.props.cl.grade_scale) {
+      let gradeScale = {}
+      Object.keys(this.props.cl.grade_scale).forEach(grade => {
+        gradeScale[grade] = {grade: this.props.cl.grade_scale[grade], known: true}
+      })
+      const {isEditable} = this.state
+      let gradeScaleArray = Object.keys(gradeScale).sort((a, b) => {
+        return gradeScale[b].grade > gradeScale[a].grade ? 1 : -1
+      })
 
-    return (
-      gradeScale
-        ? <ul className="grade-scale-list">
-          {Object.keys(gradeScale).sort((a, b) => {
-            return parseFloat(gradeScale[a]) < parseFloat(gradeScale[b]) ? 1 : -1
-          }).map((key, idx) =>
-            <li key={idx} className="grade-row">
-              {isEditable && this.renderDeleteButton(key)}
-              <div className="grade">
-                <div className="grade-key">{key}</div>
-                <div className="grade-min">{gradeScale[key]}</div>
-              </div>
-            </li>
+      return (
+        <ul className="grade-scale-list">
+          {gradeScaleArray.map((key, idx) =>
+            isEditable
+              ? gradeScale[key].known &&
+                <li key={idx} className={'grade-row'}>
+                  {this.renderDeleteButton(key)}
+                  <div className="grade" ref={ref => { this.gradeRefs[key] = ref }} style={{fontStyle: gradeScale[key].known ? '' : 'italic'}}>
+                    <div className="grade-key">{key}</div>
+                    <div className="grade-min">{gradeScale[key].grade} {gradeScale[key].known ? '' : ' (new)'}</div>
+                  </div>
+                </li>
+              : <li key={idx} className={'grade-row'}>
+                <div className="grade" ref={ref => { this.gradeRefs[key] = ref }} style={{fontStyle: gradeScale[key].known ? '' : 'italic'}}>
+                  <div className="grade-key">{key}</div>
+                  <div className="grade-min">{gradeScale[key].grade} {gradeScale[key].known ? '' : ' (new)'}</div>
+                </div>
+              </li>
           )}
         </ul>
-        : <div className='margin-top'>There is no grade scale</div>
-    )
+      )
+    } else {
+      return (
+        <div className='margin-top'>There is no grade scale</div>
+      )
+    }
   }
 
   renderSubmitButton () {
@@ -173,7 +213,9 @@ class GradeScale extends React.Component {
     const {isEditable} = this.state
     return (
       <div id='class-editor-grade-scale-content'>
-        {this.renderScale()}
+        {
+          this.renderScale()
+        }
         {isEditable && this.renderForm()}
         {isEditable && this.renderSubmitButton()}
         {isEditable && this.renderOptions()}
@@ -193,15 +235,33 @@ class GradeScale extends React.Component {
     )
   }
 
+  renderChangeRequests () {
+    let crs = this.props.cl.change_requests.filter(cr => cr.change_type.id === 100 && !changeRequestIsComplete(cr))
+    return (
+      <AdminGradeScaleChangeRequest
+        crs={crs}
+        cl={this.props.cl}
+        onChange={this.props.onChange}
+      />
+    )
+  }
+
   render () {
     return (
       <div id='class-editor-grade-scale' className={this.props.superBoxClassName}>
-        <Card
-          title={this.renderTitle()}
-          content={this.renderContent()}
-          boxClassName={this.props.boxClassName}
-          contentClassName={this.props.contentClassName}
-        />
+        <div className='class-editor-grade-scale-card' ref={cardRef => { this.cardRef = cardRef }}>
+          <Card
+            title={this.renderTitle()}
+            content={this.renderContent()}
+            boxClassName={this.props.boxClassName}
+            contentClassName={this.props.contentClassName}
+          />
+        </div>
+        {this.state.mounted && this.state.changeRequests && !this.state.isEditable &&
+          <div className='class-editor-grade-scale-crs'>
+            {this.renderChangeRequests()}
+          </div>
+        }
         {this.renderCommonScaleModal()}
       </div>
     )
@@ -217,7 +277,9 @@ GradeScale.propTypes = {
   hasIssues: PropTypes.bool,
   onSelectIssue: PropTypes.func,
   boxClassName: PropTypes.string,
-  contentClassName: PropTypes.string
+  contentClassName: PropTypes.string,
+  superBoxClassName: PropTypes.string,
+  onChange: PropTypes.func
 }
 
 export default ValidateForm(Form(GradeScale, 'form'))
