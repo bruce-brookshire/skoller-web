@@ -4,7 +4,7 @@ class LandingBanner extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      showBanner: true
+      showBanner: false
     }
   }
 

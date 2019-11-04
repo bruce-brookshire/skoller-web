@@ -13,8 +13,6 @@ class AdminWeightChangeRequest extends React.Component {
       isPoints: this.crIsPoints(this.props.crs[0]),
       deletedWeights: []
     }
-
-    console.log(this.props.crs.length)
   }
 
   componentDidMount () {
@@ -25,7 +23,6 @@ class AdminWeightChangeRequest extends React.Component {
     let isPoints = true
     cr.members.forEach(member => {
       if (member.member_name === 'is_points') {
-        console.log('crIsPoints if (member.member_name === is_points)')
         if (member.member_value === 'false') {
           isPoints = false
         }
@@ -41,7 +38,6 @@ class AdminWeightChangeRequest extends React.Component {
           return (
             <tr key={member.id}>
               <td>{member.member_name}</td>
-              {console.log('renderRows', 'this.state.currentCr.members:', this.state.currentCr.members)}
               <td>{member.member_value}{this.renderPercent()}</td>
               <td>{this.getWeight(member.member_name) ? 'Updated' : 'New'}</td>
             </tr>
@@ -136,22 +132,24 @@ class AdminWeightChangeRequest extends React.Component {
       if (member.member_name !== 'is_points') {
         let existingWeight = this.getWeight(member.member_name)
         if (existingWeight) {
-          console.log('onAccept if existingWeight, existingWeight:', existingWeight, 'this.state.currentCr.members:', this.state.currentCr.members)
           actions.weights.updateWeight(this.props.cl, {name: existingWeight.name, weight: member.member_value, id: parseInt(existingWeight.id)})
             .catch((r) => console.log(r))
         } else {
-          console.log('onAccept not existingWeight', 'this.state.currentCr.members:', this.state.currentCr.members)
           actions.weights.createWeight(this.props.cl, {name: member.member_name, weight: member.member_value})
             .catch((r) => console.log(r))
         }
       }
     })
-    await this.state.deletedWeights.forEach(weight => {
-      actions.weights.deleteWeight(weight)
-    })
-    console.log('updateClass', 'this.state.currentCr.members.filter(m => m.member_name === is_points)[0].member_value', 'this.state.currentCr.members:', this.state.currentCr.members)
-    await actions.classes.updateClass({id: this.props.cl.id, is_points: this.state.currentCr.members.filter(m => m.member_name === 'is_points')[0].member_value})
-      .catch(e => console.log(e))
+    if (this.state.deletedWeights.length > 0) {
+      await this.state.deletedWeights.forEach(weight => {
+        actions.weights.deleteWeight(weight)
+      })
+    }
+    let isPointsMember = this.state.currentCr.members.filter(m => m.member_name === 'is_points')[0]
+    if (isPointsMember) {
+      await actions.classes.updateClass({id: this.props.cl.id, is_points: isPointsMember.member_value})
+        .catch(e => console.log(e))
+    }
     await this.state.currentCr.members.forEach(member => {
       actions.classhelp.resolveChangeRequestMember(member.id)
         .catch(e => console.log(e))
@@ -177,7 +175,6 @@ class AdminWeightChangeRequest extends React.Component {
     let crs = this.props.crs
     cr.members.forEach(member => {
       if (member.member_name !== 'is_points') {
-        console.log('if (member.member_name !== is_points), cr:', cr)
         total = total + parseFloat(member.member_value)
       }
     })
