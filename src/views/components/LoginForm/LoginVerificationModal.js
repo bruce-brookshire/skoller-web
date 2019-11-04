@@ -50,18 +50,15 @@ class Verification extends React.Component {
   * Sumbit the verification code for authorization.
   */
   onSubmit = () => {
-    actions.auth.loginStudentWithPhone(this.getForm().phone, this.getForm().verification_code).then((response) => {
+    actions.auth.loginStudentWithPhone(this.getForm().phone, this.getForm().verification_code).then(() => {
       const { userStore: { authToken } } = this.props.rootStore
       this.cookie.remove('skollerToken', { path: '/' })
       this.cookie.set('skollerToken', authToken, { maxAge: 86400 * 7, path: '/' })
       if (this.props.rootStore.userStore.user.student.primary_school) {
-        console.log('inside this.props.rootStore.userStore.student.primary_school')
         browserHistory.push('/student')
       } else if (this.props.onSubmit) {
-        console.log('running this.props.onSubmit')
         this.props.onSubmit()
       } else {
-        console.log('inside browserHistory.push select school')
         browserHistory.push('/onboard/select-school')
       }
     }).catch((r) => console.log('error town', r))

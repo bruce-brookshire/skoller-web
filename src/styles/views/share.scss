@@ -1,0 +1,43 @@
+.sk-share-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  $sk-home-break-point: 1000px;
+  @media only screen and (max-width: $sk-home-break-point) {
+    flex-direction: column;
+  }
+
+  box-sizing: border-box;
+  padding: 1rem;
+
+  .sk-share-header {
+    @include skoller-cell;
+    margin: 0.5rem;
+    padding: 1rem;
+    max-width: 400px;
+
+    h1 {
+      margin: 0;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    .sk-share-points {
+      width: 100%;
+      margin: 0.5rem 0 0 0;
+      padding: 1rem;
+      color: white;
+      background-color: $cn-color-blue;
+      border-radius: 5px;
+      
+      p {
+        margin: 4px 0 0 0;
+        font-size: 18px;
+        font-weight: 600;
+        text-align: center;
+      }
+    }
+  }
+}

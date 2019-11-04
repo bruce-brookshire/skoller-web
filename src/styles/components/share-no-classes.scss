@@ -1,0 +1,15 @@
+.sk-share-no-classes {
+  @include skoller-cell;
+  width: 100%;
+  max-width: 400px;
+  margin: 0.5rem;
+  padding: 1rem;
+
+  h2 {
+    margin: 0.5rem 0;
+  }
+
+  p {
+    margin: 0.5rem 0;
+  }
+}

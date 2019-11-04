@@ -1,15 +1,31 @@
 import { extendObservable } from 'mobx'
+import actions from '../actions'
+import stores from './index'
 
 class StudentClassesStore {
   constructor () {
     extendObservable(this, {
-      loading: null,
+      loading: true,
       classes: []
     })
   }
 
-  setClasses (classes) {
-    this.classes = classes
+  getClasses () {
+    this.loading = true
+    actions.classes.getStudentClassesById(stores.userStore.user.student.id)
+      .then((data) => {
+        this.classes = data
+        this.loading = false
+      })
+  }
+
+  updateClasses () {
+    this.loading = true
+    actions.classes.getStudentClassesById(stores.userStore.user.student.id)
+      .then((data) => {
+        this.classes = data
+        this.loading = false
+      })
   }
 }
 
