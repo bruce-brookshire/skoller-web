@@ -57,7 +57,6 @@ class Share extends React.Component {
   }
 
   renderHeader () {
-    console.log(this.state.user.student.raise_effort)
     return (
       <div className='sk-share-header'>
         <h1>Share with Your Community</h1>

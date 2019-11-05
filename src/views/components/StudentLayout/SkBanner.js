@@ -53,6 +53,8 @@ class SkBanner extends React.Component {
     Object.keys(partners).forEach(partnerKey => {
       if (partners[partnerKey].slug === partnerSlug) {
         partner = partners[partnerKey]
+      } else if (partners[partnerKey].altName === partnerSlug) {
+        partner = partners[partnerKey]
       }
     })
     return partner
@@ -60,27 +62,31 @@ class SkBanner extends React.Component {
 
   renderPartnerBanner () {
     const partner = this.getPartner(this.props.rootStore.userStore.user.student.raise_effort.org_name)
-    return (
-      <div className='sk-banner-partner'>
-        <div className='sk-banner-partner-logo'>
-          <img src={partner.logo} />
-        </div>
-        <div className='sk-banner-partner-content'>
-          <p className='sk-banner-partner-content-headline'><span style={{color: '#' + partner.primaryColor}}>RAISE HUNDREDS</span> for {partner.philanthropy}!</p>
-          <div className='sk-banner-partner-content-action'>
-            <div className='sk-banner-partner-content-button'>
-              <p
-                style={{backgroundColor: '#' + partner.primaryColor}}
-                onClick={() => browserHistory.push('/student/share')}
-              >
-                CLICK HERE
-              </p>
+    if (partner) {
+      return (
+        <div className='sk-banner-partner'>
+          <div className='sk-banner-partner-logo'>
+            <img src={partner.logo} />
+          </div>
+          <div className='sk-banner-partner-content'>
+            <p className='sk-banner-partner-content-headline'><span style={{color: '#' + partner.primaryColor}}>RAISE HUNDREDS</span> for {partner.philanthropy}!</p>
+            <div className='sk-banner-partner-content-action'>
+              <div className='sk-banner-partner-content-button'>
+                <p
+                  style={{backgroundColor: '#' + partner.primaryColor}}
+                  onClick={() => browserHistory.push('/student/share')}
+                >
+                  CLICK HERE
+                </p>
+              </div>
+              <p>to share with classmates</p>
             </div>
-            <p>to share with classmates</p>
           </div>
         </div>
-      </div>
-    )
+      )
+    } else {
+      return null
+    }
   }
 
   renderContent () {
