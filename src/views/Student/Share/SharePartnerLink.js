@@ -13,6 +13,8 @@ class SharePartnerLink extends React.Component {
     Object.keys(partners).forEach(partnerKey => {
       if (partners[partnerKey].slug === partnerSlug) {
         partner = partners[partnerKey]
+      } else if (partners[partnerKey].altName === partnerSlug) {
+        partner = partners[partnerKey]
       }
     })
     return partner
@@ -20,7 +22,6 @@ class SharePartnerLink extends React.Component {
 
   renderContent () {
     const partner = this.getPartner(this.props.params.partner)
-    console.log(partner)
     return (
       <div className='sk-share-partner-link-container'>
         <div className='sk-share-partner-link'>
