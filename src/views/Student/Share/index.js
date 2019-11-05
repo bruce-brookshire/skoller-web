@@ -39,7 +39,11 @@ class Share extends React.Component {
     await actions.students.getStudentSignupOrganization(this.props.rootStore.userStore.user.student.id)
       .then((r) => {
         let slug = r.link.replace(/(.+)(\/c\/)/g, '')
-        this.setState({partner: this.getPartner(slug), show: true})
+        if (this.props.rootStore.userStore.user.student.raise_effort) {
+          this.setState({partner: this.getPartner(slug)})
+        } else {
+          this.setState({partner: false})
+        }
       })
       .catch(r => {
         this.setState({partner: false})
