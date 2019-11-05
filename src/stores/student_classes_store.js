@@ -1,4 +1,4 @@
-import { extendObservable } from 'mobx'
+import { extendObservable, action } from 'mobx'
 import actions from '../actions'
 import stores from './index'
 
@@ -15,8 +15,13 @@ class StudentClassesStore {
     actions.classes.getStudentClassesById(stores.userStore.user.student.id)
       .then((data) => {
         this.classes = data
-        this.loading = false
+        this.getClassesSuccess()
       })
+  }
+
+  @action
+  getClassesSuccess () {
+    this.loading = false
   }
 
   updateClasses () {
@@ -24,7 +29,7 @@ class StudentClassesStore {
     actions.classes.getStudentClassesById(stores.userStore.user.student.id)
       .then((data) => {
         this.classes = data
-        this.loading = false
+        this.getClassesSuccess()
       })
   }
 }
