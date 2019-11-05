@@ -10,7 +10,7 @@ class SkBanner extends React.Component {
     super(props)
 
     this.state = {
-      banner: this.getBannerChoice()
+      banner: this.props.state ? this.props.state : this.getBannerChoice()
     }
   }
 
@@ -40,7 +40,9 @@ class SkBanner extends React.Component {
     if (
       this.props.rootStore.userStore.user.student.raise_effort &&
       hasCompletedClass &&
-      this.props.rootStore.studentNavStore.activePage !== 'share'
+      this.props.rootStore.studentNavStore.activePage !== 'share' &&
+      this.props.rootStore.studentNavStore.activePage !== 'home' &&
+      this.renderPartnerBanner()
     ) {
       return true
     } else {
@@ -51,9 +53,9 @@ class SkBanner extends React.Component {
   getPartner (partnerSlug) {
     let partner = null
     Object.keys(partners).forEach(partnerKey => {
-      if (partners[partnerKey].slug === partnerSlug) {
+      if (partners[partnerKey].slug.toLowerCase() === partnerSlug.toLowerCase()) {
         partner = partners[partnerKey]
-      } else if (partners[partnerKey].altName === partnerSlug) {
+      } else if (partners[partnerKey].altName.toLowerCase() === partnerSlug.toLowerCase()) {
         partner = partners[partnerKey]
       }
     })
@@ -69,7 +71,7 @@ class SkBanner extends React.Component {
             <img src={partner.logo} />
           </div>
           <div className='sk-banner-partner-content'>
-            <p className='sk-banner-partner-content-headline'><span style={{color: '#' + partner.primaryColor}}>RAISE HUNDREDS</span> for {partner.philanthropy}!</p>
+            <p style={{display: this.props.hideText ? 'none' : ''}} className='sk-banner-partner-content-headline'><span style={{color: '#' + partner.primaryColor}}>RAISE HUNDREDS</span> for {partner.philanthropy}!</p>
             <div className='sk-banner-partner-content-action'>
               <div className='sk-banner-partner-content-button'>
                 <p
@@ -90,7 +92,7 @@ class SkBanner extends React.Component {
   }
 
   renderContent () {
-    if (this.state.banner === 'partner') {
+    if (this.state.banner === 'partner' && this.renderPartnerBanner()) {
       return (
         this.renderPartnerBanner()
       )
@@ -103,7 +105,7 @@ class SkBanner extends React.Component {
     if (this.state.banner) {
       return (
         <div className='sk-banner-wrapper'>
-          <div className='sk-banner'>
+          <div className='sk-banner' style={this.props.style ? this.props.style : null}>
             {this.renderContent()}
           </div>
         </div>
@@ -115,7 +117,10 @@ class SkBanner extends React.Component {
 }
 
 SkBanner.propTypes = {
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  style: PropTypes.object,
+  state: PropTypes.string,
+  hideText: PropTypes.bool
 }
 
 export default SkBanner

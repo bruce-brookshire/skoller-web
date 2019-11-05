@@ -6,6 +6,7 @@ import actions from '../../../actions'
 import partners from '../Onboard/partners'
 import CopyBox from '../../components/CopyBox'
 import {browserHistory} from 'react-router'
+import SkBanner from '../../components/StudentLayout/SkBanner';
 
 @inject('rootStore') @observer
 class HomeShare extends React.Component {
@@ -93,14 +94,11 @@ class HomeShare extends React.Component {
                   position='left'
                 >
                   {this.state.hasCompletedClass
-                    ? <p>Because of you, <b>$1 was donated to {partner.philanthropy}.</b> Share this link to raise even more money!</p>
-                    : <p>Upload your syllabus to get <b>$1 donated to {partner.philanthropy}.</b> Share this link to raise even more money!</p>
+                    ? <p>Because of you, <b>$1 was donated to {partner.philanthropy}.</b> Share to raise even more money!</p>
+                    : <p>Upload your syllabus to get <b>$1 donated to {partner.philanthropy}.</b> Share to raise even more money!</p>
                   }
                 </Sammi>
-                <div className='home-share-copy-box'>
-                  <CopyBox linkValue={('https://skoller.co/c/' + partner.slug)} />
-                </div>
-                <img src={partner.logo} className='home-share-logo' />
+                <SkBanner state='partner' style={{boxShadow: '0 0 0 0', margin: '0 0 0 0'}} hideText={true} />
               </div>
             </div>
           </div>

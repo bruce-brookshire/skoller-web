@@ -11,9 +11,7 @@ class SharePartnerLink extends React.Component {
   getPartner (partnerSlug) {
     let partner = null
     Object.keys(partners).forEach(partnerKey => {
-      if (partners[partnerKey].slug === partnerSlug) {
-        partner = partners[partnerKey]
-      } else if (partners[partnerKey].altName === partnerSlug) {
+      if (partners[partnerKey].slug.toLowerCase() === partnerSlug.toLowerCase() || partners[partnerKey].altName.toLowerCase() === partnerSlug.toLowerCase()) {
         partner = partners[partnerKey]
       }
     })
