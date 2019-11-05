@@ -40,7 +40,8 @@ class SkBanner extends React.Component {
     if (
       this.props.rootStore.userStore.user.student.raise_effort &&
       hasCompletedClass &&
-      this.props.rootStore.studentNavStore.activePage !== 'share'
+      this.props.rootStore.studentNavStore.activePage !== 'share' &&
+      this.renderPartnerBanner()
     ) {
       return true
     } else {
@@ -51,9 +52,9 @@ class SkBanner extends React.Component {
   getPartner (partnerSlug) {
     let partner = null
     Object.keys(partners).forEach(partnerKey => {
-      if (partners[partnerKey].slug === partnerSlug) {
+      if (partners[partnerKey].slug.toLowerCase() === partnerSlug.toLowerCase()) {
         partner = partners[partnerKey]
-      } else if (partners[partnerKey].altName === partnerSlug) {
+      } else if (partners[partnerKey].altName.toLowerCase() === partnerSlug.toLowerCase()) {
         partner = partners[partnerKey]
       }
     })
@@ -90,7 +91,7 @@ class SkBanner extends React.Component {
   }
 
   renderContent () {
-    if (this.state.banner === 'partner') {
+    if (this.state.banner === 'partner' && this.renderPartnerBanner()) {
       return (
         this.renderPartnerBanner()
       )
