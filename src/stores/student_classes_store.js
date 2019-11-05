@@ -17,10 +17,18 @@ class StudentClassesStore {
         this.classes = data
         this.getClassesSuccess()
       })
+      .catch(() => {
+        this.getClassesError()
+      })
   }
 
   @action
   getClassesSuccess () {
+    this.loading = false
+  }
+
+  @action
+  getClassesError () {
     this.loading = false
   }
 
