@@ -14,6 +14,7 @@ class HomeClasses extends React.Component {
       return null
     }
   }
+
   render () {
     return (
       <div className='home-classes'>
@@ -33,9 +34,10 @@ class HomeClasses extends React.Component {
 }
 
 HomeClasses.propTypes = {
-  classes: PropTypes.object,
-  onAddClass: PropTypes.function,
-  onClassSelect: PropTypes.function
+  classes: PropTypes.array,
+  onAddClass: PropTypes.func,
+  onClassSelect: PropTypes.func,
+  launchClassStatusModal: PropTypes.func
 }
 
 export default HomeClasses

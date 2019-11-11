@@ -111,9 +111,9 @@ class HomeShare extends React.Component {
 }
 
 HomeShare.propTypes = {
-  classes: PropTypes.object,
-  onAddClass: PropTypes.function,
-  onClassSelect: PropTypes.function,
+  classes: PropTypes.array,
+  onAddClass: PropTypes.func,
+  onClassSelect: PropTypes.func,
   rootStore: PropTypes.object
 }
 

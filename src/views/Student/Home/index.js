@@ -23,9 +23,9 @@ class Home extends React.Component {
       classStatusModal: {show: false, cl: null},
       loading: true
     }
+    this.cookie = new Cookies()
     this.updateClasses()
     this.updateStudent()
-    this.cookie = new Cookies()
     this.props.rootStore.studentNavStore.setActivePage('home')
     this.props.rootStore.studentNavStore.location = this.props.location
     console.log(this.props.rootStore)
