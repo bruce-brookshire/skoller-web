@@ -85,3 +85,41 @@ export function setStudentMajor (userId, studentId, majorId) {
       return Promise.reject(error)
     })
 }
+
+/*
+* Get student and link details
+*
+* @param [string] userId. Student ID
+* @param [string] schoolId. School ID
+* @param [string] majorId. Major ID
+*/
+export function setStudentMajors (userId, studentId, majorIdsArray) {
+  let form = {'student': {'id': studentId, 'fields_of_study': majorIdsArray}}
+  return put(`/api/v1/users/${userId}`, form, 'Error setting major. Try again.')
+    .then(response => {
+      return response
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Update student data
+*
+* @param [string] userId. Student ID
+* @param [string] studentId. Student ID
+* @param [object] form. Student info form
+*/
+export function updateStudent (userId, studentId, form) {
+  let studentForm = form
+  studentForm.id = studentId
+  let userForm = {'student': studentForm}
+  return put(`/api/v1/users/${userId}`, userForm, 'Error setting major. Try again.')
+    .then(response => {
+      return response
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}

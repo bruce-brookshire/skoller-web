@@ -26,7 +26,7 @@ class SkSelectDropDown extends React.Component {
 }
 
 SkSelectDropDown.propTypes = {
-  optionsMap: PropTypes.function,
+  optionsMap: PropTypes.func,
   show: PropTypes.bool,
   toggle: PropTypes.func
 }

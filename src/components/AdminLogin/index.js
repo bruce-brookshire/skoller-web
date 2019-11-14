@@ -58,7 +58,7 @@ class AdminLogin extends React.Component {
 
         const { userStore: { authToken } } = this.props.rootStore
         this.cookie.remove('skollerToken', { path: '/' })
-        this.cookie.set('skollerToken', authToken, { maxAge: 86400 * 7, path: '/' })
+        this.cookie.set('skollerToken', authToken, { maxAge: 86400 * 270, path: '/' })
         if (this.props.onSubmit) {
           this.props.onSubmit()
         }
