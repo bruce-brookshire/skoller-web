@@ -25,7 +25,6 @@ class Home extends React.Component {
       loading: true
     }
     this.updateClasses()
-    this.updateStudent()
     this.props.rootStore.studentNavStore.setActivePage('home')
     this.props.rootStore.studentNavStore.location = this.props.location
     this.cookie = new Cookies()
@@ -33,8 +32,10 @@ class Home extends React.Component {
   }
 
   async updateStudent () {
-    if (this.cookie.get('skollerToken')) {
-      await actions.auth.getUserByToken(this.cookie.get('skollerToken')).catch((r) => console.log(r))
+    if (this.cookie) {
+      if (this.cookie.get('skollerToken')) {
+        await actions.auth.getUserByToken(this.cookie.get('skollerToken')).catch((r) => console.log(r))
+      }
     }
   }
 
@@ -172,7 +173,7 @@ class Home extends React.Component {
               </div>
             </div>
             {this.state.classes.length > 2 ? <HomeShare classes={this.state.classes} /> : null}
-            <HomeJobs />
+            <HomeJobs updateStudent={() => this.updateStudent()} />
             {/* // this is for chat once we get it ready
             <div className="home-shadow-box">
               <h1>Chat</h1>

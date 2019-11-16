@@ -5,6 +5,7 @@ import navbarStore from './navbar_store'
 import searchStore from './search_store'
 import studentAssignmentsStore from './student_assignments_store'
 import studentClassesStore from './student_classes_store'
+import studentJobsStore from './student_jobs_store'
 import studentNavStore from './student_nav_store'
 
 class ApplicationStore {
@@ -16,6 +17,7 @@ class ApplicationStore {
       searchStore,
       studentAssignmentsStore,
       studentClassesStore,
+      studentJobsStore,
       studentNavStore
     })
   }

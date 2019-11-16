@@ -1,11 +1,11 @@
-import {get, post, postFile} from '../utilities/api'
+import {get, post, put} from '../utilities/api'
 
 /*
 * Get a user's job profile by user id
 *
 */
 export function getJobsProfile (userId) {
-  return get(`/api/v1/users/${userId}/jobs-profile`, '', 'Error fetching SkollerJobs profile.')
+  return get(`/api/v1/users/${userId}/job-profile`, '', '')
     .then(data => {
       return data
     })
@@ -86,7 +86,7 @@ export function uploadJobsDoc (jobsId, file, isResume = true) {
   let type = isResume ? 'resume' : 'transcript'
   form.append('file', file)
 
-  return postFile(`/api/v1/skoller-jobs/profile/${jobsId}/documents/${type}`, file, 'Error uploading document. Try again.')
+  return put(`/api/v1/skoller-jobs/profiles/${jobsId}/documents/${type}`, form, 'Error uploading document. Try again.')
     .then(data => {
       return data
     })

@@ -8,7 +8,7 @@ import SkLoader from '../../../assets/sk-icons/SkLoader'
 @inject('rootStore') @observer
 class StudentLayout extends React.Component {
   gettingData () {
-    if (this.props.rootStore.studentClassesStore.loading) {
+    if (this.props.rootStore.studentClassesStore.loading || this.props.rootStore.studentJobsStore.loading) {
       return true
     } else {
       return false

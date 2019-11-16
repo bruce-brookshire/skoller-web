@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react'
 import PropTypes from 'prop-types'
 import partners from '../../../views/Student/Onboard/partners'
 import { browserHistory } from 'react-router'
+import SkollerJobsSwitch from '../../../assets/sk-icons/SkollerJobsSwitch'
 
 @inject('rootStore') @observer
 class SkBanner extends React.Component {
@@ -10,16 +11,26 @@ class SkBanner extends React.Component {
     super(props)
 
     this.state = {
-      banner: this.props.state ? this.props.state : this.getBannerChoice()
+      banners: []
     }
   }
 
-  getBannerChoice () {
+  componentDidMount () {
+    this.getBannerChoices()
+  }
+
+  async getBannerChoices () {
+    let banners = []
+
     if (this.partnerLogic() && this.props.rootStore.studentNavStore.activePage !== 'share') {
-      return 'partner'
-    } else {
-      return null
+      banners.push('partner')
     }
+
+    if (this.props.rootStore.studentJobsStore.hasJobsProfile && this.props.rootStore.studentNavStore.activePage === 'home') {
+      banners.push('jobs')
+    }
+
+    this.setState({banners})
   }
 
   hasCompletedClass () {
@@ -91,18 +102,48 @@ class SkBanner extends React.Component {
     }
   }
 
-  renderContent () {
-    if (this.state.banner === 'partner' && this.renderPartnerBanner()) {
+  renderLogo (white = false) {
+    if (white) {
       return (
-        this.renderPartnerBanner()
+        <span>
+          <span style={{fontWeight: '900', color: 'white'}}>skoller</span>
+          <span style={{fontWeight: '300', fontStyle: 'oblique', color: 'white'}}>Jobs</span>
+        </span>
       )
     } else {
-      return null
+      return (
+        <span>
+          <span style={{fontWeight: '900', color: '#55B9E5'}}>skoller</span>
+          <span style={{fontWeight: '300', fontStyle: 'oblique', color: '#4ADD58'}}>Jobs</span>
+        </span>
+      )
     }
   }
 
+  renderJobsBanner () {
+    return (
+      <div className='sk-banner-jobs'>
+        <p>Skoller can help you find your <b>dream job.</b></p>
+        <div className='sk-banner-jobs-button'>
+          <p>
+            <SkollerJobsSwitch />
+          </p>
+        </div>
+      </div>
+    )
+  }
+
+  renderContent () {
+    return (
+      <div>
+        {this.state.banners.includes('partner') && this.renderPartnerBanner()}
+        {this.state.banners.includes('jobs') && this.renderJobsBanner()}
+      </div>
+    )
+  }
+
   render () {
-    if (this.state.banner) {
+    if (this.state.banners.length > 0 && !this.state.loading) {
       return (
         <div className='sk-banner-wrapper'>
           <div className='sk-banner' style={this.props.style ? this.props.style : null}>

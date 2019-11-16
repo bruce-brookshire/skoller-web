@@ -5,14 +5,15 @@ import SkSelect from '../../components/SkSelect'
 import actions from '../../../actions'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import PropTypes from 'prop-types'
-import SkSelectDropDown from '../../components/SkSelectDropDown';
+import SkSelectDropDown from '../../components/SkSelectDropDown'
+import { showSnackbar } from '../../../utilities/snackbar'
 
 @inject('rootStore') @observer
 class HomeJobs extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      show: true,
+      show: !this.props.rootStore.studentJobsStore.hasJobsProfile,
       resume: null,
       majors: [],
       beginningMajors: [],
@@ -57,14 +58,14 @@ class HomeJobs extends React.Component {
     if (white) {
       return (
         <span>
-          <span style={{fontWeight: '900', color: 'white'}}>Skoller</span>
+          <span style={{fontWeight: '900', color: 'white'}}>skoller</span>
           <span style={{fontWeight: '300', fontStyle: 'oblique', color: 'white'}}>Jobs</span>
         </span>
       )
     } else {
       return (
         <span>
-          <span style={{fontWeight: '900', color: '#55B9E5'}}>Skoller</span>
+          <span style={{fontWeight: '900', color: '#55B9E5'}}>skoller</span>
           <span style={{fontWeight: '300', fontStyle: 'oblique', color: '#4ADD58'}}>Jobs</span>
         </span>
       )
@@ -174,9 +175,6 @@ class HomeJobs extends React.Component {
       majorIds.push(major.id)
     })
     await actions.students.setStudentMajors(user.id, user.student.id, majorIds)
-      .then((r) => {
-        console.log(r, 'added majors')
-      })
       .catch(() => {
         this.setState({loading: false, error: 'Error saving majors. Try again later.'})
         throw new Error('Error saving majors. Try again later.')
@@ -187,6 +185,7 @@ class HomeJobs extends React.Component {
     await actions.jobs.createJobsProfile(jobsForm)
       .then((data) => {
         skollerJobsId = data.id
+        showSnackbar('Successfully joined SkollerJobs!', 'success')
       })
       .catch(e => {
         console.log(e)
@@ -194,16 +193,14 @@ class HomeJobs extends React.Component {
         throw new Error('Error creating profile. Try again later.')
       })
 
-    // upload resume
-    await actions.jobs.uploadJobsDoc(skollerJobsId, this.state.resume)
-      .then(r => console.log(r))
-      .catch(e => {
-        console.log(e)
-        this.setState({loading: false, error: 'Error uploading résumé. Try again later.'})
-        throw new Error('Error uploading résumé. Try again later.')
-      })
+    // // upload resume
+    // await actions.jobs.uploadJobsDoc(skollerJobsId, this.state.resume)
+    //   .catch(e => {
+    //     console.log(e)
+    //     this.setState({loading: false, error: 'Error uploading résumé. Try again later.'})
+    //   })
 
-    this.setState({loading: false})
+    this.props.updateStudent()
   }
 
   renderButton () {
@@ -244,7 +241,7 @@ class HomeJobs extends React.Component {
         <p className='home-jobs-headline'>
           Sign up for {this.renderLogo(false)} and find your <strong>dream job.</strong>
         </p>
-        <img src={'https://images.unsplash.com/photo-1558402989-4778474384c9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80'} />
+        {/* <img src={'https://images.unsplash.com/photo-1558402989-4778474384c9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80'} /> */}
         <div className='home-jobs-row'>
           <p className='home-jobs-label'>Upload your résumé 📄👩🏻‍💼👨🏾‍💼</p>
           <div className='home-jobs-drag-and-drop'>
@@ -344,9 +341,6 @@ class HomeJobs extends React.Component {
   }
 
   render () {
-    console.log('majors.length', this.state.majors.length)
-    console.log('beginningMajors.length', this.state.beginningMajors.length)
-    console.log('student.fieldsofstudy.length', this.props.rootStore.userStore.user.student.fields_of_study.length)
     if (this.state.show) {
       return (
         this.renderHomeCell()
@@ -360,7 +354,8 @@ class HomeJobs extends React.Component {
 }
 
 HomeJobs.propTypes = {
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  updateStudent: PropTypes.function
 }
 
 export default HomeJobs
