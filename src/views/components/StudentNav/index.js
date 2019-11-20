@@ -32,20 +32,35 @@ class StudentNav extends React.Component {
   }
 
   render () {
-    return (
-      <div className="s-nav-wrapper">
-        <div className="s-nav">
-          <NavItem pageName="home" text="Home" />
-          <NavItem pageName="classes" text="Classes" />
-          <NavItem pageName="tasks" text="Tasks" />
-          <NavItem pageName="calendar" text="Calendar" />
-          <NavItem pageName="share" text="Share" />
-          {/* <NavItem pageName="activity" text="Activity" />
-          <NavItem pageName="chat" text="Chat" /> */}
-          {this.renderLogout()}
+    if (this.props.rootStore.studentNavStore.jobsMode) {
+      return (
+        <div className="s-nav-wrapper">
+          <div className="s-nav">
+            <NavItem pageName="jobs" text="Home" />
+            <NavItem pageName="jobs/profile" text="Profile" />
+            <NavItem pageName="jobs/resume" text="Résumé" />
+            {/* <NavItem pageName="activity" text="Activity" />
+            <NavItem pageName="chat" text="Chat" /> */}
+            {this.renderLogout()}
+          </div>
         </div>
-      </div>
-    )
+      )
+    } else {
+      return (
+        <div className="s-nav-wrapper">
+          <div className="s-nav">
+            <NavItem pageName="home" text="Home" />
+            <NavItem pageName="classes" text="Classes" />
+            <NavItem pageName="tasks" text="Tasks" />
+            <NavItem pageName="calendar" text="Calendar" />
+            <NavItem pageName="share" text="Share" />
+            {/* <NavItem pageName="activity" text="Activity" />
+            <NavItem pageName="chat" text="Chat" /> */}
+            {this.renderLogout()}
+          </div>
+        </div>
+      )
+    }
   }
 }
 

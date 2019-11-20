@@ -3,7 +3,8 @@ import { inject, observer } from 'mobx-react'
 import PropTypes from 'prop-types'
 import partners from '../../../views/Student/Onboard/partners'
 import { browserHistory } from 'react-router'
-import SkollerJobsSwitch from '../../../assets/sk-icons/SkollerJobsSwitch'
+import SkollerJobsSwitch from '../../../assets/sk-icons/jobs/SkollerJobsSwitch'
+import SkollerSwitch from '../../../assets/sk-icons/jobs/SkollerSwitch'
 
 @inject('rootStore') @observer
 class SkBanner extends React.Component {
@@ -26,7 +27,11 @@ class SkBanner extends React.Component {
       banners.push('partner')
     }
 
-    if (this.props.rootStore.studentJobsStore.hasJobsProfile && this.props.rootStore.studentNavStore.activePage === 'home') {
+    if (
+      this.props.rootStore.studentJobsStore.hasJobsProfile &&
+      (this.props.rootStore.studentNavStore.activePage === 'home' ||
+      this.props.rootStore.studentNavStore.activePage === 'jobs')
+    ) {
       banners.push('jobs')
     }
 
@@ -121,16 +126,47 @@ class SkBanner extends React.Component {
   }
 
   renderJobsBanner () {
-    return (
-      <div className='sk-banner-jobs'>
-        <p>Skoller can help you find your <b>dream job.</b></p>
-        <div className='sk-banner-jobs-button'>
-          <p>
-            <SkollerJobsSwitch />
-          </p>
+    if (this.props.rootStore.studentNavStore.jobsMode) {
+      return (
+        <div className='sk-banner-jobs'>
+          <p>Keep up with classes, <b>together.</b></p>
+          <div
+            className='sk-banner-skoller-button'
+            onClick={() => {
+              if (this.props.rootStore.studentNavStore.jobsMode) {
+                browserHistory.push('/student/home')
+              } else {
+                browserHistory.push('/student/jobs')
+              }
+            }}
+          >
+            <p>
+              <SkollerSwitch />
+            </p>
+          </div>
         </div>
-      </div>
-    )
+      )
+    } else {
+      return (
+        <div className='sk-banner-jobs'>
+          <p>Skoller can help you find your <b>dream job.</b></p>
+          <div
+            className='sk-banner-jobs-button'
+            onClick={() => {
+              if (this.props.rootStore.studentNavStore.jobsMode) {
+                browserHistory.push('/student/home')
+              } else {
+                browserHistory.push('/student/jobs')
+              }
+            }}
+          >
+            <p>
+              <SkollerJobsSwitch />
+            </p>
+          </div>
+        </div>
+      )
+    }
   }
 
   renderContent () {

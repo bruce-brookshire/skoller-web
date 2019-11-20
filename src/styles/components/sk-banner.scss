@@ -24,6 +24,11 @@
         @include sk-jobs-button;
         margin: 0 0 0 0.5rem;
       }
+
+      .sk-banner-skoller-button {
+        @include sk-standard-button;
+        margin: 0 0 0 0.5rem;
+      }
     }
 
     .sk-banner-partner {

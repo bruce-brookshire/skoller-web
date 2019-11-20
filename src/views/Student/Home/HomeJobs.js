@@ -205,7 +205,7 @@ class HomeJobs extends React.Component {
 
   renderButton () {
     let disabled = this.state.majors.length === 0 ||
-      // this.state.resume === null ||
+      this.state.resume === null ||
       !this.state.gradYearChoice ||
       !this.state.gradMonthChoice ||
       !this.state.gradDegreeChoice
@@ -235,6 +235,19 @@ class HomeJobs extends React.Component {
     }
   }
 
+  processFile (f) {
+    let file = f[0]
+    let fileExtension
+    if (file.name.lastIndexOf('.') > 0) {
+      fileExtension = file.name.substring(file.name.lastIndexOf('.') + 1, file.name.length)
+    }
+    if (fileExtension.toLowerCase() !== 'pdf') {
+      this.setState({error: 'Resume must be in PDF format.'})
+    } else {
+      this.setState({resume: f, error: null})
+    }
+  }
+
   renderContent () {
     return (
       <div className='home-jobs'>
@@ -246,8 +259,9 @@ class HomeJobs extends React.Component {
           <p className='home-jobs-label'>Upload your résumé 📄👩🏻‍💼👨🏾‍💼</p>
           <div className='home-jobs-drag-and-drop'>
             <DragAndDrop
-              handleDrop={(file) => { this.setState({resume: file}) }}
+              handleDrop={(file) => { this.processFile(file) }}
               disabled={this.state.resume !== null}
+              accept={'application/pdf'}
             >
               {this.state.resume
                 ? <div className='home-jobs-drag-and-drop-file'>
@@ -260,7 +274,7 @@ class HomeJobs extends React.Component {
                   />
                   <p>{this.state.resume[0].name}</p>
                 </div>
-                : <p>Drag and drop your résumé here</p>
+                : <p>Drag and drop a PDF of your résumé here</p>
               }
             </DragAndDrop>
           </div>

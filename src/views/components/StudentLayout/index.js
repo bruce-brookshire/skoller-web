@@ -15,9 +15,17 @@ class StudentLayout extends React.Component {
     }
   }
 
-  render () {
-    if (this.gettingData()) {
-      return <SkLoader />
+  renderContent () {
+    if (this.props.rootStore.studentNavStore.jobsMode) {
+      return (
+        <div className='sk-layout'>
+          <StudentNav />
+          <main>
+            <SkBanner />
+            {this.props.children}
+          </main>
+        </div>
+      )
     } else {
       return (
         <div className='sk-layout'>
@@ -27,6 +35,16 @@ class StudentLayout extends React.Component {
             {this.props.children}
           </main>
         </div>
+      )
+    }
+  }
+
+  render () {
+    if (this.gettingData()) {
+      return <SkLoader />
+    } else {
+      return (
+        this.renderContent()
       )
     }
   }

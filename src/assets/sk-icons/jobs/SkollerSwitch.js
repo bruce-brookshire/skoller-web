@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-class Cloud extends React.Component {
-  getColor(givenFillColor) {
+class SkollerSwitch extends React.Component {
+  getColor (givenFillColor) {
     let fillColor = '#4a4a4a'
 
     const skColors = {
@@ -24,7 +24,7 @@ class Cloud extends React.Component {
     }
 
     if (givenFillColor) {
-      Object.keys(skColors).forEach(function(item) {
+      Object.keys(skColors).forEach(function (item) {
         if (givenFillColor === item) {
           fillColor = skColors[item]
         }
@@ -37,13 +37,13 @@ class Cloud extends React.Component {
     return fillColor
   }
 
-  render() {
+  render () {
     const fillColor = this.getColor(this.props.fill)
     return (
       <svg
         width={this.props.width}
         height={this.props.height}
-        viewBox="0 0 124 20"
+        viewBox="0 0 90 20"
         version="1.1"
       >
         <title>Swith to SkollerJobs</title>
@@ -101,16 +101,6 @@ class Cloud extends React.Component {
                       <tspan x="83.78" y="16.8878049" letterSpacing="-0.9">
                         r
                       </tspan>
-                      <tspan
-                        x="90.48"
-                        y="16.8878049"
-                        fontFamily="Calibre-Light-Italic, Calibre"
-                        fontStyle="italic"
-                        fontWeight="300"
-                        letterSpacing="-1.1"
-                      >
-                        Jobs
-                      </tspan>
                     </text>
                   </g>
                 </g>
@@ -123,15 +113,15 @@ class Cloud extends React.Component {
   }
 }
 
-Cloud.defaultProps = {
-  width: '124',
+SkollerSwitch.defaultProps = {
+  width: '90',
   height: '20'
 }
 
-Cloud.propTypes = {
+SkollerSwitch.propTypes = {
   fill: PropTypes.string,
   width: PropTypes.string,
   height: PropTypes.string
 }
 
-export default Cloud
+export default SkollerSwitch
