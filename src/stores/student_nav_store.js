@@ -16,10 +16,8 @@ class StudentNavStore {
 
   @action toggleJobsMode (bool) {
     if (bool !== null) {
-      console.log('toggle jobs mode ', bool)
       this.jobsMode = bool
     } else {
-      console.log('toggle jobs mode ', !this.jobsMode)
       this.jobsMode = !this.jobsMode
     }
   }

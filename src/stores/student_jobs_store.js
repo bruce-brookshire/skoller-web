@@ -12,7 +12,6 @@ class StudentJobsStore {
   }
 
   getJobsProfile () {
-    console.log('getJobsProfile')
     this.loading = true
     actions.jobs.getJobsProfile(stores.userStore.user.id)
       .then((r) => {

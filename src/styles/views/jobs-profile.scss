@@ -1,0 +1,15 @@
+.jobs-profile {
+  margin: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  .jobs-profile-cell {
+    @include skoller-cell;
+    margin: 0.5rem;
+    padding: 1rem;
+    max-width: 464px;
+    min-width: 380px;
+  }
+}

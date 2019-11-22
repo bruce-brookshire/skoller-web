@@ -5,8 +5,8 @@ import partners from '../../../views/Student/Onboard/partners'
 import { browserHistory } from 'react-router'
 import SkollerJobsSwitch from '../../../assets/sk-icons/jobs/SkollerJobsSwitch'
 import SkollerSwitch from '../../../assets/sk-icons/jobs/SkollerSwitch'
-import ForwardArrow from '../../../assets/sk-icons/navigation/ForwardArrow';
-import BackArrow from '../../../assets/sk-icons/navigation/BackArrow';
+import ForwardArrow from '../../../assets/sk-icons/navigation/ForwardArrow'
+import BackArrow from '../../../assets/sk-icons/navigation/BackArrow'
 
 @inject('rootStore') @observer
 class SkBanner extends React.Component {
@@ -37,9 +37,6 @@ class SkBanner extends React.Component {
     ) {
       banners.push('jobs')
     }
-
-    // FOR TESTING PURPOSES
-    banners.push('partner')
 
     this.setState({banners, currentBanner: banners[0]})
   }
@@ -203,7 +200,6 @@ class SkBanner extends React.Component {
       return (
         <div style={{marginRight: '1rem', cursor: 'pointer'}} onClick={() => {
           if (banners.indexOf(currentBanner) === 0) {
-            console.log('setting current banner: ', banners.length - 1)
             this.setState({currentBanner: banners[banners.length - 1]})
           } else {
             this.setState({currentBanner: banners[banners.indexOf(currentBanner) - 1]})

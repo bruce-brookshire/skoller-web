@@ -20,6 +20,16 @@ class Profile extends React.Component {
     }
   }
 
+  renderContent () {
+    return (
+      <div className='jobs-profile'>
+        <div className='jobs-profile-cell'>
+          <h1>Your Profile</h1>
+        </div>
+      </div>
+    )
+  }
+
   render () {
     if (this.props.rootStore.studentJobsStore.loading) {
       return (
@@ -29,7 +39,7 @@ class Profile extends React.Component {
       this.pushIfNoProfile()
       return (
         <StudentLayout>
-          <div>PROFILE</div>
+          {this.renderContent()}
         </StudentLayout>
       )
     }
