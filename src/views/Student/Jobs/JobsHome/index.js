@@ -19,7 +19,13 @@ class JobsHome extends React.Component {
   renderProfileCell () {
     return (
       <div className='jobs-home-cell'>
-        <h1>Your Profile</h1>
+        <div className='jobs-home-cell-heading'>
+          <h1>Your Profile</h1>
+          <div className='jobs-home-cell-subheading'>
+            <CompletionCircle completion={25} hexColor={'#4add58'} customSize='32' />
+            <p>25% complete</p>
+          </div>
+        </div>
         <div className='jobs-home-cell-content'>
           <p>Finish your profile and skollerJobs will <b>match you</b> with the <b>perfect job for you.</b></p>
           <div className='jobs-home-cell-profile-categories'>

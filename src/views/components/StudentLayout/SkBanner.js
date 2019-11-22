@@ -5,6 +5,8 @@ import partners from '../../../views/Student/Onboard/partners'
 import { browserHistory } from 'react-router'
 import SkollerJobsSwitch from '../../../assets/sk-icons/jobs/SkollerJobsSwitch'
 import SkollerSwitch from '../../../assets/sk-icons/jobs/SkollerSwitch'
+import ForwardArrow from '../../../assets/sk-icons/navigation/ForwardArrow';
+import BackArrow from '../../../assets/sk-icons/navigation/BackArrow';
 
 @inject('rootStore') @observer
 class SkBanner extends React.Component {
@@ -12,7 +14,8 @@ class SkBanner extends React.Component {
     super(props)
 
     this.state = {
-      banners: []
+      banners: [],
+      currentBanner: null
     }
   }
 
@@ -35,7 +38,10 @@ class SkBanner extends React.Component {
       banners.push('jobs')
     }
 
-    this.setState({banners})
+    // FOR TESTING PURPOSES
+    banners.push('partner')
+
+    this.setState({banners, currentBanner: banners[0]})
   }
 
   hasCompletedClass () {
@@ -58,7 +64,8 @@ class SkBanner extends React.Component {
       hasCompletedClass &&
       this.props.rootStore.studentNavStore.activePage !== 'share' &&
       this.props.rootStore.studentNavStore.activePage !== 'home' &&
-      this.renderPartnerBanner()
+      this.renderPartnerBanner() &&
+      !this.props.rootStore.studentNavStore.jobsMode
     ) {
       return true
     } else {
@@ -169,17 +176,98 @@ class SkBanner extends React.Component {
     }
   }
 
+  renderForwardArrow () {
+    let currentBanner = this.state.currentBanner
+    let banners = this.state.banners
+    if (this.state.banners.length > 1) {
+      return (
+        <div style={{marginLeft: '1rem', cursor: 'pointer'}} onClick={() => {
+          if (banners.indexOf(currentBanner) === (banners.length - 1)) {
+            this.setState({currentBanner: banners[0]})
+          } else {
+            this.setState({currentBanner: banners[banners.indexOf(currentBanner) + 1]})
+          }
+        }}>
+          <ForwardArrow />
+        </div>
+      )
+    } else {
+      return null
+    }
+  }
+
+  renderBackArrow () {
+    let currentBanner = this.state.currentBanner
+    let banners = this.state.banners
+    if (banners.length > 1) {
+      return (
+        <div style={{marginRight: '1rem', cursor: 'pointer'}} onClick={() => {
+          if (banners.indexOf(currentBanner) === 0) {
+            console.log('setting current banner: ', banners.length - 1)
+            this.setState({currentBanner: banners[banners.length - 1]})
+          } else {
+            this.setState({currentBanner: banners[banners.indexOf(currentBanner) - 1]})
+          }
+        }}>
+          <BackArrow />
+        </div>
+      )
+    } else {
+      return null
+    }
+  }
+
+  renderBannerIndicator () {
+    let banners = this.state.banners
+    let currentBanner = this.state.currentBanner
+    if (banners.length > 1) {
+      return (
+        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', margin: '8px 0 0 0'}}>
+          {banners.map(banner => {
+            return (
+              <div
+                key={banners.indexOf(banner)}
+                style = {{
+                  backgroundColor: banner === currentBanner ? '#57B9E4' : '#4a4a4a',
+                  height: '6px',
+                  width: '6px',
+                  borderRadius: '100%',
+                  margin: '0 4px',
+                  cursor: 'pointer'
+                }}
+                onClick={() => this.setState({currentBanner: banner})}
+              />
+            )
+          })}
+        </div>
+      )
+    }
+  }
+
   renderContent () {
     return (
       <div>
-        {this.state.banners.includes('partner') && this.renderPartnerBanner()}
-        {this.state.banners.includes('jobs') && this.renderJobsBanner()}
+        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+          {this.renderBackArrow()}
+          {this.state.currentBanner === 'partner' && this.renderPartnerBanner()}
+          {this.state.currentBanner === 'jobs' && this.renderJobsBanner()}
+          {this.renderForwardArrow()}
+        </div>
+        {this.renderBannerIndicator()}
       </div>
     )
   }
 
   render () {
-    if (this.state.banners.length > 0 && !this.state.loading) {
+    if (this.props.state === 'partner') {
+      return (
+        <div className='sk-banner-wrapper'>
+          <div className='sk-banner' style={this.props.style ? this.props.style : null}>
+            {this.renderPartnerBanner()}
+          </div>
+        </div>
+      )
+    } else if (this.state.banners.length > 0) {
       return (
         <div className='sk-banner-wrapper'>
           <div className='sk-banner' style={this.props.style ? this.props.style : null}>
