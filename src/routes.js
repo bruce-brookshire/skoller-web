@@ -27,7 +27,8 @@ import ClassLink from './views/Student/ClassLink'
 import ClassDetail from './views/Student/ClassDetail'
 import AssignmentDetail from './views/Student/AssignmentDetail'
 import AddAssignment from './views/Student/Assignments/AddAssignment'
-import SharePartnerLink from './views/Student/MiscViews/SharePartnerLink'
+import SharePartnerLink from './views/Student/Share/SharePartnerLink'
+import Share from './views/Student/Share'
 
 import SyllabusTool from './views/SyllabusTool'
 import ClassAdmin from './views/ClassAdmin'
@@ -81,7 +82,11 @@ const router = (
           <IndexRedirect to='/student/home'/>
           <Route path='/student/home' component={Home} />
           <Route path='/student/tasks' component={Tasks} />
-          <Route path='/student/share/:partner' component={SharePartnerLink} />
+          <Route path='/student/share'>
+            <IndexRedirect to='/student/share/classes' />
+            <Route path='/student/share/classes' component={Share} />
+            <Route path='/student/share/:partner' component={SharePartnerLink} />
+          </Route>
           <Route path='/student/verify' component={Verification} onEnter={authOnboard} />
           <Route path='/student/class-link' component={ClassLink} />
           <Route path='/student/calendar' component={Calendar}/>
@@ -169,13 +174,6 @@ function requireAuth (nextState, replaceState) {
 * to the onboarding page.
 */
 function authenticateStudent (user) {
-  if (user.student) {
-    // return actions.classes.getStudentClassesById(user.student.id).then((classes) => {
-    //   if (classes.length === 0) {
-    //     browserHistory.push('/student/find-classes')
-    //   }
-    // }).catch(() => false)
-  }
   return new Promise((resolve, reject) => {
     resolve()
   })

@@ -22,6 +22,7 @@ class CopyBox extends React.Component {
       <div
         className='sk-copy-box'
         onClick={(e) => this.copyToClipboard(e)}
+        style={{height: this.props.longMessage ? '100%' : '56px'}}
       >
         <form>
           <textarea
@@ -29,10 +30,13 @@ class CopyBox extends React.Component {
             value={this.props.linkValue}
             readOnly={true}
             style={{cursor: 'pointer'}}
+            className={this.props.longMessage ? 'sk-copy-box-long' : 'sk-copy-box-short'}
           />
         </form>
         {this.state.copyStatus &&
-          <p>link copied to clipboard! 📋</p>
+          <p>
+            {!this.props.longMessage && 'link '}copied to clipboard! 📋
+          </p>
         }
       </div>
     )
@@ -40,7 +44,8 @@ class CopyBox extends React.Component {
 }
 
 CopyBox.propTypes = {
-  linkValue: PropTypes.string
+  linkValue: PropTypes.string,
+  longMessage: PropTypes.bool
 }
 
 export default CopyBox

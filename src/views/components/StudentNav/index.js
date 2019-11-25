@@ -39,6 +39,7 @@ class StudentNav extends React.Component {
           <NavItem pageName="classes" text="Classes" />
           <NavItem pageName="tasks" text="Tasks" />
           <NavItem pageName="calendar" text="Calendar" />
+          <NavItem pageName="share" text="Share" />
           {/* <NavItem pageName="activity" text="Activity" />
           <NavItem pageName="chat" text="Chat" /> */}
           {this.renderLogout()}

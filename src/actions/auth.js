@@ -1,7 +1,7 @@
 import {post, get, put} from '../utilities/api'
 import {showSnackbar} from '../utilities/snackbar'
 import stores from '../stores'
-const {userStore} = stores
+const {userStore, studentClassesStore} = stores
 
 /*
 * Authenticate login credentials. Set the user.
@@ -45,6 +45,7 @@ export function loginStudentWithPhone (phone, verificationCode) {
       userStore.authToken = `Bearer ${data.token}`
       userStore.user = data.user
       userStore.loading = false
+      studentClassesStore.getClasses()
     })
     .catch(error => {
       userStore.loading = false
@@ -70,7 +71,6 @@ const verifyStudentPhoneNumberError = (e) => {
 export function verifyStudentPhoneNumber (phone) {
   return post(`/api/v1/students/login`, phone, verifyStudentPhoneNumberError)
     .catch(error => {
-      console.log(error)
       return Promise.reject(error)
     })
 }
@@ -146,6 +146,7 @@ export function getUserByToken (token) {
       .then(data => {
         userStore.user = data.user
         userStore.authToken = token
+        studentClassesStore.getClasses()
         return data
       })
       .catch(error => {
@@ -155,6 +156,7 @@ export function getUserByToken (token) {
     return post(`/api/v1/users/token-login`, '')
       .then(data => {
         userStore.user = data.user
+        studentClassesStore.getClasses()
         return data
       })
       .catch(error => {
@@ -270,7 +272,6 @@ export function getRoles () {
 * @params [Object] form. User form data.
 */
 export function updateAccount (form) {
-  console.log(form)
   return put(`/api/v1/users/${form.id}`, form, 'Error updating user. Try again.')
     .then(data => {
       return data

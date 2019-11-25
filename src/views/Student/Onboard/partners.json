@@ -7,7 +7,8 @@
     "philanthropy": "The Arthritis Foundation",
     "primaryColor": "c40030",
     "secondaryColor": "ef456c",
-    "slug": "aoii"
+    "slug": "aoii",
+    "altName": "Alpha Omicron Pi"
   },
   "1": {
     "id": 1,
@@ -17,7 +18,8 @@
     "philanthropy": "Camp Kesem",
     "primaryColor": "0091ba",
     "secondaryColor": "81bd41",
-    "slug": "kesem"
+    "slug": "kesem",
+    "altName": "kesem"
   },
   "2": {
     "id": 2,
@@ -27,7 +29,8 @@
     "philanthropy": "The Alpha Sigma Alpha Foundation",
     "primaryColor": "a02824",
     "secondaryColor": "be5450",
-    "slug": "asa"
+    "slug": "asa",
+    "altName": "Alpha Sigma Alpha"
   },
   "3": {
     "id": 3,
@@ -37,7 +40,8 @@
     "philanthropy": "St. Jude Children's Research Hospital",
     "primaryColor": "000000",
     "secondaryColor": "000000",
-    "slug": "utd"
+    "slug": "utd",
+    "altName": "UTD"
   },
   "4": {
     "id": 4,
@@ -47,7 +51,8 @@
     "philanthropy": null,
     "primaryColor": "df4142",
     "secondaryColor": "334a4d",
-    "slug": "mam"
+    "slug": "mam",
+    "altName": "MAM"
   },
   "5": {
     "id": 5,
@@ -57,6 +62,7 @@
     "philanthropy": null,
     "primaryColor": "1c3050",
     "secondaryColor": "1c3050",
-    "slug": "ama"
+    "slug": "ama",
+    "altName": "AMA"
   }
 }

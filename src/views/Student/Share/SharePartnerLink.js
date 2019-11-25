@@ -11,7 +11,7 @@ class SharePartnerLink extends React.Component {
   getPartner (partnerSlug) {
     let partner = null
     Object.keys(partners).forEach(partnerKey => {
-      if (partners[partnerKey].slug === partnerSlug) {
+      if (partners[partnerKey].slug.toLowerCase() === partnerSlug.toLowerCase() || partners[partnerKey].altName.toLowerCase() === partnerSlug.toLowerCase()) {
         partner = partners[partnerKey]
       }
     })
@@ -20,7 +20,6 @@ class SharePartnerLink extends React.Component {
 
   renderContent () {
     const partner = this.getPartner(this.props.params.partner)
-    console.log(partner)
     return (
       <div className='sk-share-partner-link-container'>
         <div className='sk-share-partner-link'>
