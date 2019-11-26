@@ -10,7 +10,12 @@ function getCandidateCardCompletion (profile) {
   if (profile.skills) {
     score += 1
   }
-  // INSERT WORK EXPERIENCE AND ACHIEVEMENTS HERE WHEN THEY ARE READY
+  if (profile.experience_activities.length > 0) {
+    score += 1
+  }
+  if (profile.achievement_activities.length > 0) {
+    score += 1
+  }
   return (score / 4)
 }
 
@@ -67,7 +72,7 @@ function getCompanyValuesCompletion (profile) {
   }
 }
 
-function getEqualOpportunityEmploymentCompletion (profile) {
+export function getEqualOpportunityEmploymentCompletion (profile) {
   let score = 0
   if (profile.ethnicity_type) {
     score += 1
@@ -103,7 +108,9 @@ function getSocialLinksCompletion (profile) {
 
 function getVolunteerCompletion (profile) {
   let score = 0
-  // INSERT VOLUNTEER STUFF HERE
+  if (profile.volunteer_activities.length > 0) {
+    score += 1
+  }
   return (score / 1)
 }
 

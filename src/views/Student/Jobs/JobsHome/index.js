@@ -3,6 +3,7 @@ import {inject, observer} from 'mobx-react'
 import PropTypes from 'prop-types'
 import CompletionCircle from '../../../components/CompletionCircle'
 import { calculateTotalProfileScore, calculateCoreProfileCompleteness, calculatePersonalityProfileCompleteness, calculateExperienceProfileCompleteness, calculateExtrasProfileCompleteness } from '../utils'
+import { browserHistory } from 'react-router';
 // import StudentLayout from '../../components/StudentLayout'
 // import {browserHistory} from 'react-router'
 // import SkLoader from '../../../assets/sk-icons/SkLoader'
@@ -27,7 +28,11 @@ class JobsHome extends React.Component {
     return (
       <div className='jobs-home-cell'>
         <div className='jobs-home-cell-heading'>
-          <h1>Your Profile</h1>
+          <h1
+            onClick={() => browserHistory.push('/student/jobs/profile')}
+          >
+            Your Profile
+          </h1>
           <div className='jobs-home-cell-subheading'>
             <p style={{marginRight: '6px'}}>Profile strength: </p>
             <CompletionCircle completion={totalProfileScore} hexColor={'#4add58'} customSize={32} />

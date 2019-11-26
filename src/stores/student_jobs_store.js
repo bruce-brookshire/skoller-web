@@ -12,6 +12,7 @@ class StudentJobsStore {
   }
 
   getJobsProfile () {
+    this.startLoading()
     this.loading = true
     actions.jobs.getJobsProfile(stores.userStore.user.id)
       .then((r) => {
@@ -28,6 +29,11 @@ class StudentJobsStore {
   @action
   stopLoading () {
     this.loading = false
+  }
+
+  @action
+  startLoading () {
+    this.loading = true
   }
 }
 
