@@ -16,27 +16,15 @@ class StudentLayout extends React.Component {
   }
 
   renderContent () {
-    if (this.props.rootStore.studentNavStore.jobsMode) {
-      return (
-        <div className='sk-layout'>
-          <StudentNav />
-          <main>
-            <SkBanner />
-            {this.props.children}
-          </main>
-        </div>
-      )
-    } else {
-      return (
-        <div className='sk-layout'>
-          <StudentNav />
-          <main>
-            <SkBanner />
-            {this.props.children}
-          </main>
-        </div>
-      )
-    }
+    return (
+      <div className='sk-layout'>
+        <StudentNav />
+        <main>
+          <SkBanner />
+          {this.props.children}
+        </main>
+      </div>
+    )
   }
 
   render () {
