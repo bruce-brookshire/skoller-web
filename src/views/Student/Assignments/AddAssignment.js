@@ -319,10 +319,8 @@ class AddAssignment extends Component {
   }
 
   toggleClasses (bool) {
-    console.log('toggle classes: ', bool)
     let autoComplete = this.state.autoComplete
     autoComplete.classes = bool
-    console.log('new autocomplete: ', autoComplete)
     this.setState({autoComplete})
   }
 

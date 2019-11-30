@@ -8,10 +8,13 @@ class ProfileScoreVisual extends React.Component {
   constructor (props) {
     super(props)
 
+    let score = calculateTotalProfileScore(this.props.profile, this.props.user) + 0
+    let timeoutTime = (100 / score) * 2
+
     this.state = {
-      score: calculateTotalProfileScore(this.props.profile, this.props.user),
-      displayScore: 0,
-      timeoutTime: 5
+      score,
+      timeoutTime,
+      displayScore: 0
     }
 
     this.timeout = undefined
@@ -29,7 +32,7 @@ class ProfileScoreVisual extends React.Component {
     if (this.state.score - this.state.displayScore < 6) {
       return this.state.timeoutTime + 20
     } else if (this.state.score - this.state.displayScore < 12) {
-      return this.state.timeoutTime + 10
+      return this.state.timeoutTime + 12
     } else if (this.state.displayScore / this.state.score > 0.5) {
       return this.state.timeoutTime + 0.25
     } else if (this.state.displayScore / this.state.score > 0.25) {

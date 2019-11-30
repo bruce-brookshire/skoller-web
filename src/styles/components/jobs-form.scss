@@ -1,0 +1,34 @@
+.jobs-form-container {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+
+  .jobs-form-row {
+    margin: 0.25rem 0 0.25rem 0;
+    max-width: 512px;
+
+    .jobs-form-label {
+      font-weight: 600;
+    }
+
+    .jobs-form-sub-label {
+      color: $cn-form-border;
+      font-size: 14px;
+    }
+
+    .jobs-form-input {
+      @include sk-form-field;
+    }
+
+    .jobs-autocomplete-option {
+      @include sk-autocomplete-option;
+      border-bottom: none;
+    }
+
+    .jobs-form-selections {
+      cursor: pointer;
+      color: $cn-color-green;
+      margin: 0;
+    }
+  }
+}

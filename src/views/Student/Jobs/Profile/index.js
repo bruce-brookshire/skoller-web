@@ -7,6 +7,7 @@ import SkLoader from '../../../../assets/sk-icons/SkLoader'
 import ProfileBlock from './ProfileBlock'
 import ProfileScoreVisual from './ProfileScoreVisual'
 import { getEqualOpportunityEmploymentCompletion, calculateExtrasProfileCompleteness } from '../utils';
+import ModalRouter from './ModalRouter';
 
 @inject('rootStore') @observer
 class Profile extends React.Component {
@@ -14,11 +15,30 @@ class Profile extends React.Component {
     super(props)
 
     this.state = {
-      student: this.props.rootStore.userStore.user.student
+      student: this.props.rootStore.userStore.user.student,
+      form: null
     }
 
     this.props.rootStore.studentNavStore.setActivePage('jobs/profile')
     this.props.rootStore.studentNavStore.location = this.props.location
+  }
+
+  updateForm (formName) {
+    this.setState({form: formName})
+  }
+
+  renderButton (text, form) {
+    return (
+      <div className='jobs-profile-block-row'>
+        <div className='jobs-profile-add-button'>
+          <p
+            onClick={() => this.updateForm(form)}
+          >
+            {text}
+          </p>
+        </div>
+      </div>
+    )
   }
 
   pushIfNoProfile () {
@@ -109,7 +129,7 @@ class Profile extends React.Component {
         <ProfileBlock
           title='Career Interests'
           settingsButton={() => {
-            console.log('button pushed')
+            this.updateForm('careerInterests')
           }}
         >
           <div className='jobs-profile-block-row'>
@@ -128,14 +148,10 @@ class Profile extends React.Component {
         <ProfileBlock
           title='Career Interests'
           settingsButton={() => {
-            console.log('button pushed')
+            this.updateForm('careerInterests')
           }}
         >
-          <div className='jobs-profile-block-row'>
-            <div className='jobs-profile-add-button'>
-              <p>Add Career Interests</p>
-            </div>
-          </div>
+          {this.renderButton('Add Career Interests', 'careerInterests')}
         </ProfileBlock>
       )
     }
@@ -147,7 +163,7 @@ class Profile extends React.Component {
       <ProfileBlock
         title='Education'
         settingsButton={() => {
-          console.log('button pushed')
+          this.updateForm('education')
         }}
       >
         <div className='jobs-profile-block-row'>
@@ -164,11 +180,7 @@ class Profile extends React.Component {
           </div>
         }
         {!(profile.degree_type && student.grad_year && profile.gpa && student.fields_of_study.length > 0) &&
-          <div className='jobs-profile-block-row'>
-            <div className='jobs-profile-add-button'>
-              <p>Fill Out Your Education</p>
-            </div>
-          </div>
+          this.renderButton('Fill Out Your Education', 'education')
         }
       </ProfileBlock>
     )
@@ -180,7 +192,7 @@ class Profile extends React.Component {
         <ProfileBlock
           title='Work Experience'
           settingsButton={() => {
-            console.log('button pushed')
+            this.updateForm('workExperience')
           }}
         >
           <div className='jobs-profile-block-row'>
@@ -199,14 +211,10 @@ class Profile extends React.Component {
         <ProfileBlock
           title='Work Experience'
           settingsButton={() => {
-            console.log('button pushed')
+            this.updateForm('workExperience')
           }}
         >
-          <div className='jobs-profile-block-row'>
-            <div className='jobs-profile-add-button'>
-              <p>Add Work Experience</p>
-            </div>
-          </div>
+          {this.renderButton('Add Work Experience', 'workExperience')}
         </ProfileBlock>
       )
     }
@@ -218,7 +226,7 @@ class Profile extends React.Component {
         <ProfileBlock
           title='Documents'
           settingsButton={() => {
-            console.log('button pushed')
+            this.updateForm('documents')
           }}
         >
           <div className='jobs-profile-block-row'>
@@ -237,14 +245,10 @@ class Profile extends React.Component {
         <ProfileBlock
           title='Documents'
           settingsButton={() => {
-            console.log('button pushed')
+            this.updateForm('documents')
           }}
         >
-          <div className='jobs-profile-block-row'>
-            <div className='jobs-profile-add-button'>
-              <p>Upload Documents</p>
-            </div>
-          </div>
+          {this.renderButton('Upload Documents', 'documents')}
         </ProfileBlock>
       )
     }
@@ -256,7 +260,7 @@ class Profile extends React.Component {
         <ProfileBlock
           title='Volunteer Experience'
           settingsButton={() => {
-            console.log('button pushed')
+            this.updateForm('volunteerExperience')
           }}
         >
           <div className='jobs-profile-block-row'>
@@ -275,14 +279,10 @@ class Profile extends React.Component {
         <ProfileBlock
           title='Volunteer Experience'
           settingsButton={() => {
-            console.log('button pushed')
+            this.updateForm('volunteerExperience')
           }}
         >
-          <div className='jobs-profile-block-row'>
-            <div className='jobs-profile-add-button'>
-              <p>Add Volunteer Experience</p>
-            </div>
-          </div>
+          {this.renderButton('Add Volunteer Experience', 'volunteerExperience')}
         </ProfileBlock>
       )
     }
@@ -294,7 +294,7 @@ class Profile extends React.Component {
         <ProfileBlock
           title='Company Values'
           settingsButton={() => {
-            console.log('button pushed')
+            this.updateForm('companyValues')
           }}
         >
           <div className='jobs-profile-block-row'>
@@ -313,14 +313,10 @@ class Profile extends React.Component {
         <ProfileBlock
           title='Company Values'
           settingsButton={() => {
-            console.log('button pushed')
+            this.updateForm('companyValues')
           }}
         >
-          <div className='jobs-profile-block-row'>
-            <div className='jobs-profile-add-button'>
-              <p>What&apos;s Important to You?</p>
-            </div>
-          </div>
+          {this.renderButton("What's Important to You?", 'companyValues')}
         </ProfileBlock>
       )
     }
@@ -333,7 +329,7 @@ class Profile extends React.Component {
         <ProfileBlock
           title='Equal Opportunity Employment'
           settingsButton={() => {
-            console.log('button pushed')
+            this.updateForm('equalOpportunityEmployment')
           }}
         >
           <div className='jobs-profile-block-row'>
@@ -352,14 +348,10 @@ class Profile extends React.Component {
         <ProfileBlock
           title='Equal Opportunity Employment'
           settingsButton={() => {
-            console.log('button pushed')
+            this.updateForm('equalOpportunityEmployment')
           }}
         >
-          <div className='jobs-profile-block-row'>
-            <div className='jobs-profile-add-button'>
-              <p>Tell Us About Yourself</p>
-            </div>
-          </div>
+          {this.renderButton('Tell Us About Yourself', 'equalOpportunityEmployment')}
         </ProfileBlock>
       )
     }
@@ -372,7 +364,7 @@ class Profile extends React.Component {
         <ProfileBlock
           title='Extras'
           settingsButton={() => {
-            console.log('button pushed')
+            this.updateForm('extras')
           }}
         >
           <div className='jobs-profile-block-row'>
@@ -391,14 +383,10 @@ class Profile extends React.Component {
         <ProfileBlock
           title='Extras'
           settingsButton={() => {
-            console.log('button pushed')
+            this.updateForm('extras')
           }}
         >
-          <div className='jobs-profile-block-row'>
-            <div className='jobs-profile-add-button'>
-              <p>Round Out Your Profile</p>
-            </div>
-          </div>
+          {this.renderButton('Round Out Your Profile', 'extras')}
         </ProfileBlock>
       )
     }
@@ -410,7 +398,7 @@ class Profile extends React.Component {
         <ProfileBlock
           title='Personality Profile'
           settingsButton={() => {
-            console.log('button pushed')
+            this.updateForm('personalityProfile')
           }}
         >
           <div className='jobs-profile-block-row'>
@@ -429,14 +417,10 @@ class Profile extends React.Component {
         <ProfileBlock
           title='Personality Profile'
           settingsButton={() => {
-            console.log('button pushed')
+            this.updateForm('personalityProfile')
           }}
         >
-          <div className='jobs-profile-block-row'>
-            <div className='jobs-profile-add-button'>
-              <p>Take the Personality Quiz</p>
-            </div>
-          </div>
+          {this.renderButton('Take the Personality Quiz', 'personalityProfile')}
         </ProfileBlock>
       )
     }
@@ -448,7 +432,7 @@ class Profile extends React.Component {
         <ProfileBlock
           title='On the Web'
           settingsButton={() => {
-            console.log('button pushed')
+            this.updateForm('onTheWeb')
           }}
         >
           <div className='jobs-profile-block-row'>
@@ -467,14 +451,10 @@ class Profile extends React.Component {
         <ProfileBlock
           title='On the Web'
           settingsButton={() => {
-            console.log('button pushed')
+            this.updateForm('onTheWeb')
           }}
         >
-          <div className='jobs-profile-block-row'>
-            <div className='jobs-profile-add-button'>
-              <p>Show Off Your Other Profiles</p>
-            </div>
-          </div>
+          {this.renderButton('Show Off Your Other Profiles', 'onTheWeb')}
         </ProfileBlock>
       )
     }
@@ -516,6 +496,7 @@ class Profile extends React.Component {
         <StudentLayout>
           <div className='jobs-profile-container'>
             {this.renderContent()}
+            <ModalRouter form={this.state.form} onClose={() => this.setState({form: null})} />
           </div>
         </StudentLayout>
       )
