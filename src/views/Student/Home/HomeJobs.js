@@ -7,6 +7,7 @@ import SkLoader from '../../../assets/sk-icons/SkLoader'
 import PropTypes from 'prop-types'
 import SkSelectDropDown from '../../components/SkSelectDropDown'
 import { showSnackbar } from '../../../utilities/snackbar'
+import moment from 'moment'
 
 @inject('rootStore') @observer
 class HomeJobs extends React.Component {
@@ -156,7 +157,8 @@ class HomeJobs extends React.Component {
     this.setState({loading: true})
     let user = this.props.rootStore.userStore.user
     let jobsForm = {
-      degree_type_id: this.state.gradDegreeChoice.id
+      degree_type_id: this.state.gradDegreeChoice.id,
+      graduation_date: new Date(this.state.gradMonthChoice + ' ' + this.state.gradYearChoice).toISOString()
     }
     let userForm = {
       grad_year: this.state.gradYearChoice
@@ -174,6 +176,7 @@ class HomeJobs extends React.Component {
     this.state.majors.forEach(major => {
       majorIds.push(major.id)
     })
+
     await actions.students.setStudentMajors(user.id, user.student.id, majorIds)
       .catch(() => {
         this.setState({loading: false, error: 'Error saving majors. Try again later.'})
@@ -193,12 +196,12 @@ class HomeJobs extends React.Component {
         throw new Error('Error creating profile. Try again later.')
       })
 
-    // // upload resume
-    // await actions.jobs.uploadJobsDoc(skollerJobsId, this.state.resume)
-    //   .catch(e => {
-    //     console.log(e)
-    //     this.setState({loading: false, error: 'Error uploading résumé. Try again later.'})
-    //   })
+    // upload resume
+    await actions.jobs.uploadJobsDoc(skollerJobsId, this.state.resume)
+      .catch(e => {
+        console.log(e)
+        this.setState({loading: false, error: 'Error uploading résumé. Try again later.'})
+      })
 
     this.props.updateStudent()
   }

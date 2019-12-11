@@ -35,7 +35,7 @@ class HomeShare extends React.Component {
     let hasCompletedClass = false
     if (this.props.classes) {
       this.props.classes.forEach(cl => {
-        if (cl.status.id > 1100) {
+        if (cl.status.id > 1300) {
           hasCompletedClass = true
         }
       })
@@ -57,7 +57,7 @@ class HomeShare extends React.Component {
         } else {
           this.setState({
             partner: this.getPartner(slug),
-            show: true,
+            show: false,
             hasCompletedClass: false
           })
         }

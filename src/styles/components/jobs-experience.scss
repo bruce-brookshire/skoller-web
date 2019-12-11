@@ -1,0 +1,36 @@
+.jobs-experience {
+  margin: 1rem 0;
+  border: 1px solid $cn-font-color;
+  border-radius: 5px;
+  padding: 1rem;
+
+  p, h1, h2, h3 {
+    margin: 0
+  }
+
+  h3 {
+    line-height: 18px;
+    margin-bottom: 0.25rem;
+  }
+
+  .jobs-experience-org {
+    margin-bottom: -2px;
+    font-weight: 600;
+  }
+
+  .jobs-experience-date {
+    font-weight: 200;
+    margin-bottom: -0.25rem;
+  }
+
+  .jobs-experience-description {
+    margin: 0.5rem 0 -0.5rem 0;
+
+    .jobs-experience-description-row {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      margin-bottom: 0.25rem;
+    }
+  }
+}

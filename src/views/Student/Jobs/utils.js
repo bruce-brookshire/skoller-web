@@ -19,6 +19,20 @@ function getCandidateCardCompletion (profile) {
   return (score / 4)
 }
 
+function getWorkPreferencesCompletion (profile) {
+  let score = 0
+  if (profile.career_interests) {
+    score += 1
+  }
+  if (profile.regions) {
+    score += 1
+  }
+  if (profile.startup_interest !== null) {
+    score += 1
+  }
+  return (score / 3)
+}
+
 function getProfilePicCompletion (user) {
   let score = 0
   if (user.avatar) {
@@ -51,8 +65,10 @@ function getPersonalityCompletion (profile) {
 
 function getMoreInfoCompletion (profile) {
   let score = 0
-  // CLUBS GO HERE
-  if (profile.played_sports) {
+  if (profile.club_activities.length > 0) {
+    score += 1
+  }
+  if (profile.played_sports !== null) {
     score += 1
   }
   if (profile.act_score) {
@@ -61,7 +77,7 @@ function getMoreInfoCompletion (profile) {
   if (profile.sat_score) {
     score += 1
   }
-  return (score / 3)
+  return (score / 4)
 }
 
 function getCompanyValuesCompletion (profile) {
@@ -116,9 +132,10 @@ function getVolunteerCompletion (profile) {
 
 export function calculateTotalProfileScore (profile, user) {
   console.log(profile)
-  let score = 25
+  let score = 20
   score += getCandidateCardCompletion(profile) * 15
-  score += getProfilePicCompletion(user) * 15
+  score += getWorkPreferencesCompletion(profile) * 10
+  score += getProfilePicCompletion(user) * 10
   score += getBasicInfoCompletion(profile) * 10
   score += getPersonalityCompletion(profile) * 10
   score += getMoreInfoCompletion(profile) * 5
@@ -174,5 +191,11 @@ export function calculateExperienceProfileCompleteness (profile) {
 
 export function calculateExtrasProfileCompleteness (profile) {
   let score = 0
-  return score
+  if (profile.skills) {
+    score += 1
+  }
+  if (profile.achievement_activities.length > 0) {
+    score += 1
+  }
+  return round((score / 2) * 100)
 }

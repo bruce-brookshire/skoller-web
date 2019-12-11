@@ -1,4 +1,4 @@
-import {get, post, put} from '../utilities/api'
+import {get, post, put, del} from '../utilities/api'
 
 /*
 * Get a user's job profile by user id
@@ -54,8 +54,38 @@ export function getActivityTypes () {
     })
 }
 
+export function addCareerActivity (form) {
+  return post(`/api/v1/skoller-jobs/profiles/${form.job_profile_id}/activities`, form, 'Error saving experience. Try again later.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+export function deleteActivity (activityId, profileId) {
+  return del(`/api/v1/skoller-jobs/profiles/${profileId}/activities/${activityId}`, '', 'Error saving experience. Try again later.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+export function editActivity (form) {
+  return put(`/api/v1/skoller-jobs/profiles/${form.job_profile_id}/activities/${form.id}`, form, 'Error saving experience. Try again later.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
 export function editJobsProfile (form) {
-  return post(`/api/v1/skoller-jobs/profiles/${form.id}`, '', 'Error saving SkollerJobs data. Try again.')
+  return put(`/api/v1/skoller-jobs/profiles/${form.id}`, form, 'Error saving SkollerJobs data. Try again.')
     .then(data => {
       return data
     })

@@ -13,7 +13,7 @@ class SearchField extends React.Component {
   render () {
     return (
       <input
-        className='jobs-form-input jobs-form-search-field'
+        className={'jobs-form-input jobs-form-search-field ' + (this.state.showSearchIcon ? '' : 'focus')}
         onChange={(e) => this.props.updateValue(e.target.value)}
         onFocus={() => this.setState({showSearchIcon: false})}
         onBlur={() => this.setState({showSearchIcon: true})}

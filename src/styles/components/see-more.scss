@@ -1,0 +1,23 @@
+.see-more {
+  position: relative;
+
+  &:before {
+    content: '';
+    width: calc(100% + 2px);
+    margin-left: -1px;
+    height: 88px;
+    background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8), white, white);
+    position: absolute;
+    bottom: 0;
+  }
+
+  .see-more-button {
+    margin: 0.5rem 0 0rem 0;
+    color: $cn-color-green;
+    cursor: pointer;
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    width: 100%;
+  }
+}

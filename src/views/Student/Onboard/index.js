@@ -7,6 +7,13 @@ import StudentLink from './EnrollLink/StudentLink'
 
 @inject('rootStore') @observer
 class Switch extends React.Component {
+  componentDidMount () {
+    this.props.rootStore.studentNavStore.onboarding = true
+  }
+
+  componentWillUMount () {
+    this.props.rootStore.studentNavStore.onboarding = true
+  }
   render () {
     if (this.props.route.type === 'onboard') {
       return (
@@ -26,7 +33,8 @@ class Switch extends React.Component {
 
 Switch.propTypes = {
   params: PropTypes.object,
-  route: PropTypes.object
+  route: PropTypes.object,
+  rootStore: PropTypes.object
 }
 
 export default Switch

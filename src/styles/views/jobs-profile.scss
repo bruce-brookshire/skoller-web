@@ -4,6 +4,10 @@
   justify-content: center;
   margin-top: 0.5rem;
 
+  p {
+    margin: 0;
+  }
+
   .jobs-profile {
     margin: 0.5rem;
     display: flex;
@@ -46,7 +50,7 @@
       .jobs-profile-block {
         @include skoller-cell;
         margin: 0.5rem;
-        padding: 1rem;
+        padding: 1rem 1rem 0.5rem 1rem;
         width: 244px;
     
         .jobs-profile-block-header {

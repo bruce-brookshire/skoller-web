@@ -28,6 +28,10 @@
       margin: 0 0 1rem 0;
       width: 380px;
       height: 100%;
+
+      @media only screen and (max-width: $sk-mobile-break-point) {
+        width: 100%;
+      }
   
       .sk-class-status-modal-mobile-message {
         margin: 0;

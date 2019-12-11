@@ -3,7 +3,9 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 import PropTypes from 'prop-types'
 import { calculateTotalProfileScore } from '../utils'
+import { inject, observer } from 'mobx-react'
 
+@inject('rootStore') @observer
 class ProfileScoreVisual extends React.Component {
   constructor (props) {
     super(props)
@@ -68,40 +70,72 @@ class ProfileScoreVisual extends React.Component {
       color = '#F7D300'
     }
 
-    return (
-      <div style={{height: '124px', width: '124px', margin: '1rem', fontWeight: '600'}}>
-        <CircularProgressbar
-          value={percentage}
-          text={`${percentage}%`}
-          styles={buildStyles({
+    if (this.props.placeholder) {
+      return (
+        <div style={{height: '124px', width: '124px', margin: '1rem', fontWeight: '600'}}>
+          <CircularProgressbar
+            value={0}
+            text={``}
+            styles={buildStyles({
 
-            // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
-            strokeLinecap: 'round',
+              // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
+              strokeLinecap: 'round',
 
-            // Text size
-            textSize: '18px',
+              // Text size
+              textSize: '18px',
 
-            // How long animation takes to go from one percentage to another, in seconds
-            // pathTransitionDuration: 0.5,
+              // How long animation takes to go from one percentage to another, in seconds
+              // pathTransitionDuration: 0.5,
 
-            // Can specify path transition in more detail, or remove it entirely
-            pathTransition: 'none',
+              // Can specify path transition in more detail, or remove it entirely
+              pathTransition: 'none',
 
-            // Colors
-            pathColor: color,
-            textColor: color,
-            trailColor: '#00000000',
-            backgroundColor: '#4a4a4a'
-          })}
-        />
-      </div>
-    )
+              // Colors
+              pathColor: color,
+              textColor: color,
+              trailColor: '#00000000',
+              backgroundColor: '#4a4a4a'
+            })}
+          />
+        </div>
+      )
+    } else {
+      return (
+        <div style={{height: '124px', width: '124px', margin: '1rem', fontWeight: '600'}}>
+          <CircularProgressbar
+            value={percentage}
+            text={`${percentage}%`}
+            styles={buildStyles({
+
+              // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
+              strokeLinecap: 'round',
+
+              // Text size
+              textSize: '18px',
+
+              // How long animation takes to go from one percentage to another, in seconds
+              // pathTransitionDuration: 0.5,
+
+              // Can specify path transition in more detail, or remove it entirely
+              pathTransition: 'none',
+
+              // Colors
+              pathColor: color,
+              textColor: color,
+              trailColor: '#00000000',
+              backgroundColor: '#4a4a4a'
+            })}
+          />
+        </div>
+      )
+    }
   }
 }
 
 ProfileScoreVisual.propTypes = {
   profile: PropTypes.object,
-  user: PropTypes.object
+  user: PropTypes.object,
+  placeholder: PropTypes.bool
 }
 
 export default ProfileScoreVisual

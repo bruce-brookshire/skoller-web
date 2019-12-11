@@ -173,7 +173,10 @@ import {
   getStatusTypes,
   editJobsProfile,
   createJobsProfile,
-  uploadJobsDoc
+  uploadJobsDoc,
+  addCareerActivity,
+  deleteActivity,
+  editActivity
 } from './jobs'
 
 const actions = {
@@ -377,7 +380,10 @@ const actions = {
     getStatusTypes,
     editJobsProfile,
     createJobsProfile,
-    uploadJobsDoc
+    uploadJobsDoc,
+    addCareerActivity,
+    deleteActivity,
+    editActivity
   }
 }
 
