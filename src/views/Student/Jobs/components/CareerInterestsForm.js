@@ -27,22 +27,32 @@ class CareerInterestForm extends React.Component {
   }
 
   careerInterests = [
-    'Science',
-    'Math',
-    'History',
-    'Finance',
-    'Computer Science',
+    'Account Manager',
+    'Accounting',
+    'Biotechnology',
+    'Business Analyst',
+    'Consulting',
+    'Data Science',
+    'Design/Creative',
     'Engineering',
-    'Actuary',
-    'Beep',
-    'Bop',
-    'Eee',
-    'Eeee',
-    'Eeeee',
-    'Eeeeee',
-    'Week',
-    'Reek',
-    'Gleek'
+    'Finance',
+    'Government and Politics',
+    'Human Resources/Recruiting',
+    'Information Technology',
+    'Legal',
+    'Marketing/Advertising',
+    'Nonprofit',
+    'Office Management',
+    'Operations/Logistics',
+    'Product Management',
+    'Quantitative Trading',
+    'Real Estate',
+    'Research',
+    'Sales/Business Development',
+    'Social Media/Communications',
+    'Software Development',
+    'Startups',
+    'Teaching'
   ]
 
   careerInterestOptionsMap = () => {
