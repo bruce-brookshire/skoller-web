@@ -22,8 +22,6 @@ class CareerInterestForm extends React.Component {
       careerInterestSearchQuery: '',
       startup: this.getStartupSelection(this.props.rootStore.studentJobsStore.profile.startup_interest)
     }
-
-    console.log(this.state)
   }
 
   careerInterests = [

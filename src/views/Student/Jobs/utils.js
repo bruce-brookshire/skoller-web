@@ -203,7 +203,7 @@ export function calculateExtrasProfileCompleteness (profile) {
   if (profile.club_activities.length > 0) {
     score += 1
   }
-  if (profile.student_athlete !== null) {
+  if (profile.played_sports !== null) {
     score += 1
   }
   if (profile.sat_score) {
