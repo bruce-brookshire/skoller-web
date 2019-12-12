@@ -22,8 +22,10 @@ class OnTheWebForm extends React.Component {
   }
 
   sanitize (link) {
-    link.replace('http://', '').replace('https://', '').replace('www.', '')
-    link = 'http://' + link
+    link = link.replace(/http:\/\/|https:\/\/|www\./g, '')
+    if (link) {
+      link = 'http://' + link
+    }
     return link
   }
 

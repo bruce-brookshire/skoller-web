@@ -9,8 +9,8 @@ import ProfileScoreVisual from './ProfileScoreVisual'
 import { getEqualOpportunityEmploymentCompletion, calculateExtrasProfileCompleteness } from '../utils'
 import ModalRouter from './ModalRouter'
 import moment from 'moment'
-import ExperienceCard from '../components/ExperienceCard';
-import SeeMore from '../../../components/SeeMore/SeeMore';
+import ExperienceCard from '../components/ExperienceCard'
+import SeeMore from '../../../components/SeeMore/SeeMore'
 
 @inject('rootStore') @observer
 class Profile extends React.Component {
@@ -19,11 +19,23 @@ class Profile extends React.Component {
 
     this.state = {
       student: this.props.rootStore.userStore.user.student,
-      form: null
+      form: null,
+      width: 0
     }
 
+    window.addEventListener('resize', () => this.updateWidth())
     this.props.rootStore.studentNavStore.setActivePage('jobs/profile')
     this.props.rootStore.studentNavStore.location = this.props.location
+  }
+
+  componentDidMount () {
+    this.updateWidth()
+  }
+
+  updateWidth = () => {
+    this.setState({
+      width: window.innerWidth
+    })
   }
 
   updateForm (formName) {
@@ -97,6 +109,19 @@ class Profile extends React.Component {
     }
   }
 
+  renderBasicInfoButton (profile) {
+    return (
+      (profile.work_auth === null || profile.sponsorship_required === null || profile.state_code === null) &&
+        <div className='jobs-profile-header-add-button'>
+          <p
+            onClick={() => this.updateForm('basicInfo')}
+          >
+            Complete Your Basic Info
+          </p>
+        </div>
+    )
+  }
+
   renderHeader () {
     let user = this.props.rootStore.userStore.user
     let student = user.student
@@ -119,26 +144,32 @@ class Profile extends React.Component {
     return (
       <div className='jobs-profile-header'>
         <div className='jobs-profile-header-content'>
-          <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-            {this.renderAvatar()}
-            <div>
-              <h1>{student.name_first} {student.name_last}</h1>
-              <p>{student.primary_school.name}</p>
-              <p><i className='far fa-envelope' /> {user.email}</p>
-              <p><i className='fas fa-map-marker-alt' /> Home state</p>
+          <div className='jobs-profile-header-row'>
+            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+              {/* {this.renderAvatar()} */}
+              <div style={{marginLeft: '2rem'}}>
+                <h1>{student.name_first} {student.name_last}</h1>
+                <p>{student.primary_school.name}</p>
+                <p><i className='far fa-envelope' /> {user.email}</p>
+                {profile.state_code &&
+                  <p><i className='fas fa-map-marker-alt' /> {profile.state_code}</p>
+                }
+              </div>
+            </div>
+            <div className='jobs-profile-header-score-container'>
+              <div className='jobs-profile-header-score-text'>
+                <p><b>Profile strength</b></p>
+                <p>Your profile <span style={{fontWeight: '600', color: color}}>{strength}</span></p>
+                <p>Your profile is {profile.job_profile_status.id === 100 ? <b style={{color: '#4add58'}}>ACTIVE.</b> : <b style={{color: 'rgb(255, 65, 89)'}}>INACTIVE.</b>}</p>
+              </div>
+              {!this.props.rootStore.studentJobsStore.backgroundLoading
+                ? <ProfileScoreVisual profile={profile} user={user} />
+                : <div style={{height: '124px', width: '124px', margin: '1rem', fontWeight: '600'}} />
+              }
             </div>
           </div>
-          <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', textAlign: 'right'}}>
-            <div>
-              <p><b>Profile strength</b></p>
-              <p>Your profile <span style={{fontWeight: '600', color: color}}>{strength}</span></p>
-              <p>Your profile is {profile.job_profile_status.id === 100 ? <b style={{color: '#4add58'}}>ACTIVE.</b> : <b style={{color: 'rgb(255, 65, 89)'}}>INACTIVE.</b>}</p>
-            </div>
-            {!this.props.rootStore.studentJobsStore.backgroundLoading
-              ? <ProfileScoreVisual profile={profile} user={user} />
-              : <div style={{height: '124px', width: '124px', margin: '1rem', fontWeight: '600'}} />
-            }
-          </div>
+          {this.renderBasicInfoButton(profile)}
+          <div className='jobs-profile-header-settings' onClick={() => this.updateForm('basicInfo')}>...</div>
         </div>
       </div>
     )
@@ -294,15 +325,16 @@ class Profile extends React.Component {
             this.updateForm('documents')
           }}
         >
-          <div className='jobs-profile-block-row'>
-            I’m looking for work in <b>software development and engineering.</b>
-          </div>
-          <div className='jobs-profile-block-row'>
-            I want to work <b>in Texas.</b>
-          </div>
-          <div className='jobs-profile-block-row'>
-            I would <b>strongly prefer</b> working for a startup.
-          </div>
+          {profile.resume_url &&
+            <div className='jobs-profile-block-row'>
+              <a href={profile.resume_url}>Résumé</a>
+            </div>
+          }
+          {profile.transcript_url &&
+            <div className='jobs-profile-block-row'>
+              <a href={profile.resume_url}>Transcript</a>
+            </div>
+          }
         </ProfileBlock>
       )
     } else {
@@ -485,15 +517,60 @@ class Profile extends React.Component {
             this.updateForm('extras')
           }}
         >
-          <div className='jobs-profile-block-row'>
-            I’m looking for work in <b>software development and engineering.</b>
-          </div>
-          <div className='jobs-profile-block-row'>
-            I want to work <b>in Texas.</b>
-          </div>
-          <div className='jobs-profile-block-row'>
-            I would <b>strongly prefer</b> working for a startup.
-          </div>
+          {profile.played_sports &&
+            <div className='jobs-profile-block-row'>
+              I was a <b>student athlete.</b>
+            </div>
+          }
+          {profile.achievement_activities.length > 0 &&
+            <div className='jobs-profile-block-row'>
+              I achieved <b>
+                {this.props.rootStore.studentJobsStore.profile.achievement_activities.map(club => {
+                  let index = this.props.rootStore.studentJobsStore.profile.achievement_activities.indexOf(club)
+                  let lastOne = index === this.props.rootStore.studentJobsStore.profile.achievement_activities.length - 1
+                  let moreThanOne = this.props.rootStore.studentJobsStore.profile.achievement_activities.length > 1
+                  let moreThanTwo = this.props.rootStore.studentJobsStore.profile.achievement_activities.length > 2
+                  return (
+                    <span key={index}>
+                      {lastOne && moreThanOne ? 'and ' : ''}{club.name}{' ('}{moment(club.start_date).format('MM/YYYY')}{')'}{lastOne ? moreThanOne ? '.' : '' : moreThanTwo ? ', ' : ' '}
+                    </span>
+                  )
+                })}
+              </b>
+            </div>
+          }
+          {profile.achievement_activities.length > 0 &&
+            <div className='jobs-profile-block-row'>
+              I was a part of <b>
+                {this.props.rootStore.studentJobsStore.profile.club_activities.map(club => {
+                  let index = this.props.rootStore.studentJobsStore.profile.club_activities.indexOf(club)
+                  let lastOne = index === this.props.rootStore.studentJobsStore.profile.club_activities.length - 1
+                  let moreThanOne = this.props.rootStore.studentJobsStore.profile.club_activities.length > 1
+                  let moreThanTwo = this.props.rootStore.studentJobsStore.profile.club_activities.length > 2
+                  return (
+                    <span key={index}>
+                      {lastOne && moreThanOne ? 'and ' : ''}{club.name}{lastOne ? moreThanOne ? '.' : '' : moreThanTwo ? ', ' : ' '}
+                    </span>
+                  )
+                })}
+              </b>
+            </div>
+          }
+          {profile.skills &&
+            <div className='jobs-profile-block-row'>
+              My skills are <b>{profile.skills}.</b>
+            </div>
+          }
+          {profile.sat_score &&
+            <div className='jobs-profile-block-row'>
+              My SAT score is <b>{profile.sat_score}.</b>
+            </div>
+          }
+          {profile.act_score &&
+            <div className='jobs-profile-block-row'>
+              My ACT score is <b>{profile.act_score}.</b>
+            </div>
+          }
         </ProfileBlock>
       )
     } else {
@@ -624,27 +701,49 @@ class Profile extends React.Component {
 
   renderContent () {
     let profile = this.props.rootStore.studentJobsStore.profile
-    return (
-      <div className='jobs-profile'>
-        {this.renderHeader()}
-        <div className='jobs-profile-column'>
-          {this.renderCareerInterests(profile)}
-          {this.renderEducation(profile)}
-          {this.renderWorkExperience(profile)}
+    if (this.state.width > 995) {
+      return (
+        <div className='jobs-profile'>
+          {this.renderHeader(profile)}
+          <div className='jobs-profile-column'>
+            {this.renderCareerInterests(profile)}
+            {this.renderEducation(profile)}
+            {this.renderWorkExperience(profile)}
+          </div>
+          <div className='jobs-profile-column'>
+            {this.renderVolunteerExperience(profile)}
+            {this.renderCompanyValues(profile)}
+            {this.renderEqualOpportunityEmployment(profile)}
+          </div>
+          <div className='jobs-profile-column'>
+            {this.renderExtras(profile)}
+            {this.renderPersonalityProfile(profile)}
+            {this.renderOnTheWeb(profile)}
+            {this.renderDocuments(profile)}
+          </div>
         </div>
-        <div className='jobs-profile-column'>
-          {this.renderVolunteerExperience(profile)}
-          {this.renderCompanyValues(profile)}
-          {this.renderEqualOpportunityEmployment(profile)}
+      )
+    } else {
+      return (
+        <div className='jobs-profile'>
+          {this.renderHeader(profile)}
+          <div className='jobs-profile-column'>
+            {this.renderCareerInterests(profile)}
+            {this.renderEducation(profile)}
+            {this.renderWorkExperience(profile)}
+            {this.renderVolunteerExperience(profile)}
+            {this.renderCompanyValues(profile)}
+          </div>
+          <div className='jobs-profile-column'>
+            {this.renderEqualOpportunityEmployment(profile)}
+            {this.renderExtras(profile)}
+            {this.renderPersonalityProfile(profile)}
+            {this.renderOnTheWeb(profile)}
+            {this.renderDocuments(profile)}
+          </div>
         </div>
-        <div className='jobs-profile-column'>
-          {this.renderExtras(profile)}
-          {this.renderPersonalityProfile(profile)}
-          {this.renderOnTheWeb(profile)}
-          {this.renderDocuments(profile)}
-        </div>
-      </div>
-    )
+      )
+    }
   }
 
   render () {

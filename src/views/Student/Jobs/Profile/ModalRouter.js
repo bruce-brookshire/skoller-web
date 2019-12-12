@@ -21,6 +21,9 @@ import EqualOpportunityEmploymentForm from '../components/EqualOpportunityEmploy
 import EqualOpportunityEmployment from '../../../../assets/sk-icons/jobs/EqualOpportunityEmployment'
 import Extras from '../../../../assets/sk-icons/jobs/Extras'
 import ExtrasForm from '../components/ExtrasForm'
+import Documents from '../../../../assets/sk-icons/jobs/Documents';
+import DocumentsForm from '../components/DocumentsForm';
+import BasicInfoForm from '../components/BasicInfoForm';
 
 @inject('rootStore') @observer
 class ModalRouter extends React.Component {
@@ -59,7 +62,7 @@ class ModalRouter extends React.Component {
       return (
         <div>
           <h2 style={{textAlign: 'center', margin: '0'}}>
-            <CareerInterests /> Education
+            <CareerInterests /> Career Interests
           </h2>
           <CareerInterestForm onSubmit={() => this.onSubmit()} />
         </div>
@@ -68,7 +71,7 @@ class ModalRouter extends React.Component {
       return (
         <div>
           <h2 style={{textAlign: 'center', margin: '0'}}>
-            <Education /> Career Interests
+            <Education /> Education
           </h2>
           <EducationForm onSubmit={() => this.onSubmit()} />
         </div>
@@ -84,7 +87,12 @@ class ModalRouter extends React.Component {
       )
     } else if (this.props.form === 'documents') {
       return (
-        <div>documents</div>
+        <div>
+          <h2 style={{textAlign: 'center', margin: '0'}}>
+            <Documents /> Documents
+          </h2>
+          <DocumentsForm onSubmit={(doNotClose) => this.onSubmit(doNotClose)} />
+        </div>
       )
     } else if (this.props.form === 'volunteerExperience') {
       return (
@@ -135,7 +143,7 @@ class ModalRouter extends React.Component {
       return (
         <div>
           <h2 style={{textAlign: 'center', margin: '0'}}>
-            <OnTheWeb /> Personality Profile
+            <OnTheWeb /> On the Web
           </h2>
           <OnTheWebForm onSubmit={() => this.onSubmit()} />
         </div>
@@ -156,6 +164,24 @@ class ModalRouter extends React.Component {
             <WorkExperience /> Add Work Experience
           </h2>
           <ExperienceForm isVolunteer={false} onSubmit={(doNotClose) => this.onSubmit(doNotClose)} />
+        </div>
+      )
+    } else if (this.props.form === 'basicInfo') {
+      return (
+        <div>
+          <h2 style={{textAlign: 'center', margin: '0'}}>
+            Basic Info
+          </h2>
+          <BasicInfoForm isVolunteer={false} onSubmit={(doNotClose) => this.onSubmit(doNotClose)} />
+        </div>
+      )
+    } else if (this.props.form === 'profilePic') {
+      return (
+        <div>
+          <h2 style={{textAlign: 'center', margin: '0'}}>
+            Edit Your Profile Picture
+          </h2>
+          <p>work in progress</p>
         </div>
       )
     } else {

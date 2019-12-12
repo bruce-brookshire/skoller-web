@@ -186,6 +186,9 @@ export function calculatePersonalityProfileCompleteness (profile) {
 
 export function calculateExperienceProfileCompleteness (profile) {
   let score = 0
+  if (profile.experience_activities.length > 0) {
+    score += 100
+  }
   return score
 }
 
@@ -197,5 +200,17 @@ export function calculateExtrasProfileCompleteness (profile) {
   if (profile.achievement_activities.length > 0) {
     score += 1
   }
-  return round((score / 2) * 100)
+  if (profile.club_activities.length > 0) {
+    score += 1
+  }
+  if (profile.student_athlete !== null) {
+    score += 1
+  }
+  if (profile.sat_score) {
+    score += 1
+  }
+  if (profile.act_score) {
+    score += 1
+  }
+  return round((score / 6) * 100)
 }

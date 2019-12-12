@@ -197,7 +197,7 @@ class HomeJobs extends React.Component {
       })
 
     // upload resume
-    await actions.jobs.uploadJobsDoc(skollerJobsId, this.state.resume)
+    await actions.jobs.uploadJobsDoc(skollerJobsId, this.state.resume[0])
       .catch(e => {
         console.log(e)
         this.setState({loading: false, error: 'Error uploading résumé. Try again later.'})

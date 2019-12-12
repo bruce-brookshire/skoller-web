@@ -153,6 +153,7 @@ class ExtrasForm extends React.Component {
               let index = this.props.rootStore.studentJobsStore.profile.achievement_activities.indexOf(club)
               let lastOne = index === this.props.rootStore.studentJobsStore.profile.achievement_activities.length - 1
               let moreThanOne = this.props.rootStore.studentJobsStore.profile.achievement_activities.length > 1
+              let moreThanTwo = this.props.rootStore.studentJobsStore.profile.achievement_activities.length > 2
               return (
                 <span
                   key={index}
@@ -164,7 +165,7 @@ class ExtrasForm extends React.Component {
                       })
                   }}
                 >
-                  {lastOne && moreThanOne ? 'and ' : ''}{club.name}{' '}{moment(club.start_date).format('MM/YYYY')}{lastOne ? moreThanOne ? '.' : '' : ', '}
+                  {lastOne && moreThanOne ? 'and ' : ''}{club.name}{' ('}{moment(club.start_date).format('MM/YYYY')}{')'}{lastOne ? moreThanOne ? '.' : '' : moreThanTwo ? ', ' : ' '}
                 </span>
               )
             })
@@ -208,6 +209,7 @@ class ExtrasForm extends React.Component {
               let index = this.props.rootStore.studentJobsStore.profile.club_activities.indexOf(club)
               let lastOne = index === this.props.rootStore.studentJobsStore.profile.club_activities.length - 1
               let moreThanOne = this.props.rootStore.studentJobsStore.profile.club_activities.length > 1
+              let moreThanTwo = this.props.rootStore.studentJobsStore.profile.club_activities.length > 2
               return (
                 <span
                   key={index}
@@ -219,7 +221,7 @@ class ExtrasForm extends React.Component {
                       })
                   }}
                 >
-                  {lastOne && moreThanOne ? 'and ' : ''}{club.name}{lastOne ? moreThanOne ? '.' : '' : ', '}
+                  {lastOne && moreThanOne ? 'and ' : ''}{club.name}{lastOne ? moreThanOne ? '.' : '' : moreThanTwo ? ', ' : ' '}
                 </span>
               )
             })
