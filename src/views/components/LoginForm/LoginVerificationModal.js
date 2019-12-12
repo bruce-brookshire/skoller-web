@@ -53,7 +53,7 @@ class Verification extends React.Component {
     actions.auth.loginStudentWithPhone(this.getForm().phone, this.getForm().verification_code).then(() => {
       const { userStore: { authToken } } = this.props.rootStore
       this.cookie.remove('skollerToken', { path: '/' })
-      this.cookie.set('skollerToken', authToken, { maxAge: 86400 * 7, path: '/' })
+      this.cookie.set('skollerToken', authToken, { maxAge: 86400 * 270, path: '/' })
       if (this.props.rootStore.userStore.user.student.primary_school) {
         browserHistory.push('/student')
       } else if (this.props.onSubmit) {

@@ -1,7 +1,7 @@
 import {post, get, put} from '../utilities/api'
 import {showSnackbar} from '../utilities/snackbar'
 import stores from '../stores'
-const {userStore, studentClassesStore} = stores
+const {userStore, studentClassesStore, studentJobsStore} = stores
 
 /*
 * Authenticate login credentials. Set the user.
@@ -46,6 +46,7 @@ export function loginStudentWithPhone (phone, verificationCode) {
       userStore.user = data.user
       userStore.loading = false
       studentClassesStore.getClasses()
+      studentJobsStore.getJobsProfile()
     })
     .catch(error => {
       userStore.loading = false
@@ -147,6 +148,7 @@ export function getUserByToken (token) {
         userStore.user = data.user
         userStore.authToken = token
         studentClassesStore.getClasses()
+        studentJobsStore.getJobsProfile()
         return data
       })
       .catch(error => {
@@ -157,6 +159,7 @@ export function getUserByToken (token) {
       .then(data => {
         userStore.user = data.user
         studentClassesStore.getClasses()
+        studentJobsStore.getJobsProfile()
         return data
       })
       .catch(error => {

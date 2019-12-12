@@ -14,11 +14,13 @@
 
   .sk-modal-container {
     box-sizing: border-box;
-    max-height: 100vh;
     overflow: scroll;
+    margin: 1rem 0;
+    @include skoller-cell;
+    max-height: calc(100vh - 4rem);
 
     .sk-modal {
-      @include skoller-cell;
+      // @include skoller-cell;
       padding: 1rem;
       min-width: 352px;
 

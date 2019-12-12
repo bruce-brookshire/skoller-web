@@ -3,6 +3,10 @@ import { inject, observer } from 'mobx-react'
 import PropTypes from 'prop-types'
 import partners from '../../../views/Student/Onboard/partners'
 import { browserHistory } from 'react-router'
+import SkollerJobsSwitch from '../../../assets/sk-icons/jobs/SkollerJobsSwitch'
+import SkollerSwitch from '../../../assets/sk-icons/jobs/SkollerSwitch'
+import ForwardArrow from '../../../assets/sk-icons/navigation/ForwardArrow'
+import BackArrow from '../../../assets/sk-icons/navigation/BackArrow'
 
 @inject('rootStore') @observer
 class SkBanner extends React.Component {
@@ -10,16 +14,31 @@ class SkBanner extends React.Component {
     super(props)
 
     this.state = {
-      banner: this.props.state ? this.props.state : this.getBannerChoice()
+      banners: [],
+      currentBanner: null
     }
   }
 
-  getBannerChoice () {
+  componentDidMount () {
+    this.getBannerChoices()
+  }
+
+  async getBannerChoices () {
+    let banners = []
+
     if (this.partnerLogic() && this.props.rootStore.studentNavStore.activePage !== 'share') {
-      return 'partner'
-    } else {
-      return null
+      banners.push('partner')
     }
+
+    if (
+      this.props.rootStore.studentJobsStore.hasJobsProfile &&
+      (this.props.rootStore.studentNavStore.activePage === 'home' ||
+      this.props.rootStore.studentNavStore.activePage === 'jobs')
+    ) {
+      banners.push('jobs')
+    }
+
+    this.setState({banners, currentBanner: banners[0]})
   }
 
   hasCompletedClass () {
@@ -42,7 +61,8 @@ class SkBanner extends React.Component {
       hasCompletedClass &&
       this.props.rootStore.studentNavStore.activePage !== 'share' &&
       this.props.rootStore.studentNavStore.activePage !== 'home' &&
-      this.renderPartnerBanner()
+      this.renderPartnerBanner() &&
+      !this.props.rootStore.studentNavStore.jobsMode
     ) {
       return true
     } else {
@@ -91,18 +111,159 @@ class SkBanner extends React.Component {
     }
   }
 
-  renderContent () {
-    if (this.state.banner === 'partner' && this.renderPartnerBanner()) {
+  renderLogo (white = false) {
+    if (white) {
       return (
-        this.renderPartnerBanner()
+        <span>
+          <span style={{fontWeight: '900', color: 'white'}}>skoller</span>
+          <span style={{fontWeight: '300', fontStyle: 'oblique', color: 'white'}}>Jobs</span>
+        </span>
+      )
+    } else {
+      return (
+        <span>
+          <span style={{fontWeight: '900', color: '#55B9E5'}}>skoller</span>
+          <span style={{fontWeight: '300', fontStyle: 'oblique', color: '#4ADD58'}}>Jobs</span>
+        </span>
+      )
+    }
+  }
+
+  renderJobsBanner () {
+    if (this.props.rootStore.studentNavStore.jobsMode) {
+      return (
+        <div className='sk-banner-jobs'>
+          <p>Keep up with classes, <b>together.</b></p>
+          <div
+            className='sk-banner-skoller-button'
+            onClick={() => {
+              if (this.props.rootStore.studentNavStore.jobsMode) {
+                browserHistory.push('/student/home')
+              } else {
+                browserHistory.push('/student/jobs')
+              }
+            }}
+          >
+            <p>
+              <SkollerSwitch />
+            </p>
+          </div>
+        </div>
+      )
+    } else {
+      return (
+        <div className='sk-banner-jobs'>
+          <p>Skoller can help you find your <b>dream job.</b></p>
+          <div
+            className='sk-banner-jobs-button'
+            onClick={() => {
+              if (this.props.rootStore.studentNavStore.jobsMode) {
+                browserHistory.push('/student/home')
+              } else {
+                browserHistory.push('/student/jobs')
+              }
+            }}
+          >
+            <p>
+              <SkollerJobsSwitch />
+            </p>
+          </div>
+        </div>
+      )
+    }
+  }
+
+  renderForwardArrow () {
+    let currentBanner = this.state.currentBanner
+    let banners = this.state.banners
+    if (this.state.banners.length > 1) {
+      return (
+        <div style={{marginLeft: '1rem', cursor: 'pointer'}} onClick={() => {
+          if (banners.indexOf(currentBanner) === (banners.length - 1)) {
+            this.setState({currentBanner: banners[0]})
+          } else {
+            this.setState({currentBanner: banners[banners.indexOf(currentBanner) + 1]})
+          }
+        }}>
+          <ForwardArrow />
+        </div>
       )
     } else {
       return null
     }
   }
 
+  renderBackArrow () {
+    let currentBanner = this.state.currentBanner
+    let banners = this.state.banners
+    if (banners.length > 1) {
+      return (
+        <div style={{marginRight: '1rem', cursor: 'pointer'}} onClick={() => {
+          if (banners.indexOf(currentBanner) === 0) {
+            this.setState({currentBanner: banners[banners.length - 1]})
+          } else {
+            this.setState({currentBanner: banners[banners.indexOf(currentBanner) - 1]})
+          }
+        }}>
+          <BackArrow />
+        </div>
+      )
+    } else {
+      return null
+    }
+  }
+
+  renderBannerIndicator () {
+    let banners = this.state.banners
+    let currentBanner = this.state.currentBanner
+    if (banners.length > 1) {
+      return (
+        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', margin: '8px 0 0 0'}}>
+          {banners.map(banner => {
+            return (
+              <div
+                key={banners.indexOf(banner)}
+                style = {{
+                  backgroundColor: banner === currentBanner ? '#57B9E4' : '#4a4a4a',
+                  height: '6px',
+                  width: '6px',
+                  borderRadius: '100%',
+                  margin: '0 4px',
+                  cursor: 'pointer'
+                }}
+                onClick={() => this.setState({currentBanner: banner})}
+              />
+            )
+          })}
+        </div>
+      )
+    }
+  }
+
+  renderContent () {
+    return (
+      <div>
+        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+          {this.renderBackArrow()}
+          {this.state.currentBanner === 'partner' && this.renderPartnerBanner()}
+          {this.state.currentBanner === 'jobs' && this.renderJobsBanner()}
+          {this.renderForwardArrow()}
+        </div>
+        {this.renderBannerIndicator()}
+      </div>
+    )
+  }
+
   render () {
-    if (this.state.banner) {
+    if (this.props.state === 'partner') {
+      return (
+        <div className='sk-banner-wrapper'>
+          <div className='sk-banner' style={this.props.style ? this.props.style : null}>
+            {this.renderPartnerBanner()}
+          </div>
+        </div>
+      )
+    } else if (this.state.banners.length > 0) {
       return (
         <div className='sk-banner-wrapper'>
           <div className='sk-banner' style={this.props.style ? this.props.style : null}>

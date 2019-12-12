@@ -79,6 +79,7 @@ class DragAndDrop extends React.Component {
           ref={fileUploader => { this.fileUploader = fileUploader }}
           style={{display: 'none'}}
           onChange={(e) => this.props.handleDrop(e.target.files)}
+          accept={this.props.accept ? this.props.accept : ''}
         />
         {this.props.disabled
           ? null
@@ -93,7 +94,8 @@ class DragAndDrop extends React.Component {
 DragAndDrop.propTypes = {
   children: PropTypes.object,
   disabled: PropTypes.bool,
-  handleDrop: PropTypes.func
+  handleDrop: PropTypes.func,
+  accept: PropTypes.string
 }
 
 export default DragAndDrop

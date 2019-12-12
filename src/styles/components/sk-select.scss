@@ -1,0 +1,25 @@
+.sk-select {
+  @include sk-form-field-select;
+  position: relative;
+  margin-bottom: 0px;
+  position: relative;
+
+  .sk-select-selection {
+    margin: 0;
+
+    &:after {
+      content: "";
+      position: absolute;
+
+      right: 12px;
+      top: 10px;
+      width: 8px;
+      height: 8px;
+      border: solid $cn-form-border;
+      border-width: 0 2px 2px 0;
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
+    }
+  }
+}
