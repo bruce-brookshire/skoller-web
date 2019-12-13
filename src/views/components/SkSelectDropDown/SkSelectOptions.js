@@ -9,8 +9,13 @@ class SkSelectOptions extends React.Component {
     this.state = {
       boundingClient: null,
       top: 0,
-      y: 0
+      y: 0,
+      dropdownRefTop: null,
+      dropdownRefHeight: null,
+      maxHeight: '200'
     }
+
+    this.dropdownRef = null
 
     window.addEventListener('scroll', this.updatePosition)
 
@@ -19,6 +24,8 @@ class SkSelectOptions extends React.Component {
     if (this.skModal) {
       this.skModal.addEventListener('scroll', this.updatePosition)
     }
+
+    console.log('re-constructing')
   }
 
   componentDidMount () {
@@ -34,11 +41,23 @@ class SkSelectOptions extends React.Component {
 
   updatePosition = () => {
     this.setState({boundingClient: this.props.refObject.getBoundingClientRect()})
-    console.log(this.props.refObject.getBoundingClientRect())
     if (this.ref) {
       this.setState({top: this.ref.getBoundingClientRect().top, y: this.ref.getBoundingClientRect().y})
     } else {
       this.setState({top: 0})
+    }
+  }
+
+  updateDropDownPosition () {
+    if (this.dropdownRef) {
+      let ref = this.dropdownRef.getBoundingClientRect()
+      let maxHeight = this.state.maxHeight
+      if ((this.state.dropdownRefTop + this.state.dropdownRefHeight) > (window.innerHeight)) {
+        maxHeight = (window.innerHeight - this.state.dropdownRefTop).toString() + 'px'
+      } else {
+        maxHeight = this.state.maxHeight + 'px'
+      }
+      this.setState({dropdownRefTop: ref.top, dropdownRefHeight: ref.height, maxHeight})
     }
   }
 
@@ -51,14 +70,15 @@ class SkSelectOptions extends React.Component {
     if (this.skModal) {
       style.top = 0
       style.transform = `translateY(${this.state.y}px)`
-      // style.zIndex = '2000'
+      style.maxHeight = this.state.maxHeight
     }
+
     return (
-      <div ref={ref => { this.ref = ref }} onScroll={() => console.log('scroll')}>
+      <div ref={ref => { this.ref = ref }}>
         <OutsideClickHandler
           onOutsideClick={() => this.handleClickOutside()}
         >
-          <div style={style} className='sk-select-dropdown'>
+          <div onScroll={() => this.updateDropDownPosition()} ref={ref => { this.dropdownRef = ref }} style={style} className='sk-select-dropdown'>
             {this.props.optionsMap()}
           </div>
         </OutsideClickHandler>
