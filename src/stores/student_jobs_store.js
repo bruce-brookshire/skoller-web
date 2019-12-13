@@ -1,7 +1,7 @@
 import { extendObservable, action } from 'mobx'
 import actions from '../actions'
 import stores from './index'
-import { calculateTotalProfileScore } from '../views/Student/Jobs/utils';
+import { calculateTotalProfileScore } from '../views/Student/Jobs/utils'
 
 class StudentJobsStore {
   constructor () {
@@ -23,9 +23,9 @@ class StudentJobsStore {
     this.score = score
   }
 
-  getJobsProfile () {
+  async getJobsProfile () {
     this.startLoading()
-    actions.jobs.getJobsProfile(stores.userStore.user.id)
+    await actions.jobs.getJobsProfile(stores.userStore.user.id)
       .then((r) => {
         this.profile = r
         this.hasJobsProfile = true

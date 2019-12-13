@@ -131,15 +131,16 @@ class EnrollLink extends React.Component {
       .then(() => {
         if (this.state.newUser) {
           this.setState({formState: 'download'})
+          // browserHistory.push('/student/home')
         } else {
-          browserHistory.push('/student')
+          browserHistory.push('/student/home')
         }
       })
       .catch(e => {
-        if (e.status === 422) {
-          browserHistory.push('/student')
+        if (this.state.newUser) {
+          this.setState({formState: 'download'})
         } else {
-          this.setState({loading: false})
+          browserHistory.push('/student/home')
         }
       })
   }

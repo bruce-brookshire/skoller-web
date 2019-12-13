@@ -15,7 +15,7 @@ class EqualOpportunityEmploymentForm extends React.Component {
     this.state = {
       form: {
         gender: profile.gender ? profile.gender : '',
-        ethnicity_type: profile.ethnicity_type ? profile.ethnicity_type.id : null,
+        ethnicity_type: profile.ethnicity_type ? profile.ethnicity_type.id : '',
         veteran: profile.veteran === true ? 'Yes' : 'No',
         disability: profile.disability === true ? 'Yes' : 'No',
         first_gen_college: profile.first_gen_college === true ? 'Yes' : 'No',

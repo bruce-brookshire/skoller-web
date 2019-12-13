@@ -16,8 +16,10 @@ class SkSelectDropDown extends React.Component {
         {this.props.show &&
           <SkSelectOptions
             refWidth={this.ref.offsetWidth.toString() + 'px'}
+            refObject={this.ref}
             toggle={this.props.toggle}
             optionsMap={this.props.optionsMap}
+            disableModalLogic={this.props.disableModalLogic}
           />
         }
       </div>
@@ -28,7 +30,8 @@ class SkSelectDropDown extends React.Component {
 SkSelectDropDown.propTypes = {
   optionsMap: PropTypes.func,
   show: PropTypes.bool,
-  toggle: PropTypes.func
+  toggle: PropTypes.func,
+  disableModalLogic: PropTypes.bool
 }
 
 export default SkSelectDropDown

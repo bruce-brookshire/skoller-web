@@ -276,7 +276,7 @@
           position: absolute;
           margin-top: -1px;
           max-height: 120px;
-          overflow: scroll;
+          overflow: auto;
           -webkit-overflow-scrolling: touch;
       
           .sk-find-class-p-autocomplete-option {
@@ -311,7 +311,7 @@
     position: absolute;
     margin-top: -9px;
     max-height: 200px;
-    overflow: scroll;
+    overflow: auto;
     -webkit-overflow-scrolling: touch;
 
     .sk-find-class-autocomplete-option {

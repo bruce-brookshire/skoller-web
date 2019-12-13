@@ -14,20 +14,32 @@ class CompanyValuesForm extends React.Component {
 
     this.state = {
       values: {
-        compensation: values.compensation,
-        prestige: values.prestige,
-        impact: values.impact,
-        development: values.development,
-        community: values.community,
-        balance: values.balance,
-        mobility: values.mobility,
-        stability: values.stability
+        compensation: this.getValue('compensation'),
+        prestige: this.getValue('prestige'),
+        impact: this.getValue('impact'),
+        development: this.getValue('development'),
+        community: this.getValue('community'),
+        balance: this.getValue('balance'),
+        mobility: this.getValue('mobility'),
+        stability: this.getValue('stability')
       },
       options: [
         'Not that important',
         'Somewhat important',
         'Very important'
       ]
+    }
+  }
+
+  getValue (v) {
+    if (this.props.rootStore.studentJobsStore.profile.company_values) {
+      if (this.props.rootStore.studentJobsStore.profile.company_values[v]) {
+        return this.props.rootStore.studentJobsStore.profile.company_values[v]
+      } else {
+        return ''
+      }
+    } else {
+      return ''
     }
   }
 
