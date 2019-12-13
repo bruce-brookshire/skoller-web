@@ -157,11 +157,11 @@ class HomeJobs extends React.Component {
     this.setState({loading: true})
     let user = this.props.rootStore.userStore.user
     let jobsForm = {
-      degree_type_id: this.state.gradDegreeChoice.id,
       graduation_date: new Date(this.state.gradMonthChoice + ' ' + this.state.gradYearChoice).toISOString()
     }
     let userForm = {
-      grad_year: this.state.gradYearChoice
+      grad_year: this.state.gradYearChoice,
+      degree_type_id: this.state.gradDegreeChoice.id
     }
 
     // update student's grad year

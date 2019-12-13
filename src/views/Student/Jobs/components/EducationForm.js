@@ -56,12 +56,21 @@ class EducationForm extends React.Component {
   }
 
   async onSubmit () {
+    let user = this.props.rootStore.userStore.user
     let form = {
       id: this.state.profile.id,
       graduation_date: new Date(this.state.gradMonthChoice + ' ' + this.state.gradYearChoice).toISOString(),
       gpa: this.state.gpa,
       degree_type_id: this.state.gradDegreeChoice.id
     }
+    let userForm = {
+      degree_type_id: this.state.gradDegreeChoice.id
+    }
+    // update student's grad year
+    await actions.students.updateStudent(user.id, user.student.id, userForm)
+      .catch(() => {
+        throw new Error('Error saving grad year. Try again later.')
+      })
     actions.jobs.editJobsProfile(form)
       .then(() => {
         this.props.onSubmit()

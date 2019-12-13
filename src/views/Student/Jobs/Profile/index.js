@@ -253,9 +253,9 @@ class Profile extends React.Component {
             My GPA is <b>{profile.gpa}.</b>
           </div>
         }
-        {profile.degree_type && profile.graduation_date &&
+        {student.degree_type && profile.graduation_date &&
           <div className='jobs-profile-block-row'>
-            I&apos;m graduating <b>{moment(profile.graduation_date).format('MMMM YYYY')}</b> with a <b>{profile.degree_type.name} degree.</b>
+            I&apos;m graduating <b>{moment(profile.graduation_date).format('MMMM YYYY')}</b> with a <b>{student.degree_type.name} degree.</b>
           </div>
         }
         {student.fields_of_study.length > 0 &&
@@ -268,7 +268,7 @@ class Profile extends React.Component {
             })}</b></p>
           </div>
         }
-        {!(profile.degree_type && student.grad_year && profile.gpa && student.fields_of_study.length > 0) &&
+        {!(student.degree_type && student.grad_year && profile.gpa && student.fields_of_study.length > 0) &&
           this.renderButton('Fill Out Your Education', 'education')
         }
       </ProfileBlock>
