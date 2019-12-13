@@ -16,6 +16,7 @@ class SkSelectDropDown extends React.Component {
         {this.props.show &&
           <SkSelectOptions
             refWidth={this.ref.offsetWidth.toString() + 'px'}
+            refObject={this.ref}
             toggle={this.props.toggle}
             optionsMap={this.props.optionsMap}
           />

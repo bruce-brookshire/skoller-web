@@ -19,7 +19,7 @@ class StudentLayout extends React.Component {
     return (
       <div className='sk-layout'>
         <StudentNav />
-        <main>
+        <main id='main'>
           <SkBanner />
           {this.props.children}
         </main>

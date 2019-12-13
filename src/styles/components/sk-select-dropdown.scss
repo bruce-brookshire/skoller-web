@@ -1,8 +1,10 @@
 .sk-select-dropdown-container {
   width: 100%;
+  // -webkit-transform: translate3d(0,0,0);
 
   .sk-select-dropdown {
-    position: absolute;
+    // -webkit-transform: translate3d(0,0,0);
+    position: fixed;
     z-index: 5;
     background-color: white;
     overflow: scroll;
@@ -13,6 +15,6 @@
     box-sizing: border-box;
     margin: 0 0 0.5rem 0;
     padding: 8px 4px 6px 4px;
-    max-height: 200px;
+    max-height: 136px;
   }
 }

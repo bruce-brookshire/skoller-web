@@ -6,18 +6,25 @@
   margin: 0;
   top: 0;
   left: 0;
-  z-index: 5;
+  z-index: 10;
   display: flex;
   justify-content: center;
   align-items: center;
+  // overflow: scroll;
   -webkit-overflow-scrolling: touch;
+  -webkit-transform: translate3d(0,0,0);
 
   .sk-modal-container {
     box-sizing: border-box;
     overflow: scroll;
     margin: 1rem 0;
     @include skoller-cell;
-    max-height: calc(100vh - 4rem);
+    max-height: calc(100vh - 6rem);
+    -webkit-overflow-scrolling: touch;
+
+    @media only screen and (max-width: $sk-mobile-break-point) {
+      max-height: calc(100vh - 300px);
+    }
 
     .sk-modal {
       // @include skoller-cell;

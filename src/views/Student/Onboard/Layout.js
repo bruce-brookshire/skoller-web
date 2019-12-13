@@ -37,7 +37,7 @@ class Layout extends React.Component {
   render () {
     return (
       <div className='onboard-container'>
-        <div className='onboard-layout' style={{zIndex: '4'}}>
+        <div className='onboard-layout' id='onboard-layout' style={{zIndex: '4'}}>
           <div className='onboard-logo-text'>
             Keep Up with Classes, Together.
           </div>
