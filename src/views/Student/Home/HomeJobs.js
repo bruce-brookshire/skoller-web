@@ -335,6 +335,7 @@ class HomeJobs extends React.Component {
           <SkSelectDropDown
             optionsMap={() => this.renderMajorOptions()}
             show={(this.state.addMajor && this.state.options.length !== 0) && this.state.majorInput !== null}
+            disableModalLogic={true}
           />
         </div>
         {this.renderButton()}

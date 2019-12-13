@@ -67,10 +67,14 @@ class SkSelectOptions extends React.Component {
 
   render () {
     let style = {width: this.props.refWidth}
-    if (this.skModal) {
+    if (this.skModal && !this.props.disableModalLogic) {
       style.top = 0
       style.transform = `translateY(${this.state.y}px)`
       style.maxHeight = this.state.maxHeight
+    }
+
+    if (this.props.disableModalLogic) {
+      style.position = 'absolute'
     }
 
     return (
@@ -92,7 +96,8 @@ SkSelectOptions.propTypes = {
   show: PropTypes.bool,
   toggle: PropTypes.func,
   refWidth: PropTypes.string,
-  refObject: PropTypes.object
+  refObject: PropTypes.object,
+  disableModalLogic: PropTypes.bool
 }
 
 export default SkSelectOptions

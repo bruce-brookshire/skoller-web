@@ -26,6 +26,7 @@ class SkSelect extends React.Component {
             optionsMap={this.props.optionsMap}
             toggle={() => this.setState({open: !this.state.open})}
             show={this.state.open}
+            disableModalLogic={this.props.disableModalLogic}
           />
         </div>
       </div>
@@ -36,7 +37,8 @@ class SkSelect extends React.Component {
 SkSelect.propTypes = {
   selection: PropTypes.string,
   optionsMap: PropTypes.func,
-  className: PropTypes.string
+  className: PropTypes.string,
+  disableModalLogic: PropTypes.bool
 }
 
 export default SkSelect
