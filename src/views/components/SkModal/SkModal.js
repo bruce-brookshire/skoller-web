@@ -83,7 +83,8 @@ class SkModal extends React.Component {
         height: window.innerHeight.toString() + 'px',
         boxShadow: 'none',
         borderRadius: '0',
-        margin: '0'
+        margin: '0',
+        paddingBottom: '46px'
       }
 
       containerStyle = {
