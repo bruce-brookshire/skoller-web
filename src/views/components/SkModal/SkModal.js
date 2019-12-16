@@ -34,9 +34,14 @@ class SkModal extends React.Component {
 
     this.main = document.getElementById('main')
     this.onboardLayout = document.getElementById('onboard-layout')
+    this.cnLandingContainer = document.getElementById('cn-landing-container')
 
     if (this.main && this.state.ios) {
       // this.main.style = {display: 'none'}
+    }
+
+    if (this.cnLandingContainer) {
+      this.cnLandingContainer.addEventListener('touchmove', preventDefault)
     }
 
     if (this.onboardLayout) {
@@ -60,6 +65,10 @@ class SkModal extends React.Component {
 
     if (this.onboardLayout) {
       this.onboardLayout.removeEventListener('touchmove', preventDefault)
+    }
+
+    if (this.cnLandingContainer) {
+      this.cnLandingContainer.removeEventListener('touchmove', preventDefault)
     }
   }
 
