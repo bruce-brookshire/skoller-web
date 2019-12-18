@@ -13,6 +13,7 @@ import SkModal from '../SkModal/SkModal'
 import DropClassButton from '../DropClassButton'
 import ToolTip from '../ToolTip'
 import UploadAdditionalDocuments from './UploadAdditionalDocuments'
+import ClassStatusImage from './ClassStatusImage'
 
 @inject('rootStore') @observer
 class ClassStatusModal extends React.Component {
@@ -56,11 +57,11 @@ class ClassStatusModal extends React.Component {
     let id = cl.status.id
     if (id === 1100) {
       status = 'needSyllabus'
-      sammiMessage = `Let's get your class set up!`
+      sammiMessage = <p>It&apos;s time to <b>send your syllabus!</b></p>
       mobileMessage = `Head over to skoller.co on your computer to login and upload your syllabus.`
     } else if (id === 1200) {
       status = 'inReview'
-      sammiMessage = `Someone already uploaded the syllabus!`
+      sammiMessage = <p>Your syllabus is <b>IN REVIEW!</b></p>
     } else if (id === 1300) {
       status = 'diy'
       sammiMessage = `Someone already uploaded the syllabus, but we need a little help.`
@@ -171,7 +172,7 @@ class ClassStatusModal extends React.Component {
     return (
       !this.state.uploadAdditionalDocumentsView &&
       <div className='sk-class-status-modal-checklist-container'>
-        <Checklist cl={this.state.cl} status={this.state.status === 'inReview' ? 'inReview' : null} />
+        <ClassStatusImage status={this.state.cl.status.id} />
       </div>
     )
   }
@@ -354,17 +355,21 @@ class ClassStatusModal extends React.Component {
   }
 
   renderDropButton () {
-    return (
-      <div
-        className='sk-class-status-modal-drop-class'
-      >
-        <p
-          onClick={() => this.onDropClass()}
+    if (this.props.closeModal) {
+      return (
+        <div
+          className='sk-class-status-modal-drop-class'
         >
-          Drop class
-        </p>
-      </div>
-    )
+          <p
+            onClick={() => this.onDropClass()}
+          >
+            Drop class
+          </p>
+        </div>
+      )
+    } else {
+      return null
+    }
   }
 
   renderControl () {
@@ -417,11 +422,22 @@ class ClassStatusModal extends React.Component {
     }
   }
 
+  renderProgress () {
+    if (this.props.progress) {
+      return (
+        <SkProgressBar progress={this.props.progress} width={'100%'} backgroundColor={'$cn-color-blue'}/>
+      )
+    } else {
+      return null
+    }
+  }
+
   renderHeader () {
     return (
       <div className='sk-class-status-modal-header'>
         <h1>{this.state.cl.name}</h1>
         {this.renderSammi()}
+        {this.renderProgress()}
       </div>
     )
   }
@@ -445,7 +461,7 @@ class ClassStatusModal extends React.Component {
 
   render () {
     return (
-      <SkModal closeModal={() => this.props.closeModal()}>
+      <SkModal closeModal={this.props.closeModal ? () => this.props.closeModal() : null}>
         {this.state.loading
           ? <SkLoader />
           : this.renderModalContent()
@@ -460,7 +476,8 @@ ClassStatusModal.propTypes = {
   rootStore: PropTypes.object,
   disableNext: PropTypes.bool,
   cl: PropTypes.object,
-  closeModal: PropTypes.function
+  closeModal: PropTypes.function,
+  progress: PropTypes.number
 }
 
 export default ClassStatusModal
