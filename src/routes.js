@@ -119,6 +119,10 @@ const router = (
           <Route path='/hub/reports' component={ReportList} />
         </Route>
 
+        <Route path='/jobs'>
+          <IndexRedirect to='/student/jobs'/>
+        </Route>
+
         <Route path='/class/:classId/syllabus_tool' component={SyllabusTool} />
         <Route path='/class/:classId/admin(/:tabState)' component={ClassAdmin} onEnter={requireAdmin} />
         <Route path='/assignment/:assignmentId/admin' component={AssignmentAdmin} onEnter={requireAdmin} />
