@@ -359,6 +359,7 @@ class FirstClass extends React.Component {
             cl={this.state.firstClass}
             closeModal={false}
             progress={0.75}
+            onboard={true}
           />
         }
       </div>

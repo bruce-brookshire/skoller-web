@@ -24,58 +24,81 @@ class ClassStatusModal extends React.Component {
       loading: true
     }
 
-    actions.classes.getClassById(this.props.cl.id)
-      .then((r) => {
-        console.log('full class', r)
-        this.setState({fullClass: r})
+    this.init()
 
-        let initState = this.getClass(r)
-        let status = initState.status
-        let sammiMessage = initState.sammiMessage
-        let mobileMessage = initState.mobileMessage
+    // actions.classes.getClassById(this.props.cl.id)
+    //   .then((r) => {
+    //     console.log('full class', r)
+    //     this.setState({fullClass: r})
 
-        this.setState({
-          cl: this.props.cl,
-          fullClass: r,
-          uploadingDoc: false,
-          syllabus: null,
-          additionalFiles: [],
-          sammiMessage: sammiMessage,
-          status: status,
-          mobile: mobileCheck(),
-          mobileMessage: mobileMessage,
-          showDropClassConfirm: false,
-          uploadAdditionalDocumentsView: false,
-          loading: false
-        })
-      })
-      .catch((r) => console.log(r))
+    //     let initState = this.getClass(r)
+    //     let status = initState.status
+    //     let sammiMessage = initState.sammiMessage
+    //     let mobileMessage = initState.mobileMessage
+    //     let documents = []
+
+    //     if (status === 'diy') {
+    //       actions.documents.getClassDocuments(r.id)
+    //         .then(r => {
+    //           documents = r
+    //         })
+    //     }
+
+    //     this.setState({
+    //       cl: this.props.cl,
+    //       fullClass: r,
+    //       uploadingDoc: false,
+    //       syllabus: null,
+    //       additionalFiles: [],
+    //       sammiMessage: sammiMessage,
+    //       status: status,
+    //       mobile: mobileCheck(),
+    //       mobileMessage: mobileMessage,
+    //       showDropClassConfirm: false,
+    //       uploadAdditionalDocumentsView: false,
+    //       loading: false,
+    //       classDocuments: null
+    //     })
+    //   })
+    //   .catch((r) => console.log(r))
   }
 
-  componentDidMount () {
-    actions.classes.getClassById(this.props.cl.id)
+  async init () {
+    let cl
+    await actions.classes.getClassById(this.props.cl.id)
       .then((r) => {
-        let initState = this.getClass(r)
-        let status = initState.status
-        let sammiMessage = initState.sammiMessage
-        let mobileMessage = initState.mobileMessage
-
-        this.setState({
-          cl: this.props.cl,
-          fullClass: r,
-          uploadingDoc: false,
-          syllabus: null,
-          additionalFiles: [],
-          sammiMessage: sammiMessage,
-          status: status,
-          mobile: mobileCheck(),
-          mobileMessage: mobileMessage,
-          showDropClassConfirm: false,
-          uploadAdditionalDocumentsView: false,
-          loading: false
-        })
+        cl = r
       })
       .catch((r) => console.log(r))
+    console.log('full class', cl)
+    this.setState({fullClass: cl})
+
+    let initState = this.getClass(cl)
+    let status = initState.status
+    let sammiMessage = initState.sammiMessage
+    let mobileMessage = initState.mobileMessage
+    let documents = []
+
+    await actions.documents.getClassDocuments(cl.id)
+      .then(r => {
+        documents = r
+      })
+
+    this.setState({
+      cl: this.props.cl,
+      fullClass: cl,
+      uploadingDoc: false,
+      syllabus: null,
+      additionalFiles: [],
+      sammiMessage: sammiMessage,
+      status: status,
+      mobile: mobileCheck(),
+      mobileMessage: mobileMessage,
+      showDropClassConfirm: false,
+      uploadAdditionalDocumentsView: false,
+      loading: false,
+      classDocuments: documents
+    })
   }
 
   getClass (cl) {
@@ -92,7 +115,7 @@ class ClassStatusModal extends React.Component {
       sammiMessage = <p>Your syllabus is <b>IN REVIEW!</b></p>
     } else if (id === 1300) {
       status = 'diy'
-      sammiMessage = `Someone already uploaded the syllabus, but we need a little help.`
+      sammiMessage = <p>The document(s) submitted <b>don&apos;t have the info we need for setup!</b></p>
       mobileMessage = `Head over to skoller.co on your computer to login and finish setting up your class.`
     } else if (id >= 1400) {
       status = 'live'
@@ -222,7 +245,7 @@ class ClassStatusModal extends React.Component {
     } else {
       return (
         <div className='sk-class-status-modal-action-detail'>
-          <div>Check back in a few short hours and we&apos;ll have your class all ready for you.</div>
+          <h2>Check back soon to find this class already set up for you.</h2>
           <div
             onClick={() => {
               this.setState({
@@ -236,6 +259,66 @@ class ClassStatusModal extends React.Component {
           >
             📄Upload additional documents.
           </div>
+        </div>
+      )
+    }
+  }
+
+  renderDIYAction () {
+    if (!this.state.mobile) {
+      return (
+        <div className='sk-class-status-modal-file-drop-container' style={{height: '480px', overflow: 'auto', maxHeight: '480px'}}>
+          <div
+            style={{
+              border: '1px solid #4a4a4a',
+              borderRadius: '5px',
+              padding: '1rem',
+              marginBottom: '1rem'
+            }}
+          >
+            <div className='sk-class-status-modal-file-drop-files'>
+              These are the documents that were not helpful:
+              {this.state.classDocuments.map(doc => {
+                return (
+                  <div className='sk-class-status-modal-file-drop-file' key={this.state.classDocuments.indexOf(doc)}>
+                    <p style={{textAlign: 'center'}}>{doc.name}</p>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+          <DragAndDrop
+            handleDrop={(file) => {
+              let additionalFiles = this.state.additionalFiles
+              additionalFiles.push(file[0])
+              this.setState({additionalFiles: additionalFiles})
+            }}
+          >
+            {this.state.additionalFiles.length > 0
+              ? <div className='sk-class-status-modal-file-drop-files'>
+                {this.state.additionalFiles.map(file => {
+                  return (
+                    <div key={file.name} className='sk-class-status-modal-file-drop-file'>
+                      <i
+                        className='far fa-times-circle'
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          let index = this.state.additionalFiles.indexOf(file)
+                          let additionalFiles = this.state.additionalFiles
+                          additionalFiles.splice(index, 1)
+                          this.setState({additionalFiles: additionalFiles})
+                        }}
+                      />
+                      <p>{file.name}</p>
+                    </div>
+                  )
+                })}
+              </div>
+              : <div className='sk-class-status-modal-file-drop-message'>
+                Drop the correct documents for the class
+              </div>
+            }
+          </DragAndDrop>
         </div>
       )
     }
@@ -258,8 +341,9 @@ class ClassStatusModal extends React.Component {
                 : null
               }
               {this.state.status === 'diy'
-                ? <div className='sk-class-status-modal-action-detail'>
-                  <div>We weren&apos;t able to properly review your syllabus. Help us set up your class!</div>
+                ? <div className='sk-class-status-modal-action-detail' style={{height: 'auto', maxHeight: '300px'}}>
+                  {this.renderDIYAction()}
+                  {/* <div>We weren&apos;t able to properly review your syllabus. Help us set up your class!</div> */}
                 </div>
                 : null
               }
@@ -280,7 +364,7 @@ class ClassStatusModal extends React.Component {
             </div>
           }
         </div>
-        {this.state.status === 'needSyllabus' && !mobileCheck()
+        {(this.state.status === 'needSyllabus' || this.state.status === 'diy') && !mobileCheck()
           ? this.renderSyllabusToolTip()
           : null
         }
@@ -326,26 +410,33 @@ class ClassStatusModal extends React.Component {
         status: 'inReview',
         sammiMessage: `Woohoo! You've submitted your syllabus.`
       })
-    } else if (this.state.status === 'inReview' || this.state.status === 'live') {
+    } else if (this.state.status === 'live') {
       this.props.onSubmit()
-    } else if (this.state.status === 'diy') {
+    } else if (this.state.status === 'inReview') {
       this.sendToDiy()
+    } else if (this.state.status === 'diy') {
+      this.setState({loading: true})
+      await this.state.additionalFiles.forEach(file => {
+        actions.documents.uploadClassDocument(this.state.cl, file, false)
+      })
+      this.init()
     }
   }
 
   renderNextButton () {
     let buttonText
     buttonText = 'Done'
-    if (this.state.status === 'needSyllabus') {
+    if (this.state.status === 'needSyllabus' || this.state.status === 'diy') {
       buttonText = 'Submit'
-    } else if (this.state.status === 'diy' || this.state.status === 'syllabusOverload') {
+    } else if (this.state.status === 'syllabusOverload') {
       buttonText = `Use the DIY tool`
     }
-    if (!this.state.mobile || this.state.status === 'live' || this.state.status === 'inReview') {
+    if ((!this.state.mobile || this.state.status === 'live') && this.state.status !== 'inReview') {
       return (
         <div
           className={'onboard-next' + (
-            (this.state.status === 'needSyllabus') && (this.state.syllabus === null)
+            ((this.state.status === 'needSyllabus') && (this.state.syllabus === null)) ||
+            (this.state.status === 'diy' && this.state.additionalFiles.length === 0)
               ? ' disabled'
               : ''
           )}
@@ -356,39 +447,29 @@ class ClassStatusModal extends React.Component {
           </p>
         </div>
       )
+    } else if (this.state.status === 'inReview') {
+      return (
+        <div>
+          <p style={{margin: '0', textAlign: 'center'}}>Don&apos;t want to wait?</p>
+          <div
+            className={'onboard-next' + (
+              (this.state.status === 'needSyllabus') && (this.state.syllabus === null)
+                ? ' disabled'
+                : ''
+            )}
+            onClick={() => this.handleSubmit()}
+          >
+            <p>
+              Use the DIY tool
+            </p>
+          </div>
+        </div>
+      )
     }
   }
 
   async onDropClass () {
     this.setState({showDropClassConfirm: true})
-  }
-
-  async onDropClassConfirm () {
-    this.setState({loading: true})
-    await actions.classes.dropClass(this.state.cl.id).catch(r => console.log(r))
-    this.props.closeModal()
-  }
-
-  renderDropClassConfirm () {
-    return (
-      <SkModal>
-        <div className='sk-class-status-modal-drop-modal'>
-          <h3>Are you sure you want to drop this class?</h3>
-          <div
-            className='sk-class-status-modal-drop-modal-yes'
-            onClick={() => this.onDropClassConfirm()}
-          >
-            <p>Yes, drop class.</p>
-          </div>
-          <div
-            className='sk-class-status-modal-drop-modal-no'
-            onClick={() => this.setState({showDropClassConfirm: false})}
-          >
-            <p>No, stay in this class.</p>
-          </div>
-        </div>
-      </SkModal>
-    )
   }
 
   renderControl () {
@@ -442,28 +523,28 @@ class ClassStatusModal extends React.Component {
       <div style={{
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: !(this.state.status === 'inReview' || this.state.status === 'needSyllabus') && this.props.closeModal ? 'flex-end' : 'space-between',
+        justifyContent: !(this.state.status === 'needSyllabus' || this.state.status === 'diy') && this.props.closeModal ? 'flex-end' : 'space-between',
         margin: '0.5rem 0 -0.5rem 0'
       }}>
-        {this.state.status === 'inReview' && !mobileCheck()
+        {this.state.status === 'inReview' && !mobileCheck() && this.props.onboard
           ? <p
             style={{margin: '6px 0 0 0', textAlign: 'center', cursor: 'pointer'}}
             onClick={() => {
-              this.sendToDiy()
+              this.props.onSubmit()
             }}
           >
-            <span style={{color: '#57B9E4'}}>Setup on your own</span>
+            <span style={{color: '#57B9E4'}}>Continue to Skoller</span>
           </p>
           : null
         }
-        {this.state.status === 'needSyllabus' && !mobileCheck()
+        {(this.state.status === 'needSyllabus' || this.state.status === 'diy') && !mobileCheck()
           ? <p
             style={{margin: '6px 0 0 0', textAlign: 'center', cursor: 'pointer'}}
             onClick={() => {
               this.sendToDiy()
             }}
           >
-            <span style={{color: '#57B9E4'}}>Setup on your own</span>
+            <span style={{color: '#57B9E4'}}>Setup without the syllabus</span>
           </p>
           : null
         }
@@ -511,7 +592,8 @@ ClassStatusModal.propTypes = {
   disableNext: PropTypes.bool,
   cl: PropTypes.object,
   closeModal: PropTypes.function,
-  progress: PropTypes.number
+  progress: PropTypes.number,
+  onboard: PropTypes.bool
 }
 
 export default ClassStatusModal
