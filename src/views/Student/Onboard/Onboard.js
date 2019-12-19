@@ -252,7 +252,7 @@ class Onboard extends React.Component {
         ? <div className='onboard-loading'>
           <SkLoader />
         </div>
-        : <Layout hideModal={this.state.step === 'verify'}>
+        : <Layout hideModal={this.state.step === 'verify' || this.state.step === 'first-class'}>
           {(this.state.step === 'sign-up')
             ? this.renderSignUp()
             : null
