@@ -50,7 +50,7 @@ class DropClassButton extends React.Component {
         <p
           onClick={() => this.onDropClass()}
         >
-          Drop class
+          Drop this class
         </p>
       </div>
     )

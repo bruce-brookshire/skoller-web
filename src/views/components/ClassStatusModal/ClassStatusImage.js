@@ -15,6 +15,8 @@ class ClassStatusImage extends React.Component {
       image = syllabusOverload
     } else if (this.props.status === 1400) {
       image = live
+    } else if (this.props.status === 1500) {
+      image = syllabusOverload
     }
     return (
       <div style={{

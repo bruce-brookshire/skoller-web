@@ -20,33 +20,62 @@ class ClassStatusModal extends React.Component {
   constructor (props) {
     super(props)
 
-    let initState = this.getClass(this.props.cl)
-    let status = initState.status
-    let sammiMessage = initState.sammiMessage
-    let mobileMessage = initState.mobileMessage
-    let cl = initState.cl
-
     this.state = {
-      cl: cl,
-      fullClass: null,
-      uploadingDoc: false,
-      syllabus: null,
-      additionalFiles: [],
-      sammiMessage: sammiMessage,
-      status: status,
-      mobile: mobileCheck(),
-      mobileMessage: mobileMessage,
-      showDropClassConfirm: false,
-      uploadAdditionalDocumentsView: false
+      loading: true
     }
-  }
 
-  componentWillMount () {
     actions.classes.getClassById(this.props.cl.id)
       .then((r) => {
+        console.log('full class', r)
         this.setState({fullClass: r})
+
+        let initState = this.getClass(r)
+        let status = initState.status
+        let sammiMessage = initState.sammiMessage
+        let mobileMessage = initState.mobileMessage
+
+        this.setState({
+          cl: this.props.cl,
+          fullClass: r,
+          uploadingDoc: false,
+          syllabus: null,
+          additionalFiles: [],
+          sammiMessage: sammiMessage,
+          status: status,
+          mobile: mobileCheck(),
+          mobileMessage: mobileMessage,
+          showDropClassConfirm: false,
+          uploadAdditionalDocumentsView: false,
+          loading: false
+        })
       })
-      .catch(() => false)
+      .catch((r) => console.log(r))
+  }
+
+  componentDidMount () {
+    actions.classes.getClassById(this.props.cl.id)
+      .then((r) => {
+        let initState = this.getClass(r)
+        let status = initState.status
+        let sammiMessage = initState.sammiMessage
+        let mobileMessage = initState.mobileMessage
+
+        this.setState({
+          cl: this.props.cl,
+          fullClass: r,
+          uploadingDoc: false,
+          syllabus: null,
+          additionalFiles: [],
+          sammiMessage: sammiMessage,
+          status: status,
+          mobile: mobileCheck(),
+          mobileMessage: mobileMessage,
+          showDropClassConfirm: false,
+          uploadAdditionalDocumentsView: false,
+          loading: false
+        })
+      })
+      .catch((r) => console.log(r))
   }
 
   getClass (cl) {
@@ -68,6 +97,10 @@ class ClassStatusModal extends React.Component {
     } else if (id >= 1400) {
       status = 'live'
       sammiMessage = `WOOHOO! Your class is live ⚡️`
+    }
+    if (cl.school.is_syllabus_overload) {
+      status = 'syllabusOverload'
+      sammiMessage = <p>Due to high volume, it could take me <b>a few days</b> to set up this class.</p>
     }
     return ({
       cl: cl,
@@ -170,7 +203,7 @@ class ClassStatusModal extends React.Component {
     return (
       !this.state.uploadAdditionalDocumentsView &&
       <div className='sk-class-status-modal-checklist-container'>
-        <ClassStatusImage status={this.state.cl.status.id} />
+        <ClassStatusImage status={this.state.fullClass.school.is_syllabus_overload ? 1500 : this.state.cl.status.id} />
       </div>
     )
   }
@@ -227,6 +260,13 @@ class ClassStatusModal extends React.Component {
               {this.state.status === 'diy'
                 ? <div className='sk-class-status-modal-action-detail'>
                   <div>We weren&apos;t able to properly review your syllabus. Help us set up your class!</div>
+                </div>
+                : null
+              }
+              {this.state.status === 'syllabusOverload'
+                ? <div className='sk-class-status-modal-action-detail'>
+                  <h2>We recommend you use the DIY tool to set up your class instantly!</h2>
+                  <p style={{margin: '0'}}><small>Less than 10 minutes</small></p>
                 </div>
                 : null
               }
@@ -298,8 +338,8 @@ class ClassStatusModal extends React.Component {
     buttonText = 'Done'
     if (this.state.status === 'needSyllabus') {
       buttonText = 'Submit'
-    } else if (this.state.status === 'diy') {
-      buttonText = `Let's DIY!`
+    } else if (this.state.status === 'diy' || this.state.status === 'syllabusOverload') {
+      buttonText = `Use the DIY tool`
     }
     if (!this.state.mobile || this.state.status === 'live' || this.state.status === 'inReview') {
       return (
@@ -399,7 +439,12 @@ class ClassStatusModal extends React.Component {
 
   renderSubControl () {
     return (
-      <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', margin: '0.5rem 0 -0.5rem 0'}}>
+      <div style={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: !(this.state.status === 'inReview' || this.state.status === 'needSyllabus') && this.props.closeModal ? 'flex-end' : 'space-between',
+        margin: '0.5rem 0 -0.5rem 0'
+      }}>
         {this.state.status === 'inReview' && !mobileCheck()
           ? <p
             style={{margin: '6px 0 0 0', textAlign: 'center', cursor: 'pointer'}}
@@ -418,9 +463,7 @@ class ClassStatusModal extends React.Component {
               this.sendToDiy()
             }}
           >
-            <small>
-              <span style={{color: '#57B9E4'}}>Setup on your own</span>
-            </small>
+            <span style={{color: '#57B9E4'}}>Setup on your own</span>
           </p>
           : null
         }

@@ -4,10 +4,10 @@ import PropTypes from 'prop-types'
 class Sammi extends React.Component {
   getSammi = () => {
     const sammis = {
-      'wow': '/src/assets/images/sammi/Wow@3x.png',
-      'ooo': '/src/assets/images/sammi/OoOoo@3x.png',
+      'wow': '/src/assets/images/sammi/Wow2.png',
+      'ooo': '/src/assets/images/sammi/OoOoo.png',
       'sad': 'src/assets/images/sammi/Sad@3x.png',
-      'happy': '/src/assets/images/sammi/Smile@3x.png',
+      'happy': '/src/assets/images/sammi/Smile.png',
       'happy2': '/src/assets/images/sammi/Smile 2@3x.png',
       'smirk': '/src/assets/images/sammi/Smirk@3x.png',
       'deal with it': '/src/assets/images/sammi/Deal with it@3x.png'

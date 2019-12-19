@@ -157,5 +157,13 @@
   .onboard-next {
     @include sk-standard-button;
     @include not-selectable;
-  }  
+  }
+
+  .disabled {
+    @include disabled-button;
+
+    p {
+      font-weight: 400;
+    }
+  }
 }

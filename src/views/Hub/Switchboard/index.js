@@ -83,9 +83,9 @@ class Switchboard extends React.Component {
             <div className='margin-top'>
               <SignupLinks />
             </div>
-            <div className='margin-top'>
-              {/* <FourDoorOverrides /> */}
-            </div>
+            {/* <div className='margin-top'>
+              <FourDoorOverrides />
+            </div> */}
             <div className='margin-top'>
               <OrganizationsCard />
             </div>
