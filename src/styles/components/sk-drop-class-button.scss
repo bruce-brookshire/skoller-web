@@ -18,6 +18,10 @@
 
     p {
       background-color: $cn-color-red;
+
+      &:hover {
+        background-color: $cn-color-red;
+      }
     }
     margin-bottom: 8px;
   }

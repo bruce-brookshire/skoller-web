@@ -205,6 +205,7 @@ class Onboard extends React.Component {
           params={this.state.selectSchoolData}
           renderPartner={this.renderPartner}
           partner={this.state.partner}
+          onboard={true}
         />
       )
     )

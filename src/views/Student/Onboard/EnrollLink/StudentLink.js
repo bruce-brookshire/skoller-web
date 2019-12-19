@@ -124,12 +124,14 @@ class StudentLink extends React.Component {
   renderStudentLinkContent () {
     return (
       <div className='sk-enroll-link-container'>
-        <h1>Your classmates are waiting on you! 🎉🎊</h1>
-        <div className='sk-enroll-link-call-out'>
-          <div className='sk-enroll-link-img-container'>
-            <img src={this.userImage()} className='sk-enroll-link-img' />
+        <div>
+          <h1>Your classmates are waiting on you! 🎉🎊</h1>
+          <div className='sk-enroll-link-call-out'>
+            <div className='sk-enroll-link-img-container'>
+              <img src={this.userImage()} className='sk-enroll-link-img' />
+            </div>
+            <p><b>{this.userName()}</b> invites you to join Skoller.</p>
           </div>
-          <p><b>{this.userName()}</b> invites you to join Skoller.</p>
         </div>
         {(this.state.formState === 'sign-up') &&
           this.renderSignUpForm()
