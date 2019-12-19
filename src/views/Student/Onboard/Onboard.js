@@ -64,7 +64,6 @@ class Onboard extends React.Component {
   }
 
   async loginStudent () {
-    console.log('damnit')
     if (this.cookie.get('skollerToken')) {
       console.log('0')
       await actions.auth.getUserByToken(this.cookie.get('skollerToken')).catch((r) => console.log(r))
