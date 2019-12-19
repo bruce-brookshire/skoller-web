@@ -11,6 +11,7 @@ import EnrollVerify from './EnrollVerify'
 import EnrollLogin from './EnrollLogin'
 import moment from 'moment'
 import EnrollDownload from './EnrollDownload'
+import live from '../../../../assets/images/class_status/todolist_gif.gif'
 
 @inject('rootStore') @observer
 class EnrollLink extends React.Component {
@@ -131,9 +132,12 @@ class EnrollLink extends React.Component {
       .then(() => {
         if (this.state.newUser) {
           this.setState({formState: 'download'})
-          // browserHistory.push('/student/home')
         } else {
-          browserHistory.push('/student/home')
+          if (this.state.linkDetail.student_class.status.id === 1400) {
+            this.setState({formState: 'complete'})
+          } else {
+            browserHistory.push('/student/home')
+          }
         }
       })
       .catch(e => {
@@ -231,16 +235,39 @@ class EnrollLink extends React.Component {
     )
   }
 
+  renderCompleteContent () {
+    return (
+      <div className='sk-enroll-link-container'>
+        <h1>This class is already LIVE on Skoller!</h1>
+        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+          <img style={{width: '300px'}} src={live} alt='Class is LIVE' />
+        </div>
+        <div className='sk-enroll-link-enroll-form'>
+          <div
+            className='sk-enroll-link-enroll-form-button'
+            onClick={() => browserHistory.push('/student/home')}
+          >
+            <p>Continue</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   renderEnrollContent () {
     return (
       <div className='sk-enroll-link-container'>
-        <h1>Your classmates are waiting on you! 🎉🎊</h1>
-        <div className='sk-enroll-link-call-out'>
-          <div className='sk-enroll-link-img-container'>
-            <img src={this.userImage()} className='sk-enroll-link-img' />
+        {this.state.formState !== 'complete' &&
+          <div>
+            <h1>Your classmates are waiting on you! 🎉🎊</h1>
+            <div className='sk-enroll-link-call-out'>
+              <div className='sk-enroll-link-img-container'>
+                <img src={this.userImage()} className='sk-enroll-link-img' />
+              </div>
+              <p><b>{this.userName()}</b> invites you to join <b>{this.className()}</b></p>
+            </div>
           </div>
-          <p><b>{this.userName()}</b> invites you to join <b>{this.className()}</b></p>
-        </div>
+        }
         {(this.state.formState === 'sign-up') &&
           this.renderSignUpForm()
         }
@@ -252,6 +279,9 @@ class EnrollLink extends React.Component {
         }
         {(this.state.formState === 'enroll') &&
           this.renderEnrollForm()
+        }
+        {(this.state.formState === 'complete') &&
+          this.renderCompleteContent()
         }
       </div>
     )

@@ -21,7 +21,7 @@ class ClassStatusImage extends React.Component {
     return (
       <div style={{
         height: this.props.status === 1400 ? '400px' : '300px',
-        width: '300px',
+        width: this.props.status === 1400 ? (this.props.maxWidth ? this.props.maxWidth.toString() + 'px' : '300px') : '300px',
         backgroundImage: `url(${image})`,
         backgroundSize: 'contain',
         backgroundRepeat: 'no-repeat',
@@ -37,7 +37,8 @@ class ClassStatusImage extends React.Component {
 }
 
 ClassStatusImage.propTypes = {
-  status: PropTypes.number
+  status: PropTypes.number,
+  maxWidth: PropTypes.number
 }
 
 export default ClassStatusImage

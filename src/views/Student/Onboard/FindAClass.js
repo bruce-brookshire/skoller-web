@@ -7,6 +7,7 @@ import moment from 'moment'
 import ProfessorForm from '../../../views/components/ProfessorForm'
 import SkModal from '../../components/SkModal/SkModal'
 import Sammi from '../../components/Sammi'
+import live from '../../../assets/images/class_status/todolist_gif.gif'
 
 @inject('rootStore') @observer
 class FindAClass extends React.Component {
@@ -56,7 +57,8 @@ class FindAClass extends React.Component {
       meetTimeMinute: '00',
       isNewClass: false,
       termChoice: termChoice,
-      schoolChoice: schoolChoice
+      schoolChoice: schoolChoice,
+      completedClassView: false
     }
   }
 
@@ -647,13 +649,17 @@ class FindAClass extends React.Component {
         })
       }
     } else {
-      actions.classes.enrollInClass(this.state.classChoice.id).then(() => {
-        this.props.onSubmit()
+      actions.classes.enrollInClass(this.state.classChoice.id).then((r) => {
+        if (r.status.id === 1400 && !this.props.onboard) {
+          this.setState({completedClassView: true})
+        } else {
+          this.props.onSubmit()
+        }
       })
     }
   }
 
-  render () {
+  renderContent () {
     return (
       <div>
         {this.props.renderPartner ? this.props.renderPartner() : null}
@@ -713,6 +719,37 @@ class FindAClass extends React.Component {
       </div>
     )
   }
+
+  renderCompletedClassView () {
+    return (
+      <div className='sk-enroll-link-container'>
+        <h2>This class is already LIVE on Skoller!</h2>
+        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+          <img style={{width: '300px'}} src={live} alt='Class is LIVE' />
+        </div>
+        <div className='sk-enroll-link-enroll-form'>
+          <div
+            className='sk-enroll-link-enroll-form-button'
+            onClick={() => this.props.onSubmit()}
+          >
+            <p>Continue</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  render () {
+    if (!this.state.completedClassView) {
+      return (
+        this.renderContent()
+      )
+    } else {
+      return (
+        this.renderCompletedClassView()
+      )
+    }
+  }
 }
 
 FindAClass.propTypes = {
@@ -722,7 +759,8 @@ FindAClass.propTypes = {
   renderPartner: PropTypes.func,
   onBack: PropTypes.func,
   hideOnboard: PropTypes.bool,
-  launchClassStatusModal: PropTypes.func
+  launchClassStatusModal: PropTypes.func,
+  onboard: PropTypes.bool
 }
 
 export default FindAClass
