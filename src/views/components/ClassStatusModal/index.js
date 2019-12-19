@@ -42,7 +42,6 @@ class ClassStatusModal extends React.Component {
   }
 
   componentWillMount () {
-    console.log(mobileCheck())
     actions.classes.getClassById(this.props.cl.id)
       .then((r) => {
         this.setState({fullClass: r})
@@ -134,7 +133,6 @@ class ClassStatusModal extends React.Component {
             handleDrop={(file) => {
               let additionalFiles = this.state.additionalFiles
               additionalFiles.push(file[0])
-              console.log(additionalFiles)
               this.setState({additionalFiles: additionalFiles})
             }}
           >
@@ -194,7 +192,6 @@ class ClassStatusModal extends React.Component {
           <div>Check back in a few short hours and we&apos;ll have your class all ready for you.</div>
           <div
             onClick={() => {
-              console.log(this.props.cl)
               this.setState({
                 uploadAdditionalDocumentsView: true
               })
@@ -216,7 +213,7 @@ class ClassStatusModal extends React.Component {
       <div className='sk-class-status-modal-container'>
         <div className='sk-class-status-modal-row'>
           {this.renderChecklist()}
-          {this.state.status === 'needSyllabus' && this.state.mobile
+          {(this.state.status === 'needSyllabus' && this.state.mobile) || this.props.cl.status.id === 1400
             ? null
             : <div className='sk-class-status-modal-action-container'>
               {this.state.status === 'needSyllabus'
@@ -234,9 +231,10 @@ class ClassStatusModal extends React.Component {
                 : null
               }
               {this.state.status === 'live'
-                ? <div className='sk-class-status-modal-action-detail'>
-                  <h3>This class is already LIVE on Skoller!</h3>
-                </div>
+                // ? <div className='sk-class-status-modal-action-detail'>
+                //   <h3>This class is already LIVE on Skoller!</h3>
+                // </div>
+                ? null
                 : null
               }
             </div>
@@ -280,7 +278,6 @@ class ClassStatusModal extends React.Component {
       await actions.documents.uploadClassDocument(this.state.cl, this.state.syllabus[0], true)
       if (this.state.additionalFiles) {
         await this.state.additionalFiles.forEach(file => {
-          console.log(file)
           actions.documents.uploadClassDocument(this.state.cl, file, false)
         })
       }
@@ -354,24 +351,6 @@ class ClassStatusModal extends React.Component {
     )
   }
 
-  renderDropButton () {
-    if (this.props.closeModal) {
-      return (
-        <div
-          className='sk-class-status-modal-drop-class'
-        >
-          <p
-            onClick={() => this.onDropClass()}
-          >
-            Drop class
-          </p>
-        </div>
-      )
-    } else {
-      return null
-    }
-  }
-
   renderControl () {
     if (this.state.uploadAdditionalDocumentsView) {
       return null
@@ -379,32 +358,6 @@ class ClassStatusModal extends React.Component {
       return (
         <div>
           {!this.props.disableNext && this.renderNextButton()}
-          {this.state.status === 'inReview' && !mobileCheck()
-            ? <p
-              style={{margin: '6px 0 0 0', textAlign: 'center', cursor: 'pointer'}}
-              onClick={() => {
-                this.sendToDiy()
-              }}
-            >
-              <small>
-                Don&apos;t want to wait? <span style={{color: '#57B9E4'}}>Click here to do it yourself!</span>
-              </small>
-            </p>
-            : null
-          }
-          {this.state.status === 'needSyllabus' && !mobileCheck()
-            ? <p
-              style={{margin: '6px 0 0 0', textAlign: 'center', cursor: 'pointer'}}
-              onClick={() => {
-                this.sendToDiy()
-              }}
-            >
-              <small>
-                No syllabus? <span style={{color: '#57B9E4'}}>Click here to add assignments without one!</span>
-              </small>
-            </p>
-            : null
-          }
         </div>
       )
     }
@@ -412,13 +365,15 @@ class ClassStatusModal extends React.Component {
 
   renderSammi () {
     if (!this.state.uploadAdditionalDocumentsView) {
-      return (
-        <Sammi
-          message={this.state.sammiMessage}
-          position='right'
-          emotion='happy'
-        />
-      )
+      if (this.props.cl.status.id !== 1400) {
+        return (
+          <Sammi
+            message={this.state.sammiMessage}
+            position='right'
+            emotion='happy'
+          />
+        )
+      }
     }
   }
 
@@ -442,11 +397,46 @@ class ClassStatusModal extends React.Component {
     )
   }
 
+  renderSubControl () {
+    return (
+      <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', margin: '0.5rem 0 -0.5rem 0'}}>
+        {this.state.status === 'inReview' && !mobileCheck()
+          ? <p
+            style={{margin: '6px 0 0 0', textAlign: 'center', cursor: 'pointer'}}
+            onClick={() => {
+              this.sendToDiy()
+            }}
+          >
+            <span style={{color: '#57B9E4'}}>Setup on your own</span>
+          </p>
+          : null
+        }
+        {this.state.status === 'needSyllabus' && !mobileCheck()
+          ? <p
+            style={{margin: '6px 0 0 0', textAlign: 'center', cursor: 'pointer'}}
+            onClick={() => {
+              this.sendToDiy()
+            }}
+          >
+            <small>
+              <span style={{color: '#57B9E4'}}>Setup on your own</span>
+            </small>
+          </p>
+          : null
+        }
+        {this.props.closeModal &&
+          <div style={{textAlign: 'right'}}>
+            <DropClassButton onDropClass={() => this.props.closeModal()} cl={this.state.cl} />
+          </div>
+        }
+      </div>
+    )
+  }
+
   renderModalContent () {
     return (
       <div className='sk-class-status-modal'>
         <div className='sk-class-status-modal-drop-container'>
-          <DropClassButton onDropClass={() => this.props.closeModal()} cl={this.state.cl} />
         </div>
         {this.renderHeader()}
         {this.renderClass()}
@@ -455,6 +445,7 @@ class ClassStatusModal extends React.Component {
           : null
         }
         {this.renderControl()}
+        {this.renderSubControl()}
       </div>
     )
   }

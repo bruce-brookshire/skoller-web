@@ -64,3 +64,23 @@ export function updateMinVer (form) {
       return Promise.reject(error)
     })
 }
+
+export function getAdminSettings () {
+  return get(`/api/v1/admin-settings/syllabus_overload_override`, '', 'Error getting admin settings. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+export function setSyllabusOverloadSettings (bool) {
+  return put(`/api/v1/admin-settings/syllabus_overload_override`, {value: bool}, 'Error setting admin settings. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}

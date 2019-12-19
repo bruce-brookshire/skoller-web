@@ -129,7 +129,9 @@ import {
   updateAutoUpdateInfo,
   forecastAutoUpdateInfo,
   getMinVersionInfo,
-  updateMinVer
+  updateMinVer,
+  getAdminSettings,
+  setSyllabusOverloadSettings
 } from './settings'
 import {
   createCustomLink,
@@ -343,7 +345,9 @@ const actions = {
     updateAutoUpdateInfo,
     forecastAutoUpdateInfo,
     getMinVersionInfo,
-    updateMinVer
+    updateMinVer,
+    getAdminSettings,
+    setSyllabusOverloadSettings
   },
   signupLinks: {
     createCustomLink,

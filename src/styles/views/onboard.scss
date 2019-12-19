@@ -90,6 +90,10 @@
         p {
           background-color: $cn-form-border;
           cursor: auto;
+
+          &:hover {
+            background-color: $cn-form-border;
+          }
         }
       }
 

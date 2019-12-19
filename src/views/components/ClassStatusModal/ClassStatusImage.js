@@ -8,7 +8,6 @@ import PropTypes from 'prop-types'
 
 class ClassStatusImage extends React.Component {
   render () {
-    console.log(this.props.status)
     let image = sendSyllabus
     if (this.props.status === 1200) {
       image = inReview
@@ -17,11 +16,19 @@ class ClassStatusImage extends React.Component {
     } else if (this.props.status === 1400) {
       image = live
     }
-    console.log(image)
     return (
-      <div style={{height: '300px', width: '300px', backgroundImage: `url(${image})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat'}}>
+      <div style={{
+        height: this.props.status === 1400 ? '400px' : '300px',
+        width: '300px',
+        backgroundImage: `url(${image})`,
+        backgroundSize: 'contain',
+        backgroundRepeat: 'no-repeat',
+        textAlign: 'center'
+      }}>
         {/* <img style={{width: '100%', height: 'auto', maxHeight: '200px'}} src={image} /> */}
-        <p>.</p>
+        {this.props.status === 1400 &&
+          <h3>This class is already LIVE on Skoller!</h3>
+        }
       </div>
     )
   }

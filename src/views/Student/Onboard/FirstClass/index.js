@@ -354,7 +354,7 @@ class FirstClass extends React.Component {
           ? <SkLoader />
           // : this.renderModalContent()
           : <ClassStatusModal
-            onSubmit={() => console.log('ok')}
+            onSubmit={() => this.props.onSubmit()}
             disableNext={false}
             cl={this.state.firstClass}
             closeModal={false}
