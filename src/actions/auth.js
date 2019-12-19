@@ -147,8 +147,10 @@ export function getUserByToken (token) {
       .then(data => {
         userStore.user = data.user
         userStore.authToken = token
-        studentClassesStore.getClasses()
-        studentJobsStore.getJobsProfile()
+        if (userStore.user.roles[0].id !== 200) {
+          studentClassesStore.getClasses()
+          studentJobsStore.getJobsProfile()
+        }
         return data
       })
       .catch(error => {
@@ -158,8 +160,10 @@ export function getUserByToken (token) {
     return post(`/api/v1/users/token-login`, '')
       .then(data => {
         userStore.user = data.user
-        studentClassesStore.getClasses()
-        studentJobsStore.getJobsProfile()
+        if (userStore.user.roles[0].id !== 200) {
+          studentClassesStore.getClasses()
+          studentJobsStore.getJobsProfile()
+        }
         return data
       })
       .catch(error => {

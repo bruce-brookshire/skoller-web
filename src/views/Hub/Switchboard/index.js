@@ -14,6 +14,7 @@ import EmailSettings from '../../Cards/EmailSettings'
 import NotificationHistory from '../../Cards/NotificationHistory'
 import AssignmentReminders from '../../Cards/AssignmentReminders'
 import FourDoorOverrides from '../../Cards/FourDoorOverrides'
+import SyllabusOverload from '../../Cards/SyllabusOverload'
 
 @inject('rootStore') @observer
 class Switchboard extends React.Component {
@@ -67,7 +68,8 @@ class Switchboard extends React.Component {
               <MinVersionSettings />
             </div>
             <div className="cn-switchboard-section-item margin-top">
-              <FourDoorStatus />
+              {/* <FourDoorStatus /> */}
+              <SyllabusOverload />
             </div>
             <div className="cn-switchboard-section-item margin-top">
               <EmailSettings />
@@ -81,9 +83,9 @@ class Switchboard extends React.Component {
             <div className='margin-top'>
               <SignupLinks />
             </div>
-            <div className='margin-top'>
+            {/* <div className='margin-top'>
               <FourDoorOverrides />
-            </div>
+            </div> */}
             <div className='margin-top'>
               <OrganizationsCard />
             </div>

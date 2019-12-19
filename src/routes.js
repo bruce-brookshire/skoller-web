@@ -178,13 +178,15 @@ function requireAuth (nextState, replaceState) {
     userStore.authToken = cookie.get('skollerToken')
     actions.auth.getUserByToken()
       .then((user) => {
+        console.log('requireAuth user', user)
         authenticateStudent(user.user).then(() => {
           userStore.setFetchingUser(false)
         }).catch(() => { userStore.setFetchingUser(false) })
 
         userStore.setFetchingUser(false)
       })
-      .catch(() => {
+      .catch((r) => {
+        console.log('requireAuth catch', r)
         browserHistory.push('/landing')
         userStore.setFetchingUser(false)
       })
