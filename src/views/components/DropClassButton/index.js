@@ -16,6 +16,7 @@ class DropClassButton extends React.Component {
 
   async onDropClassConfirm () {
     this.setState({loading: true})
+    this.props.rootStore.studentClassesStore.updateClasses()
     await actions.classes.dropClass(this.props.cl.id).catch(r => console.log(r))
     this.props.onDropClass()
   }
@@ -70,7 +71,8 @@ class DropClassButton extends React.Component {
 
 DropClassButton.propTypes = {
   cl: PropTypes.object,
-  onDropClass: PropTypes.function
+  onDropClass: PropTypes.function,
+  rootStore: PropTypes.object
 }
 
 export default DropClassButton
