@@ -1,4 +1,4 @@
-import {get, post, put, del} from '../utilities/api'
+import {get, post, put, del, putFile} from '../utilities/api'
 
 /*
 * Get a user's job profile by user id
@@ -114,9 +114,10 @@ export function createJobsProfile (form) {
 export function uploadJobsDoc (jobsId, file, isResume = true) {
   let form = new FormData()
   let type = isResume ? 'resume' : 'transcript'
+  form.append('type', type)
   form.append('file', file)
 
-  return put(`/api/v1/skoller-jobs/profiles/${jobsId}/documents/${type}`, form, 'Error uploading document. Try again.')
+  return putFile(`/api/v1/skoller-jobs/profiles/${jobsId}/documents/${type}`, form, 'Error uploading document. Try again.')
     .then(data => {
       return data
     })

@@ -31,6 +31,7 @@ class DocumentsForm extends React.Component {
         })
         .catch(e => {
           console.log(e)
+          this.setState({loading: false})
         })
     }
     if (this.state.resume) {
@@ -39,17 +40,13 @@ class DocumentsForm extends React.Component {
       await actions.jobs.uploadJobsDoc(this.props.rootStore.studentJobsStore.profile.id, resume, true)
         .then((r) => {
           console.log(r)
-          this.setState({loading: false})
-          // this.props.onSubmit()
         })
         .catch(e => {
           console.log(e)
           this.setState({loading: false})
         })
     }
-    if (!this.state.resume && !this.state.transcript) {
-      this.props.onSubmit()
-    }
+    this.props.onSubmit()
   }
 
   processFile (f, isResume = true) {
