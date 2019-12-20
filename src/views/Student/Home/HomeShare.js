@@ -4,9 +4,8 @@ import {inject, observer} from 'mobx-react'
 import Sammi from '../../components/Sammi'
 import actions from '../../../actions'
 import partners from '../Onboard/partners'
-import CopyBox from '../../components/CopyBox'
 import {browserHistory} from 'react-router'
-import SkBanner from '../../components/StudentLayout/SkBanner';
+import SkBanner from '../../components/StudentLayout/SkBanner'
 
 @inject('rootStore') @observer
 class HomeShare extends React.Component {
