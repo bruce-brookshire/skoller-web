@@ -152,7 +152,7 @@ class StudentLink extends React.Component {
         ? <div className='onboard-loading'>
           <SkLoader />
         </div>
-        : <Layout hideModal={this.state.step === 'verify'} loggedIn={!this.state.userNotFound} >
+        : <Layout id='enroll-layout' hideModal={this.state.step === 'verify'} loggedIn={!this.state.userNotFound} >
           {this.renderStudentLinkContent()}
         </Layout>
     )

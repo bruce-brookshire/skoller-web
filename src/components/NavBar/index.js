@@ -63,6 +63,9 @@ class NavBar extends React.Component {
         <div className='cn-navbar'>
           <div>
             <img alt="Skoller" className='logo' src='/src/assets/images/logo-wide-blue@1x.png' />
+            <div className='onboard-logo-text'>
+              Keep Up with Classes, Together.
+            </div>
           </div>
           <div className='user-info'>
             <div className='left'>

@@ -26,7 +26,8 @@ class SelectSchool extends React.Component {
       showSchoolOptions: false,
       showTermOptions: false,
       sammiMessage: null,
-      activeTerm: null
+      activeTerm: null,
+      ios: this.getMobileOperatingSystem() === 'iOS'
     }
 
     if (this.props.backData) {
@@ -34,6 +35,17 @@ class SelectSchool extends React.Component {
         schoolChoice: this.props.backData.schoolChoice,
         termChoice: this.props.backData.termChoice
       })
+    }
+  }
+
+  getMobileOperatingSystem () {
+    let userAgent = navigator.userAgent || navigator.vendor || window.opera
+
+    // Windows Phone must come first because its UA also contains "Android"
+    if (/android/i.test(userAgent)) {
+      return 'Android'
+    } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+      return 'iOS'
     }
   }
 
@@ -153,7 +165,7 @@ class SelectSchool extends React.Component {
           }
         </div>
         {((this.state.schools.length > 0 || this.state.input) && !this.state.loadingAutocomplete)
-          ? <div className='sk-select-school-autocomplete-container' style={{width: this.schoolField.offsetWidth.toString() + 'px'}} contentEditable={false}>
+          ? <div className='sk-select-school-autocomplete-container' style={{width: this.schoolField.offsetWidth.toString() + 'px', maxHeight: this.state.ios ? '120px' : '136px', overflow: 'scroll'}} contentEditable={false}>
             {this.renderAutoComplete()}
           </div>
           : null
@@ -367,7 +379,7 @@ class SelectSchool extends React.Component {
         }
         {this.state.loading
           ? null
-          : <div>
+          : <div className='onboard-select-school-container'>
             <div className='onboard-select-school'>
               <h1>Meet Sammi 👋</h1>
               <Sammi

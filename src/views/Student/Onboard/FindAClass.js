@@ -58,7 +58,19 @@ class FindAClass extends React.Component {
       isNewClass: false,
       termChoice: termChoice,
       schoolChoice: schoolChoice,
-      completedClassView: false
+      completedClassView: false,
+      ios: this.getMobileOperatingSystem() === 'iOS'
+    }
+  }
+
+  getMobileOperatingSystem () {
+    let userAgent = navigator.userAgent || navigator.vendor || window.opera
+
+    // Windows Phone must come first because its UA also contains "Android"
+    if (/android/i.test(userAgent)) {
+      return 'Android'
+    } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+      return 'iOS'
     }
   }
 
@@ -91,7 +103,8 @@ class FindAClass extends React.Component {
       <div
         className='sk-find-class-autocomplete-container'
         style={{
-          width: this.classNameField.offsetWidth.toString() + 'px'
+          width: this.classNameField.offsetWidth.toString() + 'px',
+          maxHeight: this.state.ios ? '120px' : '136px'
         }}
       >
         {this.state.classes.map(cl => {
