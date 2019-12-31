@@ -1,7 +1,7 @@
 @mixin landing-nav-parent {
   position: relative;
   min-height: 100vh;
-  background-color: #f5f7f9;
+  background-color: #EDFAFF;
 
   @include breakpoint(medium) {
     padding-bottom: 69px;

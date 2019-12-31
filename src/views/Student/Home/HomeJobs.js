@@ -8,6 +8,7 @@ import PropTypes from 'prop-types'
 import SkSelectDropDown from '../../components/SkSelectDropDown'
 import { showSnackbar } from '../../../utilities/snackbar'
 import moment from 'moment'
+import { browserHistory } from 'react-router';
 
 @inject('rootStore') @observer
 class HomeJobs extends React.Component {
@@ -203,6 +204,7 @@ class HomeJobs extends React.Component {
         this.setState({loading: false, error: 'Error uploading résumé. Try again later.'})
       })
 
+    browserHistory.push('/student/jobs')
     this.props.updateStudent()
   }
 
