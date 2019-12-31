@@ -8,11 +8,23 @@ import SkLoader from '../../../assets/sk-icons/SkLoader'
 @inject('rootStore') @observer
 class StudentLayout extends React.Component {
   gettingData () {
-    if (this.props.rootStore.studentClassesStore.loading) {
+    if (this.props.rootStore.studentClassesStore.loading || this.props.rootStore.studentJobsStore.loading) {
       return true
     } else {
       return false
     }
+  }
+
+  renderContent () {
+    return (
+      <div className='sk-layout'>
+        <StudentNav />
+        <main id='main'>
+          <SkBanner />
+          {this.props.children}
+        </main>
+      </div>
+    )
   }
 
   render () {
@@ -20,13 +32,7 @@ class StudentLayout extends React.Component {
       return <SkLoader />
     } else {
       return (
-        <div className='sk-layout'>
-          <StudentNav />
-          <main>
-            <SkBanner />
-            {this.props.children}
-          </main>
-        </div>
+        this.renderContent()
       )
     }
   }

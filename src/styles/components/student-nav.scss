@@ -117,5 +117,13 @@
         font-weight: 400;
       }
     }
+
+    .active-jobs {
+      background-color: $cn-color-green;
+
+      a {
+        font-weight: 400;
+      }
+    }
   }
 }

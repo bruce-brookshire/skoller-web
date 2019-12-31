@@ -10,6 +10,7 @@ import {inject, observer} from 'mobx-react'
 import FourDoor from '../../components/FourDoor'
 import EmailDomainDetails from './EmailDomainDetails'
 import EmailDomainForm from './EmailDomainForm'
+import SyllabusOverload from '../../Cards/SyllabusOverload';
 
 @inject('rootStore') @observer
 class SchoolInfo extends React.Component {
@@ -160,6 +161,12 @@ class SchoolInfo extends React.Component {
     )
   }
 
+  renderSyllabusOverload () {
+    return (
+      <SyllabusOverload school={this.state.school} />
+    )
+  }
+
   renderSchoolSettings () {
     const {school} = this.state
     return (
@@ -171,8 +178,9 @@ class SchoolInfo extends React.Component {
               <td><div className='switch' /></td>
             </tr>
             {school && <tr>
-              <th>4 Door:</th>
-              <td>{this.renderFourDoor()}</td>
+              <th>Syllabus Overload:</th>
+              {/* <td>{this.renderFourDoor()}</td> */}
+              <td>{this.renderSyllabusOverload()}</td>
             </tr>}
             <tr>
               <th>Chat:</th>

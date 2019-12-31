@@ -47,6 +47,10 @@ import ReportList from './views/Hub/ReportList'
 import Enroll from './views/EnrollmentLink/Enroll'
 import DownloadApp from './views/components/DownloadApp'
 
+import Jobs from './views/Student/Jobs'
+import Profile from './views/Student/Jobs/Profile'
+import Resume from './views/Student/Jobs/Resume'
+
 import actions from './actions'
 import stores from './stores'
 const {userStore} = stores
@@ -80,7 +84,7 @@ const router = (
         <IndexRedirect to='/student/home' />
         <Route path='/student'>
           <IndexRedirect to='/student/home'/>
-          <Route path='/student/home' component={Home} />
+          <Route path='/student/home' component={Home} onEnter={() => toggleJobsMode(false)} />
           <Route path='/student/tasks' component={Tasks} />
           <Route path='/student/share'>
             <IndexRedirect to='/student/share/classes' />
@@ -94,6 +98,12 @@ const router = (
           <Route path='/student/class/:classId' component={ClassDetail} />
           <Route path='/student/class/:classId/assignments/:assignmentId' component={AssignmentDetail} />
           <Route path='/student/class/:classId/add-assignment' component={AddAssignment} />
+          <Route path='/student/jobs' onEnter={() => toggleJobsMode(true)} onLeave={() => toggleJobsMode(false)}>
+            <IndexRedirect to='/student/jobs/home' />
+            <Route path='/student/jobs/home' component={Jobs} />
+            <Route path='/student/jobs/profile' component={Profile} />
+            <Route path='/student/jobs/resume' component={Resume} />
+          </Route>
         </Route>
 
         <Route path='/hub'>
@@ -109,6 +119,10 @@ const router = (
           <Route path='/hub/reports' component={ReportList} />
         </Route>
 
+        <Route path='/jobs'>
+          <IndexRedirect to='/student/jobs'/>
+        </Route>
+
         <Route path='/class/:classId/syllabus_tool' component={SyllabusTool} />
         <Route path='/class/:classId/admin(/:tabState)' component={ClassAdmin} onEnter={requireAdmin} />
         <Route path='/assignment/:assignmentId/admin' component={AssignmentAdmin} onEnter={requireAdmin} />
@@ -118,6 +132,14 @@ const router = (
     </Route>
   </Router>
 )
+
+function toggleJobsMode (bool) {
+  if (bool !== null) {
+    stores.studentNavStore.toggleJobsMode(bool)
+  } else {
+    stores.studentNavStore.toggleJobsMode()
+  }
+}
 
 /*
 * Require users to not be students
@@ -156,13 +178,15 @@ function requireAuth (nextState, replaceState) {
     userStore.authToken = cookie.get('skollerToken')
     actions.auth.getUserByToken()
       .then((user) => {
+        console.log('requireAuth user', user)
         authenticateStudent(user.user).then(() => {
           userStore.setFetchingUser(false)
         }).catch(() => { userStore.setFetchingUser(false) })
 
         userStore.setFetchingUser(false)
       })
-      .catch(() => {
+      .catch((r) => {
+        console.log('requireAuth catch', r)
         browserHistory.push('/landing')
         userStore.setFetchingUser(false)
       })

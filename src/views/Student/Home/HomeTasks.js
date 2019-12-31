@@ -16,8 +16,8 @@ class HomeTasks extends React.Component {
 
 HomeTasks.propTypes = {
   classes: PropTypes.object,
-  onAddClass: PropTypes.function,
-  onClassSelect: PropTypes.function
+  onAddClass: PropTypes.func,
+  onClassSelect: PropTypes.func
 }
 
 export default HomeTasks

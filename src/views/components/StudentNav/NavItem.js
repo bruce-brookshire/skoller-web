@@ -8,7 +8,9 @@ import ActivityIcon from '../../../assets/sk-icons/ActivityIcon'
 import ChatIcon from '../../../assets/sk-icons/ChatIcon'
 import ClassesIcon from '../../../assets/sk-icons/ClassesIcon'
 import CalendarIcon from '../../../assets/sk-icons/CalendarIcon'
-import ShareIcon from '../../../assets/sk-icons/ShareIcon';
+import ShareIcon from '../../../assets/sk-icons/ShareIcon'
+import Profile from '../../../assets/sk-icons/jobs/Profile'
+import Resume from '../../../assets/sk-icons/jobs/Resume'
 
 @inject('rootStore')
 @observer
@@ -28,7 +30,7 @@ class NavItem extends React.Component {
       marginRight: '-8px',
       marginTop: '3px'
     }
-    if (this.props.pageName.includes('home')) {
+    if (this.props.pageName.includes('home') || this.props.pageName === ('jobs')) {
       return <HomeIcon fill="white" width="22px" height="22px" />
     } else if (this.props.pageName.includes('tasks')) {
       return <TasksIcon fill="white" width="22px" height="22px" />
@@ -42,17 +44,22 @@ class NavItem extends React.Component {
       return <ActivityIcon fill="white" width="22px" height="22px" />
     } else if (this.props.pageName.includes('share')) {
       return <ShareIcon fill="white" width="22px" height="22px" />
+    } else if (this.props.pageName.includes('jobs/profile')) {
+      return <Profile fill="white" width="22px" height="22px" />
+    } else if (this.props.pageName.includes('jobs/resume')) {
+      return <Resume fill="white" width="22px" height="22px" />
     } else {
       return null
     }
   }
 
   render () {
+    let jobsMode = this.props.rootStore.studentNavStore.jobsMode
     return (
       <div
         className={
           's-nav-item ' +
-          (this.getActivePage() === this.props.pageName ? 'active' : '')
+          (this.getActivePage() === this.props.pageName ? (jobsMode ? 'active-jobs' : 'active') : '')
         }
         onClick={() => {
           browserHistory.push('/student/' + this.props.pageName)

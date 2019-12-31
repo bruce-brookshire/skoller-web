@@ -129,7 +129,9 @@ import {
   updateAutoUpdateInfo,
   forecastAutoUpdateInfo,
   getMinVersionInfo,
-  updateMinVer
+  updateMinVer,
+  getAdminSettings,
+  setSyllabusOverloadSettings
 } from './settings'
 import {
   createCustomLink,
@@ -156,7 +158,28 @@ import {
   getClassWeightsByClassId,
   updateWeight
 } from './weights'
-import { getStudentByLink, setStudentPrimarySchool, setStudentPrimaryPeriod, getStudentSignupOrganization, setStudentMajor } from './students'
+import {
+  getStudentByLink,
+  setStudentPrimarySchool,
+  setStudentPrimaryPeriod,
+  getStudentSignupOrganization,
+  setStudentMajor,
+  setStudentMajors,
+  updateStudent
+} from './students'
+import {
+  getJobsProfile,
+  getActivityTypes,
+  getDegreeTypes,
+  getEthnicityTypes,
+  getStatusTypes,
+  editJobsProfile,
+  createJobsProfile,
+  uploadJobsDoc,
+  addCareerActivity,
+  deleteActivity,
+  editActivity
+} from './jobs'
 
 const actions = {
   analytics: {
@@ -167,7 +190,9 @@ const actions = {
     setStudentPrimarySchool,
     setStudentPrimaryPeriod,
     getStudentSignupOrganization,
-    setStudentMajor
+    setStudentMajor,
+    setStudentMajors,
+    updateStudent
   },
   assignments: {
     createAssignment,
@@ -320,7 +345,9 @@ const actions = {
     updateAutoUpdateInfo,
     forecastAutoUpdateInfo,
     getMinVersionInfo,
-    updateMinVer
+    updateMinVer,
+    getAdminSettings,
+    setSyllabusOverloadSettings
   },
   signupLinks: {
     createCustomLink,
@@ -348,6 +375,19 @@ const actions = {
     getClassWeights,
     getClassWeightsByClassId,
     updateWeight
+  },
+  jobs: {
+    getJobsProfile,
+    getActivityTypes,
+    getDegreeTypes,
+    getEthnicityTypes,
+    getStatusTypes,
+    editJobsProfile,
+    createJobsProfile,
+    uploadJobsDoc,
+    addCareerActivity,
+    deleteActivity,
+    editActivity
   }
 }
 

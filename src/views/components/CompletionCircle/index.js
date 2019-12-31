@@ -16,19 +16,30 @@ class CompletionCircle extends React.Component {
     // circle.style.strokeDasharray = `${circumference} ${circumference}`
     // circle.style.strokeDashoffset = `${circumference}`
 
+    let color = '#4a4a4a'
+    if (this.props.hexColor) {
+      color = this.props.hexColor
+    }
+
+    let size = {height: '16', width: '16'}
+    if (this.props.customSize) {
+      size.height = this.props.customSize
+      size.width = this.props.customSize
+    }
+
     return (
       <div
         className="completion-circle-container"
       >
         <svg
           className="completion-circle"
-          width="16"
-          height="16"
+          width={size.width.toString()}
+          height={size.height.toString()}
           viewBox='0 0 24 24'
         >
           <circle
             className="completion-circle__circle"
-            stroke="#4a4a4a"
+            stroke={color}
             strokeWidth="2"
             fill="transparent"
             r={radius + 4}
@@ -37,7 +48,7 @@ class CompletionCircle extends React.Component {
           />
           <circle
             className="completion-circle__circle"
-            stroke="#4a4a4a"
+            stroke={color}
             strokeWidth="10"
             fill="transparent"
             r={radius}
@@ -55,7 +66,9 @@ class CompletionCircle extends React.Component {
 }
 
 CompletionCircle.propTypes = {
-  completion: PropTypes.number
+  completion: PropTypes.number,
+  hexColor: PropTypes.string,
+  customSize: PropTypes.number
 }
 
 export default CompletionCircle

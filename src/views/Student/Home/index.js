@@ -11,6 +11,7 @@ import HomeClasses from './HomeClasses'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import HomeTasks from './HomeTasks'
 import HomeShare from './HomeShare'
+import HomeJobs from './HomeJobs'
 
 @inject('rootStore') @observer
 class Home extends React.Component {
@@ -24,16 +25,17 @@ class Home extends React.Component {
       loading: true
     }
     this.updateClasses()
-    this.updateStudent()
-    this.cookie = new Cookies()
     this.props.rootStore.studentNavStore.setActivePage('home')
     this.props.rootStore.studentNavStore.location = this.props.location
+    this.cookie = new Cookies()
     console.log(this.props.rootStore)
   }
 
   async updateStudent () {
-    if (this.cookie.get('skollerToken')) {
-      await actions.auth.getUserByToken(this.cookie.get('skollerToken')).catch((r) => console.log(r))
+    if (this.cookie) {
+      if (this.cookie.get('skollerToken')) {
+        await actions.auth.getUserByToken(this.cookie.get('skollerToken')).catch((r) => console.log(r))
+      }
     }
   }
 
@@ -53,7 +55,6 @@ class Home extends React.Component {
         if (classes.length > 1) {
           showPopUp = false
           if (student.fields_of_study[0] === undefined) {
-            console.log('no fields of study :(')
             showPopUp = true
             type = 'getMajor'
           }
@@ -86,7 +87,6 @@ class Home extends React.Component {
     const {user: {student}} = this.props.rootStore.userStore
     await actions.classes.getStudentClassesById(student.id).then((classes) => {
       this.setState({classes})
-      console.log(classes)
     }).catch(() => false)
     this.setState({loading: false})
   }
@@ -102,7 +102,6 @@ class Home extends React.Component {
     // because ClassList will not return it
 
     let fullClass = this.findFullClass(cl.id)
-    console.log(fullClass.status.id < 1400)
     if (fullClass.status.id < 1400) {
       this.setState({classStatusModal: {show: true, cl: fullClass}})
     } else {
@@ -138,7 +137,6 @@ class Home extends React.Component {
   renderContent () {
     return (
       <div>
-        {console.log(this.props.rootStore)}
         {this.state.popUp.show &&
           <PopUp closeModal={() => this.closePopUp()} type={this.state.popUp.type}/>
         }
@@ -157,7 +155,7 @@ class Home extends React.Component {
                 <HomeClasses classes={this.state.classes} onAddClass={() => this.closeAddClassModal()} onClassSelect={this.onClassSelect} launchClassStatusModal={(cl) => this.launchClassStatusModal(cl)} />
               </div>
             </div>
-            {this.state.classes.length <= 2 && <HomeShare classes={this.state.classes} />}
+            {this.state.classes.length <= 2 ? <HomeShare classes={this.state.classes} /> : null}
             {/* // this is for activity once we get it ready
             <div className="home-shadow-box">
               <h1>Activity</h1>
@@ -174,7 +172,8 @@ class Home extends React.Component {
                 <HomeTasks />
               </div>
             </div>
-            {this.state.classes.length > 2 && <HomeShare classes={this.state.classes} />}
+            {this.state.classes.length > 2 ? <HomeShare classes={this.state.classes} /> : null}
+            <HomeJobs updateStudent={() => this.updateStudent()} />
             {/* // this is for chat once we get it ready
             <div className="home-shadow-box">
               <h1>Chat</h1>

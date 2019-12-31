@@ -118,6 +118,22 @@ export function postFile (path, form, errMsg) {
     })
 }
 
+export function putFile (path, form, errMsg) {
+  return fetch(`${Environment.SERVER_NAME}${path}`, {
+    method: 'PUT',
+    headers: {
+      'Authorization': userStore.authToken
+    },
+    body: form
+  })
+    .then(response => parseResponse(response))
+    .catch(error => {
+      if (errMsg) showSnackbar(errMsg)
+      if (Environment.IS_DEV) console.log(error)
+      return Promise.reject(error)
+    })
+}
+
 export function put (path, form, errMsg) {
   return fetch(`${Environment.SERVER_NAME}${path}`, {
     method: 'PUT',

@@ -1,9 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import actions from '../../../actions'
+// import actions from '../../../actions'
 import {mapProfessor} from '../../../utilities/display'
 import {mapTimeToDisplay} from '../../../utilities/time'
-import CompletionCircle from '../../components/CompletionCircle'
+// import CompletionCircle from '../../components/CompletionCircle'
+import sExclamation from '../../../assets/images/class_status/s-exclamation.png'
+import sInReview from '../../../assets/images/class_status/s-in-review.png'
+import uploadS from '../../../assets/images/class_status/upload-s.png'
 
 class ClassList extends React.Component {
   /*
@@ -88,29 +91,27 @@ class ClassList extends React.Component {
     } else if (statusNameL === 'new class' || statusNameL === 'needs setup') {
       return (
         <div className='cn-class-list-row-icon-container'>
-          <i className='fas fa-user-edit cn-class-list-row-icon cn-blue' />
-          <span className='cn-class-list-row-icon-text cn-blue'>Set Up Class</span>
+          {/* <i className='fas fa-user-edit cn-class-list-row-icon cn-blue' /> */}
+          <img className='cn-class-list-row-icon-img' src={uploadS} />
         </div>
       )
     } else if (statusNameL === 'syllabus submitted') {
       return (
         <div className='cn-class-list-row-icon-container'>
-          <i className='far fa-clock cn-class-list-row-icon cn-grey' />
-          <span className='cn-class-list-row-icon-text cn-grey'>In Review</span>
+          <img className='cn-class-list-row-icon-img' src={sInReview} />
         </div>
       )
     } else if (statusNameL === 'class setup' || statusNameL === 'class issue' || statusNameL === 'needs student input') {
       return (
         <div className='cn-class-list-row-icon-container'>
-          <i className='fas fa-exclamation-circle cn-class-list-row-icon cn-orange' />
-          <span className='cn-class-list-row-icon-text cn-orange'>DIY Required</span>
+          {/* <i className='fas fa-exclamation-circle cn-class-list-row-icon cn-orange' /> */}
+          <img className='cn-class-list-row-icon-img' src={sExclamation} />
         </div>
       )
     } else {
       return (
         <div className='cn-class-list-row-icon-container'>
           <i className='fas fa-exclamation cn-class-list-row-icon cn-grey' />
-          <span className='cn-class-list-row-icon-text cn-grey'>status.name</span>
         </div>
       )
     }
@@ -133,8 +134,7 @@ class ClassList extends React.Component {
             <div className='cn-class-list-row-data'>
               <div className='cn-class-list-row-col cn-class-list-row-col-primary'>
                 <div className='cn-class-list-title' style={{color: c.color}}>{c.name}</div>
-                <div className='cn-class-list-subtext cn-class-list-flex-top cn-class-list-text-left'><i className='fas fa-user' /> {c.enrollment} classmates</div>
-                <div className='cn-class-list-subtext cn-class-list-subtext-completion'><CompletionCircle completion={c.completion * 100}/> <div>{Math.round(c.completion * 100)}% complete</div></div>
+                <div className='cn-class-list-subtext cn-class-list-flex-top cn-class-list-text-left'><i className='fas fa-users' /> {c.enrollment} classmates</div>
               </div>
             </div>
           </div>
@@ -149,12 +149,17 @@ class ClassList extends React.Component {
             <div className='cn-class-list-row-data'>
               <div className='cn-class-list-row-col cn-class-list-row-col-primary'>
                 <div className='cn-class-list-title'>{c.name}</div>
-                <div className='cn-class-list-text'>{c.professor}</div>
-                <div className='cn-class-list-subtext'>{c.courseNumber}</div>
-              </div>
-              <div className='cn-class-list-row-col'>
-                <div className='cn-class-list-subtext cn-class-list-flex-top cn-class-list-text-right'>{c.enrollment} <i className='fas fa-user' /></div>
-                <div className='cn-class-list-subtext cn-class-list-flex-bottom cn-class-list-text-right'>{c.days + ' ' + c.beginTime}</div>
+                <div className='cn-class-list-flex-top cn-class-list-text-left'>
+                  {c.setupStatus.id === 1100 &&
+                    <div className='cn-class-list-status-us'>Send the syllabus!</div>
+                  }
+                  {c.setupStatus.id === 1200 &&
+                    <div className='cn-class-list-status-sir'>Syllabus in review.</div>
+                  }
+                  {c.setupStatus.id === 1300 &&
+                    <div className='cn-class-list-status-nsi'>We need your help...</div>
+                  }
+                </div>
               </div>
             </div>
           </div>

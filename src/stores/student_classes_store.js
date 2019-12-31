@@ -5,7 +5,7 @@ import stores from './index'
 class StudentClassesStore {
   constructor () {
     extendObservable(this, {
-      loading: true,
+      loading: false,
       classes: []
     })
   }

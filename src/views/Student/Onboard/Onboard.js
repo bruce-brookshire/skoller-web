@@ -64,7 +64,6 @@ class Onboard extends React.Component {
   }
 
   async loginStudent () {
-    console.log('damnit')
     if (this.cookie.get('skollerToken')) {
       console.log('0')
       await actions.auth.getUserByToken(this.cookie.get('skollerToken')).catch((r) => console.log(r))
@@ -206,6 +205,7 @@ class Onboard extends React.Component {
           params={this.state.selectSchoolData}
           renderPartner={this.renderPartner}
           partner={this.state.partner}
+          onboard={true}
         />
       )
     )
@@ -252,7 +252,7 @@ class Onboard extends React.Component {
         ? <div className='onboard-loading'>
           <SkLoader />
         </div>
-        : <Layout hideModal={this.state.step === 'verify'}>
+        : <Layout id='onboard-layout' hideModal={this.state.step === 'verify' || this.state.step === 'first-class'}>
           {(this.state.step === 'sign-up')
             ? this.renderSignUp()
             : null

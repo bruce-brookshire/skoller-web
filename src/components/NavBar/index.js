@@ -57,11 +57,15 @@ class NavBar extends React.Component {
   }
 
   render () {
+    let jobsMode = this.props.rootStore.studentNavStore.jobsMode
     if (this.props.onboard) {
       return (
         <div className='cn-navbar'>
           <div>
             <img alt="Skoller" className='logo' src='/src/assets/images/logo-wide-blue@1x.png' />
+            <div className='onboard-logo-text'>
+              Keep Up with Classes, Together.
+            </div>
           </div>
           <div className='user-info'>
             <div className='left'>
@@ -71,21 +75,57 @@ class NavBar extends React.Component {
           </div>
         </div>
       )
+    } else if (jobsMode) {
+      const {userStore: {user}} = this.props.rootStore
+      const admin = this.props.rootStore.userStore.isAdmin()
+      return (
+        <div className={'cn-navbar cn-navbar-jobs'}>
+          <div>
+            <img
+              alt="Skoller"
+              className='logo' src='/src/assets/images/jobs/skoller-jobs-logo.png'
+              onClick={() => {
+                if (admin) {
+                  browserHistory.push('/hub/landing')
+                } else {
+                  browserHistory.push('/student/jobs')
+                }
+              }}
+            />
+          </div>
+          <div className='class-info'>
+            {/* {this.renderClassInfo()} */}
+          </div>
+          <div className='user-info'>
+            <div className='left'>
+              <p>{this.getName()}</p>
+              <span>{this.getDescription()}</span>
+            </div>
+            <div className='right'>
+              {user.avatar
+                ? <img className='profile-img' src={user.avatar}/>
+                : <div className='profile-img vertical-align profile-initials'>{this.getInitials()}</div>}
+            </div>
+          </div>
+        </div>
+      )
     } else {
       const {userStore: {user}} = this.props.rootStore
       const admin = this.props.rootStore.userStore.isAdmin()
       return (
-        <div className='cn-navbar'>
-          <div
-            onClick={() => {
-              if (admin) {
-                browserHistory.push('/hub/landing')
-              } else {
-                browserHistory.push('/')
-              }
-            }}
-          >
-            <img alt="Skoller" className='logo' src='/src/assets/images/logo-wide-blue@1x.png' />
+        <div className={'cn-navbar'}>
+          <div>
+            <img
+              alt="Skoller"
+              className='logo' src='/src/assets/images/logo-wide-blue@1x.png'
+              onClick={() => {
+                if (admin) {
+                  browserHistory.push('/hub/landing')
+                } else {
+                  browserHistory.push('/')
+                }
+              }}
+            />
             <div className='cn-navbar-message'>Keep Up with Classes, Together.</div>
           </div>
           <div className='class-info'>

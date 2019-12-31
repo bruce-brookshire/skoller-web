@@ -4,6 +4,7 @@ class StudentNavStore {
   constructor () {
     extendObservable(this, {
       activePage: null,
+      jobsMode: false,
       location: {}
     })
   }
@@ -11,6 +12,14 @@ class StudentNavStore {
   // use setActivePage when a new UI page is loading (componentWillMount) so the nav panel knows what item to highlight
   @action setActivePage (page) {
     this.activePage = page
+  }
+
+  @action toggleJobsMode (bool) {
+    if (bool !== null) {
+      this.jobsMode = bool
+    } else {
+      this.jobsMode = !this.jobsMode
+    }
   }
 }
 

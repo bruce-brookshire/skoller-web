@@ -10,6 +10,7 @@ import {mobileCheck} from '../../../../utilities/display'
 import Sammi from '../../../components/Sammi'
 import Checklist from '../../../components/ClassStatusModal/Checklist'
 import ToolTip from '../../../components/ToolTip'
+import ClassStatusModal from '../../../components/ClassStatusModal';
 
 @inject('rootStore') @observer
 class FirstClass extends React.Component {
@@ -351,7 +352,15 @@ class FirstClass extends React.Component {
       <div>
         {this.state.loading
           ? <SkLoader />
-          : this.renderModalContent()
+          // : this.renderModalContent()
+          : <ClassStatusModal
+            onSubmit={() => this.props.onSubmit()}
+            disableNext={false}
+            cl={this.state.firstClass}
+            closeModal={false}
+            progress={0.75}
+            onboard={true}
+          />
         }
       </div>
     )

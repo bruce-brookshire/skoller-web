@@ -48,7 +48,7 @@ class Enroll extends React.Component {
   onSignUp () {
     const { userStore: { authToken } } = this.props.rootStore
     this.cookie.remove('skollerToken', { path: '/' })
-    this.cookie.set('skollerToken', authToken, { maxAge: 84600 * 7, path: '/' })
+    this.cookie.set('skollerToken', authToken, { maxAge: 86400 * 270, path: '/' })
     this.incrementStep()
   }
 

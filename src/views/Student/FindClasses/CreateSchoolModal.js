@@ -4,7 +4,7 @@ import {Form, ValidateForm} from 'react-form-library'
 import {InputField, CheckboxField, SelectField} from '../../../components/Form'
 import actions from '../../../actions'
 import Loading from '../../../components/Loading'
-import SkLoader from '../../../assets/sk-icons/SkLoader';
+import SkLoader from '../../../assets/sk-icons/SkLoader'
 
 const requiredFields = {
   'name': {
@@ -78,13 +78,10 @@ class CreateSchoolModal extends React.Component {
   }
 
   onCreateSchool (form) {
-    console.log('onCreateSchool')
     this.setState({loading: true})
     actions.schools.createSchool(form).then((school) => {
       this.props.onSubmit(school)
-      console.log(school)
       this.setState({loading: false})
-      console.log('running props.onClose')
       this.props.onClose()
     }).catch(() => { this.setState({loading: false}) })
   }

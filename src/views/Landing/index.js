@@ -30,7 +30,7 @@ class Landing extends React.Component {
       <div className='cn-landing-wrapper'>
         <LandingBanner />
         {window.innerWidth > 767 && <LandingNav rootStore={this.props.rootStore}/>}
-        <div className='cn-landing-container'>
+        <div className='cn-landing-container' id='cn-landing-container'>
 
           <div className='cn-landing-content-wrapper'>
 
