@@ -110,8 +110,9 @@ class SkModal extends React.Component {
 
       containerStyle = {
         backgroundColor: 'rgba(0,0,0,0)',
-        top: '-4px',
-        maxHeight: 'none'
+        maxHeight: 'none',
+        alignItems: 'flex-start',
+        top: '64px'
       }
     }
 
