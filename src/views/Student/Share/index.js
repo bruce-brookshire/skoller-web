@@ -72,7 +72,7 @@ class Share extends React.Component {
           {this.state.partner
             ? <div>
               <p>Your raise: ${this.state.user.student.raise_effort.personal_signups}</p>
-              <p>{this.state.partner.name} raise: ${this.state.user.student.raise_effort.org_singups}</p>
+              <p>{this.state.partner.name} raise: ${this.state.user.student.raise_effort.org_signups}</p>
             </div>
             : <p>Your points: {this.state.user.student.points}</p>
           }
