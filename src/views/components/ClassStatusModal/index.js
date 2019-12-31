@@ -70,7 +70,6 @@ class ClassStatusModal extends React.Component {
         cl = r
       })
       .catch((r) => console.log(r))
-    console.log('full class', cl)
     this.setState({fullClass: cl})
 
     let initState = this.getClass(cl)
@@ -417,9 +416,17 @@ class ClassStatusModal extends React.Component {
     } else if (this.state.status === 'diy') {
       this.setState({loading: true})
       await this.state.additionalFiles.forEach(file => {
-        actions.documents.uploadClassDocument(this.state.cl, file, false)
+        actions.documents.uploadClassDocument(this.state.cl, file, true)
+          .then(() => {
+            if (this.state.additionalFiles.indexOf(file) === this.state.additionalFiles.length - 1) {
+              this.setState({
+                loading: false,
+                status: 'inReview',
+                sammiMessage: `Woohoo! You've submitted your class documents.`
+              })
+            }
+          })
       })
-      this.init()
     }
   }
 
