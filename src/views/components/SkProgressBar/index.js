@@ -28,7 +28,7 @@ class skProgressBar extends React.Component {
       '$cn-color-orange': '#ff6d00',
       '$cn-color-red': '#ff4159',
       '$cn-color-green': '#7ed321',
-      '$cn-primary-background-color': '#f5f7f9',
+      '$cn-primary-background-color': '#EDFAFF',
       '$cn-blue-cell-background': '#edf5ff',
       '$cn-link-background': 'rgba(85,185,229,0.2)',
       '$cn-form-border': '#CCC',
@@ -64,8 +64,8 @@ class skProgressBar extends React.Component {
     }
 
     const markerStyle = {
-      position: 'absolute',
-      transform: `translate(${(this.state.measureWidth * this.props.progress) - 16}px, -5px)`,
+      // position: 'absolute',
+      transform: `translate(${(this.state.measureWidth * this.props.progress) - 16}px, -12px)`,
       width: '16px',
       height: '16px',
       boxSizing: 'border-box',
@@ -76,8 +76,10 @@ class skProgressBar extends React.Component {
     }
 
     const measureFillStyle = {
-      position: 'absolute',
-      transform: `translate(${(this.state.measureWidth * this.props.progress) - 16}px, -1px)`,
+      // position: 'fixed',
+      // transform: `translate(${(this.state.measureWidth * this.props.progress) - 16}px, -1px)`,
+      marginLeft: `${(this.state.measureWidth * this.props.progress) - 16}px`,
+      marginTop: `-1px`,
       width: `${this.state.measureWidth - (this.state.measureWidth * this.props.progress) + 16}px`,
       height: '8px',
       border: `1px solid ${this.renderColor(this.props.backgroundColor)}`,

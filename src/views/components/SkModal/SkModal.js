@@ -34,6 +34,8 @@ class SkModal extends React.Component {
 
     this.main = document.getElementById('main')
     this.onboardLayout = document.getElementById('onboard-layout')
+
+    this.enrollLinkLayout = document.getElementById('enroll-layout')
     this.cnLandingContainer = document.getElementById('cn-landing-container')
 
     if (this.main && this.state.ios) {
@@ -45,7 +47,11 @@ class SkModal extends React.Component {
     }
 
     if (this.onboardLayout) {
-      this.onboardLayout.addEventListener('touchmove', preventDefault)
+      // this.onboardLayout.addEventListener('touchmove', preventDefault)
+    }
+
+    if (this.enrollLinkLayout) {
+      // this.enrollLinkLayout.addEventListener('touchmove', preventDefault)
     }
 
     window.addEventListener('touchmove', preventDefault)
@@ -67,6 +73,10 @@ class SkModal extends React.Component {
       this.onboardLayout.removeEventListener('touchmove', preventDefault)
     }
 
+    if (this.enrollLinkLayout) {
+      this.enrollLinkLayout.removeEventListener('touchmove', preventDefault)
+    }
+    
     if (this.cnLandingContainer) {
       this.cnLandingContainer.removeEventListener('touchmove', preventDefault)
     }
@@ -84,12 +94,14 @@ class SkModal extends React.Component {
   }
 
   render () {
+    // console.log(window.innerHeight.toString() + 'px')
     let style = {}
     let containerStyle = {}
     if (this.state.ios) {
       style = {
         width: '100vw',
-        height: window.innerHeight.toString() + 'px',
+        maxHeight: 'none',
+        height: (window.innerHeight - 64).toString() + 'px',
         boxShadow: 'none',
         borderRadius: '0',
         margin: '0',
@@ -97,7 +109,9 @@ class SkModal extends React.Component {
       }
 
       containerStyle = {
-        backgroundColor: 'rgba(0,0,0,0)'
+        backgroundColor: 'rgba(0,0,0,0)',
+        top: '-4px',
+        maxHeight: 'none'
       }
     }
 

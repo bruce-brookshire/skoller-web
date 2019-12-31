@@ -11,7 +11,19 @@ import { mobileCheck } from '../../../utilities/display'
 @inject('rootStore') @observer
 class Layout extends React.Component {
   state = {
-    calendarData: this.generateCalendarData()
+    calendarData: this.generateCalendarData(),
+    ios: this.getMobileOperatingSystem() === 'iOS'
+  }
+
+  getMobileOperatingSystem () {
+    let userAgent = navigator.userAgent || navigator.vendor || window.opera
+
+    // Windows Phone must come first because its UA also contains "Android"
+    if (/android/i.test(userAgent)) {
+      return 'Android'
+    } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+      return 'iOS'
+    }
   }
 
   generateCalendarData () {
@@ -37,10 +49,7 @@ class Layout extends React.Component {
   render () {
     return (
       <div className='onboard-container'>
-        <div className='onboard-layout' id='onboard-layout' style={{zIndex: '4'}}>
-          <div className='onboard-logo-text'>
-            Keep Up with Classes, Together.
-          </div>
+        <div className='onboard-layout' id={(this.props.id)} style={{zIndex: '4'}}>
           <NavBar onboard={true} />
           {this.props.hideModal
             ? this.renderContent()
@@ -49,7 +58,9 @@ class Layout extends React.Component {
             </SkModal>
           }
         </div>
-        <Calendar onboardData={this.state.calendarData} />
+        {!this.state.ios &&
+          <Calendar onboardData={this.state.calendarData} />
+        }
       </div>
     )
   }
@@ -58,7 +69,8 @@ class Layout extends React.Component {
 Layout.propTypes = {
   children: PropTypes.object,
   hideModal: PropTypes.bool,
-  loggedIn: PropTypes.bool
+  loggedIn: PropTypes.bool,
+  id: PropTypes.string
 }
 
 export default Layout

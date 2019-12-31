@@ -12,6 +12,8 @@ import EnrollLogin from './EnrollLogin'
 import moment from 'moment'
 import EnrollDownload from './EnrollDownload'
 import live from '../../../../assets/images/class_status/todolist_gif.gif'
+import AppStore from '../../../../assets/images/app_download/app-store-badge.svg'
+import GooglePlay from '../../../../assets/images/app_download/google-play-badge.png'
 
 @inject('rootStore') @observer
 class EnrollLink extends React.Component {
@@ -131,7 +133,11 @@ class EnrollLink extends React.Component {
     actions.classes.enrollByLink(this.props.params.link)
       .then(() => {
         if (this.state.newUser) {
-          this.setState({formState: 'download'})
+          if (this.state.linkDetail.student_class.status.id === 1400) {
+            this.setState({formState: 'downloadComplete'})
+          } else {
+            this.setState({formState: 'download'})
+          }
         } else {
           if (this.state.linkDetail.student_class.status.id === 1400) {
             this.setState({formState: 'complete'})
@@ -140,7 +146,7 @@ class EnrollLink extends React.Component {
           }
         }
       })
-      .catch(e => {
+      .catch(() => {
         if (this.state.newUser) {
           this.setState({formState: 'download'})
         } else {
@@ -235,6 +241,67 @@ class EnrollLink extends React.Component {
     )
   }
 
+  getMobileOperatingSystem () {
+    let userAgent = navigator.userAgent || navigator.vendor || window.opera
+
+    // Windows Phone must come first because its UA also contains "Android"
+    if (/android/i.test(userAgent)) {
+      return 'Android'
+    } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+      return 'iOS'
+    } else {
+      return false
+    }
+  }
+
+  renderDownloadCompleteDownload () {
+    const operatingSystem = this.getMobileOperatingSystem()
+    if (this.getMobileOperatingSystem()) {
+      return (
+        <div style={{textAlign: 'center'}}>
+          <div>Skoller works best on the app.</div>
+          <div className='sk-enroll-download-badge'>
+            {operatingSystem === 'Android' &&
+              <a
+                href='http://play.google.com/store/apps/details?id=com.skoller'
+              >
+                <img src={GooglePlay} />
+              </a>
+            }
+            {operatingSystem === 'iOS' &&
+              <a
+                href='http://appstore.com/skoller'
+              >
+                <img src={AppStore} />
+              </a>
+            }
+          </div>
+        </div>
+      )
+    }
+  }
+
+  renderDownloadCompleteContent () {
+    return (
+      <div className='sk-enroll-link-container'>
+        <h1>Welcome to <b>{this.state.linkDetail.student_class.name}</b>!</h1>
+        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+          <img style={{width: '200px'}} src={live} alt='Class is LIVE' />
+        </div>
+        <div style={{textAlign: 'center', marginBottom: '1rem'}}>The syllabus for this class is <b>ALREADY ORGANIZED</b> on Skoller 🙌</div>
+        {this.renderDownloadCompleteDownload()}
+        {/* <div className='sk-enroll-link-enroll-form'>
+          <div
+            className='sk-enroll-link-enroll-form-button'
+            onClick={() => browserHistory.push('/student/home')}
+          >
+            <p>Continue</p>
+          </div>
+        </div> */}
+      </div>
+    )
+  }
+
   renderCompleteContent () {
     return (
       <div className='sk-enroll-link-container'>
@@ -257,7 +324,7 @@ class EnrollLink extends React.Component {
   renderEnrollContent () {
     return (
       <div className='sk-enroll-link-container'>
-        {this.state.formState !== 'complete' &&
+        {((this.state.formState !== 'complete') && (this.state.formState !== 'downloadComplete')) &&
           <div>
             <h1>Your classmates are waiting on you! 🎉🎊</h1>
             <div className='sk-enroll-link-call-out'>
@@ -283,6 +350,9 @@ class EnrollLink extends React.Component {
         {(this.state.formState === 'complete') &&
           this.renderCompleteContent()
         }
+        {(this.state.formState === 'downloadComplete') &&
+          this.renderDownloadCompleteContent()
+        }
       </div>
     )
   }
@@ -293,7 +363,7 @@ class EnrollLink extends React.Component {
         ? <div className='onboard-loading'>
           <SkLoader />
         </div>
-        : <Layout hideModal={this.state.step === 'verify'} loggedIn={!this.state.userNotFound} >
+        : <Layout id='enroll-layout' hideModal={this.state.step === 'verify'} loggedIn={!this.state.userNotFound} >
           {(this.state.formState === 'download')
             ? this.renderDownload()
             : this.renderEnrollContent()

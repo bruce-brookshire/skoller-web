@@ -16,7 +16,7 @@ class Profile extends React.Component {
       '$cn-color-orange': '#ff6d00',
       '$cn-color-red': '#ff4159',
       '$cn-color-green': '#7ed321',
-      '$cn-primary-background-color': '#f5f7f9',
+      '$cn-primary-background-color': '#EDFAFF',
       '$cn-blue-cell-background': '#edf5ff',
       '$cn-link-background': 'rgba(85,185,229,0.2)',
       '$cn-form-border': '#CCC',
