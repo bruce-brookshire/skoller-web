@@ -75,7 +75,7 @@ class HomeJobs extends React.Component {
   }
 
   renderMonthsOptions () {
-    let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May']
+    let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     return (
       months.map(month => {
         return (
@@ -158,7 +158,7 @@ class HomeJobs extends React.Component {
     this.setState({loading: true})
     let user = this.props.rootStore.userStore.user
     let jobsForm = {
-      graduation_date: new Date(this.state.gradMonthChoice + ' ' + this.state.gradYearChoice).toISOString()
+      graduation_date: new Date(this.state.gradMonthChoice + ' 1, ' + this.state.gradYearChoice + ' 00:00:00').toISOString()
     }
     let userForm = {
       grad_year: this.state.gradYearChoice,
@@ -198,7 +198,7 @@ class HomeJobs extends React.Component {
       })
 
     // upload resume
-    await actions.jobs.uploadJobsDoc(skollerJobsId, this.state.resume[0])
+    await actions.jobs.uploadJobsDoc(skollerJobsId, this.state.resume[0], true)
       .catch(e => {
         console.log(e)
         this.setState({loading: false, error: 'Error uploading résumé. Try again later.'})
