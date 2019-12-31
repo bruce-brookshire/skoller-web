@@ -3,8 +3,8 @@
   // -webkit-transform: translate3d(0,0,0);
 
   .sk-select-dropdown {
-    // -webkit-transform: translate3d(0,0,0);
-    position: fixed;
+    -webkit-transform: translate3d(0,0,0);
+    position: absolute;
     z-index: 5;
     background-color: white;
     overflow: scroll;
