@@ -20,7 +20,7 @@ class Tasks extends React.Component {
       <StudentLayout>
         <div className='tasks-wrapper'>
           <div className='tasks-container'>
-            <h1>Tasks</h1>
+            <h1>To-Do&apos;s</h1>
             <TasksList />
           </div>
         </div>

@@ -166,8 +166,8 @@ class Home extends React.Component {
           </div>
           <div className="home-column">
             <div className="home-shadow-box">
-              <h1 className='home-heading' onClick={() => browserHistory.push('/student/tasks')}>Tasks</h1>
-              <div className="home-sub-heading">Due soon</div>
+              <h1 className='home-heading' onClick={() => browserHistory.push('/student/tasks')}>To-Do's</h1>
+              <div className="home-sub-heading">Next 10 days</div>
               <div className="home-card-content">
                 <HomeTasks />
               </div>

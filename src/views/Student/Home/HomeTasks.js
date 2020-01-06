@@ -8,7 +8,7 @@ class HomeTasks extends React.Component {
   render () {
     return (
       <div className='home-tasks'>
-        <TasksList maxTasks={3} />
+        <TasksList maxDays={10} />
       </div>
     )
   }

@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import actions from '../../../actions'
 import TaskCard from './TaskCard'
-import SkLoader from '../../../assets/sk-icons/SkLoader';
+import SkLoader from '../../../assets/sk-icons/SkLoader'
+import moment from 'moment'
 
 @inject('rootStore') @observer
 
@@ -21,15 +22,15 @@ class TasksList extends React.Component {
     this.getStudentTasks()
   }
 
-  getStudentTasks () {
+  async getStudentTasks () {
     const {user: {student}} = this.props.rootStore.userStore
 
-    actions.classes.getStudentClassesById(student.id).then((classes) => {
+    await actions.classes.getStudentClassesById(student.id).then((classes) => {
       classes.forEach(studentClass => { TasksList.studentClasses[studentClass.id] = studentClass })
       this.setState({classes})
     }).catch(() => false)
 
-    actions.assignments.getTaskAssignments(student.id).then((tasks) => {
+    await actions.assignments.getTaskAssignments(student.id).then((tasks) => {
       const parentClassGetter = function () {
         return TasksList.studentClasses[this.class_id]
       }
@@ -69,15 +70,28 @@ class TasksList extends React.Component {
     } else {
       return (
         this.state.tasks.map(task => {
+          console.log(task)
           let cl = this.getClassForTask(task)
+          let daysAway = moment(task.due).diff(moment(), 'days')
+          let maxDays = this.props.maxDays ? this.props.maxDays : 10000
+          let maxTasks = this.props.maxTasks ? this.props.maxTasks : 10000
           i += 1
-          if (!this.props.maxTasks || (i <= this.props.maxTasks)) {
-            return (
-              <div key={task.id}>
-                <TaskCard task={task} clName={cl.clName} clColor={cl.clColor} />
-              </div>
-            )
+          if (maxDays && maxTasks) {
+            if (daysAway <= maxDays && i <= maxTasks) {
+              return (
+                <div key={task.id}>
+                  <TaskCard task={task} clName={cl.clName} clColor={cl.clColor} />
+                </div>
+              )
+            }
           }
+          // if (!this.props.maxTasks || (i <= this.props.maxTasks)) {
+          //   return (
+          //     <div key={task.id}>
+          //       <TaskCard task={task} clName={cl.clName} clColor={cl.clColor} />
+          //     </div>
+          //   )
+          // }
         })
       )
     }
@@ -102,7 +116,8 @@ class TasksList extends React.Component {
 TasksList.propTypes = {
   rootStore: PropTypes.object,
   location: PropTypes.object,
-  maxTasks: PropTypes.number
+  maxTasks: PropTypes.number,
+  maxDays: PropTypes.number
 }
 
 export default TasksList
