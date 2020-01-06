@@ -173,7 +173,7 @@ class UploadOverloadDocuments extends React.Component {
         className={'sk-upload-overload-docs-submit' + (disabled ? ' disabled' : '')}
         onClick={() => {
           if (disabled) {
-            console.log('disabled')
+            return null
           } else {
             this.onSubmit()
           }

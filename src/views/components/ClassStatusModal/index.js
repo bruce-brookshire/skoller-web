@@ -202,7 +202,7 @@ class ClassStatusModal extends React.Component {
         <div style={{marginBottom: '-2rem'}}>
           <UploadAdditionalDocuments
             cl={this.state.fullClass}
-            onUpload={() => console.log('upload')}
+            onUpload={() => null}
             onSubmit={() => this.props.closeModal()}
           />
         </div>

@@ -71,6 +71,12 @@ class Home extends React.Component {
         }
       })
       .catch(() => false)
+    if (this.props.rootStore.studentJobsStore.hasJobsProfile && !showPopUp) {
+      if (this.props.rootStore.studentJobsStore.profile.resume_url === null) {
+        showPopUp = true
+        type = 'getResume'
+      }
+    }
     if (showPopUp) {
       this.setState({popUp: {type: type, show: true}})
     }
