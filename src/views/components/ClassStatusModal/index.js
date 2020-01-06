@@ -354,9 +354,6 @@ class ClassStatusModal extends React.Component {
                 : null
               }
               {this.state.status === 'live'
-                // ? <div className='sk-class-status-modal-action-detail'>
-                //   <h3>This class is already LIVE on Skoller!</h3>
-                // </div>
                 ? null
                 : null
               }

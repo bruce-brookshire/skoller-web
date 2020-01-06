@@ -7,7 +7,6 @@ import SkLoader from '../../../assets/sk-icons/SkLoader'
 import PropTypes from 'prop-types'
 import SkSelectDropDown from '../../components/SkSelectDropDown'
 import { showSnackbar } from '../../../utilities/snackbar'
-import moment from 'moment'
 import { browserHistory } from 'react-router'
 import JobsLogo from '../../../assets/images/jobs/skoller-jobs-logo.png'
 
@@ -190,7 +189,7 @@ class HomeJobs extends React.Component {
     await actions.jobs.createJobsProfile(jobsForm)
       .then((data) => {
         skollerJobsId = data.id
-        showSnackbar('Successfully joined SkollerJobs!', 'success')
+        // showSnackbar('Successfully joined SkollerJobs!', 'success')
       })
       .catch(e => {
         console.log(e)
@@ -200,13 +199,18 @@ class HomeJobs extends React.Component {
 
     // upload resume
     await actions.jobs.uploadJobsDoc(skollerJobsId, this.state.resume[0], true)
+      .then(() => {
+        actions.jobs.getJobsProfile(this.props.rootStore.userStore.user.id)
+          .then((r) => {
+            this.props.rootStore.studentJobsStore.profile = r
+            this.props.rootStore.studentJobsStore.hasJobsProfile = true
+            browserHistory.push('/student/jobs')
+          })
+      })
       .catch(e => {
         console.log(e)
         this.setState({loading: false, error: 'Error uploading résumé. Try again later.'})
       })
-
-    browserHistory.push('/student/jobs')
-    this.props.updateStudent()
   }
 
   renderButton () {

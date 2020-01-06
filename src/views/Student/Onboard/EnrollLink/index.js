@@ -305,10 +305,11 @@ class EnrollLink extends React.Component {
   renderCompleteContent () {
     return (
       <div className='sk-enroll-link-container'>
-        <h1>This class is already LIVE on Skoller!</h1>
+        <h1>Welcome to {this.state.linkDetail.student_class.name}!</h1>
         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
           <img style={{width: '300px'}} src={live} alt='Class is LIVE' />
         </div>
+        <div style={{textAlign: 'center', marginBottom: '1rem'}}>The syllabus for this class is <b>ALREADY ORGANIZED</b> on Skoller 🙌</div>
         <div className='sk-enroll-link-enroll-form'>
           <div
             className='sk-enroll-link-enroll-form-button'
