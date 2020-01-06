@@ -12,11 +12,18 @@ class SkSelect extends React.Component {
   }
 
   render () {
+    let jobsStyle = {
+      backgroundColor: '#efeff4',
+      borderColor: '#15A494',
+      color: '#15A494'
+    }
+
     let className = (this.props.className ? this.props.className : '')
     return (
       <div className={className}>
         <div
           className='sk-select'
+          style={this.props.jobsMode ? jobsStyle : {}}
           onClick={() => this.setState({open: !this.state.open})}
         >
           <p className='sk-select-selection'>{this.props.selection}</p>
@@ -27,6 +34,7 @@ class SkSelect extends React.Component {
             toggle={() => this.setState({open: !this.state.open})}
             show={this.state.open}
             disableModalLogic={this.props.disableModalLogic}
+            jobsMode={this.props.jobsMode}
           />
         </div>
       </div>
@@ -38,7 +46,8 @@ SkSelect.propTypes = {
   selection: PropTypes.string,
   optionsMap: PropTypes.func,
   className: PropTypes.string,
-  disableModalLogic: PropTypes.bool
+  disableModalLogic: PropTypes.bool,
+  jobsMode: PropTypes.bool
 }
 
 export default SkSelect

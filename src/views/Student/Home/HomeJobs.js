@@ -8,7 +8,8 @@ import PropTypes from 'prop-types'
 import SkSelectDropDown from '../../components/SkSelectDropDown'
 import { showSnackbar } from '../../../utilities/snackbar'
 import moment from 'moment'
-import { browserHistory } from 'react-router';
+import { browserHistory } from 'react-router'
+import JobsLogo from '../../../assets/images/jobs/skoller-jobs-logo.png'
 
 @inject('rootStore') @observer
 class HomeJobs extends React.Component {
@@ -225,7 +226,7 @@ class HomeJobs extends React.Component {
           }
         }}
       >
-        <p>Join {this.renderLogo(true)}</p>
+        <p>Join Skoller Jobs</p>
       </div>
     )
   }
@@ -257,16 +258,18 @@ class HomeJobs extends React.Component {
     return (
       <div className='home-jobs'>
         <p className='home-jobs-headline'>
-          Sign up for {this.renderLogo(false)} and find your <strong>dream job.</strong>
+          From the classroom to your dream career.
         </p>
         {/* <img src={'https://images.unsplash.com/photo-1558402989-4778474384c9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80'} /> */}
         <div className='home-jobs-row'>
-          <p className='home-jobs-label'>Upload your résumé 📄👩🏻‍💼👨🏾‍💼</p>
+          <p className='home-jobs-label'>Upload your résumé</p>
           <div className='home-jobs-drag-and-drop'>
             <DragAndDrop
               handleDrop={(file) => { this.processFile(file) }}
               disabled={this.state.resume !== null}
               accept={'application/pdf'}
+              textColor={'#6ED6AE'}
+              backgroundColor={'#efeff4'}
             >
               {this.state.resume
                 ? <div className='home-jobs-drag-and-drop-file'>
@@ -291,17 +294,20 @@ class HomeJobs extends React.Component {
               optionsMap={() => this.renderMonthsOptions()}
               selection={this.state.gradMonthChoice}
               className='home-jobs-grad-month'
+              jobsMode={true}
             />
             <SkSelect
               optionsMap={() => this.renderYearOptions()}
               selection={this.state.gradYearChoice}
               className='home-jobs-grad-year'
+              jobsMode={true}
             />
             <p className='home-jobs-grad-text'>with a </p>
             <SkSelect
               optionsMap={() => this.renderDegreeOptions()}
               selection={this.state.gradDegreeChoice.name}
               className='home-jobs-grad-degree'
+              jobsMode={true}
             />
             <p className='home-jobs-grad-text'>degree.</p>
           </div>
@@ -338,6 +344,7 @@ class HomeJobs extends React.Component {
             optionsMap={() => this.renderMajorOptions()}
             show={(this.state.addMajor && this.state.options.length !== 0) && this.state.majorInput !== null}
             disableModalLogic={true}
+            jobsMode={true}
           />
         </div>
         {this.renderButton()}
@@ -348,8 +355,9 @@ class HomeJobs extends React.Component {
 
   renderHomeCell () {
     return (
-      <div className="home-shadow-box margin-top">
-        <h1 className='home-heading' style={{cursor: 'default'}}>Jobs</h1>
+      <div className="home-shadow-box home-jobs-shadow-box margin-top">
+        {/* <h1 className='home-heading' style={{cursor: 'default'}}>Jobs</h1> */}
+        <img src={JobsLogo} style={{maxWidth: '216px', margin: '1rem 1rem 0 1rem'}} />
         <div className="home-card-content">
           {this.state.loading
             ? <SkLoader />

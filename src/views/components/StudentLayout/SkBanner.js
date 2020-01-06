@@ -7,6 +7,7 @@ import SkollerJobsSwitch from '../../../assets/sk-icons/jobs/SkollerJobsSwitch'
 import SkollerSwitch from '../../../assets/sk-icons/jobs/SkollerSwitch'
 import ForwardArrow from '../../../assets/sk-icons/navigation/ForwardArrow'
 import BackArrow from '../../../assets/sk-icons/navigation/BackArrow'
+import JobsSwitch from '../../../components/NavBar/JobsSwitch';
 
 @inject('rootStore') @observer
 class SkBanner extends React.Component {
@@ -33,7 +34,8 @@ class SkBanner extends React.Component {
     if (
       this.props.rootStore.studentJobsStore.hasJobsProfile &&
       (this.props.rootStore.studentNavStore.activePage === 'home' ||
-      this.props.rootStore.studentNavStore.activePage === 'jobs')
+      this.props.rootStore.studentNavStore.activePage === 'jobs') &&
+      window.innerWidth <= 1000
     ) {
       banners.push('jobs')
     }
@@ -133,41 +135,15 @@ class SkBanner extends React.Component {
     if (this.props.rootStore.studentNavStore.jobsMode) {
       return (
         <div className='sk-banner-jobs'>
-          <p>Keep up with classes, <b>together.</b></p>
-          <div
-            className='sk-banner-skoller-button'
-            onClick={() => {
-              if (this.props.rootStore.studentNavStore.jobsMode) {
-                browserHistory.push('/student/home')
-              } else {
-                browserHistory.push('/student/jobs')
-              }
-            }}
-          >
-            <p>
-              <SkollerSwitch />
-            </p>
-          </div>
+          {/* <p>Keep up with classes, <b>together.</b></p> */}
+          <JobsSwitch />
         </div>
       )
     } else {
       return (
         <div className='sk-banner-jobs'>
-          <p>Skoller can help you find your <b>dream job.</b></p>
-          <div
-            className='sk-banner-jobs-button'
-            onClick={() => {
-              if (this.props.rootStore.studentNavStore.jobsMode) {
-                browserHistory.push('/student/home')
-              } else {
-                browserHistory.push('/student/jobs')
-              }
-            }}
-          >
-            <p>
-              <SkollerJobsSwitch />
-            </p>
-          </div>
+          {/* <p>Skoller can help you find your <b>dream job.</b></p> */}
+          <JobsSwitch />
         </div>
       )
     }

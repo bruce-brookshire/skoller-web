@@ -2,7 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import ClassInfo from './ClassInfo'
-import { browserHistory } from 'react-router';
+import { browserHistory } from 'react-router'
+import JobsSwitch from './JobsSwitch'
 
 @inject('rootStore') @observer
 class NavBar extends React.Component {
@@ -56,58 +57,73 @@ class NavBar extends React.Component {
     }
   }
 
+  renderOnboardHeader () {
+    return (
+      <div className='cn-navbar'>
+        <div>
+          <img alt="Skoller" className='logo' src='/src/assets/images/logo-wide-blue@1x.png' />
+          <div className='onboard-logo-text'>
+            Keep Up with Classes, Together.
+          </div>
+        </div>
+        <div className='user-info'>
+          <div className='left'>
+          </div>
+          <div className='right'>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  renderJobsHeader () {
+    const {userStore: {user}} = this.props.rootStore
+    const admin = this.props.rootStore.userStore.isAdmin()
+    return (
+      <div className={'cn-navbar cn-navbar-jobs'}>
+        <div>
+          <img
+            alt="Skoller"
+            className='logo' src='/src/assets/images/jobs/skoller-jobs-logo.png'
+            onClick={() => {
+              if (admin) {
+                browserHistory.push('/hub/landing')
+              } else {
+                browserHistory.push('/student/jobs')
+              }
+            }}
+          />
+        </div>
+        <div className='class-info'>
+          {/* {this.renderClassInfo()} */}
+        </div>
+        <div className='user-info'>
+          {window.innerWidth > 1000 &&
+            <JobsSwitch />
+          }
+          <div className='left'>
+            <p>{this.getName()}</p>
+            <span>{this.getDescription()}</span>
+          </div>
+          <div className='right'>
+            {user.avatar
+              ? <img className='profile-img' src={user.avatar}/>
+              : <div className='profile-img vertical-align profile-initials'>{this.getInitials()}</div>}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   render () {
     let jobsMode = this.props.rootStore.studentNavStore.jobsMode
     if (this.props.onboard) {
       return (
-        <div className='cn-navbar'>
-          <div>
-            <img alt="Skoller" className='logo' src='/src/assets/images/logo-wide-blue@1x.png' />
-            <div className='onboard-logo-text'>
-              Keep Up with Classes, Together.
-            </div>
-          </div>
-          <div className='user-info'>
-            <div className='left'>
-            </div>
-            <div className='right'>
-            </div>
-          </div>
-        </div>
+        this.renderOnboardHeader()
       )
     } else if (jobsMode) {
-      const {userStore: {user}} = this.props.rootStore
-      const admin = this.props.rootStore.userStore.isAdmin()
       return (
-        <div className={'cn-navbar cn-navbar-jobs'}>
-          <div>
-            <img
-              alt="Skoller"
-              className='logo' src='/src/assets/images/jobs/skoller-jobs-logo.png'
-              onClick={() => {
-                if (admin) {
-                  browserHistory.push('/hub/landing')
-                } else {
-                  browserHistory.push('/student/jobs')
-                }
-              }}
-            />
-          </div>
-          <div className='class-info'>
-            {/* {this.renderClassInfo()} */}
-          </div>
-          <div className='user-info'>
-            <div className='left'>
-              <p>{this.getName()}</p>
-              <span>{this.getDescription()}</span>
-            </div>
-            <div className='right'>
-              {user.avatar
-                ? <img className='profile-img' src={user.avatar}/>
-                : <div className='profile-img vertical-align profile-initials'>{this.getInitials()}</div>}
-            </div>
-          </div>
-        </div>
+        this.renderJobsHeader()
       )
     } else {
       const {userStore: {user}} = this.props.rootStore
@@ -132,6 +148,9 @@ class NavBar extends React.Component {
             {/* {this.renderClassInfo()} */}
           </div>
           <div className='user-info'>
+            {window.innerWidth > 1000 &&
+              <JobsSwitch />
+            }
             <div className='left'>
               <p>{this.getName()}</p>
               <span>{this.getDescription()}</span>

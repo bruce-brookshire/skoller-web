@@ -3,28 +3,21 @@ import PropTypes from 'prop-types'
 
 class WeightIcon extends React.Component {
   render () {
-    console.log(this.props.color, this.props.weight)
     let weight = this.props.weight
     let gray = 'rgba(0, 0, 0, 0.05)'
-    let impact
     let colorSet = {
       'one': {color: gray, opacity: '100%'},
       'two': {color: gray, opacity: '100%'},
       'three': {color: gray, opacity: '100%'}
     }
 
-    if (weight === 0) {
-      impact = 'none'
-    } else if (weight < 0.05) {
-      impact = 'low'
+    if (weight < 0.05) {
       colorSet.one.color = this.props.color
     } else if (weight < 0.15) {
-      impact = 'medium'
       colorSet.one.color = this.props.color
       colorSet.one.opacity = '75%'
       colorSet.two.color = this.props.color
     } else {
-      impact = 'high'
       colorSet.one.color = this.props.color
       colorSet.one.opacity = '50%'
       colorSet.two.color = this.props.color

@@ -63,35 +63,24 @@ class TasksList extends React.Component {
   renderTasks () {
     let i = 0
     if (this.state.tasks.length === 0) {
-      console.log('no tasks')
       return (
         this.renderNoTasks()
       )
     } else {
       return (
         this.state.tasks.map(task => {
-          console.log(task)
           let cl = this.getClassForTask(task)
           let daysAway = moment(task.due).diff(moment(), 'days')
           let maxDays = this.props.maxDays ? this.props.maxDays : 10000
           let maxTasks = this.props.maxTasks ? this.props.maxTasks : 10000
           i += 1
-          if (maxDays && maxTasks) {
-            if (daysAway <= maxDays && i <= maxTasks) {
-              return (
-                <div key={task.id}>
-                  <TaskCard task={task} clName={cl.clName} clColor={cl.clColor} />
-                </div>
-              )
-            }
+          if (daysAway <= maxDays && i <= maxTasks) {
+            return (
+              <div key={task.id}>
+                <TaskCard task={task} clName={cl.clName} clColor={cl.clColor} />
+              </div>
+            )
           }
-          // if (!this.props.maxTasks || (i <= this.props.maxTasks)) {
-          //   return (
-          //     <div key={task.id}>
-          //       <TaskCard task={task} clName={cl.clName} clColor={cl.clColor} />
-          //     </div>
-          //   )
-          // }
         })
       )
     }

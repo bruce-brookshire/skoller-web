@@ -241,12 +241,12 @@
     font-weight: 600;
     padding: 8px 8px 4px 8px;
     border-radius: 5px;
-    background: $cn-color-green;
+    background: $sk-jobs-dark-green;
     color: white;
     width: 100%;
 
     &:hover {
-      background: rgba(74, 221, 88, 0.9);
+      background: $sk-jobs-dark-green-hover;
     }
   }
 }
