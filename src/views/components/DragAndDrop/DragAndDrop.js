@@ -68,7 +68,7 @@ class DragAndDrop extends React.Component {
   render () {
     return (
       <div
-        className='sk-drag-and-drop'
+        className={'sk-drag-and-drop ' + (this.props.className ? this.props.className : '')}
         ref={dropRef => { this.dropRef = dropRef }}
         onClick={() => this.handleClick()}
         style={{backgroundColor: this.props.backgroundColor ? this.props.backgroundColor : ''}}
@@ -98,7 +98,8 @@ DragAndDrop.propTypes = {
   handleDrop: PropTypes.func,
   accept: PropTypes.string,
   backgroundColor: PropTypes.string,
-  textColor: PropTypes.string
+  textColor: PropTypes.string,
+  className: PropTypes.string
 }
 
 export default DragAndDrop

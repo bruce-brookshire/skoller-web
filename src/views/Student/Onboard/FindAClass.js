@@ -173,7 +173,7 @@ class FindAClass extends React.Component {
           <h3>{cl.name}</h3>
         </div>
         <div className='sk-find-class-selected-class-row'>
-          <p>{cl.professor ? cl.professor.name_first + ' ' + cl.professor.name_last : '--'}</p>
+          <p>{cl.professor ? ((cl.professor.name_first ? cl.professor.name_first : '') + ' ' + (cl.professor.name_last ? cl.professor.name_last : '')) : '--'}</p>
           <p>
             <i className="fas fa-user fa-xs" style={{marginRight: '2px'}} />{cl.enrollment.toString()}
           </p>

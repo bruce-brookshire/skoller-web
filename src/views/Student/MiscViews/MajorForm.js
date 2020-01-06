@@ -6,6 +6,7 @@ import Sammi from '../../components/Sammi'
 import {inject, observer} from 'mobx-react'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import {showSnackbar} from '../../../utilities/snackbar'
+import {Cookies} from 'react-cookie'
 
 @inject('rootStore') @observer
 class MajorForm extends React.Component {
@@ -19,6 +20,8 @@ class MajorForm extends React.Component {
       showDropDown: false,
       query: null
     }
+
+    this.cookie = new Cookies()
   }
 
   async queryFieldsOfStudy (query) {
@@ -65,13 +68,27 @@ class MajorForm extends React.Component {
   async onSubmit () {
     this.setState({loading: true})
     const user = this.props.rootStore.userStore.user
+    let lastMajor = this.state.selections[this.state.selections.length - 1]
     await this.state.selections.forEach(major => {
       actions.students.setStudentMajor(user.id, user.student.id, major.id)
+        .then(() => {
+          if (major === lastMajor) {
+            if (this.cookie) {
+              if (this.cookie.get('skollerToken')) {
+                actions.auth.getUserByToken(this.cookie.get('skollerToken')).catch((r) => console.log(r))
+                  .then(() => {
+                    this.props.onSubmit()
+                  })
+              }
+            } else {
+              this.props.onSubmit()
+            }
+          }
+        })
         .catch(() => {
           this.setState({loading: false})
         })
     })
-    this.props.onSubmit()
     showSnackbar('Successfully added your major!', 'success')
   }
 

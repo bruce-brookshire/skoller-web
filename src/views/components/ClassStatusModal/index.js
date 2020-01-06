@@ -14,6 +14,7 @@ import DropClassButton from '../DropClassButton'
 import ToolTip from '../ToolTip'
 import UploadAdditionalDocuments from './UploadAdditionalDocuments'
 import ClassStatusImage from './ClassStatusImage'
+import UploadOverloadDocuments from './UploadOverloadDocuments'
 
 @inject('rootStore') @observer
 class ClassStatusModal extends React.Component {
@@ -25,42 +26,6 @@ class ClassStatusModal extends React.Component {
     }
 
     this.init()
-
-    // actions.classes.getClassById(this.props.cl.id)
-    //   .then((r) => {
-    //     console.log('full class', r)
-    //     this.setState({fullClass: r})
-
-    //     let initState = this.getClass(r)
-    //     let status = initState.status
-    //     let sammiMessage = initState.sammiMessage
-    //     let mobileMessage = initState.mobileMessage
-    //     let documents = []
-
-    //     if (status === 'diy') {
-    //       actions.documents.getClassDocuments(r.id)
-    //         .then(r => {
-    //           documents = r
-    //         })
-    //     }
-
-    //     this.setState({
-    //       cl: this.props.cl,
-    //       fullClass: r,
-    //       uploadingDoc: false,
-    //       syllabus: null,
-    //       additionalFiles: [],
-    //       sammiMessage: sammiMessage,
-    //       status: status,
-    //       mobile: mobileCheck(),
-    //       mobileMessage: mobileMessage,
-    //       showDropClassConfirm: false,
-    //       uploadAdditionalDocumentsView: false,
-    //       loading: false,
-    //       classDocuments: null
-    //     })
-    //   })
-    //   .catch((r) => console.log(r))
   }
 
   async init () {
@@ -96,7 +61,8 @@ class ClassStatusModal extends React.Component {
       showDropClassConfirm: false,
       uploadAdditionalDocumentsView: false,
       loading: false,
-      classDocuments: documents
+      classDocuments: documents,
+      syllabusOverloadUploadDocs: false
     })
   }
 
@@ -348,7 +314,8 @@ class ClassStatusModal extends React.Component {
               }
               {this.state.status === 'syllabusOverload'
                 ? <div className='sk-class-status-modal-action-detail'>
-                  <h2>We recommend you use the DIY tool to set up your class instantly!</h2>
+                  <h2 style={{margin: '0'}}>We recommend you use the DIY tool to set up your class instantly!</h2>
+                  <p onClick={() => this.setState({syllabusOverloadUploadDocs: !this.state.syllabusOverloadUploadDocs})} style={{margin: '0', cursor: 'pointer', color: '#57B9E4'}}>Upload class documents</p>
                   <p style={{margin: '0'}}><small>Less than 10 minutes</small></p>
                 </div>
                 : null
@@ -561,12 +528,9 @@ class ClassStatusModal extends React.Component {
     )
   }
 
-  renderModalContent () {
+  renderStatusContent () {
     return (
-      <div className='sk-class-status-modal'>
-        <div className='sk-class-status-modal-drop-container'>
-        </div>
-        {this.renderHeader()}
+      <div>
         {this.renderClass()}
         {this.state.mobile && this.state.mobileMessage
           ? this.renderMobileMessage()
@@ -574,6 +538,23 @@ class ClassStatusModal extends React.Component {
         }
         {this.renderControl()}
         {this.renderSubControl()}
+      </div>
+    )
+  }
+
+  renderModalContent () {
+    return (
+      <div className='sk-class-status-modal'>
+        {this.renderHeader()}
+        {this.state.status === 'syllabusOverload' && !this.state.mobile && this.state.syllabusOverloadUploadDocs
+          ? <UploadOverloadDocuments
+            cl={this.state.fullClass}
+            onUpload={() => null}
+            onSubmit={() => this.props.closeModal()}
+            onBack={() => this.setState({syllabusOverloadUploadDocs: false})}
+          />
+          : this.renderStatusContent()
+        }
       </div>
     )
   }

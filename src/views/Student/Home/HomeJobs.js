@@ -42,8 +42,8 @@ class HomeJobs extends React.Component {
       })
     let majors = []
     let beginningMajors = []
-    majors = this.props.rootStore.userStore.user.student.fields_of_study.sort()
-    beginningMajors = this.props.rootStore.userStore.user.student.fields_of_study.sort()
+    majors = this.props.user.student.fields_of_study.sort()
+    beginningMajors = this.props.user.student.fields_of_study.sort()
     let gradDegreeChoice = this.state.degreeTypes[0]
     this.setState({loading: false, gradDegreeChoice, majors, beginningMajors})
   }
@@ -156,7 +156,7 @@ class HomeJobs extends React.Component {
 
   async onSubmit () {
     this.setState({loading: true})
-    let user = this.props.rootStore.userStore.user
+    let user = this.props.user
     let jobsForm = {
       graduation_date: new Date(this.state.gradMonthChoice + ' 1, ' + this.state.gradYearChoice + ' 00:00:00').toISOString()
     }
@@ -200,7 +200,7 @@ class HomeJobs extends React.Component {
     // upload resume
     await actions.jobs.uploadJobsDoc(skollerJobsId, this.state.resume[0], true)
       .then(() => {
-        actions.jobs.getJobsProfile(this.props.rootStore.userStore.user.id)
+        actions.jobs.getJobsProfile(this.props.user.id)
           .then((r) => {
             this.props.rootStore.studentJobsStore.profile = r
             this.props.rootStore.studentJobsStore.hasJobsProfile = true
@@ -264,7 +264,6 @@ class HomeJobs extends React.Component {
         <p className='home-jobs-headline'>
           From the classroom to your dream career.
         </p>
-        {/* <img src={'https://images.unsplash.com/photo-1558402989-4778474384c9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80'} /> */}
         <div className='home-jobs-row'>
           <p className='home-jobs-label'>Upload your résumé</p>
           <div className='home-jobs-drag-and-drop'>
@@ -387,7 +386,8 @@ class HomeJobs extends React.Component {
 
 HomeJobs.propTypes = {
   rootStore: PropTypes.object,
-  updateStudent: PropTypes.function
+  updateStudent: PropTypes.function,
+  user: PropTypes.object
 }
 
 export default HomeJobs
