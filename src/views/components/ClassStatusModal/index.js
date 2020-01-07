@@ -15,6 +15,8 @@ import ToolTip from '../ToolTip'
 import UploadAdditionalDocuments from './UploadAdditionalDocuments'
 import ClassStatusImage from './ClassStatusImage'
 import UploadOverloadDocuments from './UploadOverloadDocuments'
+import AppStore from '../../../assets/images/app_download/app-store-badge.svg'
+import GooglePlay from '../../../assets/images/app_download/google-play-badge.png'
 
 @inject('rootStore') @observer
 class ClassStatusModal extends React.Component {
@@ -187,11 +189,54 @@ class ClassStatusModal extends React.Component {
     }
   }
 
+  getMobileOperatingSystem () {
+    let userAgent = navigator.userAgent || navigator.vendor || window.opera
+
+    // Windows Phone must come first because its UA also contains "Android"
+    if (/android/i.test(userAgent)) {
+      return 'Android'
+    } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+      return 'iOS'
+    } else {
+      return false
+    }
+  }
+
+  renderDownloadCompleteDownload () {
+    const operatingSystem = this.getMobileOperatingSystem()
+    if (this.getMobileOperatingSystem()) {
+      return (
+        <div style={{textAlign: 'center'}}>
+          <div>Skoller works best on the app.</div>
+          <div className='sk-enroll-download-badge'>
+            {operatingSystem === 'Android' &&
+              <a
+                href='http://play.google.com/store/apps/details?id=com.skoller'
+              >
+                <img style={{maxWidth: '160px'}} src={GooglePlay} />
+              </a>
+            }
+            {operatingSystem === 'iOS' &&
+              <a
+                href='http://appstore.com/skoller'
+              >
+                <img style={{maxWidth: '160px'}} src={AppStore} />
+              </a>
+            }
+          </div>
+        </div>
+      )
+    }
+  }
+
   renderChecklist () {
     return (
       !this.state.uploadAdditionalDocumentsView &&
       <div className='sk-class-status-modal-checklist-container'>
         <ClassStatusImage status={this.state.fullClass.school.is_syllabus_overload ? 1500 : this.state.cl.status.id} />
+        {this.state.status === 'live' &&
+          this.renderDownloadCompleteDownload()
+        }
       </div>
     )
   }
@@ -482,7 +527,7 @@ class ClassStatusModal extends React.Component {
   renderHeader () {
     return (
       <div className='sk-class-status-modal-header'>
-        <h1>{this.state.cl.name}</h1>
+        <h1>{this.props.onboard ? 'Welcome to ' : ''}{this.state.cl.name}</h1>
         {this.renderSammi()}
         {this.renderProgress()}
       </div>
