@@ -31,7 +31,9 @@ class Profile extends React.Component {
   componentDidMount () {
     this.updateWidth()
 
-    if (this.props.rootStore.userStore.user.avatar === null) {
+    if (this.props.rootStore.studentJobsStore.profile === null) {
+      this.setState({form: 'getResume'})
+    } else if (this.props.rootStore.userStore.user.avatar === null) {
       this.setState({form: 'welcome'})
     }
   }

@@ -182,6 +182,10 @@ class ModalRouter extends React.Component {
       return (
         <WelcomeModal onSubmit={() => this.onSubmit()} />
       )
+    } else if (this.props.form === 'getResume') {
+      return (
+        <DocumentsForm homeModal={true} rootStore={this.props.rootStore} onSubmit={() => this.onSubmit()} />
+      )
     } else {
       return null
     }
