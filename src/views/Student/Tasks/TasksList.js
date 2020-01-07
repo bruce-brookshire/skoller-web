@@ -54,8 +54,8 @@ class TasksList extends React.Component {
 
   renderNoTasks () {
     return (
-      <div style={{color: 'rgba(0,0,0,0.3', width: '100%', textAlign: 'center', padding: '2rem'}}>
-        No tasks yet.
+      <div style={{color: 'rgba(0,0,0,0.3)', width: '100%', textAlign: 'center', padding: '2rem'}}>
+        No to-do&apos;s.
       </div>
     )
   }
@@ -67,22 +67,36 @@ class TasksList extends React.Component {
         this.renderNoTasks()
       )
     } else {
-      return (
-        this.state.tasks.map(task => {
-          let cl = this.getClassForTask(task)
-          let daysAway = moment(task.due).diff(moment(), 'days')
-          let maxDays = this.props.maxDays ? this.props.maxDays : 10000
-          let maxTasks = this.props.maxTasks ? this.props.maxTasks : 10000
-          i += 1
-          if (daysAway <= maxDays && i <= maxTasks) {
-            return (
-              <div key={task.id}>
-                <TaskCard task={task} clName={cl.clName} clColor={cl.clColor} />
-              </div>
-            )
-          }
-        })
-      )
+      let taskCount = 0
+      this.state.tasks.forEach(task => {
+        let daysAway = moment(task.due).diff(moment(), 'days')
+        let maxDays = this.props.maxDays ? this.props.maxDays : 10000
+        let maxTasks = this.props.maxTasks ? this.props.maxTasks : 10000
+        if (daysAway <= maxDays && i <= maxTasks) {
+          taskCount += 1
+        }
+      })
+      console.log(taskCount)
+      if (taskCount === 0) {
+        return this.renderNoTasks()
+      } else {
+        return (
+          this.state.tasks.map(task => {
+            let cl = this.getClassForTask(task)
+            let daysAway = moment(task.due).diff(moment(), 'days')
+            let maxDays = this.props.maxDays ? this.props.maxDays : 10000
+            let maxTasks = this.props.maxTasks ? this.props.maxTasks : 10000
+            i += 1
+            if (daysAway <= maxDays && i <= maxTasks) {
+              return (
+                <div key={task.id}>
+                  <TaskCard task={task} clName={cl.clName} clColor={cl.clColor} />
+                </div>
+              )
+            }
+          })
+        )
+      }
     }
   }
 

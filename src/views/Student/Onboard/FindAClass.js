@@ -741,9 +741,7 @@ class FindAClass extends React.Component {
     return (
       <div className='sk-enroll-link-container'>
         <h2>Welcome to {this.state.classChoice.name}!</h2>
-        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-          <img style={{width: '300px'}} src={live} alt='Class is LIVE' />
-        </div>
+        <div style={{display: 'flex', width: '100%', height: '280px', maxHeight: '300px', flexDirection: 'row', justifyContent: 'center', backgroundImage: `url(${live})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center center'}} />
         <div style={{textAlign: 'center', marginBottom: '1rem'}}>The syllabus for this class is <b>ALREADY ORGANIZED</b> on Skoller 🙌</div>
         <div className='sk-enroll-link-enroll-form'>
           <div

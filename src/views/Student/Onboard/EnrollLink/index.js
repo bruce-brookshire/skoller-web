@@ -285,9 +285,7 @@ class EnrollLink extends React.Component {
     return (
       <div className='sk-enroll-link-container'>
         <h1>Welcome to <b>{this.state.linkDetail.student_class.name}</b>!</h1>
-        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-          <img style={{width: '200px'}} src={live} alt='Class is LIVE' />
-        </div>
+        <div style={{display: 'flex', width: '100%', height: '280px', maxHeight: '300px', flexDirection: 'row', justifyContent: 'center', backgroundImage: `url(${live})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center center'}} />
         <div style={{textAlign: 'center', marginBottom: '1rem'}}>The syllabus for this class is <b>ALREADY ORGANIZED</b> on Skoller 🙌</div>
         {this.renderDownloadCompleteDownload()}
         {/* <div className='sk-enroll-link-enroll-form'>
@@ -306,9 +304,7 @@ class EnrollLink extends React.Component {
     return (
       <div className='sk-enroll-link-container'>
         <h1>Welcome to {this.state.linkDetail.student_class.name}!</h1>
-        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-          <img style={{width: '300px'}} src={live} alt='Class is LIVE' />
-        </div>
+        <div style={{display: 'flex', width: '100%', height: '280px', maxHeight: '300px', flexDirection: 'row', justifyContent: 'center', backgroundImage: `url(${live})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center center'}} />
         <div style={{textAlign: 'center', marginBottom: '1rem'}}>The syllabus for this class is <b>ALREADY ORGANIZED</b> on Skoller 🙌</div>
         <div className='sk-enroll-link-enroll-form'>
           <div

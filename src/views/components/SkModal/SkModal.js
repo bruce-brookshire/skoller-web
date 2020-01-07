@@ -11,7 +11,8 @@ class SkModal extends React.Component {
     super()
 
     this.state = {
-      ios: this.getMobileOperatingSystem() === 'iOS'
+      ios: this.getMobileOperatingSystem() === 'iOS',
+      initHeight: window.innerHeight
     }
 
     this.main = null
@@ -76,7 +77,7 @@ class SkModal extends React.Component {
     if (this.enrollLinkLayout) {
       this.enrollLinkLayout.removeEventListener('touchmove', preventDefault)
     }
-    
+
     if (this.cnLandingContainer) {
       this.cnLandingContainer.removeEventListener('touchmove', preventDefault)
     }
@@ -97,11 +98,12 @@ class SkModal extends React.Component {
     // console.log(window.innerHeight.toString() + 'px')
     let style = {}
     let containerStyle = {}
+    // const height = window.innerHeight
     if (this.state.ios) {
       style = {
         width: '100vw',
         maxHeight: 'none',
-        height: (window.innerHeight - 64).toString() + 'px',
+        height: (this.state.initHeight - 64).toString() + 'px',
         boxShadow: 'none',
         borderRadius: '0',
         margin: '0',
