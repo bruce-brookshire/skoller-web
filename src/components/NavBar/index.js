@@ -80,7 +80,7 @@ class NavBar extends React.Component {
     const {userStore: {user}} = this.props.rootStore
     const admin = this.props.rootStore.userStore.isAdmin()
     return (
-      <div className={'cn-navbar cn-navbar-jobs'}>
+      <div className={'cn-navbar cn-navbar-jobs'} style={{backgroundColor: '#4a4a4a', color: 'rgba(245, 245, 245, 1)'}}>
         <div>
           <img
             alt="Skoller"
@@ -103,12 +103,12 @@ class NavBar extends React.Component {
           }
           <div className='left'>
             <p>{this.getName()}</p>
-            <span>{this.getDescription()}</span>
+            <span>Job Candidate</span>
           </div>
           <div className='right'>
             {user.avatar
               ? <img className='profile-img' src={user.avatar}/>
-              : <div className='profile-img vertical-align profile-initials'>{this.getInitials()}</div>}
+              : <div style={{backgroundColor: '#15A494'}} className='profile-img vertical-align profile-initials'>{this.getInitials()}</div>}
           </div>
         </div>
       </div>

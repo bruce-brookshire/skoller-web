@@ -18,10 +18,12 @@ class SearchField extends React.Component {
         onFocus={() => this.setState({showSearchIcon: false})}
         onBlur={() => this.setState({showSearchIcon: true})}
         style={{
-          background: 'url(/src/assets/images/icons/sk-search.png) no-repeat 7px 9px',
-          backgroundSize: '16px 16px',
-          padding: '0 0 0 30px',
-          position: 'relative'
+          background: 'url(/src/assets/images/icons/sk-search.png) no-repeat 6px 5px',
+          backgroundSize: '12px 12px',
+          padding: '0 0 0 24px',
+          position: 'relative',
+          minHeight: '24px',
+          fontSize: '12px'
         }}
         value={this.props.searchQuery}
       />

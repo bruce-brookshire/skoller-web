@@ -157,7 +157,7 @@ class ExtrasForm extends React.Component {
               return (
                 <span
                   key={index}
-                  style={{color: '#4ADD58', cursor: 'pointer'}}
+                  style={{color: '#15A494', cursor: 'pointer'}}
                   onClick={() => {
                     actions.jobs.deleteActivity(club.id, this.props.rootStore.studentJobsStore.profile.id)
                       .then(() => {
@@ -213,7 +213,7 @@ class ExtrasForm extends React.Component {
               return (
                 <span
                   key={index}
-                  style={{color: '#4ADD58', cursor: 'pointer'}}
+                  style={{color: '#15A494', cursor: 'pointer'}}
                   onClick={() => {
                     actions.jobs.deleteActivity(club.id, this.props.rootStore.studentJobsStore.profile.id)
                       .then(() => {

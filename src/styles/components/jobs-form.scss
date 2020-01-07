@@ -19,7 +19,7 @@
     }
 
     .disabled {
-      @include disabled-button;
+      @include disabled-jobs-button;
       margin-top: 1rem;
     }
 
@@ -120,7 +120,7 @@
     .jobs-form-checkbox {
       margin-top: 0.5rem;
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       flex-wrap: wrap;
 
       .checkbox-container {

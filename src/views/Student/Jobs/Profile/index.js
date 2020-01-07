@@ -30,6 +30,10 @@ class Profile extends React.Component {
 
   componentDidMount () {
     this.updateWidth()
+
+    if (this.props.rootStore.userStore.user.avatar === null) {
+      this.setState({form: 'welcome'})
+    }
   }
 
   updateWidth = () => {
@@ -84,7 +88,7 @@ class Profile extends React.Component {
         <div
           className='jobs-profile-header-avatar'
           style={{
-            backgroundColor: `#4add58`,
+            backgroundColor: `#6ED6AE`,
             width: '80px',
             height: '80px',
             borderRadius: '50%',
@@ -122,18 +126,23 @@ class Profile extends React.Component {
     )
   }
 
+  formatPhone (string) {
+    let match = string.match(/^(\d{3})(\d{3})(\d{4})$/)
+    return '(' + match[1] + ') ' + match[2] + '-' + match[3]
+  }
+
   renderHeader () {
     let user = this.props.rootStore.userStore.user
     let student = user.student
     let profile = this.props.rootStore.studentJobsStore.profile
 
     let strength
-    let color = '#4ADD58'
+    let color = '#6ED6AE'
     if (this.props.rootStore.studentJobsStore.score <= 50) {
       strength = 'needs some work.'
       color = '#FF4159'
     } else if (this.props.rootStore.studentJobsStore.score <= 75) {
-      strength = 'is good, but could be better!'
+      strength = 'could be better!'
       color = '#F7D300'
     } else if (this.props.rootStore.studentJobsStore.score <= 90) {
       strength = 'is very strong! '
@@ -149,18 +158,16 @@ class Profile extends React.Component {
               {/* {this.renderAvatar()} */}
               <div style={{marginLeft: '2rem'}}>
                 <h1>{student.name_first} {student.name_last}</h1>
-                <p>{student.primary_school.name}</p>
+                <p>{student.primary_school.name} | {student.primary_school.adr_locality}, {student.primary_school.adr_region}</p>
                 <p><i className='far fa-envelope' /> {user.email}</p>
-                {profile.state_code &&
-                  <p><i className='fas fa-map-marker-alt' /> {profile.state_code}</p>
-                }
+                <p><i className='fas fa-phone' /> {this.formatPhone(user.student.phone)}</p>
               </div>
             </div>
             <div className='jobs-profile-header-score-container'>
               <div className='jobs-profile-header-score-text'>
-                <p><b>Profile strength</b></p>
-                <p>Your profile <span style={{fontWeight: '600', color: color}}>{strength}</span></p>
-                <p>Your profile is {profile.job_profile_status.id === 100 ? <b style={{color: '#4add58'}}>ACTIVE.</b> : <b style={{color: 'rgb(255, 65, 89)'}}>INACTIVE.</b>}</p>
+                <p><b style={{color: '#4a4a4a'}}>Your profile</b></p>
+                <p>Strength: <span style={{fontWeight: '600', color: color}}>{strength}</span></p>
+                <p>Status: {profile.job_profile_status.id === 100 ? <b style={{color: '#6ED6AE'}}>ACTIVE.</b> : <b style={{color: 'rgb(255, 65, 89)'}}>INACTIVE.</b>}</p>
               </div>
               {!this.props.rootStore.studentJobsStore.backgroundLoading
                 ? <ProfileScoreVisual profile={profile} user={user} />
@@ -204,7 +211,7 @@ class Profile extends React.Component {
               let index = profile.career_interests.split('|').indexOf(i)
               let last = index === profile.career_interests.split('|').length - 1
               return (
-                <span key={index}>{last ? 'and ' : ''}{i}{last ? '.' : ', '}</span>
+                <span key={index}>{(last && profile.career_interests.split('|').length > 1) ? 'and ' : ''}{i}{last ? '.' : ', '}</span>
               )
             })}</b>
           </div>
@@ -299,7 +306,7 @@ class Profile extends React.Component {
               )
             })}
           </SeeMore>
-          {this.renderButton('Add Work Experience', 'addWorkExperience')}
+          {this.renderButton('Add Experience', 'addWorkExperience')}
         </ProfileBlock>
       )
     } else {
@@ -375,7 +382,7 @@ class Profile extends React.Component {
               )
             })}
           </SeeMore>
-          {this.renderButton('Add Volunteer Experience', 'addVolunteerExperience')}
+          {this.renderButton('Add Experience', 'addVolunteerExperience')}
         </ProfileBlock>
       )
     } else {
@@ -386,7 +393,7 @@ class Profile extends React.Component {
             this.updateForm('volunteerExperience')
           }}
         >
-          {this.renderButton('Add Volunteer Experience', 'addVolunteerExperience')}
+          {this.renderButton('Add Experience', 'addVolunteerExperience')}
         </ProfileBlock>
       )
     }
@@ -693,7 +700,7 @@ class Profile extends React.Component {
             this.updateForm('onTheWeb')
           }}
         >
-          {this.renderButton('Show Off Your Other Profiles', 'onTheWeb')}
+          {this.renderButton('Add Your Other Profiles', 'onTheWeb')}
         </ProfileBlock>
       )
     }

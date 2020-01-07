@@ -123,7 +123,9 @@ class SkModal extends React.Component {
         <div className="sk-modal-container" id="sk-modal-container" style={style}>
           <OutsideClickHandler
             onOutsideClick={() => {
-              this.closeModal()
+              if (!this.props.disableOutsideClick) {
+                this.closeModal()
+              }
             }}
           >
             <div className="sk-modal">
@@ -131,7 +133,7 @@ class SkModal extends React.Component {
                 ? <div className="sk-modal-exit" onClick={() => {
                   this.closeModal()
                 }}>
-                  <Exit width="18" height="18" fill="$cn-color-blue"/>
+                  <Exit width="18" height="18" fill={this.props.rootStore.studentNavStore.jobsMode ? 'jobs' : '$cn-color-blue'}/>
                 </div>
                 : null
               }
@@ -155,8 +157,10 @@ class SkModal extends React.Component {
 SkModal.propTypes = {
   title: PropTypes.string,
   children: PropTypes.node.isRequired,
-  closeModal: PropTypes.func
+  rootStore: PropTypes.object,
+  closeModal: PropTypes.function,
   // use the closeModal function to close the modal from the parent component.
+  disableOutsideClick: PropTypes.function
 }
 
 export default SkModal

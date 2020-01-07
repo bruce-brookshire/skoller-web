@@ -21,9 +21,11 @@ import EqualOpportunityEmploymentForm from '../components/EqualOpportunityEmploy
 import EqualOpportunityEmployment from '../../../../assets/sk-icons/jobs/EqualOpportunityEmployment'
 import Extras from '../../../../assets/sk-icons/jobs/Extras'
 import ExtrasForm from '../components/ExtrasForm'
-import Documents from '../../../../assets/sk-icons/jobs/Documents';
-import DocumentsForm from '../components/DocumentsForm';
-import BasicInfoForm from '../components/BasicInfoForm';
+import Documents from '../../../../assets/sk-icons/jobs/Documents'
+import DocumentsForm from '../components/DocumentsForm'
+import BasicInfoForm from '../components/BasicInfoForm'
+import WelcomeModal from '../components/WelcomeModal'
+import actions from '../../../../actions'
 
 @inject('rootStore') @observer
 class ModalRouter extends React.Component {
@@ -52,6 +54,7 @@ class ModalRouter extends React.Component {
 
   onSubmit (doNotClose = false) {
     this.props.rootStore.studentJobsStore.refreshJobsProfile()
+    actions.users.refreshUser()
     if (!doNotClose) {
       this.props.onClose()
     }
@@ -175,14 +178,9 @@ class ModalRouter extends React.Component {
           <BasicInfoForm isVolunteer={false} onSubmit={(doNotClose) => this.onSubmit(doNotClose)} />
         </div>
       )
-    } else if (this.props.form === 'profilePic') {
+    } else if (this.props.form === 'welcome') {
       return (
-        <div>
-          <h2 style={{textAlign: 'center', margin: '0'}}>
-            Edit Your Profile Picture
-          </h2>
-          <p>work in progress</p>
-        </div>
+        <WelcomeModal onSubmit={() => this.onSubmit()} />
       )
     } else {
       return null
@@ -192,7 +190,7 @@ class ModalRouter extends React.Component {
   render () {
     if (this.props.form && this.renderForm()) {
       return (
-        <SkModal closeModal={() => this.onClose()}>
+        <SkModal closeModal={() => this.onClose()} disableOutsideClick={true}>
           {this.renderForm()}
         </SkModal>
       )

@@ -19,7 +19,8 @@ class Exit extends React.Component {
       '$cn-blue-cell-background': '#edf5ff',
       '$cn-link-background': 'rgba(85,185,229,0.2)',
       '$cn-form-border': '#CCC',
-      '$cn-color-hover-grey': '#e9e9e9'
+      '$cn-color-hover-grey': '#e9e9e9',
+      'jobs': '#6ED6AE'
     }
 
     if (givenFillColor) {

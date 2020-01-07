@@ -149,7 +149,8 @@ import {
   getEmailPreferences,
   updateEmailPreferences,
   deleteUserById,
-  refreshUser
+  refreshUser,
+  addAvatar
 } from './users'
 import {
   createWeight,
@@ -367,7 +368,8 @@ const actions = {
     getEmailPreferences,
     updateEmailPreferences,
     deleteUserById,
-    refreshUser
+    refreshUser,
+    addAvatar
   },
   weights: {
     createWeight,
