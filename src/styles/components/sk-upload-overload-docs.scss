@@ -1,0 +1,124 @@
+.sk-upload-overload-docs-container {
+  // margin-bottom: -2rem;
+  // max-width: 380px;
+  padding: 1rem;
+  border: 1px solid #4a4a4a;
+  border-radius: 5px;
+
+  .sk-upload-overload-docs {
+    width: 100%;
+  
+    h2 {
+      margin: 0 0 -0.5rem 0;
+      text-align: center;
+    }
+  
+    h3 {
+      margin: 0;
+    }
+    
+    p {
+      margin: 0;
+    }
+
+    .sk-upload-overload-docs-row {
+      display: flex;
+      flex-direction: row;
+    }
+  
+    .sk-upload-overload-docs-previous-container {
+      margin: 1rem 0;
+      border: 1px solid $cn-form-border;
+      border-radius: 5px;
+      padding: 1rem;
+      background-color: #57B9E412;
+      min-height: 106px;
+      box-sizing: border-box;
+
+      p {
+        margin-bottom: 0.5rem;
+      }
+
+      .sk-upload-overload-docs-previous {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        max-height: 88px;
+        overflow-y: scroll;
+    
+        .sk-upload-overload-docs-previous-item {
+          max-width: 50%;
+          display: flex;
+          flex-direction: column;
+
+          a {
+            margin: 0 4px 0 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+      }
+    }
+    
+    .sk-upload-overload-docs-file-drop {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 88px;
+      box-sizing: border-box;
+  
+      .sk-upload-overload-docs-file-drop-files {
+        height: 88px;
+        max-height: 88px;
+        overflow-y: scroll;
+
+        .sk-upload-overload-docs-file-drop-file {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          
+          p {
+            max-width: calc(100% - 36px);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin-left: 4px;
+          }
+        }
+      }
+    }
+
+    .sk-upload-overload-docs-submit {
+      @include sk-standard-button;
+      margin-top: 1rem;
+    }
+
+    .disabled {
+      p {
+        background-color: rgba(0,0,0,0.13);
+        cursor: default;
+
+        &:hover {
+          background-color: rgba(0,0,0,0.13);
+        }
+      }
+    }
+    
+    .sk-upload-overload-docs-help {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      margin: 1rem 0 0 0;
+
+      p {
+        color: $cn-color-blue;
+        cursor: pointer;
+        text-align: center;
+        margin: 0;
+      }
+    }
+  }
+}

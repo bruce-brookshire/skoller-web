@@ -59,7 +59,8 @@ class FindAClass extends React.Component {
       termChoice: termChoice,
       schoolChoice: schoolChoice,
       completedClassView: false,
-      ios: this.getMobileOperatingSystem() === 'iOS'
+      ios: this.getMobileOperatingSystem() === 'iOS',
+      searchClassesValue: null
     }
   }
 
@@ -77,9 +78,11 @@ class FindAClass extends React.Component {
   searchClasses (value) {
     this.setState({loadingAutocompleteClasses: true})
     if (value) {
-      this.setState({loadingAutocompleteClasses: true})
+      this.setState({loadingAutocompleteClasses: true, searchClassesValue: value})
       actions.classes.searchSchoolStudentClasses(this.state.termChoice.id, value).then((classes) => {
-        this.setState({classes, loadingAutocompleteClasses: false})
+        if (this.state.searchClassesValue === value) {
+          this.setState({classes, loadingAutocompleteClasses: false})
+        }
       }).catch(() => { this.setState({loadingAutocompleteClasses: false}) })
     } else {
       this.setState({classes: [], loadingAutocompleteClasses: false})
@@ -125,7 +128,11 @@ class FindAClass extends React.Component {
                 <h3>{cl.name}</h3>
               </div>
               <div className='sk-find-class-autocomplete-option-row'>
-                <p>{cl.professor ? cl.professor.name_first + ' ' + cl.professor.name_last : '--'}</p>
+                <p>{
+                  cl.professor
+                    ? (cl.professor.name_first ? cl.professor.name_first : '') + ' ' + (cl.professor.name_last ? cl.professor.name_last : '')
+                    : '--'
+                }</p>
                 <p>
                   <i className="fas fa-user fa-xs" style={{marginRight: '2px'}} />{cl.enrollment.toString()}
                 </p>
@@ -169,7 +176,7 @@ class FindAClass extends React.Component {
           <h3>{cl.name}</h3>
         </div>
         <div className='sk-find-class-selected-class-row'>
-          <p>{cl.professor ? cl.professor.name_first + ' ' + cl.professor.name_last : '--'}</p>
+          <p>{cl.professor ? ((cl.professor.name_first ? cl.professor.name_first : '') + ' ' + (cl.professor.name_last ? cl.professor.name_last : '')) : '--'}</p>
           <p>
             <i className="fas fa-user fa-xs" style={{marginRight: '2px'}} />{cl.enrollment.toString()}
           </p>
@@ -727,7 +734,7 @@ class FindAClass extends React.Component {
             }
           }}
         >
-          <p>Next</p>
+          <p>{this.state.classChoice ? 'Join class' : 'Next'}</p>
         </div>
       </div>
     )
@@ -736,10 +743,9 @@ class FindAClass extends React.Component {
   renderCompletedClassView () {
     return (
       <div className='sk-enroll-link-container'>
-        <h2>This class is already LIVE on Skoller!</h2>
-        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-          <img style={{width: '300px'}} src={live} alt='Class is LIVE' />
-        </div>
+        <h2>Welcome to {this.state.classChoice.name}!</h2>
+        <div style={{display: 'flex', width: '100%', height: '280px', maxHeight: '300px', flexDirection: 'row', justifyContent: 'center', backgroundImage: `url(${live})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center center'}} />
+        <div style={{textAlign: 'center', marginBottom: '1rem'}}>The syllabus for this class is <b>ALREADY ORGANIZED</b> on Skoller 🙌</div>
         <div className='sk-enroll-link-enroll-form'>
           <div
             className='sk-enroll-link-enroll-form-button'

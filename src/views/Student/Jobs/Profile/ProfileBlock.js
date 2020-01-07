@@ -58,7 +58,7 @@ class ProfileBlock extends React.Component {
 
   renderTitle () {
     return (
-      <h2>{this.renderIcon()} {this.props.title}</h2>
+      <h2>{this.props.title}</h2>
     )
   }
 

@@ -1,0 +1,70 @@
+.jobs-welcome-modal {
+  max-width: 380px;
+  text-align: center;
+
+  .add-photo {
+    color: $sk-jobs-dark-green;
+    cursor: pointer;
+    margin: 1rem 0 0 0;
+  }
+
+  .jobs-welcome-modal-icon {
+    font-size: 120px;
+    margin: 0 0 -32px 0;
+    color: $sk-jobs-dark-green;
+    cursor: pointer;
+  }
+
+  .jobs-welcome-modal-image-preview {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 1rem 0;
+
+    .image-preview {
+      width: 160px;
+      height: 160px;
+      border-radius: 25%;
+      background-position: center center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      position: relative;
+
+      .clear-image {
+        color: $sk-jobs-light-green;
+        cursor: pointer;
+        position: absolute;
+        top: 0;
+        left: calc();
+        font-size: 14px;
+        height: 18px;
+        width: 18px;
+        border: 2px solid $sk-jobs-light-green;
+        border-radius: 50%;
+        margin: -8px 0 0 -8px;
+
+        .exit {
+          margin-top: 1px;
+        }
+      }
+    }
+  }
+
+  .do-later {
+    color: rgba(0,0,0,0.25);
+    cursor: pointer;
+    width: 80px;
+    margin: 0 auto;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+  }
+
+  .jobs-welcome-modal-button {
+    @include sk-jobs-button;
+  }
+
+  .disabled {
+    @include disabled-jobs-button;
+  }
+}

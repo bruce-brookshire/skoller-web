@@ -62,7 +62,7 @@ class ProfileScoreVisual extends React.Component {
 
   render () {
     let percentage = this.state.displayScore
-    let color = '#4ADD58'
+    let color = '#15A494'
 
     if (this.state.score <= 50) {
       color = '#FF4159'

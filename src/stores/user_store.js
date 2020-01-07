@@ -21,7 +21,11 @@ class UserStore {
   }
 
   isSW () {
-    return this.user.roles.findIndex(role => role.id === 300) > -1
+    if (this.user) {
+      return this.user.roles.findIndex(role => role.id === 300) > -1
+    } else {
+      return null
+    }
   }
 
   isChangeReq () {

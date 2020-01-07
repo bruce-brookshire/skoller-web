@@ -4,6 +4,7 @@
   .home-jobs-headline {
     margin-top: 0;
     font-size: 20px;
+    color: $sk-jobs-light-green;
   }
 
   img {
@@ -21,11 +22,15 @@
     }
 
     .home-jobs-drag-and-drop {
+      p {
+        color: $sk-jobs-dark-green;
+      }
+
       .home-jobs-drag-and-drop-file {
         display: flex;
         flex-direction: row;
         justify-content: center;
-        color: $cn-color-blue;
+        color: $sk-jobs-dark-green;
 
         i {
           margin: 12px 4px 0 0;
@@ -37,7 +42,7 @@
       display: flex;
       flex-direction: row;
       justify-content: flex-start;
-      color: $cn-color-blue;
+      color: $sk-jobs-dark-green;
 
       .home-jobs-grad-month {
         min-width: 80px;
@@ -56,14 +61,15 @@
 
       .home-jobs-grad-text {
         margin: 12px 0 -12px 0;
-        color: $cn-font-color;
+        color: $sk-jobs-white;
       }
     }
 
     .home-jobs-majors {
       @include sk-form-field;
       @include remove-form-styling;
-      border-color: $cn-color-blue;
+      border-color: $sk-jobs-dark-green;
+      background-color: $sk-jobs-light-gray;
 
       display: flex;
       flex-direction: row;
@@ -72,13 +78,13 @@
 
       .home-jobs-major-choice {
         margin: 4px 6px 0 0;
-        color: $cn-color-blue;
+        color: $sk-jobs-dark-green;
         cursor: pointer;
       }
 
       .home-jobs-major-add {
         margin: 0 4px 0 0;
-        color: $cn-color-blue;
+        color: $sk-alert-red;
         background-color: rgba(0,0,0,0.04);
         border-radius: 3px;
         padding: 4px 4px 0 4px;
@@ -103,7 +109,7 @@
   }
 
   .home-jobs-button {
-    @include sk-standard-button;
+    @include sk-jobs-button;
     margin: 1rem 0 0 0;
 
     p {
@@ -115,11 +121,11 @@
     cursor: default;
 
     p {
-      background-color: rgba(0,0,0,0.2);
+      background-color: rgba(255,255,255,0.2);
       cursor: default;
 
       &:hover {
-        background-color: rgba(0,0,0,0.2);
+        background-color: rgba(255,255,255,0.2);
       }
     }
   }

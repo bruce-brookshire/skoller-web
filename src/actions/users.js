@@ -1,4 +1,4 @@
-import {csv, get, put, del, post} from '../utilities/api'
+import {csv, get, put, del, post, putFile} from '../utilities/api'
 import stores from '../stores'
 const {userStore} = stores
 
@@ -50,6 +50,20 @@ export function refreshUser () {
   return post(`/api/v1/users/token-login`, '')
     .then(data => {
       userStore.user = data.user
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+export function addAvatar (file, userId) {
+  let form = new FormData()
+  form.append('file', file, `${userId}_profilephoto.jpg`)
+  console.log(form)
+
+  return putFile(`/api/v1/users/${userId}`, form, 'Error saving profile picture. Try again later.')
+    .then(data => {
       return data
     })
     .catch(error => {

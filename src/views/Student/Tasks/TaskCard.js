@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import {browserHistory} from 'react-router'
 import {inject, observer} from 'mobx-react'
+import WeightIcon from './WeightIcon';
 
 @inject('rootStore') @observer
 class TaskCard extends React.Component {
@@ -29,11 +30,11 @@ class TaskCard extends React.Component {
         <div className="task-card" style={{border: '1px solid', borderColor: color, borderRadius: '5px'}}>
           <div className="task-card-heading">
             <h2 className="task-card-left" style={{color: color}}>{task.name}</h2>
-            <p className="task-card-right">{this.formatDueDate(task.due)}</p>
+            <p className="task-card-right"><WeightIcon color={color} weight={task.weight} /></p>
           </div>
           <div className="task-card-content">
-            <p className="task-card-left">{this.props.clName}</p>
-            <p className="task-card-left">{(task.weight * 100).toFixed(2) + '%'}</p>
+            <p className="task-card-left">{'Due in ' + this.formatDueDate(task.due)}</p>
+            <p className="task-card-left" style={{color: '#a9a9a9'}}>{this.props.clName}</p>
           </div>
         </div>
       </div>

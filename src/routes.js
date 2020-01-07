@@ -99,7 +99,7 @@ const router = (
           <Route path='/student/class/:classId/assignments/:assignmentId' component={AssignmentDetail} />
           <Route path='/student/class/:classId/add-assignment' component={AddAssignment} />
           <Route path='/student/jobs' onEnter={() => toggleJobsMode(true)} onLeave={() => toggleJobsMode(false)}>
-            <IndexRedirect to='/student/jobs/home' />
+            <IndexRedirect to='/student/jobs/profile' />
             <Route path='/student/jobs/home' component={Jobs} />
             <Route path='/student/jobs/profile' component={Profile} />
             <Route path='/student/jobs/resume' component={Resume} />
