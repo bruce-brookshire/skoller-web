@@ -23,7 +23,7 @@ class JobsSwitch extends React.Component {
           <label className="switch">
             <input type="checkbox" checked={this.props.rootStore.studentNavStore.jobsMode} onChange={() => {
               if (!this.props.rootStore.studentNavStore.jobsMode) {
-                browserHistory.push('/student/jobs/home')
+                browserHistory.push('/student/jobs')
               } else {
                 browserHistory.push('/student/home')
               }
