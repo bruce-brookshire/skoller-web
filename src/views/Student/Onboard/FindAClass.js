@@ -59,7 +59,8 @@ class FindAClass extends React.Component {
       termChoice: termChoice,
       schoolChoice: schoolChoice,
       completedClassView: false,
-      ios: this.getMobileOperatingSystem() === 'iOS'
+      ios: this.getMobileOperatingSystem() === 'iOS',
+      searchClassesValue: null
     }
   }
 
@@ -77,9 +78,11 @@ class FindAClass extends React.Component {
   searchClasses (value) {
     this.setState({loadingAutocompleteClasses: true})
     if (value) {
-      this.setState({loadingAutocompleteClasses: true})
+      this.setState({loadingAutocompleteClasses: true, searchClassesValue: value})
       actions.classes.searchSchoolStudentClasses(this.state.termChoice.id, value).then((classes) => {
-        this.setState({classes, loadingAutocompleteClasses: false})
+        if (this.state.searchClassesValue === value) {
+          this.setState({classes, loadingAutocompleteClasses: false})
+        }
       }).catch(() => { this.setState({loadingAutocompleteClasses: false}) })
     } else {
       this.setState({classes: [], loadingAutocompleteClasses: false})
