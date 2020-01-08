@@ -147,9 +147,9 @@ class Profile extends React.Component {
       strength = 'could be better!'
       color = '#F7D300'
     } else if (this.props.rootStore.studentJobsStore.score <= 90) {
-      strength = 'is very strong! '
+      strength = 'very strong! '
     } else if (this.props.rootStore.studentJobsStore.score >= 100) {
-      strength = 'is fantastic. Nice work!'
+      strength = 'fantastic. Nice work!'
     }
 
     return (
@@ -369,7 +369,7 @@ class Profile extends React.Component {
             this.updateForm('volunteerExperience')
           }}
         >
-          <SeeMore hideHeight={'256px'} customText={'View all'}>
+          <SeeMore disable={profile.volunteer_activities.length === 1} hideHeight={'256px'} customText={'View all'}>
             {profile.volunteer_activities.map(v => {
               return (
                 <div key={profile.volunteer_activities.indexOf(v)}>
