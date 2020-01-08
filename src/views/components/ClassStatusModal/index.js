@@ -8,7 +8,6 @@ import SkLoader from '../../../assets/sk-icons/SkLoader'
 import DragAndDrop from '../DragAndDrop/DragAndDrop'
 import {mobileCheck} from '../../../utilities/display'
 import Sammi from '../Sammi'
-import Checklist from './Checklist'
 import SkModal from '../SkModal/SkModal'
 import DropClassButton from '../DropClassButton'
 import ToolTip from '../ToolTip'
@@ -353,7 +352,6 @@ class ClassStatusModal extends React.Component {
               {this.state.status === 'diy'
                 ? <div className='sk-class-status-modal-action-detail' style={{height: 'auto', maxHeight: '300px'}}>
                   {this.renderDIYAction()}
-                  {/* <div>We weren&apos;t able to properly review your syllabus. Help us set up your class!</div> */}
                 </div>
                 : null
               }
@@ -527,7 +525,7 @@ class ClassStatusModal extends React.Component {
   renderHeader () {
     return (
       <div className='sk-class-status-modal-header'>
-        <h1>{this.props.onboard ? 'Welcome to ' : ''}{this.state.cl.name}</h1>
+        <h1>{(this.props.onboard || this.props.firstOpen) ? 'Welcome to ' : ''}{this.state.cl.name}</h1>
         {this.renderSammi()}
         {this.renderProgress()}
       </div>
@@ -617,13 +615,14 @@ class ClassStatusModal extends React.Component {
 }
 
 ClassStatusModal.propTypes = {
-  onSubmit: PropTypes.function,
+  onSubmit: PropTypes.func,
   rootStore: PropTypes.object,
   disableNext: PropTypes.bool,
   cl: PropTypes.object,
-  closeModal: PropTypes.function,
+  closeModal: PropTypes.func,
   progress: PropTypes.number,
-  onboard: PropTypes.bool
+  onboard: PropTypes.bool,
+  firstOpen: PropTypes.bool
 }
 
 export default ClassStatusModal

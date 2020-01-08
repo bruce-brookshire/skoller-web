@@ -17,9 +17,7 @@ class PopUp extends React.Component {
 
   renderNeedSyllabusPopUp () {
     return (
-      <div className='sk-pop-up'>
-        <FirstClass disableNext={false} />
-      </div>
+      <FirstClass disableNext={false} closeModal={() => this.props.closeModal()} />
     )
   }
 
@@ -63,9 +61,7 @@ class PopUp extends React.Component {
     return (
       <div className='sk-pop-up-container'>
         {this.props.type === 'needSyllabus' &&
-          <SkModal closeModal={() => this.closeModal()}>
-            {this.renderNeedSyllabusPopUp()}
-          </SkModal>
+          this.renderNeedSyllabusPopUp()
         }
         {this.props.type === 'needPrimarySchool' &&
           <SkModal>

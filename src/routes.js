@@ -178,11 +178,17 @@ function requireAuth (nextState, replaceState) {
     userStore.authToken = cookie.get('skollerToken')
     actions.auth.getUserByToken()
       .then((user) => {
-        console.log('requireAuth user', user)
-        authenticateStudent(user.user).then(() => {
-          userStore.setFetchingUser(false)
-        }).catch(() => { userStore.setFetchingUser(false) })
+        console.log('getUserByToken', user)
 
+        if (user.user.roles.filter(role => role.id === 100)) {
+          console.log('is syllabus worker')
+          authenticateStudent(user.user).then(() => {
+            userStore.setFetchingUser(false)
+          }).catch(() => { userStore.setFetchingUser(false) })
+        } else if (user.user.roles.filter(role => role.id === 200)) {
+          console.log('is syllabus worker')
+          userStore.setFetchingUser(false)
+        }
         userStore.setFetchingUser(false)
       })
       .catch((r) => {
