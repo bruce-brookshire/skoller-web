@@ -160,12 +160,6 @@ class Assignments extends React.Component {
       }).catch(() => false)
     }
     this.setState({assignments: safeAssignments})
-    // const newAssignments = assignments.filter(a => a.id !== assignment.id)
-    // this.setState({assignments: newAssignments})
-    // actions.assignments.deleteAssignment(assignment).then(() => {
-    //   const newAssignments = assignments.filter(a => a.id !== assignment.id)
-    //   this.setState({assignments: newAssignments})
-    // }).catch(() => false)
   }
 
   onNext () {
@@ -305,6 +299,8 @@ class Assignments extends React.Component {
       weights = this.getSingleWeight()
     }
 
+    console.log(this.state.assignments)
+
     return (
       <div id='cn-assignments'>
         {loadingAssignments || loadingWeights
@@ -385,7 +381,6 @@ class Assignments extends React.Component {
                   Assignments
                   {viewOnly && <a onClick={() => this.props.onEdit()}>Edit</a>}
                 </div>
-                {console.log(this.state.assignments)}
                 <AssignmentTable
                   viewOnly={viewOnly}
                   assignments={this.state.assignments}

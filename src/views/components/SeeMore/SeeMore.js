@@ -8,12 +8,10 @@ class SeeMore extends React.Component {
     this.state = {
       seeMore: this.props.children.length > 1
     }
-
-    console.log('children', this.props.children)
   }
 
   render () {
-    if (this.props.children.length > 1) {
+    if (this.state.seeMore) {
       return (
         <div
           className='see-more'
