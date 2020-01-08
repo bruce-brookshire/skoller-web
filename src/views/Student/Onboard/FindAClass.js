@@ -671,9 +671,13 @@ class FindAClass extends React.Component {
     } else {
       actions.classes.enrollInClass(this.state.classChoice.id).then((r) => {
         if (r.status.id === 1400 && !this.props.onboard) {
-          this.setState({completedClassView: true})
+          // this.setState({completedClassView: true})
+          this.props.launchClassStatusModal(r)
         } else {
-          this.props.onSubmit()
+          console.log('wtf')
+          console.log('props', this.props)
+          this.props.launchClassStatusModal(r)
+          // this.props.onSubmit()
         }
       })
     }
