@@ -674,10 +674,8 @@ class FindAClass extends React.Component {
           // this.setState({completedClassView: true})
           this.props.launchClassStatusModal(r)
         } else {
-          console.log('wtf')
-          console.log('props', this.props)
           this.props.launchClassStatusModal(r)
-          // this.props.onSubmit()
+          this.props.onSubmit()
         }
       })
     }
