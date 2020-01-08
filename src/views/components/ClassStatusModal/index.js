@@ -525,7 +525,7 @@ class ClassStatusModal extends React.Component {
   renderHeader () {
     return (
       <div className='sk-class-status-modal-header'>
-        <h1>{this.props.onboard ? 'Welcome to ' : ''}{this.state.cl.name}</h1>
+        <h1>{(this.props.onboard || this.props.firstOpen) ? 'Welcome to ' : ''}{this.state.cl.name}</h1>
         {this.renderSammi()}
         {this.renderProgress()}
       </div>
@@ -615,11 +615,11 @@ class ClassStatusModal extends React.Component {
 }
 
 ClassStatusModal.propTypes = {
-  onSubmit: PropTypes.function,
+  onSubmit: PropTypes.func,
   rootStore: PropTypes.object,
   disableNext: PropTypes.bool,
   cl: PropTypes.object,
-  closeModal: PropTypes.function,
+  closeModal: PropTypes.func,
   progress: PropTypes.number,
   onboard: PropTypes.bool,
   firstOpen: PropTypes.bool
