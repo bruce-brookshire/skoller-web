@@ -385,6 +385,7 @@ class Assignments extends React.Component {
                   Assignments
                   {viewOnly && <a onClick={() => this.props.onEdit()}>Edit</a>}
                 </div>
+                {console.log(this.state.assignments)}
                 <AssignmentTable
                   viewOnly={viewOnly}
                   assignments={this.state.assignments}
