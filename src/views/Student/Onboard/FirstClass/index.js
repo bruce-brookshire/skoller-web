@@ -356,7 +356,8 @@ class FirstClass extends React.Component {
             onSubmit={() => this.props.onSubmit()}
             disableNext={false}
             cl={this.state.firstClass}
-            closeModal={() => this.props.closeModal()}
+            // closeModal={() => this.props.closeModal()}
+            onboard={true}
           />
         }
       </div>
