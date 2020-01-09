@@ -138,6 +138,20 @@ export function registerUserAdmin (form) {
     })
 }
 
+function handleTokenResponse (data, token) {
+  userStore.user = data.user
+  if (token) {
+    userStore.authToken = token
+  }
+  if ((data.user.roles.filter(role => role.id === 200).length > 0) || (data.user.roles.filter(role => role.id === 300).length > 0)) {
+    console.log('admin or sw')
+  } else {
+    studentClassesStore.getClasses()
+    studentJobsStore.getJobsProfile()
+  }
+  return data
+}
+
 /*
 * Fetch user to set state.
 */
@@ -145,12 +159,7 @@ export function getUserByToken (token) {
   if (token) {
     return post(`/api/v1/users/token-login`, '', '', token)
       .then(data => {
-        userStore.user = data.user
-        userStore.authToken = token
-        if (userStore.user.roles[0].id !== 200) {
-          studentClassesStore.getClasses()
-          studentJobsStore.getJobsProfile()
-        }
+        handleTokenResponse(data, token)
         return data
       })
       .catch(error => {
@@ -159,11 +168,7 @@ export function getUserByToken (token) {
   } else {
     return post(`/api/v1/users/token-login`, '')
       .then(data => {
-        userStore.user = data.user
-        if (userStore.user.roles[0].id !== 200) {
-          studentClassesStore.getClasses()
-          studentJobsStore.getJobsProfile()
-        }
+        handleTokenResponse(data, false)
         return data
       })
       .catch(error => {

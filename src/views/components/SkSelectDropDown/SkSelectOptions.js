@@ -77,6 +77,12 @@ class SkSelectOptions extends React.Component {
       style.position = 'absolute'
     }
 
+    if (this.props.jobsMode) {
+      style.backgroundColor = '#efeff4'
+      style.borderColor = '#15A494'
+      style.color = '#15A494'
+    }
+
     return (
       <div ref={ref => { this.ref = ref }}>
         <OutsideClickHandler
@@ -97,7 +103,8 @@ SkSelectOptions.propTypes = {
   toggle: PropTypes.func,
   refWidth: PropTypes.string,
   refObject: PropTypes.object,
-  disableModalLogic: PropTypes.bool
+  disableModalLogic: PropTypes.bool,
+  jobsMode: PropTypes.bool
 }
 
 export default SkSelectOptions

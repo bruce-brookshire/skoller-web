@@ -228,10 +228,11 @@
   }
 }
 
-// standard button
+// standard jobs button
 @mixin sk-jobs-button {
   text-align: center;
   margin: 0 auto;
+  text-transform: uppercase;
   // padding: 8px;
 
   p {
@@ -241,12 +242,41 @@
     font-weight: 600;
     padding: 8px 8px 4px 8px;
     border-radius: 5px;
-    background: $cn-color-green;
-    color: white;
+    // background: $sk-jobs-white;
+    background: white;
+    color: $sk-jobs-dark-green;
+    border: 2px solid $sk-jobs-dark-green;
+    box-sizing: border-box;
     width: 100%;
 
     &:hover {
-      background: rgba(74, 221, 88, 0.9);
+      background: $sk-jobs-dark-green;
+      // color: $sk-jobs-white;
+      color: white;
+    }
+  }
+}
+
+// disabled jobs button
+@mixin disabled-jobs-button {
+  text-align: center;
+  margin: 0 auto;
+
+  p {
+    box-sizing: border-box;
+    cursor: auto;
+    margin: 0 auto;
+    font-weight: 600;
+    padding: 8px 8px 4px 8px;
+    border-radius: 5px;
+    background: rgba(0,0,0,0.12);
+    border-color: $sk-charcoal;
+    color: $sk-charcoal;
+    width: 100%;
+
+    &:hover {
+      background: rgba(0,0,0,0.12);
+      color: $sk-charcoal;
     }
   }
 }

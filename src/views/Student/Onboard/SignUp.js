@@ -108,7 +108,7 @@ class SignUp extends React.Component {
           <div className='sk-onboard-sign-up-row'>
             <h1>Welcome to Skoller!</h1>
             {this.props.partner.philanthropy
-              ? <p>Follow these easy steps and <b>${this.props.partner.donationAmount} will be donated</b> to {this.props.partner.philanthropy}!</p>
+              ? <p>Follow these easy steps to RAISE THOUSANDS for {this.props.partner.philanthropy}!</p>
               : <p>Follow these easy steps to sign up for Skoller through {this.props.partner.name}!</p>
             }
           </div>

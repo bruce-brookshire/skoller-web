@@ -31,10 +31,13 @@ class ClassInfo extends React.Component {
 
     if (!isDIY) {
       return (
-        <div className='class-details'>
-          <span>{number}</span>
-          <span>{professor && mapProfessor(professor)}</span>
-          <span>{days}: {startTime ? mapTimeToDisplay(startTime) : 'TBA'}</span>
+        <div className='class-details' style={{display: 'flex', flexDirection: 'column'}}>
+          <span style={{fontSize: '18px', fontWeight: '600'}}>{this.props.cl.name}</span>
+          <div>
+            <span>{number}</span>
+            <span>{professor && mapProfessor(professor)}</span>
+            <span>{days}: {startTime ? mapTimeToDisplay(startTime) : 'TBA'}</span>
+          </div>
         </div>
       )
     }

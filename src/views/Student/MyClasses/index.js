@@ -150,6 +150,7 @@ class MyClasses extends React.Component {
   }
 
   closeAddClassModal () {
+    console.log('closeAddClassModal')
     this.setState({showAddClassModal: false})
     this.updateClasses()
   }

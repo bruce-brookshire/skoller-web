@@ -160,12 +160,6 @@ class Assignments extends React.Component {
       }).catch(() => false)
     }
     this.setState({assignments: safeAssignments})
-    // const newAssignments = assignments.filter(a => a.id !== assignment.id)
-    // this.setState({assignments: newAssignments})
-    // actions.assignments.deleteAssignment(assignment).then(() => {
-    //   const newAssignments = assignments.filter(a => a.id !== assignment.id)
-    //   this.setState({assignments: newAssignments})
-    // }).catch(() => false)
   }
 
   onNext () {
@@ -304,6 +298,8 @@ class Assignments extends React.Component {
     if (this.props.singleWeight) {
       weights = this.getSingleWeight()
     }
+
+    console.log(this.state.assignments)
 
     return (
       <div id='cn-assignments'>

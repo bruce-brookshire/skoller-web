@@ -8,12 +8,14 @@ import SkLoader from '../../../assets/sk-icons/SkLoader'
 import DragAndDrop from '../DragAndDrop/DragAndDrop'
 import {mobileCheck} from '../../../utilities/display'
 import Sammi from '../Sammi'
-import Checklist from './Checklist'
 import SkModal from '../SkModal/SkModal'
 import DropClassButton from '../DropClassButton'
 import ToolTip from '../ToolTip'
 import UploadAdditionalDocuments from './UploadAdditionalDocuments'
 import ClassStatusImage from './ClassStatusImage'
+import UploadOverloadDocuments from './UploadOverloadDocuments'
+import AppStore from '../../../assets/images/app_download/app-store-badge.svg'
+import GooglePlay from '../../../assets/images/app_download/google-play-badge.png'
 
 @inject('rootStore') @observer
 class ClassStatusModal extends React.Component {
@@ -25,42 +27,6 @@ class ClassStatusModal extends React.Component {
     }
 
     this.init()
-
-    // actions.classes.getClassById(this.props.cl.id)
-    //   .then((r) => {
-    //     console.log('full class', r)
-    //     this.setState({fullClass: r})
-
-    //     let initState = this.getClass(r)
-    //     let status = initState.status
-    //     let sammiMessage = initState.sammiMessage
-    //     let mobileMessage = initState.mobileMessage
-    //     let documents = []
-
-    //     if (status === 'diy') {
-    //       actions.documents.getClassDocuments(r.id)
-    //         .then(r => {
-    //           documents = r
-    //         })
-    //     }
-
-    //     this.setState({
-    //       cl: this.props.cl,
-    //       fullClass: r,
-    //       uploadingDoc: false,
-    //       syllabus: null,
-    //       additionalFiles: [],
-    //       sammiMessage: sammiMessage,
-    //       status: status,
-    //       mobile: mobileCheck(),
-    //       mobileMessage: mobileMessage,
-    //       showDropClassConfirm: false,
-    //       uploadAdditionalDocumentsView: false,
-    //       loading: false,
-    //       classDocuments: null
-    //     })
-    //   })
-    //   .catch((r) => console.log(r))
   }
 
   async init () {
@@ -96,7 +62,8 @@ class ClassStatusModal extends React.Component {
       showDropClassConfirm: false,
       uploadAdditionalDocumentsView: false,
       loading: false,
-      classDocuments: documents
+      classDocuments: documents,
+      syllabusOverloadUploadDocs: false
     })
   }
 
@@ -221,11 +188,54 @@ class ClassStatusModal extends React.Component {
     }
   }
 
+  getMobileOperatingSystem () {
+    let userAgent = navigator.userAgent || navigator.vendor || window.opera
+
+    // Windows Phone must come first because its UA also contains "Android"
+    if (/android/i.test(userAgent)) {
+      return 'Android'
+    } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+      return 'iOS'
+    } else {
+      return false
+    }
+  }
+
+  renderDownloadCompleteDownload () {
+    const operatingSystem = this.getMobileOperatingSystem()
+    if (this.getMobileOperatingSystem()) {
+      return (
+        <div style={{textAlign: 'center'}}>
+          <div>Skoller works best on the app.</div>
+          <div className='sk-enroll-download-badge'>
+            {operatingSystem === 'Android' &&
+              <a
+                href='http://play.google.com/store/apps/details?id=com.skoller'
+              >
+                <img style={{maxWidth: '160px'}} src={GooglePlay} />
+              </a>
+            }
+            {operatingSystem === 'iOS' &&
+              <a
+                href='http://appstore.com/skoller'
+              >
+                <img style={{maxWidth: '160px'}} src={AppStore} />
+              </a>
+            }
+          </div>
+        </div>
+      )
+    }
+  }
+
   renderChecklist () {
     return (
       !this.state.uploadAdditionalDocumentsView &&
       <div className='sk-class-status-modal-checklist-container'>
         <ClassStatusImage status={this.state.fullClass.school.is_syllabus_overload ? 1500 : this.state.cl.status.id} />
+        {this.state.status === 'live' &&
+          this.renderDownloadCompleteDownload()
+        }
       </div>
     )
   }
@@ -236,7 +246,7 @@ class ClassStatusModal extends React.Component {
         <div style={{marginBottom: '-2rem'}}>
           <UploadAdditionalDocuments
             cl={this.state.fullClass}
-            onUpload={() => console.log('upload')}
+            onUpload={() => null}
             onSubmit={() => this.props.closeModal()}
           />
         </div>
@@ -342,21 +352,18 @@ class ClassStatusModal extends React.Component {
               {this.state.status === 'diy'
                 ? <div className='sk-class-status-modal-action-detail' style={{height: 'auto', maxHeight: '300px'}}>
                   {this.renderDIYAction()}
-                  {/* <div>We weren&apos;t able to properly review your syllabus. Help us set up your class!</div> */}
                 </div>
                 : null
               }
               {this.state.status === 'syllabusOverload'
                 ? <div className='sk-class-status-modal-action-detail'>
-                  <h2>We recommend you use the DIY tool to set up your class instantly!</h2>
+                  <h2 style={{margin: '0'}}>We recommend you use the DIY tool to set up your class instantly!</h2>
+                  <p onClick={() => this.setState({syllabusOverloadUploadDocs: !this.state.syllabusOverloadUploadDocs})} style={{margin: '0', cursor: 'pointer', color: '#57B9E4'}}>Upload class documents</p>
                   <p style={{margin: '0'}}><small>Less than 10 minutes</small></p>
                 </div>
                 : null
               }
               {this.state.status === 'live'
-                // ? <div className='sk-class-status-modal-action-detail'>
-                //   <h3>This class is already LIVE on Skoller!</h3>
-                // </div>
                 ? null
                 : null
               }
@@ -518,7 +525,7 @@ class ClassStatusModal extends React.Component {
   renderHeader () {
     return (
       <div className='sk-class-status-modal-header'>
-        <h1>{this.state.cl.name}</h1>
+        <h1>{(this.props.onboard || this.props.firstOpen) ? 'Welcome to ' : ''}{this.state.cl.name}</h1>
         {this.renderSammi()}
         {this.renderProgress()}
       </div>
@@ -564,12 +571,9 @@ class ClassStatusModal extends React.Component {
     )
   }
 
-  renderModalContent () {
+  renderStatusContent () {
     return (
-      <div className='sk-class-status-modal'>
-        <div className='sk-class-status-modal-drop-container'>
-        </div>
-        {this.renderHeader()}
+      <div>
         {this.renderClass()}
         {this.state.mobile && this.state.mobileMessage
           ? this.renderMobileMessage()
@@ -577,6 +581,23 @@ class ClassStatusModal extends React.Component {
         }
         {this.renderControl()}
         {this.renderSubControl()}
+      </div>
+    )
+  }
+
+  renderModalContent () {
+    return (
+      <div className='sk-class-status-modal'>
+        {this.renderHeader()}
+        {this.state.status === 'syllabusOverload' && !this.state.mobile && this.state.syllabusOverloadUploadDocs
+          ? <UploadOverloadDocuments
+            cl={this.state.fullClass}
+            onUpload={() => null}
+            onSubmit={() => this.props.closeModal()}
+            onBack={() => this.setState({syllabusOverloadUploadDocs: false})}
+          />
+          : this.renderStatusContent()
+        }
       </div>
     )
   }
@@ -594,13 +615,14 @@ class ClassStatusModal extends React.Component {
 }
 
 ClassStatusModal.propTypes = {
-  onSubmit: PropTypes.function,
+  onSubmit: PropTypes.func,
   rootStore: PropTypes.object,
   disableNext: PropTypes.bool,
   cl: PropTypes.object,
-  closeModal: PropTypes.function,
+  closeModal: PropTypes.func,
   progress: PropTypes.number,
-  onboard: PropTypes.bool
+  onboard: PropTypes.bool,
+  firstOpen: PropTypes.bool
 }
 
 export default ClassStatusModal

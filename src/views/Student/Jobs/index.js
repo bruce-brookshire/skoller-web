@@ -18,6 +18,7 @@ class Jobs extends React.Component {
   pushIfNoProfile () {
     if (!this.props.rootStore.studentJobsStore.hasJobsProfile) {
       console.log('DOES NOT HAVE PROFILE')
+      console.log(this.props.rootStore.studentJobsStore)
       browserHistory.push('/student/home')
     }
   }

@@ -6,6 +6,7 @@ import FirstClass from '../Onboard/FirstClass/index'
 import SelectSchool from '../Onboard/SelectSchool'
 import AddClassModal from '../MyClasses/AddClassModal'
 import MajorForm from '../MiscViews/MajorForm'
+import DocumentsForm from '../Jobs/components/DocumentsForm';
 
 @inject('rootStore') @observer
 class PopUp extends React.Component {
@@ -16,9 +17,7 @@ class PopUp extends React.Component {
 
   renderNeedSyllabusPopUp () {
     return (
-      <div className='sk-pop-up'>
-        <FirstClass disableNext={false} />
-      </div>
+      <FirstClass disableNext={false} closeModal={() => this.props.closeModal()} />
     )
   }
 
@@ -50,13 +49,19 @@ class PopUp extends React.Component {
     )
   }
 
+  renderGetResume () {
+    return (
+      <div className='sk-pop-up'>
+        <DocumentsForm homeModal={true} rootStore={this.props.rootStore} onSubmit={() => this.props.closeModal()} />
+      </div>
+    )
+  }
+
   render () {
     return (
       <div className='sk-pop-up-container'>
         {this.props.type === 'needSyllabus' &&
-          <SkModal closeModal={() => this.closeModal()}>
-            {this.renderNeedSyllabusPopUp()}
-          </SkModal>
+          this.renderNeedSyllabusPopUp()
         }
         {this.props.type === 'needPrimarySchool' &&
           <SkModal>
@@ -71,6 +76,11 @@ class PopUp extends React.Component {
         {this.props.type === 'getMajor' &&
           <SkModal closeModal={() => this.closeModal()}>
             {this.renderGetMajor()}
+          </SkModal>
+        }
+        {this.props.type === 'getResume' &&
+          <SkModal closeModal={() => this.closeModal()}>
+            {this.renderGetResume()}
           </SkModal>
         }
       </div>

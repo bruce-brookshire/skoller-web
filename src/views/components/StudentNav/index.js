@@ -35,10 +35,10 @@ class StudentNav extends React.Component {
     if (this.props.rootStore.studentNavStore.jobsMode) {
       return (
         <div className="s-nav-wrapper">
-          <div className="s-nav">
-            <NavItem pageName="jobs" text="Home" />
+          <div className="s-nav" style={this.props.rootStore.studentNavStore.jobsMode ? {backgroundColor: '#5e5e5e', borderRight: '1px solid #7e7d7d'} : {}}>
+            {/* <NavItem pageName="jobs" text="Home" /> */}
             <NavItem pageName="jobs/profile" text="Profile" />
-            {/* <NavItem pageName="jobs/resume" text="Résumé" /> */}
+            {/* <NavItem pageName="jobs/resume" text="Custom Resume (Coming Soon)" /> */}
             {/* <NavItem pageName="activity" text="Activity" />
             <NavItem pageName="chat" text="Chat" /> */}
             {this.renderLogout()}
@@ -51,7 +51,7 @@ class StudentNav extends React.Component {
           <div className="s-nav">
             <NavItem pageName="home" text="Home" />
             <NavItem pageName="classes" text="Classes" />
-            <NavItem pageName="tasks" text="Tasks" />
+            <NavItem pageName="tasks" text="To-Do's" />
             <NavItem pageName="calendar" text="Calendar" />
             {this.props.rootStore.studentClassesStore.classes.filter(cl => cl.status.id === 1400).length !== 0 &&
               <NavItem pageName="share" text="Share" />

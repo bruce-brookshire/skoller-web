@@ -71,7 +71,9 @@ class ChangeSchool extends React.Component {
     if (value) {
       this.setState({loadingAutocomplete: true, value})
       actions.schools.searchSchools(value).then((schools) => {
-        this.setState({schools, loadingAutocomplete: false})
+        if (value === this.state.value) {
+          this.setState({schools, loadingAutocomplete: false})
+        }
       }).catch(() => { this.setState({loadingAutocomplete: false}) })
     } else {
       this.setState({schools: [], loadingAutocomplete: false})

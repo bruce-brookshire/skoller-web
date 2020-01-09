@@ -19,7 +19,7 @@
     }
 
     .disabled {
-      @include disabled-button;
+      @include disabled-jobs-button;
       margin-top: 1rem;
     }
 
@@ -67,7 +67,7 @@
       p {
         margin: 2px 8px 0 0;
         cursor: pointer;
-        color: $cn-color-green;
+        color: $sk-jobs-dark-green;
       }
     }
 
@@ -76,7 +76,7 @@
     }
 
     .focus {
-      border-color: $cn-color-green;
+      border-color: $sk-jobs-dark-green;
     }
 
     .error {
@@ -85,7 +85,7 @@
 
     .jobs-form-select {
       .sk-select {
-        border-color: $cn-color-green;
+        border-color: $sk-jobs-dark-green;
       }
     }
 
@@ -102,7 +102,7 @@
       }
 
       .jobs-form-select .sk-select {
-        border-color: $cn-color-green;
+        border-color: $sk-jobs-dark-green;
       }
     }
 
@@ -113,14 +113,14 @@
 
     .jobs-form-selections {
       cursor: pointer;
-      color: $cn-color-green;
+      color: $sk-jobs-dark-green;
       margin: 0;
     }
 
     .jobs-form-checkbox {
       margin-top: 0.5rem;
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       flex-wrap: wrap;
 
       .checkbox-container {
@@ -179,7 +179,7 @@
         }
 
         input:checked ~ .checkmark {
-          background-color: $cn-color-green;
+          background-color: $sk-jobs-dark-green;
         }
 
         input:checked ~ .checkmark:after {
@@ -289,7 +289,7 @@
             }
     
             input:checked ~ .checkmark {
-              background-color: $cn-color-green;
+              background-color: $sk-jobs-dark-green;
             }
     
             input:checked ~ .checkmark:after {

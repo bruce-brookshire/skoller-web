@@ -71,6 +71,12 @@ class Home extends React.Component {
         }
       })
       .catch(() => false)
+    if (this.props.rootStore.studentJobsStore.hasJobsProfile && !showPopUp) {
+      if (this.props.rootStore.studentJobsStore.profile.resume_url === null) {
+        showPopUp = true
+        type = 'getResume'
+      }
+    }
     if (showPopUp) {
       this.setState({popUp: {type: type, show: true}})
     }
@@ -166,14 +172,14 @@ class Home extends React.Component {
           </div>
           <div className="home-column">
             <div className="home-shadow-box">
-              <h1 className='home-heading' onClick={() => browserHistory.push('/student/tasks')}>Tasks</h1>
-              <div className="home-sub-heading">Due soon</div>
+              <h1 className='home-heading' onClick={() => browserHistory.push('/student/tasks')}>To-Do&apos;s</h1>
+              <div className="home-sub-heading">Next 10 days</div>
               <div className="home-card-content">
                 <HomeTasks />
               </div>
             </div>
             {this.state.classes.length > 2 ? <HomeShare classes={this.state.classes} /> : null}
-            <HomeJobs updateStudent={() => this.updateStudent()} />
+            <HomeJobs updateStudent={() => this.updateStudent()} user={this.props.rootStore.userStore.user} />
             {/* // this is for chat once we get it ready
             <div className="home-shadow-box">
               <h1>Chat</h1>

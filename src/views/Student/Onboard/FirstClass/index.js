@@ -347,7 +347,6 @@ class FirstClass extends React.Component {
   }
 
   render () {
-    console.log(this.props.rootStore.userStore.user)
     return (
       <div>
         {this.state.loading
@@ -357,9 +356,7 @@ class FirstClass extends React.Component {
             onSubmit={() => this.props.onSubmit()}
             disableNext={false}
             cl={this.state.firstClass}
-            closeModal={false}
-            progress={0.75}
-            onboard={true}
+            closeModal={() => this.props.closeModal()}
           />
         }
       </div>
@@ -372,7 +369,8 @@ FirstClass.propTypes = {
   rootStore: PropTypes.object,
   renderPartner: PropTypes.func,
   partner: PropTypes.object,
-  disableNext: PropTypes.bool
+  disableNext: PropTypes.bool,
+  closeModal: PropTypes.func
 }
 
 export default FirstClass

@@ -210,16 +210,16 @@ class ExperienceForm extends React.Component {
         </div>
         <div className='jobs-form-row'>
           <div className='jobs-form-label'>Description</div>
-          <div className='jobs-form-sub-label'>Here&apos;s an example of a good description: {
+          <div className='jobs-form-sub-label'>Here&apos;s an example of a good description point: {
             this.props.isVolunteer
               ? <div>
                 <div>• Helped serve food to homeless.</div>
-                <div>• Mentored group of youth at kitchen.</div>
-                <div>• Led a team of volunteers.</div>
+                {/* <div>• Mentored group of youth at kitchen.</div>
+                <div>• Led a team of volunteers.</div> */}
               </div>
               : <div>
-                <div>• Head of growth for startup company.</div>
-                <div>• Oversaw a 35% increase in sales.</div>
+                {/* <div>• Head of growth for startup company.</div> */}
+                {/* <div>• Oversaw a 35% increase in sales.</div> */}
                 <div>• Led a team of 10 staff members.</div>
               </div>
           }

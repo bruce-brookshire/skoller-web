@@ -99,7 +99,7 @@ const router = (
           <Route path='/student/class/:classId/assignments/:assignmentId' component={AssignmentDetail} />
           <Route path='/student/class/:classId/add-assignment' component={AddAssignment} />
           <Route path='/student/jobs' onEnter={() => toggleJobsMode(true)} onLeave={() => toggleJobsMode(false)}>
-            <IndexRedirect to='/student/jobs/home' />
+            <IndexRedirect to='/student/jobs/profile' />
             <Route path='/student/jobs/home' component={Jobs} />
             <Route path='/student/jobs/profile' component={Profile} />
             <Route path='/student/jobs/resume' component={Resume} />
@@ -178,11 +178,17 @@ function requireAuth (nextState, replaceState) {
     userStore.authToken = cookie.get('skollerToken')
     actions.auth.getUserByToken()
       .then((user) => {
-        console.log('requireAuth user', user)
-        authenticateStudent(user.user).then(() => {
-          userStore.setFetchingUser(false)
-        }).catch(() => { userStore.setFetchingUser(false) })
+        console.log('getUserByToken', user)
 
+        if (user.user.roles.filter(role => role.id === 100)) {
+          console.log('is syllabus worker')
+          authenticateStudent(user.user).then(() => {
+            userStore.setFetchingUser(false)
+          }).catch(() => { userStore.setFetchingUser(false) })
+        } else if (user.user.roles.filter(role => role.id === 200)) {
+          console.log('is syllabus worker')
+          userStore.setFetchingUser(false)
+        }
         userStore.setFetchingUser(false)
       })
       .catch((r) => {

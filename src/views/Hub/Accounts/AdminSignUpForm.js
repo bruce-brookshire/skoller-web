@@ -35,6 +35,7 @@ class AdminSignUpForm extends React.Component {
   onSubmit () {
     const form = this.state.form
     if (this.props.validateForm(form, requiredFields)) {
+      console.log(form)
       actions.auth.registerUserAdmin(form).then((user) => {
         this.props.resetValidation()
         this.props.onSubmit(user)

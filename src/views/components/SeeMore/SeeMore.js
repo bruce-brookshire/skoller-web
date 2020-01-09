@@ -11,7 +11,7 @@ class SeeMore extends React.Component {
   }
 
   render () {
-    if (this.state.seeMore) {
+    if (this.state.seeMore && !this.props.disable) {
       return (
         <div
           className='see-more'
@@ -43,7 +43,8 @@ class SeeMore extends React.Component {
 SeeMore.propTypes = {
   children: PropTypes.array,
   hideHeight: PropTypes.string,
-  customText: PropTypes.string
+  customText: PropTypes.string,
+  disable: PropTypes.bool
 }
 
 export default SeeMore
