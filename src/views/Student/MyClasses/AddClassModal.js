@@ -32,10 +32,10 @@ class AddClassModal extends React.Component {
   }
 
   onSubmit () {
-    return null
+    // return null
     // console.log('onSubmit')
     // this.props.rootStore.studentClassesStore.updateClasses()
-    // this.props.closeModal()
+    this.props.closeModal()
   }
 
   launchClassStatusModal (cl) {
@@ -62,7 +62,7 @@ class AddClassModal extends React.Component {
           <SkModal
             title={this.state.formState === 'editSchool' ? 'Join a School' : 'Join a Class'}
             closeModal={() => {
-              this.closeModal()
+              !this.state.classStatusModal.show && this.closeModal()
             }}
           >
             <div className='sk-add-class-modal'>

@@ -14,7 +14,7 @@ class TaskCard extends React.Component {
     if (today.isSame(dueDate, 'date')) {
       return 'Today'
     } else {
-      return daysTillDue >= 7 ? dueDate.from(today, 'days') : moment.weekdays((daysTillDue + today.weekday()) % 7)
+      return daysTillDue >= 7 ? 'in ' + dueDate.from(today, 'days') : 'on ' + moment.weekdays((daysTillDue + today.weekday()) % 7)
     }
   }
 
@@ -33,7 +33,7 @@ class TaskCard extends React.Component {
             <p className="task-card-right"><WeightIcon color={color} weight={task.weight} /></p>
           </div>
           <div className="task-card-content">
-            <p className="task-card-left">{'Due in ' + this.formatDueDate(task.due)}</p>
+            <p className="task-card-left">{'Due ' + this.formatDueDate(task.due)}</p>
             <p className="task-card-left" style={{color: '#a9a9a9'}}>{this.props.clName}</p>
           </div>
         </div>

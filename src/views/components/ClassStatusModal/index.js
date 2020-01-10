@@ -87,7 +87,7 @@ class ClassStatusModal extends React.Component {
       status = 'live'
       sammiMessage = `WOOHOO! Your class is live ⚡️`
     }
-    if (cl.school.is_syllabus_overload) {
+    if (cl.school.is_syllabus_overload && id < 1400) {
       status = 'syllabusOverload'
       sammiMessage = <p>Due to high volume, it could take me <b>a few days</b> to set up this class.</p>
     }
@@ -232,7 +232,7 @@ class ClassStatusModal extends React.Component {
     return (
       !this.state.uploadAdditionalDocumentsView &&
       <div className='sk-class-status-modal-checklist-container'>
-        <ClassStatusImage status={this.state.fullClass.school.is_syllabus_overload ? 1500 : this.state.cl.status.id} />
+        <ClassStatusImage status={(this.state.fullClass.school.is_syllabus_overload && this.state.fullClass.status.id < 1400) ? 1500 : this.state.cl.status.id} />
         {this.state.status === 'live' &&
           this.renderDownloadCompleteDownload()
         }
@@ -394,6 +394,7 @@ class ClassStatusModal extends React.Component {
   }
 
   sendToDiy () {
+    console.log('send to DIY')
     browserHistory.push({
       pathname: `/class/${this.state.cl.id}/syllabus_tool/`,
       state: {
@@ -417,8 +418,9 @@ class ClassStatusModal extends React.Component {
         sammiMessage: `Woohoo! You've submitted your syllabus.`
       })
     } else if (this.state.status === 'live') {
+      console.log(this.props.onSubmit)
       this.props.onSubmit()
-    } else if (this.state.status === 'inReview') {
+    } else if (this.state.status === 'inReview' || this.state.status === 'syllabusOverload') {
       this.sendToDiy()
     } else if (this.state.status === 'diy') {
       this.setState({loading: true})
@@ -461,7 +463,7 @@ class ClassStatusModal extends React.Component {
           </p>
         </div>
       )
-    } else if (this.state.status === 'inReview') {
+    } else if (this.state.status === 'inReview' || this.state.status === 'syllabusOverload') {
       return (
         <div>
           <p style={{margin: '0', textAlign: 'center'}}>Don&apos;t want to wait?</p>

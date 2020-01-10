@@ -21,6 +21,7 @@ class Tasks extends React.Component {
         <div className='tasks-wrapper'>
           <div className='tasks-container'>
             <h1>To-Do&apos;s</h1>
+            <p className='tasks-sub-heading'>Rest of the semester</p>
             <TasksList />
           </div>
         </div>
