@@ -26,63 +26,32 @@ class MyClasses extends React.Component {
 
   componentWillMount () {
     this.props.rootStore.studentNavStore.setActivePage('classes')
-    this.updateClasses()
+    // this.updateClasses()
   }
 
   findFullClass (classId) {
-    const {classes} = this.state
-
-    return classes.find((cl) => cl.id === classId)
+    return this.props.rootStore.studentClassesStore.classes.find((cl) => cl.id === classId)
   }
 
   updateClasses () {
-    const {user: {student}} = this.props.rootStore.userStore
-    actions.classes.getStudentClassesById(student.id).then((classes) => {
-      this.setState({classes, loading: false})
-    }).catch(() => false)
+    // const {user: {student}} = this.props.rootStore.userStore
+    // actions.classes.getStudentClassesById(student.id).then((classes) => {
+    //   this.setState({classes, loading: false})
+    // }).catch(() => false)
+    this.props.rootStore.studentClassesStore.updateClasses()
   }
 
-  updateClass (cl) {
-    actions.classes.getClassById(cl.id).then(cl => {
-      const index = this.state.classes.findIndex(c => c.id === cl.id)
-      const newClasses = this.state.classes
-      newClasses[index] = cl
-      this.setState({classes: newClasses})
-    }).catch(() => false)
-  }
-
-  assignColors () {
-    const { classes } = this.state
-    if (classes) {
-      const colorsInUse = []
-      const colors = [
-        '#9b55e5ff', // purple
-        '#ff71a8ff', // pink
-        '#57b9e4ff', // blue
-        '#4cd8bdff', // mint
-        '#4add58ff', // green
-        '#f7d300ff', // yellow
-        '#ffae42ff', // orange
-        '#dd4a63ff' // red
-      ]
-      classes.forEach(cl => {
-        if (!cl.color) {
-          colors.forEach(async color => {
-            if (colorsInUse.indexOf(color) !== -1) {
-              cl.color = color
-              await actions.studentclasses.updateClassColor(cl).then((res) => {
-                console.log(res)
-              }).catch(() => false)
-              colorsInUse.push(color)
-            }
-          })
-        }
-      })
-    }
-  }
+  // updateClass (cl) {
+  //   actions.classes.getClassById(cl.id).then(cl => {
+  //     const index = this.props.rootStore.studentClassesStore.classes.findIndex(c => c.id === cl.id)
+  //     const newClasses = this.props.rootStore.studentClassesStore.classes
+  //     newClasses[index] = cl
+  //     this.setState({classes: newClasses})
+  //   }).catch(() => false)
+  // }
 
   numberOfClassesNeedingSyllabus () {
-    return this.state.classes.filter((item, index) => {
+    return this.props.rootStore.studentClassesStore.classes.filter((item, index) => {
       var nameL = item.status.name.toLowerCase()
       return ['new class', 'needs setup', 'needs student input', 'class setup', 'class issue'].includes(nameL) && !item.status.is_complete
     }).length
@@ -114,17 +83,17 @@ class MyClasses extends React.Component {
         {this.renderNeedsSyllabusInfo()}
         <div className='cn-table-grid-container'>
           <ClassList
-            classes={this.state.classes}
+            classes={this.props.rootStore.studentClassesStore.classes}
             emptyMessage='You are not enrolled in any classes.'
             onSelect={this.onClassSelect.bind(this)}
           />
-          {this.state.classes.length > 1 &&
+          {this.props.rootStore.studentClassesStore.classes.length > 1 &&
             <button className='button add-button' onClick={() => this.setState({showAddClassModal: true})}>
               Join a Class
             </button>
           }
-          <JoinFirstClassPrompt onAddClass={() => this.updateClasses()} show={this.state.classes.length === 0} />
-          <SecondClassPrompt onAddClass={() => this.updateClasses()} show={this.state.classes.length === 1} />
+          <JoinFirstClassPrompt onAddClass={() => this.updateClasses()} show={this.props.rootStore.studentClassesStore.classes.length === 0} />
+          <SecondClassPrompt onAddClass={() => this.updateClasses()} show={this.props.rootStore.studentClassesStore.classes.length === 1} />
         </div>
       </div>
     )
@@ -135,7 +104,6 @@ class MyClasses extends React.Component {
     // because ClassList will not return it
 
     let fullClass = this.findFullClass(cl.id)
-    console.log(fullClass.status.id < 1400)
     if (fullClass.status.id < 1400) {
       this.setState({classStatusModal: {show: true, cl: fullClass}})
     } else {
@@ -188,7 +156,7 @@ class MyClasses extends React.Component {
   render () {
     return (
       <StudentLayout>
-        {this.state.loading
+        {this.props.rootStore.studentClassesStore.loading
           ? <SkLoader />
           : this.renderView()}
       </StudentLayout>
