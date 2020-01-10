@@ -7,43 +7,42 @@ import SkLoader from '../../../assets/sk-icons/SkLoader'
 import moment from 'moment'
 
 @inject('rootStore') @observer
-
 class TasksList extends React.Component {
   static studentClasses = {}
 
   constructor (props) {
     super(props)
     this.state = {
-      classes: [],
-      tasks: [],
-      loading: true
+      classes: this.props.rootStore.studentClassesStore.classes,
+      tasks: this.props.rootStore.studentAssignmentsStore.assignments,
+      loading: false
     }
 
-    this.getStudentTasks()
+    // this.getStudentTasks()
   }
 
   async getStudentTasks () {
-    const {user: {student}} = this.props.rootStore.userStore
+    // const {user: {student}} = this.props.rootStore.userStore
 
-    await actions.classes.getStudentClassesById(student.id).then((classes) => {
-      classes.forEach(studentClass => { TasksList.studentClasses[studentClass.id] = studentClass })
-      this.setState({classes})
-    }).catch(() => false)
+    // await actions.classes.getStudentClassesById(student.id).then((classes) => {
+    //   classes.forEach(studentClass => { TasksList.studentClasses[studentClass.id] = studentClass })
+    //   this.setState({classes})
+    // }).catch(() => false)
 
-    await actions.assignments.getTaskAssignments(student.id).then((tasks) => {
-      const parentClassGetter = function () {
-        return TasksList.studentClasses[this.class_id]
-      }
-      tasks.forEach(task => {
-        task.getParentClass = parentClassGetter.bind(task)
-      })
-      this.setState({tasks, loading: false})
-    }).catch(() => false)
+    // await actions.assignments.getTaskAssignments(student.id).then((tasks) => {
+    //   const parentClassGetter = function () {
+    //     return TasksList.studentClasses[this.class_id]
+    //   }
+    //   tasks.forEach(task => {
+    //     task.getParentClass = parentClassGetter.bind(task)
+    //   })
+    //   this.setState({tasks, loading: false})
+    // }).catch(() => false)
   }
 
   getClassForTask (task) {
     let clName, clColor
-    this.state.classes.forEach(cl => {
+    this.props.rootStore.studentClassesStore.classes.forEach(cl => {
       if (cl.id === task.class_id) {
         clName = cl.name
         clColor = cl.color
@@ -62,13 +61,13 @@ class TasksList extends React.Component {
 
   renderTasks () {
     let i = 0
-    if (this.state.tasks.length === 0) {
+    if (this.props.rootStore.studentAssignmentsStore.assignments.length === 0) {
       return (
         this.renderNoTasks()
       )
     } else {
       let taskCount = 0
-      this.state.tasks.forEach(task => {
+      this.props.rootStore.studentAssignmentsStore.assignments.forEach(task => {
         let daysAway = moment(task.due).diff(moment(), 'days')
         let maxDays = this.props.maxDays ? this.props.maxDays : 10000
         let maxTasks = this.props.maxTasks ? this.props.maxTasks : 10000
@@ -76,12 +75,11 @@ class TasksList extends React.Component {
           taskCount += 1
         }
       })
-      console.log(taskCount)
       if (taskCount === 0) {
         return this.renderNoTasks()
       } else {
         return (
-          this.state.tasks.map(task => {
+          this.props.rootStore.studentAssignmentsStore.assignments.map(task => {
             let cl = this.getClassForTask(task)
             let daysAway = moment(task.due).diff(moment(), 'days')
             let maxDays = this.props.maxDays ? this.props.maxDays : 10000
@@ -109,8 +107,8 @@ class TasksList extends React.Component {
   render () {
     return (
       <div>
-        {this.state.loading && <SkLoader />}
-        {!this.state.loading && this.renderContent()}
+        {(this.props.rootStore.studentAssignmentsStore.loading || this.props.rootStore.studentClassesStore.loading) && <SkLoader />}
+        {!(this.props.rootStore.studentAssignmentsStore.loading || this.props.rootStore.studentClassesStore.loading) && this.renderContent()}
       </div>
     )
   }

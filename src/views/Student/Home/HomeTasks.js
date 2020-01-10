@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import TasksList from '../Tasks/TasksList'
 
@@ -12,12 +11,6 @@ class HomeTasks extends React.Component {
       </div>
     )
   }
-}
-
-HomeTasks.propTypes = {
-  classes: PropTypes.object,
-  onAddClass: PropTypes.func,
-  onClassSelect: PropTypes.func
 }
 
 export default HomeTasks

@@ -13,6 +13,7 @@ import ClassStatusModal from '../../components/ClassStatusModal'
 class PopUp extends React.Component {
   closeModal = () => {
     this.props.rootStore.userStore.setPopUpState(false)
+    this.props.refreshClasses()
     this.props.closeModal()
   }
 
@@ -93,7 +94,8 @@ class PopUp extends React.Component {
 PopUp.propTypes = {
   closeModal: PropTypes.func,
   rootStore: PropTypes.obj,
-  type: PropTypes.string
+  type: PropTypes.string,
+  refreshClasses: PropTypes.func
 }
 
 export default PopUp

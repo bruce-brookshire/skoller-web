@@ -22,7 +22,7 @@ class Home extends React.Component {
       assignments: [],
       popUp: {show: false, type: null},
       classStatusModal: {show: false, cl: null},
-      loading: true
+      loading: false
     }
     this.updateClasses()
     this.props.rootStore.studentNavStore.setActivePage('home')
@@ -90,17 +90,13 @@ class Home extends React.Component {
   }
 
   async updateClasses () {
-    const {user: {student}} = this.props.rootStore.userStore
-    await actions.classes.getStudentClassesById(student.id).then((classes) => {
-      this.setState({classes})
-    }).catch(() => false)
+    this.props.rootStore.studentAssignmentsStore.updateAssignments()
+    this.props.rootStore.studentClassesStore.updateClasses()
     this.setState({loading: false})
   }
 
   findFullClass (classId) {
-    const {classes} = this.state
-
-    return classes.find((cl) => cl.id === classId)
+    return this.props.rootStore.studentClassesStore.classes.find((cl) => cl.id === classId)
   }
 
   onClassSelect = (cl) => {
@@ -144,7 +140,7 @@ class Home extends React.Component {
     return (
       <div>
         {this.state.popUp.show &&
-          <PopUp closeModal={() => this.closePopUp()} type={this.state.popUp.type}/>
+          <PopUp closeModal={() => this.closePopUp()} type={this.state.popUp.type} refreshClasses={() => this.updateClasses()}/>
         }
         {this.state.classStatusModal.show &&
           <ClassStatusModal
@@ -158,10 +154,10 @@ class Home extends React.Component {
             <div className="home-shadow-box">
               <h1 className='home-heading' onClick={() => browserHistory.push('/student/classes')}>Classes</h1>
               <div className="home-card-content">
-                <HomeClasses classes={this.state.classes} onAddClass={() => this.closeAddClassModal()} onClassSelect={this.onClassSelect} launchClassStatusModal={(cl) => this.launchClassStatusModal(cl)} />
+                <HomeClasses classes={this.props.rootStore.studentClassesStore.classes} onAddClass={() => this.closeAddClassModal()} onClassSelect={this.onClassSelect} launchClassStatusModal={(cl) => this.launchClassStatusModal(cl)} />
               </div>
             </div>
-            {this.state.classes.length <= 2 ? <HomeShare classes={this.state.classes} /> : null}
+            {this.props.rootStore.studentClassesStore.classes.length <= 2 ? <HomeShare classes={this.props.rootStore.studentClassesStore.classes} /> : null}
             {/* // this is for activity once we get it ready
             <div className="home-shadow-box">
               <h1>Activity</h1>
@@ -178,7 +174,7 @@ class Home extends React.Component {
                 <HomeTasks />
               </div>
             </div>
-            {this.state.classes.length > 2 ? <HomeShare classes={this.state.classes} /> : null}
+            {this.props.rootStore.studentClassesStore.classes.length > 2 ? <HomeShare classes={this.props.rootStore.studentClassesStore.classes} /> : null}
             <HomeJobs updateStudent={() => this.updateStudent()} user={this.props.rootStore.userStore.user} />
             {/* // this is for chat once we get it ready
             <div className="home-shadow-box">

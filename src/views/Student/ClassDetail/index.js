@@ -90,7 +90,7 @@ class ClassDetail extends React.Component {
     const {cl} = this.state
     return (
       <div className='cn-class-assignments-title' style={{ color: '#' + cl.color }}>
-        <span>{cl.name}</span>
+        <h1 style={{textAlign: 'center', margin: '0'}}>{cl.name}</h1>
         {/* <i className='fas fa-info-circle'></i> */}
       </div>
     )
@@ -111,20 +111,22 @@ class ClassDetail extends React.Component {
 
   renderClassAssignmentsHeader () {
     return (
-      <div className='cn-class-assignments-header'>
-        <div className='cn-class-assignments-header-item'>
-          {this.renderBackButton()}
-          {/* {this.renderSpeculateGradeButton()} */}
-          {this.renderDocumentUploadButton()}
-        </div>
-        <div className='cn-class-assignments-header-item text-center'>
-          {this.renderClassTitle()}
-          {this.renderCurrentClassGrade()}
-          {this.renderDropClassButton()}
-        </div>
-        <div className='cn-class-assignments-header-item text-right'>
-          {this.renderAddAssignmentButton()}
-          {this.renderClassEnrollment()}
+      <div>
+        {this.renderClassTitle()}
+        <div className='cn-class-assignments-header'>
+          <div className='cn-class-assignments-header-item'>
+            {this.renderBackButton()}
+            {/* {this.renderSpeculateGradeButton()} */}
+            {this.renderDocumentUploadButton()}
+          </div>
+          <div className='cn-class-assignments-header-item text-center'>
+            {this.renderCurrentClassGrade()}
+            {this.renderDropClassButton()}
+          </div>
+          <div className='cn-class-assignments-header-item text-right'>
+            {this.renderAddAssignmentButton()}
+            {this.renderClassEnrollment()}
+          </div>
         </div>
       </div>
     )
