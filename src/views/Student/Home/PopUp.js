@@ -6,7 +6,8 @@ import FirstClass from '../Onboard/FirstClass/index'
 import SelectSchool from '../Onboard/SelectSchool'
 import AddClassModal from '../MyClasses/AddClassModal'
 import MajorForm from '../MiscViews/MajorForm'
-import DocumentsForm from '../Jobs/components/DocumentsForm';
+import DocumentsForm from '../Jobs/components/DocumentsForm'
+import ClassStatusModal from '../../components/ClassStatusModal'
 
 @inject('rootStore') @observer
 class PopUp extends React.Component {
@@ -17,7 +18,8 @@ class PopUp extends React.Component {
 
   renderNeedSyllabusPopUp () {
     return (
-      <FirstClass disableNext={false} closeModal={() => this.props.closeModal()} />
+      // <FirstClass disableNext={false} closeModal={() => this.props.closeModal()} />
+      <ClassStatusModal cl={this.props.rootStore.studentClassesStore.classes[0]} closeModal={() => this.props.closeModal()} />
     )
   }
 
