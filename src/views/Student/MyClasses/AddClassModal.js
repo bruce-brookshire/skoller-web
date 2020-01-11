@@ -4,7 +4,10 @@ import SkModal from '../../components/SkModal/SkModal'
 import PropTypes from 'prop-types'
 import FindAClass from '../Onboard/FindAClass'
 import ChangeSchool from './ChangeSchool'
-import ClassStatusModal from '../../components/ClassStatusModal';
+import ClassStatusModal from '../../components/ClassStatusModal'
+import moment from 'moment'
+import SkLoader from '../../../assets/sk-icons/SkLoader';
+import actions from '../../../actions'
 
 @inject('rootStore') @observer
 class AddClassModal extends React.Component {
@@ -20,7 +23,35 @@ class AddClassModal extends React.Component {
       classStatusModal: {
         show: false,
         cl: null
-      }
+      },
+      loading: false
+    }
+
+    this.checkForActiveTerm()
+  }
+
+  checkForActiveTerm () {
+    if (moment(this.props.rootStore.userStore.user.student.primary_period.end_date).isBefore(moment())) {
+      this.setState({loading: true})
+      let activeMainTerms = []
+      this.props.rootStore.userStore.user.student.primary_school.periods.forEach(term => {
+        if (term.is_main_period && moment(term.end_date).isAfter(moment())) {
+          activeMainTerms.push(term)
+        }
+      })
+
+      let terms = activeMainTerms.sort((a, b) => moment(a.start_date).isAfter(moment(b.start_date)) ? 0 : -1)
+      actions.students.setStudentPrimaryPeriod(this.props.rootStore.userStore.user.id, this.props.rootStore.userStore.user.student.id, terms[0].id)
+        .then((r) => {
+          this.setState({
+            params: {
+              schoolChoice: this.props.rootStore.userStore.user.student.primary_school,
+              termChoice: r
+            },
+            loading: false
+          })
+        })
+        .catch(e => console.log(e))
     }
   }
 
@@ -32,10 +63,10 @@ class AddClassModal extends React.Component {
   }
 
   onSubmit () {
-    return null
+    // return null
     // console.log('onSubmit')
     // this.props.rootStore.studentClassesStore.updateClasses()
-    // this.props.closeModal()
+    this.props.closeModal()
   }
 
   launchClassStatusModal (cl) {
@@ -62,7 +93,7 @@ class AddClassModal extends React.Component {
           <SkModal
             title={this.state.formState === 'editSchool' ? 'Join a School' : 'Join a Class'}
             closeModal={() => {
-              this.closeModal()
+              !this.state.classStatusModal.show && this.closeModal()
             }}
           >
             <div className='sk-add-class-modal'>
@@ -87,7 +118,9 @@ class AddClassModal extends React.Component {
 
   render () {
     return (
-      this.renderAddClassModal()
+      this.state.loading
+        ? <SkLoader />
+        : this.renderAddClassModal()
     )
   }
 }

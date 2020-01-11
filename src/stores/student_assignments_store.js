@@ -1,4 +1,6 @@
-import { extendObservable, computed } from 'mobx'
+import { extendObservable, computed, action } from 'mobx'
+import actions from '../actions'
+import stores from './index'
 
 class StudentAssignmentsStore {
   constructor () {
@@ -22,6 +24,37 @@ class StudentAssignmentsStore {
     } catch (error) {
       return false
     }
+  }
+
+  getAssignments () {
+    this.loading = true
+    actions.assignments.getAllStudentAssignments(stores.userStore.user.student.id)
+      .then((data) => {
+        this.assignments = data
+        this.getAssignmentsSuccess()
+      })
+      .catch(() => {
+        this.getAssignmentsError()
+      })
+  }
+
+  @action
+  getAssignmentsSuccess () {
+    this.loading = false
+  }
+
+  @action
+  getAssignmentsError () {
+    this.loading = false
+  }
+
+  updateAssignments () {
+    this.loading = true
+    actions.assignments.getAllStudentAssignments(stores.userStore.user.student.id)
+      .then((data) => {
+        this.assignments = data
+        this.getAssignmentsSuccess()
+      })
   }
 }
 

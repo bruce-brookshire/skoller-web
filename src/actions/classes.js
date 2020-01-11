@@ -1,7 +1,7 @@
 import { csv, get, post, del, put } from '../utilities/api'
 import { showSnackbar } from '../utilities/snackbar'
 import stores from '../stores'
-const { userStore } = stores
+const { userStore, studentClassesStore } = stores
 
 /*
  * Search classes by param
@@ -98,9 +98,13 @@ const processColor = (cl, studentId) => {
       `/api/v1/students/${studentId}/classes/${cl.id}`,
       { color: randomFreeColor },
       'Error fetching class. Try again.'
-    ).catch(error => {
-      return Promise.reject(error)
-    })
+    )
+      .then(() => {
+        stores.studentClassesStore.updateClasses()
+      })
+      .catch(error => {
+        return Promise.reject(error)
+      })
     return '#' + randomFreeColor
   }
 }

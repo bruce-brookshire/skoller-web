@@ -278,7 +278,7 @@ class Profile extends React.Component {
           </div>
         }
         {!(student.degree_type && student.grad_year && profile.gpa && student.fields_of_study.length > 0) &&
-          this.renderButton('Fill Out Your Education', 'education')
+          this.renderButton('Add Your GPA', 'education')
         }
       </ProfileBlock>
     )
@@ -664,32 +664,32 @@ class Profile extends React.Component {
         >
           {profile.social_links.linkedin &&
             <div className='jobs-profile-block-row'>
-              <a href={profile.social_links.linkedin} className='jobs-profile-social-link'>{profile.social_links.linkedin}</a>
+              <a href={profile.social_links.linkedin} rel='noopener noreferrer' target='_blank' className='jobs-profile-social-link'>{profile.social_links.linkedin}</a>
             </div>
           }
           {profile.social_links.facebook &&
             <div className='jobs-profile-block-row'>
-              <a href={profile.social_links.facebook} className='jobs-profile-social-link'>{profile.social_links.facebook}</a>
+              <a href={profile.social_links.facebook} rel='noopener noreferrer' target='_blank' className='jobs-profile-social-link'>{profile.social_links.facebook}</a>
             </div>
           }
           {profile.social_links.twitter &&
             <div className='jobs-profile-block-row'>
-              <a href={profile.social_links.twitter} className='jobs-profile-social-link'>{profile.social_links.twitter}</a>
+              <a href={profile.social_links.twitter} rel='noopener noreferrer' target='_blank' className='jobs-profile-social-link'>{profile.social_links.twitter}</a>
             </div>
           }
           {profile.social_links.instagram &&
             <div className='jobs-profile-block-row'>
-              <a href={profile.social_links.instagram} className='jobs-profile-social-link'>{profile.social_links.instagram}</a>
+              <a href={profile.social_links.instagram} rel='noopener noreferrer' target='_blank' className='jobs-profile-social-link'>{profile.social_links.instagram}</a>
             </div>
           }
           {profile.social_links.github &&
             <div className='jobs-profile-block-row'>
-              <a href={profile.social_links.github} className='jobs-profile-social-link'>{profile.social_links.github}</a>
+              <a href={profile.social_links.github} rel='noopener noreferrer' target='_blank' className='jobs-profile-social-link'>{profile.social_links.github}</a>
             </div>
           }
           {profile.social_links.personal &&
             <div className='jobs-profile-block-row'>
-              <a href={profile.social_links.personal} className='jobs-profile-social-link'>{profile.social_links.personal}</a>
+              <a href={profile.social_links.personal} rel='noopener noreferrer' target='_blank' className='jobs-profile-social-link'>{profile.social_links.personal}</a>
             </div>
           }
         </ProfileBlock>
