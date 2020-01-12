@@ -59,6 +59,11 @@ class TasksList extends React.Component {
     )
   }
 
+  getSortedAssignments () {
+    return this.props.rootStore.studentAssignmentsStore.assignments
+      .sort((a, b) => moment(a.due).isBefore(moment(b.due)) ? -1 : 1)
+  }
+
   renderTasks () {
     let i = 0
     if (this.props.rootStore.studentAssignmentsStore.assignments.length === 0) {
@@ -67,7 +72,7 @@ class TasksList extends React.Component {
       )
     } else {
       let taskCount = 0
-      this.props.rootStore.studentAssignmentsStore.assignments.forEach(task => {
+      this.getSortedAssignments().forEach(task => {
         let daysAway = moment(task.due).diff(moment(), 'days')
         let maxDays = this.props.maxDays ? this.props.maxDays : 10000
         let maxTasks = this.props.maxTasks ? this.props.maxTasks : 10000
@@ -79,10 +84,10 @@ class TasksList extends React.Component {
         return this.renderNoTasks()
       } else {
         return (
-          this.props.rootStore.studentAssignmentsStore.assignments.map(task => {
+          this.getSortedAssignments().map(task => {
             let cl = this.getClassForTask(task)
             let daysAway = moment(task.due).diff(moment(), 'days')
-            let maxDays = this.props.maxDays ? this.props.maxDays : 10000
+            let maxDays = this.props.maxDays ? this.props.maxDays - 1 : 10000
             let maxTasks = this.props.maxTasks ? this.props.maxTasks : 10000
             i += 1
             if (daysAway <= maxDays && i <= maxTasks) {
