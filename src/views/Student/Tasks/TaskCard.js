@@ -3,14 +3,14 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import {browserHistory} from 'react-router'
 import {inject, observer} from 'mobx-react'
-import WeightIcon from './WeightIcon';
+import WeightIcon from './WeightIcon'
 
 @inject('rootStore') @observer
 class TaskCard extends React.Component {
   formatDueDate (dd) {
-    const today = moment()
-    const dueDate = moment(dd)
-    const daysTillDue = dueDate.diff(today, 'days')
+    let today = moment(0, 'HH')
+    let dueDate = moment(dd)
+    let daysTillDue = dueDate.diff(today, 'days')
     if (today.isSame(dueDate, 'date')) {
       return 'Today'
     } else {
