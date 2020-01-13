@@ -93,6 +93,7 @@ class NavBar extends React.Component {
               }
             }}
           />
+          <div className='cn-navbar-message sk-jobs-navbar-message'>{'From the classroom to your dream career.'}</div>
         </div>
         <div className='class-info'>
           {/* {this.renderClassInfo()} */}

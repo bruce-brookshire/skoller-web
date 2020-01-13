@@ -74,6 +74,16 @@
             }
           }
 
+          .jobs-profile-header-basic {
+            h1 {
+              font-size: 28px;
+              max-width: 200px;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              overflow: hidden;
+            }
+          }
+
           .jobs-profile-header-avatar {
             position: relative;
 
@@ -102,6 +112,11 @@
             .jobs-profile-header-avatar-edit {
               display: none;
             }
+          }
+
+          .jobs-profile-header-recruiter-contact {
+            color: $sk-jobs-light-green;
+            cursor: pointer;
           }
 
           .jobs-profile-header-score-container {

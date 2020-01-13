@@ -26,6 +26,7 @@ import DocumentsForm from '../components/DocumentsForm'
 import BasicInfoForm from '../components/BasicInfoForm'
 import AvatarModal from '../components/AvatarModal'
 import actions from '../../../../actions'
+import Welcome from '../components/Welcome'
 
 @inject('rootStore') @observer
 class ModalRouter extends React.Component {
@@ -186,6 +187,10 @@ class ModalRouter extends React.Component {
       return (
         <DocumentsForm homeModal={true} rootStore={this.props.rootStore} onSubmit={() => this.onSubmit()} />
       )
+    } else if (this.props.form === 'welcome') {
+      return (
+        <Welcome onSubmit={() => this.onSubmit()} />
+      )
     } else {
       return null
     }
@@ -194,7 +199,7 @@ class ModalRouter extends React.Component {
   render () {
     if (this.props.form && this.renderForm()) {
       return (
-        <SkModal closeModal={() => this.onClose()} disableOutsideClick={true}>
+        <SkModal closeModal={this.props.form !== 'welcome' && (() => this.onClose())} disableOutsideClick={true}>
           {this.renderForm()}
         </SkModal>
       )

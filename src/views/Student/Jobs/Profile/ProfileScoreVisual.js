@@ -101,7 +101,7 @@ class ProfileScoreVisual extends React.Component {
       )
     } else {
       return (
-        <div style={{height: '124px', width: '124px', margin: '1rem', fontWeight: '600'}}>
+        <div style={{height: '124px', width: '124px', minWidth: '124px', margin: '1rem', fontWeight: '600'}}>
           <CircularProgressbar
             value={percentage}
             text={`${percentage}%`}

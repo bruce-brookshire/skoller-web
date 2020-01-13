@@ -39,13 +39,13 @@ class AvatarModal extends React.Component {
 
   renderContent () {
     return (
-      <div className='jobs-welcome-modal'>
+      <div className='jobs-avatar-modal'>
         <h2 style={{textAlign: 'center', margin: '0'}}>
           Profile Picture
         </h2>
         <p>Did you know that companies are more likely to check out your profile if it&apos;s complimented with a profile picture?</p>
         {(this.state.preview || this.props.rootStore.userStore.user.avatar) && !this.state.clearCurrentAvatar
-          ? <div className='jobs-welcome-modal-image-preview'>
+          ? <div className='jobs-avatar-modal-image-preview'>
             <div className='image-preview' style={{backgroundImage: this.state.preview ? `url(${this.state.preview})` : `url(${this.props.rootStore.userStore.user.avatar})`}}>
               <div onClick={() => {
                 this.setState({file: null, preview: null, clearCurrentAvatar: this.props.rootStore.userStore.user.avatar ? true : false})
@@ -59,7 +59,7 @@ class AvatarModal extends React.Component {
           </div>
           : <div onClick={() => this.fileUploader.click()}>
             <p className='add-photo'>Add a profile picture</p>
-            <p className='jobs-welcome-modal-icon'><i className='far fa-user-circle' /></p>
+            <p className='jobs-avatar-modal-icon'><i className='far fa-user-circle' /></p>
             <input
               type="file"
               ref={fileUploader => { this.fileUploader = fileUploader }}
@@ -75,7 +75,7 @@ class AvatarModal extends React.Component {
           onClick={() => this.props.onSubmit()}
           className='do-later'
         >Do this later</p>
-        <div className={'jobs-welcome-modal-button ' + (this.state.file ? '' : 'disabled')}>
+        <div className={'jobs-avatar-modal-button ' + (this.state.file ? '' : 'disabled')}>
           <p onClick={() => this.onSubmit()}>Save photo</p>
         </div>
       </div>

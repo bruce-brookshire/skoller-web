@@ -174,10 +174,12 @@ import {
   getDegreeTypes,
   getEthnicityTypes,
   getStatusTypes,
+  getSearchTypes,
   editJobsProfile,
   createJobsProfile,
   uploadJobsDoc,
   addCareerActivity,
+  addActivity,
   deleteActivity,
   editActivity
 } from './jobs'
@@ -384,10 +386,12 @@ const actions = {
     getDegreeTypes,
     getEthnicityTypes,
     getStatusTypes,
+    getSearchTypes,
     editJobsProfile,
     createJobsProfile,
     uploadJobsDoc,
     addCareerActivity,
+    addActivity,
     deleteActivity,
     editActivity
   }
