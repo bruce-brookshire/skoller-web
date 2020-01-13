@@ -16,7 +16,7 @@ class BasicInfoForm extends React.Component {
       work_auth: profile.work_auth !== null ? profile.work_auth ? 'Yes' : 'No' : '',
       sponsorship_required: profile.sponsorship_required !== null ? profile.sponsorship_required ? 'Yes' : 'No' : '',
       state_code: profile.state_code !== null ? profile.state_code : '',
-      visibility: profile.job_profile_status.id === 100 ? 'Active' : 'Hidden'
+      visibility: profile.job_profile_status.id === 100 ? "Active - I'm currently looking for job opportunities!" : "Passive - I'm not looking for a job right now but I will be soon!"
     }
   }
 
@@ -88,7 +88,7 @@ class BasicInfoForm extends React.Component {
       work_auth: this.state.work_auth === 'Yes',
       sponsorship_required: this.state.sponsorship_required === 'Yes',
       state_code: this.state.state_code,
-      job_profile_status_id: this.state.visibility === 'Active' ? 100 : 200
+      job_profile_status_id: this.state.visibility === "Active - I'm currently looking for job opportunities!" ? 100 : 200
     }
     console.log(form)
     actions.jobs.editJobsProfile(form)
@@ -155,7 +155,7 @@ class BasicInfoForm extends React.Component {
   }
 
   renderVisibilityOptions () {
-    let options = ['Active', 'Hidden']
+    let options = ["Active - I'm currently looking for job opportunities!", "Passive - I'm not looking for a job right now but I will be soon!"]
     return (
       options.map(o => {
         return (

@@ -11,6 +11,7 @@ import ModalRouter from './ModalRouter'
 import moment from 'moment'
 import ExperienceCard from '../components/ExperienceCard'
 import SeeMore from '../../../components/SeeMore/SeeMore'
+import ToolTip from '../../../components/ToolTip';
 
 @inject('rootStore') @observer
 class Profile extends React.Component {
@@ -146,7 +147,7 @@ class Profile extends React.Component {
     } else if (this.props.rootStore.studentJobsStore.score <= 75) {
       strength = 'could be better!'
       color = '#F7D300'
-    } else if (this.props.rootStore.studentJobsStore.score <= 90) {
+    } else if (this.props.rootStore.studentJobsStore.score <= 100) {
       strength = 'very strong! '
     } else if (this.props.rootStore.studentJobsStore.score >= 100) {
       strength = 'fantastic. Nice work!'
@@ -169,7 +170,18 @@ class Profile extends React.Component {
               <div className='jobs-profile-header-score-text'>
                 <p><b style={{color: '#4a4a4a'}}>Your profile</b></p>
                 <p>Strength: <span style={{fontWeight: '600', color: color}}>{strength}</span></p>
-                <p>Status: {profile.job_profile_status.id === 100 ? <b style={{color: '#6ED6AE'}}>ACTIVE.</b> : <b style={{color: 'rgb(255, 65, 89)'}}>INACTIVE.</b>}</p>
+                <ToolTip
+                  tip={
+                    <div>
+                      {profile.job_profile_status.id === 100
+                        ? <p>Active - I&apos;m currently looking for job opportunities!</p>
+                        : <p>Passive - I am not looking for a job right now but I will be soon!</p>
+                      }
+                    </div>
+                  }
+                >
+                  <p style={{cursor: 'default'}}>Status: {profile.job_profile_status.id === 100 ? <b style={{color: '#6ED6AE'}}>ACTIVE.</b> : <b style={{color: 'rgb(255, 65, 89)'}}>PASSIVE.</b>}</p>
+                </ToolTip>
               </div>
               {!this.props.rootStore.studentJobsStore.backgroundLoading
                 ? <ProfileScoreVisual profile={profile} user={user} />
@@ -277,7 +289,7 @@ class Profile extends React.Component {
             })}</b></p>
           </div>
         }
-        {!(student.degree_type && student.grad_year && profile.gpa && student.fields_of_study.length > 0) &&
+        {profile.gpa === null &&
           this.renderButton('Add Your GPA', 'education')
         }
       </ProfileBlock>
@@ -755,6 +767,11 @@ class Profile extends React.Component {
     }
   }
 
+  onModalClose () {
+    this.setState({form: null})
+    this.props.rootStore.studentJobsStore.refreshJobsProfile()
+  }
+
   render () {
     if (this.props.rootStore.studentJobsStore.loading) {
       return (
@@ -766,7 +783,7 @@ class Profile extends React.Component {
         <StudentLayout>
           <div className='jobs-profile-container'>
             {this.renderContent()}
-            <ModalRouter form={this.state.form} onClose={() => this.setState({form: null})} />
+            <ModalRouter form={this.state.form} onClose={() => this.onModalClose()} />
           </div>
         </StudentLayout>
       )

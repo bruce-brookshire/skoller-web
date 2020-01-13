@@ -4,6 +4,7 @@
   justify-content: center;
   // margin-top: 0.5rem;
   margin: 1rem 1rem 1rem 1rem;
+  min-height: calc(100vh - 64px - 2rem);
 
   p {
     margin: 0;
@@ -107,7 +108,7 @@
           margin: 0 0 1rem 0;
 
           p {
-            width: 200px;
+            width: 230px;
           }
         }
 

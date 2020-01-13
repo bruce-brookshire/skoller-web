@@ -9,10 +9,12 @@ import WeightIcon from './WeightIcon'
 class TaskCard extends React.Component {
   formatDueDate (dd) {
     let today = moment(0, 'HH')
-    let dueDate = moment(dd)
+    let dueDate = moment.utc(dd)
     let daysTillDue = dueDate.diff(today, 'days')
     if (today.isSame(dueDate, 'date')) {
-      return 'Today'
+      return 'today'
+    } else if (daysTillDue === 1) {
+      return 'tomorrow'
     } else {
       return daysTillDue >= 7 ? 'in ' + dueDate.from(today, 'days') : 'on ' + moment.weekdays((daysTillDue + today.weekday()) % 7)
     }
