@@ -181,12 +181,11 @@ function requireAuth (nextState, replaceState) {
         console.log('getUserByToken', user)
 
         if (user.user.roles.filter(role => role.id === 100)) {
-          console.log('is syllabus worker')
           authenticateStudent(user.user).then(() => {
             userStore.setFetchingUser(false)
           }).catch(() => { userStore.setFetchingUser(false) })
         } else if (user.user.roles.filter(role => role.id === 200)) {
-          console.log('is syllabus worker')
+          console.log('syllabus worker')
           userStore.setFetchingUser(false)
         }
         userStore.setFetchingUser(false)

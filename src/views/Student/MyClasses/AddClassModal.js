@@ -6,7 +6,7 @@ import FindAClass from '../Onboard/FindAClass'
 import ChangeSchool from './ChangeSchool'
 import ClassStatusModal from '../../components/ClassStatusModal'
 import moment from 'moment'
-import SkLoader from '../../../assets/sk-icons/SkLoader';
+import SkLoader from '../../../assets/sk-icons/SkLoader'
 import actions from '../../../actions'
 
 @inject('rootStore') @observer

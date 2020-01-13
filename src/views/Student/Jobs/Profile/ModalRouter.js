@@ -24,8 +24,9 @@ import ExtrasForm from '../components/ExtrasForm'
 import Documents from '../../../../assets/sk-icons/jobs/Documents'
 import DocumentsForm from '../components/DocumentsForm'
 import BasicInfoForm from '../components/BasicInfoForm'
-import WelcomeModal from '../components/WelcomeModal'
+import AvatarModal from '../components/AvatarModal'
 import actions from '../../../../actions'
+import Welcome from '../components/Welcome'
 
 @inject('rootStore') @observer
 class ModalRouter extends React.Component {
@@ -178,13 +179,17 @@ class ModalRouter extends React.Component {
           <BasicInfoForm isVolunteer={false} onSubmit={(doNotClose) => this.onSubmit(doNotClose)} />
         </div>
       )
-    } else if (this.props.form === 'welcome') {
+    } else if (this.props.form === 'avatar') {
       return (
-        <WelcomeModal onSubmit={() => this.onSubmit()} />
+        <AvatarModal onSubmit={() => this.onSubmit()} />
       )
     } else if (this.props.form === 'getResume') {
       return (
         <DocumentsForm homeModal={true} rootStore={this.props.rootStore} onSubmit={() => this.onSubmit()} />
+      )
+    } else if (this.props.form === 'welcome') {
+      return (
+        <Welcome onSubmit={() => this.onSubmit()} />
       )
     } else {
       return null
@@ -194,7 +199,7 @@ class ModalRouter extends React.Component {
   render () {
     if (this.props.form && this.renderForm()) {
       return (
-        <SkModal closeModal={() => this.onClose()} disableOutsideClick={true}>
+        <SkModal closeModal={this.props.form !== 'welcome' && (() => this.onClose())} disableOutsideClick={true}>
           {this.renderForm()}
         </SkModal>
       )

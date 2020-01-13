@@ -10,7 +10,8 @@ class StudentJobsStore {
       profile: {},
       loading: false,
       score: null,
-      backgroundLoading: false
+      backgroundLoading: false,
+      firstOpen: false
     })
   }
 

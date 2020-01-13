@@ -90,16 +90,17 @@ class AddAssignment extends Component {
   }
 
   // get the class user selects
-  selectClassHandler = cl => {
+  async selectClassHandler (cl) {
+    console.log(cl)
     let newAssignment = this.state.newAssignment
     newAssignment.weight_id = null
     this.setState({newAssignment: newAssignment})
     this.toggleClasses(false)
-    const selectedClassId = cl.id
+    let selectedClassId = cl.id
     if (this.state.selectedClass.id === selectedClassId) {
       newAssignment.weight_id = null
     }
-    actions.classes
+    await actions.classes
       .getStudentClass(this.state.studentId, selectedClassId)
       .then(selectedStudentClass => {
         newAssignment.class = selectedStudentClass
@@ -109,7 +110,7 @@ class AddAssignment extends Component {
         })
       })
     actions.classes.getClassById(selectedClassId).then(selectedClass => {
-      this.getClassWeights(selectedClass.id)
+      this.getClassWeights(selectedClassId)
       this.setState({
         selectedClass: selectedClass,
         showWeightsField: true
@@ -193,7 +194,8 @@ class AddAssignment extends Component {
         selectedClass: givenClass ? this.state.selectedClass : null,
         selectedStudentClass: givenClass ? this.state.selectedStudentClass : null,
         formView: true
-      }).then(this.resetFormState())
+      })
+      this.resetFormState()
     }
   }
 

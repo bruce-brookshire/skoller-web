@@ -57,16 +57,33 @@ export function refreshUser () {
     })
 }
 
-export function addAvatar (file, userId) {
-  let form = new FormData()
-  form.append('file', file, `${userId}_profilephoto.jpg`)
-  console.log(form)
+export function addAvatar (file, userId, studentId) {
+  let form
+  if (file !== '' && file !== null) {
+    form = new FormData()
+    form.append('file', file, `${userId}_profilephoto.jpg`)
 
-  return putFile(`/api/v1/users/${userId}`, form, 'Error saving profile picture. Try again later.')
-    .then(data => {
-      return data
-    })
-    .catch(error => {
-      return Promise.reject(error)
-    })
+    return putFile(`/api/v1/users/${userId}`, form, 'Error saving profile picture. Try again later.')
+      .then(data => {
+        return data
+      })
+      .catch(error => {
+        return Promise.reject(error)
+      })
+  } else {
+    form = {
+      'file': '',
+      'student': {
+        'id': studentId
+      }
+    }
+
+    return put(`/api/v1/users/${userId}`, form, 'Error saving profile picture. Try again later.')
+      .then(data => {
+        return data
+      })
+      .catch(error => {
+        return Promise.reject(error)
+      })
+  }
 }

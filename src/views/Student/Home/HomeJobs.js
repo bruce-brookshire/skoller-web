@@ -6,7 +6,6 @@ import actions from '../../../actions'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import PropTypes from 'prop-types'
 import SkSelectDropDown from '../../components/SkSelectDropDown'
-import { showSnackbar } from '../../../utilities/snackbar'
 import { browserHistory } from 'react-router'
 import JobsLogo from '../../../assets/images/jobs/skoller-jobs-logo.png'
 
@@ -27,12 +26,17 @@ class HomeJobs extends React.Component {
       loadingFieldsOfStudy: false,
       addMajor: false,
       options: [],
-      error: null
+      error: null,
+      job_search_type: null,
+      jobSearchOptions: []
     }
     this.getFormData()
   }
 
   async getFormData () {
+    await actions.jobs.getSearchTypes().then(r => {
+      this.setState({jobSearchOptions: r})
+    })
     await actions.jobs.getDegreeTypes()
       .then((data) => {
         this.setState({degreeTypes: data})
@@ -154,10 +158,30 @@ class HomeJobs extends React.Component {
     )
   }
 
+  renderJobSearchTypeOptions () {
+    let options = this.state.jobSearchOptions
+    return (
+      options.map(o => {
+        return (
+          <div
+            key={options.indexOf(o)}
+            className='home-jobs-select-choice'
+            onClick={() => {
+              this.setState({job_search_type: o})
+            }}
+          >
+            {o.name}
+          </div>
+        )
+      })
+    )
+  }
+
   async onSubmit () {
     this.setState({loading: true})
     let user = this.props.user
     let jobsForm = {
+      job_search_type_id: this.state.job_search_type.id,
       graduation_date: new Date(this.state.gradMonthChoice + ' 1, ' + this.state.gradYearChoice + ' 00:00:00').toISOString()
     }
     let userForm = {
@@ -204,7 +228,8 @@ class HomeJobs extends React.Component {
           .then((r) => {
             this.props.rootStore.studentJobsStore.profile = r
             this.props.rootStore.studentJobsStore.hasJobsProfile = true
-            browserHistory.push('/student/jobs')
+            this.props.rootStore.studentJobsStore.firstOpen = true
+            browserHistory.push({pathname: '/student/jobs'})
           })
       })
       .catch(e => {
@@ -218,7 +243,8 @@ class HomeJobs extends React.Component {
       this.state.resume === null ||
       !this.state.gradYearChoice ||
       !this.state.gradMonthChoice ||
-      !this.state.gradDegreeChoice
+      !this.state.gradDegreeChoice ||
+      !this.state.job_search_type
     return (
       <div
         className={'home-jobs-button ' + (disabled ? 'disabled' : '')}
@@ -289,6 +315,14 @@ class HomeJobs extends React.Component {
               }
             </DragAndDrop>
           </div>
+        </div>
+        <div className='home-jobs-row'>
+          <div className='home-jobs-label'>What type of job are you seeking?</div>
+          <SkSelect
+            optionsMap={() => this.renderJobSearchTypeOptions()}
+            selection={this.state.job_search_type ? this.state.job_search_type.name : 'Select one'}
+            jobsMode={true}
+          />
         </div>
         <div className='home-jobs-row'>
           <p className='home-jobs-label'>Graduation Details</p>
