@@ -54,6 +54,26 @@ export function getActivityTypes () {
     })
 }
 
+export function getSearchTypes () {
+  return get(`/api/v1/skoller-jobs/types/job_search`, '', 'Error fetching activity types.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+export function addActivity (form) {
+  return post(`/api/v1/skoller-jobs/profiles/${form.job_profile_id}/activities`, form, 'Error saving experience. Try again later.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
 export function addCareerActivity (form) {
   return post(`/api/v1/skoller-jobs/profiles/${form.job_profile_id}/activities`, form, 'Error saving experience. Try again later.')
     .then(data => {

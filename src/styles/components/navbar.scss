@@ -163,9 +163,22 @@
     @media only screen and (max-width: 600px) {
       font-size: 16px;
       top: 32px;
+      display: none;
+    }
+  }
+
+  .sk-jobs-navbar-message {
+    color: $sk-jobs-light-green;
+    left: 228px;
+    top: 30px;
+    font-size: 18px;
+
+    @media only screen and (max-width: 1000px) {
+      font-size: 16px;
+      top: 32px;
     }
 
-    @media only screen and (max-width: $sk-mobile-break-point) {
+    @media only screen and (max-width: 900px) {
       display: none;
     }
   }

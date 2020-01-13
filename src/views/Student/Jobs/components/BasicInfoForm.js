@@ -16,8 +16,17 @@ class BasicInfoForm extends React.Component {
       work_auth: profile.work_auth !== null ? profile.work_auth ? 'Yes' : 'No' : '',
       sponsorship_required: profile.sponsorship_required !== null ? profile.sponsorship_required ? 'Yes' : 'No' : '',
       state_code: profile.state_code !== null ? profile.state_code : '',
-      visibility: profile.job_profile_status.id === 100 ? "Active - I'm currently looking for job opportunities!" : "Passive - I'm not looking for a job right now but I will be soon!"
+      visibility: profile.job_profile_status.id === 100 ? "Active - I'm currently looking for job opportunities!" : "Passive - I'm not looking for a job right now but I will be soon!",
+      job_search_type: profile.job_search_type ? profile.job_search_type : null,
+      jobSearchOptions: [],
+      loading: true
     }
+  }
+
+  componentDidMount () {
+    actions.jobs.getSearchTypes().then(r => {
+      this.setState({jobSearchOptions: r, loading: false})
+    })
   }
 
   states = [
@@ -88,9 +97,15 @@ class BasicInfoForm extends React.Component {
       work_auth: this.state.work_auth === 'Yes',
       sponsorship_required: this.state.sponsorship_required === 'Yes',
       state_code: this.state.state_code,
-      job_profile_status_id: this.state.visibility === "Active - I'm currently looking for job opportunities!" ? 100 : 200
+      job_profile_status_id: this.state.visibility === "Active - I'm currently looking for job opportunities!" ? 100 : 200,
+      job_search_type_id: this.state.job_search_type.id
     }
-    console.log(form)
+    // let activityForm = {
+    //   job_profile_id: this.props.rootStore.studentJobsStore.profile.id,
+    //   job_search_type_id: this.state.job_search_type.id
+    // }
+    // await actions.jobs.addActivity(activityForm)
+    //   .catch((e) => console.log(e))
     actions.jobs.editJobsProfile(form)
       .then(() => {
         this.props.onSubmit()
@@ -110,6 +125,25 @@ class BasicInfoForm extends React.Component {
             }}
           >
             {o}
+          </div>
+        )
+      })
+    )
+  }
+
+  renderJobSearchTypeOptions () {
+    let options = this.state.jobSearchOptions
+    return (
+      options.map(o => {
+        return (
+          <div
+            key={options.indexOf(o)}
+            className='jobs-autocomplete-option'
+            onClick={() => {
+              this.setState({job_search_type: o})
+            }}
+          >
+            {o.name}
           </div>
         )
       })
@@ -176,6 +210,7 @@ class BasicInfoForm extends React.Component {
   renderContent () {
     let disabled = true
     if (
+      this.state.job_search_type !== '' &&
       this.state.state_code !== '' &&
       this.state.sponsorship_required !== '' &&
       this.state.work_auth !== ''
@@ -184,6 +219,14 @@ class BasicInfoForm extends React.Component {
     }
     return (
       <div className='jobs-form-container'>
+        <div className='jobs-form-row margin-bottom'>
+          <div className='jobs-form-label'>What type of job are you seeking?</div>
+          <SkSelect
+            optionsMap={() => this.renderJobSearchTypeOptions()}
+            selection={this.state.job_search_type ? this.state.job_search_type.name : ''}
+            className='jobs-form-select'
+          />
+        </div>
         <div className='jobs-form-row margin-bottom'>
           <div className='jobs-form-label'>Are you authorized to work in the United States?</div>
           <SkSelect
@@ -209,7 +252,7 @@ class BasicInfoForm extends React.Component {
           />
         </div>
         <div className='jobs-form-row margin-bottom'>
-          <div className='jobs-form-label'>Skoller Jobs Profile visibility</div>
+          <div className='jobs-form-label'>Profile Status</div>
           <SkSelect
             optionsMap={() => this.renderVisibilityOptions()}
             selection={this.state.visibility}

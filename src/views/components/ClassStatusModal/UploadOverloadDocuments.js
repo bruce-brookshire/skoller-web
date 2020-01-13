@@ -42,17 +42,17 @@ class UploadOverloadDocuments extends React.Component {
   }
 
   async onSubmit () {
+    this.setState({loading: true})
     if (this.state.newDocuments.length > 0) {
-      this.setState({loading: true})
       await this.state.newDocuments.forEach(async doc => {
         await actions.documents.uploadClassDocument(this.props.cl, doc, false)
       })
-      this.setState({loading: false})
     }
     if (this.state.newSyllabus) {
       await actions.documents.uploadClassDocument(this.props.cl, this.state.newSyllabus, true)
       showSnackbar('Successfully uploaded ' + (this.state.newDocuments.length + (this.state.newSyllabus ? 1 : 0)).toString() + ' document' + ((this.state.newDocuments.length + (this.state.newSyllabus ? 1 : 0)) > 1 ? 's' : '') + '.', 'success')
     }
+    this.setState({loading: false})
     this.props.onSubmit()
   }
 
@@ -162,7 +162,7 @@ class UploadOverloadDocuments extends React.Component {
 
   renderSubmit () {
     let disabled = true
-    if (this.state.newDocuments.length === 0) {
+    if (this.state.newDocuments.length === 0 && this.state.newSyllabus === null) {
       disabled = true
     } else {
       disabled = false

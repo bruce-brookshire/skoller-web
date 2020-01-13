@@ -11,7 +11,7 @@ import ModalRouter from './ModalRouter'
 import moment from 'moment'
 import ExperienceCard from '../components/ExperienceCard'
 import SeeMore from '../../../components/SeeMore/SeeMore'
-import ToolTip from '../../../components/ToolTip';
+import ToolTip from '../../../components/ToolTip'
 
 @inject('rootStore') @observer
 class Profile extends React.Component {
@@ -21,7 +21,8 @@ class Profile extends React.Component {
     this.state = {
       student: this.props.rootStore.userStore.user.student,
       form: null,
-      width: 0
+      width: 0,
+      firstOpen: this.props.rootStore.studentJobsStore.firstOpen
     }
 
     window.addEventListener('resize', () => this.updateWidth())
@@ -32,10 +33,12 @@ class Profile extends React.Component {
   componentDidMount () {
     this.updateWidth()
 
-    if (this.props.rootStore.studentJobsStore.profile.resume_url === null) {
+    if (this.props.rootStore.studentJobsStore.firstOpen) {
+      this.setState({form: 'welcome'})
+    } else if (this.props.rootStore.studentJobsStore.profile.resume_url === null) {
       this.setState({form: 'getResume'})
     } else if (this.props.rootStore.userStore.user.avatar === null) {
-      this.setState({form: 'welcome'})
+      this.setState({form: 'avatar'})
     }
   }
 
@@ -69,6 +72,10 @@ class Profile extends React.Component {
     }
   }
 
+  launchAvatarModal () {
+    this.setState({form: 'avatar'})
+  }
+
   renderAvatar () {
     let user = this.props.rootStore.userStore.user
     if (user.avatar) {
@@ -84,7 +91,14 @@ class Profile extends React.Component {
             backgroundPosition: '50%',
             margin: '1rem'
           }}
-        />
+        >
+          <div
+            className='jobs-profile-header-avatar-edit'
+            onClick={() => this.launchAvatarModal()}
+          >
+            Edit photo
+          </div>
+        </div>
       )
     } else {
       return (
@@ -101,6 +115,7 @@ class Profile extends React.Component {
             justifyContent: 'center',
             alignItems: 'center'
           }}
+          onClick={() => this.launchAvatarModal()}
         >
           <p
             style={{
@@ -134,6 +149,13 @@ class Profile extends React.Component {
     return '(' + match[1] + ') ' + match[2] + '-' + match[3]
   }
 
+  renderJobSearchType () {
+    let profile = this.props.rootStore.studentJobsStore.profile
+    return (
+      <p>You are currently seeking a{profile.job_search_type.id === 100 ? 'n' : ''}<br />{profile.job_search_type.name.toLowerCase()}{profile.job_search_type.id >= 300 ? ' job' : ''} opportunity.</p>
+    )
+  }
+
   renderHeader () {
     let user = this.props.rootStore.userStore.user
     let student = user.student
@@ -148,40 +170,57 @@ class Profile extends React.Component {
       strength = 'could be better!'
       color = '#F7D300'
     } else if (this.props.rootStore.studentJobsStore.score <= 100) {
-      strength = 'very strong! '
+      strength = 'is very strong! '
     } else if (this.props.rootStore.studentJobsStore.score >= 100) {
-      strength = 'fantastic. Nice work!'
+      strength = 'is fantastic. Nice work!'
     }
+
+    let style = ((student.name_first + student.name_last).length + 1) > 15
+      ? {
+        fontSize: '18px'
+      }
+      : null
 
     return (
       <div className='jobs-profile-header'>
         <div className='jobs-profile-header-content'>
-          <div className='jobs-profile-header-row'>
-            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-              {/* {this.renderAvatar()} */}
-              <div style={{marginLeft: '2rem'}}>
-                <h1>{student.name_first} {student.name_last}</h1>
+          <div
+            className='jobs-profile-header-row'
+            style={this.state.width < 995 ? {justifyContent: 'center', alignItems: 'center'} : {}}
+          >
+            <div className='jobs-profile-header-basic' style={
+              this.state.width > 995
+                ? {display: 'flex', flexDirection: 'row', alignItems: 'center'}
+                : {display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginTop: '1rem', textAlign: 'center'}
+            }>
+              {this.renderAvatar()}
+              <div>
+                {console.log(((student.name_first + student.name_last).length + 1) > 15)}
+                <h1
+                  style={style}
+                >
+                  {student.name_first} {student.name_last}
+                </h1>
                 <p>{student.primary_school.name} | {student.primary_school.adr_locality}, {student.primary_school.adr_region}</p>
                 <p><i className='far fa-envelope' /> {user.email}</p>
                 <p><i className='fas fa-phone' /> {this.formatPhone(user.student.phone)}</p>
+                <ToolTip
+                  tip={
+                    <p>Our recruiters will contact you via email<br />to schedule an introductory call.</p>
+                  }
+                >
+                  <p className='jobs-profile-header-recruiter-contact'>How will recruiters contact me?</p>
+                </ToolTip>
               </div>
             </div>
             <div className='jobs-profile-header-score-container'>
               <div className='jobs-profile-header-score-text'>
-                <p><b style={{color: '#4a4a4a'}}>Your profile</b></p>
-                <p>Strength: <span style={{fontWeight: '600', color: color}}>{strength}</span></p>
-                <ToolTip
-                  tip={
-                    <div>
-                      {profile.job_profile_status.id === 100
-                        ? <p>Active - I&apos;m currently looking for job opportunities!</p>
-                        : <p>Passive - I am not looking for a job right now but I will be soon!</p>
-                      }
-                    </div>
-                  }
-                >
-                  <p style={{cursor: 'default'}}>Status: {profile.job_profile_status.id === 100 ? <b style={{color: '#6ED6AE'}}>ACTIVE.</b> : <b style={{color: 'rgb(255, 65, 89)'}}>PASSIVE.</b>}</p>
-                </ToolTip>
+                <p><b style={{color: '#4a4a4a', fontSize: '17px'}}>Your profile <span style={{fontWeight: '600', color: color}}>{strength}</span></b></p>
+                <p style={{cursor: 'default'}}>
+                  {profile.job_profile_status.id === 100
+                    ? this.renderJobSearchType()
+                    : 'Your account is in passive mode and will be hidden from recruiters until you change it back to active!'}
+                </p>
               </div>
               {!this.props.rootStore.studentJobsStore.backgroundLoading
                 ? <ProfileScoreVisual profile={profile} user={user} />

@@ -36,8 +36,8 @@ class ExperienceCard extends React.Component {
 ExperienceCard.propTypes = {
   title: PropTypes.string,
   organization: PropTypes.string,
-  startDate: PropTypes.object,
-  endDate: PropTypes.object,
+  startDate: PropTypes.string,
+  endDate: PropTypes.string,
   description: PropTypes.string
 }
 
