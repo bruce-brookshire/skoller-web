@@ -52,7 +52,7 @@ class DayCell extends React.Component {
         // new Date(Date.parse(assignments[element].due)).getDate() === new Date(day).getDate() &&
         // new Date(Date.parse(assignments[element].due)).getMonth() === new Date(day).getMonth() &&
         // new Date(Date.parse(assignments[element].due)).getYear() === new Date(day).getYear()
-        moment.utc(assignments[element].due).format('MMDDYYYY') === moment.utc(day).format('MMDDYYYY')
+        moment.utc(assignments[element].due).format('MMDDYYYY') === moment(day).format('MMDDYYYY')
       ) {
         dayAssignments.push(assignments[element])
       }

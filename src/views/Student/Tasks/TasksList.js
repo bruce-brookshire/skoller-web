@@ -90,7 +90,7 @@ class TasksList extends React.Component {
             let maxDays = this.props.maxDays ? this.props.maxDays - 1 : 10000
             let maxTasks = this.props.maxTasks ? this.props.maxTasks : 10000
             i += 1
-            if (daysAway <= maxDays && i <= maxTasks) {
+            if (daysAway <= maxDays && i <= maxTasks && daysAway >= 0) {
               return (
                 <div key={task.id}>
                   <TaskCard task={task} clName={cl.clName} clColor={cl.clColor} />
