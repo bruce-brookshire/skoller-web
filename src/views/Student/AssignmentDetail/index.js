@@ -19,7 +19,9 @@ class AssignmentDetail extends React.Component {
       assignmentWeightCategory: {},
       cl: {}
     }
+  }
 
+  componentDidMount () {
     this.getData()
   }
 

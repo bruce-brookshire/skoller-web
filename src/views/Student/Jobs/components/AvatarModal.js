@@ -6,22 +6,33 @@ import SkLoader from '../../../../assets/sk-icons/SkLoader'
 import actions from '../../../../actions'
 
 @inject('rootStore') @observer
-class WelcomeModal extends React.Component {
+class AvatarModal extends React.Component {
   constructor (props) {
     super(props)
 
     this.state = {
       file: null,
       preview: null,
-      loading: false
+      loading: false,
+      clearCurrentAvatar: false
     }
   }
 
   async onSubmit () {
     this.setState({loading: true})
-    await actions.users.addAvatar(this.state.file, this.props.rootStore.userStore.user.id)
-      .then(r => {
+    await actions.users.addAvatar(this.state.file, this.props.rootStore.userStore.user.id, this.props.rootStore.userStore.user.student.id)
+      .then(() => {
         this.props.onSubmit()
+      })
+      .catch(e => console.log(e))
+  }
+
+  deleteAvatar () {
+    this.setState({loading: true})
+    actions.users.addAvatar('', this.props.rootStore.userStore.user.id, this.props.rootStore.userStore.user.student.id)
+      .then(r => {
+        this.props.rootStore.studentJobsStore.refreshJobsProfile()
+        this.setState({loading: false})
       })
       .catch(e => console.log(e))
   }
@@ -30,13 +41,16 @@ class WelcomeModal extends React.Component {
     return (
       <div className='jobs-welcome-modal'>
         <h2 style={{textAlign: 'center', margin: '0'}}>
-          Welcome to Skoller Jobs!
+          Profile Picture
         </h2>
         <p>Did you know that companies are more likely to check out your profile if it&apos;s complimented with a profile picture?</p>
-        {this.state.preview
+        {(this.state.preview || this.props.rootStore.userStore.user.avatar) && !this.state.clearCurrentAvatar
           ? <div className='jobs-welcome-modal-image-preview'>
-            <div className='image-preview' style={{backgroundImage: `url(${this.state.preview})`}}>
-              <div onClick={() => this.setState({file: null, preview: null})} className='clear-image'>
+            <div className='image-preview' style={{backgroundImage: this.state.preview ? `url(${this.state.preview})` : `url(${this.props.rootStore.userStore.user.avatar})`}}>
+              <div onClick={() => {
+                this.setState({file: null, preview: null, clearCurrentAvatar: this.props.rootStore.userStore.user.avatar ? true : false})
+                this.deleteAvatar()
+              }} className='clear-image'>
                 <div className='exit'>
                   <Exit fill={'jobs'} height={'12px'} width={'12px'} />
                 </div>
@@ -51,7 +65,7 @@ class WelcomeModal extends React.Component {
               ref={fileUploader => { this.fileUploader = fileUploader }}
               style={{display: 'none'}}
               onChange={(e) => {
-                this.setState({file: e.target.files[0], preview: URL.createObjectURL(e.target.files[0])})
+                this.setState({file: e.target.files[0], preview: URL.createObjectURL(e.target.files[0]), clearCurrentAvatar: false})
               }}
             />
           </div>
@@ -61,7 +75,7 @@ class WelcomeModal extends React.Component {
           onClick={() => this.props.onSubmit()}
           className='do-later'
         >Do this later</p>
-        <div className='jobs-welcome-modal-button'>
+        <div className={'jobs-welcome-modal-button ' + (this.state.file ? '' : 'disabled')}>
           <p onClick={() => this.onSubmit()}>Save photo</p>
         </div>
       </div>
@@ -77,9 +91,9 @@ class WelcomeModal extends React.Component {
   }
 }
 
-WelcomeModal.propTypes = {
+AvatarModal.propTypes = {
   onSubmit: PropTypes.function,
   rootStore: PropTypes.object
 }
 
-export default WelcomeModal
+export default AvatarModal

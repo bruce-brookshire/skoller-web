@@ -24,7 +24,7 @@ import ExtrasForm from '../components/ExtrasForm'
 import Documents from '../../../../assets/sk-icons/jobs/Documents'
 import DocumentsForm from '../components/DocumentsForm'
 import BasicInfoForm from '../components/BasicInfoForm'
-import WelcomeModal from '../components/WelcomeModal'
+import AvatarModal from '../components/AvatarModal'
 import actions from '../../../../actions'
 
 @inject('rootStore') @observer
@@ -178,9 +178,9 @@ class ModalRouter extends React.Component {
           <BasicInfoForm isVolunteer={false} onSubmit={(doNotClose) => this.onSubmit(doNotClose)} />
         </div>
       )
-    } else if (this.props.form === 'welcome') {
+    } else if (this.props.form === 'avatar') {
       return (
-        <WelcomeModal onSubmit={() => this.onSubmit()} />
+        <AvatarModal onSubmit={() => this.onSubmit()} />
       )
     } else if (this.props.form === 'getResume') {
       return (

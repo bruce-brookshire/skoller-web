@@ -49,6 +49,7 @@
           flex-direction: row;
           flex-wrap: wrap;
           justify-content: center;
+          align-items: center;
           width: auto;
 
           > * {
@@ -73,12 +74,43 @@
             }
           }
 
+          .jobs-profile-header-avatar {
+            position: relative;
+
+            &:hover {
+              cursor: pointer;
+
+              .jobs-profile-header-avatar-edit {
+                display: block;
+                position: absolute;
+                bottom: 0;
+                color: white;
+                // background-color: $sk-jobs-dark-green-75;
+                background-image: linear-gradient(rgba(0,0,0,0), $sk-jobs-dark-green);
+                width: 80px;
+                height: 80px;
+                border-radius: 100%;
+                // border-bottom-left-radius: 110px;
+                // border-bottom-right-radius: 110px;
+                text-align: center;
+                font-size: 14px;
+                padding-top: 54px;
+                text-shadow: 1px 0px 4px rbga(0,0,0,0.75);
+              }
+            }
+
+            .jobs-profile-header-avatar-edit {
+              display: none;
+            }
+          }
+
           .jobs-profile-header-score-container {
             display: flex;
             flex-direction: row;
             align-items: right;
             text-align: right;
             justify-content: flex-end;
+            padding: 8px;
 
             .jobs-profile-header-score-text {
               display: flex;

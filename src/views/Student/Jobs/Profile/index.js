@@ -11,7 +11,7 @@ import ModalRouter from './ModalRouter'
 import moment from 'moment'
 import ExperienceCard from '../components/ExperienceCard'
 import SeeMore from '../../../components/SeeMore/SeeMore'
-import ToolTip from '../../../components/ToolTip';
+import ToolTip from '../../../components/ToolTip'
 
 @inject('rootStore') @observer
 class Profile extends React.Component {
@@ -35,7 +35,7 @@ class Profile extends React.Component {
     if (this.props.rootStore.studentJobsStore.profile.resume_url === null) {
       this.setState({form: 'getResume'})
     } else if (this.props.rootStore.userStore.user.avatar === null) {
-      this.setState({form: 'welcome'})
+      this.setState({form: 'avatar'})
     }
   }
 
@@ -69,6 +69,10 @@ class Profile extends React.Component {
     }
   }
 
+  launchAvatarModal () {
+    this.setState({form: 'avatar'})
+  }
+
   renderAvatar () {
     let user = this.props.rootStore.userStore.user
     if (user.avatar) {
@@ -84,7 +88,14 @@ class Profile extends React.Component {
             backgroundPosition: '50%',
             margin: '1rem'
           }}
-        />
+        >
+          <div
+            className='jobs-profile-header-avatar-edit'
+            onClick={() => this.launchAvatarModal()}
+          >
+            Edit photo
+          </div>
+        </div>
       )
     } else {
       return (
@@ -101,6 +112,7 @@ class Profile extends React.Component {
             justifyContent: 'center',
             alignItems: 'center'
           }}
+          onClick={() => this.launchAvatarModal()}
         >
           <p
             style={{
@@ -156,10 +168,17 @@ class Profile extends React.Component {
     return (
       <div className='jobs-profile-header'>
         <div className='jobs-profile-header-content'>
-          <div className='jobs-profile-header-row'>
-            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-              {/* {this.renderAvatar()} */}
-              <div style={{marginLeft: '2rem'}}>
+          <div
+            className='jobs-profile-header-row'
+            style={this.state.width < 995 ? {justifyContent: 'center', alignItems: 'center'} : {}}
+          >
+            <div style={
+              this.state.width > 995
+                ? {display: 'flex', flexDirection: 'row', alignItems: 'center'}
+                : {display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginTop: '1rem'}
+            }>
+              {this.renderAvatar()}
+              <div>
                 <h1>{student.name_first} {student.name_last}</h1>
                 <p>{student.primary_school.name} | {student.primary_school.adr_locality}, {student.primary_school.adr_region}</p>
                 <p><i className='far fa-envelope' /> {user.email}</p>

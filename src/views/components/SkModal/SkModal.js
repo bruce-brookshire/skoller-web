@@ -95,7 +95,6 @@ class SkModal extends React.Component {
   }
 
   render () {
-    // console.log(window.innerHeight.toString() + 'px')
     let style = {}
     let containerStyle = {}
     // const height = window.innerHeight
@@ -123,7 +122,6 @@ class SkModal extends React.Component {
         <div className="sk-modal-container" id="sk-modal-container" style={style}>
           <OutsideClickHandler
             onOutsideClick={() => {
-              // console.log('outside click')
               if (!this.props.disableOutsideClick) {
                 this.closeModal()
               }

@@ -94,7 +94,11 @@ class PersonalityProfileForm extends React.Component {
     return (
       options.map(o => {
         return (
-          <div key={options.indexOf(o)} className='jobs-autocomplete-option' onClick={() => this.setState({myers_briggs: o})}>
+          <div key={options.indexOf(o)} className='jobs-autocomplete-option' onClick={() => {
+            let personality = this.state.personality
+            personality.myers_briggs = o
+            this.setState({personality})
+          }}>
             {o}
           </div>
         )
@@ -117,7 +121,11 @@ class PersonalityProfileForm extends React.Component {
     return (
       options.map(o => {
         return (
-          <div key={options.indexOf(o)} className='jobs-autocomplete-option' onClick={() => this.setState({enneagram: o})}>
+          <div key={options.indexOf(o)} className='jobs-autocomplete-option' onClick={() => {
+            let personality = this.state.personality
+            personality.enneagram = o
+            this.setState({personality})
+          }}>
             {o}
           </div>
         )
