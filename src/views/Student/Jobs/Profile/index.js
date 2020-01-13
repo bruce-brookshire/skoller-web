@@ -40,9 +40,6 @@ class Profile extends React.Component {
     } else if (this.props.rootStore.userStore.user.avatar === null) {
       this.setState({form: 'avatar'})
     }
-
-    // delete after testing
-    this.setState({form: 'welcome'})
   }
 
   updateWidth = () => {
