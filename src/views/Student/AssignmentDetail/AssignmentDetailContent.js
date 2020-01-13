@@ -148,7 +148,7 @@ class AssignmentDetailContent extends React.Component {
           </div>
           <div className='sk-assignment-detail-content-row'>
             <p>Due date</p>
-            <p>{moment(assignment.due).format('MMMM D, YYYY')}</p>
+            <p>{moment.utc(assignment.due).format('MMMM D, YYYY')}</p>
           </div>
         </div>
         <div className='sk-assignment-detail-content-section'>
