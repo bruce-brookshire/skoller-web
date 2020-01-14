@@ -20,7 +20,7 @@ class JobsHome extends React.Component {
 
   renderProfileCell () {
     let profile = this.props.rootStore.studentJobsStore.profile
-    let totalProfileScore = calculateTotalProfileScore(profile, this.props.rootStore.userStore.user)
+    let totalProfileScore = profile.profile_score * 100
     let coreProfileCompletion = calculateCoreProfileCompleteness(profile)
     let personalityProfileCompletion = calculatePersonalityProfileCompleteness(profile)
     let experienceCompletion = calculateExperienceProfileCompleteness(profile)

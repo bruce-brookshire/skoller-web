@@ -178,15 +178,15 @@ class Profile extends React.Component {
 
     let strength
     let color = '#6ED6AE'
-    if (this.props.rootStore.studentJobsStore.score <= 50) {
+    if (profile.profile_score <= 0.50) {
       strength = 'needs some work.'
       color = '#FF4159'
-    } else if (this.props.rootStore.studentJobsStore.score <= 75) {
+    } else if (profile.profile_score <= 0.75) {
       strength = 'could be better!'
       color = '#F7D300'
-    } else if (this.props.rootStore.studentJobsStore.score <= 100) {
+    } else if (profile.profile_score <= 1) {
       strength = 'is very strong! '
-    } else if (this.props.rootStore.studentJobsStore.score >= 100) {
+    } else if (profile.profile_score >= 1) {
       strength = 'is fantastic. Nice work!'
     }
 
