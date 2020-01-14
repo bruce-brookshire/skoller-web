@@ -5,6 +5,7 @@ import actions from '../../../actions'
 import TaskCard from './TaskCard'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import moment from 'moment'
+import SeeMore from '../../components/SeeMore/SeeMore';
 
 @inject('rootStore') @observer
 class TasksList extends React.Component {
@@ -64,8 +65,22 @@ class TasksList extends React.Component {
       .sort((a, b) => moment(a.due).isBefore(moment(b.due)) ? -1 : 1)
   }
 
+  getTaskDisplayCount () {
+    let i = 0
+    this.getSortedAssignments().forEach(task => {
+      let daysAway = moment(task.due).diff(moment(), 'days')
+      let maxDays = this.props.maxDays ? this.props.maxDays - 1 : 10000
+      let maxTasks = this.props.maxTasks ? this.props.maxTasks : 10000
+      if (daysAway <= maxDays && i <= maxTasks && daysAway >= 0) {
+        i += 1
+      }
+    })
+    return i
+  }
+
   renderTasks () {
     let i = 0
+    console.log(this.getTaskDisplayCount())
     if (this.props.rootStore.studentAssignmentsStore.assignments.length === 0) {
       return (
         this.renderNoTasks()
@@ -104,9 +119,18 @@ class TasksList extends React.Component {
   }
 
   renderContent () {
-    return (
-      this.renderTasks()
-    )
+    let displayCount = this.getTaskDisplayCount()
+    if (this.props.seeMore && (displayCount > 4)) {
+      return (
+        <SeeMore hideHeight='308px' textColor={'#57B9E4'} seeMore={true} customText={`See all ${displayCount} to-do's`}>
+          {this.renderTasks()}
+        </SeeMore>
+      )
+    } else {
+      return (
+        this.renderTasks()
+      )
+    }
   }
 
   render () {
@@ -123,7 +147,8 @@ TasksList.propTypes = {
   rootStore: PropTypes.object,
   location: PropTypes.object,
   maxTasks: PropTypes.number,
-  maxDays: PropTypes.number
+  maxDays: PropTypes.number,
+  seeMore: PropTypes.bool
 }
 
 export default TasksList

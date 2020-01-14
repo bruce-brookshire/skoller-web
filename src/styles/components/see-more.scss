@@ -9,6 +9,7 @@
     background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8), white, white);
     position: absolute;
     bottom: 0;
+    z-index: 1;
   }
 
   .see-more-button {
@@ -19,12 +20,14 @@
     bottom: 0;
     text-align: center;
     width: 100%;
+    background-color: white;
+    z-index: 1;
 
     border-radius: 5px;
     padding: 8px 0 0 0;
 
     &:hover {
-      background-color: rgba(0,0,0,0.04);
+      background-color: rgba(245,245,245,1);
     }
   }
 }

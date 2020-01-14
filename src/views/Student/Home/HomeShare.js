@@ -46,13 +46,14 @@ class HomeShare extends React.Component {
     await actions.students.getStudentSignupOrganization(this.props.rootStore.userStore.user.student.id)
       .then((r) => {
         let slug = r.link.replace(/(.+)(\/c\/)/g, '')
-        this.setState({partner: this.getPartner(slug), show: true})
+        this.setState({partner: this.getPartner(slug)})
         if (this.hasCompletedClass()) {
           this.setState({
             partner: this.getPartner(slug),
             show: true,
             hasCompletedClass: true
           })
+          if (this.props.willDisplay) { this.props.willDisplay() }
         } else {
           this.setState({
             partner: this.getPartner(slug),
@@ -112,7 +113,8 @@ class HomeShare extends React.Component {
 HomeShare.propTypes = {
   classes: PropTypes.array,
   onAddClass: PropTypes.func,
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  willDisplay: PropTypes.func
 }
 
 export default HomeShare

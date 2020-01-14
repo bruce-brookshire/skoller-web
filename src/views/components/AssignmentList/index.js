@@ -27,9 +27,9 @@ class AssignmentList extends React.Component {
   renderDueDateInfo (dd) {
     const today = moment()
     if (dd) {
-      const dueDate = moment(dd)
+      const dueDate = moment.utc(dd)
       const daysTillDue = dueDate.from(today, 'days')
-      if (today.isSame(dueDate)) return 'Today'
+      if (today.isSame(dueDate, 'date')) return 'Today'
       if (today.isBefore(dueDate)) return 'In ' + daysTillDue
       if (today.isAfter(dueDate)) return 'In the Past'
     } else { console.warn('This assignment needs a due date!') }
