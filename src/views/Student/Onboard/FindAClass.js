@@ -501,7 +501,7 @@ class FindAClass extends React.Component {
     delete classChoice.professor
     this.setState({
       classChoice: classChoice,
-      professor: null,
+      professor: '',
       professorChoice: null
     })
   }
@@ -531,11 +531,13 @@ class FindAClass extends React.Component {
                   this.searchProfessors(e.target.value)
                   this.setState({professor: e.target.value, showProfessorAutocomplete: true})
                 }}
+                style={{color: 'rgba(0,0,0,0.5)'}}
               />
               : <p>
                 {this.state.professorChoice.name_first} {this.state.professorChoice.name_last}
               </p>
             }
+            {/* {this.state.professor && !this.state.showProfessorAutocomplete && <p onClick={() => this.setState({showNewProfessorModal: true})} style={{margin: '-8px 0 0 0', color: 'red', fontSize: '12px'}}>You must create a new professor to add this class</p>} */}
           </div>
           {(this.state.showProfessorAutocomplete && this.state.professor && this.state.professors)
             ? this.renderProfessorAutocomplete()

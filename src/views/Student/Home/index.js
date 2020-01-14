@@ -22,7 +22,8 @@ class Home extends React.Component {
       assignments: [],
       popUp: {show: false, type: null},
       classStatusModal: {show: false, cl: null},
-      loading: false
+      loading: false,
+      shareWillDisplay: false
     }
     this.updateClasses()
     this.props.rootStore.studentNavStore.setActivePage('home')
@@ -157,7 +158,7 @@ class Home extends React.Component {
                 <HomeClasses classes={this.props.rootStore.studentClassesStore.classes} onAddClass={() => this.closeAddClassModal()} onClassSelect={this.onClassSelect} launchClassStatusModal={(cl) => this.launchClassStatusModal(cl)} />
               </div>
             </div>
-            {this.props.rootStore.studentClassesStore.classes.length <= 2 ? <HomeShare classes={this.props.rootStore.studentClassesStore.classes} /> : null}
+            {this.state.shareWillDisplay && <HomeJobs updateStudent={() => this.updateStudent()} user={this.props.rootStore.userStore.user} />}
             {/* // this is for activity once we get it ready
             <div className="home-shadow-box">
               <h1>Activity</h1>
@@ -174,8 +175,8 @@ class Home extends React.Component {
                 <HomeTasks />
               </div>
             </div>
-            {this.props.rootStore.studentClassesStore.classes.length > 2 ? <HomeShare classes={this.props.rootStore.studentClassesStore.classes} /> : null}
-            <HomeJobs updateStudent={() => this.updateStudent()} user={this.props.rootStore.userStore.user} />
+            <HomeShare classes={this.props.rootStore.studentClassesStore.classes} willDisplay={() => this.setState({shareWillDisplay: true})} />
+            {!this.state.shareWillDisplay && <HomeJobs updateStudent={() => this.updateStudent()} user={this.props.rootStore.userStore.user} />}
             {/* // this is for chat once we get it ready
             <div className="home-shadow-box">
               <h1>Chat</h1>

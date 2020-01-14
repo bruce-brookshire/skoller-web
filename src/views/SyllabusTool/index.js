@@ -79,7 +79,8 @@ class SyllabusTool extends React.Component {
       stepCount: 3,
       uploadingDoc: false,
       singleWeight: state.weightId ? state.weightId : false,
-      assignments: []
+      assignments: [],
+      isStudent: this.props.rootStore.userStore.isStudent()
     }
   }
 
