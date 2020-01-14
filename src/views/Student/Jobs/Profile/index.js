@@ -151,9 +151,24 @@ class Profile extends React.Component {
 
   renderJobSearchType () {
     let profile = this.props.rootStore.studentJobsStore.profile
-    return (
-      <p>You are currently seeking a{profile.job_search_type.id === 100 ? 'n' : ''}<br />{profile.job_search_type.name.toLowerCase()}{profile.job_search_type.id >= 300 ? ' job' : ''} opportunity.</p>
-    )
+    if (profile.job_search_type) {
+      return (
+        <p>You are currently seeking a{profile.job_search_type.id === 100 ? 'n' : ''}<br />{profile.job_search_type.name.toLowerCase()}{profile.job_search_type.id >= 300 ? ' job' : ''} opportunity.</p>
+      )
+    } else {
+      return <p
+        style={{
+          color: '#15A494',
+          cursor: 'pointer',
+          border: '1px solid #15A494',
+          borderRadius: '5px',
+          padding: '10px 6px 6px 6px'
+        }}
+        onClick={() => this.setState({form: 'basicInfo'})}
+      >
+        Update your job search type
+      </p>
+    }
   }
 
   renderHeader () {

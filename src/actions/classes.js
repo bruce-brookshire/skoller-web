@@ -275,7 +275,7 @@ export function updateClass (form) {
 export function updateClassStatus (cl, form) {
   return put(`/api/v1/classes/${cl.id}/statuses`, form)
     .then(data => {
-      showSnackbar('Class status updated.', 'info')
+      // showSnackbar('Class status updated.', 'info')
       return data
     })
     .catch(error => {

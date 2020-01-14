@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
+import actions from '../../../../actions'
 
 class AssignmentTable extends React.Component {
   /*
@@ -99,6 +100,10 @@ class AssignmentTable extends React.Component {
   }
 
   handleSubmit () {
+    // if (this.props.cl.status.id !== 1400) {
+    //   actions.classes.updateClassStatus(this.props.cl, {class_status_id: 1400})
+    //     .then(r => console.log(r))
+    // }
     if (this.props.onSubmitSingleWeight) {
       this.props.onSubmitSingleWeight()
     } else {
