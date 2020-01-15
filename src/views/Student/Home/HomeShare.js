@@ -71,7 +71,7 @@ class HomeShare extends React.Component {
     let partner = this.state.partner
     if (this.state.hasCompletedClass) {
       return (
-        <p>Because of you, <b>$1 was donated to {partner.philanthropy}.</b> Share this link to raise even more money!</p>
+        <p>You've raised <b>${this.props.rootStore.userStore.user.student.raise_effort.personal_signups} for {partner.philanthropy}.</b> Raise THOUSANDS by sharing with classmates!</p>
       )
     } else {
       return (
@@ -94,7 +94,7 @@ class HomeShare extends React.Component {
                   position='left'
                 >
                   {this.state.hasCompletedClass
-                    ? <p>Because of you, <b>$1 was donated to {partner.philanthropy}.</b> Share to raise even more money!</p>
+                    ? <p>You've raised <b>${this.props.rootStore.userStore.user.student.raise_effort.personal_signups} for {partner.philanthropy}.</b> Raise THOUSANDS by sharing with classmates!</p>
                     : <p>Upload your syllabus to get <b>$1 donated to {partner.philanthropy}.</b> Share to raise even more money!</p>
                   }
                 </Sammi>

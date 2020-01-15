@@ -288,14 +288,14 @@ class EnrollLink extends React.Component {
         <div style={{display: 'flex', width: '100%', height: '280px', maxHeight: '300px', flexDirection: 'row', justifyContent: 'center', backgroundImage: `url(${live})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center center'}} />
         <div style={{textAlign: 'center', marginBottom: '1rem'}}>The syllabus for this class is <b>ALREADY ORGANIZED</b> on Skoller 🙌</div>
         {this.renderDownloadCompleteDownload()}
-        {/* <div className='sk-enroll-link-enroll-form'>
+        <div className='sk-enroll-link-enroll-form'>
           <div
             className='sk-enroll-link-enroll-form-button'
             onClick={() => browserHistory.push('/student/home')}
           >
             <p>Continue</p>
           </div>
-        </div> */}
+        </div>
       </div>
     )
   }
