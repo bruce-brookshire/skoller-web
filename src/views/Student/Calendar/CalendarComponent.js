@@ -15,8 +15,12 @@ import SecondClassPrompt from '../../components/Sammi/Prompts/SecondClassPrompt'
 class Calendar extends React.Component {
   constructor (props) {
     super(props)
-    let thisMonth = new Date(moment().startOf('month'))
-    let thisWeek = new Date(moment().startOf('week'))
+    let thisMonth = moment().startOf('month')
+    let thisWeek = moment().startOf('week')
+
+    console.log(moment.utc().format('MM/DD/YYYY hh:mm:ss'))
+    console.log(thisMonth.format('MM/DD/YYYY hh:mm:ss'))
+    console.log(parseInt(thisMonth.format('d')))
 
     let assignments = {}
     if (this.props.rootStore.studentAssignmentsStore.getFormattedAssignments) {
@@ -97,18 +101,18 @@ class Calendar extends React.Component {
   }
 
   nextMonth () {
-    const thisMonth = moment(this.state.thisMonth)
-    const thisWeek = moment(this.state.thisWeek)
+    let thisMonth = moment(this.state.thisMonth)
+    let thisWeek = moment(this.state.thisWeek)
 
     if (this.state.isWeek) {
       this.setState({
-        thisWeek: new Date(thisWeek.add(7, 'days')),
-        thisMonth: new Date(thisWeek.add(7, 'days').startOf('month'))
+        thisWeek: moment(thisWeek).add(7, 'days'),
+        thisMonth: moment(thisWeek).add(7, 'days').startOf('month')
       })
     } else {
       this.setState({
-        thisMonth: new Date(thisMonth.add(1, 'M')),
-        thisWeek: new Date(moment(thisMonth.startOf('month').startOf('week')))
+        thisMonth: moment(thisMonth).add(1, 'months'),
+        thisWeek: moment(thisMonth).startOf('month').startOf('week')
       })
     }
   }
@@ -119,13 +123,13 @@ class Calendar extends React.Component {
 
     if (this.state.isWeek) {
       this.setState({
-        thisWeek: new Date(thisWeek.subtract(7, 'days')),
-        thisMonth: new Date(thisWeek.subtract(7, 'days').startOf('month'))
+        thisWeek: moment(thisWeek).subtract(7, 'days'),
+        thisMonth: moment(thisWeek).subtract(7, 'days').startOf('month')
       })
     } else {
       this.setState({
-        thisMonth: new Date(thisMonth.subtract(1, 'M')),
-        thisWeek: new Date(moment(thisMonth.startOf('month').startOf('week')))
+        thisMonth: moment(thisMonth).subtract(1, 'M'),
+        thisWeek: moment(thisMonth).startOf('month').startOf('week')
       })
     }
   }
@@ -136,8 +140,8 @@ class Calendar extends React.Component {
 
   jumpToToday () {
     this.setState({
-      thisMonth: new Date(moment().startOf('month')),
-      thisWeek: new Date(moment().startOf('week'))
+      thisMonth: moment.utc().startOf('month'),
+      thisWeek: moment.utc().startOf('week')
     })
   }
 
@@ -151,7 +155,7 @@ class Calendar extends React.Component {
       assignments = this.props.rootStore.studentAssignmentsStore.getFormattedAssignments
     }
 
-    if (moment().year() !== moment(this.state.thisMonth).year()) {
+    if (moment.utc().year() !== this.state.thisMonth.year()) {
       isCurrentYear = false
     }
 

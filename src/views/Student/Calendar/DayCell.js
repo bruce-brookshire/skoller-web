@@ -52,7 +52,7 @@ class DayCell extends React.Component {
         // new Date(Date.parse(assignments[element].due)).getDate() === new Date(day).getDate() &&
         // new Date(Date.parse(assignments[element].due)).getMonth() === new Date(day).getMonth() &&
         // new Date(Date.parse(assignments[element].due)).getYear() === new Date(day).getYear()
-        moment.utc(assignments[element].due).format('MMDDYYYY') === moment(day).format('MMDDYYYY')
+        moment.utc(assignments[element].due).format('MMDDYYYY') === day.format('MMDDYYYY')
       ) {
         dayAssignments.push(assignments[element])
       }
@@ -60,13 +60,13 @@ class DayCell extends React.Component {
 
     // check to see if date is in month for purposes of formatting the date
     let isCurrentMonth = false
-    if (day.month() === moment(this.props.thisMonth).month()) {
+    if (day.month() === this.props.thisMonth.month()) {
       isCurrentMonth = true
     }
 
     // check to see if date is current day for purposes of formatting the date
     let isCurrentDay = false
-    if (day.isSame(moment(), 'month') && day.isSame(moment(), 'day') && day.isSame(moment(), 'year')) {
+    if (day.format('MM/DD/YYYY') === moment.utc().format('MM/DD/YYYY')) {
       isCurrentDay = true
     }
 
