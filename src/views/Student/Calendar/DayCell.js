@@ -66,7 +66,7 @@ class DayCell extends React.Component {
 
     // check to see if date is current day for purposes of formatting the date
     let isCurrentDay = false
-    if (day.format('MM/DD/YYYY') === moment.utc().format('MM/DD/YYYY')) {
+    if (day.format('MM/DD/YYYY') === moment().format('MM/DD/YYYY')) {
       isCurrentDay = true
     }
 
