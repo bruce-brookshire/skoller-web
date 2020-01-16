@@ -2,7 +2,6 @@ import React from 'react'
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 import PropTypes from 'prop-types'
-import { calculateTotalProfileScore } from '../utils'
 import { inject, observer } from 'mobx-react'
 
 @inject('rootStore') @observer
@@ -10,7 +9,7 @@ class ProfileScoreVisual extends React.Component {
   constructor (props) {
     super(props)
 
-    let score = calculateTotalProfileScore(this.props.profile, this.props.user) + 0
+    let score = this.props.profile.profile_score * 100
     let timeoutTime = (100 / score) * 2
 
     this.state = {
@@ -64,7 +63,7 @@ class ProfileScoreVisual extends React.Component {
     let percentage = this.state.displayScore
     let color = '#15A494'
 
-    if (this.state.score <= 50) {
+    if (this.state.score <= 49.9) {
       color = '#FF4159'
     } else if (this.state.score <= 75) {
       color = '#F7D300'

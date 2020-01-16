@@ -63,7 +63,7 @@ class NavBar extends React.Component {
         <div>
           <img alt="Skoller" className='logo' src='/src/assets/images/logo-wide-blue@1x.png' />
           <div className='onboard-logo-text'>
-            {this.props.rootStore.userStore.isSW() ? '' : 'Keep Up with Classes, Together.'}
+            {this.props.rootStore.userStore.isSW() ? '' : 'Keep up with classes, together.'}
           </div>
         </div>
         <div className='user-info'>
@@ -143,7 +143,7 @@ class NavBar extends React.Component {
                 }
               }}
             />
-            <div className='cn-navbar-message'>{this.props.rootStore.userStore.isSW() ? '' : 'Keep Up with Classes, Together.'}</div>
+            <div className='cn-navbar-message'>{this.props.rootStore.userStore.isSW() ? '' : 'Keep up with classes, together.'}</div>
           </div>
           <div className='class-info'>
             {this.props.rootStore.userStore.isSW() &&

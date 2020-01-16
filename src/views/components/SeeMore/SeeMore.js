@@ -6,7 +6,7 @@ class SeeMore extends React.Component {
     super(props)
 
     this.state = {
-      seeMore: this.props.children.length > 1
+      seeMore: this.props.seeMore !== null ? this.props.seeMore : this.props.children.length > 1
     }
   }
 
@@ -22,7 +22,7 @@ class SeeMore extends React.Component {
             position: 'relative'
           }}
         >
-          <p className='see-more-button' onClick={() => this.setState({seeMore: false})}>
+          <p className='see-more-button' style={{color: this.props.textColor ? this.props.textColor : ''}} onClick={() => this.setState({seeMore: false})}>
             {this.props.customText ? this.props.customText : 'See more'}
           </p>
           <div style={{height: '100%'}}>
@@ -44,7 +44,9 @@ SeeMore.propTypes = {
   children: PropTypes.array,
   hideHeight: PropTypes.string,
   customText: PropTypes.string,
-  disable: PropTypes.bool
+  disable: PropTypes.bool,
+  seeMore: PropTypes.bool,
+  textColor: PropTypes.string
 }
 
 export default SeeMore

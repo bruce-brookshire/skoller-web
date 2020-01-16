@@ -7,6 +7,7 @@
 
   .tasks-container {
     box-sizing: border-box;
+    position: relative;
     width: 100%;
     @include skoller-cell;
     padding: 1rem;
@@ -24,11 +25,27 @@
     }
 
     .tasks-sub-heading {
-      text-align: right;
-      margin: -48px 0 -64px 0;
+      text-align: left;
+      position: absolute;
+      top: 0.75rem;
+      right: 18px;
       width: 160px;
-      float: right;
+      // float: right;
       color: rgba(0, 0, 0, 0.5)
+    }
+
+    .tasks-add-new {
+      position: absolute;
+      top: 1.4rem;
+      right: 1rem;
+      cursor: pointer;
+      padding: 8px;
+      margin: -8px;
+      color: $cn-color-blue;
+
+      i {
+        cursor: pointer;
+      }
     }
   }
 }

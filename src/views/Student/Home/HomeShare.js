@@ -46,13 +46,14 @@ class HomeShare extends React.Component {
     await actions.students.getStudentSignupOrganization(this.props.rootStore.userStore.user.student.id)
       .then((r) => {
         let slug = r.link.replace(/(.+)(\/c\/)/g, '')
-        this.setState({partner: this.getPartner(slug), show: true})
+        this.setState({partner: this.getPartner(slug)})
         if (this.hasCompletedClass()) {
           this.setState({
             partner: this.getPartner(slug),
             show: true,
             hasCompletedClass: true
           })
+          if (this.props.willDisplay) { this.props.willDisplay() }
         } else {
           this.setState({
             partner: this.getPartner(slug),
@@ -70,7 +71,7 @@ class HomeShare extends React.Component {
     let partner = this.state.partner
     if (this.state.hasCompletedClass) {
       return (
-        <p>Because of you, <b>$1 was donated to {partner.philanthropy}.</b> Share this link to raise even more money!</p>
+        <p>You've raised <b>${this.props.rootStore.userStore.user.student.raise_effort.personal_signups} for {partner.philanthropy}.</b> Raise THOUSANDS by sharing with classmates!</p>
       )
     } else {
       return (
@@ -93,7 +94,7 @@ class HomeShare extends React.Component {
                   position='left'
                 >
                   {this.state.hasCompletedClass
-                    ? <p>Because of you, <b>$1 was donated to {partner.philanthropy}.</b> Share to raise even more money!</p>
+                    ? <p>You've raised <b>${this.props.rootStore.userStore.user.student.raise_effort.personal_signups} for {partner.philanthropy}.</b> Raise THOUSANDS by sharing with classmates!</p>
                     : <p>Upload your syllabus to get <b>$1 donated to {partner.philanthropy}.</b> Share to raise even more money!</p>
                   }
                 </Sammi>
@@ -112,7 +113,8 @@ class HomeShare extends React.Component {
 HomeShare.propTypes = {
   classes: PropTypes.array,
   onAddClass: PropTypes.func,
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  willDisplay: PropTypes.func
 }
 
 export default HomeShare

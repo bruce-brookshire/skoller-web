@@ -151,9 +151,24 @@ class Profile extends React.Component {
 
   renderJobSearchType () {
     let profile = this.props.rootStore.studentJobsStore.profile
-    return (
-      <p>You are currently seeking a{profile.job_search_type.id === 100 ? 'n' : ''}<br />{profile.job_search_type.name.toLowerCase()}{profile.job_search_type.id >= 300 ? ' job' : ''} opportunity.</p>
-    )
+    if (profile.job_search_type) {
+      return (
+        <p>You are currently seeking a{profile.job_search_type.id === 100 ? 'n' : ''}<br />{profile.job_search_type.name.toLowerCase()}{profile.job_search_type.id >= 300 ? ' job' : ''} opportunity.</p>
+      )
+    } else {
+      return <p
+        style={{
+          color: '#15A494',
+          cursor: 'pointer',
+          border: '1px solid #15A494',
+          borderRadius: '5px',
+          padding: '10px 6px 6px 6px'
+        }}
+        onClick={() => this.setState({form: 'basicInfo'})}
+      >
+        Update your job search type
+      </p>
+    }
   }
 
   renderHeader () {
@@ -163,15 +178,15 @@ class Profile extends React.Component {
 
     let strength
     let color = '#6ED6AE'
-    if (this.props.rootStore.studentJobsStore.score <= 50) {
+    if (profile.profile_score <= 0.4999) {
       strength = 'needs some work.'
       color = '#FF4159'
-    } else if (this.props.rootStore.studentJobsStore.score <= 75) {
+    } else if (profile.profile_score <= 0.75) {
       strength = 'could be better!'
       color = '#F7D300'
-    } else if (this.props.rootStore.studentJobsStore.score <= 100) {
+    } else if (profile.profile_score <= 1) {
       strength = 'is very strong! '
-    } else if (this.props.rootStore.studentJobsStore.score >= 100) {
+    } else if (profile.profile_score >= 1) {
       strength = 'is fantastic. Nice work!'
     }
 
