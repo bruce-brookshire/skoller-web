@@ -1,0 +1,153 @@
+.sk-share-classes {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+
+  .sk-share-classes-col {
+    width: 380px;
+    max-width: 100vw;
+
+    .sk-share-form {
+      @include skoller-cell;
+      margin: 0.5rem;
+      padding: 1rem;
+
+      .sk-share-form-incentive {
+        width: 100%;
+        height: 278px;
+
+        .sk-share-form-incentive-headline {
+          font-size: 24px;
+          font-weight: 200;
+          text-align: center;
+
+          b {
+            font-weight: 600;
+          }
+        }
+
+        .sk-share-form-incentive-img {
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-position: center center;
+          height: 230px;
+          width: 100%;
+          margin: 0.5rem 0;
+          position: relative;
+
+          .sk-share-form-incentive-org {
+            position: absolute;
+            top: 150px;
+            left: 150px;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: white;
+            @include not-selectable;
+          }
+        }
+      }
+    
+      h1, h2 {
+        margin: 0;
+      }
+    
+      .sk-share-form-section {
+        margin-top: 1rem;
+    
+        h4 {
+          margin: 0;
+        }
+    
+        p {
+          margin: 0;
+        }
+    
+        .sk-share-form-select {
+          @include sk-form-field;
+          height: 24px;
+          cursor: pointer;
+          margin-bottom: -1px;
+          position: relative;
+    
+          .sk-share-form-selection {
+            padding-top: 2px;
+          }
+        }
+    
+        .sk-share-autocomplete-option {
+          @include sk-autocomplete-option;
+        }
+      }
+    }
+
+    .sk-share-classes-cell {
+      @include skoller-cell;
+      margin: 1rem 0.5rem;
+      padding: 1rem;
+      height: 296px;
+
+      h1 {
+        margin: 0;
+      }
+
+      .sk-share-classes-partnerships {
+        .partnerships-detail {
+          margin: 0;
+          a {
+            color: $cn-color-blue;
+            font-weight: 600;
+            text-decoration: none;
+          }
+        }
+  
+        iframe {
+          border-radius: 5px;
+        }
+      }
+
+      .sk-share-classes-scoreboard {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+
+        .sk-share-classes-raise-effort {
+          flex-grow: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          align-items: center;
+
+          .raise-effort-headline {
+            text-align: center;
+            max-width: 240px;
+            margin: 3.5rem 0;
+            font-size: 24px;
+            font-weight: 200;
+  
+            b {
+              font-weight: 600;
+            }
+          }
+
+          .raise-effort-detail {
+            color: rgba(0,0,0,0.5);
+            font-size: 12px;
+            text-align: center;
+          }
+
+          .raise-effort-button {
+            @include sk-standard-button;
+            margin: 1rem 0;
+
+            p {
+              padding-left: 1.5rem;
+              padding-right: 1.5rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -84,7 +84,7 @@ class Share extends React.Component {
   renderContent () {
     return (
       <div className='sk-share-container'>
-        {this.renderHeader()}
+        {this.state.classes.length === 0 && this.renderHeader()}
         {this.state.classes.length > 0
           ? <ShareClasses
             classes={this.state.classes}

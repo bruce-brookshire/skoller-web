@@ -27,8 +27,8 @@ class CalendarBody extends React.Component {
     let lastDay = null
     // this loops 42 times because the calendar will always have 42 cells (6 weeks)
     for (let i = 0; i < 42; i++) {
-      let day = moment(this.props.thisMonth).add(i, 'd')
-      if (day.month() === this.props.thisMonth.getMonth()) {
+      let day = moment(this.props.thisMonth).add(i, 'day')
+      if (day.format('MM') === this.props.thisMonth.format('MM')) {
         days.push(day)
         lastDay = day
       } else {
@@ -36,14 +36,14 @@ class CalendarBody extends React.Component {
       }
     }
 
-    for (let i = 1; i < this.props.thisMonth.getDay() + 1; ++i) {
+    for (let i = 1; i < parseInt(this.props.thisMonth.format('E')) + 1; ++i) {
       let day = moment(this.props.thisMonth).subtract(i, 'd')
       days.splice(0, 0, day)
     }
 
     while (days.length < 42) {
-      let day = moment(lastDay).add(1, 'd')
-      lastDay = day
+      let day = moment(lastDay).add(1, 'day')
+      lastDay = moment(day)
       days.push(day)
     }
 
@@ -54,8 +54,8 @@ class CalendarBody extends React.Component {
     const weekDays = []
     let lastDay = null
     for (let i = 0; i < 7; i++) {
-      let day = moment(this.props.thisWeek).add(i, 'd')
-      if (day.week() === moment(this.props.thisWeek).week()) {
+      let day = moment(this.props.thisWeek).add(i, 'days')
+      if (day.isSame(this.props.thisWeek, 'week')) {
         weekDays.push(day)
         lastDay = day
       } else {
@@ -63,13 +63,8 @@ class CalendarBody extends React.Component {
       }
     }
 
-    for (let i = 1; i < this.props.thisWeek.getDay() + 1; ++i) {
-      let day = moment(this.props.thisMonth).subtract(i, 'd')
-      weekDays.splice(0, 0, day)
-    }
-
     while (weekDays.length < 7) {
-      let day = moment(lastDay).add(1, 'd')
+      let day = moment(lastDay).add(1, 'day')
       lastDay = day
       weekDays.push(day)
     }

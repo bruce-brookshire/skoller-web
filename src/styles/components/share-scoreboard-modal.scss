@@ -1,0 +1,31 @@
+.share-scoreboard-modal {
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  p {
+    text-align: center;
+  }
+
+  table {
+    width: 100%;
+
+    tr {
+      font-size: 24px;
+      font-weight: 600;
+
+      .right {
+        text-align: right;
+      }
+
+      .nationwide {
+        font-size: 14px;
+        transform: translate(8px, -8px);
+        color: rgba(0,0,0,0.4);
+        font-weight: 400;
+      }
+    }
+  }
+}

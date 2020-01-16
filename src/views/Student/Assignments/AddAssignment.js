@@ -20,10 +20,10 @@ class AddAssignment extends Component {
     this.state = {
       // student info stuff
       newAssignment: {
-        due: this.props.assignmentParams.due,
+        due: this.props.assignmentParams ? this.props.assignmentParams.due : null,
         name: null,
         weight_id: null,
-        class: this.props.assignmentParams.class,
+        class: this.props.assignmentParams ? this.props.assignmentParams.class : null,
         created_on: 'web',
         share: true
       },
