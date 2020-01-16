@@ -178,7 +178,7 @@ class Profile extends React.Component {
 
     let strength
     let color = '#6ED6AE'
-    if (profile.profile_score <= 0.50) {
+    if (profile.profile_score <= 0.4999) {
       strength = 'needs some work.'
       color = '#FF4159'
     } else if (profile.profile_score <= 0.75) {
