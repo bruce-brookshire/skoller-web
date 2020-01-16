@@ -5,7 +5,6 @@ import SkProgressBar from '../../components/SkProgressBar'
 
 class ScoreboardModal extends React.Component {
   render () {
-    console.log(this.props.user.student.raise_effort)
     return (
       <SkModal title='Full Scoreboard' closeModal={() => this.props.closeModal()}>
         <div className='share-scoreboard-modal'>
@@ -13,7 +12,7 @@ class ScoreboardModal extends React.Component {
           <table>
             <tr>
               <td className='left'>Your Raise</td>
-              <td style={{color: '#' + this.props.partner.primaryColor}} className='right'>${this.props.user.student.raise_effort.personal_signups}</td>
+              <td style={{color: '#' + this.props.partner.primaryColor}} className='right'>${this.props.user.student.raise_effort.personal_signups + 1}</td>
             </tr>
             <tr>
               <td className='nationwide'></td>

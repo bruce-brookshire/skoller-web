@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import SkSelectDropDown from '../../components/SkSelectDropDown'
 import CopyBox from '../../components/CopyBox'
-import YouTube from 'react-youtube'
 import amazon from '../../../assets/images/share/amazon.png'
 import jar from '../../../assets/images/share/jar.png'
 import ScoreboardModal from './ScoreboardModal'
@@ -147,7 +146,14 @@ class ShareClasses extends React.Component {
       <div className='sk-share-classes-partnerships'>
         <h1>Partnerships</h1>
         <p className='partnerships-detail'><a target='_blank' rel='noopener noreferrer' href='https://explore.skoller.co/affiliate-program'>Check out</a> how Skoller and student organizations benefit when they partner up!</p>
-        <YouTube className={'video'} videoId={'-piVeJNI61w'} opts={opts} />
+        {/* <YouTube className={'video'} videoId={'-piVeJNI61w'} opts={opts} /> */}
+        <div className='video'>
+          <iframe src='https://www.youtube.com/embed/-piVeJNI61w'
+            frameBorder='0'
+            allowFullScreen
+            title='video'
+          />
+        </div>
       </div>
     )
   }
@@ -159,7 +165,7 @@ class ShareClasses extends React.Component {
         {this.props.partner
           ? <div className='sk-share-classes-raise-effort'>
             <div className='raise-effort-headline'>
-              <b style={{color: '#' + this.props.partner.primaryColor}}>YOU&apos;VE RAISED ${this.props.user.student.raise_effort.personal_signups}</b> for {this.props.partner.philanthropy}
+              <b style={{color: '#' + this.props.partner.primaryColor}}>YOU&apos;VE RAISED ${this.props.user.student.raise_effort.personal_signups + 1}</b> for {this.props.partner.philanthropy}
             </div>
             <div className='raise-effort-button'>
               <p onClick={() => this.setState({showScoreboardModal: true})}>See full scoreboard</p>
