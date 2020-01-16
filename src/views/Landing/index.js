@@ -8,9 +8,9 @@ import '../../../node_modules/react-smartbanner/src/styles/style.scss'
 
 import LandingNav from '../components/LandingNav'
 import Signup from './Signup'
-import LandingMessageType from './LandingMessageType'
 import LandingFooter from '../components/LandingFooter'
-import LandingBanner from './LandingBanner';
+import LandingBanner from './LandingBanner'
+import skollerHome from '../../assets/images/landing_page/skoller-home.png'
 
 @inject('rootStore') @observer
 class Landing extends React.Component {
@@ -33,15 +33,25 @@ class Landing extends React.Component {
         <div className='cn-landing-container' id='cn-landing-container'>
 
           <div className='cn-landing-content-wrapper'>
-
+            {window.innerWidth <= 767 && <LandingNav rootStore={this.props.rootStore}/>}
             <div className='cn-landing-content'>
-              {window.innerWidth <= 767 && <LandingNav rootStore={this.props.rootStore}/>}
-              <LandingMessageType rootStore={this.props.rootStore}/>
+              {/* <LandingMessageType rootStore={this.props.rootStore}/> */}
               <Signup rootStore={this.props.rootStore}/>
-            </div>
-
-            <div className='cn-learn-more'>
-              <a className='button cn-landing-button' href='https://explore.skoller.co'>Explore</a>
+              <div className='cn-landing-image-container'>
+                <div
+                  className='cn-landing-image'
+                  style={{
+                    backgroundImage: `url(${skollerHome})`,
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center center'}}
+                  src={skollerHome}
+                />
+                <div className='cn-learn-more'>
+                  <p>Want to learn more?</p>
+                  <a className='button cn-landing-button' href='https://explore.skoller.co'>Explore</a>
+                </div>
+              </div>
             </div>
           </div>
 

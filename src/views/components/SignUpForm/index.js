@@ -124,31 +124,39 @@ class SignUpForm extends React.Component {
             {header && <div>{header}</div>}
           </div>
           <div className='row'>
-            <div className='col-xs-12'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.student && formErrors.student.name_first}
-                label='First name'
-                id='sign-up.student.name_first'
-                name='student.name_first'
-                autoComplete='given-name'
-                onChange={updateProperty}
-                placeholder='First name'
-                value={form.student.name_first}
-              />
-            </div>
-            <div className='col-xs-12'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.student && formErrors.student.name_last}
-                label='Last name'
-                id='sign-up.student.name_last'
-                name='student.name_last'
-                autoComplete='family-name'
-                onChange={updateProperty}
-                placeholder='Last name'
-                value={form.student.name_last}
-              />
+            <div className='double-input-row'
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                maxWidth: '100%'
+              }}
+            >
+              <div className='col-xs-6'>
+                <InputField
+                  containerClassName='margin-top'
+                  error={formErrors.student && formErrors.student.name_first}
+                  label='First name'
+                  id='sign-up.student.name_first'
+                  name='student.name_first'
+                  autoComplete='given-name'
+                  onChange={updateProperty}
+                  placeholder='First name'
+                  value={form.student.name_first}
+                />
+              </div>
+              <div className='col-xs-6'>
+                <InputField
+                  containerClassName='margin-top'
+                  error={formErrors.student && formErrors.student.name_last}
+                  label='Last name'
+                  id='sign-up.student.name_last'
+                  name='student.name_last'
+                  autoComplete='family-name'
+                  onChange={updateProperty}
+                  placeholder='Last name'
+                  value={form.student.name_last}
+                />
+              </div>
             </div>
             <div className='col-xs-12'>
               <InputField
