@@ -44,14 +44,10 @@ class Signup extends React.Component {
               {...this.props}
               header={
                 <div>
-                  <h1>Get started!</h1>
-                  <small>
-                    You&apos;re a few clicks away from the easiest semester of
-                    your life.
-                  </small>
+                  <h1>Sign up<small>It&apos;s free!</small></h1>
                 </div>
               }
-              buttonText="Sign Up"
+              buttonText="Sign up"
               onSubmit={this.onSubmit.bind(this)}
             />
           </div>
