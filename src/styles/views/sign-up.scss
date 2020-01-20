@@ -3,9 +3,10 @@
   display: block;
   @include breakpoint(medium) {
     display: flex;
-    flex-grow: 1;
+    flex-grow: 0;
     min-height: 100%;
-    width: 475px;
+    // width: 475px;
+    max-width: 380px;
     margin-left: 2rem;
     margin-right: 2rem;
   }
@@ -28,6 +29,7 @@
     justify-content: center;
     align-items: center;
     width: 100%;
+    
 
     @include breakpoint(medium) {
       display: flex;
@@ -39,20 +41,26 @@
     }
 
     #sign-up-form {
-      padding: 4px 0;
       margin: 2rem 0;
-      @include shadow-box;
+      @include skoller-cell;
       border-radius: 16px;
-      min-height: 100%;
+      min-height: calc(100% - 2rem);
       width: 100%;
+      padding: 1rem;
 
       @include breakpoint(medium) {
-        padding: 0;
+        padding: 1rem;
         margin: 0;
       }
 
       .cn-sign-up-form {
         margin-top: 2rem;
+        small {
+          color: $cn-form-border;
+          margin-left: 8px;
+          font-weight: 400;
+          font-size: 18px;
+        }
 
         .cn-sign-up-form-phone {
           margin-top: 8px;

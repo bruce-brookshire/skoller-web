@@ -165,11 +165,16 @@ class SyllabusTool extends React.Component {
     actions.classes.unlockClass(classId, form).then(() => {
       this.setState({submitting: false})
       if (!navbarStore.isDIY) {
-        this.getNextClass()
+        if (!this.props.rootStore.userStore.isStudent()) {
+          this.getNextClass()
+        }
       } else {
         browserHistory.push('/student/classes')
       }
-    }).catch(() => { this.setState({submitting: false}); browserHistory.push('/hub/landing') })
+    }).catch(() => {
+      this.setState({submitting: false})
+      browserHistory.push('/')
+    })
   }
 
   /*
@@ -463,11 +468,16 @@ class SyllabusTool extends React.Component {
     navbarStore.cl = cl
   }
 
+  onBackToClasses () {
+    this.unlock(true)
+    browserHistory.push('/student/classes')
+  }
+
   renderBackToClasses () {
     const {navbarStore} = this.props.rootStore
     if (navbarStore.isDIY) {
       return (
-        <div className='cn-syllabus-tool-back-button' onClick={() => browserHistory.push('/student/classes')}>
+        <div className='cn-syllabus-tool-back-button' onClick={() => this.onBackToClasses()}>
           <span>👈</span> Back to classes
         </div>
       )
