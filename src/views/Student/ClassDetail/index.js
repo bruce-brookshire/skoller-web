@@ -2,10 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import {browserHistory} from 'react-router'
-import UploadDocuments from './UploadDocuments'
 import actions from '../../../actions'
 import Loading from '../../../components/Loading'
-import ClassCard from '../../Cards/ClassCard'
 import ClassInviteLink from './ClassInviteLink'
 import AssignmentList from '../../components/AssignmentList'
 import StudentLayout from '../../components/StudentLayout'
@@ -13,7 +11,7 @@ import AddAssignment from '../Assignments/AddAssignment'
 import DropClassButton from '../../components/DropClassButton'
 import UploadAdditionalDocuments from '../../components/ClassStatusModal/UploadAdditionalDocuments'
 import SkModal from '../../components/SkModal/SkModal'
-import CopyBox from '../../components/CopyBox';
+import CopyBox from '../../components/CopyBox'
 
 @inject('rootStore') @observer
 class ClassDetail extends React.Component {
@@ -144,20 +142,6 @@ class ClassDetail extends React.Component {
     )
   }
 
-  renderClassCard () {
-    const {cl} = this.state
-    let professorName = cl.professor ? cl.professor.name_first + ' ' + cl.professor.name_last : ''
-    return (
-      <ClassCard
-        cl={cl}
-        schoolName={cl.school.name}
-        professorName={professorName}
-        semesterName={cl.class_period.name}
-        onDelete={this.toggleDeleteDialog.bind(this)}
-      />
-    )
-  }
-
   renderClassLink () {
     const {cl} = this.state
     const {enrollmentLink, enrollmentCount} = this.props.location.state
@@ -167,14 +151,6 @@ class ClassDetail extends React.Component {
         enrollmentLink={enrollmentLink}
         enrollmentCount={enrollmentCount}
       />
-    )
-  }
-
-  renderSpeculateGradeButton () {
-    return (
-      <a className='spec-grade-button'>
-        % Speculate Grade
-      </a>
     )
   }
 
@@ -269,33 +245,12 @@ class ClassDetail extends React.Component {
     )
   }
 
-  toggleDeleteDialog () {
-    this.setState({openDeleteDialog: !this.state.openDeleteDialog})
-  }
-
   renderClassShareCell () {
     return (
       <div className='sk-class-detail-share-cell'>
         <h1>Share {this.state.studentClass.name}⚡️️</h1>
         <p>Copy this link for {this.state.studentClass.name} and share it with your classmates.</p>
         <CopyBox linkValue={this.state.studentClass.enrollment_link} />
-      </div>
-    )
-  }
-
-  renderClassDetails () {
-    const {cl} = this.state
-    return (
-      <div className="cn-class-detail-container">
-        <div id='cn-class-detail-header'>
-          <div className='cn-class-detail-header-item'>
-            {this.renderClassCard()}
-          </div>
-          <div className='cn-class-detail-header-item'>
-            {this.renderClassLink()}
-          </div>
-        </div>
-        <UploadDocuments cl={cl} onUpload={this.getClass.bind(this)} />
       </div>
     )
   }
@@ -315,19 +270,15 @@ class ClassDetail extends React.Component {
           {loading
             ? <Loading />
             : <div className='cn-class-assignments-wrapper'>
-              {cl.status.id === 1100 || cl.status.id === 1200 || cl.status.id === 1300
-                ? <div id='cn-class-detail-container'>
-                  {this.renderClassDetails()}
-                </div>
-                : <div>
-                  {this.renderClassShareCell()}
-                  <div className='cn-class-assignments-container'>
-                    {this.renderClassAssignmentsHeader()}
-                    <div className='cn-class-list-container margin-top'>
-                      {this.renderAssignmentList()}
-                    </div>
+              <div>
+                {this.renderClassShareCell()}
+                <div className='cn-class-assignments-container'>
+                  {this.renderClassAssignmentsHeader()}
+                  <div className='cn-class-list-container margin-top'>
+                    {this.renderAssignmentList()}
                   </div>
-                </div>}
+                </div>
+              </div>
             </div>
           }
         </div>
