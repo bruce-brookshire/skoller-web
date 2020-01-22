@@ -107,7 +107,7 @@ class ClassDetail extends React.Component {
     )
   }
 
-  renderClassAssignmentsHeader () {
+  renderClassHeader () {
     return (
       <div>
         {this.renderClassTitle()}
@@ -263,7 +263,7 @@ class ClassDetail extends React.Component {
   }
 
   render () {
-    const {loading, cl} = this.state
+    const {loading} = this.state
     return (
       <StudentLayout>
         <div>
@@ -273,7 +273,7 @@ class ClassDetail extends React.Component {
               <div>
                 {this.renderClassShareCell()}
                 <div className='cn-class-assignments-container'>
-                  {this.renderClassAssignmentsHeader()}
+                  {this.renderClassHeader()}
                   <div className='cn-class-list-container margin-top'>
                     {this.renderAssignmentList()}
                   </div>
