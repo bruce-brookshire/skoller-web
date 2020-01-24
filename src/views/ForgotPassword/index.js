@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 import {Form, ValidateForm} from 'react-form-library'
 import {InputField} from '../../components/Form'
 import actions from '../../actions'
@@ -33,13 +33,13 @@ class ForgotPassword extends React.Component {
   onSubmit () {
     if (this.props.validateForm(this.state.form, requiredFields)) {
       actions.auth.forgotPassword(this.state.form).then(() => {
-        browserHistory.push('/landing')
+        this.props.history.push('/landing')
       }).catch(() => false)
     }
   }
 
   onLogin () {
-    browserHistory.push('/landing')
+    this.props.history.push('/landing')
   }
 
   render () {
@@ -85,4 +85,4 @@ ForgotPassword.propTypes = {
   validateForm: PropTypes.func
 }
 
-export default ValidateForm(Form(ForgotPassword, 'form'))
+export default withRouter(ForgotPassword)

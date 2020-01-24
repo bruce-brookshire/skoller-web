@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 import {Form, ValidateForm} from 'react-form-library'
 import {InputField} from '../../components/Form'
 import actions from '../../actions'
@@ -38,13 +38,13 @@ class ResetPassword extends React.Component {
   onSubmit () {
     if (this.props.validateForm(this.state.form, requiredFields)) {
       actions.auth.resetPassword(this.state.form, this.props.location.query.token).then(() => {
-        browserHistory.push('/landing')
+        this.props.history.push('/landing')
       }).catch(() => false)
     }
   }
 
   onLogin () {
-    browserHistory.push('/landing')
+    this.props.history.push('/landing')
   }
 
   render () {
@@ -100,4 +100,4 @@ ResetPassword.propTypes = {
   validateForm: PropTypes.func
 }
 
-export default ValidateForm(Form(ResetPassword, 'form'))
+export default withRouter(ResetPassword)

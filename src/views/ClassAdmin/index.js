@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 
 import actions from '../../actions'
 import Loading from '../../components/Loading'
@@ -62,7 +62,7 @@ class ClassAdmin extends React.Component {
       openAssignmentModal: false,
       documents: [],
       openNoDocModal: false,
-      tabState: this.props.params.tabState ? this.props.params.tabState : 'class_info',
+      tabState: this.props.match.params.tabState ? this.props.match.params.tabState : 'class_info',
       uploadingDoc: false,
       loadingClass: true
     }
@@ -103,7 +103,7 @@ class ClassAdmin extends React.Component {
           })
         }
         if (!incompleteChangeRequests || lastCr) {
-          browserHistory.push({
+          this.props.history.push({
             pathname: '/hub/classes',
             state: {
               needsChange: true
@@ -134,7 +134,7 @@ class ClassAdmin extends React.Component {
   */
   async getClass () {
     this.setState({loadingClass: true})
-    const {params: {classId}} = this.props
+    let classId = this.props.match.params.classId
     await actions.classes.getClassByIdAdmin(classId).then((cl) => {
       this.setState({cl, weights: cl.weights, assignments: cl.assignments})
       this.setState({loadingClass: false})
@@ -147,7 +147,7 @@ class ClassAdmin extends React.Component {
   * Fetch the documents for a class.
   */
   getDocuments () {
-    const {params: {classId}} = this.props
+    let classId = this.props.match.params.classId
     actions.documents.getClassDocuments(classId).then((documents) => {
       documents.sort((a, b) => b.is_syllabus)
       this.setState({documents})
@@ -214,7 +214,7 @@ class ClassAdmin extends React.Component {
   * @param [Object] assignment. Assignment object to be edited.
   */
   onSelectAssignment (assignment) {
-    browserHistory.push({
+    this.props.history.push({
       pathname: `/assignment/${assignment.id}/admin`,
       state: {assignment,
         school: this.state.cl.school,
@@ -722,4 +722,4 @@ ClassAdmin.propTypes = {
   history: PropTypes.object
 }
 
-export default ClassAdmin
+export default withRouter(ClassAdmin)

@@ -2,7 +2,7 @@ import React from 'react'
 import { inject, observer } from 'mobx-react'
 import PropTypes from 'prop-types'
 import partners from '../../../views/Student/Onboard/partners'
-import { browserHistory } from 'react-router'
+import { withRouter } from 'react-router-dom'
 import SkollerJobsSwitch from '../../../assets/sk-icons/jobs/SkollerJobsSwitch'
 import SkollerSwitch from '../../../assets/sk-icons/jobs/SkollerSwitch'
 import ForwardArrow from '../../../assets/sk-icons/navigation/ForwardArrow'
@@ -99,7 +99,7 @@ class SkBanner extends React.Component {
               <div className='sk-banner-partner-content-button'>
                 <p
                   style={{backgroundColor: '#' + partner.primaryColor}}
-                  onClick={() => browserHistory.push('/student/share')}
+                  onClick={() => this.props.history.push('/student/share')}
                 >
                   CLICK HERE
                 </p>
@@ -261,4 +261,4 @@ SkBanner.propTypes = {
   hideText: PropTypes.bool
 }
 
-export default SkBanner
+export default withRouter(SkBanner)

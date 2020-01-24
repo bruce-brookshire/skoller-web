@@ -76,7 +76,7 @@ class SignUpForm extends React.Component {
   }
 
   checkPhone (phone) {
-    if (phone !== null) {
+    if (phone) {
       if (phone.length === 12) {
         return true
       }

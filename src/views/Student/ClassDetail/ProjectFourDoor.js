@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 
 @inject('rootStore') @observer
 class ProjectFourDoor extends React.Component {
@@ -30,7 +30,7 @@ class ProjectFourDoor extends React.Component {
   */
   onDIY () {
     const {cl} = this.props
-    browserHistory.push({
+    this.props.history.push({
       pathname: `/class/${cl.id}/syllabus_tool/`,
       state: {
         isDIY: true
@@ -155,4 +155,4 @@ ProjectFourDoor.propTypes = {
   rootStore: PropTypes.object
 }
 
-export default ProjectFourDoor
+export default withRouter(ProjectFourDoor)

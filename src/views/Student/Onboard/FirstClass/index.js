@@ -3,7 +3,7 @@ import SkProgressBar from '../../../components/SkProgressBar'
 import PropTypes from 'prop-types'
 import actions from '../../../../actions'
 import { inject, observer } from 'mobx-react'
-import { browserHistory } from 'react-router'
+import { withRouter } from 'react-router-dom'
 import SkLoader from '../../../../assets/sk-icons/SkLoader'
 import DragAndDrop from '../../../components/DragAndDrop/DragAndDrop'
 import {mobileCheck} from '../../../../utilities/display'
@@ -39,7 +39,7 @@ class FirstClass extends React.Component {
         this.setState({mobile: true})
       }
       if (classes.length > 1) {
-        browserHistory.push('/student')
+        this.props.history.push('/student')
       } else {
         let cl = classes[0]
         let status
@@ -228,7 +228,7 @@ class FirstClass extends React.Component {
   }
 
   sendToDiy () {
-    browserHistory.push({
+    this.props.history.push({
       pathname: `/class/${this.state.firstClass.id}/syllabus_tool/`,
       state: {
         isDIY: true
@@ -311,7 +311,7 @@ class FirstClass extends React.Component {
         {this.state.status === 'diy' &&
           <div
             className='sk-onboard-alt'
-            onClick={() => browserHistory.push('/student')}
+            onClick={() => this.props.history.push('/student')}
           >
             Not the right time? Enter Skoller instead.
           </div>
@@ -374,4 +374,4 @@ FirstClass.propTypes = {
   closeModal: PropTypes.func
 }
 
-export default FirstClass
+export default withRouter(FirstClass)

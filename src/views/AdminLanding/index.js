@@ -1,8 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { browserHistory } from '../../../node_modules/react-router'
+import { withRouter } from 'react-router-dom'
 import { Cookies } from '../../../node_modules/react-cookie'
-// import { InputField } from '../Form'
 import actions from '../../actions'
 import { inject, observer } from 'mobx-react'
 
@@ -64,13 +63,13 @@ class AdminLanding extends React.Component {
         this.cookie.remove('skollerToken', { path: '/' })
         this.cookie.set('skollerToken', authToken, { maxAge: 86400 * 270, path: '/' })
 
-        browserHistory.push('/hub')
+        this.props.history.push('/hub')
       }).catch((reason) => false)
     }
   }
 
   onForgotPassword () {
-    browserHistory.push('/forgot_password')
+    this.props.history.push('/forgot_password')
   }
 
   render () {
@@ -106,4 +105,4 @@ class AdminLanding extends React.Component {
   }
 }
 
-export default AdminLanding
+export default withRouter(AdminLanding)

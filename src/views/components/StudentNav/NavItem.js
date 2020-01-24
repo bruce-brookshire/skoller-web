@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { inject, observer } from 'mobx-react'
-import { browserHistory } from 'react-router'
+import { withRouter } from 'react-router-dom'
 import HomeIcon from '../../../assets/sk-icons/HomeIcon'
 import TasksIcon from '../../../assets/sk-icons/TasksIcon'
 import ActivityIcon from '../../../assets/sk-icons/ActivityIcon'
@@ -62,7 +62,7 @@ class NavItem extends React.Component {
           (this.getActivePage() === this.props.pageName ? (jobsMode ? 'active-jobs' : 'active') : '')
         }
         onClick={() => {
-          browserHistory.push('/student/' + this.props.pageName)
+          this.props.history.push('/student/' + this.props.pageName)
         }}
       >
         {this.getNavIcon()}
@@ -79,4 +79,4 @@ NavItem.propTypes = {
   text: PropTypes.string
 }
 
-export default NavItem
+export default withRouter(NavItem)

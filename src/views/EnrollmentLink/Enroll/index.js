@@ -6,7 +6,7 @@ import LoginForm from '../../components/LoginForm'
 import SignUpForm from '../../components/SignUpForm'
 import {inject, observer} from 'mobx-react'
 import Verification from '../../components/Verification'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 import {Cookies} from 'react-cookie'
 import DownloadApp from '../../components/DownloadApp'
 
@@ -36,7 +36,7 @@ class Enroll extends React.Component {
   }
 
   onDLNext () {
-    browserHistory.push('/student/classes')
+    this.props.history.push('/student/classes')
   }
 
   onSubmit () {
@@ -140,4 +140,4 @@ Enroll.propTypes = {
   rootStore: PropTypes.object
 }
 
-export default Enroll
+export default withRouter(Enroll)

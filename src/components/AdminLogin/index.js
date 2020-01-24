@@ -1,6 +1,6 @@
 import React from './node_modules/react'
 import PropTypes from './node_modules/prop-types'
-import {browserHistory} from './node_modules/react-router'
+import { withRouter } from 'react-router-dom'
 import {Cookies} from './node_modules/react-cookie'
 import {Form, ValidateForm} from './node_modules/react-form-library'
 import {InputField} from '../Form'
@@ -67,7 +67,7 @@ class AdminLogin extends React.Component {
   }
 
   onForgotPassword () {
-    browserHistory.push('/forgot_password')
+    this.props.history.push('/forgot_password')
   }
 
   render () {
@@ -110,4 +110,4 @@ class AdminLogin extends React.Component {
   }
 }
 
-export default ValidateForm(Form(AdminLogin, 'form'))
+export default withRouter(AdminLogin)

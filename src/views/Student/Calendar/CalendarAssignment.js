@@ -1,13 +1,13 @@
 import React from 'react'
 import { observer, inject } from 'mobx-react'
-import { browserHistory } from 'react-router'
+import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 @inject('rootStore')
 @observer
 class DayCell extends React.Component {
   goToAssignment (assignment) {
-    browserHistory.push({pathname: '/student/class/' + assignment.class_id + '/assignments/' + assignment.assignment_id, state: { prevPath: this.props.rootStore.studentNavStore.location.pathname }})
+    this.props.history.push({pathname: '/student/class/' + assignment.class_id + '/assignments/' + assignment.assignment_id, state: { prevPath: this.props.rootStore.studentNavStore.location.pathname }})
   }
 
   // return the rendered calendar day cell
@@ -30,4 +30,4 @@ DayCell.propTypes = {
   classColors: PropTypes.object
 }
 
-export default DayCell
+export default withRouter(DayCell)

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 import actions from '../../../actions'
 import Loading from '../../../components/Loading'
 import ClassInviteLink from './ClassInviteLink'
@@ -33,11 +33,11 @@ class ClassDetail extends React.Component {
 
   componentWillMount () {
     this.getClass()
-    this.getClassAssignmentsForStudent(this.props.params)
+    this.getClassAssignmentsForStudent(this.props.match.params)
   }
 
   getClass () {
-    const {classId} = this.props.params
+    const {classId} = this.props.match.params
     this.setState({loading: true})
     actions.classes.getClassById(classId).then(cl => {
       this.getClassColor(cl)
@@ -78,7 +78,7 @@ class ClassDetail extends React.Component {
   onDeleteClass () {
     var {cl} = this.state
     actions.classes.dropClass(cl.id).then(() => {
-      browserHistory.push({
+      this.props.history.push({
         pathname: `/student/classes`
       })
     }).catch(() => false)
@@ -103,7 +103,7 @@ class ClassDetail extends React.Component {
 
   renderDropClassButton () {
     return (
-      <DropClassButton onDropClass={() => browserHistory.push('/student/classes')} cl={this.state.cl} />
+      <DropClassButton onDropClass={() => this.props.history.push('/student/classes')} cl={this.state.cl} />
     )
   }
 
@@ -187,7 +187,7 @@ class ClassDetail extends React.Component {
       <a
         className='back-button'
         onClick={() => {
-          browserHistory.push('/student/classes')
+          this.props.history.push('/student/classes')
         }}
       >
         <i className='fa fa-angle-left' /> All Classes
@@ -257,7 +257,7 @@ class ClassDetail extends React.Component {
 
   onAssignmentSelect (assignment) {
     const { cl } = this.state
-    browserHistory.push({
+    this.props.history.push({
       pathname: `/student/class/${cl.id}/assignments/${assignment.assignment_id}`
     })
   }
@@ -293,4 +293,4 @@ ClassDetail.propTypes = {
   location: PropTypes.object
 }
 
-export default ClassDetail
+export default withRouter(ClassDetail)

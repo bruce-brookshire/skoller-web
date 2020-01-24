@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { inject, observer } from 'mobx-react'
 import NavItem from './NavItem'
-import { browserHistory } from 'react-router'
+import { withRouter } from 'react-router-dom'
 
 @inject('rootStore')
 @observer
@@ -21,7 +21,7 @@ class StudentNav extends React.Component {
           's-nav-item bottom'
         }
         onClick={() => {
-          browserHistory.push('/logout')
+          this.props.history.push('/logout')
         }}
       >
         <i className='fas fa-sign-out-alt fa-lg' />
@@ -72,4 +72,4 @@ StudentNav.propTypes = {
   imgPath: PropTypes.string
 }
 
-export default StudentNav
+export default withRouter(StudentNav)

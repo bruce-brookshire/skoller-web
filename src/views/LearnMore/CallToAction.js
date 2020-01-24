@@ -1,5 +1,5 @@
 import React from 'react'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 
 class CallToAction extends React.Component {
   render () {
@@ -7,7 +7,7 @@ class CallToAction extends React.Component {
       <div className="section-cta">
         <ul className="actions">
           <li className="action">
-            <a className="button" onClick={() => { browserHistory.push('/landing'); window.scrollTo(0, 0) }}>
+            <a className="button" onClick={() => { this.props.history.push('/landing'); window.scrollTo(0, 0) }}>
               This is dope. Sign me up.
             </a>
           </li>
@@ -17,7 +17,7 @@ class CallToAction extends React.Component {
             </a>
           </li>
           <li className="action">
-            <a onClick={() => { browserHistory.push('/faq'); window.scrollTo(0, 0) }} style={{textDecoration: 'underline'}}>
+            <a onClick={() => { this.props.history.push('/faq'); window.scrollTo(0, 0) }} style={{textDecoration: 'underline'}}>
               Want to learn more? Check out our FAQ&apos;s.
             </a>
           </li>
@@ -27,4 +27,4 @@ class CallToAction extends React.Component {
   }
 }
 
-export default CallToAction
+export default withRouter(CallToAction)

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import StudentLayout from '../../components/StudentLayout'
 import actions from '../../../actions'
-import { browserHistory } from 'react-router'
+import { withRouter } from 'react-router-dom'
 import PopUp from './PopUp'
 import ClassStatusModal from '../../components/ClassStatusModal'
 import {Cookies} from 'react-cookie'
@@ -108,7 +108,7 @@ class Home extends React.Component {
     if (fullClass.status.id < 1400) {
       this.setState({classStatusModal: {show: true, cl: fullClass}})
     } else {
-      browserHistory.push({
+      this.props.history.push({
         pathname: `/student/class/${cl.id}/`,
         state: {
           enrollmentLink: fullClass.enrollment_link,
@@ -153,7 +153,7 @@ class Home extends React.Component {
         <div className="home-container">
           <div className="home-column">
             <div className="home-shadow-box">
-              <h1 className='home-heading' onClick={() => browserHistory.push('/student/classes')}>Classes</h1>
+              <h1 className='home-heading' onClick={() => this.props.history.push('/student/classes')}>Classes</h1>
               <div className="home-card-content">
                 <HomeClasses classes={this.props.rootStore.studentClassesStore.classes} onAddClass={() => this.closeAddClassModal()} onClassSelect={this.onClassSelect} launchClassStatusModal={(cl) => this.launchClassStatusModal(cl)} />
               </div>
@@ -169,7 +169,7 @@ class Home extends React.Component {
           </div>
           <div className="home-column">
             <div className="home-shadow-box">
-              <h1 className='home-heading' onClick={() => browserHistory.push('/student/tasks')}>To-Do&apos;s</h1>
+              <h1 className='home-heading' onClick={() => this.props.history.push('/student/tasks')}>To-Do&apos;s</h1>
               <div className="home-sub-heading">Next 10 days</div>
               <div className="home-card-content">
                 <HomeTasks />
@@ -207,4 +207,4 @@ Home.propTypes = {
   location: PropTypes.object
 }
 
-export default Home
+export default withRouter(Home)

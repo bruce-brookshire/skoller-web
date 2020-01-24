@@ -3,10 +3,7 @@ import {inject, observer} from 'mobx-react'
 import PropTypes from 'prop-types'
 import CompletionCircle from '../../../components/CompletionCircle'
 import { calculateTotalProfileScore, calculateCoreProfileCompleteness, calculatePersonalityProfileCompleteness, calculateExperienceProfileCompleteness, calculateExtrasProfileCompleteness } from '../utils'
-import { browserHistory } from 'react-router';
-// import StudentLayout from '../../components/StudentLayout'
-// import {browserHistory} from 'react-router'
-// import SkLoader from '../../../assets/sk-icons/SkLoader'
+import { withRouter } from 'react-router-dom'
 
 @inject('rootStore') @observer
 class JobsHome extends React.Component {
@@ -29,7 +26,7 @@ class JobsHome extends React.Component {
       <div className='jobs-home-cell'>
         <div className='jobs-home-cell-heading'>
           <h1
-            onClick={() => browserHistory.push('/student/jobs/profile')}
+            onClick={() => this.props.history.push('/student/jobs/profile')}
           >
             Your Profile
           </h1>
@@ -102,4 +99,4 @@ JobsHome.propTypes = {
   location: PropTypes.object
 }
 
-export default JobsHome
+export default withRouter(JobsHome)

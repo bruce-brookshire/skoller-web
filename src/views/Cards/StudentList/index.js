@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Grid from '../../../components/Grid'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 import Card from '../../../components/Card'
 
 const headers = [
@@ -66,7 +66,7 @@ class StudentList extends React.Component {
 
   onAccountSelect (student) {
     let state = {user: {student: student, ...student.user}}
-    browserHistory.push({pathname: '/hub/accounts/account/info', state: state})
+    this.props.history.push({pathname: '/hub/accounts/account/info', state: state})
   }
 
   render () {
@@ -96,4 +96,4 @@ StudentList.propTypes = {
   contentClassName: PropTypes.string
 }
 
-export default StudentList
+export default withRouter(StudentList)

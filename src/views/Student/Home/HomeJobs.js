@@ -6,7 +6,7 @@ import actions from '../../../actions'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import PropTypes from 'prop-types'
 import SkSelectDropDown from '../../components/SkSelectDropDown'
-import { browserHistory } from 'react-router'
+import { withRouter } from 'react-router-dom'
 import JobsLogo from '../../../assets/images/jobs/skoller-jobs-logo.png'
 
 @inject('rootStore') @observer
@@ -229,7 +229,7 @@ class HomeJobs extends React.Component {
             this.props.rootStore.studentJobsStore.profile = r
             this.props.rootStore.studentJobsStore.hasJobsProfile = true
             this.props.rootStore.studentJobsStore.firstOpen = true
-            browserHistory.push({pathname: '/student/jobs'})
+            this.props.history.push({pathname: '/student/jobs'})
           })
       })
       .catch(e => {
@@ -424,4 +424,4 @@ HomeJobs.propTypes = {
   user: PropTypes.object
 }
 
-export default HomeJobs
+export default withRouter(HomeJobs)

@@ -4,7 +4,7 @@ import {inject, observer} from 'mobx-react'
 import VerificationCode from '../../../components/VerificationCode'
 import actions from '../../../actions'
 import {formatPhone} from '../../../utilities/display'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 var Environment = require('../../../../environment.js')
 
 const numberOfDigits = 5
@@ -51,7 +51,7 @@ class Verification extends React.Component {
       if (this.props.onSubmit) {
         this.props.onSubmit()
       } else {
-        browserHistory.push('/student')
+        this.props.history.push('/student')
       }
     }).catch(() => false)
   }
@@ -105,4 +105,4 @@ Verification.propTypes = {
   location: PropTypes.object
 }
 
-export default Verification
+export default withRouter(Verification)

@@ -24,7 +24,7 @@ class Unsubscribe extends React.Component {
   }
 
   componentWillMount () {
-    const {params} = this.props
+    const {params} = this.props.match
     this.setState({loading: true})
     actions.users.getEmailPreferences(params.id).then(results => {
       this.setState({emailPreferences: results.email_preferences, userUnsubscribed: results.user_unsubscribed})

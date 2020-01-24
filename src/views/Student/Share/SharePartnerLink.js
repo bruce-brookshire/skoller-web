@@ -19,7 +19,7 @@ class SharePartnerLink extends React.Component {
   }
 
   renderContent () {
-    const partner = this.getPartner(this.props.params.partner)
+    const partner = this.getPartner(this.props.match.params.partner)
     return (
       <div className='sk-share-partner-link-container'>
         <div className='sk-share-partner-link'>
