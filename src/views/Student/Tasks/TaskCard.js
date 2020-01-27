@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 import {inject, observer} from 'mobx-react'
 import WeightIcon from './WeightIcon'
 
@@ -21,7 +21,7 @@ class TaskCard extends React.Component {
   }
 
   goToAssignment () {
-    browserHistory.push({pathname: '/student/class/' + this.props.task.class_id + '/assignments/' + this.props.task.assignment_id, state: { prevPath: this.props.rootStore.studentNavStore.location.pathname }})
+    this.props.history.push({pathname: '/student/class/' + this.props.task.class_id + '/assignments/' + this.props.task.assignment_id, state: { prevPath: this.props.rootStore.studentNavStore.location.pathname }})
   }
 
   renderCard () {
@@ -57,4 +57,4 @@ TaskCard.propTypes = {
   rootStore: PropTypes.object
 }
 
-export default TaskCard
+export default withRouter(TaskCard)

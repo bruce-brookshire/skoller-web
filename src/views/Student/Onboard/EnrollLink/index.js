@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { inject, observer } from 'mobx-react'
 import {Cookies} from 'react-cookie'
 import actions from '../../../../actions'
-import { browserHistory } from 'react-router'
+import { withRouter } from 'react-router-dom'
 import SkLoader from '../../../../assets/sk-icons/SkLoader'
 import Layout from '../Layout'
 import EnrollSignUp from './EnrollSignUp'
@@ -109,7 +109,7 @@ class EnrollLink extends React.Component {
 
   onSubmitVerifyForm = () => {
     if (this.state.classNotFound) {
-      browserHistory.push('/o')
+      this.props.history.push('/o')
     } else {
       this.onEnroll()
     }
@@ -142,7 +142,7 @@ class EnrollLink extends React.Component {
           if (this.state.linkDetail.student_class.status.id === 1400) {
             this.setState({formState: 'complete'})
           } else {
-            browserHistory.push('/student/home')
+            this.props.history.push('/student/home')
           }
         }
       })
@@ -150,7 +150,7 @@ class EnrollLink extends React.Component {
         if (this.state.newUser) {
           this.setState({formState: 'download'})
         } else {
-          browserHistory.push('/student/home')
+          this.props.history.push('/student/home')
         }
       })
   }
@@ -237,7 +237,7 @@ class EnrollLink extends React.Component {
 
   renderDownload () {
     return (
-      <EnrollDownload onNext={() => browserHistory.push('/student/home')} />
+      <EnrollDownload onNext={() => this.props.history.push('/student/home')} />
     )
   }
 
@@ -291,7 +291,7 @@ class EnrollLink extends React.Component {
         <div className='sk-enroll-link-enroll-form'>
           <div
             className='sk-enroll-link-enroll-form-button'
-            onClick={() => browserHistory.push('/student/home')}
+            onClick={() => this.props.history.push('/student/home')}
           >
             <p>Continue</p>
           </div>
@@ -309,7 +309,7 @@ class EnrollLink extends React.Component {
         <div className='sk-enroll-link-enroll-form'>
           <div
             className='sk-enroll-link-enroll-form-button'
-            onClick={() => browserHistory.push('/student/home')}
+            onClick={() => this.props.history.push('/student/home')}
           >
             <p>Continue</p>
           </div>
@@ -376,4 +376,4 @@ EnrollLink.propTypes = {
   location: PropTypes.object
 }
 
-export default EnrollLink
+export default withRouter(EnrollLink)

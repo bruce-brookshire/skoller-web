@@ -7,7 +7,7 @@ import StudentLayout from '../../components/StudentLayout'
 import AddClassModal from './AddClassModal'
 import ClassStatusModal from '../../components/ClassStatusModal'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 import SecondClassPrompt from '../../components/Sammi/Prompts/SecondClassPrompt'
 import JoinFirstClassPrompt from '../../components/Sammi/Prompts/JoinFirstClassPrompt'
 
@@ -107,7 +107,7 @@ class MyClasses extends React.Component {
     if (fullClass.status.id < 1400) {
       this.setState({classStatusModal: {show: true, cl: fullClass}})
     } else {
-      browserHistory.push({
+      this.props.history.push({
         pathname: `/student/class/${cl.id}/`,
         state: {
           enrollmentLink: fullClass.enrollment_link,
@@ -169,4 +169,4 @@ MyClasses.propTypes = {
   location: PropTypes.object
 }
 
-export default MyClasses
+export default withRouter(MyClasses)

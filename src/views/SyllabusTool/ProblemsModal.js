@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Modal from '../../components/Modal'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 
 class ProblemsModal extends React.Component {
   // TODO: Go to new documents page when made.
   goToDocuments () {
-    browserHistory.push('/student/classes')
+    this.props.history.push('/student/classes')
   }
 
   render () {
@@ -36,4 +36,4 @@ ProblemsModal.propTypes = {
   onClose: PropTypes.func
 }
 
-export default ProblemsModal
+export default withRouter(ProblemsModal)

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import actions from '../../../../actions'
-import {browserHistory} from 'react-router'
+import  { withRouter } from 'react-router-dom'
 import Post from './Post'
 import Card from '../../../../components/Card'
 
@@ -40,7 +40,7 @@ class Chat extends React.Component {
   * Navigate to the account info page on clicking a user's account
   */
   onAccountSelect (user) {
-    browserHistory.push({pathname: '/hub/accounts/account/info', state: {user}})
+    this.props.history.push({pathname: '/hub/accounts/account/info', state: {user}})
   }
 
   /*
@@ -163,4 +163,4 @@ Chat.propTypes = {
   contentClassName: PropTypes.string
 }
 
-export default Chat
+export default withRouter(Chat)

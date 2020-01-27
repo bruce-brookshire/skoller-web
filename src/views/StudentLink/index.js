@@ -7,7 +7,7 @@ import EnrollLinkSplash from '../components/EnrollLinkSplash'
 import actions from '../../actions'
 import {inject, observer} from 'mobx-react'
 import Verification from '../components/Verification'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 import {Cookies} from 'react-cookie'
 
 @inject('rootStore') @observer
@@ -38,7 +38,7 @@ class StudentLink extends React.Component {
   }
 
   onSubmit () {
-    browserHistory.push('/student/classes')
+    this.props.history.push('/student/classes')
   }
 
   onSignUp () {
@@ -121,4 +121,4 @@ StudentLink.propTypes = {
   params: PropTypes.object
 }
 
-export default StudentLink
+export default withRouter(StudentLink)

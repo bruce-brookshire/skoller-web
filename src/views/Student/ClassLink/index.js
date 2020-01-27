@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { browserHistory } from 'react-router'
+import { withRouter } from 'react-router-dom'
 
 class ClassLink extends React.Component {
   render () {
@@ -21,7 +21,7 @@ class ClassLink extends React.Component {
         <button
           className='button full-width margin-top'
           onClick={() => {
-            browserHistory.push('/student/classes')
+            this.props.history.push('/student/classes')
           }}>
           Continue to Skoller
         </button>
@@ -34,4 +34,4 @@ ClassLink.propTypes = {
   location: PropTypes.object
 }
 
-export default ClassLink
+export default withRouter(ClassLink)

@@ -4,7 +4,7 @@ import {inject, observer} from 'mobx-react'
 import actions from '../../../actions'
 import Loading from '../../../components/Loading'
 import StudentLayout from '../../components/StudentLayout'
-import { browserHistory } from 'react-router'
+import { withRouter } from 'react-router-dom'
 import BackArrow from '../../../assets/sk-icons/navigation/BackArrow'
 import AssignmentDetailContent from './AssignmentDetailContent'
 
@@ -32,7 +32,7 @@ class AssignmentDetail extends React.Component {
   }
 
   getClass () {
-    const { classId } = this.props.params
+    const { classId } = this.props.match.params
 
     this.setState({ loading: true })
     actions.classes.getStudentClass(this.props.rootStore.userStore.user.student.id, classId).then(cl => {
@@ -41,10 +41,11 @@ class AssignmentDetail extends React.Component {
   }
 
   async getAssignment () {
-    const classId = this.props.params.classId
+    console.log(this.props.match)
+    const classId = this.props.match.params.classId
     const { userStore } = this.props.rootStore
     const { user: { student } } = userStore
-    const { assignmentId } = this.props.params
+    const { assignmentId } = this.props.match.params
     const { assignments } = await actions.studentClasses.getStudentClassAssignments(classId, student).then(assignments => {
       this.setState({ assignments: assignments })
       return assignments
@@ -55,7 +56,7 @@ class AssignmentDetail extends React.Component {
 
   async getWeightInfo () {
     const weightId = this.state.currentAssignment.weight_id
-    const weights = await actions.weights.getClassWeightsByClassId(this.props.params.classId).then(res => res)
+    const weights = await actions.weights.getClassWeightsByClassId(this.props.match.params.classId).then(res => res)
     await this.setState({assignmentWeightCategory: weights.find(w => parseInt(w.id) === parseInt(weightId)), loading: false})
   }
 
@@ -69,13 +70,13 @@ class AssignmentDetail extends React.Component {
             : <div className='sk-assignment-detail'>
               <div className='sk-assignment-detail-outer-container'>
                 {this.props.rootStore.studentNavStore.location.pathname
-                  ? <div className='sk-assignment-detail-back-button' onClick={() => browserHistory.push(this.props.rootStore.studentNavStore.location.pathname)}>
+                  ? <div className='sk-assignment-detail-back-button' onClick={() => this.props.history.push(this.props.rootStore.studentNavStore.location.pathname)}>
                     <BackArrow width="14" height="14" />
                     <p>Back</p>
                   </div>
                   : null
                 }
-                <h2 style={{color: this.state.classColor}} onClick={() => browserHistory.push('/student/class/' + this.state.cl.id)}>
+                <h2 style={{color: this.state.classColor}} onClick={() => this.props.history.push('/student/class/' + this.state.cl.id)}>
                   {this.state.cl.name}
                 </h2>
               </div>
@@ -96,4 +97,4 @@ AssignmentDetail.propTypes = {
   location: PropTypes.object
 }
 
-export default AssignmentDetail
+export default withRouter(AssignmentDetail)

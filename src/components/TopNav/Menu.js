@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 import {inject, observer} from 'mobx-react'
 
 const menuItems = [
@@ -45,7 +45,7 @@ class Menu extends React.Component {
 
   onMenuItemClick (menuItem) {
     if (menuItem.path) {
-      browserHistory.push(menuItem.path)
+      this.props.history.push(menuItem.path)
       this.setState({activePath: menuItem.path})
     }
   }
@@ -59,7 +59,7 @@ Menu.propTypes = {
   rootStore: PropTypes.object
 }
 
-export default Menu
+export default withRouter(Menu)
 
 @inject('rootStore') @observer
 class MenuItem extends React.Component {

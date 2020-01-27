@@ -12,7 +12,7 @@ import Modal from '../../../components/Modal'
 import MeetingTimes from '../../components/ClassEditor/MeetingTimes'
 import moment from 'moment-timezone'
 import ProfessorForm from '../../components/ProfessorForm'
-import { browserHistory } from 'react-router'
+import { withRouter } from 'react-router-dom'
 import ClassCard from '../../Cards/ClassCard'
 import {inject, observer} from 'mobx-react'
 
@@ -93,7 +93,7 @@ class FindClasses extends React.Component {
   enroll (cl) {
     actions.classes.enrollInClass(cl.id).then((studentCl) => {
       this.setState({loading: false})
-      browserHistory.push({
+      this.props.history.push({
         pathname: 'student/class-link',
         state: {
           enrollmentLink: studentCl.enrollment_link,
@@ -613,4 +613,4 @@ FindClasses.propTypes = {
   rootStore: PropTypes.object
 }
 
-export default ValidateForm(Form(FindClasses, 'form'))
+export default withRouter(FindClasses)

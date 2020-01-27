@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { inject, observer } from 'mobx-react'
 import {Cookies} from 'react-cookie'
 import actions from '../../../../actions'
-import { browserHistory } from 'react-router'
+import { withRouter } from 'react-router-dom'
 import SkLoader from '../../../../assets/sk-icons/SkLoader'
 import Layout from '../Layout'
 import EnrollSignUp from './EnrollSignUp'
@@ -52,7 +52,7 @@ class StudentLink extends React.Component {
     if (this.cookie) {
       if (this.cookie.get('skollerToken')) {
         await actions.auth.getUserByToken(this.cookie.get('skollerToken'))
-          .then(() => browserHistory.push('/student'))
+          .then(() => this.props.history.push('/student'))
           .catch(() => {
             this.setState({userNotFound: true, formState: 'sign-up'})
           })
@@ -94,7 +94,7 @@ class StudentLink extends React.Component {
   }
 
   onSubmitVerifyForm = () => {
-    browserHistory.push('/o')
+    this.props.history.push('/o')
   }
 
   renderVerificationForm () {
@@ -165,4 +165,4 @@ StudentLink.propTypes = {
   location: PropTypes.object
 }
 
-export default StudentLink
+export default withRouter(StudentLink)

@@ -9,7 +9,7 @@ import SignUp from './SignUp'
 import SelectSchool from './SelectSchool'
 import FindAClass from './FindAClass'
 import FirstClass from './FirstClass/index'
-import { browserHistory } from 'react-router'
+import { withRouter } from 'react-router-dom'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import SharePartner from './SharePartner'
 import Layout from './Layout'
@@ -47,7 +47,7 @@ class Onboard extends React.Component {
       .then((r) => {
         let slug = r.link.replace(/(.+)(\/c\/)/g, '')
         if (this.props.params.partner && (this.props.params.partner !== slug)) {
-          browserHistory.push(('/student/share/' + this.props.params.partner))
+          this.props.history.push(('/student/share/' + this.props.params.partner))
           this.setState({redirect: true})
         }
         this.setState({partner: this.getPartner(slug)})
@@ -55,7 +55,7 @@ class Onboard extends React.Component {
       .catch(r => {
         if (this.props.params.partner) {
           this.setState({partner: null, redirect: true})
-          browserHistory.push(('/student/share/' + this.props.params.partner))
+          this.props.history.push(('/student/share/' + this.props.params.partner))
           console.log('but')
           hasPartner = false
         }
@@ -80,7 +80,7 @@ class Onboard extends React.Component {
       } else if (this.state.partner !== null) {
         this.setState({step: 'sign-up', loading: false})
       } else {
-        browserHistory.push('/landing')
+        this.props.history.push('/landing')
       }
     }
   }
@@ -100,7 +100,7 @@ class Onboard extends React.Component {
         classNumber = classes.length
       }).catch(r => console.log(r))
       if (classNumber > 1) {
-        browserHistory.push('/student')
+        this.props.history.push('/student')
       }
       if (!user.student.primary_school || !user.student.primary_period) {
         this.setState({step: 'select-school'})
@@ -109,10 +109,10 @@ class Onboard extends React.Component {
       } else if (user.student.primary_school && user.student.primary_period && (classNumber === 0)) {
         this.setState({step: 'find-a-class'})
       } else {
-        browserHistory.push('/student')
+        this.props.history.push('/student')
       }
     } else {
-      browserHistory.push('/student')
+      this.props.history.push('/student')
     }
     this.setState({loading: false})
   }
@@ -222,7 +222,7 @@ class Onboard extends React.Component {
               }
               : () => {
                 this.updateStudent()
-                browserHistory.push('/student')
+                this.props.history.push('/student')
               }
           }
           renderPartner={this.renderPartner}
@@ -237,7 +237,7 @@ class Onboard extends React.Component {
       this.renderOnboardContent(
         <SharePartner
           onSubmit={() => {
-            browserHistory.push('/student')
+            this.props.history.push('/student')
           }}
           renderPartner={this.renderPartner}
           partner={this.state.partner}
@@ -287,4 +287,4 @@ Onboard.propTypes = {
   params: PropTypes.object
 }
 
-export default Onboard
+export default withRouter(Onboard)

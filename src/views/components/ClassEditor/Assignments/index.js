@@ -7,7 +7,7 @@ import SkipCategoryModal from './SkipCategoryModal'
 import actions from '../../../../actions'
 import SkLoader from '../../../../assets/sk-icons/SkLoader'
 import moment from 'moment'
-import { browserHistory } from 'react-router'
+import  { withRouter } from 'react-router-dom'
 import {showSnackbar} from '../../../../utilities/snackbar'
 
 class Assignments extends React.Component {
@@ -285,7 +285,7 @@ class Assignments extends React.Component {
   onSubmitSingleWeight () {
     this.submitAssignments()
     this.handleSubmit()
-    browserHistory.push('/student/class/' + this.props.cl.id.toString())
+    this.props.history.push('/student/class/' + this.props.cl.id.toString())
   }
 
   render () {
@@ -419,4 +419,4 @@ Assignments.propTypes = {
   singleWeight: PropTypes.number
 }
 
-export default Assignments
+export default withRouter(Assignments)

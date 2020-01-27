@@ -1,5 +1,6 @@
 import React from 'react'
 import { inject, observer } from 'mobx-react'
+import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Onboard from './Onboard'
 import EnrollLink from './EnrollLink/index'
@@ -14,18 +15,20 @@ class Switch extends React.Component {
   componentWillUMount () {
     this.props.rootStore.studentNavStore.onboarding = true
   }
+
   render () {
-    if (this.props.route.type === 'onboard') {
+    console.log(this.props)
+    if (this.props.type === 'onboard') {
       return (
-        <Onboard params={this.props.params} />
+        <Onboard params={this.props.match.params} />
       )
-    } else if (this.props.route.type === 'e') {
+    } else if (this.props.type === 'e') {
       return (
-        <EnrollLink params={this.props.params} />
+        <EnrollLink params={this.props.match.params} />
       )
-    } else if (this.props.route.type === 's') {
+    } else if (this.props.type === 's') {
       return (
-        <StudentLink params={this.props.params} isStudent={true} />
+        <StudentLink params={this.props.match.params} isStudent={true} />
       )
     }
   }
@@ -34,7 +37,8 @@ class Switch extends React.Component {
 Switch.propTypes = {
   params: PropTypes.object,
   route: PropTypes.object,
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  type: PropTypes.string
 }
 
-export default Switch
+export default withRouter(Switch)

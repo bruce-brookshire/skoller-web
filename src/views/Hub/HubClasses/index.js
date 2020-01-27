@@ -1,5 +1,5 @@
 import React from 'react'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 import ClassSearch from './ClassSearch'
 import Grid from '../../../components/Grid'
 import Loading from '../../../components/Loading'
@@ -169,7 +169,7 @@ class HubClasses extends React.Component {
   * @param [Object] cl. Class to edit.
   */
   onEditClass (cl) {
-    browserHistory.push({
+    this.props.history.push({
       pathname: `/class/${cl.id}/admin`
     })
   }
@@ -239,4 +239,4 @@ HubClasses.propTypes = {
   location: PropTypes.object
 }
 
-export default HubClasses
+export default withRouter(HubClasses)

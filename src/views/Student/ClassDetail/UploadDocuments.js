@@ -5,7 +5,7 @@ import ProjectFourDoor from './ProjectFourDoor'
 import UploadHistory from '../../../components/UploadHistory'
 import actions from '../../../actions'
 import StudentRequestModal from './StudentRequestModal'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 
 class UploadDocuments extends React.Component {
   constructor (props) {
@@ -318,7 +318,7 @@ class UploadDocuments extends React.Component {
 
   onInstantStart () {
     const {cl} = this.props
-    browserHistory.push({
+    this.props.history.push({
       pathname: `/class/${cl.id}/syllabus_tool/`,
       state: {
         isDIY: true
@@ -468,4 +468,4 @@ UploadDocuments.propTypes = {
   onUpload: PropTypes.func
 }
 
-export default UploadDocuments
+export default withRouter(UploadDocuments)

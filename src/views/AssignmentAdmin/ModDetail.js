@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Grid from '../../components/Grid'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 
 const headers = [
   {
@@ -20,7 +20,7 @@ const headers = [
 
 class ModDetail extends React.Component {
   onSelect (item) {
-    browserHistory.push({pathname: '/hub/accounts/account/info', state: {user: item.user}})
+    this.props.history.push({pathname: '/hub/accounts/account/info', state: {user: item.user}})
   }
 
   mapAction (item, index) {
@@ -71,4 +71,4 @@ ModDetail.propTypes = {
   mod: PropTypes.object.isRequired
 }
 
-export default ModDetail
+export default withRouter(ModDetail)

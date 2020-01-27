@@ -4,7 +4,7 @@ import {Form, ValidateForm} from 'react-form-library'
 import {InputField} from '../../../components/Form'
 import actions from '../../../actions'
 import {wrapTimeHour} from '../../../utilities/time'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 import NumberFormat from 'react-number-format'
 
 const requiredFields = {
@@ -31,7 +31,14 @@ class SignUpForm extends React.Component {
   initializeState () {
     return {
       form: this.initializeFormData(),
-      phoneFocus: false
+      phoneFocus: false,
+      nameFirstFocus: false,
+      nameLastFocus: false,
+      emailFocus: false,
+      phoneError: false,
+      nameFirstError: false,
+      nameLastError: false,
+      emailError: false
     }
   }
 
@@ -53,21 +60,50 @@ class SignUpForm extends React.Component {
   }
 
   onClickTerms () {
-    browserHistory.push('useragreement')
+    this.props.history.push('useragreement')
+  }
+
+  validateEmail (email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    return re.test(String(email).toLowerCase())
+  }
+
+  validateForm () {
+    if (
+      (typeof this.state.form.student.name_first === 'string' || this.state.form.student.name_first === '') &&
+      (typeof this.state.form.student.name_last === 'string' || this.state.form.student.name_last === '') &&
+      (this.state.form.student.phone ? this.state.form.student.phone.length === 10 : false) &&
+      this.validateEmail(this.state.form.email)
+    ) {
+      return true
+    } else {
+      if (typeof this.state.form.student.name_first !== 'string' || this.state.form.student.name_first === '') {
+        this.setState({nameFirstError: true})
+      }
+      if (typeof this.state.form.student.name_last !== 'string' || this.state.form.student.name_last === '') {
+        this.setState({nameLastError: true})
+      }
+      if (this.this.state.form.student.phone ? this.this.state.form.student.phone.length !== 10 : true) {
+        this.setState({phoneError: true})
+      }
+      if (!this.validateEmail(this.state.form.email)) {
+        this.setState({emailError: true})
+      }
+      return false
+    }
   }
 
   onSubmit () {
     const form = this.mapForm()
-    if (this.props.validateForm(form, requiredFields)) {
+    if (this.validateForm()) {
       this.props.onSubmit(form)
     }
   }
 
   onSubmitAdmin () {
     const form = this.mapForm()
-    if (this.props.validateForm(form, requiredFields)) {
+    if (this.validateForm()) {
       actions.auth.registerUserAdmin(form).then((user) => {
-        this.props.resetValidation()
         this.props.onSubmit(user)
       }).catch(() => false)
     }
@@ -88,23 +124,6 @@ class SignUpForm extends React.Component {
     return newForm
   }
 
-  renderReferralCode () {
-    const {formErrors, updateProperty} = this.props
-    const {form} = this.state
-    return (
-      <div id="cn-referral-code">
-        <InputField
-          error={formErrors.student && formErrors.student.custom_link}
-          label='Referral code?'
-          name='student.custom_link'
-          onChange={updateProperty}
-          placeholder='Optional'
-          value={form.student.custom_link}
-        />
-      </div>
-    )
-  }
-
   renderTerms () {
     return (
       <div className='cn-terms-of-use margin-bottom'>
@@ -115,7 +134,7 @@ class SignUpForm extends React.Component {
 
   render () {
     const {form} = this.state
-    const {formErrors, updateProperty, header, buttonText, isAdmin, referralCode} = this.props
+    const {updateProperty, header, buttonText, isAdmin} = this.props
 
     return (
       <div className='cn-sign-up-form'>
@@ -132,52 +151,89 @@ class SignUpForm extends React.Component {
               }}
             >
               <div className='col-xs-6'>
-                <InputField
-                  containerClassName='margin-top'
-                  error={formErrors.student && formErrors.student.name_first}
-                  label='First name'
-                  id='sign-up.student.name_first'
-                  name='student.name_first'
-                  autoComplete='given-name'
-                  onChange={updateProperty}
-                  placeholder='First name'
-                  value={form.student.name_first}
-                />
+                <div className='cn-input-container margin-top'>
+                  <label className={'cn-input-label' + (this.state.nameFirstError ? ' error' : '') + (this.state.nameFirstFocus ? ' active' : '')}>First name</label>
+                  <input
+                    className='cn-form-input'
+                    style={
+                      {width: '100%', borderColor: this.state.nameFirstError ? 'red' : 'null'}
+                    }
+                    id='sign-up.student.name_first'
+                    name='student.name_first'
+                    autoComplete='first-name'
+                    onChange={(e) => {
+                      let form = this.state.form
+                      form.student.name_first = e.target.value
+                      this.setState({
+                        form
+                      })
+                    }}
+                    placeholder='First name'
+                    value={form.student.name_first}
+                    onFocus={() => this.setState({nameFirstFocus: true})}
+                    onBlur={() => this.setState({nameFirstFocus: false})}
+                  />
+                </div>
               </div>
               <div className='col-xs-6'>
-                <InputField
-                  containerClassName='margin-top'
-                  error={formErrors.student && formErrors.student.name_last}
-                  label='Last name'
-                  id='sign-up.student.name_last'
-                  name='student.name_last'
-                  autoComplete='family-name'
-                  onChange={updateProperty}
-                  placeholder='Last name'
-                  value={form.student.name_last}
-                />
+                <div className='cn-input-container margin-top'>
+                  <label className={'cn-input-label' + (this.state.nameLastError ? ' error' : '') + (this.state.nameLastFocus ? ' active' : '')}>Last name</label>
+                  <input
+                    className='cn-form-input'
+                    style={
+                      {width: '100%', borderColor: this.state.nameLastError ? 'red' : 'null'}
+                    }
+                    id='sign-up.student.name_last'
+                    name='student.name_last'
+                    autoComplete='family-name'
+                    onChange={(e) => {
+                      let form = this.state.form
+                      form.student.name_last = e.target.value
+                      this.setState({
+                        form
+                      })
+                    }}
+                    placeholder='Last name'
+                    value={form.student.name_last}
+                    onFocus={() => this.setState({nameLastFocus: true})}
+                    onBlur={() => this.setState({nameLastFocus: false})}
+                  />
+                </div>
               </div>
             </div>
             <div className='col-xs-12'>
-              <InputField
-                containerClassName='margin-top'
-                error={formErrors.email}
-                label='Email'
-                id='signup.email'
-                autoComplete='email'
-                name='email'
-                onChange={(name, value) => {
-                  updateProperty(name, value.trim())
-                }}
-                placeholder='Email'
-                value={form.email}
-              />
+              <div className='cn-input-container margin-top'>
+                <label className={'cn-input-label' + (this.state.emailError ? ' error' : '') + (this.state.emailFocus ? ' active' : '')}>Email</label>
+                <input
+                  style={
+                    {width: '100%', borderColor: this.state.emailError ? 'red' : 'null'}
+                  }
+                  className='cn-form-input'
+                  error={this.state.emailError}
+                  id='sign-up.email'
+                  autoComplete='email'
+                  name='email'
+                  onFocus={() => this.setState({emailFocus: true})}
+                  onBlur={() => this.setState({emailFocus: false})}
+                  onChange={(e) => {
+                    let form = this.state.form
+                    form.email = e.target.value
+                    this.setState({
+                      form
+                    })
+                  }}
+                  placeholder='Email'
+                  value={form.email}
+                />
+              </div>
             </div>
             <div className='col-xs-12 cn-sign-up-form-phone'>
-              <label className={'cn-input-label' + (formErrors.student && formErrors.student.phone ? ' error' : '') + (this.state.phoneFocus ? ' active' : '')}>Phone</label>
+              <label className={'cn-input-label' + (this.state.phoneError ? ' error' : '') + (this.state.phoneFocus ? ' active' : '')}>Phone</label>
               <NumberFormat
-                style={{width: '100%', borderColor: formErrors.student && formErrors.student.phone ? 'red' : 'null'}}
-                error={formErrors.student && formErrors.student.phone}
+                style={
+                  {width: '100%', borderColor: this.state.phoneError ? 'red' : 'null'}
+                }
+                // error={formErrors.student && formErrors.student.phone}
                 placeholder='Phone'
                 format="+1 (###) ###-####"
                 mask=" "
@@ -187,7 +243,6 @@ class SignUpForm extends React.Component {
                 onValueChange={(values) => {
                   let form = this.state.form
                   form.student.phone = values.value
-                  console.log(values.value)
                   this.setState({
                     form
                   })
@@ -228,4 +283,4 @@ SignUpForm.propTypes = {
   enrollmentLink: PropTypes.string
 }
 
-export default ValidateForm(Form(SignUpForm, 'form'))
+export default withRouter(SignUpForm, 'form')

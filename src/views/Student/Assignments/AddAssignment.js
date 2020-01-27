@@ -9,7 +9,7 @@ import NewAssignment from './NewAssignment'
 import {showSnackbar} from '../../../utilities/snackbar'
 import SkSelectDropDown from '../../components/SkSelectDropDown'
 import Sammi from '../../components/Sammi'
-import { browserHistory } from 'react-router'
+import { withRouter } from 'react-router-dom'
 
 @inject('rootStore')
 @observer
@@ -681,7 +681,7 @@ class AddAssignment extends Component {
   }
 
   sendToDiy () {
-    browserHistory.push({
+    this.props.history.push({
       pathname: `/class/${this.state.selectedClass.id}/syllabus_tool/`,
       state: {
         isDIY: true,
@@ -749,4 +749,4 @@ AddAssignment.propTypes = {
   assignmentParams: PropTypes.object
 }
 
-export default AddAssignment
+export default withRouter(AddAssignment)
