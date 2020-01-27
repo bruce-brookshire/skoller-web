@@ -12,6 +12,7 @@ import SkLoader from '../../../assets/sk-icons/SkLoader'
 import HomeTasks from './HomeTasks'
 import HomeShare from './HomeShare'
 import HomeJobs from './HomeJobs'
+import HomeInsights from './HomeInsights'
 
 @inject('rootStore') @observer
 class Home extends React.Component {
@@ -175,6 +176,7 @@ class Home extends React.Component {
                 <HomeTasks />
               </div>
             </div>
+            <HomeInsights />
             <HomeShare classes={this.props.rootStore.studentClassesStore.classes} willDisplay={() => this.setState({shareWillDisplay: true})} />
             {!this.state.shareWillDisplay && <HomeJobs updateStudent={() => this.updateStudent()} user={this.props.rootStore.userStore.user} />}
             {/* // this is for chat once we get it ready
