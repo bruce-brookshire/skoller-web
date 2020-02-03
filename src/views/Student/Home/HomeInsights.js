@@ -137,7 +137,13 @@ class HomeInsights extends React.Component {
   render () {
     return (
       <div className='home-shadow-box margin-top'>
-        <h1 className='home-heading' onClick={() => this.props.history.push('/student/insights')}>Insights</h1>
+        <h1
+          className='home-heading'
+          style={{cursor: 'default'}}
+          // onClick={() => this.props.history.push('/student/insights')}
+        >
+          Insights
+        </h1>
         {this.props.rootStore.studentAssignmentsStore.assignments.length > 0 && this.renderNav()}
         {this.renderContent()}
       </div>
