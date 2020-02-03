@@ -11,7 +11,7 @@ class TaskCard extends React.Component {
     let today = moment(0, 'HH')
     let dueDate = moment.utc(dd)
     let daysTillDue = dueDate.diff(today, 'days')
-    if (today.isSame(dueDate, 'date')) {
+    if (moment(today).format('MMDDYYYY') === moment(dueDate).format('MMDDYYYY')) {
       return 'today'
     } else if (daysTillDue === 1) {
       return 'tomorrow'

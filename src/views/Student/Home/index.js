@@ -159,14 +159,8 @@ class Home extends React.Component {
                 <HomeClasses classes={this.props.rootStore.studentClassesStore.classes} onAddClass={() => this.closeAddClassModal()} onClassSelect={this.onClassSelect} launchClassStatusModal={(cl) => this.launchClassStatusModal(cl)} />
               </div>
             </div>
+            <HomeInsights />
             {this.state.shareWillDisplay && <HomeJobs updateStudent={() => this.updateStudent()} user={this.props.rootStore.userStore.user} />}
-            {/* // this is for activity once we get it ready
-            <div className="home-shadow-box">
-              <h1>Activity</h1>
-              <div className="home-card-content">
-                <p>content</p>
-              </div>
-            </div> */}
           </div>
           <div className="home-column">
             <div className="home-shadow-box">
@@ -176,16 +170,8 @@ class Home extends React.Component {
                 <HomeTasks />
               </div>
             </div>
-            <HomeInsights />
             <HomeShare classes={this.props.rootStore.studentClassesStore.classes} willDisplay={() => this.setState({shareWillDisplay: true})} />
             {!this.state.shareWillDisplay && <HomeJobs updateStudent={() => this.updateStudent()} user={this.props.rootStore.userStore.user} />}
-            {/* // this is for chat once we get it ready
-            <div className="home-shadow-box">
-              <h1>Chat</h1>
-              <div className="home-card-content">
-                <p>content</p>
-              </div>
-            </div> */}
           </div>
         </div>
       </div>
