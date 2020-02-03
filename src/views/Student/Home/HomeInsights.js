@@ -55,23 +55,29 @@ class HomeInsights extends React.Component {
   }
 
   renderContent () {
-    if (this.state.type === 'assignmentsTimeline') {
+    if (this.props.rootStore.studentAssignmentsStore.assignments.length > 0) {
+      if (this.state.type === 'assignmentsTimeline') {
+        return (
+          <div>
+            <AssignmentsTimeline />
+          </div>
+        )
+      } else if (this.state.type === 'weightsTimeline') {
+        return (
+          <div>
+            <WeightsTimeline />
+          </div>
+        )
+      } else if (this.state.type === 'distribution') {
+        return (
+          <div>
+            <Distribution />
+          </div>
+        )
+      }
+    } else {
       return (
-        <div>
-          <AssignmentsTimeline />
-        </div>
-      )
-    } else if (this.state.type === 'weightsTimeline') {
-      return (
-        <div>
-          <WeightsTimeline />
-        </div>
-      )
-    } else if (this.state.type === 'distribution') {
-      return (
-        <div>
-          <Distribution />
-        </div>
+        <p style={{textAlign: 'center', color: 'rgba(0,0,0,0.3)', margin: '32px'}}>Insights are available when you add assignments</p>
       )
     }
   }
@@ -132,7 +138,7 @@ class HomeInsights extends React.Component {
     return (
       <div className='home-shadow-box margin-top'>
         <h1 className='home-heading' onClick={() => this.props.history.push('/student/insights')}>Insights</h1>
-        {this.renderNav()}
+        {this.props.rootStore.studentAssignmentsStore.assignments.length > 0 && this.renderNav()}
         {this.renderContent()}
       </div>
     )

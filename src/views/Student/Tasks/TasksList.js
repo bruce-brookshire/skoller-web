@@ -16,7 +16,8 @@ class TasksList extends React.Component {
     this.state = {
       classes: this.props.rootStore.studentClassesStore.classes,
       tasks: this.props.rootStore.studentAssignmentsStore.assignments,
-      loading: false
+      loading: false,
+      seeMore: false
     }
 
     // this.getStudentTasks()
