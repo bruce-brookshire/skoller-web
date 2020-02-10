@@ -1,10 +1,10 @@
 import React from 'react'
 import {inject, observer} from 'mobx-react'
 import { withRouter } from 'react-router-dom'
-import { VictoryTooltip, VictoryScatter, VictoryPie, VictoryLabel, VictoryAxis, VictoryArea } from 'victory'
+import { VictoryPie, VictoryLabel } from 'victory'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import { getAssignmentWeightData, getWeightDistribution } from './DataUtils'
+import { getWeightDistribution } from './DataUtils'
 import { getStyles } from './styles'
 
 export class DateTooltip extends React.Component {
@@ -70,7 +70,7 @@ class WeightsTimeline extends React.Component {
 
           {/* Define labels */}
           <VictoryLabel x={18} y={40}
-            text='Distribution'
+            text='Grade Distribution'
             style={styles.title}
           />
 
@@ -85,7 +85,7 @@ class WeightsTimeline extends React.Component {
               style={styles.pie.labelTitleOne}
             />
             <VictoryLabel x={0} y={20}
-              text={'More than 15% of your final grade'}
+              text={'More than 15% of your class grade'}
               style={styles.pie.labelTitleOneSubtitle}
             />
 
@@ -94,7 +94,7 @@ class WeightsTimeline extends React.Component {
               style={styles.pie.labelTitleTwo}
             />
             <VictoryLabel x={0} y={84}
-              text={'5-15% of your final grade'}
+              text={'5-15% of your class grade'}
               style={styles.pie.labelTitleTwoSubtitle}
             />
 
@@ -103,7 +103,7 @@ class WeightsTimeline extends React.Component {
               style={styles.pie.labelTitleThree}
             />
             <VictoryLabel x={0} y={148}
-              text={'Less than 5% of your final grade'}
+              text={'Less than 5% of your class grade'}
               style={styles.pie.labelTitleThreeSubtitle}
             />
           </g>
@@ -123,6 +123,18 @@ class WeightsTimeline extends React.Component {
             />
 
           </g>
+
+          {/* <g transform={'translate(300, 40)'}>
+            <VictoryStack
+              colorScale={styles.stack.colorScale}
+              standalone={false}
+            >
+              <VictoryBar data={[{x: 1, y: data[2].y}]} />
+              <VictoryBar data={[{x: 1, y: data[1].y}]} />
+              <VictoryBar data={[{x: 1, y: data[0].y}]} />
+              <VictoryBar data={[{x: 2, y: 0}]} />
+            </VictoryStack>
+          </g> */}
         </svg>
       )
     } else {

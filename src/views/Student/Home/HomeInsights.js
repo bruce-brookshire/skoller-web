@@ -6,6 +6,7 @@ import moment from 'moment'
 import AssignmentsTimeline from '../Insights/AssignmentsTimeline'
 import WeightsTimeline from '../Insights/WeightsTimeline'
 import Distribution from '../Insights/Distribution'
+import Sammi from '../../components/Sammi'
 
 export class DateTooltip extends React.Component {
   static propTypes = {
@@ -50,7 +51,7 @@ class HomeInsights extends React.Component {
     super(props)
 
     this.state = {
-      type: 'assignmentsTimeline'
+      type: 'distribution'
     }
   }
 
@@ -96,23 +97,12 @@ class HomeInsights extends React.Component {
       >
         <p
           style={{
-            borderBottom: this.state.type === 'assignmentsTimeline' ? '4px solid #57B9E4' : '',
-            fontWeight: this.state.type === 'assignmentsTimeline' ? '600' : '',
-            margin: '0 0 -2px 0',
-            padding: '0 8px',
-            cursor: 'pointer'
-          }}
-          onClick={() => this.setState({type: 'assignmentsTimeline'})}
-        >
-          Assignments Timeline
-        </p>
-        <p
-          style={{
             borderBottom: this.state.type === 'distribution' ? '4px solid #57B9E4' : '',
             fontWeight: this.state.type === 'distribution' ? '600' : '',
             margin: '0 0 -2px 0',
-            padding: '0 8px',
-            cursor: 'pointer'
+            padding: '0 12px',
+            cursor: 'pointer',
+            textAlign: 'center'
           }}
           onClick={() => this.setState({type: 'distribution'})}
         >
@@ -120,15 +110,29 @@ class HomeInsights extends React.Component {
         </p>
         <p
           style={{
+            borderBottom: this.state.type === 'assignmentsTimeline' ? '4px solid #57B9E4' : '',
+            fontWeight: this.state.type === 'assignmentsTimeline' ? '600' : '',
+            margin: '0 0 -2px 0',
+            padding: '0 12px',
+            cursor: 'pointer',
+            textAlign: 'center'
+          }}
+          onClick={() => this.setState({type: 'assignmentsTimeline'})}
+        >
+          Assignments
+        </p>
+        <p
+          style={{
             borderBottom: this.state.type === 'weightsTimeline' ? '4px solid #57B9E4' : '',
             fontWeight: this.state.type === 'weightsTimeline' ? '600' : '',
             margin: '0 0 -2px 0',
-            padding: '0 8px',
-            cursor: 'pointer'
+            padding: '0 12px',
+            cursor: 'pointer',
+            textAlign: 'center'
           }}
           onClick={() => this.setState({type: 'weightsTimeline'})}
         >
-          Weights Timeline
+          Weights
         </p>
       </div>
     )
@@ -137,7 +141,21 @@ class HomeInsights extends React.Component {
   render () {
     return (
       <div className='home-shadow-box margin-top'>
-        <h1 className='home-heading' onClick={() => this.props.history.push('/student/insights')}>Insights</h1>
+        <h1
+          className='home-heading'
+          style={{cursor: 'default'}}
+          // onClick={() => this.props.history.push('/student/insights')}
+        >
+          Insights
+        </h1>
+        <Sammi position='left' emotion='wow'>
+          <p
+            style={{cursor: 'default', margin: '0', padding: '8px'}}
+            // onClick={() => this.props.history.push('/student/insights')}
+          >
+            Skoller Insights help you <b>see your semester in new ways</b> using data from <b>all {this.props.rootStore.studentClassesStore.classes.length > 2 ? this.props.rootStore.studentClassesStore.classes.length.toString() + ' ' : ''}of your classes!</b>
+          </p>
+        </Sammi>
         {this.props.rootStore.studentAssignmentsStore.assignments.length > 0 && this.renderNav()}
         {this.renderContent()}
       </div>

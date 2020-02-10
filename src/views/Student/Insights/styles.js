@@ -106,7 +106,12 @@ export function getStyles (c) {
       data: { fill: COLOR_50, stroke: COLOR, strokeWidth: 2 }
     },
 
-    // AREA DEFAULT
+    // STACK DEFAULT
+    stack: {
+      colorScale: [COLOR_50, COLOR_75, COLOR]
+    },
+
+    // PIE DEFAULT
     pie: {
       colorScale: [COLOR, COLOR_75, COLOR_50, COLOR_25],
       labelTitleOne: {
