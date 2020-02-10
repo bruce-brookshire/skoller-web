@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 import { VictoryTooltip, VictoryScatter, VictoryLine, VictoryLabel, VictoryAxis } from 'victory'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import { getAssignmentCountData, getAssignmentWeightData } from './DataUtils'
+import { getAssignmentCountData } from './DataUtils'
 import { getStyles } from './styles'
 
 export class DateTooltip extends React.Component {
@@ -109,6 +109,7 @@ class AssignmentsTimeline extends React.Component {
               standalone={false}
               domainPadding={200}
               style={styles.axisOne}
+              tickFormat={d => d.toString()}
             />
 
             <VictoryLine
