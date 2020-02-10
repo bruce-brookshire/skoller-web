@@ -15,7 +15,7 @@ class ClassList extends React.Component {
   * @return [Array]. Array of formatted row data.
   */
   getRows () {
-    return this.props.classes.sort((a, b) => {
+    return this.props.classes.slice().sort((a, b) => {
       var aNum = a.status.is_complete ? 0 : this.getStatusNum(a.status.name.toLowerCase())
       var bNum = b.status.is_complete ? 0 : this.getStatusNum(b.status.name.toLowerCase())
       if (aNum > bNum) {

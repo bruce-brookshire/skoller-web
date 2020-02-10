@@ -2,6 +2,8 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import {inject, observer} from 'mobx-react'
 import Snackbar from '../components/Snackbar'
+import { withRouter } from 'react-router-dom'
+import ReactGA from 'react-ga'
 
 @inject('rootStore') @observer
 class App extends React.Component {
@@ -11,8 +13,12 @@ class App extends React.Component {
   }
 
   render () {
-    // const {userStore} = this.props.rootStore
-    // if (userStore.fetchingUser) return <div />
+    // GOOGLE ANALYTICS PAGE VIEW LOGIC USING REACT-ROUTER-DOM'S HISTORY OBJECT
+    this.props.history.listen(l => {
+      console.log('GOOGLE ANALYTICS PAGEVIEW', l.pathname)
+      ReactGA.set({ page: l.pathname })
+      ReactGA.pageview(l.pathname)
+    })
 
     return (
       <div className='app public'>
@@ -26,7 +32,8 @@ class App extends React.Component {
 App.propTypes = {
   children: PropTypes.node,
   rootStore: PropTypes.object,
-  location: PropTypes.object
+  location: PropTypes.object,
+  history: PropTypes.object
 }
 
-export default App
+export default withRouter(App)

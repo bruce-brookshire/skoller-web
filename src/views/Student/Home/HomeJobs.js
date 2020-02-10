@@ -46,8 +46,8 @@ class HomeJobs extends React.Component {
       })
     let majors = []
     let beginningMajors = []
-    majors = this.props.user.student.fields_of_study.sort()
-    beginningMajors = this.props.user.student.fields_of_study.sort()
+    majors = this.props.user.student.fields_of_study.slice().sort()
+    beginningMajors = this.props.user.student.fields_of_study.slice().sort()
     let gradDegreeChoice = this.state.degreeTypes[0]
     this.setState({loading: false, gradDegreeChoice, majors, beginningMajors})
   }

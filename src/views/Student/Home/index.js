@@ -204,7 +204,8 @@ class Home extends React.Component {
 
 Home.propTypes = {
   rootStore: PropTypes.object,
-  location: PropTypes.object
+  location: PropTypes.object,
+  history: PropTypes.object
 }
 
 export default withRouter(Home)

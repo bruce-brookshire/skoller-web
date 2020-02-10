@@ -61,7 +61,7 @@ class TasksList extends React.Component {
   }
 
   getSortedAssignments () {
-    return this.props.rootStore.studentAssignmentsStore.assignments
+    return this.props.rootStore.studentAssignmentsStore.assignments.slice()
       .sort((a, b) => moment(a.due).isBefore(moment(b.due)) ? -1 : 1)
   }
 
@@ -80,7 +80,6 @@ class TasksList extends React.Component {
 
   renderTasks () {
     let i = 0
-    console.log(this.getTaskDisplayCount())
     if (this.props.rootStore.studentAssignmentsStore.assignments.length === 0) {
       return (
         this.renderNoTasks()
