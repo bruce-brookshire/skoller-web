@@ -126,7 +126,7 @@ class AddClassModal extends React.Component {
 }
 
 AddClassModal.propTypes = {
-  closeModal: PropTypes.function,
+  closeModal: PropTypes.func,
   rootStore: PropTypes.object,
   launchClassStatusModal: PropTypes.function
 }

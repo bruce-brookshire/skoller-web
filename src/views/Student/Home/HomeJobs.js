@@ -420,7 +420,7 @@ class HomeJobs extends React.Component {
 
 HomeJobs.propTypes = {
   rootStore: PropTypes.object,
-  updateStudent: PropTypes.function,
+  updateStudent: PropTypes.func,
   user: PropTypes.object
 }
 

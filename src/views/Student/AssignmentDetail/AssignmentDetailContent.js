@@ -19,8 +19,10 @@ class AssignmentDetailContent extends React.Component {
       editGrade: false,
       newGrade: null,
 
-      editName: false,
-      newName: null
+      editMode: false,
+      newName: null,
+      newDue: null,
+      isPrivate: false
     }
   }
 
@@ -83,23 +85,29 @@ class AssignmentDetailContent extends React.Component {
       .then(r => {
         let currentAssignment = r.filter(a => a.id === this.state.currentAssignment.id)[0]
         currentAssignment.name = this.state.newName
-        this.setState({currentAssignment, loading: false, newName: null, editName: false})
+        this.setState({currentAssignment, loading: false, newName: null, editMode: false})
       })
       .catch(e => console.log(e))
   }
 
-  handleSaveName () {
+  handleSave () {
     this.setState({loading: true})
     let form = {
-      name: this.state.newName,
-      id: this.state.currentAssignment.id
+      id: this.state.currentAssignment.id,
+      is_private: this.state.isPrivate
+    }
+    if (this.state.newName) {
+      form.name = this.state.newName
+    }
+    if (this.state.newDue) {
+      form.due = this.state.newDue
     }
     actions.assignments.updateStudentAssignment(form)
       .then(() => {
         this.updateAssignment()
       })
       .catch((e) => {
-        this.setState({loading: false, editName: false, newName: null})
+        this.setState({loading: false, editMode: false, newName: null})
         console.log(e)
       })
   }
@@ -109,21 +117,57 @@ class AssignmentDetailContent extends React.Component {
   renderAssignmentTitle () {
     const assignment = this.state.currentAssignment
 
-    if (this.state.editName) {
+    if (this.state.editMode) {
       return (
         <div className="sk-assignment-detail-edit-name">
           <input className="sk-assignment-detail-edit-name-input" type="text" placeholder={assignment.name} onChange={(e) => this.setState({newName: e.target.value})} />
-          <button className="sk-assignment-detail-edit-name-save" onClick={() => this.handleSaveName()}>Save assignment name</button>
         </div>
       )
     } else {
       return (
         <div className="sk-assignment-detail-name">
           <h1>{assignment.name}</h1>
-          <i onClick={() => this.setState({editName: !this.state.editName})} className='fas fa-pencil-alt'/>
+          <i onClick={() => this.setState({editMode: !this.state.editMode})} className='fas fa-pencil-alt'/>
         </div>
       )
     }
+  }
+
+  renderSave () {
+    return (
+      <div className='sk-assignment-detail-save'>
+        <div className="sk-assignment-detail-radio">
+          <label
+            className={this.state.isPrivate === false ? 'is-active' : null}
+          >
+            <input
+              type="radio"
+              value={true}
+              checked={this.state.isPrivate === false}
+              onChange={() => this.setState({isPrivate: false})}
+            />
+            <div className="radio-button" />
+            <p>Share changes with class as update</p>
+          </label>
+          <label
+            className={this.state.isPrivate === true ? 'is-active' : null}
+          >
+            <input
+              type="radio"
+              value={false}
+              checked={this.state.isPrivate === true}
+              onChange={() => this.setState({isPrivate: true})}
+            />
+            <div className="radio-button" />
+            <p>Keep changes private</p>
+          </label>
+        </div>
+        <div className="sk-assignment-detail-save-button" onClick={() => this.handleSave()}>
+          <p>Save changes</p>
+        </div>
+        <p className='sk-assignment-detail-cancel' onClick={() => this.setState({editMode: false})}>Cancel</p>
+      </div>
+    )
   }
 
   renderAssignmentDetails (assignment) {
@@ -151,6 +195,7 @@ class AssignmentDetailContent extends React.Component {
             <p>{moment.utc(assignment.due).format('MMMM D, YYYY')}</p>
           </div>
         </div>
+
         <div className='sk-assignment-detail-content-section'>
           <div className='sk-assignment-detail-content-section-title'>
             <p>Personal details</p><br />
@@ -176,6 +221,8 @@ class AssignmentDetailContent extends React.Component {
             </div>
           </div>
         </div>
+
+        {this.state.editMode && this.renderSave()}
       </div>
     )
   }

@@ -74,7 +74,7 @@ class AssignmentDetail extends React.Component {
                     <BackArrow width="14" height="14" />
                     <p>Back</p>
                   </div>
-                  : null
+                  : <div style={{margin: '1rem 0'}} />
                 }
                 <h2 style={{color: this.state.classColor}} onClick={() => this.props.history.push('/student/class/' + this.state.cl.id)}>
                   {this.state.cl.name}

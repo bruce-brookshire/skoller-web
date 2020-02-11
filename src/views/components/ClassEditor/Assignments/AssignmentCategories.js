@@ -135,9 +135,9 @@ AssignmentCategories.propTypes = {
   cl: PropTypes.object.isRequired,
   weights: PropTypes.array,
   noAssignments: PropTypes.array,
-  onClick: PropTypes.function,
+  onClick: PropTypes.func,
   rootStore: PropTypes.object,
-  onSubmit: PropTypes.function,
+  onSubmit: PropTypes.func,
   assignments: PropTypes.array,
   singleWeight: PropTypes.number
 }

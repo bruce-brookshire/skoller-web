@@ -41,8 +41,8 @@ class HomeClasses extends React.Component {
 HomeClasses.propTypes = {
   classes: PropTypes.array,
   onAddClass: PropTypes.func,
-  onClassSelect: PropTypes.function,
-  launchClassStatusModal: PropTypes.function,
+  onClassSelect: PropTypes.func,
+  launchClassStatusModal: PropTypes.func,
   rootStore: PropTypes.object
 }
 
