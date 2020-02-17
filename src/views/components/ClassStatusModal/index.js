@@ -417,7 +417,6 @@ class ClassStatusModal extends React.Component {
         sammiMessage: `Woohoo! You've submitted your syllabus.`
       })
     } else if (this.state.status === 'live') {
-      console.log(this.props.onSubmit)
       this.props.onSubmit()
     } else if (this.state.status === 'inReview' || this.state.status === 'syllabusOverload') {
       this.sendToDiy()

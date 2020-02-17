@@ -6,7 +6,7 @@ class StudentAssignmentsStore {
   constructor () {
     extendObservable(this, {
       loading: null,
-      assignments: {}
+      assignments: []
     })
   }
 

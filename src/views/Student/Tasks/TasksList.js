@@ -62,7 +62,8 @@ class TasksList extends React.Component {
   }
 
   getSortedAssignments () {
-    return this.props.rootStore.studentAssignmentsStore.assignments.slice()
+    return this.props.rootStore.studentAssignmentsStore.assignments
+      .slice()
       .sort((a, b) => moment(a.due).isBefore(moment(b.due)) ? -1 : 1)
   }
 
