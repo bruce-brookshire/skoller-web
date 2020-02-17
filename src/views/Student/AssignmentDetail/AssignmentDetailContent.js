@@ -4,6 +4,7 @@ import {inject, observer} from 'mobx-react'
 import actions from '../../../actions'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import moment from 'moment'
+import DatePicker from '../../components/DatePicker'
 
 @inject('rootStore') @observer
 class AssignmentDetailContent extends React.Component {
@@ -22,7 +23,8 @@ class AssignmentDetailContent extends React.Component {
       editMode: false,
       newName: null,
       newDue: null,
-      isPrivate: false
+      isPrivate: false,
+      showDatePicker: false
     }
   }
 
@@ -91,25 +93,43 @@ class AssignmentDetailContent extends React.Component {
   }
 
   handleSave () {
-    this.setState({loading: true})
-    let form = {
-      id: this.state.currentAssignment.id,
-      is_private: this.state.isPrivate
-    }
-    if (this.state.newName) {
-      form.name = this.state.newName
-    }
-    if (this.state.newDue) {
-      form.due = this.state.newDue
-    }
-    actions.assignments.updateStudentAssignment(form)
-      .then(() => {
-        this.updateAssignment()
+    if (this.state.newDue || this.state.newName) {
+      this.setState({loading: true})
+      let form = {
+        id: this.state.currentAssignment.id,
+        is_private: this.state.isPrivate
+      }
+      if (this.state.newName !== null) {
+        form.name = this.state.newName
+      }
+      if (this.state.newDue !== null) {
+        let dueDate = moment(this.state.newDue)
+        let schoolTz = this.props.rootStore.userStore.user.student.primary_school.timezone
+        let convertedDueDate = moment(dueDate).tz(schoolTz)
+        form.due = convertedDueDate
+      }
+      actions.assignments.updateStudentAssignment(form, this.state.isPrivate)
+        .then((r) => {
+          this.setState({
+            currentAssignment: r,
+            loading: false,
+            newName: null,
+            newDue: null,
+            editMode: false
+          })
+          this.props.updateAssignment(r)
+        })
+        .catch((e) => {
+          this.setState({loading: false, editMode: false, newName: null, newDue: false})
+          console.log(e)
+        })
+    } else {
+      this.setState({
+        newName: null,
+        newDue: null,
+        editMode: false
       })
-      .catch((e) => {
-        this.setState({loading: false, editMode: false, newName: null})
-        console.log(e)
-      })
+    }
   }
 
   // Render Methods
@@ -192,7 +212,20 @@ class AssignmentDetailContent extends React.Component {
           </div>
           <div className='sk-assignment-detail-content-row'>
             <p>Due date</p>
-            <p>{moment.utc(assignment.due).format('MMMM D, YYYY')}</p>
+            {this.state.editMode
+              ? <div>
+                <p
+                  onClick={() => this.setState({showDatePicker: true})}
+                  style={{cursor: 'pointer', color: '#57B9E4'}}
+                >
+                  {moment.utc(this.state.newDue ? this.state.newDue : assignment.due).format('MMMM D, YYYY')}
+                </p>
+                {this.state.showDatePicker && <DatePicker givenDate={assignment.due ? assignment.due : null} returnSelectedDay={(d) => {
+                  this.setState({newDue: d, showDatePicker: false})
+                }} />}
+              </div>
+              : <p>{moment.utc(assignment.due).format('MMMM D, YYYY')}</p>
+            }
           </div>
         </div>
 
@@ -245,7 +278,8 @@ AssignmentDetailContent.propTypes = {
   location: PropTypes.object,
   assignment: PropTypes.object,
   assignmentWeightCategory: PropTypes.object,
-  cl: PropTypes.object
+  cl: PropTypes.object,
+  updateAssignment: PropTypes.func
 }
 
 export default AssignmentDetailContent

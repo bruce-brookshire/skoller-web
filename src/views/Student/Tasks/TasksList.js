@@ -16,7 +16,8 @@ class TasksList extends React.Component {
     this.state = {
       classes: this.props.rootStore.studentClassesStore.classes,
       tasks: this.props.rootStore.studentAssignmentsStore.assignments,
-      loading: false
+      loading: false,
+      seeMore: false
     }
 
     // this.getStudentTasks()
@@ -70,9 +71,9 @@ class TasksList extends React.Component {
     this.getSortedAssignments().forEach(task => {
       let daysAway = moment(task.due).diff(moment(), 'days')
       let maxDays = this.props.maxDays ? this.props.maxDays - 1 : 10000
-      let maxTasks = this.props.maxTasks ? this.props.maxTasks : 10000
-      if (daysAway <= maxDays && i <= maxTasks && daysAway >= 0) {
+      if (daysAway <= maxDays && daysAway >= 0) {
         i += 1
+        console.log(task.name)
       }
     })
     return i
@@ -103,8 +104,10 @@ class TasksList extends React.Component {
             let daysAway = moment(task.due).diff(moment(), 'days')
             let maxDays = this.props.maxDays ? this.props.maxDays - 1 : 10000
             let maxTasks = this.props.maxTasks ? this.props.maxTasks : 10000
-            i += 1
-            if (daysAway <= maxDays && i <= maxTasks && daysAway >= 0) {
+            if (daysAway >= 0) {
+              i += 1
+            }
+            if ((daysAway <= maxDays) && (i <= maxTasks || this.state.seeMore) && (daysAway >= 0)) {
               return (
                 <div key={task.id}>
                   <TaskCard task={task} clName={cl.clName} clColor={cl.clColor} />
@@ -118,18 +121,22 @@ class TasksList extends React.Component {
   }
 
   renderContent () {
-    let displayCount = this.getTaskDisplayCount()
-    if (this.props.seeMore && (displayCount > 4)) {
-      return (
-        <SeeMore hideHeight='308px' textColor={'#57B9E4'} seeMore={true} customText={`See all ${displayCount} to-do's`}>
-          {this.renderTasks()}
-        </SeeMore>
-      )
-    } else {
-      return (
-        this.renderTasks()
-      )
-    }
+    return (
+      <div>
+        {this.renderTasks()}
+        {
+          !this.state.seeMore &&
+          this.props.maxTasks &&
+          this.props.maxTasks < this.getTaskDisplayCount() &&
+          <div
+            style={{color: '#57B9E4', cursor: 'pointer', textAlign: 'center', marginBottom: '8px'}}
+            onClick={() => this.setState({seeMore: true})}
+          >
+            See all {this.getTaskDisplayCount()} tasks
+          </div>
+        }
+      </div>
+    )
   }
 
   render () {

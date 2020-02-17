@@ -2,7 +2,6 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import {inject, observer} from 'mobx-react'
 import Snackbar from '../components/Snackbar'
-import { withRouter } from 'react-router-dom'
 
 @inject('rootStore') @observer
 class App extends React.Component {
@@ -60,4 +59,4 @@ App.propTypes = {
   history: PropTypes.object
 }
 
-export default withRouter(App)
+export default App

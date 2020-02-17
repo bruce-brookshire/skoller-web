@@ -81,7 +81,7 @@ class AssignmentDetail extends React.Component {
                 </h2>
               </div>
               <div className='sk-assignment-detail-container'>
-                <AssignmentDetailContent cl={this.state.cl} assignment={this.state.currentAssignment} assignmentWeightCategory={this.state.assignmentWeightCategory} />
+                <AssignmentDetailContent cl={this.state.cl} assignment={this.state.currentAssignment} updateAssignment={(r) => this.setState({currentAssignment: r})} assignmentWeightCategory={this.state.assignmentWeightCategory} />
               </div>
             </div>
           }
