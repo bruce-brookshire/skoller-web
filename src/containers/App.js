@@ -11,38 +11,6 @@ class App extends React.Component {
   }
 
   render () {
-    // GOOGLE ANALYTICS PAGE VIEW LOGIC USING REACT-ROUTER-DOM'S HISTORY OBJECT
-    // this.props.history.listen(l => {
-    //   let sendHit = true
-    //   let path = l.pathname
-
-    //   let assignmentPath = /\/student\/class\/\d+\/assignments\/\d+/
-    //   if (path.match(assignmentPath)) {
-    //     path = '/student/class/classId/assignments/assignmentId/'
-    //   }
-
-    //   let classPath = /\/student\/class\/\d+/
-    //   if (path.match(classPath)) {
-    //     path = '/student/class/classId/'
-    //   }
-
-    //   let syllabusToolPath = /\/student\/class\/\d+\/syllabus_tool/
-    //   if (path.match(syllabusToolPath)) {
-    //     path = '/student/class/classId/syllabus_tool'
-    //   }
-
-    //   let hubPath = /\/hub/
-    //   let adminLoginPath = /\/admin-login/
-    //   if (path.match(hubPath) || path.match(adminLoginPath)) {
-    //     sendHit = false
-    //   }
-
-    //   if (sendHit) {
-    //     ReactGA.set({ page: path })
-    //     ReactGA.pageview(path)
-    //   }
-    // })
-
     return (
       <div className='app public'>
         {this.props.children}

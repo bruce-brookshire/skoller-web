@@ -5,6 +5,7 @@ import {Provider} from 'mobx-react'
 import routes from './routes'
 import stores from './stores'
 import * as firebase from 'firebase'
+var Environment = require('../environment.js')
 
 const app = document.getElementById('root')
 
@@ -19,8 +20,10 @@ var firebaseConfig = {
   appId: '1:596122259226:web:cf03d1597789a46b4826a3',
   measurementId: 'G-R7SG6FL9N7'
 }
-firebase.initializeApp(firebaseConfig)
-firebase.analytics()
+if (!Environment.IS_DEV) {
+  firebase.initializeApp(firebaseConfig)
+  firebase.analytics()
+}
 
 ReactDOM.render(
   <Provider rootStore={stores}>
