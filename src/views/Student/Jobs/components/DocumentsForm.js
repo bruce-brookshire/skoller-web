@@ -161,7 +161,7 @@ class DocumentsForm extends React.Component {
 
 DocumentsForm.propTypes = {
   rootStore: PropTypes.object,
-  onSubmit: PropTypes.function,
+  onSubmit: PropTypes.func,
   homeModal: PropTypes.bool
 }
 

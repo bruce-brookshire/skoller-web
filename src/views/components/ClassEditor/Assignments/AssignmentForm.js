@@ -306,16 +306,16 @@ AssignmentForm.propTypes = {
   assignment: PropTypes.object,
   cl: PropTypes.object.isRequired,
   formErrors: PropTypes.object,
-  onCreateAssignment: PropTypes.function,
+  onCreateAssignment: PropTypes.func,
   onUpdateAssignment: PropTypes.func.isRequired,
-  updateProperty: PropTypes.function,
-  validateForm: PropTypes.function,
+  updateProperty: PropTypes.func,
+  validateForm: PropTypes.func,
   currentWeight: PropTypes.object,
-  resetValidation: PropTypes.function,
+  resetValidation: PropTypes.func,
   isAdmin: PropTypes.bool,
   weights: PropTypes.array,
   lastAssignmentDate: PropTypes.string,
-  updateLastAssignmentDate: PropTypes.function,
+  updateLastAssignmentDate: PropTypes.func,
   toggleAddingAssignment: PropTypes.function
 }
 

@@ -88,7 +88,7 @@ class DatePicker extends React.Component {
 
 DatePicker.propTypes = {
   givenDate: PropTypes.object,
-  returnSelectedDay: PropTypes.function,
+  returnSelectedDay: PropTypes.func,
   inline: PropTypes.bool,
   close: PropTypes.function
 }

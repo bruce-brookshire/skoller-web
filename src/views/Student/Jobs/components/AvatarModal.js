@@ -92,7 +92,7 @@ class AvatarModal extends React.Component {
 }
 
 AvatarModal.propTypes = {
-  onSubmit: PropTypes.function,
+  onSubmit: PropTypes.func,
   rootStore: PropTypes.object
 }
 

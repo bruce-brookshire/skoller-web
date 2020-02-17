@@ -31,6 +31,7 @@ class Home extends React.Component {
     this.props.rootStore.studentNavStore.location = this.props.location
     this.cookie = new Cookies()
     console.log(this.props.rootStore)
+    console.log(this.props.rootStore.userStore.user.id)
   }
 
   async updateStudent () {
@@ -192,7 +193,8 @@ class Home extends React.Component {
 
 Home.propTypes = {
   rootStore: PropTypes.object,
-  location: PropTypes.object
+  location: PropTypes.object,
+  history: PropTypes.object
 }
 
 export default withRouter(Home)

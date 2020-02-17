@@ -39,7 +39,6 @@ class ClassAdmin extends React.Component {
     this.state = this.initializeState()
     this.tabSelect = this.tabSelect.bind(this)
     console.log(this.props.rootStore)
-    console.log(this.props.rootStore.userStore.authToken)
   }
 
   /*

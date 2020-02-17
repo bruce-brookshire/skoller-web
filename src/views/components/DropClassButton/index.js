@@ -74,7 +74,7 @@ class DropClassButton extends React.Component {
 
 DropClassButton.propTypes = {
   cl: PropTypes.object,
-  onDropClass: PropTypes.function,
+  onDropClass: PropTypes.func,
   rootStore: PropTypes.object
 }
 
