@@ -32,7 +32,7 @@ class TaskCard extends React.Component {
         <div className="task-card" style={{border: '1px solid', borderColor: color, borderRadius: '5px'}}>
           <div className="task-card-heading">
             <h2 className="task-card-left" style={{color: color}}>{task.name}</h2>
-            <p className="task-card-right"><WeightIcon color={color} weight={task.weight} /></p>
+            <div className="task-card-right"><WeightIcon color={color} weight={task.weight} /></div>
           </div>
           <div className="task-card-content">
             <p className="task-card-left">{'Due ' + this.formatDueDate(task.due)}</p>

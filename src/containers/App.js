@@ -11,9 +11,6 @@ class App extends React.Component {
   }
 
   render () {
-    // const {userStore} = this.props.rootStore
-    // if (userStore.fetchingUser) return <div />
-
     return (
       <div className='app public'>
         {this.props.children}
@@ -26,7 +23,8 @@ class App extends React.Component {
 App.propTypes = {
   children: PropTypes.node,
   rootStore: PropTypes.object,
-  location: PropTypes.object
+  location: PropTypes.object,
+  history: PropTypes.object
 }
 
 export default App

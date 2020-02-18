@@ -74,14 +74,14 @@ class AssignmentDetail extends React.Component {
                     <BackArrow width="14" height="14" />
                     <p>Back</p>
                   </div>
-                  : null
+                  : <div style={{margin: '1rem 0'}} />
                 }
                 <h2 style={{color: this.state.classColor}} onClick={() => this.props.history.push('/student/class/' + this.state.cl.id)}>
                   {this.state.cl.name}
                 </h2>
               </div>
               <div className='sk-assignment-detail-container'>
-                <AssignmentDetailContent cl={this.state.cl} assignment={this.state.currentAssignment} assignmentWeightCategory={this.state.assignmentWeightCategory} />
+                <AssignmentDetailContent cl={this.state.cl} assignment={this.state.currentAssignment} updateAssignment={(r) => this.setState({currentAssignment: r})} assignmentWeightCategory={this.state.assignmentWeightCategory} />
               </div>
             </div>
           }

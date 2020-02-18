@@ -78,7 +78,7 @@ class EnrollVerify extends React.Component {
 
 EnrollVerify.propTypes = {
   rootStore: PropTypes.object,
-  onSubmit: PropTypes.function,
+  onSubmit: PropTypes.func,
   phone: PropTypes.string,
   classNotFound: PropTypes.bool
 }

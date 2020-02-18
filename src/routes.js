@@ -58,8 +58,6 @@ const {userStore} = stores
 class AuthSwitch extends React.Component {
   constructor (props) {
     super(props)
-    console.log('authswitch props', this.props)
-
     let from = this.props.location.state ? this.props.location.state.from || null : null
 
     this.state = {

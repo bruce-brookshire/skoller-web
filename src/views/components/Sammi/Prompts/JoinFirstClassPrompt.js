@@ -54,7 +54,7 @@ class JoinFirstClassPrompt extends React.Component {
 
 JoinFirstClassPrompt.propTypes = {
   show: PropTypes.bool,
-  onAddClass: PropTypes.func
+  onAddClass: PropTypes.function
 }
 
 export default JoinFirstClassPrompt

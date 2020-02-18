@@ -57,7 +57,11 @@ class SecondClassPrompt extends React.Component {
 SecondClassPrompt.propTypes = {
   show: PropTypes.bool,
   onAddClass: PropTypes.func,
+<<<<<<< HEAD
   launchClassStatusModal: PropTypes.func
+=======
+  launchClassStatusModal: PropTypes.function
+>>>>>>> feature/webapp_improvements
 }
 
 export default SecondClassPrompt
