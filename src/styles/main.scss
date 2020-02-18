@@ -172,6 +172,7 @@
 @import 'views/school-search.scss';
 @import 'views/share.scss';
 @import 'views/sign-up.scss';
+@import 'views/sk-class.scss';
 @import 'views/skip-category-modal.scss';
 @import 'views/student-list.scss';
 @import 'views/student-problems-modal.scss';
@@ -186,11 +187,6 @@
 html {
   box-sizing: border-box;
 }
-
-// .sk-app-container {
-//   overflow: hidden;
-//   overscroll-behavior: contain;
-// }
 
 .layout {
   overflow: scroll;

@@ -12,6 +12,7 @@ import DropClassButton from '../../components/DropClassButton'
 import UploadAdditionalDocuments from '../../components/ClassStatusModal/UploadAdditionalDocuments'
 import SkModal from '../../components/SkModal/SkModal'
 import CopyBox from '../../components/CopyBox'
+import TasksList from '../Tasks/TasksList'
 
 @inject('rootStore') @observer
 class ClassDetail extends React.Component {
@@ -114,7 +115,6 @@ class ClassDetail extends React.Component {
         <div className='cn-class-assignments-header'>
           <div className='cn-class-assignments-header-item'>
             {this.renderBackButton()}
-            {/* {this.renderSpeculateGradeButton()} */}
             {this.renderDocumentUploadButton()}
           </div>
           <div className='cn-class-assignments-header-item text-center'>
@@ -262,12 +262,65 @@ class ClassDetail extends React.Component {
     })
   }
 
+  renderHeader () {
+    let cl = this.state.cl
+    console.log(this.state.cl)
+    return (
+      <div className='sk-class-header'>
+        <div className='sk-class-grade' style={{backgroundColor: '#' + this.state.cl.color}}>
+          <h2>
+            {cl.grade > 0 ? cl.grade + '%' : '–'}
+          </h2>
+        </div>
+        <div className='sk-class-header-detail'>
+          <div className='sk-class-name'>
+            <h1 style={{color: '#' + this.state.cl.color}}>
+              {cl.name}
+            </h1>
+          </div>
+          <div className='sk-class-icons'>
+            <i className='fas fa-search' />
+            <i className='fas fa-info-circle' />
+            <i className='fas fa-file' />
+            <i className='fas fa-link' />
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  renderInsights () {
+    return (
+      <div className='sk-class-insights'>
+        <h1>Insights</h1>
+      </div>
+    )
+  }
+
+  renderAssignments () {
+    return (
+      <div className='sk-class-assignments'>
+        <h1>Assignments</h1>
+        <TasksList cl={this.state.cl.id} />
+      </div>
+    )
+  }
+
   render () {
     const {loading} = this.state
     return (
       <StudentLayout>
-        <div>
-          {loading
+        <div className='sk-class'>
+          <div className='sk-class-column'>
+            {this.renderHeader()}
+          </div>
+          <div className='sk-class-column'>
+            {this.renderInsights()}
+          </div>
+          <div className='sk-class-column'>
+            {this.renderAssignments()}
+          </div>
+          {/* {loading
             ? <Loading />
             : <div className='cn-class-assignments-wrapper'>
               <div>
@@ -280,7 +333,7 @@ class ClassDetail extends React.Component {
                 </div>
               </div>
             </div>
-          }
+          } */}
         </div>
       </StudentLayout>
     )
@@ -290,7 +343,8 @@ class ClassDetail extends React.Component {
 ClassDetail.propTypes = {
   params: PropTypes.object,
   rootStore: PropTypes.object,
-  location: PropTypes.object
+  location: PropTypes.object,
+  history: PropTypes.object
 }
 
 export default withRouter(ClassDetail)

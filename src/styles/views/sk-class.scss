@@ -1,0 +1,89 @@
+.sk-class {
+  margin: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+
+  .sk-class-column {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+
+    @media only screen and (max-width: $sk-mobile-break-point) {
+      min-width: 100%;
+    }
+
+    .sk-class-header {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 1rem;
+      @include skoller-cell;
+      margin: 0.5rem;
+
+      .sk-class-grade {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        width: 74px;
+        height: 54px;
+        border-radius: 8px;
+
+        h2 {
+          padding: 6px 0 0 0;
+          margin: 0;
+          text-align: center;
+          color: white;
+        }
+      }
+
+      .sk-class-header-detail {
+        display: flex;
+        flex-direction: column;
+        margin: 0 0 0 1rem;
+
+        .sk-class-name {
+          width: 100%;
+
+          h1 {
+            margin: 0;
+          }
+        }
+
+        .sk-class-icons {
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-start;
+
+          i {
+            margin-right: 12px;
+            color: $cn-color-blue;
+          }
+        }
+      }
+    }
+
+    .sk-class-insights {
+      @include skoller-cell;
+      padding: 1rem;
+      margin: 0.5rem;
+
+      h1 {
+        margin: 0 0 1rem 0;
+      }
+    }
+
+    .sk-class-assignments {
+      @include skoller-cell;
+      padding: 1rem;
+      margin: 0.5rem;
+
+      h1 {
+        margin: 0 0 1rem 0;
+      }
+    }
+  }
+}
