@@ -2,8 +2,9 @@ import moment from 'moment'
 
 export function getAssignmentCountData (studentAssignmentsStore, cl = false) {
   let data = []
-  let firstAssignment = Math.min.apply(Math, studentAssignmentsStore.assignments.map(a => parseInt(moment(a.due).format('X'))))
-  let lastAssignment = Math.max.apply(Math, studentAssignmentsStore.assignments.map(a => parseInt(moment(a.due).format('X'))))
+  let assignments = cl ? studentAssignmentsStore.assignments.filter(a => a.class_id === cl.id) : studentAssignmentsStore.assignments
+  let firstAssignment = Math.min.apply(Math, assignments.map(a => parseInt(moment(a.due).format('X'))))
+  let lastAssignment = Math.max.apply(Math, assignments.map(a => parseInt(moment(a.due).format('X'))))
   let firstWeek = moment(firstAssignment, 'X').startOf('week')
   let lastWeek = moment(lastAssignment, 'X').startOf('week').add(7, 'days')
 
@@ -14,7 +15,7 @@ export function getAssignmentCountData (studentAssignmentsStore, cl = false) {
   }
 
   if (cl) {
-    studentAssignmentsStore.assignments.forEach(assignment => {
+    assignments.forEach(assignment => {
       weeks.forEach(w => {
         if (moment(assignment.due).isSame(moment(w.week), 'week') && (assignment.class_id === cl.id)) {
           w.assignments.push(assignment)
@@ -22,7 +23,7 @@ export function getAssignmentCountData (studentAssignmentsStore, cl = false) {
       })
     })
   } else {
-    studentAssignmentsStore.assignments.forEach(assignment => {
+    assignments.forEach(assignment => {
       weeks.forEach(w => {
         if (moment(assignment.due).isSame(moment(w.week), 'week')) {
           w.assignments.push(assignment)
@@ -39,9 +40,10 @@ export function getAssignmentCountData (studentAssignmentsStore, cl = false) {
 }
 
 export function getAssignmentWeightData (studentAssignmentsStore, cl = false) {
+  let assignments = cl ? studentAssignmentsStore.assignments.filter(a => a.class_id === cl.id) : studentAssignmentsStore.assignments
   let data = []
-  let firstAssignment = Math.min.apply(Math, studentAssignmentsStore.assignments.map(a => parseInt(moment(a.due).format('X'))))
-  let lastAssignment = Math.max.apply(Math, studentAssignmentsStore.assignments.map(a => parseInt(moment(a.due).format('X'))))
+  let firstAssignment = Math.min.apply(Math, assignments.map(a => parseInt(moment(a.due).format('X'))))
+  let lastAssignment = Math.max.apply(Math, assignments.map(a => parseInt(moment(a.due).format('X'))))
   let firstWeek = moment(firstAssignment, 'X').startOf('week')
   let lastWeek = moment(lastAssignment, 'X').startOf('week').add(7, 'days')
 
@@ -52,7 +54,7 @@ export function getAssignmentWeightData (studentAssignmentsStore, cl = false) {
   }
 
   if (cl) {
-    studentAssignmentsStore.assignments.forEach(assignment => {
+    assignments.forEach(assignment => {
       weeks.forEach(w => {
         if (moment(assignment.due).isSame(moment(w.week), 'week') && (assignment.class_id === cl.id)) {
           w.assignments.push(assignment)
@@ -60,7 +62,7 @@ export function getAssignmentWeightData (studentAssignmentsStore, cl = false) {
       })
     })
   } else {
-    studentAssignmentsStore.assignments.forEach(assignment => {
+    assignments.forEach(assignment => {
       weeks.forEach(w => {
         if (moment(assignment.due).isSame(moment(w.week), 'week')) {
           w.assignments.push(assignment)
@@ -70,7 +72,7 @@ export function getAssignmentWeightData (studentAssignmentsStore, cl = false) {
   }
 
   let totalWeights = 0
-  studentAssignmentsStore.assignments.forEach(a => {
+  assignments.forEach(a => {
     totalWeights += a.weight
   })
 
@@ -93,30 +95,19 @@ export function getAssignmentWeightData (studentAssignmentsStore, cl = false) {
 }
 
 export function getWeightDistribution (studentAssignmentsStore, cl = false) {
+  let assignments = cl ? studentAssignmentsStore.assignments.filter(a => a.class_id === cl.id) : studentAssignmentsStore.assignments
   let low = 0
   let medium = 0
   let high = 0
-  if (cl) {
-    studentAssignmentsStore.assignments.forEach(assignment => {
-      if (assignment.weight < 0.05 && assignment.class_id === cl.id) {
-        low += 1
-      } else if (assignment.weight < 0.15) {
-        medium += 1
-      } else {
-        high += 1
-      }
-    })
-  } else {
-    studentAssignmentsStore.assignments.forEach(assignment => {
-      if (assignment.weight < 0.05) {
-        low += 1
-      } else if (assignment.weight < 0.15) {
-        medium += 1
-      } else {
-        high += 1
-      }
-    })
-  }
+  assignments.forEach(assignment => {
+    if (assignment.weight < 0.05) {
+      low += 1
+    } else if (assignment.weight < 0.15) {
+      medium += 1
+    } else {
+      high += 1
+    }
+  })
 
   let count = low + medium + high
 

@@ -7,6 +7,7 @@ import StudentLayout from '../../components/StudentLayout'
 import { withRouter } from 'react-router-dom'
 import BackArrow from '../../../assets/sk-icons/navigation/BackArrow'
 import AssignmentDetailContent from './AssignmentDetailContent'
+import NestedNav from '../../components/NestedNav'
 
 @inject('rootStore') @observer
 class AssignmentDetail extends React.Component {
@@ -41,7 +42,6 @@ class AssignmentDetail extends React.Component {
   }
 
   async getAssignment () {
-    console.log(this.props.match)
     const classId = this.props.match.params.classId
     const { userStore } = this.props.rootStore
     const { user: { student } } = userStore
@@ -64,18 +64,18 @@ class AssignmentDetail extends React.Component {
     const { loading } = this.state
     return (
       <StudentLayout>
+        <NestedNav back=
+          {
+            this.props.rootStore.studentNavStore.location.pathname
+              ? this.props.rootStore.studentNavStore.location.pathname.match(/class/) ? false : true
+              : false
+          }
+        />
         <div className='sk-assignment-detail-wrapper'>
           {loading
             ? <Loading />
             : <div className='sk-assignment-detail'>
               <div className='sk-assignment-detail-outer-container'>
-                {this.props.rootStore.studentNavStore.location.pathname
-                  ? <div className='sk-assignment-detail-back-button' onClick={() => this.props.history.push(this.props.rootStore.studentNavStore.location.pathname)}>
-                    <BackArrow width="14" height="14" />
-                    <p>Back</p>
-                  </div>
-                  : <div style={{margin: '1rem 0'}} />
-                }
                 <h2 style={{color: this.state.classColor}} onClick={() => this.props.history.push('/student/class/' + this.state.cl.id)}>
                   {this.state.cl.name}
                 </h2>

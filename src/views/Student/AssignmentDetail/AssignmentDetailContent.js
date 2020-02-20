@@ -47,7 +47,10 @@ class AssignmentDetailContent extends React.Component {
       this.setState({newGrade: this.state.currentAssignment.grade})
     } else if (newGrade !== currentAssignment.grade && newGrade !== null) {
       currentAssignment.grade = newGrade
-      actions.assignments.gradeAssignment(currentAssignment.id, newGrade)
+      actions.assignments.gradeAssignment(currentAssignment.id, newGrade).then(() => {
+        this.props.rootStore.studentClassesStore.updateClasses()
+        this.props.rootStore.studentAssignmentsStore.updateAssignments()
+      })
       this.setState({
         addGrade: false,
         editGrade: false,
@@ -118,6 +121,8 @@ class AssignmentDetailContent extends React.Component {
             editMode: false
           })
           this.props.updateAssignment(r)
+          this.props.rootStore.studentClassesStore.updateClasses()
+          this.props.rootStore.studentAssignmentsStore.updateAssignments()
         })
         .catch((e) => {
           this.setState({loading: false, editMode: false, newName: null, newDue: false})

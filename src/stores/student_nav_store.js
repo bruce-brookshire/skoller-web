@@ -6,7 +6,8 @@ class StudentNavStore {
       activePage: null,
       jobsMode: false,
       location: {},
-      mobile: this.isMobile()
+      mobile: this.isMobile(),
+      history: []
     })
   }
 

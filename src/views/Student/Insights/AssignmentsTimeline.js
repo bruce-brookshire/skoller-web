@@ -47,11 +47,11 @@ export class DateTooltip extends React.Component {
 @inject('rootStore') @observer
 class AssignmentsTimeline extends React.Component {
   getStyles () {
-    return getStyles()
+    return getStyles(this.props.cl ? '#' + this.props.cl.color : false)
   }
 
   render () {
-    let data = getAssignmentCountData(this.props.rootStore.studentAssignmentsStore)
+    let data = getAssignmentCountData(this.props.rootStore.studentAssignmentsStore, this.props.cl ? this.props.cl : false)
     const styles = this.getStyles()
     if (data.length > 0) {
       const today = parseInt(moment().format('X'))
@@ -66,6 +66,7 @@ class AssignmentsTimeline extends React.Component {
         ]
       }
       const tickValues = data.map(d => d.x)
+      let hardestWeek = data.filter((d) => d.y === Math.max.apply(Math, data.map(a => a.y)))[0].x
 
       return (
         <svg style={styles.parent} viewBox='0 0 450 350'>
@@ -77,7 +78,7 @@ class AssignmentsTimeline extends React.Component {
           />
 
           <VictoryLabel x={18} y={60}
-            text='Your hardest week will be EVERY WEEK'
+            text={'Your hardest week ' + (moment(hardestWeek, 'X').isAfter(moment()) ? 'will be' : 'was') + ' the week of ' + moment(hardestWeek, 'X').format('MM/DD')}
             style={styles.subtitle}
           />
 
@@ -175,7 +176,8 @@ class AssignmentsTimeline extends React.Component {
 
 AssignmentsTimeline.propTypes = {
   history: PropTypes.object,
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  cl: PropTypes.object
 }
 
 export default withRouter(AssignmentsTimeline)

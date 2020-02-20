@@ -47,11 +47,11 @@ export class DateTooltip extends React.Component {
 @inject('rootStore') @observer
 class WeightsTimeline extends React.Component {
   getStyles () {
-    return getStyles()
+    return getStyles(this.props.cl ? '#' + this.props.cl.color : false)
   }
 
   render () {
-    let data = getAssignmentWeightData(this.props.rootStore.studentAssignmentsStore)
+    let data = getAssignmentWeightData(this.props.rootStore.studentAssignmentsStore, this.props.cl)
     const styles = this.getStyles()
     if (data.length > 0) {
       const today = parseInt(moment().format('X'))
@@ -174,7 +174,8 @@ class WeightsTimeline extends React.Component {
 
 WeightsTimeline.propTypes = {
   history: PropTypes.object,
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  cl: PropTypes.object
 }
 
 export default withRouter(WeightsTimeline)
