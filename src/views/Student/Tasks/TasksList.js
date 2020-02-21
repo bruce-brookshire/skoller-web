@@ -1,11 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
-import actions from '../../../actions'
 import TaskCard from './TaskCard'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import moment from 'moment'
-import SeeMore from '../../components/SeeMore/SeeMore';
 
 @inject('rootStore') @observer
 class TasksList extends React.Component {
@@ -19,27 +17,6 @@ class TasksList extends React.Component {
       loading: false,
       seeMore: false
     }
-
-    // this.getStudentTasks()
-  }
-
-  async getStudentTasks () {
-    // const {user: {student}} = this.props.rootStore.userStore
-
-    // await actions.classes.getStudentClassesById(student.id).then((classes) => {
-    //   classes.forEach(studentClass => { TasksList.studentClasses[studentClass.id] = studentClass })
-    //   this.setState({classes})
-    // }).catch(() => false)
-
-    // await actions.assignments.getTaskAssignments(student.id).then((tasks) => {
-    //   const parentClassGetter = function () {
-    //     return TasksList.studentClasses[this.class_id]
-    //   }
-    //   tasks.forEach(task => {
-    //     task.getParentClass = parentClassGetter.bind(task)
-    //   })
-    //   this.setState({tasks, loading: false})
-    // }).catch(() => false)
   }
 
   getClassForTask (task) {
@@ -72,9 +49,12 @@ class TasksList extends React.Component {
     this.getSortedAssignments().forEach(task => {
       let daysAway = moment(task.due).diff(moment(), 'days')
       let maxDays = this.props.maxDays ? this.props.maxDays - 1 : 10000
-      if (daysAway <= maxDays && daysAway >= 0) {
+      if (
+        (daysAway <= maxDays) && // if maxDays prop is given, check to make sure that task is within maxDays
+        (daysAway >= 0 || this.props.cl) && // make sure task is in the future, unless it's within a class detail view
+        (this.props.cl ? task.class_id === this.props.cl.id : true) // if class detail view, make sure assignment is for that class
+      ) {
         i += 1
-        console.log(task.name)
       }
     })
     return i
@@ -82,7 +62,7 @@ class TasksList extends React.Component {
 
   renderTasks () {
     let i = 0
-    if (this.props.rootStore.studentAssignmentsStore.assignments.length === 0) {
+    if (this.props.rootStore.studentAssignmentsStore.assignments.length === 0 || this.getTaskDisplayCount().length <= 0) {
       return (
         this.renderNoTasks()
       )
@@ -105,13 +85,16 @@ class TasksList extends React.Component {
             let daysAway = moment(task.due).diff(moment(), 'days')
             let maxDays = this.props.maxDays ? this.props.maxDays - 1 : 10000
             let maxTasks = this.props.maxTasks ? this.props.maxTasks : 10000
-            if (daysAway >= 0) {
+            if (
+              (daysAway <= maxDays) && // if maxDays prop is given, check to make sure that task is within maxDays
+              (i < maxTasks || this.state.seeMore) && // if number of tasks already displayed is greater than limit given by prop maxTasks, don't display... unless user has clicked See More
+              (daysAway >= 0 || this.props.cl) && // make sure task is in the future, unless it's within a class detail view
+              (this.props.cl ? task.class_id === this.props.cl.id : true) // if class detail view, make sure assignment is for that class
+            ) {
               i += 1
-            }
-            if ((daysAway <= maxDays) && (i <= maxTasks || this.state.seeMore) && (daysAway >= 0)) {
               return (
                 <div key={task.id}>
-                  <TaskCard task={task} clName={cl.clName} clColor={cl.clColor} />
+                  <TaskCard task={task} clName={cl.clName} clColor={cl.clColor} classDetailView={this.props.cl} />
                 </div>
               )
             }
@@ -133,7 +116,7 @@ class TasksList extends React.Component {
             style={{color: '#57B9E4', cursor: 'pointer', textAlign: 'center', marginBottom: '8px'}}
             onClick={() => this.setState({seeMore: true})}
           >
-            See all {this.getTaskDisplayCount()} tasks
+            See all {this.getTaskDisplayCount()} {this.props.cl ? 'assignments' : "to-do's"}
           </div>
         }
       </div>
@@ -155,7 +138,8 @@ TasksList.propTypes = {
   location: PropTypes.object,
   maxTasks: PropTypes.number,
   maxDays: PropTypes.number,
-  seeMore: PropTypes.bool
+  seeMore: PropTypes.bool,
+  cl: PropTypes.object
 }
 
 export default TasksList

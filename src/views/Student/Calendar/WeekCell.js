@@ -49,12 +49,13 @@ class WeekCell extends React.Component {
     const dayAssignments = []
     assignmentsKeys.forEach(function (element) {
       if (
-        new Date(Date.parse(assignments[element].due)).getDate() ===
-          new Date(day).getDate() &&
-        new Date(Date.parse(assignments[element].due)).getMonth() ===
-          new Date(day).getMonth() &&
-        new Date(Date.parse(assignments[element].due)).getYear() ===
-          new Date(day).getYear()
+        // new Date(Date.parse(assignments[element].due)).getDate() ===
+        //   new Date(day).getDate() &&
+        // new Date(Date.parse(assignments[element].due)).getMonth() ===
+        //   new Date(day).getMonth() &&
+        // new Date(Date.parse(assignments[element].due)).getYear() ===
+        //   new Date(day).getYear()
+        moment.utc(assignments[element].due).format('MMDDYYYY') === day.format('MMDDYYYY')
       ) {
         dayAssignments.push(assignments[element])
       }

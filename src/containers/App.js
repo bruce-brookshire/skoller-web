@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import {inject, observer} from 'mobx-react'
 import Snackbar from '../components/Snackbar'
+import { withRouter } from 'react-router-dom'
 
 @inject('rootStore') @observer
 class App extends React.Component {
@@ -11,6 +12,10 @@ class App extends React.Component {
   }
 
   render () {
+    this.props.history.listen((l) => {
+      this.props.rootStore.studentNavStore.history.push(l.pathname)
+    })
+
     return (
       <div className='app public'>
         {this.props.children}
@@ -27,4 +32,4 @@ App.propTypes = {
   history: PropTypes.object
 }
 
-export default App
+export default withRouter(App)
