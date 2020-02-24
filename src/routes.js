@@ -173,8 +173,9 @@ class StudentJobsContainer extends React.Component {
   render () {
     return (
       <Switch>
-        <Route component={Profile} />
-        {/* <Route path='/student/jobs/home' component={Jobs} /> */}
+        {/* <Route component={Profile} /> */}
+        <Route exact path='/student/jobs' render={() => <Redirect to='/student/jobs/home' />} />
+        <Route path='/student/jobs/home' component={Jobs} />
         <Route path='/student/jobs/profile' component={Profile} />
         {/* <Route path='/student/jobs/resume' component={Resume} /> */}
       </Switch>

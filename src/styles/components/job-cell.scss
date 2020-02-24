@@ -1,0 +1,33 @@
+.job-cell {
+  border: 1px solid $sk-jobs-dark-green;
+  border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 8px 8px 8px;
+  margin-bottom: 1rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $cn-color-hover-grey;
+  }
+
+  .job-cell-header {
+    h2 {
+      color: $sk-jobs-dark-green;
+    }
+
+    h3 {
+      color: $sk-jobs-light-green;
+    }
+
+    h2, h3 {
+      margin: 0;
+    }
+  }
+
+  .job-cell-details {
+    p {
+      margin: 0;
+    }
+  }
+}

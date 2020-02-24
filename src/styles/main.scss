@@ -66,7 +66,9 @@
 @import 'components/hub-professor';
 @import 'components/hub-weight-form';
 @import 'components/hub-weights';
+@import 'components/job-cell';
 @import 'components/jobs-form.scss';
+@import 'components/jobs-list';
 @import 'components/jobs-experience.scss';
 @import 'components/jobs-switch.scss';
 @import 'components/jobs-avatar-modal.scss';
@@ -214,6 +216,13 @@ body {
   color: $cn-font-color;
   font-family: $cn-font-family;
   line-height: 1.2;
+
+  h1 {
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+  }
 }
 
 .app {

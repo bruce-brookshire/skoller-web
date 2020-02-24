@@ -1,9 +1,9 @@
 import React from 'react'
 import {inject, observer} from 'mobx-react'
 import PropTypes from 'prop-types'
-import CompletionCircle from '../../../components/CompletionCircle'
-import { calculateTotalProfileScore, calculateCoreProfileCompleteness, calculatePersonalityProfileCompleteness, calculateExperienceProfileCompleteness, calculateExtrasProfileCompleteness } from '../utils'
 import { withRouter } from 'react-router-dom'
+import ProfileScoreVisual from '../Profile/ProfileScoreVisual'
+import JobsList from '../Browse/JobsList'
 
 @inject('rootStore') @observer
 class JobsHome extends React.Component {
@@ -17,11 +17,6 @@ class JobsHome extends React.Component {
 
   renderProfileCell () {
     let profile = this.props.rootStore.studentJobsStore.profile
-    let totalProfileScore = profile.profile_score * 100
-    let coreProfileCompletion = calculateCoreProfileCompleteness(profile)
-    let personalityProfileCompletion = calculatePersonalityProfileCompleteness(profile)
-    let experienceCompletion = calculateExperienceProfileCompleteness(profile)
-    let extrasCompletion = calculateExtrasProfileCompleteness(profile)
     return (
       <div className='jobs-home-cell'>
         <div className='jobs-home-cell-heading'>
@@ -30,44 +25,13 @@ class JobsHome extends React.Component {
           >
             Your Profile
           </h1>
-          <div className='jobs-home-cell-subheading'>
-            <p style={{marginRight: '6px'}}>Profile strength: </p>
-            <CompletionCircle completion={totalProfileScore} hexColor={'#4add58'} customSize={32} />
-            <p style={{marginLeft: '0px'}}>{totalProfileScore}%</p>
-          </div>
         </div>
-        <div className='jobs-home-cell-content'>
-          <p>Finish your profile and skollerJobs will <b>match you</b> with the <b>perfect job for you.</b></p>
-          <div className='jobs-home-cell-profile-categories'>
-            <div className='jobs-home-cell-profile-category'>
-              <h2>Core Information</h2>
-              <div className='jobs-home-cell-profile-category-completion'>
-                <CompletionCircle completion={coreProfileCompletion} hexColor={'#4add58'} customSize={32} />
-                <p>{coreProfileCompletion}% complete</p>
-              </div>
-            </div>
-            <div className='jobs-home-cell-profile-category'>
-              <h2>Personality Profile</h2>
-              <div className='jobs-home-cell-profile-category-completion'>
-                <CompletionCircle completion={personalityProfileCompletion} hexColor={'#4add58'} customSize={32} />
-                <p>{personalityProfileCompletion}% complete</p>
-              </div>
-            </div>
-            <div className='jobs-home-cell-profile-category'>
-              <h2>Experience</h2>
-              <div className='jobs-home-cell-profile-category-completion'>
-                <CompletionCircle completion={experienceCompletion} hexColor={'#4add58'} customSize={32} />
-                <p>{experienceCompletion}% complete</p>
-              </div>
-            </div>
-            <div className='jobs-home-cell-profile-category'>
-              <h2>Extras</h2>
-              <div className='jobs-home-cell-profile-category-completion'>
-                <CompletionCircle completion={extrasCompletion} hexColor={'#4add58'} customSize={32} />
-                <p>{extrasCompletion}% complete</p>
-              </div>
-            </div>
+        <div className='jobs-home-strength'>
+          <div>
+            <div>Your profile could be better</div>
+            <div className='jobs-home-button'>FILL OUT YOUR PROFILE</div>
           </div>
+          <ProfileScoreVisual profile={profile} user={this.props.rootStore.userStore.user} />
         </div>
       </div>
     )
@@ -76,10 +40,14 @@ class JobsHome extends React.Component {
   renderResumeCell () {
     return (
       <div className='jobs-home-cell'>
-        <h1>Resume</h1>
-        <div>
-          boop
+        <div className='jobs-home-cell-heading'>
+          <h1
+            onClick={() => this.props.history.push('/student/jobs/profile')}
+          >
+            Browse Jobs
+          </h1>
         </div>
+        <JobsList />
       </div>
     )
   }
@@ -88,7 +56,7 @@ class JobsHome extends React.Component {
     return (
       <div className='jobs-home'>
         {this.renderProfileCell()}
-        {/* {this.renderResumeCell()} */}
+        {this.renderResumeCell()}
       </div>
     )
   }
@@ -96,7 +64,8 @@ class JobsHome extends React.Component {
 
 JobsHome.propTypes = {
   rootStore: PropTypes.object,
-  location: PropTypes.object
+  location: PropTypes.object,
+  history: PropTypes.object
 }
 
 export default withRouter(JobsHome)

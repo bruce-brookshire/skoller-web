@@ -338,7 +338,7 @@ class Profile extends React.Component {
             <p>I&apos;m majoring in <b>{student.fields_of_study.map(f => {
               let last = student.fields_of_study.indexOf(f) === student.fields_of_study.length - 1
               return (
-                <span key={f.id}>{last ? 'and ' : ''}{f.field}{last ? '.' : student.fields_of_study.length > 2 ? ', ' : ' '}</span>
+                <span key={f.id}>{last && student.fields_of_study.length > 1 ? 'and ' : ''}{f.field}{last ? '.' : student.fields_of_study.length > 2 ? ', ' : ' '}</span>
               )
             })}</b></p>
           </div>

@@ -11,7 +11,7 @@ class Jobs extends React.Component {
   constructor (props) {
     super(props)
 
-    this.props.rootStore.studentNavStore.setActivePage('jobs')
+    this.props.rootStore.studentNavStore.setActivePage('jobs/home')
     this.props.rootStore.studentNavStore.location = this.props.location
   }
 
@@ -39,6 +39,7 @@ class Jobs extends React.Component {
 
 Jobs.propTypes = {
   rootStore: PropTypes.object,
+  history: PropTypes.object,
   location: PropTypes.object
 }
 

@@ -30,7 +30,7 @@ class NavItem extends React.Component {
       marginRight: '-8px',
       marginTop: '3px'
     }
-    if (this.props.pageName.includes('home') || this.props.pageName === ('jobs')) {
+    if (this.props.pageName.includes('home') || this.props.pageName.includes('jobs/home')) {
       return <HomeIcon fill="white" width="22px" height="22px" />
     } else if (this.props.pageName.includes('tasks')) {
       return <TasksIcon fill="white" width="22px" height="22px" />
