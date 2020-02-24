@@ -52,6 +52,7 @@ class WeightsTimeline extends React.Component {
 
   render () {
     let {data, count} = getWeightDistribution(this.props.rootStore.studentAssignmentsStore, this.props.cl)
+
     const styles = this.getStyles()
     if (data.length > 0) {
       const domain = {

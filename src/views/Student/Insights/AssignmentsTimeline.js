@@ -52,6 +52,7 @@ class AssignmentsTimeline extends React.Component {
 
   render () {
     let data = getAssignmentCountData(this.props.rootStore.studentAssignmentsStore, this.props.cl ? this.props.cl : false)
+
     const styles = this.getStyles()
     if (data.length > 0) {
       const today = parseInt(moment().format('X'))

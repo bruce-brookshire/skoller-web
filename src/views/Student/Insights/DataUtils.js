@@ -2,9 +2,11 @@ import moment from 'moment'
 
 export function getAssignmentCountData (studentAssignmentsStore, cl = false) {
   let data = []
+
   let assignments = cl ? studentAssignmentsStore.assignments.filter(a => a.class_id === cl.id) : studentAssignmentsStore.assignments
   let firstAssignment = Math.min.apply(Math, assignments.map(a => parseInt(moment(a.due).format('X'))))
   let lastAssignment = Math.max.apply(Math, assignments.map(a => parseInt(moment(a.due).format('X'))))
+
   let firstWeek = moment(firstAssignment, 'X').startOf('week')
   let lastWeek = moment(lastAssignment, 'X').startOf('week').add(7, 'days')
 

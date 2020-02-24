@@ -2,7 +2,7 @@ export function getStyles (c) {
   if (c) {
     c = c.replace('ff', '')
   }
-
+  
   const GRAY_COLOR = '#4a4a4a'
   const GRAY_COLOR_75 = GRAY_COLOR + '75'
   const GRAY_COLOR_50 = GRAY_COLOR + '50'
