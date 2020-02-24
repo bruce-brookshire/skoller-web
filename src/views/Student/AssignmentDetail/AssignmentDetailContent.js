@@ -242,7 +242,7 @@ class AssignmentDetailContent extends React.Component {
             <p>Grade earned</p>
             <div>
               {assignment.grade && !this.state.editGrade
-                ? <div className="sk-assignment-detail-grade" onClick={() => this.editGradeHandler()}>{assignment.grade}</div>
+                ? <div className="sk-assignment-detail-grade" onClick={() => this.editGradeHandler()}>{assignment.grade}%</div>
                 : this.state.addGrade
                   ? <div className="sk-assignment-detail-edit-grade" id="edit-grade-form">
                     <input type="text" className="sk-assignment-detail-edit-grade-input" onChange={this.addGradeOnChangeHandler} /><br />

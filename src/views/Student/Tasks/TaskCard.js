@@ -36,7 +36,7 @@ class TaskCard extends React.Component {
         <div className="task-card-container" key={task.id} onClick={() => this.goToAssignment()} >
           <div className="task-card-class-detail" style={{border: '1px solid', borderColor: color, borderRadius: '5px'}}>
             <div className='task-card-grade' style={{backgroundColor: task.grade ? color : 'rgba(0,0,0,0.04)', borderRight: task.grade ? 'none' : `1px solid ${color}`}}>
-              <div style={{color: task.grade ? 'white' : '#4a4a4a'}}>{task.grade ? task.grade : '-'}</div>
+              <div style={{color: task.grade ? 'white' : '#4a4a4a'}}>{task.grade ? task.grade + '%' : '-'}</div>
             </div>
             <div className='task-card-detail'>
               <div className="task-card-left">
