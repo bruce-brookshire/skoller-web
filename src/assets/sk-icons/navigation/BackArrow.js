@@ -23,7 +23,7 @@ class BackArrow extends React.Component {
           <g
             id="Calendar---Main---Month"
             transform="translate(-304.000000, -103.000000)"
-            stroke="#55B9E5"
+            stroke={this.props.fill || '#55B9E5'}
           >
             <g id="Group-4" transform="translate(290.000000, 84.000000)">
               <g id="Group-3">

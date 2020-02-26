@@ -847,7 +847,8 @@ class Profile extends React.Component {
 
 Profile.propTypes = {
   rootStore: PropTypes.object,
-  location: PropTypes.object
+  location: PropTypes.object,
+  history: PropTypes.object
 }
 
 export default withRouter(Profile)

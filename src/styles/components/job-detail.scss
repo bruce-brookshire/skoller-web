@@ -1,0 +1,48 @@
+.job-detail-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 0 0 2rem 0;
+
+  .job-detail {
+    @include skoller-cell;
+    max-width: 600px;
+    padding: 1rem;
+
+    h1, h2, h3, p {
+      margin: 0.25rem 0;
+    }
+
+    .job-detail-header {
+      h1 {
+        margin: 0 0 -8px 0;
+        color: $sk-jobs-dark-green;
+      }
+
+      h2 {
+        margin: 0;
+        color: $sk-jobs-light-green;
+      }
+    }
+
+    .job-detail-description {
+      border: 2px solid $cn-font-color;
+      border-radius: 5px;
+      background-color: rgba(0,0,0,0.025);
+      padding: 1rem;
+      margin: 1rem 0 0 0;
+    }
+
+    .job-detail-apply {
+      @include sk-jobs-button;
+      margin: 1rem 0 0 0;
+
+      p {
+        width: 200px;
+        padding: 16px 0 12px 0;
+      }
+    }
+  }
+}

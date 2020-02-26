@@ -5,40 +5,48 @@
   flex-wrap: wrap;
   justify-content: center;
 
-  .jobs-home-cell {
-    @include skoller-cell;
-    margin: 0.5rem;
-    padding: 1rem;
-    max-width: 464px;
-    min-width: 380px;
+  .jobs-home-column {
+    display: flex;
+    flex-direction: column;
 
-    .jobs-home-cell-heading {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-
-      h1 {
-        margin: 0;
-        cursor: pointer;
-        width: 100%;
-      }
-
-      .jobs-home-cell-subheading {
+    .jobs-home-cell {
+      @include skoller-cell;
+      margin: 0.5rem;
+      padding: 1rem;
+      max-width: 464px;
+      width: 360px;
+  
+      .jobs-home-cell-heading {
         display: flex;
         flex-direction: row;
-        justify-content: flex-end;
+        justify-content: space-between;
   
-        p {
-          margin: 8px 0 0 4px;
+        h1 {
+          margin: 0;
+          cursor: pointer;
+          width: 100%;
+        }
+  
+        .jobs-home-cell-subheading {
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-end;
+    
+          p {
+            margin: 8px 0 0 4px;
+          }
         }
       }
-    }
-
-    .jobs-home-strength {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
+  
+      .jobs-home-strength {
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+        font-size: 18px;
+        margin-bottom: 8px;
+      }
 
       .jobs-home-button {
         @include sk-jobs-button;

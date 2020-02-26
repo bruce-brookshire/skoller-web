@@ -9,7 +9,7 @@ const style = {
 const JobsDisclaimer = () => (
   <div className='jobs-disclaimer'>
     <div style={style} className='jobs-disclaimer-desc'>
-      Sponsored <small>do we really need a disclaimer</small>
+      <small>Sponsored content</small>
     </div>
   </div>
 )

@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-// import { withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 
 class JobCell extends React.Component {
   render () {
     const job = this.props.job
     return (
-      <div className='job-cell'>
+      <div className='job-cell' onClick={() => this.props.history.push('/student/jobs/job-details/12')}>
         <div className='job-cell-header'>
           <h2>{job.position}</h2>
           <h3>{job.job_source}</h3>
@@ -21,7 +21,8 @@ class JobCell extends React.Component {
 }
 
 JobCell.propTypes = {
-  job: PropTypes.object.isRequired
+  job: PropTypes.object.isRequired,
+  history: PropTypes.object
 }
 
-export default JobCell
+export default withRouter(JobCell)
