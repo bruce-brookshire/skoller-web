@@ -145,3 +145,13 @@ export function uploadJobsDoc (jobsId, file, isResume = true) {
       return Promise.reject(error)
     })
 }
+
+export function getJobsListings () {
+  return get(`/api/v1/skoller-jobs/job-listings?offset=40`, '', 'Error fetching jobs. Try again later.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}

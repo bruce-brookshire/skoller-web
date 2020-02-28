@@ -10,7 +10,9 @@ class StudentJobsStore {
       loading: false,
       score: null,
       backgroundLoading: false,
-      firstOpen: false
+      firstOpen: false,
+      listings: [],
+      loadingListings: false
     })
   }
 
@@ -31,6 +33,22 @@ class StudentJobsStore {
       .catch((r) => {
         this.hasJobsProfile = false
         this.stopLoading()
+      })
+  }
+
+  async getJobsListings () {
+    if (this.listings.length === 0) {
+      this.startLoadingListings()
+    }
+    console.log('getting listings')
+    await actions.jobs.getJobsListings()
+      .then((r) => {
+        console.log(r)
+        this.listings = r
+        this.stopLoadingListings()
+      })
+      .catch((r) => {
+        this.stopLoadingListings()
       })
   }
 
@@ -57,6 +75,16 @@ class StudentJobsStore {
   @action
   startLoading () {
     this.loading = true
+  }
+
+  @action
+  stopLoadingListings () {
+    this.loadingListings = false
+  }
+
+  @action
+  startLoadingListings () {
+    this.loadingListings = true
   }
 
   @action

@@ -181,7 +181,8 @@ import {
   addCareerActivity,
   addActivity,
   deleteActivity,
-  editActivity
+  editActivity,
+  getJobsListings
 } from './jobs'
 
 const actions = {
@@ -393,7 +394,8 @@ const actions = {
     addCareerActivity,
     addActivity,
     deleteActivity,
-    editActivity
+    editActivity,
+    getJobsListings
   }
 }
 

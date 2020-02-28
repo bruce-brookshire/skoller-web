@@ -13,6 +13,8 @@ class Jobs extends React.Component {
 
     this.props.rootStore.studentNavStore.setActivePage('jobs/home')
     this.props.rootStore.studentNavStore.location = this.props.location
+
+    this.props.rootStore.studentJobsStore.getJobsListings()
   }
 
   pushIfNoProfile () {
@@ -22,7 +24,7 @@ class Jobs extends React.Component {
   }
 
   render () {
-    if (this.props.rootStore.studentJobsStore.loading) {
+    if (this.props.rootStore.studentJobsStore.loading || this.props.rootStore.studentJobsStore.loadingListings) {
       return (
         <SkLoader />
       )

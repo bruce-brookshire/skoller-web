@@ -62,7 +62,7 @@ class JobsHome extends React.Component {
       <div className='jobs-home-cell'>
         <div className='jobs-home-cell-heading'>
           <h1
-            onClick={() => this.props.history.push('/student/jobs/profile')}
+            onClick={() => this.props.history.push('/student/jobs/browse')}
           >
             Browse Jobs
           </h1>

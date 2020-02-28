@@ -50,6 +50,7 @@ import DownloadApp from './views/components/DownloadApp'
 import Jobs from './views/Student/Jobs'
 import Profile from './views/Student/Jobs/Profile'
 import Resume from './views/Student/Jobs/Resume'
+import JobsBrowse from './views/Student/Jobs/Browse'
 
 import actions from './actions'
 import stores from './stores'
@@ -178,6 +179,7 @@ class StudentJobsContainer extends React.Component {
         <Route exact path='/student/jobs' render={() => <Redirect to='/student/jobs/home' />} />
         <Route path='/student/jobs/home' component={Jobs} />
         <Route path='/student/jobs/profile' component={Profile} />
+        <Route path='/student/jobs/browse' component={JobsBrowse} />
         <Route path='/student/jobs/job-details/:jobId' component={JobDetail} />
         {/* <Route path='/student/jobs/resume' component={Resume} /> */}
       </Switch>
