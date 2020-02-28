@@ -13,7 +13,7 @@ class AssignmentDetailContent extends React.Component {
     this.state = {
       loading: false,
 
-      currentAssignment: this.props.assignment,
+      assignment: this.props.assignment,
       assignmentWeightCategory: this.props.assignmentWeightCategory,
 
       addGrade: false,
@@ -40,11 +40,11 @@ class AssignmentDetailContent extends React.Component {
 
   addGradeOnSubmitHandler = () => {
     const newGrade = this.state.newGrade
-    const currentAssignment = this.state.currentAssignment
+    const currentAssignment = this.state.assignment
     if (isNaN(newGrade)) {
       window.confirm('Please enter a valid number')
       document.getElementById('add-grade-form').reset()
-      this.setState({newGrade: this.state.currentAssignment.grade})
+      this.setState({newGrade: this.state.assignment.grade})
     } else if (newGrade !== currentAssignment.grade && newGrade !== null) {
       currentAssignment.grade = newGrade
       actions.assignments.gradeAssignment(currentAssignment.id, newGrade).then(() => {
@@ -84,22 +84,10 @@ class AssignmentDetailContent extends React.Component {
     })
   }
 
-  async updateAssignment () {
-    this.setState({loading: true})
-    await actions.assignments.getAllStudentAssignments(this.props.rootStore.userStore.user.student.id)
-      .then(r => {
-        let currentAssignment = r.filter(a => a.id === this.state.currentAssignment.id)[0]
-        currentAssignment.name = this.state.newName
-        this.setState({currentAssignment, loading: false, newName: null, editMode: false})
-      })
-      .catch(e => console.log(e))
-  }
-
   handleSave () {
     if (this.state.newDue || this.state.newName) {
-      this.setState({loading: true})
       let form = {
-        id: this.state.currentAssignment.id,
+        id: this.state.assignment.id,
         is_private: this.state.isPrivate
       }
       if (this.state.newName !== null) {
@@ -113,20 +101,21 @@ class AssignmentDetailContent extends React.Component {
       }
       actions.assignments.updateStudentAssignment(form, this.state.isPrivate)
         .then((r) => {
-          this.setState({
-            currentAssignment: r,
-            loading: false,
-            newName: null,
-            newDue: null,
-            editMode: false
-          })
-          this.props.updateAssignment(r)
-          this.props.rootStore.studentClassesStore.updateClasses()
-          this.props.rootStore.studentAssignmentsStore.updateAssignments()
+          actions.assignments.getAllStudentAssignments(this.props.rootStore.userStore.user.student.id)
+            .then((data) => {
+              let a = data.filter(a => a.id === r.id)[0]
+              this.setState({
+                assignment: a,
+                newName: null,
+                newDue: null,
+                editMode: false
+              })
+              this.props.rootStore.studentClassesStore.updateClasses()
+              this.props.rootStore.studentAssignmentsStore.updateAssignments()
+            })
         })
         .catch((e) => {
           this.setState({loading: false, editMode: false, newName: null, newDue: false})
-          console.log(e)
         })
     } else {
       this.setState({
@@ -140,7 +129,7 @@ class AssignmentDetailContent extends React.Component {
   // Render Methods
 
   renderAssignmentTitle () {
-    const assignment = this.state.currentAssignment
+    const assignment = this.state.assignment
 
     if (this.state.editMode) {
       return (
@@ -266,11 +255,10 @@ class AssignmentDetailContent extends React.Component {
   }
 
   render () {
-    const { loading } = this.state
-    const assignment = this.props.assignment
+    let assignment = this.state.assignment
     return (
       <div className='sk-assignment-detail-content'>
-        {loading
+        {this.state.loading
           ? <SkLoader />
           : this.renderAssignmentDetails(assignment)}
       </div>
@@ -283,8 +271,7 @@ AssignmentDetailContent.propTypes = {
   location: PropTypes.object,
   assignment: PropTypes.object,
   assignmentWeightCategory: PropTypes.object,
-  cl: PropTypes.object,
-  updateAssignment: PropTypes.func
+  cl: PropTypes.object
 }
 
 export default AssignmentDetailContent

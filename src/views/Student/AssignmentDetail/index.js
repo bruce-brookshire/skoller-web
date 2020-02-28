@@ -2,12 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import actions from '../../../actions'
-import Loading from '../../../components/Loading'
 import StudentLayout from '../../components/StudentLayout'
 import { withRouter } from 'react-router-dom'
-import BackArrow from '../../../assets/sk-icons/navigation/BackArrow'
 import AssignmentDetailContent from './AssignmentDetailContent'
 import NestedNav from '../../components/NestedNav'
+import SkLoader from '../../../assets/sk-icons/SkLoader'
 
 @inject('rootStore') @observer
 class AssignmentDetail extends React.Component {
@@ -73,7 +72,7 @@ class AssignmentDetail extends React.Component {
         />
         <div className='sk-assignment-detail-wrapper'>
           {loading
-            ? <Loading />
+            ? <SkLoader />
             : <div className='sk-assignment-detail'>
               <div className='sk-assignment-detail-outer-container'>
                 <h2 style={{color: this.state.classColor}} onClick={() => this.props.history.push('/student/class/' + this.state.cl.id)}>
@@ -94,7 +93,9 @@ class AssignmentDetail extends React.Component {
 AssignmentDetail.propTypes = {
   params: PropTypes.object,
   rootStore: PropTypes.object,
-  location: PropTypes.object
+  location: PropTypes.object,
+  history: PropTypes.object,
+  match: PropTypes.object
 }
 
 export default withRouter(AssignmentDetail)

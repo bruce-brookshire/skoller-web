@@ -6,6 +6,7 @@ class StudentClassesStore {
   constructor () {
     extendObservable(this, {
       loading: false,
+      loadingUpdate: false,
       classes: []
     })
   }
@@ -25,6 +26,7 @@ class StudentClassesStore {
   @action
   getClassesSuccess () {
     this.loading = false
+    this.loadingUpdate = false
   }
 
   @action
@@ -33,7 +35,7 @@ class StudentClassesStore {
   }
 
   updateClasses () {
-    this.loading = true
+    this.loadingUpdate = true
     actions.classes.getStudentClassesById(stores.userStore.user.student.id)
       .then((data) => {
         this.classes = data

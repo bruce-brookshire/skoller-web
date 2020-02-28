@@ -41,6 +41,7 @@ class StudentAssignmentsStore {
   @action
   getAssignmentsSuccess () {
     this.loading = false
+    this.loadingUpdate = false
   }
 
   @action
@@ -49,7 +50,7 @@ class StudentAssignmentsStore {
   }
 
   updateAssignments () {
-    this.loading = true
+    this.loadingUpdate = true
     actions.assignments.getAllStudentAssignments(stores.userStore.user.student.id)
       .then((data) => {
         this.assignments = data

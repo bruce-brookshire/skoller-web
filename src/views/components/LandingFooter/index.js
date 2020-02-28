@@ -21,7 +21,7 @@ class LandingFooter extends React.Component {
             <a className='non-styled-link' href="https://explore.skoller.co/contactus">Contact us</a>
           </div>
           <div className='footer-link'>
-            Skoller, Inc. &copy; 2019
+            Skoller, Inc. &copy; {new Date().getFullYear().toString()}
           </div>
         </div>
       </footer>
