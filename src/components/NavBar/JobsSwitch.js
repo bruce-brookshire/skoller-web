@@ -14,6 +14,8 @@ class JobsSwitch extends React.Component {
   }
 
   render () {
+    let body = document.getElementById('body')
+
     if (this.props.rootStore.studentJobsStore.hasJobsProfile) {
       return (
         <div className='jobs-switch'>
@@ -24,8 +26,10 @@ class JobsSwitch extends React.Component {
             <input type="checkbox" checked={this.props.rootStore.studentNavStore.jobsMode} onChange={() => {
               if (!this.props.rootStore.studentNavStore.jobsMode) {
                 this.props.history.push('/student/jobs')
+                body.style.backgroundColor = '#4a4a4a'
               } else {
                 this.props.history.push('/student/home')
+                body.style.backgroundColor = '#EDFAFF'
               }
             }} />
             <span className="slider round" />
@@ -39,7 +43,8 @@ class JobsSwitch extends React.Component {
 }
 
 JobsSwitch.propTypes = {
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  history: PropTypes.object
 }
 
 export default withRouter(JobsSwitch)

@@ -10,7 +10,9 @@ class StudentJobsStore {
       loading: false,
       score: null,
       backgroundLoading: false,
-      firstOpen: false
+      firstOpen: false,
+      listings: [],
+      loadingListings: false
     })
   }
 
@@ -31,6 +33,32 @@ class StudentJobsStore {
       .catch((r) => {
         this.hasJobsProfile = false
         this.stopLoading()
+      })
+  }
+
+  async getJobsListings () {
+    if (this.listings.length === 0) {
+      this.startLoadingListings()
+    }
+    await actions.jobs.getJobsListings()
+      .then((r) => {
+        this.listings = r
+        this.stopLoadingListings()
+      })
+      .catch((r) => {
+        this.stopLoadingListings()
+      })
+  }
+
+  async loadMoreJobs () {
+    await actions.jobs.getJobsListings(this.listings.length)
+      .then((r) => {
+        r.forEach(j => {
+          this.listings.push(j)
+        })
+      })
+      .catch((r) => {
+        console.log(r)
       })
   }
 
@@ -57,6 +85,16 @@ class StudentJobsStore {
   @action
   startLoading () {
     this.loading = true
+  }
+
+  @action
+  stopLoadingListings () {
+    this.loadingListings = false
+  }
+
+  @action
+  startLoadingListings () {
+    this.loadingListings = true
   }
 
   @action

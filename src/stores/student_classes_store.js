@@ -11,11 +11,19 @@ class StudentClassesStore {
     })
   }
 
+  sort (classArray) {
+    return classArray.sort((a, b) => {
+      var textA = a.name.toUpperCase()
+      var textB = b.name.toUpperCase()
+      return (textA < textB) ? -1 : (textA > textB) ? 1 : 0
+    })
+  }
+
   getClasses () {
     this.loading = true
     actions.classes.getStudentClassesById(stores.userStore.user.student.id)
       .then((data) => {
-        this.classes = data
+        this.classes = this.sort(data)
         this.getClassesSuccess()
       })
       .catch(() => {
@@ -38,7 +46,7 @@ class StudentClassesStore {
     this.loadingUpdate = true
     actions.classes.getStudentClassesById(stores.userStore.user.student.id)
       .then((data) => {
-        this.classes = data
+        this.classes = this.sort(data)
         this.getClassesSuccess()
       })
   }

@@ -210,7 +210,6 @@ class Profile extends React.Component {
             }>
               {this.renderAvatar()}
               <div>
-                {console.log(((student.name_first + student.name_last).length + 1) > 15)}
                 <h1
                   style={style}
                 >
@@ -338,7 +337,7 @@ class Profile extends React.Component {
             <p>I&apos;m majoring in <b>{student.fields_of_study.map(f => {
               let last = student.fields_of_study.indexOf(f) === student.fields_of_study.length - 1
               return (
-                <span key={f.id}>{last ? 'and ' : ''}{f.field}{last ? '.' : student.fields_of_study.length > 2 ? ', ' : ' '}</span>
+                <span key={f.id}>{last && student.fields_of_study.length > 1 ? 'and ' : ''}{f.field}{last ? '.' : student.fields_of_study.length > 2 ? ', ' : ' '}</span>
               )
             })}</b></p>
           </div>
@@ -847,7 +846,8 @@ class Profile extends React.Component {
 
 Profile.propTypes = {
   rootStore: PropTypes.object,
-  location: PropTypes.object
+  location: PropTypes.object,
+  history: PropTypes.object
 }
 
 export default withRouter(Profile)

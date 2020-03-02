@@ -11,7 +11,18 @@ class App extends React.Component {
     return <Snackbar message={snackbarStore.message} show={snackbarStore.show} type={snackbarStore.type}/>
   }
 
+  renderBackgroundColor () {
+    let body = document.getElementById('body')
+    if (this.props.rootStore.studentNavStore.jobsMode) {
+      body.style.backgroundColor = '#4a4a4a'
+    } else {
+      body.style.backgroundColor = '#EDFAFF'
+    }
+  }
+
   render () {
+    this.renderBackgroundColor()
+
     this.props.history.listen((l) => {
       this.props.rootStore.studentNavStore.history.push(l.pathname)
     })

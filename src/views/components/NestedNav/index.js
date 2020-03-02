@@ -23,12 +23,10 @@ class NestedNav extends React.Component {
   getNestedNav = () => {
     let history = this.props.rootStore.studentNavStore.history
     let paths = history[history.length - 1]
-    console.log('paths', paths)
     let currentPath = paths.split('/')
     let pathArray = []
     let classId = null
     currentPath.forEach(p => {
-      console.log('p', p)
       let d = null
       if (parseInt(p)) {
         let prevPath = currentPath[currentPath.indexOf(p) - 1]
@@ -40,7 +38,6 @@ class NestedNav extends React.Component {
             path: path
           }
         } else if (prevPath === 'assignments') {
-          console.log('assignments')
           d = {
             name: this.props.rootStore.studentAssignmentsStore.assignments.filter(a => a.assignment_id === parseInt(p))[0].name,
             path: currentPath.slice(0, currentPath.indexOf(p) + 1).join('/')
@@ -54,7 +51,6 @@ class NestedNav extends React.Component {
         })
       }
     })
-    console.log('pathArray', pathArray)
     return pathArray
   }
 
@@ -64,7 +60,7 @@ class NestedNav extends React.Component {
       if (backPath && backPath !== '/') {
         return (
           <div className='nested-nav-back' onClick={() => this.props.history.push(backPath)}>
-            <BackArrow width="14" height="14" />
+            <BackArrow fill={this.props.rootStore.studentNavStore.jobsMode ? '#6ED6AE' : ''} width="14" height="14" />
             <p>Back</p>
           </div>
         )
@@ -78,12 +74,10 @@ class NestedNav extends React.Component {
           {pathArray.map(p => {
             return (
               <div className='nested-nav-item' key={pathArray.indexOf(p)} onClick={() => this.props.history.push(p.path)}>
-                {p.name}{pathArray.indexOf(p) !== pathArray.length - 1 ? <ForwardArrow width="14" height="14" /> : null}
+                {p.name}{pathArray.indexOf(p) !== pathArray.length - 1 ? <ForwardArrow fill={this.props.rootStore.studentNavStore.jobsMode ? '#6ED6AE' : ''} width="14" height="14" /> : null}
               </div>
             )
           })}
-          {/* <div>class name</div>
-          <ForwardArrow width="14" height="14" /> */}
         </div>
       )
     }
@@ -94,7 +88,7 @@ class NestedNav extends React.Component {
       return null
     } else {
       return (
-        <div className='nested-nav'>
+        <div className='nested-nav' style={{color: this.props.rootStore.studentNavStore.jobsMode ? '#6ED6AE' : ''}}>
           {this.renderContent()}
         </div>
       )

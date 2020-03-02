@@ -17,9 +17,9 @@ class StudentLayout extends React.Component {
 
   renderContent () {
     return (
-      <div className='sk-layout'>
+      <div className='sk-layout' style={this.props.rootStore.studentNavStore.jobsMode ? {backgroundColor: '#4a4a4a'} : {}}>
         <StudentNav />
-        <main id='main' style={this.props.rootStore.studentNavStore.jobsMode ? {backgroundColor: '#4a4a4a'} : {}}>
+        <main id='main'>
           <SkBanner />
           {this.props.children}
         </main>

@@ -182,7 +182,10 @@ import {
   addCareerActivity,
   addActivity,
   deleteActivity,
-  editActivity
+  editActivity,
+  getJobsListings,
+  getJobBySenderReference,
+  sendJobAction
 } from './jobs'
 
 const actions = {
@@ -395,7 +398,10 @@ const actions = {
     addCareerActivity,
     addActivity,
     deleteActivity,
-    editActivity
+    editActivity,
+    getJobsListings,
+    getJobBySenderReference,
+    sendJobAction
   }
 }
 

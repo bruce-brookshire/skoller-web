@@ -100,31 +100,68 @@ class ProfileScoreVisual extends React.Component {
       )
     } else {
       return (
-        <div style={{height: '124px', width: '124px', minWidth: '124px', margin: '1rem', fontWeight: '600'}}>
-          <CircularProgressbar
-            value={percentage}
-            text={`${percentage}%`}
-            styles={buildStyles({
+        <div style={{height: '124px', width: '124px', minWidth: '124px', margin: '1rem', fontWeight: '600', position: 'relative'}}>
+          <div style={{
+            position: 'absolute',
+            top: '0',
+            left: '0',
+            zIndex: '0'
+          }}>
+            <CircularProgressbar
+              value={100}
+              styles={buildStyles({
 
-              // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
-              strokeLinecap: 'round',
+                // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
+                strokeLinecap: 'round',
 
-              // Text size
-              textSize: '18px',
+                // Text size
+                textSize: '18px',
 
-              // How long animation takes to go from one percentage to another, in seconds
-              // pathTransitionDuration: 0.5,
+                // How long animation takes to go from one percentage to another, in seconds
+                // pathTransitionDuration: 0.5,
 
-              // Can specify path transition in more detail, or remove it entirely
-              pathTransition: 'none',
+                // Can specify path transition in more detail, or remove it entirely
+                pathTransition: 'none',
 
-              // Colors
-              pathColor: color,
-              textColor: color,
-              trailColor: '#00000000',
-              backgroundColor: '#4a4a4a'
-            })}
-          />
+                // Colors
+                pathColor: 'rgba(0,0,0,0.06)',
+                textColor: 'rgba(0,0,0,0.06)',
+                trailColor: '#00000000',
+                backgroundColor: 'rgba(0,0,0,0.06)'
+              })}
+            />
+          </div>
+          <div style={{
+            position: 'absolute',
+            top: '0',
+            left: '0',
+            zIndex: '1'
+          }}>
+            <CircularProgressbar
+              value={percentage}
+              text={`${percentage}%`}
+              styles={buildStyles({
+
+                // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
+                strokeLinecap: 'round',
+
+                // Text size
+                textSize: '18px',
+
+                // How long animation takes to go from one percentage to another, in seconds
+                // pathTransitionDuration: 0.5,
+
+                // Can specify path transition in more detail, or remove it entirely
+                pathTransition: 'none',
+
+                // Colors
+                pathColor: color,
+                textColor: color,
+                trailColor: '#00000000',
+                backgroundColor: '#4a4a4a'
+              })}
+            />
+          </div>
         </div>
       )
     }

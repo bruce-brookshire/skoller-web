@@ -36,8 +36,9 @@ class StudentNav extends React.Component {
       return (
         <div className="s-nav-wrapper">
           <div className="s-nav" style={this.props.rootStore.studentNavStore.jobsMode ? {backgroundColor: '#5e5e5e', borderRight: '1px solid #7e7d7d'} : {}}>
-            {/* <NavItem pageName="jobs" text="Home" /> */}
+            <NavItem pageName="jobs/home" text="Home" />
             <NavItem pageName="jobs/profile" text="Profile" />
+            <NavItem pageName="jobs/browse" text="Browse" />
             {/* <NavItem pageName="jobs/resume" text="Custom Resume (Coming Soon)" /> */}
             {/* <NavItem pageName="activity" text="Activity" />
             <NavItem pageName="chat" text="Chat" /> */}

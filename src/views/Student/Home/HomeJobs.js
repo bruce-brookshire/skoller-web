@@ -229,7 +229,7 @@ class HomeJobs extends React.Component {
             this.props.rootStore.studentJobsStore.profile = r
             this.props.rootStore.studentJobsStore.hasJobsProfile = true
             this.props.rootStore.studentJobsStore.firstOpen = true
-            this.props.history.push({pathname: '/student/jobs'})
+            this.props.history.push({pathname: '/student/jobs/profile'})
           })
       })
       .catch(e => {
@@ -421,7 +421,8 @@ class HomeJobs extends React.Component {
 HomeJobs.propTypes = {
   rootStore: PropTypes.object,
   updateStudent: PropTypes.func,
-  user: PropTypes.object
+  user: PropTypes.object,
+  history: PropTypes.object
 }
 
 export default withRouter(HomeJobs)
