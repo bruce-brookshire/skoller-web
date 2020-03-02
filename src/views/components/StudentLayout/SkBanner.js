@@ -35,7 +35,8 @@ class SkBanner extends React.Component {
       this.props.rootStore.studentJobsStore.hasJobsProfile &&
       (this.props.rootStore.studentNavStore.activePage === 'home' ||
       this.props.rootStore.studentNavStore.activePage === 'jobs' ||
-      this.props.rootStore.studentNavStore.activePage === 'jobs/profile') &&
+      this.props.rootStore.studentNavStore.activePage === 'jobs/profile' ||
+      this.props.rootStore.studentNavStore.activePage === 'jobs/home') &&
       window.innerWidth <= 1000
     ) {
       banners.push('jobs')
