@@ -40,15 +40,25 @@ class StudentJobsStore {
     if (this.listings.length === 0) {
       this.startLoadingListings()
     }
-    console.log('getting listings')
     await actions.jobs.getJobsListings()
       .then((r) => {
-        console.log(r)
         this.listings = r
         this.stopLoadingListings()
       })
       .catch((r) => {
         this.stopLoadingListings()
+      })
+  }
+
+  async loadMoreJobs () {
+    await actions.jobs.getJobsListings(this.listings.length)
+      .then((r) => {
+        r.forEach(j => {
+          this.listings.push(j)
+        })
+      })
+      .catch((r) => {
+        console.log(r)
       })
   }
 

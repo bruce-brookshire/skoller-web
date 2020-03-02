@@ -2,14 +2,13 @@ import React from 'react'
 
 const style = {
   textAlign: 'center',
-  margin: '1rem 0',
-  color: 'rgba(0,0,0,0.3)'
+  margin: '1rem 0'
 }
 
 const JobsDisclaimer = () => (
   <div className='jobs-disclaimer'>
     <div style={style} className='jobs-disclaimer-desc'>
-      <small>Sponsored content</small>
+      <small>Powered by <b>jobg8</b></small>
     </div>
   </div>
 )

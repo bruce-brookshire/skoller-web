@@ -14,7 +14,9 @@ class Jobs extends React.Component {
     this.props.rootStore.studentNavStore.setActivePage('jobs/home')
     this.props.rootStore.studentNavStore.location = this.props.location
 
-    this.props.rootStore.studentJobsStore.getJobsListings()
+    if (this.props.rootStore.studentJobsStore.listings.length === 0) {
+      this.props.rootStore.studentJobsStore.getJobsListings()
+    }
   }
 
   pushIfNoProfile () {

@@ -210,7 +210,6 @@ class Profile extends React.Component {
             }>
               {this.renderAvatar()}
               <div>
-                {console.log(((student.name_first + student.name_last).length + 1) > 15)}
                 <h1
                   style={style}
                 >

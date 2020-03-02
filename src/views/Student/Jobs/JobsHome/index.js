@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom'
 import ProfileScoreVisual from '../Profile/ProfileScoreVisual'
 import JobsList from '../Browse/JobsList'
 import SearchField from '../components/SearchField'
+import JobsDisclaimer from '../Browse/JobsDisclaimer'
 
 @inject('rootStore') @observer
 class JobsHome extends React.Component {
@@ -66,8 +67,16 @@ class JobsHome extends React.Component {
           >
             Browse Jobs
           </h1>
+          <div className='jobs-home-cell-subheading'>
+            <JobsDisclaimer />
+          </div>
         </div>
         <JobsList />
+        <div className='jobs-home-button'>
+          <p onClick={() => this.props.history.push('/student/jobs/browse/')}>
+            BROWSE ALL JOBS
+          </p>
+        </div>
       </div>
     )
   }
@@ -79,7 +88,8 @@ class JobsHome extends React.Component {
       <div className='jobs-home-cell'>
         <div className='jobs-home-cell-heading'>
           <h1
-            onClick={() => this.props.history.push('/student/jobs/profile')}
+            // onClick={() => this.props.history.push('/student/jobs/profile')}
+            style={{cursor: 'default'}}
           >
             Your Job Matches
           </h1>

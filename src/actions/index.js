@@ -183,7 +183,9 @@ import {
   addActivity,
   deleteActivity,
   editActivity,
-  getJobsListings
+  getJobsListings,
+  getJobBySenderReference,
+  sendJobAction
 } from './jobs'
 
 const actions = {
@@ -397,7 +399,9 @@ const actions = {
     addActivity,
     deleteActivity,
     editActivity,
-    getJobsListings
+    getJobsListings,
+    getJobBySenderReference,
+    sendJobAction
   }
 }
 

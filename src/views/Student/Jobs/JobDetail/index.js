@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import StudentLayout from '../../../components/StudentLayout'
-import NestedNav from '../../../components/NestedNav'
+// import StudentLayout from '../../../components/StudentLayout'
+// import NestedNav from '../../../components/NestedNav'
 import JobDetailContent from './JobDetailContent'
 
 class JobDetail extends React.Component {
@@ -16,17 +16,18 @@ class JobDetail extends React.Component {
   renderContent () {
     return (
       <div className='job-detail-container'>
-        <JobDetailContent jobId={1} />
+        <JobDetailContent jobId={this.state.jobId} />
       </div>
     )
   }
 
   render () {
     return (
-      <StudentLayout>
-        <NestedNav back={true} />
-        {this.renderContent()}
-      </StudentLayout>
+      // <StudentLayout>
+      //   {/* <NestedNav back={true} /> */}
+      //   {this.renderContent()}
+      // </StudentLayout>
+      this.renderContent()
     )
   }
 }

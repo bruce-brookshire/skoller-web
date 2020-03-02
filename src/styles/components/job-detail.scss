@@ -10,6 +10,7 @@
     @include skoller-cell;
     max-width: 600px;
     padding: 1rem;
+    margin: 1rem;
 
     h1, h2, h3, p {
       margin: 0.25rem 0;
@@ -40,6 +41,7 @@
       margin: 1rem 0 0 0;
 
       p {
+        display:block;
         width: 200px;
         padding: 16px 0 12px 0;
       }

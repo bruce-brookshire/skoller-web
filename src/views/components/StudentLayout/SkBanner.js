@@ -76,10 +76,12 @@ class SkBanner extends React.Component {
   getPartner (partnerSlug) {
     let partner = null
     Object.keys(partners).forEach(partnerKey => {
-      if (partners[partnerKey].slug.toLowerCase() === partnerSlug.toLowerCase()) {
-        partner = partners[partnerKey]
-      } else if (partners[partnerKey].altName.toLowerCase() === partnerSlug.toLowerCase()) {
-        partner = partners[partnerKey]
+      if (partners[partnerKey] && partnerSlug) {
+        if (partners[partnerKey].slug.toLowerCase() === partnerSlug.toLowerCase()) {
+          partner = partners[partnerKey]
+        } else if (partners[partnerKey].altName.toLowerCase() === partnerSlug.toLowerCase()) {
+          partner = partners[partnerKey]
+        }
       }
     })
     return partner

@@ -54,7 +54,7 @@ import JobsBrowse from './views/Student/Jobs/Browse'
 
 import actions from './actions'
 import stores from './stores'
-import JobDetail from './views/Student/Jobs/JobDetail.js'
+import JobDetail from './views/Student/Jobs/JobDetail'
 const {userStore} = stores
 
 class AuthSwitch extends React.Component {
