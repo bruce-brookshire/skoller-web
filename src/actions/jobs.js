@@ -147,7 +147,7 @@ export function uploadJobsDoc (jobsId, file, isResume = true) {
 }
 
 export function getJobsListings (offset = 0) {
-  return get(`/api/v1/skoller-jobs/job-listings?offset=${offset}`, '', 'Error fetching jobs. Try again later.')
+  return get(`/api/v1/skoller-jobs/job-listings?offset=${offset}&min_view=true`, '', 'Error fetching jobs. Try again later.')
     .then(data => {
       return data
     })
