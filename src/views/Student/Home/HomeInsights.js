@@ -60,13 +60,13 @@ class HomeInsights extends React.Component {
       if (this.state.type === 'assignmentsTimeline') {
         return (
           <div style={{margin: '1rem'}}>
-            <AssignmentsTimeline />
+            <AssignmentsTimeline view={'w'} />
           </div>
         )
       } else if (this.state.type === 'weightsTimeline') {
         return (
           <div style={{margin: '1rem'}}>
-            <WeightsTimeline />
+            <WeightsTimeline view={'w'} />
           </div>
         )
       } else if (this.state.type === 'distribution') {
