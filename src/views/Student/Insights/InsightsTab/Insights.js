@@ -74,11 +74,11 @@ class InsightsPage extends React.Component {
 
   renderContent () {
     return (
-      <div className='insights-container'>
+      <div className='insights-container' id='insights-container'>
         <div className='insights-cp-container'>
           {this.renderControlPanel()}
         </div>
-        <div className='insights-so-container'>
+        <div className='insights-so-container' id='insights-so-container'>
           {this.renderSemesterOutlook()}
         </div>
       </div>
