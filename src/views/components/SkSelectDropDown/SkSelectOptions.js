@@ -24,8 +24,6 @@ class SkSelectOptions extends React.Component {
     if (this.skModal) {
       this.skModal.addEventListener('scroll', this.updatePosition)
     }
-
-    console.log('re-constructing')
   }
 
   componentDidMount () {

@@ -36,6 +36,7 @@ class Layout extends React.Component {
         }
         <div
           className='layout'
+          id='layout'
           style={layoutStyle}
         >
           {this.props.children}

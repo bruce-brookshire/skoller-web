@@ -23,7 +23,12 @@ class App extends React.Component {
   render () {
     this.renderBackgroundColor()
 
+    let layout = document.getElementById('layout')
+
     this.props.history.listen((l) => {
+      if (layout) {
+        layout.scrollTop = 0
+      }
       this.props.rootStore.studentNavStore.history.push(l.pathname)
     })
 

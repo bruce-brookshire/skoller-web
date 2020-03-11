@@ -1,0 +1,10 @@
+.insights-semester {
+  @include skoller-cell;
+  padding: 1rem;
+  width: 100%;
+  max-width: 600px;
+
+  h1 {
+    margin: 0;
+  }
+}

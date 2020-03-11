@@ -51,7 +51,7 @@ class WeightsTimeline extends React.Component {
   }
 
   render () {
-    let {data, count} = getWeightDistribution(this.props.rootStore.studentAssignmentsStore, this.props.cl)
+    let {data, count} = getWeightDistribution(this.props.rootStore.studentAssignmentsStore, this.props.cl, this.props.ids)
 
     const styles = this.getStyles()
     if (data.length > 0) {
@@ -65,6 +65,7 @@ class WeightsTimeline extends React.Component {
           Math.max.apply(Math, data.map(a => a.y)) + (Math.max.apply(Math, data.map(a => a.y)) * 0.25)
         ]
       }
+      const animate = styles.animate
 
       return (
         <svg style={styles.parent} viewBox='0 0 450 350'>
@@ -73,39 +74,47 @@ class WeightsTimeline extends React.Component {
           <VictoryLabel x={18} y={40}
             text='Grade Distribution'
             style={styles.title}
+            animate={animate}
           />
 
           <VictoryLabel x={18} y={60}
             text={'Of your ' + count + ' assignments this semester...'}
             style={styles.subtitle}
+            animate={animate}
           />
 
           <g transform={'translate(18, 124)'}>
             <VictoryLabel x={0} y={0}
               text={data[0].y.toString() + ' are high impact'}
               style={styles.pie.labelTitleOne}
+              animate={animate}
             />
             <VictoryLabel x={0} y={20}
               text={'More than 15% of your class grade'}
               style={styles.pie.labelTitleOneSubtitle}
+              animate={animate}
             />
 
             <VictoryLabel x={0} y={64}
               text={data[1].y.toString() + ' are medium impact'}
               style={styles.pie.labelTitleTwo}
+              animate={animate}
             />
             <VictoryLabel x={0} y={84}
               text={'5-15% of your class grade'}
               style={styles.pie.labelTitleTwoSubtitle}
+              animate={animate}
             />
 
             <VictoryLabel x={0} y={128}
               text={data[2].y.toString() + ' are low impact'}
               style={styles.pie.labelTitleThree}
+              animate={animate}
             />
             <VictoryLabel x={0} y={148}
               text={'Less than 5% of your class grade'}
               style={styles.pie.labelTitleThreeSubtitle}
+              animate={animate}
             />
           </g>
 
@@ -121,6 +130,7 @@ class WeightsTimeline extends React.Component {
               size={4}
               style={styles.pie}
               colorScale={styles.pie.colorScale}
+              animate={animate}
             />
 
           </g>
@@ -147,7 +157,8 @@ class WeightsTimeline extends React.Component {
 WeightsTimeline.propTypes = {
   history: PropTypes.object,
   rootStore: PropTypes.object,
-  cl: PropTypes.object
+  cl: PropTypes.object,
+  ids: PropTypes.array
 }
 
 export default withRouter(WeightsTimeline)

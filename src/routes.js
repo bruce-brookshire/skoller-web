@@ -29,6 +29,7 @@ import AssignmentDetail from './views/Student/AssignmentDetail'
 import AddAssignment from './views/Student/Assignments/AddAssignment'
 import SharePartnerLink from './views/Student/Share/SharePartnerLink'
 import Share from './views/Student/Share'
+import Insights from './views/Student/Insights'
 
 import SyllabusTool from './views/SyllabusTool'
 import ClassAdmin from './views/ClassAdmin'
@@ -194,6 +195,7 @@ class StudentContainer extends React.Component {
         <Route exact path='/student' component={Home} />
         <Route path='/student/home' component={Home} />
         <Route path='/student/tasks' component={Tasks} />
+        <Route path='/student/insights' component={Insights} />
         <Route path='/student/share' component={StudentShareContainer} />
         <Route path='/student/verify' component={Verification} onEnter={authOnboard} />
         <Route path='/student/class-link' component={ClassLink} />

@@ -9,6 +9,7 @@ import ChatIcon from '../../../assets/sk-icons/ChatIcon'
 import ClassesIcon from '../../../assets/sk-icons/ClassesIcon'
 import CalendarIcon from '../../../assets/sk-icons/CalendarIcon'
 import ShareIcon from '../../../assets/sk-icons/ShareIcon'
+import InsightsIcon from '../../../assets/sk-icons/InsightsIcon'
 import Profile from '../../../assets/sk-icons/jobs/Profile'
 import Resume from '../../../assets/sk-icons/jobs/Resume'
 import Browse from '../../../assets/sk-icons/jobs/Browse'
@@ -24,13 +25,13 @@ class NavItem extends React.Component {
   }
 
   getNavIcon () {
-    const iconStyle = {
-      width: '30px',
-      height: '22px',
-      color: 'white',
-      marginRight: '-8px',
-      marginTop: '3px'
-    }
+    // const iconStyle = {
+    //   width: '30px',
+    //   height: '22px',
+    //   color: 'white',
+    //   marginRight: '-8px',
+    //   marginTop: '3px'
+    // }
     if (this.props.pageName.includes('home') || this.props.pageName.includes('jobs/home')) {
       return <HomeIcon fill="white" width="22px" height="22px" />
     } else if (this.props.pageName.includes('tasks')) {
@@ -51,6 +52,8 @@ class NavItem extends React.Component {
       return <Resume fill="white" width="22px" height="22px" />
     } else if (this.props.pageName.includes('jobs/browse')) {
       return <Browse fill="white" width="19px" height="18px" />
+    } else if (this.props.pageName.includes('insights')) {
+      return <InsightsIcon fill="white" width="22px" height="24px" />
     } else {
       return null
     }
@@ -79,7 +82,8 @@ class NavItem extends React.Component {
 NavItem.propTypes = {
   rootStore: PropTypes.object,
   pageName: PropTypes.string,
-  text: PropTypes.string
+  text: PropTypes.string,
+  history: PropTypes.object
 }
 
 export default withRouter(NavItem)

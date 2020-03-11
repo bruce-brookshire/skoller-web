@@ -59,19 +59,19 @@ class ClassInsights extends React.Component {
     if (this.props.rootStore.studentAssignmentsStore.assignments.length > 0) {
       if (this.state.type === 'assignmentsTimeline') {
         return (
-          <div>
-            <AssignmentsTimeline cl={this.props.cl} />
+          <div style={{margin: '1rem'}}>
+            <AssignmentsTimeline cl={this.props.cl} view={'w'} />
           </div>
         )
       } else if (this.state.type === 'weightsTimeline') {
         return (
-          <div>
-            <WeightsTimeline cl={this.props.cl} />
+          <div style={{margin: '1rem'}}>
+            <WeightsTimeline cl={this.props.cl} view={'w'} />
           </div>
         )
       } else if (this.state.type === 'distribution') {
         return (
-          <div>
+          <div style={{margin: '1rem'}}>
             <Distribution cl={this.props.cl} />
           </div>
         )
