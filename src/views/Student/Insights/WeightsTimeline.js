@@ -1,7 +1,7 @@
 import React from 'react'
 import {inject, observer} from 'mobx-react'
 import { withRouter } from 'react-router-dom'
-import { VictoryTooltip, VictoryScatter, VictoryLine, VictoryLabel, VictoryAxis, VictoryArea } from 'victory'
+import { VictoryTooltip, VictoryScatter, VictoryLine, VictoryLabel, VictoryAxis, VictoryArea, VictoryBar } from 'victory'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import { getAssignmentWeightData } from './DataUtils'
@@ -34,7 +34,15 @@ export class DateTooltip extends React.Component {
             }}
           >
             <div style={{textAlign: 'center'}}>
-              <h3 style={{margin: 0, fontSize: '14px'}}>{moment(datum.x, 'X').format('M/D')} - {moment(datum.x, 'X').add(7, 'days').format('M/D')}</h3>
+              {this.props.view === 'w' &&
+                <h3 style={{margin: 0, fontSize: '14px'}}>{moment(datum.x, 'X').format('M/D')} - {moment(datum.x, 'X').add(7, 'days').format('M/D')}</h3>
+              }
+              {this.props.view === 'd' &&
+                <h3 style={{margin: 0, fontSize: '14px'}}>{moment(datum.x, 'X').format('M/D')}</h3>
+              }
+              {this.props.view === 'm' &&
+                <h3 style={{margin: 0, fontSize: '14px'}}>{moment(datum.x, 'X').format('M/D')} - {moment(datum.x, 'X').add(1, 'month').subtract(1, 'day').format('M/D')}</h3>
+              }
               <p style={{margin: 0, fontSize: '12px'}}>{Math.round(datum.y * 1000) / 10}% of total grade</p>
             </div>
           </div>
@@ -44,6 +52,10 @@ export class DateTooltip extends React.Component {
   }
 }
 
+DateTooltip.propTypes = {
+  view: PropTypes.string
+}
+
 @inject('rootStore') @observer
 class WeightsTimeline extends React.Component {
   getStyles () {
@@ -51,7 +63,7 @@ class WeightsTimeline extends React.Component {
   }
 
   render () {
-    let data = getAssignmentWeightData(this.props.rootStore.studentAssignmentsStore, this.props.cl)
+    let data = getAssignmentWeightData(this.props.rootStore.studentAssignmentsStore, this.props.cl, this.props.ids, this.props.view)
     const styles = this.getStyles()
     if (data.length > 0) {
       const today = parseInt(moment().format('X'))
@@ -61,11 +73,12 @@ class WeightsTimeline extends React.Component {
           data[data.length - 1].x + 604800
         ],
         y: [
-          Math.min.apply(Math, data.map(a => a.y)),
+          0,
           Math.max.apply(Math, data.map(a => a.y)) + (Math.max.apply(Math, data.map(a => a.y)) * 0.25)
         ]
       }
       const tickValues = data.map(d => d.x)
+      const animate = this.props.view !== 'd' ? styles.animate : null
 
       return (
         <svg style={styles.parent} viewBox='0 0 450 350'>
@@ -90,6 +103,7 @@ class WeightsTimeline extends React.Component {
               style={styles.axisDates}
               domain={{x: domain.x}}
               standalone={false}
+              animate={animate}
             />
 
             <VictoryLabel x={6} y={154}
@@ -103,12 +117,13 @@ class WeightsTimeline extends React.Component {
               dependentAxis
               // label='Assignment Weights'
               domain={{y: domain.y}}
-              tickFormat={d => (d * 100).toString() + '%'}
+              tickFormat={d => Math.round((d * 100)).toString() + '%'}
               offsetX={50}
               orientation='left'
               standalone={false}
               domainPadding={200}
               style={styles.axisOne}
+              animate={animate}
             />
 
             <VictoryLine
@@ -117,6 +132,7 @@ class WeightsTimeline extends React.Component {
               scale={{x: 'time', y: 'linear'}}
               standalone={false}
               style={styles.todayLine.back}
+              animate={animate}
             />
 
             <VictoryLine
@@ -125,6 +141,7 @@ class WeightsTimeline extends React.Component {
               scale={{x: 'time', y: 'linear'}}
               standalone={false}
               style={styles.todayLine.front}
+              animate={animate}
             />
 
             <VictoryScatter
@@ -134,35 +151,56 @@ class WeightsTimeline extends React.Component {
               scale={{x: 'time', y: 'linear'}}
               size={4}
               style={styles.todayLine.dot}
+              animate={animate}
             />
 
             <VictoryLabel x={(((today - domain.x[0]) / (domain.x[1] - domain.x[0])) * 336) + 35} y={34}
               text={'Today'}
               style={styles.label}
+              animate={animate}
             />
 
             <g>
-              <VictoryArea
+              {(this.props.view === 'w' || this.props.view === 'm') &&
+                <VictoryArea
+                  data={data}
+                  domain={domain}
+                  scale={{x: 'time', y: 'linear'}}
+                  standalone={false}
+                  interpolation='monotoneX'
+                  style={styles.area}
+                  animate={animate}
+                />
+              }
+            </g>
+
+            {(this.props.view === 'w' || this.props.view === 'm') &&
+              <VictoryScatter
                 data={data}
+                size={5}
                 domain={domain}
                 scale={{x: 'time', y: 'linear'}}
                 standalone={false}
-                interpolation='monotoneX'
-                style={styles.area}
+                style={styles.scatter}
+                labels={() => ''}
+                labelComponent={ <VictoryTooltip flyoutComponent={<DateTooltip view={this.props.view}/>} /> }
+                animate={animate}
               />
-            </g>
+            }
 
-            <VictoryScatter
-              data={data}
-              size={5}
-              domain={domain}
-              scale={{x: 'time', y: 'linear'}}
-              standalone={false}
-              style={styles.scatter}
-              labels={() => ''}
-              labelComponent={ <VictoryTooltip flyoutComponent={<DateTooltip/>} /> }
-            />
-
+            {this.props.view === 'd' &&
+              <VictoryBar
+                data={data}
+                size={5}
+                domain={domain}
+                scale={{x: 'time', y: 'linear'}}
+                standalone={false}
+                style={styles.scatter}
+                labels={() => ''}
+                labelComponent={ <VictoryTooltip flyoutComponent={<DateTooltip view={this.props.view} />} /> }
+                animate={animate}
+              />
+            }
           </g>
         </svg>
       )
@@ -175,7 +213,9 @@ class WeightsTimeline extends React.Component {
 WeightsTimeline.propTypes = {
   history: PropTypes.object,
   rootStore: PropTypes.object,
-  cl: PropTypes.object
+  cl: PropTypes.object,
+  ids: PropTypes.array,
+  view: PropTypes.string
 }
 
 export default withRouter(WeightsTimeline)

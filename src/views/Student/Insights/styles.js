@@ -21,8 +21,7 @@ export function getStyles (c) {
       maxWidth: '100%',
       height: 'auto',
       border: '1px solid ' + GRAY_COLOR_50,
-      borderRadius: '5px',
-      margin: '1rem'
+      borderRadius: '5px'
     },
     title: {
       textAnchor: 'start',
@@ -171,6 +170,14 @@ export function getStyles (c) {
       },
       dot: {
         data: { stroke: GRAY_COLOR_50, strokeWidth: 5, fill: GRAY_COLOR }
+      }
+    },
+
+    // ANIMATION
+    animate: {
+      duration: 400,
+      onLoad: {
+        duration: 0
       }
     }
   }

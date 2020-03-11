@@ -57,6 +57,7 @@ class StudentNav extends React.Component {
             {this.props.rootStore.studentClassesStore.classes.filter(cl => cl.status.id === 1400).length !== 0 &&
               <NavItem pageName="share" text="Share" />
             }
+            <NavItem pageName="insights" text="Insights" />
             {/* <NavItem pageName="activity" text="Activity" />
             <NavItem pageName="chat" text="Chat" /> */}
             {this.renderLogout()}
@@ -70,7 +71,8 @@ class StudentNav extends React.Component {
 StudentNav.propTypes = {
   rootStore: PropTypes.object,
   noLogin: PropTypes.bool,
-  imgPath: PropTypes.string
+  imgPath: PropTypes.string,
+  history: PropTypes.object
 }
 
 export default withRouter(StudentNav)

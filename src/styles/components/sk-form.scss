@@ -1,0 +1,70 @@
+.sk-form-checkbox {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  .checkbox-container {
+    display: block;
+    position: relative;
+    padding-left: 24px;
+    padding-top: 4px;
+    margin-bottom: 12px;
+    margin-right: 8px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    &:hover input ~ .checkmark {
+      background-color: #ccc;
+    }
+
+    .checkmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 18px;
+      width: 18px;
+      background-color: #eee;
+      border-radius: 5px;
+
+      &:hover {
+        background-color: #ccc;
+      }
+
+      &:after {
+        content: "";
+        position: absolute;
+        display: none;
+
+        left: 7px;
+        top: 3px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+      }
+    }
+
+    input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
+
+    input:checked ~ .checkmark {
+      background-color: $sk-blue;
+    }
+
+    input:checked ~ .checkmark:after {
+      display: block;
+    }
+  }
+}

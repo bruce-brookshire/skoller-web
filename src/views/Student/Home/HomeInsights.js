@@ -59,19 +59,19 @@ class HomeInsights extends React.Component {
     if (this.props.rootStore.studentAssignmentsStore.assignments.length > 0) {
       if (this.state.type === 'assignmentsTimeline') {
         return (
-          <div>
+          <div style={{margin: '1rem'}}>
             <AssignmentsTimeline />
           </div>
         )
       } else if (this.state.type === 'weightsTimeline') {
         return (
-          <div>
+          <div style={{margin: '1rem'}}>
             <WeightsTimeline />
           </div>
         )
       } else if (this.state.type === 'distribution') {
         return (
-          <div>
+          <div style={{margin: '1rem'}}>
             <Distribution />
           </div>
         )
@@ -143,8 +143,7 @@ class HomeInsights extends React.Component {
       <div className='home-shadow-box margin-top'>
         <h1
           className='home-heading'
-          style={{cursor: 'default'}}
-          // onClick={() => this.props.history.push('/student/insights')}
+          onClick={() => this.props.history.push('/student/insights')}
         >
           Insights
         </h1>
