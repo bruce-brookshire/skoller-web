@@ -4,6 +4,8 @@ import PropTypes from 'prop-types'
 import SkSelect from '../../../components/SkSelect'
 import SkCheckboxField from '../../../../components/SkForm/SkCheckboxField'
 import SemesterOutlook from './SemesterOutlook'
+import html2canvas from 'html2canvas'
+import KeyInsights from './KeyInsights'
 
 @inject('rootStore') @observer
 class InsightsPage extends React.Component {
@@ -72,14 +74,32 @@ class InsightsPage extends React.Component {
     )
   }
 
+  renderKeyInsights () {
+    return (
+      <KeyInsights />
+    )
+  }
+
+  downloadGraphs () {
+    // html2canvas(document.getElementById('insights-so-container')).then(canvas => {
+    //   let img = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream")
+    //   window.location.href = img
+    // })
+  }
+
   renderContent () {
     return (
-      <div className='insights-container' id='insights-container'>
-        <div className='insights-cp-container'>
-          {this.renderControlPanel()}
+      <div className='insights'>
+        <div className='insights-container' id='insights-container'>
+          <div className='insights-cp-container'>
+            {this.renderControlPanel()}
+          </div>
+          <div onClick={() => this.downloadGraphs()} className='insights-so-container' id='insights-so-container'>
+            {this.renderSemesterOutlook()}
+          </div>
         </div>
-        <div className='insights-so-container' id='insights-so-container'>
-          {this.renderSemesterOutlook()}
+        <div className='key-insights-wrapper'>
+          {this.renderKeyInsights()}
         </div>
       </div>
     )

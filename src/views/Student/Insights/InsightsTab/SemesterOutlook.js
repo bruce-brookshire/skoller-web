@@ -15,7 +15,7 @@ class SemesterOutlook extends React.Component {
     }
   }
 
-  render () {
+  renderContent () {
     let ids = this.props.rootStore.studentClassesStore.classes.map(cl => this.props.selectedClasses.includes(cl.name) ? cl.id : null)
     return (
       <div className='insights-semester'>
@@ -30,6 +30,16 @@ class SemesterOutlook extends React.Component {
           <Distribution ids={ids} />
         </div>
       </div>
+    )
+  }
+
+  render () {
+    let ids = this.props.rootStore.studentClassesStore.classes.map(cl => this.props.selectedClasses.includes(cl.name) ? cl.id : null)
+
+    return (
+      ids.length > 0
+        ? this.renderContent()
+        : <div />
     )
   }
 }

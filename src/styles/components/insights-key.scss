@@ -1,0 +1,11 @@
+.key-insights-container {
+  @include skoller-cell;
+  padding: 1rem;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+
+  h1 {
+    margin: 0;
+  }
+}
