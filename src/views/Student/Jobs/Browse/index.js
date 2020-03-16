@@ -35,20 +35,26 @@ class JobsBrowse extends React.Component {
       )
     })
 
-    return (
-      <InfiniteScroll
-        pageStart={0}
-        loadMore={this.loadMore}
-        hasMore={true}
-        loader={<div className="loader" key={0}><SkLoader /></div>}
-        useWindow={false}
-      >
-        <div>
-          <div key={-1} className='spacer' />
-          {items}
-        </div>
-      </InfiniteScroll>
-    )
+    if (items.length > 0) {
+      return (
+        <InfiniteScroll
+          pageStart={0}
+          loadMore={this.loadMore}
+          hasMore={true}
+          loader={<div className="loader" key={0}><SkLoader /></div>}
+          useWindow={false}
+        >
+          <div>
+            <div key={-1} className='spacer' />
+            {items}
+          </div>
+        </InfiniteScroll>
+      )
+    } else {
+      return (
+        <p style={{color: 'white', marginTop: '100px'}}>No listings right now. Check back soon for more results!</p>
+      )
+    }
   }
 
   renderContent () {

@@ -10,13 +10,18 @@ class JobsList extends React.Component {
     let jobs = this.props.rootStore.studentJobsStore.listings.slice()
     return (
       <div className='jobs-list' style={{marginBottom: '1rem'}}>
-        {jobs.slice(0, 3).map(job => {
-          return (
-            <div key={jobs.indexOf(job)}>
-              <JobCell job={job} />
-            </div>
-          )
-        })}
+        {jobs.length > 0 &&
+          jobs.slice(0, 3).map(job => {
+            return (
+              <div key={jobs.indexOf(job)}>
+                <JobCell job={job} />
+              </div>
+            )
+          })
+        }
+        {jobs.length === 0 &&
+          <p>No listings right now. Check back soon for more results!</p>
+        }
       </div>
     )
   }
