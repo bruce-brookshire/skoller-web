@@ -170,3 +170,8 @@ export function getTaskAssignments (studentId) {
 
   return get(`/api/v1/students/${studentId}/assignments?is_complete=false&date=${dateStr}`)
 }
+
+export function getStudentAssignmentById (studentId, taskId) {
+  console.log(studentId, taskId)
+  return get(`/api/v1/students/${studentId}/assignments?id=${taskId}`)
+}

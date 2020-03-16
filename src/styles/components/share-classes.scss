@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   flex-wrap: wrap;
 
   .sk-share-classes-col {
@@ -11,7 +11,7 @@
 
     .sk-share-form {
       @include skoller-cell;
-      margin: 0.5rem;
+      margin: 1rem 0.5rem;
       padding: 1rem;
 
       .sk-share-form-incentive {

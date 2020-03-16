@@ -1,5 +1,5 @@
 import React from 'react'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 import Grid from '../../../components/Grid'
 import actions from '../../../actions'
 import SchoolSearch from './SchoolSearch'
@@ -112,14 +112,14 @@ class HubSchools extends React.Component {
   * On create school.
   */
   onCreateSchool () {
-    browserHistory.push('/hub/schools/school/info')
+    this.props.history.push('/hub/schools/school/info')
   }
 
   /*
   * On school select.
   */
   onSchoolSelect (school) {
-    browserHistory.push({pathname: '/hub/schools/school/info', state: {school}})
+    this.props.history.push({pathname: '/hub/schools/school/info', state: {school}})
   }
 
   getCsv () {
@@ -166,4 +166,4 @@ class HubSchools extends React.Component {
   }
 }
 
-export default HubSchools
+export default withRouter(HubSchools)

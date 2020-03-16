@@ -145,3 +145,36 @@ export function uploadJobsDoc (jobsId, file, isResume = true) {
       return Promise.reject(error)
     })
 }
+
+export function getJobsListings (offset = 0) {
+  return get(`/api/v1/skoller-jobs/job-listings?offset=${offset}&min_view=true`, '', 'Error fetching jobs. Try again later.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+export function getJobBySenderReference (senderReference) {
+  return get(`/api/v1/skoller-jobs/job-listings/${senderReference}`, '', 'Error getting job. Try again later.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+export function sendJobAction (clickedApplication = false, senderReference) {
+  let form = {
+    action: clickedApplication ? 'clicked_application' : 'viewed_job'
+  }
+  return post(`/api/v1/skoller-jobs/job-listings/${senderReference}/action`, form, '')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}

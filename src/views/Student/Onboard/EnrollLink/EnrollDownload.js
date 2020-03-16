@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import AppStore from '../../../../assets/images/app_download/app-store-badge.svg'
 import GooglePlay from '../../../../assets/images/app_download/google-play-badge.png'
+import live from '../../../../assets/images/class_status/todolist_gif.gif'
 
 class EnrollDownload extends React.Component {
   redirect () {
@@ -27,6 +28,7 @@ class EnrollDownload extends React.Component {
     const operatingSystem = this.getMobileOperatingSystem()
     return (
       <div className='sk-enroll-download'>
+        <div style={{display: 'flex', width: '100%', height: '280px', maxHeight: '300px', flexDirection: 'row', justifyContent: 'center', backgroundImage: `url(${live})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center center'}} />
         <h1>
           Get Skoller on {operatingSystem}.
         </h1>

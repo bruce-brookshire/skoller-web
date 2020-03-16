@@ -1,15 +1,15 @@
 import React from 'react'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 import {inject, observer} from 'mobx-react'
 import PropTypes from 'prop-types'
 import Modal from '../../components/Modal'
 import actions from '../../actions'
-import SkModal from '../components/SkModal/SkModal';
+import SkModal from '../components/SkModal/SkModal'
 
 @inject('rootStore') @observer
 class RequestResolvedModal extends React.Component {
   navigateToNeedsChange () {
-    browserHistory.push({
+    this.props.history.push({
       pathname: '/hub/classes',
       state: {
         needsChange: true
@@ -106,4 +106,4 @@ RequestResolvedModal.propTypes = {
   request: PropTypes.object
 }
 
-export default RequestResolvedModal
+export default withRouter(RequestResolvedModal)

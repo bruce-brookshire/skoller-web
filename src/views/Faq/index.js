@@ -1,5 +1,5 @@
 import React from 'react'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 
 class Faq extends React.Component {
   render () {
@@ -10,7 +10,7 @@ class Faq extends React.Component {
             <h2>
               <img
                 className='faq-logo'
-                onClick={() => { browserHistory.push('/landing') }}
+                onClick={() => { this.props.history.push('/landing') }}
                 src='../../../src/assets/images/logo-wide-blue@1x.png'/>
               <span style={{display: 'block'}}>Skoller FAQ</span>
             </h2>
@@ -92,4 +92,4 @@ class Faq extends React.Component {
   }
 }
 
-export default Faq
+export default withRouter(Faq)

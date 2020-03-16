@@ -2,7 +2,7 @@ import React from 'react'
 import {inject, observer} from 'mobx-react'
 import PropTypes from 'prop-types'
 import StudentLayout from '../../../components/StudentLayout'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 import SkLoader from '../../../../assets/sk-icons/SkLoader'
 
 @inject('rootStore') @observer
@@ -16,7 +16,7 @@ class Resume extends React.Component {
 
   pushIfNoProfile () {
     if (!this.props.rootStore.studentJobsStore.hasJobsProfile) {
-      browserHistory.push('/student/home')
+      this.props.history.push('/student/home')
     }
   }
 
@@ -41,4 +41,4 @@ Resume.propTypes = {
   location: PropTypes.object
 }
 
-export default Resume
+export default withRouter(Resume)

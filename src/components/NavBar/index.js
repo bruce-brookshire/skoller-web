@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import ClassInfo from './ClassInfo'
-import { browserHistory } from 'react-router'
+import { withRouter } from 'react-router-dom'
 import JobsSwitch from './JobsSwitch'
 
 @inject('rootStore') @observer
@@ -87,9 +87,9 @@ class NavBar extends React.Component {
             className='logo' src='/src/assets/images/jobs/skoller-jobs-logo.png'
             onClick={() => {
               if (admin) {
-                browserHistory.push('/hub/landing')
+                this.props.history.push('/hub/landing')
               } else {
-                browserHistory.push('/student/jobs')
+                this.props.history.push('/student/jobs')
               }
             }}
           />
@@ -137,9 +137,9 @@ class NavBar extends React.Component {
               className='logo' src='/src/assets/images/logo-wide-blue@1x.png'
               onClick={() => {
                 if (admin) {
-                  browserHistory.push('/hub/landing')
+                  this.props.history.push('/hub/landing')
                 } else {
-                  browserHistory.push('/')
+                  this.props.history.push('/')
                 }
               }}
             />
@@ -175,4 +175,4 @@ NavBar.propTypes = {
   onboard: PropTypes.bool
 }
 
-export default NavBar
+export default withRouter(NavBar)

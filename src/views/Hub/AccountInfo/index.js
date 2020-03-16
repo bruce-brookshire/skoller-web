@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 import Modal from '../../../components/Modal'
 import AccountInfoForm from './AccountInfoForm'
 import actions from '../../../actions'
@@ -77,7 +77,7 @@ class AccountInfo extends React.Component {
 
   onDeleteUser () {
     actions.users.deleteUserById(this.state.user).then(_resp => {
-      browserHistory.push({
+      this.props.history.push({
         pathname: '/hub/accounts',
         state: {
           needsChange: true
@@ -185,7 +185,7 @@ class AccountInfo extends React.Component {
   }
 
   onClassSelect (cl) {
-    browserHistory.push({
+    this.props.history.push({
       pathname: `/class/${cl.id}/admin`
     })
   }
@@ -271,4 +271,4 @@ AccountInfo.propTypes = {
   location: PropTypes.object
 }
 
-export default AccountInfo
+export default withRouter(AccountInfo)

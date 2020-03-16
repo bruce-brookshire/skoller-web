@@ -164,14 +164,14 @@ class UploadAdditionalDocuments extends React.Component {
           <StudentRequestModal
             open={true}
             onClose={() => {
-              this.setState({showStudentRequestModal: !this.state.showStudentRequestModal})
+              this.setState({showStudentRequestModal: false})
             }}
             cl={this.props.cl}
             onSuccess={() => {
               showSnackbar('Request for assistance submitted successfully.', 'success')
-              this.setState({showStudentRequestModal: !this.state.showStudentRequestModal})
+              this.setState({showStudentRequestModal: false})
             }}
-            onError={() => this.setState({showStudentRequestModal: !this.state.showStudentRequestModal})}
+            onError={() => this.setState({showStudentRequestModal: false})}
           />
         }
       </div>

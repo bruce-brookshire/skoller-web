@@ -1,5 +1,5 @@
 import React from 'react'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 import AccountSearch from './AccountSearch'
 import Grid from '../../../components/Grid'
 import actions from '../../../actions'
@@ -103,11 +103,11 @@ class Accounts extends React.Component {
   }
 
   onCreateAccount (user) {
-    browserHistory.push({pathname: '/hub/accounts/account/info', state: {user: user.user}})
+    this.props.history.push({pathname: '/hub/accounts/account/info', state: {user: user.user}})
   }
 
   onAccountSelect (user) {
-    browserHistory.push({pathname: '/hub/accounts/account/info', state: {user}})
+    this.props.history.push({pathname: '/hub/accounts/account/info', state: {user}})
   }
 
   toggleCreateModal () {
@@ -153,4 +153,4 @@ class Accounts extends React.Component {
   }
 }
 
-export default Accounts
+export default withRouter(Accounts)

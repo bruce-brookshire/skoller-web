@@ -99,14 +99,97 @@
               width: 100%;
               padding: 4px;
             }
+          }
+        }
 
-            .sk-assignment-detail-edit-name-save {
-              background-color: none;
-              text-align: center;
+        .sk-assignment-detail-save {
+
+          .sk-assignment-detail-radio {
+            max-width: 70vw;
+            width: 100%;
+            margin: 0 0 0.5rem 0;
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            justify-content: space-between;
+    
+            label {
+              // margin: 4px 8px 0 0;
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+              align-items: center;
+              border: 1px solid $cn-form-border;
+              padding: 10px 5px 6px 5px;
+              padding: 1.2rem 0.5rem 1rem 0.5rem;
+              height: 13px;
+              max-width: 100vw;
+              border-radius: 5px;
               color: $cn-color-blue;
               cursor: pointer;
-              margin: 0 0 0.5rem 0;
+    
+              &:hover {
+                input {
+                  background-color: $cn-form-border;
+                }
+              }
+    
+              input {
+                position: absolute;
+                width: 0;
+                height: 0;
+                opacity: 0;
+                cursor: pointer;
+              }
+    
+              .radio-button {
+                position: relative;
+                height: 16px;
+                width: 16px;
+                background-color: rgba(0,0,0,.05);
+                border-radius: 50%;
+                margin: -3px 8px 0 0;
+    
+                &:after {
+                  content: "";
+                  position: absolute;
+                  display: none;
+                  top: 5px;
+                  left: 5px;
+                  width: 6px;
+                  height: 6px;
+                  border-radius: 50%;
+                  background: white;
+                }
+              }
+    
+              input:checked ~ .radio-button {
+                background-color: $cn-color-blue;
+              }
+    
+              input:checked ~ .radio-button:after {
+                display: block;
+              }
             }
+    
+            .is-active {
+              border-color: $cn-color-blue;
+            }
+          }
+
+          .sk-assignment-detail-save-button {
+            @include sk-standard-button;
+          }
+
+          .sk-assignment-detail-cancel {
+            color: $cn-color-blue;
+            cursor: pointer;
+            text-align: center;
+            margin: 0.5rem 0 -0.5rem 0;
           }
         }
 

@@ -6,7 +6,7 @@ import actions from '../../../actions'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import PropTypes from 'prop-types'
 import SkSelectDropDown from '../../components/SkSelectDropDown'
-import { browserHistory } from 'react-router'
+import { withRouter } from 'react-router-dom'
 import JobsLogo from '../../../assets/images/jobs/skoller-jobs-logo.png'
 
 @inject('rootStore') @observer
@@ -46,8 +46,8 @@ class HomeJobs extends React.Component {
       })
     let majors = []
     let beginningMajors = []
-    majors = this.props.user.student.fields_of_study.sort()
-    beginningMajors = this.props.user.student.fields_of_study.sort()
+    majors = this.props.user.student.fields_of_study.slice().sort()
+    beginningMajors = this.props.user.student.fields_of_study.slice().sort()
     let gradDegreeChoice = this.state.degreeTypes[0]
     this.setState({loading: false, gradDegreeChoice, majors, beginningMajors})
   }
@@ -229,7 +229,7 @@ class HomeJobs extends React.Component {
             this.props.rootStore.studentJobsStore.profile = r
             this.props.rootStore.studentJobsStore.hasJobsProfile = true
             this.props.rootStore.studentJobsStore.firstOpen = true
-            browserHistory.push({pathname: '/student/jobs'})
+            this.props.history.push({pathname: '/student/jobs/profile'})
           })
       })
       .catch(e => {
@@ -420,8 +420,9 @@ class HomeJobs extends React.Component {
 
 HomeJobs.propTypes = {
   rootStore: PropTypes.object,
-  updateStudent: PropTypes.function,
-  user: PropTypes.object
+  updateStudent: PropTypes.func,
+  user: PropTypes.object,
+  history: PropTypes.object
 }
 
-export default HomeJobs
+export default withRouter(HomeJobs)

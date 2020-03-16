@@ -1,67 +1,52 @@
 .jobs-home {
-  margin: 0.5rem;
+  padding: 0.5rem;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
 
-  .jobs-home-cell {
-    @include skoller-cell;
-    margin: 0.5rem;
-    padding: 1rem;
-    max-width: 464px;
-    min-width: 380px;
+  .jobs-home-column {
+    display: flex;
+    flex-direction: column;
 
-    .jobs-home-cell-heading {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-
-      h1 {
-        margin: 0;
-        cursor: pointer;
-      }
-      
-      .jobs-home-cell-subheading {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-end;
+    .jobs-home-cell {
+      @include skoller-cell;
+      margin: 0.5rem;
+      padding: 1rem;
+      max-width: 464px;
+      width: 360px;
   
-        p {
-          margin: 8px 0 0 4px;
-        }
-      }
-    }
-
-    .jobs-home-cell-content {
-      .jobs-home-cell-profile-categories {
+      .jobs-home-cell-heading {
         display: flex;
         flex-direction: row;
-        flex-wrap: wrap;
-        margin: 0 -0.25rem;
-
-        .jobs-home-cell-profile-category {
-          width: calc(50% - 0.5rem);
-          margin: 0.25rem;
-          border: 1px solid $sk-jobs-dark-green;
-          border-radius: 5px;
-
-          h2 {
-            color: $sk-jobs-dark-green;
-            margin: 8px;
-            text-align: center;
-          }
-
-          .jobs-home-cell-profile-category-completion {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-
-            p {
-              margin: 8px 0 0 4px;
-            }
-          }
+        justify-content: space-between;
+        position: relative;
+  
+        h1 {
+          margin: 0;
+          cursor: pointer;
+          width: 100%;
         }
+  
+        .jobs-home-cell-subheading {
+          position: absolute;
+          top: -4px;
+          right: 8px;
+        }
+      }
+  
+      .jobs-home-strength {
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+        font-size: 18px;
+        margin-bottom: 8px;
+      }
+
+      .jobs-home-button {
+        @include sk-jobs-button;
       }
     }
   }

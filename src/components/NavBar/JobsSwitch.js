@@ -1,7 +1,7 @@
 import React from 'react'
 import {inject, observer} from 'mobx-react'
 import PropTypes from 'prop-types'
-import { browserHistory } from 'react-router'
+import { withRouter } from 'react-router-dom'
 
 @inject('rootStore') @observer
 class JobsSwitch extends React.Component {
@@ -14,6 +14,8 @@ class JobsSwitch extends React.Component {
   }
 
   render () {
+    let body = document.getElementById('body')
+
     if (this.props.rootStore.studentJobsStore.hasJobsProfile) {
       return (
         <div className='jobs-switch'>
@@ -23,9 +25,11 @@ class JobsSwitch extends React.Component {
           <label className="switch">
             <input type="checkbox" checked={this.props.rootStore.studentNavStore.jobsMode} onChange={() => {
               if (!this.props.rootStore.studentNavStore.jobsMode) {
-                browserHistory.push('/student/jobs')
+                this.props.history.push('/student/jobs')
+                body.style.backgroundColor = '#4a4a4a'
               } else {
-                browserHistory.push('/student/home')
+                this.props.history.push('/student/home')
+                body.style.backgroundColor = '#EDFAFF'
               }
             }} />
             <span className="slider round" />
@@ -39,7 +43,8 @@ class JobsSwitch extends React.Component {
 }
 
 JobsSwitch.propTypes = {
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  history: PropTypes.object
 }
 
-export default JobsSwitch
+export default withRouter(JobsSwitch)

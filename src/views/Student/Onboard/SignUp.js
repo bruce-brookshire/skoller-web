@@ -81,7 +81,7 @@ class SignUp extends React.Component {
       this.state.firstName &&
       this.state.lastName &&
       this.state.email &&
-      this.state.phone.length === 12
+      (this.state.phone ? this.state.phone.length === 12 : false)
     ) {
       disableNext = false
     }

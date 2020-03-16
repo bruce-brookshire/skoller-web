@@ -1,7 +1,7 @@
 import React from 'react'
 import LoginForm from '../LoginForm'
 import PropTypes from 'prop-types'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 import actions from '../../../actions'
 
 class LandingNav extends React.Component {
@@ -12,14 +12,14 @@ class LandingNav extends React.Component {
       if (user.student.is_verified) {
         actions.classes.getStudentClassesById(user.student.id).then((classes) => {
           classes.length > 0
-            ? browserHistory.push('/student/classes')
-            : browserHistory.push('/student/find-classes')
+            ? this.props.history.push('/student/classes')
+            : this.props.history.push('/student/find-classes')
         }).catch(() => false)
       } else {
-        browserHistory.push('/student/verify')
+        this.props.history.push('/student/verify')
       }
     } else {
-      browserHistory.push('/hub')
+      this.props.history.push('/hub')
     }
   }
 
@@ -28,7 +28,7 @@ class LandingNav extends React.Component {
       <div className='cn-landing-navbar'>
         <div className='cn-navbar-content'>
           <div className='cn-navbar-logo'>
-            <a onClick={() => { browserHistory.push('/landing'); window.scrollTo(0, 0) }} ><img alt="Skoller" className='logo' src={this.props.imgPath || 'src/assets/images/logo-wide-blue@1x.png'} /></a>
+            <a onClick={() => { this.props.history.push('/landing'); window.scrollTo(0, 0) }} ><img alt="Skoller" className='logo' src={this.props.imgPath || 'src/assets/images/logo-wide-blue@1x.png'} /></a>
             <span className='cn-navbar-slogan'>Keep Up with Classes, Together</span>
           </div>
           {!this.props.noLogin && <LoginForm
@@ -47,4 +47,4 @@ LandingNav.propTypes = {
   imgPath: PropTypes.string
 }
 
-export default LandingNav
+export default withRouter(LandingNav)

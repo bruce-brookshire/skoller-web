@@ -10,7 +10,8 @@ import {
   getTaskAssignments,
   gradeAssignment,
   removeGradeFromAssignment,
-  updateStudentAssignment
+  updateStudentAssignment,
+  getStudentAssignmentById
 } from './assignments'
 import { getAnalytics } from './analytics'
 import {
@@ -181,7 +182,10 @@ import {
   addCareerActivity,
   addActivity,
   deleteActivity,
-  editActivity
+  editActivity,
+  getJobsListings,
+  getJobBySenderReference,
+  sendJobAction
 } from './jobs'
 
 const actions = {
@@ -209,7 +213,8 @@ const actions = {
     gradeAssignment,
     removeGradeFromAssignment,
     getAllStudentAssignments,
-    updateStudentAssignment
+    updateStudentAssignment,
+    getStudentAssignmentById
   },
   auth: {
     authenticateUser,
@@ -393,7 +398,10 @@ const actions = {
     addCareerActivity,
     addActivity,
     deleteActivity,
-    editActivity
+    editActivity,
+    getJobsListings,
+    getJobBySenderReference,
+    sendJobAction
   }
 }
 

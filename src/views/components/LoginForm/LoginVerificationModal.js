@@ -4,7 +4,7 @@ import {inject, observer} from 'mobx-react'
 import VerificationCode from '../../../components/VerificationCode'
 import actions from '../../../actions'
 import {formatPhone} from '../../../utilities/display'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 import SkModal from '../../components/SkModal/SkModal'
 import {Cookies} from 'react-cookie'
 
@@ -55,11 +55,11 @@ class Verification extends React.Component {
       this.cookie.remove('skollerToken', { path: '/' })
       this.cookie.set('skollerToken', authToken, { maxAge: 86400 * 270, path: '/' })
       if (this.props.rootStore.userStore.user.student.primary_school) {
-        browserHistory.push('/student')
+        this.props.history.push('/student')
       } else if (this.props.onSubmit) {
         this.props.onSubmit()
       } else {
-        browserHistory.push('/onboard/select-school')
+        this.props.history.push('/onboard/select-school')
       }
     }).catch((r) => console.log('error town', r))
   }
@@ -108,4 +108,4 @@ Verification.propTypes = {
   onSubmit: PropTypes.func
 }
 
-export default Verification
+export default withRouter(Verification)

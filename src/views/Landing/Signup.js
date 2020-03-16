@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { browserHistory } from 'react-router'
+import { withRouter } from 'react-router-dom'
 import SignUpForm from '../components/SignUpForm'
 import { inject, observer } from 'mobx-react'
 import { Cookies } from 'react-cookie'
@@ -29,7 +29,7 @@ class Signup extends React.Component {
       .registerUser(newUser)
       .then(() => {
         // actions.auth.verifyStudentPhoneNumber({phone: newUser.student.phone}).then(() => {
-        browserHistory.push({ pathname: '/o' })
+        this.props.history.push({ pathname: '/o' })
         // })
       })
       .catch(error => console.log(error))
@@ -61,4 +61,4 @@ Signup.propTypes = {
   rootStore: PropTypes.object
 }
 
-export default Signup
+export default withRouter(Signup)

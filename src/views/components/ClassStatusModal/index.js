@@ -3,7 +3,7 @@ import SkProgressBar from '../SkProgressBar'
 import PropTypes from 'prop-types'
 import actions from '../../../actions'
 import { inject, observer } from 'mobx-react'
-import { browserHistory } from 'react-router'
+import { withRouter } from 'react-router-dom'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import DragAndDrop from '../DragAndDrop/DragAndDrop'
 import {mobileCheck} from '../../../utilities/display'
@@ -394,8 +394,7 @@ class ClassStatusModal extends React.Component {
   }
 
   sendToDiy () {
-    console.log('send to DIY')
-    browserHistory.push({
+    this.props.history.push({
       pathname: `/class/${this.state.cl.id}/syllabus_tool/`,
       state: {
         isDIY: true
@@ -418,7 +417,6 @@ class ClassStatusModal extends React.Component {
         sammiMessage: `Woohoo! You've submitted your syllabus.`
       })
     } else if (this.state.status === 'live') {
-      console.log(this.props.onSubmit)
       this.props.onSubmit()
     } else if (this.state.status === 'inReview' || this.state.status === 'syllabusOverload') {
       this.sendToDiy()
@@ -627,4 +625,4 @@ ClassStatusModal.propTypes = {
   firstOpen: PropTypes.bool
 }
 
-export default ClassStatusModal
+export default withRouter(ClassStatusModal)

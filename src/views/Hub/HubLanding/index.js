@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 import Loading from '../../../components/Loading'
 import actions from '../../../actions'
 
@@ -48,7 +48,7 @@ class HubLanding extends React.Component {
   * @param [String] route. Route to navigate to.
   */
   onNavigate (route) {
-    browserHistory.push(route)
+    this.props.history.push(route)
   }
 
   /*
@@ -67,7 +67,7 @@ class HubLanding extends React.Component {
   * @param [Number] sectionId. The section id of the section to work.
   */
   navigateToSyllabusTool (cl) {
-    browserHistory.push({
+    this.props.history.push({
       pathname: `/class/${cl.id}/syllabus_tool`,
       state: {
         isSW: true
@@ -76,7 +76,7 @@ class HubLanding extends React.Component {
   }
 
   onNeedsChange () {
-    browserHistory.push({
+    this.props.history.push({
       pathname: '/hub/classes',
       state: {
         needsChange: true
@@ -85,7 +85,7 @@ class HubLanding extends React.Component {
   }
 
   onNeedsMaint () {
-    browserHistory.push({
+    this.props.history.push({
       pathname: '/hub/classes',
       state: {
         needsMaint: true
@@ -161,7 +161,7 @@ class HubLanding extends React.Component {
 
           <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 margin-top'>
             <button className='nav-button admin button full-width' onClick={() =>
-              browserHistory.push({pathname: '/hub/reports', state: {reports: this.state.reports}})}>
+              this.props.history.push({pathname: '/hub/reports', state: {reports: this.state.reports}})}>
               <i className='fa fa-flag' style={{color: '#FEFEFE', fontSize: '1.4rem', paddingBottom: '4px'}}></i>
               <span>Reports (
                 {this.state.loadingReports ? <Loading style={{color: 'white'}}/>
@@ -270,4 +270,4 @@ HubLanding.propTypes = {
   rootStore: PropTypes.object
 }
 
-export default HubLanding
+export default withRouter(HubLanding)

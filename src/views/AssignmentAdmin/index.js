@@ -38,7 +38,7 @@ class AssignmentAdmin extends React.Component {
 
   getMods () {
     this.setState({loading: true})
-    const {params: {assignmentId}} = this.props
+    const assignmentId = this.props.match.params.assignmentId
     actions.mods.getAssignmentMods(assignmentId).then((mods) => {
       this.setState({mods})
       this.setState({loading: false})
@@ -146,7 +146,7 @@ class AssignmentAdmin extends React.Component {
 AssignmentAdmin.propTypes = {
   rootStore: PropTypes.object,
   location: PropTypes.object,
-  params: PropTypes.object
+  match: PropTypes.object
 }
 
 export default AssignmentAdmin

@@ -40,4 +40,59 @@
       }
     }
   }
+
+  .task-card-class-detail {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    &:hover {
+      cursor: pointer;
+      background-color: $cn-color-hover-grey;
+    }
+
+    .task-card-grade {
+      width: 64px;
+      border-radius: 3px 0 0 3px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .task-card-detail {
+      padding: 12px 8px 8px 8px;
+      display: flex;
+      width: calc(100% - 64px);
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+      .task-card-left {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+  
+        h2 {
+          margin: 0;
+          font-size: 20px;
+        }
+  
+        p {
+          margin: 0;
+        }
+      }
+  
+      .task-card-right {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+    }
+  }
 }

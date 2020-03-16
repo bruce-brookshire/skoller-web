@@ -3,6 +3,9 @@ import React from 'react'
 import {inject, observer} from 'mobx-react'
 import NavBar from '../components/NavBar'
 import TopNav from '../components/TopNav'
+import { Cookies } from 'react-cookie'
+import actions from '../actions'
+import { withRouter } from 'react-router-dom'
 
 @inject('rootStore') @observer
 class Layout extends React.Component {
@@ -33,6 +36,7 @@ class Layout extends React.Component {
         }
         <div
           className='layout'
+          id='layout'
           style={layoutStyle}
         >
           {this.props.children}
@@ -48,4 +52,4 @@ Layout.propTypes = {
   location: PropTypes.object
 }
 
-export default Layout
+export default withRouter(Layout)

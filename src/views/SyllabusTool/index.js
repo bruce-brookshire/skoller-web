@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 import Loading from '../../components/Loading'
 import actions from '../../actions'
 import Weights from '../components/ClassEditor/Weights'
@@ -88,7 +88,7 @@ class SyllabusTool extends React.Component {
   * Fetch the class by id.
   */
   getClass () {
-    const {params: {classId}} = this.props
+    const classId = this.props.match.params.classId
     let {navbarStore} = this.props.rootStore
     actions.classes.getClassById(classId).then((cl) => {
       navbarStore.cl = cl
@@ -100,7 +100,7 @@ class SyllabusTool extends React.Component {
   * Fetch the documents for a class.
   */
   getDocuments () {
-    const {params: {classId}} = this.props
+    const classId = this.props.match.params.classId
     actions.documents.getClassDocuments(classId).then((documents) => {
       documents.sort((a, b) => b.is_syllabus)
       this.setState({documents, currentDocument: (documents[0] && documents[0].path) || null})
@@ -119,12 +119,12 @@ class SyllabusTool extends React.Component {
   */
   lockClass () {
     const {navbarStore} = this.props.rootStore
-    const {params: {classId}} = this.props
+    const classId = this.props.match.params.classId
     const form = {is_class: true}
     actions.classes.lockClass(classId, form).then(() => {
     }).catch((error) => {
       if (error === 409 && navbarStore.isDIY) {
-        browserHistory.push('/student/classes')
+        this.props.history.push('/student/classes')
       }
     })
   }
@@ -147,7 +147,7 @@ class SyllabusTool extends React.Component {
   * Unlock the the class when not complete.
   */
   unlockClass () {
-    const {params: {classId}} = this.props
+    const classId = this.props.match.params.classId
     const form = {is_class: true}
 
     actions.classes.unlockClass(classId, form).then(() => {
@@ -158,7 +158,7 @@ class SyllabusTool extends React.Component {
   * Unlock the class for syllabus worker.
   */
   unlock (isCompleted) {
-    const {params: {classId}} = this.props
+    const classId = this.props.match.params.classId
     const {navbarStore} = this.props.rootStore
     const form = {is_class: true, is_completed: isCompleted}
     this.setState({submitting: true})
@@ -169,11 +169,11 @@ class SyllabusTool extends React.Component {
           this.getNextClass()
         }
       } else {
-        browserHistory.push('/student/classes')
+        this.props.history.push('/student/classes')
       }
     }).catch(() => {
       this.setState({submitting: false})
-      browserHistory.push('/')
+      this.props.history.push('/')
     })
   }
 
@@ -185,12 +185,12 @@ class SyllabusTool extends React.Component {
     this.setState({gettingClass: true})
     actions.syllabusworkers.getNextClass().then((cl) => {
       const {state} = this.props.location
-      browserHistory.push({ pathname: `/class/${cl.id}/syllabus_tool`, state: {...state} })
+      this.props.history.push({ pathname: `/class/${cl.id}/syllabus_tool`, state: {...state} })
       this.intializeComponent()
       this.setState({gettingClass: false})
     }).catch(() => {
       this.setState({gettingClass: false})
-      browserHistory.push('hub/landing')
+      this.props.history.push('hub/landing')
     })
   }
 
@@ -470,7 +470,7 @@ class SyllabusTool extends React.Component {
 
   onBackToClasses () {
     this.unlock(true)
-    browserHistory.push('/student/classes')
+    this.props.history.push('/student/classes')
   }
 
   renderBackToClasses () {
@@ -519,8 +519,8 @@ class SyllabusTool extends React.Component {
 
 SyllabusTool.propTypes = {
   location: PropTypes.object,
-  params: PropTypes.object,
+  match: PropTypes.object,
   rootStore: PropTypes.object
 }
 
-export default SyllabusTool
+export default withRouter(SyllabusTool)

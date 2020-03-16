@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 import {convertUTCDatetimeToDateString, mapTimeToDisplay} from '../../../../utilities/time'
 
 class Post extends React.Component {
@@ -27,7 +27,7 @@ class Post extends React.Component {
 
   onAccountSelect () {
     let state = {user: {student: this.student, ...this.user}}
-    browserHistory.push({pathname: '/hub/accounts/account/info', state: state})
+    this.props.history.push({pathname: '/hub/accounts/account/info', state: state})
   }
 
   render () {
@@ -66,4 +66,4 @@ Post.propTypes = {
   showLikes: PropTypes.bool
 }
 
-export default Post
+export default withRouter(Post)

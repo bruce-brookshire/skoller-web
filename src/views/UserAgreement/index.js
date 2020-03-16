@@ -1,5 +1,5 @@
 import React from 'react'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 
 class UserAgreement extends React.Component {
   render () {
@@ -10,7 +10,7 @@ class UserAgreement extends React.Component {
             <h2>
               <img
                 className='user-agreement-logo'
-                onClick={() => { browserHistory.push('/landing') }}
+                onClick={() => { this.props.history.push('/landing') }}
                 src='../../../src/assets/images/logo-wide-blue@1x.png'/>
               <span style={{display: 'block'}}>Skoller Terms of Use</span>
             </h2>
@@ -674,4 +674,4 @@ class UserAgreement extends React.Component {
   }
 }
 
-export default UserAgreement
+export default withRouter(UserAgreement)

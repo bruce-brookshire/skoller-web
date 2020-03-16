@@ -51,11 +51,12 @@ class DropClassButton extends React.Component {
       <div
         className='sk-drop-class'
       >
-        <p
-          onClick={() => this.onDropClass()}
-        >
-          Drop this class
-        </p>
+        {this.props.icon
+          ? <i className='fas fa-arrow-alt-circle-down' onClick={() => this.onDropClass()} />
+          : <p
+            onClick={() => this.onDropClass()}
+          >Drop this class</p>
+        }
       </div>
     )
   }
@@ -74,8 +75,9 @@ class DropClassButton extends React.Component {
 
 DropClassButton.propTypes = {
   cl: PropTypes.object,
-  onDropClass: PropTypes.function,
-  rootStore: PropTypes.object
+  onDropClass: PropTypes.func,
+  rootStore: PropTypes.object,
+  icon: PropTypes.bool
 }
 
 export default DropClassButton

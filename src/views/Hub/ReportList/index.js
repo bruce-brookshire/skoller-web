@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 import Grid from '../../../components/Grid'
 import actions from '../../../actions'
 
@@ -46,7 +46,7 @@ class ReportList extends React.Component {
 
   onSelectReport (report) {
     actions.auth.getUserById(report).then((user) => {
-      browserHistory.push({
+      this.props.history.push({
         pathname: '/hub/accounts/account/info',
         state: {user: user}
       })
@@ -76,4 +76,4 @@ ReportList.propTypes = {
   location: PropTypes.object
 }
 
-export default ReportList
+export default withRouter(ReportList)

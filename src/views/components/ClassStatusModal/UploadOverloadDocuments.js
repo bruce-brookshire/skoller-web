@@ -243,7 +243,7 @@ class UploadOverloadDocuments extends React.Component {
 
 UploadOverloadDocuments.propTypes = {
   cl: PropTypes.object,
-  onSubmit: PropTypes.function,
+  onSubmit: PropTypes.func,
   onBack: PropTypes.function
 }
 

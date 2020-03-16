@@ -1,19 +1,21 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
-import {browserHistory} from 'react-router'
-import UploadDocuments from './UploadDocuments'
+import { withRouter } from 'react-router-dom'
 import actions from '../../../actions'
-import Loading from '../../../components/Loading'
-import ClassCard from '../../Cards/ClassCard'
-import ClassInviteLink from './ClassInviteLink'
 import AssignmentList from '../../components/AssignmentList'
 import StudentLayout from '../../components/StudentLayout'
 import AddAssignment from '../Assignments/AddAssignment'
 import DropClassButton from '../../components/DropClassButton'
 import UploadAdditionalDocuments from '../../components/ClassStatusModal/UploadAdditionalDocuments'
 import SkModal from '../../components/SkModal/SkModal'
-import CopyBox from '../../components/CopyBox';
+import CopyBox from '../../components/CopyBox'
+import TasksList from '../Tasks/TasksList'
+import ClassInsights from './ClassInsights'
+import SkLoader from '../../../assets/sk-icons/SkLoader'
+import moment from 'moment'
+import Speculator from './Speculator'
+import NestedNav from '../../components/NestedNav'
 
 @inject('rootStore') @observer
 class ClassDetail extends React.Component {
@@ -26,20 +28,28 @@ class ClassDetail extends React.Component {
       assignments: [],
       showAddAssignmentModal: false,
       showUploadAdditionalDocuments: false,
-      studentClass: {}
+      studentClass: {},
+      showShareModal: false,
+      showClassInfoModal: false,
+      showSpeculate: false
     }
 
     this.props.rootStore.studentNavStore.setActivePage('classes')
     this.props.rootStore.studentNavStore.location = this.props.location // set active page route location for access from assignment detail
   }
 
+  getCurrentClass () {
+    let cl = this.props.rootStore.studentClassesStore.classes.filter(cl => cl.id === parseInt(this.props.match.params.classId))[0]
+    return cl
+  }
+
   componentWillMount () {
     this.getClass()
-    this.getClassAssignmentsForStudent(this.props.params)
+    this.getClassAssignmentsForStudent(this.props.match.params)
   }
 
   getClass () {
-    const {classId} = this.props.params
+    const {classId} = this.props.match.params
     this.setState({loading: true})
     actions.classes.getClassById(classId).then(cl => {
       this.getClassColor(cl)
@@ -80,7 +90,7 @@ class ClassDetail extends React.Component {
   onDeleteClass () {
     var {cl} = this.state
     actions.classes.dropClass(cl.id).then(() => {
-      browserHistory.push({
+      this.props.history.push({
         pathname: `/student/classes`
       })
     }).catch(() => false)
@@ -105,18 +115,17 @@ class ClassDetail extends React.Component {
 
   renderDropClassButton () {
     return (
-      <DropClassButton onDropClass={() => browserHistory.push('/student/classes')} cl={this.state.cl} />
+      <DropClassButton icon={true} onDropClass={() => this.props.history.push('/student/classes')} cl={this.state.cl} />
     )
   }
 
-  renderClassAssignmentsHeader () {
+  renderClassHeader () {
     return (
       <div>
         {this.renderClassTitle()}
         <div className='cn-class-assignments-header'>
           <div className='cn-class-assignments-header-item'>
             {this.renderBackButton()}
-            {/* {this.renderSpeculateGradeButton()} */}
             {this.renderDocumentUploadButton()}
           </div>
           <div className='cn-class-assignments-header-item text-center'>
@@ -141,40 +150,6 @@ class ClassDetail extends React.Component {
         onSelect={this.onAssignmentSelect.bind(this)}
         classColor={cl.color}
       />
-    )
-  }
-
-  renderClassCard () {
-    const {cl} = this.state
-    let professorName = cl.professor ? cl.professor.name_first + ' ' + cl.professor.name_last : ''
-    return (
-      <ClassCard
-        cl={cl}
-        schoolName={cl.school.name}
-        professorName={professorName}
-        semesterName={cl.class_period.name}
-        onDelete={this.toggleDeleteDialog.bind(this)}
-      />
-    )
-  }
-
-  renderClassLink () {
-    const {cl} = this.state
-    const {enrollmentLink, enrollmentCount} = this.props.location.state
-    return (
-      <ClassInviteLink
-        cl={cl}
-        enrollmentLink={enrollmentLink}
-        enrollmentCount={enrollmentCount}
-      />
-    )
-  }
-
-  renderSpeculateGradeButton () {
-    return (
-      <a className='spec-grade-button'>
-        % Speculate Grade
-      </a>
     )
   }
 
@@ -204,35 +179,13 @@ class ClassDetail extends React.Component {
   }
 
   /*
-  * Render the back button to tab between syllabus sections
-  */
-  renderBackButton () {
-    return (
-      <a
-        className='back-button'
-        onClick={() => {
-          browserHistory.push('/student/classes')
-        }}
-      >
-        <i className='fa fa-angle-left' /> All Classes
-      </a>
-    )
-  }
-
-  /*
-  * Close the Add Assignment modal
-  */
-  closeModal = () => {
-    this.setState({showAddAssignmentModal: false})
-  }
-
-  /*
   * Find class weight categories that don't have assignments
   */
   getEmptyWeights () {
-    let weights = this.state.studentClass.weights
+    let cl = this.getCurrentClass()
+    let weights = cl.weights
     let emptyWeights = []
-    let assignments = this.state.studentClass.assignments
+    let assignments = cl.assignments
     weights.forEach(weight => {
       let assignmentCount = 0
       assignments.forEach(assignment => {
@@ -255,82 +208,182 @@ class ClassDetail extends React.Component {
           + Add Assignment{emptyWeights.length > 0 ? <div className='add-assignment-button-alert'><div className='add-assignment-button-alert-count'>{emptyWeights.length}</div></div> : null}
         </a>
         { this.state.showAddAssignmentModal
-          ? <AddAssignment closeModal={this.closeModal} assignmentParams={{class: this.state.studentClass}}/>
+          ? <AddAssignment closeModal={() => this.setState({showAddAssignmentModal: false})} assignmentParams={{class: this.state.studentClass}}/>
           : null
         }
       </div>
     )
   }
 
-  renderClassEnrollment () {
-    const {cl} = this.state
-    return (
-      <span><i className="fas fa-users"></i> {cl.enrollment} Student{cl.enrollment > 1 ? 's' : ''}</span>
-    )
-  }
-
-  toggleDeleteDialog () {
-    this.setState({openDeleteDialog: !this.state.openDeleteDialog})
-  }
+  // renderClassEnrollment () {
+  //   const {cl} = this.state
+  //   return (
+  //     <span><i className="fas fa-users"></i> {cl.enrollment} Student{cl.enrollment > 1 ? 's' : ''}</span>
+  //   )
+  // }
 
   renderClassShareCell () {
+    let cl = this.getCurrentClass()
     return (
-      <div className='sk-class-detail-share-cell'>
-        <h1>Share {this.state.studentClass.name}⚡️️</h1>
-        <p>Copy this link for {this.state.studentClass.name} and share it with your classmates.</p>
-        <CopyBox linkValue={this.state.studentClass.enrollment_link} />
-      </div>
+      this.state.showShareModal &&
+        <SkModal title={`Share ${cl.name}⚡️️`} closeModal={() => this.setState({showShareModal: false})}>
+          {/* <h1>Share {cl.name}⚡️️</h1> */}
+          <p>Copy this link for {cl.name} and share it with your classmates.</p>
+          <CopyBox linkValue={cl.enrollment_link} />
+        </SkModal>
     )
   }
 
-  renderClassDetails () {
-    const {cl} = this.state
+  renderDocumentsModal () {
     return (
-      <div className="cn-class-detail-container">
-        <div id='cn-class-detail-header'>
-          <div className='cn-class-detail-header-item'>
-            {this.renderClassCard()}
+      this.state.showUploadAdditionalDocuments
+        ? <SkModal
+          title={this.state.cl.name}
+          closeModal={() => this.setState({showUploadAdditionalDocuments: false})}
+        >
+          <div style={{marginBottom: '1rem'}} />
+          <UploadAdditionalDocuments
+            cl={this.state.cl}
+            onSubmit={() => this.setState({showUploadAdditionalDocuments: false})}
+          />
+        </SkModal>
+        : null
+    )
+  }
+
+  renderClassInfoModal () {
+    let cl = this.getCurrentClass()
+    return (
+      this.state.showClassInfoModal
+        ? <SkModal title={'Class details'} closeModal={() => this.setState({showClassInfoModal: false})}>
+          <div
+            className='sk-class-detail-info'
+          >
+            <div className='sk-find-class-selected-class-title'>
+              <h3>{cl.name}</h3>
+            </div>
+            <div className='sk-find-class-selected-class-row'>
+              <p>{cl.professor ? ((cl.professor.name_first ? cl.professor.name_first : '') + ' ' + (cl.professor.name_last ? cl.professor.name_last : '')) : '--'}</p>
+              <p>
+                <i className="fas fa-user fa-xs" style={{marginRight: '2px'}} />{cl.enrollment.toString()}
+              </p>
+            </div>
+            <div className='sk-find-class-selected-class-row'>
+              <p>{cl.meet_days} {cl.meet_days === 'Online' ? '' : moment(cl.meet_start_time, 'HH:mm:ss').format('hh:mmA')}</p>
+              <p>{cl.subject} {cl.code}.{cl.section}</p>
+            </div>
           </div>
-          <div className='cn-class-detail-header-item'>
-            {this.renderClassLink()}
+        </SkModal>
+        : null
+    )
+  }
+
+  renderSpeculator () {
+    let cl = this.getCurrentClass()
+    return (
+      this.state.showSpeculate
+        ? <SkModal closeModal={() => this.setState({showSpeculate: false})}>
+          <Speculator cl={cl} />
+        </SkModal>
+        : null
+    )
+  }
+
+  // onAssignmentSelect (assignment) {
+  //   const { cl } = this.state
+  //   this.props.history.push({
+  //     pathname: `/student/class/${cl.id}/assignments/${assignment.assignment_id}`
+  //   })
+  // }
+
+  renderHeader () {
+    let cl = this.getCurrentClass()
+    return (
+      <div className='sk-class-header'>
+        <div className='sk-class-grade' style={{backgroundColor: '#' + cl.color}}>
+          <h2>
+            {cl.grade > 0 ? cl.grade + '%' : '–'}
+          </h2>
+        </div>
+        <div className='sk-class-header-detail'>
+          <div className='sk-class-name'>
+            <h1 style={{color: '#' + cl.color}}>
+              {cl.name}
+            </h1>
+          </div>
+          <div className='sk-class-icons'>
+            {/* <i
+              className='fas fa-search'
+              title='Speculate grade'
+              onClick={() => this.setState({showSpeculate: true})}
+            /> */}
+            <i
+              className='fas fa-info-circle'
+              title='Class details'
+              onClick={() => this.setState({showClassInfoModal: true})}
+            />
+            <i
+              className='fas fa-file'
+              title='View class documents'
+              onClick={() => this.setState({showUploadAdditionalDocuments: true})}
+            />
+            <i
+              className='fas fa-link'
+              title='Share class'
+              onClick={() => this.setState({showShareModal: true})}
+            />
+            {this.renderDropClassButton()}
+            {this.renderClassInfoModal()}
+            {this.renderSpeculator()}
           </div>
         </div>
-        <UploadDocuments cl={cl} onUpload={this.getClass.bind(this)} />
       </div>
     )
   }
 
-  onAssignmentSelect (assignment) {
-    const { cl } = this.state
-    browserHistory.push({
-      pathname: `/student/class/${cl.id}/assignments/${assignment.assignment_id}`
-    })
+  renderInsights () {
+    return (
+      <div className='sk-class-insights'>
+        <h1>Insights</h1>
+        <ClassInsights cl={this.getCurrentClass()} />
+      </div>
+    )
+  }
+
+  renderAssignments () {
+    return (
+      <div className='sk-class-assignments'>
+        <h1>Assignments</h1>
+        {this.renderAddAssignmentButton()}
+        <TasksList maxTasks={5} cl={this.getCurrentClass()} />
+      </div>
+    )
+  }
+
+  renderLayout () {
+    return (
+      <div className='sk-class'>
+        <div className='sk-class-column'>
+          {this.renderHeader()}
+          {this.renderAssignments()}
+        </div>
+        <div className='sk-class-column'>
+          {this.renderInsights()}
+        </div>
+        {this.renderDocumentsModal()}
+        {this.renderClassShareCell()}
+      </div>
+    )
   }
 
   render () {
-    const {loading, cl} = this.state
     return (
       <StudentLayout>
-        <div>
-          {loading
-            ? <Loading />
-            : <div className='cn-class-assignments-wrapper'>
-              {cl.status.id === 1100 || cl.status.id === 1200 || cl.status.id === 1300
-                ? <div id='cn-class-detail-container'>
-                  {this.renderClassDetails()}
-                </div>
-                : <div>
-                  {this.renderClassShareCell()}
-                  <div className='cn-class-assignments-container'>
-                    {this.renderClassAssignmentsHeader()}
-                    <div className='cn-class-list-container margin-top'>
-                      {this.renderAssignmentList()}
-                    </div>
-                  </div>
-                </div>}
-            </div>
-          }
-        </div>
+        <NestedNav />
+        {this.props.rootStore.studentClassesStore.loading
+          ? <SkLoader />
+          : this.renderLayout()
+        }
       </StudentLayout>
     )
   }
@@ -339,7 +392,8 @@ class ClassDetail extends React.Component {
 ClassDetail.propTypes = {
   params: PropTypes.object,
   rootStore: PropTypes.object,
-  location: PropTypes.object
+  location: PropTypes.object,
+  history: PropTypes.object
 }
 
-export default ClassDetail
+export default withRouter(ClassDetail)

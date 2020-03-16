@@ -3,7 +3,7 @@ import Card from '../../../components/Card'
 import actions from '../../../actions'
 import Loading from '../../../components/Loading'
 import Grid from '../../../components/Grid'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 
 const headers = [
   {
@@ -59,7 +59,7 @@ class FourDoorOverrides extends React.Component {
   * On school select.
   */
   onSchoolSelect (school) {
-    browserHistory.push({pathname: '/hub/schools/school/info', state: {school}})
+    this.props.history.push({pathname: '/hub/schools/school/info', state: {school}})
   }
 
   renderContent () {
@@ -94,4 +94,4 @@ class FourDoorOverrides extends React.Component {
   }
 }
 
-export default FourDoorOverrides
+export default withRouter(FourDoorOverrides)

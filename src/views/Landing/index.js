@@ -14,7 +14,6 @@ import skollerHome from '../../assets/images/landing_page/skoller-home.png'
 
 @inject('rootStore') @observer
 class Landing extends React.Component {
-
   render () {
     const meta = { // eslint-disable-line no-unused-vars
       title: `Skoller`,

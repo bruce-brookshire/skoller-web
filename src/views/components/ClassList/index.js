@@ -15,7 +15,7 @@ class ClassList extends React.Component {
   * @return [Array]. Array of formatted row data.
   */
   getRows () {
-    return this.props.classes.sort((a, b) => {
+    return this.props.classes.slice().sort((a, b) => {
       var aNum = a.status.is_complete ? 0 : this.getStatusNum(a.status.name.toLowerCase())
       var bNum = b.status.is_complete ? 0 : this.getStatusNum(b.status.name.toLowerCase())
       if (aNum > bNum) {
@@ -85,7 +85,7 @@ class ClassList extends React.Component {
     if (status.is_complete) {
       return (
         <div className='cn-class-list-row-icon-container cn-white' style={{background: classColor, borderColor: classColor}} >
-          <span className='cn-class-list-row-grade-text cn-white'>{item.grade > 0 ? item.grade + '%' : '--'}</span>
+          <span style={{fontWeight: '700'}} className='cn-class-list-row-grade-text cn-white'>{item.grade > 0 ? Math.round(item.grade) + '%' : '–'}</span>
         </div>
       )
     } else if (statusNameL === 'new class' || statusNameL === 'needs setup') {

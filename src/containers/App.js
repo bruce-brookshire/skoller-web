@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import {inject, observer} from 'mobx-react'
 import Snackbar from '../components/Snackbar'
+import { withRouter } from 'react-router-dom'
 
 @inject('rootStore') @observer
 class App extends React.Component {
@@ -10,9 +11,26 @@ class App extends React.Component {
     return <Snackbar message={snackbarStore.message} show={snackbarStore.show} type={snackbarStore.type}/>
   }
 
+  renderBackgroundColor () {
+    let body = document.getElementById('body')
+    if (this.props.rootStore.studentNavStore.jobsMode) {
+      body.style.backgroundColor = '#4a4a4a'
+    } else {
+      body.style.backgroundColor = '#EDFAFF'
+    }
+  }
+
   render () {
-    const {userStore} = this.props.rootStore
-    if (userStore.fetchingUser) return <div />
+    this.renderBackgroundColor()
+
+    let layout = document.getElementById('layout')
+
+    this.props.history.listen((l) => {
+      if (layout) {
+        layout.scrollTop = 0
+      }
+      this.props.rootStore.studentNavStore.history.push(l.pathname)
+    })
 
     return (
       <div className='app public'>
@@ -26,7 +44,8 @@ class App extends React.Component {
 App.propTypes = {
   children: PropTypes.node,
   rootStore: PropTypes.object,
-  location: PropTypes.object
+  location: PropTypes.object,
+  history: PropTypes.object
 }
 
-export default App
+export default withRouter(App)

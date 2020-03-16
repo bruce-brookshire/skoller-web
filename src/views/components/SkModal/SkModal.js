@@ -157,9 +157,9 @@ SkModal.propTypes = {
   title: PropTypes.string,
   children: PropTypes.node.isRequired,
   rootStore: PropTypes.object,
-  closeModal: PropTypes.function,
+  closeModal: PropTypes.func,
   // use the closeModal function to close the modal from the parent component.
-  disableOutsideClick: PropTypes.function
+  disableOutsideClick: PropTypes.func
 }
 
 export default SkModal

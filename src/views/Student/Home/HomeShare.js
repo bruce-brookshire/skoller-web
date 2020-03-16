@@ -4,7 +4,7 @@ import {inject, observer} from 'mobx-react'
 import Sammi from '../../components/Sammi'
 import actions from '../../../actions'
 import partners from '../Onboard/partners'
-import {browserHistory} from 'react-router'
+import { withRouter } from 'react-router-dom'
 import SkBanner from '../../components/StudentLayout/SkBanner'
 
 @inject('rootStore') @observer
@@ -85,7 +85,7 @@ class HomeShare extends React.Component {
     if (this.state.show) {
       return (
         <div className="home-shadow-box margin-top">
-          <h1 className='home-heading' onClick={() => browserHistory.push('/student/share/aoii')}>Share</h1>
+          <h1 className='home-heading' onClick={() => this.props.history.push('/student/share/aoii')}>Share</h1>
           <div className="home-card-content">
             <div className='home-share'>
               <div className='home-share-link'>
@@ -117,4 +117,4 @@ HomeShare.propTypes = {
   willDisplay: PropTypes.func
 }
 
-export default HomeShare
+export default withRouter(HomeShare)

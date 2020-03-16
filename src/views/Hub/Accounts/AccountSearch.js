@@ -23,7 +23,9 @@ class AccountSearch extends React.Component {
     const options = [
       {value: 100, name: 'Student'},
       {value: 300, name: 'Syllabi Worker'},
-      {value: 200, name: 'Admin'}
+      {value: 200, name: 'Admin'},
+      {value: 600, name: 'Job Listing Provider'},
+      {value: 700, name: 'Any Role'}
     ]
 
     return options
@@ -123,23 +125,34 @@ class AccountSearch extends React.Component {
   }
 
   onSearch () {
-    let params = ''
-    if (this.state.schoolId && this.state.searchValue !== '') {
-      params = `school_id=${this.state.schoolId}&account_type=${this.state.accountType}&email=${this.state.searchValue}`
-    } else if (this.state.schoolId && this.state.searchValue === '') {
-      params = `school_id=${this.state.schoolId}&account_type=${this.state.accountType}`
-    } else if (this.state.searchValue !== '') {
-      params = `account_type=${this.state.accountType}&email=${this.state.searchValue}`
-    } else {
-      params = `account_type=${this.state.accountType}`
+    let paramMap = {}
+
+    var {searchValue, schoolId, accountType, suspended} = this.state
+
+    if (accountType == 700) {
+      accountType = null
     }
-    if (this.state.accountType !== 200) {
-      params += `&is_suspended=${this.state.suspended}`
+
+    if (searchValue !== '') {
+      paramMap['email'] = searchValue
     }
-    if (this.state.accountType === 100 && this.state.searchValue !== '') {
-      params += `&user_name=${this.state.searchValue}`
-      params += `&or=${true}`
+
+    paramMap['school_id'] = schoolId
+    paramMap['account_type'] = accountType
+
+    if (accountType && accountType !== 200) {
+      paramMap['is_suspended'] = suspended
     }
+    if (accountType === 100 && searchValue !== '') {
+      paramMap['user_name'] = searchValue
+      paramMap['or'] = true
+    }
+
+    let params = Object.entries(paramMap)
+      .map(e => (e[0] != null && e[1] != null) ? (e[0] + '=' + e[1]) : '')
+      .filter(r => r !== '')
+      .join('&')
+
     this.props.onSearch(params)
   }
 

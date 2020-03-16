@@ -99,11 +99,14 @@ class ShareClasses extends React.Component {
       )
     } else {
       return (
-        <div className='sk-share-form-incentive'>
-          <div className='sk-share-form-incentive-headline'>
-            Get <b>5 students</b> on Skoller and earn a $10 gift card!
-          </div>
-          <div className='sk-share-form-incentive-img' style={{backgroundImage: `url(${amazon})`}} />
+        // <div className='sk-share-form-incentive'>
+        //   <div className='sk-share-form-incentive-headline'>
+        //     Skoller works better when you and <b>all of your classmates</b> use it!
+        //   </div>
+        //   {/* <div className='sk-share-form-incentive-img' style={{backgroundImage: `url(${amazon})`}} /> */}
+        // </div>
+        <div>
+          Skoller works better when you and <b>all of your classmates</b> use it!
         </div>
       )
     }
@@ -114,7 +117,7 @@ class ShareClasses extends React.Component {
       <div className='sk-share-form'>
         <h1>Share</h1>
         {this.renderIncentive()}
-        <h2>Here&apos;s how:</h2>
+        {this.props.partner && <h2>Here&apos;s how:</h2>}
         <div className='sk-share-form-section'>
           <h4>1. Select a class</h4>
           {this.renderSelect()}
