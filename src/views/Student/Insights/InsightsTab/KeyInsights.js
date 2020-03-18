@@ -82,9 +82,9 @@ class KeyInsights extends React.Component {
   }
 
   renderContent () {
-    let ids = this.props.rootStore.studentClassesStore.classes.map(cl => this.props.selectedClasses.includes(cl.name) ? cl.id : null)
+    let ids = this.props.rootStore.studentClassesStore.classes.map(cl => this.props.selectedClasses.includes(cl.name) ? cl.id : null).filter(x => x !== null)
     let moreThanTwoCompletedClasses = false
-    if (this.props.rootStore.studentClassesStore.classes.filter(cl => cl.status.id === 1400).length > 1) {
+    if (this.props.rootStore.studentClassesStore.classes.filter(cl => cl.status.id === 1400).length > 1 && ids.length > 1) {
       moreThanTwoCompletedClasses = true
     }
 
@@ -107,7 +107,7 @@ class KeyInsights extends React.Component {
           </div>
         }
         {(!moreThanTwoCompletedClasses || !moreThanTwoClassesWithAssignments) &&
-          <p>Add more assignments to see your insights!</p>
+          <p>Add more data to see your key insights!</p>
         }
       </div>
     )

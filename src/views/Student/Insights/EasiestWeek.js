@@ -17,13 +17,14 @@ export class DataComponent extends React.Component {
 
   render () {
     const {x, y} = this.props
+    let fill = '#4a4a4a'
     return (
       <g>
         <marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
-          <path d="M0,0 L0,6 L5,3 z" fill="#57B9E4" />
+          <path d="M0,0 L0,6 L5,3 z" fill={fill} />
         </marker>
         {/* <path d={`M ${x} ${y - 10} C ${x + 20} ${y - 50}, ${(450 / 2) - 20} 80, ${450 / 2} 40`} markerEnd="url(#arrow)" stroke="black" strokeWidth='2' fill="transparent"/> */}
-        <path d={`M ${(450 / 2) - 18} 40 C ${(450 / 2) - 20} 80, ${x + 20} ${y - 50}, ${x + 8} ${y - 24}`} markerEnd="url(#arrow)" stroke="#57B9E4" strokeWidth='2' fill="transparent"/>
+        <path d={`M ${(450 / 2) - 18} 40 C ${(450 / 2) - 20} 80, ${x + 20} ${y - 50}, ${x + 3} ${y - 15}`} markerEnd="url(#arrow)" stroke={fill} strokeWidth='2' fill="transparent"/>
       </g>
     )
   }

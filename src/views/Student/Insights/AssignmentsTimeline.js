@@ -78,6 +78,10 @@ class AssignmentsTimeline extends React.Component {
           Math.max.apply(Math, data.map(a => a.y)) + (Math.max.apply(Math, data.map(a => a.y)) * 0.25)
         ]
       }
+      let hideToday = false
+      if (moment(today, 'X').isAfter(moment(domain.x[1], 'X'))) {
+        hideToday = true
+      }
       const tickValues = data.map(d => d.x)
       const animate = this.props.view !== 'd' ? styles.animate : null
 
@@ -142,39 +146,41 @@ class AssignmentsTimeline extends React.Component {
               animate={animate}
             />
 
-            <VictoryLine
-              x={() => today}
-              domain={domain}
-              scale={{x: 'time', y: 'linear'}}
-              standalone={false}
-              style={styles.todayLine.back}
-              animate={animate}
-            />
+            {!hideToday && <g>
+              <VictoryLine
+                x={() => today}
+                domain={domain}
+                scale={{x: 'time', y: 'linear'}}
+                standalone={false}
+                style={styles.todayLine.back}
+                animate={animate}
+              />
 
-            <VictoryLine
-              x={() => today}
-              domain={domain}
-              scale={{x: 'time', y: 'linear'}}
-              standalone={false}
-              style={styles.todayLine.front}
-              animate={animate}
-            />
+              <VictoryLine
+                x={() => today}
+                domain={domain}
+                scale={{x: 'time', y: 'linear'}}
+                standalone={false}
+                style={styles.todayLine.front}
+                animate={animate}
+              />
 
-            <VictoryScatter
-              data={[{x: today, y: domain.y[1]}]}
-              domain={domain}
-              standalone={false}
-              scale={{x: 'time', y: 'linear'}}
-              size={4}
-              style={styles.todayLine.dot}
-              animate={animate}
-            />
+              <VictoryScatter
+                data={[{x: today, y: domain.y[1]}]}
+                domain={domain}
+                standalone={false}
+                scale={{x: 'time', y: 'linear'}}
+                size={4}
+                style={styles.todayLine.dot}
+                animate={animate}
+              />
 
-            <VictoryLabel x={(((today - domain.x[0]) / (domain.x[1] - domain.x[0])) * 336) + 35} y={34}
-              text={'Today'}
-              style={styles.label}
-              animate={animate}
-            />
+              <VictoryLabel x={(((today - domain.x[0]) / (domain.x[1] - domain.x[0])) * 336) + 35} y={34}
+                text={'Today'}
+                style={styles.label}
+                animate={animate}
+              />
+            </g>}
 
             {(this.props.view === 'w' || this.props.view === 'm') &&
               <VictoryLine
