@@ -19,7 +19,7 @@ class SemesterOutlook extends React.Component {
     let ids = this.props.rootStore.studentClassesStore.classes.map(cl => this.props.selectedClasses.includes(cl.name) ? cl.id : null)
     return (
       <div className='insights-semester'>
-        <h1>{this.props.rootStore.userStore.user.student.name_first}&apos;s Semester</h1>
+        <h1>Your Semester</h1>
         <div style={{margin: '1rem 0'}}>
           <WeightsTimeline ids={ids} view={this.getView()} />
         </div>

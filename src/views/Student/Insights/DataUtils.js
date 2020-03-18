@@ -81,6 +81,54 @@ export function getAssignmentCountData (studentAssignmentsStore, cl = false, ids
   return data
 }
 
+export function getAssignmentCountDataByClass (studentAssignmentsStore, cl = false, ids = [], grouping = 'w') {
+  let data = {d: [], ids: []}
+  let classData = {}
+
+  let assignments = cl ? studentAssignmentsStore.assignments.filter(a => a.class_id === cl.id) : studentAssignmentsStore.assignments.filter(a => ids.length > 0 ? ids.includes(a.class_id) : true)
+  let firstAssignment = Math.min.apply(Math, assignments.map(a => parseInt(moment(a.due).format('X'))))
+  let lastAssignment = Math.max.apply(Math, assignments.map(a => parseInt(moment(a.due).format('X'))))
+
+  let firstWeek = moment(firstAssignment, 'X').startOf('week')
+  let lastWeek = moment(lastAssignment, 'X').startOf('week').add(7, 'days')
+
+  let weeks = []
+  while (firstWeek.isBefore(lastWeek)) {
+    weeks.push({week: moment(firstWeek), assignments: []})
+    firstWeek.add(7, 'days')
+  }
+
+  assignments.forEach(assignment => {
+    weeks.forEach(w => {
+      if (moment(assignment.due).isSame(moment(w.week), 'week')) {
+        w.assignments.push(assignment)
+      }
+    })
+  })
+
+  ids.forEach(id => {
+    classData[id] = {data: []}
+    weeks.forEach(w => {
+      let datum = {x: parseInt(moment(w.week).format('X')), y: null}
+      let assignmentCount = 0
+      let classAssignments = w.assignments.filter(a => a.class_id === id)
+      classAssignments.forEach(a => {
+        if (w.assignments.includes(a)) {
+          assignmentCount += 1
+        }
+      })
+      datum.y = assignmentCount
+      classData[id].data.push(datum)
+    })
+  })
+
+  weeks.forEach(w => {
+    data.d.push({x: parseInt(moment(w.week).format('X')), y: w.assignments.length})
+  })
+
+  return {data: data.d, classData}
+}
+
 export function getAssignmentWeightData (studentAssignmentsStore, cl = false, ids = [], grouping = 'w') {
   let assignments = cl ? studentAssignmentsStore.assignments.filter(a => a.class_id === cl.id) : studentAssignmentsStore.assignments.filter(a => ids.length > 0 ? ids.includes(a.class_id) : true)
   let data = []
@@ -219,8 +267,40 @@ export function getWeightDistribution (studentAssignmentsStore, cl = false, ids 
   }
 }
 
-export function getHardestWeek (studentAssignmentsStore, ids = []) {
+function percentRank (array, n) {
+  var L = 0
+  var S = 0
+  var N = array.length
+
+  for (var i = 0; i < array.length; i++) {
+    if (array[i] < n) {
+      L += 1
+    } else if (array[i] === n) {
+      S += 1
+    } else {
+
+    }
+  }
+
+  var pct = (L + (0.5 * S)) / N
+
+  return pct
+}
+
+export function getKeyInsights (studentAssignmentsStore, ids = []) {
   let assignments = studentAssignmentsStore.assignments.filter(a => ids.length > 0 ? ids.includes(a.class_id) : true)
+
+  let firstAssignment = Math.min.apply(Math, assignments.map(a => parseInt(moment(a.due).format('X'))))
+  let lastAssignment = Math.max.apply(Math, assignments.map(a => parseInt(moment(a.due).format('X'))))
+
+  let firstWeek = moment(firstAssignment, 'X').startOf('week')
+  let lastWeek = moment(lastAssignment, 'X').startOf('week').add(7, 'days')
+
+  let allWeeks = []
+  while (firstWeek.isBefore(lastWeek)) {
+    allWeeks.push(moment(firstWeek).format('MM/DD/YYYY'))
+    firstWeek.add(7, 'days')
+  }
 
   let weeks = {}
   assignments.forEach(a => {
@@ -231,6 +311,12 @@ export function getHardestWeek (studentAssignmentsStore, ids = []) {
       weeks[w] = {
         assignments: [a]
       }
+    }
+  })
+
+  allWeeks.forEach(week => {
+    if (!weeks[week]) {
+      weeks[week] = {assignments: []}
     }
   })
 
@@ -249,6 +335,16 @@ export function getHardestWeek (studentAssignmentsStore, ids = []) {
     allWeights += weeks[w].totalWeight
   })
 
+  let weeklyWeightArray = weeksArray.map(w => weeks[w].totalWeight)
+  let easiestWeeks = allWeeks.map(w => {
+    console.log(percentRank(weeklyWeightArray, weeks[w].totalWeight), percentRank(weeklyWeightArray, weeks[w].totalWeight) <= 0.25)
+    if (percentRank(weeklyWeightArray, weeks[w].totalWeight) <= 0.25) {
+      weeks[w].overallWeight = weeks[w].totalWeight / allWeights
+      return weeks[w]
+    }
+  }).filter(w => w !== undefined)
+  console.log('easiestWeeks', easiestWeeks)
+
   let hardestWeekWeight = Math.max.apply(Math, weeksArray.map(w => weeks[w].totalWeight))
   let hardestWeekTotalWeight = Math.max.apply(Math, weeksArray.map(w => weeks[w].totalWeight)) / allWeights
   let hardestWeeks = weeksArray.filter((w) => weeks[w].totalWeight === hardestWeekWeight).map(w => weeks[w])
@@ -257,7 +353,8 @@ export function getHardestWeek (studentAssignmentsStore, ids = []) {
 
   let keyInsights = {
     hardestWeeks,
-    hardestWeekTotalWeight
+    hardestWeekTotalWeight,
+    easiestWeeks
   }
 
   if (busiestWeeks !== hardestWeeks) {
@@ -269,58 +366,67 @@ export function getHardestWeek (studentAssignmentsStore, ids = []) {
 
 export function getAssignmentWeightDataByClass (studentAssignmentsStore, cl = false, ids = [], grouping = 'w') {
   let assignments = cl ? studentAssignmentsStore.assignments.filter(a => a.class_id === cl.id) : studentAssignmentsStore.assignments.filter(a => ids.length > 0 ? ids.includes(a.class_id) : true)
-  let data = []
+  let data = {d: [], ids: []}
+  let classData = {}
   let firstAssignment = Math.min.apply(Math, assignments.map(a => parseInt(moment(a.due).format('X'))))
   let lastAssignment = Math.max.apply(Math, assignments.map(a => parseInt(moment(a.due).format('X'))))
 
-  function getViewWeights (d, totalWeights) {
-    let weights = 0
-    d.assignments.forEach(a => {
-      weights += a.weight
-    })
-    return (weights / totalWeights)
+  let firstWeek = moment(firstAssignment, 'X').startOf('week')
+  let lastWeek = moment(lastAssignment, 'X').startOf('week').add(7, 'days')
+
+  let weeks = []
+  while (firstWeek.isBefore(lastWeek)) {
+    weeks.push({week: moment(firstWeek), assignments: [], weight: 0})
+    firstWeek.add(7, 'days')
   }
-  switch (grouping) {
-    case 'w':
-      let firstWeek = moment(firstAssignment, 'X').startOf('week')
-      let lastWeek = moment(lastAssignment, 'X').startOf('week').add(7, 'days')
 
-      let weeks = []
-      while (firstWeek.isBefore(lastWeek)) {
-        weeks.push({week: moment(firstWeek)})
-        firstWeek.add(7, 'days')
+  assignments.forEach(a => {
+    if (classData[a.class_id]) {
+      classData[a.class_id].assignments.push(a)
+    } else {
+      classData[a.class_id] = {assignments: [a]}
+    }
+  })
+
+  let totalWeights = 0
+  assignments.forEach(a => {
+    totalWeights += a.weight
+    weeks.forEach(w => {
+      if (moment(a.due).isSame(moment(w.week), 'week')) {
+        w.assignments.push(a)
+        w.weight += a.weight
       }
+    })
+  })
 
-      let classData = {}
-      assignments.forEach(a => {
-        if (classData[a.class_id]) {
-          classData[a.class_id].assignments.push(a)
-        } else {
-          classData[a.class_id] = {assignments: [a]}
+  ids.forEach(id => {
+    classData[id] = {data: []}
+    weeks.forEach(w => {
+      let datum = {x: parseInt(moment(w.week).format('X')), y: null}
+      let assignmentWeights = 0
+      let classAssignments = w.assignments.filter(a => a.class_id === id)
+      classAssignments.forEach(a => {
+        if (w.assignments.includes(a)) {
+          assignmentWeights += a.weight
         }
       })
+      datum.y = assignmentWeights / totalWeights
+      classData[id].data.push(datum)
+    })
+  })
 
-      assignments.forEach(a => {
-        weeks.forEach(w => {
-          if (moment(a.due).isSame(moment(w.week), 'week')) {
-            w.assignments.push(a)
-          }
-        })
-      })
+  weeks.forEach(w => {
+    data.d.push({x: parseInt(moment(w.week).format('X')), y: w.weight / totalWeights})
+  })
 
-      let totalWeekWeights = 0
-      assignments.forEach(a => {
-        totalWeekWeights += a.weight
-      })
+  return {data: data.d, classData}
 
-      weeks.forEach(w => {
-        data.push({
-          x: parseInt(moment(w.week).format('X')),
-          y: getViewWeights(w, totalWeekWeights)
-        })
-      })
-      break
-  }
+  // weeks.forEach(w => {
+  //   data.push({
+  //     x: parseInt(moment(w.week).format('X')),
+  //     y: getViewWeights(w, totalWeekWeights)
+  //   })
+  // })
 
-  return data
+  // return data
 }

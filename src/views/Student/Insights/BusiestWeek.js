@@ -1,10 +1,10 @@
 import React from 'react'
 import {inject, observer} from 'mobx-react'
 import { withRouter } from 'react-router-dom'
-import { VictoryScatter, VictoryLabel, VictoryAxis, VictoryArea, VictoryStack, VictoryTooltip } from 'victory'
+import { VictoryScatter, VictoryLabel, VictoryAxis, VictoryBar, VictoryStack, VictoryTooltip } from 'victory'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import { getAssignmentWeightData, getAssignmentWeightDataByClass } from './DataUtils'
+import { getAssignmentWeightData, getAssignmentCountData, getAssignmentCountDataByClass } from './DataUtils'
 import { getStyles } from './styles'
 import insights from '../../../assets/images/jobs/insights.svg'
 
@@ -35,19 +35,19 @@ DataComponent.propTypes = {
 }
 
 @inject('rootStore') @observer
-class HardestWeek extends React.Component {
+class BusiestWeek extends React.Component {
   getStyles () {
     return getStyles(this.props.cl ? '#' + this.props.cl.color : false)
   }
 
   render () {
-    let {data, classData} = getAssignmentWeightDataByClass(this.props.rootStore.studentAssignmentsStore, this.props.cl, this.props.ids)
+    let {data, classData} = getAssignmentCountDataByClass(this.props.rootStore.studentAssignmentsStore, this.props.cl, this.props.ids)
     const styles = this.getStyles()
     if (data.length > 0) {
       const domain = {
         x: [
-          data[0].x,
-          data[data.length - 1].x
+          data[0].x - 604800,
+          data[data.length - 1].x + 604800
         ],
         y: [
           0,
@@ -76,7 +76,7 @@ class HardestWeek extends React.Component {
             />
 
             <VictoryLabel x={6} y={154}
-              text={'% of Total Grade'}
+              text={'Number of Assignments'}
               style={styles.axisLabel}
               angle={270}
               textAnchor={'middle'}
@@ -85,7 +85,7 @@ class HardestWeek extends React.Component {
             <VictoryAxis
               dependentAxis
               domain={{y: domain.y}}
-              tickFormat={d => Math.round((d * 100)).toString() + '%'}
+              tickFormat={d => Math.round((d))}
               offsetX={50}
               orientation='left'
               standalone={false}
@@ -94,12 +94,22 @@ class HardestWeek extends React.Component {
               animate={animate}
             />
 
+            {/* <g>
+              <VictoryBar
+                data={data}
+                domain={domain}
+                scale={{x: 'time', y: 'linear'}}
+                standalone={false}
+                interpolation='monotoneX'
+                style={{data: {fill: 'blue'}}}
+                animate={animate}
+              />
+            </g> */}
             <VictoryStack
               domain={domain}
               scale={{x: 'time', y: 'linear'}}
               standalone={false}
               interpolation='monotoneX'
-              labels={() => ''}
             >
               {Object.keys(classData).map(k => {
                 if (k !== 'null') {
@@ -114,17 +124,16 @@ class HardestWeek extends React.Component {
                     })
                   })
                   return (
-                    <VictoryArea
+                    <VictoryBar
                       key={Object.keys(classData).indexOf(k)}
                       data={data}
                       domain={domain}
                       scale={{x: 'time', y: 'linear'}}
                       standalone={false}
                       interpolation='monotoneX'
-                      // style={{data: {fill: color.toLowerCase().replace('ff', '75'), stroke: color, strokeWidth: '1'}}}
                       style={{data: {fill: color}}}
                       animate={animate}
-                      labels={() => ''}
+                      renderInPortal={true}
                       labelComponent={
                         <VictoryTooltip
                           flyoutStyle={styles.flyout}
@@ -138,7 +147,7 @@ class HardestWeek extends React.Component {
             </VictoryStack>
 
             <VictoryScatter
-              data={[{x: parseInt(this.props.hardestWeek), y: this.props.hardestWeekWeight}]}
+              data={[{x: parseInt(this.props.busiestWeek), y: this.props.busiestWeekCount}]}
               size={5}
               domain={domain}
               scale={{x: 'time', y: 'linear'}}
@@ -157,13 +166,13 @@ class HardestWeek extends React.Component {
   }
 }
 
-HardestWeek.propTypes = {
+BusiestWeek.propTypes = {
   history: PropTypes.object,
   rootStore: PropTypes.object,
   cl: PropTypes.object,
   ids: PropTypes.array,
-  hardestWeek: PropTypes.string,
-  hardestWeekWeight: PropTypes.number
+  busiestWeek: PropTypes.string,
+  busiestWeekCount: PropTypes.number
 }
 
-export default withRouter(HardestWeek)
+export default withRouter(BusiestWeek)

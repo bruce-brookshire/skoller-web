@@ -1,7 +1,7 @@
 import React from 'react'
 import {inject, observer} from 'mobx-react'
 import { withRouter } from 'react-router-dom'
-import { VictoryScatter, VictoryLabel, VictoryAxis, VictoryArea, VictoryStack, VictoryTooltip } from 'victory'
+import { VictoryScatter, VictoryLabel, VictoryAxis, VictoryBar, VictoryStack, VictoryTooltip, VictoryArea } from 'victory'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import { getAssignmentWeightData, getAssignmentWeightDataByClass } from './DataUtils'
@@ -24,7 +24,7 @@ export class DataComponent extends React.Component {
           <path d="M0,0 L0,6 L5,3 z" fill="#57B9E4" />
         </marker>
         {/* <path d={`M ${x} ${y - 10} C ${x + 20} ${y - 50}, ${(450 / 2) - 20} 80, ${450 / 2} 40`} markerEnd="url(#arrow)" stroke="black" strokeWidth='2' fill="transparent"/> */}
-        <path d={`M ${(450 / 2) - 18} 40 C ${(450 / 2) - 20} 80, ${x + 20} ${y - 50}, ${x + 3} ${y - 15}`} markerEnd="url(#arrow)" stroke="#57B9E4" strokeWidth='2' fill="transparent"/>
+        <path d={`M ${(450 / 2) - 18} 40 C ${(450 / 2) - 20} 80, ${x + 20} ${y - 50}, ${x + 8} ${y - 24}`} markerEnd="url(#arrow)" stroke="#57B9E4" strokeWidth='2' fill="transparent"/>
       </g>
     )
   }
@@ -35,7 +35,7 @@ DataComponent.propTypes = {
 }
 
 @inject('rootStore') @observer
-class HardestWeek extends React.Component {
+class EasiestWeek extends React.Component {
   getStyles () {
     return getStyles(this.props.cl ? '#' + this.props.cl.color : false)
   }
@@ -48,6 +48,8 @@ class HardestWeek extends React.Component {
         x: [
           data[0].x,
           data[data.length - 1].x
+          // data[0].x - 604800,
+          // data[data.length - 1].x + 604800
         ],
         y: [
           0,
@@ -137,17 +139,21 @@ class HardestWeek extends React.Component {
               })}
             </VictoryStack>
 
-            <VictoryScatter
-              data={[{x: parseInt(this.props.hardestWeek), y: this.props.hardestWeekWeight}]}
-              size={5}
-              domain={domain}
-              scale={{x: 'time', y: 'linear'}}
-              standalone={false}
-              style={styles.scatter}
-              animate={animate}
-              dataComponent={<DataComponent />}
-            />
-
+            {this.props.easiestWeeks.map(w => {
+              return (
+                <VictoryScatter
+                  key={this.props.easiestWeeks.indexOf(w)}
+                  data={[{x: parseInt(moment(w.getWeek()).format('X')), y: w.overallWeight}]}
+                  size={5}
+                  domain={domain}
+                  scale={{x: 'time', y: 'linear'}}
+                  standalone={false}
+                  style={styles.scatter}
+                  animate={animate}
+                  dataComponent={<DataComponent />}
+                />
+              )
+            })}
           </g>
         </svg>
       )
@@ -157,13 +163,12 @@ class HardestWeek extends React.Component {
   }
 }
 
-HardestWeek.propTypes = {
+EasiestWeek.propTypes = {
   history: PropTypes.object,
   rootStore: PropTypes.object,
   cl: PropTypes.object,
   ids: PropTypes.array,
-  hardestWeek: PropTypes.string,
-  hardestWeekWeight: PropTypes.number
+  easiestWeeks: PropTypes.array
 }
 
-export default withRouter(HardestWeek)
+export default withRouter(EasiestWeek)

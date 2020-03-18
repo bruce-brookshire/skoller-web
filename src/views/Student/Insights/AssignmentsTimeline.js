@@ -85,13 +85,13 @@ class AssignmentsTimeline extends React.Component {
       let hardestDatum = data.filter((d) => d.y === Math.max.apply(Math, data.map(a => a.y)))[0].x
       switch (this.props.view) {
         case 'w':
-          hardestText = 'Your hardest week ' + (moment(hardestDatum, 'X').isAfter(moment()) ? 'will be' : 'was') + ' the week of ' + moment(hardestDatum, 'X').format('MM/DD')
+          hardestText = 'Your busiest week ' + (moment(hardestDatum, 'X').isAfter(moment()) ? 'will be' : 'was') + ' the week of ' + moment(hardestDatum, 'X').format('MM/DD')
           break
         case 'd':
           hardestText = ''
           break
         case 'm':
-          hardestText = 'Your hardest month is ' + moment(hardestDatum, 'X').format('MMMM')
+          hardestText = 'Your busiest month is ' + moment(hardestDatum, 'X').format('MMMM')
           break
       }
 

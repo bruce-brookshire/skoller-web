@@ -90,7 +90,7 @@ class WeightsTimeline extends React.Component {
           />
 
           <VictoryLabel x={18} y={60}
-            text='How much of your total grade is determined each week?'
+            text={`How much of your total grade is determined each ${this.props.view === 'd' ? 'day' : ''}${this.props.view === 'm' ? 'month' : ''}${this.props.view === 'w' ? 'week' : ''}?`}
             style={styles.subtitle}
           />
 

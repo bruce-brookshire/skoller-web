@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import SkSelect from '../../../components/SkSelect'
 import SkCheckboxField from '../../../../components/SkForm/SkCheckboxField'
 import SemesterOutlook from './SemesterOutlook'
-import html2canvas from 'html2canvas'
 import KeyInsights from './KeyInsights'
 
 @inject('rootStore') @observer
@@ -16,7 +15,7 @@ class InsightsPage extends React.Component {
     this.props.rootStore.studentNavStore.location = this.props.location
 
     let dataOptions = {}
-    this.props.rootStore.studentClassesStore.classes.map(cl => {
+    this.props.rootStore.studentClassesStore.classes.filter(cl => cl.status.id >= 1400).map(cl => {
       dataOptions[cl.name] = {
         on: true,
         color: cl.getColor()
@@ -76,7 +75,7 @@ class InsightsPage extends React.Component {
 
   renderKeyInsights () {
     return (
-      <KeyInsights />
+      <KeyInsights selectedClasses={Object.keys(this.state.dataOptions).filter(o => this.state.dataOptions[o].on)} />
     )
   }
 
@@ -96,11 +95,12 @@ class InsightsPage extends React.Component {
           </div>
           <div onClick={() => this.downloadGraphs()} className='insights-so-container' id='insights-so-container'>
             {this.renderSemesterOutlook()}
+            {this.renderKeyInsights()}
           </div>
         </div>
-        <div className='key-insights-wrapper'>
+        {/* <div className='key-insights-wrapper'>
           {this.renderKeyInsights()}
-        </div>
+        </div> */}
       </div>
     )
   }
