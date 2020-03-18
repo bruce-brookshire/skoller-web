@@ -4,9 +4,8 @@ import { withRouter } from 'react-router-dom'
 import { VictoryScatter, VictoryLabel, VictoryAxis, VictoryArea, VictoryStack, VictoryTooltip } from 'victory'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import { getAssignmentWeightData, getAssignmentWeightDataByClass } from './DataUtils'
+import { getAssignmentWeightDataByClass } from './DataUtils'
 import { getStyles } from './styles'
-import insights from '../../../assets/images/jobs/insights.svg'
 
 export class DataComponent extends React.Component {
   static propTypes = {

@@ -1,12 +1,11 @@
 import React from 'react'
 import {inject, observer} from 'mobx-react'
 import { withRouter } from 'react-router-dom'
-import { VictoryScatter, VictoryLabel, VictoryAxis, VictoryBar, VictoryStack, VictoryTooltip, VictoryArea } from 'victory'
+import { VictoryScatter, VictoryLabel, VictoryAxis, VictoryStack, VictoryTooltip, VictoryArea } from 'victory'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import { getAssignmentWeightData, getAssignmentWeightDataByClass } from './DataUtils'
+import { getAssignmentWeightDataByClass } from './DataUtils'
 import { getStyles } from './styles'
-import insights from '../../../assets/images/jobs/insights.svg'
 
 export class DataComponent extends React.Component {
   static propTypes = {

@@ -11,9 +11,7 @@ import EasiestWeek from '../EasiestWeek'
 class KeyInsights extends React.Component {
   renderSingleHardestWeek (keyInsights) {
     let ids = this.props.rootStore.studentClassesStore.classes.map(cl => this.props.selectedClasses.includes(cl.name) ? cl.id : null)
-    let assignments = keyInsights.hardestWeeks[0].assignments.sort((a, b) => a.weight > b.weight ? 1 : -1)
     let weight = Math.round(keyInsights.hardestWeekTotalWeight * 1000) / 1000
-    let future = moment(keyInsights.hardestWeeks[0].getWeek()).isAfter(moment())
 
     return (
       <div className='hardest-week'>
