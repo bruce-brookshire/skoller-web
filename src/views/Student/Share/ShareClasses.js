@@ -178,9 +178,6 @@ class ShareClasses extends React.Component {
             <div className='raise-effort-headline'>
               <b>{this.props.user.student.raise_effort.personal_signups} students</b> have signed up using your invite links
             </div>
-            <div className='raise-effort-detail'>
-              5 sign-ups = $10 gift card. Sign ups must come from your links. Offer ends 02/14/2020. You will receive an email when you reach 5 sign ups!
-            </div>
           </div>
         }
       </div>
