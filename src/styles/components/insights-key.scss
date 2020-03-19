@@ -1,0 +1,30 @@
+.key-insights-container {
+  @include skoller-cell;
+  padding: 1rem;
+  width: 100%;
+  max-width: 600px;
+  margin-top: 1rem;
+
+  h1 {
+    margin: 0 0 1rem 0;
+  }
+
+  .hardest-week {
+    text-align: center;
+
+    .title {
+      font-size: 24px;
+      font-weight: 400;
+      padding: 0 1rem;
+  
+      .bold {
+        color: $sk-blue;
+        font-weight: 600;
+      }
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+}

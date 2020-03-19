@@ -160,6 +160,11 @@ export function getStyles (c) {
       data: { stroke: COLOR, strokeWidth: 2, fill: '#ffffff' }
     },
 
+    // BAR
+    bar: {
+      data: { fill: COLOR }
+    },
+
     // VERTICAL TODAY LINE
     todayLine: {
       front: {
@@ -173,9 +178,18 @@ export function getStyles (c) {
       }
     },
 
+    // FLYOUT
+    flyout: {
+      strokeWidth: '1px',
+      stroke: GRAY_COLOR_75,
+      fontFamily: '"Calibre", sans-serif',
+      fill: 'white',
+      padding: 0
+    },
+
     // ANIMATION
     animate: {
-      duration: 400,
+      duration: 800,
       onLoad: {
         duration: 0
       }
