@@ -67,6 +67,23 @@
             cursor: pointer;
           }
 
+          .sk-class-palette {
+            position: absolute;
+            z-index: 10;
+            background-color: white;
+            padding: 8px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            border-radius: $skoller-cell-border-radius;
+            box-shadow: 0px 8px 15px rgba(0,0,0,.05);
+
+            .sk-class-palette-color {
+              width: 24px;
+              height: 24px;
+            }
+          }
+
           .sk-class-detail-info {
             margin: 1rem 0;
             padding: 8px;

@@ -16,6 +16,7 @@ import SkLoader from '../../../assets/sk-icons/SkLoader'
 import moment from 'moment'
 import Speculator from './Speculator'
 import NestedNav from '../../components/NestedNav'
+import OutsideClickHandler from 'react-outside-click-handler'
 
 @inject('rootStore') @observer
 class ClassDetail extends React.Component {
@@ -31,8 +32,11 @@ class ClassDetail extends React.Component {
       studentClass: {},
       showShareModal: false,
       showClassInfoModal: false,
-      showSpeculate: false
+      showSpeculate: false,
+      showPalette: false
     }
+
+    this.paletteRef = React.createRef()
 
     this.props.rootStore.studentNavStore.setActivePage('classes')
     this.props.rootStore.studentNavStore.location = this.props.location // set active page route location for access from assignment detail
@@ -289,6 +293,53 @@ class ClassDetail extends React.Component {
     )
   }
 
+  updateColor (color) {
+    actions.studentClasses.updateClassColor(this.state.cl, color)
+      .then(data => {
+        this.setState({cl: data, showPalette: false})
+        this.props.rootStore.studentClassesStore.updateClasses()
+      })
+  }
+
+  renderPalette () {
+    let colors = [
+      'D73F76ff',
+      'E2762Dff',
+      'F1AA39ff',
+      '19A394ff',
+      '61D8A0ff',
+      '3484E3ff',
+      'FF7BB1ff',
+      'DE89F6ff'
+    ]
+    if (this.state.showPalette) {
+      return (
+        <OutsideClickHandler
+          onOutsideClick={() => this.setState({showPalette: false})}
+        >
+          {console.log(this.paletteRef)}
+          <div className='sk-class-palette' style={{
+            top: this.paletteRef.current.offsetTop + 16,
+            left: this.paletteRef.current.offsetLeft - (((colors.length * 24) + 16) / 2) + 8
+          }}>
+            {colors.map(color => {
+              return (
+                <div
+                  className='sk-class-palette-color'
+                  style={{backgroundColor: '#' + color}}
+                  key={colors.indexOf(color)}
+                  onClick={() => this.updateColor(color)}
+                />
+              )
+            })}
+          </div>
+        </OutsideClickHandler>
+      )
+    } else {
+      return null
+    }
+  }
+
   // onAssignmentSelect (assignment) {
   //   const { cl } = this.state
   //   this.props.history.push({
@@ -332,9 +383,16 @@ class ClassDetail extends React.Component {
               title='Share class'
               onClick={() => this.setState({showShareModal: true})}
             />
+            <i
+              className='fas fa-palette'
+              title='Class color'
+              onClick={() => this.setState({showPalette: true})}
+              ref={this.paletteRef}
+            />
             {this.renderDropClassButton()}
             {this.renderClassInfoModal()}
             {this.renderSpeculator()}
+            {this.renderPalette()}
           </div>
         </div>
       </div>
@@ -393,7 +451,8 @@ ClassDetail.propTypes = {
   params: PropTypes.object,
   rootStore: PropTypes.object,
   location: PropTypes.object,
-  history: PropTypes.object
+  history: PropTypes.object,
+  match: PropTypes.object
 }
 
 export default withRouter(ClassDetail)
