@@ -89,7 +89,7 @@ class KeyInsights extends React.Component {
     }
 
     let moreThanTwoClassesWithAssignments = false
-    if (this.props.rootStore.studentClassesStore.classes.filter(cl => cl.assignments.length > 1)) {
+    if (this.props.rootStore.studentClassesStore.classes.filter(cl => cl.assignments.length > 0)) {
       moreThanTwoClassesWithAssignments = true
     }
 
