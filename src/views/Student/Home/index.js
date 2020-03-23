@@ -26,7 +26,7 @@ class Home extends React.Component {
       loading: false,
       shareWillDisplay: false
     }
-    this.updateClasses()
+
     this.props.rootStore.studentNavStore.setActivePage('home')
     this.props.rootStore.studentNavStore.location = this.props.location
     this.cookie = new Cookies()
@@ -52,6 +52,7 @@ class Home extends React.Component {
     let showPopUp = false
     let type
     let student = this.props.rootStore.userStore.user.student
+
     await actions.classes.getStudentClassesById(student.id)
       .then((classes) => {
         if (classes.length > 1) {
@@ -152,7 +153,7 @@ class Home extends React.Component {
           />
         }
         <div className="home-container">
-          <div className="home-column">
+          <div className="home-column home-column-lg">
             <div className="home-shadow-box">
               <h1 className='home-heading' onClick={() => this.props.history.push('/student/classes')}>Classes</h1>
               <div className="home-card-content">
@@ -160,9 +161,8 @@ class Home extends React.Component {
               </div>
             </div>
             <HomeInsights />
-            {this.state.shareWillDisplay && <HomeJobs updateStudent={() => this.updateStudent()} user={this.props.rootStore.userStore.user} />}
           </div>
-          <div className="home-column">
+          <div className="home-column home-column-sm">
             <div className="home-shadow-box">
               <h1 className='home-heading' onClick={() => this.props.history.push('/student/tasks')}>To-Do&apos;s</h1>
               <div className="home-sub-heading">Next 10 days</div>
@@ -170,8 +170,8 @@ class Home extends React.Component {
                 <HomeTasks />
               </div>
             </div>
+            <HomeJobs updateStudent={() => this.updateStudent()} user={this.props.rootStore.userStore.user} />
             <HomeShare classes={this.props.rootStore.studentClassesStore.classes} willDisplay={() => this.setState({shareWillDisplay: true})} />
-            {!this.state.shareWillDisplay && <HomeJobs updateStudent={() => this.updateStudent()} user={this.props.rootStore.userStore.user} />}
           </div>
         </div>
       </div>

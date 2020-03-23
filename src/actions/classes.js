@@ -101,13 +101,15 @@ const processColor = (cl, studentId) => {
     }
 
     const randomFreeColor = freeColors[Math.floor(Math.random() * freeColors.length)]
+    console.log('processColor')
     put(
       `/api/v1/students/${studentId}/classes/${cl.id}`,
       { color: randomFreeColor },
       'Error fetching class. Try again.'
     )
       .then(() => {
-        stores.studentClassesStore.updateClasses()
+        console.log('process color update classes')
+        // stores.studentClassesStore.updateClasses()
       })
       .catch(error => {
         return Promise.reject(error)

@@ -208,7 +208,7 @@ class ClassDetail extends React.Component {
     let emptyWeights = this.getEmptyWeights()
     return (
       <div>
-        <a className='add-assignment-button' onClick={() => this.setState({showAddAssignmentModal: true})}>
+        <a className='add-assignment-button link-style' onClick={() => this.setState({showAddAssignmentModal: true})}>
           + Add Assignment{emptyWeights.length > 0 ? <div className='add-assignment-button-alert'><div className='add-assignment-button-alert-count'>{emptyWeights.length}</div></div> : null}
         </a>
         { this.state.showAddAssignmentModal
