@@ -337,13 +337,11 @@ export function getKeyInsights (studentAssignmentsStore, ids = []) {
 
   let weeklyWeightArray = weeksArray.map(w => weeks[w].totalWeight)
   let easiestWeeks = allWeeks.map(w => {
-    console.log(percentRank(weeklyWeightArray, weeks[w].totalWeight), percentRank(weeklyWeightArray, weeks[w].totalWeight) <= 0.25)
     if (percentRank(weeklyWeightArray, weeks[w].totalWeight) <= 0.25) {
       weeks[w].overallWeight = weeks[w].totalWeight / allWeights
       return weeks[w]
     }
   }).filter(w => w !== undefined)
-  console.log('easiestWeeks', easiestWeeks)
 
   let hardestWeekWeight = Math.max.apply(Math, weeksArray.map(w => weeks[w].totalWeight))
   let hardestWeekTotalWeight = Math.max.apply(Math, weeksArray.map(w => weeks[w].totalWeight)) / allWeights

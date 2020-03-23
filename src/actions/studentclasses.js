@@ -2,7 +2,6 @@ import { get, post, put, del } from '../utilities/api'
 import stores from '../stores'
 const { userStore } = stores
 
-
 /*
 * Get student class by id
 *
@@ -90,7 +89,8 @@ export function deleteStudentAssignmentPost (assignmentId, postId) {
 */
 export function updateClassColor (cl, color) {
   const { user: { student } } = userStore
-  return put(`/api/v1/student/${student.id}/classes/${cl.id}/`, { color: color }, 'Color not updated, try again.')
+  console.log(cl, color)
+  return put(`/api/v1/students/${student.id}/classes/${cl.id}/`, { color: color }, 'Color not updated, try again.')
     .then(data => {
       return data
     })

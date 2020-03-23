@@ -84,7 +84,7 @@ class HomeShare extends React.Component {
     let partner = this.state.partner
     if (this.state.show) {
       return (
-        <div className="home-shadow-box margin-top">
+        <div className="home-shadow-box">
           <h1 className='home-heading' onClick={() => this.props.history.push('/student/share/aoii')}>Share</h1>
           <div className="home-card-content">
             <div className='home-share'>
@@ -114,7 +114,8 @@ HomeShare.propTypes = {
   classes: PropTypes.array,
   onAddClass: PropTypes.func,
   rootStore: PropTypes.object,
-  willDisplay: PropTypes.func
+  willDisplay: PropTypes.func,
+  history: PropTypes.object
 }
 
 export default withRouter(HomeShare)

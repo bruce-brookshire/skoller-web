@@ -1,6 +1,7 @@
 export function getStyles (c) {
   if (c) {
-    c = c.replace('ff', '').replace('FF', '')
+    console.log(c)
+    c = c.toLowerCase().replace(/.$/, '').replace(/.$/, '')
   }
 
   const GRAY_COLOR = '#4a4a4a'
