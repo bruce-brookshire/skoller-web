@@ -1,5 +1,27 @@
 .home-jobs {
   margin: -8px 0 1rem 0;
+  max-height:600px;
+
+  .example-enter {
+    opacity: 0.01;
+    transform: translateY(-25px);
+  }
+  
+  .example-enter.example-enter-active {
+    opacity: 1;
+    transform: translateY(0px);
+    transition: 200ms ease-in;
+  }
+  
+  .example-leave {
+    opacity: 1;
+  }
+  
+  .example-leave.example-leave-active {
+    opacity: 0.01;
+    transition: 300ms ease-in;
+    display: none;
+  }
 
   .home-jobs-headline {
     margin-top: 0;
@@ -14,97 +36,106 @@
     margin-bottom: 1rem;
   }
 
-  .home-jobs-row {
-    margin: 0 0 1rem 0;
+  .home-jobs-content {
+    height: 24px;
+    transition: 200ms;
 
-    .home-jobs-label {
-      margin: 0;
-    }
-
-    .home-jobs-drag-and-drop {
-      p {
-        color: $sk-jobs-dark-green;
+    .home-jobs-row {
+      margin: 0 0 1rem 0;
+  
+      .home-jobs-label {
+        margin: 0;
       }
-
-      .home-jobs-drag-and-drop-file {
+  
+      .home-jobs-drag-and-drop {
+        p {
+          color: $sk-jobs-dark-green;
+        }
+  
+        .home-jobs-drag-and-drop-file {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          color: $sk-jobs-dark-green;
+  
+          i {
+            margin: 12px 4px 0 0;
+          }
+        }
+      }
+  
+      .home-jobs-grad-inputs {
         display: flex;
         flex-direction: row;
-        justify-content: center;
+        justify-content: flex-start;
         color: $sk-jobs-dark-green;
-
-        i {
-          margin: 12px 4px 0 0;
+        flex-wrap: wrap;
+  
+        .home-jobs-grad-month {
+          min-width: 80px;
+          padding-right: 8px;
+          margin-top: 6px;
+        }
+  
+        .home-jobs-grad-year {
+          min-width: 68px;
+          padding-right: 8px;
+          margin-top: 6px;
+        }
+  
+        .home-jobs-grad-degree {
+          min-width: 120px;
+          padding: 0 8px;
+          margin-top: 6px;
+        }
+  
+        .home-jobs-grad-text {
+          margin: 12px 0 0 0;
+          color: $sk-jobs-white;
         }
       }
-    }
-
-    .home-jobs-grad-inputs {
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
-      color: $sk-jobs-dark-green;
-
-      .home-jobs-grad-month {
-        min-width: 80px;
-        padding-right: 8px;
-      }
-
-      .home-jobs-grad-year {
-        min-width: 68px;
-        padding-right: 8px;
-      }
-
-      .home-jobs-grad-degree {
-        min-width: 120px;
-        padding: 0 8px;
-      }
-
-      .home-jobs-grad-text {
-        margin: 12px 0 -12px 0;
-        color: $sk-jobs-white;
-      }
-    }
-
-    .home-jobs-majors {
-      @include sk-form-field;
-      @include remove-form-styling;
-      border-color: $sk-jobs-dark-green;
-      background-color: $sk-jobs-light-gray;
-
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: flex-start;
-
-      .home-jobs-major-choice {
-        margin: 4px 6px 0 0;
-        color: $sk-jobs-dark-green;
-        cursor: pointer;
-      }
-
-      .home-jobs-major-add {
-        margin: 0 4px 0 0;
-        color: $sk-alert-red;
-        background-color: rgba(0,0,0,0.04);
-        border-radius: 3px;
-        padding: 4px 4px 0 4px;
-        cursor: pointer;
-
-        &:hover {
-          background-color: rgba(0,0,0,0.06);
+  
+      .home-jobs-majors {
+        @include sk-form-field;
+        @include remove-form-styling;
+        border-color: $sk-jobs-dark-green;
+        background-color: $sk-jobs-light-gray;
+  
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+  
+        .home-jobs-major-choice {
+          margin: 4px 6px 0 0;
+          color: $sk-jobs-dark-green;
+          cursor: pointer;
+        }
+  
+        .home-jobs-major-add {
+          margin: 0 4px 0 0;
+          color: $sk-alert-red;
+          background-color: rgba(0,0,0,0.04);
+          border-radius: 3px;
+          padding: 4px 4px 0 4px;
+          cursor: pointer;
+  
+          &:hover {
+            background-color: rgba(0,0,0,0.06);
+          }
+        }
+  
+        input {
+          width: 64px;
+          background-color: rgba(0,0,0,0.04);
+          border-radius: 3px;
+          padding: 4px;
         }
       }
-
-      input {
-        width: 64px;
-        background-color: rgba(0,0,0,0.04);
-        border-radius: 3px;
-        padding: 4px;
+  
+      .home-jobs-select-choice {
+        @include sk-autocomplete-option;
       }
-    }
-
-    .home-jobs-select-choice {
-      @include sk-autocomplete-option;
     }
   }
 

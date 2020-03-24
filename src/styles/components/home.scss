@@ -1,34 +1,60 @@
+$sk-home-break-point: 1000px;
+
 .home-container {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  $sk-home-break-point: 1000px;
-  @media only screen and (max-width: $sk-home-break-point) {
-    flex-direction: column;
-  }
+  width: calc(100vw - 200px);
 
   box-sizing: border-box;
-  padding: 1rem 1rem 3.5rem 1rem;
+  padding: 1rem 2rem 3.5rem 2rem;
+
+  @media only screen and (max-width: $sk-home-break-point) {
+    flex-direction: column;
+    width: calc(100vw - 200px);
+  }
+
+  @media only screen and (max-width: $sk-mobile-break-point) {
+    flex-direction: column;
+    width: 100vw;
+    padding: 1rem 1rem 3.5rem 1rem;
+  }
+
+  .home-column-lg {
+    width: 60%;
+    max-width: 600px;
+    margin-right: 2rem;
+
+    @media only screen and (max-width: $sk-home-break-point) {
+      width: 100%;
+      margin: 0;
+      max-width: none;
+    }
+  }
+
+  .home-column-sm {
+    width: 40%;
+    max-width: 400px;
+
+    @media only screen and (max-width: $sk-home-break-point) {
+      width: 100%;
+      max-width: none;
+    }
+  }
 
   .home-column {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 0 0.5rem;
 
     .home-shadow-box {
       box-sizing: border-box;
-      width: calc(((100vw - 200px) / 2) - 2rem);
+      width: 100%;
       @include skoller-cell;
-      max-width: 464px;
+      margin: 0 0 2rem 0;
 
-      @media only screen and (max-width: $sk-home-break-point) {
-        width: calc((100vw - 200px) - 5rem);
-        margin: 16px 16px;
-      }
-  
       @media only screen and (max-width: $sk-mobile-break-point) {
-        width: calc((100vw - 2rem));
+        margin: 0 1rem 1rem 1rem;
       }
 
       .home-heading {

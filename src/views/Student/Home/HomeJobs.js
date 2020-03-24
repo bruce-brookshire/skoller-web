@@ -8,6 +8,7 @@ import PropTypes from 'prop-types'
 import SkSelectDropDown from '../../components/SkSelectDropDown'
 import { withRouter } from 'react-router-dom'
 import JobsLogo from '../../../assets/images/jobs/skoller-jobs-logo.png'
+import { CSSTransitionGroup } from 'react-transition-group'
 
 @inject('rootStore') @observer
 class HomeJobs extends React.Component {
@@ -28,9 +29,22 @@ class HomeJobs extends React.Component {
       options: [],
       error: null,
       job_search_type: null,
-      jobSearchOptions: []
+      jobSearchOptions: [],
+      showForm: false,
+      formHeight: null
     }
+
+    this.formRef = React.createRef()
     this.getFormData()
+  }
+
+  componentDidUpdate () {
+    setTimeout(() => {
+      let ref = this.formRef
+      if (ref.current.offsetHeight !== this.state.formHeight) {
+        this.setState({formHeight: ref.current.offsetHeight})
+      }
+    }, 1)
   }
 
   async getFormData () {
@@ -284,13 +298,10 @@ class HomeJobs extends React.Component {
     }
   }
 
-  renderContent () {
+  renderForm () {
     return (
-      <div className='home-jobs'>
-        <p className='home-jobs-headline'>
-          From the classroom to your dream career.
-        </p>
-        <div className='home-jobs-row'>
+      <React.Fragment>
+        <div className='home-jobs-row' key={1}>
           <p className='home-jobs-label'>Upload your résumé</p>
           <div className='home-jobs-drag-and-drop'>
             <DragAndDrop
@@ -339,14 +350,16 @@ class HomeJobs extends React.Component {
               className='home-jobs-grad-year'
               jobsMode={true}
             />
-            <p className='home-jobs-grad-text'>with a </p>
-            <SkSelect
-              optionsMap={() => this.renderDegreeOptions()}
-              selection={this.state.gradDegreeChoice.name}
-              className='home-jobs-grad-degree'
-              jobsMode={true}
-            />
-            <p className='home-jobs-grad-text'>degree.</p>
+            <div style={{display: 'flex', flexDirection: 'row'}}>
+              <p className='home-jobs-grad-text'>with a </p>
+              <SkSelect
+                optionsMap={() => this.renderDegreeOptions()}
+                selection={this.state.gradDegreeChoice.name}
+                className='home-jobs-grad-degree'
+                jobsMode={true}
+              />
+              <p className='home-jobs-grad-text'>degree.</p>
+            </div>
           </div>
         </div>
         <div className='home-jobs-row'>
@@ -385,6 +398,37 @@ class HomeJobs extends React.Component {
           />
         </div>
         {this.renderButton()}
+      </React.Fragment>
+    )
+  }
+
+  renderSeeMore () {
+    return (
+      <div onClick={() => this.setState({showForm: true})} style={{textAlign: 'center', cursor: 'pointer'}}>
+        Get started 👇
+      </div>
+    )
+  }
+
+  renderContent () {
+    console.log(this.formRef)
+    return (
+      <div className='home-jobs'>
+        <p className='home-jobs-headline'>
+          From the classroom to your dream career.
+        </p>
+        <div className={'home-jobs-content ' + (this.state.showForm ? 'open' : 'closed')} style={{height: this.state.formHeight ? this.state.formHeight + 'px' : null}}>
+          <CSSTransitionGroup
+            transitionName="example"
+            transitionEnterTimeout={500}
+            transitionLeaveTimeout={300}
+          >
+            {this.state.showForm
+              ? <div ref={this.formRef} key={1}>{this.renderForm()}</div>
+              : <div key={2}>{this.renderSeeMore()}</div>
+            }
+          </CSSTransitionGroup>
+        </div>
         {this.renderError()}
       </div>
     )
