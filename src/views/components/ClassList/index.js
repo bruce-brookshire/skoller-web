@@ -170,7 +170,7 @@ class ClassList extends React.Component {
 
   renderGrade (cl) {
     let status = cl.status.id
-    if (status === 1400) {
+    if (status >= 1400) {
       return (
         <h1 style={{color: cl.getColor()}} className='cn-class-list-row-grade-text cn-white'>{cl.grade > 0 ? Math.round(cl.grade) + '%' : '–'}</h1>
       )
