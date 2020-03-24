@@ -85,118 +85,118 @@ class AssignmentsTimeline extends React.Component {
       const tickValues = data.map(d => d.x)
       const animate = this.props.view !== 'd' ? styles.animate : null
 
-      let hardestText
-      let hardestDatum = data.filter((d) => d.y === Math.max.apply(Math, data.map(a => a.y)))[0].x
-      switch (this.props.view) {
-        case 'w':
-          hardestText = 'Your busiest week ' + (moment(hardestDatum, 'X').isAfter(moment()) ? 'will be' : 'was') + ' the week of ' + moment(hardestDatum, 'X').format('MM/DD')
-          break
-        case 'd':
-          hardestText = ''
-          break
-        case 'm':
-          hardestText = 'Your busiest month is ' + moment(hardestDatum, 'X').format('MMMM')
-          break
-      }
-
       return (
-        <svg style={styles.parent} viewBox='0 0 450 350'>
-
-          {/* Define labels */}
-          <VictoryLabel x={18} y={40}
-            text='Assignments Timeline'
-            style={styles.title}
-          />
-
-          <VictoryLabel x={18} y={60}
-            text={hardestText}
-            style={styles.subtitle}
-          />
-
-          <g transform={'translate(16, 46)'}>
-            {/* Add shared independent axis */}
-            <VictoryAxis
-              tickValues={tickValues}
-              tickFormat={d => moment(d, 'X').format('M/DD')}
-              tickCount={5}
-              style={styles.axisDates}
-              domain={{x: domain.x}}
-              // scale='time'
-              standalone={false}
+        <div>
+          <div className='insights-title'>
+            <b style={this.props.cl ? {color: '#' + this.props.cl.color} : null}>How many assignments</b> do you have each {this.props.view === 'd' ? 'day' : ''}{this.props.view === 'm' ? 'month' : ''}{this.props.view === 'w' ? 'week' : ''}?
+          </div>
+          <svg style={styles.parent} viewBox='0 0 450 260'>
+            {/* Define labels */}
+            {/* <VictoryLabel x={225} y={40}
+              text={`How many assignments do you have each ${this.props.view === 'd' ? 'day' : ''}${this.props.view === 'm' ? 'month' : ''}${this.props.view === 'w' ? 'week' : ''}?`}
+              style={styles.title}
               animate={animate}
-            />
+            /> */}
 
-            <VictoryLabel x={6} y={154}
-              text={'Number of Assignments'}
-              style={styles.axisLabel}
-              angle={270}
-              textAnchor={'middle'}
-            />
-
-            <VictoryAxis
-              dependentAxis
-              // label='Assignments'
-              domain={{y: domain.y}}
-              offsetX={50}
-              orientation='left'
-              standalone={false}
-              domainPadding={200}
-              style={styles.axisOne}
-              tickFormat={d => d.toString()}
-              animate={animate}
-            />
-
-            {!hideToday && <g>
-              <VictoryLine
-                x={() => today}
-                domain={domain}
-                scale={{x: 'time', y: 'linear'}}
+            <g transform={'translate(16, -20)'}>
+              {/* Add shared independent axis */}
+              <VictoryAxis
+                tickValues={tickValues}
+                tickFormat={d => moment(d, 'X').format('M/DD')}
+                tickCount={5}
+                style={styles.axisDates}
+                domain={{x: domain.x}}
+                // scale='time'
                 standalone={false}
-                style={styles.todayLine.back}
                 animate={animate}
               />
 
-              <VictoryLine
-                x={() => today}
-                domain={domain}
-                scale={{x: 'time', y: 'linear'}}
+              <VictoryLabel x={6} y={154}
+                text={'Number of Assignments'}
+                style={styles.axisLabel}
+                angle={270}
+                textAnchor={'middle'}
+              />
+
+              <VictoryAxis
+                dependentAxis
+                // label='Assignments'
+                domain={{y: domain.y}}
+                offsetX={50}
+                orientation='left'
                 standalone={false}
-                style={styles.todayLine.front}
+                domainPadding={200}
+                style={styles.axisOne}
+                tickFormat={d => d.toString()}
                 animate={animate}
               />
 
-              <VictoryScatter
-                data={[{x: today, y: domain.y[1]}]}
-                domain={domain}
-                standalone={false}
-                scale={{x: 'time', y: 'linear'}}
-                size={4}
-                style={styles.todayLine.dot}
-                animate={animate}
-              />
+              {!hideToday && <g>
+                <VictoryLine
+                  x={() => today}
+                  domain={domain}
+                  scale={{x: 'time', y: 'linear'}}
+                  standalone={false}
+                  style={styles.todayLine.back}
+                  animate={animate}
+                />
 
-              <VictoryLabel x={(((today - domain.x[0]) / (domain.x[1] - domain.x[0])) * 336) + 35} y={34}
-                text={'Today'}
-                style={styles.label}
-                animate={animate}
-              />
-            </g>}
+                <VictoryLine
+                  x={() => today}
+                  domain={domain}
+                  scale={{x: 'time', y: 'linear'}}
+                  standalone={false}
+                  style={styles.todayLine.front}
+                  animate={animate}
+                />
 
-            {(this.props.view === 'w' || this.props.view === 'm') &&
-              <VictoryLine
-                data={data}
-                domain={domain}
-                scale={{x: 'time', y: 'linear'}}
-                standalone={false}
-                interpolation='monotoneX'
-                style={styles.lineOne}
-                animate={animate}
-              />
-            }
-
-            {(this.props.view === 'w' || this.props.view === 'm') &&
-              <g>
                 <VictoryScatter
+                  data={[{x: today, y: domain.y[1]}]}
+                  domain={domain}
+                  standalone={false}
+                  scale={{x: 'time', y: 'linear'}}
+                  size={4}
+                  style={styles.todayLine.dot}
+                  animate={animate}
+                />
+
+                <VictoryLabel x={(((today - domain.x[0]) / (domain.x[1] - domain.x[0])) * 336) + 35} y={34}
+                  text={'Today'}
+                  style={styles.label}
+                  animate={animate}
+                />
+              </g>}
+
+              {(this.props.view === 'w' || this.props.view === 'm') &&
+                <VictoryLine
+                  data={data}
+                  domain={domain}
+                  scale={{x: 'time', y: 'linear'}}
+                  standalone={false}
+                  interpolation='monotoneX'
+                  style={styles.lineOne}
+                  animate={animate}
+                />
+              }
+
+              {(this.props.view === 'w' || this.props.view === 'm') &&
+                <g>
+                  <VictoryScatter
+                    data={data}
+                    size={5}
+                    domain={domain}
+                    scale={{x: 'time', y: 'linear'}}
+                    standalone={false}
+                    style={styles.scatter}
+                    labels={() => ''}
+                    labelComponent={ <VictoryTooltip flyoutComponent={<DateTooltip view={this.props.view}/>} /> }
+                    animate={animate}
+                  />
+                </g>
+              }
+
+              {this.props.view === 'd' &&
+                <VictoryBar
                   data={data}
                   size={5}
                   domain={domain}
@@ -204,27 +204,13 @@ class AssignmentsTimeline extends React.Component {
                   standalone={false}
                   style={styles.scatter}
                   labels={() => ''}
-                  labelComponent={ <VictoryTooltip flyoutComponent={<DateTooltip view={this.props.view}/>} /> }
+                  labelComponent={ <VictoryTooltip flyoutComponent={<DateTooltip view={this.props.view} />} /> }
                   animate={animate}
                 />
-              </g>
-            }
-
-            {this.props.view === 'd' &&
-              <VictoryBar
-                data={data}
-                size={5}
-                domain={domain}
-                scale={{x: 'time', y: 'linear'}}
-                standalone={false}
-                style={styles.scatter}
-                labels={() => ''}
-                labelComponent={ <VictoryTooltip flyoutComponent={<DateTooltip view={this.props.view} />} /> }
-                animate={animate}
-              />
-            }
-          </g>
-        </svg>
+              }
+            </g>
+          </svg>
+        </div>
       )
     } else {
       return <div />

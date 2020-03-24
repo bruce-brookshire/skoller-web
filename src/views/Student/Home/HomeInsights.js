@@ -59,19 +59,19 @@ class HomeInsights extends React.Component {
     if (this.props.rootStore.studentAssignmentsStore.assignments.length > 0) {
       if (this.state.type === 'assignmentsTimeline') {
         return (
-          <div style={{margin: '1rem'}}>
+          <div style={{margin: '2rem 1rem 1rem 1rem'}}>
             <AssignmentsTimeline view={'w'} />
           </div>
         )
       } else if (this.state.type === 'weightsTimeline') {
         return (
-          <div style={{margin: '1rem'}}>
+          <div style={{margin: '2rem 1rem 1rem 1rem'}}>
             <WeightsTimeline view={'w'} />
           </div>
         )
       } else if (this.state.type === 'distribution') {
         return (
-          <div style={{margin: '1rem'}}>
+          <div style={{margin: '2rem 1rem 1rem 1rem'}}>
             <Distribution />
           </div>
         )

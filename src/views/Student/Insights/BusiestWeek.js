@@ -133,11 +133,11 @@ class BusiestWeek extends React.Component {
                       interpolation='monotoneX'
                       style={{data: {fill: color}}}
                       animate={animate}
-                      renderInPortal={true}
+                      // renderInPortal={true}
                       labelComponent={
                         <VictoryTooltip
                           flyoutStyle={styles.flyout}
-                          renderInPortal={true}
+                          // renderInPortal={true}
                         />
                       }
                     />
