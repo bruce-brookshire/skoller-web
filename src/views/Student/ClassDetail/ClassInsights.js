@@ -6,7 +6,7 @@ import moment from 'moment'
 import AssignmentsTimeline from '../Insights/AssignmentsTimeline'
 import WeightsTimeline from '../Insights/WeightsTimeline'
 import Distribution from '../Insights/Distribution'
-import Sammi from '../../components/Sammi'
+import SpeculateTool from '../Insights/SpeculateTool'
 
 export class DateTooltip extends React.Component {
   static propTypes = {
@@ -51,7 +51,8 @@ class ClassInsights extends React.Component {
     super(props)
 
     this.state = {
-      type: 'distribution'
+      // type: 'distribution'
+      type: 'speculate'
     }
   }
 
@@ -73,6 +74,12 @@ class ClassInsights extends React.Component {
         return (
           <div style={{margin: '2rem 1rem 1rem 1rem'}}>
             <Distribution cl={this.props.cl} />
+          </div>
+        )
+      } else if (this.state.type === 'speculate') {
+        return (
+          <div style={{margin: '2rem 1rem 1rem 1rem'}}>
+            <SpeculateTool cl={this.props.cl} />
           </div>
         )
       }
@@ -134,6 +141,19 @@ class ClassInsights extends React.Component {
           onClick={() => this.setState({type: 'weightsTimeline'})}
         >
           Weights
+        </p>
+        <p
+          style={{
+            borderBottom: this.state.type === 'speculate' ? '4px solid #' + color : '',
+            fontWeight: this.state.type === 'speculate' ? '600' : '',
+            margin: '0 0 -2px 0',
+            padding: '0 12px',
+            cursor: 'pointer',
+            textAlign: 'center'
+          }}
+          onClick={() => this.setState({type: 'speculate'})}
+        >
+          Speculate
         </p>
       </div>
     )
