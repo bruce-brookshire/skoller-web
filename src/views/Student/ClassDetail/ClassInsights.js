@@ -51,8 +51,7 @@ class ClassInsights extends React.Component {
     super(props)
 
     this.state = {
-      // type: 'distribution'
-      type: 'speculate'
+      type: 'distribution'
     }
   }
 

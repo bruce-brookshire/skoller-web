@@ -37,3 +37,29 @@
     }
   }
 }
+
+.speculate {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  .speculate-select {
+    margin: 0 auto;
+    text-align: left;
+    width: 48px;
+
+    .sk-select-selection {
+      padding: 0 4px;
+    }
+
+    .sk-select-option {
+      cursor: pointer;
+      padding: 4px;
+
+      &:hover {
+        background-color: $cn-color-hover-grey;
+      }
+    }
+  }
+}

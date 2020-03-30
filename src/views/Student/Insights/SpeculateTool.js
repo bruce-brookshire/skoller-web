@@ -9,10 +9,12 @@ class SpeculateTool extends React.Component {
     super(props)
 
     let gradeScale = this.props.cl.grade_scale
-    let choice = Object.keys(gradeScale).reduce((a, b) => gradeScale[a] > gradeScale[b] ? { grade: a, min: gradeScale[a] } : { grade: b, min: gradeScale[b] })
+    let choice = null
+
+    if (gradeScale) choice = Object.keys(gradeScale).reduce((a, b) => gradeScale[a] > gradeScale[b] ? { grade: a, min: gradeScale[a] } : { grade: b, min: gradeScale[b] })
 
     this.state = {
-      gradeScale: gradeScale,
+      gradeScale,
       choice
     }
   }
@@ -112,7 +114,7 @@ class SpeculateTool extends React.Component {
         return (
           <div
             key={Object.keys(gradeScale).indexOf(g)}
-            className='sk-select-selection'
+            className='sk-select-option'
             onClick={() => this.setState({choice: {grade: g, min: gradeScale[g]}})}
           >
             {g}
@@ -136,21 +138,22 @@ class SpeculateTool extends React.Component {
 
   renderSpeculateTool () {
     return (
-      <div>
-        <p>What grade do you want to make?</p>
-        <SkSelect
-          optionsMap={() => this.renderGradeOptions()}
-          selection={this.state.choice.grade}
-        />
-        <p>You need to average at least <b>{this.renderAverage()}%</b> on your remaining assignments this semester to achieve the grade <b>{this.state.choice.grade}</b></p>
+      <div className='speculate'>
+        <p>What grade do you want to make in this class?</p>
+        <div className='speculate-select'>
+          <SkSelect
+            optionsMap={() => this.renderGradeOptions()}
+            selection={this.state.choice.grade}
+          />
+        </div>
+        <p>You need to average at least <b>{this.renderAverage()}%</b> on your remaining assignments this semester to achieve the grade <b>{this.state.choice.grade}.</b></p>
       </div>
     )
   }
 
   render () {
-    console.log(this.props.cl)
     return (
-      this.props.cl.grade_scale === null
+      !this.state.gradeScale
         ? this.renderNoGradeScale()
         : this.renderSpeculateTool()
     )
