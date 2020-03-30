@@ -2,6 +2,7 @@ import React from 'react'
 import {inject, observer} from 'mobx-react'
 import PropTypes from 'prop-types'
 import SkSelect from '../../components/SkSelect'
+import actions from '../../../actions'
 
 @inject('rootStore') @observer
 class SpeculateTool extends React.Component {
@@ -19,9 +20,31 @@ class SpeculateTool extends React.Component {
     }
   }
 
+  adoptGradeScale (gs) {
+    let gradeScale = {}
+    gs.forEach(g => {
+      gradeScale[g.grade] = g.minimum
+    })
+    let form = {
+      id: this.props.cl.id,
+      gradeScale
+    }
+    console.log(form)
+    actions.classes.updateClass(form)
+      .then(r => {
+        let gradeScale = r.grade_scale
+        let choice = Object.keys(gradeScale).reduce((a, b) => gradeScale[a] > gradeScale[b] ? { grade: a, min: gradeScale[a] } : { grade: b, min: gradeScale[b] })
+        this.setState({
+          gradeScale,
+          choice
+        })
+      })
+      .catch(e => console.log)
+  }
+
   renderSelect (gs) {
     return (
-      <div className='speculate-gs-option-select'><p>Adopt</p></div>
+      <div className='speculate-gs-option-select' onClick={() => this.adoptGradeScale(gs)}><p>Adopt</p></div>
     )
   }
 
