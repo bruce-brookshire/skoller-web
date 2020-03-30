@@ -25,13 +25,15 @@ class SpeculateTool extends React.Component {
     gs.forEach(g => {
       gradeScale[g.grade] = g.minimum
     })
+
     let form = {
       id: this.props.cl.id,
-      gradeScale
+      grade_scale: gradeScale
     }
     console.log(form)
     actions.classes.updateClass(form)
       .then(r => {
+        console.log(r)
         let gradeScale = r.grade_scale
         let choice = Object.keys(gradeScale).reduce((a, b) => gradeScale[a] > gradeScale[b] ? { grade: a, min: gradeScale[a] } : { grade: b, min: gradeScale[b] })
         this.setState({
@@ -39,7 +41,7 @@ class SpeculateTool extends React.Component {
           choice
         })
       })
-      .catch(e => console.log)
+      .catch(e => console.log(e))
   }
 
   renderSelect (gs) {
