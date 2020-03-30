@@ -242,11 +242,14 @@ export function getAssignmentWeightData (studentAssignmentsStore, cl = false, id
 
 export function getWeightDistribution (studentAssignmentsStore, cl = false, ids = [], grouping = 'w') {
   let assignments = cl ? studentAssignmentsStore.assignments.filter(a => a.class_id === cl.id) : studentAssignmentsStore.assignments.filter(a => ids.length > 0 ? ids.includes(a.class_id) : true)
+  let zero = 0
   let low = 0
   let medium = 0
   let high = 0
   assignments.forEach(assignment => {
-    if (assignment.weight < 0.05) {
+    if (assignment.weight === 0) {
+      zero += 1
+    } else if (assignment.weight < 0.05) {
       low += 1
     } else if (assignment.weight < 0.15) {
       medium += 1
@@ -261,7 +264,8 @@ export function getWeightDistribution (studentAssignmentsStore, cl = false, ids 
     data: [
       { x: 'High', y: high },
       { x: 'Medium', y: medium },
-      { x: 'Low', y: low }
+      { x: 'Low', y: low },
+      { x: 'Zero', y: zero }
     ],
     count
   }

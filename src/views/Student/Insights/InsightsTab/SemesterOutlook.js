@@ -15,6 +15,12 @@ class SemesterOutlook extends React.Component {
     }
   }
 
+  renderSpacer () {
+    return (
+      <div style={{borderBottom: '1px solid rgba(0,0,0,0.15)', width: '100%', margin: '2rem 0'}} />
+    )
+  }
+
   renderContent () {
     let ids = this.props.rootStore.studentClassesStore.classes.map(cl => this.props.selectedClasses.includes(cl.name) ? cl.id : null)
     return (
@@ -23,9 +29,11 @@ class SemesterOutlook extends React.Component {
         <div style={{margin: '1rem 0'}}>
           <WeightsTimeline ids={ids} view={this.getView()} />
         </div>
+        {this.renderSpacer()}
         <div style={{margin: '1rem 0'}}>
           <AssignmentsTimeline ids={ids} view={this.getView()} />
         </div>
+        {this.renderSpacer()}
         <div style={{margin: '1rem 0 0 0'}}>
           <Distribution ids={ids} />
         </div>

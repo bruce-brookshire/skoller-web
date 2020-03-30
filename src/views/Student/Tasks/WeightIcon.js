@@ -11,7 +11,9 @@ class WeightIcon extends React.Component {
       'three': {color: gray, opacity: '100%'}
     }
 
-    if (weight < 0.05) {
+    if (weight === 0) {
+      colorSet.one.color = colorSet.one.color
+    } else if (weight < 0.05) {
       colorSet.one.color = this.props.color
     } else if (weight < 0.15) {
       colorSet.one.color = this.props.color

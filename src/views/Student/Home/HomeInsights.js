@@ -7,6 +7,7 @@ import AssignmentsTimeline from '../Insights/AssignmentsTimeline'
 import WeightsTimeline from '../Insights/WeightsTimeline'
 import Distribution from '../Insights/Distribution'
 import Sammi from '../../components/Sammi'
+import Progress from '../Insights/Progress'
 
 export class DateTooltip extends React.Component {
   static propTypes = {
@@ -51,7 +52,8 @@ class HomeInsights extends React.Component {
     super(props)
 
     this.state = {
-      type: 'distribution'
+      // type: 'distribution'
+      type: 'progress'
     }
   }
 
@@ -59,20 +61,26 @@ class HomeInsights extends React.Component {
     if (this.props.rootStore.studentAssignmentsStore.assignments.length > 0) {
       if (this.state.type === 'assignmentsTimeline') {
         return (
-          <div style={{margin: '1rem'}}>
+          <div style={{margin: '2rem 1rem 1rem 1rem'}}>
             <AssignmentsTimeline view={'w'} />
           </div>
         )
       } else if (this.state.type === 'weightsTimeline') {
         return (
-          <div style={{margin: '1rem'}}>
+          <div style={{margin: '2rem 1rem 1rem 1rem'}}>
             <WeightsTimeline view={'w'} />
           </div>
         )
       } else if (this.state.type === 'distribution') {
         return (
-          <div style={{margin: '1rem'}}>
+          <div style={{margin: '2rem 1rem 1rem 1rem'}}>
             <Distribution />
+          </div>
+        )
+      } else if (this.state.type === 'progress') {
+        return (
+          <div style={{margin: '2rem 1rem 1rem 1rem'}}>
+            <Progress />
           </div>
         )
       }
@@ -133,6 +141,19 @@ class HomeInsights extends React.Component {
           onClick={() => this.setState({type: 'weightsTimeline'})}
         >
           Weights
+        </p>
+        <p
+          style={{
+            borderBottom: this.state.type === 'progress' ? '4px solid #57B9E4' : '',
+            fontWeight: this.state.type === 'progress' ? '600' : '',
+            margin: '0 0 -2px 0',
+            padding: '0 12px',
+            cursor: 'pointer',
+            textAlign: 'center'
+          }}
+          onClick={() => this.setState({type: 'progress'})}
+        >
+          Progress
         </p>
       </div>
     )

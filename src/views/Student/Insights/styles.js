@@ -19,18 +19,18 @@ export function getStyles (c) {
       display: 'inline',
       padding: 0,
       fontFamily: '"Calibre", sans-serif',
-      maxWidth: '100%',
+      width: '100%',
       height: 'auto',
-      border: '1px solid ' + GRAY_COLOR_50,
+      // border: '1px solid ' + GRAY_COLOR_50,
       borderRadius: '5px'
     },
     title: {
-      textAnchor: 'start',
+      textAnchor: 'middle',
       verticalAnchor: 'end',
       fill: GRAY_COLOR,
       fontFamily: 'inherit',
-      fontSize: '24px',
-      fontWeight: 'bold'
+      fontSize: '18px',
+      fontWeight: '400'
     },
     subtitle: {
       textAnchor: 'start',
@@ -117,7 +117,7 @@ export function getStyles (c) {
 
     // PIE DEFAULT
     pie: {
-      colorScale: [COLOR, COLOR_75, COLOR_50, COLOR_25],
+      colorScale: [COLOR, COLOR_75, COLOR_50, GRAY_COLOR_25],
       labelTitleOne: {
         fill: COLOR,
         fontSize: 20,
@@ -136,6 +136,12 @@ export function getStyles (c) {
         fontFamily: 'inherit',
         fontWeight: 600
       },
+      labelTitleFour: {
+        fill: GRAY_COLOR_25,
+        fontSize: 20,
+        fontFamily: 'inherit',
+        fontWeight: 600
+      },
       labelTitleOneSubtitle: {
         fill: GRAY_COLOR,
         fontSize: 14,
@@ -149,6 +155,12 @@ export function getStyles (c) {
         fontWeight: 300
       },
       labelTitleThreeSubtitle: {
+        fill: GRAY_COLOR,
+        fontSize: 14,
+        fontFamily: 'inherit',
+        fontWeight: 300
+      },
+      labelTitleFourSubtitle: {
         fill: GRAY_COLOR,
         fontSize: 14,
         fontFamily: 'inherit',
