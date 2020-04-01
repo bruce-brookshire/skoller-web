@@ -10,7 +10,7 @@ class SpeculateTool extends React.Component {
     super(props)
 
     let gradeScale = this.props.cl.grade_scale
-    let choice = null
+    let choice = []
 
     if (gradeScale) choice = Object.keys(gradeScale).reduce((a, b) => gradeScale[a] > gradeScale[b] ? { grade: a, min: gradeScale[a] } : { grade: b, min: gradeScale[b] })
 
@@ -105,7 +105,7 @@ class SpeculateTool extends React.Component {
             <table>
               {gs2.map(g => {
                 return (
-                  <tr key={gs1.indexOf(g)}>
+                  <tr key={gs2.indexOf(g)}>
                     <td>{g.grade}</td>
                     <td>{g.minimum}</td>
                   </tr>
@@ -118,7 +118,7 @@ class SpeculateTool extends React.Component {
             <table>
               {gs3.map(g => {
                 return (
-                  <tr key={gs1.indexOf(g)}>
+                  <tr key={gs3.indexOf(g)}>
                     <td>{g.grade}</td>
                     <td>{g.minimum}</td>
                   </tr>
@@ -153,8 +153,8 @@ class SpeculateTool extends React.Component {
     let min = this.state.choice.min
     let assignments = this.props.cl.assignments
 
-    let completedAssignmentsScore = assignments.filter(a => a.grade !== null).map(a => a.weight * a.grade).reduce((a, b) => a + b)
-    let remainingWeight = assignments.filter(a => a.grade === null).map(a => a.weight).reduce((a, b) => a + b)
+    let completedAssignmentsScore = assignments.filter(a => a.grade !== null).map(a => a.weight * a.grade).reduce((a, b) => a + b, 0)
+    let remainingWeight = assignments.filter(a => a.grade === null).map(a => a.weight).reduce((a, b) => a + b, 0)
 
     let x = (min - completedAssignmentsScore) / remainingWeight
 

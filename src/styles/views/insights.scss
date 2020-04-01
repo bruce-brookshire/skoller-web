@@ -92,3 +92,19 @@ $insights-bp: 1000px;
     font-weight: 600;
   }
 }
+
+.sk-insights-select {
+  .sk-select-selection {
+    color: $sk-blue;
+    padding: 4px 4px 0 4px;
+  }
+
+  .sk-insights-select-option {
+    padding: 4px;
+    cursor: pointer;
+  
+    &:hover {
+      background-color: $cn-color-hover-grey;
+    }
+  }
+}

@@ -74,11 +74,6 @@ class Progress extends React.Component {
     let dArray = this.renderPathSegments()
     return (
       <React.Fragment>
-        <div className='insights-progress-chart-axis'>
-          <div className='date'>{moment(dArray[0].a.a.due).format('M/D')}</div>
-          <div className='line' />
-          <div className='date'>{moment(dArray[dArray.length - 1].a.a.due).format('M/D')}</div>
-        </div>
         <div className='insights-progress-chart' style={{display: 'flex', flexDirection: 'row', width: '100%' + 'px'}}>
           {dArray.filter(d => moment(d.a.a.due).isBefore(moment())).map(d => {
             return (
