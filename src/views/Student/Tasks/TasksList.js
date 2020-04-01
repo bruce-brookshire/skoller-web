@@ -33,7 +33,10 @@ class TasksList extends React.Component {
   renderNoTasks () {
     return (
       <div style={{color: 'rgba(0,0,0,0.3)', width: '100%', textAlign: 'center', padding: '2rem'}}>
-        No to-do&apos;s.
+        {this.props.rootStore.studentAssignmentsStore.assignments.length > 0
+          ? "You're all caught up!"
+          : "No to-do's."
+        }
       </div>
     )
   }
@@ -47,17 +50,28 @@ class TasksList extends React.Component {
   getTaskDisplayCount () {
     let i = 0
     this.getSortedAssignments().forEach(task => {
-      let daysAway = moment(task.due).diff(moment(), 'days')
-      let maxDays = this.props.maxDays ? this.props.maxDays - 1 : 10000
-      if (
-        (daysAway <= maxDays) && // if maxDays prop is given, check to make sure that task is within maxDays
-        (daysAway >= 0 || this.props.cl) && // make sure task is in the future, unless it's within a class detail view
-        (this.props.cl ? task.class_id === this.props.cl.id : true) // if class detail view, make sure assignment is for that class
-      ) {
+      if (this.taskValidity(task)) {
         i += 1
       }
     })
     return i
+  }
+
+  taskValidity (task, i = false) {
+    let daysAway = moment(task.due).diff(moment(), 'days')
+    let maxDays = this.props.maxDays ? this.props.maxDays - 1 : 10000
+    let maxTasks = this.props.maxTasks ? this.props.maxTasks : 10000
+
+    if (
+      (daysAway <= maxDays) && // if maxDays prop is given, check to make sure that task is within maxDays
+      (i === false ? !i : (i < maxTasks || this.state.seeMore)) && // if number of tasks already displayed is greater than limit given by prop maxTasks, don't display... unless user has clicked See More or unless i is not given
+      (daysAway >= 0 || this.props.cl) && // make sure task is in the future, unless it's within a class detail view
+      (this.props.cl ? task.class_id === this.props.cl.id : true) // if class detail view, make sure assignment is for that class
+    ) {
+      return true
+    } else {
+      return false
+    }
   }
 
   renderTasks () {
@@ -69,10 +83,7 @@ class TasksList extends React.Component {
     } else {
       let taskCount = 0
       this.getSortedAssignments().forEach(task => {
-        let daysAway = moment(task.due).diff(moment(), 'days')
-        let maxDays = this.props.maxDays ? this.props.maxDays : 10000
-        let maxTasks = this.props.maxTasks ? this.props.maxTasks : 10000
-        if (daysAway <= maxDays && i <= maxTasks) {
+        if (this.taskValidity(task)) {
           taskCount += 1
         }
       })
@@ -82,15 +93,7 @@ class TasksList extends React.Component {
         return (
           this.getSortedAssignments().map(task => {
             let cl = this.getClassForTask(task)
-            let daysAway = moment(task.due).diff(moment(), 'days')
-            let maxDays = this.props.maxDays ? this.props.maxDays - 1 : 10000
-            let maxTasks = this.props.maxTasks ? this.props.maxTasks : 10000
-            if (
-              (daysAway <= maxDays) && // if maxDays prop is given, check to make sure that task is within maxDays
-              (i < maxTasks || this.state.seeMore) && // if number of tasks already displayed is greater than limit given by prop maxTasks, don't display... unless user has clicked See More
-              (daysAway >= 0 || this.props.cl) && // make sure task is in the future, unless it's within a class detail view
-              (this.props.cl ? task.class_id === this.props.cl.id : true) // if class detail view, make sure assignment is for that class
-            ) {
+            if (this.taskValidity(task, i)) {
               i += 1
               return (
                 <div key={task.id}>

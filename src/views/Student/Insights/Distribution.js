@@ -129,11 +129,6 @@ class WeightsTimeline extends React.Component {
             There are <b style={this.props.cl ? {color: '#' + this.props.cl.color} : null}>{count} assignments</b> {(this.props.cl ? 'in this class...' : 'this semester...')}
           </div>
           <svg style={styles.parent} viewBox='0 0 450 260'>
-            {/* <VictoryLabel x={225} y={40}
-              text={'There are ' + count + ' assignments ' + (this.props.cl ? 'in this class...' : 'this semester...')}
-              style={styles.title}
-              animate={animate}
-            /> */}
             <g transform={'translate(18, 28)'}>
               {this.renderLabel(0, 0, styles, animate, data[0], 'high')}
               {this.renderLabel(0, 64, styles, animate, data[1], 'medium')}

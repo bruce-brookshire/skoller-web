@@ -7,6 +7,7 @@ import AssignmentsTimeline from '../Insights/AssignmentsTimeline'
 import WeightsTimeline from '../Insights/WeightsTimeline'
 import Distribution from '../Insights/Distribution'
 import SpeculateTool from '../Insights/SpeculateTool'
+import SkSelect from '../../components/SkSelect'
 
 export class DateTooltip extends React.Component {
   static propTypes = {
@@ -51,31 +52,31 @@ class ClassInsights extends React.Component {
     super(props)
 
     this.state = {
-      type: 'distribution'
+      type: 'Distribution'
     }
   }
 
   renderContent () {
     if (this.props.rootStore.studentAssignmentsStore.assignments.length > 0) {
-      if (this.state.type === 'assignmentsTimeline') {
+      if (this.state.type === 'Assignments') {
         return (
           <div style={{margin: '2rem 1rem 1rem 1rem'}}>
             <AssignmentsTimeline cl={this.props.cl} view={'w'} />
           </div>
         )
-      } else if (this.state.type === 'weightsTimeline') {
+      } else if (this.state.type === 'Weights') {
         return (
           <div style={{margin: '2rem 1rem 1rem 1rem'}}>
             <WeightsTimeline cl={this.props.cl} view={'w'} />
           </div>
         )
-      } else if (this.state.type === 'distribution') {
+      } else if (this.state.type === 'Distribution') {
         return (
           <div style={{margin: '2rem 1rem 1rem 1rem'}}>
             <Distribution cl={this.props.cl} />
           </div>
         )
-      } else if (this.state.type === 'speculate') {
+      } else if (this.state.type === 'Speculate') {
         return (
           <div style={{margin: '2rem 1rem 1rem 1rem'}}>
             <SpeculateTool cl={this.props.cl} />
@@ -158,10 +159,34 @@ class ClassInsights extends React.Component {
     )
   }
 
+  renderSelectOptions () {
+    let options = ['Distribution', 'Assignments', 'Weights', 'Speculate']
+
+    return (
+      options.map(o => {
+        let index = options.indexOf(o)
+
+        return (
+          <div className='sk-insights-select-option' key={index} onClick={() => this.setState({type: o})}>
+            {o}
+          </div>
+        )
+      })
+    )
+  }
+
+  renderSelect () {
+    return (
+      <div style={{margin: '1rem 1rem 0 1rem'}}>
+        <SkSelect className='sk-insights-select' selection={<b>{this.state.type}</b>} optionsMap={() => this.renderSelectOptions()} />
+      </div>
+    )
+  }
+
   render () {
     return (
       <div>
-        {this.props.rootStore.studentAssignmentsStore.assignments.length > 0 && this.renderNav()}
+        {this.props.rootStore.studentAssignmentsStore.assignments.length > 0 && this.renderSelect()}
         {this.renderContent()}
       </div>
     )

@@ -8,6 +8,7 @@ import WeightsTimeline from '../Insights/WeightsTimeline'
 import Distribution from '../Insights/Distribution'
 import Sammi from '../../components/Sammi'
 import Progress from '../Insights/Progress'
+import SkSelect from '../../components/SkSelect'
 
 export class DateTooltip extends React.Component {
   static propTypes = {
@@ -52,32 +53,31 @@ class HomeInsights extends React.Component {
     super(props)
 
     this.state = {
-      // type: 'distribution'
-      type: 'progress'
+      type: 'Distribution'
     }
   }
 
   renderContent () {
     if (this.props.rootStore.studentAssignmentsStore.assignments.length > 0) {
-      if (this.state.type === 'assignmentsTimeline') {
+      if (this.state.type === 'Assignments') {
         return (
           <div style={{margin: '2rem 1rem 1rem 1rem'}}>
             <AssignmentsTimeline view={'w'} />
           </div>
         )
-      } else if (this.state.type === 'weightsTimeline') {
+      } else if (this.state.type === 'Weights') {
         return (
           <div style={{margin: '2rem 1rem 1rem 1rem'}}>
             <WeightsTimeline view={'w'} />
           </div>
         )
-      } else if (this.state.type === 'distribution') {
+      } else if (this.state.type === 'Distribution') {
         return (
           <div style={{margin: '2rem 1rem 1rem 1rem'}}>
             <Distribution />
           </div>
         )
-      } else if (this.state.type === 'progress') {
+      } else if (this.state.type === 'Progress') {
         return (
           <div style={{margin: '2rem 1rem 1rem 1rem'}}>
             <Progress />
@@ -159,6 +159,30 @@ class HomeInsights extends React.Component {
     )
   }
 
+  renderSelectOptions () {
+    let options = ['Distribution', 'Assignments', 'Weights', 'Progress']
+
+    return (
+      options.map(o => {
+        let index = options.indexOf(o)
+
+        return (
+          <div className='sk-insights-select-option' key={index} onClick={() => this.setState({type: o})}>
+            {o}
+          </div>
+        )
+      })
+    )
+  }
+
+  renderSelect () {
+    return (
+      <div style={{margin: '1rem 1rem 0 1rem'}}>
+        <SkSelect className='sk-insights-select' selection={<b>{this.state.type}</b>} optionsMap={() => this.renderSelectOptions()} />
+      </div>
+    )
+  }
+
   render () {
     return (
       <div className='home-shadow-box margin-top'>
@@ -176,7 +200,8 @@ class HomeInsights extends React.Component {
             Skoller Insights help you <b>see your semester in new ways</b> using data from <b>all {this.props.rootStore.studentClassesStore.classes.length > 2 ? this.props.rootStore.studentClassesStore.classes.length.toString() + ' ' : ''}of your classes!</b>
           </p>
         </Sammi>
-        {this.props.rootStore.studentAssignmentsStore.assignments.length > 0 && this.renderNav()}
+        {/* {this.props.rootStore.studentAssignmentsStore.assignments.length > 0 && this.renderNav()} */}
+        {this.renderSelect()}
         {this.renderContent()}
       </div>
     )
