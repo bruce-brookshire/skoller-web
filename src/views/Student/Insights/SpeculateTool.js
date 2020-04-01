@@ -12,7 +12,6 @@ class SpeculateTool extends React.Component {
     let gradeScale = this.props.cl.grade_scale
     let choice = []
 
-    console.log(Object.keys(gradeScale))
     if (gradeScale) choice = Object.keys(gradeScale).reduce((a, b) => gradeScale[a] > gradeScale[b] ? { grade: a, min: gradeScale[a] } : { grade: b, min: gradeScale[b] })
 
     this.state = {
@@ -106,7 +105,7 @@ class SpeculateTool extends React.Component {
             <table>
               {gs2.map(g => {
                 return (
-                  <tr key={gs1.indexOf(g)}>
+                  <tr key={gs2.indexOf(g)}>
                     <td>{g.grade}</td>
                     <td>{g.minimum}</td>
                   </tr>
@@ -119,7 +118,7 @@ class SpeculateTool extends React.Component {
             <table>
               {gs3.map(g => {
                 return (
-                  <tr key={gs1.indexOf(g)}>
+                  <tr key={gs3.indexOf(g)}>
                     <td>{g.grade}</td>
                     <td>{g.minimum}</td>
                   </tr>
