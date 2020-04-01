@@ -69,7 +69,7 @@ class KeyInsights extends React.Component {
               </span>
             )
           })}
-          {' represent the easiest 25% of weeks this semester.'}
+          {' are the easiest weeks of this semester.'}
         </p>
       </div>
     )

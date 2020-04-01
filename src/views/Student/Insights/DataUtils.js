@@ -341,7 +341,7 @@ export function getKeyInsights (studentAssignmentsStore, ids = []) {
 
   let weeklyWeightArray = weeksArray.map(w => weeks[w].totalWeight)
   let easiestWeeks = allWeeks.map(w => {
-    if (percentRank(weeklyWeightArray, weeks[w].totalWeight) <= 0.25) {
+    if (percentRank(weeklyWeightArray, weeks[w].totalWeight) <= 0.25 || weeks[w].totalWeight <= 0.01) {
       weeks[w].overallWeight = weeks[w].totalWeight / allWeights
       return weeks[w]
     }
