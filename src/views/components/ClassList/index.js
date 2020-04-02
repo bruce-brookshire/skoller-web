@@ -258,8 +258,8 @@ class ClassList extends React.Component {
               style={cl.status.id >= 1400 ? {border: '1px solid ' + color} : null}
               onClick={() => this.onClassSelect(cl)}
             >
-              <div className='cn-class-list-cell-title' style={cl.status.id !== 1400 ? {backgroundColor: null, borderBottom: '1px solid #4a4a4a'} : {backgroundColor: color}}>
-                <h2 style={cl.status.id !== 1400 ? {color: '#4a4a4a'} : {color: 'white'}}>{name}</h2>
+              <div className='cn-class-list-cell-title' style={cl.status.id < 1400 ? {backgroundColor: null, borderBottom: '1px solid #4a4a4a'} : {backgroundColor: color}}>
+                <h2 style={cl.status.id < 1400 ? {color: '#4a4a4a'} : {color: 'white'}}>{name}</h2>
               </div>
               <div className='cn-class-list-cell-grade'>
                 {this.renderGrade(cl)}
