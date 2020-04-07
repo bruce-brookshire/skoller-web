@@ -74,135 +74,141 @@ class WeightsTimeline extends React.Component {
         ],
         y: [
           0,
-          Math.max.apply(Math, data.map(a => a.y)) + (Math.max.apply(Math, data.map(a => a.y)) * 0.25)
+          Math.max.apply(Math, data.map(a => a.y)) + (Math.max.apply(Math, data.map(a => a.y)) * 0.33)
         ]
+      }
+      let hideToday = false
+      if (moment(today, 'X').isAfter(moment(domain.x[1], 'X'))) {
+        hideToday = true
       }
       const tickValues = data.map(d => d.x)
       const animate = this.props.view !== 'd' ? styles.animate : null
 
       return (
-        <svg style={styles.parent} viewBox='0 0 450 350'>
-
-          {/* Define labels */}
-          <VictoryLabel x={18} y={40}
-            text='Weights Timeline'
-            style={styles.title}
-          />
-
-          <VictoryLabel x={18} y={60}
-            text='How much of your total grade is determined each week?'
-            style={styles.subtitle}
-          />
-
-          <g transform={'translate(16, 46)'}>
-            {/* Add shared independent axis */}
-            <VictoryAxis
-              tickValues={tickValues}
-              tickFormat={d => moment(d, 'X').format('M/DD')}
-              tickCount={5}
-              style={styles.axisDates}
-              domain={{x: domain.x}}
-              standalone={false}
+        <div>
+          <div className='insights-title'>
+            How much of your <b style={this.props.cl ? {color: '#' + this.props.cl.color} : null}>total grade</b> is determined each {this.props.view === 'd' ? 'day' : ''}{this.props.view === 'm' ? 'month' : ''}{this.props.view === 'w' ? 'week' : ''}?
+          </div>
+          <svg style={styles.parent} viewBox='0 0 450 260'>
+            {/* Define labels
+            <VictoryLabel x={225} y={40}
+              text={`How much of your total grade is determined each ${this.props.view === 'd' ? 'day' : ''}${this.props.view === 'm' ? 'month' : ''}${this.props.view === 'w' ? 'week' : ''}?`}
+              style={styles.title}
               animate={animate}
-            />
+            /> */}
 
-            <VictoryLabel x={6} y={154}
-              text={'% of Total Grade'}
-              style={styles.axisLabel}
-              angle={270}
-              textAnchor={'middle'}
-            />
+            <g transform={'translate(16, -20)'}>
+              {/* Add shared independent axis */}
+              <VictoryAxis
+                tickValues={tickValues}
+                tickFormat={d => moment(d, 'X').format('M/DD')}
+                tickCount={5}
+                style={styles.axisDates}
+                domain={{x: domain.x}}
+                standalone={false}
+                animate={animate}
+              />
 
-            <VictoryAxis
-              dependentAxis
-              // label='Assignment Weights'
-              domain={{y: domain.y}}
-              tickFormat={d => Math.round((d * 100)).toString() + '%'}
-              offsetX={50}
-              orientation='left'
-              standalone={false}
-              domainPadding={200}
-              style={styles.axisOne}
-              animate={animate}
-            />
+              <VictoryLabel x={6} y={154}
+                text={'% of Total Grade'}
+                style={styles.axisLabel}
+                angle={270}
+                textAnchor={'middle'}
+              />
 
-            <VictoryLine
-              x={() => today}
-              domain={domain}
-              scale={{x: 'time', y: 'linear'}}
-              standalone={false}
-              style={styles.todayLine.back}
-              animate={animate}
-            />
+              <VictoryAxis
+                dependentAxis
+                // label='Assignment Weights'
+                domain={{y: domain.y}}
+                tickFormat={d => Math.round((d * 100)).toString() + '%'}
+                offsetX={50}
+                orientation='left'
+                standalone={false}
+                domainPadding={200}
+                style={styles.axisOne}
+                animate={animate}
+              />
 
-            <VictoryLine
-              x={() => today}
-              domain={domain}
-              scale={{x: 'time', y: 'linear'}}
-              standalone={false}
-              style={styles.todayLine.front}
-              animate={animate}
-            />
-
-            <VictoryScatter
-              data={[{x: today, y: domain.y[1]}]}
-              domain={domain}
-              standalone={false}
-              scale={{x: 'time', y: 'linear'}}
-              size={4}
-              style={styles.todayLine.dot}
-              animate={animate}
-            />
-
-            <VictoryLabel x={(((today - domain.x[0]) / (domain.x[1] - domain.x[0])) * 336) + 35} y={34}
-              text={'Today'}
-              style={styles.label}
-              animate={animate}
-            />
-
-            <g>
-              {(this.props.view === 'w' || this.props.view === 'm') &&
-                <VictoryArea
-                  data={data}
+              {!hideToday && <g>
+                <VictoryLine
+                  x={() => today}
                   domain={domain}
                   scale={{x: 'time', y: 'linear'}}
                   standalone={false}
-                  interpolation='monotoneX'
-                  style={styles.area}
+                  style={styles.todayLine.back}
+                  animate={animate}
+                />
+
+                <VictoryLine
+                  x={() => today}
+                  domain={domain}
+                  scale={{x: 'time', y: 'linear'}}
+                  standalone={false}
+                  style={styles.todayLine.front}
+                  animate={animate}
+                />
+
+                <VictoryScatter
+                  data={[{x: today, y: domain.y[1]}]}
+                  domain={domain}
+                  standalone={false}
+                  scale={{x: 'time', y: 'linear'}}
+                  size={4}
+                  style={styles.todayLine.dot}
+                  animate={animate}
+                />
+
+                <VictoryLabel x={(((today - domain.x[0]) / (domain.x[1] - domain.x[0])) * 336) + 35} y={34}
+                  text={'Today'}
+                  style={styles.label}
+                  animate={animate}
+                />
+              </g>}
+
+              <g>
+                {(this.props.view === 'w' || this.props.view === 'm') &&
+                  <VictoryArea
+                    data={data}
+                    domain={domain}
+                    scale={{x: 'time', y: 'linear'}}
+                    standalone={false}
+                    interpolation='monotoneX'
+                    style={styles.area}
+                    animate={animate}
+                  />
+                }
+              </g>
+
+              {(this.props.view === 'w' || this.props.view === 'm') &&
+                <VictoryScatter
+                  data={data}
+                  size={5}
+                  domain={domain}
+                  scale={{x: 'time', y: 'linear'}}
+                  standalone={false}
+                  style={styles.scatter}
+                  labels={() => ''}
+                  labelComponent={ <VictoryTooltip flyoutComponent={<DateTooltip view={this.props.view}/>} /> }
+                  animate={animate}
+                />
+              }
+
+              {this.props.view === 'd' &&
+                <VictoryBar
+                  data={data}
+                  size={5}
+                  domain={domain}
+                  scale={{x: 'time', y: 'linear'}}
+                  standalone={false}
+                  style={styles.scatter}
+                  labels={() => ''}
+                  labelComponent={ <VictoryTooltip flyoutComponent={<DateTooltip view={this.props.view} />} /> }
                   animate={animate}
                 />
               }
             </g>
-
-            {(this.props.view === 'w' || this.props.view === 'm') &&
-              <VictoryScatter
-                data={data}
-                size={5}
-                domain={domain}
-                scale={{x: 'time', y: 'linear'}}
-                standalone={false}
-                style={styles.scatter}
-                labels={() => ''}
-                labelComponent={ <VictoryTooltip flyoutComponent={<DateTooltip view={this.props.view}/>} /> }
-                animate={animate}
-              />
-            }
-
-            {this.props.view === 'd' &&
-              <VictoryBar
-                data={data}
-                size={5}
-                domain={domain}
-                scale={{x: 'time', y: 'linear'}}
-                standalone={false}
-                style={styles.scatter}
-                labels={() => ''}
-                labelComponent={ <VictoryTooltip flyoutComponent={<DateTooltip view={this.props.view} />} /> }
-                animate={animate}
-              />
-            }
-          </g>
-        </svg>
+          </svg>
+        </div>
       )
     } else {
       return <div />

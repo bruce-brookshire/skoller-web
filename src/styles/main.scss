@@ -67,6 +67,8 @@
 @import 'components/hub-weight-form';
 @import 'components/hub-weights';
 @import 'components/insights-semester';
+@import 'components/insights-key';
+@import 'components/insights-progress';
 @import 'components/job-cell';
 @import 'components/job-detail';
 @import 'components/jobs-form.scss';
@@ -113,6 +115,7 @@
 @import 'components/sk-upload-additional-docs.scss';
 @import 'components/sk-upload-overload-docs.scss';
 @import 'components/sign-up-form';
+@import 'components/speculate-tool';
 @import 'components/time-fields';
 @import 'components/topnav';
 @import 'components/tooltip';
@@ -218,6 +221,11 @@ a {
 a {
   color: inherit; /* blue colors for links too */
   text-decoration: inherit; /* no underline */
+}
+
+.link-style {
+  color: $cn-color-blue;
+  cursor: pointer;
 }
 
 body {

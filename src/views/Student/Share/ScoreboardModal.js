@@ -33,7 +33,7 @@ class ScoreboardModal extends React.Component {
             </tr>
           </table>
           <p style={{fontWeight: '600', color: '#' + this.props.partner.primaryColor}}>${this.props.user.student.raise_effort.org_signups} raised of $10,000</p>
-          <div style={{marginTop: '-16px'}}>
+          <div style={{marginTop: '-16px', width: 'calc(100% - 2rem)'}}>
             <SkProgressBar width={'348'} backgroundColor={'#' + this.props.partner.primaryColor} progress={this.props.user.student.raise_effort.org_signups / 10000} />
           </div>
         </div>

@@ -70,14 +70,14 @@ const processColor = (cl, studentId) => {
     return '#' + cl.color
   } else {
     var colors = {
-      '9b55e5ff': false, // purple
-      'ff71a8ff': false, // pink
-      '57b9e4ff': false, // blue
-      '4cd8bdff': false, // mint
-      '4add58ff': false, // green
-      'f7d300ff': false, // yellow
-      'ffae42ff': false, // orange
-      'dd4a63ff': false // red
+      'D73F76ff': false, // magenta
+      'E2762Dff': false, // orange
+      'F1AA39ff': false, // yellow
+      '19A394ff': false, // teal
+      '61D8A0ff': false, // mint
+      '3484E3ff': false, // blue
+      'FF7BB1ff': false, // pink
+      'DE89F6ff': false // lavender
     }
 
     for (var studentClass in StudentClass.currentClasses) {
@@ -86,21 +86,30 @@ const processColor = (cl, studentId) => {
       }
     }
 
-    const freeColors = []
+    let freeColors = []
     Object.keys(colors).forEach(colorKey => {
       if (!colors[colorKey]) {
         freeColors.push(colorKey)
       }
     })
+    studentClassesStore.classes.forEach(cl => {
+      freeColors.splice(freeColors.indexOf(cl.color), 1)
+    })
+
+    if (freeColors.length === 0) {
+      freeColors = colors
+    }
 
     const randomFreeColor = freeColors[Math.floor(Math.random() * freeColors.length)]
+    console.log('processColor')
     put(
       `/api/v1/students/${studentId}/classes/${cl.id}`,
       { color: randomFreeColor },
       'Error fetching class. Try again.'
     )
       .then(() => {
-        stores.studentClassesStore.updateClasses()
+        console.log('process color update classes')
+        // stores.studentClassesStore.updateClasses()
       })
       .catch(error => {
         return Promise.reject(error)

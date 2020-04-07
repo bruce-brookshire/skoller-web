@@ -238,7 +238,7 @@ class AssignmentDetailContent extends React.Component {
                     <button className="sk-assignment-detail-edit-grade-save" onClick={this.addGradeOnSubmitHandler}>Save Grade</button>
                   </div>
                   : !this.state.editGrade
-                    ? <a className="sk-assignment-detail-add-grade" onClick={this.addGradeHandler}>Add Grade</a>
+                    ? <a className="sk-assignment-detail-add-grade link-style" onClick={this.addGradeHandler}>Add Grade</a>
                     : this.state.editGrade
                       ? <div className="sk-assignment-detail-edit-grade">
                         <input className="sk-assignment-detail-edit-grade-input" type="text" placeholder={assignment.grade} onChange={this.addGradeOnChangeHandler} />

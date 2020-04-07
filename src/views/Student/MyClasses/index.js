@@ -34,21 +34,9 @@ class MyClasses extends React.Component {
   }
 
   updateClasses () {
-    // const {user: {student}} = this.props.rootStore.userStore
-    // actions.classes.getStudentClassesById(student.id).then((classes) => {
-    //   this.setState({classes, loading: false})
-    // }).catch(() => false)
     this.props.rootStore.studentClassesStore.updateClasses()
+    this.props.rootStore.studentAssignmentsStore.updateAssignments()
   }
-
-  // updateClass (cl) {
-  //   actions.classes.getClassById(cl.id).then(cl => {
-  //     const index = this.props.rootStore.studentClassesStore.classes.findIndex(c => c.id === cl.id)
-  //     const newClasses = this.props.rootStore.studentClassesStore.classes
-  //     newClasses[index] = cl
-  //     this.setState({classes: newClasses})
-  //   }).catch(() => false)
-  // }
 
   numberOfClassesNeedingSyllabus () {
     return this.props.rootStore.studentClassesStore.classes.filter((item, index) => {

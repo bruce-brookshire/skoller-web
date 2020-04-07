@@ -15,21 +15,39 @@ class SemesterOutlook extends React.Component {
     }
   }
 
-  render () {
+  renderSpacer () {
+    return (
+      <div style={{borderBottom: '1px solid rgba(0,0,0,0.15)', width: '100%', margin: '2rem 0'}} />
+    )
+  }
+
+  renderContent () {
     let ids = this.props.rootStore.studentClassesStore.classes.map(cl => this.props.selectedClasses.includes(cl.name) ? cl.id : null)
     return (
       <div className='insights-semester'>
-        <h1>{this.props.rootStore.userStore.user.student.name_first}&apos;s Semester</h1>
+        <h1>Your Semester</h1>
         <div style={{margin: '1rem 0'}}>
           <WeightsTimeline ids={ids} view={this.getView()} />
         </div>
+        {this.renderSpacer()}
         <div style={{margin: '1rem 0'}}>
           <AssignmentsTimeline ids={ids} view={this.getView()} />
         </div>
+        {this.renderSpacer()}
         <div style={{margin: '1rem 0 0 0'}}>
           <Distribution ids={ids} />
         </div>
       </div>
+    )
+  }
+
+  render () {
+    let ids = this.props.rootStore.studentClassesStore.classes.map(cl => this.props.selectedClasses.includes(cl.name) ? cl.id : null)
+
+    return (
+      ids.length > 0
+        ? this.renderContent()
+        : <div />
     )
   }
 }

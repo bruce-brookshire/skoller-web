@@ -9,7 +9,7 @@
     display: flex;
     flex-direction: column;
     width: 50%;
-    min-width: 345px;
+    min-width: 395px;
     max-width: 500px;
     flex-grow: 1;
 
@@ -67,6 +67,23 @@
             cursor: pointer;
           }
 
+          .sk-class-palette {
+            position: absolute;
+            z-index: 10;
+            background-color: white;
+            padding: 8px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            border-radius: $skoller-cell-border-radius;
+            box-shadow: 0px 8px 15px rgba(0,0,0,.05);
+
+            .sk-class-palette-color {
+              width: 24px;
+              height: 24px;
+            }
+          }
+
           .sk-class-detail-info {
             margin: 1rem 0;
             padding: 8px;
@@ -101,6 +118,7 @@
     .sk-class-insights {
       @include skoller-cell;
       margin: 0.5rem;
+      min-width: 395px;
 
       h1 {
         margin: 1rem 0 1rem 1rem;
