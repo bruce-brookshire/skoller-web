@@ -25,7 +25,7 @@ export class DataComponent extends React.Component {
           <path d="M0,0 L0,6 L5,3 z" fill={fill} />
         </marker>
         <path d={`M ${(450 / 2) - 18} 40 C ${(450 / 2) - 20} 80, ${x + 20} ${y - 50}, ${x + 3} ${y - 15}`} markerEnd="url(#arrow)" stroke={fill} strokeWidth='2' fill="transparent"/> */}
-        <path d={`M ${x} 40, ${x} ${y}, ${x} ${y}`} stroke={fill} strokeWidth={strokeWidth} fill="transparent"/>
+        <path d={`M ${x} 40, ${x} ${250}, ${x} ${250}`} stroke={fill} strokeWidth={strokeWidth} fill="transparent"/>
       </g>
     )
   }
