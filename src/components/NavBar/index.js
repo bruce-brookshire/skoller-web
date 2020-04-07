@@ -172,7 +172,8 @@ class NavBar extends React.Component {
 
 NavBar.propTypes = {
   rootStore: PropTypes.object,
-  onboard: PropTypes.bool
+  onboard: PropTypes.bool,
+  history: PropTypes.object
 }
 
 export default withRouter(NavBar)

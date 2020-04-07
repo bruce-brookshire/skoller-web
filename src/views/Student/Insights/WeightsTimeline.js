@@ -188,7 +188,7 @@ class WeightsTimeline extends React.Component {
                   standalone={false}
                   style={styles.scatter}
                   labels={() => ''}
-                  labelComponent={ <VictoryTooltip flyoutComponent={<DateTooltip view={this.props.view}/>} /> }
+                  labelComponent={ <VictoryTooltip renderInPortal={false} flyoutComponent={<DateTooltip view={this.props.view}/>} /> }
                   animate={animate}
                 />
               }
@@ -202,7 +202,7 @@ class WeightsTimeline extends React.Component {
                   standalone={false}
                   style={styles.scatter}
                   labels={() => ''}
-                  labelComponent={ <VictoryTooltip flyoutComponent={<DateTooltip view={this.props.view} />} /> }
+                  labelComponent={ <VictoryTooltip renderInPortal={false} flyoutComponent={<DateTooltip view={this.props.view} />} /> }
                   animate={animate}
                 />
               }

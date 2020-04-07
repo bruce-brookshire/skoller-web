@@ -1,0 +1,114 @@
+@import 'si-landing.scss';
+@import 'si-table.scss';
+@import 'si-layout.scss';
+@import 'si-nav.scss';
+
+// small components that don't need individual scss files
+.si-avatar {
+  width: 100%;
+
+  * {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #4a4a4a;
+    background-size: cover;
+    background-position: center;
+    // margin: 0 auto;
+  }
+}
+
+.si-watch-toggle {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  cursor: pointer;
+
+  svg {
+    width: 18px;
+    height: auto;
+  }
+}
+
+.si-teams-cell {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  max-width: 256px;
+  margin-bottom: -4px;
+  position: relative;
+
+  .team {
+    background-color: white;
+    border: 1px solid $sk-blue;
+    border-radius: 3px;
+    padding: 6px 4px 2px 4px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $sk-blue-25;
+    }
+  }
+
+  .add-a-team {
+    margin-bottom: 4px;
+
+    .add-team-button {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      font-weight: 600;
+      border: 1px solid $sk-blue;
+      border-radius: 3px;
+      width: 29px;
+      height: 29px;
+      padding: 5px 0 0 0;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $sk-blue-50;
+      }
+    }
+  }
+
+  .add-team-search-container {
+    position: absolute;
+    z-index: 1;
+    background-color: white;
+    border: 1px solid $sk-blue-75;
+    border-radius: 3px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.04);
+    padding: 0.5rem;
+
+    .add-team-search {
+      width: 100%;
+      min-width: 192px;
+      border: none;
+      
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .team-options-container {
+      max-height: 180px;
+      overflow-y: hidden;
+      overflow: auto;
+
+      .team-option {
+        cursor: pointer;
+        padding: 6px 0 2px 0;
+  
+        &:hover {
+          background-color: $sk-blue-25;
+        }
+      }
+    }
+  }
+}

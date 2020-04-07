@@ -52,6 +52,12 @@ class NavItem extends React.Component {
       return <Resume fill="white" width="22px" height="22px" />
     } else if (this.props.pageName.includes('jobs/browse')) {
       return <Browse fill="white" width="19px" height="18px" />
+    } else if (this.props.pageName.includes('insights/dashboard')) {
+      return null
+    } else if (this.props.pageName.includes('insights/students')) {
+      return null
+    } else if (this.props.pageName.includes('insights/teams')) {
+      return null
     } else if (this.props.pageName.includes('insights')) {
       return <InsightsIcon fill="white" width="22px" height="24px" />
     } else {

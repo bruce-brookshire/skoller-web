@@ -1,0 +1,26 @@
+// variables
+$b: $sk-blue;
+$b75: $sk-blue-75;
+$b50: $sk-blue-50;
+$b25: $sk-blue-25;
+$b10: $sk-blue-10;
+$b5: $sk-blue-5;
+
+.si-table {
+  background-color: white;
+  // width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  text-align: left;
+
+  tr:nth-child(even) { background: white; }
+  tr:nth-child(odd) { background: $b25; }
+  thead {
+    background-color: $b50;
+  }
+
+  table, th, td {
+    border: 1px solid #4a4a4a;
+    padding: 4px;
+  }
+}

@@ -137,7 +137,7 @@ class BusiestWeek extends React.Component {
                       labelComponent={
                         <VictoryTooltip
                           flyoutStyle={styles.flyout}
-                          // renderInPortal={true}
+                          renderInPortal={false}
                         />
                       }
                     />

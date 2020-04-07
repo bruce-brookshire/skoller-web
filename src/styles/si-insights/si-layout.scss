@@ -1,0 +1,18 @@
+.si-layout {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  min-height: calc(100vh - 64px);
+
+  main {
+    flex: 0 0 calc(100% - 200px);
+
+    @media only screen and (max-width: $sk-mobile-break-point) {
+      flex: 0 0 0;
+    }
+  }
+
+  @media only screen and (max-width: $sk-mobile-break-point) {
+    flex-direction: column;
+  }
+}
