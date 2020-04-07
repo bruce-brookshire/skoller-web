@@ -50,8 +50,6 @@ class MyClasses extends React.Component {
     if (num > 0) {
       return (
         <div className='cn-needs-syllabus-info margin-bottom center-text cn-blue'>
-          <i className='fas fa-user-edit' />
-          <br/>
           {`${num} class${num > 1 ? 'es' : ''} still need${num > 1 ? '' : 's'} to be set up.`}
         </div>
       )

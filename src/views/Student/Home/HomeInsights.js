@@ -9,6 +9,7 @@ import Distribution from '../Insights/Distribution'
 import Sammi from '../../components/Sammi'
 import Progress from '../Insights/Progress'
 import SkSelect from '../../components/SkSelect'
+import ToolTip from '../../components/ToolTip'
 
 export class DateTooltip extends React.Component {
   static propTypes = {
@@ -192,6 +193,7 @@ class HomeInsights extends React.Component {
         >
           Insights
         </h1>
+        <ToolTip tip='Skoller Insights help you see your semester in new ways using data from all of your classes!'><i className='fas fa-info-circle' /></ToolTip>
         {this.renderSelect()}
         {this.renderContent()}
       </div>

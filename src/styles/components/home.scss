@@ -92,6 +92,18 @@ $sk-home-break-point: 1000px;
         right: 0;
         width: 128px;
       }
+
+      .tooltip-container {
+        position: absolute;
+        top: 20px;
+        left: 128px;
+        font-size: 14px;
+        color: $sk-blue;
+
+        .tooltip {
+          width: 196px;
+        }
+      }
     }
   }
 }
