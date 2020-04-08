@@ -87,7 +87,7 @@ class ClassStatusModal extends React.Component {
       status = 'live'
       sammiMessage = `WOOHOO! Your class is live ⚡️`
     }
-    if (cl.school.is_syllabus_overload && id < 1400) {
+    if (cl.school.is_syllabus_overload && id < 1400 && id !== 1100) {
       status = 'syllabusOverload'
       sammiMessage = <p>Due to high volume, it could take me <b>a few days</b> to set up this class.</p>
     }
@@ -411,11 +411,19 @@ class ClassStatusModal extends React.Component {
           actions.documents.uploadClassDocument(this.state.cl, file, false)
         })
       }
-      this.setState({
-        loading: false,
-        status: 'inReview',
-        sammiMessage: `Woohoo! You've submitted your syllabus.`
-      })
+      this.setState(
+        this.state.fullClass.school.is_syllabus_overload
+          ? {
+            loading: false,
+            status: 'syllabusOverload',
+            sammiMessage: <p>Due to high volume, it could take me <b>a few days</b> to set up this class.</p>
+          }
+          : {
+            loading: false,
+            status: 'inReview',
+            sammiMessage: `Woohoo! You've submitted your syllabus.`
+          }
+      )
     } else if (this.state.status === 'live') {
       this.props.onSubmit()
     } else if (this.state.status === 'inReview' || this.state.status === 'syllabusOverload') {
@@ -622,7 +630,8 @@ ClassStatusModal.propTypes = {
   closeModal: PropTypes.func,
   progress: PropTypes.number,
   onboard: PropTypes.bool,
-  firstOpen: PropTypes.bool
+  firstOpen: PropTypes.bool,
+  history: PropTypes.object
 }
 
 export default withRouter(ClassStatusModal)
