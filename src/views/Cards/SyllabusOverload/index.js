@@ -23,7 +23,7 @@ class SyllabusOverload extends React.Component {
     } else {
       actions.settings.getAdminSettings()
         .then(r => {
-          this.setState({loading: false, status: r.value})
+          this.setState({loading: false, status: r.value === 'true'})
         })
         .catch(r => {
           console.log(r)
