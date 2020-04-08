@@ -3,6 +3,7 @@
 @import 'mixins/breakpoint';    // Breakpoint utils lifted from Zurb
 @import 'mixins/zf-utils';
 @import 'mixins';               // Include global utility mixins
+@import 'animations';
 
 @import 'mixins/button';
 @import 'mixins/layout';

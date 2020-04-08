@@ -7,6 +7,7 @@ import Table from '../components/Table'
 import data from './test'
 import TeamsCell from '../components/TeamsCell'
 import InsightsLayout from '../../components/InsightsLayout'
+import CopyCell from '../components/CopyCell'
 
 @inject('rootStore') @observer
 class Dashboard extends React.Component {
@@ -27,7 +28,7 @@ class Dashboard extends React.Component {
         d.name_last,
         <WatchToggle user={d} key={i} />,
         <TeamsCell key={i} user={d} />,
-        d.phone,
+        <CopyCell isPhone={true} text={d.phone} key={i} />,
         d.email
       ]
     })

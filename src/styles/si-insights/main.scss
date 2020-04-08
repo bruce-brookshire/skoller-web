@@ -37,7 +37,7 @@
   justify-content: flex-start;
   flex-wrap: wrap;
   max-width: 256px;
-  margin-bottom: -4px;
+  // margin-bottom: -4px;
   position: relative;
 
   .team {
@@ -108,6 +108,25 @@
         &:hover {
           background-color: $sk-blue-25;
         }
+      }
+    }
+  }
+}
+
+.si-copy-cell {
+  background-color: rgba(0,0,0,0);
+  padding: 0;
+  margin: 0;
+
+  form {
+    padding: 0;
+    margin: 0;
+
+    textarea {
+      margin: 0 !important;
+
+      &:focus {
+        outline: none;
       }
     }
   }

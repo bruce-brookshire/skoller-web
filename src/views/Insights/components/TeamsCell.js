@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import OutsideClickHandler from 'react-outside-click-handler'
+import { CSSTransition } from 'react-transition-group'
 
 class TeamsCell extends React.Component {
   constructor (props) {
@@ -28,7 +29,7 @@ class TeamsCell extends React.Component {
 
   renderSearch () {
     return (
-      <div className='add-team-search-container' style={{
+      <div className='add-team-search-container' style={this.cellRef.current && {
         width: this.cellRef.current.offsetWidth + 'px',
         top: this.cellRef.current.offsetHeight + 'px'
       }}>
@@ -53,7 +54,7 @@ class TeamsCell extends React.Component {
         <div className='si-teams-cell' ref={this.cellRef}>
           {teams.map(t => {
             return (
-              <div className='team' onClick={() => this.popTeam(t.id)} key={t.id}>
+              <div className='team' key={Math.floor(Math.random() * Math.floor(10000))} onClick={() => this.popTeam(t.id)}>
                 {t.name}
               </div>
             )
@@ -61,7 +62,16 @@ class TeamsCell extends React.Component {
           <div className='add-a-team'>
             <div className='add-team-button' onClick={() => this.setState({add: true})}>+</div>
           </div>
-          {this.state.add && this.renderSearch()}
+          {/* {this.state.add && this.renderSearch()} */}
+          <CSSTransition
+            mountOnEnter
+            in={this.state.add}
+            timeout={300}
+            classNames="fade"
+            unmountOnExit
+          >
+            {this.renderSearch()}
+          </CSSTransition>
         </div>
       </OutsideClickHandler>
     )

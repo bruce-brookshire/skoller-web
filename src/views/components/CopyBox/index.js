@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { CSSTransition } from 'react-transition-group'
 
 class CopyBox extends React.Component {
   constructor (props) {
@@ -8,6 +9,8 @@ class CopyBox extends React.Component {
     this.state = {
       copyStatus: false
     }
+
+    this.timer = () => setTimeout(() => this.setState({copyStatus: false}), 5000)
   }
 
   copyToClipboard = (e) => {
@@ -19,12 +22,13 @@ class CopyBox extends React.Component {
     document.execCommand('copy')
     e.target.focus()
     this.setState({ copyStatus: true })
+    this.timer()
   }
 
   render () {
     return (
       <div
-        className='sk-copy-box'
+        className={'sk-copy-box ' + this.props.className}
         onClick={(e) => this.copyToClipboard(e)}
         style={{height: this.props.longMessage ? '100%' : '56px'}}
       >
@@ -36,11 +40,16 @@ class CopyBox extends React.Component {
             style={{cursor: 'pointer', paddingTop: this.props.hiddenText ? '24px' : ''}}
             className={(this.props.longMessage ? 'sk-copy-box-long' : 'sk-copy-box-short') + (this.props.smallText ? ' small-text' : '')}
           />
-          {this.state.copyStatus &&
+          <CSSTransition
+            in={this.state.copyStatus}
+            timeout={300}
+            classNames="fade"
+            unmountOnExit
+          >
             <p>
-              {!this.props.longMessage && 'link '}copied to clipboard! 📋
+              copied to clipboard! 📋
             </p>
-          }
+          </CSSTransition>
           {this.props.hiddenText &&
             <textarea
               ref={(hiddenTextArea) => { this.hiddenTextArea = hiddenTextArea }}
@@ -59,7 +68,8 @@ CopyBox.propTypes = {
   linkValue: PropTypes.string,
   longMessage: PropTypes.bool,
   smallText: PropTypes.bool,
-  hiddenText: PropTypes.string
+  hiddenText: PropTypes.string,
+  className: PropTypes.string
 }
 
 export default CopyBox
