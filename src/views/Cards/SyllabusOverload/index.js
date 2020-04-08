@@ -23,7 +23,7 @@ class SyllabusOverload extends React.Component {
     } else {
       actions.settings.getAdminSettings()
         .then(r => {
-          this.setState({loading: false, status: r.value})
+          this.setState({loading: false, status: r.value === 'true'})
         })
         .catch(r => {
           console.log(r)
@@ -45,8 +45,10 @@ class SyllabusOverload extends React.Component {
       id: this.props.school.id,
       is_syllabus_overload: bool
     }
+    console.log(form)
     actions.schools.updateSchool(form)
       .then(r => {
+        console.log(r.is_syllabus_overload)
         this.setState({status: r.is_syllabus_overload, loading: false})
       })
   }
