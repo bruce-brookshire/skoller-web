@@ -11,6 +11,7 @@ import FourDoor from '../../components/FourDoor'
 import EmailDomainDetails from './EmailDomainDetails'
 import EmailDomainForm from './EmailDomainForm'
 import SyllabusOverload from '../../Cards/SyllabusOverload';
+import SkLoader from '../../../assets/sk-icons/SkLoader'
 
 @inject('rootStore') @observer
 class SchoolInfo extends React.Component {
@@ -32,8 +33,9 @@ class SchoolInfo extends React.Component {
     const {state} = this.props.location
     if (state && state.school) {
       actions.schools.getSchoolById(state.school.id).then(school => {
+        console.log(school)
         const periods = school.class_periods
-        this.setState({school, periods})
+        this.setState({school, periods, loading: false})
       })
       this.getEmailDomains()
     }
@@ -73,7 +75,8 @@ class SchoolInfo extends React.Component {
       openEmailDomainForm: false,
       school: (state && state.school) || null,
       periods: [],
-      emailDomains: []
+      emailDomains: [],
+      loading: true
     }
   }
 
@@ -305,7 +308,7 @@ class SchoolInfo extends React.Component {
     this.setState({openEmailDomainForm: !this.state.openEmailDomainForm})
   }
 
-  render () {
+  renderContent () {
     return (
       <div className='cn-school-info'>
         <div className='row'>
@@ -335,6 +338,14 @@ class SchoolInfo extends React.Component {
         {this.renderPeriodFormModal()}
         {this.renderEmailDomainFormModal()}
       </div>
+    )
+  }
+
+  render () {
+    return (
+      this.state.loading
+        ? <SkLoader />
+        : this.renderContent()
     )
   }
 }
