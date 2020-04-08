@@ -82,5 +82,28 @@ $sk-home-break-point: 1000px;
       background-color: $sk-charcoal;
       color: $sk-jobs-white;
     }
+
+    .home-insights {
+      position: relative;
+
+      .home-insights-select {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 128px;
+      }
+
+      .tooltip-container {
+        position: absolute;
+        top: 20px;
+        left: 128px;
+        font-size: 14px;
+        color: $sk-blue;
+
+        .tooltip {
+          width: 196px;
+        }
+      }
+    }
   }
 }

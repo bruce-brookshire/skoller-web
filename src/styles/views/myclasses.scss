@@ -36,7 +36,7 @@
     }
 
     .cn-my-classes-content {
-      padding: 1rem;
+      padding: 0 1rem 1rem 1rem;
       .cn-my-classes-header {
         display: inline-block;
         width: 100%;
@@ -57,6 +57,9 @@
     
       .cn-needs-syllabus-info {
         font-size: 18px;
+        text-align: left;
+        color: $sk-alert-red;
+        margin: -0.25rem 0 1rem 0;
       }
     
       .cn-table-grid-container {

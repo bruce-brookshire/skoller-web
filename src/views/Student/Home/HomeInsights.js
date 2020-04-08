@@ -9,6 +9,7 @@ import Distribution from '../Insights/Distribution'
 import Sammi from '../../components/Sammi'
 import Progress from '../Insights/Progress'
 import SkSelect from '../../components/SkSelect'
+import ToolTip from '../../components/ToolTip'
 
 export class DateTooltip extends React.Component {
   static propTypes = {
@@ -177,7 +178,7 @@ class HomeInsights extends React.Component {
 
   renderSelect () {
     return (
-      <div style={{margin: '1rem 1rem 0 1rem'}}>
+      <div className='home-insights-select' style={{margin: '1rem 1rem 0 1rem'}}>
         <SkSelect className='sk-insights-select' selection={<b>{this.state.type}</b>} optionsMap={() => this.renderSelectOptions()} />
       </div>
     )
@@ -185,22 +186,14 @@ class HomeInsights extends React.Component {
 
   render () {
     return (
-      <div className='home-shadow-box margin-top'>
+      <div className='home-shadow-box margin-top home-insights'>
         <h1
           className='home-heading'
           onClick={() => this.props.history.push('/student/insights')}
         >
           Insights
         </h1>
-        <Sammi position='left' emotion='wow'>
-          <p
-            style={{cursor: 'default', margin: '0', padding: '8px'}}
-            // onClick={() => this.props.history.push('/student/insights')}
-          >
-            Skoller Insights help you <b>see your semester in new ways</b> using data from <b>all {this.props.rootStore.studentClassesStore.classes.length > 2 ? this.props.rootStore.studentClassesStore.classes.length.toString() + ' ' : ''}of your classes!</b>
-          </p>
-        </Sammi>
-        {/* {this.props.rootStore.studentAssignmentsStore.assignments.length > 0 && this.renderNav()} */}
+        <ToolTip tip='Skoller Insights help you see your semester in new ways using data from all of your classes!'><i className='fas fa-info-circle' /></ToolTip>
         {this.renderSelect()}
         {this.renderContent()}
       </div>
