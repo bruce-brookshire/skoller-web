@@ -8,6 +8,7 @@ import data from './test'
 import TeamsCell from '../components/TeamsCell'
 import InsightsLayout from '../../components/InsightsLayout'
 import CopyCell from '../components/CopyCell'
+import actions from '../../../actions'
 
 @inject('rootStore') @observer
 class Dashboard extends React.Component {
@@ -15,10 +16,12 @@ class Dashboard extends React.Component {
     super(props)
 
     this.props.rootStore.insightsStore.getStudents()
+
+    actions.insights.getStudentsByTeamId()
   }
 
   renderTable () {
-    const headers = ['📷', 'First name', 'Last name', 'Watching', 'Teams', 'Phone', 'Email']
+    const headers = ['📷', 'First name', 'Last name', 'Watching', 'Teams', 'Phone (click to copy)', 'Email']
     let i = 0
     const d = data.map(d => {
       i += 1
@@ -29,7 +32,7 @@ class Dashboard extends React.Component {
         <WatchToggle user={d} key={i} />,
         <TeamsCell key={i} user={d} />,
         <CopyCell isPhone={true} text={d.phone} key={i} />,
-        d.email
+        <a className={'link-style'} href={'mailto:' + d.email} key={i}>{d.email}</a>
       ]
     })
 
@@ -38,9 +41,22 @@ class Dashboard extends React.Component {
     )
   }
 
+  renderHeader () {
+    return (
+      <div className='si-table-header'>
+        <div className='si-table-header-item'>
+          Sort
+        </div>
+      </div>
+    )
+  }
+
   renderContent () {
     return (
-      this.renderTable()
+      <div className='si-dashboard'>
+        {this.renderHeader()}
+        {this.renderTable()}
+      </div>
     )
   }
 

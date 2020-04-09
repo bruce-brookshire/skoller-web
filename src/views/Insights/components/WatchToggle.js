@@ -1,10 +1,17 @@
 import React, {useState} from 'react'
 import PropTypes from 'prop-types'
+import {CSSTransition} from 'react-transition-group'
 
 const WatchToggle = (props) => {
   const [watching, setWatching] = useState(props.user.watching)
+  const [changed, setChanged] = useState(false)
+
+  const timer = () => setTimeout(() => setChanged(false), 2000)
+
   const toggleWatching = () => {
     setWatching(!watching)
+    setChanged(true)
+    timer()
   }
 
   const star = () => {
@@ -22,6 +29,16 @@ const WatchToggle = (props) => {
       <div className={'toggle ' + (watching ? 'watching' : '')}>
         {star()}
       </div>
+      <CSSTransition
+        in={changed}
+        timeout={300}
+        classNames="fade"
+        unmountOnExit
+      >
+        <p>
+          {watching ? 'Added to ' : 'Removed from '} watchlist
+        </p>
+      </CSSTransition>
     </div>
   )
 }

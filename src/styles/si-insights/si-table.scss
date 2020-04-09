@@ -24,3 +24,8 @@ $b5: $sk-blue-5;
     padding: 4px;
   }
 }
+
+.si-table-header {
+  display: flex;
+  flex-flow: row wrap;
+}

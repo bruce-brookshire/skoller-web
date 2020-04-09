@@ -19,15 +19,22 @@
 }
 
 .si-watch-toggle {
-  width: 100%;
+  width: 96px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   cursor: pointer;
 
   svg {
     width: 18px;
     height: auto;
+  }
+
+  p {
+    font-size: 10px;
+    text-align: center;
+    margin: -4px 0 -8px 0;
   }
 }
 
@@ -37,16 +44,17 @@
   justify-content: flex-start;
   flex-wrap: wrap;
   max-width: 256px;
-  // margin-bottom: -4px;
+  margin-bottom: -4px;
   position: relative;
 
   .team {
     background-color: white;
     border: 1px solid $sk-blue;
     border-radius: 3px;
-    padding: 6px 4px 2px 4px;
+    padding: 4px 4px 0px 4px;
     margin-right: 4px;
     margin-bottom: 4px;
+    height: 25px;
     cursor: pointer;
 
     &:hover {
@@ -66,8 +74,8 @@
       font-weight: 600;
       border: 1px solid $sk-blue;
       border-radius: 3px;
-      width: 29px;
-      height: 29px;
+      width: 25px;
+      height: 25px;
       padding: 5px 0 0 0;
       cursor: pointer;
 
@@ -114,20 +122,59 @@
 }
 
 .si-copy-cell {
+  @include remove-form-styling;
+  box-sizing: border-box;
+  width: 100%;
+  background-color: #57B9E420;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+
   background-color: rgba(0,0,0,0);
   padding: 0;
-  margin: 0;
 
   form {
+    width: 100%;
+    margin: 0;
+    cursor: pointer;
     padding: 0;
     margin: 0;
 
-    textarea {
-      margin: 0 !important;
+    .sk-copy-box-short {
+      cursor: pointer;
+      resize: none;
+      width: 100%;
+      text-align: left;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 20px;
+      overflow: hidden;
+      padding: 8px 0 0 0;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      height: 20px;
+      cursor: default;
+      color: $sk-blue;
 
       &:focus {
         outline: none;
       }
     }
+
+    .small-text {
+      font-size: 16px;
+      font-weight: 500;
+    }
+  }
+
+  p {
+    font-size: 12px;
+    margin: 0;
+    text-align: center;
+  }
+
+  &:hover {
+    background-color: $sk-blue-25;
   }
 }
