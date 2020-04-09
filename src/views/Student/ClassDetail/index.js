@@ -209,7 +209,7 @@ class ClassDetail extends React.Component {
     return (
       <div>
         <a className='add-assignment-button link-style' onClick={() => this.setState({showAddAssignmentModal: true})}>
-          + Add Assignment{emptyWeights.length > 0 ? <div className='add-assignment-button-alert'><div className='add-assignment-button-alert-count'>{emptyWeights.length}</div></div> : null}
+          <i className='fas fa-plus' style={{fontSize: '16px', marginTop: '-2px', fontWeight: '600'}} />{emptyWeights.length > 0 ? <div className='add-assignment-button-alert'><div className='add-assignment-button-alert-count'>{emptyWeights.length}</div></div> : null}
         </a>
         { this.state.showAddAssignmentModal
           ? <AddAssignment closeModal={() => this.setState({showAddAssignmentModal: false})} assignmentParams={{class: this.state.studentClass}}/>
@@ -379,7 +379,7 @@ class ClassDetail extends React.Component {
               onClick={() => this.setState({showUploadAdditionalDocuments: true})}
             />
             <i
-              className='fas fa-link'
+              className='fas fa-users'
               title='Share class'
               onClick={() => this.setState({showShareModal: true})}
             />
@@ -401,10 +401,7 @@ class ClassDetail extends React.Component {
 
   renderInsights () {
     return (
-      <div className='sk-class-insights'>
-        <h1>Insights</h1>
-        <ClassInsights cl={this.getCurrentClass()} />
-      </div>
+      <ClassInsights cl={this.getCurrentClass()} />
     )
   }
 
@@ -413,7 +410,7 @@ class ClassDetail extends React.Component {
       <div className='sk-class-assignments'>
         <h1>Assignments</h1>
         {this.renderAddAssignmentButton()}
-        <TasksList maxTasks={5} cl={this.getCurrentClass()} />
+        <TasksList filter={true} maxTasks={5} cl={this.getCurrentClass()} />
       </div>
     )
   }

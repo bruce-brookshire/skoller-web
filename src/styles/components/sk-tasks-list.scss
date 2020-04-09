@@ -1,0 +1,12 @@
+.sk-tasks-list {
+  .sk-tasks-list-filter {
+    margin: 0 0 1rem 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    .sk-select {
+      height: auto;
+    }
+  }
+}

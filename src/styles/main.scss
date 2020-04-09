@@ -112,6 +112,7 @@
 @import 'components/sk-pop-up';
 @import 'components/sk-select-dropdown';
 @import 'components/sk-share-partner-link';
+@import 'components/sk-tasks-list';
 @import 'components/sk-upload-additional-docs.scss';
 @import 'components/sk-upload-overload-docs.scss';
 @import 'components/sign-up-form';
@@ -515,4 +516,20 @@ body {
 .cn-lightning {
   padding-top: 3px;
   margin-right: 2px;
+}
+
+.sk-select-option {
+  cursor: pointer;
+  padding: 4px;
+
+  &:hover {
+    background-color: $cn-color-hover-grey;
+  }
+}
+
+.sk-select-selection {
+  cursor: pointer;
+  padding: 4px;
+  color: $sk-blue;
+  font-weight: 600;
 }

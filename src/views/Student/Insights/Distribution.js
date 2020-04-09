@@ -126,7 +126,7 @@ class WeightsTimeline extends React.Component {
       return (
         <div>
           <div className='insights-title'>
-            There are <b style={this.props.cl ? {color: '#' + this.props.cl.color} : null}>{count} assignments</b> {(this.props.cl ? 'in this class...' : 'this semester...')}
+            You have <b style={this.props.cl ? {color: '#' + this.props.cl.color} : null}>{count} assignments</b> {(this.props.cl ? 'in this class...' : 'this semester...')}
           </div>
           <svg style={styles.parent} viewBox='0 0 450 260'>
             <g transform={'translate(18, 28)'}>
