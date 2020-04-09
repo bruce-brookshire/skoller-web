@@ -40,16 +40,14 @@ class ClassDetail extends React.Component {
 
     this.props.rootStore.studentNavStore.setActivePage('classes')
     this.props.rootStore.studentNavStore.location = this.props.location // set active page route location for access from assignment detail
+
+    this.getClass()
+    this.getClassAssignmentsForStudent(this.props.match.params)
   }
 
   getCurrentClass () {
     let cl = this.props.rootStore.studentClassesStore.classes.filter(cl => cl.id === parseInt(this.props.match.params.classId))[0]
     return cl
-  }
-
-  componentWillMount () {
-    this.getClass()
-    this.getClassAssignmentsForStudent(this.props.match.params)
   }
 
   getClass () {
