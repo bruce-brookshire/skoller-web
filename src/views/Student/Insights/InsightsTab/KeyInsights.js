@@ -15,8 +15,8 @@ class KeyInsights extends React.Component {
 
     return (
       <div className='hardest-week'>
-        <div className='title'>
-          Making up {Math.round(weight * 1000) / 10}% of your total grade, the week of <span className='bold'>{moment(keyInsights.hardestWeeks[0].getWeek()).format('MMMM DD')}</span> is your <b className='bold'>hardest week.</b>
+        <div className='insights-title'>
+          Making up {Math.round(weight * 1000) / 10}% of your total grade, the week of <b className='bold'>{moment(keyInsights.hardestWeeks[0].getWeek()).format('MMMM DD')}</b> is your <b className='bold'>hardest week.</b>
         </div>
         {/* <h3 style={{textAlign: 'center', margin: '0 0 -0.25rem 0'}}>Hardest week</h3> */}
         <HardestWeek ids={ids} hardestWeek={moment(keyInsights.hardestWeeks[0].getWeek()).format('X')} hardestWeekWeight={weight} />
@@ -40,8 +40,8 @@ class KeyInsights extends React.Component {
 
     return (
       <div className='hardest-week'>
-        <div className='title'>
-          With {count} of your {totalAssignmentCount} assignments, the week of <span className='bold'>{moment(keyInsights.busiestWeek[0].getWeek()).format('MMMM DD')}</span> is{keyInsights.busiestWeek[0] === keyInsights.hardestWeeks[0] ? ' also' : ''} your <b className='bold'>busiest week.</b>
+        <div className='insights-title'>
+          With {count} of your {totalAssignmentCount} assignments, the week of <b className='bold'>{moment(keyInsights.busiestWeek[0].getWeek()).format('MMMM DD')}</b> is{keyInsights.busiestWeek[0] === keyInsights.hardestWeeks[0] ? ' also' : ''} your <b className='bold'>busiest week.</b>
         </div>
         <BusiestWeek ids={ids} busiestWeek={moment(keyInsights.busiestWeek[0].getWeek()).format('X')} busiestWeekCount={count} />
       </div>
@@ -53,8 +53,8 @@ class KeyInsights extends React.Component {
 
     return (
       <div className='hardest-week'>
-        <div className='title'>
-          Looking to slack off? <span className='bold'>Try these weeks.</span>
+        <div className='insights-title'>
+          Looking to slack off? <b className='bold'>Try these weeks.</b>
         </div>
         <EasiestWeek easiestWeeks={keyInsights.easiestWeeks} ids={ids} />
         <p>{'The weeks of '}

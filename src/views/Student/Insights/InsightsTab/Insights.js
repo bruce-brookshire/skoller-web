@@ -64,10 +64,10 @@ class InsightsPage extends React.Component {
   renderControlPanel () {
     return (
       <div className='insights-cp'>
-        <h1>Insights</h1>
-        <p style={{marginBottom: '8px'}}>
+        {/* <h1>Insights</h1> */}
+        {/* <p style={{marginBottom: '8px'}}>
           See your workload in new ways.
-        </p>
+        </p> */}
         <h3>Select your data</h3>
         <div className='insights-cp-classes' style={{marginBottom: '8px'}}>
           <SkCheckboxField
@@ -111,13 +111,6 @@ class InsightsPage extends React.Component {
     )
   }
 
-  downloadGraphs () {
-    // html2canvas(document.getElementById('insights-so-container')).then(canvas => {
-    //   let img = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream")
-    //   window.location.href = img
-    // })
-  }
-
   renderContent () {
     let hasCompletedClasses = (this.props.rootStore.studentClassesStore.classes.filter(cl => cl.status.id === 1400).length > 0)
     return (
@@ -125,12 +118,12 @@ class InsightsPage extends React.Component {
         <div className='insights-container' id='insights-container'>
           {hasCompletedClasses
             ? <React.Fragment>
-              <div className='insights-cp-container'>
-                {this.renderControlPanel()}
-              </div>
               <div onClick={() => this.downloadGraphs()} className='insights-so-container' id='insights-so-container'>
                 {this.renderSemesterOutlook()}
                 {this.renderKeyInsights()}
+              </div>
+              <div className='insights-cp-container'>
+                {this.renderControlPanel()}
               </div>
             </React.Fragment>
             : <React.Fragment>
@@ -156,7 +149,7 @@ class InsightsPage extends React.Component {
               </div>
               <div onClick={() => this.downloadGraphs()} className='insights-so-container' id='insights-so-container'>
                 <div className='insights-semester'>
-                  <h1>Your Semester</h1>
+                  <h1>Insights</h1>
                   <div style={{margin: '1rem 0 0 0', height: '180px', width: '100%', backgroundColor: '#4a4a4a15', borderRadius: '8px'}} />
                   <div style={{margin: '1rem 0 0 0', height: '180px', width: '100%', backgroundColor: '#4a4a4a15', borderRadius: '8px'}} />
                   <div style={{margin: '1rem 0 0 0', height: '180px', width: '100%', backgroundColor: '#4a4a4a15', borderRadius: '8px'}} />
