@@ -4,8 +4,8 @@ import PropTypes from 'prop-types'
 class Table extends React.Component {
   renderHeader (h, i) {
     return (
-      <th key={i}>
-        {h}
+      <th key={i} colSpan={h.colSpan ? h.colSpan : null}>
+        {h.children ? h.children : h}
       </th>
     )
   }

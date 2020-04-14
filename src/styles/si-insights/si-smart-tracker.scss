@@ -1,0 +1,31 @@
+.si-smart-tracker {
+  box-sizing: border-box;
+  width: 50%;
+  @include skoller-cell;
+
+  @media only screen and (max-width: $sk-mobile-break-point) {
+    margin: 0 1rem 1rem 1rem;
+  }
+  padding: 1rem;
+
+  h1 {
+    margin: 0;
+    text-align: left;
+  }
+
+  .si-smart-tracker-content {
+    table {
+      width: 100%;
+
+      th, td {
+        border: none;
+      }
+
+      tr {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+.si-sa-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin: 8px 0;
+
+  .sa-info {
+    display: flex;
+    flex-flow: column nowrap;
+    margin: 0 0 0 8px;
+
+    .sa-name {
+      font-size: 20px;
+      font-weight: 600;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+  
+      .si-watch-toggle {
+        margin: 0 0 0 8px;
+      }
+    }
+  
+    .sa-teams {
+      display: flex;
+      flex-flow: row wrap;
+
+      .sa-team {
+        margin-right: 4px;
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import { extendObservable, action } from 'mobx'
-import data from '../views/Insights/Dashboard/test'
+import actions from '../actions'
 
 class InsightsStore {
   constructor () {
@@ -14,7 +14,7 @@ class InsightsStore {
     this.loading = !update
     this.loadingUpdate = update
 
-    this.students = data
+    this.students = actions.insights.getStudentsByOrgId()
     this.getDataSuccess()
     // actions.classes.getStudentClassesById(stores.userStore.user.student.id)
     //   .then((data) => {
