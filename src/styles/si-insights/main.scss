@@ -25,7 +25,6 @@
 }
 
 .si-watch-toggle {
-  // width: 96px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -46,6 +45,14 @@
     border: 1px solid $sk-blue;
     padding: 2px 4px -2px 4px;
     border-radius: 3px;
+  }
+
+  .added {
+    background-color: #93ffb2;
+  }
+
+  .removed {
+    background-color: #ffa79e;
   }
 }
 

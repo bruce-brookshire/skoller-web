@@ -35,7 +35,7 @@ const WatchToggle = (props) => {
         classNames="fade"
         unmountOnExit
       >
-        <p style={props.showConfirm ? null : {margin: '-4px 4px 4px 8px', padding: '4px 4px 0 4px'}}>
+        <p className={watching ? 'added' : 'removed'} style={props.showConfirm ? null : {margin: '-4px 4px 4px 8px', padding: '4px 4px 0 4px'}}>
           {watching ? 'Added to ' : 'Removed from '} watchlist
         </p>
       </CSSTransition>
