@@ -22,6 +22,8 @@ class MyClasses extends React.Component {
       loading: true
     }
     this.props.rootStore.studentNavStore.location = this.props.location
+    this.props.rootStore.studentClassesStore.updateClasses()
+    this.props.rootStore.studentAssignmentsStore.updateAssignments()
   }
 
   componentWillMount () {
@@ -50,8 +52,6 @@ class MyClasses extends React.Component {
     if (num > 0) {
       return (
         <div className='cn-needs-syllabus-info margin-bottom center-text cn-blue'>
-          <i className='fas fa-user-edit' />
-          <br/>
           {`${num} class${num > 1 ? 'es' : ''} still need${num > 1 ? '' : 's'} to be set up.`}
         </div>
       )

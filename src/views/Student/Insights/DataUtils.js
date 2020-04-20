@@ -432,3 +432,21 @@ export function getAssignmentWeightDataByClass (studentAssignmentsStore, cl = fa
 
   // return data
 }
+
+// styles
+
+export function convertHexToRGBWithOpacity (hexVal, a = 0.5) {
+  let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hexVal)
+  let rgb = result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : null
+
+  // Convert all to the rgb equivalent of opacity
+  let r = (1 - a) * 255 + a * rgb.r
+  let g = (1 - a) * 255 + a * rgb.g
+  let b = (1 - a) * 255 + a * rgb.b
+
+  return 'rgba(' + [r, g, b].join(',') + ',1)'
+}

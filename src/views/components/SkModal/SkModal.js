@@ -118,7 +118,7 @@ class SkModal extends React.Component {
     }
 
     return (
-      <div className={'sk-modal-wrapper ' + (this.state.ios ? 'animate-bottom' : '')} style={containerStyle}>
+      <div className={'sk-modal-wrapper'} style={containerStyle}>
         <div className="sk-modal-container" id="sk-modal-container" style={style}>
           <OutsideClickHandler
             onOutsideClick={() => {

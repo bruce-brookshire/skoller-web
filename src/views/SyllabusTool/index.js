@@ -162,7 +162,7 @@ class SyllabusTool extends React.Component {
     const {navbarStore} = this.props.rootStore
     const form = {is_class: true, is_completed: isCompleted}
     this.setState({submitting: true})
-    actions.classes.unlockClass(classId, form).then(() => {
+    actions.classes.unlockClass(classId, form).then((r) => {
       this.setState({submitting: false})
       if (!navbarStore.isDIY) {
         if (!this.props.rootStore.userStore.isStudent()) {
@@ -225,7 +225,7 @@ class SyllabusTool extends React.Component {
 
     if (currentIndex === ContentEnum.ASSIGNMENTS) {
       return (
-        <a className='back-button' onClick={this.onPrevious.bind(this)}>
+        <a className='back-button link-style' onClick={this.onPrevious.bind(this)}>
           <i className='fa fa-angle-left' /> Back to weights
         </a>
       )
@@ -468,9 +468,27 @@ class SyllabusTool extends React.Component {
     navbarStore.cl = cl
   }
 
-  onBackToClasses () {
-    this.unlock(true)
-    this.props.history.push('/student/classes')
+  async onBackToClasses () {
+    await actions.weights.getClassWeightsByClassId(this.props.match.params.classId)
+      .then(async r => {
+        if (r ? r.length > 0 : false) {
+          await actions.assignments.getClassAssignments({id: this.props.match.params.classId})
+            .then(r => {
+              if (r.length > 0) {
+                this.props.rootStore.studentClassesStore.updateClasses()
+                this.unlock(true)
+              } else {
+                this.unlock(false)
+              }
+            })
+        } else {
+          this.unlock(false)
+        }
+      })
+      .catch((e) => {
+        this.unlock(false)
+        this.props.history.push('/student/classes')
+      })
   }
 
   renderBackToClasses () {
@@ -520,7 +538,8 @@ class SyllabusTool extends React.Component {
 SyllabusTool.propTypes = {
   location: PropTypes.object,
   match: PropTypes.object,
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  history: PropTypes.object
 }
 
 export default withRouter(SyllabusTool)

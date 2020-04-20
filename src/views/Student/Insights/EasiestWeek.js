@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 import { VictoryScatter, VictoryLabel, VictoryAxis, VictoryStack, VictoryTooltip, VictoryArea } from 'victory'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import { getAssignmentWeightDataByClass } from './DataUtils'
+import { getAssignmentWeightDataByClass, convertHexToRGBWithOpacity } from './DataUtils'
 import { getStyles } from './styles'
 
 export class DataComponent extends React.Component {
@@ -17,15 +17,15 @@ export class DataComponent extends React.Component {
 
   render () {
     const {x, y} = this.props
-    let fill = 'rgba(260,220,100,0.50)'
-    let strokeWidth = 21
+    let fill = '#57B9E450'
+    let strokeWidth = 20.5
     return (
       <g>
         {/* <marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
           <path d="M0,0 L0,6 L5,3 z" fill={fill} />
         </marker>
         <path d={`M ${(450 / 2) - 18} 40 C ${(450 / 2) - 20} 80, ${x + 20} ${y - 50}, ${x + 3} ${y - 15}`} markerEnd="url(#arrow)" stroke={fill} strokeWidth='2' fill="transparent"/> */}
-        <path d={`M ${x} 40, ${x} ${y}, ${x} ${y}`} stroke={fill} strokeWidth={strokeWidth} fill="transparent"/>
+        <path d={`M ${x} 40, ${x} ${250}, ${x} ${250}`} stroke={fill} strokeWidth={strokeWidth} fill="transparent"/>
       </g>
     )
   }
@@ -97,6 +97,22 @@ class EasiestWeek extends React.Component {
               animate={animate}
             />
 
+            {this.props.easiestWeeks.map(w => {
+              return (
+                <VictoryScatter
+                  key={this.props.easiestWeeks.indexOf(w)}
+                  data={[{x: parseInt(moment(w.getWeek()).format('X')), y: w.overallWeight}]}
+                  size={5}
+                  domain={domain}
+                  scale={{x: 'time', y: 'linear'}}
+                  standalone={false}
+                  style={styles.scatter}
+                  animate={animate}
+                  dataComponent={<DataComponent />}
+                />
+              )
+            })}
+
             <VictoryStack
               domain={domain}
               scale={{x: 'time', y: 'linear'}}
@@ -107,7 +123,9 @@ class EasiestWeek extends React.Component {
               {Object.keys(classData).map(k => {
                 if (k !== 'null') {
                   let cl = this.props.rootStore.studentClassesStore.classes.find(cl => cl.id === parseInt(k))
+                  // let color = this.convertHexToRGB(cl.getColor())
                   let color = cl.getColor()
+                  let halfColor = convertHexToRGBWithOpacity(color)
                   let data = classData[k].data
                   data = data.map(datum => {
                     return ({
@@ -125,7 +143,7 @@ class EasiestWeek extends React.Component {
                       standalone={false}
                       interpolation='monotoneX'
                       // style={{data: {fill: color.toLowerCase().replace('ff', '75'), stroke: color, strokeWidth: '1'}}}
-                      style={{data: {fill: color}}}
+                      style={{data: {fill: halfColor, stroke: color, strokeWidth: 2}}}
                       animate={animate}
                       labels={() => ''}
                       labelComponent={
@@ -139,22 +157,6 @@ class EasiestWeek extends React.Component {
                 }
               })}
             </VictoryStack>
-
-            {this.props.easiestWeeks.map(w => {
-              return (
-                <VictoryScatter
-                  key={this.props.easiestWeeks.indexOf(w)}
-                  data={[{x: parseInt(moment(w.getWeek()).format('X')), y: w.overallWeight}]}
-                  size={5}
-                  domain={domain}
-                  scale={{x: 'time', y: 'linear'}}
-                  standalone={false}
-                  style={styles.scatter}
-                  animate={animate}
-                  dataComponent={<DataComponent />}
-                />
-              )
-            })}
           </g>
         </svg>
       )

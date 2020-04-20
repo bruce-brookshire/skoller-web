@@ -69,7 +69,7 @@ class MenuItem extends React.Component {
     if ((adminAccessible || !this.props.menuItem.admin) && currentPath !== this.props.menuItem.path) {
       return (
         <div className={`menu-item`}>
-          <a onClick={() => this.props.onClick()}>
+          <a className='link-style' onClick={() => this.props.onClick()}>
             {this.props.menuItem.text}
           </a>
         </div>

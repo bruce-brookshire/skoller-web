@@ -90,75 +90,6 @@ class ClassInsights extends React.Component {
     }
   }
 
-  renderNav () {
-    let color = this.props.cl.color
-    return (
-      <div
-        style={{
-          borderBottom: '2px solid #4a4a4a50',
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          margin: '0 1rem',
-          padding: '0 0 0 0'
-        }}
-      >
-        <p
-          style={{
-            borderBottom: this.state.type === 'distribution' ? '4px solid #' + color : '',
-            fontWeight: this.state.type === 'distribution' ? '600' : '',
-            margin: '0 0 -2px 0',
-            padding: '0 12px',
-            cursor: 'pointer',
-            textAlign: 'center'
-          }}
-          onClick={() => this.setState({type: 'distribution'})}
-        >
-          Distribution
-        </p>
-        <p
-          style={{
-            borderBottom: this.state.type === 'assignmentsTimeline' ? '4px solid #' + color : '',
-            fontWeight: this.state.type === 'assignmentsTimeline' ? '600' : '',
-            margin: '0 0 -2px 0',
-            padding: '0 12px',
-            cursor: 'pointer',
-            textAlign: 'center'
-          }}
-          onClick={() => this.setState({type: 'assignmentsTimeline'})}
-        >
-          Assignments
-        </p>
-        <p
-          style={{
-            borderBottom: this.state.type === 'weightsTimeline' ? '4px solid #' + color : '',
-            fontWeight: this.state.type === 'weightsTimeline' ? '600' : '',
-            margin: '0 0 -2px 0',
-            padding: '0 12px',
-            cursor: 'pointer',
-            textAlign: 'center'
-          }}
-          onClick={() => this.setState({type: 'weightsTimeline'})}
-        >
-          Weights
-        </p>
-        <p
-          style={{
-            borderBottom: this.state.type === 'speculate' ? '4px solid #' + color : '',
-            fontWeight: this.state.type === 'speculate' ? '600' : '',
-            margin: '0 0 -2px 0',
-            padding: '0 12px',
-            cursor: 'pointer',
-            textAlign: 'center'
-          }}
-          onClick={() => this.setState({type: 'speculate'})}
-        >
-          Speculate
-        </p>
-      </div>
-    )
-  }
-
   renderSelectOptions () {
     let options = ['Distribution', 'Assignments', 'Weights', 'Speculate']
 
@@ -177,7 +108,7 @@ class ClassInsights extends React.Component {
 
   renderSelect () {
     return (
-      <div style={{margin: '1rem 1rem 0 1rem'}}>
+      <div className='class-insights-select' style={{margin: '1rem 1rem 0 1rem'}}>
         <SkSelect className='sk-insights-select' selection={<b>{this.state.type}</b>} optionsMap={() => this.renderSelectOptions()} />
       </div>
     )
@@ -185,9 +116,12 @@ class ClassInsights extends React.Component {
 
   render () {
     return (
-      <div>
+      <div className='sk-class-insights'>
+        <h1>Insights</h1>
         {this.props.rootStore.studentAssignmentsStore.assignments.length > 0 && this.renderSelect()}
-        {this.renderContent()}
+        <div className='class-insights'>
+          {this.renderContent()}
+        </div>
       </div>
     )
   }
