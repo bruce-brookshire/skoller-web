@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 import { VictoryScatter, VictoryLabel, VictoryAxis, VictoryArea, VictoryStack, VictoryTooltip } from 'victory'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import { getAssignmentWeightDataByClass } from './DataUtils'
+import { getAssignmentWeightDataByClass, convertHexToRGBWithOpacity } from './DataUtils'
 import { getStyles } from './styles'
 
 export class DataComponent extends React.Component {
@@ -100,11 +100,13 @@ class HardestWeek extends React.Component {
               standalone={false}
               interpolation='monotoneX'
               labels={() => ''}
+              style={{labels: {fontFamily: '"Calibre", sans-serif'}}}
             >
               {Object.keys(classData).map(k => {
                 if (k !== 'null') {
                   let cl = this.props.rootStore.studentClassesStore.classes.find(cl => cl.id === parseInt(k))
                   let color = cl.getColor()
+                  let halfColor = convertHexToRGBWithOpacity(color)
                   let data = classData[k].data
                   data = data.map(datum => {
                     return ({
@@ -122,12 +124,12 @@ class HardestWeek extends React.Component {
                       standalone={false}
                       interpolation='monotoneX'
                       // style={{data: {fill: color.toLowerCase().replace('ff', '75'), stroke: color, strokeWidth: '1'}}}
-                      style={{data: {fill: color}}}
+                      style={{data: {fill: halfColor, stroke: color, strokeWidth: 2}, labels: {fontFamily: '"Calibre", sans-serif'}}}
                       animate={animate}
                       labels={() => ''}
                       labelComponent={
                         <VictoryTooltip
-                          flyoutStyle={styles.flyout}
+                          flyoutStyle={{...styles.flyout, fontFamily: 'inherit'}}
                           // renderInPortal={true}
                         />
                       }

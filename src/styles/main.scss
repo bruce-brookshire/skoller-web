@@ -529,7 +529,8 @@ body {
 
 .sk-select-selection {
   cursor: pointer;
-  padding: 4px;
+  margin-top: 4px;
+  padding: 2px 0 0 0;
   color: $sk-blue;
   font-weight: 600;
 }

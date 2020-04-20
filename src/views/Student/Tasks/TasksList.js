@@ -79,6 +79,20 @@ class TasksList extends React.Component {
     }
   }
 
+  outlookLogic (task) {
+    if (this.props.outlook) {
+      if (this.props.outlook === 'Rest of the semester') {
+        return true
+      } else if (this.props.outlook === 'Next 10 days') {
+        return moment(task.due).diff(moment(), 'day') <= 10
+      } else if (this.props.outlook === 'Next 30 days') {
+        return moment(task.due).diff(moment(), 'day') <= 30
+      }
+    } else {
+      return true
+    }
+  }
+
   taskValidity (task, i = false) {
     let daysAway = moment(task.due).diff(moment(), 'days')
     let maxDays = this.props.maxDays ? this.props.maxDays - 1 : 10000
@@ -89,7 +103,8 @@ class TasksList extends React.Component {
       (i === false ? !i : (i < maxTasks || this.state.seeMore)) && // if number of tasks already displayed is greater than limit given by prop maxTasks, don't display... unless user has clicked See More or unless i is not given
       (daysAway >= 0 || this.props.cl) && // make sure task is in the future, unless it's within a class detail view
       (this.props.cl ? task.class_id === this.props.cl.id : true) && // if class detail view, make sure assignment is for that class
-      (this.filterLogic(task)) // if filter is on, check to see if task should be displayed
+      (this.filterLogic(task)) && // if filter is on, check to see if task should be displayed
+      (this.outlookLogic(task)) // if outlook is on, check to see if task should be displayed
     ) {
       return true
     } else {
@@ -187,7 +202,9 @@ TasksList.propTypes = {
   maxDays: PropTypes.number,
   seeMore: PropTypes.bool,
   cl: PropTypes.object,
-  filter: PropTypes.bool
+  filter: PropTypes.bool,
+  outlook: PropTypes.string,
+  displayCountCallback: PropTypes.func
 }
 
 export default TasksList
