@@ -7,6 +7,7 @@ import actions from '../../../actions'
 import ClassList from '../../components/ClassList'
 import Grid from '../../../components/Grid'
 import DeleteDialog from '../../../components/Grid/DeleteDialog'
+import SkLoader from '../../../assets/sk-icons/SkLoader'
 
 const headers = [
   {
@@ -30,20 +31,37 @@ const headers = [
 class AccountInfo extends React.Component {
   constructor (props) {
     super(props)
-    this.state = this.initializeState()
-  }
-
-  componentWillMount () {
     const {state} = this.props.location
+
+    this.state = {
+      classes: [],
+      openAccountForm: false,
+      user: (state && state.user) || null,
+      loading: true
+    }
+
     if (state && state.user) {
       this.getUser(state.user)
     }
+
     if (this.state.user && this.state.user.student) {
       actions.classes.getStudentClassesById(this.state.user.student.id).then(classes => {
-        this.setState({classes: classes})
-      }).catch(() => false)
+        this.setState({classes: classes, loading: false})
+      }).catch((e) => console.log(e))
     }
   }
+
+  // componentWillMount () {
+  //   const {state} = this.props.location
+  //   if (state && state.user) {
+  //     this.getUser(state.user)
+  //   }
+  //   if (this.state.user && this.state.user.student) {
+  //     actions.classes.getStudentClassesById(this.state.user.student.id).then(classes => {
+  //       this.setState({classes: classes})
+  //     }).catch(() => false)
+  //   }
+  // }
 
   initializeState () {
     const {state} = this.props.location
@@ -110,7 +128,7 @@ class AccountInfo extends React.Component {
     const {user} = this.state
 
     return (
-      <div className='cn-account-info-box cn-accounts-min-width'>
+      <div className='cn-account-info-box cn-accounts-min-width cn-account-info-details'>
         {this.renderDeleteDialog()}
         <div className='cn-shadow-box-content'>
           <div className='cn-card-title edit-header'>
@@ -236,14 +254,14 @@ class AccountInfo extends React.Component {
     )
   }
 
-  render () {
+  renderContent () {
     return (
       <div>
         <h2 className='center-text'>Account Info</h2>
         <div id='cn-account-info'>
           {this.renderAccountDetails()}
           {this.state.user && this.state.user.student &&
-            <div className='cn-account-info-box'>
+            <div className='cn-account-info-box cn-account-info-classes'>
               <div className='cn-shadow-box-content'>
                 <div className='cn-card-title margin-bottom'>
                   Classes
@@ -263,6 +281,14 @@ class AccountInfo extends React.Component {
         </div>
         {this.renderAccountFormModal()}
       </div>
+    )
+  }
+
+  render () {
+    return (
+      this.state.loading
+        ? <SkLoader />
+        : this.renderContent()
     )
   }
 }
