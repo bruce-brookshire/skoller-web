@@ -25,7 +25,8 @@ class SemesterOutlook extends React.Component {
     let ids = this.props.rootStore.studentClassesStore.classes.map(cl => this.props.selectedClasses.includes(cl.name) ? cl.id : null)
     return (
       <div className='insights-semester'>
-        <h1>Your Semester</h1>
+        <h1>Insights</h1>
+        <p className='insights-semester-tagline'>Visualize your semester in new ways</p>
         <div style={{margin: '1rem 0'}}>
           <WeightsTimeline ids={ids} view={this.getView()} />
         </div>

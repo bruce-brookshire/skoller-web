@@ -43,7 +43,7 @@ class StudentClassesStore {
   }
 
   updateClasses () {
-    console.log('updateClasses')
+    console.log('update classes')
     this.loadingUpdate = true
     actions.classes.getStudentClassesById(stores.userStore.user.student.id)
       .then((data) => {

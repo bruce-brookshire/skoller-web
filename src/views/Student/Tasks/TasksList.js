@@ -4,6 +4,7 @@ import {inject, observer} from 'mobx-react'
 import TaskCard from './TaskCard'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import moment from 'moment'
+import SkSelect from '../../components/SkSelect'
 
 @inject('rootStore') @observer
 class TasksList extends React.Component {
@@ -15,7 +16,8 @@ class TasksList extends React.Component {
       classes: this.props.rootStore.studentClassesStore.classes,
       tasks: this.props.rootStore.studentAssignmentsStore.assignments,
       loading: false,
-      seeMore: false
+      seeMore: false,
+      filterSelection: 'All assignments'
     }
   }
 
@@ -42,9 +44,15 @@ class TasksList extends React.Component {
   }
 
   getSortedAssignments () {
-    return this.props.rootStore.studentAssignmentsStore.assignments
-      .slice()
-      .sort((a, b) => moment(a.due).isBefore(moment(b.due)) ? -1 : 1)
+    if (this.props.filter && this.state.filterSelection === 'Past') {
+      return this.props.rootStore.studentAssignmentsStore.assignments
+        .slice()
+        .sort((a, b) => moment(a.due).isAfter(moment(b.due)) ? -1 : 1)
+    } else {
+      return this.props.rootStore.studentAssignmentsStore.assignments
+        .slice()
+        .sort((a, b) => moment(a.due).isBefore(moment(b.due)) ? -1 : 1)
+    }
   }
 
   getTaskDisplayCount () {
@@ -57,6 +65,34 @@ class TasksList extends React.Component {
     return i
   }
 
+  filterLogic (task) {
+    if (this.props.filter) {
+      if (this.state.filterSelection === 'All assignments') {
+        return true
+      } else if (this.state.filterSelection === 'Upcoming') {
+        return moment(task.due).isSame(moment(), 'day') || moment(task.due).isAfter(moment())
+      } else if (this.state.filterSelection === 'Past') {
+        return moment(task.due).isBefore(moment())
+      }
+    } else {
+      return true
+    }
+  }
+
+  outlookLogic (task) {
+    if (this.props.outlook) {
+      if (this.props.outlook === 'Rest of the semester') {
+        return true
+      } else if (this.props.outlook === 'Next 10 days') {
+        return moment(task.due).diff(moment(), 'day') <= 10
+      } else if (this.props.outlook === 'Next 30 days') {
+        return moment(task.due).diff(moment(), 'day') <= 30
+      }
+    } else {
+      return true
+    }
+  }
+
   taskValidity (task, i = false) {
     let daysAway = moment(task.due).diff(moment(), 'days')
     let maxDays = this.props.maxDays ? this.props.maxDays - 1 : 10000
@@ -66,7 +102,9 @@ class TasksList extends React.Component {
       (daysAway <= maxDays) && // if maxDays prop is given, check to make sure that task is within maxDays
       (i === false ? !i : (i < maxTasks || this.state.seeMore)) && // if number of tasks already displayed is greater than limit given by prop maxTasks, don't display... unless user has clicked See More or unless i is not given
       (daysAway >= 0 || this.props.cl) && // make sure task is in the future, unless it's within a class detail view
-      (this.props.cl ? task.class_id === this.props.cl.id : true) // if class detail view, make sure assignment is for that class
+      (this.props.cl ? task.class_id === this.props.cl.id : true) && // if class detail view, make sure assignment is for that class
+      (this.filterLogic(task)) && // if filter is on, check to see if task should be displayed
+      (this.outlookLogic(task)) // if outlook is on, check to see if task should be displayed
     ) {
       return true
     } else {
@@ -107,9 +145,30 @@ class TasksList extends React.Component {
     }
   }
 
+  renderFilter () {
+    let filterOptions = ['All assignments', 'Upcoming', 'Past']
+    return (
+      <div className='sk-tasks-list-filter'>
+        <SkSelect
+          selection={this.state.filterSelection}
+          optionsMap={() => filterOptions.map(o =>
+            <div
+              className='sk-select-option'
+              key={filterOptions.indexOf(o)}
+              onClick={() => {
+                this.setState({filterSelection: o})
+              }}
+            >{o}</div>
+          )}
+        />
+      </div>
+    )
+  }
+
   renderContent () {
     return (
-      <div>
+      <div className='sk-tasks-list'>
+        {this.props.filter && this.renderFilter()}
         {this.renderTasks()}
         {
           !this.state.seeMore &&
@@ -142,7 +201,10 @@ TasksList.propTypes = {
   maxTasks: PropTypes.number,
   maxDays: PropTypes.number,
   seeMore: PropTypes.bool,
-  cl: PropTypes.object
+  cl: PropTypes.object,
+  filter: PropTypes.bool,
+  outlook: PropTypes.string,
+  displayCountCallback: PropTypes.func
 }
 
 export default TasksList

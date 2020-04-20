@@ -15,8 +15,9 @@ class KeyInsights extends React.Component {
 
     return (
       <div className='hardest-week'>
-        <div className='title'>
-          Making up {Math.round(weight * 1000) / 10}% of your total grade, the week of <span className='bold'>{moment(keyInsights.hardestWeeks[0].getWeek()).format('MMMM DD')}</span> is your <b className='bold'>hardest week.</b>
+        <div className='insights-title'>
+          The week of <b className='bold'>{moment(keyInsights.hardestWeeks[0].getWeek()).format('MMMM DD')}</b> is your <b className='bold'>hardest week.</b>
+          <div className='insights-sub-title'>It makes up {Math.round(weight * 1000) / 10}% of your total grade</div>
         </div>
         {/* <h3 style={{textAlign: 'center', margin: '0 0 -0.25rem 0'}}>Hardest week</h3> */}
         <HardestWeek ids={ids} hardestWeek={moment(keyInsights.hardestWeeks[0].getWeek()).format('X')} hardestWeekWeight={weight} />
@@ -26,22 +27,13 @@ class KeyInsights extends React.Component {
 
   renderSingleBusiestWeek (keyInsights) {
     let ids = this.props.rootStore.studentClassesStore.classes.map(cl => this.props.selectedClasses.includes(cl.name) ? cl.id : null)
-    // let assignments = keyInsights.busiestWeek[0].assignments.sort((a, b) => a.weight > b.weight ? 1 : -1)
-    // let weight = Math.round(keyInsights.hardestWeekTotalWeight * 1000) / 1000
-    // let future = moment(keyInsights.hardestWeeks[0].getWeek()).isAfter(moment())
     let count = keyInsights.busiestWeek[0].assignments.length
-
-    let totalAssignmentCount = 0
-    this.props.rootStore.studentAssignmentsStore.assignments.forEach((a) => {
-      if (ids.includes(a.class_id)) {
-        totalAssignmentCount += 1
-      } else return null
-    })
 
     return (
       <div className='hardest-week'>
-        <div className='title'>
-          With {count} of your {totalAssignmentCount} assignments, the week of <span className='bold'>{moment(keyInsights.busiestWeek[0].getWeek()).format('MMMM DD')}</span> is{keyInsights.busiestWeek[0] === keyInsights.hardestWeeks[0] ? ' also' : ''} your <b className='bold'>busiest week.</b>
+        <div className='insights-title'>
+          The week of <b className='bold'>{moment(keyInsights.busiestWeek[0].getWeek()).format('MMMM DD')}</b> is{keyInsights.busiestWeek[0] === keyInsights.hardestWeeks[0] ? ' also' : ''} your <b className='bold'>busiest week.</b>
+          <div className='insights-sub-title'>You have {count} assignments due that week.</div>
         </div>
         <BusiestWeek ids={ids} busiestWeek={moment(keyInsights.busiestWeek[0].getWeek()).format('X')} busiestWeekCount={count} />
       </div>
@@ -53,24 +45,24 @@ class KeyInsights extends React.Component {
 
     return (
       <div className='hardest-week'>
-        <div className='title'>
-          Looking to slack off? <span className='bold'>Try these weeks.</span>
+        <div className='insights-title'>
+          Looking to <b className='bold'>slack off?</b>
+          <div className='insights-sub-title'>
+            {keyInsights.easiestWeeks.map(w => {
+              let last = false
+              if (keyInsights.easiestWeeks.indexOf(w) === keyInsights.easiestWeeks.length - 1) {
+                last = true
+              }
+              return (
+                <span style={{fontSize: '14px', fontWeight: '200'}} key={keyInsights.easiestWeeks.indexOf(w)}>
+                  {last ? 'and ' : ''}{moment(w.getWeek()).format('MMMM Do')}{last ? '' : ', '}
+                </span>
+              )
+            })}<br />
+            {' are the easiest weeks of this semester.'}
+          </div>
         </div>
         <EasiestWeek easiestWeeks={keyInsights.easiestWeeks} ids={ids} />
-        <p>{'The weeks of '}
-          {keyInsights.easiestWeeks.map(w => {
-            let last = false
-            if (keyInsights.easiestWeeks.indexOf(w) === keyInsights.easiestWeeks.length - 1) {
-              last = true
-            }
-            return (
-              <span style={{fontSize: '18px', fontWeight: '600'}} key={keyInsights.easiestWeeks.indexOf(w)}>
-                {last ? 'and ' : ''}{moment(w.getWeek()).format('MMMM Do')}{last ? '' : ', '}
-              </span>
-            )
-          })}
-          {' are the easiest weeks of this semester.'}
-        </p>
       </div>
     )
   }
