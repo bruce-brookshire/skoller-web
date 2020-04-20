@@ -88,12 +88,9 @@ const processColor = (cl, studentId) => {
 
     let freeColors = []
     Object.keys(colors).forEach(colorKey => {
-      if (!colors[colorKey]) {
+      if (colors[colorKey] === false) {
         freeColors.push(colorKey)
       }
-    })
-    studentClassesStore.classes.forEach(cl => {
-      freeColors.splice(freeColors.indexOf(cl.color), 1)
     })
 
     if (freeColors.length === 0) {
@@ -101,7 +98,6 @@ const processColor = (cl, studentId) => {
     }
 
     const randomFreeColor = freeColors[Math.floor(Math.random() * freeColors.length)]
-    console.log('processColor')
     put(
       `/api/v1/students/${studentId}/classes/${cl.id}`,
       { color: randomFreeColor },
@@ -109,7 +105,7 @@ const processColor = (cl, studentId) => {
     )
       .then(() => {
         console.log('process color update classes')
-        // stores.studentClassesStore.updateClasses()
+        stores.studentClassesStore.updateClasses()
       })
       .catch(error => {
         return Promise.reject(error)

@@ -22,6 +22,8 @@ class MyClasses extends React.Component {
       loading: true
     }
     this.props.rootStore.studentNavStore.location = this.props.location
+    this.props.rootStore.studentClassesStore.updateClasses()
+    this.props.rootStore.studentAssignmentsStore.updateAssignments()
   }
 
   componentWillMount () {

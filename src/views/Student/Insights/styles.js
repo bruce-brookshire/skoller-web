@@ -1,6 +1,5 @@
 export function getStyles (c) {
   if (c) {
-    console.log(c)
     c = c.toLowerCase().replace(/.$/, '').replace(/.$/, '')
   }
 
@@ -195,9 +194,22 @@ export function getStyles (c) {
     flyout: {
       strokeWidth: '1px',
       stroke: GRAY_COLOR_75,
-      fontFamily: '"Calibre", sans-serif',
+      // fontFamily: '"Calibre", sans-serif',
       fill: 'white',
-      padding: 0
+      // padding: 0,
+      labels: {
+        fontFamily: '"Calibre", sans-serif',
+        fontWeight: 900
+      }
+    },
+
+    // tooltip
+    tooltip: {
+      fontFamily: '"Calibre", sans-serif',
+      labels: {
+        fontFamily: 'inherit',
+        fontWeight: 400
+      }
     },
 
     // ANIMATION

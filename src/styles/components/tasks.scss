@@ -12,7 +12,7 @@
     @include skoller-cell;
     padding: 1rem;
     width: calc((100vw - 200px) - 5rem);
-    max-width: 600px;
+    max-width: 512px;
     
     @media only screen and (max-width: $sk-mobile-break-point) {
       box-sizing: border-box;
@@ -25,13 +25,26 @@
     }
 
     .tasks-sub-heading {
-      text-align: left;
+      text-align: right;
+      width: 180px;
       position: absolute;
-      top: 0.75rem;
-      right: 18px;
-      width: 160px;
-      // float: right;
-      color: rgba(0, 0, 0, 0.5)
+      top: 8px;
+      right: 40px;
+      color: rgba(0,0,0,0.5);
+    }
+
+    .tasks-filter {
+      text-align: left;
+      width: 100%;
+
+      .tasks-filter-option {
+        cursor: pointer;
+        padding: 4px;
+      
+        &:hover {
+          background-color: $cn-color-hover-grey;
+        }
+      }
     }
 
     .tasks-add-new {

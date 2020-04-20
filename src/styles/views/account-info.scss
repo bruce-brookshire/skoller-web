@@ -1,16 +1,29 @@
 #cn-account-info {
   display: flex;
-  justify-content: space-around;
+  flex-direction: row;
+  justify-content: center;
   flex-wrap: wrap;
   margin: 0 auto;
-  max-width: 1200px;
   padding: 1rem;
 
   .cn-account-info-box {
     @include skoller-cell;
     padding: 1rem;
-    min-width: 300px;
     margin: 0 0.25rem 1rem 0.25rem;
-    flex-grow: 1;
+  }
+
+  .cn-account-info-details {
+    // width: 380px;
+    // flex-grow: 0;
+    text-align: left;
+    // flex-basis: 33%;
+
+    table {
+      width: 100%;
+    }
+  }
+
+  .cn-account-info-classes {
+    max-width: 450px;
   }
 }

@@ -10,7 +10,7 @@ class UploadHistory extends React.Component {
         return (
           <a
             key={index}
-            className='history-item'
+            className='history-item link-style'
             href={file.path}
             target="_blank"
           >{file.name}</a>

@@ -64,7 +64,7 @@ class UploadOverloadDocuments extends React.Component {
           <div className='sk-upload-overload-docs-previous-item'>
             <h3>Syllabus</h3>
             {this.state.syllabus
-              ? <a href={this.state.syllabus.path} target='_blank' rel='noopener noreferrer'>{this.state.syllabus.name}</a>
+              ? <a className='link-style' href={this.state.syllabus.path} target='_blank' rel='noopener noreferrer'>{this.state.syllabus.name}</a>
               : <p>No syllabus was uploaded.</p>
             }
           </div>
@@ -74,7 +74,7 @@ class UploadOverloadDocuments extends React.Component {
               ? this.state.documents.map(doc => {
                 if (!doc.is_syllabus) {
                   return (
-                    <a href={doc.path} target='_blank' rel='noopener noreferrer'>{doc.name}</a>
+                    <a className='link-style' href={doc.path} target='_blank' rel='noopener noreferrer'>{doc.name}</a>
                   )
                 } else if ((this.state.documents.length === 1 && this.state.syllabus !== null) || (this.state.documents.length === 0 && this.state.syllabus === null)) {
                   return (

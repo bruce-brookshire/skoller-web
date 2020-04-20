@@ -13,7 +13,9 @@ class ClassList extends React.Component {
 
   renderGrade (cl) {
     let status = cl.status.id
-    let syllabusOverload = this.props.rootStore.userStore.user.student.schools.find(s => s.id === cl.class_period.school_id).is_syllabus_overload
+    let syllabusOverload = false
+    if (!this.props.rootStore.userStore.isAdmin()) syllabusOverload = this.props.rootStore.userStore.user.student.schools.find(s => s.id === cl.class_period.school_id).is_syllabus_overload
+
     if (status >= 1400) {
       return (
         <h1 style={{color: cl.getColor()}} className='cn-class-list-row-grade-text cn-white'>{cl.grade > 0 ? Math.round(cl.grade) + '%' : '–'}</h1>
@@ -43,7 +45,8 @@ class ClassList extends React.Component {
 
   renderExtra (cl) {
     let status = cl.status.id
-    let syllabusOverload = this.props.rootStore.userStore.user.student.schools.find(s => s.id === cl.class_period.school_id).is_syllabus_overload
+    let syllabusOverload = false
+    if (!this.props.rootStore.userStore.isAdmin()) syllabusOverload = this.props.rootStore.userStore.user.student.schools.find(s => s.id === cl.class_period.school_id).is_syllabus_overload
 
     if (status >= 1400) {
       return (
