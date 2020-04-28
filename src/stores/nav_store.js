@@ -1,6 +1,6 @@
 import { extendObservable, action } from 'mobx'
 
-class StudentNavStore {
+class NavStore {
   constructor () {
     extendObservable(this, {
       activePage: null,
@@ -38,7 +38,7 @@ class StudentNavStore {
   }
 }
 
-const studentNavStore = new StudentNavStore()
+const navStore = new NavStore()
 
-export default studentNavStore
-export { StudentNavStore }
+export default navStore
+export { NavStore }

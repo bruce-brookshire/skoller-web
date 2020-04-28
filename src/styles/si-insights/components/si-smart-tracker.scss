@@ -1,10 +1,11 @@
 .si-smart-tracker {
   box-sizing: border-box;
-  width: 50%;
+  min-width: 380px;
   @include skoller-cell;
 
   @media only screen and (max-width: $sk-mobile-break-point) {
     margin: 0 1rem 1rem 1rem;
+    min-width: 0;
   }
   padding: 1rem;
 

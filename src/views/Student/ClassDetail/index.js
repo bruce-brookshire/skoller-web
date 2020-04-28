@@ -38,8 +38,8 @@ class ClassDetail extends React.Component {
 
     this.paletteRef = React.createRef()
 
-    this.props.rootStore.studentNavStore.setActivePage('classes')
-    this.props.rootStore.studentNavStore.location = this.props.location // set active page route location for access from assignment detail
+    this.props.rootStore.navStore.setActivePage('classes')
+    this.props.rootStore.navStore.location = this.props.location // set active page route location for access from assignment detail
 
     this.getClass()
     this.getClassAssignmentsForStudent(this.props.match.params)

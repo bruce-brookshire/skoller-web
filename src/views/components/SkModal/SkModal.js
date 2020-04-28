@@ -3,6 +3,7 @@ import { observer, inject } from 'mobx-react'
 import PropTypes from 'prop-types'
 import Exit from '../../../assets/sk-icons/navigation/Exit'
 import OutsideClickHandler from 'react-outside-click-handler'
+import { CSSTransition } from 'react-transition-group'
 
 @inject('rootStore')
 @observer
@@ -132,7 +133,7 @@ class SkModal extends React.Component {
                 ? <div className="sk-modal-exit" onClick={() => {
                   this.closeModal()
                 }}>
-                  <Exit width="18" height="18" fill={this.props.rootStore.studentNavStore.jobsMode ? 'jobs' : '$cn-color-blue'}/>
+                  <Exit width="18" height="18" fill={this.props.rootStore.navStore.jobsMode ? 'jobs' : '$cn-color-blue'}/>
                 </div>
                 : null
               }

@@ -25,7 +25,7 @@ const WatchToggle = (props) => {
   }
 
   return (
-    <div className='si-watch-toggle' style={props.showConfirm ? {width: '96px'} : {display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+    <div className='si-watch-toggle' style={props.showConfirm ? {position: 'relative'} : {display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
       <div onClick={() => toggleWatching()} className={'toggle ' + (watching ? 'watching' : '')}>
         {star()}
       </div>
@@ -35,7 +35,7 @@ const WatchToggle = (props) => {
         classNames="fade"
         unmountOnExit
       >
-        <p className={watching ? 'added' : 'removed'} style={props.showConfirm ? null : {margin: '-4px 4px 4px 8px', padding: '4px 4px 0 4px'}}>
+        <p className={watching ? 'added' : 'removed'} style={props.showConfirm ? {width: '112px', padding: '2px 2px 0 2px', position: 'absolute', bottom: '-6px'} : {margin: '-4px 4px 4px 8px', padding: '4px 4px 0 4px'}}>
           {watching ? 'Added to ' : 'Removed from '} watchlist
         </p>
       </CSSTransition>

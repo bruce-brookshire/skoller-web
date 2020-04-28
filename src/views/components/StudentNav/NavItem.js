@@ -19,7 +19,7 @@ import Browse from '../../../assets/sk-icons/jobs/Browse'
 class NavItem extends React.Component {
   getActivePage () {
     const {
-      studentNavStore: { activePage }
+      navStore: { activePage }
     } = this.props.rootStore
     return activePage
   }
@@ -66,7 +66,7 @@ class NavItem extends React.Component {
   }
 
   render () {
-    let jobsMode = this.props.rootStore.studentNavStore.jobsMode
+    let jobsMode = this.props.rootStore.navStore.jobsMode
     return (
       <div
         className={

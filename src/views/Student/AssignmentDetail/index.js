@@ -65,8 +65,8 @@ class AssignmentDetail extends React.Component {
       <StudentLayout>
         <NestedNav back=
           {
-            this.props.rootStore.studentNavStore.location.pathname
-              ? this.props.rootStore.studentNavStore.location.pathname.match(/class/) ? false : true
+            this.props.rootStore.navStore.location.pathname
+              ? this.props.rootStore.navStore.location.pathname.match(/class/) ? false : true
               : false
           }
         />

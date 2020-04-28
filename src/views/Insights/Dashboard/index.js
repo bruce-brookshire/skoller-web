@@ -4,12 +4,12 @@ import PropTypes from 'prop-types'
 import Avatar from '../components/Avatar'
 import WatchToggle from '../components/WatchToggle'
 import Table from '../components/Table'
-import data from './test'
 import TeamsCell from '../components/TeamsCell'
 import InsightsLayout from '../../components/InsightsLayout'
 import CopyCell from '../components/CopyCell'
 import actions from '../../../actions'
 import SmartTracker from './SmartTracker'
+import OrgOverview from './OrgOverview'
 
 @inject('rootStore') @observer
 class Dashboard extends React.Component {
@@ -17,6 +17,7 @@ class Dashboard extends React.Component {
     super(props)
 
     this.props.rootStore.insightsStore.getStudents()
+    this.props.rootStore.navStore.setActivePage('insights/dashboard')
 
     actions.insights.getStudentsByTeamId()
   }
@@ -43,13 +44,9 @@ class Dashboard extends React.Component {
     )
   }
 
-  renderHeader () {
+  renderOrgOverview () {
     return (
-      <div className='si-table-header'>
-        <div className='si-table-header-item'>
-          Sort
-        </div>
-      </div>
+      <OrgOverview />
     )
   }
 
@@ -62,9 +59,12 @@ class Dashboard extends React.Component {
   renderContent () {
     return (
       <div className='si-dashboard'>
-        {this.renderHeader()}
-        {/* {this.renderTable()} */}
-        {this.renderSmartTracker()}
+        <div className='si-dashboard-column-sm'>
+          {this.renderOrgOverview()}
+        </div>
+        <div className='si-dashboard-column-lg'>
+          {this.renderSmartTracker()}
+        </div>
       </div>
     )
   }

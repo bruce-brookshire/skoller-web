@@ -21,13 +21,13 @@ class MyClasses extends React.Component {
       classStatusModal: {show: false, cl: null},
       loading: true
     }
-    this.props.rootStore.studentNavStore.location = this.props.location
+    this.props.rootStore.navStore.location = this.props.location
     this.props.rootStore.studentClassesStore.updateClasses()
     this.props.rootStore.studentAssignmentsStore.updateAssignments()
   }
 
   componentWillMount () {
-    this.props.rootStore.studentNavStore.setActivePage('classes')
+    this.props.rootStore.navStore.setActivePage('classes')
     // this.updateClasses()
   }
 

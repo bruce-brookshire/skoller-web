@@ -25,7 +25,7 @@ class TaskCard extends React.Component {
   }
 
   goToAssignment () {
-    this.props.history.push({pathname: '/student/class/' + this.props.task.class_id + '/assignments/' + this.props.task.assignment_id, state: { prevPath: this.props.rootStore.studentNavStore.location.pathname }})
+    this.props.history.push({pathname: '/student/class/' + this.props.task.class_id + '/assignments/' + this.props.task.assignment_id, state: { prevPath: this.props.rootStore.navStore.location.pathname }})
   }
 
   renderCard () {

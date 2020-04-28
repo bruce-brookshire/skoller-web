@@ -127,3 +127,45 @@
     }
   }
 }
+
+.si-top {
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  height: 64px;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  z-index: 9;
+  border-bottom: 1px solid $sk-blue;
+
+  .si-top-left {
+    font-size: 24px;
+    font-weight: 600;
+    color: $sk-blue;
+    cursor: pointer;
+
+    svg {
+      margin-bottom: -2px;
+    }
+  }
+
+  .si-top-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    
+    .si-top-user-name {
+      margin: 0;
+      font-weight: 600;
+    }
+
+    .si-top-user-org {
+      margin: 0;
+      font-weight: 200;
+    }
+  }
+}

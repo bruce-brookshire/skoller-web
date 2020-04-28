@@ -8,9 +8,8 @@ $b5: $sk-blue-5;
 
 .si-table {
   background-color: white;
-  // width: 100%;
   border-collapse: collapse;
-  margin: 1rem 0;
+  // margin: 1rem 0;
   text-align: left;
 
   tr:nth-child(even) { background: white; }
@@ -20,7 +19,7 @@ $b5: $sk-blue-5;
   }
 
   table, th, td {
-    border: 1px solid #4a4a4a;
+    border: 1px solid #fafafa;
     padding: 4px;
   }
 }

@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
 @observer
 class DayCell extends React.Component {
   goToAssignment (assignment) {
-    this.props.history.push({pathname: '/student/class/' + assignment.class_id + '/assignments/' + assignment.assignment_id, state: { prevPath: this.props.rootStore.studentNavStore.location.pathname }})
+    this.props.history.push({pathname: '/student/class/' + assignment.class_id + '/assignments/' + assignment.assignment_id, state: { prevPath: this.props.rootStore.navStore.location.pathname }})
   }
 
   // return the rendered calendar day cell

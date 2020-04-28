@@ -1,0 +1,38 @@
+.si-gm-wrapper {
+  position: relative;
+
+  .si-gm {
+    position: absolute;
+    z-index: 1;
+    background-color: white;
+    border: 1px solid $sk-blue-75;
+    border-radius: 3px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.04);
+    padding: 0.5rem;
+  
+    .add-team-search {
+      width: 100%;
+      min-width: 192px;
+      border: none;
+      
+      &:focus {
+        outline: none;
+      }
+    }
+  
+    .team-options-container {
+      max-height: 180px;
+      overflow-y: hidden;
+      overflow: auto;
+  
+      .team-option {
+        cursor: pointer;
+        padding: 6px 0 2px 0;
+  
+        &:hover {
+          background-color: $sk-blue-25;
+        }
+      }
+    }
+  }
+}

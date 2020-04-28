@@ -13,9 +13,9 @@ class Tasks extends React.Component {
   constructor (props) {
     super(props)
 
-    this.props.rootStore.studentNavStore.location = this.props.location
+    this.props.rootStore.navStore.location = this.props.location
 
-    this.props.rootStore.studentNavStore.setActivePage('tasks')
+    this.props.rootStore.navStore.setActivePage('tasks')
 
     this.state = {
       showAddAssignmentModal: false,

@@ -5,7 +5,7 @@ import App from './containers/App'
 import Layout from './containers/Layout'
 
 import Landing from './views/Landing'
-import AdminLanding from './views/AdminLanding'
+import AdminLanding from './views/Hub/AdminLanding'
 import Faq from './views/Faq'
 import ForgotPassword from './views/ForgotPassword'
 import Unsubscribe from './views/Unsubscribe'
@@ -17,6 +17,7 @@ import OurTeam from './views/OurTeam'
 import PitchDeck from './views/PitchDeck'
 import ResetPassword from './views/ResetPassword'
 
+// student
 import Onboard from './views/Student/Onboard'
 import Home from './views/Student/Home'
 import Calendar from './views/Student/Calendar'
@@ -35,9 +36,11 @@ import SyllabusTool from './views/SyllabusTool'
 import ClassAdmin from './views/ClassAdmin'
 import AssignmentAdmin from './views/AssignmentAdmin'
 
+// hub
 import HubLanding from './views/Hub/HubLanding'
 import HubSchools from './views/Hub/HubSchools'
 import HubClasses from './views/Hub/HubClasses'
+import HubInsights from './views/Hub/HubInsights'
 import SchoolInfo from './views/Hub/SchoolInfo'
 import Accounts from './views/Hub/Accounts'
 import AccountInfo from './views/Hub/AccountInfo'
@@ -48,15 +51,21 @@ import ReportList from './views/Hub/ReportList'
 import Enroll from './views/EnrollmentLink/Enroll'
 import DownloadApp from './views/components/DownloadApp'
 
+// skoller insights
+import InsightsLanding from './views/Insights/Landing'
+import Dashboard from './views/Insights/Dashboard'
+import Students from './views/Insights/Students'
+import Groups from './views/Insights/Groups'
+import Organization from './views/Insights/Organization'
+
+// student - skoller jobs
 import Jobs from './views/Student/Jobs'
 import Profile from './views/Student/Jobs/Profile'
-// import Resume from './views/Student/Jobs/Resume'
 import JobsBrowse from './views/Student/Jobs/Browse'
 
 import actions from './actions'
 import stores from './stores'
 import JobDetail from './views/Student/Jobs/JobDetail'
-import InsightsLanding from './views/Insights/Landing'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 
@@ -163,6 +172,20 @@ class HubContainer extends React.Component {
         <Route exact path='/hub/analytics' component={Analytics} />
         <Route exact path='/hub/switchboard' component={Switchboard} />
         <Route exact path='/hub/reports' component={ReportList} />
+        <Route exact path='/hub/insights' component={HubInsights} />
+      </Switch>
+    )
+  }
+}
+
+class InsightsContainer extends React.Component {
+  render () {
+    return (
+      <Switch>
+        <Route exact path='/insights/dashboard' component={Dashboard} />
+        <Route exact path='/insights/students' component={Students} />
+        <Route exact path='/insights/groups' component={Groups} />
+        <Route exact path='/insights/organization' component={Organization} />
       </Switch>
     )
   }
@@ -183,11 +206,11 @@ class StudentShareContainer extends React.Component {
 class StudentJobsContainer extends React.Component {
   constructor (props) {
     super(props)
-    stores.studentNavStore.setJobsMode(true)
+    stores.navStore.setJobsMode(true)
   }
 
   componentWillUnmount () {
-    stores.studentNavStore.setJobsMode(false)
+    stores.navStore.setJobsMode(false)
   }
 
   render () {
@@ -233,7 +256,7 @@ const router = (
       <Switch>
         <Route exact path='/' component={AuthSwitch} />
         <Route path='/landing' component={Landing} />
-        <Route path='/insights' component={InsightsLanding} />
+        {/* <Route path='/insights' component={InsightsLanding} /> */}
         <Route path='/admin-login' component={AdminLanding} />
         <Route path='/forgot_password' component={ForgotPassword} />
         <Route path='/unsubscribe/:id' component={Unsubscribe} />
@@ -284,6 +307,11 @@ const router = (
           <Layout>
             <HubContainer />
           </Layout>
+        </ProtectedRoute>
+
+        <Route exact path='/insights' component={InsightsLanding} />
+        <ProtectedRoute path='/insights'>
+          <InsightsContainer />
         </ProtectedRoute>
 
         <Route path='/jobs' render={() => <Redirect to="/student/jobs"/>} />

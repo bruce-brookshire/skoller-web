@@ -13,7 +13,7 @@ class App extends React.Component {
 
   renderBackgroundColor () {
     let body = document.getElementById('body')
-    if (this.props.rootStore.studentNavStore.jobsMode) {
+    if (this.props.rootStore.navStore.jobsMode) {
       body.style.backgroundColor = '#4a4a4a'
     } else {
       body.style.backgroundColor = '#EDFAFF'
@@ -29,7 +29,7 @@ class App extends React.Component {
       if (layout) {
         layout.scrollTop = 0
       }
-      this.props.rootStore.studentNavStore.history.push(l.pathname)
+      this.props.rootStore.navStore.history.push(l.pathname)
     })
 
     return (

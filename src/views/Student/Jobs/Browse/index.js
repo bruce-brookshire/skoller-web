@@ -17,8 +17,8 @@ class JobsBrowse extends React.Component {
       this.props.rootStore.studentJobsStore.getJobsListings()
     }
 
-    this.props.rootStore.studentNavStore.setActivePage('jobs/browse')
-    this.props.rootStore.studentNavStore.location = this.props.location
+    this.props.rootStore.navStore.setActivePage('jobs/browse')
+    this.props.rootStore.navStore.location = this.props.location
   }
 
   loadMore = () => {

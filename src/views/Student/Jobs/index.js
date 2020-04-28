@@ -11,8 +11,8 @@ class Jobs extends React.Component {
   constructor (props) {
     super(props)
 
-    this.props.rootStore.studentNavStore.setActivePage('jobs/home')
-    this.props.rootStore.studentNavStore.location = this.props.location
+    this.props.rootStore.navStore.setActivePage('jobs/home')
+    this.props.rootStore.navStore.location = this.props.location
 
     if (this.props.rootStore.studentJobsStore.listings.length === 0) {
       this.props.rootStore.studentJobsStore.getJobsListings()

@@ -11,8 +11,13 @@ class Table extends React.Component {
   }
 
   renderData (d, i) {
+    let colSpan = null
+    if (d.props) {
+      colSpan = d.props.colSpan ? d.props.colSpan : null
+    }
+
     return (
-      <td key={i}>
+      <td key={i} colSpan={colSpan}>
         {d}
       </td>
     )
@@ -21,7 +26,7 @@ class Table extends React.Component {
   render () {
     const {headers, data} = this.props
     return (
-      <table className='si-table'>
+      <table className={'si-table' + (this.props.className ? (' ' + this.props.className) : '')}>
         <thead>
           <tr>
             {headers.map(h => {
@@ -50,7 +55,8 @@ class Table extends React.Component {
 
 Table.propTypes = {
   headers: PropTypes.array,
-  data: PropTypes.array
+  data: PropTypes.array,
+  className: PropTypes.string
 }
 
 export default Table

@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 // import SkBanner from './SkBanner'
 import {inject, observer} from 'mobx-react'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
-import InsightsNav from './InsightsNav'
+import InsightsNav from '../InsightsNav/InsightsNav'
+import InsightsTop from '../InsightsNav/InsightsTop'
 
 @inject('rootStore') @observer
 class InsightsLayout extends React.Component {
@@ -18,6 +19,7 @@ class InsightsLayout extends React.Component {
   renderContent () {
     return (
       <div className='si-layout' id='si-layout'>
+        <InsightsTop />
         <InsightsNav />
         <main id='main'>
           {/* <SkBanner /> */}

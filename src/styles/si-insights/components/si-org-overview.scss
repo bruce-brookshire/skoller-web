@@ -1,0 +1,24 @@
+.si-org-overview {
+  box-sizing: border-box;
+  @include skoller-cell;
+  padding: 1rem;
+
+  h1 {
+    margin: 0;
+    text-align: left;
+  }
+
+  .si-org-overview-content {
+    display: flex;
+    flex-direction: row;
+    flex-flow: row wrap;
+    justify-content: space-between;
+
+    .si-org-overview-category {
+      display: flex;
+      flex-flow: column;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}

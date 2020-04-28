@@ -1,13 +1,21 @@
 // views
-@import 'si-landing.scss';
-@import 'si-dashboard.scss';
+@import 'views/si-landing.scss';
+@import 'views/si-dashboard.scss';
+@import 'views/si-students.scss';
 
 // components
-@import 'si-table.scss';
-@import 'si-layout.scss';
-@import 'si-nav.scss';
-@import 'si-smart-tracker.scss';
-@import 'si-sa-card.scss';
+@import 'components/si-filter-bar.scss';
+@import 'components/si-gm.scss';
+@import 'components/si-layout.scss';
+@import 'components/si-nav.scss';
+@import 'components/si-org-overview.scss';
+@import 'components/si-sa-card.scss';
+@import 'components/si-smart-tracker.scss';
+@import 'components/si-table.scss';
+@import 'components/si-teams-cell.scss';
+
+// hub
+@import 'hub/hub-insights-form.scss';
 
 // small components that don't need individual scss files
 .si-avatar {
@@ -53,89 +61,6 @@
 
   .removed {
     background-color: #ffa79e;
-  }
-}
-
-.si-teams-cell {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  max-width: 256px;
-  margin-bottom: -4px;
-  position: relative;
-
-  .team {
-    background-color: white;
-    border: 1px solid $sk-blue;
-    border-radius: 3px;
-    padding: 4px 4px 0px 4px;
-    margin-right: 4px;
-    margin-bottom: 4px;
-    // height: 25px;
-    cursor: pointer;
-
-    &:hover {
-      background-color: $sk-blue-25;
-    }
-  }
-
-  .add-a-team {
-    margin-bottom: 4px;
-
-    .add-team-button {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      font-size: 20px;
-      font-weight: 600;
-      border: 1px solid $sk-blue;
-      border-radius: 3px;
-      width: 25px;
-      height: 25px;
-      padding: 5px 0 0 0;
-      cursor: pointer;
-
-      &:hover {
-        background-color: $sk-blue-50;
-      }
-    }
-  }
-
-  .add-team-search-container {
-    position: absolute;
-    z-index: 1;
-    background-color: white;
-    border: 1px solid $sk-blue-75;
-    border-radius: 3px;
-    box-shadow: 0px 4px 12px rgba(0,0,0,0.04);
-    padding: 0.5rem;
-
-    .add-team-search {
-      width: 100%;
-      min-width: 192px;
-      border: none;
-      
-      &:focus {
-        outline: none;
-      }
-    }
-
-    .team-options-container {
-      max-height: 180px;
-      overflow-y: hidden;
-      overflow: auto;
-
-      .team-option {
-        cursor: pointer;
-        padding: 6px 0 2px 0;
-  
-        &:hover {
-          background-color: $sk-blue-25;
-        }
-      }
-    }
   }
 }
 

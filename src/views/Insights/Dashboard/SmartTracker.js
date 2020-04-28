@@ -5,8 +5,6 @@ import SmartTrackerIcon from '../../../assets/sk-icons/insights/SmartTrackerIcon
 import dataWithId from './test'
 import Avatar from '../components/Avatar'
 import WatchToggle from '../components/WatchToggle'
-import TeamsCell from '../components/TeamsCell'
-import CopyCell from '../components/CopyCell'
 import Table from '../components/Table'
 
 const StudentAthleteCard = (user) => {

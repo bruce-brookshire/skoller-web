@@ -16,14 +16,19 @@ class HubLanding extends React.Component {
       loadingReports: false,
       reports: []
     }
-  }
 
-  componentWillMount () {
     this.getStatuses()
     if (this.isAdminUser()) {
       this.getReports()
     }
   }
+
+  // componentWillMount () {
+  //   this.getStatuses()
+  //   if (this.isAdminUser()) {
+  //     this.getReports()
+  //   }
+  // }
 
   /*
   * Fetch the class statuses
@@ -160,6 +165,13 @@ class HubLanding extends React.Component {
           </div>
 
           <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 margin-top'>
+            <button className='nav-button admin button full-width' onClick={() => this.onNavigate('/hub/insights')}>
+              <i className='fas fa-eye' style={{color: '#FEFEFE', fontSize: '1.4rem', paddingBottom: '4px'}}></i>
+              <span>Insights</span>
+            </button>
+          </div>
+
+          <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 margin-top'>
             <button className='nav-button admin button full-width' onClick={() =>
               this.props.history.push({pathname: '/hub/reports', state: {reports: this.state.reports}})}>
               <i className='fa fa-flag' style={{color: '#FEFEFE', fontSize: '1.4rem', paddingBottom: '4px'}}></i>
@@ -267,7 +279,8 @@ class HubLanding extends React.Component {
 }
 
 HubLanding.propTypes = {
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  history: PropTypes.object
 }
 
 export default withRouter(HubLanding)
