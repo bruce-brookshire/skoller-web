@@ -13,11 +13,9 @@
     margin-top: 1rem;
     border-top: 1px solid #4a4a4a;
     width: 100%;
-    height: calc(100vh - 250px);
 
     .hub-insights-orgs {
       flex-grow: 0;
-      border-right: 1px solid #4a4a4a;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
@@ -28,10 +26,19 @@
       }
     }
 
-    .hub-insights-info {
+    .hub-insights-info-container {
+      border-left: 1px solid #4a4a4a;
       flex-grow: 1;
-      display: flex;
-      flex-flow: row wrap;
+      background: #fafafa;
+
+      .hub-insights-info {
+        display: flex;
+        flex-flow: row wrap;
+      }
+
+      h2 {
+        text-align: center;
+      }
     }
 
     .hub-insights-group {
@@ -43,8 +50,10 @@
       align-items: center;
 
       table {
-        min-width: 212px;
+        // min-width: 212px;
         width: 100%;
+        max-height: 100px;
+        overflow: scroll;
       }
     }
 

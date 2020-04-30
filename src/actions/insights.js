@@ -54,6 +54,25 @@ function deleteOrg (orgId) {
   //   })
 }
 
+// Add student to org
+function addStudentToOrg (orgId, studentId) {
+  let form = {student_id: studentId}
+  return post(`/api/v1/organizations/${orgId}/students`, form, '')
+    .then(data => { return data })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+// Remove student from org
+function removeStudentFromOrg (orgId, orgStudentId) {
+  return del(`/api/v1/organizations/${orgId}/students/${orgStudentId}`, '', '')
+    .then(data => { return data })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
 /*
 
 ORGANIZATION OWNERS
@@ -94,8 +113,8 @@ function updateOrgOwner (orgId, form) {
 }
 
 // Delete an org owner
-function deleteOrgOwner (orgId, form) {
-  return del(`/api/v1/organizations/${orgId}/owners`, form, '')
+function deleteOrgOwner (orgId, orgOwnerId) {
+  return del(`/api/v1/organizations/${orgId}/owners/${orgOwnerId}`, '', '')
     .then(data => { return data })
     .catch(error => {
       return Promise.reject(error)
@@ -127,6 +146,40 @@ function createOrgGroup (orgId, form) {
 // Add student to group
 function addStudentToGroup (orgId, orgGroupId, orgStudentId) {
   return post(`/api/v1/organizations/${orgId}/org-groups/${orgGroupId}/students`, {org_student_id: orgStudentId}, '')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+// Remove student from group
+function removeStudentFromGroup (orgId, orgGroupId, orgGroupStudentId) {
+  return del(`/api/v1/organizations/${orgId}/org-groups/${orgGroupId}/students/${orgGroupStudentId}`, '', '')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+// Add user as an org group owner
+function createOrgGroupOwner (orgId, orgGroupId, userId) {
+  let form = {user_id: userId}
+  return post(`/api/v1/organizations/${orgId}/org-groups/${orgGroupId}/owners`, form, '')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+// Remove user as an org group owner
+function removeOrgGroupOwner (orgId, orgGroupId, orgGroupOwnerId) {
+  return del(`/api/v1/organizations/${orgId}/org-groups/${orgGroupId}/owners/${orgGroupOwnerId}`, '', '')
     .then(data => {
       return data
     })
@@ -194,16 +247,14 @@ function login (form) {
 }
 
 // Get a team's students by team ID
-function getStudentsByTeamId (teamId) {
-  console.log('it ran!')
-  return dataWithId
-  // return get(`/api/v1/users/${teamId}/job-profile`, '', '')
-  //   .then(data => {
-  //     return data
-  //   })
-  //   .catch(error => {
-  //     return Promise.reject(error)
-  //   })
+function getStudentsByGroupId (orgId, orgGroupId) {
+  return get(`/api/v1/organizations/${orgId}/org-groups/${orgGroupId}/students`, '', '')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
 }
 
 // Add a student to a group owner's watchlist
@@ -228,7 +279,9 @@ const exports = {
   createOrg,
   updateOrg,
   deleteOrg,
-
+  // students
+  addStudentToOrg,
+  removeStudentFromOrg,
   /*
 
   ORG OWNER
@@ -246,6 +299,10 @@ const exports = {
   getAllGroupsInOrg,
   createOrgGroup,
   addStudentToGroup,
+  removeStudentFromGroup,
+  // group owners,
+  createOrgGroupOwner,
+  removeOrgGroupOwner,
   // watchlist
   getOrgOwnerWatchlist,
   addStudentToOrgOwnerWatchlist,
@@ -257,7 +314,7 @@ const exports = {
 
   */
 
-  getStudentsByTeamId,
+  getStudentsByGroupId,
   getAllStudentsInOrg,
   addStudentToGroupOwnerWatchlist,
   removeStudentFromGroupOwnerWatchlist

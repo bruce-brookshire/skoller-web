@@ -2,21 +2,19 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import actions from '../../../actions'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
-import Table from '../../../views/Insights/components/Table'
+import Table from '../../Insights/components/Table'
+import SkSelect from '../../components/SkSelect'
 
-class TagUserToOrg extends React.Component {
+class TagUserToOrgGroup extends React.Component {
   constructor (props) {
     super(props)
 
     this.state = {
       query: '',
       loading: false,
-      users: null
+      users: null,
+      group: null
     }
-  }
-
-  componentWillUnmount () {
-    // this.props.onSubmit && this.props.onSubmit()
   }
 
   getAccounts (queryString) {
@@ -25,7 +23,7 @@ class TagUserToOrg extends React.Component {
     actions.auth.getUsers(queryString).then(users => {
       users.forEach(u => {
         u.isOwner = false
-        if (this.props.org.owners.map(o => o.user_id).includes(u.id)) {
+        if (this.props.groupOwners.map(o => o.user_id).includes(u.id)) {
           u.isOwner = true
         }
       })
@@ -38,47 +36,58 @@ class TagUserToOrg extends React.Component {
   }
 
   tagOwner (user) {
-    actions.insights.createOrgOwner(this.props.org.id, {user_id: user.id})
-      .then(() => {
-        this.props.onSubmit && this.props.onSubmit()
-        this.getAccounts(this.state.query)
-      })
-  }
-
-  removeOwner (user) {
-    actions.insights.deleteOrgOwner(this.props.org.id, this.props.org.owners.find(o => o.user_id === user.id).id)
-      .then(() => {
-        this.props.onSubmit && this.props.onSubmit()
-        this.getAccounts(this.state.query)
-      })
+    if (this.state.group === null) {
+      this.setState({error: 'Group is required'})
+    } else {
+      actions.insights.createOrgGroupOwner(this.props.org.id, this.state.group.id, user.id)
+        .then(() => {
+          this.props.onSubmit && this.props.onSubmit()
+        })
+        .catch(() => {
+          this.setState({error: 'Error tagging user to org. Try again later.'})
+        })
+    }
   }
 
   renderTagButton (user) {
     if (user.isOwner) {
       return (
-        <div onClick={() => this.removeOwner(user)} className='hub-insights-form-button'>
-          <p style={{backgroundColor: 'red'}}>Remove owner</p>
-        </div>
+        <p style={{color: 'green'}}>Already an org group owner</p>
       )
     } else {
-      return (
-        <div onClick={() => this.tagOwner(user)} className='hub-insights-form-button'>
-          <p>Make owner</p>
-        </div>
-      )
+      if (this.state.group) {
+        return (
+          <div onClick={() => this.tagOwner(user)} className='hub-insights-form-button'>
+            <p>Make owner</p>
+          </div>
+        )
+      } else {
+        return (
+          <div className='disabled'>
+            <p>Select a group first</p>
+          </div>
+        )
+      }
     }
   }
 
   render () {
     return (
       <div className='hub-insights-form-container' style={{padding: '0 1rem'}}>
-        <h1 style={{margin: 0}}>Add or Remove Org Owners</h1>
+        <h1 style={{margin: 0}}>Make User an Org Group Owner</h1>
         <h3 style={{margin: 0}}>{this.props.org.name}</h3>
         <div className='hub-insights-form-row'>
           <input className='hub-insights-form-input' placeholder='Search for a user by email address' onChange={(e) => this.setState({query: e.target.value})} />
           <div className='hub-insights-form-save'>
             <p onClick={() => this.onSearch()}>Search</p>
           </div>
+        </div>
+        <div className='hub-insights-form-row'>
+          <SkSelect selection={this.state.group ? this.state.group.name : 'Select a group for this user to own'} optionsMap={() => this.props.org.groups.map(g => {
+            return (
+              <div className='hub-insights-autocomplete-option' key={g.id} onClick={() => this.setState({group: g})}>{g.name}</div>
+            )
+          })} />
         </div>
         {this.state.loading &&
           <SkLoader />
@@ -93,9 +102,10 @@ class TagUserToOrg extends React.Component {
   }
 }
 
-TagUserToOrg.propTypes = {
+TagUserToOrgGroup.propTypes = {
   org: PropTypes.object,
-  onSubmit: PropTypes.func
+  onSubmit: PropTypes.func,
+  groupOwners: PropTypes.array
 }
 
-export default TagUserToOrg
+export default TagUserToOrgGroup

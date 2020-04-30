@@ -1,6 +1,5 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
-import Grid from '../../../components/Grid'
 import actions from '../../../actions'
 import PropTypes from 'prop-types'
 import Table from '../../Insights/components/Table'
@@ -11,13 +10,9 @@ import CreateOrg from './CreateOrg'
 import CreateOrgGroup from './CreateOrgGroup'
 import TagUserToOrg from './TagUserToOrg'
 import TeamsCell from '../../Insights/components/TeamsCell'
-
-const headers = [
-  'One',
-  'Two',
-  'Three',
-  'Four'
-]
+import AddOrRemoveOrgStudents from './AddOrRemoveOrgStudents'
+import CreateOrgGroupOwner from './CreateOrgGroupOwner'
+import TagUserToOrgGroup from './TagUserToOrgGroup'
 
 class HubInsights extends React.Component {
   constructor (props) {
@@ -30,6 +25,9 @@ class HubInsights extends React.Component {
       showNewOrgModal: false,
       showNewOrgOwnerModal: false,
       showNewOrgGroupModal: false,
+      showManageStudentsModal: false,
+      showCreateOrgGroupOwnersModal: false,
+      showTagUserToOrgGroupModal: false,
       loadingDetails: false
     }
 
@@ -58,6 +56,7 @@ class HubInsights extends React.Component {
       })
     await actions.insights.getAllStudentsInOrg(org.id)
       .then(students => {
+        console.log(students)
         org.students = students.map(s => { return {...s, orgStudentId: s.id} })
       })
     this.setState({loadingDetails: false, orgSelection: org})
@@ -112,7 +111,7 @@ class HubInsights extends React.Component {
   renderNewOrgOwnerButton () {
     return (
       <div className='hub-insights-cell-button blue' onClick={() => this.setState({showNewOrgOwnerModal: true})}>
-        Create new org owner
+        Create new user as org owner
       </div>
     )
   }
@@ -120,7 +119,7 @@ class HubInsights extends React.Component {
   renderTagUserToOrgButton () {
     return (
       <div className='hub-insights-cell-button blue' onClick={() => this.setState({showTagUserToOrgModal: true})}>
-        Tag existing user to org
+        Add or remove an existing user as owner
       </div>
     )
   }
@@ -209,6 +208,71 @@ class HubInsights extends React.Component {
     }
   }
 
+  renderCreateOrgGroupOwnerButton () {
+    return (
+      <div colSpan={2} className='hub-insights-cell-button blue' onClick={() => this.setState({showCreateOrgGroupOwnersModal: true})}>
+        Create new org group owner
+      </div>
+    )
+  }
+
+  renderTagUserToOrgGroupButton () {
+    return (
+      <div colSpan={2} className='hub-insights-cell-button blue' onClick={() => this.setState({showTagUserToOrgGroupModal: true})}>
+        Make an existing user an org group owner
+      </div>
+    )
+  }
+
+  renderOwnerTeamsCell (owner) {
+    return (
+      <TeamsCell owner={true} user={owner} org={this.state.orgSelection} onChange={() => this.getOrgData(true)} />
+    )
+  }
+
+  getAllOrgGroupOwners () {
+    let orgOwnersArrays = this.state.orgSelection.groups.map(g => g.owners)
+    let mergedOwners = [].concat.apply([], orgOwnersArrays)
+    let seen = new Set()
+    const filteredMergedOwners = mergedOwners.filter(o => {
+      const duplicate = seen.has(o.user_id)
+      seen.add(o.user_id)
+      return !duplicate
+    })
+    return filteredMergedOwners
+  }
+
+  renderOrgGroupOwners () {
+    if (this.state.orgSelection) {
+      let data = this.getAllOrgGroupOwners().map(o => [o.user_id, this.renderOwnerTeamsCell(o)])
+      data.push([this.renderCreateOrgGroupOwnerButton()])
+      data.push([this.renderTagUserToOrgGroupButton()])
+      return (
+        <div className='hub-insights-group'>
+          <h2>Group Owners</h2>
+          <Table
+            headers={['User ID', 'Teams (org groups)']}
+            data={data}
+          />
+          {this.state.showCreateOrgGroupOwnersModal &&
+            <SkModal closeModal={() => this.setState({showCreateOrgGroupOwnersModal: false})}>
+              <CreateOrgGroupOwner org={this.state.orgSelection} onSubmit={() => this.onSubmitGroups()} />
+            </SkModal>
+          }
+          {this.state.showTagUserToOrgGroupModal &&
+            <SkModal closeModal={() => this.setState({showTagUserToOrgGroupModal: false})}>
+              <TagUserToOrgGroup groupOwners={this.getAllOrgGroupOwners()} org={this.state.orgSelection} onSubmit={() => this.onSubmitGroups()} />
+            </SkModal>
+          }
+        </div>
+      )
+    } else {
+      return (
+        <div />
+      )
+    }
+  }
+
   renderStudentGroups (user) {
     return (
       <TeamsCell org={this.state.orgSelection} user={user} onChange={() => this.getOrgData(true)} />
@@ -217,8 +281,8 @@ class HubInsights extends React.Component {
 
   renderManageStudentsButton () {
     return (
-      <div colSpan='3' className='hub-insights-cell-button blue' onClick={() => this.setState({showNewOrgGroupModal: true})}>
-        Manage students
+      <div colSpan='3' className='hub-insights-cell-button blue' onClick={() => this.setState({showManageStudentsModal: true})}>
+        Add or remove org students
       </div>
     )
   }
@@ -231,12 +295,12 @@ class HubInsights extends React.Component {
         <div className='hub-insights-group'>
           <h2>Students</h2>
           <Table
-            headers={['Name', 'Phone', 'Teams']}
+            headers={['Name', 'Phone', 'Teams (org groups)']}
             data={data}
           />
-          {this.state.showNewOrgGroupModal &&
-            <SkModal closeModal={() => this.setState({showNewOrgGroupModal: false})}>
-              <CreateOrgGroup org={this.state.orgSelection} onSubmit={() => this.onSubmitGroups()} />
+          {this.state.showManageStudentsModal &&
+            <SkModal closeModal={() => this.setState({showManageStudentsModal: false})}>
+              <AddOrRemoveOrgStudents org={this.state.orgSelection} onSubmit={() => this.onSubmitGroups()} />
             </SkModal>
           }
         </div>
@@ -251,10 +315,14 @@ class HubInsights extends React.Component {
   renderDetails () {
     return (
       <React.Fragment>
-        {!this.state.orgSelection && <p style={{textAlign: 'center', width: '100%'}}>Select an organization to see its details</p>}
-        {this.renderOrgOwners()}
-        {this.renderOrgGroups()}
-        {this.renderOrgStudents()}
+        {this.state.orgSelection && <h2>{this.state.orgSelection.name}</h2>}
+        <div className='hub-insights-info'>
+          {!this.state.orgSelection && <p style={{textAlign: 'center', width: '100%'}}>Select an organization to see its details</p>}
+          {this.renderOrgOwners()}
+          {this.renderOrgGroups()}
+          {this.renderOrgGroupOwners()}
+          {this.renderOrgStudents()}
+        </div>
       </React.Fragment>
     )
   }
@@ -270,7 +338,7 @@ class HubInsights extends React.Component {
           <div className='hub-insights-orgs'>
             {this.renderOrgs()}
           </div>
-          <div className='hub-insights-info'>
+          <div className='hub-insights-info-container'>
             {this.state.loadingDetails
               ? <SkLoader />
               : this.renderDetails()

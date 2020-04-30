@@ -13,7 +13,7 @@ const Team = (props) => {
 
   const renderX = () => {
     return (
-      <div className='team-remove' onClick={() => props.popTeam(props.team.id)}>
+      <div className='team-remove' onClick={() => props.popTeam(props.team)}>
         <i className='fas fa-times' />
       </div>
     )
@@ -44,10 +44,7 @@ class TeamsCell extends React.Component {
   constructor (props) {
     super(props)
 
-    console.log(this.props)
-
     this.state = {
-      teams: this.props.user.org_groups,
       input: '',
       add: false,
       teamOptions: this.props.org.groups
@@ -56,16 +53,39 @@ class TeamsCell extends React.Component {
     this.cellRef = React.createRef()
   }
 
-  popTeam = (id) => {
-    this.setState({teams: this.state.teams.filter(t => t.id !== id)})
+  popTeam = (team) => {    
+    if (this.props.owner) {
+      actions.insights.removeOrgGroupOwner(this.props.org.id, team.id, team.owners.find(o => o.user_id === this.props.user.user_id).id)
+        .then(() => {
+          this.props.onChange && this.props.onChange()
+          this.setState({add: false, input: ''})
+        })
+    } else {
+      actions.insights.getStudentsByGroupId(this.props.org.id, team.id)
+        .then(r => {
+          actions.insights.removeStudentFromGroup(this.props.org.id, team.id, r.find(s => s.org_student_id === this.props.user.orgStudentId).id)
+            .then(() => {
+              this.props.onChange && this.props.onChange()
+              this.setState({add: false, input: ''})
+            })
+        })
+    }
   }
 
   addTeam = (id) => {
-    actions.insights.addStudentToGroup(this.props.org.id, id, this.props.user.orgStudentId)
-      .then(() => {
-        this.props.onChange && this.props.onChange()
-        this.setState({add: false, input: ''})
-      })
+    if (this.props.owner) {
+      actions.insights.createOrgGroupOwner(this.props.org.id, id, this.props.user.user_id)
+        .then(() => {
+          this.props.onChange && this.props.onChange()
+          this.setState({add: false, input: ''})
+        })
+    } else {
+      actions.insights.addStudentToGroup(this.props.org.id, id, this.props.user.orgStudentId)
+        .then(() => {
+          this.props.onChange && this.props.onChange()
+          this.setState({add: false, input: ''})
+        })
+    }
   }
 
   renderSearch () {
@@ -87,7 +107,13 @@ class TeamsCell extends React.Component {
   }
 
   render () {
-    let {teams} = this.state
+    let teams
+    if (this.props.owner) {
+      teams = this.props.org.groups.filter(g => g.owners.map(os => os.user_id).includes(this.props.user.user_id))
+      console.log('owner teams', teams, this.props.user)
+    } else {
+      teams = this.props.user.org_groups
+    }
     return (
       <OutsideClickHandler
         onOutsideClick={() => {
@@ -98,7 +124,7 @@ class TeamsCell extends React.Component {
           {teams.map(t => {
             return (
               <div key={Math.floor(Math.random() * Math.floor(10000))}>
-                <Team team={t} popTeam={(id) => this.popTeam(id)} />
+                <Team team={t} popTeam={(team) => this.popTeam(team)} />
               </div>
             )
           })}
@@ -123,7 +149,8 @@ class TeamsCell extends React.Component {
 TeamsCell.propTypes = {
   user: PropTypes.object,
   org: PropTypes.object,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  owner: PropTypes.bool
 }
 
 export default TeamsCell
