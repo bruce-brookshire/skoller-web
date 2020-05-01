@@ -1,0 +1,134 @@
+@import 'mixins';
+
+// views
+@import 'views/si-landing.scss';
+@import 'views/si-dashboard.scss';
+@import 'views/si-students.scss';
+
+// components
+@import 'components/si-filter-bar.scss';
+@import 'components/si-filter-modal.scss';
+@import 'components/si-gm.scss';
+@import 'components/si-layout.scss';
+@import 'components/si-nav.scss';
+@import 'components/si-org-overview.scss';
+@import 'components/si-sa-card.scss';
+@import 'components/si-smart-tracker.scss';
+@import 'components/si-table.scss';
+@import 'components/si-teams-cell.scss';
+
+// hub
+@import 'hub/hub-insights-form.scss';
+
+// small components that don't need individual scss files
+.si-avatar {
+  // width: 100%;
+
+  .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #4a4a4a;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    // margin: 0 auto;
+
+    i {
+      color: white;
+    }
+  }
+}
+
+.si-watch-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  svg {
+    cursor: pointer;
+    width: 18px;
+    height: auto;
+  }
+
+  p {
+    font-size: 10px;
+    text-align: center;
+    margin: -4px 0 -8px 0;
+    font-weight: 400;
+    background-color: #fafafa;
+    border: 1px solid $sk-blue;
+    padding: 2px 4px -2px 4px;
+    border-radius: 3px;
+  }
+
+  .added {
+    background-color: #93ffb2;
+  }
+
+  .removed {
+    background-color: #ffa79e;
+  }
+}
+
+.si-copy-cell {
+  @include remove-form-styling;
+  box-sizing: border-box;
+  width: 100%;
+  background-color: #57B9E420;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+
+  background-color: rgba(0,0,0,0);
+  padding: 0;
+
+  form {
+    width: 100%;
+    margin: 0;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+
+    .sk-copy-box-short {
+      cursor: pointer;
+      resize: none;
+      width: 100%;
+      text-align: left;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 20px;
+      overflow: auto;
+      padding: 8px 0 0 0;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      height: 20px;
+      cursor: default;
+      color: $sk-blue;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .small-text {
+      font-size: 16px;
+      font-weight: 500;
+    }
+  }
+
+  p {
+    font-size: 12px;
+    margin: 0;
+    text-align: center;
+  }
+
+  &:hover {
+    background-color: $sk-blue-25;
+  }
+}

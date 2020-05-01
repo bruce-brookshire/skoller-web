@@ -1,0 +1,73 @@
+.hub-insights {
+  padding: 1rem;
+  text-align: center;
+
+  .hub-insights-content {
+    text-align: left;
+    display: flex;
+    // flex-flow: row wrap;
+    justify-content: center;
+    // max-width: 1200px;
+    // min-width: 600px;
+    margin: 0 auto;
+    margin-top: 1rem;
+    border-top: 1px solid #4a4a4a;
+    width: 100%;
+
+    .hub-insights-orgs {
+      flex-grow: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+
+      table {
+        min-width: 212px;
+      }
+    }
+
+    .hub-insights-info-container {
+      border-left: 1px solid #4a4a4a;
+      flex-grow: 1;
+      background: #fafafa;
+
+      .hub-insights-info {
+        display: flex;
+        flex-flow: row wrap;
+      }
+
+      h2 {
+        text-align: center;
+      }
+    }
+
+    .hub-insights-group {
+      margin: 1rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+
+      table {
+        // min-width: 212px;
+        width: 100%;
+        max-height: 100px;
+        overflow: scroll;
+      }
+    }
+
+    .hub-insights-cell-button {
+      padding: 6px 4px 2px 4px;
+      cursor: pointer;
+      
+      &:hover {
+        background-color: rgba(0,0,0,0.05);
+      }
+    }
+
+    .blue {
+      color: $sk-blue;
+    }
+  }
+}

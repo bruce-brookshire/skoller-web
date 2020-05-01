@@ -1,0 +1,62 @@
+.si-landing {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .si-landing-content {
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    max-width: 1000px;
+
+    .jumbo {
+      background-image: url('src/assets/images/insights/runner.jpg');
+      width: 100%;
+      max-width: 600px;
+      height: 400px;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    .login {
+      @include skoller-cell;
+      padding: 1rem;
+      margin: 1rem;
+      // height: 216px;
+      margin-left: -5rem;
+
+      h2 {
+        margin: 0;
+      }
+
+      .form-login {
+        min-width: 300px;
+    
+        .form-control {
+          display: flex;
+          flex-direction: column;
+    
+          input {
+            @include remove-form-styling;
+            @include sk-form-field;
+          }
+    
+          .right {
+            text-align: right;
+          }
+        }
+    
+        button {
+          width: 100%;
+          text-align: center;
+          // margin-top: 0.5rem;
+        }
+      }
+    }
+  }
+}

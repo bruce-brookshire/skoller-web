@@ -1,0 +1,24 @@
+@mixin si-autocomplete-option {
+  padding: 0.75rem 0 0.25rem 0;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $cn-color-hover-grey;
+  }
+}
+
+@mixin si-select {
+  .sk-select {
+    border: none;
+    
+    p {
+      color: inherit;
+      font-weight: 400;
+    }
+  }
+
+  &:hover {
+    background-color: rgba(0,0,0,0.05);
+    border-radius: 5px;
+  }
+}

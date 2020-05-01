@@ -11,8 +11,8 @@ class InsightsPage extends React.Component {
   constructor (props) {
     super(props)
 
-    this.props.rootStore.studentNavStore.setActivePage('insights')
-    this.props.rootStore.studentNavStore.location = this.props.location
+    this.props.rootStore.navStore.setActivePage('insights')
+    this.props.rootStore.navStore.location = this.props.location
 
     let dataOptions = {}
     this.props.rootStore.studentClassesStore.classes.filter(cl => cl.status.id >= 1400).map(cl => {

@@ -144,9 +144,7 @@ function handleTokenResponse (data, token) {
   if (token) {
     userStore.authToken = token
   }
-  if ((data.user.roles.filter(role => role.id === 200).length > 0) || (data.user.roles.filter(role => role.id === 300).length > 0)) {
-    console.log('admin or sw')
-  } else {
+  if (data.user.roles.find(role => role.id === 100)) {
     studentClassesStore.getClasses()
     studentAssignmentsStore.getAssignments()
     studentJobsStore.getJobsProfile()

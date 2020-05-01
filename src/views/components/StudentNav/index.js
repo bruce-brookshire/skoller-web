@@ -9,7 +9,7 @@ import { withRouter } from 'react-router-dom'
 class StudentNav extends React.Component {
   getActivePage () {
     const {
-      studentNavStore: { activePage }
+      navStore: { activePage }
     } = this.props.rootStore
     return activePage
   }
@@ -32,10 +32,10 @@ class StudentNav extends React.Component {
   }
 
   render () {
-    if (this.props.rootStore.studentNavStore.jobsMode) {
+    if (this.props.rootStore.navStore.jobsMode) {
       return (
         <div className="s-nav-wrapper">
-          <div className="s-nav" style={this.props.rootStore.studentNavStore.jobsMode ? {backgroundColor: '#5e5e5e', borderRight: '1px solid #7e7d7d'} : {}}>
+          <div className="s-nav" style={this.props.rootStore.navStore.jobsMode ? {backgroundColor: '#5e5e5e', borderRight: '1px solid #7e7d7d'} : {}}>
             <NavItem pageName="jobs/home" text="Home" />
             <NavItem pageName="jobs/profile" text="Profile" />
             <NavItem pageName="jobs/browse" text="Browse" />

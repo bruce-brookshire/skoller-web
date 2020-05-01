@@ -3,6 +3,7 @@
 @import 'mixins/breakpoint';    // Breakpoint utils lifted from Zurb
 @import 'mixins/zf-utils';
 @import 'mixins';               // Include global utility mixins
+@import 'animations';
 
 @import 'mixins/button';
 @import 'mixins/layout';
@@ -161,6 +162,7 @@
 @import 'views/hub-accounts.scss';
 @import 'views/hub-admin-login.scss';
 @import 'views/hub-classes.scss';
+@import 'views/hub-insights.scss';
 @import 'views/hub-landing.scss';
 @import 'views/hub-schools.scss';
 @import 'views/insights';
@@ -195,6 +197,9 @@
 @import 'views/unsubscribe.scss';
 @import 'views/user-agreement.scss';
 @import 'views/verification.scss';
+
+// Skoller Insights
+@import 'si-insights/main.scss';
 
 html {
   box-sizing: border-box;

@@ -9,7 +9,7 @@ import { withRouter } from 'react-router-dom'
 
 @inject('rootStore') @observer
 class Layout extends React.Component {
-  isStudent () {
+  isNotAdmin () {
     const roles = this.props.rootStore.userStore.user.roles
     let isStudent = false
     if (this.props.rootStore.userStore.user.roles === undefined) {
@@ -25,13 +25,13 @@ class Layout extends React.Component {
 
   render () {
     let layoutStyle = {
-      top: this.isStudent() ? '64px' : '96px'
+      top: this.isNotAdmin() ? '64px' : '96px'
     }
 
     return (
       <div className='sk-app-container'>
         <NavBar />
-        {!this.isStudent() &&
+        {!this.isNotAdmin() &&
           <TopNav />
         }
         <div

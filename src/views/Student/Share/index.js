@@ -22,7 +22,7 @@ class Share extends React.Component {
 
     this.getPartnerByUser()
     this.getClasses()
-    this.props.rootStore.studentNavStore.setActivePage('share')
+    this.props.rootStore.navStore.setActivePage('share')
   }
 
   getPartner (partnerSlug) {

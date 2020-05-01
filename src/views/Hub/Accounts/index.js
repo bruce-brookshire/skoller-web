@@ -47,6 +47,7 @@ class Accounts extends React.Component {
   * Get users
   */
   getAccounts (queryString) {
+    console.log(queryString)
     this.setState({loading: true})
     actions.auth.getUsers(queryString).then(users => {
       this.setState({users, loading: false})

@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
-import { Cookies } from '../../../node_modules/react-cookie'
-import actions from '../../actions'
+import { Cookies } from 'react-cookie'
+import actions from '../../../actions'
 import { inject, observer } from 'mobx-react'
 
 @inject('rootStore') @observer
@@ -95,7 +95,7 @@ class AdminLanding extends React.Component {
               type='password'
               onChange={this.setPassword}
             />
-            <a className='right forgot-password' onClick={this.onForgotPassword.bind(this)}>Forgot password?</a>
+            <a className='right forgot-password link-style' onClick={this.onForgotPassword.bind(this)}>Forgot password?</a>
           </div>
 
           <button type="submit" className="button" onClick={this.onSubmit.bind(this)}>Login</button>
@@ -103,6 +103,10 @@ class AdminLanding extends React.Component {
       </div>
     )
   }
+}
+
+AdminLanding.propTypes = {
+  history: PropTypes.object
 }
 
 export default withRouter(AdminLanding)

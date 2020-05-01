@@ -34,7 +34,7 @@ class Onboard extends React.Component {
 
     this.cookie = new Cookies()
 
-    this.props.rootStore.studentNavStore.setActivePage('calendar')
+    this.props.rootStore.navStore.setActivePage('calendar')
   }
 
   componentDidMount () {

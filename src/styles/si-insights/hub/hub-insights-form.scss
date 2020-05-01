@@ -1,0 +1,321 @@
+.hub-insights-form-container {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  max-width: 380px;
+
+  input, textarea {
+    font-size: 14px;
+    color: $cn-font-color;
+  }
+
+  .hub-insights-form-row {
+    margin: 0.25rem 0 0.25rem 0;
+    max-width: 512px;
+  }
+  
+  .hub-insights-form-error {
+    color: $sk-alert-red;
+  }
+
+  .hub-insights-form-save {
+    @include sk-standard-button;
+    margin: 0.5rem 0 0 0;
+  }
+
+  .disabled {
+    @include disabled-button;
+    margin-top: 1rem;
+  }
+
+  .hub-insights-form-label {
+    font-weight: 600;
+  }
+
+  .hub-insights-form-sub-label {
+    color: $cn-form-border;
+    font-size: 14px;
+  }
+
+  .hub-insights-form-button {
+    @include sk-standard-button;
+    width: auto;
+  }
+
+  .hub-insights-form-drag-and-drop {
+    .sk-drag-and-drop {
+      height: 88px;
+    }
+
+    .hub-insights-form-drag-and-drop-file {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      color: $cn-color-blue;
+      margin: -12px 0 0 0;
+
+      i {
+        margin: 12px 4px 0 0;
+      }
+
+      p {
+        margin-top: 12px;
+      }
+    }
+  }
+
+  .hub-insights-form-action-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    p {
+      margin: 2px 8px 0 0;
+      cursor: pointer;
+      color: $sk-blue;
+    }
+  }
+
+  .hub-insights-form-input {
+    @include sk-form-field;
+  }
+
+  .focus {
+    border-color: $sk-blue;
+  }
+
+  .error {
+    border-color: $cn-color-red;
+  }
+
+  .hub-insights-form-select {
+    .sk-select {
+      border-color: $sk-blue;
+    }
+  }
+
+  .hub-insights-form-select-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: calc(100% + 1rem);
+    margin-left: -0.5rem;
+
+    .hub-insights-form-select {
+      margin: 0 0.5rem;
+      flex-grow: 1;
+    }
+
+    .hub-insights-form-select .sk-select {
+      border-color: $sk-blue;
+    }
+  }
+
+  .hub-insights-autocomplete-option {
+    @include sk-autocomplete-option;
+    border-bottom: none;
+  }
+
+  .hub-insights-form-selections {
+    cursor: pointer;
+    color: $sk-blue;
+    margin: 0;
+  }
+
+  .hub-insights-form-checkbox {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+
+    .checkbox-container {
+      display: block;
+      position: relative;
+      padding-left: 24px;
+      padding-top: 4px;
+      margin-bottom: 12px;
+      margin-right: 8px;
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+
+      &:hover input ~ .checkmark {
+        background-color: #ccc;
+      }
+
+      .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 18px;
+        width: 18px;
+        background-color: #eee;
+        border-radius: 5px;
+
+        &:hover {
+          background-color: #ccc;
+        }
+
+        &:after {
+          content: "";
+          position: absolute;
+          display: none;
+
+          left: 7px;
+          top: 3px;
+          width: 5px;
+          height: 10px;
+          border: solid white;
+          border-width: 0 3px 3px 0;
+          -webkit-transform: rotate(45deg);
+          -ms-transform: rotate(45deg);
+          transform: rotate(45deg);
+        }
+      }
+
+      input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+      }
+
+      input:checked ~ .checkmark {
+        background-color: $sk-blue;
+      }
+
+      input:checked ~ .checkmark:after {
+        display: block;
+      }
+    }
+  }
+
+  .hub-insights-form-spectrum {
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+
+    .hub-insights-form-spectrum-options {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      .hub-insights-form-spectrum-option {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 64px;
+
+        p {
+          margin: 0;
+          text-align: center;
+        }
+      }
+    }
+
+    .hub-insights-form-spectrum-background {
+      height: 5px;
+      width: calc(100% - 64px);
+      margin: 0 32px;
+      background-color: #eee;
+      border-radius: 5px;
+      margin-top: 8px;
+    }
+
+    .hub-insights-form-spectrum-checks {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      .hub-insights-form-spectrum-check {
+        margin-top: -12px;
+
+        .checkbox-container {
+          width: 64px;
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          position: relative;
+          margin-bottom: 12px;
+          margin-left: calc(50% - 9px);
+          cursor: pointer;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+  
+          p {
+            margin: 0;
+          }
+  
+          &:hover input ~ .checkmark {
+            background-color: #ccc;
+          }
+  
+          .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 18px;
+            width: 18px;
+            background-color: #eee;
+            border-radius: 100%;
+  
+            &:hover {
+              background-color: #ccc;
+            }
+  
+            &:after {
+              content: "";
+              position: absolute;
+              display: none;
+  
+              left: 5px;
+              top: 5px;
+              width: 5px;
+              height: 5px;
+              border: solid white;
+              border-width: 4px;
+              border-radius: 100%;
+            }
+          }
+  
+          input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+          }
+  
+          input:checked ~ .checkmark {
+            background-color: $sk-blue;
+          }
+  
+          input:checked ~ .checkmark:after {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+
+  .hub-insights-form-multiple-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .hub-insights-form-input {
+      height: 36px;
+    }
+  }
+
+  .margin-bottom {
+    margin-bottom: 0.5rem;
+  }
+}

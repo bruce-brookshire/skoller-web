@@ -27,8 +27,8 @@ class Home extends React.Component {
       shareWillDisplay: false
     }
 
-    this.props.rootStore.studentNavStore.setActivePage('home')
-    this.props.rootStore.studentNavStore.location = this.props.location
+    this.props.rootStore.navStore.setActivePage('home')
+    this.props.rootStore.navStore.location = this.props.location
     this.cookie = new Cookies()
     console.log(this.props.rootStore)
   }

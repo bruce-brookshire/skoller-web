@@ -8,7 +8,7 @@ import PropTypes from 'prop-types'
 import SkSelectDropDown from '../../components/SkSelectDropDown'
 import { withRouter } from 'react-router-dom'
 import JobsLogo from '../../../assets/images/jobs/skoller-jobs-logo.png'
-import { CSSTransitionGroup } from 'react-transition-group'
+import { CSSTransition } from 'react-transition-group'
 
 @inject('rootStore') @observer
 class HomeJobs extends React.Component {
@@ -411,23 +411,28 @@ class HomeJobs extends React.Component {
   }
 
   renderContent () {
-    console.log(this.formRef)
     return (
       <div className='home-jobs'>
         <p className='home-jobs-headline'>
           From the classroom to your dream career.
         </p>
         <div className={'home-jobs-content ' + (this.state.showForm ? 'open' : 'closed')} style={{height: this.state.formHeight ? this.state.formHeight + 'px' : null}}>
-          <CSSTransitionGroup
-            transitionName="example"
-            transitionEnterTimeout={500}
-            transitionLeaveTimeout={300}
+          <CSSTransition
+            in={this.state.showForm}
+            timeout={300}
+            classNames="example"
+            unmountOnExit
           >
-            {this.state.showForm
-              ? <div ref={this.formRef} key={1}>{this.renderForm()}</div>
-              : <div key={2}>{this.renderSeeMore()}</div>
-            }
-          </CSSTransitionGroup>
+            <div ref={this.formRef} key={1}>{this.renderForm()}</div>
+          </CSSTransition>
+          <CSSTransition
+            in={!this.state.showForm}
+            timeout={300}
+            classNames="example"
+            unmountOnExit
+          >
+            <div key={2}>{this.renderSeeMore()}</div>
+          </CSSTransition>
         </div>
         {this.renderError()}
       </div>
