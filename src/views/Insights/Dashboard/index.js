@@ -1,46 +1,21 @@
 import React from 'react'
 import {inject, observer} from 'mobx-react'
 import PropTypes from 'prop-types'
-import Avatar from '../components/Avatar'
-import WatchToggle from '../components/WatchToggle'
-import Table from '../components/Table'
-import TeamsCell from '../components/TeamsCell'
-import InsightsLayout from '../../components/InsightsLayout'
-import CopyCell from '../components/CopyCell'
-import actions from '../../../actions'
 import SmartTracker from './SmartTracker'
 import OrgOverview from './OrgOverview'
+import Watchlist from './Watchlist'
 
 @inject('rootStore') @observer
 class Dashboard extends React.Component {
   constructor (props) {
     super(props)
 
-    this.props.rootStore.insightsStore.getStudents()
     this.props.rootStore.navStore.setActivePage('insights/dashboard')
-
-    actions.insights.getStudentsByTeamId()
   }
 
-  renderTable () {
-    const headers = ['📷', 'First name', 'Last name', 'Watching', 'Teams', 'Phone (click to copy)', 'Email']
-    let i = 0
-    const da = this.props.rootStore.insightsStore.students
-    const d = da.map(d => {
-      i += 1
-      return [
-        <Avatar user={d} key={i} />,
-        d.name_first,
-        d.name_last,
-        <WatchToggle showConfirm={true} user={d} key={i} />,
-        <TeamsCell key={i} user={d} />,
-        <CopyCell isPhone={true} text={d.phone} key={i} />,
-        <a className={'link-style'} href={'mailto:' + d.email} key={i}>{d.email}</a>
-      ]
-    })
-
+  renderWatchlist () {
     return (
-      <Table headers={headers} data={d} />
+      <Watchlist />
     )
   }
 
@@ -59,11 +34,12 @@ class Dashboard extends React.Component {
   renderContent () {
     return (
       <div className='si-dashboard'>
-        <div className='si-dashboard-column-sm'>
-          {this.renderOrgOverview()}
-        </div>
         <div className='si-dashboard-column-lg'>
+          {this.renderOrgOverview()}
           {this.renderSmartTracker()}
+        </div>
+        <div className='si-dashboard-column-sm'>
+          {this.renderWatchlist()}
         </div>
       </div>
     )
@@ -71,9 +47,9 @@ class Dashboard extends React.Component {
 
   render () {
     return (
-      <InsightsLayout>
+      <div className='si-dashboard-container'>
         {this.renderContent()}
-      </InsightsLayout>
+      </div>
     )
   }
 }

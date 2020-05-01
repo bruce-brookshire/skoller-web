@@ -1,8 +1,7 @@
 import {get, post, put, del} from '../utilities/api'
-import dataWithId from '../views/Insights/Dashboard/test'
 import {showSnackbar} from '../utilities/snackbar'
 import stores from '../stores'
-const {userStore, insightsStore} = stores
+const {userStore} = stores
 
 /*
 
@@ -81,6 +80,17 @@ These methods are reserved for org owners.
 In addition to these, all group owner methods can also be performed by org owners.
 
 */
+
+// Get org
+function getOrgById (orgId) {
+  return get(`/api/v1/organizations/${orgId}`)
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
 
 // Get all org owners within an org
 function getAllOrgOwnersInOrg (orgId) {
@@ -165,6 +175,17 @@ function removeStudentFromGroup (orgId, orgGroupId, orgGroupStudentId) {
     })
 }
 
+// Get all org group owners within an org
+function getAllOrgGroupOwnersInOrg (orgId) {
+  return get(`/api/v1/organizations/${orgId}/org-group-owners`)
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
 // Add user as an org group owner
 function createOrgGroupOwner (orgId, orgGroupId, userId) {
   let form = {user_id: userId}
@@ -189,21 +210,25 @@ function removeOrgGroupOwner (orgId, orgGroupId, orgGroupOwnerId) {
 }
 
 // Get org owner watchlist
-function getOrgOwnerWatchlist (orgOwnerId) {
-  console.log('getOrgOwnerWatchlist')
-  // return get(`/api/v1/organizations/${orgId}/owners/${orgOwnerId}/watchlist`)
-  //   .then(r => {})
-  //   .catch(e => Promise.reject(e))
+function getOrgOwnerWatchlist (orgId, orgOwnerId) {
+  return get(`/api/v1/organizations/${orgId}/owners/${orgOwnerId}/watchlists`)
+    .then(r => { return r })
+    .catch(e => Promise.reject(e))
 }
 
 // Add a student to an org owner watchlist
-function addStudentToOrgOwnerWatchlist (orgOwnerId, studentId) {
-  console.log('addStudentToOrgOwnerWatchlist')
+function addStudentToOrgOwnerWatchlist (orgId, orgOwnerId, orgStudentId) {
+  let form = {org_student_id: orgStudentId}
+  return post(`/api/v1/organizations/${orgId}/owners/${orgOwnerId}/watchlists`, form, '')
+    .then(r => { return r })
+    .catch(e => Promise.reject(e))
 }
 
 // Remove a student from an org owner watchlist
-function removeStudentFromOrgOwnerWatchlist (orgOwnerId, studentId) {
-  console.log('removeStudentFromOrgOwnerWatchlist')
+function removeStudentFromOrgOwnerWatchlist (orgId, orgOwnerId, watchlistId) {
+  return del(`/api/v1/organizations/${orgId}/owners/${orgOwnerId}/watchlists/${watchlistId}`, '', '')
+    .then(r => { return r })
+    .catch(e => Promise.reject(e))
 }
 
 // Get all students in an org
@@ -291,6 +316,7 @@ const exports = {
   // auth
   login,
   // owners
+  getOrgById,
   getAllOrgOwnersInOrg,
   createOrgOwner,
   updateOrgOwner,
@@ -301,8 +327,11 @@ const exports = {
   addStudentToGroup,
   removeStudentFromGroup,
   // group owners,
+  getAllOrgGroupOwnersInOrg,
   createOrgGroupOwner,
   removeOrgGroupOwner,
+  // students,
+  getAllStudentsInOrg,
   // watchlist
   getOrgOwnerWatchlist,
   addStudentToOrgOwnerWatchlist,
@@ -315,7 +344,6 @@ const exports = {
   */
 
   getStudentsByGroupId,
-  getAllStudentsInOrg,
   addStudentToGroupOwnerWatchlist,
   removeStudentFromGroupOwnerWatchlist
 }

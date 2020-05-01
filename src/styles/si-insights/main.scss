@@ -1,3 +1,5 @@
+@import 'mixins';
+
 // views
 @import 'views/si-landing.scss';
 @import 'views/si-dashboard.scss';
@@ -5,6 +7,7 @@
 
 // components
 @import 'components/si-filter-bar.scss';
+@import 'components/si-filter-modal.scss';
 @import 'components/si-gm.scss';
 @import 'components/si-layout.scss';
 @import 'components/si-nav.scss';
@@ -21,14 +24,22 @@
 .si-avatar {
   // width: 100%;
 
-  * {
+  .avatar {
     width: 36px;
     height: 36px;
     border-radius: 50%;
     background-color: #4a4a4a;
     background-size: cover;
     background-position: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     // margin: 0 auto;
+
+    i {
+      color: white;
+    }
   }
 }
 

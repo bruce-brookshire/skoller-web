@@ -68,6 +68,7 @@ import stores from './stores'
 import JobDetail from './views/Student/Jobs/JobDetail'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
+import InsightsLayout from './views/components/InsightsLayout'
 
 const {userStore} = stores
 
@@ -100,15 +101,11 @@ class AuthSwitch extends React.Component {
             path = '/hub'
           } else if (user.user.roles.filter(role => role.id === 300).length > 0) {
             path = '/hub'
-          } else {
-            path = '/landing'
           }
           this.setState({path: this.state.from || path})
         })
-        .catch(() => {
+        .catch((e) => {
           userStore.setFetchingUser(false)
-          // path = '/'
-          // this.setState({path})
         })
     } else {
       path = '/student'
@@ -182,10 +179,12 @@ class InsightsContainer extends React.Component {
   render () {
     return (
       <Switch>
-        <Route exact path='/insights/dashboard' component={Dashboard} />
-        <Route exact path='/insights/students' component={Students} />
-        <Route exact path='/insights/groups' component={Groups} />
-        <Route exact path='/insights/organization' component={Organization} />
+        <InsightsLayout>
+          <Route exact path='/insights/dashboard' component={Dashboard} />
+          <Route exact path='/insights/students' component={Students} />
+          <Route exact path='/insights/groups' component={Groups} />
+          <Route exact path='/insights/organization' component={Organization} />
+        </InsightsLayout>
       </Switch>
     )
   }

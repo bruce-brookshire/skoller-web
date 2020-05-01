@@ -1,33 +1,104 @@
 import { extendObservable, action } from 'mobx'
 import actions from '../actions'
+import stores from './index'
 
 class InsightsStore {
   constructor () {
     extendObservable(this, {
       loading: false,
       loadingUpdate: false,
-      students: []
+      students: [],
+      groups: [],
+      watchlist: [],
+      org: {}
     })
   }
 
-  getStudents (update = false) {
-    this.loading = !update
-    this.loadingUpdate = update
-
-    this.students = actions.insights.getStudentsByOrgId()
-    this.getDataSuccess()
-    // actions.classes.getStudentClassesById(stores.userStore.user.student.id)
-    //   .then((data) => {
-    //     this.classes = this.sort(data)
-    //     this.getDataSuccess()
-    //   })
-    //   .catch(() => {
-    //     this.getDataError()
-    //   })
+  async getOrgGroups () {
+    await actions.insights.getAllGroupsInOrg(stores.userStore.user.org_owners[0].organization_id)
+      .then(r => {
+        this.groups = r
+        this.org.groups = r
+      })
   }
 
-  updateStudents () {
-    this.getStudents(true)
+  async getStudents () {
+    await actions.insights.getAllStudentsInOrg(stores.userStore.user.org_owners[0].organization_id)
+      .then(r => {
+        let students = r.map(s => { return {...s, orgStudentId: s.id} })
+        this.students = students
+        this.org.students = students
+      })
+  }
+
+  async getOrg () {
+    await actions.insights.getOrgById(stores.userStore.user.org_owners[0].organization_id)
+      .then(r => {
+        let org = r
+        this.org = {...this.org, ...org}
+      })
+  }
+
+  async getOrgOwnerWatchlist () {
+    await actions.insights.getOrgOwnerWatchlist(stores.userStore.user.org_owners[0].organization_id, stores.userStore.user.org_owners[0].id)
+      .then(r => {
+        console.log(r)
+        let students = r.map(s => { return {...s, orgStudentId: s.id} })
+        this.watchlist = students
+        this.org.watchlist = students
+      })
+  }
+
+  async getData (filters) {
+    this.loading = true
+
+    if (filters.includes('students')) {
+      await this.getStudents()
+    }
+
+    if (filters.includes('groups')) {
+      await this.getOrgGroups()
+    }
+
+    if (filters.includes('org')) {
+      await this.getOrg()
+    }
+
+    if (filters.includes('orgOwnerWatchlist')) {
+      await this.getOrgOwnerWatchlist()
+    }
+
+    this.getDataSuccess()
+  }
+
+  async updateData (filters) {
+    this.loadingUpdate = true
+
+    if (filters.includes('students')) {
+      await this.getStudents()
+    }
+
+    if (filters.includes('groups')) {
+      await this.getOrgGroups()
+    }
+
+    if (filters.includes('org')) {
+      await this.getOrg()
+    }
+
+    if (filters.includes('orgOwnerWatchlist')) {
+      await this.getOrgOwnerWatchlist()
+    }
+
+    this.getDataSuccess()
+  }
+
+  isWatching (student) {
+    if (this.watchlist.map(u => u.org_student_id).includes(student.id)) {
+      return true
+    } else {
+      return false
+    }
   }
 
   @action
@@ -39,6 +110,7 @@ class InsightsStore {
   @action
   getDataError () {
     this.loading = false
+    this.loadingUpdate = false
   }
 }
 

@@ -8,6 +8,14 @@
     text-align: left;
   }
 
+  i {
+    font-size: 24px;
+  }
+
+  h2 {
+    margin: 0.5rem 0;
+  }
+
   .si-org-overview-content {
     display: flex;
     flex-direction: row;
@@ -15,10 +23,22 @@
     justify-content: space-between;
 
     .si-org-overview-category {
+      cursor: pointer;
       display: flex;
       flex-flow: column;
       justify-content: center;
       align-items: center;
+      margin: 1rem;
+      padding: 1.5rem 0;
+      border: 1px solid $cn-form-border;
+      border-radius: 10px;
+      flex-grow: 1;
+      box-shadow: 0px 6px 8px rgba(0,0,0,.08);
+      transition: box-shadow 150ms;
+
+      &:hover {
+        box-shadow: none;
+      }
     }
   }
 }

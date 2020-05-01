@@ -2,6 +2,7 @@
   box-sizing: border-box;
   min-width: 380px;
   @include skoller-cell;
+  position: relative;
 
   @media only screen and (max-width: $sk-mobile-break-point) {
     margin: 0 1rem 1rem 1rem;
@@ -14,9 +15,38 @@
     text-align: left;
   }
 
+  .si-smart-tracker-timeframe {
+    width: 100%;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    .si-select {
+      width: 112px;
+      margin-left: 8px;
+      @include si-select;
+    }
+
+    .si-smart-tracker-timeframe-option {
+      @include si-autocomplete-option;
+    }
+  }
+
   .si-smart-tracker-content {
+    border: 1px solid #4a4a4a;
+    border-radius: 5px;
+    padding: 8px;
+    margin-top: 1rem;
+
     table {
       width: 100%;
+
+      thead {
+        background-color: rgba(0,0,0,0);
+      }
 
       th, td {
         border: none;

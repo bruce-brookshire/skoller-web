@@ -2,33 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import SmartTrackerIcon from '../../../assets/sk-icons/insights/SmartTrackerIcon'
-import dataWithId from './test'
-import Avatar from '../components/Avatar'
-import WatchToggle from '../components/WatchToggle'
 import Table from '../components/Table'
-
-const StudentAthleteCard = (user) => {
-  return (
-    <div className='si-sa-card'>
-      <Avatar user={user.student} />
-      <div className='sa-info'>
-        <div className='sa-name'>
-          {user.student.name_first + ' ' + user.student.name_last}
-          <WatchToggle user={user.student} showConfirm={false} />
-        </div>
-        <div className='sa-teams'>
-          {user.student.teams.map(t => {
-            return (
-              <div className='sa-team' key={user.student.teams.indexOf(t)}>
-                {t.name}{user.student.teams.indexOf(t) !== user.student.teams.length - 1 ? ', ' : ''}
-              </div>
-            )
-          })}
-        </div>
-      </div>
-    </div>
-  )
-}
+import StudentAthleteCard from './StudentAthleteCard'
+import SkSelect from '../../components/SkSelect'
 
 @inject('rootStore') @observer
 class SmartTracker extends React.Component {
@@ -36,29 +12,41 @@ class SmartTracker extends React.Component {
     super(props)
 
     this.state = {
-      filter: 'Assignments'
+      filter: 'Assignments',
+      timeframe: 'Next 7 days'
     }
   }
+
   renderTable () {
     const headers = [{children: 'Student-Athlete', colSpan: 1}, this.state.filter]
-    let i = 0
-    const d = dataWithId.map(d => {
-      i += 1
+    const data = this.props.rootStore.insightsStore.students.map(d => {
       return [
-        <StudentAthleteCard student={d} key={i} />,
-        12
+        <StudentAthleteCard user={d} key={d.id} rootStore={this.props.rootStore} />,
+        Math.floor(Math.random() * Math.floor(20))
       ]
     })
 
     return (
-      <Table headers={headers} data={d} />
+      <Table headers={headers} data={data} />
     )
   }
 
   render () {
+    let options = ['Next 7 days', 'Next 30 days']
     return (
       <div className='si-smart-tracker'>
         <h1><SmartTrackerIcon /> Smart Tracker</h1>
+        <div className='si-smart-tracker-timeframe'>
+          Timeframe: <SkSelect className='si-select' selection={this.state.timeframe} optionsMap={() => options.map(o => {
+            return (
+              <div
+                key={options.indexOf(o)}
+                className='si-smart-tracker-timeframe-option'
+                onClick={() => this.setState({timeframe: o})}
+              >{o}</div>
+            )
+          })} />
+        </div>
         <div className='si-smart-tracker-content'>
           {this.renderTable()}
         </div>

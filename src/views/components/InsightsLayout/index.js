@@ -8,8 +8,14 @@ import InsightsTop from '../InsightsNav/InsightsTop'
 
 @inject('rootStore') @observer
 class InsightsLayout extends React.Component {
+  constructor (props) {
+    super(props)
+
+    this.props.rootStore.insightsStore.getData(['students', 'groups', 'org', 'orgOwnerWatchlist'])
+  }
+
   gettingData () {
-    if (this.props.rootStore.studentClassesStore.loading || this.props.rootStore.studentJobsStore.loading) {
+    if (this.props.rootStore.insightsStore.loading) {
       return true
     } else {
       return false

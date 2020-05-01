@@ -53,7 +53,7 @@ class TeamsCell extends React.Component {
     this.cellRef = React.createRef()
   }
 
-  popTeam = (team) => {    
+  popTeam = (team) => {
     if (this.props.owner) {
       actions.insights.removeOrgGroupOwner(this.props.org.id, team.id, team.owners.find(o => o.user_id === this.props.user.user_id).id)
         .then(() => {

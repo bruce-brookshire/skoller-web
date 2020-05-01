@@ -36,8 +36,8 @@ class InsightsNav extends React.Component {
         <div className="si-nav" style={this.props.rootStore.navStore.jobsMode ? {backgroundColor: '#5e5e5e', borderRight: '1px solid #7e7d7d'} : {}}>
           <InsightsNavItem pageName="insights/dashboard" text="Dashboard" />
           <InsightsNavItem pageName="insights/students" text="Students" />
-          <InsightsNavItem pageName="insights/groups" text="Groups" />
-          <InsightsNavItem pageName="insights/organization" text="Organization" />
+          {/* <InsightsNavItem pageName="insights/groups" text="Groups" />
+          <InsightsNavItem pageName="insights/organization" text="Organization" /> */}
           {this.renderLogout()}
         </div>
       </div>

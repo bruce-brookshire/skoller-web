@@ -52,23 +52,21 @@ class InsightsLanding extends React.Component {
 
   onSubmit (event) {
     event.preventDefault()
-    // let {email, password} = this.state
+    let {email, password} = this.state
 
-    // email = email.trim()
-    // password = password.trim()
+    email = email.trim()
+    password = password.trim()
 
-    // if (email !== '' && password !== '') {
-    //   actions.auth.authenticateUser({email: email, password: password}).then(() => {
-    //     const { userStore: { authToken } } = this.props.rootStore
+    if (email !== '' && password !== '') {
+      actions.auth.authenticateUser({email: email, password: password}).then(() => {
+        const { userStore: { authToken } } = this.props.rootStore
 
-    //     this.cookie.remove('skollerToken', { path: '/' })
-    //     this.cookie.set('skollerToken', authToken, { maxAge: 86400 * 270, path: '/' })
+        this.cookie.remove('skollerToken', { path: '/' })
+        this.cookie.set('skollerToken', authToken, { maxAge: 86400 * 270, path: '/' })
 
-    //     this.props.history.push('/hub')
-    //   }).catch((reason) => false)
-    // }
-
-    this.props.history.push('/insights/dashboard')
+        this.props.history.push('/insights/dashboard')
+      }).catch((reason) => false)
+    }
   }
 
   onForgotPassword () {

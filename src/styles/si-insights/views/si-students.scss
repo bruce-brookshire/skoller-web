@@ -1,6 +1,7 @@
 .si-students {
   padding: 1rem 0 0 0 ;
   min-width: 900px;
+  min-height: calc(100vh - 64px);
   background-color: #fafafa;
 
   .si-students-header {
