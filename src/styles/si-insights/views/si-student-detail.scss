@@ -1,0 +1,22 @@
+.si-student-detail-container {
+  padding: 1rem;
+
+  .si-student-detail {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+
+    .si-student-detail-cell {
+      @include skoller-cell;
+      padding: 1rem;
+      margin: 0 0 1rem 0;
+      width: 100%;
+      max-width: 380px;
+
+      h1, h2, h3 {
+        margin: 0;
+      }
+    }
+  }
+}

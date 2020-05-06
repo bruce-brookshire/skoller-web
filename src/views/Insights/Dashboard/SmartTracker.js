@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import SmartTrackerIcon from '../../../assets/sk-icons/insights/SmartTrackerIcon'
 import Table from '../components/Table'
-import StudentAthleteCard from './StudentAthleteCard'
+import StudentAthleteCard from '../components/StudentAthleteCard'
 import SkSelect from '../../components/SkSelect'
 
 @inject('rootStore') @observer

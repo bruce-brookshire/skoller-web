@@ -1,8 +1,11 @@
 @import 'mixins';
 
 // views
-@import 'views/si-landing.scss';
 @import 'views/si-dashboard.scss';
+@import 'views/si-groups.scss';
+@import 'views/si-landing.scss';
+@import 'views/si-organization.scss';
+@import 'views/si-student-detail.scss';
 @import 'views/si-students.scss';
 
 // components

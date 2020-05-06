@@ -23,8 +23,8 @@ class InsightsTop extends React.Component {
         </div>
         <div className='si-top-right'>
           <div className='si-top-user'>
-            <p className='si-top-user-name'>Jonathan Rankin</p>
-            <p className='si-top-user-org'>Skoller University Athletics</p>
+            <p className='si-top-user-name'>{this.props.rootStore.userStore.user.email}</p>
+            <p className='si-top-user-org'>{this.props.rootStore.insightsStore.org.name}</p>
           </div>
         </div>
       </div>

@@ -10,8 +10,19 @@ class InsightsStore {
       students: [],
       groups: [],
       watchlist: [],
-      org: {}
+      groupOwners: [],
+      org: {
+        groupsAlias: 'team'
+      }
     })
+  }
+
+  async getOrgOwners () {
+    await actions.insights.getAllOrgOwnersInOrg(stores.userStore.user.org_owners[0].organization_id)
+      .then(r => {
+        this.orgOwners = r
+        this.org.orgOwners = r
+      })
   }
 
   async getOrgGroups () {
@@ -31,6 +42,22 @@ class InsightsStore {
       })
   }
 
+  async getGroupOwners () {
+    await actions.insights.getAllOrgGroupOwnersInOrg(stores.userStore.user.org_owners[0].organization_id)
+      .then(r => {
+        let groupOwners = r
+        let filteredGroupOwners = []
+        groupOwners.forEach(go => {
+          if (!filteredGroupOwners.find(o => o.user_id === go.user_id)) {
+            filteredGroupOwners.push(go)
+          }
+        })
+
+        this.groupOwners = filteredGroupOwners
+        this.org.groupOwners = filteredGroupOwners
+      })
+  }
+
   async getOrg () {
     await actions.insights.getOrgById(stores.userStore.user.org_owners[0].organization_id)
       .then(r => {
@@ -42,54 +69,47 @@ class InsightsStore {
   async getOrgOwnerWatchlist () {
     await actions.insights.getOrgOwnerWatchlist(stores.userStore.user.org_owners[0].organization_id, stores.userStore.user.org_owners[0].id)
       .then(r => {
-        console.log(r)
         let students = r.map(s => { return {...s, orgStudentId: s.id} })
         this.watchlist = students
         this.org.watchlist = students
       })
   }
 
-  async getData (filters) {
-    this.loading = true
+  async getAllData (filters) {
+    if (!filters || filters.includes('orgOwners')) {
+      await this.getOrgOwners()
+    }
 
-    if (filters.includes('students')) {
+    if (!filters || filters.includes('students')) {
       await this.getStudents()
     }
 
-    if (filters.includes('groups')) {
+    if (!filters || filters.includes('groups')) {
       await this.getOrgGroups()
     }
 
-    if (filters.includes('org')) {
+    if (!filters || filters.includes('org')) {
       await this.getOrg()
     }
 
-    if (filters.includes('orgOwnerWatchlist')) {
-      await this.getOrgOwnerWatchlist()
+    if (!filters || filters.includes('groupOwners')) {
+      await this.getGroupOwners()
     }
 
+    if (!filters || filters.includes('orgOwnerWatchlist')) {
+      await this.getOrgOwnerWatchlist()
+    }
+  }
+
+  async getData (filters) {
+    this.loading = true
+    await this.getAllData(filters)
     this.getDataSuccess()
   }
 
   async updateData (filters) {
     this.loadingUpdate = true
-
-    if (filters.includes('students')) {
-      await this.getStudents()
-    }
-
-    if (filters.includes('groups')) {
-      await this.getOrgGroups()
-    }
-
-    if (filters.includes('org')) {
-      await this.getOrg()
-    }
-
-    if (filters.includes('orgOwnerWatchlist')) {
-      await this.getOrgOwnerWatchlist()
-    }
-
+    await this.getAllData(filters)
     this.getDataSuccess()
   }
 

@@ -12,11 +12,11 @@ class OrgOverview extends React.Component {
             <i className='fas fa-user' />
             <h2>Students</h2>
           </Link>
-          <Link to='/insights/students' className='si-org-overview-category'>
+          <Link to='/insights/groups' className='si-org-overview-category'>
             <i className='fas fa-users' />
             <h2>Teams</h2>
           </Link>
-          <Link to='/insights/students' className='si-org-overview-category'>
+          <Link to='/insights/organization' className='si-org-overview-category'>
             <i className='fas fa-eye' />
             <h2>Viewers</h2>
           </Link>

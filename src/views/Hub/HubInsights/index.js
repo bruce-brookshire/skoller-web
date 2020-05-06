@@ -54,6 +54,10 @@ class HubInsights extends React.Component {
       .then((groups) => {
         org.groups = groups
       })
+    await actions.insights.getAllOrgGroupOwnersInOrg(org.id)
+      .then((groupOwners) => {
+        org.groupOwners = groupOwners
+      })
     await actions.insights.getAllStudentsInOrg(org.id)
       .then(students => {
         console.log(students)

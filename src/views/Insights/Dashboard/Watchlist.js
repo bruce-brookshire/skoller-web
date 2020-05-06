@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import Table from '../components/Table'
-import StudentAthleteCard from './StudentAthleteCard'
+import StudentAthleteCard from '../components/StudentAthleteCard'
 
 @inject('rootStore') @observer
 class Watchlist extends React.Component {

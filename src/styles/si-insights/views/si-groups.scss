@@ -1,20 +1,24 @@
-.si-students {
+.si-groups {
   padding: 1rem 0 0 0 ;
   min-width: 900px;
   min-height: calc(100vh - 64px);
   background-color: #fafafa;
 
-  .si-students-header {
+  .si-groups-header {
     // @include skoller-cell;
     // padding: 1rem;
     margin: 0 1rem 1rem 1rem;
   }
 
-  .si-students-content {
-    .si-students-table {
+  .si-groups-content {
+    .si-groups-table {
       width: 100%;
-      
-      .si-students-table-sa {
+
+      .si-groups-table-name {
+        min-width: 196px;
+      }
+
+      .si-groups-table-sa {
         cursor: pointer;
         border-radius: 5px;
         padding: 8px 4px 2px 4px;

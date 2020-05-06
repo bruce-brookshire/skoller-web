@@ -12,7 +12,7 @@ class Table extends React.Component {
 
   renderData (d, i) {
     let colSpan = null
-    if (d.props) {
+    if (d && d.props) {
       colSpan = d.props.colSpan ? d.props.colSpan : null
     }
 

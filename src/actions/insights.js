@@ -186,7 +186,7 @@ function getAllOrgGroupOwnersInOrg (orgId) {
     })
 }
 
-// Add user as an org group owner
+// Create org user as an org group owner
 function createOrgGroupOwner (orgId, orgGroupId, userId) {
   let form = {user_id: userId}
   return post(`/api/v1/organizations/${orgId}/org-groups/${orgGroupId}/owners`, form, '')

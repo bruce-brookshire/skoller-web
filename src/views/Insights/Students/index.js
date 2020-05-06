@@ -5,11 +5,10 @@ import Avatar from '../components/Avatar'
 import WatchToggle from '../components/WatchToggle'
 import Table from '../components/Table'
 import TeamsCell from '../components/TeamsCell'
-import InsightsLayout from '../../components/InsightsLayout'
 import CopyCell from '../components/CopyCell'
-import actions from '../../../actions'
 import GentleModal from '../components/GentleModal'
 import SkSelect from '../../components/SkSelect'
+import { Link } from 'react-router-dom'
 
 @inject('rootStore') @observer
 class Students extends React.Component {
@@ -87,14 +86,25 @@ class Students extends React.Component {
     return this.sortStudents(students)
   }
 
+  renderStudentAthleteCell (d) {
+    return (
+      <Link to={'/insights/students/' + d.id}>
+        <div
+          className='si-students-table-sa'
+        >
+          {d.student.name_first + ' ' + d.student.name_last}
+        </div>
+      </Link>
+    )
+  }
+
   renderTable () {
-    const headers = ['📷', 'First name', 'Last name', 'My Watchlist', 'Teams', 'Phone (click to copy)', 'Assignments', 'Weights', 'Intensity']
+    const headers = ['📷', 'Student-Athlete', 'My Watchlist', 'Teams', 'Phone (click to copy)', 'Assignments', 'Weights', 'Intensity']
     let da = this.renderFilteredStudents()
     const d = da.map(d => {
       return [
         <Avatar user={d} key={d.id} />,
-        d.student.name_first,
-        d.student.name_last,
+        this.renderStudentAthleteCell(d),
         <WatchToggle rootStore={this.props.rootStore} showConfirm={true} user={d} key={d.id} />,
         <TeamsCell key={d.id} user={d} org={this.props.rootStore.insightsStore.org} onChange={() => this.props.rootStore.insightsStore.updateData(['students', 'groups'])} />,
         <CopyCell isPhone={true} text={d.student.phone} key={d.id} />,

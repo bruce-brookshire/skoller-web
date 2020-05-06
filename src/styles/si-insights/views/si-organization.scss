@@ -1,0 +1,44 @@
+.si-organization {
+  padding: 1rem 0 0 0 ;
+  min-width: 900px;
+  min-height: calc(100vh - 64px);
+  background-color: #fafafa;
+
+  .si-organization-header {
+    // @include skoller-cell;
+    // padding: 1rem;
+    margin: 0 1rem 1rem 1rem;
+  }
+
+  .si-organization-content {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    width: 100%;
+
+    .si-organization-column {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      margin: 0 0.5rem;
+
+      h2 {
+        margin: 0;
+        background-color: #fff;
+        border-radius: 5px 5px 0 0;
+        border: 1px solid #eaeaea;
+        padding: 12px 8px 6px 8px;
+        float: left;
+      }
+
+      .si-organization-table {
+        // width: 100%;
+  
+        .si-teams-cell {
+          min-width: 0;
+          max-width: 192px;
+        }
+      }
+    }
+  }
+}
