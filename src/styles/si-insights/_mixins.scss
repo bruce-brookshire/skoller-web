@@ -9,16 +9,21 @@
 
 @mixin si-select {
   .sk-select {
-    border: none;
+    border: 1px solid $sk-blue-50;
     
     p {
       color: inherit;
       font-weight: 400;
+      padding-right: 28px;
     }
   }
 
   &:hover {
     background-color: rgba(0,0,0,0.05);
     border-radius: 5px;
+  }
+
+  .si-select-option {
+    @include si-autocomplete-option;
   }
 }

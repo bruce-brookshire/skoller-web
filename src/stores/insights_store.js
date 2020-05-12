@@ -1,6 +1,7 @@
 import { extendObservable, action } from 'mobx'
 import actions from '../actions'
 import stores from './index'
+import { getIntensityScore } from '../views/Insights/utils'
 
 class InsightsStore {
   constructor () {
@@ -13,6 +14,12 @@ class InsightsStore {
       groupOwners: [],
       org: {
         groupsAlias: 'team'
+      },
+      interfaceSettings: {
+        dashboard: {
+          sort: 'Assignments',
+          timeframe: 'Next 7 days'
+        }
       }
     })
   }
@@ -75,6 +82,23 @@ class InsightsStore {
       })
   }
 
+  async getStudentData () {
+    let students = this.students.slice()
+    for (const s of students) {
+      await actions.classes.getStudentClassesById(s.student_id)
+        .then(r => {
+          let assignments = [].concat.apply([], r.map(cl => cl.assignments))
+          s.classes = r
+          s.assignments = assignments
+          s.intensity = {
+            sevenDay: getIntensityScore(assignments, 7),
+            thirtyDay: getIntensityScore(assignments, 30)
+          }
+        })
+    }
+    this.students = students
+  }
+
   async getAllData (filters) {
     if (!filters || filters.includes('orgOwners')) {
       await this.getOrgOwners()
@@ -82,6 +106,9 @@ class InsightsStore {
 
     if (!filters || filters.includes('students')) {
       await this.getStudents()
+        .then(async () => {
+          await this.getStudentData()
+        })
     }
 
     if (!filters || filters.includes('groups')) {

@@ -24,28 +24,88 @@
     justify-content: flex-end;
     align-items: center;
 
-    .si-select {
-      width: 112px;
-      margin-left: 8px;
-      @include si-select;
-    }
-
     .si-smart-tracker-timeframe-option {
       @include si-autocomplete-option;
     }
   }
 
+  .si-select {
+    width: 128px;
+    @include si-select;
+  }
+
+  .si-smart-tracker-filter {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    margin-right: -8px;
+
+    .si-smart-tracker-filter-group {
+      margin: 0 8px 0 0;
+      flex-grow: 0;
+
+      .si-smart-tracker-filter-label {
+        margin: 0;
+      }
+
+      .si-smart-tracker-search {
+        width: 100%;
+        flex-grow: 1;
+        height: 100%;
+        min-width: 192px;
+        border: 1px solid $sk-blue-50;
+        border-radius: 5px;
+        background-color: #fafafa00;
+        font-size: 14px;
+        padding: 9px 8px;
+        transition: box-shadow 0.1s ease-in-out;
+  
+        &:focus {
+          outline: none;
+          background-color: white;
+          box-shadow: 0 6px 10px rgba(0,0,0,0.08);
+        }
+      }
+    }
+
+    .grow {
+      flex-grow: 1;
+    }
+  }
+
   .si-smart-tracker-content {
-    border: 1px solid #4a4a4a;
-    border-radius: 5px;
-    padding: 8px;
+    // border: 1px solid #4a4a4a;
+    // border-radius: 5px;
+    // padding: 8px;
     margin-top: 1rem;
 
     table {
       width: 100%;
+      height: auto;
 
       thead {
         background-color: rgba(0,0,0,0);
+
+        &:before {
+          background-color: $sk-blue-25;
+          content: '';
+          width: 100%;
+          height: 36px;
+        }
+      }
+
+      tbody {
+        display: block;
+        height: 448px;
+        overflow: auto;
+        padding: 8px;
+        padding-right: 16px;
+
+        border: 1px solid #4a4a4a;
+        border-radius: 5px;
       }
 
       th, td {
@@ -56,6 +116,11 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+      }
+
+      .si-smart-tracker-value {
+        font-size: 28px;
+        font-weight: 600;
       }
     }
   }

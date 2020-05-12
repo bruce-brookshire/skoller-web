@@ -12,19 +12,13 @@ class StudentInsights extends React.Component {
     this.state = {
       timeframe: '7 days',
       mode: 'Assignments',
-      assignments: [].concat.apply([], this.props.classes.map(cl => cl.assignments)),
-      intensityScore: null
+      assignments: [].concat.apply([], this.props.classes.map(cl => cl.assignments))
     }
-  }
-
-  componentDidMount () {
-    let intensityScore = getIntensityScore(this.state.assignments, 'w')
-    this.setState({intensityScore})
   }
 
   renderContent () {
     let assignments = this.state.assignments
-    let chartSize = {width: 400, height: 300}
+    let chartSize = {width: 450, height: 300}
     return (
       <div className='si-student-insights'>
         <div className='si-student-insights-row'>
@@ -42,7 +36,7 @@ class StudentInsights extends React.Component {
           </div>
           <div className='si-student-insights-detail'>
             {this.state.mode === 'Assignments' && <div>{this.props.user.student.name_first} has <b>{getAssignmentCountInNextNDays(assignments, 7)} assignments</b> due in the next 7 days</div>}
-            {this.state.mode === 'Weights' && <div><b>{getAssignmentWeightsInNextNDays(assignments, 7)} of {this.props.user.student.name_first}&apos;s grade</b> will be determined in the next 7 days</div>}
+            {this.state.mode === 'Weights' && <div><b>{getAssignmentWeightsInNextNDays(assignments, 7)}% of {this.props.user.student.name_first}&apos;s grade</b> will be determined in the next 7 days</div>}
           </div>
         </div>
       </div>
@@ -52,7 +46,7 @@ class StudentInsights extends React.Component {
   render () {
     return (
       <Fragment>
-        <div className='si-student-detail-cell-subtitle'><h2>{this.state.intensityScore} out of 10</h2></div>
+        <div className='si-student-detail-cell-subtitle'><h2>{this.props.user.intensity.sevenDay} out of 10</h2></div>
         {this.renderContent()}
       </Fragment>
     )

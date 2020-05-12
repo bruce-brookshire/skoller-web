@@ -26,7 +26,7 @@ export function getAssignmentCountInNextNDays (assignments, n) {
   return assignmentCount
 }
 
-export function getAssignmentWeightsInNextNDays (assignments, n) {
+export function getAssignmentWeightsInNextNDays (assignments, n = 7) {
   let assignmentsWeight = 0
   let lastDay = moment().add(n, 'days')
 
@@ -42,7 +42,7 @@ export function getAssignmentWeightsInNextNDays (assignments, n) {
     }
   })
 
-  return Math.round((assignmentsWeight / totalWeight) * 1000) / 10 + '%'
+  return Math.round((assignmentsWeight / totalWeight) * 1000) / 10
 }
 
 const percentile = (arr, val) => {
@@ -75,79 +75,38 @@ export function getIntensityScore (assignments, view = 'w') {
   }
 
   let assignmentCountPercentile, cumulativeWeightPercentile
-  switch (true) {
-    case (view === 'w'):
-      let allPossibleWeeks = []
-      allDays.forEach(d => {
-        let week = []
-        for (let i = 0; i < 7; i++) {
-          let day = allDays[allDays.indexOf(d) + i]
-          if (day) {
-            week.push(day)
-          } else {
-            week.push({
-              day: null,
-              assignmentCount: 0,
-              cumulativeWeights: 0
-            })
-          }
-        }
+  let allPossiblePeriods = []
+  allDays.forEach(d => {
+    let period = []
+    for (let i = 0; i < (view + 1); i++) {
+      let day = allDays[allDays.indexOf(d) + i]
+      if (day) {
+        period.push(day)
+      } else {
+        period.push({
+          day: null,
+          assignmentCount: 0,
+          cumulativeWeights: 0
+        })
+      }
+    }
 
-        const weekAssignmentCount = week.reduce((i, d) => i + d.assignmentCount, 0)
-        const weekCumWeights = week.reduce((i, d) => i + d.cumulativeWeights, 0)
+    const periodAssignmentCount = period.reduce((i, d) => i + d.assignmentCount, 0)
+    const periodCumWeights = period.reduce((i, d) => i + d.cumulativeWeights, 0)
 
-        allPossibleWeeks.push({weekAssignmentCount, weekCumWeights})
-      })
+    allPossiblePeriods.push({periodAssignmentCount, periodCumWeights})
+  })
 
-      const allPossibleWeeksCumulativeWeights = allPossibleWeeks.map(w => w.weekCumWeights)
-      const allPossibleWeeksAssignmentCount = allPossibleWeeks.map(w => w.weekAssignmentCount)
+  const allPossiblePeriodsCumulativeWeights = allPossiblePeriods.map(w => w.periodCumWeights)
+  const allPossiblePeriodsAssignmentCount = allPossiblePeriods.map(w => w.periodAssignmentCount)
 
-      const weekAssignments = assignments.filter(a => {
-        return today.startOf('day').isSame(moment(a.due).startOf('week'), 'week')
-      })
+  const periodAssignments = assignments.filter(a => {
+    let diff = moment(a.due).startOf('day').diff(today.startOf('day'), 'days')
+    return diff < view && diff > 0
+  })
 
-      assignmentCountPercentile = percentile(allPossibleWeeksAssignmentCount, weekAssignments.length)
-      cumulativeWeightPercentile = percentile(allPossibleWeeksCumulativeWeights, weekAssignments.reduce((i, a) => i + a.weight, 0))
-      break
-
-    case (typeof view === 'number'):
-      let allPossiblePeriods = []
-      allDays.forEach(d => {
-        let period = []
-        for (let i = 0; i < (view + 1); i++) {
-          let day = allDays[allDays.indexOf(d) + i]
-          if (day) {
-            period.push(day)
-          } else {
-            period.push({
-              day: null,
-              assignmentCount: 0,
-              cumulativeWeights: 0
-            })
-          }
-        }
-
-        const periodAssignmentCount = period.reduce((i, d) => i + d.assignmentCount, 0)
-        const periodCumWeights = period.reduce((i, d) => i + d.cumulativeWeights, 0)
-
-        allPossiblePeriods.push({periodAssignmentCount, periodCumWeights})
-      })
-
-      const allPossiblePeriodsCumulativeWeights = allPossiblePeriods.map(w => w.periodCumWeights)
-      const allPossiblePeriodsAssignmentCount = allPossiblePeriods.map(w => w.periodAssignmentCount)
-
-      const periodAssignments = assignments.filter(a => {
-        let diff = moment(a.due).startOf('day').diff(today.startOf('day'), 'days')
-        // let diff = today.startOf('day').diff(moment(a.due).startOf('day'), 'days')
-        return diff < view && diff > 0
-      })
-
-      console.log(periodAssignments)
-
-      assignmentCountPercentile = percentile(allPossiblePeriodsAssignmentCount, periodAssignments.length)
-      cumulativeWeightPercentile = percentile(allPossiblePeriodsCumulativeWeights, periodAssignments.reduce((i, a) => i + a.weight, 0))
-      break
-  }
+  assignmentCountPercentile = percentile(allPossiblePeriodsAssignmentCount, periodAssignments.length)
+  cumulativeWeightPercentile = percentile(allPossiblePeriodsCumulativeWeights, periodAssignments.reduce((i, a) => i + a.weight, 0))
 
   /*
   The intensity score is the percentile rank of the cumulative weights plus the percentile rank
