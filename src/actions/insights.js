@@ -186,9 +186,21 @@ function getAllOrgGroupOwnersInOrg (orgId) {
     })
 }
 
-// Create org user as an org group owner
-function createOrgGroupOwner (orgId, orgGroupId, userId) {
+// Create org member
+function createOrgMember (orgId, userId) {
   let form = {user_id: userId}
+  return post(`/api/v1/organizations/${orgId}/members`, form, '')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+// Create org user as an org group owner
+function createOrgGroupOwner (orgId, orgGroupId, orgMemberId) {
+  let form = {org_member_id: orgMemberId}
   return post(`/api/v1/organizations/${orgId}/org-groups/${orgGroupId}/owners`, form, '')
     .then(data => {
       return data
@@ -328,6 +340,7 @@ const exports = {
   removeStudentFromGroup,
   // group owners,
   getAllOrgGroupOwnersInOrg,
+  createOrgMember,
   createOrgGroupOwner,
   removeOrgGroupOwner,
   // students,

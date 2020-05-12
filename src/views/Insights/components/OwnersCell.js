@@ -31,7 +31,8 @@ const Owner = (props) => {
       >
         {renderX()}
       </CSSTransition>
-      {props.user.user.email}
+      {/* {props.user.user.email} */}
+      {props.user.id}
     </div>
   )
 }
@@ -85,14 +86,14 @@ class OwnersCell extends React.Component {
         width: this.cellRef.current.offsetWidth + 'px',
         top: this.cellRef.current.offsetHeight + 'px'
       }}>
-        <input autoFocus placeholder={'Find a student'} className='add-team-search' value={this.state.input} onChange={(e) => this.setState({input: e.target.value})} />
-        <div className='team-options-container'>
+        <input autoFocus placeholder={'Find an owner'} className='add-team-search' value={this.state.input} onChange={(e) => this.setState({input: e.target.value})} />
+        {/* <div className='team-options-container'>
           {this.props.rootStore.insightsStore.groupOwners.filter(u => (u.user.email).toLowerCase().includes(this.state.input.toLowerCase())).map(u => {
             return (
               <div onClick={() => this.addOwner(u)} className='team-option' key={u.id}>{u.user.email}</div>
             )
           })}
-        </div>
+        </div> */}
       </div>
     )
   }

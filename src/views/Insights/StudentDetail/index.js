@@ -6,7 +6,9 @@ import TeamsCell from '../components/TeamsCell'
 import actions from '../../../actions'
 import StudentAthleteCard from '../components/StudentAthleteCard'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
-import ClassList from '../../components/ClassList'
+import { toTitleCase } from '../utils'
+import StudentInsights from './StudentInsights'
+import SiClassList from './SiClassList'
 
 @inject('rootStore') @observer
 class StudentDetail extends React.Component {
@@ -37,7 +39,7 @@ class StudentDetail extends React.Component {
       return <SkLoader />
     } else {
       return (
-        <ClassList classes={this.state.classes} emptyMessage={'No classes yet.'} />
+        <SiClassList classes={this.state.classes} emptyMessage={'No classes yet.'} />
       )
     }
   }
@@ -45,16 +47,23 @@ class StudentDetail extends React.Component {
   render () {
     let insightsStore = this.props.rootStore.insightsStore
     let user = insightsStore.students.find(s => s.id === parseInt(this.props.match.params.orgStudentId))
+    let title = toTitleCase(insightsStore.org.groupsAlias) + 's'
     return (
       <div className='si-student-detail-container'>
         <NestedNav pageType='studentDetail' />
         <div className='si-student-detail'>
-          <div className='si-student-detail-cell student'>
-            <StudentAthleteCard absoluteToggle={true} noLink={true} noTeams={true} user={user} rootStore={this.props.rootStore} />
+          <div className='si-student-detail-cell-row'>
+            <div className='si-student-detail-cell student'>
+              <StudentAthleteCard absoluteToggle={true} noLink={true} noTeams={true} user={user} rootStore={this.props.rootStore} />
+            </div>
+            <div className='si-student-detail-cell teams'>
+              <h2>{title}</h2>
+              <TeamsCell user={user} org={insightsStore.org} onChange={() => insightsStore.updateData()} />
+            </div>
           </div>
           <div className='si-student-detail-cell teams'>
-            <h2>Teams</h2>
-            <TeamsCell user={user} org={insightsStore.org} onChange={() => insightsStore.updateData()} />
+            <h2>Intensity Score:</h2>
+            {this.state.loadingClasses ? <SkLoader /> : <StudentInsights user={user} classes={this.state.classes} />}
           </div>
           <div className='si-student-detail-cell classes'>
             <h2>Classes</h2>

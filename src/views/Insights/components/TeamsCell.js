@@ -74,28 +74,7 @@ class TeamsCell extends React.Component {
 
   addTeam = (id) => {
     if (this.props.owner) {
-      // let groupOwner = this.props.org.groupOwners.find(go => go.user_id === this.props.user.user_id)
-      // console.log(groupOwner)
-      // if (groupOwner) {
-      //   actions.insights.addOrgGroupOwner(this.props.org.id, id, groupOwner.id)
-      //     .then(() => {
-      //       this.props.onChange && this.props.onChange()
-      //       this.setState({add: false, input: ''})
-      //     })
-      //     .catch(() => {
-      //       this.setState({error: 'Error tagging user to org. Try again later.'})
-      //     })
-      // } else {
-      //   actions.insights.createOrgGroupOwner(this.props.org.id, id, this.props.user.user_id)
-      //     .then(() => {
-      //       this.props.onChange && this.props.onChange()
-      //       this.setState({add: false, input: ''})
-      //     })
-      //     .catch(() => {
-      //       this.setState({error: 'Error tagging user to org. Try again later.'})
-      //     })
-      // }
-      actions.insights.createOrgGroupOwner(this.props.org.id, id, this.props.user.user_id)
+      actions.insights.createOrgGroupOwner(this.props.org.id, id, this.props.user.org_member_id)
         .then(() => {
           this.props.onChange && this.props.onChange()
           this.setState({add: false, input: ''})
@@ -133,7 +112,7 @@ class TeamsCell extends React.Component {
   render () {
     let teams
     if (this.props.owner) {
-      teams = this.props.org.groups.filter(g => g.owners.map(os => os.user_id).includes(this.props.user.user_id))
+      teams = this.props.org.groups.filter(g => g.owners.map(os => os.org_member_id).includes(this.props.user.org_member_id))
     } else {
       teams = this.props.user.org_groups
     }

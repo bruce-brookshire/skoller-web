@@ -9,12 +9,9 @@ $b5: $sk-blue-5;
 .si-table {
   background-color: white;
   border-collapse: collapse;
-  // margin: 1rem 0;
   text-align: left;
   word-break: break-all;
 
-  // tr:nth-child(even) { background: white; }
-  // tr:nth-child(odd) { background: white; }
   thead {
     background-color: $b50;
   }
@@ -28,6 +25,7 @@ $b5: $sk-blue-5;
     cursor: pointer;
     padding: 10px 8px 6px 8px;
     margin: -4px;
+    color: $sk-blue;
     
     &:hover {
       background-color: $sk-blue-25;

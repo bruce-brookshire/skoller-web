@@ -239,8 +239,8 @@ class HubInsights extends React.Component {
     let mergedOwners = [].concat.apply([], orgOwnersArrays)
     let seen = new Set()
     const filteredMergedOwners = mergedOwners.filter(o => {
-      const duplicate = seen.has(o.user_id)
-      seen.add(o.user_id)
+      const duplicate = seen.has(o.org_member_id)
+      seen.add(o.org_member_id)
       return !duplicate
     })
     return filteredMergedOwners
@@ -248,14 +248,15 @@ class HubInsights extends React.Component {
 
   renderOrgGroupOwners () {
     if (this.state.orgSelection) {
-      let data = this.getAllOrgGroupOwners().map(o => [o.user_id, this.renderOwnerTeamsCell(o)])
+      console.log(this.state.orgSelection)
+      let data = this.getAllOrgGroupOwners().map(o => [o.id, this.renderOwnerTeamsCell(o)])
       data.push([this.renderCreateOrgGroupOwnerButton()])
       data.push([this.renderTagUserToOrgGroupButton()])
       return (
         <div className='hub-insights-group'>
           <h2>Group Owners</h2>
           <Table
-            headers={['User ID', 'Teams (org groups)']}
+            headers={['ID', 'Teams (org groups)']}
             data={data}
           />
           {this.state.showCreateOrgGroupOwnersModal &&

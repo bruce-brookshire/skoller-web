@@ -25,6 +25,8 @@ class Groups extends React.Component {
         type: 'Ascending'
       }
     }
+
+    console.log(this.props.rootStore.insightsStore)
   }
 
   sortGroups (groups) {

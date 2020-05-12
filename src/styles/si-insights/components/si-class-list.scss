@@ -1,0 +1,223 @@
+.si-class-list-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: calc(100% + 1rem);
+  // margin-bottom: 0.5rem;
+  justify-content: flex-start;
+
+  .si-class-list-empty-message {
+    padding: 1rem;
+    color: rgba(0,0,0,0.30);
+    text-align: center;
+    width: 100%;
+  }
+
+  .si-class-list-cell {
+    width: calc(33.333% - 1rem);
+    flex-grow: 1;
+    min-width: 144px;
+    border-radius: 5px;
+    border: 1px solid #4a4a4a;
+    margin: 0 1rem 1rem 0;
+    box-shadow: 0px 6px 8px rgba(0,0,0,.08);
+    transition: 150ms;
+
+    @media only screen and (max-width: 750px) {
+      width: calc(50% - 1rem);
+    }
+
+    .si-class-list-cell-title {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      height: 56px;
+      border-radius: 3px 3px 0 0;
+
+      h2 {
+        margin: 0;
+        color: white;
+        font-size: 18px;
+      }
+    }
+
+    .si-class-list-cell-grade {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      height: 32px;
+
+      h1 {
+        text-align: center;
+        margin: 4px 0 0 0;
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      .si-class-list-row-icon-img {
+        max-width: 40px;
+        max-height: 40px;
+        margin: 8px 0;
+      }
+    }
+
+    .si-class-list-cell-extra {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      margin-bottom: 4px;
+
+      p {
+        margin: 0;
+      }
+    }
+  }
+
+  .si-class-list-cell:hover {
+    cursor: pointer;
+    background-color: $cn-color-hover-grey;
+    box-shadow: none;
+  }
+
+  .empty {
+    border: none;
+    cursor: default;
+    box-shadow: none;
+    height: 0;
+    margin: 0 1rem 0 0;
+
+    &:hover {
+      background-color: white;
+      cursor: default;
+    }
+  }
+
+  .si-class-list-row {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 128px;
+    border: 1px solid $cn-color-grey;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 0.5rem;
+    width: calc(33% - 1rem);
+
+    @media only screen and (max-width: $sk-mobile-break-point) {
+      width: 100%;
+    }
+
+    .si-class-list-row-icon-container {
+      display:flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid $cn-color-grey;
+      padding: 3px;
+      flex-basis: 0 0 64px;
+      min-width: 64px;
+      height: 64px;
+
+      .si-class-list-row-icon-img {
+        max-width: 45px;
+        max-height: 45px;
+        margin: 8px 0;
+      }
+
+      .si-class-list-row-icon {
+        font-size: 30px;
+        margin-bottom: 3px;
+      }
+      
+      .si-class-list-row-icon-text{
+        font-size: 14px;
+      }
+
+      .si-class-list-row-grade-text {
+        font-size: 25px;
+        color: white;
+      }
+    }
+
+    .si-class-list-row-data {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      flex: 1 1 100%;
+      min-width: 0;
+      height: 64px;
+
+      .si-class-list-row-col {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+        // padding: $unit-space/2;
+        min-width: 0;
+        padding: 8px;
+
+        .si-class-list-status-us {
+          font-weight: 600;
+          color: $sk-alert-red;
+        }
+
+        .si-class-list-status-sir {
+          font-weight: 600;
+          color: $cn-color-grey;
+        }
+
+        .si-class-list-status-nsi {
+          font-weight: 600;
+          color: $sk-alert-orange;
+        }
+
+        .si-class-list-title {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          font-size: 20px;
+          font-weight: 700;
+          min-width: 0;
+          margin: 0;
+          height: 40px;
+        }
+
+        .si-class-list-text {
+          font-size: 16px;
+          min-width: 0;
+        }
+
+        .si-class-list-subtext {
+          font-size: 14px;
+          min-width: 0;
+          margin: 0;
+        }
+
+        .si-class-list-subtext-completion {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          justify-content: flex-start;
+          margin: 4px 0 0 -2px;
+        }
+
+        .si-class-list-flex-bottom {
+          justify-self: flex-end;
+        }
+
+        .si-class-list-flex-top {
+          justify-self: flex-start;
+        }
+
+      }
+    }
+
+    .si-class-list-text-right {
+      text-align: right;
+    }
+  }
+} 
