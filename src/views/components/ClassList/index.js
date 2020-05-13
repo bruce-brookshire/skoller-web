@@ -124,7 +124,7 @@ class ClassList extends React.Component {
         {this.renderClassRows()}
         {this.props.classes.length === 0 &&
           <div className='cn-class-list-empty-message'>
-            {"Looks like you don't have any classes yet. Join one now!"}
+            {this.props.emptyMessage || "Looks like you don't have any classes yet. Join one now!"}
           </div>
         }
       </div>

@@ -18,7 +18,6 @@ class TagUserToOrgGroup extends React.Component {
   }
 
   getAccounts (queryString) {
-    console.log(this.props)
     this.setState({loading: true})
     actions.auth.getUsers(queryString).then(users => {
       users.forEach(u => {
@@ -39,12 +38,15 @@ class TagUserToOrgGroup extends React.Component {
     if (this.state.group === null) {
       this.setState({error: 'Group is required'})
     } else {
-      actions.insights.createOrgGroupOwner(this.props.org.id, this.state.group.id, user.id)
-        .then(() => {
-          this.props.onSubmit && this.props.onSubmit()
-        })
-        .catch(() => {
-          this.setState({error: 'Error tagging user to org. Try again later.'})
+      actions.insights.createOrgMember(this.props.org.id, user.id)
+        .then(r => {
+          actions.insights.createOrgGroupOwner(this.props.org.id, this.state.group.id, r.id)
+            .then(() => {
+              this.props.onSubmit && this.props.onSubmit()
+            })
+            .catch(() => {
+              this.setState({error: 'Error tagging user to org. Try again later.'})
+            })
         })
     }
   }

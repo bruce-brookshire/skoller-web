@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import actions from '../../../actions'
+import { toTitleCase } from '../../Insights/utils'
 
 class CreateOrgGroup extends React.Component {
   constructor (props) {
@@ -28,7 +29,7 @@ class CreateOrgGroup extends React.Component {
   render () {
     return (
       <div className='hub-insights-form-container'>
-        <h1 style={{margin: '0'}}>Create Org Group</h1>
+        <h1 style={{margin: '0'}}>Create New {this.props.alias ? toTitleCase(this.props.alias) : 'Org Group'}</h1>
         <h3 style={{margin: '0'}}>{this.props.org.name}</h3>
         <div className='hub-insights-form-row'>
           <div className='hub-insights-form-label'>Name</div>
@@ -49,7 +50,8 @@ class CreateOrgGroup extends React.Component {
 
 CreateOrgGroup.propTypes = {
   onSubmit: PropTypes.func,
-  org: PropTypes.object
+  org: PropTypes.object,
+  alias: PropTypes.string
 }
 
 export default CreateOrgGroup

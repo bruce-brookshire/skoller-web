@@ -1,71 +1,127 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import {inject, observer} from 'mobx-react'
 import PropTypes from 'prop-types'
-import Avatar from '../components/Avatar'
-import WatchToggle from '../components/WatchToggle'
 import Table from '../components/Table'
+import GentleModal from '../components/GentleModal'
+import SkSelect from '../../components/SkSelect'
+import { toTitleCase } from '../utils'
+import CreateOrgGroup from '../../Hub/HubInsights/CreateOrgGroup'
+import StudentsCell from '../components/StudentsCell'
+import OwnersCell from '../components/OwnersCell'
 import TeamsCell from '../components/TeamsCell'
-import InsightsLayout from '../../components/InsightsLayout'
-import CopyCell from '../components/CopyCell'
-import actions from '../../../actions'
+import SkModal from '../../components/SkModal/SkModal'
+import CreateOrgOwner from '../../Hub/HubInsights/CreateOrgOwner'
+import CreateOrgGroupOwner from '../../Hub/HubInsights/CreateOrgGroupOwner'
 
 @inject('rootStore') @observer
 class Organization extends React.Component {
   constructor (props) {
     super(props)
 
-    this.props.rootStore.insightsStore.getStudents()
     this.props.rootStore.navStore.setActivePage('insights/organization')
 
-    actions.insights.getStudentsByTeamId()
+    this.state = {
+      showNewOrgOwnerModal: false
+    }
   }
 
-  renderTable () {
-    const headers = ['📷', 'First name', 'Last name', 'Watching', 'Teams', 'Phone (click to copy)', 'Email']
-    let i = 0
-    const da = this.props.rootStore.insightsStore.students
-    const d = da.map(d => {
-      i += 1
-      return [
-        <Avatar user={d} key={i} />,
-        d.name_first,
-        d.name_last,
-        <WatchToggle showConfirm={true} user={d} key={i} />,
-        <TeamsCell key={i} user={d} />,
-        <CopyCell isPhone={true} text={d.phone} key={i} />,
-        <a className={'link-style'} href={'mailto:' + d.email} key={i}>{d.email}</a>
-      ]
-    })
-
+  renderNewOrgOwnerButton () {
     return (
-      <Table headers={headers} data={d} />
-    )
-  }
-
-  renderHeader () {
-    return (
-      <div className='si-table-header'>
-        <div className='si-table-header-item'>
-          Sort
-        </div>
+      <div colSpan={2} className='si-table-button' onClick={() => this.setState({showNewOrgOwnerModal: true})}>
+        Create new organization owner
       </div>
     )
   }
 
-  renderContent () {
+  renderOrgOwnersTable () {
+    const headers = ['Email']
+    let da = this.props.rootStore.insightsStore.org.orgOwners.slice()
+    const d = da.map(d => {
+      return [
+        d.user.email
+      ]
+    })
+    d.push([this.renderNewOrgOwnerButton()])
+
     return (
-      <div className='si-dashboard'>
-        {this.renderHeader()}
-        {this.renderTable()}
+      <Fragment>
+        <Table className='si-organization-table' headers={headers} data={d} />
+        {this.state.showNewOrgOwnerModal && <SkModal closeModal={() => this.setState({showNewOrgOwnerModal: false})}>
+          <CreateOrgOwner onSubmit={() => {
+            this.setState({showNewOrgOwnerModal: false})
+            this.props.rootStore.insightsStore.updateData()
+          }} org={this.props.rootStore.insightsStore.org} />
+        </SkModal>}
+      </Fragment>
+    )
+  }
+
+  renderTeamsCell (d) {
+    return (
+      <TeamsCell owner={true} user={d} org={this.props.rootStore.insightsStore.org} onChange={() => this.props.rootStore.insightsStore.updateData()} />
+    )
+  }
+
+  renderNewOrgGroupOwnerButton () {
+    return (
+      <div colSpan={2} className='si-table-button' onClick={() => this.setState({showNewOrgGroupOwnerModal: true})}>
+        Create new {this.props.rootStore.insightsStore.org.groupsAlias} owner
+      </div>
+    )
+  }
+
+  renderOrgGroupOwnersTable () {
+    let insightsStore = this.props.rootStore.insightsStore
+    let title = toTitleCase(insightsStore.org.groupsAlias) + 's'
+    const headers = ['Email', title]
+    let da = insightsStore.org.groupOwners.slice()
+    const d = da.map(d => {
+      return [
+        d.user.email,
+        this.renderTeamsCell(d)
+      ]
+    })
+    d.push([this.renderNewOrgGroupOwnerButton()])
+
+    return (
+      <Fragment>
+        <Table className='si-organization-table' headers={headers} data={d} />
+        {this.state.showNewOrgGroupOwnerModal && <SkModal closeModal={() => this.setState({showNewOrgGroupOwnerModal: false})}>
+          <CreateOrgGroupOwner onSubmit={() => {
+            this.setState({showNewOrgGroupOwnerModal: false})
+            this.props.rootStore.insightsStore.updateData()
+          }} org={this.props.rootStore.insightsStore.org} />
+        </SkModal>}
+      </Fragment>
+    )
+  }
+
+  renderContent () {
+    let insightsStore = this.props.rootStore.insightsStore
+    let title = toTitleCase(insightsStore.org.groupsAlias) + 's'
+    return (
+      <div className='si-organization'>
+        <div className='si-organization-header'>
+          <h1>Organization</h1>
+          <p>Manage all of the administrators in {insightsStore.org.name} from this page.</p>
+        </div>
+        <div className='si-organization-content'>
+          <div className='si-organization-column'>
+            <h2>Organization owners</h2>
+            {this.renderOrgOwnersTable()}
+          </div>
+          <div className='si-organization-column'>
+            <h2>{title} owners</h2>
+            {this.renderOrgGroupOwnersTable()}
+          </div>
+        </div>
       </div>
     )
   }
 
   render () {
     return (
-      <InsightsLayout>
-        {this.renderContent()}
-      </InsightsLayout>
+      this.renderContent()
     )
   }
 }

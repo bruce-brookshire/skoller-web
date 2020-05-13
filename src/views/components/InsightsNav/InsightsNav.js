@@ -3,6 +3,7 @@ import {inject, observer} from 'mobx-react'
 import PropTypes from 'prop-types'
 import {withRouter} from 'react-router-dom'
 import InsightsNavItem from './InsightsNavItem'
+import { toTitleCase } from '../../Insights/utils'
 
 @inject('rootStore') @observer
 class InsightsNav extends React.Component {
@@ -31,13 +32,15 @@ class InsightsNav extends React.Component {
   }
 
   render () {
+    let insightsStore = this.props.rootStore.insightsStore
+    let groupsTitle = toTitleCase(insightsStore.org.groupsAlias) + 's'
     return (
       <div className="si-nav-wrapper">
         <div className="si-nav" style={this.props.rootStore.navStore.jobsMode ? {backgroundColor: '#5e5e5e', borderRight: '1px solid #7e7d7d'} : {}}>
           <InsightsNavItem pageName="insights/dashboard" text="Dashboard" />
           <InsightsNavItem pageName="insights/students" text="Students" />
-          {/* <InsightsNavItem pageName="insights/groups" text="Groups" />
-          <InsightsNavItem pageName="insights/organization" text="Organization" /> */}
+          <InsightsNavItem pageName="insights/groups" text={groupsTitle} />
+          <InsightsNavItem pageName="insights/organization" text="Organization" />
           {this.renderLogout()}
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { extendObservable, action } from 'mobx'
 import actions from '../actions'
 import stores from './index'
+import { getIntensityScore } from '../views/Insights/utils'
 
 class InsightsStore {
   constructor () {
@@ -10,8 +11,25 @@ class InsightsStore {
       students: [],
       groups: [],
       watchlist: [],
-      org: {}
+      groupOwners: [],
+      org: {
+        groupsAlias: 'team'
+      },
+      interfaceSettings: {
+        dashboard: {
+          sort: 'Assignments',
+          timeframe: 'Next 7 days'
+        }
+      }
     })
+  }
+
+  async getOrgOwners () {
+    await actions.insights.getAllOrgOwnersInOrg(stores.userStore.user.org_owners[0].organization_id)
+      .then(r => {
+        this.orgOwners = r
+        this.org.orgOwners = r
+      })
   }
 
   async getOrgGroups () {
@@ -24,10 +42,25 @@ class InsightsStore {
 
   async getStudents () {
     await actions.insights.getAllStudentsInOrg(stores.userStore.user.org_owners[0].organization_id)
-      .then(r => {
+      .then(async r => {
         let students = r.map(s => { return {...s, orgStudentId: s.id} })
-        this.students = students
-        this.org.students = students
+        await this.getStudentData(students)
+      })
+  }
+
+  async getGroupOwners () {
+    await actions.insights.getAllOrgGroupOwnersInOrg(stores.userStore.user.org_owners[0].organization_id)
+      .then(r => {
+        let groupOwners = r
+        let filteredGroupOwners = []
+        groupOwners.forEach(go => {
+          if (!filteredGroupOwners.find(o => o.user_id === go.user_id)) {
+            filteredGroupOwners.push(go)
+          }
+        })
+
+        this.groupOwners = filteredGroupOwners
+        this.org.groupOwners = filteredGroupOwners
       })
   }
 
@@ -42,54 +75,63 @@ class InsightsStore {
   async getOrgOwnerWatchlist () {
     await actions.insights.getOrgOwnerWatchlist(stores.userStore.user.org_owners[0].organization_id, stores.userStore.user.org_owners[0].id)
       .then(r => {
-        console.log(r)
         let students = r.map(s => { return {...s, orgStudentId: s.id} })
         this.watchlist = students
         this.org.watchlist = students
       })
   }
 
-  async getData (filters) {
-    this.loading = true
+  async getStudentData (students) {
+    for (const s of students) {
+      await actions.classes.getStudentClassesById(s.student_id)
+        .then(r => {
+          let assignments = [].concat.apply([], r.map(cl => cl.assignments))
+          s.classes = r
+          s.assignments = assignments
+          s.intensity = {
+            sevenDay: getIntensityScore(assignments, 7),
+            thirtyDay: getIntensityScore(assignments, 30)
+          }
+        })
+    }
+    this.students = students
+  }
 
-    if (filters.includes('students')) {
+  async getAllData (filters) {
+    if (!filters || filters.includes('orgOwners')) {
+      await this.getOrgOwners()
+    }
+
+    if (!filters || filters.includes('students')) {
       await this.getStudents()
     }
 
-    if (filters.includes('groups')) {
+    if (!filters || filters.includes('groups')) {
       await this.getOrgGroups()
     }
 
-    if (filters.includes('org')) {
+    if (!filters || filters.includes('org')) {
       await this.getOrg()
     }
 
-    if (filters.includes('orgOwnerWatchlist')) {
-      await this.getOrgOwnerWatchlist()
+    if (!filters || filters.includes('groupOwners')) {
+      await this.getGroupOwners()
     }
 
+    if (!filters || filters.includes('orgOwnerWatchlist')) {
+      await this.getOrgOwnerWatchlist()
+    }
+  }
+
+  async getData (filters) {
+    this.loading = true
+    await this.getAllData(filters)
     this.getDataSuccess()
   }
 
   async updateData (filters) {
     this.loadingUpdate = true
-
-    if (filters.includes('students')) {
-      await this.getStudents()
-    }
-
-    if (filters.includes('groups')) {
-      await this.getOrgGroups()
-    }
-
-    if (filters.includes('org')) {
-      await this.getOrg()
-    }
-
-    if (filters.includes('orgOwnerWatchlist')) {
-      await this.getOrgOwnerWatchlist()
-    }
-
+    await this.getAllData(filters)
     this.getDataSuccess()
   }
 

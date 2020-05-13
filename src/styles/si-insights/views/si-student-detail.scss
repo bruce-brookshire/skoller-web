@@ -1,0 +1,56 @@
+.si-student-detail-container {
+  padding: 1rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .si-student-detail {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 640px;
+    align-items: center;
+
+    .si-student-detail-cell-row {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 100%;
+
+      .student {
+        margin-right: 1rem;
+        flex-basis: calc(50% - 1rem);
+        flex-grow: 1;
+
+        .sa-name {
+          font-size: 24px;
+        }
+      }
+
+      .teams {
+        flex-grow: 1;
+        flex-basis: 50%;
+      }
+    }
+
+    .si-student-detail-cell {
+      @include skoller-cell;
+      padding: 1rem;
+      margin: 0 0 1rem 0;
+      width: 100%;
+      position: relative;
+
+      h1, h2, h3 {
+        margin: 0;
+      }
+
+      .si-student-detail-cell-subtitle {
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+      }
+    }
+  }
+}

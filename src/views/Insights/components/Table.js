@@ -2,38 +2,58 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 class Table extends React.Component {
-  renderHeader (h, i) {
+  renderHeader (d, i) {
+    let colSpan = null
+    let rowSpan = null
+    if (d && d.props) {
+      colSpan = d.props.colSpan ? d.props.colSpan : null
+      rowSpan = d.props.rowSpan ? d.props.rowSpan : null
+    }
+
     return (
-      <th key={i} colSpan={h.colSpan ? h.colSpan : null}>
-        {h.children ? h.children : h}
+      <th key={i} colSpan={colSpan} rowSpan={rowSpan}>
+        {d ? d.children ? d.children : d : null}
       </th>
     )
   }
 
   renderData (d, i) {
     let colSpan = null
-    if (d.props) {
+    let rowSpan = null
+    if (d && d.props) {
       colSpan = d.props.colSpan ? d.props.colSpan : null
+      rowSpan = d.props.rowSpan ? d.props.rowSpan : null
     }
 
     return (
-      <td key={i} colSpan={colSpan}>
-        {d}
+      <td key={i} colSpan={colSpan} rowSpan={rowSpan}>
+        {d ? d.children ? d.children : d : null}
       </td>
     )
   }
 
   render () {
-    const {headers, data} = this.props
+    let {headers, data} = this.props
+
+    // this allows header prop to be a single array, or an array of arrays is there are multiple tr in a header
+    if (!Array.isArray(headers[0])) {
+      headers = [headers]
+    }
+
     return (
       <table className={'si-table' + (this.props.className ? (' ' + this.props.className) : '')}>
         <thead>
-          <tr>
-            {headers.map(h => {
-              let i = this.props.headers.indexOf(h)
-              return this.renderHeader(h, i)
-            })}
-          </tr>
+          {headers.map(d => {
+            let i = headers.indexOf(d)
+            return (
+              <tr key={i}>
+                {d.map(datum => {
+                  let i = d.indexOf(datum)
+                  return this.renderHeader(datum, i)
+                })}
+              </tr>
+            )
+          })}
         </thead>
         <tbody>
           {data.map(d => {

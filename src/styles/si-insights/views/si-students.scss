@@ -13,6 +13,40 @@
   .si-students-content {
     .si-students-table {
       width: 100%;
+
+      .si-students-timeframe {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        .si-select {
+          flex-grow: 1;
+
+          .sk-select {
+            background-color: #ffffff;
+
+            &:hover {
+              background-color: rgba(255, 255, 255, 0.75);
+            }
+          }
+
+          @include si-select;
+        }
+      }
+      
+      .si-students-table-sa {
+        cursor: pointer;
+        border-radius: 5px;
+        padding: 8px 4px 2px 4px;
+        box-shadow: none;
+        transition: linear 100ms;
+
+        &:hover {
+          background-color: $sk-blue-25;
+          box-shadow: 0px 4px 12px rgba(0,0,0,0.05);
+        }
+      }
     }
   }
 }

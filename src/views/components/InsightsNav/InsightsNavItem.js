@@ -15,11 +15,13 @@ class NavItem extends React.Component {
 
   getNavIcon () {
     if (this.props.pageName.includes('insights/dashboard')) {
-      return null
+      return <i className='fas fa-tachometer-alt' />
     } else if (this.props.pageName.includes('insights/students')) {
-      return null
-    } else if (this.props.pageName.includes('insights/teams')) {
-      return null
+      return <i className='fas fa-user' />
+    } else if (this.props.pageName.includes('insights/groups')) {
+      return <i className='fas fa-users' />
+    } else if (this.props.pageName.includes('insights/organization')) {
+      return <i className='fas fa-globe' />
     } else {
       return null
     }

@@ -69,6 +69,7 @@ import JobDetail from './views/Student/Jobs/JobDetail'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import InsightsLayout from './views/components/InsightsLayout'
+import StudentDetail from './views/Insights/StudentDetail'
 
 const {userStore} = stores
 
@@ -182,6 +183,7 @@ class InsightsContainer extends React.Component {
         <InsightsLayout>
           <Route exact path='/insights/dashboard' component={Dashboard} />
           <Route exact path='/insights/students' component={Students} />
+          <Route exact path='/insights/students/:orgStudentId' component={StudentDetail} />
           <Route exact path='/insights/groups' component={Groups} />
           <Route exact path='/insights/organization' component={Organization} />
         </InsightsLayout>

@@ -1,0 +1,53 @@
+.si-groups {
+  padding: 1rem 0 0 0 ;
+  min-width: 900px;
+  min-height: calc(100vh - 64px);
+  background-color: #fafafa;
+
+  .si-groups-header {
+    // @include skoller-cell;
+    // padding: 1rem;
+    margin: 0 1rem 1rem 1rem;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+
+    .si-groups-header-left {
+      flex-grow: 1;
+    }
+    
+    .si-groups-header-right {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+
+      .si-button {
+        @include sk-standard-button;
+      }
+    }
+  }
+
+  .si-groups-content {
+    .si-groups-table {
+      width: 100%;
+
+      .si-groups-table-name {
+        min-width: 196px;
+      }
+
+      .si-groups-table-sa {
+        cursor: pointer;
+        border-radius: 5px;
+        padding: 8px 4px 2px 4px;
+        box-shadow: none;
+        transition: linear 100ms;
+
+        &:hover {
+          background-color: $sk-blue-25;
+          box-shadow: 0px 4px 12px rgba(0,0,0,0.05);
+        }
+      }
+    }
+  }
+}

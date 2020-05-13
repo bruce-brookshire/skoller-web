@@ -5,7 +5,7 @@
   justify-content: center;
 
   .si-dashboard {
-    padding: 1rem;
+    padding: 2rem;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -18,14 +18,14 @@
       flex-basis: 60%;
 
       .si-smart-tracker {
-        margin-top: 1rem;
+        margin-top: 2rem;
       }
     }
 
     .si-dashboard-column-sm {
       flex-direction: column;
       flex-basis: 40%;
-      padding-left: 1rem;
+      padding-left: 2rem;
       flex-grow: 1;
 
       .si-dashboard-watchlist {
