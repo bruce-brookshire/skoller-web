@@ -8,6 +8,8 @@ import { toTitleCase } from '../utils'
 import CreateOrgGroup from '../../Hub/HubInsights/CreateOrgGroup'
 import StudentsCell from '../components/StudentsCell'
 import OwnersCell from '../components/OwnersCell'
+import LoadingIndicator from '../components/LoadingIndicator'
+import SkModal from '../../components/SkModal/SkModal'
 
 @inject('rootStore') @observer
 class Groups extends React.Component {
@@ -25,8 +27,6 @@ class Groups extends React.Component {
         type: 'Ascending'
       }
     }
-
-    console.log(this.props.rootStore.insightsStore)
   }
 
   sortGroups (groups) {
@@ -59,13 +59,13 @@ class Groups extends React.Component {
 
   renderStudentsCell (d) {
     return (
-      <StudentsCell group={d} org={this.props.rootStore.insightsStore.org} onChange={() => this.props.rootStore.insightsStore.updateData()} />
+      <StudentsCell group={d} org={this.props.rootStore.insightsStore.org} onChange={() => this.props.rootStore.insightsStore.updateData(['students'])} />
     )
   }
 
   renderOwnersCell (d) {
     return (
-      <OwnersCell group={d} org={this.props.rootStore.insightsStore.org} onChange={() => this.props.rootStore.insightsStore.updateData()} />
+      <OwnersCell group={d} org={this.props.rootStore.insightsStore.org} onChange={() => this.props.rootStore.insightsStore.updateData(['groupOwners'])} />
     )
   }
 
@@ -95,7 +95,12 @@ class Groups extends React.Component {
 
   renderNewGroupModal () {
     return (
-      this.state.showNewGroupModal && <CreateOrgGroup />
+      this.state.showNewGroupModal && <SkModal closeModal={() => this.setState({showNewGroupModal: false})}>
+        <CreateOrgGroup org={this.props.rootStore.insightsStore.org} onSubmit={() => {
+          this.setState({showNewGroupModal: false})
+          this.props.rootStore.insightsStore.updateData(['groups'])
+        }} alias={this.props.rootStore.insightsStore.org.groupsAlias} />
+      </SkModal>
     )
   }
 
@@ -154,8 +159,18 @@ class Groups extends React.Component {
     return (
       <div className='si-groups'>
         <div className='si-groups-header'>
-          <h1>{title}</h1>
-          <p>Manage all of the groups in {this.props.rootStore.insightsStore.org.name} from this page.</p>
+          <div className='si-groups-header-left'>
+            <h1>{title}<LoadingIndicator /></h1>
+            <p>Manage all of the groups in {this.props.rootStore.insightsStore.org.name} from this page.</p>
+          </div>
+          <div className='si-groups-header-right'>
+            <div className='si-button'>
+              <p
+                onClick={() => this.setState({showNewGroupModal: true})}
+              >Create a new {insightsStore.org.groupsAlias}</p>
+            </div>
+            {this.renderNewGroupModal()}
+          </div>
         </div>
         <div className='si-groups-content'>
           {this.renderFilterBar()}

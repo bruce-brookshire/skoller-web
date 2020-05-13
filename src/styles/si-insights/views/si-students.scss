@@ -13,6 +13,27 @@
   .si-students-content {
     .si-students-table {
       width: 100%;
+
+      .si-students-timeframe {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        .si-select {
+          flex-grow: 1;
+
+          .sk-select {
+            background-color: #ffffff;
+
+            &:hover {
+              background-color: rgba(255, 255, 255, 0.75);
+            }
+          }
+
+          @include si-select;
+        }
+      }
       
       .si-students-table-sa {
         cursor: pointer;

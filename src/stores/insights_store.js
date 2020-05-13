@@ -42,10 +42,9 @@ class InsightsStore {
 
   async getStudents () {
     await actions.insights.getAllStudentsInOrg(stores.userStore.user.org_owners[0].organization_id)
-      .then(r => {
+      .then(async r => {
         let students = r.map(s => { return {...s, orgStudentId: s.id} })
-        this.students = students
-        this.org.students = students
+        await this.getStudentData(students)
       })
   }
 
@@ -82,8 +81,7 @@ class InsightsStore {
       })
   }
 
-  async getStudentData () {
-    let students = this.students.slice()
+  async getStudentData (students) {
     for (const s of students) {
       await actions.classes.getStudentClassesById(s.student_id)
         .then(r => {
@@ -106,9 +104,6 @@ class InsightsStore {
 
     if (!filters || filters.includes('students')) {
       await this.getStudents()
-        .then(async () => {
-          await this.getStudentData()
-        })
     }
 
     if (!filters || filters.includes('groups')) {

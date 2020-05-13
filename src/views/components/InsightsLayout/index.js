@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-// import SkBanner from './SkBanner'
 import {inject, observer} from 'mobx-react'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import InsightsNav from '../InsightsNav/InsightsNav'
@@ -28,7 +27,6 @@ class InsightsLayout extends React.Component {
         <InsightsTop />
         <InsightsNav />
         <main id='main'>
-          {/* <SkBanner /> */}
           {this.props.children}
         </main>
       </div>

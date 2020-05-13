@@ -9,6 +9,8 @@ import CopyCell from '../components/CopyCell'
 import GentleModal from '../components/GentleModal'
 import SkSelect from '../../components/SkSelect'
 import { Link } from 'react-router-dom'
+import { getAssignmentCountInNextNDays, getAssignmentWeightsInNextNDays } from '../utils'
+import LoadingIndicator from '../components/LoadingIndicator'
 
 @inject('rootStore') @observer
 class Students extends React.Component {
@@ -25,11 +27,13 @@ class Students extends React.Component {
       sort: {
         value: 'Last name',
         type: 'Ascending'
-      }
+      },
+      timeframe: 7
     }
   }
 
   sortStudents (students) {
+    let days = this.state.timeframe
     let sortedStudents = []
     if (this.state.sort.value === 'Last name') {
       sortedStudents = students.sort((a, b) => {
@@ -53,7 +57,6 @@ class Students extends React.Component {
 
     if (this.state.sort.value === 'Watching') {
       sortedStudents = students.sort((a, b) => {
-        console.log(this.props.rootStore.insightsStore.isWatching(a))
         if (this.props.rootStore.insightsStore.isWatching(a) === this.props.rootStore.insightsStore.isWatching(b)) {
           return 0
         } else {
@@ -62,6 +65,37 @@ class Students extends React.Component {
           } else {
             return 1
           }
+        }
+      })
+    }
+
+    if (this.state.sort.value === 'Assignments') {
+      sortedStudents = students.sort((a, b) => {
+        if (getAssignmentCountInNextNDays(a.assignments, days) < getAssignmentCountInNextNDays(b.assignments, days)) {
+          return 1
+        } else {
+          return -1
+        }
+      })
+    }
+
+    if (this.state.sort.value === 'Weights') {
+      sortedStudents = students.sort((a, b) => {
+        if (getAssignmentWeightsInNextNDays(a.assignments, days) < getAssignmentWeightsInNextNDays(b.assignments, days)) {
+          return 1
+        } else {
+          return -1
+        }
+      })
+    }
+
+    if (this.state.sort.value === 'Intensity') {
+      let intensityString = days === 7 ? 'sevenDay' : 'thirtyDay'
+      sortedStudents = students.sort((a, b) => {
+        if (a.intensity[intensityString] < b.intensity[intensityString]) {
+          return 1
+        } else {
+          return -1
         }
       })
     }
@@ -98,8 +132,59 @@ class Students extends React.Component {
     )
   }
 
+  renderHeaderItem (d, rowSpan = 1, colSpan = 1) {
+    return (
+      <div colSpan={colSpan} rowSpan={rowSpan}>{d}</div>
+    )
+  }
+
+  renderTimeframe () {
+    let options = ['Next 7 days', 'Next 30 days']
+    return (
+      <div className='si-students-timeframe'>
+        <span style={{marginRight: '8px'}}>Timeframe:</span>
+        <SkSelect
+          className='si-select'
+          selection={this.state.timeframe === 7 ? 'Next 7 days' : 'Next 30 days'}
+          optionsMap={() => options.map(o => {
+            return (
+              <div
+                className='si-select-option'
+                key={options.indexOf(o)}
+                onClick={() => {
+                  if (o === 'Next 7 days') {
+                    this.setState({timeframe: 7})
+                  } else {
+                    this.setState({timeframe: 30})
+                  }
+                }}
+              >
+                {o}
+              </div>
+            )
+          })}
+        />
+      </div>
+    )
+  }
+
   renderTable () {
-    const headers = ['📷', 'Student-Athlete', 'My Watchlist', 'Teams', 'Phone (click to copy)', 'Assignments', 'Weights', 'Intensity']
+    const headers = [
+      [
+        this.renderHeaderItem('📷', 2, 1),
+        this.renderHeaderItem('Student-Athlete', 2, 1),
+        this.renderHeaderItem('My Watchlist', 2, 1),
+        this.renderHeaderItem('Teams', 2, 1),
+        this.renderHeaderItem('Phone (click to copy)', 2, 1),
+        this.renderHeaderItem(this.renderTimeframe(), 1, 3)
+      ],
+      [
+        this.renderHeaderItem('Assignments', 1, 1),
+        this.renderHeaderItem('Weight', 1, 1),
+        this.renderHeaderItem('Intensity', 1, 1)
+      ]
+    ]
+    let intensityString = this.state.timeframe === 7 ? 'sevenDay' : 'thirtyDay'
     let da = this.renderFilteredStudents()
     const d = da.map(d => {
       return [
@@ -108,9 +193,9 @@ class Students extends React.Component {
         <WatchToggle rootStore={this.props.rootStore} showConfirm={true} user={d} key={d.id} />,
         <TeamsCell key={d.id} user={d} org={this.props.rootStore.insightsStore.org} onChange={() => this.props.rootStore.insightsStore.updateData(['students', 'groups'])} />,
         <CopyCell isPhone={true} text={d.student.phone} key={d.id} />,
-        Math.floor(Math.random() * Math.floor(20)),
-        Math.floor(Math.random() * Math.floor(25)),
-        Math.floor(Math.random() * Math.floor(100))
+        <div key={d.id}>{getAssignmentCountInNextNDays(d.assignments, this.state.timeframe)}</div>,
+        <div key={d.id}>{getAssignmentWeightsInNextNDays(d.assignments, this.state.timeframe)}</div>,
+        <div key={d.id}>{d.intensity[intensityString]}</div>
       ]
     })
 
@@ -188,11 +273,10 @@ class Students extends React.Component {
   }
 
   renderContent () {
-    console.log(this.props.rootStore.insightsStore)
     return (
       <div className='si-students'>
         <div className='si-students-header'>
-          <h1>Students</h1>
+          <h1>Students<LoadingIndicator /></h1>
           <p>Manage all of the students in {this.props.rootStore.insightsStore.org.name} from this page.</p>
         </div>
         <div className='si-students-content'>

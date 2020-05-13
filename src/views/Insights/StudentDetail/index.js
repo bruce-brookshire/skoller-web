@@ -19,6 +19,8 @@ class StudentDetail extends React.Component {
       classes: []
     }
 
+    this.props.rootStore.navStore.setActivePage('insights/students')
+
     this.getStudentClasses()
   }
 

@@ -25,5 +25,6 @@
 
   .si-select-option {
     @include si-autocomplete-option;
+    font-weight: 400;
   }
 }
