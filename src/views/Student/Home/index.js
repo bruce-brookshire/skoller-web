@@ -69,8 +69,13 @@ class Home extends React.Component {
             type = 'needSyllabus'
           }
         } else if (classes.length === 0) {
-          showPopUp = true
-          type = 'findClass'
+          if (student.primary_school === null) {
+            showPopUp = true
+            type = 'needPrimarySchool'
+          } else {
+            showPopUp = true
+            type = 'findClass'
+          }
         }
       })
       .catch(() => false)
