@@ -88,9 +88,9 @@ class ChangeRequestHistory extends React.Component {
                   </div>
                   <div className='hub-change-request-history-cr-row'>
                     <p>Submitted by:</p>
-                    <p>{member.cr.user.email}</p>
+                    <p>{member.cr.user && member.cr.user.email}</p>
                   </div>
-                </div>
+                </div>m
               </div>
             )
           })}

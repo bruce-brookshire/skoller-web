@@ -89,16 +89,26 @@ class AdminAssignmentForm extends React.Component {
   */
   initializeFormData (data) {
     let formData = data || {}
-    const {id, name, weight_id: weightId, due} = formData
+    const {id, name, due} = formData
     const {cl} = this.props
 
     const dueDate = due
       ? convertUTCDatetimeToDateString(due, cl.school.timezone) : ''
 
+    let weightId
+    if (this.props.assignment) {
+      if (this.props.assignment.weight_id) {
+        weightId = this.props.assignment.weight_id
+      } else {
+        weightId = this.props.weights[0].id
+      }
+    } else {
+      weightId = this.props.weights[0].id
+    }
     return ({
       id: id || null,
       name: name || '',
-      weight_id: this.props.weights[0].id,
+      weight_id: weightId,
       due: dueDate ? this.mapAssignmentDate(dueDate) : '',
       year_due: dueDate ? dueDate.split('-')[0] : date.getFullYear(),
       created_on: 'Web'
