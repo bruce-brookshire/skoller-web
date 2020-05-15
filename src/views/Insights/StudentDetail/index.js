@@ -9,6 +9,7 @@ import SkLoader from '../../../assets/sk-icons/SkLoader'
 import { toTitleCase } from '../utils'
 import StudentInsights from './StudentInsights'
 import SiClassList from './SiClassList'
+import SiTasksList from './SiTasksList'
 
 @inject('rootStore') @observer
 class StudentDetail extends React.Component {
@@ -34,6 +35,16 @@ class StudentDetail extends React.Component {
           loadingClasses: false
         })
       })
+  }
+
+  renderTasks () {
+    if (this.state.loadingClasses) {
+      return <SkLoader />
+    } else {
+      return (
+        <SiTasksList maxDays={7} classes={this.state.classes} emptyMessage={"No to-do's yet."} />
+      )
+    }
   }
 
   renderClasses () {
@@ -66,6 +77,13 @@ class StudentDetail extends React.Component {
           <div className='si-student-detail-cell teams'>
             <h2>Intensity Score:</h2>
             {this.state.loadingClasses ? <SkLoader /> : <StudentInsights user={user} classes={this.state.classes} />}
+          </div>
+          <div className='si-student-detail-cell tasks'>
+            <h2>To-Do&apos;s</h2>
+            {/* <div className='si-student-detail-cell-subtitle'>
+              Next 7 days
+            </div> */}
+            {this.renderTasks()}
           </div>
           <div className='si-student-detail-cell classes'>
             <h2>Classes</h2>

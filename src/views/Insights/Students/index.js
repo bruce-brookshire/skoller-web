@@ -5,7 +5,7 @@ import Avatar from '../components/Avatar'
 import WatchToggle from '../components/WatchToggle'
 import Table from '../components/Table'
 import TeamsCell from '../components/TeamsCell'
-import CopyCell from '../components/CopyCell'
+// import CopyCell from '../components/CopyCell'
 import GentleModal from '../components/GentleModal'
 import SkSelect from '../../components/SkSelect'
 import { Link } from 'react-router-dom'
@@ -175,7 +175,7 @@ class Students extends React.Component {
         this.renderHeaderItem('Student-Athlete', 2, 1),
         this.renderHeaderItem('My Watchlist', 2, 1),
         this.renderHeaderItem('Teams', 2, 1),
-        this.renderHeaderItem('Phone (click to copy)', 2, 1),
+        // this.renderHeaderItem('Phone (click to copy)', 2, 1),
         this.renderHeaderItem(this.renderTimeframe(), 1, 3)
       ],
       [
@@ -192,7 +192,7 @@ class Students extends React.Component {
         this.renderStudentAthleteCell(d),
         <WatchToggle rootStore={this.props.rootStore} showConfirm={true} user={d} key={d.id} />,
         <TeamsCell key={d.id} user={d} org={this.props.rootStore.insightsStore.org} onChange={() => this.props.rootStore.insightsStore.updateData(['students', 'groups'])} />,
-        <CopyCell isPhone={true} text={d.student.phone} key={d.id} />,
+        // <CopyCell isPhone={true} text={d.student.phone} key={d.id} />,
         <div key={d.id}>{getAssignmentCountInNextNDays(d.assignments, this.state.timeframe)}</div>,
         <div key={d.id}>{getAssignmentWeightsInNextNDays(d.assignments, this.state.timeframe)}</div>,
         <div key={d.id}>{d.intensity[intensityString]}</div>
