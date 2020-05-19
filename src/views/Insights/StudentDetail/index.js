@@ -38,11 +38,13 @@ class StudentDetail extends React.Component {
   }
 
   renderTasks () {
+    let user = this.props.rootStore.insightsStore.students.find(s => s.id === parseInt(this.props.match.params.orgStudentId))
+
     if (this.state.loadingClasses) {
       return <SkLoader />
     } else {
       return (
-        <SiTasksList maxDays={7} classes={this.state.classes} emptyMessage={"No to-do's yet."} />
+        <SiTasksList user={user} maxDays={7} maxTasks={3} classes={this.state.classes} emptyMessage={"No to-do's yet."} />
       )
     }
   }

@@ -16,7 +16,8 @@ export default class SiTasksList extends Component {
     classes: PropTypes.array,
     cl: PropTypes.object,
     maxDays: PropTypes.number,
-    maxTasks: PropTypes.number
+    maxTasks: PropTypes.number,
+    user: PropTypes.object
   }
 
   getAllTasks () {
@@ -43,19 +44,42 @@ export default class SiTasksList extends Component {
   getTaskDisplayCount () {
     let i = 0
     this.state.assignments.forEach(task => {
-      if (this.taskValidity(task)) {
+      if (this.taskValidity(task, false)) {
         i += 1
       }
     })
     return i
   }
 
+  formatDueDate (dd) {
+    let today = moment(0, 'HH')
+    let dueDate = moment.utc(dd)
+    let daysTillDue = dueDate.diff(today, 'days')
+    if (moment(today).format('MMDDYYYY') === moment(dueDate).format('MMDDYYYY')) {
+      return 'today'
+    } else if (daysTillDue === 1) {
+      return 'tomorrow'
+    } else {
+      if (today.isAfter(dueDate)) {
+        return moment(dueDate).fromNow()
+      } else {
+        return daysTillDue >= 7 ? 'in ' + dueDate.from(today, 'days') : 'on ' + moment.weekdays((daysTillDue + today.weekday()) % 7)
+      }
+    }
+  }
+
   render () {
     let tasks = this.state.assignments
+    let taskDisplayCount = this.getTaskDisplayCount()
     let i = 0
+
     return (
       <div className='si-tasks-list'>
-        <div className='si-tasks-list-detail'>sah</div>
+        <div className='si-tasks-list-detail'>
+          <div>
+            {this.props.user.student.name_first} has <b>{taskDisplayCount} assignment{(taskDisplayCount > 1 || taskDisplayCount === 0) ? 's' : ''}</b> due in the next 7 days.
+          </div>
+        </div>
         <div className='si-tasks-list-tasks'>
           {tasks.map(t => {
             if (this.taskValidity(t, i)) {
@@ -69,13 +93,14 @@ export default class SiTasksList extends Component {
                     <div className='si-task-weight'>{(Math.round(t.weight * 1000) / 10) + '% of grade'}</div>
                   </div>
                   <div className='si-tasks-list-task-row'>
-                    <div className='si-task-due'>{moment(t.due).fromNow()}</div>
+                    <div className='si-task-due'>Due {this.formatDueDate(t.due)}</div>
                     <div className='si-task-class'>{this.props.classes.find(cl => cl.id === t.class_id).name}</div>
                   </div>
                 </div>
               )
             }
           })}
+          {!this.state.seeMore && <div className='si-tasks-see-more' onClick={() => this.setState({seeMore: true})}>See all {this.getTaskDisplayCount()} to-do&apos;s in the next 7 days</div>}
         </div>
       </div>
     )
