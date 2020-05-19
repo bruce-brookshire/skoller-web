@@ -1,7 +1,7 @@
 .si-smart-tracker {
   box-sizing: border-box;
   min-width: 380px;
-  @include skoller-cell;
+  @include si-cell;
   position: relative;
 
   @media only screen and (max-width: $sk-mobile-break-point) {
@@ -62,10 +62,13 @@
         font-size: 14px;
         padding: 9px 8px;
         transition: box-shadow 0.1s ease-in-out;
+
+        // dark mode variables
+        color: white;
   
         &:focus {
           outline: none;
-          background-color: white;
+          // background-color: white;
           box-shadow: 0 6px 10px rgba(0,0,0,0.08);
         }
       }

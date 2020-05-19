@@ -4,9 +4,10 @@
   min-height: calc(100vh - 64px);
   background-color: #fafafa;
 
+  // dark mode variables
+  @include si-table-page;
+
   .si-groups-header {
-    // @include skoller-cell;
-    // padding: 1rem;
     margin: 0 1rem 1rem 1rem;
     display: flex;
     flex-flow: row wrap;

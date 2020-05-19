@@ -10,6 +10,16 @@
     border-radius: 3px;
     box-shadow: 0px 4px 12px rgba(0,0,0,0.04);
     padding: 0.5rem;
+
+    // dark mode variables
+    background-color: #4a4a4a;
+    input {
+      background-color: rgba(0,0,0,0);
+      color: white;
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.50);
+      }
+    }
   
     .add-team-search {
       width: 100%;

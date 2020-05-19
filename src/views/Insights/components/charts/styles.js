@@ -3,14 +3,20 @@ export function getStyles (c) {
     c = c.toLowerCase().replace(/.$/, '').replace(/.$/, '')
   }
 
-  const GRAY_COLOR = '#4a4a4a'
-  const GRAY_COLOR_75 = GRAY_COLOR + '75'
-  const GRAY_COLOR_50 = GRAY_COLOR + '50'
-  const GRAY_COLOR_25 = GRAY_COLOR + '25'
+  // const GRAY_COLOR = '#4a4a4a'
+  // const GRAY_COLOR_75 = GRAY_COLOR + '75'
+  // const GRAY_COLOR_50 = GRAY_COLOR + '50'
+  // const GRAY_COLOR_25 = GRAY_COLOR + '25'
   const COLOR = c || '#57B9E4'
   const COLOR_75 = COLOR + '75'
   const COLOR_50 = COLOR + '50'
   const COLOR_25 = COLOR + '25'
+
+  // dark mode variables
+  const GRAY_COLOR = '#ffffff'
+  const GRAY_COLOR_75 = GRAY_COLOR + '75'
+  const GRAY_COLOR_50 = GRAY_COLOR + '50'
+  const GRAY_COLOR_25 = GRAY_COLOR + '25'
 
   const labelFontSize = '18px'
 
@@ -189,7 +195,8 @@ export function getStyles (c) {
         data: { stroke: GRAY_COLOR_50, strokeWidth: 5, fill: GRAY_COLOR },
         labels: {
           fontFamily: '"Calibre", sans-serif',
-          fontWeight: 600
+          fontWeight: 600,
+          fill: GRAY_COLOR
         }
       }
     },

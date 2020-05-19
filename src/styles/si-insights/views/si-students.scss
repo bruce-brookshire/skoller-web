@@ -4,9 +4,10 @@
   min-height: calc(100vh - 64px);
   background-color: #fafafa;
 
+  // dark mode variables
+  @include si-table-page;
+
   .si-students-header {
-    // @include skoller-cell;
-    // padding: 1rem;
     margin: 0 1rem 1rem 1rem;
   }
 
@@ -21,17 +22,22 @@
         align-items: center;
 
         .si-select {
+          @include si-select;
           flex-grow: 1;
 
           .sk-select {
             background-color: #ffffff;
 
+            // dark mode variables
+            background-color: #ffffff15;
+
             &:hover {
               background-color: rgba(255, 255, 255, 0.75);
+
+              // dark mode variables
+              background-color: #ffffff25;
             }
           }
-
-          @include si-select;
         }
       }
       
