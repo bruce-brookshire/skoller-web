@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { inject, observer } from 'mobx-react'
 import SiAssignmentsChart from '../components/charts/SiAssignmentsChart'
-import { getAssignmentCountInNextNDays, getAssignmentWeightsInNextNDays, getIntensityScore } from '../utils'
+import { getAssignmentCountInNextNDays, getAssignmentWeightsInNextNDays } from '../utils'
 import SiWeightsChart from '../components/charts/SiWeightsChart'
 
 @inject('rootStore') @observer
@@ -35,8 +35,9 @@ class StudentInsights extends React.Component {
             </div>
           </div>
           <div className='si-student-insights-detail'>
-            {this.state.mode === 'Assignments' && <div>{this.props.user.student.name_first} has <b>{getAssignmentCountInNextNDays(assignments, 7)} assignments</b> due in the next 7 days</div>}
-            {this.state.mode === 'Weights' && <div><b>{getAssignmentWeightsInNextNDays(assignments, 7)}% of {this.props.user.student.name_first}&apos;s grade</b> will be determined in the next 7 days</div>}
+            <div><b>{getAssignmentWeightsInNextNDays(assignments, 7)}% of {this.props.user.student.name_first}&apos;s grade</b> will be determined in the next 7 days</div>
+            {/* {this.state.mode === 'Assignments' && <div>{this.props.user.student.name_first} has <b>{getAssignmentCountInNextNDays(assignments, 7)} assignments</b> due in the next 7 days</div>}
+            {this.state.mode === 'Weights' && <div><b>{getAssignmentWeightsInNextNDays(assignments, 7)}% of {this.props.user.student.name_first}&apos;s grade</b> will be determined in the next 7 days</div>} */}
           </div>
         </div>
       </div>

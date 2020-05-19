@@ -605,7 +605,9 @@ class FindAClass extends React.Component {
     let meetStartTime = ''
     let hour = this.state.meetTimeHour
     if (!this.state.isAm) {
-      hour = (parseInt(this.state.meetTimeHour) + 12).toString()
+      if (parseInt(this.state.meetTimeHour) !== 12) {
+        hour = (parseInt(this.state.meetTimeHour) + 12).toString()
+      }
     }
     if (parseInt(hour) < 10) {
       hour = '0' + hour.toString()
