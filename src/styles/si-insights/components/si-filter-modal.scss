@@ -42,10 +42,10 @@
         background-color: rgba(0,0,0,0.05);
       }
 
-      // .si-filter-modal-option {
-      //   @include sk-autocomplete-option;
-      //   border-bottom: none;
-      // }
+      .si-filter-modal-option {
+        @include sk-autocomplete-option;
+        border-bottom: none;
+      }
     }
   }
 }

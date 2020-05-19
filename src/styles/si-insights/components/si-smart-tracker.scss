@@ -24,9 +24,12 @@
     justify-content: flex-end;
     align-items: center;
 
-    .si-smart-tracker-timeframe-option {
-      @include si-autocomplete-option;
+    .si-select {
+      @include si-select;
     }
+    // .si-smart-tracker-timeframe-option {
+    //   @include si-autocomplete-option;
+    // }
   }
 
   .si-select {

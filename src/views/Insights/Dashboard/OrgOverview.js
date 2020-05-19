@@ -1,7 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
+import { inject, observer } from 'mobx-react'
 
+@inject('rootStore') @observer
 class OrgOverview extends React.Component {
   render () {
     return (
@@ -11,14 +13,17 @@ class OrgOverview extends React.Component {
           <Link to='/insights/students' className='si-org-overview-category'>
             <i className='fas fa-user' />
             <h2>Students</h2>
+            <div className='si-org-overview-subtitle'>{this.props.rootStore.insightsStore.students.length}</div>
           </Link>
           <Link to='/insights/groups' className='si-org-overview-category'>
             <i className='fas fa-users' />
             <h2>Teams</h2>
+            <div className='si-org-overview-subtitle'>{this.props.rootStore.insightsStore.groups.length}</div>
           </Link>
           <Link to='/insights/organization' className='si-org-overview-category'>
             <i className='fas fa-eye' />
             <h2>Viewers</h2>
+            <div className='si-org-overview-subtitle'>{this.props.rootStore.insightsStore.groupOwners.length}</div>
           </Link>
         </div>
       </div>

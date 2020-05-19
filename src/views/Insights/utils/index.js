@@ -119,5 +119,8 @@ export function getIntensityScore (assignments, view = 'w') {
 
   let intensityScore = Math.round((((assignmentCountPercentile / 100 + cumulativeWeightPercentile / 100) / 2) ** 0.5) * 100) / 10
 
+  if (isNaN(intensityScore)) {
+    intensityScore = 0
+  }
   return intensityScore
 }

@@ -119,7 +119,7 @@ class SmartTracker extends React.Component {
             return (
               <div
                 key={timeframeOptions.indexOf(o)}
-                className='si-smart-tracker-timeframe-option'
+                className='si-smart-tracker-timeframe-option si-select-option'
                 onClick={() => { this.props.rootStore.insightsStore.interfaceSettings.dashboard.timeframe = o }}
               >{o}</div>
             )
