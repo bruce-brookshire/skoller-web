@@ -12,7 +12,6 @@ class App extends React.Component {
   }
 
   renderBackgroundColor () {
-    // console.log(this.props.location.pathname.startsWith('/insights'))
     let body = document.getElementById('body')
     if (this.props.rootStore.navStore.jobsMode || this.props.location.pathname.startsWith('/insights')) {
       body.style.backgroundColor = '#4a4a4a'

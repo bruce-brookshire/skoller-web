@@ -10,53 +10,35 @@ import { toTitleCase } from '../utils'
 import StudentInsights from './StudentInsights'
 import SiClassList from './SiClassList'
 import SiTasksList from './SiTasksList'
+import LoadingIndicator from '../components/LoadingIndicator'
 
 @inject('rootStore') @observer
 class StudentDetail extends React.Component {
   constructor (props) {
     super(props)
+    let user = this.props.rootStore.insightsStore.students.find(s => s.id === parseInt(this.props.match.params.orgStudentId))
+
     this.state = {
-      loadingClasses: true,
-      classes: []
+      loadingClasses: false,
+      classes: user.classes
     }
 
     this.props.rootStore.navStore.setActivePage('insights/students')
-
-    this.getStudentClasses()
-  }
-
-  getStudentClasses () {
-    let user = this.props.rootStore.insightsStore.students.find(s => s.id === parseInt(this.props.match.params.orgStudentId))
-
-    actions.classes.getStudentClassesById(user.student_id)
-      .then(r => {
-        this.setState({
-          classes: r,
-          loadingClasses: false
-        })
-      })
+    console.log(user.classes)
   }
 
   renderTasks () {
     let user = this.props.rootStore.insightsStore.students.find(s => s.id === parseInt(this.props.match.params.orgStudentId))
 
-    if (this.state.loadingClasses) {
-      return <SkLoader />
-    } else {
-      return (
-        <SiTasksList user={user} maxDays={7} maxTasks={3} classes={this.state.classes} emptyMessage={"No to-do's yet."} />
-      )
-    }
+    return (
+      <SiTasksList user={user} maxDays={7} maxTasks={3} classes={this.state.classes} emptyMessage={"No to-do's yet."} />
+    )
   }
 
   renderClasses () {
-    if (this.state.loadingClasses) {
-      return <SkLoader />
-    } else {
-      return (
-        <SiClassList classes={this.state.classes} emptyMessage={'No classes yet.'} />
-      )
-    }
+    return (
+      <SiClassList classes={this.state.classes} emptyMessage={'No classes yet.'} />
+    )
   }
 
   render () {
@@ -72,13 +54,13 @@ class StudentDetail extends React.Component {
               <StudentAthleteCard absoluteToggle={true} noLink={true} noTeams={true} user={user} rootStore={this.props.rootStore} />
             </div>
             <div className='si-student-detail-cell teams'>
-              <h2>{title}</h2>
-              <TeamsCell user={user} org={insightsStore.org} onChange={() => insightsStore.updateData()} />
+              <h2>{title}<LoadingIndicator /></h2>
+              <TeamsCell user={user} org={insightsStore.org} onChange={() => insightsStore.updateData(['students'])} />
             </div>
           </div>
           <div className='si-student-detail-cell teams'>
             <h2>Intensity Score:</h2>
-            {this.state.loadingClasses ? <SkLoader /> : <StudentInsights user={user} classes={this.state.classes} />}
+            <StudentInsights user={user} classes={this.state.classes} />
           </div>
           <div className='si-student-detail-cell tasks'>
             <h2>To-Do&apos;s</h2>

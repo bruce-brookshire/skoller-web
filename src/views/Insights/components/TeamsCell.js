@@ -63,7 +63,7 @@ class TeamsCell extends React.Component {
     } else {
       actions.insights.getStudentsByGroupId(this.props.org.id, team.id)
         .then(r => {
-          actions.insights.removeStudentFromGroup(this.props.org.id, team.id, r.find(s => s.org_student_id === this.props.user.orgStudentId).id)
+          actions.insights.removeStudentFromGroup(this.props.org.id, team.id, r.find(s => s.org_student_id === this.props.user.id).id)
             .then(() => {
               this.props.onChange && this.props.onChange()
               this.setState({add: false, input: ''})
@@ -83,7 +83,7 @@ class TeamsCell extends React.Component {
           this.setState({error: 'Error tagging user to org. Try again later.'})
         })
     } else {
-      actions.insights.addStudentToGroup(this.props.org.id, id, this.props.user.orgStudentId)
+      actions.insights.addStudentToGroup(this.props.org.id, id, this.props.user.id)
         .then(() => {
           this.props.onChange && this.props.onChange()
           this.setState({add: false, input: ''})

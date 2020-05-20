@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import {CSSTransition} from 'react-transition-group'
 import actions from '../../../actions'
@@ -13,7 +13,7 @@ class WatchToggle extends React.Component {
   toggleWatching = async () => {
     let watching = this.props.rootStore.insightsStore.isWatching(this.props.user)
     if (watching) {
-      let watchlistId = this.props.rootStore.insightsStore.watchlist.find(s => s.org_student_id === this.props.user.orgStudentId).id
+      let watchlistId = this.props.rootStore.insightsStore.watchlist.find(s => s.org_student_id === this.props.user.id).id
       await actions.insights.removeStudentFromOrgOwnerWatchlist(this.props.user.organization_id, this.props.rootStore.userStore.user.org_owners[0].id, watchlistId)
     } else {
       await actions.insights.addStudentToOrgOwnerWatchlist(this.props.user.organization_id, this.props.rootStore.userStore.user.org_owners[0].id, this.props.user.id)

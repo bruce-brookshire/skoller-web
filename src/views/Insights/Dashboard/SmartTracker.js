@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import SmartTrackerIcon from '../../../assets/sk-icons/insights/SmartTrackerIcon'
-import Table from '../components/Table'
 import StudentAthleteCard from '../components/StudentAthleteCard'
 import SkSelect from '../../components/SkSelect'
 import { getAssignmentCountInNextNDays, getAssignmentWeightsInNextNDays, toTitleCase } from '../utils'
@@ -27,10 +26,10 @@ class SmartTracker extends React.Component {
       case 'Assignments':
         value = getAssignmentCountInNextNDays(d.assignments, days)
         break
-      case 'Weights':
+      case 'Grade Impact':
         value = getAssignmentWeightsInNextNDays(d.assignments, days) + '%'
         break
-      case 'Intensity':
+      case 'Personal Intensity':
         value = d.intensity[intensityString]
         break
     }
@@ -53,7 +52,7 @@ class SmartTracker extends React.Component {
           }
         })
 
-      case 'Weights':
+      case 'Grade Impact':
         return students.sort((a, b) => {
           if (getAssignmentWeightsInNextNDays(a.assignments, days) < getAssignmentWeightsInNextNDays(b.assignments, days)) {
             return 1
@@ -62,7 +61,7 @@ class SmartTracker extends React.Component {
           }
         })
 
-      case 'Intensity':
+      case 'Personal Intensity':
         let intensityString = days === 7 ? 'sevenDay' : 'thirtyDay'
         return students.sort((a, b) => {
           if (a.intensity[intensityString] < b.intensity[intensityString]) {
@@ -91,7 +90,7 @@ class SmartTracker extends React.Component {
   }
 
   renderTable () {
-    const headers = [{children: 'Student-Athlete', colSpan: 1}, this.props.rootStore.insightsStore.interfaceSettings.dashboard.sort]
+    const headers = ['Student-Athlete', this.props.rootStore.insightsStore.interfaceSettings.dashboard.sort]
     const data = this.filterStudents(this.props.rootStore.insightsStore.students).map(d => {
       return [
         <StudentAthleteCard user={d} key={d.id} rootStore={this.props.rootStore} />,
@@ -100,13 +99,33 @@ class SmartTracker extends React.Component {
     })
 
     return (
-      <Table headers={headers} data={data} />
+      <table>
+        <thead>
+          <tr>
+            {headers.map(h => {
+              return (
+                <th key={headers.indexOf(h)}>{h}</th>
+              )
+            })}
+          </tr>
+        </thead>
+        <tbody>
+          {data.map(d => {
+            return (
+              <tr key={data.indexOf(d)}>
+                <td className='si-smart-tracker-sa'>{d[0]}</td>
+                <td>{d[1]}</td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
     )
   }
 
   render () {
     let timeframeOptions = ['Next 7 days', 'Next 30 days']
-    let filterOptions = ['Assignments', 'Weights', 'Intensity']
+    let filterOptions = ['Assignments', 'Grade Impact', 'Personal Intensity']
     let teamOptions = ['All'].concat(this.props.rootStore.insightsStore.org.groups.map(g => g.name))
     let title = toTitleCase(this.props.rootStore.insightsStore.org.groupsAlias) + 's'
     let interfaceSettings = this.props.rootStore.insightsStore.interfaceSettings
@@ -152,7 +171,7 @@ class SmartTracker extends React.Component {
           </div>
           <div className='si-smart-tracker-filter-group grow'>
             <p className='si-smart-tracker-filter-label'>Search: </p>
-            <input className='si-smart-tracker-search' value={this.state.searchQuery} onChange={(e) => this.setState({searchQuery: e.target.value})} />
+            <input placeholder='Search for a student' className='si-smart-tracker-search' value={this.state.searchQuery} onChange={(e) => this.setState({searchQuery: e.target.value})} />
           </div>
         </div>
         <div className='si-smart-tracker-content'>

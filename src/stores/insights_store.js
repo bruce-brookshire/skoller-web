@@ -17,7 +17,7 @@ class InsightsStore {
       },
       interfaceSettings: {
         dashboard: {
-          sort: 'Assignments',
+          sort: 'Grade Impact',
           timeframe: 'Next 7 days'
         }
       }
@@ -40,11 +40,34 @@ class InsightsStore {
       })
   }
 
-  async getStudents () {
+  async getStudents (filters) {
     await actions.insights.getAllStudentsInOrg(stores.userStore.user.org_owners[0].organization_id)
       .then(async r => {
-        let students = r.map(s => { return {...s, orgStudentId: s.id} })
-        await this.getStudentData(students)
+        let students = r.map(s => {
+          let student
+          const existingStudent = this.students.find(es => es.id === s.id)
+          if (existingStudent) {
+            student = {...existingStudent, ...s, orgStudentId: s.id}
+          } else {
+            student = {
+              ...s,
+              orgStudentId: s.id,
+              classes: [],
+              assignments: [],
+              intensity: {
+                sevenDay: null,
+                thirtyDay: null
+              }
+            }
+          }
+          return student
+        })
+
+        if (!filters || filters.includes('studentClasses')) {
+          await this.getStudentData(students)
+        } else {
+          this.students = students
+        }
       })
   }
 
@@ -82,8 +105,8 @@ class InsightsStore {
   }
 
   async getStudentData (students) {
-    for (const s of students) {
-      await actions.classes.getStudentClassesById(s.student_id)
+    await Promise.all(students.map(s => 
+      actions.insights.getStudentClasses(stores.userStore.user.org_owners[0].organization_id, s.id)
         .then(r => {
           let assignments = [].concat.apply([], r.map(cl => cl.assignments))
           s.classes = r
@@ -93,7 +116,19 @@ class InsightsStore {
             thirtyDay: getIntensityScore(assignments, 30)
           }
         })
-    }
+    ))
+    // for (const s of students) {
+    //   await actions.insights.getStudentClasses(stores.userStore.user.org_owners[0].organization_id, s.id)
+    //     .then(r => {
+    //       let assignments = [].concat.apply([], r.map(cl => cl.assignments))
+    //       s.classes = r
+    //       s.assignments = assignments
+    //       s.intensity = {
+    //         sevenDay: getIntensityScore(assignments, 7),
+    //         thirtyDay: getIntensityScore(assignments, 30)
+    //       }
+    //     })
+    // }
     this.students = students
   }
 
@@ -103,7 +138,7 @@ class InsightsStore {
     }
 
     if (!filters || filters.includes('students')) {
-      await this.getStudents()
+      await this.getStudents(filters)
     }
 
     if (!filters || filters.includes('groups')) {

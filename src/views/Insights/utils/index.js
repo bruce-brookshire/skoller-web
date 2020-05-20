@@ -42,7 +42,11 @@ export function getAssignmentWeightsInNextNDays (assignments, n = 7) {
     }
   })
 
-  return Math.round((assignmentsWeight / totalWeight) * 1000) / 10
+  let weights = Math.round((assignmentsWeight / totalWeight) * 1000) / 10
+  if (isNaN(weights)) {
+    weights = 0
+  }
+  return weights
 }
 
 const percentile = (arr, val) => {
