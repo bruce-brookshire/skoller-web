@@ -73,11 +73,11 @@
   }
 
   .added {
-    background-color: #93ffb2;
+    background-color: #4f8c60;
   }
 
   .removed {
-    background-color: #ffa79e;
+    background-color: #bd574c;
   }
 }
 
@@ -137,4 +137,9 @@
   &:hover {
     background-color: $sk-blue-25;
   }
+}
+
+// dark mode variables
+.sk-modal {
+  color: #4a4a4a;
 }

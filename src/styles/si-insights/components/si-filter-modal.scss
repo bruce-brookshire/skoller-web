@@ -27,14 +27,16 @@
       flex-grow: 1;
       width: 50%;
 
-      .sk-select {
-        border: none;
+      @include si-select;
+
+      // .sk-select {
+      //   border: none;
         
-        p {
-          color: inherit;
-          font-weight: 400;
-        }
-      }
+      //   p {
+      //     color: inherit;
+      //     font-weight: 400;
+      //   }
+      // }
 
       &:hover {
         background-color: rgba(0,0,0,0.05);

@@ -8,7 +8,7 @@
 
   .si-class-list-empty-message {
     padding: 1rem;
-    color: rgba(0,0,0,0.30);
+    // color: rgba(0,0,0,0.30);
     text-align: center;
     width: 100%;
   }
@@ -81,6 +81,9 @@
     cursor: pointer;
     background-color: $cn-color-hover-grey;
     box-shadow: none;
+
+    // dark mode variables
+    background-color: rgba(255, 255, 255, 0.1);
   }
 
   .empty {

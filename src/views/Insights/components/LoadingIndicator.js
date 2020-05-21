@@ -23,7 +23,7 @@ export default class LoadingIndicator extends Component {
           width: '32px',
           height: '32px',
           padding: '4px',
-          margin: '-4px 1rem -4px 1rem'
+          margin: '-8px 1rem -8px 1rem'
         }}>
           <SkCircleLoader />
         </div>

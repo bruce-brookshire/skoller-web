@@ -84,7 +84,7 @@ export default class SiTasksList extends Component {
           {tasks.map(t => {
             if (this.taskValidity(t, i)) {
               i += 1
-              let color = this.props.classes.find(cl => cl.id === t.class_id).getColor()
+              let color = '#' + this.props.classes.find(cl => cl.id === t.class_id).color
 
               return (
                 <div key={tasks.indexOf(t)} className='si-tasks-list-task'>
@@ -100,7 +100,11 @@ export default class SiTasksList extends Component {
               )
             }
           })}
-          {!this.state.seeMore && <div className='si-tasks-see-more' onClick={() => this.setState({seeMore: true})}>See all {this.getTaskDisplayCount()} to-do&apos;s in the next 7 days</div>}
+          {(
+            !this.state.seeMore ||
+            this.state.taskDisplayCount < this.props.maxTasks ||
+            !this.props.maxTasks
+          ) && <div className='si-tasks-see-more' onClick={() => this.setState({seeMore: true})}>See all {this.getTaskDisplayCount()} to-do&apos;s in the next 7 days</div>}
         </div>
       </div>
     )

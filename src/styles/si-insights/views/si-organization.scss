@@ -4,9 +4,10 @@
   min-height: calc(100vh - 64px);
   background-color: #fafafa;
 
+  // dark mode variables
+  @include si-table-page;
+
   .si-organization-header {
-    // @include skoller-cell;
-    // padding: 1rem;
     margin: 0 1rem 1rem 1rem;
   }
 
@@ -30,6 +31,9 @@
         border-bottom: none;
         padding: 12px 8px 6px 8px;
         float: left;
+
+        // dark mode variables
+        background-color: $si-ultra-dark;
       }
 
       .si-organization-table {

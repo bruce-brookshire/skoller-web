@@ -1,3 +1,6 @@
+// colors
+$si-ultra-dark: #3c3c3c;
+
 @mixin si-autocomplete-option {
   padding: 0.75rem 0 0.25rem 0;
   cursor: pointer;
@@ -9,7 +12,7 @@
 
 @mixin si-select {
   .sk-select {
-    border: 1px solid $sk-blue-50;
+    border: 1px solid $sk-blue;
     
     p {
       color: inherit;
@@ -26,5 +29,29 @@
   .si-select-option {
     @include si-autocomplete-option;
     font-weight: 400;
+
+    // dark mode variables
+    &:hover {
+      background-color: rgba(255,255,255,0.05);
+      border-radius: 5px;
+    }
   }
+
+  // dark mode variables
+  .sk-select-dropdown-container {
+    .sk-select-dropdown {
+      background-color: #4a4a4a;
+    }
+  }
+}
+
+@mixin si-cell {
+  @include skoller-cell;
+  background-color: $si-ultra-dark;
+  color: white;
+}
+
+@mixin si-table-page {
+  background-color: rgba(0,0,0,0);
+  color: white;
 }

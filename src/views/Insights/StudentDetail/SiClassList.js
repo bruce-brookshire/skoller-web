@@ -37,7 +37,8 @@ class SiClassList extends React.Component {
     return (
       <React.Fragment>
         {classes.map(cl => {
-          let color = cl.getColor()
+          // let color = cl.getColor()
+          let color = '#' + cl.color
           let name = cl.name
           if (name.length > 35) {
             name = name.slice(0, 35) + '...'

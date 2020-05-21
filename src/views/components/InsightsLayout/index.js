@@ -10,7 +10,7 @@ class InsightsLayout extends React.Component {
   constructor (props) {
     super(props)
 
-    this.props.rootStore.insightsStore.getData(['students', 'groups', 'org', 'orgOwnerWatchlist', 'groupOwners', 'orgOwners'])
+    this.props.rootStore.insightsStore.getData(['students', 'groups', 'org', 'orgOwnerWatchlist', 'groupOwners', 'orgOwners', 'studentClasses'])
   }
 
   gettingData () {

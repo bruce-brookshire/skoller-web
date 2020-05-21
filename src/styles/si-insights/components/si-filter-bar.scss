@@ -10,6 +10,9 @@
   flex-flow: row wrap;
   padding: 8px 8px;
 
+  // dark mode variables
+  background-color: $si-ultra-dark;
+
   .si-filter-bar-button {
     padding: 6px 6px 0px 6px;
     margin-right: 8px;
@@ -19,6 +22,9 @@
 
     &:hover {
       background-color: #fafafa;
+
+      // dark mode variables
+      background-color: #ffffff25;
     }
 
     i {
@@ -37,10 +43,16 @@
       font-size: 14px;
       padding: 0 8px;
       transition: box-shadow 0.1s ease-in-out;
+      
+      // dark mode variables
+      color: white;
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.50);
+      }
 
       &:focus {
         outline: none;
-        background-color: white;
+        // background-color: white;
         box-shadow: 0 6px 10px rgba(0,0,0,0.08);
       }
     }

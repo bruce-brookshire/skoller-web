@@ -42,7 +42,11 @@ export function getAssignmentWeightsInNextNDays (assignments, n = 7) {
     }
   })
 
-  return Math.round((assignmentsWeight / totalWeight) * 1000) / 10
+  let weights = Math.round((assignmentsWeight / totalWeight) * 1000) / 10
+  if (isNaN(weights)) {
+    weights = 0
+  }
+  return weights
 }
 
 const percentile = (arr, val) => {
@@ -119,5 +123,8 @@ export function getIntensityScore (assignments, view = 'w') {
 
   let intensityScore = Math.round((((assignmentCountPercentile / 100 + cumulativeWeightPercentile / 100) / 2) ** 0.5) * 100) / 10
 
+  if (isNaN(intensityScore)) {
+    intensityScore = 0
+  }
   return intensityScore
 }

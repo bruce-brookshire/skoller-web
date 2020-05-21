@@ -294,6 +294,17 @@ function getStudentsByGroupId (orgId, orgGroupId) {
     })
 }
 
+// Get a student's classes by org_student_id
+function getStudentClasses (orgId, orgStudentId) {
+  return get(`/api/v1/organizations/${orgId}/students/${orgStudentId}/classes`, '', '')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
 // Add a student to a group owner's watchlist
 function addStudentToGroupOwnerWatchlist (groupOwnerId, studentId) {
   console.log('addStudentToGroupOwnerWatchlist')
@@ -357,6 +368,7 @@ const exports = {
   */
 
   getStudentsByGroupId,
+  getStudentClasses,
   addStudentToGroupOwnerWatchlist,
   removeStudentFromGroupOwnerWatchlist
 }

@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
-import Table from '../components/Table'
 import StudentAthleteCard from '../components/StudentAthleteCard'
 import { getAssignmentCountInNextNDays, getAssignmentWeightsInNextNDays } from '../utils'
 
@@ -16,10 +15,10 @@ class Watchlist extends React.Component {
       case 'Assignments':
         value = getAssignmentCountInNextNDays(d.assignments, days)
         break
-      case 'Weights':
+      case 'Grade Impact':
         value = getAssignmentWeightsInNextNDays(d.assignments, days) + '%'
         break
-      case 'Intensity':
+      case 'Personal Intensity':
         value = d.intensity[intensityString]
         break
     }
@@ -40,7 +39,7 @@ class Watchlist extends React.Component {
           }
         })
 
-      case 'Weights':
+      case 'Grade Impact':
         return students.sort((a, b) => {
           if (getAssignmentWeightsInNextNDays(a.assignments, days) < getAssignmentWeightsInNextNDays(b.assignments, days)) {
             return 1
@@ -49,7 +48,7 @@ class Watchlist extends React.Component {
           }
         })
 
-      case 'Intensity':
+      case 'Personal Intensity':
         let intensityString = days === 7 ? 'sevenDay' : 'thirtyDay'
         return students.sort((a, b) => {
           if (a.intensity[intensityString] < b.intensity[intensityString]) {
@@ -66,8 +65,8 @@ class Watchlist extends React.Component {
       return this.props.rootStore.insightsStore.watchlist.map(u => u.org_student_id).includes(s.id)
     })
     students = this.sortStudents(students)
-    const headers = [{children: 'Student-Athlete', colSpan: 1}, this.props.rootStore.insightsStore.interfaceSettings.dashboard.sort]
-    const d = students.map(d => {
+    const headers = ['Student-Athlete', this.props.rootStore.insightsStore.interfaceSettings.dashboard.sort]
+    const data = students.map(d => {
       return [
         <StudentAthleteCard user={d} key={d.id} rootStore={this.props.rootStore} />,
         this.renderValue(d)
@@ -75,7 +74,27 @@ class Watchlist extends React.Component {
     })
 
     return (
-      <Table headers={headers} data={d} />
+      <table>
+        <thead>
+          <tr>
+            {headers.map(h => {
+              return (
+                <th key={headers.indexOf(h)}>{h}</th>
+              )
+            })}
+          </tr>
+        </thead>
+        <tbody>
+          {data.map(d => {
+            return (
+              <tr key={data.indexOf(d)}>
+                <td className='si-smart-tracker-sa'>{d[0]}</td>
+                <td>{d[1]}</td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
     )
   }
 

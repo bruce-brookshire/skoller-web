@@ -89,7 +89,7 @@ class Students extends React.Component {
       })
     }
 
-    if (this.state.sort.value === 'Intensity') {
+    if (this.state.sort.value === 'Personal Intensity') {
       let intensityString = days === 7 ? 'sevenDay' : 'thirtyDay'
       sortedStudents = students.sort((a, b) => {
         if (a.intensity[intensityString] < b.intensity[intensityString]) {
@@ -181,7 +181,7 @@ class Students extends React.Component {
       [
         this.renderHeaderItem('Assignments', 1, 1),
         this.renderHeaderItem('Weight', 1, 1),
-        this.renderHeaderItem('Intensity', 1, 1)
+        this.renderHeaderItem('Personal Intensity', 1, 1)
       ]
     ]
     let intensityString = this.state.timeframe === 7 ? 'sevenDay' : 'thirtyDay'
@@ -218,7 +218,7 @@ class Students extends React.Component {
   }
 
   renderSortModal () {
-    let valueOptions = ['Last name', 'First name', 'Watching', 'Assignments', 'Weights', 'Intensity']
+    let valueOptions = ['Last name', 'First name', 'Watching', 'Assignments', 'Weights', 'Personal Intensity']
     let typeOptions = ['Ascending', 'Descending']
     return (
       <GentleModal show={this.state.showSort} width={380} closeModal={() => {
@@ -231,12 +231,12 @@ class Students extends React.Component {
           <div className='si-filter-modal-select-row'>
             <SkSelect className='si-filter-modal-select' selection={this.state.sort.value} optionsMap={() => valueOptions.map(o => {
               return (
-                <div className='si-filter-modal-option' onClick={() => this.setState({sort: {...this.state.sort, value: o}})} key={valueOptions.indexOf(o)}>{o}</div>
+                <div className='si-select-option' onClick={() => this.setState({sort: {...this.state.sort, value: o}})} key={valueOptions.indexOf(o)}>{o}</div>
               )
             })} />
             <SkSelect className='si-filter-modal-select' selection={this.state.sort.type} optionsMap={() => typeOptions.map(o => {
               return (
-                <div className='si-filter-modal-option' onClick={() => this.setState({sort: {...this.state.sort, type: o}})} key={typeOptions.indexOf(o)}>{o}</div>
+                <div className='si-select-option' onClick={() => this.setState({sort: {...this.state.sort, type: o}})} key={typeOptions.indexOf(o)}>{o}</div>
               )
             })} />
           </div>
