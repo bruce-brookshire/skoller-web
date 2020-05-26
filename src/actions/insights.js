@@ -1,4 +1,4 @@
-import {get, post, put, del} from '../utilities/api'
+import {get, post, del} from '../utilities/api'
 import {showSnackbar} from '../utilities/snackbar'
 import stores from '../stores'
 const {userStore} = stores

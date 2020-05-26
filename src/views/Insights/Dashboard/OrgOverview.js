@@ -12,7 +12,7 @@ class OrgOverview extends React.Component {
         <div className='si-org-overview-content'>
           <Link to='/insights/students' className='si-org-overview-category'>
             <i className='fas fa-user' />
-            <h2>Students ({this.props.rootStore.insightsStore.students.length})</h2>
+            <h2>Athletes ({this.props.rootStore.insightsStore.students.length})</h2>
             {/* <div className='si-org-overview-subtitle'>{this.props.rootStore.insightsStore.students.length}</div> */}
           </Link>
           <Link to='/insights/groups' className='si-org-overview-category'>

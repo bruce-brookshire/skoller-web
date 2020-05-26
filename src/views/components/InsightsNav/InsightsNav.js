@@ -38,7 +38,7 @@ class InsightsNav extends React.Component {
       <div className="si-nav-wrapper">
         <div className="si-nav">
           <InsightsNavItem pageName="insights/dashboard" text="Dashboard" />
-          <InsightsNavItem pageName="insights/students" text="Students" />
+          <InsightsNavItem pageName="insights/students" text="Athletes" />
           <InsightsNavItem pageName="insights/groups" text={groupsTitle} />
           <InsightsNavItem pageName="insights/organization" text="Organization" />
           {this.renderLogout()}

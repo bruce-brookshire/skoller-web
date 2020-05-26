@@ -174,7 +174,7 @@ class Students extends React.Component {
     const headers = [
       [
         this.renderHeaderItem('📷', 2, 1),
-        this.renderHeaderItem('Student-Athlete', 2, 1),
+        this.renderHeaderItem('Athlete', 2, 1),
         this.renderHeaderItem('My Watchlist', 2, 1),
         this.renderHeaderItem('Teams', 2, 1),
         // this.renderHeaderItem('Phone (click to copy)', 2, 1),
@@ -289,8 +289,8 @@ class Students extends React.Component {
       <div className='si-students'>
         <div className='si-students-header'>
           <div className='si-students-header-left'>
-            <h1>Students<LoadingIndicator /></h1>
-            <p>Manage all of the students in {this.props.rootStore.insightsStore.org.name} from this page.</p>
+            <h1>Athletes<LoadingIndicator /></h1>
+            <p>Manage all of the athletes in {this.props.rootStore.insightsStore.org.name} from this page.</p>
           </div>
           <div className='si-students-header-right'>
             <div className='si-button'>

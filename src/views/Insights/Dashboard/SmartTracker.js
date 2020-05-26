@@ -90,7 +90,7 @@ class SmartTracker extends React.Component {
   }
 
   renderTable () {
-    const headers = ['Student-Athlete', this.props.rootStore.insightsStore.interfaceSettings.dashboard.sort]
+    const headers = ['Athlete', this.props.rootStore.insightsStore.interfaceSettings.dashboard.sort]
     const data = this.filterStudents(this.props.rootStore.insightsStore.students).map(d => {
       return [
         <StudentAthleteCard user={d} key={d.id} rootStore={this.props.rootStore} />,
