@@ -65,7 +65,7 @@ class Groups extends React.Component {
 
   renderOwnersCell (d) {
     return (
-      <OwnersCell group={d} org={this.props.rootStore.insightsStore.org} onChange={() => this.props.rootStore.insightsStore.updateData(['groupOwners'])} />
+      <OwnersCell group={d} org={this.props.rootStore.insightsStore.org} onChange={() => this.props.rootStore.insightsStore.updateData(['groupOwners', 'groups'])} />
     )
   }
 

@@ -1,6 +1,6 @@
 .si-tasks-list {
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: column wrap;
 
   .si-tasks-list-detail {
     flex-basis: 40%;
@@ -32,6 +32,9 @@
       flex-direction: column;
       border-bottom: 2px solid #fafafa;
       margin-bottom: 1rem;
+
+      // dark mode variables
+      border-bottom: 2px solid rgba(255,255,255,0.15);
 
       &:last-child {
         margin-bottom: 0;

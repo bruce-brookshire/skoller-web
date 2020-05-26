@@ -26,17 +26,21 @@ class CreateOrgGroupOwner extends React.Component {
         email: this.state.email,
         password: this.state.password
       }
-      actions.auth.registerUserAdmin(form).then((user) => {
-        actions.insights.createOrgGroupOwner(this.props.org.id, this.state.group.id, user.id)
-          .then(() => {
-            this.props.onSubmit && this.props.onSubmit()
+      actions.auth.registerUserAdmin(form)
+        .then((user) => {
+          actions.insights.createOrgMember(this.props.org.id, user.id).then(member => {
+            actions.insights.createOrgGroupOwner(this.props.org.id, this.state.group.id, member.id)
+              .then(() => {
+                this.props.onSubmit && this.props.onSubmit()
+              })
+              .catch(() => {
+                this.setState({error: 'Error tagging user to org. Try again later.'})
+              })
           })
-          .catch(() => {
-            this.setState({error: 'Error tagging user to org. Try again later.'})
-          })
-      }).catch(() => {
-        this.setState({error: 'Error creating user. Try again later.'})
-      })
+        })
+        .catch(() => {
+          this.setState({error: 'Error creating user. Try again later.'})
+        })
     }
   }
 

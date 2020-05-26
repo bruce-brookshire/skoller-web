@@ -32,6 +32,8 @@ class AccountInfo extends React.Component {
   constructor (props) {
     super(props)
     const {state} = this.props.location
+    console.log(this.props.location)
+    console.log('state.user', state.user)
 
     this.state = {
       classes: [],
@@ -74,7 +76,7 @@ class AccountInfo extends React.Component {
 
   getUser (user) {
     actions.auth.getUserById(user).then(user => {
-      this.setState({user})
+      this.setState({user, loading: false})
     }).catch(() => false)
   }
 

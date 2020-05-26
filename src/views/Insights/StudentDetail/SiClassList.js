@@ -1,8 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import sExclamation from '../../../assets/images/class_status/s-exclamation.png'
-import sInReview from '../../../assets/images/class_status/s-in-review.png'
-import uploadS from '../../../assets/images/class_status/upload-s.png'
 import {inject, observer} from 'mobx-react'
 import moment from 'moment'
 

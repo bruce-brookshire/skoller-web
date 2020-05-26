@@ -84,7 +84,7 @@ class Verification extends React.Component {
             <img src='/src/assets/images/letter2.png' />
             <div className='sk-verification-content-container'>
               <h1>Check your texts 🤓</h1>
-              <span>We sent a verification code to {formatPhone(phone)}. Enter it here!<br /> Didn’t get it? <a onClick={this.onResendVerification.bind(this)}>Resend link</a>.</span>
+              <span>We sent a verification code to {formatPhone(phone)}. Enter it here!<br /> Didn’t get it? <a className='link-style' onClick={() => this.onResendVerification()}>Resend link</a>.</span>
               <div className='sk-verification-code-container'>
                 <VerificationCode numberOfDigits={numberOfDigits} onChange={this.onChange.bind(this)} />
               </div>

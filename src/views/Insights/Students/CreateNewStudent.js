@@ -11,7 +11,9 @@ class CreateNewStudent extends React.Component {
 
   render () {
     return (
-      <div className='si-new-student'></div>
+      <div className='si-new-student'>
+        <h1>Invite a New Student</h1>
+      </div>
     )
   }
 }

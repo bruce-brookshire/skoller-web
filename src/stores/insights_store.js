@@ -24,24 +24,24 @@ class InsightsStore {
     })
   }
 
-  async getOrgOwners () {
-    await actions.insights.getAllOrgOwnersInOrg(stores.userStore.user.org_owners[0].organization_id)
+  async getOrgOwners (orgId) {
+    await actions.insights.getAllOrgOwnersInOrg(orgId)
       .then(r => {
         this.orgOwners = r
         this.org.orgOwners = r
       })
   }
 
-  async getOrgGroups () {
-    await actions.insights.getAllGroupsInOrg(stores.userStore.user.org_owners[0].organization_id)
+  async getOrgGroups (orgId) {
+    await actions.insights.getAllGroupsInOrg(orgId)
       .then(r => {
         this.groups = r
         this.org.groups = r
       })
   }
 
-  async getStudents (filters) {
-    await actions.insights.getAllStudentsInOrg(stores.userStore.user.org_owners[0].organization_id)
+  async getStudents (filters, orgId) {
+    await actions.insights.getAllStudentsInOrg(orgId)
       .then(async r => {
         let students = r.map(s => {
           let student
@@ -64,15 +64,15 @@ class InsightsStore {
         })
 
         if (!filters || filters.includes('studentClasses')) {
-          await this.getStudentData(students)
+          await this.getStudentData(students, orgId)
         } else {
           this.students = students
         }
       })
   }
 
-  async getGroupOwners () {
-    await actions.insights.getAllOrgGroupOwnersInOrg(stores.userStore.user.org_owners[0].organization_id)
+  async getGroupOwners (orgId) {
+    await actions.insights.getAllOrgGroupOwnersInOrg(orgId)
       .then(r => {
         let groupOwners = r
         let filteredGroupOwners = []
@@ -87,16 +87,28 @@ class InsightsStore {
       })
   }
 
-  async getOrg () {
-    await actions.insights.getOrgById(stores.userStore.user.org_owners[0].organization_id)
+  async getOrg (orgId) {
+    await actions.insights.getOrgById(orgId)
       .then(r => {
         let org = r
         this.org = {...this.org, ...org}
       })
   }
 
-  async getOrgOwnerWatchlist () {
-    await actions.insights.getOrgOwnerWatchlist(stores.userStore.user.org_owners[0].organization_id, stores.userStore.user.org_owners[0].id)
+  async getOrgOwnerWatchlist (orgId) {
+    console.log(stores.userStore.user.org_owners[0].id)
+    console.log(stores.userStore)
+    await actions.insights.getOrgOwnerWatchlist(orgId, stores.userStore.user.org_owners[0].id)
+      .then(r => {
+        console.log(r)
+        let students = r.map(s => { return {...s, orgStudentId: s.id} })
+        this.watchlist = students
+        this.org.watchlist = students
+      })
+  }
+
+  async getGroupOwnerWatchlist (orgId) {
+    await actions.insights.getOrgOwnerWatchlist(orgId)
       .then(r => {
         let students = r.map(s => { return {...s, orgStudentId: s.id} })
         this.watchlist = students
@@ -104,9 +116,9 @@ class InsightsStore {
       })
   }
 
-  async getStudentData (students) {
-    await Promise.all(students.map(s => 
-      actions.insights.getStudentClasses(stores.userStore.user.org_owners[0].organization_id, s.id)
+  async getStudentData (students, orgId) {
+    await Promise.all(students.map(s =>
+      actions.insights.getStudentClasses(orgId, s.id)
         .then(r => {
           let assignments = [].concat.apply([], r.map(cl => cl.assignments))
           s.classes = r
@@ -117,44 +129,35 @@ class InsightsStore {
           }
         })
     ))
-    // for (const s of students) {
-    //   await actions.insights.getStudentClasses(stores.userStore.user.org_owners[0].organization_id, s.id)
-    //     .then(r => {
-    //       let assignments = [].concat.apply([], r.map(cl => cl.assignments))
-    //       s.classes = r
-    //       s.assignments = assignments
-    //       s.intensity = {
-    //         sevenDay: getIntensityScore(assignments, 7),
-    //         thirtyDay: getIntensityScore(assignments, 30)
-    //       }
-    //     })
-    // }
     this.students = students
   }
 
   async getAllData (filters) {
+    const user = stores.userStore.user
+    const orgId = user.org_owners.length > 0 ? user.org_owners[0].organization_id : user.org_group_owners[0].organization_id
+
     if (!filters || filters.includes('orgOwners')) {
-      await this.getOrgOwners()
+      await this.getOrgOwners(orgId)
     }
 
     if (!filters || filters.includes('students')) {
-      await this.getStudents(filters)
+      await this.getStudents(filters, orgId)
     }
 
     if (!filters || filters.includes('groups')) {
-      await this.getOrgGroups()
+      await this.getOrgGroups(orgId)
     }
 
     if (!filters || filters.includes('org')) {
-      await this.getOrg()
+      await this.getOrg(orgId)
     }
 
     if (!filters || filters.includes('groupOwners')) {
-      await this.getGroupOwners()
+      await this.getGroupOwners(orgId)
     }
 
     if (!filters || filters.includes('orgOwnerWatchlist')) {
-      await this.getOrgOwnerWatchlist()
+      await this.getOrgOwnerWatchlist(orgId)
     }
   }
 

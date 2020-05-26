@@ -12,18 +12,18 @@ class OrgOverview extends React.Component {
         <div className='si-org-overview-content'>
           <Link to='/insights/students' className='si-org-overview-category'>
             <i className='fas fa-user' />
-            <h2>Students</h2>
-            <div className='si-org-overview-subtitle'>{this.props.rootStore.insightsStore.students.length}</div>
+            <h2>Students ({this.props.rootStore.insightsStore.students.length})</h2>
+            {/* <div className='si-org-overview-subtitle'>{this.props.rootStore.insightsStore.students.length}</div> */}
           </Link>
           <Link to='/insights/groups' className='si-org-overview-category'>
             <i className='fas fa-users' />
-            <h2>Teams</h2>
-            <div className='si-org-overview-subtitle'>{this.props.rootStore.insightsStore.groups.length}</div>
+            <h2>Teams ({this.props.rootStore.insightsStore.groups.length})</h2>
+            {/* <div className='si-org-overview-subtitle'>{this.props.rootStore.insightsStore.groups.length}</div> */}
           </Link>
           <Link to='/insights/organization' className='si-org-overview-category'>
             <i className='fas fa-eye' />
-            <h2>Viewers</h2>
-            <div className='si-org-overview-subtitle'>{this.props.rootStore.insightsStore.groupOwners.length}</div>
+            <h2>Viewers ({this.props.rootStore.insightsStore.groupOwners.length})</h2>
+            {/* <div className='si-org-overview-subtitle'>{this.props.rootStore.insightsStore.groupOwners.length}</div> */}
           </Link>
         </div>
       </div>

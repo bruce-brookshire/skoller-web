@@ -8,31 +8,47 @@
 
   .si-student-detail {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     width: 100%;
-    max-width: 640px;
-    align-items: center;
+    max-width: 1024px;
+    align-items: flex-start;
 
-    .si-student-detail-cell-row {
+    .si-student-detail-column {
       display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      width: 100%;
+      flex-direction: column;
 
-      .student {
-        margin-right: 1rem;
-        flex-basis: calc(50% - 1rem);
-        flex-grow: 1;
+      &:last-child {
+        margin-left: 1rem;
+      }
 
-        .sa-name {
-          font-size: 24px;
+      .si-student-detail-cell-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+  
+        .student {
+          margin-right: 1rem;
+          flex-basis: calc(50% - 1rem);
+          flex-grow: 1;
+  
+          .sa-name {
+            font-size: 24px;
+          }
+        }
+  
+        .teams {
+          flex-grow: 1;
+          flex-basis: 50%;
         }
       }
+    }
 
-      .teams {
-        flex-grow: 1;
-        flex-basis: 50%;
-      }
+    .lg {
+      flex-basis: 60%;
+    }
+    .sm {
+      flex-basis: 40%;
     }
 
     .si-student-detail-cell {

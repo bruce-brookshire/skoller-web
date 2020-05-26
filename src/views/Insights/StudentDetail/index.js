@@ -49,29 +49,33 @@ class StudentDetail extends React.Component {
       <div className='si-student-detail-container'>
         <NestedNav pageType='studentDetail' />
         <div className='si-student-detail'>
-          <div className='si-student-detail-cell-row'>
-            <div className='si-student-detail-cell student'>
-              <StudentAthleteCard absoluteToggle={true} noLink={true} noTeams={true} user={user} rootStore={this.props.rootStore} />
+          <div className='si-student-detail-column lg'>
+            <div className='si-student-detail-cell-row'>
+              <div className='si-student-detail-cell student'>
+                <StudentAthleteCard absoluteToggle={true} noLink={true} noTeams={true} user={user} rootStore={this.props.rootStore} />
+              </div>
+              <div className='si-student-detail-cell teams'>
+                <h2>{title}<LoadingIndicator /></h2>
+                <TeamsCell user={user} org={insightsStore.org} onChange={() => insightsStore.updateData(['students'])} />
+              </div>
             </div>
             <div className='si-student-detail-cell teams'>
-              <h2>{title}<LoadingIndicator /></h2>
-              <TeamsCell user={user} org={insightsStore.org} onChange={() => insightsStore.updateData(['students'])} />
+              <h2>Intensity Score:</h2>
+              <StudentInsights user={user} classes={this.state.classes} />
             </div>
           </div>
-          <div className='si-student-detail-cell teams'>
-            <h2>Intensity Score:</h2>
-            <StudentInsights user={user} classes={this.state.classes} />
-          </div>
-          <div className='si-student-detail-cell tasks'>
-            <h2>To-Do&apos;s</h2>
-            {/* <div className='si-student-detail-cell-subtitle'>
-              Next 7 days
-            </div> */}
-            {this.renderTasks()}
-          </div>
-          <div className='si-student-detail-cell classes'>
-            <h2>Classes</h2>
-            {this.renderClasses()}
+          <div className='si-student-detail-column sm'>
+            <div className='si-student-detail-cell tasks'>
+              <h2>To-Do&apos;s</h2>
+              {/* <div className='si-student-detail-cell-subtitle'>
+                Next 7 days
+              </div> */}
+              {this.renderTasks()}
+            </div>
+            <div className='si-student-detail-cell classes'>
+              <h2>Classes</h2>
+              {this.renderClasses()}
+            </div>
           </div>
         </div>
       </div>

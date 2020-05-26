@@ -177,7 +177,7 @@ function removeStudentFromGroup (orgId, orgGroupId, orgGroupStudentId) {
 
 // Get all org group owners within an org
 function getAllOrgGroupOwnersInOrg (orgId) {
-  return get(`/api/v1/organizations/${orgId}/org-group-owners`)
+  return get(`/api/v1/organizations/${orgId}/members`)
     .then(data => {
       return data
     })
@@ -305,6 +305,16 @@ function getStudentClasses (orgId, orgStudentId) {
     })
 }
 
+function getGroupOwnerWatchlist (orgId, orgGroupId, orgGroupOwnerId) {
+  return get(`/api/v1/organizations/${orgId}/org-groups/${orgGroupId}/owners/${orgGroupOwnerId}`, '', '')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
 // Add a student to a group owner's watchlist
 function addStudentToGroupOwnerWatchlist (groupOwnerId, studentId) {
   console.log('addStudentToGroupOwnerWatchlist')
@@ -369,6 +379,7 @@ const exports = {
 
   getStudentsByGroupId,
   getStudentClasses,
+  getGroupOwnerWatchlist,
   addStudentToGroupOwnerWatchlist,
   removeStudentFromGroupOwnerWatchlist
 }

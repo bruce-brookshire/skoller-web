@@ -11,6 +11,8 @@ import SkSelect from '../../components/SkSelect'
 import { Link } from 'react-router-dom'
 import { getAssignmentCountInNextNDays, getAssignmentWeightsInNextNDays } from '../utils'
 import LoadingIndicator from '../components/LoadingIndicator'
+import CreateNewStudent from './CreateNewStudent'
+import SkModal from '../../components/SkModal/SkModal'
 
 @inject('rootStore') @observer
 class Students extends React.Component {
@@ -272,12 +274,32 @@ class Students extends React.Component {
     )
   }
 
+  renderNewStudentModal () {
+    return (
+      this.state.showNewStudentModal
+        ? <SkModal closeModal={() => this.setState({showNewStudentModal: false})}>
+          <CreateNewStudent />
+        </SkModal>
+        : null
+    )
+  }
+
   renderContent () {
     return (
       <div className='si-students'>
         <div className='si-students-header'>
-          <h1>Students<LoadingIndicator /></h1>
-          <p>Manage all of the students in {this.props.rootStore.insightsStore.org.name} from this page.</p>
+          <div className='si-students-header-left'>
+            <h1>Students<LoadingIndicator /></h1>
+            <p>Manage all of the students in {this.props.rootStore.insightsStore.org.name} from this page.</p>
+          </div>
+          <div className='si-students-header-right'>
+            <div className='si-button'>
+              <p
+                onClick={() => this.setState({showNewStudentModal: true})}
+              >Invite a New Student</p>
+            </div>
+            {this.renderNewStudentModal()}
+          </div>
         </div>
         <div className='si-students-content'>
           {this.renderFilterBar()}

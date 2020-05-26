@@ -31,8 +31,7 @@ const Owner = (props) => {
       >
         {renderX()}
       </CSSTransition>
-      {/* {props.user.user.email} */}
-      {props.user.id}
+      {props.user.user.email}
     </div>
   )
 }
@@ -55,8 +54,8 @@ class OwnersCell extends React.Component {
     this.cellRef = React.createRef()
   }
 
-  popOwner = (user) => {
-    actions.insights.removeOrgGroupOwner(this.props.org.id, this.props.group.id, this.props.group.owners.find(o => o.user_id === user.user_id).id)
+  popOwner = (member) => {
+    actions.insights.removeOrgGroupOwner(this.props.org.id, this.props.group.id, this.props.group.owners.find(o => o.org_member_id === member.id).id)
       .then(() => {
         this.props.onChange && this.props.onChange()
       })
@@ -67,9 +66,8 @@ class OwnersCell extends React.Component {
     })
   }
 
-  addOwner = (user) => {
-    console.log(user)
-    actions.insights.createOrgGroupOwner(this.props.org.id, this.props.group.id, user.user_id)
+  addOwner = (member) => {
+    actions.insights.createOrgGroupOwner(this.props.org.id, this.props.group.id, member.id)
       .then(() => {
         this.props.onChange && this.props.onChange()
       })
@@ -87,13 +85,13 @@ class OwnersCell extends React.Component {
         top: this.cellRef.current.offsetHeight + 'px'
       }}>
         <input autoFocus placeholder={'Find an owner'} className='add-team-search' value={this.state.input} onChange={(e) => this.setState({input: e.target.value})} />
-        {/* <div className='team-options-container'>
+        <div className='team-options-container'>
           {this.props.rootStore.insightsStore.groupOwners.filter(u => (u.user.email).toLowerCase().includes(this.state.input.toLowerCase())).map(u => {
             return (
               <div onClick={() => this.addOwner(u)} className='team-option' key={u.id}>{u.user.email}</div>
             )
           })}
-        </div> */}
+        </div>
       </div>
     )
   }
@@ -109,9 +107,10 @@ class OwnersCell extends React.Component {
       >
         <div className='si-teams-cell' ref={this.cellRef}>
           {owners.map(u => {
+            let user = this.props.rootStore.insightsStore.groupOwners.find(go => go.id === u.org_member_id)
             return (
               <div key={Math.floor(Math.random() * Math.floor(10000))}>
-                <Owner user={u} popOwner={(team) => this.popOwner(team)} />
+                <Owner user={user} popOwner={(team) => this.popOwner(team)} />
               </div>
             )
           })}

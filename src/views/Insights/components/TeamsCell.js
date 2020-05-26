@@ -55,7 +55,7 @@ class TeamsCell extends React.Component {
 
   popTeam = (team) => {
     if (this.props.owner) {
-      actions.insights.removeOrgGroupOwner(this.props.org.id, team.id, team.owners.find(o => o.user_id === this.props.user.user_id).id)
+      actions.insights.removeOrgGroupOwner(this.props.org.id, team.id, team.owners.find(o => o.org_member_id === this.props.user.id).id)
         .then(() => {
           this.props.onChange && this.props.onChange()
           this.setState({add: false, input: ''})
@@ -74,7 +74,7 @@ class TeamsCell extends React.Component {
 
   addTeam = (id) => {
     if (this.props.owner) {
-      actions.insights.createOrgGroupOwner(this.props.org.id, id, this.props.user.org_member_id)
+      actions.insights.createOrgGroupOwner(this.props.org.id, id, this.props.user.id)
         .then(() => {
           this.props.onChange && this.props.onChange()
           this.setState({add: false, input: ''})
@@ -112,7 +112,7 @@ class TeamsCell extends React.Component {
   render () {
     let teams
     if (this.props.owner) {
-      teams = this.props.org.groups.filter(g => g.owners.map(os => os.org_member_id).includes(this.props.user.org_member_id))
+      teams = this.props.org.groups.filter(g => g.owners.map(os => os.org_member_id).includes(this.props.user.id))
     } else {
       teams = this.props.user.org_groups
     }
