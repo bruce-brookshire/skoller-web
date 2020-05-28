@@ -81,6 +81,17 @@ In addition to these, all group owner methods can also be performed by org owner
 
 */
 
+// Create insights user
+function createInsightsUser (email) {
+  return post(`/api/v1/insights/users`, {email: email}, '')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
 // Get org
 function getOrgById (orgId) {
   return get(`/api/v1/organizations/${orgId}`)
@@ -106,7 +117,9 @@ function getAllOrgOwnersInOrg (orgId) {
 // Create org owner
 function createOrgOwner (orgId, form) {
   return post(`/api/v1/organizations/${orgId}/owners`, form, '')
-    .then(data => {})
+    .then(data => {
+      return data
+    })
     .catch(error => {
       return Promise.reject(error)
     })
@@ -349,6 +362,7 @@ const exports = {
   // auth
   login,
   // owners
+  createInsightsUser,
   getOrgById,
   getAllOrgOwnersInOrg,
   createOrgOwner,

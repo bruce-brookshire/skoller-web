@@ -86,7 +86,7 @@ class Organization extends React.Component {
           <CreateOrgGroupOwner onSubmit={() => {
             this.setState({showNewOrgGroupOwnerModal: false})
             this.props.rootStore.insightsStore.updateData()
-          }} org={this.props.rootStore.insightsStore.org} />
+          }} org={this.props.rootStore.insightsStore.org} groupAlias={this.props.rootStore.insightsStore.org.groupsAlias} />
         </SkModal>}
       </Fragment>
     )
