@@ -80,6 +80,7 @@ class AdminLanding extends React.Component {
         <form className="form-login" onSubmit={this.onSubmit.bind(this)}>
           <div className='form-control'>
             <input
+              autoFocus
               label=''
               name='email'
               placeholder='Email'

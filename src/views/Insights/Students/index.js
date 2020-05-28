@@ -265,7 +265,7 @@ class Students extends React.Component {
         <div className='si-filter-bar-search'>
           <input
             className='si-filter-bar-search-input'
-            placeholder='Search for a student'
+            placeholder='Search for an athlete'
             onChange={(e) => this.setState({studentsQuery: e.target.value})}
             value={this.state.studentsQuery}
           />
