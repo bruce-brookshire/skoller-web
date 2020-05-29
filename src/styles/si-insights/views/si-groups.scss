@@ -2,9 +2,7 @@
   padding: 1rem 0 0 0 ;
   min-width: 900px;
   min-height: calc(100vh - 64px);
-  background-color: #fafafa;
-
-  // dark mode variables
+  // background-color: #fafafa;
   @include si-table-page;
 
   .si-groups-header {

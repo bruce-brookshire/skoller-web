@@ -79,7 +79,14 @@ class InsightsLanding extends React.Component {
         {/* <img alt="Skoller" className='logo' src='/src/assets/images/logo-wide-blue@1x.png' /> */}
         <h1>Welcome to <b>Skoller Insights</b></h1>
         <div className='si-landing-content'>
-          <div className='jumbo' />
+          <iframe
+            className='jumbo'
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/4qXVfl6cUe4"
+            frameBorder="0"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen />
           <div className='login'>
             <h2>Login</h2>
             <form className="form-login" onSubmit={this.onSubmit.bind(this)}>

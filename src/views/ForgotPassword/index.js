@@ -8,7 +8,7 @@ class ForgotPassword extends React.Component {
     super(props)
     this.state = {
       form: this.initializeFormData(),
-      insightsReset: false
+      insightsReset: this.props.location.state ? this.props.location.state.insightsReset : false
     }
   }
 
@@ -97,7 +97,8 @@ class ForgotPassword extends React.Component {
 }
 
 ForgotPassword.propTypes = {
-  history: PropTypes.object
+  history: PropTypes.object,
+  location: PropTypes.bool
 }
 
 export default withRouter(ForgotPassword)

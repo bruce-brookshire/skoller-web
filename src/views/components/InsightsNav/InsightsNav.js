@@ -41,6 +41,7 @@ class InsightsNav extends React.Component {
           <InsightsNavItem pageName="insights/students" text="Athletes" />
           <InsightsNavItem pageName="insights/groups" text={groupsTitle} />
           <InsightsNavItem pageName="insights/organization" text="Organization" />
+          <InsightsNavItem pageName="insights/settings" text="Settings" />
           {this.renderLogout()}
         </div>
       </div>

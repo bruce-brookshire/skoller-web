@@ -26,14 +26,12 @@
         width: 100%;
     
         .si-student-insights-switch-option {
-          background-color: rgba(0,0,0,0.05);
+          background-color: rgba(0,0,0,0.08);
+          border: 1px solid #fafafa;
           width: 128px;
           text-align: center;
           padding: 6px 4px 2px 4px;
           cursor: pointer;
-
-          // dark mode variables
-          background-color: rgba(255,255,255,0.15);
         }
     
         .left {
@@ -42,6 +40,7 @@
     
         .right {
           border-radius: 0 5px 5px 0;
+          margin-left: -1px;
         }
     
         .active {

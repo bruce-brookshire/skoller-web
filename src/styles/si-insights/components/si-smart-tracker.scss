@@ -64,8 +64,9 @@
         padding: 9px 8px;
         transition: box-shadow 0.1s ease-in-out;
 
-        // dark mode variables
-        color: white;
+        @include themed() {
+          color: t($font-color);
+        }
   
         &:focus {
           outline: none;

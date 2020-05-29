@@ -12,13 +12,11 @@ class InsightsLayout extends React.Component {
     let rootStore = this.props.rootStore
 
     const role = this.getRole(rootStore.userStore.user)
-    console.log({role})
     rootStore.insightsStore.org.role = role
     this.getData(role)
   }
 
   getRole (user) {
-    console.log(user)
     if (user.org_owners) {
       if (user.org_owners.length > 0) {
         return 'orgOwner'
@@ -54,7 +52,7 @@ class InsightsLayout extends React.Component {
 
   renderContent () {
     return (
-      <div className='si-layout' id='si-layout'>
+      <div className={'si-layout theme ' + (this.props.rootStore.insightsStore.darkMode ? 'theme--dark' : 'theme--default')} id='si-layout'>
         <InsightsTop />
         <InsightsNav />
         <main id='main'>

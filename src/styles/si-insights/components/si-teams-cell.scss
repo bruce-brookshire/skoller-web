@@ -10,7 +10,6 @@
   .team {
     display: flex;
     flex-flow: row nowrap;
-    background-color: white;
     border: 1px solid $sk-blue;
     border-radius: 3px;
     padding: 4px 4px 0px 4px;
@@ -19,8 +18,10 @@
     // height: 25px;
     cursor: pointer;
 
-    // dark mode variables
-    background-color: rgba(0,0,0,0);
+    // themed variables
+    @include themed() {
+      background-color: t($bg);
+    }
 
     &:hover {
       background-color: $sk-blue-25;
@@ -29,10 +30,7 @@
     .team-remove {
       margin-right: 4px;
       margin-top: 1px;
-      color: $sk-alert-red;
       font-size: 12px;
-
-      // dark mode variables
       color: rgb(255, 113, 113);
     }
   }
@@ -63,20 +61,21 @@
   .add-team-search-container {
     position: absolute;
     z-index: 1;
-    background-color: white;
     border: 1px solid $sk-blue-75;
     border-radius: 3px;
     box-shadow: 0px 4px 12px rgba(0,0,0,0.04);
     padding: 0.5rem;
 
-    // dark mode variables
-    background-color: #4a4a4a;
-    input {
-      background-color: rgba(0,0,0,0);
-      color: white;
-
-      &::placeholder {
-        color: rgba(255, 255, 255, 0.50);
+    // themed variables
+    @include themed() {
+      background-color: t($bg);
+      input {
+        background-color: t($bg);
+        color: t($font-color);
+  
+        &::placeholder {
+          color: t($input-p);
+        }
       }
     }
 

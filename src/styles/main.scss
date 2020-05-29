@@ -240,6 +240,7 @@ body {
   color: $cn-font-color;
   font-family: $cn-font-family;
   line-height: 1.2;
+  transition: background-color 300ms;
 
   h1 {
     a {

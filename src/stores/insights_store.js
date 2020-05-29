@@ -2,9 +2,12 @@ import { extendObservable, action } from 'mobx'
 import actions from '../actions'
 import stores from './index'
 import { getIntensityScore } from '../views/Insights/utils'
+import {Cookies} from 'react-cookie'
 
 class InsightsStore {
   constructor () {
+    this.cookie = new Cookies()
+
     extendObservable(this, {
       loading: false,
       loadingUpdate: false,
@@ -20,7 +23,8 @@ class InsightsStore {
           sort: 'Grade Impact',
           timeframe: 'Next 7 days'
         }
-      }
+      },
+      darkMode: this.cookie.get('skollerInsightsDarkMode') === 'true'
     })
   }
 
@@ -88,19 +92,18 @@ class InsightsStore {
   }
 
   async getOrg (orgId) {
-    await actions.insights.getOrgById(orgId)
-      .then(r => {
-        let org = r
-        this.org = {...this.org, ...org}
-      })
+    // REMOVE BEFORE PUSHING
+    this.org = {...this.org, name: 'Skoller University Athletics'}
+    // await actions.insights.getOrgById(orgId)
+    //   .then(r => {
+    //     let org = r
+    //     this.org = {...this.org, ...org}
+    //   })
   }
 
   async getOrgOwnerWatchlist (orgId) {
-    console.log(stores.userStore.user.org_owners[0].id)
-    console.log(stores.userStore)
     await actions.insights.getOrgOwnerWatchlist(orgId, stores.userStore.user.org_owners[0].id)
       .then(r => {
-        console.log(r)
         let students = r.map(s => { return {...s, orgStudentId: s.id} })
         this.watchlist = students
         this.org.watchlist = students
@@ -191,6 +194,11 @@ class InsightsStore {
   getDataError () {
     this.loading = false
     this.loadingUpdate = false
+  }
+
+  @action
+  getDarkModeCookie () {
+    this.darkMode = this.cookie.get('skollerInsightsDarkMode') === 'true'
   }
 }
 

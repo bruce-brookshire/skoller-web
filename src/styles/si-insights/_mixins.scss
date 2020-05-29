@@ -30,28 +30,39 @@ $si-ultra-dark: #3c3c3c;
     @include si-autocomplete-option;
     font-weight: 400;
 
-    // dark mode variables
+    // themed variables
     &:hover {
-      background-color: rgba(255,255,255,0.05);
-      border-radius: 5px;
+      @include themed() {
+        background: t($hover);
+        border-radius: 5px;
+      }
     }
   }
 
-  // dark mode variables
+  // themed variables
   .sk-select-dropdown-container {
     .sk-select-dropdown {
-      background-color: #4a4a4a;
+      @include themed() {
+        background: t($bg);
+      }
     }
   }
 }
 
 @mixin si-cell {
   @include skoller-cell;
-  background-color: $si-ultra-dark;
-  color: white;
+
+  @include themed() {
+    color: t($font-color);
+    background-color: t($bg-u);
+  }
+
+  transition: background-color 300ms, color 300ms;
 }
 
 @mixin si-table-page {
-  background-color: rgba(0,0,0,0);
-  color: white;
+  // themed variables
+  @include themed() {
+    color: t($font-color);
+  }
 }

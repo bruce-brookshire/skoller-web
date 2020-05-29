@@ -22,6 +22,8 @@ class NavItem extends React.Component {
       return <i className='fas fa-users' />
     } else if (this.props.pageName.includes('insights/organization')) {
       return <i className='fas fa-globe' />
+    } else if (this.props.pageName.includes('insights/settings')) {
+      return <i className='fas fa-cog' />
     } else {
       return null
     }

@@ -57,19 +57,20 @@ import Dashboard from './views/Insights/Dashboard'
 import Students from './views/Insights/Students'
 import Groups from './views/Insights/Groups'
 import Organization from './views/Insights/Organization'
+import InsightsLayout from './views/components/InsightsLayout'
+import StudentDetail from './views/Insights/StudentDetail'
+import Settings from './views/Insights/Settings'
 
 // student - skoller jobs
 import Jobs from './views/Student/Jobs'
 import Profile from './views/Student/Jobs/Profile'
 import JobsBrowse from './views/Student/Jobs/Browse'
+import JobDetail from './views/Student/Jobs/JobDetail'
 
 import actions from './actions'
 import stores from './stores'
-import JobDetail from './views/Student/Jobs/JobDetail'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
-import InsightsLayout from './views/components/InsightsLayout'
-import StudentDetail from './views/Insights/StudentDetail'
 
 const {userStore} = stores
 
@@ -85,12 +86,14 @@ class AuthSwitch extends React.Component {
     }
 
     userStore.setFetchingUser(true)
+
+    this.cookie = new Cookies()
   }
 
   async componentDidMount () {
     let path
     userStore.setFetchingUser(true)
-    userStore.authToken = cookie.get('skollerToken')
+    userStore.authToken = this.cookie.get('skollerToken')
     if (!userStore.user) {
       await actions.auth.getUserByToken()
         .then((user) => {
@@ -186,6 +189,7 @@ class InsightsContainer extends React.Component {
           <Route exact path='/insights/students/:orgStudentId' component={StudentDetail} />
           <Route exact path='/insights/groups' component={Groups} />
           <Route exact path='/insights/organization' component={Organization} />
+          <Route exact path='/insights/settings' component={Settings} />
         </InsightsLayout>
       </Switch>
     )

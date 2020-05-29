@@ -17,7 +17,7 @@ class AssignmentsTimeline extends React.Component {
   }
 
   getStyles () {
-    return getStyles(false)
+    return getStyles(false, this.props.rootStore.insightsStore.darkMode)
   }
 
   getAssignmentCountData () {

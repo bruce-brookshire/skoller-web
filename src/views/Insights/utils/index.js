@@ -75,7 +75,7 @@ export function getIntensityScore (assignments, view = 'w') {
 
     allDays.push(dayEntry)
 
-    day = moment(day).add(1, 'day')
+    day = moment(day).add(24, 'hours')
   }
 
   let assignmentCountPercentile, cumulativeWeightPercentile
