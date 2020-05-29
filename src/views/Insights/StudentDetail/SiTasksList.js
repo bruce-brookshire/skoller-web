@@ -77,7 +77,7 @@ export default class SiTasksList extends Component {
       <div className='si-tasks-list'>
         <div className='si-tasks-list-detail'>
           <div>
-            {this.props.user.student.name_first} has <b>{taskDisplayCount} assignment{(taskDisplayCount > 1 || taskDisplayCount === 0) ? 's' : ''}</b> due in the next 7 days.
+            {this.props.user.student.name_first} has <b>{taskDisplayCount} assignment{(taskDisplayCount > 1 || taskDisplayCount === 0) ? 's' : ''}</b> due in the next {this.props.maxDays} days.
           </div>
         </div>
         <div className='si-tasks-list-tasks'>
@@ -101,10 +101,10 @@ export default class SiTasksList extends Component {
             }
           })}
           {(
-            !this.state.seeMore ||
-            this.state.taskDisplayCount < this.props.maxTasks ||
-            !this.props.maxTasks
-          ) && <div className='si-tasks-see-more' onClick={() => this.setState({seeMore: true})}>See all {this.getTaskDisplayCount()} to-do&apos;s in the next 7 days</div>}
+            !this.state.seeMore &&
+            this.props.maxTasks &&
+            this.props.maxTasks < this.getTaskDisplayCount()
+          ) && <div className='si-tasks-see-more' onClick={() => this.setState({seeMore: true})}>See all {this.getTaskDisplayCount()} to-do&apos;s in the next {this.props.maxDays} days</div>}
         </div>
       </div>
     )

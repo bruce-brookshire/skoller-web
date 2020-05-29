@@ -39,16 +39,19 @@
         align-items: center;
 
         .si-select {
-          @include si-select;
           flex-grow: 1;
+          margin: 4px;
+          @include themed() {
+            .sk-select-selection {
+              color: t($font-color);
 
-          .sk-select {
-            @include themed() {
-              background-color: rgba(0,0,0,0);
-  
-              &:hover {
-                background-color: t($hover);
+              &::after {
+                border-color: t($font-color);
               }
+            }
+
+            .sk-select {
+              border-color: t($font-color);
             }
           }
         }

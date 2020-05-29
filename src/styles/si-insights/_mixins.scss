@@ -15,7 +15,6 @@ $si-ultra-dark: #3c3c3c;
     border: 1px solid $sk-blue;
     
     p {
-      color: inherit;
       font-weight: 400;
       padding-right: 28px;
     }
@@ -26,15 +25,19 @@ $si-ultra-dark: #3c3c3c;
     border-radius: 5px;
   }
 
-  .si-select-option {
-    @include si-autocomplete-option;
-    font-weight: 400;
-
-    // themed variables
-    &:hover {
-      @include themed() {
-        background: t($hover);
-        border-radius: 5px;
+  .sk-select-dropdown-container {
+    .sk-select-dropdown {
+      .si-select-option {
+        @include si-autocomplete-option;
+        font-weight: 400;
+    
+        // themed variables
+        &:hover {
+          @include themed() {
+            background: t($hover);
+            border-radius: 5px;
+          }
+        }
       }
     }
   }

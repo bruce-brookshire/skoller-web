@@ -93,12 +93,12 @@ class InsightsStore {
 
   async getOrg (orgId) {
     // REMOVE BEFORE PUSHING
-    this.org = {...this.org, name: 'Skoller University Athletics'}
-    // await actions.insights.getOrgById(orgId)
-    //   .then(r => {
-    //     let org = r
-    //     this.org = {...this.org, ...org}
-    //   })
+    // this.org = {...this.org, name: 'Skoller University Athletics'}
+    await actions.insights.getOrgById(orgId)
+      .then(r => {
+        let org = r
+        this.org = {...this.org, ...org}
+      })
   }
 
   async getOrgOwnerWatchlist (orgId) {

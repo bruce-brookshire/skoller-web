@@ -54,17 +54,17 @@ const percentile = (arr, val) => {
   return (100 * arr.reduce((acc, v) => acc + (v < val ? 1 : 0) + (v === val ? 0.5 : 0), 0)) / arr.length
 }
 
-export function getIntensityScore (assignments, view = 'w') {
-  const today = moment().startOf('day')
+export function getIntensityScore (assignments, nDays, startDay = moment()) {
+  let today = moment(startDay)
 
   let firstAssignment = Math.min.apply(Math, assignments.map(a => parseInt(moment(a.due).format('X'))))
   let lastAssignment = Math.max.apply(Math, assignments.map(a => parseInt(moment(a.due).format('X'))))
 
   let allDays = []
-  let day = moment(firstAssignment, 'X').startOf('day')
-  while (day.isBefore(moment(lastAssignment, 'X')) || day.isSame(moment(lastAssignment, 'X').startOf('day'))) {
+  let day = moment(firstAssignment, 'X')
+  while (day.isBefore(moment(lastAssignment, 'X')) || day.isSame(moment(lastAssignment, 'X'))) {
     let dayAssignments = assignments.filter(a => {
-      return day.isSame(moment(a.due).startOf('day'))
+      return day.isSame(moment(a.due))
     })
 
     let dayEntry = {
@@ -82,7 +82,7 @@ export function getIntensityScore (assignments, view = 'w') {
   let allPossiblePeriods = []
   allDays.forEach(d => {
     let period = []
-    for (let i = 0; i < (view + 1); i++) {
+    for (let i = 0; i < (nDays + 1); i++) {
       let day = allDays[allDays.indexOf(d) + i]
       if (day) {
         period.push(day)
@@ -95,18 +95,18 @@ export function getIntensityScore (assignments, view = 'w') {
       }
     }
 
-    const periodAssignmentCount = period.reduce((i, d) => i + d.assignmentCount, 0)
-    const periodCumWeights = period.reduce((i, d) => i + d.cumulativeWeights, 0)
+    let periodAssignmentCount = period.reduce((i, d) => i + d.assignmentCount, 0)
+    let periodCumWeights = period.reduce((i, d) => i + d.cumulativeWeights, 0)
 
     allPossiblePeriods.push({periodAssignmentCount, periodCumWeights})
   })
 
-  const allPossiblePeriodsCumulativeWeights = allPossiblePeriods.map(w => w.periodCumWeights)
-  const allPossiblePeriodsAssignmentCount = allPossiblePeriods.map(w => w.periodAssignmentCount)
+  let allPossiblePeriodsCumulativeWeights = allPossiblePeriods.map(w => w.periodCumWeights)
+  let allPossiblePeriodsAssignmentCount = allPossiblePeriods.map(w => w.periodAssignmentCount)
 
-  const periodAssignments = assignments.filter(a => {
-    let diff = moment(a.due).startOf('day').diff(today.startOf('day'), 'days')
-    return diff < view && diff > 0
+  let periodAssignments = assignments.filter(a => {
+    let diff = moment(a.due).diff(today, 'days')
+    return diff < nDays && diff > 0
   })
 
   assignmentCountPercentile = percentile(allPossiblePeriodsAssignmentCount, periodAssignments.length)

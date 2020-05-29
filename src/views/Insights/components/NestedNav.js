@@ -27,7 +27,7 @@ class NestedNav extends React.Component {
       let student = this.props.rootStore.insightsStore.students.find(s => s.id === parseInt(this.props.match.params.orgStudentId)).student
       pathArray = [
         {
-          name: 'Students',
+          name: 'Athletes',
           path: '/insights/students'
         },
         {

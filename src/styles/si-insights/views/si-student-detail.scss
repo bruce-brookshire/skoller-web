@@ -1,6 +1,6 @@
 .si-student-detail-container {
-  padding: 1rem;
-  width: 100%;
+  margin: 1rem 2rem;
+  width: calc(100% - 4rem);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -16,30 +16,85 @@
     .si-student-detail-column {
       display: flex;
       flex-direction: column;
+      min-width: 0;
 
       &:last-child {
-        margin-left: 1rem;
+        margin-left: 2rem;
       }
 
-      .si-student-detail-cell-row {
+      .student {
+        margin-right: 1rem;
+        flex-basis: calc(50% - 1rem);
+        flex-grow: 1;
         display: flex;
-        flex-direction: row;
+        flex-direction: row wrap;
         justify-content: space-between;
-        width: 100%;
-  
-        .student {
-          margin-right: 1rem;
-          flex-basis: calc(50% - 1rem);
-          flex-grow: 1;
-  
-          .sa-name {
-            font-size: 24px;
+        align-items: center;
+
+        .si-student-detail-sa {
+          display: flex;
+          flex-flow: row;
+          justify-content: flex-start;
+          align-items: center;
+
+          .si-student-detail-sa-info {
+            display: flex;
+            flex-flow: column nowrap;
+            justify-content: flex-start;
+            align-items: flex-start;
+            margin-left: 1rem;
+
+            .sa-name {
+              display: flex;
+              flex-direction: row;
+              justify-content: flex-start;
+              margin-top: 4px;
+              margin-bottom: -4px;
+              align-items: center;
+
+              .watch-toggle-container {
+                margin-left: 8px;
+              }
+            }
+            
+            .sa-teams {
+              display: flex;
+              flex-flow: row nowrap;
+              justify-content: flex-start;
+
+              * {
+                margin-right: 4px;
+              }
+            }
           }
         }
-  
-        .teams {
-          flex-grow: 1;
-          flex-basis: 50%;
+
+        .si-student-detail-timeframe {
+          display: flex;
+          flex-direction: column;
+          width: 196px;
+        }
+      }
+
+      .contact {
+        flex-grow: 1;
+        flex-basis: 50%;
+
+        .si-student-detail-contact {
+          display: flex;
+          flex-flow: row nowrap;
+          justify-content: space-between;
+
+          p {
+            display: flex;
+            margin: 8px 0 0 0;
+
+            i {
+              margin-right: 8px;
+              margin-top: 2px;
+              margin-bottom: -2px;
+            }
+          }
         }
       }
     }
@@ -54,7 +109,7 @@
     .si-student-detail-cell {
       @include si-cell;
       padding: 1rem;
-      margin: 0 0 1rem 0;
+      margin: 0 0 2rem 0;
       width: 100%;
       position: relative;
 

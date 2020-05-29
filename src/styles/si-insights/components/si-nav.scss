@@ -56,7 +56,9 @@
         border-radius: 5px;
 
         &:hover {
-          background-color: rgba(255,255,255,.15);
+          @include themed() {
+            background-color: t($hover);
+          }
         }
       }
     }
@@ -79,6 +81,10 @@
 
       i {
         color: white;
+      }
+
+      span {
+        display: none;
       }
     }
   }
