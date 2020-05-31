@@ -24,7 +24,8 @@ class InsightsStore {
           timeframe: 'Next 7 days'
         }
       },
-      darkMode: this.cookie.get('skollerInsightsDarkMode') === 'true'
+      darkMode: this.cookie.get('skollerInsightsDarkMode') === 'true',
+      userType: null
     })
   }
 
@@ -36,12 +37,31 @@ class InsightsStore {
       })
   }
 
-  async getOrgGroups (orgId) {
-    await actions.insights.getAllGroupsInOrg(orgId)
-      .then(r => {
-        this.groups = r
-        this.org.groups = r
+  async asyncForEach (array, callback) {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array)
+    }
+  }
+
+  async getOrgGroups (orgId, user, role) {
+    if (role === 'orgOwner') {
+      await actions.insights.getAllGroupsInOrg(orgId)
+        .then(r => {
+          this.groups = r
+          this.org.groups = r
+        })
+    } else {
+      let groups = []
+      await this.asyncForEach(user.org_group_owners, async group => {
+        let orgGroupId = group.id
+        await actions.insights.getOrgGroupById(orgId, orgGroupId)
+          .then(r => {
+            groups.push(r)
+          })
       })
+      this.groups = groups
+      this.org.groups = groups
+    }
   }
 
   async getStudents (filters, orgId) {
@@ -92,8 +112,6 @@ class InsightsStore {
   }
 
   async getOrg (orgId) {
-    // REMOVE BEFORE PUSHING
-    // this.org = {...this.org, name: 'Skoller University Athletics'}
     await actions.insights.getOrgById(orgId)
       .then(r => {
         let org = r
@@ -110,13 +128,19 @@ class InsightsStore {
       })
   }
 
-  async getGroupOwnerWatchlist (orgId) {
-    await actions.insights.getOrgOwnerWatchlist(orgId)
-      .then(r => {
-        let students = r.map(s => { return {...s, orgStudentId: s.id} })
-        this.watchlist = students
-        this.org.watchlist = students
-      })
+  async getGroupOwnerWatchlist (orgId, user) {
+    let watchlistStudents = []
+    await Promise.all(user.org_group_owners.map(group => {
+      let orgGroupId = group.id
+      let orgGroupOwnerId = this.groups.find(g => g.id === orgGroupId).owners.find(o => o.org_member_id === this.groupOwners.find(go => go.user_id === user.id).id)
+      actions.insights.getGroupOwnerWatchlist(orgId, orgGroupId, orgGroupOwnerId)
+        .then(r => {
+          let students = r.map(s => { return {...s, orgStudentId: s.id} })
+          watchlistStudents.concat(students)
+        })
+    }))
+    this.watchlist = watchlistStudents
+    this.org.watchlist = watchlistStudents
   }
 
   async getStudentData (students, orgId) {
@@ -135,8 +159,24 @@ class InsightsStore {
     this.students = students
   }
 
+  getRole (user) {
+    if (user.org_owners) {
+      if (user.org_owners.length > 0) {
+        return 'orgOwner'
+      } else if (user.org_group_owners.length > 0) {
+        return 'groupOwner'
+      } else {
+        return false
+      }
+    } else {
+      return false
+    }
+  }
+
   async getAllData (filters) {
     const user = stores.userStore.user
+    const role = this.getRole(user)
+    this.userType = role
     const orgId = user.org_owners.length > 0 ? user.org_owners[0].organization_id : user.org_group_owners[0].organization_id
 
     if (!filters || filters.includes('orgOwners')) {
@@ -148,7 +188,7 @@ class InsightsStore {
     }
 
     if (!filters || filters.includes('groups')) {
-      await this.getOrgGroups(orgId)
+      await this.getOrgGroups(orgId, user, role)
     }
 
     if (!filters || filters.includes('org')) {
@@ -161,6 +201,10 @@ class InsightsStore {
 
     if (!filters || filters.includes('orgOwnerWatchlist')) {
       await this.getOrgOwnerWatchlist(orgId)
+    }
+
+    if (!filters || filters.includes('groupOwnerWatchlist')) {
+      await this.getGroupOwnerWatchlist(orgId, user)
     }
   }
 

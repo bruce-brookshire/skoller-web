@@ -33,12 +33,13 @@ class InsightsLayout extends React.Component {
   getData (role) {
     let rootStore = this.props.rootStore
 
+    console.log(role)
     switch (role) {
       case 'orgOwner':
         rootStore.insightsStore.getData(['students', 'groups', 'org', 'orgOwnerWatchlist', 'groupOwners', 'orgOwners', 'studentClasses'])
         break
       case 'groupOwner':
-        rootStore.insightsStore.getData(['students', 'org', 'studentClasses', 'groupOwnerWatchlist'])
+        rootStore.insightsStore.getData(['students', 'org', 'groups', 'groupOwners', 'studentClasses', 'groupOwnerWatchlist'])
     }
   }
 

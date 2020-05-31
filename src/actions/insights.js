@@ -296,6 +296,16 @@ function login (form) {
     })
 }
 
+function getOrgGroupById (orgId, orgGroupId) {
+  return get(`/api/v1/organizations/${orgId}/org-groups/${orgGroupId}`, '', '')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
 // Get a team's students by team ID
 function getStudentsByGroupId (orgId, orgGroupId) {
   return get(`/api/v1/organizations/${orgId}/org-groups/${orgGroupId}/students`, '', '')
@@ -319,7 +329,7 @@ function getStudentClasses (orgId, orgStudentId) {
 }
 
 function getGroupOwnerWatchlist (orgId, orgGroupId, orgGroupOwnerId) {
-  return get(`/api/v1/organizations/${orgId}/org-groups/${orgGroupId}/owners/${orgGroupOwnerId}`, '', '')
+  return get(`/api/v1/organizations/${orgId}/org-groups/${orgGroupId}/owners/${orgGroupOwnerId}/watchlists`, '', '')
     .then(data => {
       return data
     })
@@ -391,6 +401,7 @@ const exports = {
 
   */
 
+  getOrgGroupById,
   getStudentsByGroupId,
   getStudentClasses,
   getGroupOwnerWatchlist,

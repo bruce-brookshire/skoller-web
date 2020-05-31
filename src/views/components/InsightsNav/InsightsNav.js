@@ -34,13 +34,14 @@ class InsightsNav extends React.Component {
   render () {
     let insightsStore = this.props.rootStore.insightsStore
     let groupsTitle = toTitleCase(insightsStore.org.groupsAlias) + 's'
+    let isOrgOwner = insightsStore.userRole === 'orgOwner'
     return (
       <div className="si-nav-wrapper">
         <div className="si-nav">
           <InsightsNavItem pageName="insights/dashboard" text="Dashboard" />
-          <InsightsNavItem pageName="insights/students" text="Athletes" />
-          <InsightsNavItem pageName="insights/groups" text={groupsTitle} />
-          <InsightsNavItem pageName="insights/organization" text="Organization" />
+          {isOrgOwner && <InsightsNavItem pageName="insights/students" text="Athletes" />}
+          {isOrgOwner && <InsightsNavItem pageName="insights/groups" text={groupsTitle} />}
+          {isOrgOwner && <InsightsNavItem pageName="insights/organization" text="Organization" />}
           <InsightsNavItem pageName="insights/settings" text="Settings" />
           {this.renderLogout()}
         </div>

@@ -174,7 +174,7 @@ class SmartTracker extends React.Component {
     let interfaceSettings = this.props.rootStore.insightsStore.interfaceSettings
     return (
       <div className='si-smart-tracker'>
-        <h1><SmartTrackerIcon fill={'white'} /> Smart Tracker</h1>
+        <h1><SmartTrackerIcon fill={this.props.rootStore.insightsStore.darkMode ? 'white' : ''} /> Smart Tracker</h1>
         <div className='si-smart-tracker-timeframe'>
           <div style={{paddingRight: '8px'}}>Timeframe: </div>
           <SkSelect className='si-select' selection={interfaceSettings.dashboard.timeframe} optionsMap={() => timeframeOptions.map(o => {
