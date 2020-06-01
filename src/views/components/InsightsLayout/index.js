@@ -9,8 +9,38 @@ import InsightsTop from '../InsightsNav/InsightsTop'
 class InsightsLayout extends React.Component {
   constructor (props) {
     super(props)
+    let rootStore = this.props.rootStore
 
-    this.props.rootStore.insightsStore.getData(['students', 'groups', 'org', 'orgOwnerWatchlist', 'groupOwners', 'orgOwners', 'studentClasses'])
+    const role = this.getRole(rootStore.userStore.user)
+    rootStore.insightsStore.org.role = role
+    this.getData(role)
+  }
+
+  getRole (user) {
+    if (user.org_owners) {
+      if (user.org_owners.length > 0) {
+        return 'orgOwner'
+      } else if (user.org_group_owners.length > 0) {
+        return 'groupOwner'
+      } else {
+        return false
+      }
+    } else {
+      return false
+    }
+  }
+
+  getData (role) {
+    let rootStore = this.props.rootStore
+
+    console.log(role)
+    switch (role) {
+      case 'orgOwner':
+        rootStore.insightsStore.getData(['students', 'groups', 'org', 'orgOwnerWatchlist', 'groupOwners', 'orgOwners', 'studentClasses'])
+        break
+      case 'groupOwner':
+        rootStore.insightsStore.getData(['students', 'org', 'groups', 'groupOwners', 'studentClasses', 'groupOwnerWatchlist'])
+    }
   }
 
   gettingData () {
@@ -23,7 +53,7 @@ class InsightsLayout extends React.Component {
 
   renderContent () {
     return (
-      <div className='si-layout' id='si-layout'>
+      <div className={'si-layout theme ' + (this.props.rootStore.insightsStore.darkMode ? 'theme--dark' : 'theme--default')} id='si-layout'>
         <InsightsTop />
         <InsightsNav />
         <main id='main'>

@@ -9,7 +9,7 @@ const StudentAthleteCard = (props) => {
   return (
     <div className='si-sa-card-container'>
       <div className={'si-sa-card' + (props.noLink ? ' no-link' : '')}>
-        <Avatar props={props.user} />
+        <Avatar user={props.user} />
         <div className='sa-info'>
           <div className='sa-name'>
             <Link to={link}>

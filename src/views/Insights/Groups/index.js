@@ -65,7 +65,7 @@ class Groups extends React.Component {
 
   renderOwnersCell (d) {
     return (
-      <OwnersCell group={d} org={this.props.rootStore.insightsStore.org} onChange={() => this.props.rootStore.insightsStore.updateData(['groupOwners'])} />
+      <OwnersCell group={d} org={this.props.rootStore.insightsStore.org} onChange={() => this.props.rootStore.insightsStore.updateData(['groupOwners', 'groups'])} />
     )
   }
 
@@ -78,7 +78,7 @@ class Groups extends React.Component {
   }
 
   renderTable () {
-    const headers = ['Name', 'Students', 'Owners']
+    const headers = ['Name', 'Athletes', 'Owners']
     let da = this.renderFilteredGroups()
     const d = da.map(d => {
       return [
@@ -161,7 +161,7 @@ class Groups extends React.Component {
         <div className='si-groups-header'>
           <div className='si-groups-header-left'>
             <h1>{title}<LoadingIndicator /></h1>
-            <p>Manage all of the groups in {this.props.rootStore.insightsStore.org.name} from this page.</p>
+            <p>Manage all of the {insightsStore.org.groupsAlias}s in {this.props.rootStore.insightsStore.org.name} from this page.</p>
           </div>
           <div className='si-groups-header-right'>
             <div className='si-button'>

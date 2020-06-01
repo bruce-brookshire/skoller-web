@@ -1,4 +1,4 @@
-import {get, post, put, del} from '../utilities/api'
+import {get, post, del} from '../utilities/api'
 import {showSnackbar} from '../utilities/snackbar'
 import stores from '../stores'
 const {userStore} = stores
@@ -81,6 +81,17 @@ In addition to these, all group owner methods can also be performed by org owner
 
 */
 
+// Create insights user
+function createInsightsUser (email) {
+  return post(`/api/v1/insights/users`, {email: email}, '')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
 // Get org
 function getOrgById (orgId) {
   return get(`/api/v1/organizations/${orgId}`)
@@ -106,7 +117,9 @@ function getAllOrgOwnersInOrg (orgId) {
 // Create org owner
 function createOrgOwner (orgId, form) {
   return post(`/api/v1/organizations/${orgId}/owners`, form, '')
-    .then(data => {})
+    .then(data => {
+      return data
+    })
     .catch(error => {
       return Promise.reject(error)
     })
@@ -177,7 +190,7 @@ function removeStudentFromGroup (orgId, orgGroupId, orgGroupStudentId) {
 
 // Get all org group owners within an org
 function getAllOrgGroupOwnersInOrg (orgId) {
-  return get(`/api/v1/organizations/${orgId}/org-group-owners`)
+  return get(`/api/v1/organizations/${orgId}/members`)
     .then(data => {
       return data
     })
@@ -283,6 +296,16 @@ function login (form) {
     })
 }
 
+function getOrgGroupById (orgId, orgGroupId) {
+  return get(`/api/v1/organizations/${orgId}/org-groups/${orgGroupId}`, '', '')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
 // Get a team's students by team ID
 function getStudentsByGroupId (orgId, orgGroupId) {
   return get(`/api/v1/organizations/${orgId}/org-groups/${orgGroupId}/students`, '', '')
@@ -297,6 +320,16 @@ function getStudentsByGroupId (orgId, orgGroupId) {
 // Get a student's classes by org_student_id
 function getStudentClasses (orgId, orgStudentId) {
   return get(`/api/v1/organizations/${orgId}/students/${orgStudentId}/classes`, '', '')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+function getGroupOwnerWatchlist (orgId, orgGroupId, orgGroupOwnerId) {
+  return get(`/api/v1/organizations/${orgId}/org-groups/${orgGroupId}/owners/${orgGroupOwnerId}/watchlists`, '', '')
     .then(data => {
       return data
     })
@@ -339,6 +372,7 @@ const exports = {
   // auth
   login,
   // owners
+  createInsightsUser,
   getOrgById,
   getAllOrgOwnersInOrg,
   createOrgOwner,
@@ -367,8 +401,10 @@ const exports = {
 
   */
 
+  getOrgGroupById,
   getStudentsByGroupId,
   getStudentClasses,
+  getGroupOwnerWatchlist,
   addStudentToGroupOwnerWatchlist,
   removeStudentFromGroupOwnerWatchlist
 }

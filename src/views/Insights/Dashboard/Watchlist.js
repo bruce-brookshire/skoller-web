@@ -65,7 +65,7 @@ class Watchlist extends React.Component {
       return this.props.rootStore.insightsStore.watchlist.map(u => u.org_student_id).includes(s.id)
     })
     students = this.sortStudents(students)
-    const headers = ['Student-Athlete', this.props.rootStore.insightsStore.interfaceSettings.dashboard.sort]
+    const headers = ['Athlete', this.props.rootStore.insightsStore.interfaceSettings.dashboard.sort]
     const data = students.map(d => {
       return [
         <StudentAthleteCard user={d} key={d.id} rootStore={this.props.rootStore} />,

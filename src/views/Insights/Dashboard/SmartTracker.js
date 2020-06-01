@@ -5,6 +5,7 @@ import SmartTrackerIcon from '../../../assets/sk-icons/insights/SmartTrackerIcon
 import StudentAthleteCard from '../components/StudentAthleteCard'
 import SkSelect from '../../components/SkSelect'
 import { getAssignmentCountInNextNDays, getAssignmentWeightsInNextNDays, toTitleCase } from '../utils'
+import ToolTip from '../../components/ToolTip'
 
 @inject('rootStore') @observer
 class SmartTracker extends React.Component {
@@ -89,8 +90,50 @@ class SmartTracker extends React.Component {
     return this.sortStudents(students.slice())
   }
 
+  renderSortOption () {
+    let description
+    let sort = this.props.rootStore.insightsStore.interfaceSettings.dashboard.sort
+    let timeframe = this.props.rootStore.insightsStore.interfaceSettings.dashboard.timeframe === 'Next 7 days' ? 7 : 30
+
+    switch (sort) {
+      case 'Grade Impact':
+        description = `Grade impact sorts athletes based on who's total grade is impacted the most over the next ${timeframe} days.`
+        break
+
+      case 'Assignments':
+        description = `Assignments sorts athletes based on who has the most assignments due over the next ${timeframe} days.`
+        break
+
+      case 'Personal Intensity':
+        description = `Intensity score is a measure of what the next ${timeframe} days look like relative to the entire semester for each individual athlete, taking assignments and grade impact into account.`
+        break
+    }
+    return (
+      <div className='si-smart-tracker-sort-option'>
+        <div>
+          {sort}
+        </div>
+        <ToolTip
+          tip={
+            <div>
+              <h3>{sort}</h3>
+              <p>
+                {description}
+              </p>
+            </div>
+          }
+        >
+          <div className='si-smart-tracker-sort-option-info'>
+            ?
+          </div>
+        </ToolTip>
+
+      </div>
+    )
+  }
+
   renderTable () {
-    const headers = ['Student-Athlete', this.props.rootStore.insightsStore.interfaceSettings.dashboard.sort]
+    const headers = ['Athlete', this.renderSortOption()]
     const data = this.filterStudents(this.props.rootStore.insightsStore.students).map(d => {
       return [
         <StudentAthleteCard user={d} key={d.id} rootStore={this.props.rootStore} />,
@@ -131,7 +174,7 @@ class SmartTracker extends React.Component {
     let interfaceSettings = this.props.rootStore.insightsStore.interfaceSettings
     return (
       <div className='si-smart-tracker'>
-        <h1><SmartTrackerIcon fill={'white'} /> Smart Tracker</h1>
+        <h1><SmartTrackerIcon fill={this.props.rootStore.insightsStore.darkMode ? 'white' : ''} /> Smart Tracker</h1>
         <div className='si-smart-tracker-timeframe'>
           <div style={{paddingRight: '8px'}}>Timeframe: </div>
           <SkSelect className='si-select' selection={interfaceSettings.dashboard.timeframe} optionsMap={() => timeframeOptions.map(o => {
@@ -171,7 +214,7 @@ class SmartTracker extends React.Component {
           </div>
           <div className='si-smart-tracker-filter-group grow'>
             <p className='si-smart-tracker-filter-label'>Search: </p>
-            <input placeholder='Search for a student' className='si-smart-tracker-search' value={this.state.searchQuery} onChange={(e) => this.setState({searchQuery: e.target.value})} />
+            <input placeholder='Search for an athlete' className='si-smart-tracker-search' value={this.state.searchQuery} onChange={(e) => this.setState({searchQuery: e.target.value})} />
           </div>
         </div>
         <div className='si-smart-tracker-content'>

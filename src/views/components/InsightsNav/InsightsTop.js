@@ -3,6 +3,7 @@ import {inject, observer} from 'mobx-react'
 import PropTypes from 'prop-types'
 import {withRouter, Link} from 'react-router-dom'
 import InsightsIcon from '../../../assets/sk-icons/InsightsIcon'
+import logo from '../../../assets/images/insights/skoller-insights-logo.png'
 
 @inject('rootStore') @observer
 class InsightsTop extends React.Component {
@@ -18,7 +19,8 @@ class InsightsTop extends React.Component {
       <div className="si-top">
         <div className='si-top-left'>
           <Link to={'/insights/dashboard'}>
-            <span style={{marginBottom: '-4px'}}><InsightsIcon height='22px' fill='#57b9e4' /></span> skoller <span style={{fontWeight: '400'}}>insights</span>
+            <img src={logo} style={{width: '160px', marginTop: '8px'}} />
+            {/* <span style={{marginBottom: '-4px'}}><InsightsIcon height='22px' fill='#57b9e4' /></span> skoller <span style={{fontWeight: '400'}}>insights</span> */}
           </Link>
         </div>
         <div className='si-top-right'>

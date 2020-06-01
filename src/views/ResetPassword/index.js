@@ -1,19 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
-import {Form, ValidateForm} from 'react-form-library'
 import {InputField} from '../../components/Form'
 import actions from '../../actions'
 
-const requiredFields =
-{
-  'password': {
-    type: 'password'
-  },
-  'password_confirmation': {
-    type: 'passwordConfirmation'
-  }
-}
+// const requiredFields =
+// {
+//   'password': {
+//     type: 'password'
+//   },
+//   'password_confirmation': {
+//     type: 'passwordConfirmation'
+//   }
+// }
 
 class ResetPassword extends React.Component {
   constructor (props) {
@@ -36,7 +35,8 @@ class ResetPassword extends React.Component {
   * On submit forgot password.
   */
   onSubmit () {
-    if (this.props.validateForm(this.state.form, requiredFields)) {
+    console.log(this.props)
+    if (this.state.form.password !== '' && this.state.form.password === this.state.form.password_confirmation) {
       actions.auth.resetPassword(this.state.form, this.props.location.query.token).then(() => {
         this.props.history.push('/landing')
       }).catch(() => false)
@@ -49,7 +49,6 @@ class ResetPassword extends React.Component {
 
   render () {
     const {form} = this.state
-    const {formErrors, updateProperty} = this.props
     return (
       <div className='cn-forgot-password-container'>
         <div className='content-landing'>
@@ -61,30 +60,29 @@ class ResetPassword extends React.Component {
           </div>
 
           <div className='margin-top'>
-            <InputField
-              className=""
+            <input
+              autoFocus
+              className="sk-input"
               placeholder="Password"
               name="password"
               type="password"
               value={form.password}
-              error={formErrors.password}
-              onChange={updateProperty}
+              onChange={(e) => this.setState({form: {...this.state.form, password: e.target.value}})}
             />
           </div>
 
           <div className='margin-top'>
-            <InputField
-              className=""
+            <input
+              className="sk-input"
               placeholder="Password Confirmation"
               name="password_confirmation"
               type="password"
               value={form.password_confirmation}
-              error={formErrors.password_confirmation}
-              onChange={updateProperty}
+              onChange={(e) => this.setState({form: {...this.state.form, password_confirmation: e.target.value}})}
             />
           </div>
 
-          <a className='right login-button' onClick={this.onLogin.bind(this)}>Login?</a>
+          <a className='right login-button link-style' onClick={this.onLogin.bind(this)}>Login?</a>
           <button className='button full-width margin-top' onClick={this.onSubmit.bind(this)}>Reset Password</button>
 
         </div>
@@ -97,7 +95,8 @@ ResetPassword.propTypes = {
   formErrors: PropTypes.object,
   updateProperty: PropTypes.func,
   location: PropTypes.object,
-  validateForm: PropTypes.func
+  validateForm: PropTypes.func,
+  history: PropTypes.object
 }
 
 export default withRouter(ResetPassword)

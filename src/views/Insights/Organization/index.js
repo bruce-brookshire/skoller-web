@@ -2,16 +2,12 @@ import React, { Fragment } from 'react'
 import {inject, observer} from 'mobx-react'
 import PropTypes from 'prop-types'
 import Table from '../components/Table'
-import GentleModal from '../components/GentleModal'
-import SkSelect from '../../components/SkSelect'
 import { toTitleCase } from '../utils'
-import CreateOrgGroup from '../../Hub/HubInsights/CreateOrgGroup'
-import StudentsCell from '../components/StudentsCell'
-import OwnersCell from '../components/OwnersCell'
 import TeamsCell from '../components/TeamsCell'
 import SkModal from '../../components/SkModal/SkModal'
 import CreateOrgOwner from '../../Hub/HubInsights/CreateOrgOwner'
 import CreateOrgGroupOwner from '../../Hub/HubInsights/CreateOrgGroupOwner'
+import LoadingIndicator from '../components/LoadingIndicator'
 
 @inject('rootStore') @observer
 class Organization extends React.Component {
@@ -58,7 +54,7 @@ class Organization extends React.Component {
 
   renderTeamsCell (d) {
     return (
-      <TeamsCell owner={true} user={d} org={this.props.rootStore.insightsStore.org} onChange={() => this.props.rootStore.insightsStore.updateData()} />
+      <TeamsCell owner={true} user={d} org={this.props.rootStore.insightsStore.org} onChange={() => this.props.rootStore.insightsStore.updateData(['groups', 'groupOwners'])} />
     )
   }
 
@@ -90,7 +86,7 @@ class Organization extends React.Component {
           <CreateOrgGroupOwner onSubmit={() => {
             this.setState({showNewOrgGroupOwnerModal: false})
             this.props.rootStore.insightsStore.updateData()
-          }} org={this.props.rootStore.insightsStore.org} />
+          }} org={this.props.rootStore.insightsStore.org} groupAlias={this.props.rootStore.insightsStore.org.groupsAlias} />
         </SkModal>}
       </Fragment>
     )
@@ -102,7 +98,7 @@ class Organization extends React.Component {
     return (
       <div className='si-organization'>
         <div className='si-organization-header'>
-          <h1>Organization</h1>
+          <h1>Organization<LoadingIndicator /></h1>
           <p>Manage all of the administrators in {insightsStore.org.name} from this page.</p>
         </div>
         <div className='si-organization-content'>

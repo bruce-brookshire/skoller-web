@@ -2,9 +2,12 @@ import { extendObservable, action } from 'mobx'
 import actions from '../actions'
 import stores from './index'
 import { getIntensityScore } from '../views/Insights/utils'
+import {Cookies} from 'react-cookie'
 
 class InsightsStore {
   constructor () {
+    this.cookie = new Cookies()
+
     extendObservable(this, {
       loading: false,
       loadingUpdate: false,
@@ -20,28 +23,49 @@ class InsightsStore {
           sort: 'Grade Impact',
           timeframe: 'Next 7 days'
         }
-      }
+      },
+      darkMode: this.cookie.get('skollerInsightsDarkMode') === 'true',
+      userType: null
     })
   }
 
-  async getOrgOwners () {
-    await actions.insights.getAllOrgOwnersInOrg(stores.userStore.user.org_owners[0].organization_id)
+  async getOrgOwners (orgId) {
+    await actions.insights.getAllOrgOwnersInOrg(orgId)
       .then(r => {
         this.orgOwners = r
         this.org.orgOwners = r
       })
   }
 
-  async getOrgGroups () {
-    await actions.insights.getAllGroupsInOrg(stores.userStore.user.org_owners[0].organization_id)
-      .then(r => {
-        this.groups = r
-        this.org.groups = r
-      })
+  async asyncForEach (array, callback) {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array)
+    }
   }
 
-  async getStudents (filters) {
-    await actions.insights.getAllStudentsInOrg(stores.userStore.user.org_owners[0].organization_id)
+  async getOrgGroups (orgId, user, role) {
+    if (role === 'orgOwner') {
+      await actions.insights.getAllGroupsInOrg(orgId)
+        .then(r => {
+          this.groups = r
+          this.org.groups = r
+        })
+    } else {
+      let groups = []
+      await this.asyncForEach(user.org_group_owners, async group => {
+        let orgGroupId = group.id
+        await actions.insights.getOrgGroupById(orgId, orgGroupId)
+          .then(r => {
+            groups.push(r)
+          })
+      })
+      this.groups = groups
+      this.org.groups = groups
+    }
+  }
+
+  async getStudents (filters, orgId) {
+    await actions.insights.getAllStudentsInOrg(orgId)
       .then(async r => {
         let students = r.map(s => {
           let student
@@ -64,15 +88,15 @@ class InsightsStore {
         })
 
         if (!filters || filters.includes('studentClasses')) {
-          await this.getStudentData(students)
+          await this.getStudentData(students, orgId)
         } else {
           this.students = students
         }
       })
   }
 
-  async getGroupOwners () {
-    await actions.insights.getAllOrgGroupOwnersInOrg(stores.userStore.user.org_owners[0].organization_id)
+  async getGroupOwners (orgId) {
+    await actions.insights.getAllOrgGroupOwnersInOrg(orgId)
       .then(r => {
         let groupOwners = r
         let filteredGroupOwners = []
@@ -87,16 +111,16 @@ class InsightsStore {
       })
   }
 
-  async getOrg () {
-    await actions.insights.getOrgById(stores.userStore.user.org_owners[0].organization_id)
+  async getOrg (orgId) {
+    await actions.insights.getOrgById(orgId)
       .then(r => {
         let org = r
         this.org = {...this.org, ...org}
       })
   }
 
-  async getOrgOwnerWatchlist () {
-    await actions.insights.getOrgOwnerWatchlist(stores.userStore.user.org_owners[0].organization_id, stores.userStore.user.org_owners[0].id)
+  async getOrgOwnerWatchlist (orgId) {
+    await actions.insights.getOrgOwnerWatchlist(orgId, stores.userStore.user.org_owners[0].id)
       .then(r => {
         let students = r.map(s => { return {...s, orgStudentId: s.id} })
         this.watchlist = students
@@ -104,9 +128,24 @@ class InsightsStore {
       })
   }
 
-  async getStudentData (students) {
-    await Promise.all(students.map(s => 
-      actions.insights.getStudentClasses(stores.userStore.user.org_owners[0].organization_id, s.id)
+  async getGroupOwnerWatchlist (orgId, user) {
+    let watchlistStudents = []
+    await Promise.all(user.org_group_owners.map(group => {
+      let orgGroupId = group.id
+      let orgGroupOwnerId = this.groups.find(g => g.id === orgGroupId).owners.find(o => o.org_member_id === this.groupOwners.find(go => go.user_id === user.id).id)
+      actions.insights.getGroupOwnerWatchlist(orgId, orgGroupId, orgGroupOwnerId)
+        .then(r => {
+          let students = r.map(s => { return {...s, orgStudentId: s.id} })
+          watchlistStudents.concat(students)
+        })
+    }))
+    this.watchlist = watchlistStudents
+    this.org.watchlist = watchlistStudents
+  }
+
+  async getStudentData (students, orgId) {
+    await Promise.all(students.map(s =>
+      actions.insights.getStudentClasses(orgId, s.id)
         .then(r => {
           let assignments = [].concat.apply([], r.map(cl => cl.assignments))
           s.classes = r
@@ -117,44 +156,55 @@ class InsightsStore {
           }
         })
     ))
-    // for (const s of students) {
-    //   await actions.insights.getStudentClasses(stores.userStore.user.org_owners[0].organization_id, s.id)
-    //     .then(r => {
-    //       let assignments = [].concat.apply([], r.map(cl => cl.assignments))
-    //       s.classes = r
-    //       s.assignments = assignments
-    //       s.intensity = {
-    //         sevenDay: getIntensityScore(assignments, 7),
-    //         thirtyDay: getIntensityScore(assignments, 30)
-    //       }
-    //     })
-    // }
     this.students = students
   }
 
+  getRole (user) {
+    if (user.org_owners) {
+      if (user.org_owners.length > 0) {
+        return 'orgOwner'
+      } else if (user.org_group_owners.length > 0) {
+        return 'groupOwner'
+      } else {
+        return false
+      }
+    } else {
+      return false
+    }
+  }
+
   async getAllData (filters) {
+    const user = stores.userStore.user
+    const role = this.getRole(user)
+    this.userType = role
+    const orgId = user.org_owners.length > 0 ? user.org_owners[0].organization_id : user.org_group_owners[0].organization_id
+
     if (!filters || filters.includes('orgOwners')) {
-      await this.getOrgOwners()
+      await this.getOrgOwners(orgId)
     }
 
     if (!filters || filters.includes('students')) {
-      await this.getStudents(filters)
+      await this.getStudents(filters, orgId)
     }
 
     if (!filters || filters.includes('groups')) {
-      await this.getOrgGroups()
+      await this.getOrgGroups(orgId, user, role)
     }
 
     if (!filters || filters.includes('org')) {
-      await this.getOrg()
+      await this.getOrg(orgId)
     }
 
     if (!filters || filters.includes('groupOwners')) {
-      await this.getGroupOwners()
+      await this.getGroupOwners(orgId)
     }
 
     if (!filters || filters.includes('orgOwnerWatchlist')) {
-      await this.getOrgOwnerWatchlist()
+      await this.getOrgOwnerWatchlist(orgId)
+    }
+
+    if (!filters || filters.includes('groupOwnerWatchlist')) {
+      await this.getGroupOwnerWatchlist(orgId, user)
     }
   }
 
@@ -188,6 +238,11 @@ class InsightsStore {
   getDataError () {
     this.loading = false
     this.loadingUpdate = false
+  }
+
+  @action
+  getDarkModeCookie () {
+    this.darkMode = this.cookie.get('skollerInsightsDarkMode') === 'true'
   }
 }
 

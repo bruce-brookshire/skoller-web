@@ -1,20 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
-import {Form, ValidateForm} from 'react-form-library'
-import {InputField} from '../../components/Form'
 import actions from '../../actions'
-
-const requiredFields = {
-  'email': {
-    type: 'required'
-  }
-}
 
 class ForgotPassword extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {form: this.initializeFormData()}
+    this.state = {
+      form: this.initializeFormData(),
+      insightsReset: this.props.location.state ? this.props.location.state.insightsReset : false
+    }
   }
 
   /*
@@ -31,46 +26,68 @@ class ForgotPassword extends React.Component {
   * On submit forgot password.
   */
   onSubmit () {
-    if (this.props.validateForm(this.state.form, requiredFields)) {
+    if (this.state.form.email !== '') {
       actions.auth.forgotPassword(this.state.form).then(() => {
-        this.props.history.push('/landing')
+        if (this.state.insightsReset) {
+          this.props.history.push('/insights')
+        } else {
+          this.props.history.push('/admin-login')
+        }
       }).catch(() => false)
     }
   }
 
   onLogin () {
-    this.props.history.push('/landing')
+    if (this.state.insightsReset) {
+      this.props.history.push('/insights')
+    } else {
+      this.props.history.push('/admin-login')
+    }
+  }
+
+  renderHeader () {
+    if (this.state.insightsReset) {
+      return (
+        <h1>
+          <img src='../../../src/assets/images/logo-wide-blue@1x.png' style={{height: '5rem'}} />
+          <span style={{display: 'block'}}>Reset your password</span>
+        </h1>
+      )
+    } else {
+      return (
+        <h1>
+          <img src='../../../src/assets/images/logo-wide-blue@1x.png' style={{height: '5rem'}} />
+          <span style={{display: 'block'}}>Forgot your password?</span>
+        </h1>
+      )
+    }
   }
 
   render () {
     const {form} = this.state
-    const {formErrors, updateProperty} = this.props
     return (
       <div className='cn-forgot-password-container'>
         <div className='content-landing'>
           <div>
-            <h1>
-              <img src='../../../src/assets/images/logo-wide-blue@1x.png' style={{height: '5rem'}} />
-              <span style={{display: 'block'}}>Forgot your password?</span>
-            </h1>
+            {this.renderHeader()}
             <span>
-              Enter the email address associated with your Skoller account,
-              and we will send you an email with further instructuons to access your account.
+              Enter the email address associated with your Skoller{this.state.insightsReset ? ' Insights' : ''} account,
+              and we will send you an email with further instructions {this.state.insightsReset ? ' reset your password' : 'to access your account'}.
             </span>
           </div>
 
           <div className='margin-top'>
-            <InputField
-              className=""
+            <input
+              autoFocus
+              className="sk-input"
               placeholder="Email Address"
               name="email"
               value={form.email}
-              error={formErrors.email}
-              onChange={updateProperty}
+              onChange={(e) => this.setState({form: {email: e.target.value}})}
             />
           </div>
 
-          <a className='right login-button' onClick={this.onLogin.bind(this)}>Login?</a>
+          <a className='right login-button link-style' onClick={this.onLogin.bind(this)}>Login?</a>
           <button className='button full-width margin-top' onClick={this.onSubmit.bind(this)}>Submit</button>
 
         </div>
@@ -80,9 +97,8 @@ class ForgotPassword extends React.Component {
 }
 
 ForgotPassword.propTypes = {
-  formErrors: PropTypes.object,
-  updateProperty: PropTypes.func,
-  validateForm: PropTypes.func
+  history: PropTypes.object,
+  location: PropTypes.bool
 }
 
 export default withRouter(ForgotPassword)

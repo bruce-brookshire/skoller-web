@@ -1,6 +1,6 @@
 .si-tasks-list {
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: column wrap;
 
   .si-tasks-list-detail {
     flex-basis: 40%;
@@ -30,8 +30,13 @@
     .si-tasks-list-task {
       display: flex;
       flex-direction: column;
-      border-bottom: 2px solid #fafafa;
       margin-bottom: 1rem;
+
+      // themed variables
+      @include themed() {
+        border-bottom: 2px solid;
+        border-bottom-color: t($border);
+      }
 
       &:last-child {
         margin-bottom: 0;
@@ -54,8 +59,6 @@
 
         .si-task-class {
           font-style: italic;
-          // dark mode variables
-          // color: #4a4a4a75;
         }
       }
     }
