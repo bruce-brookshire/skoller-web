@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom'
 import { Cookies } from 'react-cookie'
 import actions from '../../../actions'
 import { inject, observer } from 'mobx-react'
-import LandingNav from '../../components/LandingNav'
 
 @inject('rootStore') @observer
 class InsightsLanding extends React.Component {
@@ -23,6 +22,20 @@ class InsightsLanding extends React.Component {
     this.state = {
       email: '',
       password: ''
+    }
+    this.cookie = new Cookies()
+    this.tokenLogin()
+  }
+
+  tokenLogin () {
+    let authToken = this.cookie.get('skollerToken')
+    if (authToken) {
+      actions.auth.getUserByToken(authToken)
+        .then(r => {
+          if (r.user.roles.map(r => r.id).includes(700)) {
+            this.props.history.push('/insights/dashboard')
+          }
+        })
     }
   }
 
@@ -76,7 +89,6 @@ class InsightsLanding extends React.Component {
   render () {
     return (
       <div className='si-landing'>
-        {/* <img alt="Skoller" className='logo' src='/src/assets/images/logo-wide-blue@1x.png' /> */}
         <h1>Welcome to <b>Skoller Insights</b></h1>
         <div className='si-landing-content'>
           <iframe
@@ -107,7 +119,6 @@ class InsightsLanding extends React.Component {
                   type='password'
                   onChange={this.setPassword}
                 />
-                {/* <a className='right forgot-password link-style' onClick={this.onForgotPassword.bind(this)}>Forgot password?</a> */}
               </div>
 
               <button type="submit" className="button" onClick={this.onSubmit.bind(this)}>Login</button>

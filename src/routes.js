@@ -282,7 +282,7 @@ const router = (
         <Route path='/download' component={DownloadApp} />
         <Route path='/pitch-deck' component={PitchDeck} />
 
-        <Route path="/logout" render={() => logout()} />
+        <Route path="/logout" render={(props) => logout(props)} />
 
         <ProtectedRoute path='/class/:classId/syllabus_tool'>
           <Layout>
@@ -341,10 +341,14 @@ function authOnboard () {
 }
 
 const cookie = new Cookies()
-function logout (nextState, replaceState) {
+function logout (props) {
   cookie.remove('skollerToken', { path: '/' })
   userStore.user = null
-  return <Route render={() => <Redirect to='/' />} />
+  if (props.location.redirect) {
+    return <Route render={() => <Redirect to={props.location.redirect} />} />
+  } else {
+    return <Route render={() => <Redirect to='/' />} />
+  }
 }
 
 export default(router)

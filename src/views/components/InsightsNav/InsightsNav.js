@@ -21,7 +21,10 @@ class InsightsNav extends React.Component {
           's-nav-item bottom'
         }
         onClick={() => {
-          this.props.history.push('/logout')
+          this.props.history.push({
+            pathname: '/logout',
+            redirect: '/insights'
+          })
         }}
       >
         <i className='fas fa-sign-out-alt fa-lg' />
@@ -34,7 +37,7 @@ class InsightsNav extends React.Component {
   render () {
     let insightsStore = this.props.rootStore.insightsStore
     let groupsTitle = toTitleCase(insightsStore.org.groupsAlias) + 's'
-    let isOrgOwner = insightsStore.userRole === 'orgOwner'
+    let isOrgOwner = insightsStore.userType === 'orgOwner'
     return (
       <div className="si-nav-wrapper">
         <div className="si-nav">
