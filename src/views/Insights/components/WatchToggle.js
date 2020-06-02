@@ -11,15 +11,30 @@ class WatchToggle extends React.Component {
   timer = () => setTimeout(() => this.setState({changed: false}), 2000)
 
   toggleWatching = async () => {
-    let watching = this.props.rootStore.insightsStore.isWatching(this.props.user)
+    let insightsStore = this.props.rootStore.insightsStore
+    let watching = insightsStore.isWatching(this.props.user)
     if (watching) {
-      let watchlistId = this.props.rootStore.insightsStore.watchlist.find(s => s.org_student_id === this.props.user.id).id
-      await actions.insights.removeStudentFromOrgOwnerWatchlist(this.props.user.organization_id, this.props.rootStore.userStore.user.org_owners[0].id, watchlistId)
+      let watchlistId = insightsStore.watchlist.find(s => s.org_student_id === this.props.user.id).id
+
+      if (insightsStore.userType === 'orgOwner') {
+        await actions.insights.removeStudentFromOrgOwnerWatchlist(this.props.user.organization_id, this.props.rootStore.userStore.user.org_owners[0].id, watchlistId)
+      } else if (insightsStore.userType === 'groupOwner') {
+        await actions.insights.removeStudentFromGroupOwnerWatchlist()
+      }
     } else {
-      await actions.insights.addStudentToOrgOwnerWatchlist(this.props.user.organization_id, this.props.rootStore.userStore.user.org_owners[0].id, this.props.user.id)
+      if (insightsStore.userType === 'orgOwner') {
+        await actions.insights.addStudentToOrgOwnerWatchlist(this.props.user.organization_id, this.props.rootStore.userStore.user.org_owners[0].id, this.props.user.id)
+      } else if (insightsStore.userType === 'groupOwner') {
+        let orgStudent = this.props.user
+        let orgGroupToAddStudentToGroupOwnerWatchlist = insightsStore.groups.find(g => orgStudent.org_groups.map(gr => gr.id).includes(g.id))
+        let memberId = insightsStore.groupOwners.find(go => go.user_id === this.props.rootStore.userStore.user.id).id
+        let groupOwner = orgGroupToAddStudentToGroupOwnerWatchlist.owners.find(o => o.org_member_id === memberId)
+        console.log({orgStudent, orgGroupToAddStudentToGroupOwnerWatchlist})
+        await actions.insights.addStudentToGroupOwnerWatchlist(this.props.user.organization_id, groupOwner.id, orgGroupToAddStudentToGroupOwnerWatchlist.id, orgStudent.id)
+      }
     }
 
-    await this.props.rootStore.insightsStore.updateData(['orgOwnerWatchlist'])
+    await insightsStore.updateData(insightsStore.userType === 'orgOwner' ? ['orgOwnerWatchlist'] : ['groupOwnerWatchlist'])
     this.setState({changed: true})
 
     this.timer()

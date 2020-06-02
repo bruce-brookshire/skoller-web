@@ -64,7 +64,7 @@ class InsightsStore {
     }
   }
 
-  async getStudents (filters, orgId) {
+  async getStudents (filters, orgId, user) {
     await actions.insights.getAllStudentsInOrg(orgId)
       .then(async r => {
         let students = r.map(s => {
@@ -86,6 +86,19 @@ class InsightsStore {
           }
           return student
         })
+
+        // filter out students that group owner doesn't own
+        if (this.userType === 'groupOwner') {
+          students = students.filter(s => {
+            let hasStudent = false
+            s.org_groups.forEach(g => {
+              if (user.org_group_owners.map(gr => gr.id).includes(g.id)) {
+                hasStudent = true
+              }
+            })
+            return hasStudent
+          })
+        }
 
         if (!filters || filters.includes('studentClasses')) {
           await this.getStudentData(students, orgId)
@@ -129,18 +142,21 @@ class InsightsStore {
   }
 
   async getGroupOwnerWatchlist (orgId, user) {
-    let watchlistStudents = []
-    await Promise.all(user.org_group_owners.map(group => {
+    let watchlistStudentsIds = []
+    await this.asyncForEach(user.org_group_owners, async group => {
       let orgGroupId = group.id
-      let orgGroupOwnerId = this.groups.find(g => g.id === orgGroupId).owners.find(o => o.org_member_id === this.groupOwners.find(go => go.user_id === user.id).id)
-      actions.insights.getGroupOwnerWatchlist(orgId, orgGroupId, orgGroupOwnerId)
+      let orgGroupOwnerId = this.groups.find(g => g.id === orgGroupId).owners.find(o => o.org_member_id === this.groupOwners.find(go => go.user_id === user.id).id).id
+      await actions.insights.getGroupOwnerWatchlist(orgId, orgGroupId, orgGroupOwnerId)
         .then(r => {
-          let students = r.map(s => { return {...s, orgStudentId: s.id} })
-          watchlistStudents.concat(students)
+          let studentIds = r.map(s => s.org_group_student.org_student_id)
+          watchlistStudentsIds = watchlistStudentsIds.concat(studentIds)
         })
-    }))
+    })
+
+    let watchlistStudents = this.students.slice().filter(s => watchlistStudentsIds.includes(s.id))
     this.watchlist = watchlistStudents
     this.org.watchlist = watchlistStudents
+    console.log(this)
   }
 
   async getStudentData (students, orgId) {
@@ -148,6 +164,7 @@ class InsightsStore {
       actions.insights.getStudentClasses(orgId, s.id)
         .then(r => {
           let assignments = [].concat.apply([], r.map(cl => cl.assignments))
+          s.org_student_id = s.id
           s.classes = r
           s.assignments = assignments
           s.intensity = {
@@ -184,7 +201,7 @@ class InsightsStore {
     }
 
     if (!filters || filters.includes('students')) {
-      await this.getStudents(filters, orgId)
+      await this.getStudents(filters, orgId, user)
     }
 
     if (!filters || filters.includes('groups')) {

@@ -20,26 +20,36 @@ class NestedNav extends React.Component {
   }
 
   getNestedNav = () => {
-    // let history = this.props.rootStore.navStore.history
-    // let paths = history[history.length - 1]
     let pathArray = []
     if (this.props.pageType === 'studentDetail') {
       let student = this.props.rootStore.insightsStore.students.find(s => s.id === parseInt(this.props.match.params.orgStudentId)).student
-      pathArray = [
-        {
-          name: 'Athletes',
-          path: '/insights/students'
-        },
-        {
-          name: student.name_first + ' ' + student.name_last
-        }
-      ]
+
+      if (this.props.rootStore.insightsStore.userType === 'orgOwner') {
+        pathArray = [
+          {
+            name: 'Athletes',
+            path: '/insights/students'
+          },
+          {
+            name: student.name_first + ' ' + student.name_last
+          }
+        ]
+      } else {
+        pathArray = [
+          {
+            name: 'Dashboard',
+            path: '/insights/dashboard'
+          },
+          {
+            name: student.name_first + ' ' + student.name_last
+          }
+        ]
+      }
     }
     return pathArray
   }
 
   renderContent () {
-    console.log(this.props)
     let pathArray = this.getNestedNav()
     return (
       <div className='nested-nav-forward'>

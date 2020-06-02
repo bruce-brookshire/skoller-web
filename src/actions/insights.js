@@ -339,8 +339,30 @@ function getGroupOwnerWatchlist (orgId, orgGroupId, orgGroupOwnerId) {
 }
 
 // Add a student to a group owner's watchlist
-function addStudentToGroupOwnerWatchlist (groupOwnerId, studentId) {
-  console.log('addStudentToGroupOwnerWatchlist')
+function addStudentToGroupOwnerWatchlist (orgId, groupOwnerId, orgGroupId, orgStudentId) {
+  return get(`/api/v1/organizations/${orgId}/org-groups/${orgGroupId}/students`, '', '')
+    .then(students => {
+      let orgGroupStudent = students.find(s => s.org_student_id === orgStudentId)
+
+      if (orgGroupStudent) {
+        let form = {
+          org_group_student_id: orgGroupStudent.id
+        }
+        post(`/api/v1/organizations/${orgId}/org-groups/${orgGroupId}/owners/${groupOwnerId}/watchlists`, form, '')
+          .then(r => {
+            return Promise.resolve(r)
+          })
+          .catch(error => {
+            return Promise.reject(error)
+          })
+      } else {
+        const error = 'Cannot find student'
+        return Promise.reject(error)
+      }
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
 }
 
 // Remove a student from a group owner's watchlist

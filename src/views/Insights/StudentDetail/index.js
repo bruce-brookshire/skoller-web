@@ -115,7 +115,7 @@ class StudentDetail extends React.Component {
             <div className='si-student-detail-cell contact'>
               <h1>Contact</h1>
               <div className='si-student-detail-contact'>
-                <p><i className='fas fa-envelope' /> <a style={{marginTop: '4px'}} className='link-style' href={user.student.users[0].email}>{user.student.users[0].email}</a></p>
+                <p><i className='fas fa-envelope' /> <a style={{marginTop: '4px'}} className='link-style' href={'mailto:' + user.student.users[0].email}>{user.student.users[0].email}</a></p>
                 <p><i className='fas fa-phone' /> <CopyCell isPhone={true} text={user.student.phone} /></p>
               </div>
             </div>
