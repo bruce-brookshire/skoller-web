@@ -23,13 +23,15 @@ class WatchToggle extends React.Component {
       }
     } else {
       if (insightsStore.userType === 'orgOwner') {
-        await actions.insights.addStudentToOrgOwnerWatchlist(this.props.user.organization_id, this.props.rootStore.userStore.user.org_owners[0].id, this.props.user.id)
+        console.log('insightsStore.organization.id', insightsStore.org.id)
+        console.log('this.props.rootStore.userStore.user.org_owners[0].id', this.props.rootStore.userStore.user.org_owners[0].id)
+        console.log('this.props.user.id', this.props.user.id)
+        await actions.insights.addStudentToOrgOwnerWatchlist(insightsStore.org.id, this.props.rootStore.userStore.user.org_owners[0].id, this.props.user.id)
       } else if (insightsStore.userType === 'groupOwner') {
         let orgStudent = this.props.user
         let orgGroupToAddStudentToGroupOwnerWatchlist = insightsStore.groups.find(g => orgStudent.org_groups.map(gr => gr.id).includes(g.id))
         let memberId = insightsStore.groupOwners.find(go => go.user_id === this.props.rootStore.userStore.user.id).id
         let groupOwner = orgGroupToAddStudentToGroupOwnerWatchlist.owners.find(o => o.org_member_id === memberId)
-        console.log({orgStudent, orgGroupToAddStudentToGroupOwnerWatchlist})
         await actions.insights.addStudentToGroupOwnerWatchlist(this.props.user.organization_id, groupOwner.id, orgGroupToAddStudentToGroupOwnerWatchlist.id, orgStudent.id)
       }
     }

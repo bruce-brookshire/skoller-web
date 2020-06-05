@@ -1,0 +1,31 @@
+.si-create-students {
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  h1 {
+    text-align: center;
+  }
+
+  .si-create-students-toggle {
+    text-align: center;
+    margin-top: 1rem;
+
+    span {
+      cursor: pointer;
+      color: $sk-blue;
+    }
+  }
+
+  .si-create-students-switch {
+    width: 400px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .si-create-students-switch-or {
+      margin: 6px 8px 8px 8px;
+    }
+  }
+}

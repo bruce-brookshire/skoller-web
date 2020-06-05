@@ -10,6 +10,56 @@ import StudentsCell from '../components/StudentsCell'
 import OwnersCell from '../components/OwnersCell'
 import LoadingIndicator from '../components/LoadingIndicator'
 import SkModal from '../../components/SkModal/SkModal'
+import CreateStudents from '../components/CreateStudents'
+
+@inject('rootStore') @observer
+class NameCell extends React.Component {
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      showActions: false,
+      showAddStudents: false,
+      studentsAlias: this.props.rootStore.insightsStore.org.studentsAlias
+    }
+  }
+
+  renderCreateStudentsModal () {
+    return (
+      this.state.showAddStudents && <SkModal disableOutsideClick={true} closeModal={() => this.setState({showAddStudents: false})}>
+        <CreateStudents group={this.props.d} onSubmit={() => {
+          this.props.rootStore.insightsStore.updateData(['invitations'])
+          this.setState({showAddStudents: false})
+        }} />
+      </SkModal>
+    )
+  }
+
+  renderActions () {
+    let group = this.props.d
+
+    return (
+      <GentleModal closeModal={() => this.setState({showActions: false})} show={this.state.showActions}>
+        <div className='action-button' onClick={() => this.setState({showAddStudents: true, showActions: false})}><p>Upload {this.state.studentsAlias}s to {group.name}</p></div>
+      </GentleModal>
+    )
+  }
+
+  render () {
+    return (
+      <div className='si-groups-table-name'>
+        {this.props.d.name}
+        <span style={{marginLeft: '8px'}}>{this.renderActions()}<i onClick={() => this.setState({showActions: true})} className='fas fa-ellipsis-h' /></span>
+        {this.renderCreateStudentsModal()}
+      </div>
+    )
+  }
+}
+
+NameCell.propTypes = {
+  d: PropTypes.object,
+  rootStore: PropTypes.object
+}
 
 @inject('rootStore') @observer
 class Groups extends React.Component {
@@ -71,9 +121,7 @@ class Groups extends React.Component {
 
   renderNameCell (d) {
     return (
-      <div className='si-groups-table-name'>
-        {d.name}
-      </div>
+      <NameCell d={d} />
     )
   }
 
@@ -167,7 +215,7 @@ class Groups extends React.Component {
             <div className='si-button'>
               <p
                 onClick={() => this.setState({showNewGroupModal: true})}
-              >Create a new {insightsStore.org.groupsAlias}</p>
+              >Create a {insightsStore.org.groupsAlias}</p>
             </div>
             {this.renderNewGroupModal()}
           </div>

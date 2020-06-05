@@ -16,7 +16,8 @@ class InsightsStore {
       watchlist: [],
       groupOwners: [],
       org: {
-        groupsAlias: 'team'
+        groupsAlias: 'team',
+        studentsAlias: 'athlete'
       },
       interfaceSettings: {
         dashboard: {
@@ -81,7 +82,8 @@ class InsightsStore {
               intensity: {
                 sevenDay: null,
                 thirtyDay: null
-              }
+              },
+              isInvitation: false
             }
           }
           return student
@@ -156,7 +158,6 @@ class InsightsStore {
     let watchlistStudents = this.students.slice().filter(s => watchlistStudentsIds.includes(s.id))
     this.watchlist = watchlistStudents
     this.org.watchlist = watchlistStudents
-    console.log(this)
   }
 
   async getStudentData (students, orgId) {
@@ -174,6 +175,34 @@ class InsightsStore {
         })
     ))
     this.students = students
+  }
+
+  async getInvitations (orgId) {
+    await actions.insights.invitations.getStudentInvitations(orgId)
+      .then(r => {
+        let invitations = r.map(i => {
+          return ({
+            ...i,
+            classes: [],
+            assignments: [],
+            student: {
+              name_first: i.name_first,
+              name_last: i.name_last,
+              phone: i.phone,
+              users: [{
+                email: i.email
+              }]
+            },
+            intensity: {
+              sevenDay: 0,
+              thirtyDay: 0
+            },
+            isInvitation: true,
+            org_groups: []
+          })
+        })
+        this.invitations = invitations
+      })
   }
 
   getRole (user) {
@@ -204,6 +233,10 @@ class InsightsStore {
       await this.getStudents(filters, orgId, user)
     }
 
+    if (!filters || filters.includes('invitations')) {
+      await this.getInvitations(orgId)
+    }
+
     if (!filters || filters.includes('groups')) {
       await this.getOrgGroups(orgId, user, role)
     }
@@ -223,6 +256,8 @@ class InsightsStore {
     if (!filters || filters.includes('groupOwnerWatchlist')) {
       await this.getGroupOwnerWatchlist(orgId, user)
     }
+
+    Promise.resolve(true)
   }
 
   async getData (filters) {
@@ -234,6 +269,7 @@ class InsightsStore {
   async updateData (filters) {
     this.loadingUpdate = true
     await this.getAllData(filters)
+    Promise.resolve(true)
     this.getDataSuccess()
   }
 
@@ -243,6 +279,11 @@ class InsightsStore {
     } else {
       return false
     }
+  }
+
+  @action
+  getStudentsAndInvitations () {
+    return this.students.concat(this.invitations)
   }
 
   @action

@@ -21,7 +21,6 @@ class CreateOrgOwner extends React.Component {
     } else {
       this.setState({error: null})
       actions.insights.createInsightsUser(this.state.email).then((user) => {
-        console.log(user)
         actions.insights.createOrgOwner(this.props.org.id, {user_id: user.id})
           .then(() => {
             this.props.onSubmit && this.props.onSubmit()

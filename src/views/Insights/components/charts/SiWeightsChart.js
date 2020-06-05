@@ -91,6 +91,7 @@ class WeightsTimeline extends React.Component {
         break
     }
 
+    console.log(data)
     return data
   }
 

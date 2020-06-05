@@ -4,6 +4,7 @@ import { inject, observer } from 'mobx-react'
 import SiAssignmentsChart from '../components/charts/SiAssignmentsChart'
 import { getAssignmentWeightsInNextNDays } from '../utils'
 import SiWeightsChart from '../components/charts/SiWeightsChart'
+import SiSpoofChart from '../components/charts/SiSpoofChart'
 
 @inject('rootStore') @observer
 class StudentInsights extends React.Component {
@@ -19,12 +20,12 @@ class StudentInsights extends React.Component {
     return this.props.rootStore.insightsStore.interfaceSettings.dashboard.timeframe === 'Next 7 days' ? 7 : 30
   }
 
-  renderContent () {
+  renderCharts () {
     let assignments = this.state.assignments
     let chartSize = {width: 600, height: 350}
 
-    return (
-      <div className='si-student-insights'>
+    if (this.props.classes.length > 0) {
+      return (
         <div className='si-student-insights-row'>
           <div className='si-student-chart-container'>
             <div className='si-student-insights-switch'>
@@ -42,6 +43,25 @@ class StudentInsights extends React.Component {
             <div><b>{getAssignmentWeightsInNextNDays(assignments, this.getTimeframe())}% of {this.props.user.student.name_first}&apos;s grade</b> will be determined in the next {this.getTimeframe()} days</div>
           </div>
         </div>
+      )
+    } else {
+      return (
+        <div className='si-student-insights-row'>
+          <div className='si-student-chart-container'>
+            <SiSpoofChart chartSize={chartSize} />
+          </div>
+          <div className='si-student-insights-detail'>
+            <div>Insights will appear here when {this.props.user.student.name_first}&apos;s classes are set up</div>
+          </div>
+        </div>
+      )
+    }
+  }
+
+  renderContent () {
+    return (
+      <div className='si-student-insights'>
+        {this.renderCharts()}
       </div>
     )
   }

@@ -9,10 +9,14 @@ import TeamsCell from '../components/TeamsCell'
 import GentleModal from '../components/GentleModal'
 import SkSelect from '../../components/SkSelect'
 import { Link } from 'react-router-dom'
-import { getAssignmentCountInNextNDays, getAssignmentWeightsInNextNDays } from '../utils'
+import { getAssignmentCountInNextNDays, getAssignmentWeightsInNextNDays, toTitleCase } from '../utils'
 import LoadingIndicator from '../components/LoadingIndicator'
-import CreateNewStudent from './CreateNewStudent'
 import SkModal from '../../components/SkModal/SkModal'
+import CreateStudentForm from '../components/CreateStudents/CreateStudentForm'
+import { asyncForEach } from '../../../utilities/api'
+import actions from '../../../actions'
+import SkLoader from '../../../assets/sk-icons/SkLoader'
+import ActionModal from '../components/ActionModal'
 
 @inject('rootStore') @observer
 class Students extends React.Component {
@@ -24,14 +28,30 @@ class Students extends React.Component {
     this.state = {
       showFilter: false,
       showSort: false,
+      showNewStudentModal: false,
       teamsQuery: '',
       studentsQuery: '',
       sort: {
         value: 'Last name',
         type: 'Ascending'
       },
-      timeframe: 7
+      timeframe: 7,
+      loading: true
     }
+
+    this.getStudents()
+  }
+
+  async getStudents () {
+    await asyncForEach(this.props.rootStore.insightsStore.invitations, async i => {
+      await asyncForEach(i.class_ids, async id => {
+        await actions.classes.getClassById(id)
+          .then(r => {
+            i.classes.push(r)
+          })
+      })
+    })
+    this.setState({loading: false})
   }
 
   sortStudents (students) {
@@ -109,7 +129,7 @@ class Students extends React.Component {
   }
 
   renderFilteredStudents () {
-    let students = this.props.rootStore.insightsStore.students
+    let students = this.props.rootStore.insightsStore.getStudentsAndInvitations()
 
     if (this.state.teamsQuery) {
       students = students.filter(s => s.org_groups.map(g => g.name.toLowerCase()).join(' ').includes(this.state.teamsQuery.toLowerCase()))
@@ -170,6 +190,30 @@ class Students extends React.Component {
     )
   }
 
+  renderSetup () {
+    return (
+      <div style={{width: '100%', textAlign: 'center'}}>Setup</div>
+    )
+  }
+
+  async delInvitation (invitationId) {
+    await actions.insights.invitations.deleteInvitation(this.props.rootStore.insightsStore.org.id, invitationId)
+      .then(async () => {
+        await this.props.rootStore.insightsStore.updateData(['invitations'])
+        this.setState({loading: false})
+      })
+  }
+
+  renderInvitationNameCell (d) {
+    return (
+      <div key={d.id + 1000} colSpan={3} style={{fontStyle: 'oblique', display: 'flex'}}>
+        {d.name_first + ' ' + d.name_last} (pending invitation) <ActionModal>
+          <div onClick={() => this.delInvitation(d.id)} className='si-action-modal-item delete'>Delete {d.name_first + ' ' + d.name_last}&apos;s invitation</div>
+        </ActionModal>
+      </div>
+    )
+  }
+
   renderTable () {
     const headers = [
       [
@@ -178,9 +222,13 @@ class Students extends React.Component {
         this.renderHeaderItem('My Watchlist', 2, 1),
         this.renderHeaderItem('Teams', 2, 1),
         // this.renderHeaderItem('Phone (click to copy)', 2, 1),
+        this.renderHeaderItem(this.renderSetup(), 1, 3),
         this.renderHeaderItem(this.renderTimeframe(), 1, 3)
       ],
       [
+        this.renderHeaderItem('Activation', 1, 1),
+        this.renderHeaderItem('Classes', 1, 1),
+        this.renderHeaderItem('Setup', 1, 1),
         this.renderHeaderItem('Assignments', 1, 1),
         this.renderHeaderItem('Weight', 1, 1),
         this.renderHeaderItem('Personal Intensity', 1, 1)
@@ -189,16 +237,31 @@ class Students extends React.Component {
     let intensityString = this.state.timeframe === 7 ? 'sevenDay' : 'thirtyDay'
     let da = this.renderFilteredStudents()
     const d = da.map(d => {
-      return [
-        <Avatar user={d} key={d.id} />,
-        this.renderStudentAthleteCell(d),
-        <WatchToggle rootStore={this.props.rootStore} showConfirm={true} user={d} key={d.id} />,
-        <TeamsCell key={d.id} user={d} org={this.props.rootStore.insightsStore.org} onChange={() => this.props.rootStore.insightsStore.updateData(['students', 'groups'])} />,
-        // <CopyCell isPhone={true} text={d.student.phone} key={d.id} />,
-        <div key={d.id}>{getAssignmentCountInNextNDays(d.assignments, this.state.timeframe)}</div>,
-        <div key={d.id}>{getAssignmentWeightsInNextNDays(d.assignments, this.state.timeframe)}</div>,
-        <div key={d.id}>{d.intensity[intensityString]}</div>
-      ]
+      if (d.isInvitation) {
+        return [
+          <Avatar user={d} key={d.id} />,
+          this.renderInvitationNameCell(d),
+          // <CopyCell isPhone={true} text={d.student.phone} key={d.id} />,
+          <div className='si-students-table-icon red' key={d.id}><i className='fas fa-times' /></div>,
+          <div key={d.id}>{d.class_ids.length}</div>,
+          <div key={d.id}>{d.classes.filter(cl => cl.status.id >= 1400).length + ' of ' + d.class_ids.length}</div>,
+          <span colSpan={3} key={d.id + 10000} style={{fontStyle: 'oblique', textAlign: 'center'}}>N/A</span>
+        ]
+      } else {
+        return [
+          <Avatar user={d} key={d.id} />,
+          this.renderStudentAthleteCell(d),
+          <WatchToggle rootStore={this.props.rootStore} showConfirm={true} user={d} key={d.id} />,
+          <TeamsCell key={d.id} user={d} org={this.props.rootStore.insightsStore.org} onChange={() => this.props.rootStore.insightsStore.updateData(['students', 'groups'])} />,
+          // <CopyCell isPhone={true} text={d.student.phone} key={d.id} />,
+          <div className='si-students-table-icon green' key={d.id}><i className='fas fa-check' /></div>,
+          <div key={d.id}>{d.classes.length}</div>,
+          <div key={d.id}>{d.classes.filter(cl => cl.status.id >= 1400).length + ' of ' + d.classes.length}</div>,
+          <div key={d.id}>{getAssignmentCountInNextNDays(d.assignments, this.state.timeframe)}</div>,
+          <div key={d.id}>{getAssignmentWeightsInNextNDays(d.assignments, this.state.timeframe)}</div>,
+          <div key={d.id}>{d.intensity[intensityString]}</div>
+        ]
+      }
     })
 
     return (
@@ -277,8 +340,11 @@ class Students extends React.Component {
   renderNewStudentModal () {
     return (
       this.state.showNewStudentModal
-        ? <SkModal closeModal={() => this.setState({showNewStudentModal: false})}>
-          <CreateNewStudent />
+        ? <SkModal title={'Invite a new ' + this.props.rootStore.insightsStore.org.studentsAlias} disableOutsideClick closeModal={() => this.setState({showNewStudentModal: false})}>
+          <CreateStudentForm onSubmit={() => {
+            this.props.rootStore.insightsStore.updateData(['invitations'])
+            this.setState({showNewStudentModal: false})
+          }} />
         </SkModal>
         : null
     )
@@ -296,14 +362,17 @@ class Students extends React.Component {
             <div className='si-button'>
               <p
                 onClick={() => this.setState({showNewStudentModal: true})}
-              >Invite a New Student</p>
+              >Invite a New {toTitleCase(this.props.rootStore.insightsStore.org.studentsAlias)}</p>
             </div>
             {this.renderNewStudentModal()}
           </div>
         </div>
         <div className='si-students-content'>
           {this.renderFilterBar()}
-          {this.renderTable()}
+          {this.state.loading
+            ? <SkLoader />
+            : this.renderTable()
+          }
         </div>
       </div>
     )

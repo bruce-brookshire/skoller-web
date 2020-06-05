@@ -11,9 +11,12 @@
 @import 'views/si-students.scss';
 
 // components
+@import 'components/si-bulk-upload.scss';
 @import 'components/si-class-list.scss';
+@import 'components/si-create-students.scss';
 @import 'components/si-filter-bar.scss';
 @import 'components/si-filter-modal.scss';
+@import 'components/si-form.scss';
 @import 'components/si-gm.scss';
 @import 'components/si-layout.scss';
 @import 'components/si-nav.scss';
@@ -162,6 +165,61 @@
     @include themed() {
       background: t($hover);
       border-radius: 5px;
+    }
+  }
+}
+
+.sk-modal-container {
+  @include themed() {
+    background: t($bg);
+  }
+}
+
+.si-button {
+  @include sk-standard-button;
+}
+
+.si-action-modal {
+  i {
+    color: $sk-blue;
+    cursor: pointer;
+    padding: 4px;
+    margin: -4px;
+    border-radius: 5px;
+
+    &:hover {
+      @include themed() {
+        background-color: t($hover);
+      }
+    }
+  }
+
+  .si-gm {
+    margin-left: 24px;
+    min-width: 100%;
+    white-space: nowrap;
+    font-style: normal;
+
+    .si-action-modal-item {
+      color: $sk-blue;
+      cursor: pointer;
+      padding: 8px 4px 4px 4px;
+
+      p {
+        margin: 0;
+      }
+
+      &:hover {
+        @include themed() {
+          background-color: t($hover);
+        }
+      }
+
+      &.delete {
+        @include themed() {
+          color: t($alert-red)
+        }
+      }
     }
   }
 }

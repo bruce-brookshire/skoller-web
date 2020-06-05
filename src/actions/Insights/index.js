@@ -1,6 +1,8 @@
-import {get, post, del} from '../utilities/api'
-import {showSnackbar} from '../utilities/snackbar'
-import stores from '../stores'
+import {get, post, del} from '../../utilities/api'
+import {showSnackbar} from '../../utilities/snackbar'
+import stores from '../../stores'
+import invitations from './invitations'
+
 const {userStore} = stores
 
 /*
@@ -243,7 +245,7 @@ function getOrgOwnerWatchlist (orgId, orgOwnerId) {
 
 // Add a student to an org owner watchlist
 function addStudentToOrgOwnerWatchlist (orgId, orgOwnerId, orgStudentId) {
-  let form = {org_student_id: orgStudentId}
+  let form = {org_student_id: orgStudentId, inserted_at: (new Date().toISOString()).split('.')[0]}
   return post(`/api/v1/organizations/${orgId}/owners/${orgOwnerId}/watchlists`, form, '')
     .then(r => { return r })
     .catch(e => Promise.reject(e))
@@ -371,6 +373,8 @@ function removeStudentFromGroupOwnerWatchlist (groupOwnerId, studentId) {
 }
 
 const exports = {
+  invitations,
+
   /*
 
   ADMIN
