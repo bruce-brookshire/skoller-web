@@ -18,11 +18,16 @@ class SmartTracker extends React.Component {
     }
   }
 
+  onSetupClasses () {
+    console.log('setup classes')
+  }
+
   renderValue (d) {
+    const setup = <div className='si-smart-tracker-value no-classes' onClick={(d) => this.onSetupClasses(d)}>Setup classes</div>
     if (d.isInvitation) {
-      if (d.class_ids.length === 0) return <div className='si-smart-tracker-value no-classes'>Setup classes</div>
+      if (d.class_ids.length === 0) return setup
     } else {
-      if (d.classes.length === 0) return <div className='si-smart-tracker-value no-classes'>Setup classes</div>
+      if (d.classes.length === 0) return setup
     }
 
     const days = this.props.rootStore.insightsStore.interfaceSettings.dashboard.timeframe === 'Next 7 days' ? 7 : 30

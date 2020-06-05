@@ -60,8 +60,11 @@ class HubInsights extends React.Component {
       })
     await actions.insights.getAllStudentsInOrg(org.id)
       .then(students => {
-        console.log(students)
         org.students = students.map(s => { return {...s, orgStudentId: s.id} })
+      })
+    await actions.insights.invitations.getStudentInvitations(org.id)
+      .then(invitations => {
+        org.invitations = invitations
       })
     this.setState({loadingDetails: false, orgSelection: org})
   }
@@ -248,15 +251,14 @@ class HubInsights extends React.Component {
 
   renderOrgGroupOwners () {
     if (this.state.orgSelection) {
-      console.log(this.state.orgSelection)
-      let data = this.getAllOrgGroupOwners().map(o => [o.id, this.renderOwnerTeamsCell(o)])
+      let data = this.state.orgSelection.groupOwners.map(o => [o.user.email, this.renderOwnerTeamsCell(o)])
       data.push([this.renderCreateOrgGroupOwnerButton()])
       data.push([this.renderTagUserToOrgGroupButton()])
       return (
         <div className='hub-insights-group'>
           <h2>Group Owners</h2>
           <Table
-            headers={['ID', 'Teams (org groups)']}
+            headers={['Email', 'Teams (org groups)']}
             data={data}
           />
           {this.state.showCreateOrgGroupOwnersModal &&
@@ -317,6 +319,38 @@ class HubInsights extends React.Component {
     }
   }
 
+  revokeInvitation (invitation) {
+    actions.insights.invitations.deleteInvitation(this.state.orgSelection.id, invitation.id)
+      .then(() => {
+        this.getOrgData()
+      })
+  }
+
+  renderRevoke (i) {
+    return (
+      <div onClick={() => this.revokeInvitation(i)} style={{cursor: 'pointer', color: 'red'}}>Revoke invitation</div>
+    )
+  }
+
+  renderOrgInvitations () {
+    if (this.state.orgSelection) {
+      let data = this.state.orgSelection.invitations.map(i => [i.name_first + ' ' + i.name_last, i.phone, this.renderRevoke(i)])
+      return (
+        <div className='hub-insights-group'>
+          <h2>Invitations</h2>
+          <Table
+            headers={['Name', 'Phone', 'Revoke']}
+            data={data}
+          />
+        </div>
+      )
+    } else {
+      return (
+        <div />
+      )
+    }
+  }
+
   renderDetails () {
     return (
       <React.Fragment>
@@ -327,6 +361,7 @@ class HubInsights extends React.Component {
           {this.renderOrgGroups()}
           {this.renderOrgGroupOwners()}
           {this.renderOrgStudents()}
+          {this.renderOrgInvitations()}
         </div>
       </React.Fragment>
     )

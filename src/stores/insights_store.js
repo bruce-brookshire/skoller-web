@@ -113,6 +113,7 @@ class InsightsStore {
   async getGroupOwners (orgId) {
     await actions.insights.getAllOrgGroupOwnersInOrg(orgId)
       .then(r => {
+        console.log(r)
         let groupOwners = r
         let filteredGroupOwners = []
         groupOwners.forEach(go => {
