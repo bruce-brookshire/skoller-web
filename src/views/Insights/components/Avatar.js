@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 const Avatar = (props) => {
-  console.log(props.user)
   return (
     <div className='si-avatar'>
       {(props.user && props.user.student.users[0].pic_path)

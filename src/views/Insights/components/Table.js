@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { observer } from 'mobx-react'
 
+@observer
 class Table extends React.Component {
   renderHeader (d, i) {
     let colSpan = null
@@ -11,7 +13,7 @@ class Table extends React.Component {
     }
 
     return (
-      <th key={i} colSpan={colSpan} rowSpan={rowSpan}>
+      <th className={this.props.stickyHeader ? 'sticky' : null} key={i} colSpan={colSpan} rowSpan={rowSpan}>
         {d ? d.children ? d.children : d : null}
       </th>
     )
@@ -42,7 +44,7 @@ class Table extends React.Component {
 
     return (
       <table className={'si-table' + (this.props.className ? (' ' + this.props.className) : '')}>
-        <thead>
+        <thead className={this.props.stickyHeader ? 'sticky' : null}>
           {headers.map(d => {
             let i = headers.indexOf(d)
             return (
@@ -76,7 +78,8 @@ class Table extends React.Component {
 Table.propTypes = {
   headers: PropTypes.array,
   data: PropTypes.array,
-  className: PropTypes.string
+  className: PropTypes.string,
+  stickyHeader: PropTypes.bool
 }
 
 export default Table

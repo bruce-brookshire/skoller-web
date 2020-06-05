@@ -18,7 +18,18 @@ class SmartTracker extends React.Component {
     }
   }
 
+  onSetupClasses () {
+    console.log('setup classes')
+  }
+
   renderValue (d) {
+    const setup = <div className='si-smart-tracker-value no-classes' onClick={(d) => this.onSetupClasses(d)}>Setup classes</div>
+    if (d.isInvitation) {
+      if (d.class_ids.length === 0) return setup
+    } else {
+      if (d.classes.length === 0) return setup
+    }
+
     const days = this.props.rootStore.insightsStore.interfaceSettings.dashboard.timeframe === 'Next 7 days' ? 7 : 30
     let intensityString = days === 7 ? 'sevenDay' : 'thirtyDay'
     let value
@@ -134,7 +145,7 @@ class SmartTracker extends React.Component {
 
   renderTable () {
     const headers = ['Athlete', this.renderSortOption()]
-    const data = this.filterStudents(this.props.rootStore.insightsStore.students).map(d => {
+    const data = this.filterStudents(this.props.rootStore.insightsStore.getStudentsAndInvitations()).map(d => {
       return [
         <StudentAthleteCard user={d} key={d.id} rootStore={this.props.rootStore} />,
         this.renderValue(d)
@@ -169,7 +180,7 @@ class SmartTracker extends React.Component {
   render () {
     let timeframeOptions = ['Next 7 days', 'Next 30 days']
     let filterOptions = ['Assignments', 'Grade Impact', 'Personal Intensity']
-    let teamOptions = ['All'].concat(this.props.rootStore.insightsStore.org.groups.map(g => g.name))
+    let teamOptions = ['All'].concat(this.props.rootStore.insightsStore.org.groups ? this.props.rootStore.insightsStore.org.groups.map(g => g.name) : null)
     let title = toTitleCase(this.props.rootStore.insightsStore.org.groupsAlias) + 's'
     let interfaceSettings = this.props.rootStore.insightsStore.interfaceSettings
     return (

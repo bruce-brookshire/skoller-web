@@ -1,0 +1,59 @@
+.si-form {
+  margin-left: 0;
+  margin-right: -2rem;
+
+  label {
+    // themed variables
+    @include themed() {
+      color: t($font-color);
+    }
+  }
+
+  input {
+    @include remove-form-styling;
+    border: 1px solid $sk-blue;
+    font-size: 14px;
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+
+    // themed variables
+    @include themed() {
+      color: t($font-color);
+      background-color: t($bg);
+      &::placeholder {
+        color: t($input-p);
+      }
+    }
+
+    &.error {
+      border-color: $sk-alert-red;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .si-form-item {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .si-form-submit {
+    @include sk-standard-button;
+  }
+
+  .si-form-row {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    width: 100%;
+    margin: 0 -1rem 1rem -1rem;
+
+    > * {
+      margin: 0 1rem;
+    }
+  }
+}

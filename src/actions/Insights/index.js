@@ -1,6 +1,8 @@
-import {get, post, del} from '../utilities/api'
-import {showSnackbar} from '../utilities/snackbar'
-import stores from '../stores'
+import {get, post, del} from '../../utilities/api'
+import {showSnackbar} from '../../utilities/snackbar'
+import stores from '../../stores'
+import invitations from './invitations'
+
 const {userStore} = stores
 
 /*
@@ -243,7 +245,7 @@ function getOrgOwnerWatchlist (orgId, orgOwnerId) {
 
 // Add a student to an org owner watchlist
 function addStudentToOrgOwnerWatchlist (orgId, orgOwnerId, orgStudentId) {
-  let form = {org_student_id: orgStudentId}
+  let form = {org_student_id: orgStudentId, inserted_at: (new Date().toISOString()).split('.')[0]}
   return post(`/api/v1/organizations/${orgId}/owners/${orgOwnerId}/watchlists`, form, '')
     .then(r => { return r })
     .catch(e => Promise.reject(e))
@@ -339,8 +341,30 @@ function getGroupOwnerWatchlist (orgId, orgGroupId, orgGroupOwnerId) {
 }
 
 // Add a student to a group owner's watchlist
-function addStudentToGroupOwnerWatchlist (groupOwnerId, studentId) {
-  console.log('addStudentToGroupOwnerWatchlist')
+function addStudentToGroupOwnerWatchlist (orgId, groupOwnerId, orgGroupId, orgStudentId) {
+  return get(`/api/v1/organizations/${orgId}/org-groups/${orgGroupId}/students`, '', '')
+    .then(students => {
+      let orgGroupStudent = students.find(s => s.org_student_id === orgStudentId)
+
+      if (orgGroupStudent) {
+        let form = {
+          org_group_student_id: orgGroupStudent.id
+        }
+        post(`/api/v1/organizations/${orgId}/org-groups/${orgGroupId}/owners/${groupOwnerId}/watchlists`, form, '')
+          .then(r => {
+            return Promise.resolve(r)
+          })
+          .catch(error => {
+            return Promise.reject(error)
+          })
+      } else {
+        const error = 'Cannot find student'
+        return Promise.reject(error)
+      }
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
 }
 
 // Remove a student from a group owner's watchlist
@@ -349,6 +373,8 @@ function removeStudentFromGroupOwnerWatchlist (groupOwnerId, studentId) {
 }
 
 const exports = {
+  invitations,
+
   /*
 
   ADMIN

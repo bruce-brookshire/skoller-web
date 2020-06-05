@@ -11,9 +11,18 @@ $b5: $sk-blue-5;
   border-collapse: collapse;
   text-align: left;
   word-break: break-all;
+  position: relative;
+
+  @include themed() {
+    background-color: t($bg-u);
+  }
 
   thead {
     background-color: $b75;
+
+    &.sticky {
+      background-color: rgba(0, 0, 0, 0);
+    }
   }
 
   table, th, td {
@@ -34,6 +43,15 @@ $b5: $sk-blue-5;
     &:before {
       content: '+ ';
       font-weight: 600;
+    }
+  }
+
+  th {
+    &.sticky {
+      position: sticky;
+      top: 0;
+      background-color: $b;
+      color: white;
     }
   }
 }

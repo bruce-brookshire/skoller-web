@@ -16,7 +16,8 @@ class InsightsStore {
       watchlist: [],
       groupOwners: [],
       org: {
-        groupsAlias: 'team'
+        groupsAlias: 'team',
+        studentsAlias: 'athlete'
       },
       interfaceSettings: {
         dashboard: {
@@ -64,7 +65,7 @@ class InsightsStore {
     }
   }
 
-  async getStudents (filters, orgId) {
+  async getStudents (filters, orgId, user) {
     await actions.insights.getAllStudentsInOrg(orgId)
       .then(async r => {
         let students = r.map(s => {
@@ -81,11 +82,25 @@ class InsightsStore {
               intensity: {
                 sevenDay: null,
                 thirtyDay: null
-              }
+              },
+              isInvitation: false
             }
           }
           return student
         })
+
+        // filter out students that group owner doesn't own
+        if (this.userType === 'groupOwner') {
+          students = students.filter(s => {
+            let hasStudent = false
+            s.org_groups.forEach(g => {
+              if (user.org_group_owners.map(gr => gr.id).includes(g.id)) {
+                hasStudent = true
+              }
+            })
+            return hasStudent
+          })
+        }
 
         if (!filters || filters.includes('studentClasses')) {
           await this.getStudentData(students, orgId)
@@ -98,6 +113,7 @@ class InsightsStore {
   async getGroupOwners (orgId) {
     await actions.insights.getAllOrgGroupOwnersInOrg(orgId)
       .then(r => {
+        console.log(r)
         let groupOwners = r
         let filteredGroupOwners = []
         groupOwners.forEach(go => {
@@ -129,16 +145,18 @@ class InsightsStore {
   }
 
   async getGroupOwnerWatchlist (orgId, user) {
-    let watchlistStudents = []
-    await Promise.all(user.org_group_owners.map(group => {
+    let watchlistStudentsIds = []
+    await this.asyncForEach(user.org_group_owners, async group => {
       let orgGroupId = group.id
-      let orgGroupOwnerId = this.groups.find(g => g.id === orgGroupId).owners.find(o => o.org_member_id === this.groupOwners.find(go => go.user_id === user.id).id)
-      actions.insights.getGroupOwnerWatchlist(orgId, orgGroupId, orgGroupOwnerId)
+      let orgGroupOwnerId = this.groups.find(g => g.id === orgGroupId).owners.find(o => o.org_member_id === this.groupOwners.find(go => go.user_id === user.id).id).id
+      await actions.insights.getGroupOwnerWatchlist(orgId, orgGroupId, orgGroupOwnerId)
         .then(r => {
-          let students = r.map(s => { return {...s, orgStudentId: s.id} })
-          watchlistStudents.concat(students)
+          let studentIds = r.map(s => s.org_group_student.org_student_id)
+          watchlistStudentsIds = watchlistStudentsIds.concat(studentIds)
         })
-    }))
+    })
+
+    let watchlistStudents = this.students.slice().filter(s => watchlistStudentsIds.includes(s.id))
     this.watchlist = watchlistStudents
     this.org.watchlist = watchlistStudents
   }
@@ -148,6 +166,7 @@ class InsightsStore {
       actions.insights.getStudentClasses(orgId, s.id)
         .then(r => {
           let assignments = [].concat.apply([], r.map(cl => cl.assignments))
+          s.org_student_id = s.id
           s.classes = r
           s.assignments = assignments
           s.intensity = {
@@ -157,6 +176,34 @@ class InsightsStore {
         })
     ))
     this.students = students
+  }
+
+  async getInvitations (orgId) {
+    await actions.insights.invitations.getStudentInvitations(orgId)
+      .then(r => {
+        let invitations = r.map(i => {
+          return ({
+            ...i,
+            classes: [],
+            assignments: [],
+            student: {
+              name_first: i.name_first,
+              name_last: i.name_last,
+              phone: i.phone,
+              users: [{
+                email: i.email
+              }]
+            },
+            intensity: {
+              sevenDay: 0,
+              thirtyDay: 0
+            },
+            isInvitation: true,
+            org_groups: []
+          })
+        })
+        this.invitations = invitations
+      })
   }
 
   getRole (user) {
@@ -184,7 +231,11 @@ class InsightsStore {
     }
 
     if (!filters || filters.includes('students')) {
-      await this.getStudents(filters, orgId)
+      await this.getStudents(filters, orgId, user)
+    }
+
+    if (!filters || filters.includes('invitations')) {
+      await this.getInvitations(orgId)
     }
 
     if (!filters || filters.includes('groups')) {
@@ -206,6 +257,8 @@ class InsightsStore {
     if (!filters || filters.includes('groupOwnerWatchlist')) {
       await this.getGroupOwnerWatchlist(orgId, user)
     }
+
+    Promise.resolve(true)
   }
 
   async getData (filters) {
@@ -217,6 +270,7 @@ class InsightsStore {
   async updateData (filters) {
     this.loadingUpdate = true
     await this.getAllData(filters)
+    Promise.resolve(true)
     this.getDataSuccess()
   }
 
@@ -226,6 +280,11 @@ class InsightsStore {
     } else {
       return false
     }
+  }
+
+  @action
+  getStudentsAndInvitations () {
+    return this.students.concat(this.invitations)
   }
 
   @action

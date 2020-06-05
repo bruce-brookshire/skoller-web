@@ -1,7 +1,7 @@
 import { csv, get, post, del, put } from '../utilities/api'
 import { showSnackbar } from '../utilities/snackbar'
 import stores from '../stores'
-const { userStore, studentClassesStore } = stores
+const { userStore } = stores
 
 /*
  * Search classes by param
@@ -142,6 +142,7 @@ export function getStudentClass (studentId, classId) {
  * @param [Number] classId. The id of the student.
  */
 export function getClassById (classId) {
+  console.log('getClassById')
   return get(
     `/api/v1/classes/${classId}`,
     '',

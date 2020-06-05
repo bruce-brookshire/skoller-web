@@ -187,7 +187,7 @@ import {
   getJobBySenderReference,
   sendJobAction
 } from './jobs'
-import insights from './insights'
+import insights from './Insights'
 
 const actions = {
   analytics: {

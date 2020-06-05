@@ -32,6 +32,10 @@
     .si-students-table {
       width: 100%;
 
+      th {
+        text-align: center;
+      }
+
       .si-students-timeframe {
         display: flex;
         flex-direction: row;
@@ -67,6 +71,27 @@
         &:hover {
           background-color: $sk-blue-25;
           box-shadow: 0px 4px 12px rgba(0,0,0,0.05);
+        }
+      }
+
+      .si-students-table-icon {
+        width: 100%;
+
+        i {
+          width: 100%;
+          text-align: center;
+        }
+
+        &.green {
+          @include themed() {
+            color: t($success-green);
+          }
+        }
+
+        &.red {
+          @include themed() {
+            color: t($alert-red);
+          }
         }
       }
     }

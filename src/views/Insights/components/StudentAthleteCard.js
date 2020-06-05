@@ -6,6 +6,30 @@ import { Link } from 'react-router-dom'
 
 const StudentAthleteCard = (props) => {
   const link = props.noLink ? null : '/insights/students/' + props.user.id
+  if (props.user.isInvitation) {
+    return (
+      <div className='si-sa-card-container'>
+        <div className={'si-sa-card' + (props.noLink ? ' no-link' : '')}>
+          <Avatar user={props.user} />
+          <div className='sa-info'>
+            <div className='sa-name'>
+              {props.user.student.name_first + ' ' + props.user.student.name_last} <small style={{fontStyle: 'oblique', fontSize: '14px', margin: '4px 0 0 8px'}}> (pending invitation)</small>
+            </div>
+            {!props.noTeams && <div className='sa-teams'>
+              {props.user.group_ids.map(id => {
+                const t = props.rootStore.insightsStore.groups.find(g => g.id === id)
+                return (
+                  <div className='sa-team' key={props.user.org_groups.indexOf(t)}>
+                    {t.name}{props.user.org_groups.indexOf(t) !== props.user.org_groups.length - 1 ? ', ' : ''}
+                  </div>
+                )
+              })}
+            </div>}
+          </div>
+        </div>
+      </div>
+    )
+  }
   return (
     <div className='si-sa-card-container'>
       <div className={'si-sa-card' + (props.noLink ? ' no-link' : '')}>

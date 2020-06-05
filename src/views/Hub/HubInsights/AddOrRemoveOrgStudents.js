@@ -36,7 +36,13 @@ class AddOrRemoveOrgStudents extends React.Component {
   }
 
   tagStudent (user) {
-    actions.insights.addStudentToOrg(this.props.org.id, user.student.id)
+    let form = {
+      name_first: user.student.name_first,
+      name_last: user.student.name_last,
+      phone: user.student.phone,
+      email: user.email
+    }
+    actions.insights.invitations.createStudentInvitation(this.props.org.id, form)
       .then(() => {
         this.props.onSubmit && this.props.onSubmit()
         this.getAccounts(this.state.query)
@@ -51,26 +57,41 @@ class AddOrRemoveOrgStudents extends React.Component {
       })
   }
 
+  revokeInvitation (invitation) {
+    actions.insights.invitations.deleteInvitation(this.props.org.id, invitation.id)
+      .then(() => {
+        this.props.onSubmit && this.props.onSubmit()
+        this.getAccounts(this.state.query)
+      })
+  }
+
   renderTagButton (user) {
     if (user.isStudent) {
-      return (
-        <div onClick={() => this.removeStudent(user)} className='hub-insights-form-button'>
-          <p style={{backgroundColor: 'red'}}>Remove student from org</p>
-        </div>
-      )
+      return <div onClick={() => this.removeStudent(user)} className='hub-insights-form-button'>
+        <p style={{backgroundColor: 'red'}}>Remove student from org</p>
+      </div>
     } else {
-      return (
-        <div onClick={() => this.tagStudent(user)} className='hub-insights-form-button'>
-          <p>Add student to org</p>
-        </div>
-      )
+      if (this.props.org.invitations.map(i => i.student_id).includes(user.student.id)) {
+        const invitation = this.props.org.invitations.find(i => i.student_id === user.student.id)
+        return (
+          <div onClick={() => this.revokeInvitation(invitation)} className='hub-insights-form-button'>
+            <p style={{backgroundColor: 'red'}}>Revoke invitation</p>
+          </div>
+        )
+      } else {
+        return (
+          <div onClick={() => this.tagStudent(user)} className='hub-insights-form-button'>
+            <p>Add student to org</p>
+          </div>
+        )
+      }
     }
   }
 
   render () {
     return (
       <div className='hub-insights-form-container' style={{padding: '0 1rem'}}>
-        <h1 style={{margin: 0}}>Add or Remove Org Students</h1>
+        <h1 style={{margin: 0}}>Invite or Remove Org Students</h1>
         <h3 style={{margin: 0}}>{this.props.org.name}</h3>
         <div className='hub-insights-form-row'>
           <input className='hub-insights-form-input' placeholder='Search for a user by email address or name' onChange={(e) => this.setState({query: e.target.value})} />

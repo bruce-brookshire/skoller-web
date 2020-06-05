@@ -17,12 +17,15 @@
     
     .si-groups-header-right {
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
+      width: 180px;
 
       .si-button {
+        width: 100%;
         @include sk-standard-button;
+        margin-bottom: 8px;
       }
     }
   }
@@ -33,6 +36,45 @@
 
       .si-groups-table-name {
         min-width: 196px;
+        display: flex;
+        flex-direction: row;
+        margin-top: 6px;
+
+        i {
+          color: $sk-blue;
+          cursor: pointer;
+          padding: 4px;
+          margin: -4px;
+          border-radius: 5px;
+
+          &:hover {
+            @include themed() {
+              background-color: t($hover);
+            }
+          }
+        }
+
+        .si-gm {
+          margin-left: 24px;
+          min-width: 100%;
+          white-space: nowrap;
+
+          .action-button {
+            color: $sk-blue;
+            cursor: pointer;
+            padding: 8px 4px 4px 4px;
+
+            p {
+              margin: 0;
+            }
+            
+            &:hover {
+              @include themed() {
+                background-color: t($hover);
+              }
+            }
+          }
+        }
       }
 
       .si-groups-table-sa {
