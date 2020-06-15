@@ -1,346 +1,407 @@
-.onboard-find-class {
-  h1 {
-    margin: 0;
-    text-align: center;
-  }
-
-  h3 {
-    margin: -8px 0 0 0;
-    text-align: center;
-  }
-}
-
-.sk-find-class-form {
-  margin-top: 1rem;
-
-  .sk-find-class-form-row {
-    margin: 0 0 1rem 0;
-
-    @media only screen and (max-width: $sk-mobile-break-point) {
+.sk-find-class-container {
+  .sk-find-class {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    align-items: flex-start;
+  
+    p {
+      text-align: left;
+      margin-left: 0.5rem;
+      margin-top: 4px;
+      flex-grow: 1;
+    }
+  
+    h1 {
       margin: 0;
+      text-align: left;
     }
+  
+    h3 {
+      margin: -8px 0 0 0;
+      text-align: left;
+    }
+  }
+  
+  .sk-find-class-form-container {
+    display: flex;
+    flex-flow: row nowrap;
+    max-width: 800px;
 
-    .sk-find-class-field {
-      @include sk-form-field;
-      width: 100%;
-      height: 24px;
-    }
-  
-    .sk-find-class-selected-name {
-      @include sk-form-field;
-      width: 100%;
-      height: 24px;
-      cursor: pointer;
-    }
-  
-    .sk-find-class-selected-class {
-      margin: 1rem 0;
-      padding: 8px;
-      border: 1px solid $cn-form-border;
-      border-radius: 5px;
-      cursor: pointer;
-  
-      .sk-find-class-selected-class-title {
-        h3 {
-          margin: 4px 0 0 0;
-        }
-      }
-  
-      .sk-find-class-selected-class-row {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-  
-        p {
+    .sk-find-class-form {
+      margin-top: 1rem;
+      flex-grow: 1;
+    
+      .sk-find-class-form-row {
+        margin: 0;
+    
+        @media only screen and (max-width: $sk-mobile-break-point) {
           margin: 0;
         }
-      }
-    }
-
-    .sk-find-class-scs-container {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      width: 100%;
-  
-      .sk-find-class-scs-item {
-        margin: 0 0 0.5rem 0;
-        width: 100%;
-        max-width: 30%;
-        box-sizing: border-box;
-  
-        .sk-find-class-scs-field {
-          @include remove-form-styling;
-          border: 1px solid $cn-form-border;
-          border-radius: 5px;
-          height: 36px;
-          padding: 4px;
-          width: 100%;
     
+        .sk-find-class-field {
+          @include sk-form-field;
+          width: 100%;
+          height: 24px;
+
           input {
-            width: 100%;
-            max-width: 80px;
-            padding: 6px 20px 15px 0;
-            margin-bottom: 0.5rem;
+            &:focus {
+              background-color: $sk-blue-25;
+            }
           }
         }
-      }
-    }
-  
-    .sk-find-class-mtd-container {
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
-      flex-wrap: wrap;
-      width: 100%;
-  
-      .sk-find-class-mtd-item {
-        margin: 0 0 0.5rem 0;
-        box-sizing: border-box;
-  
-        .sk-find-class-mtd-field {
-          @include remove-form-styling;
+      
+        .sk-find-class-selected-name {
+          @include sk-form-field;
+          width: 100%;
+          height: 24px;
+          cursor: pointer;
+
+          &:hover {
+            background-color: $sk-blue-25;
+          }
+        }
+    
+        .sk-find-class-scs-container {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          width: 100%;
+          margin-bottom: 0.5rem;
+
+          .sk-find-class-scs-item {
+            margin: 0 0 0.5rem 0;
+            width: calc(100% - 1rem);
+            max-width: 30%;
+            box-sizing: border-box;
+      
+            .sk-find-class-scs-field {
+              // @include remove-form-styling;
+
+              input {
+                width: 100%;
+                border: 1px solid $cn-form-border;
+                border-radius: 5px;
+                height: 36px;
+                padding: 4px;
+
+                &:focus {
+                  background-color: $sk-blue-25;
+                }
+              }
+            }
+          }
+        }
+      
+        .sk-find-class-mtd-container {
           display: flex;
           flex-direction: row;
           justify-content: flex-start;
-          @include not-selectable;
-  
-          .sk-find-class-mtd-time {
-            display: flex;
-            flex-direction: row;
-            border: 1px solid $cn-form-border;
-            border-radius: 5px;
-            height: 36px;
-            padding: 4px;
-  
-            select {
-              appearance: none;
-              height: 100%;
-              margin-bottom: 0.5rem;
-              outline: 0;
+          flex-wrap: wrap;
+          width: 100%;
+      
+          .sk-find-class-mtd-item {
+            margin: 0 0 0.5rem 0;
+            box-sizing: border-box;
+      
+            .sk-find-class-mtd-field {
+              @include remove-form-styling;
+              display: flex;
+              flex-direction: row;
+              justify-content: flex-start;
+              @include not-selectable;
+      
+              .sk-find-class-mtd-time {
+                display: flex;
+                flex-direction: row;
+                border: 1px solid $cn-form-border;
+                border-radius: 5px;
+                height: 36px;
+                padding: 4px;
+      
+                select {
+                  appearance: none;
+                  height: 100%;
+                  margin-bottom: 0.5rem;
+                  outline: 0;
+                }
+      
+                select:-moz-focusring {
+                  color: transparent;
+                  text-shadow: 0 0 0 #000;
+                }
+              }
+      
+              .sk-find-class-mtd-ampm {
+                display: flex;
+                flex-direction: row;
+                cursor: pointer;
+                box-sizing: border-box;
+                height: 36px;
+                margin: 0 8px 0 8px;
+                font-size: 12px;
+        
+                p {
+                  margin: 0;
+                  padding: 12px 4px 0 4px;
+                }
+        
+                .sk-find-class-mtd-am {
+                  border: 1px solid $cn-form-border;
+                  border-top-left-radius: 3px;
+                  border-bottom-left-radius: 3px;
+                }
+        
+                .sk-find-class-mtd-pm {
+                  margin-left: -1px;
+                  border: 1px solid $cn-form-border;
+                  border-top-right-radius: 3px;
+                  border-bottom-right-radius: 3px;
+                }
+        
+                .active {
+                  background-color: $cn-color-blue;
+                  color: white;
+                }
+              }
+      
+              .disabled {
+                background-color: rgba(0,0,0,.12);
+                color: white;
+                cursor: auto;
+      
+                select {
+                  color: white;
+                }
+              }
             }
-  
-            select:-moz-focusring {
-              color: transparent;
-              text-shadow: 0 0 0 #000;
+      
+            .sk-find-class-mtd-divider {
+              margin: 6px 6px 0 0;
             }
           }
-  
-          .sk-find-class-mtd-ampm {
+      
+          .sk-find-class-mtd-item-days {
+            flex: 1;
+      
+            .sk-find-class-mtd-days-container {
+              display: flex;
+              flex-direction: row;
+              margin: 0 0 0.5rem 0;
+      
+              .sk-find-class-mtd-day {
+                @include not-selectable;
+                margin-right: -1px;
+                border: 1px solid $cn-form-border;
+                height: 36px;
+                box-sizing: border-box;
+                width: calc(100% / 7 + 0.80px);
+                padding: 12px 5px 2px 5px;
+                text-align: center;
+                font-size: 12px;
+                cursor: pointer;
+              }
+      
+              .first {
+                border: 1px solid $cn-form-border;
+                border-top-left-radius: 3px;
+                border-bottom-left-radius: 3px;
+              }
+      
+              .last {
+                border: 1px solid $cn-form-border;
+                border-top-right-radius: 3px;
+                border-bottom-right-radius: 3px;
+              }
+      
+              .active {
+                background-color: $cn-color-blue;
+                color: white;
+              }
+      
+              .disabled {
+                background-color: rgba(0,0,0,.12);
+                color: white;
+                cursor: auto;
+              }
+            }
+          }
+      
+          .sk-find-class-mtd-item-online {
+            flex: 0 0 100%;
+            display: inline-flex;
+            justify-content: flex-end;
+            margin: -4px 0 0 0;
+            @include not-selectable;
+      
+            p {
+              margin: 4px 0 0 0;
+            }
+          }
+        }
+      
+        .sk-find-class-p-container {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          width: 100%;
+      
+          .sk-find-class-p-item {
+            margin-top: -8px;
+            width: 100%;
+            box-sizing: border-box;
+      
+            .sk-find-class-p-field {
+              @include remove-form-styling;
+              border: 1px solid $cn-form-border;
+              border-radius: 5px;
+              height: 36px;
+              padding: 4px;
+              width: 100%;
+              cursor: pointer;
+        
+              input {
+                width: 100%;
+                padding: 6px 20px 15px 0;
+                margin-bottom: 0.5rem;
+              }
+      
+              p {
+                margin: 6px 0 0 0;
+              }
+            }
+      
+            .sk-find-class-p-autocomplete-container {
+              @include hide-scrollbar;
+              cursor: pointer;
+              box-sizing: border-box;
+              padding: 4px;
+              background-color: white;
+              border: 1px solid $cn-form-border;
+              border-radius: 5px;
+              position: absolute;
+              margin-top: -1px;
+              max-height: 120px;
+              overflow: auto;
+              -webkit-overflow-scrolling: touch;
+          
+              .sk-find-class-p-autocomplete-option {
+                padding: 4px 12px 4px 4px;
+                border-bottom: 1px solid $cn-form-border;
+          
+                &:hover {
+                  background-color: rgba(0,0,0,.05);
+                }
+          
+                .sk-find-class-p-email {
+                  color: $cn-form-border;
+                }
+              }
+          
+              .sk-blue {
+                color: $cn-color-blue;
+              }
+            }
+          }
+        }
+      }
+    
+      .sk-find-class-autocomplete-container {
+        @include hide-scrollbar;
+        cursor: pointer;
+        box-sizing: border-box;
+        padding: 4px;
+        background-color: white;
+        border: 1px solid $cn-form-border;
+        border-radius: 5px;
+        position: absolute;
+        margin-top: -9px;
+        max-height: 200px;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        margin-bottom: -36px;
+    
+        .sk-find-class-autocomplete-option {
+          padding: 4px 12px 4px 4px;
+          border-bottom: 1px solid $cn-form-border;
+    
+          &:hover {
+            background-color: rgba(0,0,0,.05);
+          }
+    
+          .sk-find-class-autocomplete-option-title {
+            h3 {
+              margin: 4px 0 0 0;
+            }
+          }
+    
+          .sk-find-class-autocomplete-option-row {
             display: flex;
             flex-direction: row;
-            cursor: pointer;
-            box-sizing: border-box;
-            height: 36px;
-            margin: 0 8px 0 8px;
-            font-size: 12px;
+            justify-content: space-between;
     
             p {
               margin: 0;
-              padding: 12px 4px 0 4px;
-            }
-    
-            .sk-find-class-mtd-am {
-              border: 1px solid $cn-form-border;
-              border-top-left-radius: 3px;
-              border-bottom-left-radius: 3px;
-            }
-    
-            .sk-find-class-mtd-pm {
-              margin-left: -1px;
-              border: 1px solid $cn-form-border;
-              border-top-right-radius: 3px;
-              border-bottom-right-radius: 3px;
-            }
-    
-            .active {
-              background-color: $cn-color-blue;
-              color: white;
-            }
-          }
-  
-          .disabled {
-            background-color: rgba(0,0,0,.12);
-            color: white;
-            cursor: auto;
-  
-            select {
-              color: white;
             }
           }
         }
-  
-        .sk-find-class-mtd-divider {
-          margin: 6px 6px 0 0;
-        }
-      }
-  
-      .sk-find-class-mtd-item-days {
-        flex: 1;
-  
-        .sk-find-class-mtd-days-container {
-          display: flex;
-          flex-direction: row;
-          margin: 0 0 0.5rem 0;
-  
-          .sk-find-class-mtd-day {
-            @include not-selectable;
-            margin-right: -1px;
-            border: 1px solid $cn-form-border;
-            height: 36px;
-            box-sizing: border-box;
-            width: calc(100% / 7 + 0.80px);
-            padding: 12px 5px 2px 5px;
-            text-align: center;
-            font-size: 12px;
-            cursor: pointer;
-          }
-  
-          .first {
-            border: 1px solid $cn-form-border;
-            border-top-left-radius: 3px;
-            border-bottom-left-radius: 3px;
-          }
-  
-          .last {
-            border: 1px solid $cn-form-border;
-            border-top-right-radius: 3px;
-            border-bottom-right-radius: 3px;
-          }
-  
-          .active {
-            background-color: $cn-color-blue;
-            color: white;
-          }
-  
-          .disabled {
-            background-color: rgba(0,0,0,.12);
-            color: white;
-            cursor: auto;
-          }
-        }
-      }
-  
-      .sk-find-class-mtd-item-online {
-        flex: 0 0 100%;
-        display: inline-flex;
-        justify-content: flex-end;
-        margin: -4px 0 0 0;
-        @include not-selectable;
-  
-        p {
-          margin: 4px 0 0 0;
+    
+        .sk-blue {
+          color: $cn-color-blue;
         }
       }
     }
-  
-    .sk-find-class-p-container {
+
+    .sk-fc-preview {
+      width: 384px;
+      margin: 0 0 0 1rem;
       display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      width: 100%;
-  
-      .sk-find-class-p-item {
-        margin: 0 0 0.5rem 0;
+      flex-flow: column nowrap;
+      justify-content: space-around;
+      background-color: $sk-blue-25;
+      padding: 1rem;
+      border-radius: 5px;
+
+      .sk-find-class-selected-class {
+        cursor: default;
+        background-color: white;
+      }
+
+      .onboard-next {
         width: 100%;
-        box-sizing: border-box;
-  
-        .sk-find-class-p-field {
-          @include remove-form-styling;
-          border: 1px solid $cn-form-border;
-          border-radius: 5px;
-          height: 36px;
-          padding: 4px;
-          width: 100%;
-          cursor: pointer;
-    
-          input {
-            width: 100%;
-            padding: 6px 20px 15px 0;
-            margin-bottom: 0.5rem;
-          }
-  
-          p {
-            margin: 6px 0 0 0;
-          }
-        }
-  
-        .sk-find-class-p-autocomplete-container {
-          @include hide-scrollbar;
-          cursor: pointer;
-          box-sizing: border-box;
-          padding: 4px;
-          background-color: white;
-          border: 1px solid $cn-form-border;
-          border-radius: 5px;
-          position: absolute;
-          margin-top: -1px;
-          max-height: 120px;
-          overflow: auto;
-          -webkit-overflow-scrolling: touch;
-      
-          .sk-find-class-p-autocomplete-option {
-            padding: 4px 12px 4px 4px;
-            border-bottom: 1px solid $cn-form-border;
-      
-            &:hover {
-              background-color: rgba(0,0,0,.05);
-            }
-      
-            .sk-find-class-p-email {
-              color: $cn-form-border;
-            }
-          }
-      
-          .sk-blue {
-            color: $cn-color-blue;
-          }
-        }
       }
     }
   }
 
-  .sk-find-class-autocomplete-container {
-    @include hide-scrollbar;
-    cursor: pointer;
-    box-sizing: border-box;
-    padding: 4px;
-    background-color: white;
+  .onboard-next {
+    p {
+      text-align: center;
+      max-width: 380px;
+    }
+  }
+
+  .sk-find-class-selected-class {
+    margin: 1rem 0;
+    padding: 8px;
     border: 1px solid $cn-form-border;
     border-radius: 5px;
-    position: absolute;
-    margin-top: -9px;
-    max-height: 200px;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-
-    .sk-find-class-autocomplete-option {
-      padding: 4px 12px 4px 4px;
-      border-bottom: 1px solid $cn-form-border;
-
-      &:hover {
-        background-color: rgba(0,0,0,.05);
-      }
-
-      .sk-find-class-autocomplete-option-title {
-        h3 {
-          margin: 4px 0 0 0;
-        }
-      }
-
-      .sk-find-class-autocomplete-option-row {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-
-        p {
-          margin: 0;
-        }
+    cursor: pointer;
+  
+    .sk-find-class-selected-class-title {
+      h3 {
+        margin: 4px 0 0 0;
       }
     }
-
-    .sk-blue {
-      color: $cn-color-blue;
+  
+    .sk-find-class-selected-class-row {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+  
+      p {
+        margin: 0;
+      }
     }
   }
 }

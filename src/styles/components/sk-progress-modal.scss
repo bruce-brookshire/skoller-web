@@ -1,0 +1,52 @@
+$nav-height: 48px;
+$nav-height-plus-rem: calc(-52px - 1rem);
+
+.sk-progress-modal {
+  .sk-pm {
+    padding: 1rem;
+    margin: 0;
+    min-width: 380px;
+
+    .sk-modal-exit {
+      position: relative;
+      z-index: 1;
+      cursor: pointer;
+      width: 32px;
+
+      path {
+        fill: white;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 24px;
+        border-right: 1px solid white;
+        margin: 0 8px;
+        width: 1px;
+        height: 18px;
+      }
+    }
+
+    .sk-pm-nav {
+      border-radius: 10px 10px 0 0;
+      background-color: #4a4a4a;
+      height: $nav-height;
+      width: calc(100% + 2rem);
+      color: white;
+      padding-left: 64px;
+      padding-top: 1rem;
+      transform: translate(-1rem, $nav-height-plus-rem);
+      margin-bottom: -$nav-height;
+
+      h3 {
+        margin: 2px 0 0 0;
+      }
+    }
+
+    .sk-modal-content {
+      margin-top: 26px;
+    }
+  }
+}
