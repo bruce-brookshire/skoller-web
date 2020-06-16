@@ -8,6 +8,7 @@ import ProfessorForm from '../../../views/components/ProfessorForm'
 import SkModal from '../../components/SkModal/SkModal'
 import Sammi from '../../components/Sammi'
 import live from '../../../assets/images/class_status/todolist_gif.gif'
+import { CSSTransition } from 'react-transition-group'
 
 @inject('rootStore') @observer
 class FindAClass extends React.Component {
@@ -60,8 +61,11 @@ class FindAClass extends React.Component {
       schoolChoice: schoolChoice,
       completedClassView: false,
       ios: this.getMobileOperatingSystem() === 'iOS',
-      searchClassesValue: null
+      searchClassesValue: null,
+      window: window
     }
+
+    this.animationTimeout = 600
   }
 
   getMobileOperatingSystem () {
@@ -101,13 +105,28 @@ class FindAClass extends React.Component {
     }
   }
 
+  handleResize = () => {
+    this.setState({window: window})
+  }
+
+  componentDidMount () {
+    window.addEventListener('resize', this.handleResize)
+  }
+
+  componentWillUnmount () {
+    window.removeEventListener('resize', this.handleResize)
+  }
+
   renderClassNameAutocomplete () {
+    // calculate height of the search results container based on window size
+    let maxHeight = this.state.window.innerHeight - (this.classNameField.offsetTop + this.classNameField.offsetHeight) - 8
+
     return (
       <div
         className='sk-find-class-autocomplete-container'
         style={{
           width: this.classNameField.offsetWidth.toString() + 'px',
-          maxHeight: this.state.ios ? '120px' : '136px'
+          maxHeight: this.state.ios ? '120px' : maxHeight
         }}
       >
         {this.state.classes.map(cl => {
@@ -557,25 +576,37 @@ class FindAClass extends React.Component {
       }
     })
     return (
-      <div>
-        {this.state.showSubjectCodeSectionField
-          ? <div className='sk-find-class-form-row'>
+      <div style={{display: !this.state.isNewClass ? 'none' : ''}}>
+        <CSSTransition
+          in={this.state.showSubjectCodeSectionField}
+          timeout={this.animationTimeout}
+          classNames="zoom"
+          unmountOnExit
+        >
+          <div className='sk-find-class-form-row'>
             {this.renderSubjectCodeSectionField()}
           </div>
-          : null
-        }
-        {(this.state.showMeetTimesDaysField || (this.state.subject && this.state.code && this.state.section))
-          ? <div className='sk-find-class-form-row'>
+        </CSSTransition>
+        <CSSTransition
+          in={(this.state.showMeetTimesDaysField || (this.state.subject && this.state.code && this.state.section))}
+          timeout={this.animationTimeout}
+          classNames="zoom"
+          unmountOnExit
+        >
+          <div className='sk-find-class-form-row'>
             {this.renderMeetTimesDaysField()}
           </div>
-          : null
-        }
-        {this.state.showProfessorField || (meetDaysChecked || this.state.isOnline)
-          ? <div className='sk-find-class-form-row'>
+        </CSSTransition>
+        <CSSTransition
+          in={this.state.showProfessorField || (meetDaysChecked || this.state.isOnline)}
+          timeout={this.animationTimeout}
+          classNames="zoom"
+          unmountOnExit
+        >
+          <div className='sk-find-class-form-row'>
             {this.renderProfessorField()}
           </div>
-          : null
-        }
+        </CSSTransition>
       </div>
     )
   }
@@ -696,15 +727,9 @@ class FindAClass extends React.Component {
           <div className='sk-find-class-form-row'>
             {this.renderClassNameField()}
           </div>
-          {this.state.isNewClass
-            ? this.renderForm()
-            : null
-          }
+          {this.renderForm()}
         </div>
-        {this.state.isNewClass
-          ? this.renderPreview()
-          : null
-        }
+        {this.renderPreview()}
       </div>
     )
   }
@@ -765,8 +790,13 @@ class FindAClass extends React.Component {
   }
 
   renderPreview () {
-    if (this.state.isNewClass) {
-      return (
+    return (
+      <CSSTransition
+        in={this.state.isNewClass}
+        timeout={this.animationTimeout}
+        classNames="zoom"
+        unmountOnExit
+      >
         <div className='sk-fc-preview'>
           <div className='sk-fc-preview-block'>
             <Sammi
@@ -795,15 +825,13 @@ class FindAClass extends React.Component {
             {this.renderNext()}
           </div>
         </div>
-      )
-    } else {
-      return null
-    }
+      </CSSTransition>
+    )
   }
 
   renderNext () {
     return <div
-      className={'onboard-next' + ((this.validateForm()) ? '' : ' disabled')}
+      className={'sk-csm-next' + ((this.validateForm()) ? '' : ' disabled')}
       onClick={() => {
         if (this.validateForm() && !this.state.loadingSubmit) {
           this.handleSubmit()

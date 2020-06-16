@@ -155,6 +155,26 @@ $nav-height-plus-rem: calc(-52px - 1rem);
 
     .sk-modal-content {
       margin-top: 26px;
+
+      // below styles remove the progress modal changes for
+      // sk-modals rendered by the progress modal
+      .sk-modal {
+        @include skoller-cell;
+
+        .sk-modal-exit {
+          path {
+            fill: $sk-blue;
+          }
+    
+          &::after {
+            display: none;
+          }
+        }
+
+        .sk-modal-content {
+          margin-top: 0;
+        }
+      }
     }
   }
 }

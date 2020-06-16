@@ -165,13 +165,21 @@
       }
     }
   }
-  
-  .onboard-next {
-    @include sk-standard-button;
-    @include not-selectable;
-  }
 
-  .disabled {
+  // .disabled {
+  //   @include disabled-button;
+
+  //   p {
+  //     font-weight: 400;
+  //   }
+  // }
+}
+
+.sk-csm-next {
+  @include sk-standard-button;
+  @include not-selectable;
+
+  &.disabled {
     @include disabled-button;
 
     p {

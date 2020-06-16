@@ -90,7 +90,7 @@ class ClassStatusModal extends React.Component {
     }
     if (cl.school.is_syllabus_overload && id < 1400 && id !== 1100) {
       status = 'syllabusOverload'
-      sammiMessage = <span>Due to high volume, it could take me <b>a few days</b> to set up this class.</span>
+      sammiMessage = <span>Due to high volume, it could take Skoller <b>a few days</b> to set up this class.</span>
     }
     return ({
       cl: cl,
@@ -617,6 +617,8 @@ class ClassStatusModal extends React.Component {
   renderProgressModalStatus () {
     let cl = this.state.fullClass
     let status = false
+
+    if (this.state.loading) return false
 
     if (cl) {
       let id = cl ? cl.status.id : null

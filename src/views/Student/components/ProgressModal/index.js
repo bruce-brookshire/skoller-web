@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import SkModal from '../../../components/SkModal/SkModal'
+import AnimateHeight from 'react-animate-height'
+import ReactResizeDetector from 'react-resize-detector'
 
 function ProgressOption (props) {
   const renderIconClassName = () => {
@@ -32,11 +34,25 @@ ProgressOption.propTypes = {
 }
 
 export default class ProgressModal extends Component {
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      contentHeight: 'auto',
+      contentWidth: 'auto'
+    }
+  }
+
   static propTypes = {
     closeModal: PropTypes.func,
     children: PropTypes.object,
     title: PropTypes.string,
     status: PropTypes.object
+  }
+
+  handleResize = (w, h) => {
+    console.log('width: ', w)
+    this.setState({contentHeight: h, contentWidth: w})
   }
 
   renderProgressStatus () {
@@ -61,7 +77,7 @@ export default class ProgressModal extends Component {
             } else if (index === activeOptionIndex) {
               status = 'active'
             }
-            
+
             if (this.props.status.state === false) status = 'incomplete'
 
             return <ProgressOption key={index} status={status} name={o} />
@@ -79,7 +95,16 @@ export default class ProgressModal extends Component {
             <h3>{this.props.title}</h3>
             {this.renderProgressStatus()}
           </div>
-          {this.props.children}
+          <AnimateHeight
+            duration={ 200 }
+            height={ this.state.contentHeight }
+          >
+            <ReactResizeDetector handleWidth handleHeight onResize={(w, h) => this.handleResize(w, h)}>
+              <div className='sk-pm-content-container'>
+                {this.props.children}
+              </div>
+            </ReactResizeDetector>
+          </AnimateHeight>
         </SkModal>
       </div>
     )
