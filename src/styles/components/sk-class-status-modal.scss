@@ -1,6 +1,7 @@
 .sk-class-status-modal {
-  max-width: 576px;
-  padding: 0 1rem 1rem 1rem;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 1rem;
 
   .sk-class-status-modal-drop-container {
     margin-top: -20px;
@@ -12,19 +13,20 @@
 
   .sk-class-status-modal-header {
     h1 {
-      margin-bottom: 1rem;
+      // margin-bottom: 1rem;
+      margin: 0;
       text-align: center;
     }
   }
   
   .sk-class-status-modal-container {
-    margin: 1rem 0 1rem 0;
+    margin: 1rem 0;
     box-sizing: border-box;
     height: 100%;
   
     .sk-class-status-modal-row {
       display: flex;
-      flex-direction: row;
+      flex-direction: row-reverse;
       justify-content: center;
       margin: 0 0 1rem 0;
       width: 100%;
@@ -37,6 +39,8 @@
   
       .sk-class-status-modal-checklist-container {
         margin-right: 8px;
+        display: flex;
+        align-items: center;
       }
   
       .sk-class-status-modal-action-container {
@@ -45,9 +49,17 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
+
+        h1, h2 {
+          margin: 0;
+        }
+
+        h2 {
+          font-weight: 500;
+        }
   
         .sk-class-status-modal-action-detail {
-          height: 168px;
+          // height: 168px;
           display: flex;
           flex-direction: column;
           justify-content: center;

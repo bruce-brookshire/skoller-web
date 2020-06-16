@@ -2,6 +2,10 @@ $nav-height: 48px;
 $nav-height-plus-rem: calc(-52px - 1rem);
 
 .sk-progress-modal {
+  .sk-modal-container {
+    border-radius: 5px;
+  }
+
   .sk-pm {
     padding: 1rem;
     margin: 0;
@@ -30,18 +34,122 @@ $nav-height-plus-rem: calc(-52px - 1rem);
     }
 
     .sk-pm-nav {
-      border-radius: 10px 10px 0 0;
+      border-radius: 5px 5px 0 0;
       background-color: #4a4a4a;
       height: $nav-height;
       width: calc(100% + 2rem);
       color: white;
       padding-left: 64px;
       padding-top: 1rem;
+      padding-right: 1rem;
       transform: translate(-1rem, $nav-height-plus-rem);
       margin-bottom: -$nav-height;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
 
       h3 {
         margin: 2px 0 0 0;
+        max-width: 280px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      .sk-pm-status {
+        font-weight: 600;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-top: -16px;
+
+        .sk-progress-modal-po {
+          margin-right: 8px;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+
+          .sk-progress-modal-po-icon {
+            font-size: 10px;
+            text-align: center;
+            border: 2px solid white;
+            border-radius: 50%;
+            width: 21px;
+            height: 21px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+
+            .circle {
+              background-color: white;
+              border-radius: 50%;
+              width: 9px;
+              height: 9px;
+            }
+          }
+
+          p {
+            margin: 0 8px;
+            padding-top: 6px;
+          }
+
+          &.complete {
+            color: $sk-blue;
+
+            &::after {
+              content: "";
+              height: 0;
+              width: 40px;
+              border: 0.5px solid $sk-blue;
+              display: inline-block;
+            }
+
+            .sk-progress-modal-po-icon {
+              border-color: $sk-blue;
+            }
+          }
+
+          &.active {
+            color: white;
+
+            &::after {
+              content: "";
+              height: 0;
+              width: 40px;
+              border: 0.5px dashed $cn-form-border;
+              display: inline-block;
+            }
+
+            .sk-progress-modal-po-icon {
+              border-color: white;
+            }
+          }
+
+          &.incomplete {
+            color: $cn-form-border;
+
+            &::after {
+              content: "";
+              height: 0;
+              width: 40px;
+              border: 0.5px dashed $cn-form-border;
+              display: inline-block;
+            }
+
+            .sk-progress-modal-po-icon {
+              border-color: $cn-form-border;
+            }
+          }
+
+          &:last-child {
+            margin-right: -8px;
+
+            &::after {
+              display: none;
+            }
+          }
+        }
       }
     }
 
