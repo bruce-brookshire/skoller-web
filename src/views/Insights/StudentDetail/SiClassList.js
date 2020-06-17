@@ -15,7 +15,6 @@ class SiClassList extends React.Component {
   renderGrade (cl) {
     let status = cl.status.id
     let syllabusOverload = false
-    if (!this.props.rootStore.userStore.isAdmin()) syllabusOverload = this.props.rootStore.userStore.user.student.schools.find(s => s.id === cl.class_period.school_id).is_syllabus_overload
 
     if (status >= 1400) {
       return (
@@ -44,26 +43,10 @@ class SiClassList extends React.Component {
     }
   }
 
-  // renderGrade (cl) {
-  //   return (
-  //     <h1
-  //       className='si-class-list-row-grade-text cn-white'
-  //     >
-  //       {cl.assignments.length} assignments
-  //     </h1>
-  //   )
-  // }
-
   renderExtra (cl) {
-    // return (
-    //   <div className='si-class-list-cell-extra'>
-    //     <p>{cl.meet_days + ' ' + (cl.meet_start_time ? moment(cl.meet_start_time, 'hh:mm:ss').format('h:mma') : '')}</p>
-    //   </div>
-    // )
 
     let status = cl.status.id
     let syllabusOverload = false
-    if (!this.props.rootStore.userStore.isAdmin()) syllabusOverload = this.props.rootStore.userStore.user.student.schools.find(s => s.id === cl.class_period.school_id).is_syllabus_overload
 
     if (status >= 1400) {
       return (

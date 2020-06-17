@@ -22,6 +22,8 @@ class Home extends React.Component {
       classes: [],
       assignments: [],
       popUp: {show: false, type: null},
+      // classStatusModal exists on this page because it needs to be rendered if a student logs in,
+      // has only one class, and that class is not yet set up.
       classStatusModal: {show: false, cl: null},
       loading: false,
       shareWillDisplay: false

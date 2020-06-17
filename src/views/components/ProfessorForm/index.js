@@ -122,7 +122,7 @@ class ProfessorForm extends React.Component {
               value={form.email}
             />
           </div>
-          <div className='cn-create-professor-row'>
+          {/* <div className='cn-create-professor-row'>
             <InputField
               error={formErrors.phone}
               label='Phone Number'
@@ -153,7 +153,7 @@ class ProfessorForm extends React.Component {
               placeholder='Office hours'
               value={form.office_availability}
             />
-          </div>
+          </div> */}
           <button
             className='button margin-top margin-bottom form-button'
           >{!editMode ? 'Save new ' : 'Update '}{isUniversity ? 'professor' : 'teacher'}</button>

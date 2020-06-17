@@ -12,6 +12,7 @@ class InsightsStore {
       loading: false,
       loadingUpdate: false,
       students: [],
+      invitations: [],
       groups: [],
       watchlist: [],
       groupOwners: [],
@@ -113,7 +114,6 @@ class InsightsStore {
   async getGroupOwners (orgId) {
     await actions.insights.getAllOrgGroupOwnersInOrg(orgId)
       .then(r => {
-        console.log(r)
         let groupOwners = r
         let filteredGroupOwners = []
         groupOwners.forEach(go => {
@@ -159,6 +159,8 @@ class InsightsStore {
     let watchlistStudents = this.students.slice().filter(s => watchlistStudentsIds.includes(s.id))
     this.watchlist = watchlistStudents
     this.org.watchlist = watchlistStudents
+
+    console.log('getting store watchlist \n \n \n \n', this.watchlist)
   }
 
   async getStudentData (students, orgId) {

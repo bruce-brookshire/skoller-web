@@ -1,13 +1,14 @@
 import React from 'react'
 import { inject, observer } from 'mobx-react'
-import SkModal from '../../components/SkModal/SkModal'
 import PropTypes from 'prop-types'
-import FindAClass from '../Onboard/FindAClass'
+import FindAClass from '../../Onboard/FindAClass'
 import ChangeSchool from './ChangeSchool'
-import ClassStatusModal from '../../components/ClassStatusModal'
+import ClassStatusModal from '../../../components/ClassStatusModal'
 import moment from 'moment'
-import SkLoader from '../../../assets/sk-icons/SkLoader'
-import actions from '../../../actions'
+import SkLoader from '../../../../assets/sk-icons/SkLoader'
+import actions from '../../../../actions'
+import ProgressModal from '../ProgressModal'
+import AnimateHeight from 'react-animate-height'
 
 @inject('rootStore') @observer
 class AddClassModal extends React.Component {
@@ -77,24 +78,24 @@ class AddClassModal extends React.Component {
 
   renderAddClassModal () {
     return (
-      <div>
+      <div className='sk-add-class-container'>
         {this.state.classStatusModal.show &&
           <ClassStatusModal cl={this.state.classStatusModal.cl} firstOpen={true} closeModal={() => this.props.closeModal()} onSubmit={() => this.onSubmit()} />
         }
         <div className='sk-add-class-modal-wrapper' style={this.state.classStatusModal.show ? {display: 'none'} : {}}>
-          <SkModal
+          <ProgressModal
             title={this.state.formState === 'editSchool' ? 'Join a School' : 'Join a Class'}
             closeModal={() => {
               !this.state.classStatusModal.show && this.closeModal()
             }}
           >
-            <div className='sk-add-class-modal'>
+            <div className='sk-add-class-modal' style={{overflow: 'auto'}}>
               {this.state.formState === 'findClass' &&
                 <FindAClass
                   hideOnboard={true}
                   onBack={() => this.setState({formState: 'editSchool'})}
                   params={this.state.params}
-                  onSubmit={() => console.log('FindAClass onSubmit')}
+                  onSubmit={() => null}
                   launchClassStatusModal={(cl) => this.launchClassStatusModal(cl)}
                 />
               }
@@ -102,7 +103,7 @@ class AddClassModal extends React.Component {
                 <ChangeSchool backData={this.state.params} onSubmit={(data) => this.changeParams(data)} />
               }
             </div>
-          </SkModal>
+          </ProgressModal>
         </div>
       </div>
     )

@@ -2,9 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import ClassList from '../../components/ClassList'
-import actions from '../../../actions'
 import StudentLayout from '../../components/StudentLayout'
-import AddClassModal from './AddClassModal'
+import AddClassModal from '../components/AddClassModal'
 import ClassStatusModal from '../../components/ClassStatusModal'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import { withRouter } from 'react-router-dom'
@@ -106,19 +105,13 @@ class MyClasses extends React.Component {
   }
 
   closeAddClassModal () {
-    console.log('closeAddClassModal')
     this.setState({showAddClassModal: false})
     this.updateClasses()
   }
 
   closeClassStatusModal () {
-    console.log('closing modal')
     this.setState({classStatusModal: {show: false, cl: null}})
     this.updateClasses()
-  }
-
-  launchClassStatusModal = (cl) => {
-    this.setState({classStatusModal: {show: true, cl: cl}})
   }
 
   renderView () {
@@ -132,7 +125,7 @@ class MyClasses extends React.Component {
           </div>
         </div>
         {this.state.showAddClassModal &&
-          <AddClassModal closeModal={() => this.closeAddClassModal()} launchClassStatusModal={cl => this.launchClassStatusModal(cl)} />
+          <AddClassModal closeModal={() => this.closeAddClassModal()} />
         }
         {this.state.classStatusModal.show &&
           <ClassStatusModal closeModal={() => this.closeClassStatusModal()} onSubmit={() => this.closeClassStatusModal()} cl={this.state.classStatusModal.cl} />

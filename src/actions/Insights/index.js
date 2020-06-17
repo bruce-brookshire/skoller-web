@@ -368,8 +368,24 @@ function addStudentToGroupOwnerWatchlist (orgId, groupOwnerId, orgGroupId, orgSt
 }
 
 // Remove a student from a group owner's watchlist
-function removeStudentFromGroupOwnerWatchlist (groupOwnerId, studentId) {
-  console.log('removeStudentFromGroupOwnerWatchlist')
+function removeStudentFromGroupOwnerWatchlist (orgId, groupOwnerId, orgGroupId, orgStudentId) {
+  return get(`/api/v1/organizations/${orgId}/org-groups/${orgGroupId}/owners/${groupOwnerId}/watchlists`, '', '')
+    .then((r) => {
+      let watchlistStudentId = r.find(s => s.org_group_student.org_student_id === orgStudentId).id
+      if (watchlistStudentId) {
+        del(`/api/v1/organizations/${orgId}/org-groups/${orgGroupId}/owners/${groupOwnerId}/watchlists/${watchlistStudentId}`, '', '')
+          .then(r => {
+            Promise.resolve(r)
+          })
+          .catch(e => Promise.reject(e))
+      } else {
+        showSnackbar('Error removing student from watchlist. Try again later.')
+      }
+    })
+    .catch(e => {
+      showSnackbar('Error removing student from watchlist. Try again later.')
+      Promise.reject(e)
+    })
 }
 
 const exports = {

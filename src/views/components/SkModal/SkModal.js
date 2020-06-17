@@ -128,7 +128,7 @@ class SkModal extends React.Component {
               }
             }}
           >
-            <div className="sk-modal">
+            <div className={this.props.className ? this.props.className : 'sk-modal'}>
               {this.props.closeModal
                 ? <div className="sk-modal-exit" onClick={() => {
                   this.closeModal()
@@ -160,7 +160,8 @@ SkModal.propTypes = {
   rootStore: PropTypes.object,
   closeModal: PropTypes.func,
   // use the closeModal function to close the modal from the parent component.
-  disableOutsideClick: PropTypes.bool
+  disableOutsideClick: PropTypes.bool,
+  className: PropTypes.string
 }
 
 export default SkModal

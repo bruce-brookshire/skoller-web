@@ -84,7 +84,7 @@ class ClassList extends React.Component {
   }
 
   renderClassRows () {
-    let classes = this.props.classes.sort((a, b) => a.status.id < 1400 ? -1 : 1)
+    let classes = this.props.classes.slice().sort((a, b) => a.status.id < 1400 ? -1 : 1)
 
     return (
       <React.Fragment>

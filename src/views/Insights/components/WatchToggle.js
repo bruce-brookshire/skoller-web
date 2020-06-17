@@ -13,19 +13,31 @@ class WatchToggle extends React.Component {
   toggleWatching = async () => {
     let insightsStore = this.props.rootStore.insightsStore
     let watching = insightsStore.isWatching(this.props.user)
+    console.log(1)
     if (watching) {
+      console.log(2)
+      console.log('watching')
       let watchlistId = insightsStore.watchlist.find(s => s.org_student_id === this.props.user.id).id
 
       if (insightsStore.userType === 'orgOwner') {
         await actions.insights.removeStudentFromOrgOwnerWatchlist(this.props.user.organization_id, this.props.rootStore.userStore.user.org_owners[0].id, watchlistId)
       } else if (insightsStore.userType === 'groupOwner') {
-        await actions.insights.removeStudentFromGroupOwnerWatchlist()
+        let orgStudent = this.props.user
+        let orgGroupToAddStudentToGroupOwnerWatchlist = insightsStore.groups.find(g => orgStudent.org_groups.map(gr => gr.id).includes(g.id))
+        let memberId = insightsStore.groupOwners.find(go => go.user_id === this.props.rootStore.userStore.user.id).id
+        let groupOwner = orgGroupToAddStudentToGroupOwnerWatchlist.owners.find(o => o.org_member_id === memberId)
+        await actions.insights.removeStudentFromGroupOwnerWatchlist(this.props.user.organization_id, groupOwner.id, orgGroupToAddStudentToGroupOwnerWatchlist.id, orgStudent.id)
+          .then(r => {
+            let index = insightsStore.watchlist.indexOf(insightsStore.watchlist.find(s => s.org_student_id === orgStudent.id))
+            insightsStore.watchlist.splice(index, 1)
+            console.log(2.5)
+            console.log('spliced watchlist')
+          })
       }
     } else {
+      console.log(2)
+      console.log('not watching')
       if (insightsStore.userType === 'orgOwner') {
-        console.log('insightsStore.organization.id', insightsStore.org.id)
-        console.log('this.props.rootStore.userStore.user.org_owners[0].id', this.props.rootStore.userStore.user.org_owners[0].id)
-        console.log('this.props.user.id', this.props.user.id)
         await actions.insights.addStudentToOrgOwnerWatchlist(insightsStore.org.id, this.props.rootStore.userStore.user.org_owners[0].id, this.props.user.id)
       } else if (insightsStore.userType === 'groupOwner') {
         let orgStudent = this.props.user
@@ -33,11 +45,14 @@ class WatchToggle extends React.Component {
         let memberId = insightsStore.groupOwners.find(go => go.user_id === this.props.rootStore.userStore.user.id).id
         let groupOwner = orgGroupToAddStudentToGroupOwnerWatchlist.owners.find(o => o.org_member_id === memberId)
         await actions.insights.addStudentToGroupOwnerWatchlist(this.props.user.organization_id, groupOwner.id, orgGroupToAddStudentToGroupOwnerWatchlist.id, orgStudent.id)
+          .then(() => console.log(2.5))
       }
     }
 
+    console.log(3)
     await insightsStore.updateData(insightsStore.userType === 'orgOwner' ? ['orgOwnerWatchlist'] : ['groupOwnerWatchlist'])
     this.setState({changed: true})
+    console.log(4)
 
     this.timer()
   }
@@ -55,7 +70,7 @@ class WatchToggle extends React.Component {
   render () {
     return (
       <div className='si-watch-toggle' style={this.props.showConfirm ? {position: 'relative'} : {display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-        <div onClick={() => this.toggleWatching()} className={'toggle ' + (this.props.rootStore.insightsStore.isWatching(this.props.user) ? 'watching' : '')}>
+        <div onClick={() => this.toggleWatching()}>
           {this.star()}
         </div>
         <CSSTransition

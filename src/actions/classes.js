@@ -142,7 +142,6 @@ export function getStudentClass (studentId, classId) {
  * @param [Number] classId. The id of the student.
  */
 export function getClassById (classId) {
-  console.log('getClassById')
   return get(
     `/api/v1/classes/${classId}`,
     '',
