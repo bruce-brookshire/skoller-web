@@ -64,6 +64,10 @@
           flex-direction: column;
           justify-content: center;
           text-align: center;
+
+          .sk-csm-action-detail-share {
+            color: $sk-blue;
+          }
         }
   
         .sk-class-status-modal-file-drop-container {

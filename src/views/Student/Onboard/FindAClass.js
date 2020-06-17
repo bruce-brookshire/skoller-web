@@ -736,30 +736,32 @@ class FindAClass extends React.Component {
 
   renderSchoolDetailsSection () {
     return (
-      <div className='sk-find-class'>
-        <div>
-          <h1
-            className='sk-find-class-school'
-            style={{
-              color: this.state.schoolChoice.color ? this.state.schoolChoice.color : null
-            }}
-          >
-            {this.state.schoolChoice.name}
-          </h1>
-          <h3
-            className='sk-find-class-term'
-          >
-            {this.state.termChoice.name}
-          </h3>
+      <React.Fragment>
+        <div className='sk-find-class'>
+          <div>
+            <h1
+              className='sk-find-class-school'
+              style={{
+                color: this.state.schoolChoice.color ? this.state.schoolChoice.color : null
+              }}
+            >
+              {this.state.schoolChoice.name}
+            </h1>
+            <h3
+              className='sk-find-class-term'
+            >
+              {this.state.termChoice.name}
+            </h3>
+          </div>
+          <p>
+            <small
+              style={{color: '#57B9E4', cursor: 'pointer', width: '100%'}}
+              onClick={() => this.props.onBack(this.state.schoolChoice, this.state.termChoice)}
+            >
+              Edit
+            </small>
+          </p>
         </div>
-        <p>
-          <small
-            style={{color: '#57B9E4', cursor: 'pointer', width: '100%'}}
-            onClick={() => this.props.onBack(this.state.schoolChoice, this.state.termChoice)}
-          >
-            Edit
-          </small>
-        </p>
         {this.props.hideOnboard
           ? null
           : <div>
@@ -771,7 +773,7 @@ class FindAClass extends React.Component {
             <SkProgressBar progress={0.5} width={'100%'} backgroundColor={'$cn-color-blue'}/>
           </div>
         }
-      </div>
+      </React.Fragment>
     )
   }
 

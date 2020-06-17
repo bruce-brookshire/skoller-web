@@ -285,7 +285,8 @@ class Onboard extends React.Component {
 
 Onboard.propTypes = {
   rootStore: PropTypes.object,
-  params: PropTypes.object
+  params: PropTypes.object,
+  history: PropTypes.object
 }
 
 export default withRouter(Onboard)

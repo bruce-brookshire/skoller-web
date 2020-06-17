@@ -45,9 +45,9 @@ class ClassStatusImage extends React.Component {
           height: 'auto',
           width: '100%'
         }} gif={image} />
-        {this.props.status === 1400 &&
+        {/* {this.props.status === 1400 &&
           <h3>This class is already LIVE on Skoller!</h3>
-        }
+        } */}
       </div>
     )
   }

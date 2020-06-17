@@ -16,6 +16,7 @@ import UploadOverloadDocuments from './UploadOverloadDocuments'
 import AppStore from '../../../assets/images/app_download/app-store-badge.svg'
 import GooglePlay from '../../../assets/images/app_download/google-play-badge.png'
 import ProgressModal from '../../Student/components/ProgressModal'
+import CopyBox from '../../components/CopyBox'
 
 @inject('rootStore') @observer
 class ClassStatusModal extends React.Component {
@@ -86,7 +87,6 @@ class ClassStatusModal extends React.Component {
       mobileMessage = `Head over to skoller.co on your computer to login and finish setting up your class.`
     } else if (id >= 1400) {
       status = 'live'
-      sammiMessage = `WOOHOO! Your class is live ⚡️`
     }
     if (cl.school.is_syllabus_overload && id < 1400 && id !== 1100) {
       status = 'syllabusOverload'
@@ -204,7 +204,7 @@ class ClassStatusModal extends React.Component {
 
   renderDownloadCompleteDownload () {
     const operatingSystem = this.getMobileOperatingSystem()
-    if (this.getMobileOperatingSystem()) {
+    if (this.getMobileOperatingSystem() && this.state.status === 'live') {
       return (
         <div style={{textAlign: 'center'}}>
           <div>Skoller works best on the app.</div>
@@ -234,9 +234,7 @@ class ClassStatusModal extends React.Component {
       !this.state.uploadAdditionalDocumentsView &&
       <div className='sk-class-status-modal-checklist-container'>
         <ClassStatusImage status={(this.state.fullClass.school.is_syllabus_overload && this.state.fullClass.status.id < 1400) ? 1500 : this.state.cl.status.id} />
-        {this.state.status === 'live' &&
-          this.renderDownloadCompleteDownload()
-        }
+        {this.renderDownloadCompleteDownload()}
       </div>
     )
   }
@@ -341,10 +339,10 @@ class ClassStatusModal extends React.Component {
       <div className='sk-class-status-modal-container'>
         <div className='sk-class-status-modal-row'>
           {this.renderChecklist()}
-          {(this.state.status === 'needSyllabus' && this.state.mobile) || this.props.cl.status.id === 1400
+          {(this.state.status === 'needSyllabus' && this.state.mobile)
             ? null
             : <div className='sk-class-status-modal-action-container'>
-              {this.renderSammi()}
+              {this.renderTitle()}
               {this.state.status === 'needSyllabus'
                 ? this.renderNeedSyllabus()
                 : null
@@ -368,7 +366,16 @@ class ClassStatusModal extends React.Component {
                 : null
               }
               {this.state.status === 'live'
-                ? null
+                ? <div className='sk-class-status-modal-action-detail'>
+                  <h1 style={{margin: '0'}}>Welcome to<br /><b>{this.state.cl.name}</b></h1>
+                  <br />
+                  <h2 className='sk-csm-action-detail-share'>Invite classmates using this link!</h2>
+                  <CopyBox
+                    longMessage={false}
+                    smallText={false}
+                    linkValue={this.state.cl.enrollment_link}
+                  />
+                </div>
                 : null
               }
             </div>
@@ -510,15 +517,10 @@ class ClassStatusModal extends React.Component {
     }
   }
 
-  renderSammi () {
+  renderTitle () {
     if (!this.state.uploadAdditionalDocumentsView) {
       if (this.props.cl.status.id !== 1400) {
         return (
-          // <Sammi
-          //   message={this.state.sammiMessage}
-          //   position='right'
-          //   emotion='happy'
-          // />
           <h1 style={{textAlign: 'center', marginBottom: '1rem'}}>{this.state.sammiMessage}</h1>
         )
       }
@@ -538,7 +540,7 @@ class ClassStatusModal extends React.Component {
   renderHeader () {
     return (
       <div className='sk-class-status-modal-header'>
-        {(this.props.onboard || this.props.firstOpen) ? <h1>Welcome to {this.state.cl.name}</h1> : null}
+        {((this.props.onboard || this.props.firstOpen) && this.state.status !== 'live') ? <h1>Welcome to {this.state.cl.name}</h1> : null}
         {this.renderProgress()}
       </div>
     )
@@ -629,8 +631,13 @@ class ClassStatusModal extends React.Component {
       } else if (id === 1300) {
         status = 'Review'
       } else if (id >= 1400) {
-        status = 'Live'
+        status = true
       }
+
+      if (this.state.status === 'inReview') {
+        status = 'Review'
+      }
+
       if (cl.school.is_syllabus_overload && id < 1400 && id !== 1100) {
         status = 'Review'
       }
@@ -644,7 +651,11 @@ class ClassStatusModal extends React.Component {
 
   render () {
     return (
-      <ProgressModal status={this.renderProgressModalStatus()} title={this.props.cl.name} closeModal={this.props.closeModal ? () => this.props.closeModal() : null}>
+      <ProgressModal
+        status={this.renderProgressModalStatus()}
+        title={this.props.cl.name}
+        closeModal={this.props.closeModal ? () => this.props.closeModal() : null}
+      >
         {this.state.loading
           ? <SkLoader />
           : this.renderModalContent()

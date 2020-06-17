@@ -1,10 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
-import Cloud from '../../../assets/sk-icons/Cloud'
 import SkProgressBar from '../../components/SkProgressBar'
 import Sammi from '../../components/Sammi'
-import CopyBox from '../../components/CopyBox'
 
 @inject('rootStore') @observer
 class SharePartner extends React.Component {
