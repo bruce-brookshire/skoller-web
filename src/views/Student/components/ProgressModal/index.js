@@ -51,7 +51,6 @@ export default class ProgressModal extends Component {
   }
 
   handleResize = (w, h) => {
-    console.log('width: ', w)
     this.setState({contentHeight: h, contentWidth: w})
   }
 
@@ -79,6 +78,7 @@ export default class ProgressModal extends Component {
             }
 
             if (this.props.status.state === false) status = 'incomplete'
+            if (this.props.status.state === true) status = 'complete'
 
             return <ProgressOption key={index} status={status} name={o} />
           })}
@@ -90,8 +90,11 @@ export default class ProgressModal extends Component {
   render () {
     return (
       <div className='sk-progress-modal'>
-        <SkModal className='sk-pm' closeModal={() => this.props.closeModal()}>
-          <div className='sk-pm-nav'>
+        <SkModal
+          className='sk-pm'
+          closeModal={this.props.closeModal ? () => this.props.closeModal() : null}
+        >
+          <div className='sk-pm-nav' style={this.props.closeModal ? {} : {transform: 'translate(-16px, -42px)', paddingLeft: '16px'}}>
             <h3>{this.props.title}</h3>
             {this.renderProgressStatus()}
           </div>

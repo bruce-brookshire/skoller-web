@@ -8,7 +8,6 @@ import moment from 'moment'
 import SkLoader from '../../../../assets/sk-icons/SkLoader'
 import actions from '../../../../actions'
 import ProgressModal from '../ProgressModal'
-import AnimateHeight from 'react-animate-height'
 
 @inject('rootStore') @observer
 class AddClassModal extends React.Component {

@@ -6,7 +6,6 @@ import moment from 'moment'
 import calendarData from './calendarData'
 import NavBar from '../../../components/NavBar'
 import Calendar from '../Calendar'
-import { mobileCheck } from '../../../utilities/display'
 
 @inject('rootStore') @observer
 class Layout extends React.Component {

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Sammi from '../index'
-import AddClassModal from '../../../Student/MyClasses/AddClassModal'
+import AddClassModal from '../../../Student/components/AddClassModal'
 
 class JoinFirstClassPrompt extends React.Component {
   constructor (props) {

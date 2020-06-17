@@ -2,7 +2,7 @@ import React from 'react'
 // import {inject, observer} from 'mobx-react'
 import PropTypes from 'prop-types'
 import Sammi from '../index'
-import AddClassModal from '../../../Student/MyClasses/AddClassModal'
+import AddClassModal from '../../../Student/components/AddClassModal'
 
 class SecondClassPrompt extends React.Component {
   constructor (props) {

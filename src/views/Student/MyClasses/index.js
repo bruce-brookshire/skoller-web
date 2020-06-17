@@ -23,11 +23,7 @@ class MyClasses extends React.Component {
     this.props.rootStore.navStore.location = this.props.location
     this.props.rootStore.studentClassesStore.updateClasses()
     this.props.rootStore.studentAssignmentsStore.updateAssignments()
-  }
-
-  componentWillMount () {
     this.props.rootStore.navStore.setActivePage('classes')
-    // this.updateClasses()
   }
 
   findFullClass (classId) {
@@ -118,7 +114,7 @@ class MyClasses extends React.Component {
     return (
       <div className='cn-my-classes-wrapper'>
         <div className='cn-my-classes-container'>
-          <h1>Classes</h1>
+          <h1 className='cn-my-classes-title'>Classes</h1>
           <i className='fas fa-plus cn-my-classes-add-new' onClick={() => this.setState({showAddClassModal: true})} />
           <div className='cn-my-classes-content'>
             {this.renderContent()}
@@ -147,7 +143,8 @@ class MyClasses extends React.Component {
 
 MyClasses.propTypes = {
   rootStore: PropTypes.object,
-  location: PropTypes.object
+  location: PropTypes.object,
+  history: PropTypes.object
 }
 
 export default withRouter(MyClasses)

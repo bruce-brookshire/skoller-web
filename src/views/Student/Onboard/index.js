@@ -38,7 +38,8 @@ Switch.propTypes = {
   params: PropTypes.object,
   route: PropTypes.object,
   rootStore: PropTypes.object,
-  type: PropTypes.string
+  type: PropTypes.string,
+  match: PropTypes.object
 }
 
 export default withRouter(Switch)
