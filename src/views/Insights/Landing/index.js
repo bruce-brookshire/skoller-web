@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 import { Cookies } from 'react-cookie'
 import actions from '../../../actions'
 import { inject, observer } from 'mobx-react'
@@ -98,7 +98,8 @@ class InsightsLanding extends React.Component {
               <span>A product of Skoller, Inc.</span>
             </div>
             <div className='si-l-login'>
-              <form className="form-login" onSubmit={this.onSubmit.bind(this)}>
+              <div className='si-l-login-form-container'>
+                <form className="form-login" onSubmit={this.onSubmit.bind(this)}>
                 <div className='form-control'>
                   <input
                     label=''
@@ -120,6 +121,13 @@ class InsightsLanding extends React.Component {
 
                 <button type="submit" className="button" onClick={this.onSubmit.bind(this)}>Login</button>
               </form>
+              </div>
+              <Link to={{
+                pathname: '/forgot_password',
+                state: {
+                  insightsReset: true
+                }
+              }} className='si-l-login-forgot-password link-style'>Forgot password?</Link>
             </div>
           </div>
         </nav>
@@ -134,7 +142,7 @@ class InsightsLanding extends React.Component {
             allowFullScreen />
           <div className='si-landing-heading'>
             <h1>Helping coaches and advisors visualize upcoming work for student-athletes.</h1>
-            <a><p>Explore</p></a>
+            <a href='https://explore.skoller.co/insights'><p>Explore</p></a>
           </div>
         </div>
         <footer>
@@ -143,7 +151,7 @@ class InsightsLanding extends React.Component {
             <a href={'https://explore.skoller.co/insights'} className='link-style'>About Skoller Insights</a>
             <a href={'https://explore.skoller.co/privacy-policy'} className='link-style'>Privacy policy</a>
             <a href={'https://explore.skoller.co/contactus'} className='link-style'>Contact us</a>
-            <p>&copy; Skoller, Inc. {moment().format('YYYY')}</p>
+            <p style={{color: '#a9a9a9'}}>&copy; Skoller, Inc. {moment().format('YYYY')}</p>
           </div>
         </footer>
       </div>

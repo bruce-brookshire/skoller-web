@@ -4,6 +4,7 @@ $page-min-width: 1000px;
 .si-landing {
   width: 100vw;
   min-width: $page-min-width;
+  min-height: 600px;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -46,6 +47,19 @@ $page-min-width: 1000px;
       }
 
       .si-l-login {
+        display: flex;
+        flex-flow: column nowrap;
+        // justify-content: flex-end;
+        align-items: flex-end;
+        margin-top: 8px;
+
+        .si-l-login-forgot-password {
+          margin-right: 120px;
+          margin-top: 8px;
+          margin-bottom: -12px;
+          font-size: 12px;
+        }
+
         .form-login {
           display: flex;
           flex-flow: row nowrap;
