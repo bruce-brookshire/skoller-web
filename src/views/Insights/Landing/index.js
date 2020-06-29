@@ -1,9 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 import { Cookies } from 'react-cookie'
 import actions from '../../../actions'
 import { inject, observer } from 'mobx-react'
+import logo from '../../../assets/images/insights/skoller-insights-logo.png'
+import moment from 'moment'
 
 @inject('rootStore') @observer
 class InsightsLanding extends React.Component {
@@ -89,7 +91,46 @@ class InsightsLanding extends React.Component {
   render () {
     return (
       <div className='si-landing'>
-        <h1>Welcome to <b>Skoller Insights</b></h1>
+        <nav>
+          <div className='nav-content'>
+            <div className='si-l-logo'>
+              <img src={logo} />
+              <span>A product of Skoller, Inc.</span>
+            </div>
+            <div className='si-l-login'>
+              <div className='si-l-login-form-container'>
+                <form className="form-login" onSubmit={this.onSubmit.bind(this)}>
+                <div className='form-control'>
+                  <input
+                    label=''
+                    name='email'
+                    placeholder='Email'
+                    onChange={this.setEmail}
+                  />
+                </div>
+
+                <div className='form-control' >
+                  <input
+                    label=''
+                    name='password'
+                    placeholder='Password'
+                    type='password'
+                    onChange={this.setPassword}
+                  />
+                </div>
+
+                <button type="submit" className="button" onClick={this.onSubmit.bind(this)}>Login</button>
+              </form>
+              </div>
+              <Link to={{
+                pathname: '/forgot_password',
+                state: {
+                  insightsReset: true
+                }
+              }} className='si-l-login-forgot-password link-style'>Forgot password?</Link>
+            </div>
+          </div>
+        </nav>
         <div className='si-landing-content'>
           <iframe
             className='jumbo'
@@ -99,32 +140,20 @@ class InsightsLanding extends React.Component {
             frameBorder="0"
             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen />
-          <div className='login'>
-            <h2>Login</h2>
-            <form className="form-login" onSubmit={this.onSubmit.bind(this)}>
-              <div className='form-control'>
-                <input
-                  label=''
-                  name='email'
-                  placeholder='Email'
-                  onChange={this.setEmail}
-                />
-              </div>
-
-              <div className='form-control' >
-                <input
-                  label=''
-                  name='password'
-                  placeholder='Password'
-                  type='password'
-                  onChange={this.setPassword}
-                />
-              </div>
-
-              <button type="submit" className="button" onClick={this.onSubmit.bind(this)}>Login</button>
-            </form>
+          <div className='si-landing-heading'>
+            <h1>Helping coaches and advisors visualize upcoming work for student-athletes.</h1>
+            <a href='https://explore.skoller.co/insights'><p>Explore</p></a>
           </div>
         </div>
+        <footer>
+          <div className='footer-content'>
+            <a href={'https://explore.skoller.co'} className='link-style'>What is Skoller?</a>
+            <a href={'https://explore.skoller.co/insights'} className='link-style'>About Skoller Insights</a>
+            <a href={'https://explore.skoller.co/privacy-policy'} className='link-style'>Privacy policy</a>
+            <a href={'https://explore.skoller.co/contactus'} className='link-style'>Contact us</a>
+            <p style={{color: '#a9a9a9'}}>&copy; Skoller, Inc. {moment().format('YYYY')}</p>
+          </div>
+        </footer>
       </div>
     )
   }

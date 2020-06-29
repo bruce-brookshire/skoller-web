@@ -1,4 +1,6 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
+import moment from 'moment'
 
 class LandingFooter extends React.Component {
   render () {
@@ -6,22 +8,22 @@ class LandingFooter extends React.Component {
       <footer className='cn-landing-footer'>
         <div className='footer-content'>
           <div className='footer-link'>
-            <a className='non-styled-link' href='https://explore.skoller.co/blog'>Blog</a>
+            <Link className='link-style' to='/insights'>Skoller Insights</Link>
           </div>
           <div className='footer-link'>
-            <a className='non-styled-link' href='https://explore.skoller.co/press'>What people are saying about us</a>
+            <a className='link-style' href='https://explore.skoller.co/press'>What students say about us</a>
           </div>
           <div className='footer-link'>
-            <a className='non-styled-link' href='https://explore.skoller.co/team'>Our team</a>
+            <a className='link-style' href='https://explore.skoller.co/team'>Our team</a>
           </div>
           <div className='footer-link'>
-            <a className='non-styled-link' href='https://explore.skoller.co/privacy-policy'>Privacy policy</a>
+            <a className='link-style' href='https://explore.skoller.co/privacy-policy'>Privacy policy</a>
           </div>
           <div className='footer-link'>
-            <a className='non-styled-link' href="https://explore.skoller.co/contactus">Contact us</a>
+            <a className='link-style' href="https://explore.skoller.co/contactus">Contact us</a>
           </div>
           <div className='footer-link'>
-            Skoller, Inc. &copy; {new Date().getFullYear().toString()}
+            &copy; Skoller, Inc. {moment().format('YYYY')}
           </div>
         </div>
       </footer>
