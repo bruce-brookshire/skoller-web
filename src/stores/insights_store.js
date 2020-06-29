@@ -21,10 +21,9 @@ class InsightsStore {
         studentsAlias: 'athlete'
       },
       interfaceSettings: {
-        dashboard: {
-          sort: 'Grade Impact',
-          timeframe: 'Next 7 days'
-        }
+        sort: 'Grade Impact',
+        timeframe: 7,
+        timeframeOptions: [7, 14, 30]
       },
       darkMode: this.cookie.get('skollerInsightsDarkMode') === 'true',
       userType: null
@@ -81,8 +80,9 @@ class InsightsStore {
               classes: [],
               assignments: [],
               intensity: {
-                sevenDay: null,
-                thirtyDay: null
+                7: null,
+                14: null,
+                30: null
               },
               isInvitation: false
             }
@@ -172,8 +172,9 @@ class InsightsStore {
           s.classes = r
           s.assignments = assignments
           s.intensity = {
-            sevenDay: getIntensityScore(assignments, 7),
-            thirtyDay: getIntensityScore(assignments, 30)
+            7: getIntensityScore(assignments, 7),
+            14: getIntensityScore(assignments, 14),
+            30: getIntensityScore(assignments, 30)
           }
         })
     ))

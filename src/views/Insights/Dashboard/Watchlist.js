@@ -7,11 +7,11 @@ import { getAssignmentCountInNextNDays, getAssignmentWeightsInNextNDays } from '
 @inject('rootStore') @observer
 class Watchlist extends React.Component {
   renderValue (d) {
-    const days = this.props.rootStore.insightsStore.interfaceSettings.dashboard.timeframe === 'Next 7 days' ? 7 : 30
+    const days = this.props.rootStore.insightsStore.interfaceSettings.timeframe
     let intensityString = days === 7 ? 'sevenDay' : 'thirtyDay'
     let value
 
-    switch (this.props.rootStore.insightsStore.interfaceSettings.dashboard.sort) {
+    switch (this.props.rootStore.insightsStore.interfaceSettings.sort) {
       case 'Assignments':
         value = getAssignmentCountInNextNDays(d.assignments, days)
         break
@@ -27,9 +27,9 @@ class Watchlist extends React.Component {
   }
 
   sortStudents (students) {
-    const days = this.props.rootStore.insightsStore.interfaceSettings.dashboard.timeframe === 'Next 7 days' ? 7 : 30
+    const days = this.props.rootStore.insightsStore.interfaceSettings.timeframe
 
-    switch (this.props.rootStore.insightsStore.interfaceSettings.dashboard.sort) {
+    switch (this.props.rootStore.insightsStore.interfaceSettings.sort) {
       case 'Assignments':
         return students.sort((a, b) => {
           if (getAssignmentCountInNextNDays(a.assignments, days) < getAssignmentCountInNextNDays(b.assignments, days)) {
@@ -65,7 +65,7 @@ class Watchlist extends React.Component {
       return this.props.rootStore.insightsStore.watchlist.map(u => u.org_student_id).includes(s.id)
     })
     students = this.sortStudents(students)
-    const headers = ['Athlete', this.props.rootStore.insightsStore.interfaceSettings.dashboard.sort]
+    const headers = ['Athlete', this.props.rootStore.insightsStore.interfaceSettings.sort]
     const data = students.map(d => {
       return [
         <StudentAthleteCard user={d} key={d.id} rootStore={this.props.rootStore} />,

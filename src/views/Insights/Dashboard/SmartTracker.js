@@ -30,11 +30,11 @@ class SmartTracker extends React.Component {
       if (d.classes.length === 0) return setup
     }
 
-    const days = this.props.rootStore.insightsStore.interfaceSettings.dashboard.timeframe === 'Next 7 days' ? 7 : 30
+    const days = this.props.rootStore.insightsStore.interfaceSettings.timeframe
     let intensityString = days === 7 ? 'sevenDay' : 'thirtyDay'
     let value
 
-    switch (this.props.rootStore.insightsStore.interfaceSettings.dashboard.sort) {
+    switch (this.props.rootStore.insightsStore.interfaceSettings.sort) {
       case 'Assignments':
         value = getAssignmentCountInNextNDays(d.assignments, days)
         break
@@ -52,9 +52,9 @@ class SmartTracker extends React.Component {
   }
 
   sortStudents (students) {
-    const days = this.props.rootStore.insightsStore.interfaceSettings.dashboard.timeframe === 'Next 7 days' ? 7 : 30
+    const days = this.props.rootStore.insightsStore.interfaceSettings.timeframe
 
-    switch (this.props.rootStore.insightsStore.interfaceSettings.dashboard.sort) {
+    switch (this.props.rootStore.insightsStore.interfaceSettings.sort) {
       case 'Assignments':
         return students.sort((a, b) => {
           if (getAssignmentCountInNextNDays(a.assignments, days) < getAssignmentCountInNextNDays(b.assignments, days)) {
@@ -103,8 +103,8 @@ class SmartTracker extends React.Component {
 
   renderSortOption () {
     let description
-    let sort = this.props.rootStore.insightsStore.interfaceSettings.dashboard.sort
-    let timeframe = this.props.rootStore.insightsStore.interfaceSettings.dashboard.timeframe === 'Next 7 days' ? 7 : 30
+    let sort = this.props.rootStore.insightsStore.interfaceSettings.sort
+    let timeframe = this.props.rootStore.insightsStore.interfaceSettings.timeframe
 
     switch (sort) {
       case 'Grade Impact':
@@ -180,29 +180,30 @@ class SmartTracker extends React.Component {
   }
 
   render () {
-    let timeframeOptions = ['Next 7 days', 'Next 30 days']
     let filterOptions = ['Assignments', 'Grade Impact', 'Personal Intensity']
     let teamOptions = ['All'].concat(this.props.rootStore.insightsStore.org.groups ? this.props.rootStore.insightsStore.org.groups.map(g => g.name) : null)
     let title = toTitleCase(this.props.rootStore.insightsStore.org.groupsAlias) + 's'
     let interfaceSettings = this.props.rootStore.insightsStore.interfaceSettings
+    let timeframeOptions = interfaceSettings.timeframeOptions
+    console.log(interfaceSettings)
     return (
       <div className='si-smart-tracker'>
         <h1><SmartTrackerIcon fill={this.props.rootStore.insightsStore.darkMode ? 'white' : ''} /> Smart Tracker</h1>
         <div className='si-smart-tracker-timeframe'>
-          <div style={{paddingRight: '8px'}}>Timeframe: </div>
-          <SkSelect className='si-select' selection={interfaceSettings.dashboard.timeframe} optionsMap={() => timeframeOptions.map(o => {
+          <div className='si-smart-tracker-timeframe-label' style={{paddingRight: '8px'}}>Looking at </div>
+          <SkSelect className='si-select' selection={'Next ' + interfaceSettings.timeframe + ' days'} optionsMap={() => timeframeOptions.map(o => {
             return (
               <div
                 key={timeframeOptions.indexOf(o)}
                 className='si-smart-tracker-timeframe-option si-select-option'
-                onClick={() => { this.props.rootStore.insightsStore.interfaceSettings.dashboard.timeframe = o }}
-              >{o}</div>
+                onClick={() => { this.props.rootStore.insightsStore.interfaceSettings.timeframe = o }}
+              >{'Next ' + o + ' days'}</div>
             )
           })} />
         </div>
         <div className='si-smart-tracker-filter'>
           <div className='si-smart-tracker-filter-group'>
-            <p className='si-smart-tracker-filter-label'>{title}: </p>
+            <p className='si-smart-tracker-filter-label'>{title}</p>
             <SkSelect className='si-select' selection={this.state.team} optionsMap={() => teamOptions.map(o => {
               return (
                 <div
@@ -214,19 +215,19 @@ class SmartTracker extends React.Component {
             })} />
           </div>
           <div className='si-smart-tracker-filter-group'>
-            <p className='si-smart-tracker-filter-label'>Sort: </p>
-            <SkSelect className='si-select' selection={this.props.rootStore.insightsStore.interfaceSettings.dashboard.sort} optionsMap={() => filterOptions.map(o => {
+            <p className='si-smart-tracker-filter-label'>Sort</p>
+            <SkSelect className='si-select' selection={this.props.rootStore.insightsStore.interfaceSettings.sort} optionsMap={() => filterOptions.map(o => {
               return (
                 <div
                   key={filterOptions.indexOf(o)}
                   className='si-select-option'
-                  onClick={() => { this.props.rootStore.insightsStore.interfaceSettings.dashboard.sort = o }}
+                  onClick={() => { this.props.rootStore.insightsStore.interfaceSettings.sort = o }}
                 >{o}</div>
               )
             })} />
           </div>
           <div className='si-smart-tracker-filter-group grow'>
-            <p className='si-smart-tracker-filter-label'>Search: </p>
+            <p className='si-smart-tracker-filter-label'>Search</p>
             <input placeholder='Search for an athlete' className='si-smart-tracker-search' value={this.state.searchQuery} onChange={(e) => this.setState({searchQuery: e.target.value})} />
           </div>
         </div>

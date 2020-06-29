@@ -17,7 +17,7 @@ class StudentInsights extends React.Component {
   }
 
   getTimeframe () {
-    return this.props.rootStore.insightsStore.interfaceSettings.dashboard.timeframe === 'Next 7 days' ? 7 : 30
+    return this.props.rootStore.insightsStore.interfaceSettings.timeframe
   }
 
   renderCharts () {

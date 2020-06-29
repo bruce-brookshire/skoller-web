@@ -27,6 +27,12 @@
     .si-select {
       @include si-select;
     }
+
+    .si-smart-tracker-timeframe-label {
+      @include themed() {
+        color: t($font-color-50);
+      }
+    }
   }
 
   .si-select {
@@ -50,6 +56,10 @@
 
       .si-smart-tracker-filter-label {
         margin: 0;
+
+        @include themed() {
+          color: t($font-color-50);
+        }
       }
 
       .si-smart-tracker-search {
@@ -146,7 +156,9 @@
         padding: 8px;
         padding-right: 16px;
 
-        border: 1px solid #4a4a4a;
+        @include themed() {
+          border: 1px solid t($font-color-50)
+        }
         border-radius: 5px;
       }
 

@@ -90,5 +90,57 @@
         }
       }
     }
+
+    .si-groups-empty {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+
+      .si-groups-empty-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+        @include si-cell;
+        width: 400px;
+
+        h1 {
+          color: $sk-blue;
+          margin: 0 0 1rem 0;
+        }
+
+        .plus {
+          background-color: $sk-blue;
+          color: white;
+          font-size: 64px;
+          width: 70px;
+          height: 70px;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          padding: 16px 0 0 0;
+          border-radius: 50%;
+          box-shadow: 0px 4px 16px rgba(0,0,0,0.12);
+          cursor: pointer;
+          transition: all 200ms;
+
+          &:hover {
+            box-shadow: none;
+            transition: all 200ms;
+          }
+        }
+
+        i {
+          font-size: 64px;
+          margin-top: 1rem;
+          
+          @include themed() {
+            color: t($font-color-50);
+          }
+        }
+      }
+    }
   }
 }

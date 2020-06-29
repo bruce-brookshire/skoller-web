@@ -6,6 +6,7 @@ $input-p: 'input-p';
 $border: 'border';
 $alert-red: 'alert-red';
 $success-green: 'success-green';
+$font-color-50: 'font-color-50';
 
 $themes: (
   default: (
@@ -16,7 +17,8 @@ $themes: (
     input-p: rgba(0,0,0,0.5),
     border: rgba(0,0,0,0.15),
     alert-red: $sk-alert-red,
-    success-green: $cn-color-green
+    success-green: $cn-color-green,
+    font-color-50: #4a4a4a50
   ),
   dark: (
     hover: rgba(255,255,255,0.05),
@@ -26,7 +28,8 @@ $themes: (
     input-p: rgba(255,255,255,0.5),
     border: rgba(255,255,255,0.05),
     alert-red: #f0526c,
-    success-green: $cn-color-green
+    success-green: $cn-color-green,
+    font-color-50: rgba(255,255,255,0.5)
   ),
 );
 

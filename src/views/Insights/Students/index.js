@@ -161,27 +161,23 @@ class Students extends React.Component {
   }
 
   renderTimeframe () {
-    let options = ['Next 7 days', 'Next 30 days']
+    let options = this.props.rootStore.insightsStore.interfaceSettings.timeframeOptions
     return (
       <div className='si-students-timeframe'>
         <span style={{marginRight: '8px'}}>Timeframe:</span>
         <SkSelect
           className='si-select'
-          selection={this.state.timeframe === 7 ? 'Next 7 days' : 'Next 30 days'}
+          selection={'Next ' + this.state.timeframe + ' days'}
           optionsMap={() => options.map(o => {
             return (
               <div
                 className='si-select-option'
                 key={options.indexOf(o)}
                 onClick={() => {
-                  if (o === 'Next 7 days') {
-                    this.setState({timeframe: 7})
-                  } else {
-                    this.setState({timeframe: 30})
-                  }
+                  this.setState({timeframe: o})
                 }}
               >
-                {o}
+                {'Next ' + o + ' days'}
               </div>
             )
           })}
@@ -234,7 +230,7 @@ class Students extends React.Component {
         this.renderHeaderItem('Personal Intensity', 1, 1)
       ]
     ]
-    let intensityString = this.state.timeframe === 7 ? 'sevenDay' : 'thirtyDay'
+    let intensityString = this.state.timeframe
     let da = this.renderFilteredStudents()
     const d = da.map(d => {
       if (d.isInvitation) {

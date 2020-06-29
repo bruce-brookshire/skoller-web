@@ -201,6 +201,20 @@ class Groups extends React.Component {
     )
   }
 
+  renderAddGroups () {
+    let insightsStore = this.props.rootStore.insightsStore
+
+    return (
+      <div className='si-groups-empty'>
+        <div className='si-groups-empty-content'>
+          <h1>Add {insightsStore.org.groupsAlias}s!</h1>
+          <div onClick={() => this.setState({showNewGroupModal: true})} className='plus'>+</div>
+          <i className='fas fa-users' />
+        </div>
+      </div>
+    )
+  }
+
   renderContent () {
     let insightsStore = this.props.rootStore.insightsStore
     let title = toTitleCase(insightsStore.org.groupsAlias) + 's'
@@ -221,8 +235,9 @@ class Groups extends React.Component {
           </div>
         </div>
         <div className='si-groups-content'>
-          {this.renderFilterBar()}
-          {this.renderTable()}
+          {insightsStore.groups.length > 0 && this.renderFilterBar()}
+          {insightsStore.groups.length > 0 && this.renderTable()}
+          {insightsStore.groups.length === 0 && this.renderAddGroups()}
         </div>
       </div>
     )
