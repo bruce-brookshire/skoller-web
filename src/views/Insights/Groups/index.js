@@ -11,6 +11,8 @@ import OwnersCell from '../components/OwnersCell'
 import LoadingIndicator from '../components/LoadingIndicator'
 import SkModal from '../../components/SkModal/SkModal'
 import CreateStudents from '../components/CreateStudents'
+import { Link } from 'react-router-dom'
+import StatusIndicators from '../components/StatusIndicators'
 
 @inject('rootStore') @observer
 class NameCell extends React.Component {
@@ -27,7 +29,7 @@ class NameCell extends React.Component {
   renderCreateStudentsModal () {
     return (
       this.state.showAddStudents && <SkModal disableOutsideClick={true} closeModal={() => this.setState({showAddStudents: false})}>
-        <CreateStudents group={this.props.d} onSubmit={() => {
+        <CreateStudents showConfirm group={this.props.d} onSubmit={() => {
           this.props.rootStore.insightsStore.updateData(['invitations'])
           this.setState({showAddStudents: false})
         }} />
@@ -48,9 +50,12 @@ class NameCell extends React.Component {
   render () {
     return (
       <div className='si-groups-table-name'>
-        {this.props.d.name}
-        <span style={{marginLeft: '8px'}}>{this.renderActions()}<i onClick={() => this.setState({showActions: true})} className='fas fa-ellipsis-h' /></span>
-        {this.renderCreateStudentsModal()}
+        <Link to={'/insights/groups/' + this.props.d.id}>
+          {this.props.d.name}
+        </Link>
+        <StatusIndicators group={this.props.d} hideNumbers={true} />
+        {/* <span style={{marginLeft: '8px'}}>{this.renderActions()}<i onClick={() => this.setState({showActions: true})} className='fas fa-ellipsis-h' /></span> */}
+        {/* {this.renderCreateStudentsModal()} */}
       </div>
     )
   }

@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { inject, observer } from 'mobx-react'
 import ForwardArrow from '../../../assets/sk-icons/navigation/ForwardArrow'
+import { toTitleCase } from '../utils'
 
 @inject('rootStore') @observer
 class NestedNav extends React.Component {
@@ -42,6 +43,31 @@ class NestedNav extends React.Component {
           },
           {
             name: student.name_first + ' ' + student.name_last
+          }
+        ]
+      }
+    }
+    if (this.props.pageType === 'groupDetail') {
+      let group = this.props.rootStore.insightsStore.groups.find(g => g.id === parseInt(this.props.match.params.orgGroupId))
+      let groupsAlias = toTitleCase(this.props.rootStore.insightsStore.org.groupsAlias) + 's'
+      if (this.props.rootStore.insightsStore.userType === 'orgOwner') {
+        pathArray = [
+          {
+            name: groupsAlias,
+            path: '/insights/groups'
+          },
+          {
+            name: group.name
+          }
+        ]
+      } else {
+        pathArray = [
+          {
+            name: 'Dashboard',
+            path: '/insights/dashboard'
+          },
+          {
+            name: group.name
           }
         ]
       }

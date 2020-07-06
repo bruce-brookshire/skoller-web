@@ -6,6 +6,8 @@ import StudentAthleteCard from '../components/StudentAthleteCard'
 import SkSelect from '../../components/SkSelect'
 import { getAssignmentCountInNextNDays, getAssignmentWeightsInNextNDays, toTitleCase } from '../utils'
 import ToolTip from '../../components/ToolTip'
+import CreateStudents from '../components/CreateStudents'
+import SkModal from '../../components/SkModal/SkModal'
 
 @inject('rootStore') @observer
 class SmartTracker extends React.Component {
@@ -31,7 +33,7 @@ class SmartTracker extends React.Component {
     }
 
     const days = this.props.rootStore.insightsStore.interfaceSettings.timeframe
-    let intensityString = days === 7 ? 'sevenDay' : 'thirtyDay'
+    let intensityString = days
     let value
 
     switch (this.props.rootStore.insightsStore.interfaceSettings.sort) {
@@ -74,7 +76,7 @@ class SmartTracker extends React.Component {
         })
 
       case 'Personal Intensity':
-        let intensityString = days === 7 ? 'sevenDay' : 'thirtyDay'
+        let intensityString = days
         return students.sort((a, b) => {
           if (a.intensity[intensityString] < b.intensity[intensityString]) {
             return 1
@@ -143,9 +145,26 @@ class SmartTracker extends React.Component {
     )
   }
 
+  toggleShowAddStudents (bool) {
+    this.setState({showNewStudentModal: bool})
+  }
+
+  renderAddStudents () {
+    if (!this.state.showNewStudentModal) return null
+
+    return (
+      <SkModal disableOutsideClick closeModal={() => this.setState({showNewStudentModal: false})}>
+        <CreateStudents showConfirm onSubmit={() => {
+          this.props.rootStore.insightsStore.updateData()
+          this.setState({showNewStudentModal: false})
+        }} />
+      </SkModal>
+    )
+  }
+
   renderTable () {
     const headers = ['Athlete', this.renderSortOption()]
-    const data = this.filterStudents(this.props.rootStore.insightsStore.getStudentsAndInvitations()).map(d => {
+    let data = this.filterStudents(this.props.rootStore.insightsStore.getStudentsAndInvitations()).map(d => {
       if (d) {
         return [
           <StudentAthleteCard user={d} key={d.id} rootStore={this.props.rootStore} />,
@@ -153,6 +172,16 @@ class SmartTracker extends React.Component {
         ]
       }
     })
+
+    if (data.length === 0) {
+      return (
+        <div className='add-athletes-callout'>
+          <h1>Add athletes!</h1>
+          <div onClick={() => this.toggleShowAddStudents(true)} className='plus'>+</div>
+          <i className='fas fa-running' />
+        </div>
+      )
+    } 
 
     return (
       <table>
@@ -185,9 +214,10 @@ class SmartTracker extends React.Component {
     let title = toTitleCase(this.props.rootStore.insightsStore.org.groupsAlias) + 's'
     let interfaceSettings = this.props.rootStore.insightsStore.interfaceSettings
     let timeframeOptions = interfaceSettings.timeframeOptions
-    console.log(interfaceSettings)
+
     return (
       <div className='si-smart-tracker'>
+        {this.renderAddStudents()}
         <h1><SmartTrackerIcon fill={this.props.rootStore.insightsStore.darkMode ? 'white' : ''} /> Smart Tracker</h1>
         <div className='si-smart-tracker-timeframe'>
           <div className='si-smart-tracker-timeframe-label' style={{paddingRight: '8px'}}>Looking at </div>

@@ -3,6 +3,7 @@ import Avatar from './Avatar'
 import WatchToggle from './WatchToggle'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
+import StatusIndicators from './StatusIndicators'
 
 const StudentAthleteCard = (props) => {
   const link = props.noLink ? null : '/insights/students/' + props.user.id
@@ -13,7 +14,7 @@ const StudentAthleteCard = (props) => {
           <Avatar user={props.user} />
           <div className='sa-info'>
             <div className='sa-name'>
-              {props.user.student.name_first + ' ' + props.user.student.name_last} <small style={{fontStyle: 'oblique', fontSize: '14px', margin: '4px 0 0 8px'}}> (pending invitation)</small>
+              {props.user.student.name_first + ' ' + props.user.student.name_last} <span style={{marginLeft: '8px'}}><StatusIndicators invitation={props.user} /></span>
             </div>
             {!props.noTeams && <div className='sa-teams'>
               {props.user.group_ids.map(id => {
@@ -42,6 +43,7 @@ const StudentAthleteCard = (props) => {
             <div className='watch-toggle-container'>
               <WatchToggle rootStore={props.rootStore} showConfirm={props.absoluteToggle} user={props.user} />
             </div>
+            <span style={{marginLeft: '8px'}}><StatusIndicators student={props.user} /></span>
           </div>
           {!props.noTeams && <div className='sa-teams'>
             {props.user.org_groups.map(t => {

@@ -17,6 +17,7 @@ import { asyncForEach } from '../../../utilities/api'
 import actions from '../../../actions'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import ActionModal from '../components/ActionModal'
+import CreateStudents from '../components/CreateStudents'
 
 @inject('rootStore') @observer
 class Students extends React.Component {
@@ -112,7 +113,7 @@ class Students extends React.Component {
     }
 
     if (this.state.sort.value === 'Personal Intensity') {
-      let intensityString = days === 7 ? 'sevenDay' : 'thirtyDay'
+      let intensityString = days === 7
       sortedStudents = students.sort((a, b) => {
         if (a.intensity[intensityString] < b.intensity[intensityString]) {
           return 1
@@ -128,9 +129,7 @@ class Students extends React.Component {
     return sortedStudents
   }
 
-  renderFilteredStudents () {
-    let students = this.props.rootStore.insightsStore.getStudentsAndInvitations()
-
+  renderFilteredStudents (students) {
     if (this.state.teamsQuery) {
       students = students.filter(s => s.org_groups.map(g => g.name.toLowerCase()).join(' ').includes(this.state.teamsQuery.toLowerCase()))
     }
@@ -231,7 +230,7 @@ class Students extends React.Component {
       ]
     ]
     let intensityString = this.state.timeframe
-    let da = this.renderFilteredStudents()
+    let da = this.renderFilteredStudents(this.props.rootStore.insightsStore.getStudentsAndInvitations())
     const d = da.map(d => {
       if (d.isInvitation) {
         return [
@@ -336,8 +335,8 @@ class Students extends React.Component {
   renderNewStudentModal () {
     return (
       this.state.showNewStudentModal
-        ? <SkModal title={'Invite a new ' + this.props.rootStore.insightsStore.org.studentsAlias} disableOutsideClick closeModal={() => this.setState({showNewStudentModal: false})}>
-          <CreateStudentForm onSubmit={() => {
+        ? <SkModal disableOutsideClick closeModal={() => this.setState({showNewStudentModal: false})}>
+          <CreateStudents showConfirm onSubmit={() => {
             this.props.rootStore.insightsStore.updateData(['invitations'])
             this.setState({showNewStudentModal: false})
           }} />

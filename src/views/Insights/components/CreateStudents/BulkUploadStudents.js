@@ -99,7 +99,6 @@ class BulkUploadStudents extends Component {
       'First Name', 'Last Name', 'Email', 'Phone', 'Error'
     ]
     const data = this.state.errors.map(d => {
-      console.log(d, d.name_last)
       let i = 0
       return ([
         d.name_first,
@@ -147,15 +146,14 @@ class BulkUploadStudents extends Component {
         {this.state.errors.length > 0
           ? this.renderErrors()
           : <React.Fragment>
-            <h3>Here&apos;s what we pulled from your CSV.</h3>
+            <h3>Here&apos;s what we found from the CSV...</h3>
             <p>If everything looks correct, hit submit to invite these students to your organization.</p>
             <div style={{maxHeight: '300px', position: 'relative', overflow: 'scroll'}}><Table stickyHeader headers={headers} data={data} /></div>
           </React.Fragment>
         }
         <div className='si-bulk-upload-clear'>
-          {this.state.errors.length > 0
-            ? <React.Fragment>Ready to try again? <span onClick={() => this.setState({csv: null})}>Clear and upload another file.</span></React.Fragment>
-            : <React.Fragment>Wrong file? <span onClick={() => this.setState({csv: null})}>Upload a different one.</span></React.Fragment>
+          {this.state.errors.length > 0 &&
+            <div>Ready to try again? <span onClick={() => this.setState({csv: null})}>Clear and upload another file.</span></div>
           }
         </div>
       </div>
@@ -168,10 +166,10 @@ class BulkUploadStudents extends Component {
 
   onSubmit () {
     this.setState({loading: true})
-    let orgGroupId = this.props.group.id
+    let orgGroupId = this.props.group ? this.props.group.id : null
     actions.insights.invitations.postInvitationsCSV(this.props.rootStore.insightsStore.org.id, this.state.csv, orgGroupId)
-      .then(() => {
-        this.props.onSubmit && this.props.onSubmit()
+      .then((r) => {
+        this.props.onSubmit && this.props.onSubmit(r)
         this.setState({loading: false, csv: null, preview: null})
       })
       .catch(() => {
@@ -183,12 +181,16 @@ class BulkUploadStudents extends Component {
 
   renderSubmit () {
     return (
-      <div className='si-button'>
-        <p
-          onClick={() => this.onSubmit()}
-        >
-          Submit {this.state.preview.length} invitations
-        </p>
+      <div className='si-bulk-upload-submit'>
+        <h2>Does everything look good?</h2>
+        <div className='si-button'>
+          <p
+            onClick={() => this.onSubmit()}
+          >
+            Add {this.props.rootStore.insightsStore.org.studentsAlias}s ({this.state.preview.length})
+          </p>
+        </div>
+        <div style={{marginTop: '8px'}}>Something off? <span onClick={() => this.setState({csv: null})}>Go back.</span></div>
       </div>
     )
   }

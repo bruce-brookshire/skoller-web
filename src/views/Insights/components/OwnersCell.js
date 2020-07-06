@@ -31,7 +31,7 @@ const Owner = (props) => {
       >
         {renderX()}
       </CSSTransition>
-      {props.user.user.email}
+      {props.user.user ? props.user.user.email : null}
     </div>
   )
 }

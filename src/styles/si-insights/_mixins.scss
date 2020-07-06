@@ -69,3 +69,62 @@ $si-ultra-dark: #3c3c3c;
     color: t($font-color);
   }
 }
+
+@mixin si-input {
+  // width: 100%;
+  // flex-grow: 1;
+  height: 100%;
+  min-width: 192px;
+  border-radius: 5px;
+  background-color: #fafafa00;
+  font-size: 14px;
+  padding: 9px 8px;
+  transition: box-shadow 0.1s ease-in-out;
+
+  @include themed() {
+    color: t($font-color);
+    border: 1px solid t($border);
+  }
+
+  &:focus {
+    outline: none;
+    border: 1px solid $sk-blue;
+  // box-shadow: 0 6px 10px rgba(0,0,0,0.08);
+  }
+
+  &::placeholder {
+    @include themed() {
+      color: t($input-p);
+    }  
+  }
+}
+
+@mixin si-search-input {
+  height: 100%;
+  min-width: 192px;
+  border: none;
+  background-color: #fafafa00;
+  font-size: 14px;
+  padding: 9px 8px 9px 12px;
+  transition: box-shadow 0.1s ease-in-out;
+
+  @include themed() {
+    color: t($font-color);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 6px 10px rgba(0,0,0,0.08);
+  }
+
+  &::placeholder {
+    @include themed() {
+      color: t($input-p);
+    }  
+  }
+  border-radius: 50px;
+  @include themed() {
+    color: t($font-color);
+    background-color: t($font-color-15);
+  }
+}

@@ -7,7 +7,7 @@ import {showSnackbar} from '../../utilities/snackbar'
 function createStudentInvitation (orgId, form) {
   return post(`/api/v1/organizations/${orgId}/student-org-invitations`, form, '')
     .then(r => {
-      showSnackbar(`Successfully invited ${form.name_first} ${form.name_last}`, 'success')
+      showSnackbar(`Successfully added ${form.name_first} ${form.name_last}`, 'success')
       return r
     })
     .catch(error => {
@@ -37,7 +37,7 @@ function deleteInvitation (orgId, invitationId) {
 
 export function postInvitationsCSV (orgId, file, orgGroupId) {
   let form = new FormData()
-  form.append('org_group_id', orgGroupId)
+  if (orgGroupId) form.append('org_group_id', orgGroupId)
   form.append('file', file)
 
   return postFile(`/api/v1/organizations/${orgId}/student-org-invitations/csv`, form, '')

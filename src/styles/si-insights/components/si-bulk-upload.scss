@@ -84,7 +84,31 @@
     }
   }
 
-  .si-button {
-    margin-top: 1rem;
+  .si-bulk-upload-submit {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+    h2 {
+      margin: 1rem 0 0 0;
+    }
+
+    span {
+      cursor: pointer;
+      color: $sk-blue;
+    }
+
+    .si-button {
+      width: 100%;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+
+      p {
+        font-size: 18px;
+        font-weight: 600;
+      }
+    }
   }
 }

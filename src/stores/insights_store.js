@@ -48,8 +48,15 @@ class InsightsStore {
     if (role === 'orgOwner') {
       await actions.insights.getAllGroupsInOrg(orgId)
         .then(r => {
-          this.groups = r
-          this.org.groups = r
+          let groups = []
+          r.forEach(group => {
+            let students = this.students.filter(s => s.org_groups.map(og => og.id).includes(group.id))
+            let invitations = this.invitations.filter(s => s.group_ids.includes(group.id))
+            let memberOwners = []
+            groups.push({...group, students, invitations, memberOwners})
+          })
+          this.groups = groups
+          this.org.groups = groups
         })
     } else {
       let groups = []
@@ -117,6 +124,10 @@ class InsightsStore {
         let groupOwners = r
         let filteredGroupOwners = []
         groupOwners.forEach(go => {
+          go.org_groups.forEach(og => {
+            let group = this.groups.find(group => group.id === og.id)
+            if (group.memberOwners) group.memberOwners.push(go)
+          })
           if (!filteredGroupOwners.find(o => o.user_id === go.user_id)) {
             filteredGroupOwners.push(go)
           }
@@ -198,8 +209,9 @@ class InsightsStore {
               }]
             },
             intensity: {
-              sevenDay: 0,
-              thirtyDay: 0
+              7: 0,
+              14: 0,
+              30: 0
             },
             isInvitation: true,
             org_groups: []
@@ -294,6 +306,8 @@ class InsightsStore {
   getDataSuccess () {
     this.loading = false
     this.loadingUpdate = false
+
+    console.log(this)
   }
 
   @action

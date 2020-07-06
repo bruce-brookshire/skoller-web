@@ -38,21 +38,33 @@
         min-width: 196px;
         display: flex;
         flex-direction: row;
-        margin-top: 6px;
+        justify-content: space-between;
+        align-items: center;
 
-        i {
+        a {
           color: $sk-blue;
-          cursor: pointer;
-          padding: 4px;
-          margin: -4px;
           border-radius: 5px;
-
+          padding: 6px 4px 0 4px;
+          flex-grow: 1;
+          
           &:hover {
-            @include themed() {
-              background-color: t($hover);
-            }
+            background-color: $sk-blue-25;
           }
         }
+
+        // i {
+        //   color: $sk-blue;
+        //   cursor: pointer;
+        //   padding: 4px;
+        //   margin: -4px;
+        //   border-radius: 5px;
+
+        //   &:hover {
+        //     @include themed() {
+        //       background-color: t($hover);
+        //     }
+        //   }
+        // }
 
         .si-gm {
           margin-left: 24px;

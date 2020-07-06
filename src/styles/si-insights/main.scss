@@ -3,6 +3,7 @@
 
 // views
 @import 'views/si-dashboard.scss';
+@import 'views/si-group-detail.scss';
 @import 'views/si-groups.scss';
 @import 'views/si-landing.scss';
 @import 'views/si-organization.scss';
@@ -18,11 +19,13 @@
 @import 'components/si-filter-modal.scss';
 @import 'components/si-form.scss';
 @import 'components/si-gm.scss';
+@import 'components/si-group-settings.scss';
 @import 'components/si-layout.scss';
 @import 'components/si-nav.scss';
 @import 'components/si-org-overview.scss';
 @import 'components/si-sa-card.scss';
 @import 'components/si-smart-tracker.scss';
+@import 'components/si-status-indicators.scss';
 @import 'components/si-student-insights.scss';
 @import 'components/si-table.scss';
 @import 'components/si-tasks-list.scss';
@@ -53,10 +56,10 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    // margin: 0 auto;
+    color: white;
 
-    i {
-      color: white;
+    span {
+      font-size: 18px;
     }
   }
 }
@@ -221,5 +224,11 @@
         }
       }
     }
+  }
+}
+
+main {
+  @include themed() {
+    color: t($font-color);
   }
 }

@@ -13,7 +13,9 @@ class CreateOrgGroup extends React.Component {
   }
 
   onSubmit () {
-    if (this.state.name === '') {
+    if (this.checkGroupName()) {
+      this.setState({error: 'This group already exists'})
+    } else if (this.state.name === '') {
       this.setState({error: 'Group name is required'})
     } else {
       let form = {
@@ -26,6 +28,19 @@ class CreateOrgGroup extends React.Component {
     }
   }
 
+  checkGroupName () {
+    const groupNames = this.props.org.groups.map(g => g.name)
+    if (groupNames.includes(this.state.name)) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  updateName (e) {
+    this.setState({name: e.target.value})
+  }
+
   render () {
     return (
       <div className='hub-insights-form-container'>
@@ -33,7 +48,7 @@ class CreateOrgGroup extends React.Component {
         <h3 style={{margin: '0'}}>{this.props.org.name}</h3>
         <div className='hub-insights-form-row'>
           <div className='hub-insights-form-label'>Name</div>
-          <input className='hub-insights-form-input' onChange={(e) => this.setState({name: e.target.value})} />
+          <input className='hub-insights-form-input' onChange={(e) => this.updateName(e)} />
         </div>
         {this.state.error &&
           <div className='hub-insights-form-error'>{this.state.error}</div>

@@ -1,4 +1,4 @@
-import {get, post, del} from '../../utilities/api'
+import {get, post, del, put} from '../../utilities/api'
 import {showSnackbar} from '../../utilities/snackbar'
 import stores from '../../stores'
 import invitations from './invitations'
@@ -160,6 +160,28 @@ function getAllGroupsInOrg (orgId) {
 // Create org group
 function createOrgGroup (orgId, form) {
   return post(`/api/v1/organizations/${orgId}/org-groups`, form, '')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+// Update org group
+function updateOrgGroup (orgId, orgGroupId, form) {
+  return put(`/api/v1/organizations/${orgId}/org-groups/${orgGroupId}`, form, '')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+// Delete org group
+function deleteOrgGroup (orgId, orgGroupId) {
+  return del(`/api/v1/organizations/${orgId}/org-groups/${orgGroupId}`, '', '')
     .then(data => {
       return data
     })
@@ -423,6 +445,8 @@ const exports = {
   // groups
   getAllGroupsInOrg,
   createOrgGroup,
+  updateOrgGroup,
+  deleteOrgGroup,
   addStudentToGroup,
   removeStudentFromGroup,
   // group owners,

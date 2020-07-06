@@ -8,7 +8,7 @@ import { getAssignmentCountInNextNDays, getAssignmentWeightsInNextNDays } from '
 class Watchlist extends React.Component {
   renderValue (d) {
     const days = this.props.rootStore.insightsStore.interfaceSettings.timeframe
-    let intensityString = days === 7 ? 'sevenDay' : 'thirtyDay'
+    let intensityString = days
     let value
 
     switch (this.props.rootStore.insightsStore.interfaceSettings.sort) {
@@ -49,7 +49,7 @@ class Watchlist extends React.Component {
         })
 
       case 'Personal Intensity':
-        let intensityString = days === 7 ? 'sevenDay' : 'thirtyDay'
+        let intensityString = days
         return students.sort((a, b) => {
           if (a.intensity[intensityString] < b.intensity[intensityString]) {
             return 1
@@ -72,6 +72,15 @@ class Watchlist extends React.Component {
         this.renderValue(d)
       ]
     })
+
+    if (data.length === 0) {
+      return (
+        <div className='add-athletes-callout si-smart-tracker-callout'>
+          <i className='far fa-star' />
+          <h2 className='grey-h2'>Create your personal watchlist by clicking the star next to {this.props.rootStore.insightsStore.org.studentsAlias}s&apos; names.</h2>
+        </div>
+      )
+    }
 
     return (
       <table>

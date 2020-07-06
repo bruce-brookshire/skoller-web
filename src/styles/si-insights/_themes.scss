@@ -7,6 +7,7 @@ $border: 'border';
 $alert-red: 'alert-red';
 $success-green: 'success-green';
 $font-color-50: 'font-color-50';
+$font-color-15: 'font-color-15';
 
 $themes: (
   default: (
@@ -18,7 +19,8 @@ $themes: (
     border: rgba(0,0,0,0.15),
     alert-red: $sk-alert-red,
     success-green: $cn-color-green,
-    font-color-50: #4a4a4a50
+    font-color-50: #4a4a4a50,
+    font-color-15: #4a4a4a15
   ),
   dark: (
     hover: rgba(255,255,255,0.05),
@@ -29,7 +31,8 @@ $themes: (
     border: rgba(255,255,255,0.05),
     alert-red: #f0526c,
     success-green: $cn-color-green,
-    font-color-50: rgba(255,255,255,0.5)
+    font-color-50: rgba(255,255,255,0.5),
+    font-color-15: rgba(255,255,255,0.15)
   ),
 );
 
