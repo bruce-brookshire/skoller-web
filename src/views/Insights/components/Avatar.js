@@ -3,10 +3,13 @@ import PropTypes from 'prop-types'
 
 const Avatar = (props) => {
   let getAvi = false
+
+  // one day javascript will include null propagation and we won't have to
+  // use stupid conditionals like this or risk the whole app breaking
   if (props.user) {
     if (props.user.student) {
       if (props.user.student.users) {
-        getAvi = true
+        if (props.user.student.users[0].pic_path) getAvi = true
       }
     }
   }
