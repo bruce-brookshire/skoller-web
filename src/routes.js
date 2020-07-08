@@ -72,6 +72,7 @@ import stores from './stores'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import GroupDetail from './views/Insights/GroupDetail'
+import InvitationDetail from './views/Insights/StudentDetail/InvitationDetail'
 
 const {userStore} = stores
 
@@ -188,6 +189,7 @@ class InsightsContainer extends React.Component {
           <Route exact path='/insights/dashboard' component={Dashboard} />
           <Route exact path='/insights/students' component={Students} />
           <Route exact path='/insights/students/:orgStudentId' component={StudentDetail} />
+          <Route exact path='/insights/invitations/:invitationId' component={InvitationDetail} />
           <Route exact path='/insights/groups' component={Groups} />
           <Route exact path='/insights/groups/:orgGroupId' component={GroupDetail} />
           <Route exact path='/insights/organization' component={Organization} />

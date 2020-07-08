@@ -18,37 +18,6 @@
 
     .si-student-chart-container {
       flex-basis: 60%;
-
-      .si-student-insights-switch {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        width: 100%;
-    
-        .si-student-insights-switch-option {
-          background-color: rgba(0,0,0,0.08);
-          border: 1px solid #fafafa;
-          width: 128px;
-          text-align: center;
-          padding: 6px 4px 2px 4px;
-          cursor: pointer;
-        }
-    
-        .left {
-          border-radius: 5px 0 0 5px;
-        }
-    
-        .right {
-          border-radius: 0 5px 5px 0;
-          margin-left: -1px;
-        }
-    
-        .active {
-          background-color: $sk-blue;
-          color: white;
-          box-shadow: 0px 4px 10px rgba(0,0,0,0.12);
-        }
-      }
     }
   }
 }

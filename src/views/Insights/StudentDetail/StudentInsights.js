@@ -5,19 +5,32 @@ import SiAssignmentsChart from '../components/charts/SiAssignmentsChart'
 import { getAssignmentWeightsInNextNDays } from '../utils'
 import SiWeightsChart from '../components/charts/SiWeightsChart'
 import SiSpoofChart from '../components/charts/SiSpoofChart'
+import SkSelect from '../../components/SkSelect'
 
 @inject('rootStore') @observer
 class StudentInsights extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      mode: 'Assignments',
+      mode: 'Grade Impact',
       assignments: [].concat.apply([], this.props.classes.map(cl => cl.assignments))
     }
   }
 
   getTimeframe () {
     return this.props.rootStore.insightsStore.interfaceSettings.timeframe
+  }
+
+  renderSelect () {
+    let options = ['Grade Impact', 'Assignments']
+
+    if (this.state.assignments.length === 0) return null
+
+    return <SkSelect className='si-select' selection={this.state.mode} optionsMap={() => options.map(o => {
+      return (
+        <div onClick={() => this.setState({mode: o})} className='si-select-option' key={options.indexOf(o)}>{o}</div>
+      )
+    })} />
   }
 
   renderCharts () {
@@ -28,14 +41,10 @@ class StudentInsights extends React.Component {
       return (
         <div className='si-student-insights-row'>
           <div className='si-student-chart-container'>
-            <div className='si-student-insights-switch'>
-              <div className={'si-student-insights-switch-option left ' + (this.state.mode === 'Assignments' ? 'active' : null)} onClick={() => this.setState({mode: 'Assignments'})}>Assignments</div>
-              <div className={'si-student-insights-switch-option right ' + (this.state.mode === 'Weights' ? 'active' : null)} onClick={() => this.setState({mode: 'Weights'})}>Weights</div>
-            </div>
             {this.state.mode === 'Assignments' &&
               <SiAssignmentsChart chartSize={chartSize} assignments={assignments} view={'w'} />
             }
-            {this.state.mode === 'Weights' &&
+            {this.state.mode === 'Grade Impact' &&
               <SiWeightsChart chartSize={chartSize} assignments={assignments} view={'w'} />
             }
           </div>
@@ -69,7 +78,7 @@ class StudentInsights extends React.Component {
   render () {
     return (
       <Fragment>
-        <div className='si-student-detail-cell-subtitle'><h2>{this.props.user.intensity[this.getTimeframe()]} out of 10</h2></div>
+        <div className='si-student-detail-cell-subtitle'>{this.renderSelect()}</div>
         {this.renderContent()}
       </Fragment>
     )

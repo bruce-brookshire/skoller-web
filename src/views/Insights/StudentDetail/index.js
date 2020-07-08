@@ -14,7 +14,7 @@ import CopyCell from '../components/CopyCell'
 class StudentDetail extends React.Component {
   constructor (props) {
     super(props)
-    let user = this.props.rootStore.insightsStore.students.find(s => s.id === parseInt(this.props.match.params.orgStudentId))
+    let user = this.user()
 
     this.state = {
       loadingClasses: false,
@@ -22,11 +22,18 @@ class StudentDetail extends React.Component {
     }
 
     this.props.rootStore.navStore.setActivePage('insights/students')
-    console.log(user.classes)
+  }
+
+  user () {
+    if (this.props.invitation) {
+      return this.props.invitation
+    } else {
+      return this.props.rootStore.insightsStore.students.find(s => s.id === parseInt(this.props.match.params.orgStudentId))
+    }
   }
 
   renderTasks () {
-    let user = this.props.rootStore.insightsStore.students.find(s => s.id === parseInt(this.props.match.params.orgStudentId))
+    let user = this.user()
     let timeframe = this.props.rootStore.insightsStore.interfaceSettings.timeframe
 
     return (
@@ -52,7 +59,6 @@ class StudentDetail extends React.Component {
             <div className='watch-toggle-container'>
               <WatchToggle rootStore={this.props.rootStore} showConfirm={true} user={user} />
             </div>
-            {/* <LoadingIndicator /> */}
           </div>
           <div className='sa-teams'>
             {user.org_groups.map(t => {
@@ -74,7 +80,7 @@ class StudentDetail extends React.Component {
 
     return (
       <div className='si-student-detail-timeframe'>
-        <div style={{paddingRight: '8px'}}>Timeframe </div>
+        <div className='looking-at'>Looking at </div>
         <SkSelect className='si-select' selection={'Next ' + interfaceSettings.timeframe + ' days'} optionsMap={() => timeframeOptions.map(o => {
           return (
             <div
@@ -88,9 +94,30 @@ class StudentDetail extends React.Component {
     )
   }
 
+  renderStatuses () {
+    let user = this.user()
+    let classesSetup = user.classes.filter(cl => cl.status.id >= 1400).length
+    let totalClasses = user.classes.length
+
+    return (
+      <div className='statuses'>
+        {this.props.invitation && <div className='status-pending'>Pending activation</div>}
+        {classesSetup !== totalClasses && <div className='status-classes'>{classesSetup}/{totalClasses} classes setup</div>}
+      </div>
+    )
+  }
+
+  renderHeaderRight () {
+    return (
+      <div className='si-student-detail-header-right'>
+        {this.renderTimeframeSelect()}
+        {this.renderStatuses()}
+      </div>
+    )
+  }
+
   render () {
-    let insightsStore = this.props.rootStore.insightsStore
-    let user = insightsStore.students.find(s => s.id === parseInt(this.props.match.params.orgStudentId))
+    let user = this.user()
     return (
       <div className='si-student-detail-container'>
         <NestedNav pageType='studentDetail' />
@@ -99,28 +126,28 @@ class StudentDetail extends React.Component {
             <div className='si-student-detail-cell'>
               <div className='student'>
                 {this.renderAthlete(user)}
-                {this.renderTimeframeSelect()}
+                {this.renderHeaderRight()}
               </div>
             </div>
             <div className='si-student-detail-cell contact'>
-              <h1>Intensity Score:</h1>
+              <h2>Semester Outlook</h2>
               <StudentInsights user={user} classes={this.state.classes} />
             </div>
             <div className='si-student-detail-cell classes'>
-              <h1>Classes</h1>
+              <h2>Classes</h2>
               {this.renderClasses()}
             </div>
           </div>
           <div className='si-student-detail-column sm'>
             <div className='si-student-detail-cell contact'>
-              <h1>Contact</h1>
+              <h2>Contact</h2>
               <div className='si-student-detail-contact'>
                 <p><i className='fas fa-envelope' /> <a style={{marginTop: '4px'}} className='link-style' href={'mailto:' + user.student.users[0].email}>{user.student.users[0].email}</a></p>
                 <p><i className='fas fa-phone' /> <CopyCell isPhone={true} text={user.student.phone} /></p>
               </div>
             </div>
             <div className='si-student-detail-cell tasks'>
-              <h1>To-Do&apos;s</h1>
+              <h2>To-Do&apos;s</h2>
               {this.renderTasks()}
             </div>
           </div>
@@ -132,7 +159,8 @@ class StudentDetail extends React.Component {
 
 StudentDetail.propTypes = {
   rootStore: PropTypes.object,
-  match: PropTypes.object
+  match: PropTypes.object,
+  invitation: PropTypes.object
 }
 
 export default StudentDetail
