@@ -21,7 +21,7 @@ class SmartTracker extends React.Component {
   }
 
   onSetupClasses () {
-    console.log('setup classes')
+    // console.log('setup classes')
   }
 
   renderValue (d) {

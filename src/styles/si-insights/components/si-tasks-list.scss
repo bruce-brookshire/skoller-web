@@ -32,17 +32,6 @@
       flex-direction: column;
       margin-bottom: 1rem;
 
-      // themed variables
-      @include themed() {
-        border-bottom: 2px solid;
-        border-bottom-color: t($border);
-      }
-
-      &:last-child {
-        margin-bottom: 0;
-        border-bottom: none;
-      }
-
       .si-tasks-list-task-row {
         display: flex;
         flex-direction: row;
@@ -58,7 +47,10 @@
         }
 
         .si-task-class {
-          font-style: italic;
+          // font-style: italic;
+          @include themed() {
+            color: t($font-color-50);
+          }
         }
       }
     }

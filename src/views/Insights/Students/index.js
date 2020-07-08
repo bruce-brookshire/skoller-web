@@ -247,7 +247,7 @@ class Students extends React.Component {
           <Avatar user={d} key={d.id} />,
           this.renderStudentAthleteCell(d),
           <WatchToggle rootStore={this.props.rootStore} showConfirm={true} user={d} key={d.id} />,
-          <TeamsCell key={d.id} user={d} org={this.props.rootStore.insightsStore.org} onChange={() => this.props.rootStore.insightsStore.updateData(['students', 'groups'])} />,
+          <TeamsCell key={d.id} user={d} org={this.props.rootStore.insightsStore.org} onChange={() => this.props.rootStore.insightsStore.updateData()} />,
           // <CopyCell isPhone={true} text={d.student.phone} key={d.id} />,
           <div className='si-students-table-icon green' key={d.id}><i className='fas fa-check' /></div>,
           <div key={d.id}>{d.classes.length}</div>,
