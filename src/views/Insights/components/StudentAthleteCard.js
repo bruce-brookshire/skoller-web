@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import StatusIndicators from './StatusIndicators'
 
 const StudentAthleteCard = (props) => {
-  const link = props.noLink ? null : '/insights/students/' + props.user.id
+  const link = props.noLink ? null : '/insights/invitations/' + props.user.id
   if (props.user.isInvitation) {
     return (
       <div className='si-sa-card-container'>
@@ -14,7 +14,9 @@ const StudentAthleteCard = (props) => {
           <Avatar user={props.user} />
           <div className='sa-info'>
             <div className='sa-name'>
-              {props.user.student.name_first + ' ' + props.user.student.name_last} <span style={{marginLeft: '8px'}}><StatusIndicators invitation={props.user} /></span>
+              <Link to={link}>
+                {props.user.student.name_first + ' ' + props.user.student.name_last}
+              </Link> <span style={{marginLeft: '8px'}}><StatusIndicators invitation={props.user} /></span>
             </div>
             {!props.noTeams && <div className='sa-teams'>
               {props.user.group_ids.map(id => {

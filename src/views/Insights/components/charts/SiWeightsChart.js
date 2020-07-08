@@ -59,8 +59,6 @@ class WeightsTimeline extends React.Component {
           })
         })
 
-        console.log(totalWeight)
-
         data = data.map(d => {
           return {
             x: d.x,
@@ -93,7 +91,6 @@ class WeightsTimeline extends React.Component {
         break
     }
 
-    console.log(data)
     return data
   }
 

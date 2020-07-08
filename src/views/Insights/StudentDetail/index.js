@@ -26,6 +26,7 @@ class StudentDetail extends React.Component {
 
   user () {
     if (this.props.invitation) {
+      console.log(this.props.invitation)
       return this.props.invitation
     } else {
       return this.props.rootStore.insightsStore.students.find(s => s.id === parseInt(this.props.match.params.orgStudentId))
@@ -42,6 +43,7 @@ class StudentDetail extends React.Component {
   }
 
   renderClasses () {
+    console.log(this.state.classes)
     return (
       <SiClassList classes={this.state.classes} emptyMessage={'No classes yet.'} />
     )
@@ -56,9 +58,9 @@ class StudentDetail extends React.Component {
             <h1>
               {user.student.name_first + ' ' + user.student.name_last}
             </h1>
-            <div className='watch-toggle-container'>
+            {!this.props.invitation && <div className='watch-toggle-container'>
               <WatchToggle rootStore={this.props.rootStore} showConfirm={true} user={user} />
-            </div>
+            </div>}
           </div>
           <div className='sa-teams'>
             {user.org_groups.map(t => {

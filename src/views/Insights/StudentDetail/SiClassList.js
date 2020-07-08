@@ -44,7 +44,6 @@ class SiClassList extends React.Component {
   }
 
   renderExtra (cl) {
-
     let status = cl.status.id
     let syllabusOverload = false
 

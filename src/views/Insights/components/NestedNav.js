@@ -23,7 +23,12 @@ class NestedNav extends React.Component {
   getNestedNav = () => {
     let pathArray = []
     if (this.props.pageType === 'studentDetail') {
-      let student = this.props.rootStore.insightsStore.students.find(s => s.id === parseInt(this.props.match.params.orgStudentId)).student
+      let student
+      if (this.props.match.params.orgStudentId) {
+        student = this.props.rootStore.insightsStore.students.find(s => s.id === parseInt(this.props.match.params.orgStudentId)).student
+      } else {
+        student = this.props.rootStore.insightsStore.invitations.find(s => s.id === parseInt(this.props.match.params.invitationId)).student
+      }
 
       if (this.props.rootStore.insightsStore.userType === 'orgOwner') {
         pathArray = [

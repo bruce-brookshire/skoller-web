@@ -90,7 +90,11 @@
           }
 
           .statuses {
+            display: grid;
+            gap: 8px;
+
             div {
+              grid-row: 1;
               width: 120px;
               border-radius: 3px;
               color: white;
