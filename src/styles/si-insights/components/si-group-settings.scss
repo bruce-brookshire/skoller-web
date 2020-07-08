@@ -1,0 +1,61 @@
+.si-group-settings {
+  width: 100%;
+
+  .si-input {
+    @include si-input;
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .add-coaches {
+    // border: 1px solid $sk-blue;
+    // border-radius: 3px;
+    cursor: pointer;
+    padding: 4px 4px 0 4px;
+    margin: 8px 4px 4px 0;
+    width: auto;
+    color: $sk-blue;
+
+    &:hover {
+      background-color: $sk-blue-25;
+    }
+  }
+
+  .si-group-settings-coaches {
+    min-height: 300px;
+    max-width: 300px;
+    @include themed() {
+      border: 1px solid t($border);
+    }
+    border-radius: 5px;
+    padding: 8px;
+  }
+
+  h2 {
+    margin: 0.5rem 0;
+  }
+
+  .control-row {
+    display: flex;
+    flex-flow: row nowrap;
+    margin-top: 0.5rem;
+
+    div {
+      flex-grow: 1;
+      &:last-child {
+        margin-left: 8px;
+  
+        p {
+          background-color: $sk-alert-red;
+        }
+      }
+    }
+  }
+}
+
+.create-group-owner {
+  .back {
+    color: $sk-blue;
+    cursor: pointer;
+  }
+}

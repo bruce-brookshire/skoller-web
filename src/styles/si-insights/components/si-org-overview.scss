@@ -8,12 +8,9 @@
     text-align: left;
   }
 
-  i {
-    font-size: 24px;
-  }
-
   h2 {
     margin: 0.5rem 0;
+    font-weight: 200;
   }
 
   .si-org-overview-content {
@@ -22,33 +19,21 @@
     flex-flow: row wrap;
     justify-content: space-between;
 
+    i {
+      font-size: 64px;
+    }
+
     .si-org-overview-category {
-      cursor: pointer;
       display: flex;
       flex-flow: column;
       justify-content: center;
       align-items: center;
-      margin: 1rem;
       padding: 1.5rem 0;
-      // border: 2px solid $sk-blue;
       border-radius: 10px;
       flex-grow: 1;
       flex-basis: calc(33% - 2rem);
-      // box-shadow: 0px 6px 8px rgba(0,0,0,.08);
       transform: translateY(0px);
       transition: all 100ms ease-out;
-      // background-color: $sk-blue;
-      // color: white;
-
-      // themed variables
-      @include themed() {
-        background-color: t($bg);
-        color: t($font-color);
-
-        &:hover {
-          background-color: t($hover);
-        }
-      }
     }
   }
 }

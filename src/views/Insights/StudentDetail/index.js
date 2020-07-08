@@ -27,7 +27,7 @@ class StudentDetail extends React.Component {
 
   renderTasks () {
     let user = this.props.rootStore.insightsStore.students.find(s => s.id === parseInt(this.props.match.params.orgStudentId))
-    let timeframe = this.props.rootStore.insightsStore.interfaceSettings.dashboard.timeframe === 'Next 7 days' ? 7 : 30
+    let timeframe = this.props.rootStore.insightsStore.interfaceSettings.timeframe
 
     return (
       <SiTasksList user={user} maxDays={timeframe} maxTasks={50} classes={this.state.classes} emptyMessage={"No to-do's yet."} />
@@ -70,18 +70,18 @@ class StudentDetail extends React.Component {
 
   renderTimeframeSelect () {
     let interfaceSettings = this.props.rootStore.insightsStore.interfaceSettings
-    let timeframeOptions = ['Next 7 days', 'Next 30 days']
+    let timeframeOptions = interfaceSettings.timeframeOptions
 
     return (
       <div className='si-student-detail-timeframe'>
-        <div style={{paddingRight: '8px'}}>Timeframe: </div>
-        <SkSelect className='si-select' selection={interfaceSettings.dashboard.timeframe} optionsMap={() => timeframeOptions.map(o => {
+        <div style={{paddingRight: '8px'}}>Timeframe </div>
+        <SkSelect className='si-select' selection={'Next ' + interfaceSettings.timeframe + ' days'} optionsMap={() => timeframeOptions.map(o => {
           return (
             <div
               key={timeframeOptions.indexOf(o)}
               className='si-select-option'
-              onClick={() => { this.props.rootStore.insightsStore.interfaceSettings.dashboard.timeframe = o }}
-            >{o}</div>
+              onClick={() => { this.props.rootStore.insightsStore.interfaceSettings.timeframe = o }}
+            >{'Next ' + o + ' days'}</div>
           )
         })} />
       </div>

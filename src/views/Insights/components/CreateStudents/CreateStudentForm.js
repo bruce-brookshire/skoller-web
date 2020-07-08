@@ -136,9 +136,13 @@ export class CreateStudentForm extends Component {
     if (validated) {
       this.setState({loading: true})
       actions.insights.invitations.createStudentInvitation(insightsStore.org.id, form)
-        .then(() => {
-          insightsStore.updateData(['invitations'])
-          this.props.onSubmit && this.props.onSubmit()
+        .then((r) => {
+          if (r.org_student) {
+            this.setState({errorMessage: 'Error: This student is already active or has been invited to Skoller Insights.', loading: false})
+          } else {
+            insightsStore.updateData()
+            this.props.onSubmit && this.props.onSubmit(r)
+          }
         })
         .catch(() => {
           this.setState({loading: false})
@@ -204,6 +208,11 @@ export class CreateStudentForm extends Component {
             />
           </div>
         </div>
+        {this.state.errorMessage && <div className='si-form-row'>
+          <div className='si-form-item error'>
+            {this.state.errorMessage}
+          </div>
+        </div>}
         <div className='si-form-row'>
           <div className='si-form-item si-form-submit'>
             <input type="submit" value="Submit" />

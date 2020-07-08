@@ -27,6 +27,12 @@
     .si-select {
       @include si-select;
     }
+
+    .si-smart-tracker-timeframe-label {
+      @include themed() {
+        color: t($font-color-50);
+      }
+    }
   }
 
   .si-select {
@@ -50,6 +56,10 @@
 
       .si-smart-tracker-filter-label {
         margin: 0;
+
+        @include themed() {
+          color: t($font-color-50);
+        }
       }
 
       .si-smart-tracker-search {
@@ -146,7 +156,9 @@
         padding: 8px;
         padding-right: 16px;
 
-        border: 1px solid #4a4a4a;
+        @include themed() {
+          border: 1px solid t($font-color-50)
+        }
         border-radius: 5px;
       }
 
@@ -198,6 +210,24 @@
       .si-smart-tracker-sa {
         flex-grow: 1;
         margin-right: 8px;
+      }
+    }
+
+    .si-smart-tracker-callout {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 400px;
+      width: 100%;
+
+      .grey-h2 {
+        text-align: center;
+        font-weight: 400;
+
+        @include themed() {
+          color: t($font-color-50);
+        }
       }
     }
   }

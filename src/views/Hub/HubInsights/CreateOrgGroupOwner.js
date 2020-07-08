@@ -12,7 +12,7 @@ class CreateOrgGroupOwner extends React.Component {
     this.state = {
       email: '',
       emailConfirm: '',
-      group: null
+      group: this.props.group ? this.props.group : null
     }
   }
 
@@ -92,7 +92,8 @@ class CreateOrgGroupOwner extends React.Component {
 CreateOrgGroupOwner.propTypes = {
   onSubmit: PropTypes.func,
   org: PropTypes.object,
-  groupAlias: PropTypes.string
+  groupAlias: PropTypes.string,
+  group: PropTypes.object
 }
 
 export default CreateOrgGroupOwner

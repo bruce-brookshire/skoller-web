@@ -1,6 +1,7 @@
 import moment from 'moment'
 
 export function toTitleCase (string) {
+  if (!string) return null
   var sentence = string.toLowerCase().split(' ')
   for (var i = 0; i < sentence.length; i++) {
     sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1)
@@ -127,4 +128,23 @@ export function getIntensityScore (assignments, nDays, startDay = moment()) {
     intensityScore = 0
   }
   return intensityScore
+}
+
+export function optionalPlural (array, string, replaceWith) {
+  const sRegExp = /@/g
+  const nRegExp = /#/g
+  let replacement
+  if (!replaceWith) {
+    replacement = array.length === 1 ? '' : 's'
+  } else {
+    replacement = array.length === 1 ? '' : replaceWith
+  }
+
+  return string.replace(sRegExp, replacement).replace(nRegExp, array.length)
+}
+
+export async function asyncForEach (array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array)
+  }
 }

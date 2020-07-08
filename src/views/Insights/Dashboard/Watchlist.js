@@ -7,11 +7,11 @@ import { getAssignmentCountInNextNDays, getAssignmentWeightsInNextNDays } from '
 @inject('rootStore') @observer
 class Watchlist extends React.Component {
   renderValue (d) {
-    const days = this.props.rootStore.insightsStore.interfaceSettings.dashboard.timeframe === 'Next 7 days' ? 7 : 30
-    let intensityString = days === 7 ? 'sevenDay' : 'thirtyDay'
+    const days = this.props.rootStore.insightsStore.interfaceSettings.timeframe
+    let intensityString = days
     let value
 
-    switch (this.props.rootStore.insightsStore.interfaceSettings.dashboard.sort) {
+    switch (this.props.rootStore.insightsStore.interfaceSettings.sort) {
       case 'Assignments':
         value = getAssignmentCountInNextNDays(d.assignments, days)
         break
@@ -27,9 +27,9 @@ class Watchlist extends React.Component {
   }
 
   sortStudents (students) {
-    const days = this.props.rootStore.insightsStore.interfaceSettings.dashboard.timeframe === 'Next 7 days' ? 7 : 30
+    const days = this.props.rootStore.insightsStore.interfaceSettings.timeframe
 
-    switch (this.props.rootStore.insightsStore.interfaceSettings.dashboard.sort) {
+    switch (this.props.rootStore.insightsStore.interfaceSettings.sort) {
       case 'Assignments':
         return students.sort((a, b) => {
           if (getAssignmentCountInNextNDays(a.assignments, days) < getAssignmentCountInNextNDays(b.assignments, days)) {
@@ -49,7 +49,7 @@ class Watchlist extends React.Component {
         })
 
       case 'Personal Intensity':
-        let intensityString = days === 7 ? 'sevenDay' : 'thirtyDay'
+        let intensityString = days
         return students.sort((a, b) => {
           if (a.intensity[intensityString] < b.intensity[intensityString]) {
             return 1
@@ -65,13 +65,22 @@ class Watchlist extends React.Component {
       return this.props.rootStore.insightsStore.watchlist.map(u => u.org_student_id).includes(s.id)
     })
     students = this.sortStudents(students)
-    const headers = ['Athlete', this.props.rootStore.insightsStore.interfaceSettings.dashboard.sort]
+    const headers = ['Athlete', this.props.rootStore.insightsStore.interfaceSettings.sort]
     const data = students.map(d => {
       return [
         <StudentAthleteCard user={d} key={d.id} rootStore={this.props.rootStore} />,
         this.renderValue(d)
       ]
     })
+
+    if (data.length === 0) {
+      return (
+        <div className='add-athletes-callout si-smart-tracker-callout'>
+          <i className='far fa-star' />
+          <h2 className='grey-h2'>Create your personal watchlist by clicking the star next to {this.props.rootStore.insightsStore.org.studentsAlias}s&apos; names.</h2>
+        </div>
+      )
+    }
 
     return (
       <table>

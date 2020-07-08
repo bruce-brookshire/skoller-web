@@ -71,6 +71,7 @@ import actions from './actions'
 import stores from './stores'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
+import GroupDetail from './views/Insights/GroupDetail'
 
 const {userStore} = stores
 
@@ -188,6 +189,7 @@ class InsightsContainer extends React.Component {
           <Route exact path='/insights/students' component={Students} />
           <Route exact path='/insights/students/:orgStudentId' component={StudentDetail} />
           <Route exact path='/insights/groups' component={Groups} />
+          <Route exact path='/insights/groups/:orgGroupId' component={GroupDetail} />
           <Route exact path='/insights/organization' component={Organization} />
           <Route exact path='/insights/settings' component={Settings} />
         </InsightsLayout>
@@ -261,7 +263,6 @@ const router = (
       <Switch>
         <Route exact path='/' component={AuthSwitch} />
         <Route path='/landing' component={Landing} />
-        {/* <Route path='/insights' component={InsightsLanding} /> */}
         <Route path='/admin-login' component={AdminLanding} />
         <Route path='/forgot_password' component={ForgotPassword} />
         <Route path='/unsubscribe/:id' component={Unsubscribe} />

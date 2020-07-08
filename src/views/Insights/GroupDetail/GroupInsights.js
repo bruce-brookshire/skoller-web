@@ -1,18 +1,38 @@
-import React, { Fragment } from 'react'
+import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { inject, observer } from 'mobx-react'
-import SiAssignmentsChart from '../components/charts/SiAssignmentsChart'
-import { getAssignmentWeightsInNextNDays } from '../utils'
 import SiWeightsChart from '../components/charts/SiWeightsChart'
+import SiAssignmentsChart from '../components/charts/SiAssignmentsChart'
 import SiSpoofChart from '../components/charts/SiSpoofChart'
 
 @inject('rootStore') @observer
-class StudentInsights extends React.Component {
+export default class GroupInsights extends Component {
+  static propTypes = {
+    group: PropTypes.object,
+    rootStore: PropTypes.object
+  }
+
+  // render () {
+  //   const chartSize = {width: 600, height: 350}
+  //   let assignments = []
+
+  //   this.props.group.students.forEach(s => {
+  //     assignments = assignments.concat(s.assignments)
+  //   })
+
+  //   return (
+  //     <div>
+  //       <SiWeightsChart view={'w'} size={chartSize} assignments={assignments} />
+  //       <SiAssignmentsChart view={'w'} size={chartSize} assignments={assignments} />
+  //     </div>
+  //   )
+  // }
+
   constructor (props) {
     super(props)
     this.state = {
-      mode: 'Assignments',
-      assignments: [].concat.apply([], this.props.classes.map(cl => cl.assignments))
+      mode: 'Assignments'
+      // assignments: [].concat.apply([], this.props.classes.map(cl => cl.assignments))
     }
   }
 
@@ -21,10 +41,14 @@ class StudentInsights extends React.Component {
   }
 
   renderCharts () {
-    let assignments = this.state.assignments
-    let chartSize = {width: 600, height: 350}
+    const chartSize = {width: 600, height: 350}
+    let assignments = []
 
-    if (this.props.classes.length > 0) {
+    this.props.group.students.forEach(s => {
+      assignments = assignments.concat(s.assignments)
+    })
+
+    if (assignments.length > 0) {
       return (
         <div className='si-student-insights-row'>
           <div className='si-student-chart-container'>
@@ -39,9 +63,9 @@ class StudentInsights extends React.Component {
               <SiWeightsChart chartSize={chartSize} assignments={assignments} view={'w'} />
             }
           </div>
-          <div className='si-student-insights-detail'>
+          {/* <div className='si-student-insights-detail'>
             <div><b>{getAssignmentWeightsInNextNDays(assignments, this.getTimeframe())}% of {this.props.user.student.name_first}&apos;s grade</b> will be determined in the next {this.getTimeframe()} days</div>
-          </div>
+          </div> */}
         </div>
       )
     } else {
@@ -51,7 +75,7 @@ class StudentInsights extends React.Component {
             <SiSpoofChart chartSize={chartSize} />
           </div>
           <div className='si-student-insights-detail'>
-            <div>Insights will appear here when {this.props.user.student.name_first}&apos;s classes are set up</div>
+            <div>Insights will appear here when athletes and their classes are added to this team</div>
           </div>
         </div>
       )
@@ -69,17 +93,8 @@ class StudentInsights extends React.Component {
   render () {
     return (
       <Fragment>
-        <div className='si-student-detail-cell-subtitle'><h2>{this.props.user.intensity[this.getTimeframe()]} out of 10</h2></div>
         {this.renderContent()}
       </Fragment>
     )
   }
 }
-
-StudentInsights.propTypes = {
-  rootStore: PropTypes.object,
-  user: PropTypes.object,
-  classes: PropTypes.object
-}
-
-export default StudentInsights

@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
 import { inject, observer } from 'mobx-react'
 
 @inject('rootStore') @observer
@@ -9,21 +8,18 @@ class OrgOverview extends React.Component {
     if (this.props.rootStore.insightsStore.userType === 'orgOwner') {
       return (
         <div className='si-org-overview-content'>
-          <Link to='/insights/students' className='si-org-overview-category'>
+          <div className='si-org-overview-category'>
             <i className='fas fa-user' />
-            <h2>Athletes ({this.props.rootStore.insightsStore.students.length})</h2>
-            {/* <div className='si-org-overview-subtitle'>{this.props.rootStore.insightsStore.students.length}</div> */}
-          </Link>
-          <Link to='/insights/groups' className='si-org-overview-category'>
+            <h2>{this.props.rootStore.insightsStore.students.length} Athlete{this.props.rootStore.insightsStore.students.length === 1 ? '' : 's'}</h2>
+          </div>
+          <div className='si-org-overview-category'>
             <i className='fas fa-users' />
-            <h2>Teams ({this.props.rootStore.insightsStore.groups.length})</h2>
-            {/* <div className='si-org-overview-subtitle'>{this.props.rootStore.insightsStore.groups.length}</div> */}
-          </Link>
-          <Link to='/insights/organization' className='si-org-overview-category'>
+            <h2>{this.props.rootStore.insightsStore.groups.length} Team{this.props.rootStore.insightsStore.groups.length === 1 ? '' : 's'}</h2>
+          </div>
+          <div className='si-org-overview-category'>
             <i className='fas fa-eye' />
-            <h2>Viewers ({this.props.rootStore.insightsStore.groupOwners.length})</h2>
-            {/* <div className='si-org-overview-subtitle'>{this.props.rootStore.insightsStore.groupOwners.length}</div> */}
-          </Link>
+            <h2>{this.props.rootStore.insightsStore.groupOwners.length} Viewer{this.props.rootStore.insightsStore.groupOwners.length === 1 ? '' : 's'}</h2>
+          </div>
         </div>
       )
     } else {

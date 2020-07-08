@@ -39,6 +39,12 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+
+    &.error {
+      @include themed() {
+        color: t($alert-red);
+      }
+    }
   }
 
   .si-form-submit {

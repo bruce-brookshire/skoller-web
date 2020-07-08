@@ -21,10 +21,9 @@ class InsightsStore {
         studentsAlias: 'athlete'
       },
       interfaceSettings: {
-        dashboard: {
-          sort: 'Grade Impact',
-          timeframe: 'Next 7 days'
-        }
+        sort: 'Grade Impact',
+        timeframe: 7,
+        timeframeOptions: [7, 14, 30]
       },
       darkMode: this.cookie.get('skollerInsightsDarkMode') === 'true',
       userType: null
@@ -49,8 +48,15 @@ class InsightsStore {
     if (role === 'orgOwner') {
       await actions.insights.getAllGroupsInOrg(orgId)
         .then(r => {
-          this.groups = r
-          this.org.groups = r
+          let groups = []
+          r.forEach(group => {
+            let students = this.students.filter(s => s.org_groups.map(og => og.id).includes(group.id))
+            let invitations = this.invitations.filter(s => s.group_ids.includes(group.id))
+            let memberOwners = []
+            groups.push({...group, students, invitations, memberOwners})
+          })
+          this.groups = groups
+          this.org.groups = groups
         })
     } else {
       let groups = []
@@ -81,8 +87,9 @@ class InsightsStore {
               classes: [],
               assignments: [],
               intensity: {
-                sevenDay: null,
-                thirtyDay: null
+                7: null,
+                14: null,
+                30: null
               },
               isInvitation: false
             }
@@ -117,6 +124,10 @@ class InsightsStore {
         let groupOwners = r
         let filteredGroupOwners = []
         groupOwners.forEach(go => {
+          go.org_groups.forEach(og => {
+            let group = this.groups.find(group => group.id === og.id)
+            if (group.memberOwners) group.memberOwners.push(go)
+          })
           if (!filteredGroupOwners.find(o => o.user_id === go.user_id)) {
             filteredGroupOwners.push(go)
           }
@@ -172,8 +183,9 @@ class InsightsStore {
           s.classes = r
           s.assignments = assignments
           s.intensity = {
-            sevenDay: getIntensityScore(assignments, 7),
-            thirtyDay: getIntensityScore(assignments, 30)
+            7: getIntensityScore(assignments, 7),
+            14: getIntensityScore(assignments, 14),
+            30: getIntensityScore(assignments, 30)
           }
         })
     ))
@@ -197,8 +209,9 @@ class InsightsStore {
               }]
             },
             intensity: {
-              sevenDay: 0,
-              thirtyDay: 0
+              7: 0,
+              14: 0,
+              30: 0
             },
             isInvitation: true,
             org_groups: []
@@ -293,6 +306,8 @@ class InsightsStore {
   getDataSuccess () {
     this.loading = false
     this.loadingUpdate = false
+
+    console.log(this)
   }
 
   @action
