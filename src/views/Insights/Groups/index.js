@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import Table from '../components/Table'
 import GentleModal from '../components/GentleModal'
 import SkSelect from '../../components/SkSelect'
-import { toTitleCase } from '../utils'
+import { toTitleCase, optionalPlural } from '../utils'
 import CreateOrgGroup from '../../Hub/HubInsights/CreateOrgGroup'
 import StudentsCell from '../components/StudentsCell'
 import OwnersCell from '../components/OwnersCell'
@@ -114,14 +114,20 @@ class Groups extends React.Component {
 
   renderStudentsCell (d) {
     return (
-      <StudentsCell group={d} org={this.props.rootStore.insightsStore.org} onChange={() => this.props.rootStore.insightsStore.updateData(['students'])} />
+      <h2 style={{margin: 0}}>{optionalPlural(d.students.concat(d.invitations), '#', 's')}</h2>
     )
+    // return (
+    //   <StudentsCell group={d} org={this.props.rootStore.insightsStore.org} onChange={() => this.props.rootStore.insightsStore.updateData(['students'])} />
+    // )
   }
 
   renderOwnersCell (d) {
     return (
-      <OwnersCell group={d} org={this.props.rootStore.insightsStore.org} onChange={() => this.props.rootStore.insightsStore.updateData(['groupOwners', 'groups'])} />
+      <h2 style={{margin: 0}}>{optionalPlural(d.owners, '#', 's')}</h2>
     )
+    // return (
+    //   <OwnersCell group={d} org={this.props.rootStore.insightsStore.org} onChange={() => this.props.rootStore.insightsStore.updateData(['groupOwners', 'groups'])} />
+    // )
   }
 
   renderNameCell (d) {

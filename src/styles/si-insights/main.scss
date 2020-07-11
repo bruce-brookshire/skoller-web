@@ -186,11 +186,15 @@
 
 .si-action-modal {
   i {
-    color: $sk-blue;
+    // color: $sk-blue;
     cursor: pointer;
     padding: 4px;
     margin: -4px;
     border-radius: 5px;
+
+    @include themed() {
+      color: t($font-color-50);
+    }
 
     &:hover {
       @include themed() {

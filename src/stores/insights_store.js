@@ -1,7 +1,7 @@
 import { extendObservable, action } from 'mobx'
 import actions from '../actions'
 import stores from './index'
-import { getIntensityScore } from '../views/Insights/utils'
+import { getIntensityScore, asyncForEach } from '../views/Insights/utils'
 import {Cookies} from 'react-cookie'
 
 class InsightsStore {
@@ -51,7 +51,7 @@ class InsightsStore {
           let groups = []
           r.forEach(group => {
             let students = this.students.filter(s => s.org_groups.map(og => og.id).includes(group.id))
-            let invitations = this.invitations.filter(s => s.group_ids.includes(group.id))
+            let invitations = this.invitations.filter(s => s.group_ids && s.group_ids.includes(group.id))
             let memberOwners = []
             groups.push({...group, students, invitations, memberOwners})
           })
@@ -64,7 +64,9 @@ class InsightsStore {
         let orgGroupId = group.id
         await actions.insights.getOrgGroupById(orgId, orgGroupId)
           .then(r => {
-            groups.push(r)
+            let students = this.students.filter(s => s.org_groups.map(og => og.id).includes(group.id))
+            let invitations = this.invitations.filter(s => s.group_ids && s.group_ids.includes(group.id))
+            groups.push({...r, memberOwners: [], students, invitations})
           })
       })
       this.groups = groups
@@ -121,12 +123,15 @@ class InsightsStore {
   async getGroupOwners (orgId) {
     await actions.insights.getAllOrgGroupOwnersInOrg(orgId)
       .then(r => {
+        console.log('getGroupOwners', r)
         let groupOwners = r
         let filteredGroupOwners = []
         groupOwners.forEach(go => {
           go.org_groups.forEach(og => {
             let group = this.groups.find(group => group.id === og.id)
-            if (group.memberOwners) group.memberOwners.push(go)
+            if (group) {
+              if (group.memberOwners) group.memberOwners.push(go)
+            }
           })
           if (!filteredGroupOwners.find(o => o.user_id === go.user_id)) {
             filteredGroupOwners.push(go)
@@ -170,8 +175,6 @@ class InsightsStore {
     let watchlistStudents = this.students.slice().filter(s => watchlistStudentsIds.includes(s.id))
     this.watchlist = watchlistStudents
     this.org.watchlist = watchlistStudents
-
-    console.log('getting store watchlist \n \n \n \n', this.watchlist)
   }
 
   async getStudentData (students, orgId) {
@@ -192,30 +195,59 @@ class InsightsStore {
     this.students = students
   }
 
+  async getInvitationData (i) {
+    let classes = []
+    let assignments = []
+    await asyncForEach(i.class_ids, async id => {
+      await actions.classes.getClassByIdAdmin(id)
+        .then(r => {
+          r.assignments.forEach(a => {
+            if (r.is_points) {
+              let totalWeight = 0
+              r.weights.forEach(w => {
+                totalWeight += w.weight
+              })
+              a.weight = (r.weights.find(w => w.id === a.weight_id).weight / r.assignments.filter(as => as.weight_id === a.weight_id, 0).length) / totalWeight
+            } else {
+              a.weight = r.weights.find(w => w.id === a.weight_id).weight / r.assignments.filter(as => as.weight_id === a.weight_id, 0).length
+            }
+            a.class_id = r.id
+          })
+
+          assignments = assignments.concat(r.assignments)
+          r.color = '4a4a4a'
+          classes.push(r)
+        })
+    })
+    return {
+      ...i,
+      classes,
+      assignments,
+      student: {
+        name_first: i.name_first,
+        name_last: i.name_last,
+        phone: i.phone,
+        users: [{
+          email: i.email
+        }]
+      },
+      intensity: {
+        7: 0,
+        14: 0,
+        30: 0
+      },
+      isInvitation: true,
+      org_groups: []
+    }
+  }
+
   async getInvitations (orgId) {
     await actions.insights.invitations.getStudentInvitations(orgId)
-      .then(r => {
-        let invitations = r.map(i => {
-          return ({
-            ...i,
-            classes: [],
-            assignments: [],
-            student: {
-              name_first: i.name_first,
-              name_last: i.name_last,
-              phone: i.phone,
-              users: [{
-                email: i.email
-              }]
-            },
-            intensity: {
-              7: 0,
-              14: 0,
-              30: 0
-            },
-            isInvitation: true,
-            org_groups: []
-          })
+      .then(async r => {
+        let invitations = []
+        await asyncForEach(r, async r => {
+          let invitation = await this.getInvitationData(r)
+          invitations.push(invitation)
         })
         this.invitations = invitations
       })
@@ -241,16 +273,16 @@ class InsightsStore {
     this.userType = role
     const orgId = user.org_owners.length > 0 ? user.org_owners[0].organization_id : user.org_group_owners[0].organization_id
 
+    if (!filters || filters.includes('invitations')) {
+      await this.getInvitations(orgId)
+    }
+
     if (!filters || filters.includes('orgOwners')) {
       await this.getOrgOwners(orgId)
     }
 
     if (!filters || filters.includes('students')) {
       await this.getStudents(filters, orgId, user)
-    }
-
-    if (!filters || filters.includes('invitations')) {
-      await this.getInvitations(orgId)
     }
 
     if (!filters || filters.includes('groups')) {
