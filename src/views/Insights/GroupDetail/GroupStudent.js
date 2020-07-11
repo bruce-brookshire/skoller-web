@@ -3,21 +3,9 @@ import PropTypes from 'prop-types'
 import Avatar from '../components/Avatar'
 import moment from 'moment'
 import { optionalPlural } from '../utils'
-import SkModal from '../../components/SkModal/SkModal'
 import StatusIndicators from '../components/StatusIndicators'
 import { Link } from 'react-router-dom'
-
-const AddClasses = (props) => {
-  return (
-    <SkModal closeModal={props.closeModal}>
-      <div>this is where an advisor will be able to add classes</div>
-    </SkModal>
-  )
-}
-
-AddClasses.propTypes = {
-  closeModal: PropTypes.func
-}
+import AddClasses from '../components/AddClasses'
 
 export default function GroupStudent (props) {
   if (!props.student && !props.invitation) return null

@@ -9,7 +9,7 @@ import TeamsCell from '../components/TeamsCell'
 import GentleModal from '../components/GentleModal'
 import SkSelect from '../../components/SkSelect'
 import { Link } from 'react-router-dom'
-import { getAssignmentCountInNextNDays, getAssignmentWeightsInNextNDays, toTitleCase } from '../utils'
+import { getAssignmentCountInNextNDays, getAssignmentWeightsInNextNDays, toTitleCase, optionalPlural } from '../utils'
 import LoadingIndicator from '../components/LoadingIndicator'
 import SkModal from '../../components/SkModal/SkModal'
 import CreateStudentForm from '../components/CreateStudents/CreateStudentForm'
@@ -18,6 +18,7 @@ import actions from '../../../actions'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import ActionModal from '../components/ActionModal'
 import CreateStudents from '../components/CreateStudents'
+import StatusIndicators from '../components/StatusIndicators'
 
 @inject('rootStore') @observer
 class Students extends React.Component {
@@ -112,7 +113,7 @@ class Students extends React.Component {
       })
     }
 
-    if (this.state.sort.value === 'Personal Intensity') {
+    if (this.state.sort.value === 'Stress Score') {
       let intensityString = days === 7
       sortedStudents = students.sort((a, b) => {
         if (a.intensity[intensityString] < b.intensity[intensityString]) {
@@ -143,13 +144,16 @@ class Students extends React.Component {
 
   renderStudentAthleteCell (d) {
     return (
-      <Link to={'/insights/students/' + d.id}>
-        <div
-          className='si-students-table-sa'
-        >
-          {d.student.name_first + ' ' + d.student.name_last}
-        </div>
-      </Link>
+      <div className='si-students-table-sa-cell'>
+        <Link to={'/insights/students/' + d.id}>
+          <div
+            className='si-students-table-sa'
+          >
+            <div>{d.student.name_first + ' ' + d.student.name_last}</div>
+          </div>
+        </Link>
+        <StatusIndicators student={d} />
+      </div>
     )
   }
 
@@ -201,46 +205,63 @@ class Students extends React.Component {
 
   renderInvitationNameCell (d) {
     return (
-      <div key={d.id + 1000} colSpan={3} style={{fontStyle: 'oblique', display: 'flex'}}>
-        {d.name_first + ' ' + d.name_last} (pending invitation) <ActionModal>
-          <div onClick={() => this.delInvitation(d.id)} className='si-action-modal-item delete'>Delete {d.name_first + ' ' + d.name_last}&apos;s invitation</div>
-        </ActionModal>
+      <div className='si-students-table-sa-cell'>
+        <Link to={'/insights/invitations/' + d.id}>
+          <div
+            className='si-students-table-sa'
+          >
+            <div>{d.name_first + ' ' + d.name_last}</div>
+          </div>
+        </Link>
+        <div style={{display: 'flex'}}>
+          <ActionModal>
+            <div onClick={() => this.delInvitation(d.id)} className='si-action-modal-item delete'>Delete {d.name_first + ' ' + d.name_last}&apos;s invitation</div>
+          </ActionModal>
+          <div style={{marginLeft: '8px'}}>
+            <StatusIndicators invitation={d} />
+          </div>
+        </div>
       </div>
     )
   }
 
+  renderData (d) {
+    if (d.classes.length === 0) {
+      return [<div key={d.id} colSpan={3} className='add-classes si-button'><p>Add classes</p></div>]
+    }
+
+    return [
+      <div className='big-value' key={d.id}>{getAssignmentCountInNextNDays(d.assignments, this.state.timeframe)}</div>,
+      <div className='big-value' key={d.id}>{getAssignmentWeightsInNextNDays(d.assignments, this.state.timeframe)}%</div>,
+      <div className='big-value' key={d.id}>{d.intensity[this.state.timeframe]} <span>out of</span> 10</div>
+    ]
+  }
+
   renderTable () {
+    const studentsAndInvitations = this.props.rootStore.insightsStore.getStudentsAndInvitations()
     const headers = [
       [
         this.renderHeaderItem('📷', 2, 1),
-        this.renderHeaderItem('Athlete', 2, 1),
-        this.renderHeaderItem('My Watchlist', 2, 1),
-        this.renderHeaderItem('Teams', 2, 1),
-        // this.renderHeaderItem('Phone (click to copy)', 2, 1),
-        this.renderHeaderItem(this.renderSetup(), 1, 3),
+        this.renderHeaderItem('Athletes (' + studentsAndInvitations.length + ')', 2, 1),
+        this.renderHeaderItem('Watchlist', 2, 1),
+        this.renderHeaderItem('Team', 2, 1),
         this.renderHeaderItem(this.renderTimeframe(), 1, 3)
       ],
       [
-        this.renderHeaderItem('Activation', 1, 1),
-        this.renderHeaderItem('Classes', 1, 1),
-        this.renderHeaderItem('Setup', 1, 1),
         this.renderHeaderItem('Assignments', 1, 1),
-        this.renderHeaderItem('Weight', 1, 1),
-        this.renderHeaderItem('Personal Intensity', 1, 1)
+        this.renderHeaderItem('Grade Impact', 1, 1),
+        this.renderHeaderItem('Stress Score', 1, 1)
       ]
     ]
-    let intensityString = this.state.timeframe
-    let da = this.renderFilteredStudents(this.props.rootStore.insightsStore.getStudentsAndInvitations())
+    let da = this.renderFilteredStudents(studentsAndInvitations)
     const d = da.map(d => {
       if (d.isInvitation) {
         return [
           <Avatar user={d} key={d.id} />,
           this.renderInvitationNameCell(d),
-          // <CopyCell isPhone={true} text={d.student.phone} key={d.id} />,
-          <div className='si-students-table-icon red' key={d.id}><i className='fas fa-times' /></div>,
-          <div key={d.id}>{d.class_ids.length}</div>,
-          <div key={d.id}>{d.classes.filter(cl => cl.status.id >= 1400).length + ' of ' + d.class_ids.length}</div>,
-          <span colSpan={3} key={d.id + 10000} style={{fontStyle: 'oblique', textAlign: 'center'}}>N/A</span>
+          <div style={{textAlign: 'center'}} key={d.id}>--</div>,
+          <TeamsCell key={d.id} user={d} org={this.props.rootStore.insightsStore.org} onChange={() => this.props.rootStore.insightsStore.updateData()} />,
+          ...this.renderData(d)
         ]
       } else {
         return [
@@ -248,13 +269,7 @@ class Students extends React.Component {
           this.renderStudentAthleteCell(d),
           <WatchToggle rootStore={this.props.rootStore} showConfirm={true} user={d} key={d.id} />,
           <TeamsCell key={d.id} user={d} org={this.props.rootStore.insightsStore.org} onChange={() => this.props.rootStore.insightsStore.updateData()} />,
-          // <CopyCell isPhone={true} text={d.student.phone} key={d.id} />,
-          <div className='si-students-table-icon green' key={d.id}><i className='fas fa-check' /></div>,
-          <div key={d.id}>{d.classes.length}</div>,
-          <div key={d.id}>{d.classes.filter(cl => cl.status.id >= 1400).length + ' of ' + d.classes.length}</div>,
-          <div key={d.id}>{getAssignmentCountInNextNDays(d.assignments, this.state.timeframe)}</div>,
-          <div key={d.id}>{getAssignmentWeightsInNextNDays(d.assignments, this.state.timeframe)}</div>,
-          <div key={d.id}>{d.intensity[intensityString]}</div>
+          ...this.renderData(d)
         ]
       }
     })
@@ -270,7 +285,7 @@ class Students extends React.Component {
         this.setState({showFilter: false})
       }}>
         <div className='si-filter-modal'>
-          <div className='si-filter-modal-label'>Teams</div>
+          <div className='si-filter-modal-label'>Team</div>
           <input autoFocus={true} className='si-filter-modal-input' placeholder='Team name includes...' value={this.state.teamsQuery} onChange={(e) => this.setState({teamsQuery: e.target.value})} />
         </div>
       </GentleModal>
@@ -278,7 +293,7 @@ class Students extends React.Component {
   }
 
   renderSortModal () {
-    let valueOptions = ['Last name', 'First name', 'Watching', 'Assignments', 'Weights', 'Personal Intensity']
+    let valueOptions = ['Last name', 'First name', 'Watching', 'Assignments', 'Weights', 'Stress Score']
     let typeOptions = ['Ascending', 'Descending']
     return (
       <GentleModal show={this.state.showSort} width={380} closeModal={() => {
@@ -305,6 +320,28 @@ class Students extends React.Component {
     )
   }
 
+  renderStatuses () {
+    const studentsAndInvitations = this.props.rootStore.insightsStore.getStudentsAndInvitations()
+
+    let needClasses = 0
+    let needSetup = 0
+    let pendingActivation = 0
+
+    studentsAndInvitations.forEach(s => {
+      if (s.classes.length === 0) needClasses += 1
+      if (s.classes.filter(cl => cl.status.id < 1400)) needSetup += 1
+      if (s.isInvitation) pendingActivation += 1
+    })
+
+    return (
+      <div className='si-filter-bar-item right'>
+        {needClasses > 0 && <div className='status blue'>{optionalPlural(needClasses, '# need% classes', 's')}</div>}
+        {needSetup > 0 && <div className='status yellow'>{optionalPlural(needSetup, '# need% setup', 's')}</div>}
+        {pendingActivation > 0 && <div className='status red'>{pendingActivation} pending activation</div>}
+      </div>
+    )
+  }
+
   renderFilterBar () {
     return (
       <div className='si-filter-bar'>
@@ -328,6 +365,7 @@ class Students extends React.Component {
             value={this.state.studentsQuery}
           />
         </div>
+        {this.renderStatuses()}
       </div>
     )
   }

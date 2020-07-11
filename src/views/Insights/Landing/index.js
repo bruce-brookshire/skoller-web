@@ -136,7 +136,7 @@ class InsightsLanding extends React.Component {
             className='jumbo'
             width="560"
             height="315"
-            src="https://www.youtube.com/embed/4qXVfl6cUe4"
+            src="https://www.youtube.com/embed/kML4b8CA0sM"
             frameBorder="0"
             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen />

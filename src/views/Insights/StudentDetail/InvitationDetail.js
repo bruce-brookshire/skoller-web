@@ -50,7 +50,7 @@ class InvitationDetail extends Component {
             a.class_id = r.id
           })
 
-          assignments.concat(r.assignments)
+          assignments = assignments.concat(r.assignments)
           r.color = '4a4a4a'
           classes.push(r)
         })

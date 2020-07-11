@@ -43,10 +43,19 @@ class StudentDetail extends React.Component {
   }
 
   renderClasses () {
-    console.log(this.state.classes)
-    return (
-      <SiClassList classes={this.state.classes} emptyMessage={'No classes yet.'} />
-    )
+    if (this.state.classes.length > 0) {
+      return (
+        <SiClassList classes={this.state.classes} emptyMessage={'No classes yet.'} />
+      )
+    } else {
+      return (
+        <div className='add-athletes-callout'>
+          <h1>Add classes!</h1>
+          <div onClick={() => this.toggleShowAddStudents(true)} className='plus'>+</div>
+          <i className='fas fa-book' />
+        </div>
+      )
+    }
   }
 
   renderAthlete (user) {
@@ -118,6 +127,24 @@ class StudentDetail extends React.Component {
     )
   }
 
+  renderClassesCell () {
+    return (
+      <div className='si-student-detail-cell classes'>
+        <h2>Classes</h2>
+        {this.renderClasses()}
+      </div>
+    )
+  }
+
+  renderTasksCell () {
+    return (
+      <div className='si-student-detail-cell tasks'>
+        <h2>To-Do&apos;s</h2>
+        {this.renderTasks()}
+      </div>
+    )
+  }
+
   render () {
     let user = this.user()
     return (
@@ -135,23 +162,19 @@ class StudentDetail extends React.Component {
               <h2>Semester Outlook</h2>
               <StudentInsights user={user} classes={this.state.classes} />
             </div>
-            <div className='si-student-detail-cell classes'>
-              <h2>Classes</h2>
-              {this.renderClasses()}
-            </div>
+            {user.assignments.length > 0 && this.renderClassesCell()}
           </div>
           <div className='si-student-detail-column sm'>
             <div className='si-student-detail-cell contact'>
               <h2>Contact</h2>
               <div className='si-student-detail-contact'>
-                <p><i className='fas fa-envelope' /> <a style={{marginTop: '4px'}} className='link-style' href={'mailto:' + user.student.users[0].email}>{user.student.users[0].email}</a></p>
+                {Array.isArray(user.student.users) &&
+                  <p><i className='fas fa-envelope' /> <a style={{marginTop: '4px'}} className='link-style' href={'mailto:' + user.student.users[0].email}>{user.student.users[0].email}</a></p>
+                }
                 <p><i className='fas fa-phone' /> <CopyCell isPhone={true} text={user.student.phone} /></p>
               </div>
             </div>
-            <div className='si-student-detail-cell tasks'>
-              <h2>To-Do&apos;s</h2>
-              {this.renderTasks()}
-            </div>
+            {user.assignments.length > 0 ? this.renderTasksCell() : this.renderClassesCell()}
           </div>
         </div>
       </div>

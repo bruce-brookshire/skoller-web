@@ -11,6 +11,7 @@ export function toTitleCase (string) {
 }
 
 export function getAssignmentCountInNextNDays (assignments, n) {
+  if (!assignments) return 0
   let assignmentCount = 0
   let lastDay = moment().add(n, 'days')
 
@@ -28,6 +29,7 @@ export function getAssignmentCountInNextNDays (assignments, n) {
 }
 
 export function getAssignmentWeightsInNextNDays (assignments, n = 7) {
+  if (!assignments) return 0
   let assignmentsWeight = 0
   let lastDay = moment().add(n, 'days')
 
@@ -131,16 +133,27 @@ export function getIntensityScore (assignments, nDays, startDay = moment()) {
 }
 
 export function optionalPlural (array, string, replaceWith) {
-  const sRegExp = /@/g
-  const nRegExp = /#/g
-  let replacement
-  if (!replaceWith) {
-    replacement = array.length === 1 ? '' : 's'
+  let n = 0
+  if (Array.isArray(array)) {
+    n = array.length
   } else {
-    replacement = array.length === 1 ? '' : replaceWith
+    n = array
   }
 
-  return string.replace(sRegExp, replacement).replace(nRegExp, array.length)
+  const sRegExp = /@/g
+  const nRegExp = /#/g
+  const xsRegExp = /%/g
+  let replacement
+  let inverseReplacement
+  if (!replaceWith) {
+    replacement = n === 1 ? '' : 's'
+    inverseReplacement = n === 1 ? 's' : ''
+  } else {
+    replacement = n === 1 ? '' : replaceWith
+    inverseReplacement = n === 1 ? 's' : ''
+  }
+
+  return string.replace(sRegExp, replacement).replace(nRegExp, n).replace(xsRegExp, inverseReplacement)
 }
 
 export async function asyncForEach (array, callback) {

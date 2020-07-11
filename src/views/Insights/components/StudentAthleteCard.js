@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom'
 import StatusIndicators from './StatusIndicators'
 
 const StudentAthleteCard = (props) => {
-  const link = props.noLink ? null : '/insights/invitations/' + props.user.id
   if (props.user.isInvitation) {
+    let link = props.noLink ? null : '/insights/invitations/' + props.user.id
     return (
       <div className='si-sa-card-container'>
         <div className={'si-sa-card' + (props.noLink ? ' no-link' : '')}>
@@ -33,6 +33,8 @@ const StudentAthleteCard = (props) => {
       </div>
     )
   }
+
+  let link = props.noLink ? null : '/insights/students/' + props.user.id
   return (
     <div className='si-sa-card-container'>
       <div className={'si-sa-card' + (props.noLink ? ' no-link' : '')}>
