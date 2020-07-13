@@ -1,4 +1,4 @@
-import {get, post, postFile, del} from '../../utilities/api'
+import {get, post, postFile, del, put} from '../../utilities/api'
 // import stores from '../../stores'
 import {showSnackbar} from '../../utilities/snackbar'
 
@@ -35,6 +35,16 @@ function deleteInvitation (orgId, invitationId) {
     })
 }
 
+function editInvitation (orgId, invitationId, form) {
+  return put(`/api/v1/organizations/${orgId}/student-org-invitations/${invitationId}`, form, '')
+    .then(r => {
+      return r
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
 export function postInvitationsCSV (orgId, file, orgGroupId) {
   let form = new FormData()
   if (orgGroupId) form.append('org_group_id', orgGroupId)
@@ -55,7 +65,8 @@ const exports = {
   createStudentInvitation,
   getStudentInvitations,
   deleteInvitation,
-  postInvitationsCSV
+  postInvitationsCSV,
+  editInvitation
 }
 
 export default exports

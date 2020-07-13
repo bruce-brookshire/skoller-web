@@ -13,17 +13,32 @@ class TasksList extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      classes: this.props.rootStore.studentClassesStore.classes,
-      tasks: this.props.rootStore.studentAssignmentsStore.assignments,
       loading: false,
       seeMore: false,
       filterSelection: 'All assignments'
     }
   }
 
+  assignments () {
+    if (this.props.insightsUserData) {
+      console.log(this.props.insightsUserData.assignments)
+      return this.props.insightsUserData.assignments
+    } else {
+      return this.props.rootStore.studentAssignmentsStore.assignments
+    }
+  }
+
+  classes () {
+    if (this.props.insightsUserData) {
+      return this.props.insightsUserData.classes
+    } else {
+      return this.props.rootStore.studentClassesStore.classes
+    }
+  }
+
   getClassForTask (task) {
     let clName, clColor
-    this.props.rootStore.studentClassesStore.classes.forEach(cl => {
+    this.classes().forEach(cl => {
       if (cl.id === task.class_id) {
         clName = cl.name
         clColor = cl.color
@@ -35,7 +50,7 @@ class TasksList extends React.Component {
   renderNoTasks () {
     return (
       <div style={{color: 'rgba(0,0,0,0.3)', width: '100%', textAlign: 'center', padding: '2rem'}}>
-        {this.props.rootStore.studentAssignmentsStore.assignments.length > 0
+        {this.assignments().length > 0
           ? "You're all caught up!"
           : "No to-do's."
         }
@@ -45,11 +60,11 @@ class TasksList extends React.Component {
 
   getSortedAssignments () {
     if (this.props.filter && this.state.filterSelection === 'Past') {
-      return this.props.rootStore.studentAssignmentsStore.assignments
+      return this.assignments()
         .slice()
         .sort((a, b) => moment(a.due).isAfter(moment(b.due)) ? -1 : 1)
     } else {
-      return this.props.rootStore.studentAssignmentsStore.assignments
+      return this.assignments()
         .slice()
         .sort((a, b) => moment(a.due).isBefore(moment(b.due)) ? -1 : 1)
     }
@@ -114,7 +129,7 @@ class TasksList extends React.Component {
 
   renderTasks () {
     let i = 0
-    if (this.props.rootStore.studentAssignmentsStore.assignments.length === 0 || this.getTaskDisplayCount().length <= 0) {
+    if (this.assignments().length === 0 || this.getTaskDisplayCount().length <= 0) {
       return (
         this.renderNoTasks()
       )
@@ -135,7 +150,7 @@ class TasksList extends React.Component {
               i += 1
               return (
                 <div key={task.id}>
-                  <TaskCard task={task} clName={cl.clName} clColor={cl.clColor} classDetailView={this.props.cl} />
+                  <TaskCard insightsUser={this.props.insightsUserData} task={task} clName={cl.clName} clColor={cl.clColor} classDetailView={this.props.cl} />
                 </div>
               )
             }
@@ -204,7 +219,8 @@ TasksList.propTypes = {
   cl: PropTypes.object,
   filter: PropTypes.bool,
   outlook: PropTypes.string,
-  displayCountCallback: PropTypes.func
+  displayCountCallback: PropTypes.func,
+  insightsUserData: PropTypes.object
 }
 
 export default TasksList

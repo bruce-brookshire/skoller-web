@@ -9,25 +9,20 @@ import Avatar from '../components/Avatar'
 import WatchToggle from '../components/WatchToggle'
 import SkSelect from '../../components/SkSelect'
 import CopyCell from '../components/CopyCell'
+import AddClasses from '../components/AddClasses'
+import LoadingIndicator from '../components/LoadingIndicator'
 
 @inject('rootStore') @observer
 class StudentDetail extends React.Component {
   constructor (props) {
     super(props)
-    let user = this.user()
-
-    this.state = {
-      loadingClasses: false,
-      classes: user.classes
-    }
 
     this.props.rootStore.navStore.setActivePage('insights/students')
   }
 
   user () {
     if (this.props.invitation) {
-      console.log(this.props.invitation)
-      return this.props.invitation
+      return this.props.rootStore.insightsStore.invitations.find(s => s.id === parseInt(this.props.invitation.id))
     } else {
       return this.props.rootStore.insightsStore.students.find(s => s.id === parseInt(this.props.match.params.orgStudentId))
     }
@@ -38,20 +33,23 @@ class StudentDetail extends React.Component {
     let timeframe = this.props.rootStore.insightsStore.interfaceSettings.timeframe
 
     return (
-      <SiTasksList user={user} maxDays={timeframe} maxTasks={50} classes={this.state.classes} emptyMessage={"No to-do's yet."} />
+      <SiTasksList user={user} maxDays={timeframe} maxTasks={50} classes={user.classes} emptyMessage={"No to-do's yet."} />
     )
   }
 
   renderClasses () {
-    if (this.state.classes.length > 0) {
+    let user = this.user()
+    if (user.classes.length > 0) {
       return (
-        <SiClassList classes={this.state.classes} emptyMessage={'No classes yet.'} />
+        <SiClassList classes={user.classes} user={user} emptyMessage={'No classes yet.'} />
       )
     } else {
       return (
         <div className='add-athletes-callout'>
           <h1>Add classes!</h1>
-          <div onClick={() => this.toggleShowAddStudents(true)} className='plus'>+</div>
+          <AddClasses user={this.user()}>
+            <div className='plus'>+</div>
+          </AddClasses>
           <i className='fas fa-book' />
         </div>
       )
@@ -70,6 +68,7 @@ class StudentDetail extends React.Component {
             {!this.props.invitation && <div className='watch-toggle-container'>
               <WatchToggle rootStore={this.props.rootStore} showConfirm={true} user={user} />
             </div>}
+            <LoadingIndicator />
           </div>
           <div className='sa-teams'>
             {user.org_groups.map(t => {
@@ -130,7 +129,10 @@ class StudentDetail extends React.Component {
   renderClassesCell () {
     return (
       <div className='si-student-detail-cell classes'>
-        <h2>Classes</h2>
+        <div style={{display: 'flex'}}>
+          <h2>Classes</h2>
+          <AddClasses user={this.user()}><span style={{cursor: 'pointer'}}><i className='fas fa-plus' /></span></AddClasses>
+        </div>
         {this.renderClasses()}
       </div>
     )
@@ -160,7 +162,7 @@ class StudentDetail extends React.Component {
             </div>
             <div className='si-student-detail-cell contact'>
               <h2>Semester Outlook</h2>
-              <StudentInsights user={user} classes={this.state.classes} />
+              <StudentInsights user={user} classes={this.user().classes} />
             </div>
             {user.assignments.length > 0 && this.renderClassesCell()}
           </div>
@@ -170,6 +172,9 @@ class StudentDetail extends React.Component {
               <div className='si-student-detail-contact'>
                 {Array.isArray(user.student.users) &&
                   <p><i className='fas fa-envelope' /> <a style={{marginTop: '4px'}} className='link-style' href={'mailto:' + user.student.users[0].email}>{user.student.users[0].email}</a></p>
+                }
+                {!Array.isArray(user.student.users) &&
+                  <p><i className='fas fa-envelope' /> <a style={{marginTop: '4px'}} className='link-style' href={'mailto:' + user.student.user.email}>{user.student.user.email}</a></p>
                 }
                 <p><i className='fas fa-phone' /> <CopyCell isPhone={true} text={user.student.phone} /></p>
               </div>

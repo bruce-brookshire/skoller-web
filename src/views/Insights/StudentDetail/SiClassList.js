@@ -5,11 +5,17 @@ import sExclamation from '../../../assets/images/class_status/s-exclamation.png'
 import sInReview from '../../../assets/images/class_status/s-in-review.png'
 import uploadS from '../../../assets/images/class_status/upload-s.png'
 import moment from 'moment'
+import { withRouter } from 'react-router-dom'
 
 @inject('rootStore') @observer
 class SiClassList extends React.Component {
   onClassSelect (cl) {
     if (this.props.onSelect) this.props.onSelect(cl)
+    if (this.props.match.params.invitationId) {
+      this.props.history.push('/insights/invitations/' + this.props.user.id + '/classes/' + cl.id + '/')
+    } else {
+      this.props.history.push('/insights/students/' + this.props.user.id + '/classes/' + cl.id + '/')
+    }
   }
 
   renderGrade (cl) {
@@ -137,7 +143,9 @@ SiClassList.propTypes = {
   onSelect: PropTypes.func,
   containerClassName: PropTypes.string,
   rowClassName: PropTypes.string,
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  user: PropTypes.object,
+  history: PropTypes.object
 }
 
-export default SiClassList
+export default withRouter(SiClassList)

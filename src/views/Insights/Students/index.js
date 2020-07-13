@@ -19,6 +19,7 @@ import SkLoader from '../../../assets/sk-icons/SkLoader'
 import ActionModal from '../components/ActionModal'
 import CreateStudents from '../components/CreateStudents'
 import StatusIndicators from '../components/StatusIndicators'
+import AddClasses from '../components/AddClasses'
 
 @inject('rootStore') @observer
 class Students extends React.Component {
@@ -38,22 +39,22 @@ class Students extends React.Component {
         type: 'Ascending'
       },
       timeframe: 7,
-      loading: true
+      loading: false
     }
 
-    this.getStudents()
+    // this.getStudents()
   }
 
   async getStudents () {
-    await asyncForEach(this.props.rootStore.insightsStore.invitations, async i => {
-      await asyncForEach(i.class_ids, async id => {
-        await actions.classes.getClassById(id)
-          .then(r => {
-            i.classes.push(r)
-          })
-      })
-    })
-    this.setState({loading: false})
+    // await asyncForEach(this.props.rootStore.insightsStore.invitations, async i => {
+    //   await asyncForEach(i.class_ids, async id => {
+    //     await actions.classes.getClassById(id)
+    //       .then(r => {
+    //         i.classes.push(r)
+    //       })
+    //   })
+    // })
+    // this.setState({loading: false})
   }
 
   sortStudents (students) {
@@ -227,7 +228,7 @@ class Students extends React.Component {
 
   renderData (d) {
     if (d.classes.length === 0) {
-      return [<div key={d.id} colSpan={3} className='add-classes si-button'><p>Add classes</p></div>]
+      return [<div colSpan={3} key={d.id}><AddClasses user={d} /></div>]
     }
 
     return [

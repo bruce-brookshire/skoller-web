@@ -123,7 +123,6 @@ class InsightsStore {
   async getGroupOwners (orgId) {
     await actions.insights.getAllOrgGroupOwnersInOrg(orgId)
       .then(r => {
-        console.log('getGroupOwners', r)
         let groupOwners = r
         let filteredGroupOwners = []
         groupOwners.forEach(go => {
@@ -216,7 +215,9 @@ class InsightsStore {
 
           assignments = assignments.concat(r.assignments)
           r.color = '4a4a4a'
-          classes.push(r)
+          if (!classes.map(cl => cl.id).includes(r.id)) {
+            classes.push(r)
+          }
         })
     })
     return {
@@ -338,8 +339,6 @@ class InsightsStore {
   getDataSuccess () {
     this.loading = false
     this.loadingUpdate = false
-
-    console.log(this)
   }
 
   @action

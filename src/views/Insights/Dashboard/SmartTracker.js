@@ -8,6 +8,7 @@ import { getAssignmentCountInNextNDays, getAssignmentWeightsInNextNDays, toTitle
 import ToolTip from '../../components/ToolTip'
 import CreateStudents from '../components/CreateStudents'
 import SkModal from '../../components/SkModal/SkModal'
+import AddClasses from '../components/AddClasses'
 
 @inject('rootStore') @observer
 class SmartTracker extends React.Component {
@@ -25,7 +26,7 @@ class SmartTracker extends React.Component {
   }
 
   renderValue (d) {
-    const setup = <div className='si-smart-tracker-value no-classes' onClick={(d) => this.onSetupClasses(d)}>Setup classes</div>
+    const setup = <AddClasses user={d} />
     if (d.isInvitation) {
       if (d.class_ids.length === 0) return setup
     } else {
