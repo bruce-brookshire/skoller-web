@@ -73,6 +73,8 @@ import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import GroupDetail from './views/Insights/GroupDetail'
 import InvitationDetail from './views/Insights/StudentDetail/InvitationDetail'
+import SiStudentClassDetail from './views/Insights/StudentDetail/SiStudentClassDetail'
+import SiStudentAssignmentDetail from './views/Insights/StudentDetail/SiStudentAssignmentDetail'
 
 const {userStore} = stores
 
@@ -189,6 +191,10 @@ class InsightsContainer extends React.Component {
           <Route exact path='/insights/dashboard' component={Dashboard} />
           <Route exact path='/insights/students' component={Students} />
           <Route exact path='/insights/students/:orgStudentId' component={StudentDetail} />
+          <Route exact path='/insights/students/:orgStudentId/classes/:classId' component={SiStudentClassDetail} />
+          <Route exact path='/insights/invitations/:invitationId/classes/:classId' component={SiStudentClassDetail} />
+          <Route exact path='/insights/students/:orgStudentId/classes/:classId/assignments/:assignmentId' component={SiStudentAssignmentDetail} />
+          <Route exact path='/insights/invitations/:invitationId/classes/:classId/assignments/:assignmentId' component={SiStudentAssignmentDetail} />
           <Route exact path='/insights/invitations/:invitationId' component={InvitationDetail} />
           <Route exact path='/insights/groups' component={Groups} />
           <Route exact path='/insights/groups/:orgGroupId' component={GroupDetail} />

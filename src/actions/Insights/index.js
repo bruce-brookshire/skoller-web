@@ -2,6 +2,8 @@ import {get, post, del, put} from '../../utilities/api'
 import {showSnackbar} from '../../utilities/snackbar'
 import stores from '../../stores'
 import invitations from './invitations'
+import settings from './settings'
+import students from './students'
 
 const {userStore} = stores
 
@@ -412,6 +414,8 @@ function removeStudentFromGroupOwnerWatchlist (orgId, groupOwnerId, orgGroupId, 
 
 const exports = {
   invitations,
+  settings,
+  students,
 
   /*
 

@@ -10,8 +10,7 @@ import AddClasses from '../components/AddClasses'
 export default function GroupStudent (props) {
   if (!props.student && !props.invitation) return null
 
-  const [showAddClasses, setShowAddClasses] = React.useState(false)
-  const renderAddClasses = <div className='si-group-student-add-classes' onClick={() => setShowAddClasses(!showAddClasses)}>Add classes</div>
+  const renderAddClasses = <AddClasses user={props.student} />
 
   if (props.student) {
     const name = props.student.student.name_first + ' ' + props.student.student.name_last
@@ -36,7 +35,6 @@ export default function GroupStudent (props) {
             <div>{classes}</div>
           </div>
         </div>
-        {showAddClasses && <AddClasses closeModal={() => setShowAddClasses(false)} />}
       </div>
     )
   } else if (props.invitation) {
@@ -64,7 +62,6 @@ export default function GroupStudent (props) {
             <div>Sent {moment(invitation.inserted_at).fromNow()}</div>
           </div>
         </div>
-        {showAddClasses && <AddClasses closeModal={() => setShowAddClasses(false)} />}
       </div>
     )
   }

@@ -3,27 +3,6 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 
 class AssignmentList extends React.Component {
-  // TODO unfinished Matt Brown stuff below
-  renderInsertWeightsBar () {
-  //   const assignments = [...this.props.assignments]
-  //   const weights = [...this.props.weights]
-  //   console.log(assignments)
-  //   weights.forEach((w, index) => {
-  //     assignments.forEach(a => {
-  //       if (a.weight_id === w.id) {
-  //         weights.splice(index, 1)
-  //       }
-  //     })
-  //   })
-
-  //   if (weights.length >= 1) {
-  //     return (
-  //       <div className="">{weights.length} categor{weights.length === 1 ? 'y' : 'ies'} need{weights.length === 1 ? 's' : ''} assignment{weights.length === 1 ? '' : 's'}. Click to add them!</div>
-  //     )
-  //   } else if (weights.length <= 0) return null
-    return null
-  }
-
   renderDueDateInfo (dd) {
     const today = moment()
     if (dd) {
@@ -67,9 +46,9 @@ class AssignmentList extends React.Component {
   }
 
   render () {
+    console.log(this.props)
     return (
       <div className={'cn-class-list-container'}>
-        {this.renderInsertWeightsBar()}
         {this.renderClassAssignments()}
       </div>
     )

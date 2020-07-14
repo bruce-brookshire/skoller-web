@@ -696,27 +696,34 @@ class FindAClass extends React.Component {
         this.setState({loadingSubmit: true})
         actions.classes.createClass(form, this.state.termChoice.id).then((response) => {
           this.setState({loadingSubmit: false})
-          actions.classes.enrollInClass(response.id).then(() => {
-            this.props.onSubmit()
-            if (this.props.launchClassStatusModal) {
-              this.props.launchClassStatusModal(response)
-            }
-          })
+          if (this.props.altEnroll) {
+            this.props.altEnroll(response.id)
+          } else {
+            actions.classes.enrollInClass(response.id).then(() => {
+              this.props.onSubmit()
+              if (this.props.launchClassStatusModal) {
+                this.props.launchClassStatusModal(response)
+              }
+            })
+          }
         })
       }
     } else {
-      actions.classes.enrollInClass(this.state.classChoice.id).then((r) => {
-        if (r.status.id === 1400 && !this.props.onboard) {
-          this.props.launchClassStatusModal(r)
-        } else {
-          if (this.props.onboard) {
-            this.props.onSubmit()
-          } else {
+      if (this.props.altEnroll) {
+        this.props.altEnroll(this.state.classChoice.id)
+      } else {
+        actions.classes.enrollInClass(this.state.classChoice.id).then((r) => {
+          if (r.status.id === 1400 && !this.props.onboard) {
             this.props.launchClassStatusModal(r)
+          } else {
+            if (this.props.onboard) {
+              this.props.onSubmit()
+            } else {
+              this.props.launchClassStatusModal(r)
+            }
           }
-          // this.props.onSubmit()
-        }
-      })
+        })
+      }
     }
   }
 
@@ -896,7 +903,8 @@ FindAClass.propTypes = {
   onBack: PropTypes.func,
   hideOnboard: PropTypes.bool,
   launchClassStatusModal: PropTypes.func,
-  onboard: PropTypes.bool
+  onboard: PropTypes.bool,
+  altEnroll: PropTypes.func
 }
 
 export default FindAClass

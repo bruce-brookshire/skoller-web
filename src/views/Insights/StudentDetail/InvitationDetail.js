@@ -15,57 +15,22 @@ class InvitationDetail extends Component {
     history: PropTypes.object
   }
 
-  constructor (props) {
-    super(props)
+  // constructor (props) {
+  //   super(props)
 
-    this.state = {
-      loading: true,
-      invitation: null
-    }
-
-    this.getInvitation()
-  }
-
-  async getInvitation () {
-    let invitation = this.props.rootStore.insightsStore.invitations.find(i => i.id === parseInt(this.props.match.params.invitationId))
-
-    if (!invitation) this.props.history.push('/insights/students')
-
-    let classes = []
-    let assignments = []
-    await asyncForEach(invitation.class_ids, async id => {
-      await actions.classes.getClassByIdAdmin(id)
-        .then(r => {
-          r.assignments.forEach(a => {
-            if (r.is_points) {
-              let totalWeight = 0
-              r.weights.forEach(w => {
-                console.log({w, totalWeight})
-                totalWeight += w.weight
-              })
-              a.weight = (r.weights.find(w => w.id === a.weight_id).weight / r.assignments.filter(as => as.weight_id === a.weight_id, 0).length) / totalWeight
-            } else {
-              a.weight = r.weights.find(w => w.id === a.weight_id).weight / r.assignments.filter(as => as.weight_id === a.weight_id, 0).length
-            }
-            a.class_id = r.id
-          })
-
-          assignments = assignments.concat(r.assignments)
-          r.color = '4a4a4a'
-          classes.push(r)
-        })
-    })
-
-    this.setState({invitation: {...invitation, classes, assignments}, loading: false})
-
-    console.log(this.state.invitation)
-  }
+  //   this.state = {
+  //     loading: false,
+  //     invitation: this.props.rootStore.insightsStore.invitations.find(i => i.id === parseInt(this.props.match.params.invitationId))
+  //   }
+  // }
 
   render () {
-    if (this.state.loading) return <SkLoader />
+    // if (this.state.loading) return <SkLoader />
+
+    console.log(this.props.rootStore.insightsStore)
 
     return (
-      <StudentDetail invitation={this.state.invitation} />
+      <StudentDetail invitation={this.props.rootStore.insightsStore.invitations.find(i => i.id === parseInt(this.props.match.params.invitationId))} />
     )
   }
 }
