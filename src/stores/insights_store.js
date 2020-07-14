@@ -144,9 +144,17 @@ class InsightsStore {
 
   async getOrg (orgId) {
     await actions.insights.getOrgById(orgId)
-      .then(r => {
+      .then(async r => {
         let org = r
-        this.org = {...this.org, ...org}
+        this.org = {...this.org, ...org, color: null, school: null}
+
+        if (org.schools.length > 0) {
+          await actions.schools.getSchoolById(org.schools[0].id)
+            .then(r => {
+              this.org.color = r.color
+              this.org.school = r
+            })
+        }
       })
   }
 

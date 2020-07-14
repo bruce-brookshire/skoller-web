@@ -11,11 +11,18 @@ import SkSelect from '../../components/SkSelect'
 import CopyCell from '../components/CopyCell'
 import AddClasses from '../components/AddClasses'
 import LoadingIndicator from '../components/LoadingIndicator'
+import { withRouter } from 'react-router-dom'
 
 @inject('rootStore') @observer
 class StudentDetail extends React.Component {
   constructor (props) {
     super(props)
+
+    this.state = {
+      autoShowAddClasses: this.props.location.state ? this.props.location.state.autoShowAddClasses : this.props.autoShowAddClasses
+    }
+
+    console.log(this.state)
 
     this.props.rootStore.navStore.setActivePage('insights/students')
   }
@@ -56,6 +63,27 @@ class StudentDetail extends React.Component {
     }
   }
 
+  renderGroups (user) {
+    if (user.isInvitation) {
+      return user.group_ids.map(id => {
+        let t = this.props.rootStore.insightsStore.groups.find(g => g.id === id)
+        return (
+          <div className='sa-team' key={user.group_ids.indexOf(id)}>
+            {t.name}{user.group_ids.indexOf(id) !== user.group_ids.length - 1 ? ', ' : ''}
+          </div>
+        )
+      })
+    } else {
+      return user.org_groups.map(t => {
+        return (
+          <div className='sa-team' key={user.org_groups.indexOf(t)}>
+            {t.name}{user.org_groups.indexOf(t) !== user.org_groups.length - 1 ? ', ' : ''}
+          </div>
+        )
+      })
+    }
+  }
+
   renderAthlete (user) {
     return (
       <div className='si-student-detail-sa'>
@@ -71,13 +99,7 @@ class StudentDetail extends React.Component {
             <LoadingIndicator />
           </div>
           <div className='sa-teams'>
-            {user.org_groups.map(t => {
-              return (
-                <div className='sa-team' key={user.org_groups.indexOf(t)}>
-                  {t.name}{user.org_groups.indexOf(t) !== user.org_groups.length - 1 ? ', ' : ''}
-                </div>
-              )
-            })}
+            {this.renderGroups(user)}
           </div>
         </div>
       </div>
@@ -131,7 +153,7 @@ class StudentDetail extends React.Component {
       <div className='si-student-detail-cell classes'>
         <div style={{display: 'flex'}}>
           <h2>Classes</h2>
-          <AddClasses user={this.user()}><span style={{cursor: 'pointer'}}><i className='fas fa-plus' /></span></AddClasses>
+          <AddClasses autoShow={this.state.autoShowAddClasses} user={this.user()}><span className='plus' style={{cursor: 'pointer'}}><i className='fas fa-plus' /></span></AddClasses>
         </div>
         {this.renderClasses()}
       </div>
@@ -190,7 +212,9 @@ class StudentDetail extends React.Component {
 StudentDetail.propTypes = {
   rootStore: PropTypes.object,
   match: PropTypes.object,
-  invitation: PropTypes.object
+  invitation: PropTypes.object,
+  autoShowAddClasses: PropTypes.bool,
+  location: PropTypes.object
 }
 
-export default StudentDetail
+export default withRouter(StudentDetail)

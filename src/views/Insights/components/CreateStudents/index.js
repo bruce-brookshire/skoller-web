@@ -13,7 +13,7 @@ class CreateStudents extends Component {
     super(props)
 
     this.state = {
-      formState: 'bulk',
+      formState: 'single',
       studentsAlias: this.props.rootStore.insightsStore.org.studentsAlias,
       studentsAliasTitle: toTitleCase(this.props.rootStore.insightsStore.org.studentsAlias),
       group: this.props.group
