@@ -1,0 +1,94 @@
+.si-filter-bar {
+  width: 100%;
+  background-color: white;
+  border: 1px solid #9f9f9f;
+  border-bottom: none;
+  position: sticky;
+  top: 64px;
+  z-index: 2;
+  display: flex;
+  flex-flow: row wrap;
+  padding: 8px 8px;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
+
+  // themed variables
+  @include themed() {
+    background-color: t($bg-u);
+  }
+
+  .si-filter-bar-button {
+    padding: 6px 6px 0px 6px;
+    margin-right: 8px;
+    border: 1px solid #eaeaea;
+    border-radius: 3px;
+    cursor: pointer;
+
+    &:hover {
+      // themed variables
+      @include themed() {
+        background-color: t($hover);
+      }
+    }
+
+    i {
+      font-size: 12px;
+    }
+  }
+
+  .si-filter-bar-search {
+    .si-filter-bar-search-input {
+      width: 100%;
+      height: 100%;
+      min-width: 192px;
+      border: 1px solid #eaeaea;
+      border-radius: 3px;
+      background-color: #fafafa00;
+      font-size: 14px;
+      padding: 0 8px;
+      transition: box-shadow 0.1s ease-in-out;
+      
+      // themed variables
+      @include themed() {
+        color: t($font-color);
+        &::placeholder {
+          color: t($input-p);
+        }
+      }
+
+      &:focus {
+        outline: none;
+        // background-color: white;
+        box-shadow: 0 6px 10px rgba(0,0,0,0.08);
+      }
+    }
+  }
+
+  .si-filter-bar-item {
+    &.right {
+      flex-grow: 1;
+      display: flex;
+      flex-flow: row nowrap;
+      // align-items: flex-end;
+      justify-content: flex-end;
+    }
+
+    .status {
+      color: white;
+      padding: 8px 4px 2px 4px;
+      margin-left: 8px;
+      border-radius: 5px;
+
+      &.blue {
+        background-color: $sk-blue;
+      }
+
+      &.yellow {
+        background-color: $cn-color-yellow;
+      }
+
+      &.red {
+        background-color: $sk-alert-red;
+      }
+    }
+  }
+}

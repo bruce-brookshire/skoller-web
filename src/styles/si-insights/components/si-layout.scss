@@ -1,0 +1,12 @@
+.si-layout {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  min-height: calc(100vh - 64px);
+
+  main {
+    flex: 0 0 calc(100% - 200px);
+    min-width: 800px;
+    margin-top: 64px;
+  }
+}

@@ -117,7 +117,7 @@ class NavBar extends React.Component {
   }
 
   render () {
-    let jobsMode = this.props.rootStore.studentNavStore.jobsMode
+    let jobsMode = this.props.rootStore.navStore.jobsMode
     if (this.props.onboard) {
       return (
         this.renderOnboardHeader()
@@ -172,7 +172,8 @@ class NavBar extends React.Component {
 
 NavBar.propTypes = {
   rootStore: PropTypes.object,
-  onboard: PropTypes.bool
+  onboard: PropTypes.bool,
+  history: PropTypes.object
 }
 
 export default withRouter(NavBar)

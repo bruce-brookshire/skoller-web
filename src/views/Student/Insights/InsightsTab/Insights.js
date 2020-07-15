@@ -11,8 +11,8 @@ class InsightsPage extends React.Component {
   constructor (props) {
     super(props)
 
-    this.props.rootStore.studentNavStore.setActivePage('insights')
-    this.props.rootStore.studentNavStore.location = this.props.location
+    this.props.rootStore.navStore.setActivePage('insights')
+    this.props.rootStore.navStore.location = this.props.location
 
     let dataOptions = {}
     this.props.rootStore.studentClassesStore.classes.filter(cl => cl.status.id >= 1400).map(cl => {
@@ -131,7 +131,7 @@ class InsightsPage extends React.Component {
                 <div className='insights-cp'>
                   <h1>Insights</h1>
                   <p style={{marginBottom: '8px'}}>
-                    Set up your classes, then navigate back here to see you workload in brand new ways.
+                    Set up your classes, then navigate back here to see your workload in brand new ways.
                   </p>
                   <div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', margin: '8px 0 0 0'}}>
                     <div style={{width: '16px', height: '16px', borderRadius: '4px', backgroundColor: '#4a4a4a15'}} />

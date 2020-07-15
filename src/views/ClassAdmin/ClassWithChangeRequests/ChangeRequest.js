@@ -94,7 +94,7 @@ class ChangeRequest extends React.Component {
           </div>
         </div>
         <div style={{marginTop: '1rem'}}>
-          <span style={{color: '#4a4a4a75'}}>By: </span> {cr.user.email}
+          <span style={{color: '#4a4a4a75'}}>By: </span> {cr.user ? cr.user.email : null}
         </div>
         <div>
           <span style={{color: '#4a4a4a75'}}>Received: </span> {moment(moment.utc(cr.inserted_at).toDate()).local().format('MM/DD/YY h:mma')}

@@ -1,0 +1,130 @@
+// colors
+$si-ultra-dark: #3c3c3c;
+
+@mixin si-autocomplete-option {
+  padding: 0.75rem 0 0.25rem 0;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $cn-color-hover-grey;
+  }
+}
+
+@mixin si-select {
+  .sk-select {
+    border: 1px solid $sk-blue;
+    
+    p {
+      font-weight: 400;
+      padding-right: 28px;
+    }
+  }
+
+  &:hover {
+    background-color: rgba(0,0,0,0.05);
+    border-radius: 5px;
+  }
+
+  .sk-select-dropdown-container {
+    .sk-select-dropdown {
+      .si-select-option {
+        @include si-autocomplete-option;
+        font-weight: 400;
+    
+        // themed variables
+        &:hover {
+          @include themed() {
+            background: t($hover);
+            border-radius: 5px;
+          }
+        }
+      }
+    }
+  }
+
+  // themed variables
+  .sk-select-dropdown-container {
+    .sk-select-dropdown {
+      @include themed() {
+        background: t($bg);
+      }
+    }
+  }
+}
+
+@mixin si-cell {
+  @include skoller-cell;
+
+  @include themed() {
+    color: t($font-color);
+    background-color: t($bg-u);
+  }
+
+  transition: background-color 300ms, color 300ms;
+}
+
+@mixin si-table-page {
+  // themed variables
+  @include themed() {
+    color: t($font-color);
+  }
+}
+
+@mixin si-input {
+  // width: 100%;
+  // flex-grow: 1;
+  height: 100%;
+  min-width: 192px;
+  border-radius: 5px;
+  background-color: #fafafa00;
+  font-size: 14px;
+  padding: 9px 8px;
+  transition: box-shadow 0.1s ease-in-out;
+
+  @include themed() {
+    color: t($font-color);
+    border: 1px solid t($border);
+  }
+
+  &:focus {
+    outline: none;
+    border: 1px solid $sk-blue;
+  // box-shadow: 0 6px 10px rgba(0,0,0,0.08);
+  }
+
+  &::placeholder {
+    @include themed() {
+      color: t($input-p);
+    }  
+  }
+}
+
+@mixin si-search-input {
+  height: 100%;
+  min-width: 192px;
+  border: none;
+  background-color: #fafafa00;
+  font-size: 14px;
+  padding: 9px 8px 9px 12px;
+  transition: box-shadow 0.1s ease-in-out;
+
+  @include themed() {
+    color: t($font-color);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 6px 10px rgba(0,0,0,0.08);
+  }
+
+  &::placeholder {
+    @include themed() {
+      color: t($input-p);
+    }  
+  }
+  border-radius: 50px;
+  @include themed() {
+    color: t($font-color);
+    background-color: t($font-color-15);
+  }
+}

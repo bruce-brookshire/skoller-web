@@ -1,0 +1,128 @@
+.si-students {
+  padding: 1rem 0 0 0 ;
+  min-width: 900px;
+  min-height: calc(100vh - 64px);
+  // background-color: #fafafa;
+
+  @include si-table-page;
+
+  .si-students-header {
+    margin: 0 1rem 1rem 1rem;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+
+    .si-students-header-left {
+      flex-grow: 1;
+    }
+    
+    .si-students-header-right {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+
+      .si-button {
+        @include sk-standard-button;
+      }
+    }
+  }
+
+  .si-students-content {
+    .si-students-table {
+      width: 100%;
+
+      .big-value {
+        font-size: 1.2em;
+        font-weight: 600;
+        text-align: center;
+
+        span {
+          font-size: 14px;
+          font-weight: 400;
+        }
+      }
+
+      .si-add-classes-button {
+        width: 96px;
+      }
+
+      th {
+        text-align: center;
+      }
+
+      .si-students-timeframe {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        .si-select {
+          flex-grow: 1;
+          margin: 4px;
+          @include themed() {
+            .sk-select-selection {
+              color: t($font-color);
+
+              &::after {
+                border-color: t($font-color);
+              }
+            }
+
+            .sk-select {
+              border: 2px solid $sk-blue;
+              background-color: t($bg);
+            }
+          }
+        }
+      }
+      
+      .si-students-table-sa-cell {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        a {
+          flex-grow: 1;
+          font-size: 1.2em;
+          font-weight: 600;
+        }
+
+        .si-students-table-sa {
+          cursor: pointer;
+          border-radius: 5px;
+          padding: 8px 4px 2px 4px;
+          box-shadow: none;
+          transition: linear 100ms;
+  
+          &:hover {
+            background-color: $sk-blue-25;
+            box-shadow: 0px 4px 12px rgba(0,0,0,0.05);
+          }
+        }
+      }
+
+      .si-students-table-icon {
+        width: 100%;
+
+        i {
+          width: 100%;
+          text-align: center;
+        }
+
+        &.green {
+          @include themed() {
+            color: t($success-green);
+          }
+        }
+
+        &.red {
+          @include themed() {
+            color: t($alert-red);
+          }
+        }
+      }
+    }
+  }
+}

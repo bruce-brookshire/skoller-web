@@ -14,7 +14,15 @@ class ClassList extends React.Component {
   renderGrade (cl) {
     let status = cl.status.id
     let syllabusOverload = false
-    if (!this.props.rootStore.userStore.isAdmin()) syllabusOverload = this.props.rootStore.userStore.user.student.schools.find(s => s.id === cl.class_period.school_id).is_syllabus_overload
+    if (!this.props.rootStore.userStore.isAdmin()) {
+      try {
+        syllabusOverload = this.props.rootStore.userStore.user.student.schools.find(s => s.id === cl.class_period.school_id).is_syllabus_overload
+      } catch (e) {
+        console.log(e)
+      } finally {
+        syllabusOverload = false
+      }
+    }
 
     if (status >= 1400) {
       return (
@@ -46,7 +54,15 @@ class ClassList extends React.Component {
   renderExtra (cl) {
     let status = cl.status.id
     let syllabusOverload = false
-    if (!this.props.rootStore.userStore.isAdmin()) syllabusOverload = this.props.rootStore.userStore.user.student.schools.find(s => s.id === cl.class_period.school_id).is_syllabus_overload
+    if (!this.props.rootStore.userStore.isAdmin()) {
+      try {
+        syllabusOverload = this.props.rootStore.userStore.user.student.schools.find(s => s.id === cl.class_period.school_id).is_syllabus_overload
+      } catch (e) {
+        console.log(e)
+      } finally {
+        syllabusOverload = false
+      }
+    }
 
     if (status >= 1400) {
       return (
@@ -84,7 +100,7 @@ class ClassList extends React.Component {
   }
 
   renderClassRows () {
-    let classes = this.props.classes.sort((a, b) => a.status.id < 1400 ? -1 : 1)
+    let classes = this.props.classes.slice().sort((a, b) => a.status.id < 1400 ? -1 : 1)
 
     return (
       <React.Fragment>
@@ -124,7 +140,7 @@ class ClassList extends React.Component {
         {this.renderClassRows()}
         {this.props.classes.length === 0 &&
           <div className='cn-class-list-empty-message'>
-            {"Looks like you don't have any classes yet. Join one now!"}
+            {this.props.emptyMessage || "Looks like you don't have any classes yet. Join one now!"}
           </div>
         }
       </div>

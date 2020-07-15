@@ -1,0 +1,114 @@
+.si-bulk-upload {
+  width: 100%;
+
+  .si-bulk-upload-dnd-container {
+    height: 168px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .sk-drag-and-drop {
+      height: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      border: 1px dashed $cn-color-blue;
+      cursor: pointer;
+      border-radius: 5px;
+      position: relative;
+      background-color: rgba(0,0,0,0.02);
+      @include themed() {
+        color: t($font-color);
+      }
+
+      &:hover {
+        background-color: rgba(0,0,0,0.05);
+      }
+
+      .sk-drag-and-drop-overlay {
+        background-color: rgba(0,0,0,.05);
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 1;
+      }
+    }
+  }
+
+  .si-bulk-upload-template {
+    text-align: center;
+    cursor: pointer;
+    color: $sk-blue;
+    margin: 1rem 0 0 0;
+  }
+
+  .si-bulk-upload-preview {
+    h3, p {
+      margin: 4px 0;
+      text-align: center;
+      @include themed() {
+        color: t($font-color);
+      }
+
+      &.alert {
+        @include themed() {
+          color: t($alert-red);
+        }
+      }
+    }
+
+    .si-bulk-upload-preview-data {
+      width: 100%;
+      max-height: 400px;
+    }
+
+    .si-bulk-upload-clear {
+      text-align: center;
+      margin: 8px 0;
+      
+      span {
+        cursor: pointer;
+        color: $sk-blue;
+      }
+    }
+
+    .si-table {
+      width: 100%;
+    }
+  }
+
+  .si-bulk-upload-submit {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+    h2 {
+      margin: 1rem 0 0 0;
+    }
+
+    span {
+      cursor: pointer;
+      color: $sk-blue;
+    }
+
+    .si-button {
+      width: 100%;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+
+      p {
+        font-size: 18px;
+        font-weight: 600;
+      }
+    }
+  }
+}

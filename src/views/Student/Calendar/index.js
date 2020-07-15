@@ -10,9 +10,9 @@ import PropTypes from 'prop-types'
 class Calendar extends React.Component {
   constructor (props) {
     super(props)
-    this.props.rootStore.studentNavStore.setActivePage('calendar') // set active page state for navbar
+    this.props.rootStore.navStore.setActivePage('calendar') // set active page state for navbar
     this.props.rootStore.navbarStore.title = '' // clear the 'title' at the top of the page (let's remove this later, probably)
-    this.props.rootStore.studentNavStore.location = this.props.location // set active page route location for access from other components
+    this.props.rootStore.navStore.location = this.props.location // set active page route location for access from other components
   }
 
   render () {

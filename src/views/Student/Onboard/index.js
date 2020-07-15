@@ -9,11 +9,11 @@ import StudentLink from './EnrollLink/StudentLink'
 @inject('rootStore') @observer
 class Switch extends React.Component {
   componentDidMount () {
-    this.props.rootStore.studentNavStore.onboarding = true
+    this.props.rootStore.navStore.onboarding = true
   }
 
   componentWillUMount () {
-    this.props.rootStore.studentNavStore.onboarding = true
+    this.props.rootStore.navStore.onboarding = true
   }
 
   render () {
@@ -38,7 +38,8 @@ Switch.propTypes = {
   params: PropTypes.object,
   route: PropTypes.object,
   rootStore: PropTypes.object,
-  type: PropTypes.string
+  type: PropTypes.string,
+  match: PropTypes.object
 }
 
 export default withRouter(Switch)

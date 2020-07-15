@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Sammi from '../index'
-import AddClassModal from '../../../Student/MyClasses/AddClassModal'
+import AddClassModal from '../../../Student/components/AddClassModal'
 
 class JoinFirstClassPrompt extends React.Component {
   constructor (props) {
@@ -19,14 +19,6 @@ class JoinFirstClassPrompt extends React.Component {
     this.setState({showAddClassModal: false})
   }
 
-  launchClassStatusModal (cl) {
-    if (this.props.launchClassStatusModal) {
-      this.props.launchClassStatusModal(cl)
-    } else {
-      return null
-    }
-  }
-
   render () {
     if (this.props.show) {
       return (
@@ -42,7 +34,7 @@ class JoinFirstClassPrompt extends React.Component {
             </div>
           </Sammi>
           {this.state.showAddClassModal &&
-            <AddClassModal closeModal={() => this.closeAddClassModal()} launchClassStatusModal={(cl) => this.launchClassStatusModal(cl)}/>
+            <AddClassModal closeModal={() => this.closeAddClassModal()} />
           }
         </div>
       )

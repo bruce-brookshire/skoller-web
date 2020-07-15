@@ -22,13 +22,15 @@ class Home extends React.Component {
       classes: [],
       assignments: [],
       popUp: {show: false, type: null},
+      // classStatusModal exists on this page because it needs to be rendered if a student logs in,
+      // has only one class, and that class is not yet set up.
       classStatusModal: {show: false, cl: null},
       loading: false,
       shareWillDisplay: false
     }
 
-    this.props.rootStore.studentNavStore.setActivePage('home')
-    this.props.rootStore.studentNavStore.location = this.props.location
+    this.props.rootStore.navStore.setActivePage('home')
+    this.props.rootStore.navStore.location = this.props.location
     this.cookie = new Cookies()
     console.log(this.props.rootStore)
   }
@@ -69,8 +71,13 @@ class Home extends React.Component {
             type = 'needSyllabus'
           }
         } else if (classes.length === 0) {
-          showPopUp = true
-          type = 'findClass'
+          if (student.primary_school === null) {
+            showPopUp = true
+            type = 'needPrimarySchool'
+          } else {
+            showPopUp = true
+            type = 'findClass'
+          }
         }
       })
       .catch(() => false)

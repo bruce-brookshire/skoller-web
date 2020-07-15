@@ -1,0 +1,48 @@
+.si-organization {
+  padding: 1rem 0 0 0 ;
+  min-width: 900px;
+  min-height: calc(100vh - 64px);
+  // background-color: #fafafa;
+  @include si-table-page;
+
+  .si-organization-header {
+    margin: 0 1rem 1rem 1rem;
+  }
+
+  .si-organization-content {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    width: 100%;
+
+    .si-organization-column {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      margin: 0 0.5rem;
+
+      h2 {
+        margin: 0;
+        border-radius: 5px 5px 0 0;
+        border: 1px solid #9f9f9f;
+        border-bottom: none;
+        padding: 12px 8px 6px 8px;
+        float: left;
+
+        // themed variables
+        @include themed() {
+          background-color: t($bg-u);
+        }
+      }
+
+      .si-organization-table {
+        // width: 100%;
+  
+        .si-teams-cell {
+          min-width: 0;
+          max-width: 192px;
+        }
+      }
+    }
+  }
+}

@@ -8,6 +8,7 @@ import ProfessorForm from '../../../views/components/ProfessorForm'
 import SkModal from '../../components/SkModal/SkModal'
 import Sammi from '../../components/Sammi'
 import live from '../../../assets/images/class_status/todolist_gif.gif'
+import { CSSTransition } from 'react-transition-group'
 
 @inject('rootStore') @observer
 class FindAClass extends React.Component {
@@ -60,8 +61,11 @@ class FindAClass extends React.Component {
       schoolChoice: schoolChoice,
       completedClassView: false,
       ios: this.getMobileOperatingSystem() === 'iOS',
-      searchClassesValue: null
+      searchClassesValue: null,
+      window: window
     }
+
+    this.animationTimeout = 600
   }
 
   getMobileOperatingSystem () {
@@ -101,13 +105,28 @@ class FindAClass extends React.Component {
     }
   }
 
+  handleResize = () => {
+    this.setState({window: window})
+  }
+
+  componentDidMount () {
+    window.addEventListener('resize', this.handleResize)
+  }
+
+  componentWillUnmount () {
+    window.removeEventListener('resize', this.handleResize)
+  }
+
   renderClassNameAutocomplete () {
+    // calculate height of the search results container based on window size
+    let maxHeight = this.state.window.innerHeight - (this.classNameField.offsetTop + this.classNameField.offsetHeight) - 8
+
     return (
       <div
         className='sk-find-class-autocomplete-container'
         style={{
           width: this.classNameField.offsetWidth.toString() + 'px',
-          maxHeight: this.state.ios ? '120px' : '136px'
+          maxHeight: this.state.ios ? '120px' : maxHeight
         }}
       >
         {this.state.classes.map(cl => {
@@ -212,7 +231,7 @@ class FindAClass extends React.Component {
           : this.state.classChoice
             ? this.renderClassChoice()
             : <div
-              className='sk-find-class-field'
+              className={'sk-find-class-field'}
               ref={classNameField => { this.classNameField = classNameField } }
               contentEditable={true}
               onInput={e => {
@@ -238,6 +257,7 @@ class FindAClass extends React.Component {
           </div>
           <div className='sk-find-class-scs-field'>
             <input
+              autoFocus
               type='string'
               placeholder='e.g. MKT'
               value={this.state.subject}
@@ -556,25 +576,37 @@ class FindAClass extends React.Component {
       }
     })
     return (
-      <div>
-        {this.state.showSubjectCodeSectionField
-          ? <div className='sk-find-class-form-row'>
+      <div style={{display: !this.state.isNewClass ? 'none' : ''}}>
+        <CSSTransition
+          in={this.state.showSubjectCodeSectionField}
+          timeout={this.animationTimeout}
+          classNames="zoom"
+          unmountOnExit
+        >
+          <div className='sk-find-class-form-row'>
             {this.renderSubjectCodeSectionField()}
           </div>
-          : null
-        }
-        {(this.state.showMeetTimesDaysField || (this.state.subject && this.state.code && this.state.section))
-          ? <div className='sk-find-class-form-row'>
+        </CSSTransition>
+        <CSSTransition
+          in={(this.state.showMeetTimesDaysField || (this.state.subject && this.state.code && this.state.section))}
+          timeout={this.animationTimeout}
+          classNames="zoom"
+          unmountOnExit
+        >
+          <div className='sk-find-class-form-row'>
             {this.renderMeetTimesDaysField()}
           </div>
-          : null
-        }
-        {this.state.showProfessorField || (meetDaysChecked || this.state.isOnline)
-          ? <div className='sk-find-class-form-row'>
+        </CSSTransition>
+        <CSSTransition
+          in={this.state.showProfessorField || (meetDaysChecked || this.state.isOnline)}
+          timeout={this.animationTimeout}
+          classNames="zoom"
+          unmountOnExit
+        >
+          <div className='sk-find-class-form-row'>
             {this.renderProfessorField()}
           </div>
-          : null
-        }
+        </CSSTransition>
       </div>
     )
   }
@@ -605,7 +637,9 @@ class FindAClass extends React.Component {
     let meetStartTime = ''
     let hour = this.state.meetTimeHour
     if (!this.state.isAm) {
-      hour = (parseInt(this.state.meetTimeHour) + 12).toString()
+      if (parseInt(this.state.meetTimeHour) !== 12) {
+        hour = (parseInt(this.state.meetTimeHour) + 12).toString()
+      }
     }
     if (parseInt(hour) < 10) {
       hour = '0' + hour.toString()
@@ -662,87 +696,170 @@ class FindAClass extends React.Component {
         this.setState({loadingSubmit: true})
         actions.classes.createClass(form, this.state.termChoice.id).then((response) => {
           this.setState({loadingSubmit: false})
-          actions.classes.enrollInClass(response.id).then(() => {
-            this.props.onSubmit()
-            if (this.props.launchClassStatusModal) {
-              this.props.launchClassStatusModal(response)
-            }
-          })
+          if (this.props.altEnroll) {
+            this.props.altEnroll(response.id)
+          } else {
+            actions.classes.enrollInClass(response.id).then(() => {
+              this.props.onSubmit()
+              if (this.props.launchClassStatusModal) {
+                this.props.launchClassStatusModal(response)
+              }
+            })
+          }
         })
       }
     } else {
-      actions.classes.enrollInClass(this.state.classChoice.id).then((r) => {
-        if (r.status.id === 1400 && !this.props.onboard) {
-          this.props.launchClassStatusModal(r)
-        } else {
-          if (this.props.onboard) {
-            this.props.onSubmit()
-          } else {
+      if (this.props.altEnroll) {
+        this.props.altEnroll(this.state.classChoice.id)
+      } else {
+        actions.classes.enrollInClass(this.state.classChoice.id).then((r) => {
+          if (r.status.id === 1400 && !this.props.onboard) {
             this.props.launchClassStatusModal(r)
+          } else {
+            if (this.props.onboard) {
+              this.props.onSubmit()
+            } else {
+              this.props.launchClassStatusModal(r)
+            }
           }
-          // this.props.onSubmit()
-        }
-      })
+        })
+      }
     }
   }
 
-  renderContent () {
+  renderFormSection () {
     return (
-      <div>
-        {this.props.renderPartner ? this.props.renderPartner() : null}
-        <div className='onboard-find-class'>
-          <h1
-            className='onboard-find-class-school'
-            style={{
-              color: this.state.schoolChoice.color ? this.state.schoolChoice.color : null
-            }}
-          >
-            {this.state.schoolChoice.name}
-          </h1>
-          <h3
-            className='onboard-find-class-term'
-          >
-            {this.state.termChoice.name}
-          </h3>
-          <p style={{textAlign: 'center', margin: '0'}}>
-            <small
-              style={{color: '#57B9E4', cursor: 'pointer', width: '100%'}}
-              onClick={() => this.props.onBack(this.state.schoolChoice, this.state.termChoice)}
-            >
-              Edit school or term
-            </small>
-          </p>
-          {this.props.hideOnboard
-            ? null
-            : <div>
-              <Sammi
-                message='Find your first class!'
-                emotion='wow'
-                position='left'
-              />
-              <SkProgressBar progress={0.5} width={'100%'} backgroundColor={'$cn-color-blue'}/>
-            </div>
-          }
-        </div>
+      <div className='sk-find-class-form-container'>
         <div className='sk-find-class-form'>
           <div className='sk-find-class-form-row'>
             {this.renderClassNameField()}
           </div>
-          {this.state.isNewClass
-            ? this.renderForm()
-            : null
-          }
+          {this.renderForm()}
         </div>
-        <div
-          className={'onboard-next' + ((this.validateForm()) ? '' : ' disabled')}
-          onClick={() => {
-            if (this.validateForm() && !this.state.loadingSubmit) {
-              this.handleSubmit()
-            }
-          }}
-        >
-          <p>{this.state.classChoice ? 'Join class' : 'Next'}</p>
+        {this.renderPreview()}
+      </div>
+    )
+  }
+
+  renderSchoolDetailsSection () {
+    return (
+      <React.Fragment>
+        <div className='sk-find-class'>
+          <div>
+            <h1
+              className='sk-find-class-school'
+              style={{
+                color: this.state.schoolChoice.color ? this.state.schoolChoice.color : null
+              }}
+            >
+              {this.state.schoolChoice.name}
+            </h1>
+            <h3
+              className='sk-find-class-term'
+            >
+              {this.state.termChoice.name}
+            </h3>
+          </div>
+          <p>
+            <small
+              style={{color: '#57B9E4', cursor: 'pointer', width: '100%'}}
+              onClick={() => this.props.onBack(this.state.schoolChoice, this.state.termChoice)}
+            >
+              Edit
+            </small>
+          </p>
         </div>
+        {this.props.hideOnboard
+          ? null
+          : <div>
+            <Sammi
+              message='Find your first class!'
+              emotion='wow'
+              position='left'
+            />
+            <SkProgressBar progress={0.5} width={'100%'} backgroundColor={'$cn-color-blue'}/>
+          </div>
+        }
+      </React.Fragment>
+    )
+  }
+
+  renderMeetDaysPreview () {
+    let meetDays = this.state.meetDays
+
+    if (this.state.isOnline) return 'Online'
+
+    return (
+      Object.keys(meetDays).map(d => {
+        if (meetDays[d]) {
+          return <span key={Object.keys(meetDays).indexOf(d)}>{d + ' '}</span>
+        }
+      })
+    )
+  }
+
+  renderPreview () {
+    return (
+      <CSSTransition
+        in={this.state.isNewClass}
+        timeout={this.animationTimeout}
+        classNames="zoom"
+        unmountOnExit
+      >
+        <div className='sk-fc-preview'>
+          <div className='sk-fc-preview-block'>
+            <Sammi
+              message='Here&apos;s a preview of what your classmates will see when they search for this class!'
+              emotion='happy'
+              position='left' />
+          </div>
+          <div className='sk-fc-preview-block'>
+            <div
+              className='sk-find-class-selected-class'
+            >
+              <div className='sk-find-class-selected-class-title'>
+                <h3>{this.state.name}</h3>
+              </div>
+              <div className='sk-find-class-selected-class-row'>
+                <p>{this.state.professorChoice ? ((this.state.professorChoice.name_first ? this.state.professorChoice.name_first : '') + ' ' + (this.state.professorChoice.name_last ? this.state.professorChoice.name_last : '')) : '--'}</p>
+                <p>
+                  <i className="fas fa-user fa-xs" style={{marginRight: '2px'}} />1
+                </p>
+              </div>
+              <div className='sk-find-class-selected-class-row'>
+                <p>{this.renderMeetDaysPreview()} {this.state.isOnline ? '' : (this.state.meetTimeHour + ':' + this.state.meetTimeMinute + (this.state.isAm ? 'am' : 'pm'))}</p>
+                <p>{this.state.subject} {this.state.code}{this.state.section && '.'}{this.state.section}</p>
+              </div>
+            </div>
+            {this.renderNext()}
+          </div>
+        </div>
+      </CSSTransition>
+    )
+  }
+
+  renderNext () {
+    return <div
+      className={'sk-csm-next' + ((this.validateForm()) ? '' : ' disabled')}
+      onClick={() => {
+        if (this.validateForm() && !this.state.loadingSubmit) {
+          this.handleSubmit()
+        }
+      }}
+    >
+      <p>{this.state.classChoice ? 'Join class' : 'Next'}</p>
+    </div>
+  }
+
+  renderContent () {
+    return (
+      <div className='sk-find-class-container'>
+        {this.props.renderPartner ? this.props.renderPartner() : null}
+        <div className='sk-fc-content'>
+          {this.renderSchoolDetailsSection()}
+          {this.renderFormSection()}
+        </div>
+        {!this.state.isNewClass && this.renderNext()}
       </div>
     )
   }
@@ -786,7 +903,8 @@ FindAClass.propTypes = {
   onBack: PropTypes.func,
   hideOnboard: PropTypes.bool,
   launchClassStatusModal: PropTypes.func,
-  onboard: PropTypes.bool
+  onboard: PropTypes.bool,
+  altEnroll: PropTypes.func
 }
 
 export default FindAClass

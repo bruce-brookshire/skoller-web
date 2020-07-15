@@ -1,8 +1,8 @@
-@import '~react-joyride/lib/react-joyride';
 @import 'variables';            // Global variables
 @import 'mixins/breakpoint';    // Breakpoint utils lifted from Zurb
 @import 'mixins/zf-utils';
 @import 'mixins';               // Include global utility mixins
+@import 'animations';
 
 @import 'mixins/button';
 @import 'mixins/layout';
@@ -110,6 +110,7 @@
 @import 'components/sk-onboard-sign-up.scss';
 @import 'components/sk-onboard-sign-up-form.scss';
 @import 'components/sk-pop-up';
+@import 'components/sk-progress-modal';
 @import 'components/sk-select-dropdown';
 @import 'components/sk-share-partner-link';
 @import 'components/sk-tasks-list';
@@ -161,6 +162,7 @@
 @import 'views/hub-accounts.scss';
 @import 'views/hub-admin-login.scss';
 @import 'views/hub-classes.scss';
+@import 'views/hub-insights.scss';
 @import 'views/hub-landing.scss';
 @import 'views/hub-schools.scss';
 @import 'views/insights';
@@ -195,6 +197,9 @@
 @import 'views/unsubscribe.scss';
 @import 'views/user-agreement.scss';
 @import 'views/verification.scss';
+
+// Skoller Insights
+@import 'si-insights/main.scss';
 
 html {
   box-sizing: border-box;
@@ -235,6 +240,7 @@ body {
   color: $cn-font-color;
   font-family: $cn-font-family;
   line-height: 1.2;
+  transition: background-color 300ms;
 
   h1 {
     a {

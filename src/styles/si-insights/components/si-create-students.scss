@@ -1,0 +1,91 @@
+.si-create-students {
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 1rem;
+  text-align: left;
+
+  h1 {
+    text-align: left;
+    width: 100%;
+  }
+
+  .si-create-students-toggle {
+    text-align: center;
+    margin-top: 1rem;
+
+    span {
+      cursor: pointer;
+      color: $sk-blue;
+    }
+  }
+
+  .si-create-students-switch {
+    width: 100%;
+
+    .buttons {
+      width: 400px;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      margin-bottom: 1rem;
+
+      .switch-button {
+        width: 128px;
+        padding: 12px 8px 4px 8px;
+        cursor: pointer;
+        margin-right: 1rem;
+
+        @include themed() {
+          border: 1px solid t($border);
+          border-radius: 5px;
+        }
+
+        &.active {
+          background-color: $sk-blue;
+          color: white;
+        }
+
+        p {
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  .si-create-students-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .si-create-student {
+    width: 100%;
+  }
+
+  .si-create-students-confirm {
+    min-width: 380px;
+
+    h1 {
+      margin: 8px 0;
+    }
+    
+    .subtitle {
+      margin: 8px 0 1rem 0;
+    }
+
+    .control-buttons {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      div {
+        width: calc(50% - 1rem);
+        flex-grow: 1;
+      }
+    }
+  }
+}

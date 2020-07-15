@@ -1,7 +1,7 @@
 import { csv, get, post, del, put } from '../utilities/api'
 import { showSnackbar } from '../utilities/snackbar'
 import stores from '../stores'
-const { userStore, studentClassesStore } = stores
+const { userStore } = stores
 
 /*
  * Search classes by param

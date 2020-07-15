@@ -2,9 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import ClassList from '../../components/ClassList'
-import actions from '../../../actions'
 import StudentLayout from '../../components/StudentLayout'
-import AddClassModal from './AddClassModal'
+import AddClassModal from '../components/AddClassModal'
 import ClassStatusModal from '../../components/ClassStatusModal'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import { withRouter } from 'react-router-dom'
@@ -21,14 +20,10 @@ class MyClasses extends React.Component {
       classStatusModal: {show: false, cl: null},
       loading: true
     }
-    this.props.rootStore.studentNavStore.location = this.props.location
+    this.props.rootStore.navStore.location = this.props.location
     this.props.rootStore.studentClassesStore.updateClasses()
     this.props.rootStore.studentAssignmentsStore.updateAssignments()
-  }
-
-  componentWillMount () {
-    this.props.rootStore.studentNavStore.setActivePage('classes')
-    // this.updateClasses()
+    this.props.rootStore.navStore.setActivePage('classes')
   }
 
   findFullClass (classId) {
@@ -106,33 +101,27 @@ class MyClasses extends React.Component {
   }
 
   closeAddClassModal () {
-    console.log('closeAddClassModal')
     this.setState({showAddClassModal: false})
     this.updateClasses()
   }
 
   closeClassStatusModal () {
-    console.log('closing modal')
     this.setState({classStatusModal: {show: false, cl: null}})
     this.updateClasses()
-  }
-
-  launchClassStatusModal = (cl) => {
-    this.setState({classStatusModal: {show: true, cl: cl}})
   }
 
   renderView () {
     return (
       <div className='cn-my-classes-wrapper'>
         <div className='cn-my-classes-container'>
-          <h1>Classes</h1>
+          <h1 className='cn-my-classes-title'>Classes</h1>
           <i className='fas fa-plus cn-my-classes-add-new' onClick={() => this.setState({showAddClassModal: true})} />
           <div className='cn-my-classes-content'>
             {this.renderContent()}
           </div>
         </div>
         {this.state.showAddClassModal &&
-          <AddClassModal closeModal={() => this.closeAddClassModal()} launchClassStatusModal={cl => this.launchClassStatusModal(cl)} />
+          <AddClassModal closeModal={() => this.closeAddClassModal()} />
         }
         {this.state.classStatusModal.show &&
           <ClassStatusModal closeModal={() => this.closeClassStatusModal()} onSubmit={() => this.closeClassStatusModal()} cl={this.state.classStatusModal.cl} />
@@ -154,7 +143,8 @@ class MyClasses extends React.Component {
 
 MyClasses.propTypes = {
   rootStore: PropTypes.object,
-  location: PropTypes.object
+  location: PropTypes.object,
+  history: PropTypes.object
 }
 
 export default withRouter(MyClasses)

@@ -69,6 +69,7 @@ class SignupLinkForm extends React.Component {
 
   render () {
     const {form} = this.state
+    console.log(this.state)
     const {formErrors, updateProperty} = this.props
 
     return (

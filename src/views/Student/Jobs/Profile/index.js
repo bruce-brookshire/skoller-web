@@ -26,8 +26,8 @@ class Profile extends React.Component {
     }
 
     window.addEventListener('resize', () => this.updateWidth())
-    this.props.rootStore.studentNavStore.setActivePage('jobs/profile')
-    this.props.rootStore.studentNavStore.location = this.props.location
+    this.props.rootStore.navStore.setActivePage('jobs/profile')
+    this.props.rootStore.navStore.location = this.props.location
   }
 
   componentDidMount () {

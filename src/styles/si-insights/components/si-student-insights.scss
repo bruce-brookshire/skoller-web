@@ -1,0 +1,23 @@
+.si-student-insights {
+  .si-student-insights-row {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .si-student-insights-detail {
+      flex-basis: 40%;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 1rem;
+      font-size: 20px;
+      font-weight: 200;
+    }
+
+    .si-student-chart-container {
+      flex-basis: 60%;
+    }
+  }
+}

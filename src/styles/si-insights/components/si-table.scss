@@ -1,0 +1,62 @@
+// variables
+$b: $sk-blue;
+$b75: $sk-blue-75;
+$b50: $sk-blue-50;
+$b25: $sk-blue-25;
+$b10: $sk-blue-10;
+$b5: $sk-blue-5;
+
+.si-table {
+  // background-color: white;
+  border-collapse: collapse;
+  text-align: left;
+  word-break: break-all;
+  position: relative;
+
+  @include themed() {
+    background-color: t($bg-u);
+  }
+
+  thead {
+    background-color: $b75;
+
+    &.sticky {
+      background-color: rgba(0, 0, 0, 0);
+    }
+  }
+
+  table, th, td {
+    border: 1px solid #9f9f9f;
+    padding: 4px;
+  }
+
+  .si-table-button {
+    cursor: pointer;
+    padding: 10px 8px 6px 8px;
+    margin: -4px;
+    color: $sk-blue;
+    
+    &:hover {
+      background-color: $sk-blue-25;
+    }
+
+    &:before {
+      content: '+ ';
+      font-weight: 600;
+    }
+  }
+
+  th {
+    &.sticky {
+      position: sticky;
+      top: 0;
+      background-color: $b;
+      color: white;
+    }
+  }
+}
+
+.si-table-header {
+  display: flex;
+  flex-flow: row wrap;
+}

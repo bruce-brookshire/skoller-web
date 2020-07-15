@@ -9,7 +9,7 @@ class JobsSwitch extends React.Component {
     super(props)
 
     this.state = {
-      checked: this.props.rootStore.studentNavStore.jobsMode
+      checked: this.props.rootStore.navStore.jobsMode
     }
   }
 
@@ -20,11 +20,11 @@ class JobsSwitch extends React.Component {
       return (
         <div className='jobs-switch'>
           <p style={{fontWeight: '500', fontSize: '14px', marginRight: '8px', marginTop: '4px'}}>
-            SWITCH TO {this.props.rootStore.studentNavStore.jobsMode ? 'SKOLLER' : 'SKOLLER JOBS'}
+            SWITCH TO {this.props.rootStore.navStore.jobsMode ? 'SKOLLER' : 'SKOLLER JOBS'}
           </p>
           <label className="switch">
-            <input type="checkbox" checked={this.props.rootStore.studentNavStore.jobsMode} onChange={() => {
-              if (!this.props.rootStore.studentNavStore.jobsMode) {
+            <input type="checkbox" checked={this.props.rootStore.navStore.jobsMode} onChange={() => {
+              if (!this.props.rootStore.navStore.jobsMode) {
                 this.props.history.push('/student/jobs')
                 body.style.backgroundColor = '#4a4a4a'
               } else {

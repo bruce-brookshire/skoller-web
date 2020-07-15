@@ -211,7 +211,7 @@
   margin: 0 auto;
   // padding: 8px;
 
-  p {
+  p, input {
     box-sizing: border-box;
     cursor: pointer;
     margin: 0 auto;
@@ -363,7 +363,7 @@
     content: "";
     position: absolute;
     top: calc(50% - 2px);
-    left: -8.25px;
+    left: -8px;
     height: 8px;
     width: 8px;
     background: white;

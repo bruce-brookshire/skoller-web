@@ -101,7 +101,7 @@ class AdminLogin extends React.Component {
             type='password'
             value={form.password}
           />
-          <a className='right forgot-password' onClick={this.onForgotPassword.bind(this)}>Forgot password?</a>
+          <a className='right forgot-password link-style' onClick={this.onForgotPassword.bind(this)}>Forgot password?</a>
         </div>
 
         <button type="submit" className="button">Login</button>

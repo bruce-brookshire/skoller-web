@@ -8,7 +8,7 @@ import ForwardArrow from '../../../assets/sk-icons/navigation/ForwardArrow'
 @inject('rootStore') @observer
 class NestedNav extends React.Component {
   getLastPage = () => {
-    let history = this.props.rootStore.studentNavStore.history
+    let history = this.props.rootStore.navStore.history
     let currentPath = history[history.length - 1]
 
     let i = 1
@@ -21,7 +21,7 @@ class NestedNav extends React.Component {
   }
 
   getNestedNav = () => {
-    let history = this.props.rootStore.studentNavStore.history
+    let history = this.props.rootStore.navStore.history
     let paths = history[history.length - 1]
     let currentPath = paths.split('/')
     let pathArray = []
@@ -60,7 +60,7 @@ class NestedNav extends React.Component {
       if (backPath && backPath !== '/') {
         return (
           <div className='nested-nav-back' onClick={() => this.props.history.push(backPath)}>
-            <BackArrow fill={this.props.rootStore.studentNavStore.jobsMode ? '#6ED6AE' : ''} width="14" height="14" />
+            <BackArrow fill={this.props.rootStore.navStore.jobsMode ? '#6ED6AE' : ''} width="14" height="14" />
             <p>Back</p>
           </div>
         )
@@ -74,7 +74,7 @@ class NestedNav extends React.Component {
           {pathArray.map(p => {
             return (
               <div className='nested-nav-item' key={pathArray.indexOf(p)} onClick={() => this.props.history.push(p.path)}>
-                {p.name}{pathArray.indexOf(p) !== pathArray.length - 1 ? <ForwardArrow fill={this.props.rootStore.studentNavStore.jobsMode ? '#6ED6AE' : ''} width="14" height="14" /> : null}
+                {p.name}{pathArray.indexOf(p) !== pathArray.length - 1 ? <ForwardArrow fill={this.props.rootStore.navStore.jobsMode ? '#6ED6AE' : ''} width="14" height="14" /> : null}
               </div>
             )
           })}
@@ -88,7 +88,7 @@ class NestedNav extends React.Component {
       return null
     } else {
       return (
-        <div className='nested-nav' style={{color: this.props.rootStore.studentNavStore.jobsMode ? '#6ED6AE' : ''}}>
+        <div className='nested-nav' style={{color: this.props.rootStore.navStore.jobsMode ? '#6ED6AE' : ''}}>
           {this.renderContent()}
         </div>
       )

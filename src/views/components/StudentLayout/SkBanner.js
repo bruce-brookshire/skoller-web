@@ -27,16 +27,16 @@ class SkBanner extends React.Component {
   async getBannerChoices () {
     let banners = []
 
-    if (this.partnerLogic() && this.props.rootStore.studentNavStore.activePage !== 'share') {
+    if (this.partnerLogic() && this.props.rootStore.navStore.activePage !== 'share') {
       banners.push('partner')
     }
 
     if (
       this.props.rootStore.studentJobsStore.hasJobsProfile &&
-      (this.props.rootStore.studentNavStore.activePage === 'home' ||
-      this.props.rootStore.studentNavStore.activePage === 'jobs' ||
-      this.props.rootStore.studentNavStore.activePage === 'jobs/profile' ||
-      this.props.rootStore.studentNavStore.activePage === 'jobs/home') &&
+      (this.props.rootStore.navStore.activePage === 'home' ||
+      this.props.rootStore.navStore.activePage === 'jobs' ||
+      this.props.rootStore.navStore.activePage === 'jobs/profile' ||
+      this.props.rootStore.navStore.activePage === 'jobs/home') &&
       window.innerWidth <= 1000
     ) {
       banners.push('jobs')
@@ -63,10 +63,10 @@ class SkBanner extends React.Component {
     if (
       this.props.rootStore.userStore.user.student.raise_effort &&
       hasCompletedClass &&
-      this.props.rootStore.studentNavStore.activePage !== 'share' &&
-      this.props.rootStore.studentNavStore.activePage !== 'home' &&
+      this.props.rootStore.navStore.activePage !== 'share' &&
+      this.props.rootStore.navStore.activePage !== 'home' &&
       this.renderPartnerBanner() &&
-      !this.props.rootStore.studentNavStore.jobsMode
+      !this.props.rootStore.navStore.jobsMode
     ) {
       return true
     } else {
@@ -136,7 +136,7 @@ class SkBanner extends React.Component {
   }
 
   renderJobsBanner () {
-    if (this.props.rootStore.studentNavStore.jobsMode) {
+    if (this.props.rootStore.navStore.jobsMode) {
       return (
         <div className='sk-banner-jobs'>
           {/* <p>Keep up with classes, <b>together.</b></p> */}

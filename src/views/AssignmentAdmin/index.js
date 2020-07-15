@@ -55,8 +55,8 @@ class AssignmentAdmin extends React.Component {
     this.setState({openModModal: true, currentMod: item})
   }
 
-  toggleAssignmentModal () {
-    this.setState({openAssignmentModal: !this.state.openAssignmentModal})
+  toggleAssignmentModal (bool) {
+    this.setState({openAssignmentModal: bool})
   }
 
   renderAssignmentCard () {
@@ -67,7 +67,7 @@ class AssignmentAdmin extends React.Component {
         assignment={assignment}
         school={school}
         weights={weights}
-        onClickEdit={this.toggleAssignmentModal.bind(this)}
+        onClickEdit={() => this.toggleAssignmentModal(true)}
         modCount={mods.length}
         studentCount={studentCount}
       />
@@ -109,7 +109,7 @@ class AssignmentAdmin extends React.Component {
     if (openAssignmentModal) {
       return (
         <SkModal
-          closeModal={() => this.toggleAssignmentModal()}
+          closeModal={() => this.toggleAssignmentModal(false)}
         >
           <AdminAssignmentForm
             assignment={assignment}

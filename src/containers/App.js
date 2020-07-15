@@ -13,7 +13,18 @@ class App extends React.Component {
 
   renderBackgroundColor () {
     let body = document.getElementById('body')
-    if (this.props.rootStore.studentNavStore.jobsMode) {
+
+    // set page background color here so loading screens match theme
+    if (
+      // if student jobs mode
+      this.props.rootStore.navStore.jobsMode ||
+
+      // or if insights views + insights dark mode cookie is true
+      (
+        this.props.location.pathname.startsWith('/insights/') &&
+        this.props.rootStore.insightsStore.darkMode
+      )
+    ) {
       body.style.backgroundColor = '#4a4a4a'
     } else {
       body.style.backgroundColor = '#EDFAFF'
@@ -29,7 +40,7 @@ class App extends React.Component {
       if (layout) {
         layout.scrollTop = 0
       }
-      this.props.rootStore.studentNavStore.history.push(l.pathname)
+      this.props.rootStore.navStore.history.push(l.pathname)
     })
 
     return (

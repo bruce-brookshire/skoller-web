@@ -17,6 +17,7 @@ import moment from 'moment'
 import Speculator from './Speculator'
 import NestedNav from '../../components/NestedNav'
 import OutsideClickHandler from 'react-outside-click-handler'
+import SiDropClass from '../../Insights/StudentDetail/SiStudentClassDetail/SiDropClass'
 
 @inject('rootStore') @observer
 class ClassDetail extends React.Component {
@@ -38,24 +39,33 @@ class ClassDetail extends React.Component {
 
     this.paletteRef = React.createRef()
 
-    this.props.rootStore.studentNavStore.setActivePage('classes')
-    this.props.rootStore.studentNavStore.location = this.props.location // set active page route location for access from assignment detail
+    this.props.rootStore.navStore.setActivePage('classes')
+    this.props.rootStore.navStore.location = this.props.location // set active page route location for access from assignment detail
 
     this.getClass()
     this.getClassAssignmentsForStudent(this.props.match.params)
   }
 
   getCurrentClass () {
-    let cl = this.props.rootStore.studentClassesStore.classes.filter(cl => cl.id === parseInt(this.props.match.params.classId))[0]
+    let cl
+    if (this.props.cl) {
+      return this.props.cl
+    } else {
+      cl = this.props.rootStore.studentClassesStore.classes.filter(cl => cl.id === parseInt(this.props.match.params.classId))[0]
+    }
     return cl
   }
 
   getClass () {
     const {classId} = this.props.match.params
     this.setState({loading: true})
-    actions.classes.getClassById(classId).then(cl => {
-      this.getClassColor(cl)
-    }).catch(() => this.setState({loading: false}))
+    if (this.props.cl) {
+      this.setState({loading: false, cl: this.props.cl, studentClass: this.props.cl})
+    } else {
+      actions.classes.getClassById(classId).then(cl => {
+        this.getClassColor(cl)
+      }).catch(() => this.setState({loading: false}))
+    }
   }
 
   getClassColor (cl) {
@@ -73,9 +83,13 @@ class ClassDetail extends React.Component {
     let {classId} = cl
     let {userStore} = this.props.rootStore
     const { user: { student } } = userStore
-    actions.studentClasses.getStudentClassAssignments(classId, student).then(assignments => {
-      this.setState({assignments: assignments})
-    })
+    if (this.props.assignments) {
+      this.setState({assignments: this.props.assignments})
+    } else {
+      actions.studentClasses.getStudentClassAssignments(classId, student).then(assignments => {
+        this.setState({assignments})
+      })
+    }
   }
 
   componentWillUnmount () {
@@ -116,9 +130,15 @@ class ClassDetail extends React.Component {
   }
 
   renderDropClassButton () {
-    return (
-      <DropClassButton icon={true} onDropClass={() => this.props.history.push('/student/classes')} cl={this.state.cl} />
-    )
+    if (this.props.insightsUser) {
+      return (
+        <SiDropClass icon={true} onDropClass={() => this.props.history.push('/insights/' + (this.props.match.params.invitationId ? ('invitations/' + this.props.match.params.invitationId) : ('students/' + this.props.match.params.orgStudentId)))} cl={this.props.cl} />
+      )
+    } else {
+      return (
+        <DropClassButton icon={true} onDropClass={() => this.props.history.push('/student/classes')} cl={this.state.cl} />
+      )
+    }
   }
 
   renderClassHeader () {
@@ -140,18 +160,6 @@ class ClassDetail extends React.Component {
           </div>
         </div>
       </div>
-    )
-  }
-
-  renderAssignmentList () {
-    const {cl} = this.state
-    return (
-      <AssignmentList
-        assignments={this.state.assignments.assignments}
-        weights={this.state.assignments.weights}
-        onSelect={this.onAssignmentSelect.bind(this)}
-        classColor={cl.color}
-      />
     )
   }
 
@@ -216,13 +224,6 @@ class ClassDetail extends React.Component {
       </div>
     )
   }
-
-  // renderClassEnrollment () {
-  //   const {cl} = this.state
-  //   return (
-  //     <span><i className="fas fa-users"></i> {cl.enrollment} Student{cl.enrollment > 1 ? 's' : ''}</span>
-  //   )
-  // }
 
   renderClassShareCell () {
     let cl = this.getCurrentClass()
@@ -338,13 +339,6 @@ class ClassDetail extends React.Component {
     }
   }
 
-  // onAssignmentSelect (assignment) {
-  //   const { cl } = this.state
-  //   this.props.history.push({
-  //     pathname: `/student/class/${cl.id}/assignments/${assignment.assignment_id}`
-  //   })
-  // }
-
   renderHeader () {
     let cl = this.getCurrentClass()
     return (
@@ -371,22 +365,26 @@ class ClassDetail extends React.Component {
               title='Class details'
               onClick={() => this.setState({showClassInfoModal: true})}
             />
-            <i
-              className='fas fa-file'
-              title='View class documents'
-              onClick={() => this.setState({showUploadAdditionalDocuments: true})}
-            />
-            <i
-              className='fas fa-users'
-              title='Share class'
-              onClick={() => this.setState({showShareModal: true})}
-            />
-            <i
-              className='fas fa-palette'
-              title='Class color'
-              onClick={() => this.setState({showPalette: true})}
-              ref={this.paletteRef}
-            />
+            {!this.props.insightsUser &&
+              <React.Fragment>
+                <i
+                  className='fas fa-file'
+                  title='View class documents'
+                  onClick={() => this.setState({showUploadAdditionalDocuments: true})}
+                />
+                <i
+                  className='fas fa-users'
+                  title='Share class'
+                  onClick={() => this.setState({showShareModal: true})}
+                />
+                <i
+                  className='fas fa-palette'
+                  title='Class color'
+                  onClick={() => this.setState({showPalette: true})}
+                  ref={this.paletteRef}
+                />
+              </React.Fragment>
+            }
             {this.renderDropClassButton()}
             {this.renderClassInfoModal()}
             {this.renderSpeculator()}
@@ -398,6 +396,7 @@ class ClassDetail extends React.Component {
   }
 
   renderInsights () {
+    if (this.props.insightsUser) return null
     return (
       <ClassInsights cl={this.getCurrentClass()} />
     )
@@ -408,7 +407,7 @@ class ClassDetail extends React.Component {
       <div className='sk-class-assignments'>
         <h1>Assignments</h1>
         {this.renderAddAssignmentButton()}
-        <TasksList filter={true} maxTasks={5} cl={this.getCurrentClass()} />
+        <TasksList filter={true} maxTasks={5} cl={this.getCurrentClass()} insightsUserData={this.props.insightsUser ? {classes: this.props.classes, assignments: this.props.assignments} : false} />
       </div>
     )
   }
@@ -430,15 +429,21 @@ class ClassDetail extends React.Component {
   }
 
   render () {
-    return (
-      <StudentLayout>
-        <NestedNav />
-        {this.props.rootStore.studentClassesStore.loading
-          ? <SkLoader />
-          : this.renderLayout()
-        }
-      </StudentLayout>
-    )
+    if (this.props.insightsUser) {
+      return this.props.rootStore.studentClassesStore.loading
+        ? <SkLoader />
+        : this.renderLayout()
+    } else {
+      return (
+        <StudentLayout>
+          <NestedNav />
+          {this.props.rootStore.studentClassesStore.loading
+            ? <SkLoader />
+            : this.renderLayout()
+          }
+        </StudentLayout>
+      )
+    }
   }
 }
 
@@ -447,7 +452,11 @@ ClassDetail.propTypes = {
   rootStore: PropTypes.object,
   location: PropTypes.object,
   history: PropTypes.object,
-  match: PropTypes.object
+  match: PropTypes.object,
+  assignments: PropTypes.array,
+  cl: PropTypes.object,
+  insightsUser: PropTypes.bool,
+  classes: PropTypes.array
 }
 
 export default withRouter(ClassDetail)

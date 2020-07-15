@@ -25,7 +25,11 @@ class TaskCard extends React.Component {
   }
 
   goToAssignment () {
-    this.props.history.push({pathname: '/student/class/' + this.props.task.class_id + '/assignments/' + this.props.task.assignment_id, state: { prevPath: this.props.rootStore.studentNavStore.location.pathname }})
+    if (this.props.insightsUser) {
+      this.props.history.push({pathname: 'assignments/' + this.props.task.assignment_id})
+    } else {
+      this.props.history.push({pathname: '/student/class/' + this.props.task.class_id + '/assignments/' + this.props.task.assignment_id, state: { prevPath: this.props.rootStore.navStore.location.pathname }})
+    }
   }
 
   renderCard () {
@@ -81,7 +85,8 @@ TaskCard.propTypes = {
   clColor: PropTypes.string,
   rootStore: PropTypes.object,
   classDetailView: PropTypes.object,
-  history: PropTypes.object
+  history: PropTypes.object,
+  insightsUser: PropTypes.object
 }
 
 export default withRouter(TaskCard)

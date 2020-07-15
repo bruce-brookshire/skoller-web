@@ -1,6 +1,6 @@
 import { extendObservable, action } from 'mobx'
 
-class StudentNavStore {
+class NavStore {
   constructor () {
     extendObservable(this, {
       activePage: null,
@@ -24,7 +24,7 @@ class StudentNavStore {
     }
   }
 
-  // use setActivePage when a new UI page is loading (componentWillMount) so the nav panel knows what item to highlight
+  // use setActivePage when a new UI page is loading (in constructor) so the nav panel knows what item to highlight
   @action setActivePage (page) {
     this.activePage = page
   }
@@ -38,7 +38,7 @@ class StudentNavStore {
   }
 }
 
-const studentNavStore = new StudentNavStore()
+const navStore = new NavStore()
 
-export default studentNavStore
-export { StudentNavStore }
+export default navStore
+export { NavStore }

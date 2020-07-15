@@ -1,0 +1,77 @@
+.si-status-indicators {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  position: relative;
+
+  .hover-container {
+    position: absolute;
+    bottom: 36px;
+    height: auto;
+    width: 96px;
+    padding: 8px;
+    background-color: white;
+    text-align: center;
+    @include si-cell;
+    z-index: 2;
+    word-break: normal;
+
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border: 10px solid transparent;
+      border-bottom: 0;
+      margin-left: -10px;
+      margin-bottom: -10px;
+
+      @include themed() {
+        border-top-color: t($bg-u);
+      }
+    }
+  }
+
+  .si-status-indicators-dots {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    div {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin: 2px 2px 0 2px;
+    }
+  
+    .no-classes {
+      background-color: $sk-blue;
+    }
+  
+    .no-setup {
+      background-color: $cn-color-yellow;
+    }
+  
+    .no-account {
+      background-color: $sk-alert-red;
+    }
+  
+    &.si-group {
+      cursor: default;
+      justify-content: flex-end;
+  
+      div {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        padding: 4px 1px 0 0;
+      }
+    }
+  }
+}

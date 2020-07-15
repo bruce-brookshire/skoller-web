@@ -34,7 +34,7 @@ class Onboard extends React.Component {
 
     this.cookie = new Cookies()
 
-    this.props.rootStore.studentNavStore.setActivePage('calendar')
+    this.props.rootStore.navStore.setActivePage('calendar')
   }
 
   componentDidMount () {
@@ -43,6 +43,7 @@ class Onboard extends React.Component {
 
   async getPartnerByUser () {
     let hasPartner = true
+    if (!this.props.rootStore.userStore.user.student) this.props.history.push('/')
     await actions.students.getStudentSignupOrganization(this.props.rootStore.userStore.user.student.id)
       .then((r) => {
         let slug = r.link.replace(/(.+)(\/c\/)/g, '')
@@ -284,7 +285,8 @@ class Onboard extends React.Component {
 
 Onboard.propTypes = {
   rootStore: PropTypes.object,
-  params: PropTypes.object
+  params: PropTypes.object,
+  history: PropTypes.object
 }
 
 export default withRouter(Onboard)

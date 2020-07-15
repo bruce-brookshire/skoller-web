@@ -7,8 +7,7 @@ import { withRouter } from 'react-router-dom'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import DragAndDrop from '../DragAndDrop/DragAndDrop'
 import {mobileCheck} from '../../../utilities/display'
-import Sammi from '../Sammi'
-import SkModal from '../SkModal/SkModal'
+// import Sammi from '../Sammi'
 import DropClassButton from '../DropClassButton'
 import ToolTip from '../ToolTip'
 import UploadAdditionalDocuments from './UploadAdditionalDocuments'
@@ -16,6 +15,8 @@ import ClassStatusImage from './ClassStatusImage'
 import UploadOverloadDocuments from './UploadOverloadDocuments'
 import AppStore from '../../../assets/images/app_download/app-store-badge.svg'
 import GooglePlay from '../../../assets/images/app_download/google-play-badge.png'
+import ProgressModal from '../../Student/components/ProgressModal'
+import CopyBox from '../../components/CopyBox'
 
 @inject('rootStore') @observer
 class ClassStatusModal extends React.Component {
@@ -31,6 +32,7 @@ class ClassStatusModal extends React.Component {
 
   async init () {
     let cl
+
     await actions.classes.getClassById(this.props.cl.id)
       .then((r) => {
         cl = r
@@ -74,22 +76,21 @@ class ClassStatusModal extends React.Component {
     let id = cl.status.id
     if (id === 1100) {
       status = 'needSyllabus'
-      sammiMessage = <p>It&apos;s time to <b>send your syllabus!</b></p>
+      sammiMessage = <span>It&apos;s time to <b>send your syllabus!</b></span>
       mobileMessage = `Head over to skoller.co on your computer to login and upload your syllabus.`
     } else if (id === 1200) {
       status = 'inReview'
-      sammiMessage = <p>Your syllabus is <b>IN REVIEW!</b></p>
+      sammiMessage = <span>Your syllabus is <b>IN REVIEW!</b></span>
     } else if (id === 1300) {
       status = 'diy'
-      sammiMessage = <p>The document(s) submitted <b>don&apos;t have the info we need for setup!</b></p>
+      sammiMessage = <span>The document(s) submitted <b>don&apos;t have the info we need for setup.</b></span>
       mobileMessage = `Head over to skoller.co on your computer to login and finish setting up your class.`
     } else if (id >= 1400) {
       status = 'live'
-      sammiMessage = `WOOHOO! Your class is live ⚡️`
     }
     if (cl.school.is_syllabus_overload && id < 1400 && id !== 1100) {
       status = 'syllabusOverload'
-      sammiMessage = <p>Due to high volume, it could take me <b>a few days</b> to set up this class.</p>
+      sammiMessage = <span>Due to high volume, it could take Skoller <b>a few days</b> to set up this class.</span>
     }
     return ({
       cl: cl,
@@ -203,7 +204,7 @@ class ClassStatusModal extends React.Component {
 
   renderDownloadCompleteDownload () {
     const operatingSystem = this.getMobileOperatingSystem()
-    if (this.getMobileOperatingSystem()) {
+    if (this.getMobileOperatingSystem() && this.state.status === 'live') {
       return (
         <div style={{textAlign: 'center'}}>
           <div>Skoller works best on the app.</div>
@@ -233,9 +234,7 @@ class ClassStatusModal extends React.Component {
       !this.state.uploadAdditionalDocumentsView &&
       <div className='sk-class-status-modal-checklist-container'>
         <ClassStatusImage status={(this.state.fullClass.school.is_syllabus_overload && this.state.fullClass.status.id < 1400) ? 1500 : this.state.cl.status.id} />
-        {this.state.status === 'live' &&
-          this.renderDownloadCompleteDownload()
-        }
+        {this.renderDownloadCompleteDownload()}
       </div>
     )
   }
@@ -244,6 +243,7 @@ class ClassStatusModal extends React.Component {
     if (this.state.uploadAdditionalDocumentsView) {
       return (
         <div style={{marginBottom: '-2rem'}}>
+          <div className='link-style' style={{marginBottom: '8px'}} onClick={() => this.setState({uploadAdditionalDocumentsView: false})}>👈 Go back</div>
           <UploadAdditionalDocuments
             cl={this.state.fullClass}
             onUpload={() => null}
@@ -263,7 +263,8 @@ class ClassStatusModal extends React.Component {
             }}
             style={{
               color: '#57B9E4',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              marginTop: '1rem'
             }}
           >
             📄Upload additional documents.
@@ -338,9 +339,10 @@ class ClassStatusModal extends React.Component {
       <div className='sk-class-status-modal-container'>
         <div className='sk-class-status-modal-row'>
           {this.renderChecklist()}
-          {(this.state.status === 'needSyllabus' && this.state.mobile) || this.props.cl.status.id === 1400
+          {(this.state.status === 'needSyllabus' && this.state.mobile)
             ? null
             : <div className='sk-class-status-modal-action-container'>
+              {this.renderTitle()}
               {this.state.status === 'needSyllabus'
                 ? this.renderNeedSyllabus()
                 : null
@@ -358,13 +360,22 @@ class ClassStatusModal extends React.Component {
               {this.state.status === 'syllabusOverload'
                 ? <div className='sk-class-status-modal-action-detail'>
                   <h2 style={{margin: '0'}}>We recommend you use the DIY tool to set up your class instantly!</h2>
-                  <p onClick={() => this.setState({syllabusOverloadUploadDocs: !this.state.syllabusOverloadUploadDocs})} style={{margin: '0', cursor: 'pointer', color: '#57B9E4'}}>Upload class documents</p>
                   <p style={{margin: '0'}}><small>Less than 10 minutes</small></p>
+                  <p onClick={() => this.setState({syllabusOverloadUploadDocs: !this.state.syllabusOverloadUploadDocs})} style={{margin: '1rem 0 0 0', cursor: 'pointer', color: '#57B9E4'}}>Upload class documents</p>
                 </div>
                 : null
               }
               {this.state.status === 'live'
-                ? null
+                ? <div className='sk-class-status-modal-action-detail'>
+                  <h1 style={{margin: '0'}}>Welcome to<br /><b>{this.state.cl.name}</b></h1>
+                  <br />
+                  <h2 className='sk-csm-action-detail-share'>Invite classmates using this link!</h2>
+                  <CopyBox
+                    longMessage={false}
+                    smallText={false}
+                    linkValue={this.state.cl.enrollment_link}
+                  />
+                </div>
                 : null
               }
             </div>
@@ -416,7 +427,7 @@ class ClassStatusModal extends React.Component {
           ? {
             loading: false,
             status: 'syllabusOverload',
-            sammiMessage: <p>Due to high volume, it could take me <b>a few days</b> to set up this class.</p>
+            sammiMessage: <span>Due to high volume, it could take me <b>a few days</b> to set up this class.</span>
           }
           : {
             loading: false,
@@ -506,15 +517,11 @@ class ClassStatusModal extends React.Component {
     }
   }
 
-  renderSammi () {
+  renderTitle () {
     if (!this.state.uploadAdditionalDocumentsView) {
       if (this.props.cl.status.id !== 1400) {
         return (
-          <Sammi
-            message={this.state.sammiMessage}
-            position='right'
-            emotion='happy'
-          />
+          <h1 style={{textAlign: 'center', marginBottom: '1rem'}}>{this.state.sammiMessage}</h1>
         )
       }
     }
@@ -533,8 +540,7 @@ class ClassStatusModal extends React.Component {
   renderHeader () {
     return (
       <div className='sk-class-status-modal-header'>
-        <h1>{(this.props.onboard || this.props.firstOpen) ? 'Welcome to ' : ''}{this.state.cl.name}</h1>
-        {this.renderSammi()}
+        {((this.props.onboard || this.props.firstOpen) && this.state.status !== 'live') ? <h1>Welcome to {this.state.cl.name}</h1> : null}
         {this.renderProgress()}
       </div>
     )
@@ -610,14 +616,51 @@ class ClassStatusModal extends React.Component {
     )
   }
 
+  renderProgressModalStatus () {
+    let cl = this.state.fullClass
+    let status = false
+
+    if (this.state.loading) return false
+
+    if (cl) {
+      let id = cl ? cl.status.id : null
+      if (id === 1100) {
+        status = 'Syllabus'
+      } else if (id === 1200) {
+        status = 'Review'
+      } else if (id === 1300) {
+        status = 'Review'
+      } else if (id >= 1400) {
+        status = true
+      }
+
+      if (this.state.status === 'inReview') {
+        status = 'Review'
+      }
+
+      if (cl.school.is_syllabus_overload && id < 1400 && id !== 1100) {
+        status = 'Review'
+      }
+    }
+
+    return {
+      options: ['Class', 'Syllabus', 'Review', 'Live'],
+      state: status
+    }
+  }
+
   render () {
     return (
-      <SkModal closeModal={this.props.closeModal ? () => this.props.closeModal() : null}>
+      <ProgressModal
+        status={this.renderProgressModalStatus()}
+        title={this.props.cl.name}
+        closeModal={this.props.closeModal ? () => this.props.closeModal() : null}
+      >
         {this.state.loading
           ? <SkLoader />
           : this.renderModalContent()
         }
-      </SkModal>
+      </ProgressModal>
     )
   }
 }

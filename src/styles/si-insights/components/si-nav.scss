@@ -1,0 +1,140 @@
+.si-nav-wrapper {
+  flex: 0 0 200px;
+  min-width: 200px;
+  height: calc(100vh - 64px - 32px);
+  z-index: 4;
+
+  .si-nav {
+    width: 200px;
+    height: calc(100vh - 64px);
+    // background-color: rgba(60,60,60,1);
+    position: fixed;
+    top: 64px;
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(0,0,0,0);
+
+    // themed variables
+    @include themed() {
+      color: t($font-color);
+    }
+
+  transition: color 300ms;
+
+    .s-nav-item {
+      margin: 0.25rem 1rem;
+      padding: 12px 8px 8px 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      position: relative;
+      
+      //display
+      display: flex;
+      flex-direction: row;
+      align-content: center;
+      justify-content: center;
+      justify-content: flex-start;
+
+      a {
+        font-size: 18px;
+        font-weight: 300;
+        margin: 4px 0 0 8px;
+      }
+
+      i {
+        margin: 2px 0 0 0;
+      }
+
+      span {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 45px;
+        float: left;
+        border-radius: 5px;
+
+        &:hover {
+          @include themed() {
+            background-color: t($hover);
+          }
+        }
+      }
+    }
+
+    .bottom {
+      margin-top: auto;
+
+      i {
+        margin-top: 4px;
+      }
+    }
+
+    .active {
+      background-color: $cn-color-blue;
+
+      a {
+        font-weight: 400;
+        color: white;
+      }
+
+      i {
+        color: white;
+      }
+
+      span {
+        display: none;
+      }
+    }
+  }
+}
+
+.si-top {
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  height: 64px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  z-index: 9;
+  border-bottom: 1px solid $sk-blue;
+
+  // themed variables
+  @include themed() {
+    background-color: t($bg);
+    color: t($font-color);
+  }
+
+  transition: background-color 300ms, color 300ms;
+
+  .si-top-left {
+    font-size: 24px;
+    font-weight: 600;
+    color: $sk-blue;
+    cursor: pointer;
+
+    svg {
+      margin-bottom: -2px;
+    }
+  }
+
+  .si-top-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    
+    .si-top-user-name {
+      margin: 0;
+      font-weight: 600;
+    }
+
+    .si-top-user-org {
+      margin: 0;
+      font-weight: 200;
+    }
+  }
+}

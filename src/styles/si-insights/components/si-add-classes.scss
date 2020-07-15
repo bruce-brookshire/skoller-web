@@ -1,0 +1,81 @@
+.si-add-class-button {
+  width: 96px;
+}
+
+.si-add-classes {
+  .fas {
+    font-size: 14px !important;
+    color: default;
+  }
+}
+
+.si-add-classes-period {
+  h1, p, h2 {
+    margin: 8px 0;
+  }
+
+  .row {
+    padding: 0 8px;
+    display: flex;
+    flex-flow: column nowrap;
+
+    h1 {
+      margin-bottom: 0;
+    }
+
+    .edit {
+      color: $sk-blue;
+      cursor: pointer;
+      font-size: 12px;
+      margin: 0 0 4px 0;
+    }
+  }
+
+  .period {
+    cursor: pointer;
+    padding: 8px;
+
+    &:hover {
+      @include themed() {
+        background-color: t($hover);
+      }
+    }
+
+    p {
+      margin: 4px 0;
+    }
+  
+    .period-name {
+      font-weight: 600;
+      font-size: 14px;
+    }
+  
+    .period-dates {
+      @include themed() {
+        color: t($font-color-50);
+      }
+    }
+  }
+}
+
+.si-add-classes-school {
+  h1 {
+    margin: 0 0 8px 0;
+  }
+  
+  input {
+    @include si-input;
+    margin: 0 0 1rem 0;
+  }
+
+  .school-name {
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .school-loc {
+    @include themed() {
+      color: t($font-color-50);
+    }
+  }
+}

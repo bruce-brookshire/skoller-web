@@ -129,6 +129,7 @@ class HardestWeek extends React.Component {
                       labels={() => ''}
                       labelComponent={
                         <VictoryTooltip
+                          renderInPortal={false}
                           flyoutStyle={{...styles.flyout, fontFamily: 'inherit'}}
                           // renderInPortal={true}
                         />

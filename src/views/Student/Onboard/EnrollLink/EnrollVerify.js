@@ -60,7 +60,7 @@ class EnrollVerify extends React.Component {
       <div className='sk-verification-container'>
         <div className='sk-verification-content'>
           <div className='sk-verification-content-container'>
-            <p>We sent a verification code to {formatPhone(this.props.phone)}. Enter it here!<br /> Didn’t get it? <a onClick={() => console.log('make this work jonjon')}>Resend link</a>.</p>
+            <p>We sent a verification code to {formatPhone(this.props.phone)}. Enter it here!<br /> Didn’t get it? <a className='link-style' onClick={() => this.onResendVerification()}>Resend link</a>.</p>
             <div className='sk-verification-code-container'>
               <VerificationCode numberOfDigits={5} onChange={this.onChange.bind(this)} />
             </div>
