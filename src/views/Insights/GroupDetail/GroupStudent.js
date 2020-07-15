@@ -10,9 +10,8 @@ import AddClasses from '../components/AddClasses'
 export default function GroupStudent (props) {
   if (!props.student && !props.invitation) return null
 
-  const renderAddClasses = <AddClasses user={props.student} />
-
   if (props.student) {
+    const renderAddClasses = <AddClasses user={props.student} />
     const name = props.student.student.name_first + ' ' + props.student.student.name_last
     const numClasses = props.student.classes.length
     let classes
@@ -38,6 +37,7 @@ export default function GroupStudent (props) {
       </div>
     )
   } else if (props.invitation) {
+    const renderAddClasses = <AddClasses user={props.invitation} />
     const invitation = props.invitation
     const name = invitation.name_first + ' ' + invitation.name_last
     const numClasses = invitation.class_ids.length
@@ -54,7 +54,7 @@ export default function GroupStudent (props) {
         </div>
         <div className='si-group-student-right'>
           <div className='si-group-student-row'>
-            <h3>{name}</h3>
+            <Link to={'/insights/invitations/' + props.invitation.id} className='si-group-student-name'>{name}</Link>
             <StatusIndicators invitation={invitation} />
           </div>
           <div className='si-group-student-row'>

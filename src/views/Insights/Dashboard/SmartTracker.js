@@ -9,6 +9,7 @@ import ToolTip from '../../components/ToolTip'
 import CreateStudents from '../components/CreateStudents'
 import SkModal from '../../components/SkModal/SkModal'
 import AddClasses from '../components/AddClasses'
+import { withRouter } from 'react-router-dom'
 
 @inject('rootStore') @observer
 class SmartTracker extends React.Component {
@@ -174,6 +175,16 @@ class SmartTracker extends React.Component {
       }
     })
 
+    if (this.props.rootStore.insightsStore.groups.length === 0) {
+      return (
+        <div className='add-athletes-callout'>
+          <h1>Add teams!</h1>
+          <div onClick={() => this.props.history.push('/insights/groups')} className='plus'>+</div>
+          <i className='fas fa-running' />
+        </div>
+      )
+    }
+
     if (data.length === 0) {
       return (
         <div className='add-athletes-callout'>
@@ -182,7 +193,7 @@ class SmartTracker extends React.Component {
           <i className='fas fa-running' />
         </div>
       )
-    } 
+    }
 
     return (
       <table>
@@ -271,7 +282,8 @@ class SmartTracker extends React.Component {
 }
 
 SmartTracker.propTypes = {
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  history: PropTypes.object
 }
 
-export default SmartTracker
+export default withRouter(SmartTracker)

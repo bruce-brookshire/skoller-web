@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import OutsideClickHandler from 'react-outside-click-handler'
 import { CSSTransition } from 'react-transition-group'
 import actions from '../../../actions'
+import { inject, observer } from 'mobx-react'
 
 const Team = (props) => {
   const [remove, setRemove] = useState(false)
@@ -40,6 +41,7 @@ Team.propTypes = {
   popTeam: PropTypes.func
 }
 
+@inject('rootStore') @observer
 class TeamsCell extends React.Component {
   constructor (props) {
     super(props)
@@ -56,6 +58,17 @@ class TeamsCell extends React.Component {
   popTeam = (team) => {
     if (this.props.owner) {
       actions.insights.removeOrgGroupOwner(this.props.org.id, team.id, team.owners.find(o => o.org_member_id === this.props.user.id).id)
+        .then(() => {
+          this.props.onChange && this.props.onChange()
+          this.setState({add: false, input: ''})
+        })
+    } else if (this.props.user.isInvitation) {
+      let groupIds = this.props.user.group_ids
+      groupIds.splice(groupIds.indexOf(team.id), 1)
+      let form = {
+        group_ids: groupIds
+      }
+      actions.insights.invitations.editInvitation(this.props.org.id, this.props.user.id, form)
         .then(() => {
           this.props.onChange && this.props.onChange()
           this.setState({add: false, input: ''})
@@ -81,6 +94,17 @@ class TeamsCell extends React.Component {
         })
         .catch(() => {
           this.setState({error: 'Error tagging user to org. Try again later.'})
+        })
+    } else if (this.props.user.isInvitation) {
+      let groupIds = this.props.user.group_ids
+      groupIds.push(id)
+      let form = {
+        group_ids: groupIds
+      }
+      actions.insights.invitations.editInvitation(this.props.org.id, this.props.user.id, form)
+        .then(() => {
+          this.props.onChange && this.props.onChange()
+          this.setState({add: false, input: ''})
         })
     } else {
       actions.insights.addStudentToGroup(this.props.org.id, id, this.props.user.id)
@@ -114,7 +138,11 @@ class TeamsCell extends React.Component {
     if (this.props.owner) {
       teams = this.props.org.groups.filter(g => g.owners.map(os => os.org_member_id).includes(this.props.user.id))
     } else {
-      teams = this.props.user.org_groups
+      if (this.props.user.isInvitation) {
+        teams = this.props.rootStore.insightsStore.groups.filter(g => this.props.user.group_ids.includes(g.id))
+      } else {
+        teams = this.props.user.org_groups
+      }
     }
     return (
       <OutsideClickHandler
@@ -152,7 +180,8 @@ TeamsCell.propTypes = {
   user: PropTypes.object,
   org: PropTypes.object,
   onChange: PropTypes.func,
-  owner: PropTypes.bool
+  owner: PropTypes.bool,
+  rootStore: PropTypes.object
 }
 
 export default TeamsCell
