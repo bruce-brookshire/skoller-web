@@ -8,6 +8,25 @@ import {get, post, postFile, del} from '../../utilities/api'
  *
  * @param [Object] classId. The id of the class for the student to enroll in.
  */
+export function getStudentByOrgStudentId (orgId, orgStudentId) {
+  return get(
+    `/api/v1/organizations/${orgId}/students/${orgStudentId}`,
+    null,
+    'Error enrolling in class. Try again.'
+  )
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
+ * Enroll in class
+ *
+ * @param [Object] classId. The id of the class for the student to enroll in.
+ */
 export function enrollInClass (classId, studentId) {
   return post(
     `/api/v1/students/${studentId}/classes/${classId}`,

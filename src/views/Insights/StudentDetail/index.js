@@ -22,8 +22,6 @@ class StudentDetail extends React.Component {
       autoShowAddClasses: this.props.location.state ? this.props.location.state.autoShowAddClasses : this.props.autoShowAddClasses
     }
 
-    console.log(this.state)
-
     this.props.rootStore.navStore.setActivePage('insights/students')
   }
 
@@ -153,7 +151,7 @@ class StudentDetail extends React.Component {
       <div className='si-student-detail-cell classes'>
         <div style={{display: 'flex'}}>
           <h2>Classes</h2>
-          <AddClasses autoShow={this.state.autoShowAddClasses} user={this.user()}><span className='plus' style={{cursor: 'pointer'}}><i className='fas fa-plus' /></span></AddClasses>
+          <AddClasses autoShow={this.state.autoShowAddClasses} user={this.user()}><span className='classes-plus' style={{cursor: 'pointer'}}><i className='fas fa-plus' /></span></AddClasses>
         </div>
         {this.renderClasses()}
       </div>
