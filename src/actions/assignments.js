@@ -175,3 +175,10 @@ export function getStudentAssignmentById (studentId, taskId) {
   console.log(studentId, taskId)
   return get(`/api/v1/students/${studentId}/assignments?id=${taskId}`)
 }
+
+export function toggleCompleteAssignmentById (studentId, taskId, isComplete = true) {
+  let form = {
+    is_completed: isComplete ? 'true' : 'false'
+  }
+  return put(`/api/v1/assignments/${taskId}`, form, '')
+}

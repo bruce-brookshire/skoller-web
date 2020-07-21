@@ -251,6 +251,7 @@ class AddAssignment extends Component {
       actions.assignments.createStudentAssignment(this.state.studentId, assignment.class.id, assignmentToSubmit)
         .then(() => {
           actions.assignments.getAllStudentAssignments(this.state.studentId)
+          this.props.onSubmit && this.props.onSubmit()
         })
       //  TODO if (needLock === true) do stuff here to unlock
     })
@@ -746,7 +747,8 @@ class AddAssignment extends Component {
 AddAssignment.propTypes = {
   rootStore: PropTypes.object,
   closeModal: PropTypes.func,
-  assignmentParams: PropTypes.object
+  assignmentParams: PropTypes.object,
+  onSubmit: PropTypes.func
 }
 
 export default withRouter(AddAssignment)

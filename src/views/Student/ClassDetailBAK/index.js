@@ -17,7 +17,6 @@ import Speculator from './Speculator'
 import NestedNav from '../../components/NestedNav'
 import OutsideClickHandler from 'react-outside-click-handler'
 import SiDropClass from '../../Insights/StudentDetail/SiStudentClassDetail/SiDropClass'
-import ClassAssignments from './ClassAssignments'
 
 @inject('rootStore') @observer
 class ClassDetail extends React.Component {
@@ -30,11 +29,11 @@ class ClassDetail extends React.Component {
       assignments: [],
       showAddAssignmentModal: false,
       showUploadAdditionalDocuments: false,
+      studentClass: {},
       showShareModal: false,
       showClassInfoModal: false,
       showSpeculate: false,
-      showPalette: false,
-      visibleAssignments: []
+      showPalette: false
     }
 
     this.paletteRef = React.createRef()
@@ -51,7 +50,7 @@ class ClassDetail extends React.Component {
     if (this.props.cl) {
       return this.props.cl
     } else {
-      cl = this.props.rootStore.studentClassesStore.classes.find(cl => cl.id === parseInt(this.props.match.params.classId))
+      cl = this.props.rootStore.studentClassesStore.classes.filter(cl => cl.id === parseInt(this.props.match.params.classId))[0]
     }
     return cl
   }
@@ -60,7 +59,7 @@ class ClassDetail extends React.Component {
     const {classId} = this.props.match.params
     this.setState({loading: true})
     if (this.props.cl) {
-      this.setState({loading: false, cl: this.props.cl})
+      this.setState({loading: false, cl: this.props.cl, studentClass: this.props.cl})
     } else {
       actions.classes.getClassById(classId).then(cl => {
         this.getClassColor(cl)
@@ -141,6 +140,28 @@ class ClassDetail extends React.Component {
     }
   }
 
+  renderClassHeader () {
+    return (
+      <div>
+        {this.renderClassTitle()}
+        <div className='cn-class-assignments-header'>
+          <div className='cn-class-assignments-header-item'>
+            {this.renderBackButton()}
+            {this.renderDocumentUploadButton()}
+          </div>
+          <div className='cn-class-assignments-header-item text-center'>
+            {this.renderCurrentClassGrade()}
+            {this.renderDropClassButton()}
+          </div>
+          <div className='cn-class-assignments-header-item text-right'>
+            {this.renderAddAssignmentButton()}
+            {this.renderClassEnrollment()}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   renderDocumentUploadButton () {
     return (
       <div>
@@ -196,7 +217,7 @@ class ClassDetail extends React.Component {
           <i className='fas fa-plus' style={{fontSize: '16px', marginTop: '-2px', fontWeight: '600'}} />{emptyWeights.length > 0 ? <div className='add-assignment-button-alert'><div className='add-assignment-button-alert-count'>{emptyWeights.length}</div></div> : null}
         </a>
         { this.state.showAddAssignmentModal
-          ? <AddAssignment onSubmit={() => this.props.rootStore.studentClassesStore.updateClasses()} closeModal={() => this.setState({showAddAssignmentModal: false})} assignmentParams={{class: this.getCurrentClass()}}/>
+          ? <AddAssignment closeModal={() => this.setState({showAddAssignmentModal: false})} assignmentParams={{class: this.state.studentClass}}/>
           : null
         }
       </div>
@@ -294,7 +315,7 @@ class ClassDetail extends React.Component {
         <OutsideClickHandler
           onOutsideClick={() => this.setState({showPalette: false})}
         >
-          {/* {console.log(this.paletteRef)} */}
+          {console.log(this.paletteRef)}
           <div className='sk-class-palette' style={{
             top: this.paletteRef.current.offsetTop + 16,
             left: this.paletteRef.current.offsetLeft - (((colors.length * 24) + 16) / 2) + 8
@@ -381,12 +402,11 @@ class ClassDetail extends React.Component {
   }
 
   renderAssignments () {
-    const cl = this.props.rootStore.studentClassesStore.classes.find(cl => cl.id === parseInt(this.props.match.params.classId))
     return (
-      <div className='sk-class-assignments-cell'>
+      <div className='sk-class-assignments'>
         <h1>Assignments</h1>
         {this.renderAddAssignmentButton()}
-        <ClassAssignments visibleAssignmentsCallback={(visibleAssignments) => this.setState({visibleAssignments})} activeAssignmentId={null} classId={cl.id} cl={cl} />
+        <TasksList filter={true} maxTasks={5} cl={this.getCurrentClass()} insightsUserData={this.props.insightsUser ? {classes: this.props.classes, assignments: this.props.assignments} : false} />
       </div>
     )
   }
