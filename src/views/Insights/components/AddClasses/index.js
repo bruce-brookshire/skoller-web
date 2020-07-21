@@ -112,7 +112,6 @@ class AddClasses extends Component {
     let state = {
       autoShowAddClasses: true
     }
-    console.log(location)
     let lastItem = location.split('/')[location.split('/').length - 1]
     if (parseInt(lastItem)) {
       this.setState({show: true})
@@ -182,14 +181,14 @@ class AddClasses extends Component {
         class_ids: [...user.class_ids, id]
       }
       actions.insights.invitations.editInvitation(this.props.rootStore.insightsStore.org.id, user.id, form)
-        .then((r) => {
-          this.props.rootStore.insightsStore.updateData()
+        .then((invitation) => {
+          this.props.rootStore.insightsStore.updateInvitation(invitation)
           this.setState({show: false, form: 'search'})
         })
     } else {
       actions.insights.students.enrollInClass(id, this.props.user.student_id)
         .then((r) => {
-          this.props.rootStore.insightsStore.updateData()
+          this.props.rootStore.insightsStore.updateStudent(this.props.user.id)
           this.setState({show: false, form: 'search'})
         })
     }

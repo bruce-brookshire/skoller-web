@@ -185,21 +185,44 @@ class InsightsStore {
   }
 
   async getStudentData (students, orgId) {
-    await Promise.all(students.map(s =>
-      actions.insights.getStudentClasses(orgId, s.id)
+    if (Array.isArray(students)) {
+      await Promise.all(students.map(s =>
+        actions.insights.getStudentClasses(orgId, s.id)
+          .then(r => {
+            let assignments = [].concat.apply([], r.map(cl => cl.assignments))
+            s.org_student_id = s.id
+            s.classes = r
+            s.assignments = assignments
+            s.intensity = {
+              7: getIntensityScore(assignments, 7),
+              14: getIntensityScore(assignments, 14),
+              30: getIntensityScore(assignments, 30)
+            }
+          })
+      ))
+
+      this.students = students
+    } else {
+      let student = students
+      let orgStudents = this.students
+      await actions.insights.getStudentClasses(orgId, student.id)
         .then(r => {
           let assignments = [].concat.apply([], r.map(cl => cl.assignments))
-          s.org_student_id = s.id
-          s.classes = r
-          s.assignments = assignments
-          s.intensity = {
+          student.org_student_id = student.id
+          student.classes = r
+          student.assignments = assignments
+          student.intensity = {
             7: getIntensityScore(assignments, 7),
             14: getIntensityScore(assignments, 14),
             30: getIntensityScore(assignments, 30)
           }
         })
-    ))
-    this.students = students
+      let orgStudent = {...orgStudents.find(s => s.id === student.id), ...student}
+      orgStudents.splice(orgStudents.find(s => s.id === student.id))
+      orgStudents.push(orgStudent)
+      this.students = orgStudents
+      Promise.resolve(true)
+    }
   }
 
   async getInvitationData (i) {
@@ -326,6 +349,24 @@ class InsightsStore {
   async updateData (filters) {
     this.loadingUpdate = true
     await this.getAllData(filters)
+    Promise.resolve(true)
+    this.getDataSuccess()
+  }
+
+  async updateStudent (orgStudentId) {
+    let orgStudent = this.students.filter(s => s.id === orgStudentId)[0]
+    await this.getStudentData(orgStudent, this.org.id)
+
+    Promise.resolve(true)
+    this.getDataSuccess()
+  }
+
+  async updateInvitation (invitation) {
+    let orgInvite = await this.getInvitationData(invitation, this.org.id)
+    let invitations = this.invitations
+    invitations[this.invitations.indexOf(invitations.find(i => i.id === invitation.id))] = orgInvite
+    this.invitations = invitations
+
     Promise.resolve(true)
     this.getDataSuccess()
   }
