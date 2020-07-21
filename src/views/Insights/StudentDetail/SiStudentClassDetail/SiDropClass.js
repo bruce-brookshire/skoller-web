@@ -21,7 +21,7 @@ class SiDropClass extends React.Component {
       let id = this.props.rootStore.insightsStore.students.find(s => s.id === parseInt(this.props.match.params.orgStudentId)).student_id
       await actions.insights.students.dropClass(this.props.cl.id, id).catch(r => console.log(r))
         .then(() => {
-          this.props.rootStore.insightsStore.updateData()
+          this.props.rootStore.insightsStore.updateStudent(parseInt(this.props.match.params.orgStudentId))
           this.props.onDropClass()
         })
     } else {
@@ -32,7 +32,9 @@ class SiDropClass extends React.Component {
       await actions.insights.invitations.editInvitation(this.props.rootStore.insightsStore.org.id, id, {
         class_ids: classIds
       })
-      this.props.rootStore.insightsStore.updateData(['invitations', 'groups'])
+        .then(i => {
+          this.props.rootStore.insightsStore.updateInvitation(i)
+        })
       this.props.onDropClass()
     }
   }
