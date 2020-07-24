@@ -107,7 +107,7 @@ class WeightsTimeline extends React.Component {
   }
 
   render () {
-    let {data, count} = getWeightDistribution(this.props.rootStore.studentAssignmentsStore, this.props.cl, this.props.ids)
+    let {data, count} = getWeightDistribution((this.props.cl ? this.props.cl.assignments : this.props.assignments), this.props.cl, this.props.ids)
 
     const styles = this.getStyles()
     if (data.length > 0) {
@@ -161,7 +161,8 @@ WeightsTimeline.propTypes = {
   history: PropTypes.object,
   rootStore: PropTypes.object,
   cl: PropTypes.object,
-  ids: PropTypes.array
+  ids: PropTypes.array,
+  assignments: PropTypes.array
 }
 
 export default withRouter(WeightsTimeline)

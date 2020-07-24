@@ -25,13 +25,11 @@ class NestedNav extends React.Component {
     let paths = history[history.length - 1]
     let currentPath = paths.split('/')
     let pathArray = []
-    let classId = null
     currentPath.forEach(p => {
       let d = null
       if (parseInt(p)) {
         let prevPath = currentPath[currentPath.indexOf(p) - 1]
         if (prevPath === 'class') {
-          classId = parseInt(p)
           let path = currentPath.slice(0, currentPath.indexOf(p) + 1).join('/')
           d = {
             name: this.props.rootStore.studentClassesStore.classes.filter(cl => cl.id === parseInt(p))[0].name,

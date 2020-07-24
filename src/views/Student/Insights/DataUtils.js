@@ -1,9 +1,9 @@
 import moment from 'moment'
 
-export function getAssignmentCountData (studentAssignmentsStore, cl = false, ids = [], grouping = 'w') {
+export function getAssignmentCountData (a, cl = false, ids = [], grouping = 'w') {
   let data = []
 
-  let assignments = cl ? studentAssignmentsStore.assignments.filter(a => a.class_id === cl.id) : studentAssignmentsStore.assignments.filter(a => ids.length > 0 ? ids.includes(a.class_id) : true)
+  let assignments = cl ? a.filter(a => a.class_id === cl.id) : a.filter(a => ids.length > 0 ? ids.includes(a.class_id) : true)
   let firstAssignment = Math.min.apply(Math, assignments.map(a => parseInt(moment(a.due).format('X'))))
   let lastAssignment = Math.max.apply(Math, assignments.map(a => parseInt(moment(a.due).format('X'))))
 
@@ -129,8 +129,8 @@ export function getAssignmentCountDataByClass (studentAssignmentsStore, cl = fal
   return {data: data.d, classData}
 }
 
-export function getAssignmentWeightData (studentAssignmentsStore, cl = false, ids = [], grouping = 'w') {
-  let assignments = cl ? studentAssignmentsStore.assignments.filter(a => a.class_id === cl.id) : studentAssignmentsStore.assignments.filter(a => ids.length > 0 ? ids.includes(a.class_id) : true)
+export function getAssignmentWeightData (a, cl = false, ids = [], grouping = 'w') {
+  let assignments = cl ? a.filter(a => a.class_id === cl.id) : a.filter(a => ids.length > 0 ? ids.includes(a.class_id) : true)
   let data = []
   let firstAssignment = Math.min.apply(Math, assignments.map(a => parseInt(moment(a.due).format('X'))))
   let lastAssignment = Math.max.apply(Math, assignments.map(a => parseInt(moment(a.due).format('X'))))
@@ -240,8 +240,8 @@ export function getAssignmentWeightData (studentAssignmentsStore, cl = false, id
   return data
 }
 
-export function getWeightDistribution (studentAssignmentsStore, cl = false, ids = [], grouping = 'w') {
-  let assignments = cl ? studentAssignmentsStore.assignments.filter(a => a.class_id === cl.id) : studentAssignmentsStore.assignments.filter(a => ids.length > 0 ? ids.includes(a.class_id) : true)
+export function getWeightDistribution (a, cl = false, ids = [], grouping = 'w') {
+  let assignments = cl ? a.filter(a => a.class_id === cl.id) : a.filter(a => ids.length > 0 ? ids.includes(a.class_id) : true)
   let zero = 0
   let low = 0
   let medium = 0

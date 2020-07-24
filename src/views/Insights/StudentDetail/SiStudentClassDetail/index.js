@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import ClassDetail from '../../../Student/ClassDetail'
+import ClassDetail from '../../../Student/ClassDetail/ClassDetail'
 import { inject, observer } from 'mobx-react'
 import { toJS } from 'mobx'
+import NestedNav from '../../components/NestedNav'
 
 @inject('rootStore') @observer
 export default class SiStudentClassDetail extends Component {
@@ -15,16 +16,15 @@ export default class SiStudentClassDetail extends Component {
     let user
     if (this.props.match.params.invitationId) {
       user = this.props.rootStore.insightsStore.invitations.find(i => i.id === parseInt(this.props.match.params.invitationId))
-      console.log(user, this.props)
     } else {
       user = this.props.rootStore.insightsStore.students.find(s => s.id === parseInt(this.props.match.params.orgStudentId))
     }
     let cl = toJS(user.classes.find(cl => cl.id === parseInt(this.props.match.params.classId)))
-    cl.color = '4a4a4a'
-    console.log(cl)
+    cl.color = this.props.match.params.invitationId ? '4a4a4a' : cl.color
     return (
       <div>
-        <ClassDetail insightsUser cl={cl} color={'4a4a4a'} classes={user.classes} assignments={cl.assignments} />
+        <NestedNav pageType='studentDetail' />
+        <ClassDetail insightsUser cl={cl} />
       </div>
     )
   }

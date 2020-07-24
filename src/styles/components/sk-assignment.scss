@@ -110,10 +110,11 @@
   }
 }
 
+.focused-assignment {
+  background-color: rgba(255, 255, 0, 0.12) !important;
+}
+
 .sk-assignment-edit {
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
   border: 1px solid $cn-form-border;
   margin-bottom: 1rem;
   background-color: white;
@@ -121,66 +122,116 @@
   @include skoller-cell;
   border-radius: 5px;
   padding: 8px;
+  position: relative;
 
-  .sk-assignment-edit-close {
-    min-width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background-color: rgba(0,0,0,0.08);
-    border: 1px solid #4a4a4a;
+  .sk-assignment-edit-row {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
+    flex-flow: row nowrap;
     align-items: center;
-    padding-top: 8px;
-    margin-right: 8px;
-    cursor: pointer;
-  }
 
-  .sk-assignment-edit-form-item {
-    flex-grow: 1;
-    display: flex;
-    flex-flow: column;
-    margin-right: 8px;
-    margin-top: 8px;
-    position: relative;
-
-    label {
-      color: $cn-form-border;
+    &.close {
+      margin-bottom: 0px;
+      justify-content: space-between;
     }
-
-    input {
-      @include sk-form-field;
-      font-weight: 600;
-      font-size: 1em;
-
-      &.date {
-        color: $sk-blue;
-        cursor: pointer;
-        border-color: $sk-blue;
-      }
-
+  
+    .sk-assignment-edit-close {
+      min-width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      // background-color: rgba(0,0,0,0.08);
+      border: 1px solid $sk-blue;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      padding-top: 8px;
+      // margin-right: 8px;
+      cursor: pointer;
+    }
+  
+    .sk-assignment-edit-form-item {
+      flex-grow: 1;
+      display: flex;
+      flex-flow: column;
+      margin-right: 8px;
+      margin-top: 8px;
+      position: relative;
+  
       &.name {
-        color: #4a4a4a;
-        cursor: auto;
+        min-width: 25%;
+      }
+
+      &.due {
+        flex-grow: 0;
+        max-width: 96px;
+      }
+
+      .sk-select {
+        min-width: 120px;
+        width: 100% !important;
+      }
+  
+      label {
+        color: $cn-form-border;
+      }
+  
+      input {
+        @include sk-form-field;
+        font-weight: 600;
+        font-size: 1em;
+        font-family: 'Calibre';
+  
+        &.date {
+          color: $sk-blue;
+          cursor: pointer;
+          border-color: $sk-blue;
+        }
+  
+        &.name {
+          color: #4a4a4a;
+          cursor: auto;
+        }
+      }
+  
+      .sk-select {
+        height: 36px;
+        width: 96px;
+        margin-bottom: 8px;
+      }
+    }
+  
+    .si-button {
+      width: 80px;
+  
+      p {
+        height: 36px;
+        margin-top: 18px;
+        font-weight: 600;
+        padding-top: 12px;
       }
     }
 
-    .sk-select {
-      height: 36px;
-      width: 96px;
-      margin-bottom: 8px;
+    &.bottom {
+      justify-content: space-between;
     }
-  }
 
-  .si-button {
-    width: 80px;
+    .is-private-toggle {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
 
-    p {
-      height: 36px;
-      margin-top: 18px;
-      font-weight: 600;
-      padding-top: 12px;
+      p {
+        margin: 8px 8px 0 0;
+        color: #4a4a4a50;
+      }
+    }
+    
+    .delete-assignment {
+      color: $sk-alert-red;
+      cursor: pointer;
+      padding: 4px;
+      font-weight: 200;
     }
   }
 }
