@@ -63,7 +63,7 @@ class WeightsTimeline extends React.Component {
   }
 
   render () {
-    let data = getAssignmentWeightData(this.props.rootStore.studentAssignmentsStore, this.props.cl, this.props.ids, this.props.view)
+    let data = getAssignmentWeightData((this.props.cl ? this.props.cl.assignments : this.props.assignments), this.props.cl, this.props.ids, this.props.view)
     const styles = this.getStyles()
     if (data.length > 0) {
       const today = parseInt(moment().format('X'))

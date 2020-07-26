@@ -18,7 +18,7 @@ class SkSelect extends React.Component {
       color: '#15A494'
     }
 
-    let className = (this.props.className ? this.props.className : '')
+    let className = (this.props.className ? this.props.className : '') + (this.props.hideCarrot ? ' hide-carrot' : '')
     return (
       <div className={className}>
         <div
@@ -47,7 +47,8 @@ SkSelect.propTypes = {
   optionsMap: PropTypes.func,
   className: PropTypes.string,
   disableModalLogic: PropTypes.bool,
-  jobsMode: PropTypes.bool
+  jobsMode: PropTypes.bool,
+  hideCarrot: PropTypes.bool
 }
 
 export default SkSelect

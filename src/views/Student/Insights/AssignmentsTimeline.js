@@ -63,7 +63,7 @@ class AssignmentsTimeline extends React.Component {
   }
 
   render () {
-    let data = getAssignmentCountData(this.props.rootStore.studentAssignmentsStore, this.props.cl ? this.props.cl : false, this.props.ids, this.props.view)
+    let data = getAssignmentCountData((this.props.cl ? this.props.cl.assignments : this.props.assignments), this.props.cl ? this.props.cl : false, this.props.ids, this.props.view)
 
     const styles = this.getStyles()
     if (data.length > 0) {

@@ -3,6 +3,7 @@ import {
   createStudentAssignment,
   createAssignmentByClassId,
   deleteAssignment,
+  deleteStudentAssignment,
   deleteAssignmentPost,
   getAllStudentAssignments,
   getClassAssignments,
@@ -11,7 +12,8 @@ import {
   gradeAssignment,
   removeGradeFromAssignment,
   updateStudentAssignment,
-  getStudentAssignmentById
+  getStudentAssignmentById,
+  toggleCompleteAssignmentById
 } from './assignments'
 import { getAnalytics } from './analytics'
 import {
@@ -207,6 +209,7 @@ const actions = {
     createStudentAssignment,
     createAssignmentByClassId,
     deleteAssignment,
+    deleteStudentAssignment,
     deleteAssignmentPost,
     getClassAssignments,
     updateAssignment,
@@ -215,7 +218,8 @@ const actions = {
     removeGradeFromAssignment,
     getAllStudentAssignments,
     updateStudentAssignment,
-    getStudentAssignmentById
+    getStudentAssignmentById,
+    toggleCompleteAssignmentById
   },
   auth: {
     authenticateUser,
