@@ -4,12 +4,52 @@ import ClassDetail from '../../../Student/ClassDetail/ClassDetail'
 import { inject, observer } from 'mobx-react'
 import { toJS } from 'mobx'
 import NestedNav from '../../components/NestedNav'
+import actions from '../../../../actions'
 
 @inject('rootStore') @observer
 export default class SiStudentClassDetail extends Component {
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      activeAssignmentId: null
+    }
+  }
+
   static propTypes = {
     rootStore: PropTypes.object,
     match: PropTypes.object
+  }
+
+  onCompleteAssignment = () => {
+
+  }
+
+  onDeleteAssignment = () => {
+
+  }
+
+  editAssignment = async (form, assignmentId, isPrivate = true) => {
+    if (form.grade || isNaN(form.grade)) {
+      if (isNaN(form.grade)) {
+        await actions.assignments.removeGradeFromAssignment(assignmentId)
+      } else {
+        await actions.assignments.gradeAssignment(assignmentId, form.grade)
+      }
+    } else {
+      form.id = assignmentId
+      await actions.assignments.updateStudentAssignment(form, isPrivate)
+    }
+
+    this.props.rootStore.studentClassesStore.updateClasses()
+  }
+
+  createAssignment = () => {
+
+  }
+
+  updateClasses = () => {
+
   }
 
   render () {
@@ -24,7 +64,16 @@ export default class SiStudentClassDetail extends Component {
     return (
       <div>
         <NestedNav pageType='studentDetail' />
-        <ClassDetail insightsUser cl={cl} />
+        <ClassDetail
+          insightsUser
+          cl={cl}
+          onCompleteAssignment={this.onCompleteAssignment}
+          onDeleteAssignment={this.onDeleteAssignment}
+          editAssignment={this.editAssignment}
+          createAssignment={this.createAssignment}
+          updateClass={() => this.props.rootStore.studentClassesStore.updateClasses()}
+          activeAssignmentId={this.state.activeAssignmentId}
+        />
       </div>
     )
   }

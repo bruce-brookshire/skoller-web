@@ -77,7 +77,6 @@ export default class ClassAssignments extends Component {
         <div className='sk-class-assignments' ref={(r) => { this.ref = r }}>
           <Flipper spring={'stiff'} flipKey={assignments.join('|') + assignments.map(a => a.due).join('|')}>
             {assignments.map(a => {
-              console.log(a.id)
               return <Assignment
                 onDeleteAssignment={this.props.onDeleteAssignment}
                 onCompleteAssignment={this.props.onCompleteAssignment}

@@ -71,7 +71,6 @@ class StudentClassDetailView extends React.Component {
             onDeleteAssignment={this.onDeleteAssignment}
             editAssignment={this.editAssignment}
             createAssignment={this.createAssignment}
-            updateClasses={this.props.rootStore.studentClassesStore.updateClasses}
             updateClass={() => this.props.rootStore.studentClassesStore.updateClasses()}
             activeAssignmentId={this.state.activeAssignmentId}
           />
