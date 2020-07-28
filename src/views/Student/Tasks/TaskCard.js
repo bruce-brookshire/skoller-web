@@ -28,7 +28,7 @@ class TaskCard extends React.Component {
     if (this.props.insightsUser) {
       this.props.history.push({pathname: 'assignments/' + this.props.task.assignment_id})
     } else {
-      this.props.history.push({pathname: '/student/class/' + this.props.task.class_id + '/assignments/' + this.props.task.assignment_id, state: { prevPath: this.props.rootStore.navStore.location.pathname }})
+      this.props.history.push({pathname: '/student/class/' + this.props.task.class_id, state: { activeAssignmentId: this.props.task.id }})
     }
   }
 

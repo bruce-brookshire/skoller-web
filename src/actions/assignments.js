@@ -143,6 +143,16 @@ export function deleteAssignment (form) {
     })
 }
 
+/*
+* Delete a student assignment
+*/
+export function deleteStudentAssignment (assignmentId) {
+  return del(`/api/v1/assignments/${assignmentId}`, 'Error deleting assignment. Try again.')
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
 // TODO: get the params for deleting a student assignment
 // /*
 // * Delete a student's assignment
@@ -174,4 +184,11 @@ export function getTaskAssignments (studentId) {
 export function getStudentAssignmentById (studentId, taskId) {
   console.log(studentId, taskId)
   return get(`/api/v1/students/${studentId}/assignments?id=${taskId}`)
+}
+
+export function toggleCompleteAssignmentById (studentId, taskId, isComplete = true) {
+  let form = {
+    is_completed: isComplete ? 'true' : 'false'
+  }
+  return put(`/api/v1/assignments/${taskId}`, form, '')
 }

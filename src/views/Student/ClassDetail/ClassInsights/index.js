@@ -1,13 +1,12 @@
 import React from 'react'
-import {inject, observer} from 'mobx-react'
 import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import AssignmentsTimeline from '../Insights/AssignmentsTimeline'
-import WeightsTimeline from '../Insights/WeightsTimeline'
-import Distribution from '../Insights/Distribution'
-import SpeculateTool from '../Insights/SpeculateTool'
-import SkSelect from '../../components/SkSelect'
+import AssignmentsTimeline from '../../Insights/AssignmentsTimeline'
+import WeightsTimeline from '../../Insights/WeightsTimeline'
+import Distribution from '../../Insights/Distribution'
+import SpeculateTool from '../../Insights/SpeculateTool'
+import SkSelect from '../../../components/SkSelect'
 
 export class DateTooltip extends React.Component {
   static propTypes = {
@@ -46,7 +45,6 @@ export class DateTooltip extends React.Component {
   }
 }
 
-@inject('rootStore') @observer
 class ClassInsights extends React.Component {
   constructor (props) {
     super(props)
@@ -57,7 +55,7 @@ class ClassInsights extends React.Component {
   }
 
   renderContent () {
-    if (this.props.rootStore.studentAssignmentsStore.assignments.length > 0) {
+    if (this.props.cl.assignments.length > 0) {
       if (this.state.type === 'Assignments') {
         return (
           <div style={{margin: '2rem 1rem 1rem 1rem'}}>
@@ -118,7 +116,7 @@ class ClassInsights extends React.Component {
     return (
       <div className='sk-class-insights'>
         <h1>Insights</h1>
-        {this.props.rootStore.studentAssignmentsStore.assignments.length > 0 && this.renderSelect()}
+        {this.props.cl.assignments.length > 0 && this.renderSelect()}
         <div className='class-insights'>
           {this.renderContent()}
         </div>
@@ -129,7 +127,6 @@ class ClassInsights extends React.Component {
 
 ClassInsights.propTypes = {
   history: PropTypes.object,
-  rootStore: PropTypes.object,
   cl: PropTypes.object
 }
 

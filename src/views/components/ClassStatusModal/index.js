@@ -2,12 +2,10 @@ import React from 'react'
 import SkProgressBar from '../SkProgressBar'
 import PropTypes from 'prop-types'
 import actions from '../../../actions'
-import { inject, observer } from 'mobx-react'
 import { withRouter } from 'react-router-dom'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import DragAndDrop from '../DragAndDrop/DragAndDrop'
 import {mobileCheck} from '../../../utilities/display'
-// import Sammi from '../Sammi'
 import DropClassButton from '../DropClassButton'
 import ToolTip from '../ToolTip'
 import UploadAdditionalDocuments from './UploadAdditionalDocuments'
@@ -18,7 +16,6 @@ import GooglePlay from '../../../assets/images/app_download/google-play-badge.pn
 import ProgressModal from '../../Student/components/ProgressModal'
 import CopyBox from '../../components/CopyBox'
 
-@inject('rootStore') @observer
 class ClassStatusModal extends React.Component {
   constructor (props) {
     super(props)
@@ -667,7 +664,6 @@ class ClassStatusModal extends React.Component {
 
 ClassStatusModal.propTypes = {
   onSubmit: PropTypes.func,
-  rootStore: PropTypes.object,
   disableNext: PropTypes.bool,
   cl: PropTypes.object,
   closeModal: PropTypes.func,

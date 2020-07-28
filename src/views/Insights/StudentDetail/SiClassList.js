@@ -6,15 +6,30 @@ import sInReview from '../../../assets/images/class_status/s-in-review.png'
 import uploadS from '../../../assets/images/class_status/upload-s.png'
 import moment from 'moment'
 import { withRouter } from 'react-router-dom'
+import ClassStatusModal from '../../components/ClassStatusModal'
 
 @inject('rootStore') @observer
 class SiClassList extends React.Component {
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      showClassStatusModal: false,
+      selectedClass: null
+    }
+  }
+
   onClassSelect (cl) {
     if (this.props.onSelect) this.props.onSelect(cl)
-    if (this.props.match.params.invitationId) {
-      this.props.history.push('/insights/invitations/' + this.props.user.id + '/classes/' + cl.id + '/')
+
+    if (cl.status.id < 1400) {
+      this.setState({showClassStatusModal: true, selectedClass: cl})
     } else {
-      this.props.history.push('/insights/students/' + this.props.user.id + '/classes/' + cl.id + '/')
+      if (this.props.match.params.invitationId) {
+        this.props.history.push('/insights/invitations/' + this.props.user.id + '/classes/' + cl.id + '/')
+      } else {
+        this.props.history.push('/insights/students/' + this.props.user.id + '/classes/' + cl.id + '/')
+      }
     }
   }
 
@@ -123,6 +138,10 @@ class SiClassList extends React.Component {
     )
   }
 
+  closeClassStatusModal = () => {
+    this.setState({showClassStatusModal: false})
+  }
+
   render () {
     return (
       <div className={'si-class-list-container ' + this.props.containerClassName}>
@@ -131,6 +150,13 @@ class SiClassList extends React.Component {
           <div className='si-class-list-empty-message'>
             {this.props.emptyMessage || "Looks like you don't have any classes yet. Join one now!"}
           </div>
+        }
+        {this.state.showClassStatusModal && this.state.selectedClass &&
+          <ClassStatusModal
+            closeModal={this.closeClassStatusModal}
+            onSubmit={this.closeClassStatusModal}
+            cl={this.state.selectedClass}
+          />
         }
       </div>
     )
@@ -145,7 +171,8 @@ SiClassList.propTypes = {
   rowClassName: PropTypes.string,
   rootStore: PropTypes.object,
   user: PropTypes.object,
-  history: PropTypes.object
+  history: PropTypes.object,
+  match: PropTypes.object
 }
 
 export default withRouter(SiClassList)

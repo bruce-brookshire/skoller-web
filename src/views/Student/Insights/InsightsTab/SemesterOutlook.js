@@ -28,15 +28,15 @@ class SemesterOutlook extends React.Component {
         <h1>Insights</h1>
         <p className='insights-semester-tagline'>Visualize your semester in new ways</p>
         <div style={{margin: '1rem 0'}}>
-          <WeightsTimeline ids={ids} view={this.getView()} />
+          <WeightsTimeline assignments={this.props.rootStore.studentAssignmentsStore.assignments} ids={ids} view={this.getView()} />
         </div>
         {this.renderSpacer()}
         <div style={{margin: '1rem 0'}}>
-          <AssignmentsTimeline ids={ids} view={this.getView()} />
+          <AssignmentsTimeline assignments={this.props.rootStore.studentAssignmentsStore.assignments} ids={ids} view={this.getView()} />
         </div>
         {this.renderSpacer()}
         <div style={{margin: '1rem 0 0 0'}}>
-          <Distribution ids={ids} />
+          <Distribution assignments={this.props.rootStore.studentAssignmentsStore.assignments} ids={ids} />
         </div>
       </div>
     )

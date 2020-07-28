@@ -237,7 +237,11 @@ class InsightsStore {
               r.weights.forEach(w => {
                 totalWeight += w.weight
               })
-              a.weight = (r.weights.find(w => w.id === a.weight_id).weight / r.assignments.filter(as => as.weight_id === a.weight_id, 0).length) / totalWeight
+              if (a.weight_id) {
+                a.weight = (r.weights.find(w => w.id === a.weight_id).weight / r.assignments.filter(as => as.weight_id === a.weight_id, 0).length) / totalWeight
+              } else {
+                a.weight = 0
+              }
             } else {
               a.weight = r.weights.find(w => w.id === a.weight_id).weight / r.assignments.filter(as => as.weight_id === a.weight_id, 0).length
             }
