@@ -15,6 +15,7 @@ import AppStore from '../../../assets/images/app_download/app-store-badge.svg'
 import GooglePlay from '../../../assets/images/app_download/google-play-badge.png'
 import ProgressModal from '../../Student/components/ProgressModal'
 import CopyBox from '../../components/CopyBox'
+import SiDropClass from '../../Insights/StudentDetail/SiStudentClassDetail/SiDropClass'
 
 class ClassStatusModal extends React.Component {
   constructor (props) {
@@ -364,7 +365,7 @@ class ClassStatusModal extends React.Component {
               }
               {this.state.status === 'live'
                 ? <div className='sk-class-status-modal-action-detail'>
-                  <h1 style={{margin: '0'}}>Welcome to<br /><b>{this.state.cl.name}</b></h1>
+                  <h1 style={{margin: '0'}}>Welcome! This class is already LIVE.</h1>
                   <br />
                   <h2 className='sk-csm-action-detail-share'>Invite classmates using this link!</h2>
                   <CopyBox
@@ -405,7 +406,8 @@ class ClassStatusModal extends React.Component {
     this.props.history.push({
       pathname: `/class/${this.state.cl.id}/syllabus_tool/`,
       state: {
-        isDIY: true
+        isDIY: true,
+        isInsights: this.props.isInsights
       }
     })
   }
@@ -455,7 +457,7 @@ class ClassStatusModal extends React.Component {
 
   renderNextButton () {
     let buttonText
-    buttonText = 'Done'
+    buttonText = this.state.cl.status.id === 1400 ? 'Check it out!' : 'Done'
     if (this.state.status === 'needSyllabus' || this.state.status === 'diy') {
       buttonText = 'Submit'
     } else if (this.state.status === 'syllabusOverload') {
@@ -537,7 +539,7 @@ class ClassStatusModal extends React.Component {
   renderHeader () {
     return (
       <div className='sk-class-status-modal-header'>
-        {((this.props.onboard || this.props.firstOpen) && this.state.status !== 'live') ? <h1>Welcome to {this.state.cl.name}</h1> : null}
+        {((this.props.onboard || this.props.firstOpen) && this.state.status !== 'live') ? <h1>Welcome to<br /><b>{this.state.cl.name}!</b></h1> : null}
         {this.renderProgress()}
       </div>
     )
@@ -573,10 +575,13 @@ class ClassStatusModal extends React.Component {
           </p>
           : null
         }
-        {this.props.closeModal &&
+        {this.props.closeModal && !this.props.isInsights &&
           <div style={{textAlign: 'right'}}>
             <DropClassButton onDropClass={() => this.props.closeModal()} cl={this.state.cl} />
           </div>
+        }
+        {this.props.isInsights &&
+          <SiDropClass onDropClass={() => this.props.closeModal()} cl={this.state.cl} />
         }
       </div>
     )
@@ -670,7 +675,8 @@ ClassStatusModal.propTypes = {
   progress: PropTypes.number,
   onboard: PropTypes.bool,
   firstOpen: PropTypes.bool,
-  history: PropTypes.object
+  history: PropTypes.object,
+  isInsights: PropTypes.bool
 }
 
 export default withRouter(ClassStatusModal)

@@ -11,10 +11,10 @@ class LandingFooter extends React.Component {
             <Link className='link-style' to='/insights'>Skoller Insights</Link>
           </div>
           <div className='footer-link'>
-            <a className='link-style' href='https://explore.skoller.co/press'>What students say about us</a>
+            <a className='link-style' href='https://joinskoller.com/jobs'>Skoller Jobs</a>
           </div>
           <div className='footer-link'>
-            <a className='link-style' href='https://explore.skoller.co/team'>Our team</a>
+            <a className='link-style' href='https://joinskoller.com/about-us'>About us</a>
           </div>
           <div className='footer-link'>
             <a className='link-style' href='https://explore.skoller.co/privacy-policy'>Privacy policy</a>

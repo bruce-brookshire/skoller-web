@@ -133,7 +133,12 @@ class Students extends React.Component {
 
   renderFilteredStudents (students) {
     if (this.state.teamsQuery) {
-      students = students.filter(s => s.org_groups.map(g => g.name.toLowerCase()).join(' ').includes(this.state.teamsQuery.toLowerCase()))
+      students = students.filter(s => {
+        return (s.isInvitation
+          ? s.getOrgGroups().map(g => g.name.toLowerCase()).join(' ').includes(this.state.teamsQuery.toLowerCase())
+          : s.org_groups.map(g => g.name.toLowerCase()).join(' ').includes(this.state.teamsQuery.toLowerCase())
+        )
+      })
     }
 
     if (this.state.studentsQuery) {
@@ -330,7 +335,7 @@ class Students extends React.Component {
 
     studentsAndInvitations.forEach(s => {
       if (s.classes.length === 0) needClasses += 1
-      if (s.classes.filter(cl => cl.status.id < 1400)) needSetup += 1
+      if (s.classes.filter(cl => cl.status.id < 1400).length > 0) needSetup += 1
       if (s.isInvitation) pendingActivation += 1
     })
 

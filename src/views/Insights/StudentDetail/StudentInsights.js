@@ -37,7 +37,7 @@ class StudentInsights extends React.Component {
     let assignments = this.state.assignments
     let chartSize = {width: 600, height: 350}
 
-    if (this.props.classes.length > 0) {
+    if (this.props.classes.filter(cl => cl.status.id === 1400).length > 0) {
       return (
         <div className='si-student-insights-row'>
           <div className='si-student-chart-container'>
@@ -48,9 +48,9 @@ class StudentInsights extends React.Component {
               <SiWeightsChart chartSize={chartSize} assignments={assignments} view={'w'} />
             }
           </div>
-          <div className='si-student-insights-detail'>
+          {/* <div className='si-student-insights-detail'>
             <div><b>{getAssignmentWeightsInNextNDays(assignments, this.getTimeframe())}% of {this.props.user.student.name_first}&apos;s grade</b> will be determined in the next {this.getTimeframe()} days</div>
-          </div>
+          </div> */}
         </div>
       )
     } else {

@@ -55,11 +55,11 @@ export default function GroupStudent (props) {
         <div className='si-group-student-right'>
           <div className='si-group-student-row'>
             <Link to={'/insights/invitations/' + props.invitation.id} className='si-group-student-name'>{name}</Link>
-            <StatusIndicators invitation={invitation} />
+            <StatusIndicators hideTooltip invitation={invitation} />
           </div>
           <div className='si-group-student-row'>
             <div>{classes}</div>
-            <div>Sent {moment(invitation.inserted_at).fromNow()}</div>
+            {/* <div>Sent {moment(invitation.inserted_at).fromNow()}</div> */}
           </div>
         </div>
       </div>

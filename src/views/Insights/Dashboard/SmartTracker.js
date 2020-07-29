@@ -37,17 +37,22 @@ class SmartTracker extends React.Component {
     const days = this.props.rootStore.insightsStore.interfaceSettings.timeframe
     let intensityString = days
     let value
+    let sort = this.props.rootStore.insightsStore.interfaceSettings.sort
 
-    switch (this.props.rootStore.insightsStore.interfaceSettings.sort) {
+    switch (sort) {
       case 'Assignments':
         value = getAssignmentCountInNextNDays(d.assignments, days)
         break
       case 'Grade Impact':
         value = getAssignmentWeightsInNextNDays(d.assignments, days) + '%'
         break
-      case 'Personal Intensity':
+      case 'Stress score':
         value = d.intensity[intensityString]
         break
+    }
+
+    if (sort === 'Stress score') {
+      return <div className='si-smart-tracker-value'>{value} <span>out of</span> 10</div>
     }
 
     return (
@@ -77,7 +82,7 @@ class SmartTracker extends React.Component {
           }
         })
 
-      case 'Personal Intensity':
+      case 'Stress score':
         let intensityString = days
         return students.sort((a, b) => {
           if (a.intensity[intensityString] < b.intensity[intensityString]) {
@@ -98,7 +103,10 @@ class SmartTracker extends React.Component {
 
     if (this.state.team !== 'All') {
       students = students.filter(s => {
-        return s.org_groups.map(g => g.name).includes(this.state.team)
+        return (s.isInvitation
+          ? s.getOrgGroups().map(g => g.name).includes(this.state.team)
+          : s.org_groups.map(g => g.name).includes(this.state.team)
+        )
       })
     }
 
@@ -119,7 +127,7 @@ class SmartTracker extends React.Component {
         description = `Assignments sorts athletes based on who has the most assignments due over the next ${timeframe} days.`
         break
 
-      case 'Personal Intensity':
+      case 'Stress score':
         description = `Intensity score is a measure of what the next ${timeframe} days look like relative to the entire semester for each individual athlete, taking assignments and grade impact into account.`
         break
     }
@@ -221,7 +229,7 @@ class SmartTracker extends React.Component {
   }
 
   render () {
-    let filterOptions = ['Assignments', 'Grade Impact', 'Personal Intensity']
+    let filterOptions = ['Assignments', 'Grade Impact', 'Stress score']
     let teamOptions = ['All'].concat(this.props.rootStore.insightsStore.org.groups ? this.props.rootStore.insightsStore.org.groups.map(g => g.name) : null)
     let title = toTitleCase(this.props.rootStore.insightsStore.org.groupsAlias) + 's'
     let interfaceSettings = this.props.rootStore.insightsStore.interfaceSettings

@@ -156,6 +156,7 @@ class SiClassList extends React.Component {
             closeModal={this.closeClassStatusModal}
             onSubmit={this.closeClassStatusModal}
             cl={this.state.selectedClass}
+            isInsights={true}
           />
         }
       </div>
