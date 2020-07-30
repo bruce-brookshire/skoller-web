@@ -63,8 +63,10 @@ class SyllabusTool extends React.Component {
   */
   initializeState () {
     const {state} = this.props.location
+    console.log({state})
     let {navbarStore} = this.props.rootStore
     navbarStore.cl = null
+    navbarStore.isInsights = state.isInsights || false
     navbarStore.isDIY = state.isDIY || false
     navbarStore.weightId = state.weightId || false
     return {
@@ -124,7 +126,11 @@ class SyllabusTool extends React.Component {
     actions.classes.lockClass(classId, form).then(() => {
     }).catch((error) => {
       if (error === 409 && navbarStore.isDIY) {
-        this.props.history.push('/student/classes')
+        if (navbarStore.isInsights) {
+          this.props.history.goBack()
+        } else {
+          this.props.history.push('/student/classes')
+        }
       }
     })
   }
@@ -169,7 +175,11 @@ class SyllabusTool extends React.Component {
           this.getNextClass()
         }
       } else {
-        this.props.history.push('/student/classes')
+        if (navbarStore.isInsights) {
+          this.props.history.goBack()
+        } else {
+          this.props.history.push('/student/classes')
+        }
       }
     }).catch(() => {
       this.setState({submitting: false})
@@ -494,6 +504,13 @@ class SyllabusTool extends React.Component {
   renderBackToClasses () {
     const {navbarStore} = this.props.rootStore
     if (navbarStore.isDIY) {
+      if (navbarStore.isInsights) {
+        return (
+          <div className='cn-syllabus-tool-back-button' onClick={() => this.props.history.goBack()}>
+            <span>👈</span> Back to athlete
+          </div>
+        )
+      }
       return (
         <div className='cn-syllabus-tool-back-button' onClick={() => this.onBackToClasses()}>
           <span>👈</span> Back to classes

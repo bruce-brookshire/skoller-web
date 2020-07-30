@@ -21,7 +21,8 @@ export default class StatusIndicators extends Component {
     student: PropTypes.object,
     invitation: PropTypes.object,
     group: PropTypes.object,
-    hideNumbers: PropTypes.bool
+    hideNumbers: PropTypes.bool,
+    hideTooltip: PropTypes.bool
   }
 
   componentDidMount () {
@@ -119,21 +120,37 @@ export default class StatusIndicators extends Component {
   }
 
   renderHovering () {
-    if (!this.state.hovering || !this.props.group) return null
+    if (!this.state.hovering) return null
 
-    const {hovering} = this.state
-    let ref = this.noClassesRef
-    let text = 'Students with no classes'
-    if (hovering === 'noAccount') {
-      text = 'Students who have not verified their account'
-      ref = this.noAccountRef
-    } else if (hovering === 'noSetup') {
-      ref = this.noSetupRef
-      text = "Students with classes that aren't set up"
+    if (!this.state.group) {
+      const {hovering} = this.state
+      let ref = this.noClassesRef
+      let text = 'No classes'
+      if (hovering === 'noAccount') {
+        text = 'Account not activated'
+        ref = this.noAccountRef
+      } else if (hovering === 'noSetup') {
+        ref = this.noSetupRef
+        text = 'Has classes that are not set up'
+      }
+      return (
+        <div className='hover-container' style={{left: ref ? ref.offsetLeft - 36 : null}}>{text}</div>
+      )
+    } else {
+      const {hovering} = this.state
+      let ref = this.noClassesRef
+      let text = 'Students with no classes'
+      if (hovering === 'noAccount') {
+        text = 'Students who have not verified their account'
+        ref = this.noAccountRef
+      } else if (hovering === 'noSetup') {
+        ref = this.noSetupRef
+        text = "Students with classes that aren't set up"
+      }
+      return (
+        <div className='hover-container' style={{left: ref ? ref.offsetLeft - 36 : null}}>{text}</div>
+      )
     }
-    return (
-      <div className='hover-container' style={{left: ref ? ref.offsetLeft - 36 : null}}>{text}</div>
-    )
   }
 
   render () {

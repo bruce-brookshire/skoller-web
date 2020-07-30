@@ -237,9 +237,13 @@ class InsightsStore {
               r.weights.forEach(w => {
                 totalWeight += w.weight
               })
-              a.weight = (r.weights.find(w => w.id === a.weight_id).weight / r.assignments.filter(as => as.weight_id === a.weight_id, 0).length) / totalWeight
+              if (a.weight_id) {
+                a.weight = (r.weights.find(w => w.id === a.weight_id).weight / r.assignments.filter(as => as.weight_id === a.weight_id, 0).length) / totalWeight
+              } else {
+                a.weight = 0
+              }
             } else {
-              a.weight = r.weights.find(w => w.id === a.weight_id).weight / r.assignments.filter(as => as.weight_id === a.weight_id, 0).length
+              a.weight = (r.weights.find(w => w.id === a.weight_id).weight / 100) / r.assignments.filter(as => as.weight_id === a.weight_id, 0).length
             }
             a.class_id = r.id
           })
@@ -269,7 +273,10 @@ class InsightsStore {
         30: 0
       },
       isInvitation: true,
-      org_groups: []
+      org_groups: [],
+      getOrgGroups: () => {
+        return i.group_ids.map(gid => this.groups.find(g => g.id === gid))
+      }
     }
   }
 

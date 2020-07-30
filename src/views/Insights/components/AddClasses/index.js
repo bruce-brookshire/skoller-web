@@ -6,14 +6,18 @@ import actions from '../../../../actions'
 import { inject, observer } from 'mobx-react'
 import moment from 'moment'
 import { withRouter } from 'react-router-dom'
+import { showSnackbar } from '../../../../utilities/snackbar'
 
 const FindSchool = (props) => {
   const [query, setQuery] = React.useState('')
   const [schools, setSchools] = React.useState([])
-  const search = () => {
+  const [queryId, setQueryId] = React.useState(0)
+  const search = (id) => {
     actions.schools.searchSchools(query)
       .then(r => {
-        setSchools(r)
+        if (id === queryId) {
+          setSchools(r)
+        }
       })
   }
 
@@ -22,7 +26,8 @@ const FindSchool = (props) => {
       <h1>Search for a school</h1>
       <input style={{width: '100%'}} value={query} placeholder={'Search for a school'} onChange={(e) => {
         setQuery(e.target.value)
-        search()
+        setQueryId(queryId + 1)
+        search(queryId)
       }} />
       <div style={{height: '256px', overflow: 'auto', border: '1px solid lightgray', borderRadius: '5px'}}>{schools.length > 0 &&
         schools.map(s => {
@@ -46,7 +51,7 @@ const FindPeriod = (props) => {
   let periods = props.school.periods || props.school.class_periods
   if (!periods) return null
 
-  periods = periods.sort((a, b) => moment(a.start_date).isBefore(moment(b.start_date)) ? 1 : -1)
+  periods = periods.sort((a, b) => moment(a.start_date).isBefore(moment(b.start_date)) ? 1 : -1).filter(p => moment(p.end_date).isAfter(moment()))
   return (
     <div className='si-add-classes-period'>
       <div className='row'>
@@ -146,6 +151,10 @@ class AddClasses extends Component {
 
   onSelectSchool (school) {
     actions.insights.settings.addSchoolToOrg(this.props.rootStore.insightsStore.org.id, school.id)
+      .then(r => {
+        console.log(r)
+        showSnackbar('Set ' + r.schools[0].name + ' as primary school', 'success')
+      })
     let period
     let form
     if (school) {
@@ -196,7 +205,7 @@ class AddClasses extends Component {
 
   renderModal () {
     return (
-      <SkModal closeModal={() => this.setState({show: false})}>
+      <SkModal disableOutsideClick closeModal={() => this.setState({show: false})}>
         <div className='si-add-classes'>
           {this.state.form === 'school' && <FindSchool onSubmit={(school) => this.onSelectSchool(school)} />}
           {this.state.form === 'period' && <FindPeriod editSchool={() => this.setState({form: 'school'})} school={this.state.school} onSelectPeriod={(p) => this.onSelectPeriod(p)} />}

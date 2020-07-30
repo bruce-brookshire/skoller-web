@@ -10,17 +10,22 @@ class Watchlist extends React.Component {
     const days = this.props.rootStore.insightsStore.interfaceSettings.timeframe
     let intensityString = days
     let value
+    let sort = this.props.rootStore.insightsStore.interfaceSettings.sort
 
-    switch (this.props.rootStore.insightsStore.interfaceSettings.sort) {
+    switch (sort) {
       case 'Assignments':
         value = getAssignmentCountInNextNDays(d.assignments, days)
         break
       case 'Grade Impact':
         value = getAssignmentWeightsInNextNDays(d.assignments, days) + '%'
         break
-      case 'Personal Intensity':
+      case 'Stress score':
         value = d.intensity[intensityString]
         break
+    }
+
+    if (sort === 'Stress score') {
+      return <div className='si-smart-tracker-value'>{value} <span>out of</span> 10</div>
     }
 
     return <div className='si-smart-tracker-value'>{value}</div>
@@ -48,7 +53,7 @@ class Watchlist extends React.Component {
           }
         })
 
-      case 'Personal Intensity':
+      case 'Stress score':
         let intensityString = days
         return students.sort((a, b) => {
           if (a.intensity[intensityString] < b.intensity[intensityString]) {

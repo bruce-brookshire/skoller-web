@@ -176,6 +176,13 @@
         font-size: 28px;
         font-weight: 600;
         margin-top: 20px;
+        min-width: 102px;
+        text-align: right;
+
+        span {
+          font-size: 14px;
+          font-weight: 400;
+        }
 
         &.no-classes {
           position: relative;
