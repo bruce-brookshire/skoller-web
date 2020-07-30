@@ -23,3 +23,13 @@
     }
   }
 }
+
+.hide-carrot {
+  .sk-select {
+    .sk-select-selection {
+      &:after {
+        display: none !important;
+      }
+    }
+  }
+}

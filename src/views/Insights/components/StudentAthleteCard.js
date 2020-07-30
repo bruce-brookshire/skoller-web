@@ -30,6 +30,7 @@ const StudentAthleteCard = (props) => {
             </div>}
           </div>
         </div>
+        <Link to={link} className={'si-sa-card-background'} />
       </div>
     )
   }

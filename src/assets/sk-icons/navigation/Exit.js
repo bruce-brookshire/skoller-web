@@ -24,13 +24,13 @@ class Exit extends React.Component {
     }
 
     if (givenFillColor) {
+      fillColor = givenFillColor
+
       Object.keys(skColors).forEach(function (item) {
         if (givenFillColor === item) {
           fillColor = skColors[item]
         }
       })
-    } else {
-      fillColor = '#4a4a4a'
     }
 
     return fillColor

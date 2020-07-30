@@ -77,7 +77,10 @@ export default class SiTasksList extends Component {
       <div className='si-tasks-list'>
         <div className='si-tasks-list-detail'>
           <div>
-            {this.props.user.student.name_first} has <b>{taskDisplayCount} assignment{(taskDisplayCount > 1 || taskDisplayCount === 0) ? 's' : ''}</b> due in the next {this.props.maxDays} days.
+            {this.props.user.assignments.length > 0
+              ? <div>{this.props.user.student.name_first} has <b>{taskDisplayCount} assignment{(taskDisplayCount > 1 || taskDisplayCount === 0) ? 's' : ''}</b> due in the next {this.props.maxDays} days.</div>
+              : <div>{this.props.user.student.name_first} has no to-do&apos;s.</div>
+            }
           </div>
         </div>
         <div className='si-tasks-list-tasks'>

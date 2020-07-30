@@ -75,7 +75,7 @@ class HomeInsights extends React.Component {
       } else if (this.state.type === 'Distribution') {
         return (
           <div style={{margin: '2rem 1rem 1rem 1rem'}}>
-            <Distribution />
+            <Distribution assignments={this.props.rootStore.studentAssignmentsStore.assignments} />
           </div>
         )
       } else if (this.state.type === 'Progress') {

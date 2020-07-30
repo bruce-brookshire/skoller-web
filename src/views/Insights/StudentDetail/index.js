@@ -12,6 +12,8 @@ import CopyCell from '../components/CopyCell'
 import AddClasses from '../components/AddClasses'
 import LoadingIndicator from '../components/LoadingIndicator'
 import { withRouter } from 'react-router-dom'
+import { getAssignmentCountInNextNDays, getAssignmentWeightsInNextNDays, optionalPlural } from '../utils'
+import StatusIndicators from '../components/StatusIndicators'
 
 @inject('rootStore') @observer
 class StudentDetail extends React.Component {
@@ -94,12 +96,25 @@ class StudentDetail extends React.Component {
             {!this.props.invitation && <div className='watch-toggle-container'>
               <WatchToggle rootStore={this.props.rootStore} showConfirm={true} user={user} />
             </div>}
+            <StatusIndicators student={user.isInvitation ? false : user} invitation={user.isInvitation ? user : false} />
             <LoadingIndicator />
           </div>
           <div className='sa-teams'>
             {this.renderGroups(user)}
           </div>
         </div>
+      </div>
+    )
+  }
+
+  renderSummary (user) {
+    let timeframe = this.props.rootStore.insightsStore.interfaceSettings.timeframe
+    const assignmentCount = getAssignmentCountInNextNDays(user.assignments, timeframe)
+    const weightsTotal = getAssignmentWeightsInNextNDays(user.assignments, timeframe)
+
+    return (
+      <div className='si-student-detail-summary'>
+        In the next {timeframe} days, {user.student.name_first} has <b>{optionalPlural(assignmentCount, ' # assignment@ ')}</b> due worth <b> {weightsTotal}% </b> of their grade.
       </div>
     )
   }
@@ -141,7 +156,7 @@ class StudentDetail extends React.Component {
     return (
       <div className='si-student-detail-header-right'>
         {this.renderTimeframeSelect()}
-        {this.renderStatuses()}
+        {/* {this.renderStatuses()} */}
       </div>
     )
   }
@@ -150,7 +165,7 @@ class StudentDetail extends React.Component {
     return (
       <div className='si-student-detail-cell classes'>
         <div style={{display: 'flex'}}>
-          <h2>Classes</h2>
+          <h1>Classes</h1>
           <AddClasses autoShow={this.state.autoShowAddClasses} user={this.user()}><span className='classes-plus' style={{cursor: 'pointer'}}><i className='fas fa-plus' /></span></AddClasses>
         </div>
         {this.renderClasses()}
@@ -161,7 +176,7 @@ class StudentDetail extends React.Component {
   renderTasksCell () {
     return (
       <div className='si-student-detail-cell tasks'>
-        <h2>To-Do&apos;s</h2>
+        <h1>To-Do&apos;s</h1>
         {this.renderTasks()}
       </div>
     )
@@ -179,16 +194,17 @@ class StudentDetail extends React.Component {
                 {this.renderAthlete(user)}
                 {this.renderHeaderRight()}
               </div>
+              {this.renderSummary(user)}
             </div>
             <div className='si-student-detail-cell contact'>
-              <h2>Semester Outlook</h2>
+              <h1>Overview</h1>
               <StudentInsights user={user} classes={this.user().classes} />
             </div>
             {user.assignments.length > 0 && this.renderClassesCell()}
           </div>
           <div className='si-student-detail-column sm'>
             <div className='si-student-detail-cell contact'>
-              <h2>Contact</h2>
+              <h1>Contact</h1>
               <div className='si-student-detail-contact'>
                 {Array.isArray(user.student.users) &&
                   <p><i className='fas fa-envelope' /> <a style={{marginTop: '4px'}} className='link-style' href={'mailto:' + user.student.users[0].email}>{user.student.users[0].email}</a></p>
