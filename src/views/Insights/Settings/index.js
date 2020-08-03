@@ -4,6 +4,7 @@ import { inject, observer } from 'mobx-react'
 import SiToggle from '../components/forms/SiToggle'
 import {Cookies} from 'react-cookie'
 import { Link } from 'react-router-dom'
+import AdminSettings from './AdminSettings'
 
 @inject('rootStore') @observer
 class Settings extends Component {
@@ -18,6 +19,19 @@ class Settings extends Component {
     const currentDarkMode = this.props.rootStore.insightsStore.darkMode
     this.cookie.set('skollerInsightsDarkMode', !currentDarkMode, { maxAge: 86400 * 270, path: '/' })
     this.props.rootStore.insightsStore.getDarkModeCookie()
+  }
+
+  onOrgSelect = (id) => {
+    if (this.props.rootStore.insightsStore.orgSelection !== id) {
+      this.cookie.set('skollerInsightsOrgSelection', id, { maxAge: 86400 * 270, path: '/' })
+    }
+
+    this.props.rootStore.insightsStore.switchOrg()
+  }
+
+  renderAdminSettings () {
+    const user = this.props.rootStore.userStore.user
+    return <AdminSettings currentOrgId={this.props.rootStore.insightsStore.org.id} onOrgSelect={this.onOrgSelect} user={user} rootStore={this.props.rootStore} />
   }
 
   render () {
@@ -40,6 +54,7 @@ class Settings extends Component {
               }}>Reset your password</Link>
             </div>
           </div>
+          {this.renderAdminSettings()}
         </div>
       </div>
     )

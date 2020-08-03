@@ -26,6 +26,7 @@ class InsightsStore {
         timeframeOptions: [7, 14, 30]
       },
       darkMode: this.cookie.get('skollerInsightsDarkMode') === 'true',
+      orgSelection: parseInt(this.cookie.get('skollerInsightsOrgSelection')),
       userType: null
     })
   }
@@ -159,7 +160,7 @@ class InsightsStore {
   }
 
   async getOrgOwnerWatchlist (orgId) {
-    await actions.insights.getOrgOwnerWatchlist(orgId, stores.userStore.user.org_owners[0].id)
+    await actions.insights.getOrgOwnerWatchlist(orgId, this.getProperOrg(stores.userStore.user))
       .then(r => {
         let students = r.map(s => { return {...s, orgStudentId: s.id} })
         this.watchlist = students
@@ -306,11 +307,23 @@ class InsightsStore {
     }
   }
 
+  getProperOrg = (user) => {
+    if (user.org_owners.length > 0) {
+      if (this.orgSelection) {
+        return this.orgSelection
+      } else {
+        return user.org_owners[0].organization_id
+      }
+    } else {
+      return user.org_group_owners[0].organization_id
+    }
+  }
+
   async getAllData (filters) {
     const user = stores.userStore.user
     const role = this.getRole(user)
     this.userType = role
-    const orgId = user.org_owners.length > 0 ? user.org_owners[0].organization_id : user.org_group_owners[0].organization_id
+    const orgId = this.getProperOrg(user)
 
     if (!filters || filters.includes('invitations')) {
       await this.getInvitations(orgId)
@@ -406,6 +419,12 @@ class InsightsStore {
   @action
   getDarkModeCookie () {
     this.darkMode = this.cookie.get('skollerInsightsDarkMode') === 'true'
+  }
+
+  @action
+  switchOrg () {
+    this.orgSelection = this.cookie.get('skollerInsightsOrgSelection')
+    this.getData()
   }
 }
 
