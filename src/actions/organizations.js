@@ -1,4 +1,4 @@
-import {get, post, put, del} from '../utilities/api'
+import {get, post, put, del, putFile} from '../utilities/api'
 
 /*
 * Get organizations
@@ -54,4 +54,32 @@ export function deleteOrganization (id) {
     .catch(error => {
       return Promise.reject(error)
     })
+}
+
+export function addOrgLogo (file, orgId) {
+  let form
+  if (file !== '' && file !== null) {
+    form = new FormData()
+    form.append('file', file, `${orgId}_logo.jpg`)
+
+    return putFile(`/api/v1/organizations/${orgId}`, form, 'Error saving logo. Try again later.')
+      .then(data => {
+        return data
+      })
+      .catch(error => {
+        return Promise.reject(error)
+      })
+  } else {
+    form = {
+      'file': ''
+    }
+
+    return put(`/api/v1/users/${orgId}`, form, 'Error saving logo. Try again later.')
+      .then(data => {
+        return data
+      })
+      .catch(error => {
+        return Promise.reject(error)
+      })
+  }
 }

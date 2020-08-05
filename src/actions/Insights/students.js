@@ -1,4 +1,4 @@
-import {get, post, postFile, del} from '../../utilities/api'
+import {get, post, del} from '../../utilities/api'
 // import stores from '../../stores'
 
 // const {userStore} = stores
@@ -53,9 +53,18 @@ export function dropClass (classId, studentId) {
   })
 }
 
+export function checkOrgInvites (studentId) {
+  return get(
+    `/api/v1/students/${studentId}/student-org-invitations`
+  ).catch(error => {
+    return Promise.reject(error)
+  })
+}
+
 const exports = {
   enrollInClass,
-  dropClass
+  dropClass,
+  checkOrgInvites
 }
 
 export default exports

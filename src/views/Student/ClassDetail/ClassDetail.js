@@ -68,7 +68,7 @@ class ClassDetail extends React.Component {
           <i className='fas fa-plus' style={{fontSize: '16px', marginTop: '-2px', fontWeight: '600'}} />{emptyWeights.length > 0 ? <div className='add-assignment-button-alert'><div className='add-assignment-button-alert-count'>{emptyWeights.length}</div></div> : null}
         </a>
         { this.state.showAddAssignmentModal
-          ? <AddAssignment onSubmit={() => this.props.updateClass()} closeModal={() => this.setState({showAddAssignmentModal: false})} assignmentParams={{class: this.getCurrentClass()}}/>
+          ? <AddAssignment classes={this.props.classes} insightsUserStudentId={this.props.insightsUserStudentId ? this.props.insightsUserStudentId : false} onSubmit={() => this.props.updateClass()} closeModal={() => this.setState({showAddAssignmentModal: false})} assignmentParams={{class: this.getCurrentClass()}}/>
           : null
         }
       </div>
@@ -160,7 +160,9 @@ ClassDetail.propTypes = {
   onCompleteAssignment: PropTypes.func,
   editAssignment: PropTypes.func,
   onDeleteAssignment: PropTypes.func,
-  activeAssignmentId: PropTypes.number
+  activeAssignmentId: PropTypes.number,
+  insightsUserStudentId: PropTypes.number,
+  classes: PropTypes.array
 }
 
 export default withRouter(ClassDetail)

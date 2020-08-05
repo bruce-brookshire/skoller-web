@@ -96,7 +96,7 @@ class Tasks extends React.Component {
             </p>
             <div className='tasks-add-new' onClick={() => this.setState({showAddAssignmentModal: true})}><i className='fas fa-plus' /></div>
             <TasksList outlook={this.state.outlookChoice} displayCountCallback={(displayCount) => this.setState({displayCount})} />
-            {this.state.showAddAssignmentModal && <AddAssignment assignmentParams={{}} closeModal={() => this.setState({showAddAssignmentModal: false})} />}
+            {this.state.showAddAssignmentModal && <AddAssignment classes={this.props.rootStore.studentClassesStore.classes} assignmentParams={{}} closeModal={() => this.setState({showAddAssignmentModal: false})} />}
           </div>
         </div>
       </StudentLayout>
