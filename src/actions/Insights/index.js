@@ -271,7 +271,10 @@ function getOrgOwnerWatchlist (orgId, orgOwnerId) {
 function addStudentToOrgOwnerWatchlist (orgId, orgOwnerId, orgStudentId) {
   let form = {org_student_id: orgStudentId, inserted_at: (new Date().toISOString()).split('.')[0]}
   return post(`/api/v1/organizations/${orgId}/owners/${orgOwnerId}/watchlists`, form, '')
-    .then(r => { return r })
+    .then(r => {
+      console.log('form', form)
+      return r
+    })
     .catch(e => Promise.reject(e))
 }
 

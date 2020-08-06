@@ -61,12 +61,29 @@ export function postInvitationsCSV (orgId, file, orgGroupId) {
     })
 }
 
+export function acceptInvitation (orgId, invitationId) {
+  const form = {
+    'accepts': 'true'
+  }
+
+  return post(`/api/v1/organizations/${orgId}/student-org-invitations/${invitationId}/respond`, form, '')
+    .then(data => {
+      showSnackbar('Successfully accepted invitation.', 'success')
+      return data
+    })
+    .catch(error => {
+      showSnackbar('Error accepting invitation. Try again later.')
+      return Promise.reject(error)
+    })
+}
+
 const exports = {
   createStudentInvitation,
   getStudentInvitations,
   deleteInvitation,
   postInvitationsCSV,
-  editInvitation
+  editInvitation,
+  acceptInvitation
 }
 
 export default exports

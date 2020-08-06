@@ -3,11 +3,12 @@ import { inject, observer } from 'mobx-react'
 import PropTypes from 'prop-types'
 import partners from '../../../views/Student/Onboard/partners'
 import { withRouter } from 'react-router-dom'
-import SkollerJobsSwitch from '../../../assets/sk-icons/jobs/SkollerJobsSwitch'
-import SkollerSwitch from '../../../assets/sk-icons/jobs/SkollerSwitch'
 import ForwardArrow from '../../../assets/sk-icons/navigation/ForwardArrow'
 import BackArrow from '../../../assets/sk-icons/navigation/BackArrow'
-import JobsSwitch from '../../../components/NavBar/JobsSwitch';
+import JobsSwitch from '../../../components/NavBar/JobsSwitch'
+import actions from '../../../actions'
+import SkModal from '../../components/SkModal/SkModal'
+import InvitationTermsAgreement from '../../Student/components/InvitationTermsAgreement'
 
 @inject('rootStore') @observer
 class SkBanner extends React.Component {
@@ -16,7 +17,8 @@ class SkBanner extends React.Component {
 
     this.state = {
       banners: [],
-      currentBanner: null
+      currentBanner: null,
+      showInviteModal: false
     }
   }
 
@@ -42,7 +44,16 @@ class SkBanner extends React.Component {
       banners.push('jobs')
     }
 
-    this.setState({banners, currentBanner: banners[0]})
+    let invitation
+    await actions.insights.students.checkOrgInvites(this.props.rootStore.userStore.user.student.id)
+      .then((r) => {
+        if (r.length > 0) {
+          invitation = r[0]
+          banners.unshift('invites')
+        }
+      })
+
+    this.setState({banners, invitation, currentBanner: banners[0]})
   }
 
   hasCompletedClass () {
@@ -220,6 +231,30 @@ class SkBanner extends React.Component {
     }
   }
 
+  renderInviteAcceptBanner () {
+    if (this.state.banners.includes('invites')) {
+      return (
+        <div className='sk-banner-jobs'>
+          <p>You have a pending invitation</p>
+          <div onClick={() => this.setState({showInviteModal: true})} className='si-button' style={{marginLeft: 16}}><p style={{paddingTop: 8}}><b>Review</b></p></div>
+        </div>
+      )
+    }
+  }
+
+  renderInviteModal () {
+    if (this.state.showInviteModal) {
+      return (
+        <SkModal closeModal={() => this.setState({showInviteModal: false})}>
+          <InvitationTermsAgreement user={this.props.rootStore.userStore.user} invitation={this.state.invitation} onSubmit={() => {
+            this.setState({showInviteModal: false})
+            this.getBannerChoices()
+          }} />
+        </SkModal>
+      )
+    }
+  }
+
   renderContent () {
     return (
       <div>
@@ -227,9 +262,11 @@ class SkBanner extends React.Component {
           {this.renderBackArrow()}
           {this.state.currentBanner === 'partner' && this.renderPartnerBanner()}
           {this.state.currentBanner === 'jobs' && this.renderJobsBanner()}
+          {this.state.currentBanner === 'invites' && this.renderInviteAcceptBanner()}
           {this.renderForwardArrow()}
         </div>
         {this.renderBannerIndicator()}
+        {this.renderInviteModal()}
       </div>
     )
   }
@@ -261,7 +298,8 @@ SkBanner.propTypes = {
   rootStore: PropTypes.object,
   style: PropTypes.object,
   state: PropTypes.string,
-  hideText: PropTypes.bool
+  hideText: PropTypes.bool,
+  history: PropTypes.object
 }
 
 export default withRouter(SkBanner)

@@ -119,6 +119,7 @@ export function postFile (path, form, errMsg) {
 }
 
 export function putFile (path, form, errMsg) {
+  console.log(path, form, errMsg)
   return fetch(`${Environment.SERVER_NAME}${path}`, {
     method: 'PUT',
     headers: {

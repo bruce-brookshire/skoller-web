@@ -1,13 +1,15 @@
 .si-settings-container {
   width: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
 
   .si-settings {
     padding: 2rem;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
     flex-wrap: wrap;
     max-width: 1400px;
@@ -17,6 +19,7 @@
       @include si-cell;
       padding: 1rem;
       min-width: 380px;
+      margin-bottom: 1rem;
 
       h1 {
         margin: 0;
@@ -28,6 +31,34 @@
         flex-direction: row;
         justify-content: space-between;
         padding: 1rem 0 0 0;
+      }
+
+      .si-settings-admin {
+        .si-settings-admin-orgs {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+
+          .org-active {
+            background-color: $sk-blue;
+            color: white;
+          }
+
+          .org-inactive {
+            background-color: white;
+            border: 1px solid $sk-blue;
+            &:hover {
+              background-color: #fafafa;
+            }
+          }
+
+          .org {
+            padding: 8px 4px 2px 4px;
+            margin: 0 0 8px 0;
+            border-radius: 5px;
+            cursor: pointer;
+          }
+        }
       }
     }
   }

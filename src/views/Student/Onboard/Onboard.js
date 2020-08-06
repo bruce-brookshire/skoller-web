@@ -13,6 +13,8 @@ import { withRouter } from 'react-router-dom'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import SharePartner from './SharePartner'
 import Layout from './Layout'
+import InvitationTermsAgreement from '../components/InvitationTermsAgreement'
+import EnrollDownload from './EnrollLink/EnrollDownload'
 
 @inject('rootStore') @observer
 class Onboard extends React.Component {
@@ -29,7 +31,8 @@ class Onboard extends React.Component {
       loading: true,
       user: this.props.rootStore.userStore.user !== undefined ? this.props.rootStore.userStore.user : null,
       backData: null,
-      redirect: false
+      redirect: false,
+      hasOutstandingInvite: false
     }
 
     this.cookie = new Cookies()
@@ -57,16 +60,14 @@ class Onboard extends React.Component {
         if (this.props.params.partner) {
           this.setState({partner: null, redirect: true})
           this.props.history.push(('/student/share/' + this.props.params.partner))
-          console.log('but')
           hasPartner = false
         }
       })
     return new Promise(resolve => resolve(hasPartner))
   }
 
-  async loginStudent () {
+  async loginStudent (getStep = false) {
     if (this.cookie.get('skollerToken')) {
-      console.log('0')
       await actions.auth.getUserByToken(this.cookie.get('skollerToken')).catch((r) => console.log(r))
       await this.getPartnerByUser() // <-- sets onboard to partner state if user signed up through custom link
         .then(r => {
@@ -84,6 +85,10 @@ class Onboard extends React.Component {
         this.props.history.push('/landing')
       }
     }
+
+    if (getStep) {
+      this.getStep()
+    }
   }
 
   updateStudent () {
@@ -93,7 +98,6 @@ class Onboard extends React.Component {
   }
 
   async getStep () {
-    console.log('getStep')
     const user = this.state.user
     let classNumber = 0
     if (user) {
@@ -115,6 +119,14 @@ class Onboard extends React.Component {
     } else {
       this.props.history.push('/student')
     }
+
+    await actions.insights.students.checkOrgInvites(this.props.rootStore.userStore.user.student.id)
+      .then(r => {
+        if (r.length > 0) {
+          this.setState({hasOutstandingInvite: r[0], step: 'acceptInvitation'})
+        }
+      })
+
     this.setState({loading: false})
   }
 
@@ -128,8 +140,19 @@ class Onboard extends React.Component {
     return partner
   }
 
-  onVerificationSubmit = () => {
-    this.setState({step: 'select-school'})
+  onVerificationSubmit = async () => {
+    await actions.insights.students.checkOrgInvites(this.props.rootStore.userStore.user.student.id)
+      .then(r => {
+        if (r.length > 0) {
+          this.setState({hasOutstandingInvite: r[0]})
+        }
+      })
+
+    if (this.state.hasOutstandingInvite) {
+      this.setState({step: 'acceptInvitation'})
+    } else {
+      this.setState({step: 'select-school'})
+    }
   }
 
   renderVerify () {
@@ -247,6 +270,23 @@ class Onboard extends React.Component {
     )
   }
 
+  renderAcceptInvitation () {
+    return (
+      <InvitationTermsAgreement user={this.props.rootStore.userStore.user} invitation={this.state.hasOutstandingInvite} onSubmit={() => {
+        if (this.props.rootStore.navStore.mobile) {
+          this.setState({step: 'download'})
+        } else {
+          this.loginStudent(true)
+          // this.setState({step: 'select-school'})
+        }
+      }} />
+    )
+  }
+
+  renderDownload () {
+    return <EnrollDownload />
+  }
+
   render () {
     return (
       (this.state.loading)
@@ -254,6 +294,12 @@ class Onboard extends React.Component {
           <SkLoader />
         </div>
         : <Layout id='onboard-layout' hideModal={this.state.step === 'verify' || this.state.step === 'first-class'}>
+          {(this.state.step === 'acceptInvitation') &&
+            this.renderAcceptInvitation()
+          }
+          {(this.state.step === 'download') &&
+            this.renderDownload()
+          }
           {(this.state.step === 'sign-up')
             ? this.renderSignUp()
             : null

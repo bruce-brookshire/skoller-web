@@ -4,18 +4,70 @@ import { inject, observer } from 'mobx-react'
 import SkModal from '../../components/SkModal/SkModal'
 import DragAndDrop from '../../components/DragAndDrop/DragAndDrop'
 import { optionalPlural } from '../utils'
+import Exit from '../../../assets/sk-icons/navigation/Exit'
+import actions from '../../../actions'
 
 function UploadLogo (props) {
   const [showModal, setShowModal] = React.useState(false)
+  const [file, setFile] = React.useState(null)
+  const [preview, setPreview] = React.useState(null)
+
+  const org = props.rootStore.insightsStore.org
+
+  React.useEffect(() => {
+    if (org.logo_url) {
+      setPreview(org.logo_url)
+    }
+  }, [])
+
+  const handleDrop = (files) => {
+    setFile(files[0])
+    setPreview(URL.createObjectURL(files[0]))
+  }
+
+  const renderPreview = () => {
+    return (
+      <div className='jobs-avatar-modal-image-preview'>
+        <div className='image-preview' style={{backgroundImage: preview ? `url(${preview})` : `url(${null})`}}>
+          <div onClick={() => {
+            setFile(null)
+            setPreview(null)
+          }} className='clear-image'>
+            <div className='exit'>
+              <Exit fill={'jobs'} height={'12px'} width={'12px'} />
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const submit = () => {
+    actions.organizations.addOrgLogo(file, props.rootStore.insightsStore.org.id)
+      .then(() => {
+        props.onSubmit()
+        setShowModal(false)
+      })
+  }
+
   return (
     <React.Fragment>
-      <div onClick={() => setShowModal(true)} className='si-upload-logo-box'>
-        <p>Upload a<br />logo</p>
+      <div
+        onClick={() => setShowModal(true)}
+        className={'si-upload-logo-box' + (org.logo_url ? ' has-image' : '')}
+        style={{
+          backgroundImage: org.logo_url ? `url(${org.logo_url})` : null,
+          backgroundPosition: 'center',
+          backgroundSize: 'cover'
+        }}
+      >
+        {!org.logo_url && <p>Upload a<br />logo</p>}
       </div>
       {showModal && <SkModal title={'Upload a logo'} closeModal={() => setShowModal(false)}>
         <div className='si-upload-logo'>
-          <DragAndDrop>Click or drop logo here</DragAndDrop>
-          <div className='si-button'><p>Submit</p></div>
+          {preview && renderPreview()}
+          {!preview && <DragAndDrop handleDrop={handleDrop} >Click or drop logo here</DragAndDrop>}
+          {preview && <div className='si-button'><p onClick={() => submit()}>Submit</p></div>}
         </div>
       </SkModal>}
     </React.Fragment>
@@ -23,7 +75,8 @@ function UploadLogo (props) {
 }
 
 UploadLogo.propTypes = {
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  onSubmit: PropTypes.func
 }
 
 @inject('rootStore') @observer
@@ -58,7 +111,7 @@ class OrgOverview extends React.Component {
 
   renderAddLogo () {
     return (
-      <UploadLogo rootStore={this.props.rootStore} />
+      <UploadLogo onSubmit={() => this.props.rootStore.insightsStore.updateData(['org'])} rootStore={this.props.rootStore} />
     )
   }
 

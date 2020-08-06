@@ -84,7 +84,7 @@ class WeekCell extends React.Component {
         onMouseLeave={() => this.setHoverStateFalse()}
       >
         {this.state.showAddAssignmentModal ? (
-          <AddAssignment closeModal={this.closeModal} assignmentParams={{due: this.props.day}}/>
+          <AddAssignment classes={this.props.rootStore.studentClassesStore.classes} closeModal={this.closeModal} assignmentParams={{due: this.props.day}}/>
         ) : null}
         <div
           className={
@@ -133,7 +133,8 @@ WeekCell.propTypes = {
   day: PropTypes.object,
   classColors: PropTypes.object,
   thisWeek: PropTypes.object,
-  assignments: PropTypes.object
+  assignments: PropTypes.object,
+  rootStore: PropTypes.object
 }
 
 export default WeekCell

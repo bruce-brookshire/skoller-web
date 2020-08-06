@@ -32,7 +32,7 @@ class AddAssignment extends Component {
       classes: [],
       selectedClass: {},
       selectedStudentClass: null,
-      studentId: this.props.rootStore.userStore.user.student.id,
+      studentId: this.props.insightsUserStudentId ? this.props.insightsUserStudentId : this.props.rootStore.userStore.user.student.id,
 
       // visibility stuff
       showClassField: true,
@@ -57,15 +57,10 @@ class AddAssignment extends Component {
       this.setState({selectedStudentClass: this.props.assignmentParams.class})
       let selectedClassId = this.props.assignmentParams.class.id
       let newAssignment = this.state.newAssignment
-      actions.classes
-        .getStudentClass(this.state.studentId, selectedClassId)
-        .then(selectedStudentClass => {
-          newAssignment.class = selectedStudentClass
-          this.setState({
-            selectedStudentClass: selectedStudentClass,
-            newAssignment: newAssignment
-          })
-        })
+      let selectedStudentClass = this.props.classes.find(cl => cl.id === this.props.assignmentParams.class.id)
+      newAssignment.class = selectedStudentClass
+      this.state = {...this.state, selectedStudentClass, newAssignment}
+      console.log(selectedStudentClass, newAssignment, this.state)
       actions.classes.getClassById(selectedClassId).then(selectedClass => {
         this.getClassWeights(selectedClass.id)
         this.setState({
@@ -78,15 +73,13 @@ class AddAssignment extends Component {
 
   // create the class list after component mounts
   componentDidMount () {
-    actions.classes
-      .getStudentClassesById(this.state.studentId)
-      .then(classes => {
-        this.setState({ classes: classes })
-      })
+    this.setState({ classes: this.props.classes })
 
     if (this.props.assignmentParams.classId) {
       this.getClassWeights(this.props.assignmentParams.classId)
     }
+
+    console.log(this.state)
   }
 
   // get the class user selects
@@ -100,15 +93,21 @@ class AddAssignment extends Component {
     if (this.state.selectedClass.id === selectedClassId) {
       newAssignment.weight_id = null
     }
-    await actions.classes
-      .getStudentClass(this.state.studentId, selectedClassId)
-      .then(selectedStudentClass => {
-        newAssignment.class = selectedStudentClass
-        this.setState({
-          selectedStudentClass: selectedStudentClass,
-          newAssignment: newAssignment
-        })
-      })
+    let selectedStudentClass = this.props.classes.find(cl => cl.id === selectedClassId)
+    newAssignment.class = selectedStudentClass
+    this.setState({
+      selectedStudentClass,
+      newAssignment
+    })
+    // await actions.classes
+    //   .getStudentClass(this.state.studentId, selectedClassId)
+    //   .then(selectedStudentClass => {
+    //     newAssignment.class = selectedStudentClass
+    //     this.setState({
+    //       selectedStudentClass: selectedStudentClass,
+    //       newAssignment: newAssignment
+    //     })
+    //   })
     actions.classes.getClassById(selectedClassId).then(selectedClass => {
       this.getClassWeights(selectedClassId)
       this.setState({
@@ -253,7 +252,6 @@ class AddAssignment extends Component {
           actions.assignments.getAllStudentAssignments(this.state.studentId)
           this.props.onSubmit && this.props.onSubmit()
         })
-      //  TODO if (needLock === true) do stuff here to unlock
     })
     let successMessage = 'Created ' + Object.keys(this.state.newAssignments).length.toString() + ' new assignment' + ((Object.keys(this.state.newAssignments).length > 1) ? 's' : '') + '.'
     showSnackbar(successMessage, 'success')
@@ -748,7 +746,10 @@ AddAssignment.propTypes = {
   rootStore: PropTypes.object,
   closeModal: PropTypes.func,
   assignmentParams: PropTypes.object,
-  onSubmit: PropTypes.func
+  onSubmit: PropTypes.func,
+  insightsUserStudentId: PropTypes.number,
+  history: PropTypes.object,
+  classes: PropTypes.array
 }
 
 export default withRouter(AddAssignment)

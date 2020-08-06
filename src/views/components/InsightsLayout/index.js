@@ -11,7 +11,8 @@ class InsightsLayout extends React.Component {
     super(props)
     let rootStore = this.props.rootStore
 
-    const role = this.getRole(rootStore.userStore.user)
+    const user = rootStore.userStore.user
+    const role = this.getRole(user)
     rootStore.insightsStore.org.role = role
     this.getData(role)
   }

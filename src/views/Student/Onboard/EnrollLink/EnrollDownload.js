@@ -6,7 +6,7 @@ import live from '../../../../assets/images/class_status/todolist_gif.gif'
 
 class EnrollDownload extends React.Component {
   redirect () {
-    this.props.onNext()
+    this.props.onNext && this.props.onNext()
   }
 
   getMobileOperatingSystem () {
@@ -51,12 +51,14 @@ class EnrollDownload extends React.Component {
             </a>
           }
         </div>
-        <div
-          className='sk-enroll-download-next'
-          onClick={() => this.props.onNext()}
-        >
-          <p>Continue to Skoller on the Web</p>
-        </div>
+        {this.props.onNext &&
+          <div
+            className='sk-enroll-download-next'
+            onClick={() => this.props.onNext()}
+          >
+            <p>Continue to Skoller on the Web</p>
+          </div>
+        }
       </div>
     )
   }
