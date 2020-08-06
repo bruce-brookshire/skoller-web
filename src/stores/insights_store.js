@@ -190,6 +190,11 @@ class InsightsStore {
       await Promise.all(students.map(s =>
         actions.insights.getStudentClasses(orgId, s.id)
           .then(r => {
+            r.forEach(cl => {
+              if (!cl.color) {
+                cl.color = '57b9e4'
+              }
+            })
             let assignments = [].concat.apply([], r.map(cl => cl.assignments))
             s.org_student_id = s.id
             s.classes = r
@@ -208,6 +213,11 @@ class InsightsStore {
       let orgStudents = this.students
       await actions.insights.getStudentClasses(orgId, student.id)
         .then(r => {
+          r.forEach(cl => {
+            if (!cl.color) {
+              cl.color = '57b9e4'
+            }
+          })
           let assignments = [].concat.apply([], r.map(cl => cl.assignments))
           student.org_student_id = student.id
           student.classes = r

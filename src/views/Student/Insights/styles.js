@@ -1,6 +1,10 @@
 export function getStyles (c) {
   if (c) {
-    c = c.toLowerCase().replace(/.$/, '').replace(/.$/, '')
+    c = '#' + c.toLowerCase().replace(/^#/, '')
+  }
+
+  if (c.length === 9) {
+    c = c.slice(0, -1).slice(0, -1)
   }
 
   const GRAY_COLOR = '#4a4a4a'
