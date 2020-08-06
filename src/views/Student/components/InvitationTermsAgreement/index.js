@@ -631,7 +631,7 @@ function InvitationTermsAgreement (props) {
   }
 
   const onScroll = () => {
-    if (termsRef.current.scrollTop === (termsRef.current.scrollHeight - termsRef.current.offsetHeight)) {
+    if (termsRef.current.scrollTop > (termsRef.current.scrollHeight - termsRef.current.offsetHeight - 120)) {
       setBottom(true)
     }
   }

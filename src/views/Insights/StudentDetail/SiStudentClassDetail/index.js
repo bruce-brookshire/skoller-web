@@ -5,9 +5,10 @@ import { inject, observer } from 'mobx-react'
 import { toJS } from 'mobx'
 import NestedNav from '../../components/NestedNav'
 import actions from '../../../../actions'
+import { withRouter } from 'react-router-dom'
 
 @inject('rootStore') @observer
-export default class SiStudentClassDetail extends Component {
+class SiStudentClassDetail extends Component {
   constructor (props) {
     super(props)
 
@@ -19,14 +20,15 @@ export default class SiStudentClassDetail extends Component {
     }
 
     this.state = {
-      activeAssignmentId: null,
+      activeAssignmentId: this.props.location.state ? this.props.location.state.activeAssignmentId : null,
       user
     }
   }
 
   static propTypes = {
     rootStore: PropTypes.object,
-    match: PropTypes.object
+    match: PropTypes.object,
+    location: PropTypes.object
   }
 
   refreshUser () {
@@ -85,7 +87,7 @@ export default class SiStudentClassDetail extends Component {
     let cl = toJS(user.classes.find(cl => cl.id === parseInt(this.props.match.params.classId)))
     cl.color = this.props.match.params.invitationId ? '4a4a4a' : cl.color
     return (
-      <div>
+      <div className='si-class-detail'>
         <NestedNav pageType='studentDetail' />
         <ClassDetail
           insightsUser
@@ -103,3 +105,5 @@ export default class SiStudentClassDetail extends Component {
     )
   }
 }
+
+export default withRouter(SiStudentClassDetail)

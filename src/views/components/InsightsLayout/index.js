@@ -4,6 +4,7 @@ import {inject, observer} from 'mobx-react'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import InsightsNav from '../InsightsNav/InsightsNav'
 import InsightsTop from '../InsightsNav/InsightsTop'
+import ScrollToTop from './ScrollToTop'
 
 @inject('rootStore') @observer
 class InsightsLayout extends React.Component {
@@ -56,6 +57,7 @@ class InsightsLayout extends React.Component {
       <div className={'si-layout theme ' + (this.props.rootStore.insightsStore.darkMode ? 'theme--dark' : 'theme--default')} id='si-layout'>
         <InsightsTop />
         <InsightsNav />
+        <ScrollToTop />
         <main id='main'>
           {this.props.children}
         </main>

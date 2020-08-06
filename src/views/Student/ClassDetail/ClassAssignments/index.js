@@ -12,17 +12,17 @@ export default class ClassAssignments extends Component {
       visibleAssignments: []
     }
 
-    this.ref = null
+    this.containerRef = React.createRef()
   }
 
   scroll (scrollTo) {
-    this.ref.scroll({top: scrollTo, behavior: 'smooth'})
+    this.containerRef.current.scroll({top: scrollTo - this.containerRef.current.offsetTop, behavior: 'smooth'})
   }
 
   componentDidMount () {
     setTimeout(() => {
       const assignmentToScrollTo = document.getElementsByClassName('active-assignment')[0]
-      const scrollTo = assignmentToScrollTo.offsetTop - 269
+      const scrollTo = assignmentToScrollTo.offsetTop
 
       this.scroll(scrollTo)
     }, 10)
@@ -74,7 +74,7 @@ export default class ClassAssignments extends Component {
 
     return (
       <div className='sk-class-assignments-wrapper'>
-        <div className='sk-class-assignments' ref={(r) => { this.ref = r }}>
+        <div className='sk-class-assignments' ref={this.containerRef}>
           <Flipper spring={'stiff'} flipKey={assignments.join('|') + assignments.map(a => a.due).join('|')}>
             {assignments.map(a => {
               return <Assignment
