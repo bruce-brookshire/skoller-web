@@ -37,7 +37,7 @@ class Profile extends React.Component {
       this.setState({form: 'welcome'})
     } else if (this.props.rootStore.studentJobsStore.profile.resume_url === null) {
       this.setState({form: 'getResume'})
-    } else if (this.props.rootStore.userStore.user.avatar === null) {
+    } else if (this.props.rootStore.userStore.user.pic_path === null) {
       this.setState({form: 'avatar'})
     }
   }
@@ -78,12 +78,12 @@ class Profile extends React.Component {
 
   renderAvatar () {
     let user = this.props.rootStore.userStore.user
-    if (user.avatar) {
+    if (user.pic_path) {
       return (
         <div
           className='jobs-profile-header-avatar'
           style={{
-            backgroundImage: `url(${user.avatar})`,
+            backgroundImage: `url(${user.pic_path})`,
             width: '80px',
             height: '80px',
             borderRadius: '50%',

@@ -35,7 +35,7 @@ class Post extends React.Component {
       <div className={`chat-post ${this.props.type}`}>
         <div className='post-header row'>
           <div className='col-xs-6'>
-            {this.user && this.user.avatar ? (<img src={this.user.avatar}></img>) : null}
+            {this.user && this.user.pic_path ? (<img src={this.user.pic_path}></img>) : null}
             {this.user ? (<a onClick={this.onAccountSelect.bind(this)}>{`${this.student.name_first} ${this.student.name_last}`}</a>) : null}
           </div>
           <div className='col-xs-6 right-text'>

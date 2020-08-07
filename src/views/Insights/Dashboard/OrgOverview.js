@@ -57,8 +57,8 @@ function UploadLogo (props) {
         className={'si-upload-logo-box' + (org.logo_url ? ' has-image' : '')}
         style={{
           backgroundImage: org.logo_url ? `url(${org.logo_url})` : null,
-          backgroundPosition: 'center',
-          backgroundSize: 'cover'
+          backgroundPosition: 'center'
+          // backgroundSize: 'cover'
         }}
       >
         {!org.logo_url && <p>Upload a<br />logo</p>}

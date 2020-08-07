@@ -35,7 +35,7 @@ function getWorkPreferencesCompletion (profile) {
 
 function getProfilePicCompletion (user) {
   let score = 0
-  if (user.avatar) {
+  if (user.pic_path) {
     score += 1
   }
   return (score)

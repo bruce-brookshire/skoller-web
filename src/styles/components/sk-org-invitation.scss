@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: center;
   // flex-wrap: wrap;
-  max-width: 600px;
+  max-width: 900px;
 
   @media only screen and (max-width: 500px) {
     flex-direction: column;
@@ -13,6 +13,7 @@
   .sk-org-invitation-message {
     display: flex;
     flex-direction: column;
+    min-width: 380px;
 
     h2 {
       font-weight: 300;
@@ -21,7 +22,7 @@
 
   .sk-org-invitation-terms-container {
     min-width: 50%;
-    max-width: 380px;
+    // max-width: 380px;
     margin-left: 1rem;
 
     @media only screen and (max-width: 500px) {
@@ -30,8 +31,8 @@
     }
 
     .terms {
-      max-height: 400px;
-      max-width: 380px;
+      max-height: 600px;
+      // max-width: 380px;
       overflow: auto;
       padding: 8px;
       background-color: #fafafa;
