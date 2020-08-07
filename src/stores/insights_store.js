@@ -200,6 +200,7 @@ class InsightsStore {
             s.classes = r
             s.assignments = assignments
             s.intensity = {
+              // TODO replace these methods with what API returns
               7: getIntensityScore(assignments, 7),
               14: getIntensityScore(assignments, 14),
               30: getIntensityScore(assignments, 30)
@@ -223,14 +224,15 @@ class InsightsStore {
           student.classes = r
           student.assignments = assignments
           student.intensity = {
+            // TODO replace these methods with what API returns
             7: getIntensityScore(assignments, 7),
             14: getIntensityScore(assignments, 14),
             30: getIntensityScore(assignments, 30)
           }
         })
       let orgStudent = {...orgStudents.find(s => s.id === student.id), ...student}
-      orgStudents.splice(orgStudents.find(s => s.id === student.id))
-      orgStudents.push(orgStudent)
+      let existingStudent = orgStudents.find(s => s.id === student.id)
+      existingStudent = {...existingStudent, ...orgStudent}
       this.students = orgStudents
       Promise.resolve(true)
     }

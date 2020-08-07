@@ -15,6 +15,8 @@ import { withRouter } from 'react-router-dom'
 import { getAssignmentCountInNextNDays, getAssignmentWeightsInNextNDays, optionalPlural } from '../utils'
 import StatusIndicators from '../components/StatusIndicators'
 import OverviewItem from './components/OverviewItem'
+import ClassesIcon from '../../../assets/sk-icons/ClassesIcon'
+import TasksIcon from '../../../assets/sk-icons/TasksIcon'
 
 @inject('rootStore') @observer
 class StudentDetail extends React.Component {
@@ -154,6 +156,7 @@ class StudentDetail extends React.Component {
     return (
       <div className='si-student-detail-cell classes'>
         <div style={{display: 'flex'}}>
+          <ClassesIcon width={24} height={24} fill={'#4a4a4a'} />
           <h1>Classes</h1>
           <AddClasses autoShow={this.state.autoShowAddClasses} user={this.user()}><span className='classes-plus' style={{cursor: 'pointer'}}><i className='fas fa-plus' /></span></AddClasses>
         </div>
@@ -169,7 +172,10 @@ class StudentDetail extends React.Component {
 
     return (
       <div className='si-student-detail-cell tasks'>
-        <h1>To-Do&apos;s</h1>
+        <div style={{display: 'flex'}}>
+          <TasksIcon width={24} height={24} fill={'#4a4a4a'} />
+          <h1>To-Do&apos;s</h1>
+        </div>
         {this.renderTasks()}
       </div>
     )
@@ -195,7 +201,7 @@ class StudentDetail extends React.Component {
     return (
       <div className='si-student-detail-cell overview'>
         <div>
-          <h1>Overview</h1>
+          <h1><i className='far fa-paper-plane' />Overview</h1>
           {this.renderTimeframeSelect()}
         </div>
         <div className='overview-content'>
@@ -209,11 +215,21 @@ class StudentDetail extends React.Component {
               {weightsTotal + '%'} of {user.student.name_first}&apos;s total grade will be impacted in the next {timeframe} days.
             </div>
           } />
-          <OverviewItem title={intensity} subtitle={'stress score'} hoverDescription={
-            <div className='overview-desc'>
-              Skoller has {user.student.name_first}&apos;s real-time stress score at {intensity} out of 10 based on how many upcoming assignments are due and how important they are.
-            </div>
-          } />
+          <OverviewItem
+            title={intensity}
+            subtitle={'stress score'}
+            hoverDescription={
+              <div className='overview-desc'>
+                Over the next {timeframe} days, {user.student.name_first}&apos;s stress score is {intensity} out of 10.
+              </div>
+            }
+            modalButtonText={'How does Skoller calculate this?'}
+            modalDescription = {
+              <div className='overview-modal'>
+                Skoller has {user.student.name_first}&apos;s real-time stress score at {intensity} out of 10 based on how many upcoming assignments are due and how important they are.
+              </div>
+            }
+          />
         </div>
       </div>
     )
@@ -222,7 +238,7 @@ class StudentDetail extends React.Component {
   renderInsights (user) {
     return (
       <div className='si-student-detail-cell insights'>
-        <h1>Visual Insights</h1>
+        <h1><i className='fas fa-chart-bar' />Visual Insights</h1>
         <StudentInsights user={user} classes={this.user().classes} />
       </div>
     )

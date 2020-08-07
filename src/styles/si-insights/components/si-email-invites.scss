@@ -1,0 +1,18 @@
+.si-email-invites {
+  h1 {
+    margin-bottom: 8px;
+  }
+
+  .si-email-invites-count {
+    font-style: italic;
+    margin-bottom: 1rem;
+  }
+
+  .si-button {
+    margin-bottom: 1rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
