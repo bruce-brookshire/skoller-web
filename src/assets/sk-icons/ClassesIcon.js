@@ -22,7 +22,7 @@ class ClassesIcon extends React.Component {
           <g
             id="Sidebar"
             transform="translate(0.000000, -193.000000)"
-            fill="#FFFFFF"
+            fill={this.props.fill || '#FFFFFF'}
           >
             <g id="Group-4">
               <g id="Group-26" transform="translate(0.000000, 193.000000)">

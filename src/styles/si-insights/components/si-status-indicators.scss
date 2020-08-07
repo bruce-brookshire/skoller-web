@@ -4,46 +4,55 @@
   justify-content: center;
   position: relative;
 
-  .hover-container {
-    position: absolute;
-    bottom: 36px;
-    height: auto;
-    width: 96px;
-    padding: 8px;
-    background-color: white;
-    text-align: center;
-    @include si-cell;
-    z-index: 2;
-    word-break: normal;
-
-    &::before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      width: 0;
-      height: 0;
-      border: 10px solid transparent;
-      border-bottom: 0;
-      margin-left: -10px;
-      margin-bottom: -10px;
-
-      @include themed() {
-        border-top-color: t($bg-u);
-      }
-    }
-  }
-
   .si-status-indicators-dots {
     display: flex;
     flex-direction: row;
     justify-content: center;
 
-    div {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      margin: 2px 2px 0 2px;
+    .dot-container {
+      .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        margin: 2px 2px 0 2px;
+      }
+
+      .si-si-hover-container {
+        position: absolute;
+        bottom: 28px;
+        width: 144px;
+        padding: 8px;
+        text-align: center;
+        background-color: white;
+        z-index: 2;
+        word-break: normal;
+        @include si-cell;
+        box-shadow: 0px 4px 16px rgba(0,0,0,0.12);
+
+        .si-si-hover-content {
+          color: #4a4a4a !important;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+    
+        &::before {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          width: 0;
+          height: 0;
+          border: 10px solid transparent;
+          border-bottom: 0;
+          margin-left: -10px;
+          margin-bottom: -10px;
+    
+          @include themed() {
+            border-top-color: t($bg-u);
+          }
+        }
+      }
     }
   
     .no-classes {
@@ -62,15 +71,24 @@
       cursor: default;
       justify-content: flex-end;
   
-      div {
+      .dot-container {
         width: 24px;
         height: 24px;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        color: white;
-        padding: 4px 1px 0 0;
+        margin-right: 4px;
+        &:last-child {
+          margin: 0;
+        }
+
+        .dot {
+          width: 24px;
+          height: 24px;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          color: white;
+          padding: 4px 1px 0 0;
+        }
       }
     }
   }
