@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
-import {InputField} from '../../components/Form'
 import actions from '../../actions'
+import queryString from 'query-string'
 
 // const requiredFields =
 // {
@@ -37,7 +37,9 @@ class ResetPassword extends React.Component {
   onSubmit () {
     console.log(this.props)
     if (this.state.form.password !== '' && this.state.form.password === this.state.form.password_confirmation) {
-      actions.auth.resetPassword(this.state.form, this.props.location.query.token).then(() => {
+      const token = queryString.parse(this.props.location.search).token
+      // const token = null
+      actions.auth.resetPassword(this.state.form, token).then(() => {
         this.props.history.push('/landing')
       }).catch(() => false)
     }

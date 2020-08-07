@@ -4,9 +4,8 @@ import actions from '../../../../actions'
 
 function InvitationTermsAgreement (props) {
   const invitation = props.invitation
-  const termsRef = React.createRef()
+  const termsRef = React.useRef()
   const [bottom, setBottom] = React.useState(false)
-  console.log(props)
 
   const renderTerms = () => {
     return (

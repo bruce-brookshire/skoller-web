@@ -107,8 +107,8 @@ class NavBar extends React.Component {
             <span>Job Candidate</span>
           </div>
           <div className='right'>
-            {user.avatar
-              ? <img className='profile-img' src={user.avatar}/>
+            {user.pic_path
+              ? <img className='profile-img' src={user.pic_path}/>
               : <div style={{backgroundColor: '#15A494'}} className='profile-img vertical-align profile-initials'>{this.getInitials()}</div>}
           </div>
         </div>
@@ -159,8 +159,8 @@ class NavBar extends React.Component {
               <span>{this.getDescription()}</span>
             </div>
             <div className='right'>
-              {user.avatar
-                ? <img className='profile-img' src={user.avatar}/>
+              {user.pic_path
+                ? <img className='profile-img' src={user.pic_path}/>
                 : <div className='profile-img vertical-align profile-initials'>{this.getInitials()}</div>}
             </div>
           </div>

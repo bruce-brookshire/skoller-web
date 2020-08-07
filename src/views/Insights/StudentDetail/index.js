@@ -89,7 +89,12 @@ class StudentDetail extends React.Component {
   renderAthlete (user) {
     return (
       <div className='si-student-detail-sa'>
-        <Avatar large={true} user={user} />
+        <Avatar
+          loading={this.props.rootStore.insightsStore.loadingUpdate}
+          onSubmit={() => this.props.rootStore.insightsStore.updateData(['students'])}
+          large={true}
+          user={this.user()}
+        />
         <div className='si-student-detail-sa-info'>
           <div className='sa-name'>
             <h1>
@@ -157,7 +162,11 @@ class StudentDetail extends React.Component {
     )
   }
 
-  renderTasksCell () {
+  renderTasksCell (user) {
+    if (user.classes.length === 0) {
+      return null
+    }
+
     return (
       <div className='si-student-detail-cell tasks'>
         <h1>To-Do&apos;s</h1>
@@ -228,8 +237,8 @@ class StudentDetail extends React.Component {
           <div className='si-student-detail-column'>
             {this.renderStudentCell(user)}
             {this.renderOverview(user)}
-            {this.renderClassesCell()}
-            {this.renderTasksCell()}
+            {this.renderClassesCell(user)}
+            {this.renderTasksCell(user)}
             {this.renderInsights(user)}
           </div>
         </div>
