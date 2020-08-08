@@ -326,6 +326,7 @@ function login (form) {
 }
 
 function getOrgGroupById (orgId, orgGroupId) {
+  console.log(`${orgId} ${orgGroupId}`)
   return get(`/api/v1/organizations/${orgId}/org-groups/${orgGroupId}`, '', '')
     .then(data => {
       return data
