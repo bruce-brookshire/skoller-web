@@ -61,8 +61,8 @@ class InsightsStore {
         })
     } else {
       let groups = []
-      await this.asyncForEach(user.org_group_owners, async group => {
-        let orgGroupId = group.id
+      await this.asyncForEach(user.org_group_owners, async groupOwner => {
+        let orgGroupId = groupOwner.org_group_id
         await actions.insights.getOrgGroupById(orgId, orgGroupId)
           .then(r => {
             let students = this.students.filter(s => s.org_groups.map(og => og.id).includes(group.id))
@@ -105,7 +105,7 @@ class InsightsStore {
           students = students.filter(s => {
             let hasStudent = false
             s.org_groups.forEach(g => {
-              if (user.org_group_owners.map(gr => gr.id).includes(g.id)) {
+              if (user.org_group_owners.map(gr => gr.org_group_id).includes(g.id)) {
                 hasStudent = true
               }
             })
@@ -171,7 +171,7 @@ class InsightsStore {
   async getGroupOwnerWatchlist (orgId, user) {
     let watchlistStudentsIds = []
     await this.asyncForEach(user.org_group_owners, async group => {
-      let orgGroupId = group.id
+      let orgGroupId = group.org_group_id
       let orgGroupOwnerId = this.groups.find(g => g.id === orgGroupId).owners.find(o => o.org_member_id === this.groupOwners.find(go => go.user_id === user.id).id).id
       await actions.insights.getGroupOwnerWatchlist(orgId, orgGroupId, orgGroupOwnerId)
         .then(r => {
@@ -327,7 +327,7 @@ class InsightsStore {
         return user.org_owners[0].organization_id
       }
     } else {
-      return user.org_group_owners[0].organization_id
+      return user.org_members[0].organization_id
     }
   }
 
