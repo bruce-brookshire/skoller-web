@@ -99,7 +99,8 @@ import {
   getOrganizations,
   createOrganization,
   updateOrganization,
-  deleteOrganization
+  deleteOrganization,
+  addOrgLogo
 } from './organizations'
 import { getSchoolPeriods, createPeriod, updatePeriod } from './periods'
 import {
@@ -318,7 +319,8 @@ const actions = {
     getOrganizations,
     createOrganization,
     updateOrganization,
-    deleteOrganization
+    deleteOrganization,
+    addOrgLogo
   },
   periods: {
     createPeriod,

@@ -13,6 +13,7 @@ class WatchToggle extends React.Component {
   toggleWatching = async () => {
     let insightsStore = this.props.rootStore.insightsStore
     let watching = insightsStore.isWatching(this.props.user)
+    console.log(watching)
     if (watching) {
       let watchlistId = insightsStore.watchlist.find(s => s.org_student_id === this.props.user.id).id
 
@@ -32,6 +33,7 @@ class WatchToggle extends React.Component {
     } else {
       if (insightsStore.userType === 'orgOwner') {
         await actions.insights.addStudentToOrgOwnerWatchlist(insightsStore.org.id, this.props.rootStore.userStore.user.org_owners[0].id, this.props.user.id)
+          .then(r => console.log('watchlist response', r))
       } else if (insightsStore.userType === 'groupOwner') {
         let orgStudent = this.props.user
         let orgGroupToAddStudentToGroupOwnerWatchlist = insightsStore.groups.find(g => orgStudent.org_groups.map(gr => gr.id).includes(g.id))

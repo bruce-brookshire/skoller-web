@@ -16,6 +16,7 @@
 @import 'components/si-bulk-upload.scss';
 @import 'components/si-class-list.scss';
 @import 'components/si-create-students.scss';
+@import 'components/si-email-invites.scss';
 @import 'components/si-filter-bar.scss';
 @import 'components/si-filter-modal.scss';
 @import 'components/si-form.scss';
@@ -37,6 +38,10 @@
 // hub
 @import 'hub/hub-insights-form.scss';
 
+.si-class-detail {
+  color: #4a4a4a;
+}
+
 // small components that don't need individual scss files
 .si-avatar {
   .avatar {
@@ -44,8 +49,8 @@
     height: 48px;
 
     &.large {
-      width: 80px;
-      height: 80px;
+      width: 110px;
+      height: 110px;
     }
 
     border-radius: 50%;

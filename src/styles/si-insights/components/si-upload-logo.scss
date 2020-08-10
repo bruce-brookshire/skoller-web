@@ -3,9 +3,10 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 72px;
+  min-width: 96px;
+  height: 96px;
   padding: 4px;
-  border-radius: 5px;
+  border-radius: 3px;
   cursor: pointer;
   font-weight: 200;
   text-align: center;
@@ -14,11 +15,63 @@
   @include themed() {
     border: 2px dashed t($border);
     // background-color: t($font-color-15);
+
+    &.has-image {
+      border: none;
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
   }
 }
 
 .si-upload-logo {
+  .sk-drag-and-drop {
+    min-height: 256px;
+  }
+
   .si-button {
     margin-top: 1rem;
+  }
+  
+  .jobs-avatar-modal-image-preview {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 1rem 0;
+
+    .image-preview {
+      width: 160px;
+      height: 160px;
+      border-radius: 3px;
+      background-position: center center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      position: relative;
+
+      .clear-image {
+        color: $sk-jobs-light-green;
+        cursor: pointer;
+        position: absolute;
+        top: 0;
+        left: calc();
+        font-size: 14px;
+        height: 20px;
+        width: 20px;
+        border: 2px solid $sk-jobs-light-green;
+        border-radius: 50%;
+        margin: -8px 0 0 -8px;
+        background-color: white;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding-top: 6px;
+
+        .exit {
+          margin-top: 1px;
+        }
+      }
+    }
   }
 }

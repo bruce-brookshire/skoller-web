@@ -8,27 +8,27 @@
 
   .si-student-detail {
     display: flex;
-    flex-direction: row;
+    // flex-direction: row;
+    flex-direction: column;
+    justify-content: center;
     width: 100%;
     max-width: 1536px;
-    align-items: flex-start;
+    // align-items: flex-start;
+    align-items: center;
+    max-width: 800px;
 
     .si-student-detail-column {
       display: flex;
       flex-direction: column;
       min-width: 0;
-
-      &:last-child {
-        margin-left: 2rem;
-      }
+      width: 100%;
 
       .student {
-        flex-basis: calc(50% - 1rem);
         flex-grow: 1;
         display: flex;
         flex-direction: row wrap;
         justify-content: space-between;
-        align-items: center;
+        align-items: stretch;
 
         .si-student-detail-sa {
           display: flex;
@@ -42,6 +42,7 @@
             justify-content: flex-start;
             align-items: flex-start;
             margin-left: 1rem;
+            flex-grow: 1;
 
             .sa-name {
               display: flex;
@@ -60,122 +61,78 @@
                 margin-bottom: 8px;
               }
             }
-            
-            .sa-teams {
-              display: flex;
-              flex-flow: row nowrap;
-              justify-content: flex-start;
 
-              * {
-                margin-right: 4px;
+            .contact {
+              flex-grow: 1;
+      
+              .contact-item {
+                display: flex;
+                flex-flow: row nowrap;
+                margin: 8px 0 0 0;
+                font-size: 20px;
+    
+                i {
+                  margin-right: 8px;
+                  margin-top: 2px;
+                  margin-bottom: -2px;
+                }
+
+                .si-copy-cell {
+                  font-size: 20px;
+                  textarea {
+                    font-size: 20px;
+                  }
+                }
               }
             }
           }
         }
 
         .si-student-detail-header-right {
-          height: 80px;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
           align-items: flex-end;
 
-          .si-student-detail-timeframe {
+          .sa-teams {
             display: flex;
-            flex-direction: row;
-            justify-content: flex-end;
-            align-items: center;
-  
-            .looking-at {
-              padding: 4px 8px 0 0;
-              @include themed() {
-                color: t($font-color-50);
-              }
-            }
-          }
-
-          .statuses {
-            display: grid;
-            gap: 8px;
-
-            div {
-              grid-row: 1;
-              width: 120px;
-              border-radius: 3px;
-              color: white;
-              display: flex;
-              flex-direction: row;
-              justify-content: center;
-              align-items: center;
-              padding: 6px 2px 0px 2px;
-
-              &.status-classes {
-                background-color: $cn-color-yellow;
-              }
-
-              &.status-pending {
-                background-color: $sk-alert-red;
-              }
-            }
-          }
-        }
-      }
-
-      .si-student-detail-summary {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        padding: 1rem;
-        font-size: 20px;
-        font-weight: 200;
-        width: 100%;
-        margin: 1rem 0 0 0;
-
-        b {
-          margin: 0 6px;
-        }
-      }
-
-      .contact {
-        flex-grow: 1;
-        flex-basis: 50%;
-
-        .si-student-detail-contact {
-          display: flex;
-          flex-flow: column nowrap;
-          justify-content: space-between;
-          font-size: 20px;
-
-          .si-copy-cell {
+            flex-flow: row nowrap;
+            justify-content: flex-start;
             font-size: 20px;
-            textarea {
-              font-size: 20px;
+
+            @include themed() {
+              color: t($font-color-50);
             }
-          }
 
-          p {
-            display: flex;
-            margin: 8px 0 0 0;
+            * {
+              margin-right: 4px;
+            }
 
-            i {
-              margin-right: 8px;
-              margin-top: 2px;
-              margin-bottom: -2px;
+            .sa-team {
+              white-space: nowrap;
             }
           }
         }
       }
     }
 
-    .lg {
-      flex-basis: 60%;
-    }
-    .sm {
-      flex-basis: 40%;
-    }
+    .si-student-detail-timeframe {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
 
+      .looking-at {
+        // display none to hide (not taking out because we might want this back)
+        display: none;
+
+        padding: 4px 8px 0 0;
+        @include themed() {
+          color: t($font-color-50);
+        }
+      }
+    }
+  
     .si-student-detail-cell {
       @include si-cell;
       padding: 1rem;
@@ -185,6 +142,15 @@
 
       h1, h2, h3 {
         margin: 0;
+
+        i {
+          margin-right: 8px;
+          font-size: 24px;
+        }
+      }
+
+      svg {
+        margin-right: 8px;
       }
 
       &.classes {
@@ -199,6 +165,87 @@
         position: absolute;
         right: 1rem;
         top: 1rem;
+      }
+
+      &.overview {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        .overview-content {
+          display: flex;
+          flex-flow: row nowrap;
+          justify-content: space-between;
+
+          .overview-item-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+
+            @include themed() {
+              border-right: 2px solid t($hover);
+            }
+
+            &:last-child {
+              border-right: none;
+            }
+
+            .hover-container {
+              position: absolute;
+              bottom: 80px;
+              left: calc(-128px + (112px / 2));
+              height: auto;
+              width: 256px;
+              padding: 8px;
+              background-color: white;
+              text-align: center;
+              @include si-cell;
+              box-shadow: 0px 4px 16px rgba(0,0,0,0.12);
+              z-index: 2;
+              word-break: normal;
+
+              .hover-modal-button {
+                color: $sk-blue;
+                cursor: pointer;
+              }
+          
+              &::before {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                width: 0;
+                height: 0;
+                border: 10px solid transparent;
+                border-bottom: 0;
+                margin-left: -10px;
+                margin-bottom: -10px;
+          
+                @include themed() {
+                  border-top-color: t($bg-u);
+                }
+              }
+            }
+
+            svg {
+              margin-right: 0;
+            }
+
+            .overview-item {
+              cursor: default;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              padding: 0 1rem;
+            }
+
+            .overview-modal {
+              max-width: 380px;
+            }
+          }
+        }
       }
     }
   }

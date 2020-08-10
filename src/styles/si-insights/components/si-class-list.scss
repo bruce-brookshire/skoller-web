@@ -3,12 +3,10 @@
   flex-direction: row;
   flex-wrap: wrap;
   width: calc(100% + 1rem);
-  // margin-bottom: 0.5rem;
   justify-content: flex-start;
 
   .si-class-list-empty-message {
     padding: 1rem;
-    // color: rgba(0,0,0,0.30);
     text-align: center;
     width: 100%;
   }

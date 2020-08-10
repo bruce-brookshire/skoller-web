@@ -5,21 +5,19 @@ import Avatar from '../components/Avatar'
 import WatchToggle from '../components/WatchToggle'
 import Table from '../components/Table'
 import TeamsCell from '../components/TeamsCell'
-// import CopyCell from '../components/CopyCell'
 import GentleModal from '../components/GentleModal'
 import SkSelect from '../../components/SkSelect'
 import { Link } from 'react-router-dom'
 import { getAssignmentCountInNextNDays, getAssignmentWeightsInNextNDays, toTitleCase, optionalPlural } from '../utils'
 import LoadingIndicator from '../components/LoadingIndicator'
 import SkModal from '../../components/SkModal/SkModal'
-import CreateStudentForm from '../components/CreateStudents/CreateStudentForm'
-import { asyncForEach } from '../../../utilities/api'
 import actions from '../../../actions'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import ActionModal from '../components/ActionModal'
 import CreateStudents from '../components/CreateStudents'
 import StatusIndicators from '../components/StatusIndicators'
 import AddClasses from '../components/AddClasses'
+import EmailInvitations from '../components/EmailInviations'
 
 @inject('rootStore') @observer
 class Students extends React.Component {
@@ -343,7 +341,11 @@ class Students extends React.Component {
       <div className='si-filter-bar-item right'>
         {needClasses > 0 && <div className='status blue'>{optionalPlural(needClasses, '# need% classes', 's')}</div>}
         {needSetup > 0 && <div className='status yellow'>{optionalPlural(needSetup, '# need% setup', 's')}</div>}
-        {pendingActivation > 0 && <div className='status red'>{pendingActivation} pending activation</div>}
+        {pendingActivation > 0 &&
+          <EmailInvitations type={'org'} count={pendingActivation} orgId={this.props.rootStore.insightsStore.org.id}>
+            <div style={{cursor: 'pointer'}} className='status red'>{pendingActivation} pending activation</div>
+          </EmailInvitations>
+        }
       </div>
     )
   }

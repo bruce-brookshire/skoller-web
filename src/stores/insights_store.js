@@ -26,6 +26,7 @@ class InsightsStore {
         timeframeOptions: [7, 14, 30]
       },
       darkMode: this.cookie.get('skollerInsightsDarkMode') === 'true',
+      orgSelection: parseInt(this.cookie.get('skollerInsightsOrgSelection')),
       userType: null
     })
   }
@@ -60,8 +61,8 @@ class InsightsStore {
         })
     } else {
       let groups = []
-      await this.asyncForEach(user.org_group_owners, async group => {
-        let orgGroupId = group.id
+      await this.asyncForEach(user.org_group_owners, async groupOwner => {
+        let orgGroupId = groupOwner.org_group_id
         await actions.insights.getOrgGroupById(orgId, orgGroupId)
           .then(r => {
             let students = this.students.filter(s => s.org_groups.map(og => og.id).includes(group.id))
@@ -104,7 +105,7 @@ class InsightsStore {
           students = students.filter(s => {
             let hasStudent = false
             s.org_groups.forEach(g => {
-              if (user.org_group_owners.map(gr => gr.id).includes(g.id)) {
+              if (user.org_group_owners.map(gr => gr.org_group_id).includes(g.id)) {
                 hasStudent = true
               }
             })
@@ -159,7 +160,7 @@ class InsightsStore {
   }
 
   async getOrgOwnerWatchlist (orgId) {
-    await actions.insights.getOrgOwnerWatchlist(orgId, stores.userStore.user.org_owners[0].id)
+    await actions.insights.getOrgOwnerWatchlist(orgId, this.getProperOrg(stores.userStore.user))
       .then(r => {
         let students = r.map(s => { return {...s, orgStudentId: s.id} })
         this.watchlist = students
@@ -170,7 +171,7 @@ class InsightsStore {
   async getGroupOwnerWatchlist (orgId, user) {
     let watchlistStudentsIds = []
     await this.asyncForEach(user.org_group_owners, async group => {
-      let orgGroupId = group.id
+      let orgGroupId = group.org_group_id
       let orgGroupOwnerId = this.groups.find(g => g.id === orgGroupId).owners.find(o => o.org_member_id === this.groupOwners.find(go => go.user_id === user.id).id).id
       await actions.insights.getGroupOwnerWatchlist(orgId, orgGroupId, orgGroupOwnerId)
         .then(r => {
@@ -189,11 +190,17 @@ class InsightsStore {
       await Promise.all(students.map(s =>
         actions.insights.getStudentClasses(orgId, s.id)
           .then(r => {
+            r.forEach(cl => {
+              if (!cl.color) {
+                cl.color = '57b9e4'
+              }
+            })
             let assignments = [].concat.apply([], r.map(cl => cl.assignments))
             s.org_student_id = s.id
             s.classes = r
             s.assignments = assignments
             s.intensity = {
+              // TODO replace these methods with what API returns
               7: getIntensityScore(assignments, 7),
               14: getIntensityScore(assignments, 14),
               30: getIntensityScore(assignments, 30)
@@ -207,19 +214,25 @@ class InsightsStore {
       let orgStudents = this.students
       await actions.insights.getStudentClasses(orgId, student.id)
         .then(r => {
+          r.forEach(cl => {
+            if (!cl.color) {
+              cl.color = '57b9e4'
+            }
+          })
           let assignments = [].concat.apply([], r.map(cl => cl.assignments))
           student.org_student_id = student.id
           student.classes = r
           student.assignments = assignments
           student.intensity = {
+            // TODO replace these methods with what API returns
             7: getIntensityScore(assignments, 7),
             14: getIntensityScore(assignments, 14),
             30: getIntensityScore(assignments, 30)
           }
         })
       let orgStudent = {...orgStudents.find(s => s.id === student.id), ...student}
-      orgStudents.splice(orgStudents.find(s => s.id === student.id))
-      orgStudents.push(orgStudent)
+      let existingStudent = orgStudents.find(s => s.id === student.id)
+      existingStudent = {...existingStudent, ...orgStudent}
       this.students = orgStudents
       Promise.resolve(true)
     }
@@ -306,11 +319,23 @@ class InsightsStore {
     }
   }
 
+  getProperOrg = (user) => {
+    if (user.org_owners.length > 0) {
+      if (this.orgSelection) {
+        return this.orgSelection
+      } else {
+        return user.org_owners[0].organization_id
+      }
+    } else {
+      return user.org_members[0].organization_id
+    }
+  }
+
   async getAllData (filters) {
     const user = stores.userStore.user
     const role = this.getRole(user)
     this.userType = role
-    const orgId = user.org_owners.length > 0 ? user.org_owners[0].organization_id : user.org_group_owners[0].organization_id
+    const orgId = this.getProperOrg(user)
 
     if (!filters || filters.includes('invitations')) {
       await this.getInvitations(orgId)
@@ -406,6 +431,12 @@ class InsightsStore {
   @action
   getDarkModeCookie () {
     this.darkMode = this.cookie.get('skollerInsightsDarkMode') === 'true'
+  }
+
+  @action
+  switchOrg () {
+    this.orgSelection = this.cookie.get('skollerInsightsOrgSelection')
+    this.getData()
   }
 }
 

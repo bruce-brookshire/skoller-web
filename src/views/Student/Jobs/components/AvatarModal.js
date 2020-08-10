@@ -44,11 +44,11 @@ class AvatarModal extends React.Component {
           Profile Picture
         </h2>
         <p>Did you know that companies are more likely to check out your profile if it&apos;s complimented with a profile picture?</p>
-        {(this.state.preview || this.props.rootStore.userStore.user.avatar) && !this.state.clearCurrentAvatar
+        {(this.state.preview || this.props.rootStore.userStore.user.pic_path) && !this.state.clearCurrentAvatar
           ? <div className='jobs-avatar-modal-image-preview'>
-            <div className='image-preview' style={{backgroundImage: this.state.preview ? `url(${this.state.preview})` : `url(${this.props.rootStore.userStore.user.avatar})`}}>
+            <div className='image-preview' style={{backgroundImage: this.state.preview ? `url(${this.state.preview})` : `url(${this.props.rootStore.userStore.user.pic_path})`}}>
               <div onClick={() => {
-                this.setState({file: null, preview: null, clearCurrentAvatar: this.props.rootStore.userStore.user.avatar ? true : false})
+                this.setState({file: null, preview: null, clearCurrentAvatar: this.props.rootStore.userStore.user.pic_path ? true : false})
                 this.deleteAvatar()
               }} className='clear-image'>
                 <div className='exit'>

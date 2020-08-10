@@ -31,6 +31,12 @@
       display: flex;
       flex-direction: column;
       margin-bottom: 1rem;
+      border-radius: 5px;
+      padding: 1rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
 
       .si-tasks-list-task-row {
         display: flex;
@@ -43,7 +49,39 @@
         }
 
         .si-task-weight {
-          font-weight: 600;
+          // font-weight: 600;
+          position: relative;
+
+          .hover-container {
+            position: absolute;
+            bottom: 36px;
+            height: auto;
+            width: 112px;
+            left: -40px;
+            padding: 12px 8px 8px 8px;
+            background-color: white;
+            text-align: center;
+            @include si-cell;
+            z-index: 2;
+            word-break: normal;
+        
+            &::before {
+              content: '';
+              position: absolute;
+              bottom: 0;
+              left: 50%;
+              width: 0;
+              height: 0;
+              border: 10px solid transparent;
+              border-bottom: 0;
+              margin-left: -10px;
+              margin-bottom: -10px;
+        
+              @include themed() {
+                border-top-color: t($bg-u);
+              }
+            }
+          }        
         }
 
         .si-task-class {

@@ -73,6 +73,7 @@ class StudentClassDetailView extends React.Component {
             createAssignment={this.createAssignment}
             updateClass={() => this.props.rootStore.studentClassesStore.updateClasses()}
             activeAssignmentId={this.state.activeAssignmentId}
+            classes={this.props.rootStore.studentClassesStore.classes}
           />
         }
       </StudentLayout>

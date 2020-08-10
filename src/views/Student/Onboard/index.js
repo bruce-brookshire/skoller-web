@@ -17,7 +17,6 @@ class Switch extends React.Component {
   }
 
   render () {
-    console.log(this.props)
     if (this.props.type === 'onboard') {
       return (
         <Onboard params={this.props.match.params} />
