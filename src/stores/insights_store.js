@@ -160,7 +160,7 @@ class InsightsStore {
   }
 
   async getOrgOwnerWatchlist (orgId) {
-    await actions.insights.getOrgOwnerWatchlist(orgId, this.getProperOrg(stores.userStore.user))
+    await actions.insights.getOrgOwnerWatchlist(orgId, stores.userStore.user.org_owners[0].id)
       .then(r => {
         let students = r.map(s => { return {...s, orgStudentId: s.id} })
         this.watchlist = students
@@ -201,9 +201,9 @@ class InsightsStore {
             s.assignments = assignments
             s.intensity = {
               // TODO replace these methods with what API returns
-              7: getIntensityScore(assignments, 7),
-              14: getIntensityScore(assignments, 14),
-              30: getIntensityScore(assignments, 30)
+              7: 0,//getIntensityScore(assignments, 7),
+              14: 0,//getIntensityScore(assignments, 14),
+              30: 0//getIntensityScore(assignments, 30)
             }
           })
       ))

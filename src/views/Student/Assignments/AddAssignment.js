@@ -32,7 +32,7 @@ class AddAssignment extends Component {
       classes: [],
       selectedClass: {},
       selectedStudentClass: null,
-      studentId: this.props.insightsUserStudentId ? this.props.insightsUserStudentId : this.props.rootStore.userStore.user.student.id,
+      studentId: this.props.insightsUserStudentId || this.props.insightsUserStudentId,
 
       // visibility stuff
       showClassField: true,
@@ -60,7 +60,6 @@ class AddAssignment extends Component {
       let selectedStudentClass = this.props.classes.find(cl => cl.id === this.props.assignmentParams.class.id)
       newAssignment.class = selectedStudentClass
       this.state = {...this.state, selectedStudentClass, newAssignment}
-      console.log(selectedStudentClass, newAssignment, this.state)
       actions.classes.getClassById(selectedClassId).then(selectedClass => {
         this.getClassWeights(selectedClass.id)
         this.setState({
@@ -78,8 +77,6 @@ class AddAssignment extends Component {
     if (this.props.assignmentParams.classId) {
       this.getClassWeights(this.props.assignmentParams.classId)
     }
-
-    console.log(this.state)
   }
 
   // get the class user selects
