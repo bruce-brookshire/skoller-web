@@ -28,11 +28,11 @@ class ForgotPassword extends React.Component {
   onSubmit () {
     if (this.state.form.email !== '') {
       actions.auth.forgotPassword(this.state.form).then(() => {
-        if (this.state.insightsReset) {
+        // if (this.state.insightsReset) {
           this.props.history.push('/insights')
-        } else {
-          this.props.history.push('/admin-login')
-        }
+        // } else {
+        //   this.props.history.push('/admin-login')
+        // }
       }).catch(() => false)
     }
   }
