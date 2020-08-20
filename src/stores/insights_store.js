@@ -87,8 +87,6 @@ class InsightsStore {
             student = {
               ...s,
               orgStudentId: s.id,
-              classes: [],
-              assignments: [],
               intensity: {
                 7: null,
                 14: null,
@@ -187,25 +185,40 @@ class InsightsStore {
 
   async getStudentData (students, orgId) {
     if (Array.isArray(students)) {
-      await Promise.all(students.map(s =>
-        actions.insights.getStudentClasses(orgId, s.id)
-          .then(r => {
-            r.forEach(cl => {
-              if (!cl.color) {
-                cl.color = '57b9e4'
-              }
-            })
-            let assignments = [].concat.apply([], r.map(cl => cl.assignments))
-            s.org_student_id = s.id
-            s.classes = r
-            s.assignments = assignments
-            s.intensity = {
-              // TODO replace these methods with what API returns
-              7: 0,//getIntensityScore(assignments, 7),
-              14: 0,//getIntensityScore(assignments, 14),
-              30: 0//getIntensityScore(assignments, 30)
-            }
-          })
+      await Promise.all(students.map(s => {
+        s.classes.forEach(cl => {
+          if (!cl.color) {
+            cl.color = '57b9e4'
+          }
+        })
+        s.intensity = {
+          // TODO replace these methods with what API returns
+          7: 0,//getIntensityScore(assignments, 7),
+          14: 0,//getIntensityScore(assignments, 14),
+          30: 0//getIntensityScore(assignments, 30)
+        }
+
+        return s;
+
+      //  return actions.insights.getStudentClasses(orgId, s.id)
+      //     .then(r => {
+      //       r.forEach(cl => {
+      //         if (!cl.color) {
+      //           cl.color = '57b9e4'
+      //         }
+      //       })
+      //       let assignments = [].concat.apply([], r.map(cl => cl.assignments))
+      //       s.org_student_id = s.id
+      //       s.classes = r
+      //       s.assignments = assignments
+      //       s.intensity = {
+      //         // TODO replace these methods with what API returns
+      //         7: 0,//getIntensityScore(assignments, 7),
+      //         14: 0,//getIntensityScore(assignments, 14),
+      //         30: 0//getIntensityScore(assignments, 30)
+      //       }
+      //     })
+        }
       ))
 
       this.students = students
@@ -225,9 +238,9 @@ class InsightsStore {
           student.assignments = assignments
           student.intensity = {
             // TODO replace these methods with what API returns
-            7: getIntensityScore(assignments, 7),
-            14: getIntensityScore(assignments, 14),
-            30: getIntensityScore(assignments, 30)
+            7: 0,//getIntensityScore(assignments, 7),
+            14: 0,//getIntensityScore(assignments, 14),
+            30: 0//getIntensityScore(assignments, 30)
           }
         })
       let orgStudent = {...orgStudents.find(s => s.id === student.id), ...student}

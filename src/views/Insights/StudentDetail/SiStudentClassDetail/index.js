@@ -84,8 +84,7 @@ class SiStudentClassDetail extends Component {
     } else {
       user = this.props.rootStore.insightsStore.students.find(s => s.id === parseInt(this.props.match.params.orgStudentId))
     }
-    console.log("Hello");
-    console.log(user);
+    
     let cl = toJS(user.classes.find(cl => cl.id === parseInt(this.props.match.params.classId)))
     cl.color = this.props.match.params.invitationId ? '4a4a4a' : cl.color
     return (
