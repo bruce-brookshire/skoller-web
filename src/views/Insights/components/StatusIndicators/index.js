@@ -66,13 +66,10 @@ export default class StatusIndicators extends Component {
       }
 
       if (invitation.class_ids.length > 0) {
-        asyncForEach(invitation.class_ids, async id => {
-          await actions.classes.getClassById(id)
-            .then(r => {
-              if (r.status.id < 1400) {
-                this.setState({noSetup: true})
-              }
-            })
+        invitation.classes.forEach(studentClass => {
+          if (studentClass.status.id < 1400) {
+            this.setState({noSetup: true})
+          }
         })
       }
     }

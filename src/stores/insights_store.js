@@ -199,25 +199,6 @@ class InsightsStore {
         }
 
         return s;
-
-      //  return actions.insights.getStudentClasses(orgId, s.id)
-      //     .then(r => {
-      //       r.forEach(cl => {
-      //         if (!cl.color) {
-      //           cl.color = '57b9e4'
-      //         }
-      //       })
-      //       let assignments = [].concat.apply([], r.map(cl => cl.assignments))
-      //       s.org_student_id = s.id
-      //       s.classes = r
-      //       s.assignments = assignments
-      //       s.intensity = {
-      //         // TODO replace these methods with what API returns
-      //         7: 0,//getIntensityScore(assignments, 7),
-      //         14: 0,//getIntensityScore(assignments, 14),
-      //         30: 0//getIntensityScore(assignments, 30)
-      //       }
-      //     })
         }
       ))
 
@@ -254,33 +235,34 @@ class InsightsStore {
   async getInvitationData (i) {
     let classes = []
     let assignments = []
-    await asyncForEach(i.class_ids, async id => {
-      await actions.classes.getClassByIdAdmin(id)
-        .then(r => {
-          r.assignments.forEach(a => {
-            if (r.is_points) {
-              let totalWeight = 0
-              r.weights.forEach(w => {
-                totalWeight += w.weight
-              })
-              if (a.weight_id) {
-                a.weight = (r.weights.find(w => w.id === a.weight_id).weight / r.assignments.filter(as => as.weight_id === a.weight_id, 0).length) / totalWeight
-              } else {
-                a.weight = 0
-              }
-            } else {
-              a.weight = (r.weights.find(w => w.id === a.weight_id).weight / 100) / r.assignments.filter(as => as.weight_id === a.weight_id, 0).length
-            }
-            a.class_id = r.id
-          })
 
-          assignments = assignments.concat(r.assignments)
-          r.color = '4a4a4a'
-          if (!classes.map(cl => cl.id).includes(r.id)) {
-            classes.push(r)
-          }
-        })
-    })
+    i.classes.forEach(studentClass => {
+      let totalWeight = 0
+      if (studentClass.is_points) {
+        totalWeight = 0
+        studentClass.weights.forEach(w => {
+          totalWeight += w.weight
+        });
+      }
+      else {
+        totalWeight = 100
+      }
+
+      studentClass.assignments.forEach(a => {
+        if (a.weight_id) {
+          a.weight = (studentClass.weights.find(w => w.id === a.weight_id).weight / studentClass.assignments.filter(as => as.weight_id === a.weight_id, 0).length) / totalWeight
+        } else {
+          a.weight = 0
+        }
+      });
+
+      assignments = assignments.concat(studentClass.assignments)
+      studentClass.color = '4a4a4a'
+      if (!classes.map(cl => cl.id).includes(studentClass.id)) {
+        classes.push(studentClass)
+      }
+    });
+
     return {
       ...i,
       classes,
