@@ -168,6 +168,7 @@ class InsightsStore {
 
   async getGroupOwnerWatchlist (orgId, user) {
     let watchlistStudentsIds = []
+    console.log(user.org_group_owners)
     await this.asyncForEach(user.org_group_owners, async group => {
       let orgGroupId = group.org_group_id
       let orgGroupOwnerId = this.groups.find(g => g.id === orgGroupId).owners.find(o => o.org_member_id === this.groupOwners.find(go => go.user_id === user.id).id).id
@@ -237,31 +238,32 @@ class InsightsStore {
     let assignments = []
 
     i.classes.forEach(studentClass => {
-      let totalWeight = 0
-      if (studentClass.is_points) {
-        totalWeight = 0
-        studentClass.weights.forEach(w => {
-          totalWeight += w.weight
-        });
-      }
-      else {
-        totalWeight = 100
-      }
-
-      studentClass.assignments.forEach(a => {
-        if (a.weight_id) {
-          a.weight = (studentClass.weights.find(w => w.id === a.weight_id).weight / studentClass.assignments.filter(as => as.weight_id === a.weight_id, 0).length) / totalWeight
-        } else {
-          a.weight = 0
-        }
-      });
-
-      assignments = assignments.concat(studentClass.assignments)
-      studentClass.color = '4a4a4a'
       if (!classes.map(cl => cl.id).includes(studentClass.id)) {
+        let totalWeight = 0
+        if (studentClass.is_points) {
+          totalWeight = 0
+          studentClass.weights.forEach(w => {
+            totalWeight += w.weight
+          });
+        }
+        else {
+          totalWeight = 100
+        }
+
+        studentClass.assignments.forEach(a => {
+          if (a.weight_id) {
+            a.weight = (studentClass.weights.find(w => w.id === a.weight_id).weight / studentClass.assignments.filter(as => as.weight_id === a.weight_id, 0).length) / totalWeight
+          } else {
+            a.weight = 0
+          }
+        });
+
+        assignments = assignments.concat(studentClass.assignments)
+        studentClass.color = '4a4a4a'
         classes.push(studentClass)
       }
     });
+    console.log(classes)
 
     return {
       ...i,
