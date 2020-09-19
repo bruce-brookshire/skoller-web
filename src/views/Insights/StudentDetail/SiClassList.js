@@ -44,7 +44,7 @@ class SiClassList extends React.Component {
         )
       } else {
         return (
-          <h1 className='si-class-list-row-grade-text'>{cl.assignments.length} assignments</h1>
+          <h1 className='si-class-list-row-grade-text'>__% assignments</h1>
         )
       }
     } else if (status === 1100) {
