@@ -86,6 +86,7 @@ class SiStudentClassDetail extends Component {
     }
     
     let cl = toJS(user.classes.find(cl => cl.id === parseInt(this.props.match.params.classId)))
+    console.log(cl)
     cl.color = this.props.match.params.invitationId ? '4a4a4a' : cl.color
     return (
       <div className='si-class-detail'>

@@ -38,9 +38,15 @@ class SiClassList extends React.Component {
     let syllabusOverload = false
 
     if (status >= 1400) {
-      return (
-        <h1 className='si-class-list-row-grade-text'>{cl.assignments.length} assignments</h1>
-      )
+      if (cl.grade) {
+        return (
+          <h1 className='si-class-list-row-grade-text'>{cl.grade}%</h1>
+        )
+      } else {
+        return (
+          <h1 className='si-class-list-row-grade-text'>{cl.assignments.length} assignments</h1>
+        )
+      }
     } else if (status === 1100) {
       return (
         <img className='si-class-list-row-icon-img' src={uploadS} />

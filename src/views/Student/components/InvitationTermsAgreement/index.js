@@ -650,6 +650,7 @@ function InvitationTermsAgreement (props) {
     <div className='sk-org-invitation'>
       <div className='sk-org-invitation-message'>
         <h1>Welcome to Skoller!</h1>
+        {console.log(invitation)}
         <h2>An advisor from {invitation.organization.name} would like to collaborate with you on Skoller.</h2>
         <h2>Please review the privacy policy to proceed.</h2>
       </div>

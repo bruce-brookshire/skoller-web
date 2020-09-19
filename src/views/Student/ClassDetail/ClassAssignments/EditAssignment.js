@@ -83,7 +83,7 @@ export default function EditAssignment (props) {
                 </div>
                 <div className='sk-assignment-edit-form-item due'>
                   <label>Due date</label>
-                  <input className='date' readOnly onClick={() => setShowDatePicker(true)} value={moment(due).format('MM/DD/YY')} />
+                  <input className='date' readOnly onClick={() => setShowDatePicker(true)} value={due ? moment(due).format('MM/DD/YY') : 'Add due date'} />
                   {showDatePicker && <DatePicker
                     givenDate={due}
                     close={() => setShowDatePicker(false)}
