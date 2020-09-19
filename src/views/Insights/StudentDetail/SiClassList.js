@@ -33,14 +33,14 @@ class SiClassList extends React.Component {
     }
   }
 
-  renderGrade (cl) {
+  renderGrade (cl, color) {
     let status = cl.status.id
     let syllabusOverload = false
 
     if (status >= 1400) {
       if (cl.grade) {
         return (
-          <h1 className='si-class-list-row-grade-text'>{cl.grade}%</h1>
+          <h1 className='si-class-list-row-grade-text' style={{fontSize: 40, color: color}}>{cl.grade}%</h1>
         )
       } else {
         return (
@@ -75,11 +75,7 @@ class SiClassList extends React.Component {
     let syllabusOverload = false
 
     if (status >= 1400) {
-      return (
-        <div className='si-class-list-cell-extra'>
-          <p>{cl.meet_days + ' ' + (cl.meet_start_time ? moment(cl.meet_start_time, 'hh:mm:ss').format('h:mma') : '')}</p>
-        </div>
-      )
+      return null
     } else if (status === 1100) {
       return (
         <div className='si-class-list-cell-extra'>
@@ -138,7 +134,7 @@ class SiClassList extends React.Component {
                 <h2 style={cl.status.id < 1400 ? null : {color: 'white'}}>{name}</h2>
               </div>
               <div className='si-class-list-cell-grade'>
-                {this.renderGrade(cl)}
+                {this.renderGrade(cl, color)}
               </div>
               {this.renderExtra(cl)}
             </div>
