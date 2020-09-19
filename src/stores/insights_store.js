@@ -65,8 +65,8 @@ class InsightsStore {
         let orgGroupId = groupOwner.org_group_id
         await actions.insights.getOrgGroupById(orgId, orgGroupId)
           .then(r => {
-            let students = this.students.filter(s => s.org_groups.map(og => og.id).includes(group.id))
-            let invitations = this.invitations.filter(s => s.group_ids && s.group_ids.includes(group.id))
+            let students = this.students.filter(s => s.org_groups.map(og => og.id).includes(r.id))
+            let invitations = this.invitations.filter(s => s.group_ids && s.group_ids.includes(r.id))
             groups.push({...r, memberOwners: [], students, invitations})
           })
       })
