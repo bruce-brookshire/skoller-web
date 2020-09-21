@@ -62,6 +62,10 @@
     .sk-assignment-due {
       color: rgba(0,0,0,0.5);
     }
+
+    .sk-assignment-missing {
+      color: $sk-alert-red
+    }
   }
 
   .sk-assignment-controls {

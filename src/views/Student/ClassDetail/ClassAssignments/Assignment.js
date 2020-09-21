@@ -147,7 +147,7 @@ export default function Assignment (props) {
                 }
                 <div className='sk-assignment-content'>
                   <div className='sk-assignment-name' style={color ? {color} : {}}>{props.assignment.name}</div>
-                  <div className='sk-assignment-due'>{formatDueDate(props.assignment.due)}</div>
+                  <div className={props.assignment.due ? 'sk-assignment-due' : 'sk-assignment-missing'}>{formatDueDate(props.assignment.due)}</div>
                 </div>
                 <Flipper spring={'stiff'} flipKey={showButton + editExited} className='sk-assignment-controls'>
                   <Flipped flipId={1}>

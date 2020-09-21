@@ -65,8 +65,8 @@ class InsightsStore {
         let orgGroupId = groupOwner.org_group_id
         await actions.insights.getOrgGroupById(orgId, orgGroupId)
           .then(r => {
-            let students = this.students.filter(s => s.org_groups.map(og => og.id).includes(group.id))
-            let invitations = this.invitations.filter(s => s.group_ids && s.group_ids.includes(group.id))
+            let students = this.students.filter(s => s.org_groups.map(og => og.id).includes(r.id))
+            let invitations = this.invitations.filter(s => s.group_ids && s.group_ids.includes(r.id))
             groups.push({...r, memberOwners: [], students, invitations})
           })
       })
@@ -87,8 +87,6 @@ class InsightsStore {
             student = {
               ...s,
               orgStudentId: s.id,
-              classes: [],
-              assignments: [],
               intensity: {
                 7: null,
                 14: null,
@@ -170,6 +168,7 @@ class InsightsStore {
 
   async getGroupOwnerWatchlist (orgId, user) {
     let watchlistStudentsIds = []
+    console.log(user.org_group_owners)
     await this.asyncForEach(user.org_group_owners, async group => {
       let orgGroupId = group.org_group_id
       let orgGroupOwnerId = this.groups.find(g => g.id === orgGroupId).owners.find(o => o.org_member_id === this.groupOwners.find(go => go.user_id === user.id).id).id
@@ -187,25 +186,21 @@ class InsightsStore {
 
   async getStudentData (students, orgId) {
     if (Array.isArray(students)) {
-      await Promise.all(students.map(s =>
-        actions.insights.getStudentClasses(orgId, s.id)
-          .then(r => {
-            r.forEach(cl => {
-              if (!cl.color) {
-                cl.color = '57b9e4'
-              }
-            })
-            let assignments = [].concat.apply([], r.map(cl => cl.assignments))
-            s.org_student_id = s.id
-            s.classes = r
-            s.assignments = assignments
-            s.intensity = {
-              // TODO replace these methods with what API returns
-              7: 0,//getIntensityScore(assignments, 7),
-              14: 0,//getIntensityScore(assignments, 14),
-              30: 0//getIntensityScore(assignments, 30)
-            }
-          })
+      await Promise.all(students.map(s => {
+        s.classes.forEach(cl => {
+          if (!cl.color) {
+            cl.color = '57b9e4'
+          }
+        })
+        s.intensity = {
+          // TODO replace these methods with what API returns
+          7: 0,//getIntensityScore(assignments, 7),
+          14: 0,//getIntensityScore(assignments, 14),
+          30: 0//getIntensityScore(assignments, 30)
+        }
+
+        return s;
+        }
       ))
 
       this.students = students
@@ -225,9 +220,9 @@ class InsightsStore {
           student.assignments = assignments
           student.intensity = {
             // TODO replace these methods with what API returns
-            7: getIntensityScore(assignments, 7),
-            14: getIntensityScore(assignments, 14),
-            30: getIntensityScore(assignments, 30)
+            7: 0,//getIntensityScore(assignments, 7),
+            14: 0,//getIntensityScore(assignments, 14),
+            30: 0//getIntensityScore(assignments, 30)
           }
         })
       let orgStudent = {...orgStudents.find(s => s.id === student.id), ...student}
@@ -241,33 +236,35 @@ class InsightsStore {
   async getInvitationData (i) {
     let classes = []
     let assignments = []
-    await asyncForEach(i.class_ids, async id => {
-      await actions.classes.getClassByIdAdmin(id)
-        .then(r => {
-          r.assignments.forEach(a => {
-            if (r.is_points) {
-              let totalWeight = 0
-              r.weights.forEach(w => {
-                totalWeight += w.weight
-              })
-              if (a.weight_id) {
-                a.weight = (r.weights.find(w => w.id === a.weight_id).weight / r.assignments.filter(as => as.weight_id === a.weight_id, 0).length) / totalWeight
-              } else {
-                a.weight = 0
-              }
-            } else {
-              a.weight = (r.weights.find(w => w.id === a.weight_id).weight / 100) / r.assignments.filter(as => as.weight_id === a.weight_id, 0).length
-            }
-            a.class_id = r.id
-          })
 
-          assignments = assignments.concat(r.assignments)
-          r.color = '4a4a4a'
-          if (!classes.map(cl => cl.id).includes(r.id)) {
-            classes.push(r)
+    i.classes.forEach(studentClass => {
+      if (!classes.map(cl => cl.id).includes(studentClass.id)) {
+        let totalWeight = 0
+        if (studentClass.is_points) {
+          totalWeight = 0
+          studentClass.weights.forEach(w => {
+            totalWeight += w.weight
+          });
+        }
+        else {
+          totalWeight = 100
+        }
+
+        studentClass.assignments.forEach(a => {
+          if (a.weight_id) {
+            a.weight = (studentClass.weights.find(w => w.id === a.weight_id).weight / studentClass.assignments.filter(as => as.weight_id === a.weight_id, 0).length) / totalWeight
+          } else {
+            a.weight = 0
           }
-        })
-    })
+        });
+
+        assignments = assignments.concat(studentClass.assignments)
+        studentClass.color = '4a4a4a'
+        classes.push(studentClass)
+      }
+    });
+    console.log(classes)
+
     return {
       ...i,
       classes,

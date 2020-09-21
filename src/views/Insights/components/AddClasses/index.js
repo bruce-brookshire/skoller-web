@@ -86,7 +86,8 @@ class AddClasses extends Component {
     let period = null
     let form
     if (this.props.rootStore.insightsStore.org.school) {
-      let periods = this.props.rootStore.insightsStore.org.school.class_periods.map(p => {
+      let school = this.props.rootStore.insightsStore.org.school
+      let periods = (school.class_periods || school.periods).map(p => {
         return {...p, endDaysAway: moment().diff(moment(p.end_date), 'days')}
       })
       if (!periods || periods.length === 0) {
