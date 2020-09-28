@@ -251,13 +251,14 @@ class InsightsStore {
         }
 
         studentClass.assignments.forEach(a => {
+          a.class_id = studentClass.id
           if (a.weight_id) {
             a.weight = (studentClass.weights.find(w => w.id === a.weight_id).weight / studentClass.assignments.filter(as => as.weight_id === a.weight_id, 0).length) / totalWeight
           } else {
             a.weight = 0
           }
         });
-
+        
         assignments = assignments.concat(studentClass.assignments)
         studentClass.color = '4a4a4a'
         classes.push(studentClass)

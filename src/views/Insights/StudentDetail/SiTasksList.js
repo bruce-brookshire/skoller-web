@@ -125,9 +125,7 @@ class SiTasksList extends Component {
             if (this.taskValidity(t, i)) {
               i += 1
               let cl = this.props.classes.find(cl => cl.id === t.class_id)
-              console.log(this.props.classes)
-              console.log(cl)
-              let color = '#' + cl.color
+              let color = cl.color
 
               return (
                 <Link to={{pathname: this.getPath(cl), state: { activeAssignmentId: t.id }}} key={tasks.indexOf(t)} className='si-tasks-list-task' style={{border: '1px solid ' + color, borderRadius: '5px'}}>
