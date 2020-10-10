@@ -11,6 +11,7 @@ import SkModal from '../../components/SkModal/SkModal'
 import GroupSettings from './GroupSettings'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import GroupInsights from './GroupInsights'
+import GroupCalendar from './GroupCalendar'
 
 const GroupStudents = (props) => {
   const [searching, setSearching] = React.useState('')
@@ -143,8 +144,7 @@ class GroupDetail extends React.Component {
               }
             </div>
             <div className='si-group-detail-cell'>
-              <h2>Team Insights</h2>
-              <GroupInsights group={this.group()} />
+              <GroupCalendar group={this.group()} />
             </div>
           </div>
           <div className='si-group-detail-column sm'>
