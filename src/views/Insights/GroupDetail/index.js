@@ -39,7 +39,7 @@ const GroupStudents = (props) => {
     } else {
       return (
         <div className='add-athletes-callout'>
-          <h1>Add athletes!</h1>
+          <h1>Create athletes for this group!</h1>
           <div onClick={() => props.toggleShowAddStudents(true)} className='plus'>+</div>
           <i className='fas fa-running' />
         </div>

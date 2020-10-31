@@ -78,7 +78,7 @@ class Groups extends React.Component {
       showNewGroupModal: false,
       teamsQuery: '',
       sort: {
-        value: 'Team name',
+        value: 'Group name',
         type: 'Ascending'
       }
     }
@@ -86,7 +86,7 @@ class Groups extends React.Component {
 
   sortGroups (groups) {
     let sortedGroups = []
-    if (this.state.sort.value === 'Team name') {
+    if (this.state.sort.value === 'Group name') {
       sortedGroups = groups.sort((a, b) => {
         if (a.name.toLowerCase() > b.name.toLowerCase()) {
           return 1
@@ -164,7 +164,7 @@ class Groups extends React.Component {
   }
 
   renderSortModal () {
-    let valueOptions = ['Team name']
+    let valueOptions = ['Group name']
     let typeOptions = ['Ascending', 'Descending']
     return (
       <GentleModal show={this.state.showSort} width={380} closeModal={() => {
@@ -253,7 +253,7 @@ class Groups extends React.Component {
       </div>
     )
   }
-
+ 
   render () {
     return (
       this.renderContent()

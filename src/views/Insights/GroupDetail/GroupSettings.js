@@ -45,7 +45,7 @@ class GroupSettings extends Component {
   renderGroupSettings () {
     return (
       <div className='si-group-settings'>
-        <h2>Team name</h2>
+        <h2>Group name</h2>
         <input className='si-input' value={this.state.groupName} onChange={(e) => this.setState({groupName: e.target.value})} />
         <h2>Coaches ({this.group().memberOwners.length})</h2>
         <div className='si-group-settings-coaches'>

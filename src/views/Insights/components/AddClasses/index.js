@@ -143,11 +143,7 @@ class AddClasses extends Component {
         </div>
       )
     }
-    return <div className='si-add-classes-button si-button'>
-      <p
-        onClick={() => this.onClickButton()}
-      >Add classes</p>
-    </div>
+    return <div className='si-group-student-add-classes' onClick={() => this.onClickButton()}>Add classes</div>
   }
 
   onSelectSchool (school) {

@@ -20,8 +20,8 @@ export default class StatusIndicators extends Component {
   }
 
   static propTypes = {
-    student: PropTypes.object,
-    invitation: PropTypes.object,
+    student: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
+    invitation: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     group: PropTypes.object,
     hideNumbers: PropTypes.bool,
     hideTooltip: PropTypes.bool,

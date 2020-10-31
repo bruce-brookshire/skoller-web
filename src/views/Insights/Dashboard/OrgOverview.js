@@ -86,7 +86,7 @@ class OrgOverview extends React.Component {
       return (
         <React.Fragment>
           <div className='si-oo-category'>
-            <p>{this.props.rootStore.insightsStore.groups.length} Team{this.props.rootStore.insightsStore.groups.length === 1 ? '' : 's'}</p>
+            <p>{this.props.rootStore.insightsStore.groups.length} Group{this.props.rootStore.insightsStore.groups.length === 1 ? '' : 's'}</p>
           </div>
           <div className='si-oo-category'>
             <p>{optionalPlural(this.props.rootStore.insightsStore.getStudentsAndInvitations(), '# Athlete@', 's')}</p>

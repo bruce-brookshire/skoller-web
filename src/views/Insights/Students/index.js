@@ -248,7 +248,7 @@ class Students extends React.Component {
         this.renderHeaderItem('📷', 2, 1),
         this.renderHeaderItem('Athletes (' + studentsAndInvitations.length + ')', 2, 1),
         this.renderHeaderItem('Watchlist', 2, 1),
-        this.renderHeaderItem('Team', 2, 1),
+        this.renderHeaderItem('Group', 2, 1),
         this.renderHeaderItem(this.renderTimeframe(), 1, 3)
       ],
       [
@@ -289,8 +289,8 @@ class Students extends React.Component {
         this.setState({showFilter: false})
       }}>
         <div className='si-filter-modal'>
-          <div className='si-filter-modal-label'>Team</div>
-          <input autoFocus={true} className='si-filter-modal-input' placeholder='Team name includes...' value={this.state.teamsQuery} onChange={(e) => this.setState({teamsQuery: e.target.value})} />
+          <div className='si-filter-modal-label'>Group</div>
+          <input autoFocus={true} className='si-filter-modal-input' placeholder='Group name includes...' value={this.state.teamsQuery} onChange={(e) => this.setState({teamsQuery: e.target.value})} />
         </div>
       </GentleModal>
     )

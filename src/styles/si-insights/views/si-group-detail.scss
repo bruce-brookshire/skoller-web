@@ -154,7 +154,7 @@
     margin-top: 1rem;
     border-radius: 5px;
     height: 480px;
-    overflow: auto;
+    overflow: visible;
   
     @include themed() {
       border: 1px solid t($font-color-50)
@@ -190,8 +190,8 @@
         color: white;
         background-color: $sk-blue;
         cursor: pointer;
-        padding: 6px 4px 0 4px;
         border-radius: 5px;
+        padding: 8px 8px 0px 8px;
       }
     }
   }
@@ -203,7 +203,7 @@
     box-shadow: none;
     transition: linear 100ms;
     margin-left: -4px;
-    font-size: 1.17em;
+    font-size: 1.3em;
     font-weight: 600;
 
     &:hover {
