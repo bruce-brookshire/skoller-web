@@ -13,5 +13,7 @@ config.plugins.push(
 
 config.plugins.push(new TerserPlugin())
 
-module.exports = config
+module.exports = merge(config, {
+  devtool: 'none'
+});
 
