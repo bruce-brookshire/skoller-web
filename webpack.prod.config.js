@@ -13,7 +13,5 @@ config.plugins.push(
 
 config.plugins.push(new TerserPlugin())
 
-module.exports = merge(config, {
-  devtool: 'source-map'
-});
+module.exports = config
 
