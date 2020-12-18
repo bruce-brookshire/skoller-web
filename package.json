@@ -68,7 +68,8 @@
     "style-loader": "^0.18.2",
     "url-loader": "^0.6.2",
     "victory": "^34.1.1",
-    "webpack": "^3.3.0"
+    "webpack": "^3.3.0",
+    "webpack-merge": "^5.3.0"
   },
   "author": "FortyAu",
   "license": "ISC",
@@ -88,6 +89,7 @@
     "eslint-plugin-standard": "^3.0.1",
     "i": "^0.3.6",
     "postcss-loader": "^2.0.9",
+    "terser-webpack-plugin-legacy": "^1.2.5",
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.5.1"
   },

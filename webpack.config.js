@@ -9,7 +9,7 @@ module.exports = {
     filename: 'bundle.js'
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /.js?$/,
         loader: 'babel-loader',
@@ -18,10 +18,6 @@ module.exports = {
           presets: ['es2015', 'react'],
           plugins: ['transform-decorators-legacy', 'transform-class-properties']
         }
-      },
-      {
-        test: /\.json$/,
-        loaders: ['json-loader']
       },
       {
         test: /\.css$/,
@@ -33,12 +29,13 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        loaders: [
-          'style-loader',
-          'css-loader',
+        use: [
+          {loader: 'style-loader'},
+          {loader: 'css-loader'},
           {
             loader: 'postcss-loader',
             options: {
+              sourceMap: true,
               ident: 'postcss',
               plugins: () => [
                 require('postcss-flexbugs-fixes'),
@@ -54,8 +51,8 @@ module.exports = {
               ]
             }
           },
-          'resolve-url-loader',
-          'sass-loader?sourceMap'
+          {loader: 'resolve-url-loader'},
+          {loader: 'sass-loader', options: {sourceMap: true}}
         ] // compiles Sass to CSS
       }
     ]
