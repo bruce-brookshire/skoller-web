@@ -258,7 +258,7 @@ class HubInsights extends React.Component {
         <div className='hub-insights-group'>
           <h2>Group Owners</h2>
           <Table
-            headers={['Email', 'Teams (org groups)']}
+            headers={['Email', 'Groups (org groups)']}
             data={data}
           />
           {this.state.showCreateOrgGroupOwnersModal &&
@@ -302,7 +302,7 @@ class HubInsights extends React.Component {
         <div className='hub-insights-group'>
           <h2>Students</h2>
           <Table
-            headers={['Name', 'Phone', 'Teams (org groups)']}
+            headers={['Name', 'Phone', 'Groups (org groups)']}
             data={data}
           />
           {this.state.showManageStudentsModal &&

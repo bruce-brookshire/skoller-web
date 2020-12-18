@@ -11,6 +11,7 @@ import SkModal from '../../components/SkModal/SkModal'
 import GroupSettings from './GroupSettings'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import GroupInsights from './GroupInsights'
+import GroupCalendar from './GroupCalendar'
 
 const GroupStudents = (props) => {
   const [searching, setSearching] = React.useState('')
@@ -38,7 +39,7 @@ const GroupStudents = (props) => {
     } else {
       return (
         <div className='add-athletes-callout'>
-          <h1>Add athletes!</h1>
+          <h1>Create athletes for this group!</h1>
           <div onClick={() => props.toggleShowAddStudents(true)} className='plus'>+</div>
           <i className='fas fa-running' />
         </div>
@@ -143,8 +144,7 @@ class GroupDetail extends React.Component {
               }
             </div>
             <div className='si-group-detail-cell'>
-              <h2>Team Insights</h2>
-              <GroupInsights group={this.group()} />
+              <GroupCalendar group={this.group()} />
             </div>
           </div>
           <div className='si-group-detail-column sm'>
