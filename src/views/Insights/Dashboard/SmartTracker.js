@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
-import {inject, observer} from 'mobx-react'
+import { inject, observer } from 'mobx-react'
 import SmartTrackerIcon from '../../../assets/sk-icons/insights/SmartTrackerIcon'
 import StudentAthleteCard from '../components/StudentAthleteCard'
 import SkSelect from '../../components/SkSelect'
@@ -10,23 +10,27 @@ import CreateStudents from '../components/CreateStudents'
 import SkModal from '../../components/SkModal/SkModal'
 import AddClasses from '../components/AddClasses'
 import { withRouter } from 'react-router-dom'
+import CalendarSmall from '../../../assets/sk-icons/calendar/CalendarSmall'
+import GroupCalendar from '../GroupDetail/GroupCalendar'
+import OrgCalendar from './OrgCalendar'
 
 @inject('rootStore') @observer
 class SmartTracker extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
       team: 'All',
-      searchQuery: ''
+      searchQuery: '',
+      trackerType: 'smart'
     }
   }
 
-  onSetupClasses () {
+  onSetupClasses() {
     // console.log('setup classes')
   }
 
-  renderValue (d) {
+  renderValue(d) {
     const setup = <AddClasses user={d} />
     if (d.isInvitation) {
       if (d.class_ids.length === 0) return setup
@@ -60,7 +64,7 @@ class SmartTracker extends React.Component {
     )
   }
 
-  sortStudents (students) {
+  sortStudents(students) {
     const days = this.props.rootStore.insightsStore.interfaceSettings.timeframe
 
     switch (this.props.rootStore.insightsStore.interfaceSettings.sort) {
@@ -94,7 +98,7 @@ class SmartTracker extends React.Component {
     }
   }
 
-  filterStudents (students) {
+  filterStudents(students) {
     if (this.state.searchQuery !== '') {
       students = students.filter(s => {
         return (s.student.name_first + ' ' + s.student.name_last).toLowerCase().includes(this.state.searchQuery.toLowerCase())
@@ -113,7 +117,7 @@ class SmartTracker extends React.Component {
     return this.sortStudents(students.slice())
   }
 
-  renderSortOption () {
+  renderSortOption() {
     let description
     let sort = this.props.rootStore.insightsStore.interfaceSettings.sort
     let timeframe = this.props.rootStore.insightsStore.interfaceSettings.timeframe
@@ -155,24 +159,24 @@ class SmartTracker extends React.Component {
     )
   }
 
-  toggleShowAddStudents (bool) {
-    this.setState({showNewStudentModal: bool})
+  toggleShowAddStudents(bool) {
+    this.setState({ showNewStudentModal: bool })
   }
 
-  renderAddStudents () {
+  renderAddStudents() {
     if (!this.state.showNewStudentModal) return null
 
     return (
-      <SkModal disableOutsideClick closeModal={() => this.setState({showNewStudentModal: false})}>
+      <SkModal disableOutsideClick closeModal={() => this.setState({ showNewStudentModal: false })}>
         <CreateStudents showConfirm onSubmit={() => {
           this.props.rootStore.insightsStore.updateData()
-          this.setState({showNewStudentModal: false})
+          this.setState({ showNewStudentModal: false })
         }} />
       </SkModal>
     )
   }
 
-  renderTable () {
+  renderTable() {
     const headers = ['Athlete', this.renderSortOption()]
     let data = this.filterStudents(this.props.rootStore.insightsStore.getStudentsAndInvitations()).map(d => {
       if (d) {
@@ -228,19 +232,27 @@ class SmartTracker extends React.Component {
     )
   }
 
-  render () {
+  render() {
+    return (
+      <div className='si-smart-tracker'>
+        {this.renderAddStudents()}
+        {this.state.trackerType === 'smart' ? this.renderSmart() : this.renderCalendar()}
+      </div>
+    )
+  }
+
+  renderSmart() {
     let filterOptions = ['Assignments', 'Grade Impact', 'Stress score']
     let teamOptions = ['All'].concat(this.props.rootStore.insightsStore.org.groups ? this.props.rootStore.insightsStore.org.groups.map(g => g.name) : null)
     let title = toTitleCase(this.props.rootStore.insightsStore.org.groupsAlias) + 's'
     let interfaceSettings = this.props.rootStore.insightsStore.interfaceSettings
     let timeframeOptions = interfaceSettings.timeframeOptions
 
-    return (
-      <div className='si-smart-tracker'>
-        {this.renderAddStudents()}
-        <h1><SmartTrackerIcon fill={this.props.rootStore.insightsStore.darkMode ? 'white' : ''} /> Smart Tracker</h1>
-        <div className='si-smart-tracker-timeframe'>
-          <div className='si-smart-tracker-timeframe-label' style={{paddingRight: '8px'}}>Looking at </div>
+    return <Fragment>
+      <div className='si-smart-tracker-timeframe'>
+        {this.renderTitle()}
+        <div className="column">
+          <div className='si-smart-tracker-timeframe-label' style={{ paddingRight: '8px' }}>Looking at </div>
           <SkSelect className='si-select' selection={'Next ' + interfaceSettings.timeframe + ' days'} optionsMap={() => timeframeOptions.map(o => {
             return (
               <div
@@ -251,41 +263,67 @@ class SmartTracker extends React.Component {
             )
           })} />
         </div>
-        <div className='si-smart-tracker-filter'>
-          <div className='si-smart-tracker-filter-group'>
-            <p className='si-smart-tracker-filter-label'>{title}</p>
-            <SkSelect className='si-select' selection={this.state.team} optionsMap={() => teamOptions.map(o => {
-              return (
-                <div
-                  key={teamOptions.indexOf(o)}
-                  className='si-select-option'
-                  onClick={() => this.setState({team: o})}
-                >{o}</div>
-              )
-            })} />
-          </div>
-          <div className='si-smart-tracker-filter-group'>
-            <p className='si-smart-tracker-filter-label'>Sort</p>
-            <SkSelect className='si-select' selection={this.props.rootStore.insightsStore.interfaceSettings.sort} optionsMap={() => filterOptions.map(o => {
-              return (
-                <div
-                  key={filterOptions.indexOf(o)}
-                  className='si-select-option'
-                  onClick={() => { this.props.rootStore.insightsStore.interfaceSettings.sort = o }}
-                >{o}</div>
-              )
-            })} />
-          </div>
-          <div className='si-smart-tracker-filter-group grow'>
-            <p className='si-smart-tracker-filter-label'>Search</p>
-            <input placeholder='Search for an athlete' className='si-smart-tracker-search' value={this.state.searchQuery} onChange={(e) => this.setState({searchQuery: e.target.value})} />
-          </div>
+      </div>
+      <div className='si-smart-tracker-filter'>
+        <div className='si-smart-tracker-filter-group'>
+          <p className='si-smart-tracker-filter-label'>{title}</p>
+          <SkSelect className='si-select' selection={this.state.team} optionsMap={() => teamOptions.map(o => {
+            return (
+              <div
+                key={teamOptions.indexOf(o)}
+                className='si-select-option'
+                onClick={() => this.setState({ team: o })}
+              >{o}</div>
+            )
+          })} />
         </div>
-        <div className='si-smart-tracker-content'>
-          {this.renderTable()}
+        <div className='si-smart-tracker-filter-group'>
+          <p className='si-smart-tracker-filter-label'>Sort</p>
+          <SkSelect className='si-select' selection={this.props.rootStore.insightsStore.interfaceSettings.sort} optionsMap={() => filterOptions.map(o => {
+            return (
+              <div
+                key={filterOptions.indexOf(o)}
+                className='si-select-option'
+                onClick={() => { this.props.rootStore.insightsStore.interfaceSettings.sort = o }}
+              >{o}</div>
+            )
+          })} />
+        </div>
+        <div className='si-smart-tracker-filter-group grow'>
+          <p className='si-smart-tracker-filter-label'>Search</p>
+          <input placeholder='Search for an athlete' className='si-smart-tracker-search' value={this.state.searchQuery} onChange={(e) => this.setState({ searchQuery: e.target.value })} />
         </div>
       </div>
-    )
+      <div className='si-smart-tracker-content'>
+        {this.renderTable()}
+      </div>
+    </Fragment>
+  }
+
+  renderCalendar() {
+    let students = this.props.rootStore.insightsStore.getStudentsAndInvitations()
+    return <Fragment>
+      {this.renderTitle()}
+
+      <OrgCalendar students={students} />
+
+    </Fragment>
+  }
+
+  renderTitle() {
+    const isSmart = this.state.trackerType === 'smart'
+    let icon = isSmart
+      ? <SmartTrackerIcon fill={this.props.rootStore.insightsStore.darkMode ? 'white' : ''} />
+      : <div style={{ paddingRight: '4px', paddingLeft: '2px' }}><CalendarSmall height="26" width="26" fill={this.props.rootStore.insightsStore.darkMode ? 'white' : '#4A4A4A'} /></div>;
+
+
+    return <div className="row" style={{ paddingTop: isSmart ? '0px' : '6px' }}>
+      {icon}
+      <select className="si-tracker-selector" value={this.state.trackerType} onChange={({ target: { value } }) => this.setState({ trackerType: value })}>
+        <option className="value-option" value="smart">Smart Tracker</option>
+        <option className="value-option" value="calendar">Calendar</option>
+      </select>
+    </div>
   }
 }
 

@@ -10,7 +10,7 @@ import Avatar from '../components/Avatar'
 import { Link } from 'react-router-dom/cjs/react-router-dom.min'
 
 @inject('rootStore') @observer
-export default class GroupCalendar extends Component {
+export default class OrgCalendar extends Component {
     static propTypes = {
         group: PropTypes.object,
         rootStore: PropTypes.object
@@ -19,7 +19,7 @@ export default class GroupCalendar extends Component {
     constructor(props) {
         super(props)
 
-        let students = props.group.students.concat(props.group.invitations)
+        let students = this.props.students
         let studentCount = students.length
         let assignmentDays = students.flatMap(s => {
             let values = s.assignments.reduce((acc, val) => {
@@ -93,12 +93,6 @@ export default class GroupCalendar extends Component {
     renderMonth(startDate) {
         return (
             <div className="si-group-calendar-month">
-                <div className="row">
-                    <div style={{ paddingLeft: '12px', paddingRight: '8px', paddingBottom: '2px' }}>
-                        <CalendarSmall height="26" width="26" fill={this.props.rootStore.insightsStore.darkMode ? 'white' : '#4A4A4A'}/>
-                    </div>
-                    <h1>Group Calendar</h1>
-                </div>
                 <span style={{ fontWeight: "100" }}> Showing <span style={{ fontWeight: "500" }}>how many athletes</span> have assignments due each day</span>
                 <br />
                 {this.renderHeader()}

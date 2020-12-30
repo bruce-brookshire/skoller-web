@@ -82,7 +82,7 @@ class Watchlist extends React.Component {
       return (
         <div className='add-athletes-callout si-smart-tracker-callout'>
           <i className='far fa-star' />
-          <h2 className='grey-h2'>Create your personal watchlist by clicking the star next to {this.props.rootStore.insightsStore.org.studentsAlias}s&apos; names.</h2>
+          <h2 className='grey-h2'>Follow {this.props.rootStore.insightsStore.org.studentsAlias}s and groups by clicking the star next to the name</h2>
         </div>
       )
     }
