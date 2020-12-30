@@ -124,9 +124,9 @@ class CreateStudents extends Component {
     }
     return (
       <div className='si-create-students'>
-        <h1>Add {this.state.studentsAliasTitle + 's'}</h1>
+        <h1>Add {this.state.studentsAliasTitle }</h1>
         {this.renderGroupSelect()}
-        {this.renderSwitch()}
+        {/* {this.renderSwitch()} */}
         {this.renderContent()}
       </div>
     )

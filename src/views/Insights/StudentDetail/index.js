@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {inject, observer} from 'mobx-react'
+import { inject, observer } from 'mobx-react'
 import NestedNav from '../components/NestedNav'
 import StudentInsights from './StudentInsights'
 import SiClassList from './SiClassList'
@@ -17,10 +17,12 @@ import StatusIndicators from '../components/StatusIndicators'
 import OverviewItem from './components/OverviewItem'
 import ClassesIcon from '../../../assets/sk-icons/ClassesIcon'
 import TasksIcon from '../../../assets/sk-icons/TasksIcon'
+import Calendar from './SiStudentCalendar'
+import { toJS } from 'mobx'
 
 @inject('rootStore') @observer
 class StudentDetail extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -30,7 +32,7 @@ class StudentDetail extends React.Component {
     this.props.rootStore.navStore.setActivePage('insights/students')
   }
 
-  user () {
+  user() {
     if (this.props.invitation) {
       return this.props.rootStore.insightsStore.invitations.find(s => s.id === parseInt(this.props.invitation.id))
     } else {
@@ -38,7 +40,7 @@ class StudentDetail extends React.Component {
     }
   }
 
-  renderTasks () {
+  renderTasks() {
     let user = this.user()
     let timeframe = this.props.rootStore.insightsStore.interfaceSettings.timeframe
 
@@ -47,7 +49,7 @@ class StudentDetail extends React.Component {
     )
   }
 
-  renderClasses () {
+  renderClasses() {
     let user = this.user()
     if (user.classes.length > 0) {
       return (
@@ -66,7 +68,7 @@ class StudentDetail extends React.Component {
     }
   }
 
-  renderGroups (user) {
+  renderGroups(user) {
     if (user.isInvitation) {
       return user.group_ids.map(id => {
         let t = this.props.rootStore.insightsStore.groups.find(g => g.id === id)
@@ -88,7 +90,7 @@ class StudentDetail extends React.Component {
     }
   }
 
-  renderAthlete (user) {
+  renderAthlete(user) {
     return (
       <div className='si-student-detail-sa'>
         <Avatar
@@ -109,10 +111,10 @@ class StudentDetail extends React.Component {
           </div>
           <div className='contact'>
             {Array.isArray(user.student.users) &&
-              <div className='contact-item'><i className='fas fa-envelope' /> <a style={{marginTop: '4px'}} className='link-style' href={'mailto:' + user.student.users[0].email}>{user.student.users[0].email}</a></div>
+              <div className='contact-item'><i className='fas fa-envelope' /> <a style={{ marginTop: '4px' }} className='link-style' href={'mailto:' + user.student.users[0].email}>{user.student.users[0].email}</a></div>
             }
             {!Array.isArray(user.student.users) &&
-              <div className='contact-item'><i className='fas fa-envelope' /> <a style={{marginTop: '4px'}} className='link-style' href={'mailto:' + user.student.user.email}>{user.student.user.email}</a></div>
+              <div className='contact-item'><i className='fas fa-envelope' /> <a style={{ marginTop: '4px' }} className='link-style' href={'mailto:' + user.student.user.email}>{user.student.user.email}</a></div>
             }
             <div className='contact-item'><i className='fas fa-phone' /> <CopyCell isPhone={true} text={user.student.phone} /></div>
           </div>
@@ -121,7 +123,7 @@ class StudentDetail extends React.Component {
     )
   }
 
-  renderTimeframeSelect () {
+  renderTimeframeSelect() {
     let interfaceSettings = this.props.rootStore.insightsStore.interfaceSettings
     let timeframeOptions = interfaceSettings.timeframeOptions
 
@@ -141,7 +143,7 @@ class StudentDetail extends React.Component {
     )
   }
 
-  renderHeaderRight (user) {
+  renderHeaderRight(user) {
     return (
       <div className='si-student-detail-header-right'>
         <StatusIndicators student={user.isInvitation ? false : user} invitation={user.isInvitation ? user : false} />
@@ -152,27 +154,27 @@ class StudentDetail extends React.Component {
     )
   }
 
-  renderClassesCell () {
+  renderClassesCell() {
     return (
       <div className='si-student-detail-cell classes'>
-        <div style={{display: 'flex'}}>
+        <div style={{ display: 'flex' }}>
           <ClassesIcon width={24} height={24} fill={'#4a4a4a'} />
           <h1>Classes</h1>
-          <AddClasses autoShow={this.state.autoShowAddClasses} user={this.user()}><span className='classes-plus' style={{cursor: 'pointer'}}><i className='fas fa-plus' /></span></AddClasses>
+          <AddClasses autoShow={this.state.autoShowAddClasses} user={this.user()}><span className='classes-plus' style={{ cursor: 'pointer' }}><i className='fas fa-plus' /></span></AddClasses>
         </div>
         {this.renderClasses()}
       </div>
     )
   }
 
-  renderTasksCell (user) {
+  renderTasksCell(user) {
     if (user.classes.length === 0) {
       return null
     }
 
     return (
       <div className='si-student-detail-cell tasks'>
-        <div style={{display: 'flex'}}>
+        <div style={{ display: 'flex' }}>
           <TasksIcon width={24} height={24} fill={'#4a4a4a'} />
           <h1>To-Do&apos;s</h1>
         </div>
@@ -181,7 +183,7 @@ class StudentDetail extends React.Component {
     )
   }
 
-  renderStudentCell (user) {
+  renderStudentCell(user) {
     return (
       <div className='si-student-detail-cell'>
         <div className='student'>
@@ -192,7 +194,7 @@ class StudentDetail extends React.Component {
     )
   }
 
-  renderOverview (user) {
+  renderOverview(user) {
     let timeframe = this.props.rootStore.insightsStore.interfaceSettings.timeframe
     const assignmentCount = getAssignmentCountInNextNDays(user.assignments, timeframe)
     const weightsTotal = getAssignmentWeightsInNextNDays(user.assignments, timeframe)
@@ -224,7 +226,7 @@ class StudentDetail extends React.Component {
               </div>
             }
             modalButtonText={'How does Skoller calculate this?'}
-            modalDescription = {
+            modalDescription={
               <div className='overview-modal'>
                 Skoller has {user.student.name_first}&apos;s real-time stress score at {intensity} out of 10 based on how many upcoming assignments are due and how important they are.
               </div>
@@ -235,7 +237,25 @@ class StudentDetail extends React.Component {
     )
   }
 
-  renderInsights (user) {
+  renderCalendar(user) {
+    let classes = user.classes;
+    let assignments = classes.flatMap(c => c.assignments);
+    let classColors = {}
+    
+    classes.forEach(c => {
+      classColors[c.id] = `#${c.color || '57b9e4'}`
+    })
+    
+    return <Calendar
+      thisMonth={this.state.thisMonth}
+      classColors={classColors}
+      assignments={assignments}
+      studentId={!user.isInvitation && user.id}
+      invitationId={user.isInvitation && user.id}
+    />
+  }
+
+  renderInsights(user) {
     return (
       <div className='si-student-detail-cell insights'>
         <h1><i className='fas fa-chart-bar' />Visual Insights</h1>
@@ -244,7 +264,7 @@ class StudentDetail extends React.Component {
     )
   }
 
-  render () {
+  render() {
     let user = this.user()
     return (
       <div className='si-student-detail-container'>
@@ -252,10 +272,11 @@ class StudentDetail extends React.Component {
         <div className='si-student-detail'>
           <div className='si-student-detail-column'>
             {this.renderStudentCell(user)}
-            {this.renderOverview(user)}
+            {!user.isInvitation && this.renderOverview(user)}
             {this.renderClassesCell(user)}
             {this.renderTasksCell(user)}
             {this.renderInsights(user)}
+            {this.renderCalendar(user)}
           </div>
         </div>
       </div>

@@ -120,23 +120,25 @@ export default class StatusIndicators extends Component {
 
   render () {
     if (this.state.error) return null
+
+    let {noClasses, noSetup, noAccount} = this.state;
     return (
       <div className={'si-status-indicators ' + (this.props.group && !this.props.hideNumbers ? ' si-group' : '')}>
         <div className={'si-status-indicators-dots ' + (this.props.group && !this.props.hideNumbers ? ' si-group' : '')}>
           <Indicator
-            show={this.state.noClasses}
+            show={noClasses}
             className='no-classes'
             hoverContent={this.state.group ? 'No classes' : 'Students with no classes'}
             number={this.props.group && !this.props.hideNumbers && this.state.noClasses}
           />
           <Indicator
-            show={this.state.noSetup}
+            show={noSetup && !noClasses}
             className='no-setup'
             hoverContent={this.state.group ? "Students with classes that aren't set up" : 'Has classes that are not set up'}
             number={this.props.group && !this.props.hideNumbers && this.state.noSetup}
           />
           <Indicator
-            show={this.state.noAccount}
+            show={noAccount && !noSetup && !noClasses}
             className='no-account'
             hoverContent={
               this.state.group

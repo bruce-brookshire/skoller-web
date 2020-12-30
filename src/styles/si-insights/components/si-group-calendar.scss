@@ -33,15 +33,18 @@
             align-items: center;
             justify-content: center;
             text-align: center;
+            font-size: 2em;
         }
 
         .si-group-calendar-day.active {
-            background-color: #d4f2ff;
+            background-color: white;
+            border: 0.25px solid lighten(lightgray, 8%);
         }
 
         .si-group-calendar-day.current {
-            background-color: #d4f2ff;
-            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            border: 0.25px solid lighten(lightgray, 8%);
+            box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.1);
         }
 
         .si-group-calendar-day.inactive {
