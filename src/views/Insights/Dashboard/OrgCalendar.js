@@ -1,9 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { inject, observer } from 'mobx-react'
-import ForwardArrow from '../../../assets/sk-icons/navigation/ForwardArrow'
-import BackArrow from '../../../assets/sk-icons/navigation/BackArrow'
-import CalendarSmall from '../../../assets/sk-icons/calendar/CalendarSmall'
 import moment from 'moment'
 import SkModal from '../../components/SkModal/SkModal'
 import Avatar from '../components/Avatar'
@@ -49,8 +46,8 @@ export default class OrgCalendar extends Component {
                 return acc
             }, {});
 
-        let now = new Date();
-        let currMonth = new Date(now.getFullYear(), now.getMonth(), 1)
+        let now = new Date()
+        let currMonth = this.props.currMonth;
         let startDate = new Date(currMonth)
         startDate.setDate(1 - currMonth.getDay())
 
@@ -63,27 +60,22 @@ export default class OrgCalendar extends Component {
             assignmentDays,
         }
     }
+    
+    componentDidUpdate(prevProps) {
+        if(prevProps.currMonth !== this.props.currMonth) {
+            let currMonth = this.props.currMonth;
+            let startDate = new Date(currMonth)
+            startDate.setDate(1 - currMonth.getDay())
 
-    clickedNextMonth = () => this.modifyMonth(1);
-    clickedPreviousMonth = () => this.modifyMonth(-1);
-
-    modifyMonth(offset) {
-        const { currMonth } = this.state;
-        let newMonth = new Date(currMonth.getFullYear(), currMonth.getMonth() + offset, 1);
-        let newStartDate = new Date(newMonth)
-        newStartDate.setDate(1 - newMonth.getDay())
-
-        this.setState({ currMonth: newMonth, startDate: newStartDate })
+            this.setState({currMonth, startDate});
+        }
     }
+    
 
     incrementDays(date, days) {
         let newDate = new Date(date);
         newDate.setDate(date.getDate() + days)
         return newDate
-    }
-
-    currentMonthName() {
-        return this.state.currMonth.toLocaleString('default', { month: 'long', year: 'numeric' });
     }
 
     toggleModal(modalDate) {
@@ -95,7 +87,6 @@ export default class OrgCalendar extends Component {
             <div className="si-group-calendar-month">
                 <span style={{ fontWeight: "100" }}> Showing <span style={{ fontWeight: "500" }}>how many athletes</span> have assignments due each day</span>
                 <br />
-                {this.renderHeader()}
                 {this.renderWeekdays()}
 
                 {this.renderWeek(startDate)}
@@ -106,16 +97,6 @@ export default class OrgCalendar extends Component {
                 {this.renderWeek(this.incrementDays(startDate, 35))}
             </div>
         )
-    }
-
-    renderHeader() {
-        return <div className="si-group-calendar-header">
-            <div className="navigator" onClick={this.clickedPreviousMonth}><BackArrow /></div>
-            <div style={{ flexGrow: 1 }}> </div>
-            <h2>{this.currentMonthName()}</h2>
-            <div style={{ flexGrow: 1 }}> </div>
-            <div className="navigator" onClick={this.clickedNextMonth}><ForwardArrow /></div>
-        </div>
     }
 
     renderWeekdays() {

@@ -274,9 +274,9 @@ class StudentDetail extends React.Component {
             {this.renderStudentCell(user)}
             {!user.isInvitation && this.renderOverview(user)}
             {this.renderClassesCell(user)}
+            {this.renderCalendar(user)}
             {this.renderTasksCell(user)}
             {this.renderInsights(user)}
-            {this.renderCalendar(user)}
           </div>
         </div>
       </div>

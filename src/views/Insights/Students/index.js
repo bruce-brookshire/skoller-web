@@ -397,7 +397,7 @@ class Students extends React.Component {
         <div className='si-students-header'>
           <div className='si-students-header-left'>
             <h1>Athletes<LoadingIndicator /></h1>
-            <p>Manage all of the athletes in {this.props.rootStore.insightsStore.org.name} from this page.</p>
+            <p>Manage all of the athletes and their {this.props.rootStore.insightsStore.org.groupsAlias} associations from this page.</p>
           </div>
           <div className='si-students-header-right'>
             <div className='si-button'>

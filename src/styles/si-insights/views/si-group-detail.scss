@@ -158,6 +158,14 @@
   }
 }
 
+.si-add-classes-button {
+  color: white;
+  background-color: $sk-blue;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 8px 8px 0px 8px;
+}
+
 .si-group-student {
   display: flex;
   flex-flow: row nowrap;
@@ -183,11 +191,7 @@
       align-items: center;
 
       .si-group-student-add-classes {
-        color: white;
-        background-color: $sk-blue;
-        cursor: pointer;
-        border-radius: 5px;
-        padding: 8px 8px 0px 8px;
+        @extend .si-add-classes-button;
       }
     }
   }

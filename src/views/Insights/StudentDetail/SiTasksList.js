@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import { Link, withRouter } from 'react-router-dom'
 import WeightIcon from '../../Student/Tasks/WeightIcon'
+import { toJS } from 'mobx'
 
 function WeightWrapper (props) {
   const [hover, setHover] = React.useState(false)
@@ -107,7 +108,6 @@ class SiTasksList extends Component {
 
   render () {
     let tasks = this.state.assignments
-    let taskDisplayCount = this.getTaskDisplayCount()
     let i = 0
 
     return (
@@ -125,7 +125,7 @@ class SiTasksList extends Component {
             if (this.taskValidity(t, i)) {
               i += 1
               let cl = this.props.classes.find(cl => cl.id === t.class_id)
-              let color = cl.color
+              let color = "#" + cl.color
 
               return (
                 <Link to={{pathname: this.getPath(cl), state: { activeAssignmentId: t.id }}} key={tasks.indexOf(t)} className='si-tasks-list-task' style={{border: '1px solid ' + color, borderRadius: '5px'}}>

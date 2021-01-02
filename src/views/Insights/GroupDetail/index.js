@@ -41,9 +41,6 @@ const GroupStudents = (props) => {
           </div>
           <div className='si-gd-group-students-list'>
             {entries.map(e => e.isInvitation ? <GroupStudent key={e.id} invitation={e} /> : <GroupStudent key={e.id} student={e} />)}
-            {entries.map(e => e.isInvitation ? <GroupStudent key={e.id} invitation={e} /> : <GroupStudent key={e.id} student={e} />)}
-            {entries.map(e => e.isInvitation ? <GroupStudent key={e.id} invitation={e} /> : <GroupStudent key={e.id} student={e} />)}
-            {entries.map(e => e.isInvitation ? <GroupStudent key={e.id} invitation={e} /> : <GroupStudent key={e.id} student={e} />)}
           </div>
         </React.Fragment>
       )
