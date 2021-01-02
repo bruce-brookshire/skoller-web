@@ -11,18 +11,24 @@ import SkModal from '../../components/SkModal/SkModal'
 import AddClasses from '../components/AddClasses'
 import { withRouter } from 'react-router-dom'
 import CalendarSmall from '../../../assets/sk-icons/calendar/CalendarSmall'
-import GroupCalendar from '../GroupDetail/GroupCalendar'
+import ForwardArrow from '../../../assets/sk-icons/navigation/ForwardArrow'
+import BackArrow from '../../../assets/sk-icons/navigation/BackArrow'
 import OrgCalendar from './OrgCalendar'
+import { toJS } from 'mobx'
 
 @inject('rootStore') @observer
 class SmartTracker extends React.Component {
   constructor(props) {
     super(props)
 
+    let now = new Date();
+    let currMonth = new Date(now.getFullYear(), now.getMonth(), 1)
+
     this.state = {
       team: 'All',
       searchQuery: '',
-      trackerType: 'smart'
+      trackerType: 'smart',
+      currMonth
     }
   }
 
@@ -31,7 +37,7 @@ class SmartTracker extends React.Component {
   }
 
   renderValue(d) {
-    const setup = <AddClasses user={d} />
+    const setup = <div className="si-add-classes-button"> <AddClasses user={d} /></div>
     if (d.isInvitation) {
       if (d.class_ids.length === 0) return setup
     } else {
@@ -163,6 +169,20 @@ class SmartTracker extends React.Component {
     this.setState({ showNewStudentModal: bool })
   }
 
+  clickedNextMonth = () => this.modifyMonth(1);
+  clickedPreviousMonth = () => this.modifyMonth(-1);
+
+  modifyMonth(offset) {
+    const { currMonth } = this.state;
+    let newMonth = new Date(currMonth.getFullYear(), currMonth.getMonth() + offset, 1);
+
+    this.setState({ currMonth: newMonth })
+  }
+
+  currentMonthName() {
+    return this.state.currMonth.toLocaleString('default', { month: 'long', year: 'numeric' });
+  }
+
   renderAddStudents() {
     if (!this.state.showNewStudentModal) return null
 
@@ -178,7 +198,7 @@ class SmartTracker extends React.Component {
 
   renderTable() {
     const headers = ['Athlete', this.renderSortOption()]
-    let data = this.filterStudents(this.props.rootStore.insightsStore.getStudentsAndInvitations()).map(d => {
+    let data = this.filterStudents(this.props.rootStore.insightsStore.students).map(d => {
       if (d) {
         return [
           <StudentAthleteCard user={d} key={d.id} rootStore={this.props.rootStore} />,
@@ -302,11 +322,22 @@ class SmartTracker extends React.Component {
 
   renderCalendar() {
     let students = this.props.rootStore.insightsStore.getStudentsAndInvitations()
+    console.log(this.state.currMonth)
     return <Fragment>
       {this.renderTitle()}
 
-      <OrgCalendar students={students} />
+      <OrgCalendar students={students} currMonth={this.state.currMonth} />
 
+    </Fragment>
+  }
+
+  renderHeader() {
+    const navStyle = { cursor: "pointer", padding: "4px" }
+    return <Fragment>
+      <div style={{ flexGrow: 1 }} />
+      <div style={navStyle} onClick={this.clickedPreviousMonth}><BackArrow /></div>
+      <div style={{ paddingLeft: "16px", paddingRight: "16px" }}><h2 style={{ margin: '0px' }}>{this.currentMonthName()}</h2></div>
+      <div style={navStyle} onClick={this.clickedNextMonth}><ForwardArrow /></div>
     </Fragment>
   }
 
@@ -317,12 +348,13 @@ class SmartTracker extends React.Component {
       : <div style={{ paddingRight: '4px', paddingLeft: '2px' }}><CalendarSmall height="26" width="26" fill={this.props.rootStore.insightsStore.darkMode ? 'white' : '#4A4A4A'} /></div>;
 
 
-    return <div className="row" style={{ paddingTop: isSmart ? '0px' : '6px' }}>
+    return <div className="row" style={{ paddingTop: '0px', alignItems: "flex-start" }}>
       {icon}
-      <select className="si-tracker-selector" value={this.state.trackerType} onChange={({ target: { value } }) => this.setState({ trackerType: value })}>
+      <select className="si-tracker-selector" style={{ width: isSmart ? "215px" : "150px", color: "#57b9e4" }} value={this.state.trackerType} onChange={({ target: { value } }) => this.setState({ trackerType: value })}>
         <option className="value-option" value="smart">Smart Tracker</option>
         <option className="value-option" value="calendar">Calendar</option>
       </select>
+      {!isSmart && this.renderHeader()}
     </div>
   }
 }

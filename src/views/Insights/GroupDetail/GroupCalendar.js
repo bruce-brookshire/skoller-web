@@ -98,10 +98,11 @@ export default class GroupCalendar extends Component {
                         <CalendarSmall height="26" width="26" fill={this.props.rootStore.insightsStore.darkMode ? 'white' : '#4A4A4A'}/>
                     </div>
                     <h1>Group Calendar</h1>
+                    <div style={{ flexGrow: 1 }}/>
+                    {this.renderHeader()}
                 </div>
                 <span style={{ fontWeight: "100" }}> Showing <span style={{ fontWeight: "500" }}>how many athletes</span> have assignments due each day</span>
                 <br />
-                {this.renderHeader()}
                 {this.renderWeekdays()}
 
                 {this.renderWeek(startDate)}
@@ -117,9 +118,9 @@ export default class GroupCalendar extends Component {
     renderHeader() {
         return <div className="si-group-calendar-header">
             <div className="navigator" onClick={this.clickedPreviousMonth}><BackArrow /></div>
-            <div style={{ flexGrow: 1 }}> </div>
+            <div style={{ flexGrow: 1 }}/>
             <h2>{this.currentMonthName()}</h2>
-            <div style={{ flexGrow: 1 }}> </div>
+            <div style={{ flexGrow: 1 }}/>
             <div className="navigator" onClick={this.clickedNextMonth}><ForwardArrow /></div>
         </div>
     }

@@ -16,7 +16,8 @@ const StudentAthleteCard = (props) => {
             <div className='sa-name'>
               <Link to={link}>
                 {props.user.student.name_first + ' ' + props.user.student.name_last}
-              </Link> <span style={{marginLeft: '8px'}}><StatusIndicators invitation={props.user} /></span>
+              </Link> 
+              <span style={{marginLeft: '8px'}}><StatusIndicators invitation={props.user} /></span>
             </div>
             {!props.noTeams && <div className='sa-teams'>
               {props.user.group_ids.map(id => {
@@ -48,7 +49,7 @@ const StudentAthleteCard = (props) => {
             <div className='watch-toggle-container'>
               <WatchToggle rootStore={props.rootStore} showConfirm={props.absoluteToggle} user={props.user} />
             </div>
-            <span style={{marginLeft: '8px'}}><StatusIndicators student={props.user} /></span>
+            {props.user.classes.length !== 0 && <span style={{marginLeft: '8px'}}><StatusIndicators student={props.user} /></span>}
           </div>
           {!props.noTeams && <div className='sa-teams'>
             {props.user.org_groups.map(t => {
