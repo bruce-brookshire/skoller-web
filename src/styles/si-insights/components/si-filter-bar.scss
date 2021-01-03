@@ -78,16 +78,22 @@
       margin-left: 8px;
       border-radius: 5px;
 
+
       &.blue {
         background-color: $sk-blue;
       }
 
       &.yellow {
-        background-color: $cn-color-yellow;
+        color: $cn-color-yellow;
+        background-color: white;
+        border: 1px $cn-color-yellow solid;
+
       }
 
       &.red {
-        background-color: $sk-alert-red;
+        color: $sk-alert-red;
+        background-color: white;
+        border: 1px $sk-alert-red solid;
       }
     }
   }

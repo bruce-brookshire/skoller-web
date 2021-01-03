@@ -340,7 +340,7 @@ class Students extends React.Component {
     return (
       <div className='si-filter-bar-item right'>
         {needClasses > 0 && <div className='status blue'>{optionalPlural(needClasses, '# need% classes', 's')}</div>}
-        {needSetup > 0 && <div className='status yellow'>{optionalPlural(needSetup, '# need% setup', 's')}</div>}
+        {needSetup > 0 &&  <div className='status yellow'>{optionalPlural(needSetup, '# need% setup', 's')}</div>}
         {pendingActivation > 0 &&
           <EmailInvitations type={'org'} count={pendingActivation} orgId={this.props.rootStore.insightsStore.org.id}>
             <div style={{cursor: 'pointer'}} className='status red'>{pendingActivation} pending activation</div>
