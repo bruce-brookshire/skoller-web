@@ -17,7 +17,7 @@ class InsightsStore {
       watchlist: [],
       groupOwners: [],
       org: {
-        groupsAlias: 'team',
+        groupsAlias: 'group',
         studentsAlias: 'athlete'
       },
       interfaceSettings: {
@@ -168,7 +168,6 @@ class InsightsStore {
 
   async getGroupOwnerWatchlist (orgId, user) {
     let watchlistStudentsIds = []
-    console.log(user.org_group_owners)
     await this.asyncForEach(user.org_group_owners, async group => {
       let orgGroupId = group.org_group_id
       let orgGroupOwnerId = this.groups.find(g => g.id === orgGroupId).owners.find(o => o.org_member_id === this.groupOwners.find(go => go.user_id === user.id).id).id
@@ -264,7 +263,6 @@ class InsightsStore {
         classes.push(studentClass)
       }
     });
-    console.log(classes)
 
     return {
       ...i,

@@ -29,8 +29,8 @@ class TasksIcon extends React.Component {
 
 TasksIcon.propTypes = {
   fill: PropTypes.string,
-  width: PropTypes.string,
-  height: PropTypes.string
+  width: PropTypes.number,
+  height: PropTypes.number
 }
 
 export default TasksIcon

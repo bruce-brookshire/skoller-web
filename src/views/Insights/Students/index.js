@@ -248,7 +248,7 @@ class Students extends React.Component {
         this.renderHeaderItem('📷', 2, 1),
         this.renderHeaderItem('Athletes (' + studentsAndInvitations.length + ')', 2, 1),
         this.renderHeaderItem('Watchlist', 2, 1),
-        this.renderHeaderItem('Team', 2, 1),
+        this.renderHeaderItem('Group', 2, 1),
         this.renderHeaderItem(this.renderTimeframe(), 1, 3)
       ],
       [
@@ -289,8 +289,8 @@ class Students extends React.Component {
         this.setState({showFilter: false})
       }}>
         <div className='si-filter-modal'>
-          <div className='si-filter-modal-label'>Team</div>
-          <input autoFocus={true} className='si-filter-modal-input' placeholder='Team name includes...' value={this.state.teamsQuery} onChange={(e) => this.setState({teamsQuery: e.target.value})} />
+          <div className='si-filter-modal-label'>Group</div>
+          <input autoFocus={true} className='si-filter-modal-input' placeholder='Group name includes...' value={this.state.teamsQuery} onChange={(e) => this.setState({teamsQuery: e.target.value})} />
         </div>
       </GentleModal>
     )
@@ -340,7 +340,7 @@ class Students extends React.Component {
     return (
       <div className='si-filter-bar-item right'>
         {needClasses > 0 && <div className='status blue'>{optionalPlural(needClasses, '# need% classes', 's')}</div>}
-        {needSetup > 0 && <div className='status yellow'>{optionalPlural(needSetup, '# need% setup', 's')}</div>}
+        {needSetup > 0 &&  <div className='status yellow'>{optionalPlural(needSetup, '# need% setup', 's')}</div>}
         {pendingActivation > 0 &&
           <EmailInvitations type={'org'} count={pendingActivation} orgId={this.props.rootStore.insightsStore.org.id}>
             <div style={{cursor: 'pointer'}} className='status red'>{pendingActivation} pending activation</div>
@@ -397,7 +397,7 @@ class Students extends React.Component {
         <div className='si-students-header'>
           <div className='si-students-header-left'>
             <h1>Athletes<LoadingIndicator /></h1>
-            <p>Manage all of the athletes in {this.props.rootStore.insightsStore.org.name} from this page.</p>
+            <p>Manage all of the athletes and their {this.props.rootStore.insightsStore.org.groupsAlias} associations from this page.</p>
           </div>
           <div className='si-students-header-right'>
             <div className='si-button'>

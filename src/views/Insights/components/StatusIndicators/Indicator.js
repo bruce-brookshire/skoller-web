@@ -38,10 +38,10 @@ function Indicator (props) {
 }
 
 Indicator.propTypes = {
-  hoverContent: PropTypes.object,
+  hoverContent: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   className: PropTypes.string,
-  number: PropTypes.number,
-  show: PropTypes.object
+  number: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
+  show: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]) 
 }
 
 export default Indicator

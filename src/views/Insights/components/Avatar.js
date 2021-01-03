@@ -32,7 +32,7 @@ const Avatar = (props) => {
   const renderPreview = () => {
     return (
       <div className='jobs-avatar-modal-image-preview'>
-        <div className='image-preview' style={{backgroundImage: preview ? `url(${preview})` : `url(${null})`}}>
+        <div className='image-preview' style={{backgroundImage: `url(${preview})`}}>
           <div onClick={() => {
             setFile(null)
             setPreview(null)

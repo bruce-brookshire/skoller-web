@@ -1,0 +1,124 @@
+.si-group-calendar-month {
+    display: flex;
+    flex-direction: column;
+
+    .si-group-calendar-header {
+        display: flex;
+        flex-direction: row;
+        margin-top: 8px;
+        margin-bottom: 16px;
+
+        .navigator {
+            cursor: pointer;
+            padding-left: 16px;
+            padding-right: 16px;
+            padding-top: 2px;
+        }
+    }
+
+    .si-group-calendar-week {
+        display: flex;
+        flex-direction: row;
+
+        .weekday {
+            flex-grow: 1;
+            flex-basis: 0;
+            margin: 2px;
+            font-weight: 600;
+        }
+
+        .si-group-calendar-day {
+            display: flex;
+            height: 80px;
+            flex-basis: 0;
+            min-width: 40px;
+            border-radius: 5px;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 2em;
+        }
+
+        .si-group-calendar-day.active {
+            background-color: white;
+            border: 0.25px solid lighten(lightgray, 8%);
+        }
+
+        .si-group-calendar-day.current {
+            background-color: white;
+            border: 0.25px solid lighten(lightgray, 8%);
+            box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .si-group-calendar-day.inactive {
+            background-color: $sk-jobs-light-gray;
+            color: $cn-color-grey;
+        }
+
+        .si-group-calendar-day-number {
+            display: flex;
+            margin-bottom: 2px;
+
+            .active,
+            .current,
+            .inactive {
+                text-align: center;
+                align-items: center;
+                padding: 4px 4px 0px 4px;
+                border-radius: 4px;
+            }
+
+            .active {
+                color: $sk-charcoal;
+            }
+            .current {
+                color: white;
+                background-color: $sk-blue;
+                box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.05);
+            }
+            .inactive {
+                color: $cn-color-grey;
+            }
+        }
+    }
+}
+
+.si-group-calendar-detail-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 8px;
+
+    span {
+        color: lightgray;
+    }
+}
+
+.si-group-calendar-modal-students {
+    padding: 8px 8px 0px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    margin-bottom: 12px;
+    margin-top: 8px;
+    min-width: 30vw;
+
+    .student {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 8px;
+
+        .name-label {
+            cursor: pointer;
+            transition: 300ms;
+            margin-left: 8px;
+            padding: 4px 4px 0px;
+            border-radius: 4px;
+        }
+
+        .name-label:hover {
+            background-color: $sk-blue-25;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+        }
+    }
+}

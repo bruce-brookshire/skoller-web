@@ -88,7 +88,7 @@ class ClassStatusModal extends React.Component {
     }
     if (cl.school.is_syllabus_overload && id < 1400 && id !== 1100) {
       status = 'syllabusOverload'
-      sammiMessage = <span>Due to high volume, it could take Skoller <b>a few days</b> to set up this class.</span>
+      sammiMessage = <span>COVID has hit us hard.</span>
     }
     return ({
       cl: cl,
@@ -357,7 +357,7 @@ class ClassStatusModal extends React.Component {
               }
               {this.state.status === 'syllabusOverload'
                 ? <div className='sk-class-status-modal-action-detail'>
-                  <h2 style={{margin: '0'}}>We recommend you use the DIY tool to set up your class instantly!</h2>
+                  <h2 style={{margin: '0'}}>We have reached our limit and cannot process anymore syllabi. We apologize for the inconvenience and can only hope for your understanding during these trying times. You can use the DIY tool to setup this class instantly!</h2>
                   <p style={{margin: '0'}}><small>Less than 10 minutes</small></p>
                   <p onClick={() => this.setState({syllabusOverloadUploadDocs: !this.state.syllabusOverloadUploadDocs})} style={{margin: '1rem 0 0 0', cursor: 'pointer', color: '#57B9E4'}}>Upload class documents</p>
                 </div>
@@ -426,7 +426,7 @@ class ClassStatusModal extends React.Component {
           ? {
             loading: false,
             status: 'syllabusOverload',
-            sammiMessage: <span>Due to high volume, it could take me <b>a few days</b> to set up this class.</span>
+            sammiMessage: <span>COVID has hit us hard.</span>
           }
           : {
             loading: false,
