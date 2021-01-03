@@ -10,7 +10,7 @@ class SyllabusOverload extends React.Component {
 
     this.state = {
       loading: this.props.school ? false : true,
-      status: this.props.school ? this.props.school.is_syllabus_overload : null
+      status: this.props.school ? this.props.school.admin_syllabus_overload : null
     }
 
     this.getSettings()
@@ -18,8 +18,8 @@ class SyllabusOverload extends React.Component {
 
   getSettings () {
     if (this.props.school) {
-      console.log(this.props.school.is_syllabus_overload)
-      this.setState({loading: false, status: this.props.school.is_syllabus_overload})
+      console.log(this.props.school.admin_syllabus_overload)
+      this.setState({loading: false, status: this.props.school.admin_syllabus_overload})
     } else {
       actions.settings.getAdminSettings()
         .then(r => {
@@ -43,13 +43,13 @@ class SyllabusOverload extends React.Component {
     this.setState({loading: true})
     let form = {
       id: this.props.school.id,
-      is_syllabus_overload: bool
+      admin_syllabus_overload: bool
     }
     console.log(form)
     actions.schools.updateSchool(form)
       .then(r => {
-        console.log(r.is_syllabus_overload)
-        this.setState({status: r.is_syllabus_overload, loading: false})
+        console.log(r.admin_syllabus_overload)
+        this.setState({status: r.admin_syllabus_overload, loading: false})
       })
   }
 
