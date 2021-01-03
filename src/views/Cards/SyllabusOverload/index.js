@@ -43,7 +43,7 @@ class SyllabusOverload extends React.Component {
     this.setState({loading: true})
     let form = {
       id: this.props.school.id,
-      admin_syllabus_overload: bool
+      is_syllabus_overload: bool
     }
     console.log(form)
     actions.schools.updateSchool(form)
