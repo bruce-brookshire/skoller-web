@@ -112,10 +112,4 @@ class SiStudentCalendar extends React.Component {
     }
 }
 
-SiStudentCalendar.propTypes = {
-    thisMonth: PropTypes.object,
-    classColors: PropTypes.object,
-    assignments: PropTypes.array
-}
-
 export default SiStudentCalendar

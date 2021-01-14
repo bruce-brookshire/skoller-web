@@ -1,11 +1,11 @@
-import { extendObservable, action } from 'mobx'
+import { extendObservable, action, toJS } from 'mobx'
 import actions from '../actions'
 import stores from './index'
 import { getIntensityScore, asyncForEach } from '../views/Insights/utils'
-import {Cookies} from 'react-cookie'
+import { Cookies } from 'react-cookie'
 
 class InsightsStore {
-  constructor () {
+  constructor() {
     this.cookie = new Cookies()
 
     extendObservable(this, {
@@ -31,7 +31,7 @@ class InsightsStore {
     })
   }
 
-  async getOrgOwners (orgId) {
+  async getOrgOwners(orgId) {
     await actions.insights.getAllOrgOwnersInOrg(orgId)
       .then(r => {
         this.orgOwners = r
@@ -39,13 +39,13 @@ class InsightsStore {
       })
   }
 
-  async asyncForEach (array, callback) {
+  async asyncForEach(array, callback) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array)
     }
   }
 
-  async getOrgGroups (orgId, user, role) {
+  async getOrgGroups(orgId, user, role) {
     if (role === 'orgOwner') {
       await actions.insights.getAllGroupsInOrg(orgId)
         .then(r => {
@@ -54,7 +54,7 @@ class InsightsStore {
             let students = this.students.filter(s => s.org_groups.map(og => og.id).includes(group.id))
             let invitations = this.invitations.filter(s => s.group_ids && s.group_ids.includes(group.id))
             let memberOwners = []
-            groups.push({...group, students, invitations, memberOwners})
+            groups.push({ ...group, students, invitations, memberOwners })
           })
           this.groups = groups
           this.org.groups = groups
@@ -67,7 +67,7 @@ class InsightsStore {
           .then(r => {
             let students = this.students.filter(s => s.org_groups.map(og => og.id).includes(r.id))
             let invitations = this.invitations.filter(s => s.group_ids && s.group_ids.includes(r.id))
-            groups.push({...r, memberOwners: [], students, invitations})
+            groups.push({ ...r, memberOwners: [], students, invitations })
           })
       })
       this.groups = groups
@@ -75,14 +75,14 @@ class InsightsStore {
     }
   }
 
-  async getStudents (filters, orgId, user) {
+  async getStudents(filters, orgId, user) {
     await actions.insights.getAllStudentsInOrg(orgId)
       .then(async r => {
         let students = r.map(s => {
           let student
           const existingStudent = this.students.find(es => es.id === s.id)
           if (existingStudent) {
-            student = {...existingStudent, ...s, orgStudentId: s.id}
+            student = { ...existingStudent, ...s, orgStudentId: s.id }
           } else {
             student = {
               ...s,
@@ -119,7 +119,7 @@ class InsightsStore {
       })
   }
 
-  async getGroupOwners (orgId) {
+  async getGroupOwners(orgId) {
     await actions.insights.getAllOrgGroupOwnersInOrg(orgId)
       .then(r => {
         let groupOwners = r
@@ -141,11 +141,11 @@ class InsightsStore {
       })
   }
 
-  async getOrg (orgId) {
+  async getOrg(orgId) {
     await actions.insights.getOrgById(orgId)
       .then(async r => {
         let org = r
-        this.org = {...this.org, ...org, color: null, school: null}
+        this.org = { ...this.org, ...org, color: null, school: null }
 
         if (org.schools.length > 0) {
           await actions.schools.getSchoolById(org.schools[0].id)
@@ -157,16 +157,16 @@ class InsightsStore {
       })
   }
 
-  async getOrgOwnerWatchlist (orgId) {
+  async getOrgOwnerWatchlist(orgId) {
     await actions.insights.getOrgOwnerWatchlist(orgId, stores.userStore.user.org_owners[0].id)
       .then(r => {
-        let students = r.map(s => { return {...s, orgStudentId: s.id} })
+        let students = r.map(s => { return { ...s, orgStudentId: s.id } })
         this.watchlist = students
         this.org.watchlist = students
       })
   }
 
-  async getGroupOwnerWatchlist (orgId, user) {
+  async getGroupOwnerWatchlist(orgId, user) {
     let watchlistStudentsIds = []
     await this.asyncForEach(user.org_group_owners, async group => {
       let orgGroupId = group.org_group_id
@@ -183,13 +183,15 @@ class InsightsStore {
     this.org.watchlist = watchlistStudents
   }
 
-  async getStudentData (students, orgId) {
+  async getStudentData(students, orgId) {
     if (Array.isArray(students)) {
       await Promise.all(students.map(s => {
         s.classes.forEach(cl => {
           if (!cl.color) {
             cl.color = '57b9e4'
           }
+
+          this.calculateAssignmentWeights(cl)
         })
         s.intensity = {
           // TODO replace these methods with what API returns
@@ -199,7 +201,7 @@ class InsightsStore {
         }
 
         return s;
-        }
+      }
       ))
 
       this.students = students
@@ -212,6 +214,8 @@ class InsightsStore {
             if (!cl.color) {
               cl.color = '57b9e4'
             }
+
+            this.calculateAssignmentWeights(cl)
           })
           let assignments = [].concat.apply([], r.map(cl => cl.assignments))
           student.org_student_id = student.id
@@ -224,15 +228,15 @@ class InsightsStore {
             30: 0//getIntensityScore(assignments, 30)
           }
         })
-      let orgStudent = {...orgStudents.find(s => s.id === student.id), ...student}
+      let orgStudent = { ...orgStudents.find(s => s.id === student.id), ...student }
       let existingStudent = orgStudents.find(s => s.id === student.id)
-      existingStudent = {...existingStudent, ...orgStudent}
+      existingStudent = { ...existingStudent, ...orgStudent }
       this.students = orgStudents
       Promise.resolve(true)
     }
   }
 
-  async getInvitationData (i) {
+  async getInvitationData(i) {
     let classes = []
     let assignments = []
 
@@ -249,21 +253,13 @@ class InsightsStore {
           totalWeight = 100
         }
 
-        studentClass.assignments.forEach(a => {
-          a.class_id = studentClass.id
-          if (a.weight_id) {
-            a.weight = (studentClass.weights.find(w => w.id === a.weight_id).weight / studentClass.assignments.filter(as => as.weight_id === a.weight_id, 0).length) / totalWeight
-          } else {
-            a.weight = 0
-          }
-        });
-        
+        this.calculateAssignmentWeights(studentClass)
+
         assignments = assignments.concat(studentClass.assignments)
         studentClass.color = '4a4a4a'
         classes.push(studentClass)
       }
     });
-
     return {
       ...i,
       classes,
@@ -289,7 +285,41 @@ class InsightsStore {
     }
   }
 
-  async getInvitations (orgId) {
+  calculateAssignmentWeights(cl) {
+    if (cl.weights && cl.weights.lenght !== 0 && cl.assignments.length !== 0) {
+
+      let clWeights = {}
+      let weightTotal = 0;
+
+      cl.weights.forEach(w => {
+        clWeights[w.id] = w.weight
+        weightTotal += w.weight
+      })
+
+      let asWeights = {}
+      cl.assignments.forEach(a => {
+        if (a.weight_id) {
+          asWeights[a.weight_id] = (asWeights[a.weight_id] || 0) + 1
+        }
+      })
+
+      cl.assignments.forEach(a => {
+        if (a.weight_id) {
+          a.weight = (clWeights[a.weight_id] / weightTotal) / asWeights[a.weight_id]
+        }
+      })
+    }
+  }
+
+  async refreshInvitation(invitation) {
+    await actions.insights.invitations.getStudentInvitation(invitation.organization.id, invitation.id)
+    .then(async i => {
+      let invitation = await this.getInvitationData(i)
+      this.invitations = this.invitations.map(si => si.id === invitation.id ? invitation : si)
+    })
+  }
+
+  async getInvitations(orgId) {
     await actions.insights.invitations.getStudentInvitations(orgId)
       .then(async r => {
         let invitations = []
@@ -301,7 +331,7 @@ class InsightsStore {
       })
   }
 
-  getRole (user) {
+  getRole(user) {
     if (user.org_owners) {
       if (user.org_owners.length > 0) {
         return 'orgOwner'
@@ -327,7 +357,7 @@ class InsightsStore {
     }
   }
 
-  async getAllData (filters) {
+  async getAllData(filters) {
     const user = stores.userStore.user
     const role = this.getRole(user)
     this.userType = role
@@ -368,20 +398,20 @@ class InsightsStore {
     Promise.resolve(true)
   }
 
-  async getData (filters) {
+  async getData(filters) {
     this.loading = true
     await this.getAllData(filters)
     this.getDataSuccess()
   }
 
-  async updateData (filters) {
+  async updateData(filters) {
     this.loadingUpdate = true
     await this.getAllData(filters)
     Promise.resolve(true)
     this.getDataSuccess()
   }
 
-  async updateStudent (orgStudentId) {
+  async updateStudent(orgStudentId) {
     let orgStudent = this.students.filter(s => s.id === orgStudentId)[0]
     await this.getStudentData(orgStudent, this.org.id)
 
@@ -389,7 +419,7 @@ class InsightsStore {
     this.getDataSuccess()
   }
 
-  async updateInvitation (invitation) {
+  async updateInvitation(invitation) {
     let orgInvite = await this.getInvitationData(invitation, this.org.id)
     let invitations = this.invitations
     invitations[this.invitations.indexOf(invitations.find(i => i.id === invitation.id))] = orgInvite
@@ -399,7 +429,7 @@ class InsightsStore {
     this.getDataSuccess()
   }
 
-  isWatching (student) {
+  isWatching(student) {
     if (this.watchlist.map(u => u.org_student_id).includes(student.id)) {
       return true
     } else {
@@ -408,29 +438,29 @@ class InsightsStore {
   }
 
   @action
-  getStudentsAndInvitations () {
+  getStudentsAndInvitations() {
     return this.students.concat(this.invitations)
   }
 
   @action
-  getDataSuccess () {
+  getDataSuccess() {
     this.loading = false
     this.loadingUpdate = false
   }
 
   @action
-  getDataError () {
+  getDataError() {
     this.loading = false
     this.loadingUpdate = false
   }
 
   @action
-  getDarkModeCookie () {
+  getDarkModeCookie() {
     this.darkMode = this.cookie.get('skollerInsightsDarkMode') === 'true'
   }
 
   @action
-  switchOrg () {
+  switchOrg() {
     this.orgSelection = this.cookie.get('skollerInsightsOrgSelection')
     this.getData()
   }

@@ -75,12 +75,4 @@ class DayCell extends React.Component {
     }
 }
 
-DayCell.propTypes = {
-    day: PropTypes.object,
-    classColors: PropTypes.object,
-    thisMonth: PropTypes.object,
-    assignments: PropTypes.object,
-    rootStore: PropTypes.object
-}
-
 export default withRouter(DayCell)

@@ -9,7 +9,7 @@ import { withRouter } from 'react-router-dom'
 
 @inject('rootStore') @observer
 class SiStudentClassDetail extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     let user
@@ -31,10 +31,10 @@ class SiStudentClassDetail extends Component {
     location: PropTypes.object
   }
 
-  refreshUser () {
+  refreshUser() {
     let user = this.state.user
     if (user.isInvitation) {
-      this.props.rootStore.insightsStore.updateInvitation(user.id)
+      this.props.rootStore.insightsStore.refreshInvitation(user)
     } else {
       this.props.rootStore.insightsStore.updateStudent(user.id)
     }
@@ -63,7 +63,11 @@ class SiStudentClassDetail extends Component {
       }
     } else {
       form.id = assignmentId
-      await actions.assignments.updateStudentAssignment(form, isPrivate)
+      if (this.state.user.isInvitation) {
+        await actions.assignments.updateAssignment(null, form)
+      } else {
+        await actions.assignments.updateStudentAssignment(form, isPrivate)
+      }
     }
 
     this.refreshUser()
@@ -77,16 +81,16 @@ class SiStudentClassDetail extends Component {
     this.refreshUser()
   }
 
-  render () {
+  render() {
     let user
     if (this.props.match.params.invitationId) {
       user = this.props.rootStore.insightsStore.invitations.find(i => i.id === parseInt(this.props.match.params.invitationId))
     } else {
       user = this.props.rootStore.insightsStore.students.find(s => s.id === parseInt(this.props.match.params.orgStudentId))
     }
-    
+
     let cl = toJS(user.classes.find(cl => cl.id === parseInt(this.props.match.params.classId)))
-    console.log(cl)
+
     cl.color = this.props.match.params.invitationId ? '4a4a4a' : cl.color
     return (
       <div className='si-class-detail'>
