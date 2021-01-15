@@ -125,6 +125,7 @@ class SiTasksList extends Component {
             if (this.taskValidity(t, i)) {
               i += 1
               let cl = this.props.classes.find(cl => cl.id === t.class_id)
+              if (!cl) return null;
               let color = "#" + cl.color
 
               return (

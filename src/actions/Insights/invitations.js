@@ -25,6 +25,16 @@ function getStudentInvitations (orgId) {
     })
 }
 
+function getStudentInvitation (orgId, inviteId) {
+  return get(`/api/v1/organizations/${orgId}/student-org-invitations/${inviteId}`, '', '')
+    .then(r => {
+      return r
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
 function deleteInvitation (orgId, invitationId) {
   return del(`/api/v1/organizations/${orgId}/student-org-invitations/${invitationId}`, '', '')
     .then(r => {
@@ -162,6 +172,7 @@ export function sendReminderEmail (type, orgId, id) {
 const exports = {
   createStudentInvitation,
   getStudentInvitations,
+  getStudentInvitation,
   deleteInvitation,
   postInvitationsCSV,
   editInvitation,
