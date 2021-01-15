@@ -187,14 +187,14 @@ class AddClasses extends Component {
         class_ids: [...user.class_ids, id]
       }
       actions.insights.invitations.editInvitation(this.props.rootStore.insightsStore.org.id, user.id, form)
-        .then((invitation) => {
-          this.props.rootStore.insightsStore.updateInvitation(invitation)
+        .then(async (invitation) => {
+          await this.props.rootStore.insightsStore.refreshInvitation(invitation)
           this.setState({show: false, form: 'search'})
         })
     } else {
       actions.insights.students.enrollInClass(id, this.props.user.student_id)
-        .then((r) => {
-          this.props.rootStore.insightsStore.updateStudent(this.props.user.id)
+        .then(async (r) => {
+          await this.props.rootStore.insightsStore.updateStudent(this.props.user.id)
           this.setState({show: false, form: 'search'})
         })
     }

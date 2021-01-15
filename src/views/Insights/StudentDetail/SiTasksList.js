@@ -49,6 +49,10 @@ class SiTasksList extends Component {
     match: PropTypes.object
   }
 
+  componentDidUpdate(prevProps) {
+    this.setState({assignments: this.getAllTasks()})
+  }
+
   getAllTasks () {
     return [].concat.apply([], this.props.classes.map(cl => cl.assignments)).sort((a, b) => moment(a.due).isAfter(moment(b.due)) ? 1 : -1)
   }

@@ -33,7 +33,7 @@ class SiDropClass extends React.Component {
         class_ids: classIds
       })
         .then(i => {
-          this.props.rootStore.insightsStore.updateInvitation(i)
+          this.props.rootStore.insightsStore.refreshInvitation(i)
         })
       this.props.onDropClass()
     }

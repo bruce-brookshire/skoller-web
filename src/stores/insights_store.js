@@ -304,9 +304,9 @@ class InsightsStore {
       })
 
       cl.assignments.forEach(a => {
-        if (a.weight_id) {
+        if (a.weight_id) 
           a.weight = (clWeights[a.weight_id] / weightTotal) / asWeights[a.weight_id]
-        }
+        a.class_id = cl.id
       })
     }
   }
