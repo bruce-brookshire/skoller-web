@@ -17,7 +17,7 @@ class Watchlist extends React.Component {
         value = getAssignmentCountInNextNDays(d.assignments, days)
         break
       case 'Grade Impact':
-        value = getAssignmentWeightsInNextNDays(d.assignments, days) + '%'
+        value = getAssignmentWeightsInNextNDays(d.classes.flatMap(c => c.assignments), days) + '%'
         break
       case 'Stress score':
         value = d.intensity[intensityString]

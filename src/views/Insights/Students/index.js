@@ -104,7 +104,7 @@ class Students extends React.Component {
 
     if (this.state.sort.value === 'Weights') {
       sortedStudents = students.sort((a, b) => {
-        if (getAssignmentWeightsInNextNDays(a.assignments, days) < getAssignmentWeightsInNextNDays(b.assignments, days)) {
+        if (getAssignmentWeightsInNextNDays(a.classes.flatMap(c => c.assignments), days) < getAssignmentWeightsInNextNDays(b.classes.flatMap(c => c.assignments), days)) {
           return 1
         } else {
           return -1
@@ -236,7 +236,7 @@ class Students extends React.Component {
 
     return [
       <div className='big-value' key={d.id}>{getAssignmentCountInNextNDays(d.assignments, this.state.timeframe)}</div>,
-      <div className='big-value' key={d.id}>{getAssignmentWeightsInNextNDays(d.assignments, this.state.timeframe)}%</div>,
+      <div className='big-value' key={d.id}>{getAssignmentWeightsInNextNDays(d.classes.flatMap(c => c.assignments), this.state.timeframe)}%</div>,
       <div className='big-value' key={d.id}>{d.intensity[this.state.timeframe]} <span>out of</span> 10</div>
     ]
   }
