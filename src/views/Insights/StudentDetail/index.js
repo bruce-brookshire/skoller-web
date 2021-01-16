@@ -196,8 +196,9 @@ class StudentDetail extends React.Component {
 
   renderOverview(user) {
     let timeframe = this.props.rootStore.insightsStore.interfaceSettings.timeframe
-    const assignmentCount = getAssignmentCountInNextNDays(user.assignments, timeframe)
-    const weightsTotal = getAssignmentWeightsInNextNDays(user.assignments, timeframe)
+    let assignments = user.classes.flatMap(c => c.assignments);
+    const assignmentCount = getAssignmentCountInNextNDays(assignments, timeframe)
+    const weightsTotal = getAssignmentWeightsInNextNDays(assignments, timeframe)
     const intensity = user.intensity[timeframe]
 
     return (
