@@ -85,7 +85,7 @@ class SmartTracker extends React.Component {
 
       case 'Grade Impact':
         return students.sort((a, b) => {
-          if (getAssignmentWeightsInNextNDays(a.assignments, days) < getAssignmentWeightsInNextNDays(b.assignments, days)) {
+          if (getAssignmentWeightsInNextNDays(a.classes.flatMap(c => c.assignments), days) < getAssignmentWeightsInNextNDays(b.classes.flatMap(c => c.assignments), days)) {
             return 1
           } else {
             return -1
