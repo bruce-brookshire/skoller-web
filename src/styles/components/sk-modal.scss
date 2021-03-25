@@ -15,7 +15,7 @@
 
   .sk-modal-container {
     box-sizing: border-box;
-    overflow: scroll;
+    overflow: auto;
     margin: 1rem 0;
     @include skoller-cell;
     max-height: calc(100vh - 6rem);

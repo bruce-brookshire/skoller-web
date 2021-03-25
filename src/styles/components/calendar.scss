@@ -197,7 +197,7 @@
             height: calc((100vh - 420px) / 6);
             min-height: 56px;
             max-height: 128px;
-            overflow-y: scroll;
+            overflow-y: auto;
             @include hide-scrollbar;
   
             .calendar-assignment-container {
