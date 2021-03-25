@@ -89,9 +89,11 @@ class SiStudentClassDetail extends Component {
       user = this.props.rootStore.insightsStore.students.find(s => s.id === parseInt(this.props.match.params.orgStudentId))
     }
 
-    let cl = toJS(user.classes.find(cl => cl.id === parseInt(this.props.match.params.classId)))
+    const {students} = this.props.rootStore.insightsStore;
 
+    let cl = toJS(user.classes.find(cl => cl.id === parseInt(this.props.match.params.classId)))
     cl.color = this.props.match.params.invitationId ? '4a4a4a' : cl.color
+    
     return (
       <div className='si-class-detail'>
         <NestedNav pageType='studentDetail' />
@@ -106,6 +108,7 @@ class SiStudentClassDetail extends Component {
           updateClass={() => this.refreshUser()}
           activeAssignmentId={this.state.activeAssignmentId}
           insightsUserStudentId={user.student_id}
+          insightsStudents={students}
         />
       </div>
     )

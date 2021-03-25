@@ -10,23 +10,42 @@ import ShareClass from './ShareClass'
 import ClassDocuments from './ClassDocuments'
 import ClassInsights from './ClassInsights'
 import ClassInfo from './ClassInfo'
+import actions from '../../../actions'
+import { toJS } from 'mobx'
+import Classmates from './Classmates'
 
 class ClassDetail extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
       showAddAssignmentModal: false,
       visibleAssignments: [],
-      focusedAssignment: this.props.activeAssignmentId ? this.props.activeAssignmentId : null
+      focusedAssignment: this.props.activeAssignmentId ? this.props.activeAssignmentId : null,
+      classmates: null
     }
   }
 
-  getCurrentClass () {
+  componentDidMount() {
+    const { insightsUser, cl, insightsStudents } = this.props
+    if (insightsUser && insightsStudents) {
+      actions.classes.getClassByIdAdmin(cl.id).then(({ students }) => {
+        let primaryStudentId = this.props.insightsUserStudentId
+
+        let pStudent = students.find(s => s.id === primaryStudentId)
+        let iStudents = students.filter(s => s.id !== primaryStudentId && insightsStudents.find(is => is.student_id === s.id))
+        let nIStudents = students.filter(s => !insightsStudents.find(si => si.student_id === s.id))
+
+        this.setState({ classmates: [pStudent, ...iStudents, ...nIStudents] })
+      })
+    }
+  }
+
+  getCurrentClass() {
     return this.props.cl
   }
 
-  renderDropClassButton () {
+  renderDropClassButton() {
     if (this.props.insightsUser) {
       return (
         <SiDropClass icon={true} onDropClass={() => this.props.history.push('/insights/' + (this.props.match.params.invitationId ? ('invitations/' + this.props.match.params.invitationId) : ('students/' + this.props.match.params.orgStudentId)))} cl={this.props.cl} />
@@ -41,7 +60,7 @@ class ClassDetail extends React.Component {
   /*
   * Find class weight categories that don't have assignments
   */
-  getEmptyWeights () {
+  getEmptyWeights() {
     let cl = this.getCurrentClass()
     let weights = cl.weights
     let emptyWeights = []
@@ -60,40 +79,41 @@ class ClassDetail extends React.Component {
     return emptyWeights
   }
 
-  renderAddAssignmentButton () {
+  renderAddAssignmentButton() {
     let emptyWeights = this.getEmptyWeights()
     return (
       <div>
-        <a className='add-assignment-button link-style' onClick={() => this.setState({showAddAssignmentModal: true})}>
-          <i className='fas fa-plus' style={{fontSize: '16px', marginTop: '-2px', fontWeight: '600'}} />{emptyWeights.length > 0 ? <div className='add-assignment-button-alert'><div className='add-assignment-button-alert-count'>{emptyWeights.length}</div></div> : null}
+        <a className='add-assignment-button link-style' onClick={() => this.setState({ showAddAssignmentModal: true })}>
+          <i className='fas fa-plus' style={{ fontSize: '16px', marginTop: '-2px', fontWeight: '600' }} />{emptyWeights.length > 0 ? <div className='add-assignment-button-alert'><div className='add-assignment-button-alert-count'>{emptyWeights.length}</div></div> : null}
         </a>
         { this.state.showAddAssignmentModal
-          ? <AddAssignment classes={this.props.classes} insightsUserStudentId={this.props.insightsUserStudentId ? this.props.insightsUserStudentId : false} onSubmit={() => this.props.updateClass()} closeModal={() => this.setState({showAddAssignmentModal: false})} assignmentParams={{class: this.getCurrentClass()}}/>
+          ? <AddAssignment classes={this.props.classes} insightsUserStudentId={this.props.insightsUserStudentId ? this.props.insightsUserStudentId : false} onSubmit={() => this.props.updateClass()} closeModal={() => this.setState({ showAddAssignmentModal: false })} assignmentParams={{ class: this.getCurrentClass() }} />
           : null
         }
       </div>
     )
   }
 
-  renderHeader () {
+  renderHeader() {
     let cl = this.getCurrentClass()
+    let { classmates } = this.state;
     return (
       <div className='sk-class-header'>
-        <div className='sk-class-grade' style={{backgroundColor: '#' + cl.color}}>
+        <div className='sk-class-grade' style={{ backgroundColor: '#' + cl.color }}>
           <h2>
             {cl.grade > 0 ? cl.grade + '%' : '–'}
           </h2>
         </div>
         <div className='sk-class-header-detail'>
           <div className='sk-class-name'>
-            <h1 style={{color: '#' + cl.color}}>
+            <h1 style={{ color: '#' + cl.color }}>
               {cl.name}
             </h1>
           </div>
           <div className='sk-class-icons'>
             <ClassInfo cl={this.getCurrentClass()} />
             <ClassDocuments cl={this.getCurrentClass()} />
-            <ShareClass cl={this.getCurrentClass()} />
+            {classmates ? <Classmates students={classmates} cl={cl}/> : <ShareClass cl={this.getCurrentClass()} />}
             <ColorChanger cl={this.getCurrentClass()} updateClassColor={() => null} />
             {this.renderDropClassButton()}
           </div>
@@ -102,13 +122,13 @@ class ClassDetail extends React.Component {
     )
   }
 
-  renderInsights () {
+  renderInsights() {
     return (
       <ClassInsights cl={this.getCurrentClass()} />
     )
   }
 
-  renderAssignments () {
+  renderAssignments() {
     const cl = this.getCurrentClass()
     return (
       <div className='sk-class-assignments-cell'>
@@ -118,7 +138,7 @@ class ClassDetail extends React.Component {
           onDeleteAssignment={this.props.onDeleteAssignment}
           onCompleteAssignment={this.props.onCompleteAssignment}
           editAssignment={this.props.editAssignment}
-          visibleAssignmentsCallback={(visibleAssignments) => this.setState({visibleAssignments})}
+          visibleAssignmentsCallback={(visibleAssignments) => this.setState({ visibleAssignments })}
           activeAssignmentId={this.state.focusedAssignment}
           classId={cl.id}
           cl={cl}
@@ -127,7 +147,7 @@ class ClassDetail extends React.Component {
     )
   }
 
-  renderLayout () {
+  renderLayout() {
     return (
       <div className='sk-class'>
         <div className='sk-class-column'>
@@ -141,7 +161,7 @@ class ClassDetail extends React.Component {
     )
   }
 
-  render () {
+  render() {
     return (
       <div>{this.renderLayout()}</div>
     )
