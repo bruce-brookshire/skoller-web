@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import SkModal from '../../../components/SkModal/SkModal'
 
 function Classmates(props) {
-    const [shouldShowModal, showModal] = React.useState(true)
+    const [shouldShowModal, showModal] = React.useState(false)
 
     const renderClassmatesCell = () => {
         let { students, cl } = props
