@@ -1,6 +1,6 @@
 var _Environments = {
   development: {
-    SERVER_NAME: 'http://localhost:4000',
+    SERVER_NAME: 'https://api-staging.skoller.co',
     IS_DEV: true,
     NAME: 'dev'
   },
@@ -16,10 +16,10 @@ var _Environments = {
   }
 }
 
-function getEnvironment () {
+function getEnvironment() {
   // Insert logic here to get the current platform (e.g. staging, production, etc)
   // var platform = getPlatform()
-  var platform = 'development'
+  var platform = 'staging'
 
   // ...now return the correct environment
   return _Environments[platform]

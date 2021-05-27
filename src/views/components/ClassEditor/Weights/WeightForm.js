@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Form, ValidateForm} from 'react-form-library'
-import {InputField, CheckboxField} from '../../../../components/Form'
+import { Form, ValidateForm } from 'react-form-library'
+import { InputField, CheckboxField } from '../../../../components/Form'
 import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
 
@@ -15,7 +15,7 @@ const requiredFields = {
 }
 
 class WeightForm extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = this.initializeState()
   }
@@ -23,11 +23,11 @@ class WeightForm extends React.Component {
   /*
   * If new weight is received, update form.
   */
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.weight && this.state.form.id !== nextProps.weight.id) {
-      this.setState({form: this.initializeFormData(nextProps.weight)})
+      this.setState({ form: this.initializeFormData(nextProps.weight) })
     } else {
-      this.setState({form: this.initializeFormData()})
+      this.setState({ form: this.initializeFormData() })
     }
   }
 
@@ -36,8 +36,8 @@ class WeightForm extends React.Component {
   *
   * @return [Object]. State object.
   */
-  initializeState () {
-    const {weight} = this.props
+  initializeState() {
+    const { weight } = this.props
     return {
       form: this.initializeFormData(weight),
       isPoints: this.props.boolPoints,
@@ -54,9 +54,9 @@ class WeightForm extends React.Component {
   * @param [Object] data. initial data
   * @return [Object]. Form object.
   */
-  initializeFormData (data) {
+  initializeFormData(data) {
     let formData = data || {}
-    const {id, name, weight} = formData
+    const { id, name, weight } = formData
     return ({
       id: id || null,
       name: name || '',
@@ -69,9 +69,9 @@ class WeightForm extends React.Component {
   * Determine whether the user is submiting updated weight or a new weight.
   *
   */
-  onSubmit () {
-    const {form} = this.state
-    const {weight} = this.props
+  onSubmit() {
+    const { form } = this.state
+    const { weight } = this.props
 
     if (this.props.validateForm(form, requiredFields)) {
       form.id && (weight && (form.name === weight.name || form.weight === weight.weight))
@@ -83,31 +83,31 @@ class WeightForm extends React.Component {
   /*
   * Create a new weight
   */
-  onCreateWeight () {
-    this.setState({loading: true})
+  onCreateWeight() {
+    this.setState({ loading: true })
     actions.weights.createWeight(this.props.cl, this.state.form).then((weight) => {
-      this.setState({form: this.initializeFormData(), loading: false})
+      this.setState({ form: this.initializeFormData(), loading: false })
       this.props.onCreateWeight(weight)
-    }).catch(() => { this.setState({loading: false}) })
+    }).catch(() => { this.setState({ loading: false }) })
   }
 
   /*
   * Update an existing weight
   */
-  onUpdateWeight () {
-    this.setState({loading: true})
+  onUpdateWeight() {
+    this.setState({ loading: true })
     actions.weights.updateWeight(this.props.cl, this.state.form).then((weight) => {
-      this.setState({form: this.initializeFormData(), loading: false})
+      this.setState({ form: this.initializeFormData(), loading: false })
       this.props.onUpdateWeight(weight)
-    }).catch(() => { this.setState({loading: false}) })
+    }).catch(() => { this.setState({ loading: false }) })
   }
 
-  changePoints () {
-    this.setState({editPoints: false})
+  changePoints() {
+    this.setState({ editPoints: false })
     this.props.onTypeSelection(true, this.state.totalPointsFormValue)
   }
 
-  renderPointsOptions () {
+  renderPointsOptions() {
     return (
       <div className='cn-weight-form-points'>
         {this.props.totalPoints && !this.state.editPoints
@@ -117,7 +117,7 @@ class WeightForm extends React.Component {
             </div>
             <div className='cn-weight-form-points-field'>
               <div className='cn-weight-form-points-display'>{this.props.totalPoints}</div>
-              <button onClick={() => this.setState({editPoints: true})}>
+              <button onClick={() => this.setState({ editPoints: true })}>
                 Edit
               </button>
             </div>
@@ -125,7 +125,7 @@ class WeightForm extends React.Component {
           : <div className='cn-weight-form-points-form'>
             <div className='cn-weight-form-points-label'>Total available points:</div>
             <div className='cn-weight-form-points-field'>
-              <input onChange={(e) => this.setState({totalPointsFormValue: e.target.value})} />
+              <input onChange={(e) => this.setState({ totalPointsFormValue: e.target.value })} />
               <button onClick={() => this.changePoints()}>Save</button>
             </div>
           </div>
@@ -134,19 +134,43 @@ class WeightForm extends React.Component {
     )
   }
 
-  render () { // issue: renders before onUpdateClass finishes --solved
-    const {form} = this.state
-    const {formErrors, updateProperty, numWeights, noWeights} = this.props
+  render() { // issue: renders before onUpdateClass finishes --solved
+    const { form } = this.state
+    const { formErrors, updateProperty, numWeights, noWeights } = this.props
     // console.log(this.props)
     // console.log(updateProperty)
     // console.log('WeightForm: ', this.props.boolPoints)
 
     return (
       <div id='cn-weight-form'>
+        <div className='cn-section-name-header'>
+          Name
+        </div>
+        <div className='cn-section-value-header'>
+          value
+        </div>
+        <hr />
+        <div className="margin-top">
+          <input
+            className='input-box cn-name-field'
+            error={formErrors.name}
+            name="name"
+            onChange={updateProperty}
+            value={form.name}
+          />
+          <input
+            className='input-box cn-value-field'
+            error={formErrors.weight}
+            name="weight"
+            onChange={updateProperty}
+            type="number"
+            value={form.weight}
+          />
+        </div>
         {/* <div className='margin-bottom margin-top'>
           <a onClick={() => this.props.reset()}>Go back</a>
         </div> */}
-        <div className='cn-section-content-header'>
+        {/* <div className='cn-section-content-header'>
           Step 1: Set Up Weights
         </div>
         <div id='cn-weight-form-instructions'>
@@ -176,9 +200,9 @@ class WeightForm extends React.Component {
         </div>
         {this.props.boolPoints &&
           this.renderPointsOptions()
-        }
-        <hr />
-        <InputField
+        } */}
+        {/* <hr /> */}
+        {/* <InputField
           containerClassName='margin-top'
           inputClassName='input-box'
           error={formErrors.name}
@@ -187,8 +211,8 @@ class WeightForm extends React.Component {
           onChange={updateProperty}
           placeholder="Exams"
           value={form.name}
-        />
-        <div id='cn-weight-form-value'>
+        /> */}
+        {/* <div id='cn-weight-form-value'>
           <InputField
             containerClassName='margin-top hide-spinner'
             inputClassName='input-box'
@@ -215,15 +239,15 @@ class WeightForm extends React.Component {
             inputClassName='margin-right'
             label={'Weights were not provided on the syllabus.'}
           />
-        }
-        {<button
+        } */}
+        {/* {<button
           className={'button margin-top ' + (this.state.loading || noWeights ? 'disabled' : '')}
           disabled={this.state.loading || noWeights}
           onClick={this.onSubmit.bind(this)}
         >
           Add Weight
           {this.state.loading ? <Loading /> : null}
-        </button>}
+        </button>} */}
       </div>
     )
   }

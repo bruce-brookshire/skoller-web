@@ -8,6 +8,7 @@
     background-color: #aaaaaa;
     border: none;
     height: 1px;
+    margin: 0px;
   }
 
   .cn-input-container {
@@ -148,5 +149,24 @@
   .pct {
     font-size: 20px;
     margin: 0px 0px -2.5px 5px !important;
+  }
+
+
+  .cn-section-name-header,.cn-section-value-header{
+    width: 100px;
+    display: inline-block;
+    line-height: 30px;
+  }
+  .cn-section-value-header{
+    float: right;
+    text-align: end;
+  }
+  .cn-name-field{
+    width: 60%;
+  }
+
+  .cn-value-field{
+    width: 20%;
+    float: right;
   }
 }
