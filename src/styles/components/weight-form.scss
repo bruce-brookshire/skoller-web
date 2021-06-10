@@ -8,7 +8,7 @@
     background-color: #aaaaaa;
     border: none;
     height: 1px;
-    margin: 0px;
+    // margin: 0px;
   }
 
   .cn-input-container {
@@ -63,8 +63,8 @@
       text-align: center;
       padding-top: 4.5px;
       padding-bottom: 0.5px;
-      border: 1px solid #57B9E4;
-      color: #59B9E4;
+      border: 1px solid #57b9e4;
+      color: #59b9e4;
       font-size: 9pt;
     }
 
@@ -116,7 +116,6 @@
         }
 
         button {
-          
           @include primary-button;
         }
       }
@@ -124,7 +123,7 @@
   }
 
   .input-box {
-    border: 1px solid #AAAAAA;
+    border: 1px solid #aaaaaa;
     border-radius: 5px;
     height: 24px;
     padding-bottom: 2px;
@@ -132,7 +131,7 @@
 
   .input-box::placeholder {
     font-size: 10pt;
-    color: #C7C7CD;
+    color: #c7c7cd;
   }
 
   button {
@@ -151,22 +150,41 @@
     margin: 0px 0px -2.5px 5px !important;
   }
 
-
-  .cn-section-name-header,.cn-section-value-header{
+  .cn-section-name-header,
+  .cn-section-value-header {
     width: 100px;
     display: inline-block;
-    line-height: 30px;
+    line-height: 16px;
+    margin-top: 10px;
   }
-  .cn-section-value-header{
+  .cn-section-value-header {
     float: right;
     text-align: end;
   }
-  .cn-name-field{
-    width: 60%;
+  .cn-name-field {
+    width: 65%;
+    display: inline-block;
   }
 
-  .cn-value-field{
+  .cn-value-field {
     width: 20%;
-    float: right;
+    display: inline-block;
+  }
+
+  .cn-delete-icon {
+    width: 7%;
+    display: inline-block;
+    color: #5ab9e4;
+    vertical-align: -webkit-baseline-middle;
+    font-size: 20px;
+  }
+
+  .cn-percentage-icon {
+    width: 7%;
+    display: inline-block;
+    color: #5ab9e4;
+    vertical-align: -webkit-baseline-middle;
+    font-size: 20px;
+    text-align: end;
   }
 }

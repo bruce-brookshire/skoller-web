@@ -166,20 +166,23 @@
     vertical-align: middle;
   }
   .cn-section-progress-title{
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
     vertical-align: bottom;
   }
+  .fa-question-circle{
+    color: #5ab9e4;
+  }
   .cn-pull-right{
     float: right;
-    width: 110px;
+    width: 85px;
     display: block;
     margin-top: 20px;
     span{
       display: inline-block;
     }
     span.cn-section-progressbar{
-      width: 80px;
+      width: 65px;
       float: right;
       
     }

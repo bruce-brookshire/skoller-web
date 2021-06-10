@@ -4,6 +4,7 @@ import { Form, ValidateForm } from 'react-form-library'
 import { InputField, CheckboxField } from '../../../../components/Form'
 import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
+import { ProgressBar, Step } from "react-step-progress-bar";
 
 const requiredFields = {
   'name': {
@@ -80,6 +81,11 @@ class WeightForm extends React.Component {
     }
   }
 
+  onDelete() {
+    const { form } = this.state
+    const { weight } = this.props
+    this.props.onDeleteWeight(weight)
+  }
   /*
   * Create a new weight
   */
@@ -102,9 +108,43 @@ class WeightForm extends React.Component {
     }).catch(() => { this.setState({ loading: false }) })
   }
 
+  /*
+* Delete weight.
+*
+* @param [Object] weight. The weight to be deleted.
+*/
+  onDeleteWeight(weight) {
+    this.setState({ loading: true })
+    actions.weights.deleteWeight(weight).then(() => {
+      this.setState({ form: this.initializeFormData(), loading: false })
+      console.log(weight)
+      // this.props.onDeleteWeight(weight)
+    }).catch(() => { this.setState({ loading: false }) })
+  }
+
   changePoints() {
     this.setState({ editPoints: false })
     this.props.onTypeSelection(true, this.state.totalPointsFormValue)
+  }
+
+  renderProgressBar() {
+    if (!this.state.singleWeight) {
+      return <div className='cn-section-progress-outer'>
+        <img alt="Skoller" className='logo' src='/src/assets/images/sammi/Smile.png' height="40" />
+        <span className="cn-section-progress-title">Add Weights & Values <i class="far fa-question-circle"></i></span>
+        <div className="cn-pull-right">
+          <span>1/3</span>
+          <span className='cn-section-progressbar'><ProgressBar percent={(1 / 3) * 100} /></span>
+        </div>
+        {/* <ProgressBar currentStep={this.state.currentIndex} steps={this.steps}>
+          {steps.map((step, index) => {
+            return <SyllabusProgressStep key={`step-${index}`} label={step} index={index} />
+          })}
+        </ProgressBar> */}
+      </div>
+    } else {
+      return null
+    }
   }
 
   renderPointsOptions() {
@@ -137,12 +177,12 @@ class WeightForm extends React.Component {
   render() { // issue: renders before onUpdateClass finishes --solved
     const { form } = this.state
     const { formErrors, updateProperty, numWeights, noWeights } = this.props
-    // console.log(this.props)
     // console.log(updateProperty)
     // console.log('WeightForm: ', this.props.boolPoints)
 
     return (
-      <div id='cn-weight-form'>
+      <div id='cn-weight-form' >
+        {this.renderProgressBar()}
         <div className='cn-section-name-header'>
           Name
         </div>
@@ -150,23 +190,38 @@ class WeightForm extends React.Component {
           value
         </div>
         <hr />
-        <div className="margin-top">
-          <input
-            className='input-box cn-name-field'
-            error={formErrors.name}
-            name="name"
-            onChange={updateProperty}
-            value={form.name}
-          />
-          <input
-            className='input-box cn-value-field'
-            error={formErrors.weight}
-            name="weight"
-            onChange={updateProperty}
-            type="number"
-            value={form.weight}
-          />
+        <div >
+          <div className="cn-delete-icon">
+            <a onClick={this.onDelete.bind(this)}>
+              <i class="far fa-trash-alt"></i>
+            </a>
+          </div>
+          <div className="cn-name-field">
+            <InputField
+              containerClassName='margin-top'
+              inputClassName='input-box'
+              error={formErrors.name}
+              name="name"
+              onChange={updateProperty}
+              value={form.name}
+            />
+          </div>
+          <div className="cn-value-field">
+            <InputField
+              containerClassName='margin-top hide-spinner'
+              inputClassName='input-box'
+              error={formErrors.weight}
+              name="weight"
+              onChange={updateProperty}
+              type="number"
+              value={form.weight}
+            />
+          </div>
+          <div className="cn-percentage-icon">
+            {!this.props.boolPoints ? <i className="fa fa-percent"></i> : 'PTS'}
+          </div>
         </div>
+
         {/* <div className='margin-bottom margin-top'>
           <a onClick={() => this.props.reset()}>Go back</a>
         </div> */}
@@ -240,14 +295,14 @@ class WeightForm extends React.Component {
             label={'Weights were not provided on the syllabus.'}
           />
         } */}
-        {/* {<button
-          className={'button margin-top ' + (this.state.loading || noWeights ? 'disabled' : '')}
+        {<a
+          className={'margin-top ' + (this.state.loading || noWeights ? 'disabled' : '')}
           disabled={this.state.loading || noWeights}
           onClick={this.onSubmit.bind(this)}
         >
           Add Weight
           {this.state.loading ? <Loading /> : null}
-        </button>} */}
+        </a>}
       </div>
     )
   }
@@ -258,6 +313,7 @@ WeightForm.propTypes = {
   formErrors: PropTypes.object,
   onCreateWeight: PropTypes.func.isRequired,
   onUpdateWeight: PropTypes.func.isRequired,
+  onDeleteWeight: PropTypes.func,
   updateProperty: PropTypes.func,
   weight: PropTypes.object,
   validateForm: PropTypes.func,

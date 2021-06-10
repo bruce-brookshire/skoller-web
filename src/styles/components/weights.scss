@@ -12,10 +12,11 @@
   #cn-weight-table {
     display: flex;
     flex-direction: column;
-    border: 1px solid $cn-color-grey;
+    // border: 1px solid $cn-color-grey;
     border-radius: 5px;
     height: 59%;
-    margin-top: 1.2em;
+    // margin-top: 1.2em;
+    height: 50vh;
 
     #cn-weight-table-label {
       font-size: 17.5px;
@@ -42,7 +43,7 @@
       text-align: center;
       z-index: 100;
       display: inline-block;
-  
+
       .message-bubble {
         background-color: white;
         border: 1px solid $cn-form-border;
@@ -54,7 +55,7 @@
         bottom: 0;
         transform: translate(0%, -22px);
         width: 300px;
-  
+
         &.triangle-bottom {
           &::before {
             left: 12px;
@@ -62,8 +63,8 @@
             border-right: 5px solid $cn-form-border;
           }
         }
-  
-        .triangle-inner{
+
+        .triangle-inner {
           &::before {
             left: 12px;
             border-top: 5px solid transparent;
@@ -73,10 +74,10 @@
           }
         }
       }
-  
+
       &:hover {
         cursor: pointer;
-  
+
         .message-bubble {
           display: block;
         }
@@ -95,7 +96,6 @@
       width: 65%;
       height: 1.5em;
       min-height: 1.5em;
-      background-color: $cn-color-green;
       font-size: 18px;
       padding-top: 6px;
       margin-bottom: 0.7rem;

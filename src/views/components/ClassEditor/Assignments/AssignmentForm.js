@@ -1,12 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Form, ValidateForm} from 'react-form-library'
-import {InputField, SelectField} from '../../../../components/Form'
+import { Form, ValidateForm } from 'react-form-library'
+import { InputField, SelectField } from '../../../../components/Form'
 import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
-import {convertLocalDateToUTC, convertUTCDatetimeToDateString} from '../../../../utilities/time'
+import { convertLocalDateToUTC, convertUTCDatetimeToDateString } from '../../../../utilities/time'
 import DatePicker from '../../../components/DatePicker/index'
 import moment from 'moment'
+import { ProgressBar, Step } from "react-step-progress-bar";
 
 const requiredFields = {
   'name': {
@@ -39,12 +40,12 @@ const yearOpts = [
 ]
 
 class AssignmentForm extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = this.initializeState()
   }
 
-  toggleAddingAssignment () {
+  toggleAddingAssignment() {
     let formEmpty = (this.state.form.name === '')
     this.props.toggleAddingAssignment(!formEmpty)
   }
@@ -52,15 +53,15 @@ class AssignmentForm extends React.Component {
   /*
   * If new assignment is received, update form.
   */
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.assignment && (this.state.form.id !== nextProps.assignment.id)) {
-      this.setState({form: this.initializeFormData(nextProps.assignment)})
+      this.setState({ form: this.initializeFormData(nextProps.assignment) })
     }
 
     if (nextProps.currentWeight && (nextProps.currentWeight.id !== this.props.currentWeight.id)) {
       let newForm = this.initializeFormData()
       newForm.weight_id = nextProps.currentWeight.id
-      this.setState({form: newForm})
+      this.setState({ form: newForm })
     }
   }
 
@@ -69,8 +70,8 @@ class AssignmentForm extends React.Component {
   *
   * @return [Object]. State object.
   */
-  initializeState () {
-    const {assignment} = this.props
+  initializeState() {
+    const { assignment } = this.props
     return {
       form: this.initializeFormData(assignment),
       due_null: false,
@@ -86,10 +87,10 @@ class AssignmentForm extends React.Component {
   * @param [Object] data. initial data
   * @return [Object]. Form object.
   */
-  initializeFormData (data) {
+  initializeFormData(data) {
     let formData = data || {}
-    const {id, name, weight_id: weightId, due} = formData
-    const {cl, currentWeight} = this.props
+    const { id, name, weight_id: weightId, due } = formData
+    const { cl, currentWeight } = this.props
 
     const dueDate = due
       ? convertUTCDatetimeToDateString(due, cl.school.timezone) : ''
@@ -108,7 +109,7 @@ class AssignmentForm extends React.Component {
   * Determine whether the user is submitting updated assignment or a new assignment.
   *
   */
-  onSubmit () {
+  onSubmit() {
     if (this.state.due_null) {
       requiredFields.due = {}
     }
@@ -126,43 +127,43 @@ class AssignmentForm extends React.Component {
   /*
   * Create a new assignment
   */
-  onCreateAssignment (form) {
+  onCreateAssignment(form) {
     if (this.props.onCreateAssignment) {
-      this.setState({form: this.initializeFormData(), loading: false, due_null: false})
+      this.setState({ form: this.initializeFormData(), loading: false, due_null: false })
       this.props.onCreateAssignment(form)
     } else {
-      this.setState({loading: true})
+      this.setState({ loading: true })
       actions.assignments.createAssignment(this.props.cl, form).then((assignment) => {
-        this.setState({form: this.initializeFormData(), loading: false, due_null: false})
+        this.setState({ form: this.initializeFormData(), loading: false, due_null: false })
         if (this.props.onCreateAssignment) this.props.onCreateAssignment(assignment)
-      }).catch(() => { this.setState({loading: false}) })
+      }).catch(() => { this.setState({ loading: false }) })
     }
   }
 
   /*
   * Update an existing assignment
   */
-  onUpdateAssignment (form) {
-    this.setState({loading: true})
+  onUpdateAssignment(form) {
+    this.setState({ loading: true })
     actions.assignments.updateAssignment(this.props.cl, form).then((assignment) => {
       this.props.onUpdateAssignment(assignment)
-      this.setState({form: this.initializeFormData(), loading: false, due_null: false})
-    }).catch(() => { this.setState({loading: false}) })
+      this.setState({ form: this.initializeFormData(), loading: false, due_null: false })
+    }).catch(() => { this.setState({ loading: false }) })
   }
 
   /*
   * Map the form
   */
-  mapForm () {
-    const {cl} = this.props
+  mapForm() {
+    const { cl } = this.props
     if (!this.state.due_null) {
-      let newForm = {...this.state.form}
+      let newForm = { ...this.state.form }
       let due = newForm.due.split('/')
       due = `${newForm.year_due}-${due[0]}-${due[1]}`
       newForm.due = convertLocalDateToUTC(due, cl.school.timezone)
       return newForm
     } else {
-      let newForm = {...this.state.form}
+      let newForm = { ...this.state.form }
       newForm.due = null
       return newForm
     }
@@ -174,12 +175,12 @@ class AssignmentForm extends React.Component {
   * @param [String] date. YYYY-MM-DD
   * @return [String]. MM/DD
   */
-  mapAssignmentDate (date) {
+  mapAssignmentDate(date) {
     const dateParts = date.split('-')
     return `${dateParts[1]}/${dateParts[2]}`
   }
 
-  validateDate (d) {
+  validateDate(d) {
     console.log('date', d)
     if (Object.prototype.toString.call(d) === '[object Date]') {
       if (isNaN(d.getTime())) {
@@ -192,55 +193,77 @@ class AssignmentForm extends React.Component {
     }
   }
 
-  verifyData (form) {
+  verifyData(form) {
     const nameCheck = form.name.trim() !== ''
     const dateCheck = (form.due !== null) && (this.validateDate(new Date(form.due + '/' + form.year_due)))
     console.log('form.due: ', form.due)
     return nameCheck && (this.state.due_null ? true : dateCheck)
   }
 
-  render () {
-    const {form} = this.state
-    const {formErrors, updateProperty, currentWeight} = this.props
+  renderProgressBar() {
+    if (!this.state.singleWeight) {
+      return <div className='cn-section-progress-outer'>
+        <img alt="Skoller" className='logo' src='/src/assets/images/sammi/Smile.png' height="40" />
+        <span className="cn-section-progress-title">Add Assignment & Dates <i class="far fa-question-circle"></i></span>
+        <div className="cn-pull-right">
+          <span>2/3</span>
+          <span className='cn-section-progressbar'><ProgressBar percent={(2 / 3) * 100} /></span>
+        </div>
+      </div>
+    } else {
+      return null
+    }
+  }
+
+  render() {
+    const { form } = this.state
+    const { formErrors, updateProperty, currentWeight } = this.props
     const disableButton = !this.verifyData(form)
     return (
       <div id='cn-assignment-form'>
-        <div className='cn-section-content-header'>
+        {this.renderProgressBar()}
+        {/* <div className='cn-section-content-header'>
           Add: {currentWeight.name}
         </div>
+        <hr /> */}
+        <div className='cn-section-name-header'>
+          Name
+        </div>
+        <div className='cn-section-value-header'>
+          Due Date
+        </div>
         <hr />
-        <div className='row'>
-          <div className='col-xs-12'>
-            <div className='cn-input-container margin-top'>
-              <label
-                className='cn-input-label'
-              >
-                Assignment name
-              </label>
-              <input
-                className='cn-form-input'
-                autoFocus={true}
-                onChange={(e) => {
-                  form.name = e.target.value
-                  this.toggleAddingAssignment()
-                }}
-                onBlur={() => this.setState({showDatePicker: true})}
-                placeholder={`e.g. ${currentWeight.name} 1`}
-                value={form.name}
-              />
+        <div className=''>
+          <div className="cn-delete-icon">
+            {/* <a onClick={this.onDelete.bind(this)}> */}
+            <i class="far fa-trash-alt"></i>
+            {/* </a> */}
+          </div>
+          <div className='cn-input-assignment-name'>
+            <div class="form-element relative">
+              <div className='cn-input-container margin-top'>
+                <input
+                  className='cn-form-input'
+                  autoFocus={true}
+                  onChange={(e) => {
+                    form.name = e.target.value
+                    this.toggleAddingAssignment()
+                  }}
+                  onBlur={() => this.setState({ showDatePicker: true })}
+                  value={form.name}
+                />
+              </div>
             </div>
           </div>
-          <div className='col-xs-4'>
+          <div className='cn-input-assignment-date'>
             {!this.state.due_null &&
               <div>
-                <div onClick={() => this.setState({showDatePicker: true})} >
+                <div onClick={() => this.setState({ showDatePicker: true })} >
                   <InputField
                     containerClassName='margin-top'
                     error={formErrors.due}
-                    label='Due date'
                     name='due'
-                    placeholder='MM/DD'
-                    value={form.due ? form.due : 'Select date'}
+                    value={form.due ? form.due : ''}
                     disabled={true}
                   />
                 </div>
@@ -248,12 +271,12 @@ class AssignmentForm extends React.Component {
                   <DatePicker
                     givenDate={this.props.lastAssignmentDate ? moment(this.props.lastAssignmentDate) : Date.now()}
                     returnSelectedDay={(day) => {
-                      form.due = moment(day).format('MM/DD')
-                      this.setState({showDatePicker: false})
+                      form.due = moment(day).format('ddd MM/DD')
+                      this.setState({ showDatePicker: false })
                       this.toggleAddingAssignment()
                     }}
                     close={() => {
-                      this.setState({showDatePicker: false})
+                      this.setState({ showDatePicker: false })
                       this.toggleAddingAssignment()
                     }}
                   />
@@ -261,7 +284,10 @@ class AssignmentForm extends React.Component {
               </div>
             }
           </div>
-          <div className='col-xs-4'>
+          <div className="cn-files-icon">
+            <i class="far fa-clone"></i>
+          </div>
+          {/* <div className='col-xs-4'>
             {!this.state.due_null && <SelectField
               containerClassName='margin-top'
               error={formErrors.year_due}
@@ -274,8 +300,8 @@ class AssignmentForm extends React.Component {
               value={form.year_due}
               disabled={this.state.due_null === true}
             />}
-          </div>
-          <div className='col-xs-4'>
+          </div> */}
+          {/* <div className='col-xs-4'>
             <div className='cn-input-container margin-top unknown-due'>
               <label htmlFor="due_null" className='cn-input-label'>Unknown?</label>
               <div className="checkbox-appearance"
@@ -285,17 +311,17 @@ class AssignmentForm extends React.Component {
                 }}
               />
             </div>
-          </div>
+          </div> */}
         </div>
         <div id='button-container'>
-          <button
-            className={`button ${disableButton ? 'disabled' : ''}`}
+          <a
+            className={`${disableButton ? 'disabled' : ''}`}
             disabled={this.state.loading || disableButton}
             onClick={this.onSubmit.bind(this)}
           >
             {this.props.assignment ? 'Update' : 'Add'} assignment
             {this.state.loading ? <Loading /> : null}
-          </button>
+          </a>
         </div>
       </div>
     )

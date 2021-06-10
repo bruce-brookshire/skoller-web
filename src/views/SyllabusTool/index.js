@@ -406,7 +406,7 @@ class SyllabusTool extends React.Component {
     if (!this.state.singleWeight) {
       return <div className='cn-section-progress-outer'>
         <img alt="Skoller" className='logo' src='/src/assets/images/sammi/Smile.png' height="40" />
-        <span className="cn-section-progress-title">Add Weights & Values</span>
+        <span className="cn-section-progress-title">Add Weights & Values <i class="far fa-question-circle"></i></span>
         <div className="cn-pull-right">
           <span>{this.state.currentIndex + 1}/3</span>
           <span className='cn-section-progressbar'><ProgressBar percent={(this.state.currentIndex + 1 / 3) * 100} /></span>
@@ -538,7 +538,7 @@ class SyllabusTool extends React.Component {
         <div className='cn-body-container'>
           <div className='cn-section-container cn-control-panel'>
             <div className='cn-section-content'>
-              {this.renderProgressBar()}
+              {/* {this.renderProgressBar()} */}
               {this.renderContent()}
             </div>
           </div>
