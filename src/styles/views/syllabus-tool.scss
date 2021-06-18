@@ -45,7 +45,7 @@
         padding: 1rem;
         margin: 0 0.5rem 0.5rem 1rem;
 
-        .cn-section-header{
+        .cn-section-header {
           position: absolute;
           margin-top: 4px;
           display: flex;
@@ -53,7 +53,7 @@
         }
 
         .cn-section-content {
-          background-color: #FFFFFF;
+          background-color: #ffffff;
           // border: 1px solid #4A4A4A;
           // box-shadow: 0px 2px 3px #888888;
           border-radius: 5px;
@@ -87,7 +87,7 @@
         // box-shadow: 0px 2px 3px #888888;
         margin: 0 1rem 0.5rem 0.5rem;
 
-        .cn-section-header{
+        .cn-section-header {
           position: absolute;
           margin-top: 4px;
           display: flex;
@@ -95,7 +95,7 @@
           align-self: flex-end;
           padding: 8px;
         }
-        
+
         .cn-section-content {
           height: 300px;
           flex: 1;
@@ -158,34 +158,32 @@
   }
 }
 
-.cn-section-progress-outer{
+.cn-section-progress-outer {
   width: 100%;
-  img{
+  img {
     width: 25px;
     margin-right: 10px;
     vertical-align: middle;
   }
-  .cn-section-progress-title{
+  .cn-section-progress-title {
     font-size: 18px;
     font-weight: 600;
     vertical-align: bottom;
   }
-  .fa-question-circle{
+  .fa-question-circle {
     color: #5ab9e4;
   }
-  .cn-pull-right{
+  .cn-pull-right {
     float: right;
-    width: 85px;
+    width: 100px;
     display: block;
     margin-top: 20px;
-    span{
+    span {
       display: inline-block;
     }
-    span.cn-section-progressbar{
+    span.cn-section-progressbar {
       width: 65px;
       float: right;
-      
     }
   }
-
 }

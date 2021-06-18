@@ -1,16 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import AssignmentCategories from './AssignmentCategories'
-import AssignmentForm from './AssignmentForm'
 import AssignmentTable from './AssignmentTable'
-import SkipCategoryModal from './SkipCategoryModal'
+// import SkipCategoryModal from './SkipCategoryModal'
 import actions from '../../../../actions'
 import SkLoader from '../../../../assets/sk-icons/SkLoader'
 import moment from 'moment'
 import { withRouter } from 'react-router-dom'
 import { showSnackbar } from '../../../../utilities/snackbar'
 
-class Assignments extends React.Component {
+class TagAssignments extends React.Component {
     constructor(props) {
         super(props)
         this.state = this.initializeState()
@@ -84,7 +82,7 @@ class Assignments extends React.Component {
             weights: [],
             currentWeightIndex: 0,
             currentWeight: null,
-            openSkipCategoryModal: false,
+            // openSkipCategoryModal: false,
             addAssignment: false,
             lastAssignmentDate: Date.now(),
             addingAssignment: false
@@ -176,9 +174,9 @@ class Assignments extends React.Component {
     /*
      * Toggle the problems modal.
      */
-    toggleSkipCategoryModal() {
-        this.setState({ openSkipCategoryModal: !this.state.openSkipCategoryModal })
-    }
+    // toggleSkipCategoryModal() {
+    //     this.setState({ openSkipCategoryModal: !this.state.openSkipCategoryModal })
+    // }
 
     /*
      * Toggle the problems modal.
@@ -191,13 +189,13 @@ class Assignments extends React.Component {
      * Render the having issues modal.
      */
     renderSkipCategoryModal() {
-        const { openSkipCategoryModal } = this.state
-        return (<
-            SkipCategoryModal open={openSkipCategoryModal}
-            onClose={this.toggleSkipCategoryModal.bind(this)}
-            onConfirm={this.onNext.bind(this)}
-        />
-        )
+        // const { openSkipCategoryModal } = this.state
+        // return (<
+        //     SkipCategoryModal open={openSkipCategoryModal}
+        //     onClose={this.toggleSkipCategoryModal.bind(this)}
+        //     onConfirm={this.onNext.bind(this)}
+        // />
+        // )
     }
 
     // renderSavedMessage (assignments) {
@@ -328,7 +326,8 @@ class Assignments extends React.Component {
                                     />
                                   </div>
                                 } */
-                } {!viewOnly &&
+                }
+                    {/* {!viewOnly &&
                     <div id='class-editor-assignment-form' > {this.renderBackButton()}
                         <AssignmentForm
                             assignment={currentAssignment}
@@ -344,8 +343,7 @@ class Assignments extends React.Component {
                             toggleAddingAssignment={
                                 (bool) => this.toggleAddingAssignment(bool)
                             }
-                        />
-                        {/* {
+                        /> {
                             (assignments.length === 0) && !this.props.singleWeight &&
                             <div >
                                 No assignments for this weight ? <span style={
@@ -354,9 +352,9 @@ class Assignments extends React.Component {
                                     onClick={
                                         () => this.setState({ addAssignment: false, currentAssignment: null })
                                     } > Continue to the next one. </span> </div >
-                        }  */}
-                    </div>
-                    } {
+                        } </div>
+                    }  */}
+                    {
                         /* {!viewOnly && assignments.length === 0 &&
                                       <div className='margin-top margin-bottom center-text'>
                                         <a onClick={() => this.toggleSkipCategoryModal()}>Skip this category</a>
@@ -436,7 +434,7 @@ class Assignments extends React.Component {
     }
 }
 
-Assignments.propTypes = {
+TagAssignments.propTypes = {
     cl: PropTypes.object,
     isReview: PropTypes.bool,
     onSubmit: PropTypes.func,
@@ -445,4 +443,4 @@ Assignments.propTypes = {
     singleWeight: PropTypes.number
 }
 
-export default withRouter(Assignments)
+export default withRouter(TagAssignments)

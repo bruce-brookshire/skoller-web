@@ -2,8 +2,45 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import actions from '../../../../actions'
+import { ProgressBar, Step } from "react-step-progress-bar";
+import { InputField, SelectField } from '../../../../components/Form'
+import { Form, ValidateForm } from 'react-form-library'
 
 class AssignmentTable extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = this.initializeState()
+  }
+
+  initializeState() {
+    return {
+      weights: [
+        { "name": 'test' }
+      ],
+    }
+  }
+
+  renderProgressBar() {
+    // if (!this.state.singleWeight) {
+    return <div className='cn-section-progress-outer' >
+      <img alt="Skoller"
+        className='logo'
+        src='/src/assets/images/sammi/Smile.png'
+        height="40" />
+      <span className="cn-section-progress-title" > Tag Assignments < i class="far fa-question-circle" > </i></span >
+      <div className="cn-pull-right" >
+        <span> 3 / 3 </span> <span className='cn-section-progressbar' > < ProgressBar percent={
+          (3 / 3) * 100
+        }
+        /></span>
+      </div>
+    </div >
+
+    // } else {
+    //   return null
+    // }
+  }
+
   /*
   * Formats row data to be passed to the grid for display
   *
@@ -12,22 +49,31 @@ class AssignmentTable extends React.Component {
   */
   getRow(item, index) {
     console.log(item)
-    const { id, name, due } = item
-    const { currentAssignment, viewOnly } = this.props
+    const { id, name } = item
+    const { currentAssignment, viewOnly, formErrors, updateProperty } = this.props
     const activeClass = (currentAssignment && currentAssignment.id) === id
       ? 'active' : ''
 
+
     return (
-      <div
-        className={`table-row ${activeClass}`}
-        key={`assignment-${index}`}
-        onClick={() => {
-          if (viewOnly) return
-          this.props.onSelectAssignment(item)
-        }}
-      >
-        <div className='col-xs-7 assignment-name-container'>
-          {/* {!viewOnly &&
+      <div id='cn-assignment-form' > {this.renderProgressBar()}
+        <div className="col-xs-12">
+          <div className='cn-section-name-header' >
+            Assignments </div>
+          <div className='cn-section-value-header' >
+            Weight </div>
+        </div>
+        <hr />
+        <div
+          className={`table-row ${activeClass}`}
+          key={`assignment-${index}`}
+          onClick={() => {
+            if (viewOnly) return
+            this.props.onSelectAssignment(item)
+          }}
+        >
+          <div className='col-xs-6 assignment-name-container'>
+            {/* {!viewOnly &&
             <div className='col-xs-2'>
               <div
                 className='button-delete-x-light center-content'
@@ -39,13 +85,32 @@ class AssignmentTable extends React.Component {
               </div>
             </div>
           } */}
-          <div className={`assignment-label col-xs-12}`}>
-            <div>{name}</div>
-            {/* {!currentWeight && this.renderWeightName(weightId)} */}
+            <div className={`assignment-label col-xs-12}`}>
+              <div>{name}</div>
+              {/* {!currentWeight && this.renderWeightName(weightId)} */}
+            </div>
           </div>
-        </div>
-        <div className='col-xs-5 right-text'>
-          {due ? this.mapAssignmentDate(due) : ''}
+          <div className='col-xs-6 right-text tagAssignfm' >
+            <SelectField
+              containerClassName='margin-top weightselect'
+              // error={formErrors.assignment_reminder_notification_topic_id}
+              // placeholder="Tell me when?"
+              name="form"
+              // onChange={updateProperty}
+              // value={form.assignment_reminder_notification_topic_id}
+              options={this.state.weights}
+            />
+            <div className="cn-font-icon" >
+              {/* <a onClick={this.onDelete.bind(this)}> */}
+              <i class="fas fa-copy" > </i>
+              {/* </a> */}
+            </div>
+            <div className="cn-font-icon" >
+              {/* <a onClick={this.onDelete.bind(this)}> */}
+              <i class="fas fa-brush" > </i>
+              {/* </a> */}
+            </div>
+          </div>
         </div>
       </div>
     )
@@ -72,19 +137,6 @@ class AssignmentTable extends React.Component {
   //   }
   // }
 
-  /*
-  * Map the assignment dateParts
-  *
-  * @param [String] date. YYYY-MM-DD
-  * @return [String]. MM/DD
-  */
-  mapAssignmentDate(date) {
-    const { cl } = this.props
-    const today = moment.tz(Date.now(), cl.school.timezone)
-    const due = moment.tz(date, cl.school.timezone)
-    return today.format('YYYY-MM-DD') === due.format('YYYY-MM-DD') ? 'Today'
-      : `${due.format('ddd')}, ${due.format('MMM')} ${due.format('Do')}`
-  }
 
   /*
   * Render the assignments for a given class.

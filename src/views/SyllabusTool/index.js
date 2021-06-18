@@ -5,6 +5,7 @@ import Loading from '../../components/Loading'
 import actions from '../../actions'
 import Weights from '../components/ClassEditor/Weights'
 import Assignments from '../components/ClassEditor/Assignments'
+import TagAssignments from '../components/ClassEditor/TagAssignments'
 // import { ProgressBar, SyllabusProgressStep } from '../../components/ProgressBar'
 import FileUpload from '../../components/FileUpload'
 import FileViewer from '../../components/FileViewer'
@@ -22,7 +23,8 @@ const steps = ['Weights', 'Assignments']
 const ContentEnum = {
   WEIGHTS: 0,
   ASSIGNMENTS: 1,
-  REVIEW: 2
+  TAGASSIGNMENT: 2,
+  REVIEW: 3
 }
 
 @inject('rootStore') @observer
@@ -268,6 +270,14 @@ class SyllabusTool extends React.Component {
         />
       case ContentEnum.ASSIGNMENTS:
         return <Assignments
+          onBack={() => this.setState({ currentIndex: 0 })}
+          cl={navbarStore.cl}
+          isReview={false}
+          onSubmit={this.onNext.bind(this)}
+          singleWeight={this.state.singleWeight}
+        />
+      case ContentEnum.TAGASSIGNMENT:
+        return <TagAssignments
           onBack={() => this.setState({ currentIndex: 0 })}
           cl={navbarStore.cl}
           isReview={false}

@@ -11,8 +11,8 @@
 
 #class-editor-assignments-table {
   background-color: none;
-  border-top: 1px solid $cn-form-border;
-  border-radius: 0px 0px 5px 5px;
+  // border-top: 1px solid $cn-form-border;
+  // border-radius: 0px 0px 5px 5px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -28,7 +28,6 @@
         background-color: $cn-color-white;
       }
     }
-
   }
 
   .table-row {
@@ -105,5 +104,23 @@
         cursor: default;
       }
     }
+  }
+}
+
+.tagAssignfm {
+  line-height: 20px;
+  .weightselect {
+    width: 70%;
+    display: inline-block;
+  }
+  .weightselect {
+    margin-top: 0px;
+  }
+  .cn-font-icon {
+    width: 15%;
+    display: inline-block;
+    color: #5ab9e4;
+    vertical-align: -webkit-baseline-middle;
+    font-size: 20px;
   }
 }
