@@ -86,13 +86,18 @@
   }
 
   .cn-section-name-header,
-  .cn-section-value-header {
+  .cn-section-value-header,
+  .cn-section-assignment-name {
     width: 100px;
     display: inline-block;
     line-height: 16px;
     margin-top: 10px;
   }
-  .cn-section-value-header {
+  .cn-section-due-header {
+    display: inline-block;
+  }
+  .cn-section-value-header,
+  .cn-section-weight-header {
     float: right;
     text-align: end;
   }
@@ -122,4 +127,31 @@
     font-size: 20px;
     text-align: end;
   }
+}
+#cn-assignment-form .cn-input-assignment-name.reviewname {
+  width: 50%;
+}
+#cn-assignment-form .cn-input-assignment-date.reviewDue {
+  width: 22%;
+}
+.reviewAssignSelect {
+  width: 39%;
+  display: inline;
+  .reviewSelect {
+    width: 20%;
+    font-size: 13px;
+    padding: 2px;
+  }
+}
+
+.reviewWeightHeader {
+  float: right;
+  margin-top: 10px;
+}
+.reviewDueHeader {
+  width: 100px;
+  float: right;
+  margin-top: 10px;
+}
+.reviewAssinHeader {
 }

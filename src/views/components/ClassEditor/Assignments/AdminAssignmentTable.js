@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 
 class AdminAssignmentTable extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -11,10 +11,9 @@ class AdminAssignmentTable extends React.Component {
     }
   }
 
-  componentDidMount () {
-    console.log(this.props.assignments.length)
+  componentDidMount() {
     if (this.props.assignments.length > 10) {
-      this.setState({showScrollIndicator: true})
+      this.setState({ showScrollIndicator: true })
     }
   }
 
@@ -24,9 +23,9 @@ class AdminAssignmentTable extends React.Component {
   * @param [Object] item. Row data to be formatted.
   * @param [Number] index. Index of row data.
   */
-  getRow (item, index) {
-    const {id, name, weight_id: weightId, due} = item
-    const {currentAssignment, viewOnly, currentWeight} = this.props
+  getRow(item, index) {
+    const { id, name, weight_id: weightId, due } = item
+    const { currentAssignment, viewOnly, currentWeight } = this.props
     const activeClass = (currentAssignment && currentAssignment.id) === id
       ? 'active' : ''
 
@@ -67,8 +66,8 @@ class AdminAssignmentTable extends React.Component {
   /* TODO: This is a bit bloated, but when it was unrolled into the rendering code
       it was crashing as 'undefined' did not have name. Could be more trim.
   */
-  renderWeightName (id) {
-    const {weights} = this.props
+  renderWeightName(id) {
+    const { weights } = this.props
     if (weights) {
       var weight = weights.find(w => w.id === id)
       if (weight && weight !== undefined) {
@@ -77,7 +76,7 @@ class AdminAssignmentTable extends React.Component {
         </div>
       } else {
         return <div className='description'>
-           N/A
+          N/A
         </div>
       }
     } else {
@@ -91,8 +90,8 @@ class AdminAssignmentTable extends React.Component {
   * @param [String] date. YYYY-MM-DD
   * @return [String]. MM/DD
   */
-  mapAssignmentDate (date) {
-    const {cl} = this.props
+  mapAssignmentDate(date) {
+    const { cl } = this.props
     const today = moment.tz(Date.now(), cl.school.timezone)
     const due = moment.tz(date, cl.school.timezone)
     return today.format('YYYY-MM-DD') === due.format('YYYY-MM-DD') ? 'Today'
@@ -102,8 +101,8 @@ class AdminAssignmentTable extends React.Component {
   /*
   * Render the assignments for a given class.
   */
-  renderAssignments () {
-    const {assignments} = this.props
+  renderAssignments() {
+    const { assignments } = this.props
 
     // sort by due date.
     return assignments.sort((a, b) => {
@@ -113,7 +112,7 @@ class AdminAssignmentTable extends React.Component {
     )
   }
 
-  handleSubmit () {
+  handleSubmit() {
     if (this.props.onSubmitSingleWeight) {
       this.props.onSubmitSingleWeight()
     } else {
@@ -121,8 +120,8 @@ class AdminAssignmentTable extends React.Component {
     }
   }
 
-  render () {
-    const {viewOnly} = this.props
+  render() {
+    const { viewOnly } = this.props
     let addingAssignment
     if (this.props.addingAssignment === null) {
       addingAssignment = false
@@ -134,7 +133,7 @@ class AdminAssignmentTable extends React.Component {
         id='class-editor-admin-assignments-table'
         className={`${viewOnly ? 'view-only' : ''}`}
         ref={(field) => { this.sectionControl = field }}
-        style={{boxShadow: this.state.showScrollIndicator ? 'inset 0 -10px 10px -10px #00000025' : ''}}
+        style={{ boxShadow: this.state.showScrollIndicator ? 'inset 0 -10px 10px -10px #00000025' : '' }}
       >
         <div id='assignment-rows'>
           {this.renderAssignments()}

@@ -1,14 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import AssignmentTable from './AssignmentTable'
-// import SkipCategoryModal from './SkipCategoryModal'
+import ReviewForm from './ReviewForm'
+import ReviewTable from './ReviewTable'
 import actions from '../../../../actions'
 import SkLoader from '../../../../assets/sk-icons/SkLoader'
 import moment from 'moment'
 import { withRouter } from 'react-router-dom'
 import { showSnackbar } from '../../../../utilities/snackbar'
 
-class TagAssignments extends React.Component {
+class Review extends React.Component {
     constructor(props) {
         super(props)
         this.state = this.initializeState()
@@ -82,7 +82,7 @@ class TagAssignments extends React.Component {
             weights: [],
             currentWeightIndex: 0,
             currentWeight: null,
-            // openSkipCategoryModal: false,
+            openSkipCategoryModal: false,
             addAssignment: false,
             lastAssignmentDate: Date.now(),
             addingAssignment: false
@@ -135,13 +135,6 @@ class TagAssignments extends React.Component {
         }
     }
 
-    onTagAssignment(assignment) {
-        console.log(assignment)
-        const newAssignments = this.state.assignments
-        const index = this.state.assignments.findIndex(a => a.id === assignment.id)
-        newAssignments[index] = assignment
-        this.setState({ assignments: newAssignments })
-    }
     /*
      * Delete assignment.
      *
@@ -178,17 +171,12 @@ class TagAssignments extends React.Component {
         }
     }
 
-
-    async handleSubmit() {
-        this.props.onSubmit()
-    }
-
     /*
      * Toggle the problems modal.
      */
-    // toggleSkipCategoryModal() {
-    //     this.setState({ openSkipCategoryModal: !this.state.openSkipCategoryModal })
-    // }
+    toggleSkipCategoryModal() {
+        this.setState({ openSkipCategoryModal: !this.state.openSkipCategoryModal })
+    }
 
     /*
      * Toggle the problems modal.
@@ -197,28 +185,6 @@ class TagAssignments extends React.Component {
         this.setState({ addingAssignment: bool })
     }
 
-    /*
-     * Render the having issues modal.
-     */
-    renderSkipCategoryModal() {
-        // const { openSkipCategoryModal } = this.state
-        // return (<
-        //     SkipCategoryModal open={openSkipCategoryModal}
-        //     onClose={this.toggleSkipCategoryModal.bind(this)}
-        //     onConfirm={this.onNext.bind(this)}
-        // />
-        // )
-    }
-
-    // renderSavedMessage (assignments) {
-    //   const {viewOnly} = this.state
-    //   return (
-    //     <span>
-    //       {!viewOnly && <span>Saved assignments</span>}
-    //       {viewOnly && `Assignments (${assignments.length})`}
-    //     </span>
-    //   )
-    // }
 
     toAssignmentForm(weight) {
         this.setState({ addAssignment: true, currentWeight: weight, currentWeightIndex: this.state.weights.indexOf(weight) })
@@ -288,6 +254,15 @@ class TagAssignments extends React.Component {
         this.setState({ loading: false })
     }
 
+    async handleSubmit() {
+        this.props.onSubmit()
+    }
+
+    onSubmitSingleWeight() {
+        this.submitAssignments()
+        this.handleSubmit()
+        this.props.history.push('/student/class/' + this.props.cl.id.toString())
+    }
 
     render() {
         let {
@@ -311,53 +286,103 @@ class TagAssignments extends React.Component {
         // console.log(this.state.assignments)
 
         return (<div id='cn-assignments' > {
-            // loadingAssignments || loadingWeights ?
-            // <SkLoader />
-            // :
-            <div id='cn-assignment-window' > {
+            loadingAssignments || loadingWeights ?
+                <SkLoader />
+                :
+                <div id='cn-assignment-window' > {
 
-            }{
-                    // (assignments.length !== 0 && !viewOnly && addAssignment) &&
-                    // (assignments.length !== 0 && !viewOnly) &&
-
-                    <div id='cn-assignment-table-new' >
-                        <AssignmentTable
-                            viewOnly={viewOnly}
-                            addingAssignment={this.state.addingAssignment}
-                            assignments={assignments}
-                            currentAssignment={currentAssignment}
-                            onSelectAssignment={this.onSelectAssignment.bind(this)}
-                            onTagAssignment={this.onTagAssignment.bind(this)}
-                            weights={weights}
+                } {!viewOnly &&
+                    <div id='class-editor-assignment-form' > {this.renderBackButton()}
+                        <ReviewForm
+                            assignment={currentAssignment}
                             cl={cl}
-                        />
-                    </div >
-                } {
-                    viewOnly &&
-                    <div id='cn-assignment-table' >
-                        <AssignmentTable
-                            viewOnly={viewOnly}
-                            assignments={this.state.assignments}
-                            currentAssignment={currentAssignment}
-                            onSelectAssignment={this.onSelectAssignment.bind(this)}
+                            onCreateAssignment={this.onCreateAssignment.bind(this)}
+                            onUpdateAssignment={this.onUpdateAssignment.bind(this)}
                             onDeleteAssignment={this.onDeleteAssignment.bind(this)}
                             weights={weights}
-                            cl={cl}
-                        /> </div >
-                } {
-                    assignments.length !== 0 && !viewOnly && !addAssignment &&
-                    <button
-                        onClick={
-                            () => this.handleSubmit()
-                        }
-                        className='button full-width margin-top margin-bottom' >
-                        Submit and Continue </button>
-                } {this.renderSkipCategoryModal()} </div>} </div >
+                            updateLastAssignmentDate={
+                                (date) => this.updateLastAssignmentDate(date)
+                            }
+                            lastAssignmentDate={this.state.lastAssignmentDate}
+                            toggleAddingAssignment={
+                                (bool) => this.toggleAddingAssignment(bool)
+                            }
+                        />
+                        {/* {
+                            (assignments.length === 0) && !this.props.singleWeight &&
+                            <div >
+                                No assignments for this weight ? <span style={
+                                    { color: '#57B9E4', cursor: 'pointer' }
+                                }
+                                    onClick={
+                                        () => this.setState({ addAssignment: false, currentAssignment: null })
+                                    } > Continue to the next one. </span> </div >
+                        }  */}
+                    </div>
+                    } {
+                        /* {!viewOnly && assignments.length === 0 &&
+                                      <div className='margin-top margin-bottom center-text'>
+                                        <a onClick={() => this.toggleSkipCategoryModal()}>Skip this category</a>
+                                      </div>
+                                    } */
+                    } {
+                        // (assignments.length !== 0 && !viewOnly && addAssignment) &&
+                        (assignments.length !== 0 && !viewOnly) &&
+
+                        <div id='cn-assignment-table-new' >
+                            {/* <div id='cn-assignment-table-label' >
+                                Review {
+                                    viewOnly && < a onClick={
+                                        () => this.props.onEdit()
+                                    } > Edit </a>}
+                            </div > */}
+                            <ReviewTable
+                                viewOnly={viewOnly}
+                                assignments={assignments}
+                                onSelectAssignment={this.onSelectAssignment.bind(this)}
+                                cl={cl}
+                                weights={weights}
+                            />
+                        </div >
+                    } {
+                        viewOnly &&
+                        <div id='cn-assignment-table' >
+                            <div id='cn-assignment-table-label' >
+                                Review {
+                                    viewOnly && <a onClick={
+                                        () => this.props.onEdit()
+                                    } > Edit </a>}
+                            </div >
+                            <ReviewTable
+                                viewOnly={viewOnly}
+                                assignments={this.state.assignments}
+                                currentAssignment={currentAssignment}
+                                onSelectAssignment={this.onSelectAssignment.bind(this)}
+                                onDeleteAssignment={this.onDeleteAssignment.bind(this)}
+                                weights={weights}
+                                cl={cl}
+                                currentWeight={weights[currentWeightIndex]}
+                                onEdit={
+                                    () => this.props.onEdit()
+                                }
+                                onSubmit={
+                                    () => this.onNext()
+                                }
+                            /> </div >
+                    } {
+                        assignments.length !== 0 && !viewOnly && !addAssignment &&
+                        <button
+                            onClick={
+                                () => this.handleSubmit()
+                            }
+                            className='button full-width margin-top margin-bottom' >
+                            Submit and Continue </button>
+                    } </div>} </div >
         )
     }
 }
 
-TagAssignments.propTypes = {
+Review.propTypes = {
     cl: PropTypes.object,
     isReview: PropTypes.bool,
     onSubmit: PropTypes.func,
@@ -366,4 +391,4 @@ TagAssignments.propTypes = {
     singleWeight: PropTypes.number
 }
 
-export default withRouter(TagAssignments)
+export default withRouter(Review)

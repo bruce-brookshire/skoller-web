@@ -6,6 +6,7 @@ import actions from '../../actions'
 import Weights from '../components/ClassEditor/Weights'
 import Assignments from '../components/ClassEditor/Assignments'
 import TagAssignments from '../components/ClassEditor/TagAssignments'
+import ReviewAssignments from '../components/ClassEditor/Review'
 // import { ProgressBar, SyllabusProgressStep } from '../../components/ProgressBar'
 import FileUpload from '../../components/FileUpload'
 import FileViewer from '../../components/FileViewer'
@@ -67,7 +68,7 @@ class SyllabusTool extends React.Component {
   */
   initializeState() {
     const { state } = this.props.location
-    console.log({ state })
+    // console.log({ state })
     let { navbarStore } = this.props.rootStore
     navbarStore.cl = null
     navbarStore.isInsights = state.isInsights || false
@@ -82,7 +83,7 @@ class SyllabusTool extends React.Component {
       loadingClass: true,
       openIssuesModal: false,
       openProblemsModal: false,
-      stepCount: 3,
+      stepCount: 4,
       uploadingDoc: false,
       singleWeight: state.weightId ? state.weightId : false,
       assignments: [],
@@ -213,9 +214,10 @@ class SyllabusTool extends React.Component {
   */
   onNext() {
     const { currentIndex, stepCount } = this.state
-
+    console.log(currentIndex, stepCount)
     if (currentIndex !== (stepCount - 1)) {
       this.setState({ currentIndex: currentIndex + 1 })
+      console.log(this.state.currentIndex)
       this.lockClass()
     } else {
       this.unlock(true)
@@ -274,61 +276,21 @@ class SyllabusTool extends React.Component {
           cl={navbarStore.cl}
           isReview={false}
           onSubmit={this.onNext.bind(this)}
-          singleWeight={this.state.singleWeight}
         />
       case ContentEnum.TAGASSIGNMENT:
         return <TagAssignments
-          onBack={() => this.setState({ currentIndex: 0 })}
+          onBack={() => this.setState({ currentIndex: 1 })}
           cl={navbarStore.cl}
           isReview={false}
           onSubmit={this.onNext.bind(this)}
-          singleWeight={this.state.singleWeight}
         />
       case ContentEnum.REVIEW:
-        return (
-          <div>
-            <div className='cn-section-content-header'>
-              Step 3: Review
-            </div>
-            <div className='margin-bottom'>
-              Almost done! Here&apos;s your last chance to review the weights and assignments
-              before submitting for the whole class.
-            </div>
-            <Weights
-              cl={navbarStore.cl}
-              isReview={true}
-              onSubmit={this.onNext.bind(this)}
-              onUpdateClass={this.onUpdateClass.bind(this)}
-              onEdit={() => {
-                this.setState({ currentIndex: ContentEnum.WEIGHTS })
-              }}
-            />
-            <Assignments
-              cl={navbarStore.cl}
-              isReview={true}
-              onSubmit={this.onNext.bind(this)}
-              onEdit={() => {
-                this.setState({ currentIndex: ContentEnum.ASSIGNMENTS })
-              }}
-              singleWeight={this.state.singleWeight}
-            />
-            <button
-              id='cn-review-submit'
-              className='button full-width margin-top margin-bottom'
-              onClick={() => this.onNext()}
-            >
-              <div>
-                ⚡️
-              </div>
-              <div>
-                Submit
-              </div>
-              <div>
-                ⚡️
-              </div>
-            </button>
-          </div>
-        )
+        return <ReviewAssignments
+          onBack={() => this.setState({ currentIndex: 1 })}
+          cl={navbarStore.cl}
+          isReview={false}
+          onSubmit={this.onNext.bind(this)}
+        />
       default:
     }
   }

@@ -19,7 +19,6 @@ export function getAllStudentAssignments(studentId) {
 export function getClassAssignments(cl) {
   return get(`/api/v1/classes/${cl.id}/assignments`, '', 'Error fetching assignments. Try again.')
     .then(data => {
-      console.log(data, 'getClassAssignments')
       return data
     })
     .catch(error => {
@@ -35,7 +34,6 @@ export function getClassAssignments(cl) {
 export function createAssignment(cl, form) {
   return post(`/api/v1/classes/${cl.id}/assignments`, form, 'Error creating assignment. Try again.')
     .then(data => {
-      console.log(data, 'success')
       return data
     })
     .catch(error => {
@@ -120,6 +118,21 @@ export function updateAssignment(cl, form) {
 }
 
 /*
+* Update an assignment
+*
+* @params [Object] form. Assignment form.
+*/
+export function tagAssignment(cl, form) {
+  return put(`/api/v1/class/assignments/${form.id}?weight_id=${form.weight_id}`, {}, 'Error updating assignment. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
 * Update a student assignment
 *
 * @params [Object] form. Assignment form.
@@ -185,7 +198,6 @@ export function getTaskAssignments(studentId) {
 }
 
 export function getStudentAssignmentById(studentId, taskId) {
-  console.log(studentId, taskId)
   return get(`/api/v1/students/${studentId}/assignments?id=${taskId}`)
 }
 

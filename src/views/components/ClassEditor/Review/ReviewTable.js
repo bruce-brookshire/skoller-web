@@ -6,7 +6,7 @@ import { ProgressBar, Step } from "react-step-progress-bar";
 import { InputField, SelectField } from '../../../../components/Form'
 import { Form, ValidateForm } from 'react-form-library'
 
-class AssignmentTable extends React.Component {
+class ReviewTable extends React.Component {
   constructor(props) {
     super(props)
     this.state = this.initializeState()
@@ -85,7 +85,7 @@ class AssignmentTable extends React.Component {
   */
   getRow(item, index) {
     const { form } = this.state
-    const { id, name, weight_id } = item
+    const { id, name, weight_id, due } = item
 
     form.weight_id = weight_id
     form.id = id
@@ -105,35 +105,16 @@ class AssignmentTable extends React.Component {
           this.props.onSelectAssignment(item)
         }}
       >
-        <div className='col-xs-6 assignment-name-container'>
+        <div className='col-xs-7 assignment-name-container'>
           <div className={`assignment-label col-xs-12}`}>
             <div>{name}</div>
-            {/* {!currentWeight && this.renderWeightName(weightId)} */}
           </div>
         </div>
-        <div className='col-xs-6 right-text tagAssignfm' >
-          <select className="weightselect"
-            name='weight_id'
-            value={form.weight_id}
-            options={weights}
-            onChange={(val) => { this.onChange({ id: id, weight_id: val.target.value }) }}
-          >
-            {weights.map(weight => {
-              return (
-                <option key={weight.id} value={weight.id}>{weight.name}</option>
-              )
-            })}
-          </select>
-          <div className="cn-font-icon" >
-            <a onClick={(e) => { this.onCopyWeight(id) }}>
-              <i class="fas fa-copy" > </i>
-            </a>
-          </div>
-          <div className="cn-font-icon" >
-            <a onClick={(e) => { this.onPasteWeight(id) }}>
-              <i class="fas fa-brush" > </i>
-            </a>
-          </div>
+        <div className='col-xs-2 right-text' >
+          <div>{moment(due).format('MM/DD')}</div>
+        </div>
+        <div className='col-xs-3 right-text' >
+          <div>{weight_id}</div>
         </div>
       </div>
     )
@@ -194,30 +175,16 @@ class AssignmentTable extends React.Component {
     return (
 
       <div id='class-editor-assignments-table' className={`${viewOnly ? 'view-only' : ''}`} ref={(field) => { this.sectionControl = field }} >
-        <div
-          id='class-editor-admin-assignments-table'
-          className={`${viewOnly ? 'view-only' : ''}`}
-          ref={(field) => { this.sectionControl = field }}
-          style={{ boxShadow: this.state.loading ? 'inset 0 -10px 10px -10px #00000025' : '' }}
-        ></div>
+
         <div id='assignment-rows'>
-          <div id='cn-assignment-form' > {this.renderProgressBar()}
-            <div className="col-xs-12">
-              <div className='cn-section-name-header' >
-                Assignments </div>
-              <div className='cn-section-value-header' >
-                Weight </div>
-            </div>
-            <hr />
-            {this.renderAssignments()}
-          </div>
+          {this.renderAssignments()}
         </div>
       </div>
     )
   }
 }
 
-AssignmentTable.propTypes = {
+ReviewTable.propTypes = {
   viewOnly: PropTypes.bool,
   assignments: PropTypes.array.isRequired,
   addingAssignment: PropTypes.bool,
@@ -232,4 +199,4 @@ AssignmentTable.propTypes = {
   onSubmitSingleWeight: PropTypes
 }
 
-export default AssignmentTable
+export default ReviewTable

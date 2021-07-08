@@ -90,18 +90,15 @@ class AssignmentForm extends React.Component {
      */
     initializeFormData(data) {
         let formData = data || {}
-        console.log(formData)
         const { id, name, due } = formData
 
         const { cl } = this.props
-
         const dueDate = due ?
             convertUTCDatetimeToDateString(due, cl.school.timezone) : ''
 
         return ({
             id: id || null,
             name: name || '',
-            // weight_id: weightId || (currentWeight && currentWeight.id) || '',
             due: dueDate ? this.mapAssignmentDate(dueDate) : '',
             year_due: dueDate ? dueDate.split('-')[0] : date.getFullYear(),
             created_on: 'Web'
@@ -116,13 +113,16 @@ class AssignmentForm extends React.Component {
         if (this.state.due_null) {
             requiredFields.due = {}
         }
-        // console.log(this.state.form)
         if (this.props.validateForm(this.state.form, requiredFields)) {
-            const form = this.mapForm(this.state.form) && !this.state.form.id ? this.onCreateAssignment(this.state.form) : this.onUpdateAssignment(this.state.form)
+            const form = this.mapForm(this.state.form)
+            !form.id ? this.onCreateAssignment(form) : this.onUpdateAssignment(form)
         }
         if (this.props.updateLastAssignmentDate) {
-            const date = this.state.form.due + '/' + this.state.form.year_due
-            this.props.updateLastAssignmentDate(date)
+            // const date = this.state.form.due + '/' + this.state.form.year_due
+            // this.props.updateLastAssignmentDate(date)
+
+            const form = this.mapForm(this.state.form)
+            !form.id ? this.onCreateAssignment(form) : this.onUpdateAssignment(form)
         }
         this.props.toggleAddingAssignment(false)
     }
@@ -131,19 +131,11 @@ class AssignmentForm extends React.Component {
      * Create a new assignment
      */
     onCreateAssignment(form) {
-
-        if (!this.props.onCreateAssignment) {
-            this.setState({ form: this.initializeFormData(form), loading: false, due_null: false })
-            this.props.onCreateAssignment(form)
-        } else {
-            this.setState({ loading: true })
-            console.log('hete')
-            // actions.assignments.createAssignment(this.props.cl, form).then((assignment) => {
+        this.setState({ loading: true })
+        actions.assignments.createAssignment(this.props.cl, form).then((assignment) => {
             this.setState({ form: this.initializeFormData(), loading: false, due_null: false })
-            // if (this.props.onCreateAssignment) this.props.onCreateAssignment(assignment)
-            if (this.props.onCreateAssignment) this.props.onCreateAssignment(form)
-            // }).catch(() => { this.setState({ loading: false }) })
-        }
+            if (this.props.onCreateAssignment) this.props.onCreateAssignment(assignment)
+        }).catch(() => { this.setState({ loading: false }) })
     }
 
     /*
@@ -151,22 +143,22 @@ class AssignmentForm extends React.Component {
      */
     onUpdateAssignment(form) {
         this.setState({ loading: true })
-        // actions.assignments.updateAssignment(this.props.cl, form).then((assignment) => {
-        this.props.onUpdateAssignment(form)
-        // this.props.onUpdateAssignment(assignment)
-
-        this.setState({ form: this.initializeFormData(), loading: false, due_null: false })
-        // }).catch(() => { this.setState({ loading: false }) })
+        actions.assignments.updateAssignment(this.props.cl, form).then((assignment) => {
+            this.props.onUpdateAssignment(assignment)
+            this.setState({ form: this.initializeFormData(), loading: false, due_null: false })
+        }).catch(() => { this.setState({ loading: false }) })
     }
 
 
-    onDelete(form) {
+    onDelete() {
+        const { form } = this.state
+        const { assignment } = this.props
         this.setState({ loading: true })
-        // actions.assignments.updateAssignment(this.props.cl, form).then((assignment) => {
-        this.props.onDeleteAssignment(form)
-        // this.props.onDeleteAssignment(assignment)
-        this.setState({ form: this.initializeFormData(), loading: false, due_null: false })
-        // }).catch(() => { this.setState({ loading: false }) })
+        actions.assignments.updateAssignment(this.props.cl, assignment).then((assignment) => {
+            // this.props.onDeleteAssignment(form)
+            this.props.onDeleteAssignment(assignment)
+            this.setState({ form: this.initializeFormData(), loading: false, due_null: false })
+        }).catch(() => { this.setState({ loading: false }) })
     }
     /*
      * Map the form
@@ -194,12 +186,12 @@ class AssignmentForm extends React.Component {
      * @return [String]. MM/DD
      */
     mapAssignmentDate(date) {
-        const dateParts = date.split('-')
-        return `${dateParts[1]}/${dateParts[2]}`
+        // const dateParts = date.split('-')
+        // return `${dateParts[1]}/${dateParts[2]}`
+        return moment(date).format('ddd MM/DD')
     }
 
     validateDate(d) {
-        // console.log('date', d)
         if (Object.prototype.toString.call(d) === '[object Date]') {
             if (isNaN(d.getTime())) {
                 return false
@@ -212,10 +204,8 @@ class AssignmentForm extends React.Component {
     }
 
     verifyData(form) {
-        // console.log(form)
         const nameCheck = form.name.trim() !== ''
         const dateCheck = (form.due !== null) && (this.validateDate(new Date(form.due + '/' + form.year_due)))
-        // console.log('form.due: ', form.due)
         return nameCheck && (this.state.due_null ? true : dateCheck)
     }
 
@@ -241,7 +231,6 @@ class AssignmentForm extends React.Component {
 
     render() {
         const { form } = this.state
-        // console.log(form)
         const { formErrors, updateProperty } = this.props
         const disableButton = !this.verifyData(form)
         return (<div id='cn-assignment-form' > {this.renderProgressBar()} {
@@ -339,10 +328,10 @@ class AssignmentForm extends React.Component {
                                 </div>
                               </div> */
                 } </div>
-            <div >
+            <div className='addbtndiv'>
                 <a className={`${disableButton ? 'disabled' : ''}`}
                     disabled={this.state.loading || disableButton}
-                    onClick={this.onSubmit.bind(this)} > {this.props.assignment ? 'Update ' : 'Add '}
+                    onClick={this.onSubmit.bind(this)} > {this.props.assignment ? 'Update ' : '+ Add '}
                     Assignment {this.state.loading ? < Loading /> : null} </a>
             </div >
         </div>
