@@ -114,7 +114,6 @@ class Assignments extends React.Component {
         this.updateLastAssignmentDate(moment(assignment.due).format('MM/DD/YYYY'))
         const newAssignments = this.state.assignments
         newAssignments.push(assignment)
-        console.log(newAssignments)
         this.setState({ assignments: newAssignments, currentAssignment: null })
     }
 
@@ -157,6 +156,7 @@ class Assignments extends React.Component {
         })
         if (assignment.id) {
             await actions.assignments.deleteAssignment(assignment).then(() => {
+                this.setState({ currentAssignment: null })
                 this.updateAssignments()
             }).catch(() => false)
         }

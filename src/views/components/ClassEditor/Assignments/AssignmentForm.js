@@ -91,7 +91,6 @@ class AssignmentForm extends React.Component {
     initializeFormData(data) {
         let formData = data || {}
         const { id, name, due } = formData
-
         const { cl } = this.props
         const dueDate = due ?
             convertUTCDatetimeToDateString(due, cl.school.timezone) : ''
@@ -118,11 +117,8 @@ class AssignmentForm extends React.Component {
             !form.id ? this.onCreateAssignment(form) : this.onUpdateAssignment(form)
         }
         if (this.props.updateLastAssignmentDate) {
-            // const date = this.state.form.due + '/' + this.state.form.year_due
-            // this.props.updateLastAssignmentDate(date)
-
-            const form = this.mapForm(this.state.form)
-            !form.id ? this.onCreateAssignment(form) : this.onUpdateAssignment(form)
+            const date = this.state.form.due + '/' + this.state.form.year_due
+            this.props.updateLastAssignmentDate(date)
         }
         this.props.toggleAddingAssignment(false)
     }
@@ -134,7 +130,7 @@ class AssignmentForm extends React.Component {
         this.setState({ loading: true })
         actions.assignments.createAssignment(this.props.cl, form).then((assignment) => {
             this.setState({ form: this.initializeFormData(), loading: false, due_null: false })
-            if (this.props.onCreateAssignment) this.props.onCreateAssignment(assignment)
+            this.props.onCreateAssignment(assignment)
         }).catch(() => { this.setState({ loading: false }) })
     }
 
@@ -151,14 +147,10 @@ class AssignmentForm extends React.Component {
 
 
     onDelete() {
-        const { form } = this.state
-        const { assignment } = this.props
         this.setState({ loading: true })
-        actions.assignments.updateAssignment(this.props.cl, assignment).then((assignment) => {
-            // this.props.onDeleteAssignment(form)
-            this.props.onDeleteAssignment(assignment)
-            this.setState({ form: this.initializeFormData(), loading: false, due_null: false })
-        }).catch(() => { this.setState({ loading: false }) })
+        const { assignment } = this.props
+        this.props.onDeleteAssignment(assignment)
+        this.setState({ form: this.initializeFormData(), loading: false, due_null: false })
     }
     /*
      * Map the form

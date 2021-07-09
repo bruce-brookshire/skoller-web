@@ -11,7 +11,6 @@ class AssignmentTable extends React.Component {
   * @param [Number] index. Index of row data.
   */
   getRow(item, index) {
-    console.log(item)
     const { id, name, due } = item
     const { currentAssignment, viewOnly } = this.props
     const activeClass = (currentAssignment && currentAssignment.id) === id

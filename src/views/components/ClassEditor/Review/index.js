@@ -135,6 +135,14 @@ class Review extends React.Component {
         }
     }
 
+
+    onTagAssignment(assignment) {
+        const newAssignments = this.state.assignments
+        const index = this.state.assignments.findIndex(a => a.id === assignment.id)
+        newAssignments[index] = assignment
+        this.setState({ assignments: newAssignments })
+    }
+
     /*
      * Delete assignment.
      *
@@ -155,6 +163,7 @@ class Review extends React.Component {
         })
         if (assignment.id) {
             await actions.assignments.deleteAssignment(assignment).then(() => {
+                this.setState({ currentAssignment: null })
                 this.updateAssignments()
             }).catch(() => false)
         }
@@ -194,21 +203,6 @@ class Review extends React.Component {
         this.setState({ lastAssignmentDate: date })
     }
 
-    getSingleWeight() {
-        let singleWeight = this.props.singleWeight
-        let weights = []
-        if (singleWeight) {
-            this.state.weights.forEach(weight => {
-                if (weight.id === singleWeight) {
-                    weights.push(weight)
-                }
-            })
-            return weights
-        } else {
-            return false
-        }
-    }
-
     renderBackButton() {
         if (!this.props.singleWeight && this.state.addAssignment) {
             return (<div onClick={
@@ -234,34 +228,8 @@ class Review extends React.Component {
         }
     }
 
-    async submitAssignments() {
-        this.setState({ loading: true })
-        let assignmentCount = 0
-        await this.state.assignments.forEach(async form => {
-            if (!form.id) {
-                assignmentCount += 1
-                // await actions.assignments.createAssignment(this.props.cl, form).then(() => {
-                this.setState({ form: this.initializeFormData(), due_null: false })
-                this.updateAssignments()
-                // }).catch(() => {this.setState({ loading: false })})
-            }
-        })
-        showSnackbar(`Created ${assignmentCount} new assignment` + (assignmentCount > 1 ? 's' : ''), 'success')
-        this.setState({ loadingAssignments: true })
-        await actions.assignments.getClassAssignments(this.props.cl).then((assignments) => {
-            this.setState({ assignments, loadingAssignments: false })
-        }).then(() => { this.setState({ loadingAssignments: false }) })
-        this.setState({ loading: false })
-    }
-
     async handleSubmit() {
         this.props.onSubmit()
-    }
-
-    onSubmitSingleWeight() {
-        this.submitAssignments()
-        this.handleSubmit()
-        this.props.history.push('/student/class/' + this.props.cl.id.toString())
     }
 
     render() {
@@ -283,7 +251,6 @@ class Review extends React.Component {
             weights = this.getSingleWeight()
         }
 
-        // console.log(this.state.assignments)
 
         return (<div id='cn-assignments' > {
             loadingAssignments || loadingWeights ?
@@ -299,6 +266,7 @@ class Review extends React.Component {
                             onCreateAssignment={this.onCreateAssignment.bind(this)}
                             onUpdateAssignment={this.onUpdateAssignment.bind(this)}
                             onDeleteAssignment={this.onDeleteAssignment.bind(this)}
+                            onTagAssignment={this.onTagAssignment.bind(this)}
                             weights={weights}
                             updateLastAssignmentDate={
                                 (date) => this.updateLastAssignmentDate(date)

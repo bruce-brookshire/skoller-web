@@ -136,7 +136,6 @@ class TagAssignments extends React.Component {
     }
 
     onTagAssignment(assignment) {
-        console.log(assignment)
         const newAssignments = this.state.assignments
         const index = this.state.assignments.findIndex(a => a.id === assignment.id)
         newAssignments[index] = assignment

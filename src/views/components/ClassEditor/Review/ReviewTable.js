@@ -37,29 +37,13 @@ class ReviewTable extends React.Component {
     })
   }
 
-  onChange(form) {
-    console.log(form)
-    this.onTagAssignment(form)
+  getWeightName(weight_id) {
+    const { weights } = this.props
+    console.log(weights)
+    let w = weights.find(v => v.id == weight_id)
+    return w ? w.name : ''
   }
 
-  onCopyWeight(assignmentId) {
-    const { assignments } = this.props
-    const assignment = assignments.find(e => e.id == assignmentId)
-    this.setState({ copyweight: assignment.weight_id })
-  }
-
-  onPasteWeight(assignmentId) {
-    if (this.state.copyweight) {
-      this.onTagAssignment({ id: assignmentId, weight_id: this.state.copyweight })
-    }
-  }
-
-  onTagAssignment(form) {
-    this.setState({ loading: true })
-    actions.assignments.tagAssignment(this.props.cl, form).then((assignment) => {
-      this.props.onTagAssignment(assignment)
-    }).catch(() => { this.setState({ loading: false }) })
-  }
 
   renderProgressBar() {
     return <div className='cn-section-progress-outer' >
@@ -87,10 +71,7 @@ class ReviewTable extends React.Component {
     const { form } = this.state
     const { id, name, weight_id, due } = item
 
-    form.weight_id = weight_id
-    form.id = id
-
-    const { currentAssignment, viewOnly, formErrors, updateProperty, weights } = this.props
+    const { currentAssignment, viewOnly, formErrors, updateProperty } = this.props
     const activeClass = (currentAssignment && currentAssignment.id) === id
       ? 'active' : ''
 
@@ -114,7 +95,7 @@ class ReviewTable extends React.Component {
           <div>{moment(due).format('MM/DD')}</div>
         </div>
         <div className='col-xs-3 right-text' >
-          <div>{weight_id}</div>
+          <div>{this.getWeightName(weight_id)}</div>
         </div>
       </div>
     )

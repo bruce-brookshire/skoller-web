@@ -89,8 +89,9 @@ class ReviewForm extends React.Component {
      * @return [Object]. Form object.
      */
     initializeFormData(data) {
+
         let formData = data || {}
-        const { id, name, due } = formData
+        const { id, name, due, weight_id } = formData
 
         const { cl } = this.props
         const dueDate = due ?
@@ -99,11 +100,13 @@ class ReviewForm extends React.Component {
         return ({
             id: id || null,
             name: name || '',
+            weight_id: weight_id || '',
             due: dueDate ? this.mapAssignmentDate(dueDate) : '',
             year_due: dueDate ? dueDate.split('-')[0] : date.getFullYear(),
             created_on: 'Web'
         })
     }
+
 
     /*
      * Determine whether the user is submitting updated assignment or a new assignment.
@@ -118,11 +121,8 @@ class ReviewForm extends React.Component {
             !form.id ? this.onCreateAssignment(form) : this.onUpdateAssignment(form)
         }
         if (this.props.updateLastAssignmentDate) {
-            // const date = this.state.form.due + '/' + this.state.form.year_due
-            // this.props.updateLastAssignmentDate(date)
-
-            const form = this.mapForm(this.state.form)
-            !form.id ? this.onCreateAssignment(form) : this.onUpdateAssignment(form)
+            const date = this.state.form.due + '/' + this.state.form.year_due
+            this.props.updateLastAssignmentDate(date)
         }
         this.props.toggleAddingAssignment(false)
     }
@@ -151,15 +151,28 @@ class ReviewForm extends React.Component {
 
 
     onDelete() {
-        const { form } = this.state
         const { assignment } = this.props
         this.setState({ loading: true })
-        actions.assignments.updateAssignment(this.props.cl, assignment).then((assignment) => {
-            // this.props.onDeleteAssignment(form)
-            this.props.onDeleteAssignment(assignment)
-            this.setState({ form: this.initializeFormData(), loading: false, due_null: false })
-        }).catch(() => { this.setState({ loading: false }) })
+        this.props.onDeleteAssignment(assignment)
+        this.setState({ form: this.initializeFormData(), loading: false, due_null: false })
     }
+
+    onChange(weight_id) {
+        const { form } = this.state
+        form.weight_id = weight_id
+        console.log(form)
+        this.setState({ form: form })
+    }
+
+    // onTagAssignment(form) {
+    //     this.setState({ loading: true })
+
+    //     actions.assignments.tagAssignment(this.props.cl, form).then((assignment) => {
+    //         this.props.onTagAssignment(assignment)
+    //         this.setState({ form: this.initializeFormData(assignment) })
+    //     }).catch(() => { this.setState({ loading: false }) })
+    // }
+
     /*
      * Map the form
      */
@@ -227,7 +240,6 @@ class ReviewForm extends React.Component {
     render() {
         const { form } = this.state
         const { formErrors, updateProperty, weights } = this.props
-        console.log(weights)
         const disableButton = !this.verifyData(form)
         return (<div id='cn-assignment-form' > {this.renderProgressBar()} {
             /* <div className='cn-section-content-header'>
@@ -244,7 +256,7 @@ class ReviewForm extends React.Component {
                 <div className='cn-section-due-header reviewDueHeader' >
                     Due Date </div>
             </div> <hr />
-            <div className='' >
+            {form.id && <div className='' >
                 <div className="cn-delete-icon" >
                     <a onClick={this.onDelete.bind(this)}>
                         <i class="far fa-trash-alt" > </i>
@@ -302,7 +314,7 @@ class ReviewForm extends React.Component {
                         name='weight_id'
                         value={form.weight_id}
                         options={weights}
-                        onChange={(val) => { this.onChange({ id: id, weight_id: val.target.value }) }}
+                        onChange={(val) => { this.onChange(val.target.value) }}
                     >
                         <option value="">Select</option>
                         {weights.map(weight => {
@@ -313,12 +325,16 @@ class ReviewForm extends React.Component {
                     </select>
                 </div>
             </div>
-            <div className='addbtndiv'>
+            }
+            {form.id && <div className='addbtndiv'>
                 <a className={`${disableButton ? 'disabled' : ''}`}
                     disabled={this.state.loading || disableButton}
                     onClick={this.onSubmit.bind(this)} >  Save
                     Assignment {this.state.loading ? < Loading /> : null} </a>
             </div >
+            }
+
+
         </div>
         )
     }
@@ -330,6 +346,7 @@ ReviewForm.propTypes = {
     formErrors: PropTypes.object,
     onCreateAssignment: PropTypes.func,
     onUpdateAssignment: PropTypes.func.isRequired,
+    onTagAssignment: PropTypes.func,
     updateProperty: PropTypes.func,
     validateForm: PropTypes.func,
     // currentWeight: PropTypes.object,
