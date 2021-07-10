@@ -4,6 +4,8 @@ import WeightForm from './WeightForm'
 import WeightTable from './WeightTable'
 import WeightType from './WeightType'
 import actions from '../../../../actions'
+import ToolTip from '../../../../views/components/ToolTip'
+
 
 class Weights extends React.Component {
   constructor(props) {
@@ -121,7 +123,7 @@ class Weights extends React.Component {
             {isReview &&
               <div id='cn-weight-table-label'>
                 Weights
-              {isReview && <a onClick={() => this.props.onEdit()}>Edit</a>}
+                {isReview && <a onClick={() => this.props.onEdit()}>Edit</a>}
               </div>
             }
             <WeightTable
@@ -135,14 +137,23 @@ class Weights extends React.Component {
               onEdit={() => this.props.onEdit()}
             />
             {(weights.length !== 0 || noWeights) && !isReview &&
+
               <div className='submit-container'>
-                <button
-                  onClick={() => this.props.onSubmit()}
-                  disabled={disableButton}
-                  className={`submit-weights button ${disableButton ? 'disabled' : ''}`}
-                >
-                  Submit Weights
-                </button>
+                <ToolTip
+                  tip={
+                    <div>
+                      Weights need to sum to 100% before submitting! Click here to swap grade style
+                    </div>
+                  }>
+                  <button
+                    onClick={() => this.props.onSubmit()}
+                    disabled={disableButton}
+                    className={`submit-weights button ${disableButton ? 'disabled' : ''}`}
+                  >
+                    Submit Weights
+                  </button>
+                </ToolTip>
+
               </div>
             }
           </div>
@@ -154,7 +165,7 @@ class Weights extends React.Component {
               {!cl.is_points && this.renderWeightTotalWarning()}
             </div>
           </div>} */}
-      </div>
+      </div >
     )
   }
 

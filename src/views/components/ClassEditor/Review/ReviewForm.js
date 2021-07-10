@@ -8,6 +8,7 @@ import { convertLocalDateToUTC, convertUTCDatetimeToDateString } from '../../../
 import DatePicker from '../../../components/DatePicker/index'
 import moment from 'moment'
 import { ProgressBar, Step } from "react-step-progress-bar";
+import ToolTip from '../../../../views/components/ToolTip'
 
 const requiredFields = {
     'name': {
@@ -229,7 +230,20 @@ class ReviewForm extends React.Component {
                     className='logo'
                     src='/src/assets/images/sammi/Smile.png'
                     height="40" />
-                <span className="cn-section-progress-title" > Review & Submit < i class="far fa-question-circle" > </i></span >
+                <span className="cn-section-progress-title" > Review & Submit
+                    <div className="infodiv">
+                        <ToolTip
+                            tip={
+                                <div>
+                                    <p>
+                                        Make sure everything looks good before submitting
+                                    </p>
+                                </div>
+                            }>
+                            < i class="far fa-question-circle" > </i>
+                        </ToolTip>
+                    </div>
+                </span >
 
             </div >
         } else {

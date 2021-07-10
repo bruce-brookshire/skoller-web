@@ -64,6 +64,7 @@
     "react-tooltip": "^3.11.2",
     "react-transition-group": "^4.3.0",
     "react-visibility-sensor": "^5.1.1",
+    "reactjs-mappletooltip": "^1.4.63",
     "resolve-url-loader": "^2.1.1",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",

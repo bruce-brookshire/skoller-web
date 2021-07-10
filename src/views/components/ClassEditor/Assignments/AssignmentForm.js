@@ -8,6 +8,7 @@ import { convertLocalDateToUTC, convertUTCDatetimeToDateString } from '../../../
 import DatePicker from '../../../components/DatePicker/index'
 import moment from 'moment'
 import { ProgressBar, Step } from "react-step-progress-bar";
+import ToolTip from '../../../../views/components/ToolTip'
 
 const requiredFields = {
     'name': {
@@ -208,7 +209,26 @@ class AssignmentForm extends React.Component {
                     className='logo'
                     src='/src/assets/images/sammi/Smile.png'
                     height="40" />
-                <span className="cn-section-progress-title" > Add Assignment & Dates < i class="far fa-question-circle" > </i></span >
+                <span className="cn-section-progress-title" > Add Assignment & Dates
+                    <div className="infodiv">
+                        <ToolTip
+                            tip={
+                                <div>
+                                    <p>
+                                        Add all graded assignments for this class
+                                    </p>
+                                    <p>
+                                        Tip 1:if the due date is unknown but assignment is sure to happen,go ahead and add it
+                                    </p>
+                                    <p>
+                                        Tip 2:You can always add and edit assignments during the semester
+                                    </p>
+                                </div>
+                            }>
+                            < i class="far fa-question-circle" > </i>
+                        </ToolTip>
+                    </div>
+                </span >
                 <div className="cn-pull-right" >
                     <span> 2 / 3 </span> <span className='cn-section-progressbar' > < ProgressBar percent={
                         (2 / 3) * 100

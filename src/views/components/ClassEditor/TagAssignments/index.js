@@ -350,7 +350,7 @@ class TagAssignments extends React.Component {
                             () => this.handleSubmit()
                         }
                         className='button full-width margin-top margin-bottom' >
-                        Submit and Continue </button>
+                        Submit Tags </button>
                 } {this.renderSkipCategoryModal()} </div>} </div >
         )
     }

@@ -5,6 +5,7 @@ import { InputField, CheckboxField } from '../../../../components/Form'
 import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
 import { ProgressBar, Step } from "react-step-progress-bar";
+import ToolTip from '../../../../views/components/ToolTip'
 
 const requiredFields = {
   'name': {
@@ -131,7 +132,18 @@ class WeightForm extends React.Component {
     if (!this.state.singleWeight) {
       return <div className='cn-section-progress-outer'>
         <img alt="Skoller" className='logo' src='/src/assets/images/sammi/Smile.png' height="40" />
-        <span className="cn-section-progress-title">Add Weights & Values <i class="far fa-question-circle"></i></span>
+        <span className="cn-section-progress-title">Add Weights & Values
+          <div className="infodiv">
+            <ToolTip
+              tip={
+                <div>
+                  Weights need to sum to 100% before submitting! Click here to swap grade style
+                </div>
+              }>
+              <i class="far fa-question-circle"></i>
+            </ToolTip>
+          </div>
+        </span>
         <div className="cn-pull-right">
           <span>1/3</span>
           <span className='cn-section-progressbar'><ProgressBar percent={(1 / 3) * 100} /></span>

@@ -5,6 +5,7 @@ import actions from '../../../../actions'
 import { ProgressBar, Step } from "react-step-progress-bar";
 import { InputField, SelectField } from '../../../../components/Form'
 import { Form, ValidateForm } from 'react-form-library'
+import ToolTip from '../../../../views/components/ToolTip'
 
 class AssignmentTable extends React.Component {
   constructor(props) {
@@ -67,7 +68,26 @@ class AssignmentTable extends React.Component {
         className='logo'
         src='/src/assets/images/sammi/Smile.png'
         height="40" />
-      <span className="cn-section-progress-title" > Tag Assignments < i class="far fa-question-circle" > </i></span >
+      <span className="cn-section-progress-title" > Tag Assignments
+        <div className="infodiv">
+          <ToolTip
+            tip={
+              <div>
+                <p>
+                  Tag assignments to weight categories
+                </p>
+                <p>
+                  why? This associates value for esach individual assignments
+                </p>
+                <p>
+                  Example: 4 assignments tag to exams category worth 20% make each assignment worth 5%
+                </p>
+              </div>
+            }>
+            < i class="far fa-question-circle" > </i>
+          </ToolTip>
+        </div>
+      </span >
       <div className="cn-pull-right" >
         <span> 3 / 3 </span> <span className='cn-section-progressbar' > < ProgressBar percent={
           (3 / 3) * 100
