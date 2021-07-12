@@ -1,16 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import AssignmentCategories from './AssignmentCategories'
-import AssignmentForm from './AssignmentForm'
-import AssignmentTable from './AssignmentTable'
-import SkipCategoryModal from './SkipCategoryModal'
+import ReviewForm from './ReviewForm'
+import ReviewTable from './ReviewTable'
 import actions from '../../../../actions'
 import SkLoader from '../../../../assets/sk-icons/SkLoader'
 import moment from 'moment'
 import { withRouter } from 'react-router-dom'
 import { showSnackbar } from '../../../../utilities/snackbar'
 
-class Assignments extends React.Component {
+class Review extends React.Component {
     constructor(props) {
         super(props)
         this.state = this.initializeState()
@@ -114,6 +112,7 @@ class Assignments extends React.Component {
         this.updateLastAssignmentDate(moment(assignment.due).format('MM/DD/YYYY'))
         const newAssignments = this.state.assignments
         newAssignments.push(assignment)
+        console.log(newAssignments)
         this.setState({ assignments: newAssignments, currentAssignment: null })
     }
 
@@ -134,6 +133,14 @@ class Assignments extends React.Component {
             newAssignments[index] = assignment
             this.setState({ assignments: newAssignments, currentAssignment: null })
         }
+    }
+
+
+    onTagAssignment(assignment) {
+        const newAssignments = this.state.assignments
+        const index = this.state.assignments.findIndex(a => a.id === assignment.id)
+        newAssignments[index] = assignment
+        this.setState({ assignments: newAssignments })
     }
 
     /*
@@ -187,28 +194,6 @@ class Assignments extends React.Component {
         this.setState({ addingAssignment: bool })
     }
 
-    /*
-     * Render the having issues modal.
-     */
-    renderSkipCategoryModal() {
-        const { openSkipCategoryModal } = this.state
-        return (<
-            SkipCategoryModal open={openSkipCategoryModal}
-            onClose={this.toggleSkipCategoryModal.bind(this)}
-            onConfirm={this.onNext.bind(this)}
-        />
-        )
-    }
-
-    // renderSavedMessage (assignments) {
-    //   const {viewOnly} = this.state
-    //   return (
-    //     <span>
-    //       {!viewOnly && <span>Saved assignments</span>}
-    //       {viewOnly && `Assignments (${assignments.length})`}
-    //     </span>
-    //   )
-    // }
 
     toAssignmentForm(weight) {
         this.setState({ addAssignment: true, currentWeight: weight, currentWeightIndex: this.state.weights.indexOf(weight) })
@@ -216,21 +201,6 @@ class Assignments extends React.Component {
 
     updateLastAssignmentDate(date) {
         this.setState({ lastAssignmentDate: date })
-    }
-
-    getSingleWeight() {
-        let singleWeight = this.props.singleWeight
-        let weights = []
-        if (singleWeight) {
-            this.state.weights.forEach(weight => {
-                if (weight.id === singleWeight) {
-                    weights.push(weight)
-                }
-            })
-            return weights
-        } else {
-            return false
-        }
     }
 
     renderBackButton() {
@@ -258,34 +228,8 @@ class Assignments extends React.Component {
         }
     }
 
-    async submitAssignments() {
-        this.setState({ loading: true })
-        let assignmentCount = 0
-        await this.state.assignments.forEach(async form => {
-            if (!form.id) {
-                assignmentCount += 1
-                // await actions.assignments.createAssignment(this.props.cl, form).then(() => {
-                this.setState({ form: this.initializeFormData(), due_null: false })
-                this.updateAssignments()
-                // }).catch(() => {this.setState({ loading: false })})
-            }
-        })
-        showSnackbar(`Created ${assignmentCount} new assignment` + (assignmentCount > 1 ? 's' : ''), 'success')
-        this.setState({ loadingAssignments: true })
-        await actions.assignments.getClassAssignments(this.props.cl).then((assignments) => {
-            this.setState({ assignments, loadingAssignments: false })
-        }).then(() => { this.setState({ loadingAssignments: false }) })
-        this.setState({ loading: false })
-    }
-
     async handleSubmit() {
         this.props.onSubmit()
-    }
-
-    onSubmitSingleWeight() {
-        this.submitAssignments()
-        this.handleSubmit()
-        this.props.history.push('/student/class/' + this.props.cl.id.toString())
     }
 
     render() {
@@ -307,36 +251,23 @@ class Assignments extends React.Component {
             weights = this.getSingleWeight()
         }
 
-        // console.log(this.state.assignments)
 
         return (<div id='cn-assignments' > {
             loadingAssignments || loadingWeights ?
                 <SkLoader />
                 :
                 <div id='cn-assignment-window' > {
-                    /* {!viewOnly && !addAssignment &&
-                                  <div>
-                                    {this.renderBackButton()}
-                                    <AssignmentCategories
-                                      cl={cl}
-                                      weights={weights}
-                                      singleWeight={this.props.singleWeight}
-                                      noAssignments={this.state.assignments}
-                                      assignments={this.state.assignments}
-                                      onClick={this.toAssignmentForm.bind(this)}
-                                      onSubmit={() => this.props.onSubmit()}
-                                    />
-                                  </div>
-                                } */
+
                 } {!viewOnly &&
                     <div id='class-editor-assignment-form' > {this.renderBackButton()}
-                        <AssignmentForm
+                        <ReviewForm
                             assignment={currentAssignment}
                             cl={cl}
                             onCreateAssignment={this.onCreateAssignment.bind(this)}
                             onUpdateAssignment={this.onUpdateAssignment.bind(this)}
                             onDeleteAssignment={this.onDeleteAssignment.bind(this)}
-                            currentWeight={currentWeight}
+                            onTagAssignment={this.onTagAssignment.bind(this)}
+                            weights={weights}
                             updateLastAssignmentDate={
                                 (date) => this.updateLastAssignmentDate(date)
                             }
@@ -368,46 +299,29 @@ class Assignments extends React.Component {
 
                         <div id='cn-assignment-table-new' >
                             {/* <div id='cn-assignment-table-label' >
-                                Assignments {
+                                Review {
                                     viewOnly && < a onClick={
                                         () => this.props.onEdit()
                                     } > Edit </a>}
                             </div > */}
-                            <AssignmentTable
+                            <ReviewTable
                                 viewOnly={viewOnly}
-                                addingAssignment={this.state.addingAssignment}
                                 assignments={assignments}
-                                currentAssignment={currentAssignment}
                                 onSelectAssignment={this.onSelectAssignment.bind(this)}
-                                weights={weights}
                                 cl={cl}
-                                currentWeight={weights[currentWeightIndex]}
-                                onEdit={
-                                    () => this.props.onEdit()
-                                }
-                                onSubmit={
-                                    () => {
-                                        this.setState({ addAssignment: false, currentAssignment: null })
-                                        this.updateAssignments()
-                                        this.submitAssignments()
-                                    }
-                                }
-                                onSubmitSingleWeight={
-                                    this.props.singleWeight ?
-                                        () => this.onSubmitSingleWeight() : null
-                                }
+                                weights={weights}
                             />
                         </div >
                     } {
                         viewOnly &&
                         <div id='cn-assignment-table' >
                             <div id='cn-assignment-table-label' >
-                                Assignments {
+                                Review {
                                     viewOnly && <a onClick={
                                         () => this.props.onEdit()
                                     } > Edit </a>}
                             </div >
-                            <AssignmentTable
+                            <ReviewTable
                                 viewOnly={viewOnly}
                                 assignments={this.state.assignments}
                                 currentAssignment={currentAssignment}
@@ -431,12 +345,12 @@ class Assignments extends React.Component {
                             }
                             className='button full-width margin-top margin-bottom' >
                             Submit and Continue </button>
-                    } {this.renderSkipCategoryModal()} </div>} </div >
+                    } </div>} </div >
         )
     }
 }
 
-Assignments.propTypes = {
+Review.propTypes = {
     cl: PropTypes.object,
     isReview: PropTypes.bool,
     onSubmit: PropTypes.func,
@@ -445,4 +359,4 @@ Assignments.propTypes = {
     singleWeight: PropTypes.number
 }
 
-export default withRouter(Assignments)
+export default withRouter(Review)

@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {inject, observer} from 'mobx-react'
+import { inject, observer } from 'mobx-react'
 
 @inject('rootStore') @observer
 class AssignmentCategories extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -13,7 +13,7 @@ class AssignmentCategories extends React.Component {
     }
   }
 
-  renderNextStep (noAssignments) {
+  renderNextStep(noAssignments) {
     if (this.props.rootStore.userStore.user.roles[0].name === 'Student') {
       return noAssignments
         ? <div>
@@ -42,7 +42,7 @@ class AssignmentCategories extends React.Component {
     }
   }
 
-  renderCategory (weight, assignmentsCount) {
+  renderCategory(weight, assignmentsCount) {
     return (
       <div className='weight' key={weight.id} onClick={() => this.props.onClick(weight)}>
         <div className='text'>
@@ -52,7 +52,7 @@ class AssignmentCategories extends React.Component {
           <div className='add-assignments'>
             <div>
               {assignmentsCount > 0
-                ? <p style={{color: 'rgba(0,0,0,.2)', fontWeight: '500', margin: '0'}}>{assignmentsCount} Assignment{assignmentsCount > 1 ? 's' : ''}</p>
+                ? <p style={{ color: 'rgba(0,0,0,.2)', fontWeight: '500', margin: '0' }}>{assignmentsCount} Assignment{assignmentsCount > 1 ? 's' : ''}</p>
                 : <p>Add assignments</p>
               }
             </div>
@@ -68,7 +68,7 @@ class AssignmentCategories extends React.Component {
     )
   }
 
-  renderCategoriesWithoutAssignments () {
+  renderCategoriesWithoutAssignments() {
     const assignments = this.props.assignments
     const category = this.state.weights.map(weight => {
       let i = 0
@@ -87,7 +87,7 @@ class AssignmentCategories extends React.Component {
     return category
   }
 
-  renderCategoriesWithAssignments () {
+  renderCategoriesWithAssignments() {
     const assignments = this.props.assignments
     const category = this.state.weights.map(weight => {
       let i = 0
@@ -106,7 +106,7 @@ class AssignmentCategories extends React.Component {
     return category
   }
 
-  render () {
+  render() {
     return (
       <div id='cn-assignment-categories'>
         <div className='cn-section-content-header'>

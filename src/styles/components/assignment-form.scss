@@ -7,7 +7,7 @@
   .cn-section-content-header {
     margin-top: 29px;
   }
-  
+
   hr {
     margin: 4px 0px;
     background-color: #aaaaaa;
@@ -28,16 +28,20 @@
       font-size: 15px;
     }
 
-    .cn-form-input {
-      height: 28px;
-      border-color: #aaaaaa;
-    }
-
     select {
       cursor: pointer;
     }
   }
+  .cn-form-input {
+    border: 1px solid #aaaaaa;
+    border-radius: 5px;
+    height: 24px;
+    padding: 0 5px;
+  }
 
+  .cn-input-container {
+    padding: 0 5px;
+  }
   .unknown-due {
     display: flex;
     flex-direction: column;
@@ -57,11 +61,11 @@
       cursor: pointer;
     }
   }
-  
+
   #button-container {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: left;
     width: 100%;
     margin-bottom: 1.7rem;
 
@@ -80,4 +84,77 @@
       }
     }
   }
+
+  .cn-section-name-header,
+  .cn-section-value-header,
+  .cn-section-assignment-name {
+    width: 100px;
+    display: inline-block;
+    line-height: 16px;
+    margin-top: 10px;
+  }
+  .cn-section-due-header {
+    display: inline-block;
+  }
+  .cn-section-value-header,
+  .cn-section-weight-header {
+    float: right;
+    text-align: end;
+  }
+
+  .cn-delete-icon {
+    width: 7%;
+    display: inline-block;
+    color: #5ab9e4;
+    vertical-align: -webkit-baseline-middle;
+    font-size: 20px;
+  }
+
+  .cn-input-assignment-name {
+    width: 60%;
+    display: inline-block;
+  }
+
+  .cn-input-assignment-date {
+    width: 25%;
+    display: inline-block;
+  }
+  .cn-files-icon {
+    width: 7%;
+    display: inline-block;
+    color: #5ab9e4;
+    vertical-align: -webkit-baseline-middle;
+    font-size: 20px;
+    text-align: end;
+  }
+}
+#cn-assignment-form .cn-input-assignment-name.reviewname {
+  width: 50%;
+}
+#cn-assignment-form .cn-input-assignment-date.reviewDue {
+  width: 22%;
+}
+.reviewAssignSelect {
+  width: 39%;
+  display: inline;
+  .reviewSelect {
+    width: 20%;
+    font-size: 13px;
+    padding: 2px;
+  }
+}
+
+.reviewWeightHeader {
+  float: right;
+  margin-top: 10px;
+  width: 20%;
+  text-align: right;
+}
+.reviewDueHeader {
+  float: right;
+  margin-top: 10px;
+  width: 15%;
+  min-width: 65px;
+}
+.reviewAssinHeader {
 }
