@@ -7,8 +7,7 @@ import actions from '../../../../actions'
 import { convertLocalDateToUTC, convertUTCDatetimeToDateString } from '../../../../utilities/time'
 import DatePicker from '../../../components/DatePicker/index'
 import moment from 'moment'
-import { ProgressBar, Step } from "react-step-progress-bar";
-import ToolTip from '../../../../views/components/ToolTip'
+
 
 const requiredFields = {
     'name': {
@@ -202,55 +201,13 @@ class AssignmentForm extends React.Component {
         return nameCheck && (this.state.due_null ? true : dateCheck)
     }
 
-    renderProgressBar() {
-        if (!this.state.singleWeight) {
-            return <div className='cn-section-progress-outer' >
-                <img alt="Skoller"
-                    className='logo'
-                    src='/src/assets/images/sammi/Smile.png'
-                    height="40" />
-                <span className="cn-section-progress-title" > Add Assignment & Dates
-                    <div className="infodiv">
-                        <ToolTip
-                            tip={
-                                <div>
-                                    <p>
-                                        Add all graded assignments for this class
-                                    </p>
-                                    <p>
-                                        Tip 1:if the due date is unknown but assignment is sure to happen,go ahead and add it
-                                    </p>
-                                    <p>
-                                        Tip 2:You can always add and edit assignments during the semester
-                                    </p>
-                                </div>
-                            }>
-                            < i class="far fa-question-circle" > </i>
-                        </ToolTip>
-                    </div>
-                </span >
-                <div className="cn-pull-right" >
-                    <span> 2 / 3 </span> <span className='cn-section-progressbar' > < ProgressBar percent={
-                        (2 / 3) * 100
-                    }
-                    /></span>
-                </div>
-            </div >
-        } else {
-            return null
-        }
-    }
+
 
     render() {
         const { form } = this.state
         const { formErrors, updateProperty } = this.props
         const disableButton = !this.verifyData(form)
-        return (<div id='cn-assignment-form' > {this.renderProgressBar()} {
-            /* <div className='cn-section-content-header'>
-                      Add: {currentWeight.name}
-                    </div>
-                    <hr /> */
-        }
+        return (<div id='cn-assignment-form' >
             <div>
                 <div className='cn-section-name-header' >
                     Name </div>

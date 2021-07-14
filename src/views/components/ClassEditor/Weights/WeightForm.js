@@ -118,7 +118,6 @@ class WeightForm extends React.Component {
     this.setState({ loading: true })
     actions.weights.deleteWeight(weight).then(() => {
       this.setState({ form: this.initializeFormData(), loading: false })
-      console.log(weight)
       // this.props.onDeleteWeight(weight)
     }).catch(() => { this.setState({ loading: false }) })
   }
@@ -128,36 +127,12 @@ class WeightForm extends React.Component {
     this.props.onTypeSelection(true, this.state.totalPointsFormValue)
   }
 
-  renderProgressBar() {
-    if (!this.state.singleWeight) {
-      return <div className='cn-section-progress-outer'>
-        <img alt="Skoller" className='logo' src='/src/assets/images/sammi/Smile.png' height="40" />
-        <span className="cn-section-progress-title">Add Weights & Values
-          <div className="infodiv">
-            <ToolTip
-              tip={
-                <div>
-                  Weights need to sum to 100% before submitting! Click here to swap grade style
-                </div>
-              }>
-              <i class="far fa-question-circle"></i>
-            </ToolTip>
-          </div>
-        </span>
-        <div className="cn-pull-right">
-          <span>1/3</span>
-          <span className='cn-section-progressbar'><ProgressBar percent={(1 / 3) * 100} /></span>
-        </div>
-        {/* <ProgressBar currentStep={this.state.currentIndex} steps={this.steps}>
-          {steps.map((step, index) => {
-            return <SyllabusProgressStep key={`step-${index}`} label={step} index={index} />
-          })}
-        </ProgressBar> */}
-      </div>
-    } else {
-      return null
-    }
+
+
+  onNext() {
+    this.props.onConfirm()
   }
+
 
   renderPointsOptions() {
     return (
@@ -193,8 +168,7 @@ class WeightForm extends React.Component {
     // console.log('WeightForm: ', this.props.boolPoints)
 
     return (
-      <div id='cn-weight-form' >
-        {this.renderProgressBar()}
+      <div>
         <div className='cn-section-name-header'>
           Name
         </div>
@@ -233,91 +207,16 @@ class WeightForm extends React.Component {
             {!this.props.boolPoints ? <i className="fa fa-percent"></i> : 'PTS'}
           </div>
         </div>
-
-        {/* <div className='margin-bottom margin-top'>
-          <a onClick={() => this.props.reset()}>Go back</a>
-        </div> */}
-        {/* <div className='cn-section-content-header'>
-          Step 1: Set Up Weights
+        <div className='addbtndiv'>
+          <a
+            className={'margin-top ' + (this.state.loading || noWeights ? 'disabled' : '')}
+            disabled={this.state.loading || noWeights}
+            onClick={this.onSubmit.bind(this)}
+          >
+            {this.props.weight ? 'Update ' : '+ Add '} Weight
+            {this.state.loading ? <Loading /> : null}
+          </a>
         </div>
-        <div id='cn-weight-form-instructions'>
-          Weights are how much a certain group of assignments contribute to your final grade.
-        </div>
-        <div className="weight-type">
-          <div className='selector percentage'
-            style={{
-              backgroundColor: this.props.boolPoints ? 'transparent' : '#57b9e4',
-              color: this.props.boolPoints ? '#57b9e4' : '#ffffff'
-            }}
-            onClick={() => {
-              this.props.onClick(false)
-            }}>
-            Percentage
-          </div>
-          <div className='selector points'
-            style={{
-              backgroundColor: this.props.boolPoints ? '#57b9e4' : 'transparent',
-              color: this.props.boolPoints ? '#ffffff' : '#57b9e4'
-            }}
-            onClick={() => {
-              this.props.onClick(true)
-            }}>
-            Points
-          </div>
-        </div>
-        {this.props.boolPoints &&
-          this.renderPointsOptions()
-        } */}
-        {/* <hr /> */}
-        {/* <InputField
-          containerClassName='margin-top'
-          inputClassName='input-box'
-          error={formErrors.name}
-          label="Weight name"
-          name="name"
-          onChange={updateProperty}
-          placeholder="Exams"
-          value={form.name}
-        /> */}
-        {/* <div id='cn-weight-form-value'>
-          <InputField
-            containerClassName='margin-top hide-spinner'
-            inputClassName='input-box'
-            error={formErrors.weight}
-            label="Value"
-            name="weight"
-            onChange={updateProperty}
-            placeholder="25"
-            type="number"
-            value={form.weight}
-          />
-          <div className='pct'>
-            {!this.props.boolPoints ? '%' : 'pts'}
-          </div>
-        </div>
-        {numWeights === 0 &&
-          <CheckboxField
-            name='noWeights'
-            onChange={(name, value) => {
-              this.props.onNoWeightChecked(value)
-            }}
-            value={noWeights}
-            containerClassName='margin-top no-weights'
-            inputClassName='margin-right'
-            label={'Weights were not provided on the syllabus.'}
-          />
-        } */}
-        {
-          <div className='addbtndiv'>
-            <a
-              className={'margin-top ' + (this.state.loading || noWeights ? 'disabled' : '')}
-              disabled={this.state.loading || noWeights}
-              onClick={this.onSubmit.bind(this)}
-            >
-              {this.props.weight ? 'Update ' : '+ Add '} Weight
-              {this.state.loading ? <Loading /> : null}
-            </a>
-          </div>}
       </div>
     )
   }
@@ -339,7 +238,10 @@ WeightForm.propTypes = {
   boolPoints: PropTypes.bool,
   onClick: PropTypes.func,
   togglePoints: PropTypes.func,
-  totalPoints: PropTypes.number
+  totalPoints: PropTypes.number,
+  open: PropTypes.bool,
+  onClose: PropTypes.func,
+  onConfirm: PropTypes.func
 }
 
 export default ValidateForm(Form(WeightForm, 'form'))

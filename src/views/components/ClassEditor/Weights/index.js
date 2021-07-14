@@ -5,7 +5,9 @@ import WeightTable from './WeightTable'
 import WeightType from './WeightType'
 import actions from '../../../../actions'
 import ToolTip from '../../../../views/components/ToolTip'
-
+import SkipWeightModal from './SkipWeightModal'
+import { ProgressBar, Step } from "react-step-progress-bar";
+import ProgressModal from '../progressModel'
 
 class Weights extends React.Component {
   constructor(props) {
@@ -18,6 +20,10 @@ class Weights extends React.Component {
   */
   componentWillMount() {
     const { cl } = this.props
+    actions.assignments.getClassAssignments(cl).then((assignments) => {
+      this.setState({ assignments })
+    }).then(() => false)
+
     actions.weights.getClassWeights(cl).then((weights) => {
       this.setState({ weights })
     }).then(() => false)
@@ -34,8 +40,11 @@ class Weights extends React.Component {
       noWeights: false,
       totalPoints: null,
       weights: [],
+      assignments: [],
       reset: false,
-      boolPoints: this.props.cl.is_points
+      openSkipWeightModal: false,
+      boolPoints: this.props.cl.is_points,
+      openProgressModal: false
     }
   }
 
@@ -60,6 +69,48 @@ class Weights extends React.Component {
     } else {
       return this.renderWeightsContent()
     }
+  }
+
+  onNext() {
+    // const { currentWeightIndex } = this.state
+    // this.setState({ currentWeightIndex: currentWeightIndex + 1 })
+    this.props.onSubmit()
+  }
+
+  onUpdateCurrentIndex(form) {
+    this.props.onUpdateCurrentIndex(form)
+  }
+
+  toggleSkipWeightModal() {
+    this.setState({ openSkipWeightModal: !this.state.openSkipWeightModal })
+  }
+
+  toggleProgressModal() {
+    this.setState({ openProgressModal: !this.state.openProgressModal })
+  }
+
+  renderSkipWeightModal() {
+    const { openSkipWeightModal } = this.state
+    return (
+      <SkipWeightModal open={openSkipWeightModal}
+        onClose={this.toggleSkipWeightModal.bind(this)}
+        onConfirm={this.onNext.bind(this)}
+      />
+    )
+  }
+
+
+  renderProgressModal() {
+    const { openProgressModal, assignments, weights } = this.state
+    return (
+      <ProgressModal open={openProgressModal}
+        onClose={this.toggleProgressModal.bind(this)}
+        onConfirm={this.onUpdateCurrentIndex.bind(this)}
+        currentIndex={0}
+        assignments={assignments}
+        weights={weights}
+      />
+    )
   }
 
   renderExtraCredit() {
@@ -89,6 +140,29 @@ class Weights extends React.Component {
     )
   }
 
+
+  renderProgressBar() {
+    return <div className='cn-section-progress-outer'>
+      <img alt="Skoller" className='logo' src='/src/assets/images/sammi/Smile.png' height="40" />
+      <span className="cn-section-progress-title">Add Weights & Values
+        <div className="infodiv">
+          <ToolTip
+            tip={
+              <div>
+                Weights need to sum to 100% before submitting! Click here to swap grade style
+              </div>
+            }>
+            <i class="far fa-question-circle"></i>
+          </ToolTip>
+        </div>
+      </span>
+      <div className="cn-pull-right">
+        <span>1/3</span>
+        <span className='cn-section-progressbar' ><a onClick={() => this.toggleProgressModal()}><ProgressBar percent={(1 / 3) * 100} /></a></span>
+      </div>
+    </div>
+  }
+
   /*
   * Render the weights and weight form.
   */
@@ -99,33 +173,40 @@ class Weights extends React.Component {
     let disableButton = !this.isTotalWeightSecure() && !noWeights
     return (
       <div className='cn-weights-subcontainer'>
-        {!isReview &&
-          <WeightForm
-            cl={cl}
-            onCreateWeight={this.onCreateWeight.bind(this)}
-            onUpdateWeight={this.onUpdateWeight.bind(this)}
-            onDeleteWeight={this.onDeleteWeight.bind(this)}
-            weight={currentWeight}
-            noWeights={noWeights}
-            numWeights={weights.length}
-            onNoWeightChecked={(checked) => {
-              this.setState({ noWeights: checked })
-            }}
-            boolPoints={this.state.boolPoints}
-            onClick={this.onChangeType.bind(this)}
-            reset={() => this.setState({ reset: true })}
-            onTypeSelection={this.onTypeSelection.bind(this)}
-            totalPoints={this.state.totalPoints}
-          />
-        }
-        {weights.length !== 0 &&
-          <div id='cn-weight-table'>
-            {isReview &&
-              <div id='cn-weight-table-label'>
-                Weights
-                {isReview && <a onClick={() => this.props.onEdit()}>Edit</a>}
+        <div id='cn-weight-form' >
+          {this.renderProgressBar()}
+          {!isReview &&
+            <WeightForm
+              cl={cl}
+              onCreateWeight={this.onCreateWeight.bind(this)}
+              onUpdateWeight={this.onUpdateWeight.bind(this)}
+              onDeleteWeight={this.onDeleteWeight.bind(this)}
+              onConfirm={this.onNext.bind(this)}
+              weight={currentWeight}
+              noWeights={noWeights}
+              numWeights={weights.length}
+              onNoWeightChecked={(checked) => {
+                this.setState({ noWeights: checked })
+              }}
+              boolPoints={this.state.boolPoints}
+              onClick={this.onChangeType.bind(this)}
+              reset={() => this.setState({ reset: true })}
+              onTypeSelection={this.onTypeSelection.bind(this)}
+              totalPoints={this.state.totalPoints}
+            />
+          }
+        </div>
+        <div id='cn-weight-table'>
+          {weights.length === 0 &&
+            <div className="cn-weights-notadded">
+              <div className="center-text ">
+                <img alt="Skoller" className='logo' src='/src/assets/images/sammi/Smile.png' height="80" />
+                <h2>Weights are how much a group of assignments contribute to your overall grade.</h2>
+                <h4>i.e Exams=60%</h4>
               </div>
-            }
+            </div>
+          }
+          {weights.length !== 0 &&
             <WeightTable
               weights={weights}
               viewOnly={isReview}
@@ -136,9 +217,11 @@ class Weights extends React.Component {
               totalPoints={totalPoints}
               onEdit={() => this.props.onEdit()}
             />
-            {(weights.length !== 0 || noWeights) && !isReview &&
+          }
+          {(weights.length !== 0 || noWeights) && !isReview &&
 
-              <div className='submit-container'>
+            <div className='submit-container'>
+              {disableButton &&
                 <ToolTip
                   tip={
                     <div>
@@ -150,22 +233,33 @@ class Weights extends React.Component {
                     disabled={disableButton}
                     className={`submit-weights button ${disableButton ? 'disabled' : ''}`}
                   >
-                    Submit Weights
+                    Save weights
                   </button>
                 </ToolTip>
-
-              </div>
-            }
-          </div>
-        }
-        {/* {weights.length !== 0 &&
-          <div id='cn-weights-info' className='margin-bottom'>
-            <div>
-              {this.renderExtraCredit()}
-              {!cl.is_points && this.renderWeightTotalWarning()}
+              }
+              {!disableButton &&
+                <button
+                  onClick={() => this.props.onSubmit()}
+                  disabled={disableButton}
+                  className={`submit-weights button ${disableButton ? 'disabled' : ''}`}
+                >
+                  Save weights
+                </button>
+              }
             </div>
-          </div>} */}
+          }
+        </div>
+        <div className='margin-top margin-bottom center-text cn-weights-skip'>
+          <div>
+            <a onClick={() => this.toggleSkipWeightModal()}>
+              Skip Weights
+            </a>
+          </div>
+        </div>
+        {this.renderSkipWeightModal()}
+        {this.renderProgressModal()}
       </div >
+
     )
   }
 
@@ -306,6 +400,7 @@ class Weights extends React.Component {
 Weights.propTypes = {
   isReview: PropTypes.bool,
   onUpdateClass: PropTypes.func,
+  onUpdateCurrentIndex: PropTypes.func,
   cl: PropTypes.object,
   onSubmit: PropTypes.func,
   onEdit: PropTypes.func

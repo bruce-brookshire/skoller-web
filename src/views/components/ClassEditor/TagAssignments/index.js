@@ -7,6 +7,9 @@ import SkLoader from '../../../../assets/sk-icons/SkLoader'
 import moment from 'moment'
 import { withRouter } from 'react-router-dom'
 import { showSnackbar } from '../../../../utilities/snackbar'
+import ProgressModal from '../progressModel'
+import { ProgressBar, Step } from "react-step-progress-bar";
+import ToolTip from '../../../../views/components/ToolTip'
 
 class TagAssignments extends React.Component {
     constructor(props) {
@@ -85,7 +88,8 @@ class TagAssignments extends React.Component {
             // openSkipCategoryModal: false,
             addAssignment: false,
             lastAssignmentDate: Date.now(),
-            addingAssignment: false
+            addingAssignment: false,
+            openProgressModal: false
         }
     }
 
@@ -185,42 +189,33 @@ class TagAssignments extends React.Component {
     /*
      * Toggle the problems modal.
      */
-    // toggleSkipCategoryModal() {
-    //     this.setState({ openSkipCategoryModal: !this.state.openSkipCategoryModal })
-    // }
-
-    /*
-     * Toggle the problems modal.
-     */
     toggleAddingAssignment(bool = !this.state.addingAssignment) {
         this.setState({ addingAssignment: bool })
     }
 
-    /*
-     * Render the having issues modal.
-     */
-    renderSkipCategoryModal() {
-        // const { openSkipCategoryModal } = this.state
-        // return (<
-        //     SkipCategoryModal open={openSkipCategoryModal}
-        //     onClose={this.toggleSkipCategoryModal.bind(this)}
-        //     onConfirm={this.onNext.bind(this)}
-        // />
-        // )
-    }
-
-    // renderSavedMessage (assignments) {
-    //   const {viewOnly} = this.state
-    //   return (
-    //     <span>
-    //       {!viewOnly && <span>Saved assignments</span>}
-    //       {viewOnly && `Assignments (${assignments.length})`}
-    //     </span>
-    //   )
-    // }
-
     toAssignmentForm(weight) {
         this.setState({ addAssignment: true, currentWeight: weight, currentWeightIndex: this.state.weights.indexOf(weight) })
+    }
+
+    onUpdateCurrentIndex(form) {
+        this.props.onUpdateCurrentIndex(form)
+    }
+
+    toggleProgressModal() {
+        this.setState({ openProgressModal: !this.state.openProgressModal })
+    }
+
+    renderProgressModal() {
+        const { openProgressModal, assignments, weights } = this.state
+        return (
+            <ProgressModal open={openProgressModal}
+                onClose={this.toggleProgressModal.bind(this)}
+                onConfirm={this.onUpdateCurrentIndex.bind(this)}
+                currentIndex={2}
+                assignments={assignments}
+                weights={weights}
+            />
+        )
     }
 
     updateLastAssignmentDate(date) {
@@ -255,15 +250,6 @@ class TagAssignments extends React.Component {
                 } >
                 Back to weight categories </div>
             )
-        } else if (!this.props.singleWeight && !this.state.addAssignment) {
-            // return (
-            //   <div
-            //     onClick={() => this.props.onBack()}
-            //     style={{marginTop: '8px', color: '#57B9E4', cursor: 'pointer'}}
-            //   >
-            //     Back to weights
-            //   </div>
-            // )
         }
     }
 
@@ -287,6 +273,40 @@ class TagAssignments extends React.Component {
         this.setState({ loading: false })
     }
 
+    renderProgressBar() {
+        return <div className='cn-section-progress-outer' >
+            <img alt="Skoller"
+                className='logo'
+                src='/src/assets/images/sammi/Smile.png'
+                height="40" />
+            <span className="cn-section-progress-title" > Tag Assignments
+                <div className="infodiv">
+                    <ToolTip
+                        tip={
+                            <div>
+                                <p>
+                                    Tag assignments to weight categories
+                                </p>
+                                <p>
+                                    why? This associates value for esach individual assignments
+                                </p>
+                                <p>
+                                    Example: 4 assignments tag to exams category worth 20% make each assignment worth 5%
+                                </p>
+                            </div>
+                        }>
+                        < i class="far fa-question-circle" > </i>
+                    </ToolTip>
+                </div>
+            </span >
+            <div className="cn-pull-right" >
+                <span> 3 / 3 </span> <span className='cn-section-progressbar' > <a onClick={() => this.toggleProgressModal()}>< ProgressBar percent={
+                    (3 / 3) * 100
+                }
+                /></a></span>
+            </div>
+        </div >
+    }
 
     render() {
         let {
@@ -313,11 +333,9 @@ class TagAssignments extends React.Component {
             // loadingAssignments || loadingWeights ?
             // <SkLoader />
             // :
-            <div id='cn-assignment-window' > {
-
-            }{
-                    // (assignments.length !== 0 && !viewOnly && addAssignment) &&
-                    // (assignments.length !== 0 && !viewOnly) &&
+            <div id='cn-assignment-window' >
+                {this.renderProgressBar()}
+                {
 
                     <div id='cn-assignment-table-new' >
                         <AssignmentTable
@@ -332,18 +350,6 @@ class TagAssignments extends React.Component {
                         />
                     </div >
                 } {
-                    viewOnly &&
-                    <div id='cn-assignment-table' >
-                        <AssignmentTable
-                            viewOnly={viewOnly}
-                            assignments={this.state.assignments}
-                            currentAssignment={currentAssignment}
-                            onSelectAssignment={this.onSelectAssignment.bind(this)}
-                            onDeleteAssignment={this.onDeleteAssignment.bind(this)}
-                            weights={weights}
-                            cl={cl}
-                        /> </div >
-                } {
                     assignments.length !== 0 && !viewOnly && !addAssignment &&
                     <button
                         onClick={
@@ -351,7 +357,7 @@ class TagAssignments extends React.Component {
                         }
                         className='button full-width margin-top margin-bottom' >
                         Submit Tags </button>
-                } {this.renderSkipCategoryModal()} </div>} </div >
+                } {this.renderProgressModal()}</div>} </div >
         )
     }
 }
@@ -362,6 +368,7 @@ TagAssignments.propTypes = {
     onSubmit: PropTypes.func,
     onEdit: PropTypes.func,
     onBack: PropTypes.func,
+    onUpdateCurrentIndex: PropTypes.func,
     singleWeight: PropTypes.number
 }
 
