@@ -37,11 +37,6 @@ class WeightType extends React.Component {
           <span>1/3</span>
           <span className='cn-section-progressbar'><ProgressBar percent={(1 / 3) * 100} /></span>
         </div>
-        {/* <ProgressBar currentStep={this.state.currentIndex} steps={this.steps}>
-          {steps.map((step, index) => {
-            return <SyllabusProgressStep key={`step-${index}`} label={step} index={index} />
-          })}
-        </ProgressBar> */}
       </div>
     } else {
       return null

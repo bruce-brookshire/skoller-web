@@ -8,6 +8,7 @@ import ToolTip from '../../../../views/components/ToolTip'
 import SkipWeightModal from './SkipWeightModal'
 import { ProgressBar, Step } from "react-step-progress-bar";
 import ProgressModal from '../progressModel'
+import WeightGradeModal from './WeightGradeModel'
 
 class Weights extends React.Component {
   constructor(props) {
@@ -44,7 +45,8 @@ class Weights extends React.Component {
       reset: false,
       openSkipWeightModal: false,
       boolPoints: this.props.cl.is_points,
-      openProgressModal: false
+      openProgressModal: false,
+      openGradeModal: false
     }
   }
 
@@ -89,6 +91,10 @@ class Weights extends React.Component {
     this.setState({ openProgressModal: !this.state.openProgressModal })
   }
 
+  toggleGradeModal() {
+    this.setState({ openGradeModal: !this.state.openGradeModal })
+  }
+
   renderSkipWeightModal() {
     const { openSkipWeightModal } = this.state
     return (
@@ -109,6 +115,20 @@ class Weights extends React.Component {
         currentIndex={0}
         assignments={assignments}
         weights={weights}
+      />
+    )
+  }
+
+  renderGradeModal() {
+    const { cl } = this.props
+    const { openGradeModal, totalPoints } = this.state
+    return (
+      <WeightGradeModal open={openGradeModal}
+        onClose={this.toggleGradeModal.bind(this)}
+        isPoints={cl.is_points}
+        pointTotal={totalPoints || 100}
+        onChange={this.onChangeTotalPoints.bind(this)}
+        onSubmit={this.onTypeSelection.bind(this)}
       />
     )
   }
@@ -255,9 +275,15 @@ class Weights extends React.Component {
               Skip Weights
             </a>
           </div>
+          <div>
+            <a onClick={() => this.toggleGradeModal()}>
+              Grade Style
+            </a>
+          </div>
         </div>
         {this.renderSkipWeightModal()}
         {this.renderProgressModal()}
+        {this.renderGradeModal()}
       </div >
 
     )
