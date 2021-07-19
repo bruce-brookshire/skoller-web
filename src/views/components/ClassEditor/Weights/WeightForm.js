@@ -4,8 +4,7 @@ import { Form, ValidateForm } from 'react-form-library'
 import { InputField, CheckboxField } from '../../../../components/Form'
 import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
-import { ProgressBar, Step } from "react-step-progress-bar";
-import ToolTip from '../../../../views/components/ToolTip'
+import WeightGradeModal from './WeightGradeModel'
 
 const requiredFields = {
   'name': {
@@ -45,7 +44,8 @@ class WeightForm extends React.Component {
       isPoints: this.props.boolPoints,
       loading: false,
       totalPointsFormValue: null,
-      editPoints: false
+      editPoints: false,
+      openGradeModal: false
     }
   }
 
@@ -122,60 +122,52 @@ class WeightForm extends React.Component {
     }).catch(() => { this.setState({ loading: false }) })
   }
 
-  changePoints() {
+  changePoints(isPoints, total) {
     this.setState({ editPoints: false })
-    this.props.onTypeSelection(true, this.state.totalPointsFormValue)
+    this.props.onTypeSelection(isPoints, total)
+    this.toggleGradeModal()
   }
 
+  onChangeTotalPoints(totalPoints) {
+    this.setState({ totalPoints })
+  }
 
+  toggleGradeModal() {
+    this.setState({ openGradeModal: !this.state.openGradeModal })
+  }
+
+  renderGradeModal() {
+    const { cl } = this.props
+    const { openGradeModal, totalPoints } = this.state
+    return (
+      <WeightGradeModal open={openGradeModal}
+        onClose={this.toggleGradeModal.bind(this)}
+        isPoints={cl.is_points}
+        pointTotal={totalPoints || 100}
+        onChange={this.onChangeTotalPoints.bind(this)}
+        onSubmit={this.changePoints.bind(this)}
+      />
+    )
+  }
 
   onNext() {
     this.props.onConfirm()
   }
 
-
-  renderPointsOptions() {
-    return (
-      <div className='cn-weight-form-points'>
-        {this.props.totalPoints && !this.state.editPoints
-          ? <div className='cn-weight-form-points-form'>
-            <div className='cn-weight-form-points-label'>
-              Total available points:
-            </div>
-            <div className='cn-weight-form-points-field'>
-              <div className='cn-weight-form-points-display'>{this.props.totalPoints}</div>
-              <button onClick={() => this.setState({ editPoints: true })}>
-                Edit
-              </button>
-            </div>
-          </div>
-          : <div className='cn-weight-form-points-form'>
-            <div className='cn-weight-form-points-label'>Total available points:</div>
-            <div className='cn-weight-form-points-field'>
-              <input onChange={(e) => this.setState({ totalPointsFormValue: e.target.value })} />
-              <button onClick={() => this.changePoints()}>Save</button>
-            </div>
-          </div>
-        }
-      </div>
-    )
-  }
-
   render() { // issue: renders before onUpdateClass finishes --solved
     const { form } = this.state
     const { formErrors, updateProperty, numWeights, noWeights } = this.props
-    // console.log(updateProperty)
-    // console.log('WeightForm: ', this.props.boolPoints)
+
 
     return (
       <div>
-        <div className='cn-section-name-header'>
+        <div className='cn-section-name-header txt-gray'>
           Name
         </div>
-        <div className='cn-section-value-header'>
-          value
+        <div className='cn-section-value-header txt-gray'>
+          Value
         </div>
-        <hr />
+        <hr className="txt-gray" />
         <div >
           <div className="cn-delete-icon">
             <a onClick={this.onDelete.bind(this)}>
@@ -204,7 +196,9 @@ class WeightForm extends React.Component {
             />
           </div>
           <div className="cn-percentage-icon">
-            {!this.props.boolPoints ? <i className="fa fa-percent"></i> : 'PTS'}
+            <a onClick={() => this.toggleGradeModal()}>
+              {!this.props.boolPoints ? <i className="fa fa-percent"></i> : 'PTS'}
+            </a>
           </div>
         </div>
         <div className='addbtndiv'>
@@ -217,6 +211,7 @@ class WeightForm extends React.Component {
             {this.state.loading ? <Loading /> : null}
           </a>
         </div>
+        {this.renderGradeModal()}
       </div>
     )
   }

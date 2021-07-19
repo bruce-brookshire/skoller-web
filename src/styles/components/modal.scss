@@ -118,3 +118,55 @@
     }
   }
 }
+
+#cn-copy-assignment-modal {
+  min-width: 400px;
+  .assignmentName {
+    margin: 0;
+  }
+  .assignmentDate {
+    margin: 0;
+    font-weight: 400;
+  }
+  .copy-value {
+    line-height: 30px;
+  }
+  .copies-container {
+    margin-top: 20px;
+    .copies-label {
+      display: inline-block;
+      font-weight: 600;
+      min-width: 100px;
+    }
+    .form-element {
+      float: right;
+      width: 100px;
+    }
+    .select-container {
+      float: right;
+    }
+    .selectBtn {
+      float: right;
+      button {
+        margin: 0 5px;
+        color: silver;
+        border: 1px solid silver;
+        border-radius: 5px;
+        background: white;
+        cursor: pointer;
+        padding: 4px 10px;
+      }
+      .selected {
+        color: $cn-color-blue;
+        border: 1px solid $cn-color-blue;
+      }
+    }
+  }
+  .button-container {
+    margin-top: 25px;
+    button {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
+}

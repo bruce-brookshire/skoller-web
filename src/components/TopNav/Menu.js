@@ -1,13 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
-import {inject, observer} from 'mobx-react'
+import { inject, observer } from 'mobx-react'
 
 const menuItems = [
   {
     admin: true,
     path: '/hub/landing',
-    text: 'Back to homepage'
+    text: ''
   },
   {
     admin: false,
@@ -17,13 +17,13 @@ const menuItems = [
 ]
 
 class Menu extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
-    this.state = {activePath: window.location.pathname}
+    this.state = { activePath: window.location.pathname }
   }
 
-  renderMenuItems (menuItems, subIndex = 0) {
+  renderMenuItems(menuItems, subIndex = 0) {
     return (
       <ul>
         {
@@ -43,14 +43,14 @@ class Menu extends React.Component {
     )
   }
 
-  onMenuItemClick (menuItem) {
+  onMenuItemClick(menuItem) {
     if (menuItem.path) {
       this.props.history.push(menuItem.path)
-      this.setState({activePath: menuItem.path})
+      this.setState({ activePath: menuItem.path })
     }
   }
 
-  render () {
+  render() {
     return this.renderMenuItems(menuItems)
   }
 }
@@ -63,7 +63,7 @@ export default withRouter(Menu)
 
 @inject('rootStore') @observer
 class MenuItem extends React.Component {
-  render () {
+  render() {
     const currentPath = window.location.pathname
     const adminAccessible = this.props.menuItem.admin && !this.props.rootStore.userStore.isStudent()
     if ((adminAccessible || !this.props.menuItem.admin) && currentPath !== this.props.menuItem.path) {

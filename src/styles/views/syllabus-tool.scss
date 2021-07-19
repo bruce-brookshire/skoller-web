@@ -44,6 +44,7 @@
       &.cn-control-panel {
         padding: 1rem;
         margin: 0 0.5rem 0.5rem 1rem;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
         .cn-section-header {
           position: absolute;
@@ -86,6 +87,7 @@
         // border: 1px solid #4A4A4A;
         // box-shadow: 0px 2px 3px #888888;
         margin: 0 1rem 0.5rem 0.5rem;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
         .cn-section-header {
           position: absolute;
@@ -169,7 +171,7 @@
     display: inline-block;
   }
   .cn-section-progress-title {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 600;
     vertical-align: bottom;
   }
@@ -187,6 +189,9 @@
     span.cn-section-progressbar {
       width: 65px;
       float: right;
+      .RSPBprogressBar .RSPBprogression {
+        background: #57b9e4 !important;
+      }
     }
   }
 }

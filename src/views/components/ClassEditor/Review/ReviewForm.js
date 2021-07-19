@@ -269,7 +269,7 @@ class ReviewForm extends React.Component {
                     Weight </div>
                 <div className='cn-section-due-header reviewDueHeader' >
                     Due Date </div>
-            </div> <hr />
+            </div> <hr className="txt-gray" />
             {form.id && <div className='' >
                 <div className="cn-delete-icon" >
                     <a onClick={this.onDelete.bind(this)}>

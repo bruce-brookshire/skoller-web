@@ -2,13 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import WeightForm from './WeightForm'
 import WeightTable from './WeightTable'
-import WeightType from './WeightType'
 import actions from '../../../../actions'
 import ToolTip from '../../../../views/components/ToolTip'
 import SkipWeightModal from './SkipWeightModal'
 import { ProgressBar, Step } from "react-step-progress-bar";
 import ProgressModal from '../progressModel'
-import WeightGradeModal from './WeightGradeModel'
 
 class Weights extends React.Component {
   constructor(props) {
@@ -47,29 +45,6 @@ class Weights extends React.Component {
       boolPoints: this.props.cl.is_points,
       openProgressModal: false,
       openGradeModal: false
-    }
-  }
-
-  /*
-  * Render point total input if needed.
-  * Otherwise render the table
-  */
-  renderContent() {
-    const { cl, isReview } = this.props
-    const { totalPoints, reset, weights } = this.state
-
-    if (((!totalPoints && weights.length === 0) || reset) && !isReview) {
-      // ask for weights or points
-      return (
-        <WeightType
-          isPoints={cl.is_points}
-          pointTotal={totalPoints || 100}
-          onChange={this.onChangeTotalPoints.bind(this)}
-          onSubmit={this.onTypeSelection.bind(this)}
-        />
-      )
-    } else {
-      return this.renderWeightsContent()
     }
   }
 
@@ -269,21 +244,18 @@ class Weights extends React.Component {
             </div>
           }
         </div>
-        <div className='margin-top margin-bottom center-text cn-weights-skip'>
-          <div>
-            <a onClick={() => this.toggleSkipWeightModal()}>
-              Skip Weights
-            </a>
+        {weights.length === 0 &&
+          <div className='margin-top margin-bottom center-text cn-weights-skip'>
+            <div>
+              <a onClick={() => this.toggleSkipWeightModal()}>
+                Skip Weights
+              </a>
+            </div>
           </div>
-          <div>
-            <a onClick={() => this.toggleGradeModal()}>
-              Grade Style
-            </a>
-          </div>
-        </div>
+        }
         {this.renderSkipWeightModal()}
         {this.renderProgressModal()}
-        {this.renderGradeModal()}
+
       </div >
 
     )
@@ -407,17 +379,8 @@ class Weights extends React.Component {
 
   render() {
     return (
-      // <div id='cn-weights-main-container'>
-      //   <div className='margin-bottom margin-top'>
-      //     {/* <a onClick={this.goBack()}>Go back</a> */}
-      //     <a>Go back</a>
-      //   </div>
-      //   <div id='cn-weights'>
-      //     {this.renderContent()}
-      //   </div>
-      // </div>
       <div id='cn-weights'>
-        {this.renderContent()}
+        {this.renderWeightsContent()}
       </div>
     )
   }

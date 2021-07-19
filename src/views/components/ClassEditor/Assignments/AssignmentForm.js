@@ -7,7 +7,7 @@ import actions from '../../../../actions'
 import { convertLocalDateToUTC, convertUTCDatetimeToDateString } from '../../../../utilities/time'
 import DatePicker from '../../../components/DatePicker/index'
 import moment from 'moment'
-
+import CopyAssignmentModal from './CopyAssignmentModal'
 
 const requiredFields = {
     'name': {
@@ -77,7 +77,8 @@ class AssignmentForm extends React.Component {
             form: this.initializeFormData(assignment),
             due_null: false,
             loading: false,
-            showDatePicker: false
+            showDatePicker: false,
+            openCopyAssignmentModal: false,
         }
     }
 
@@ -202,6 +203,25 @@ class AssignmentForm extends React.Component {
     }
 
 
+    toggleCopyAssignmentModal() {
+        this.setState({ openCopyAssignmentModal: !this.state.openCopyAssignmentModal })
+    }
+
+    renderCopyAssignmentModal() {
+        const { openCopyAssignmentModal, assignment } = this.state
+        return (
+            <CopyAssignmentModal open={openCopyAssignmentModal}
+                onClose={this.toggleCopyAssignmentModal.bind(this)}
+                onConfirm={this.onNext.bind(this)}
+                assignment={assignment}
+            />
+        )
+    }
+
+    onNext() {
+
+    }
+
 
     render() {
         const { form } = this.state
@@ -209,11 +229,11 @@ class AssignmentForm extends React.Component {
         const disableButton = !this.verifyData(form)
         return (<div id='cn-assignment-form' >
             <div>
-                <div className='cn-section-name-header' >
+                <div className='cn-section-name-header txt-gray' >
                     Name </div>
-                <div className='cn-section-value-header' >
+                <div className='cn-section-value-header txt-gray' >
                     Due Date </div>
-            </div> <hr />
+            </div> <hr className="txt-gray" />
             <div className='' >
                 <div className="cn-delete-icon" >
                     <a onClick={this.onDelete.bind(this)}>
@@ -268,42 +288,19 @@ class AssignmentForm extends React.Component {
                         } </div>
                 } </div>
                 <div className="cn-files-icon" >
-                    <i class="far fa-clone" > </i>
-                </div > {
-                    /* <div className='col-xs-4'>
-                                {!this.state.due_null && <SelectField
-                                  containerClassName='margin-top'
-                                  error={formErrors.year_due}
-                                  label='Year'
-                                  name='year_due'
-                                  onChange={updateProperty}
-                                  placeholder='Year'
-                                  type='number'
-                                  options={yearOpts}
-                                  value={form.year_due}
-                                  disabled={this.state.due_null === true}
-                                />}
-                              </div> */
-                } {
-                    /* <div className='col-xs-4'>
-                                <div className='cn-input-container margin-top unknown-due'>
-                                  <label htmlFor="due_null" className='cn-input-label'>Unknown?</label>
-                                  <div className="checkbox-appearance"
-                                    style={{ backgroundColor: this.state.due_null ? '#57b9e4' : 'transparent' }}
-                                    onClick={() => {
-                                      this.state.due_null ? this.setState({ due_null: false }) : this.setState({ due_null: true })
-                                    }}
-                                  />
-                                </div>
-                              </div> */
-                } </div>
+                    <a onClick={() => this.toggleCopyAssignmentModal()}>
+                        <i class="far fa-clone" > </i>
+                    </a>
+                </div >
+            </div >
             <div className='addbtndiv'>
                 <a className={`${disableButton ? 'disabled' : ''}`}
                     disabled={this.state.loading || disableButton}
                     onClick={this.onSubmit.bind(this)} > {this.props.assignment ? 'Update ' : '+ Add '}
                     Assignment {this.state.loading ? < Loading /> : null} </a>
             </div >
-        </div>
+            {this.renderCopyAssignmentModal()}
+        </div >
         )
     }
 }

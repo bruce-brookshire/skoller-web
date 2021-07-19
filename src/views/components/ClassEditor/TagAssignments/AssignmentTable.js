@@ -157,12 +157,12 @@ class AssignmentTable extends React.Component {
         <div id='assignment-rows'>
           <div id='cn-assignment-form' >
             <div className="col-xs-12">
-              <div className='cn-section-name-header' >
+              <div className='cn-section-name-header txt-gray' >
                 Assignments </div>
-              <div className='cn-section-value-header' >
+              <div className='cn-section-value-header txt-gray' >
                 Weight </div>
             </div>
-            <hr />
+            <hr className="txt-gray" />
             {this.renderAssignments()}
           </div>
         </div>

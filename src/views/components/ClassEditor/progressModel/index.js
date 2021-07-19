@@ -6,8 +6,7 @@ import ToolTip from '../../../../views/components/ToolTip'
 class ProgressModal extends React.Component {
 
     render() {
-        console.log(this.props.currentIndex, this.props.weights, this.props.assignments)
-        let disableButton = this.props.assignments.length ? false : true
+        let disableButton = this.props.assignments.length && this.props.weights.length ? false : true
         return (
             <Modal
                 open={this.props.open}
