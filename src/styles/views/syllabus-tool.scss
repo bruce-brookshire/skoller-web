@@ -180,18 +180,22 @@
   }
   .cn-pull-right {
     float: right;
-    width: 100px;
+    width: 110px;
     display: block;
     margin-top: 20px;
     span {
       display: inline-block;
     }
     span.cn-section-progressbar {
-      width: 65px;
-      float: right;
+      width: 55px;
+      // float: right;
       .RSPBprogressBar .RSPBprogression {
         background: #57b9e4 !important;
       }
+    }
+    .cn-section-icons {
+      color: #57b9e4 !important;
+      margin: 2px;
     }
   }
 }

@@ -1,4 +1,5 @@
 #cn-assignment-form {
+  width: 100%;
   overflow-y: hidden;
   overflow-x: hidden;
   padding: 0em 0.5em;
@@ -135,7 +136,7 @@
   }
 }
 #cn-assignment-form .cn-input-assignment-name.reviewname {
-  width: 50%;
+  width: 45%;
 }
 #cn-assignment-form .cn-input-assignment-date.reviewDue {
   width: 22%;
@@ -144,7 +145,7 @@
   width: 39%;
   display: inline;
   .reviewSelect {
-    width: 20%;
+    width: 25%;
     font-size: 13px;
     padding: 2px;
   }
@@ -153,7 +154,7 @@
 .reviewWeightHeader {
   float: right;
   margin-top: 10px;
-  width: 20%;
+  width: 25%;
   text-align: right;
   color: #c7c7cc;
 }

@@ -57,7 +57,25 @@ class NavBar extends React.Component {
       )
     }
   }
-
+  renderLeaveSetupbtn() {
+    const { userStore: { user } } = this.props.rootStore
+    const admin = this.props.rootStore.userStore.isAdmin()
+    const { navbarStore: { cl } } = this.props.rootStore
+    if (cl) {
+      return (
+        <button className="cn_back_hmpage_btn"
+          onClick={() => {
+            if (admin) {
+              this.props.history.push('/hub/landing')
+            } else {
+              this.props.history.push('/')
+            }
+          }}>
+          Leave Setup
+        </button>
+      )
+    }
+  }
   renderAssignmentClassInfo() {
     const { navbarStore: { cl, isDIY, toggleRequestResolved } } = this.props.rootStore
     if (cl) {
@@ -172,16 +190,9 @@ class NavBar extends React.Component {
               <span>{this.getDescription()}</span> */}
             </div>
             <div className='right'>
-              <button className="cn_back_hmpage_btn"
-                onClick={() => {
-                  if (admin) {
-                    this.props.history.push('/hub/landing')
-                  } else {
-                    this.props.history.push('/')
-                  }
-                }}>
-                Leave Setup
-              </button>
+
+              {this.renderLeaveSetupbtn()}
+
               {/* {user.pic_path
                 ? <img className='profile-img' src={user.pic_path} />
                 : <div className='profile-img vertical-align profile-initials'>{this.getInitials()}</div>} */}

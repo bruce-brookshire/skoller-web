@@ -160,7 +160,7 @@ class WeightForm extends React.Component {
 
 
     return (
-      <div>
+      <div className="cn-form-section">
         <div className='cn-section-name-header txt-gray'>
           Name
         </div>
@@ -207,7 +207,7 @@ class WeightForm extends React.Component {
             disabled={this.state.loading || noWeights}
             onClick={this.onSubmit.bind(this)}
           >
-            {this.props.weight ? 'Update ' : '+ Add '} Weight
+            {this.props.weight ? 'Update ' : 'Add '} Weight
             {this.state.loading ? <Loading /> : null}
           </a>
         </div>

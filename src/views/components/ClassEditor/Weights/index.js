@@ -152,8 +152,9 @@ class Weights extends React.Component {
         </div>
       </span>
       <div className="cn-pull-right">
-        <span>1/3</span>
-        <span className='cn-section-progressbar' ><a onClick={() => this.toggleProgressModal()}><ProgressBar percent={(1 / 3) * 100} /></a></span>
+        <span> 1/3 </span> <span className='cn-section-progressbar' > <ProgressBar percent={(1 / 3) * 100} /></span>
+        <a className="cn-section-icons"><i class="fas fa-angle-left"></i></a>
+        <a className="cn-section-icons" onClick={() => this.onUpdateCurrentIndex({ currentIndex: 1 })}><i className="fas fa-angle-right"></i></a>
       </div>
     </div>
   }

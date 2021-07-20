@@ -13,11 +13,11 @@ const requiredFields = {
     'name': {
         type: ' '
     },
-    'due': {
-        validate: (value) => {
-            return value.length === 9
-        }
-    },
+    // 'due': {
+    //     validate: (value) => {
+    //         return value.length === 9
+    //     }
+    // },
     // 'year_due': {
     //   validate: (value) => { return `${value}`.length === 4 }
     // }
@@ -110,6 +110,7 @@ class AssignmentForm extends React.Component {
      *
      */
     onSubmit() {
+        console.log('here', this.state.form)
         if (this.state.due_null) {
             requiredFields.due = {}
         }
@@ -158,7 +159,7 @@ class AssignmentForm extends React.Component {
      */
     mapForm() {
         const { cl } = this.props
-        if (!this.state.due_null) {
+        if (!this.state.due_null && this.state.form.due) {
             let newForm = { ...this.state.form }
             let d = newForm.due.slice(4)
             let due = d.split('/')
@@ -296,8 +297,8 @@ class AssignmentForm extends React.Component {
             <div className='addbtndiv'>
                 <a className={`${disableButton ? 'disabled' : ''}`}
                     disabled={this.state.loading || disableButton}
-                    onClick={this.onSubmit.bind(this)} > {this.props.assignment ? 'Update ' : '+ Add '}
-                    Assignment {this.state.loading ? < Loading /> : null} </a>
+                    onClick={this.onSubmit.bind(this)} > {this.props.assignment ? ' Update ' : ' Save '}
+                    {this.state.loading ? < Loading /> : null} </a>
             </div >
             {this.renderCopyAssignmentModal()}
         </div >

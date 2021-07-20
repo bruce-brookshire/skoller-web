@@ -101,6 +101,7 @@ class AssignmentTable extends React.Component {
             options={weights}
             onChange={(val) => { this.onChange({ id: id, weight_id: val.target.value }) }}
           >
+            <option key="" value="" className="option_no_weight" selected="selected">No Weight</option>
             {weights.map(weight => {
               return (
                 <option key={weight.id} value={weight.id}>{weight.name}</option>

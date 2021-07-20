@@ -300,10 +300,13 @@ class TagAssignments extends React.Component {
                 </div>
             </span >
             <div className="cn-pull-right" >
-                <span> 3 / 3 </span> <span className='cn-section-progressbar' > <a onClick={() => this.toggleProgressModal()}>< ProgressBar percent={
+                <span>3/3 </span> <span className='cn-section-progressbar' > < ProgressBar percent={
                     (3 / 3) * 100
                 }
-                /></a></span>
+                /></span>
+                <a className="cn-section-icons" onClick={() => this.onUpdateCurrentIndex({ currentIndex: 1 })}><i class="fas fa-angle-left"></i></a>
+                <a className="cn-section-icons" onClick={() => this.onUpdateCurrentIndex({ currentIndex: 3 })}><i className="fas fa-angle-right"></i></a>
+
             </div>
         </div >
     }
