@@ -7,6 +7,7 @@ import ToolTip from '../../../../views/components/ToolTip'
 import SkipWeightModal from './SkipWeightModal'
 import { ProgressBar, Step } from "react-step-progress-bar";
 import ProgressModal from '../progressModel'
+import ReactTooltip from "react-tooltip";
 
 class Weights extends React.Component {
   constructor(props) {
@@ -141,14 +142,16 @@ class Weights extends React.Component {
       <img alt="Skoller" className='logo' src='/src/assets/images/sammi/Smile.png' height="40" />
       <span className="cn-section-progress-title">Add Weights & Values
         <div className="infodiv">
-          <ToolTip
-            tip={
-              <div>
-                Weights need to sum to 100% before submitting! Click here to swap grade style
-              </div>
-            }>
-            <i class="far fa-question-circle"></i>
-          </ToolTip>
+
+          <i class="far fa-question-circle" data-tip data-for="infoTip"></i>
+
+          <ReactTooltip id="infoTip" place="right" effect="solid" type="light" border="true" textColor="white"
+            backgroundColor="white" arrowColor="transparent">
+            <div className="tooltipBox">
+              Weights are how assignments contribute to your final grade ie: Exams = 60%
+            </div>
+          </ReactTooltip>
+
         </div>
       </span>
       <div className="cn-pull-right">
@@ -217,21 +220,22 @@ class Weights extends React.Component {
           {(weights.length !== 0 || noWeights) && !isReview &&
 
             <div className='submit-container'>
+
               {disableButton &&
-                <ToolTip
-                  tip={
-                    <div>
-                      Weights need to sum to 100% before submitting! Click here to swap grade style
-                    </div>
-                  }>
-                  <button
-                    onClick={() => this.props.onSubmit()}
-                    disabled={disableButton}
+                <div>
+                  <button data-tip data-for="weightButtonTip"
+
                     className={`submit-weights button ${disableButton ? 'disabled' : ''}`}
                   >
                     Save weights
                   </button>
-                </ToolTip>
+                  <ReactTooltip id="weightButtonTip" place="right" effect="solid" type="light" border="true" textColor="white"
+                    backgroundColor="white" arrowColor="transparent">
+                    <div className="tooltipBox">
+                      Weights need to sum to 100% before submitting! Click here to swap grade style
+                    </div>
+                  </ReactTooltip>
+                </div>
               }
               {!disableButton &&
                 <button

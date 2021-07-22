@@ -9,7 +9,7 @@ import { withRouter } from 'react-router-dom'
 import { showSnackbar } from '../../../../utilities/snackbar'
 import ProgressModal from '../progressModel'
 import { ProgressBar, Step } from "react-step-progress-bar";
-import ToolTip from '../../../../views/components/ToolTip'
+import ReactTooltip from "react-tooltip";
 
 class TagAssignments extends React.Component {
     constructor(props) {
@@ -281,22 +281,15 @@ class TagAssignments extends React.Component {
                 height="40" />
             <span className="cn-section-progress-title" > Tag Assignments
                 <div className="infodiv">
-                    <ToolTip
-                        tip={
-                            <div>
-                                <p>
-                                    Tag assignments to weight categories
-                                </p>
-                                <p>
-                                    why? This associates value for esach individual assignments
-                                </p>
-                                <p>
-                                    Example: 4 assignments tag to exams category worth 20% make each assignment worth 5%
-                                </p>
-                            </div>
-                        }>
-                        < i class="far fa-question-circle" > </i>
-                    </ToolTip>
+                    <i class="far fa-question-circle" data-tip data-for="infoTip"></i>
+                    <ReactTooltip id="infoTip" place="right" effect="solid" type="light" border="true" textColor="white"
+                        backgroundColor="white" arrowColor="transparent">
+                        <div className="tooltipBox">
+                            Tag assignments to weight categories<br></br><br></br>
+                            why? This associates value for esach individual assignments<br></br><br></br>
+                            Example: 4 assignments tag to exams category worth 20% make each assignment worth 5%
+                        </div>
+                    </ReactTooltip>
                 </div>
             </span >
             <div className="cn-pull-right" >

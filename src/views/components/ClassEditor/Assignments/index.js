@@ -11,7 +11,7 @@ import { withRouter } from 'react-router-dom'
 import { showSnackbar } from '../../../../utilities/snackbar'
 import ProgressModal from '../progressModel'
 import { ProgressBar, Step } from "react-step-progress-bar";
-import ToolTip from '../../../../views/components/ToolTip'
+import ReactTooltip from "react-tooltip";
 
 class Assignments extends React.Component {
     constructor(props) {
@@ -115,7 +115,9 @@ class Assignments extends React.Component {
      * @param [Object] assignment. Assignment.
      */
     onCreateAssignment(assignment) {
-        this.updateLastAssignmentDate(moment(assignment.due).format('MM/DD/YYYY'))
+        assignment.due ? this.updateLastAssignmentDate(moment(assignment.due).format('MM/DD/YYYY')) :
+            this.updateLastAssignmentDate(moment().format('MM/DD/YYYY'))
+
         const newAssignments = this.state.assignments
         newAssignments.push(assignment)
         this.setState({ assignments: newAssignments, currentAssignment: null })
@@ -221,7 +223,8 @@ class Assignments extends React.Component {
     }
 
     updateLastAssignmentDate(date) {
-        this.setState({ lastAssignmentDate: date })
+        if (date)
+            this.setState({ lastAssignmentDate: date })
     }
 
     getSingleWeight() {
@@ -293,22 +296,16 @@ class Assignments extends React.Component {
                 height="40" />
             <span className="cn-section-progress-title" > Add Assignment & Dates
                 <div className="infodiv">
-                    <ToolTip
-                        tip={
-                            <div>
-                                <p>
-                                    Add all graded assignments for this class
-                                </p>
-                                <p>
-                                    Tip 1:if the due date is unknown but assignment is sure to happen,go ahead and add it
-                                </p>
-                                <p>
-                                    Tip 2:You can always add and edit assignments during the semester
-                                </p>
-                            </div>
-                        }>
-                        < i class="far fa-question-circle" > </i>
-                    </ToolTip>
+                    <i class="far fa-question-circle" data-tip data-for="infoTip"></i>
+
+                    <ReactTooltip id="infoTip" place="right" effect="solid" type="light" border="true" textColor="white"
+                        backgroundColor="white" arrowColor="transparent">
+                        <div className="tooltipBox">
+                            Add all graded assignments for this class <br></br><br></br>
+                            Tip 1: If the due date is unknown but the assignment is sure to happen, go ahead and add it<br></br><br></br>
+                            Tip 2: You can always add and edit assignments during the semester
+                        </div>
+                    </ReactTooltip>
                 </div>
             </span >
             <div className="cn-pull-right" >

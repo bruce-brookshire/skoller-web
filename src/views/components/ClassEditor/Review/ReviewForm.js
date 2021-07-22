@@ -7,8 +7,7 @@ import actions from '../../../../actions'
 import { convertLocalDateToUTC, convertUTCDatetimeToDateString } from '../../../../utilities/time'
 import DatePicker from '../../../components/DatePicker/index'
 import moment from 'moment'
-import { ProgressBar, Step } from "react-step-progress-bar";
-import ToolTip from '../../../../views/components/ToolTip'
+import ReactTooltip from "react-tooltip";
 
 const requiredFields = {
     'name': {
@@ -232,16 +231,14 @@ class ReviewForm extends React.Component {
                     height="40" />
                 <span className="cn-section-progress-title" > Review & Submit
                     <div className="infodiv">
-                        <ToolTip
-                            tip={
-                                <div>
-                                    <p>
-                                        Make sure everything looks good before submitting
-                                    </p>
-                                </div>
-                            }>
-                            < i class="far fa-question-circle" > </i>
-                        </ToolTip>
+                        <i class="far fa-question-circle" data-tip data-for="infoTip"></i>
+
+                        <ReactTooltip id="infoTip" place="right" effect="solid" type="light" border="true" textColor="white"
+                            backgroundColor="white" arrowColor="transparent">
+                            <div className="tooltipBox">
+                                Make sure everything looks good before submitting!
+                            </div>
+                        </ReactTooltip>
                     </div>
                 </span >
 

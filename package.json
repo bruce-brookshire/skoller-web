@@ -61,7 +61,7 @@
     "react-router-dom": "^5.1.2",
     "react-smartbanner": "^5.1.4",
     "react-step-progress-bar": "^1.0.3",
-    "react-tooltip": "^3.11.2",
+    "react-tooltip": "^3.11.6",
     "react-transition-group": "^4.3.0",
     "react-visibility-sensor": "^5.1.1",
     "reactjs-mappletooltip": "^1.4.63",

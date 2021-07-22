@@ -71,7 +71,8 @@ class WeightForm extends React.Component {
   * Determine whether the user is submiting updated weight or a new weight.
   *
   */
-  onSubmit() {
+  onSubmit(e) {
+    e.preventDefault();
     const { form } = this.state
     const { weight } = this.props
 
@@ -158,9 +159,9 @@ class WeightForm extends React.Component {
     const { form } = this.state
     const { formErrors, updateProperty, numWeights, noWeights } = this.props
 
-
     return (
       <div className="cn-form-section">
+
         <div className='cn-section-name-header txt-gray'>
           Name
         </div>
@@ -168,33 +169,40 @@ class WeightForm extends React.Component {
           Value
         </div>
         <hr className="txt-gray" />
+
         <div >
           <div className="cn-delete-icon">
             <a onClick={this.onDelete.bind(this)}>
-              <i class="far fa-trash-alt"></i>
+              <i className="far fa-trash-alt"></i>
             </a>
           </div>
+
           <div className="cn-name-field">
-            <InputField
-              containerClassName='margin-top'
-              inputClassName='input-box'
-              error={formErrors.name}
-              name="name"
-              onChange={updateProperty}
-              value={form.name}
-            />
+            <form onSubmit={this.onSubmit.bind(this)}>
+              <InputField
+                containerClassName='margin-top'
+                inputClassName='input-box'
+                error={formErrors.name}
+                name="name"
+                onChange={updateProperty}
+                value={form.name}
+              />
+            </form>
           </div>
           <div className="cn-value-field">
-            <InputField
-              containerClassName='margin-top hide-spinner'
-              inputClassName='input-box'
-              error={formErrors.weight}
-              name="weight"
-              onChange={updateProperty}
-              type="number"
-              value={form.weight}
-            />
+            <form onSubmit={this.onSubmit.bind(this)}>
+              <InputField
+                containerClassName='margin-top hide-spinner'
+                inputClassName='input-box'
+                error={formErrors.weight}
+                name="weight"
+                onChange={updateProperty}
+                type="number"
+                value={form.weight}
+              />
+            </form>
           </div>
+
           <div className="cn-percentage-icon">
             <a onClick={() => this.toggleGradeModal()}>
               {!this.props.boolPoints ? <i className="fa fa-percent"></i> : 'PTS'}

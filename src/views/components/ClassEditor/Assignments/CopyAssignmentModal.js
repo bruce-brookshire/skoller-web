@@ -26,7 +26,7 @@ class CopyAssignmnetModal extends React.Component {
     }
 
     render() {
-        console.log(this.props.assignment)
+        // console.log(this.props.assignment)
         const { form } = this.state
         const { formErrors, updateProperty } = this.props
         return (
