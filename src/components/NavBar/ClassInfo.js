@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {mapProfessor} from '../../utilities/display'
-import {mapTimeToDisplay} from '../../utilities/time'
+import { mapProfessor } from '../../utilities/display'
+import { mapTimeToDisplay } from '../../utilities/time'
 
 class ClassInfo extends React.Component {
-  renderChangeRequest () {
-    const {cl} = this.props
+  renderChangeRequest() {
+    const { cl } = this.props
     const studentRequests = cl.student_requests.filter(c => !c.is_completed)
     const changeRequests = cl.change_requests.filter(c => !c.is_completed)
     const allRequests = studentRequests.concat(changeRequests)
@@ -26,13 +26,13 @@ class ClassInfo extends React.Component {
   /*
   * Render the class details for non DIY
   */
-  renderClassDetails () {
-    const {cl: {number, professor, meet_days: days, meet_start_time: startTime}, isDIY} = this.props
+  renderClassDetails() {
+    const { cl: { number, professor, school, meet_days: days, meet_start_time: startTime }, isDIY, assignmentPage } = this.props
 
-    if (!isDIY) {
+    if (!isDIY && !assignmentPage) {
       return (
-        <div className='class-details' style={{display: 'flex', flexDirection: 'column'}}>
-          <span style={{fontSize: '18px', fontWeight: '600'}}>{this.props.cl.name}</span>
+        <div className='class-details' style={{ display: 'flex', flexDirection: 'column' }}>
+          <span style={{ fontSize: '18px', fontWeight: '600' }}>{this.props.cl.name}</span>
           <div>
             <span>{number}</span>
             <span>{professor && mapProfessor(professor)}</span>
@@ -41,9 +41,21 @@ class ClassInfo extends React.Component {
         </div>
       )
     }
+    if (!isDIY && assignmentPage && school) {
+      return (
+        <div className='class-details assignmnet-page' style={{ display: 'flex', flexDirection: 'column' }}>
+          <span style={{ fontSize: '20px', fontWeight: '600' }}>{this.props.cl.name}</span>
+          <div className="bottomdiv">
+            <span>{school.name}</span>
+            <span>| {school.adr_locality}</span>
+            <span>| {school.adr_region}</span>
+          </div>
+        </div>
+      )
+    }
   }
 
-  render () {
+  render() {
     return (
       <div className='header-container'>
         <div className='header'>

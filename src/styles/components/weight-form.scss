@@ -150,15 +150,24 @@
     margin: 0px 0px -2.5px 5px !important;
   }
 
+  .cn-form-section {
+    display: inline-block;
+  }
+
   .cn-section-name-header,
   .cn-section-value-header {
-    width: 100px;
+    width: 50%;
     display: inline-block;
     line-height: 16px;
     margin-top: 10px;
   }
+  .txt-gray {
+    color: #c7c7cc;
+  }
+  hr.txt-gray {
+    background-color: #c7c7cc;
+  }
   .cn-section-value-header {
-    float: right;
     text-align: end;
   }
   .cn-name-field {
@@ -190,11 +199,17 @@
 }
 
 .addbtndiv {
-  background: #eeeded;
-  padding: 5px 10px;
-  height: 28px;
+  text-align: center;
+  border-bottom: 1px solid #c7c7cc;
+  height: 30px;
+  margin-top: 5px;
   a {
     font-size: 18px;
+    background: #5ab9e4;
+    color: white;
+    font-weight: 500;
+    padding: 5px 15px 2px 15px;
+    border-radius: 4px;
     vertical-align: -webkit-baseline-middle;
   }
 }

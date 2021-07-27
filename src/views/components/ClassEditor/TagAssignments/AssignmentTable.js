@@ -2,10 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import actions from '../../../../actions'
-import { ProgressBar, Step } from "react-step-progress-bar";
-import { InputField, SelectField } from '../../../../components/Form'
-import { Form, ValidateForm } from 'react-form-library'
-import ToolTip from '../../../../views/components/ToolTip'
 
 class AssignmentTable extends React.Component {
   constructor(props) {
@@ -62,40 +58,7 @@ class AssignmentTable extends React.Component {
     }).catch(() => { this.setState({ loading: false }) })
   }
 
-  renderProgressBar() {
-    return <div className='cn-section-progress-outer' >
-      <img alt="Skoller"
-        className='logo'
-        src='/src/assets/images/sammi/Smile.png'
-        height="40" />
-      <span className="cn-section-progress-title" > Tag Assignments
-        <div className="infodiv">
-          <ToolTip
-            tip={
-              <div>
-                <p>
-                  Tag assignments to weight categories
-                </p>
-                <p>
-                  why? This associates value for esach individual assignments
-                </p>
-                <p>
-                  Example: 4 assignments tag to exams category worth 20% make each assignment worth 5%
-                </p>
-              </div>
-            }>
-            < i class="far fa-question-circle" > </i>
-          </ToolTip>
-        </div>
-      </span >
-      <div className="cn-pull-right" >
-        <span> 3 / 3 </span> <span className='cn-section-progressbar' > < ProgressBar percent={
-          (3 / 3) * 100
-        }
-        /></span>
-      </div>
-    </div >
-  }
+
 
   /*
   * Formats row data to be passed to the grid for display
@@ -138,6 +101,7 @@ class AssignmentTable extends React.Component {
             options={weights}
             onChange={(val) => { this.onChange({ id: id, weight_id: val.target.value }) }}
           >
+            <option key="" value="" className="option_no_weight" selected="selected">No Weight</option>
             {weights.map(weight => {
               return (
                 <option key={weight.id} value={weight.id}>{weight.name}</option>
@@ -170,37 +134,8 @@ class AssignmentTable extends React.Component {
     }).map((assignment, index) =>
       this.getRow(assignment, index)
     )
-
-
   }
 
-
-  renderSubmit(addingAssignment = false) {
-    const { assignments } = this.props
-    const disableButton = assignments.length === 0
-
-    if (!this.props.viewOnly) {
-      // return (
-      //   // <div id='submit-container'>
-      //   //   {/* <div id='notification'>
-      //   //     Be sure to add all assignments for this category!
-      //   //   </div> */}
-      //   //   {addingAssignment
-      //   //     ? <small>Finish adding the current assignment before moving on</small>
-      //   //     : <button
-      //   //       onClick={() => this.handleSubmit()}
-      //   //       disabled={disableButton}
-      //   //       className={`submit-assignments button ${disableButton ? 'disabled' : ''}`}
-      //   //     >
-      //   //       Save{this.props.onSubmitSingleWeight && ' and Submit'}
-      //   //     </button>
-      //   //   }
-      //   // </div>
-      // )
-    } else {
-      return null
-    }
-  }
 
   render() {
     const { viewOnly } = this.props
@@ -221,14 +156,14 @@ class AssignmentTable extends React.Component {
           style={{ boxShadow: this.state.loading ? 'inset 0 -10px 10px -10px #00000025' : '' }}
         ></div>
         <div id='assignment-rows'>
-          <div id='cn-assignment-form' > {this.renderProgressBar()}
+          <div id='cn-assignment-form' >
             <div className="col-xs-12">
-              <div className='cn-section-name-header' >
+              <div className='cn-section-name-header txt-gray' >
                 Assignments </div>
-              <div className='cn-section-value-header' >
+              <div className='cn-section-value-header txt-gray' >
                 Weight </div>
             </div>
-            <hr />
+            <hr className="txt-gray" />
             {this.renderAssignments()}
           </div>
         </div>

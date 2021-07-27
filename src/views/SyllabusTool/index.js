@@ -121,6 +121,7 @@ class SyllabusTool extends React.Component {
     }).catch(() => false)
   }
 
+
   /*
   * Lock the class for DIY or SW.
   */
@@ -214,10 +215,8 @@ class SyllabusTool extends React.Component {
   */
   onNext() {
     const { currentIndex, stepCount } = this.state
-    console.log(currentIndex, stepCount)
     if (currentIndex !== (stepCount - 1)) {
       this.setState({ currentIndex: currentIndex + 1 })
-      console.log(this.state.currentIndex)
       this.lockClass()
     } else {
       this.unlock(true)
@@ -231,6 +230,10 @@ class SyllabusTool extends React.Component {
     if (this.state.currentIndex > ContentEnum.WEIGHTS) {
       this.setState({ currentIndex: this.state.currentIndex - 1 })
     }
+  }
+
+  onUpdateCurrentIndex(form) {
+    this.setState({ currentIndex: form.currentIndex })
   }
 
   /*
@@ -269,6 +272,7 @@ class SyllabusTool extends React.Component {
           isReview={false}
           onSubmit={this.onNext.bind(this)}
           onUpdateClass={this.onUpdateClass.bind(this)}
+          onUpdateCurrentIndex={this.onUpdateCurrentIndex.bind(this)}
         />
       case ContentEnum.ASSIGNMENTS:
         return <Assignments
@@ -276,6 +280,7 @@ class SyllabusTool extends React.Component {
           cl={navbarStore.cl}
           isReview={false}
           onSubmit={this.onNext.bind(this)}
+          onUpdateCurrentIndex={this.onUpdateCurrentIndex.bind(this)}
         />
       case ContentEnum.TAGASSIGNMENT:
         return <TagAssignments
@@ -283,10 +288,11 @@ class SyllabusTool extends React.Component {
           cl={navbarStore.cl}
           isReview={false}
           onSubmit={this.onNext.bind(this)}
+          onUpdateCurrentIndex={this.onUpdateCurrentIndex.bind(this)}
         />
       case ContentEnum.REVIEW:
         return <ReviewAssignments
-          onBack={() => this.setState({ currentIndex: 1 })}
+          onBack={() => this.setState({ currentIndex: 2 })}
           cl={navbarStore.cl}
           isReview={false}
           onSubmit={this.onNext.bind(this)}

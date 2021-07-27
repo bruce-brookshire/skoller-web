@@ -92,7 +92,7 @@ class ReviewTable extends React.Component {
           </div>
         </div>
         <div className='col-xs-2 right-text' >
-          <div>{moment(due).format('MM/DD')}</div>
+          <div>{due ? moment(due).format('MM/DD') : ''}</div>
         </div>
         <div className='col-xs-3 right-text' >
           <div>{this.getWeightName(weight_id)}</div>

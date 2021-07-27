@@ -65,7 +65,7 @@
               }
             }
 
-            .triangle-inner{
+            .triangle-inner {
               &::before {
                 border-top: 6px solid transparent;
                 border-right: 6px solid white;
@@ -88,14 +88,16 @@
       .class-details {
         display: flex;
         flex-direction: row;
-
+        text-align: center;
         span {
           font-size: 11px;
           margin-left: 0.25em;
           margin-right: 0.25em;
         }
       }
-
+      .class-details.assignmnet-page .bottomdiv span {
+        font-size: 14px;
+      }
       .back-button {
         font-size: 2em;
       }
@@ -139,6 +141,14 @@
         color: $cn-color-white;
         text-align: center;
       }
+    }
+    button.cn_back_hmpage_btn {
+      color: #57b9e4;
+      border: 1px solid #57b9e4;
+      border-radius: 3px;
+      padding: 5px 15px;
+      background: white;
+      cursor: pointer;
     }
   }
 

@@ -4,9 +4,9 @@
   position: fixed;
   left: 0;
   top: 0;
-  z-index:1;
+  z-index: 1;
   overflow: auto;
-  background-color: rgba(0,0,0,0.3);
+  background-color: rgba(0, 0, 0, 0.3);
 
   .cn-modal {
     position: absolute;
@@ -15,8 +15,8 @@
     transform: translate(-50%, -50%);
     min-width: 60%;
     z-index: 10000;
-    padding: 20px 24px;
-    background-color: rgba(255,255,255,0.9);
+    // padding: 20px 24px;
+    background-color: rgba(255, 255, 255, 0.9);
     max-height: 85vh;
     border-radius: 3px;
     overflow-y: hidden;
@@ -25,8 +25,8 @@
     .cn-modal-body {
       max-height: calc(100vh - (40px + 2em + 1.5em));
       overflow-y: auto;
-
-      &.account-for-footer{
+      padding: 20px 24px;
+      &.account-for-footer {
         max-height: calc(85vh - (40px + 2em + 1.5em + 4em));
       }
     }
@@ -39,18 +39,134 @@
       height: 4em;
     }
 
-    h2{
+    h2 {
       color: black;
       font-family: Helvetica;
       font-weight: 400;
     }
-
+    .cn-modal-title-container {
+      background: #444242;
+      h2 {
+        padding: 10px;
+        margin: 0;
+        color: white;
+        font-size: 18px;
+        font-weight: 600;
+        .closeicon {
+          padding-right: 10px;
+          border-right: 2px solid;
+          cursor: pointer;
+        }
+      }
+    }
     .confirm {
       float: right;
     }
 
     .close {
       float: right;
+    }
+  }
+}
+
+#cn-progress-modal {
+  min-width: 400px;
+  padding: 10px;
+  .fullwidth {
+    width: 100%;
+    padding: 5px;
+  }
+  .cn-progress-step {
+    font-size: 18px;
+    font-weight: 600;
+    color: #8c8b8b91;
+  }
+  .cn-progress-name-btn {
+    .current-step-dot {
+      color: $cn-color-blue;
+      margin-left: -15px;
+      padding-right: 5px;
+      i {
+        vertical-align: super;
+        font-size: 10px;
+      }
+    }
+    .cn-progress-name {
+      display: inline-block;
+      padding: 0 20px 0 0;
+      font-size: 24px;
+      font-weight: 500;
+    }
+    .cn-progress-name.disabled {
+      color: rgba(16, 16, 16, 0.3);
+    }
+    .cn-progress-btn {
+      width: 85px;
+      padding: 0;
+      margin: 0;
+      background: rgba(255, 255, 255, 0.9);
+      color: $cn-color-blue;
+      border: 2px solid;
+      float: right;
+      padding: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .cn-progress-btn.disabled {
+      color: rgba(16, 16, 16, 0.3);
+      cursor: not-allowed;
+    }
+  }
+}
+
+#cn-copy-assignment-modal {
+  min-width: 400px;
+  .assignmentName {
+    margin: 0;
+  }
+  .assignmentDate {
+    margin: 0;
+    font-weight: 400;
+  }
+  .copy-value {
+    line-height: 30px;
+  }
+  .copies-container {
+    margin-top: 20px;
+    .copies-label {
+      display: inline-block;
+      font-weight: 600;
+      min-width: 100px;
+    }
+    .form-element {
+      float: right;
+      width: 100px;
+    }
+    .select-container {
+      float: right;
+    }
+    .selectBtn {
+      float: right;
+      button {
+        margin: 0 5px;
+        color: silver;
+        border: 1px solid silver;
+        border-radius: 5px;
+        background: white;
+        cursor: pointer;
+        padding: 4px 10px;
+      }
+      .selected {
+        color: $cn-color-blue;
+        border: 1px solid $cn-color-blue;
+      }
+    }
+  }
+  .button-container {
+    margin-top: 25px;
+    button {
+      padding-left: 20px;
+      padding-right: 20px;
     }
   }
 }

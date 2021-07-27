@@ -7,8 +7,7 @@ import actions from '../../../../actions'
 import { convertLocalDateToUTC, convertUTCDatetimeToDateString } from '../../../../utilities/time'
 import DatePicker from '../../../components/DatePicker/index'
 import moment from 'moment'
-import { ProgressBar, Step } from "react-step-progress-bar";
-import ToolTip from '../../../../views/components/ToolTip'
+import ReactTooltip from "react-tooltip";
 
 const requiredFields = {
     'name': {
@@ -232,16 +231,14 @@ class ReviewForm extends React.Component {
                     height="40" />
                 <span className="cn-section-progress-title" > Review & Submit
                     <div className="infodiv">
-                        <ToolTip
-                            tip={
-                                <div>
-                                    <p>
-                                        Make sure everything looks good before submitting
-                                    </p>
-                                </div>
-                            }>
-                            < i class="far fa-question-circle" > </i>
-                        </ToolTip>
+                        <i class="far fa-question-circle" data-tip data-for="infoTip"></i>
+
+                        <ReactTooltip id="infoTip" place="right" effect="solid" type="light" border="true" textColor="white"
+                            backgroundColor="white" arrowColor="transparent">
+                            <div className="tooltipBox">
+                                Make sure everything looks good before submitting!
+                            </div>
+                        </ReactTooltip>
                     </div>
                 </span >
 
@@ -269,7 +266,7 @@ class ReviewForm extends React.Component {
                     Weight </div>
                 <div className='cn-section-due-header reviewDueHeader' >
                     Due Date </div>
-            </div> <hr />
+            </div> <hr className="txt-gray" />
             {form.id && <div className='' >
                 <div className="cn-delete-icon" >
                     <a onClick={this.onDelete.bind(this)}>
@@ -330,7 +327,7 @@ class ReviewForm extends React.Component {
                         options={weights}
                         onChange={(val) => { this.onChange(val.target.value) }}
                     >
-                        <option value="">Select</option>
+                        <option key="" value="" className="option_no_weight" selected="selected">No Weight</option>
                         {weights.map(weight => {
                             return (
                                 <option key={weight.id} value={weight.id}>{weight.name}</option>
