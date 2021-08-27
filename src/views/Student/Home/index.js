@@ -7,12 +7,15 @@ import { withRouter } from 'react-router-dom'
 import PopUp from './PopUp'
 import ClassStatusModal from '../../components/ClassStatusModal'
 import {Cookies} from 'react-cookie'
-import HomeClasses from './HomeClasses'
+import HomeClasses from './HomeNewClasses'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import HomeTasks from './HomeTasks'
 import HomeShare from './HomeShare'
 import HomeJobs from './HomeJobs'
 import HomeInsights from './HomeInsights'
+
+import HomeGraphImpact from './HomeGraphImpact'
+import HomeAssignments from './HomeAssignments'
 
 @inject('rootStore') @observer
 class Home extends React.Component {
@@ -162,23 +165,22 @@ class Home extends React.Component {
         <div className="home-container">
           <div className="home-column home-column-lg">
             <div className="home-shadow-box">
-              <h1 className='home-heading' onClick={() => this.props.history.push('/student/classes')}>Classes</h1>
+              
               <div className="home-card-content">
                 <HomeClasses classes={this.props.rootStore.studentClassesStore.classes} onAddClass={() => this.closeAddClassModal()} onClassSelect={this.onClassSelect} launchClassStatusModal={(cl) => this.launchClassStatusModal(cl)} />
               </div>
             </div>
-            <HomeInsights />
+            <HomeGraphImpact />
           </div>
           <div className="home-column home-column-sm">
             <div className="home-shadow-box">
-              <h1 className='home-heading' onClick={() => this.props.history.push('/student/tasks')}>To-Do&apos;s</h1>
-              <div className="home-sub-heading">Next 10 days</div>
+              <h1 className='home-heading' onClick={() => this.props.history.push('/student/tasks')}>Assignments</h1>
+              
               <div className="home-card-content">
-                <HomeTasks />
+                <HomeAssignments />
               </div>
             </div>
-            <HomeJobs updateStudent={() => this.updateStudent()} user={this.props.rootStore.userStore.user} />
-            <HomeShare classes={this.props.rootStore.studentClassesStore.classes} willDisplay={() => this.setState({shareWillDisplay: true})} />
+            
           </div>
         </div>
       </div>

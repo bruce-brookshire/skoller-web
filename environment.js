@@ -1,11 +1,11 @@
 var _Environments = {
   development: {
-    SERVER_NAME: 'https://api-staging.skoller.co',
+    SERVER_NAME: 'https://api.skoller.co',
     IS_DEV: true,
     NAME: 'dev'
   },
   staging: {
-    SERVER_NAME: 'https://api-staging.skoller.co',
+    SERVER_NAME: 'https://api.skoller.co',
     IS_DEV: true,
     NAME: 'stg'
   },
