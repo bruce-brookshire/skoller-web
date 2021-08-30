@@ -141,6 +141,7 @@
 @import "components/home-share";
 @import "components/tasks";
 @import "components/task-card";
+@import "components/home-new-class";
 
 // Composed Views ------------------------
 @import "views/mixins/onboarding.scss";
@@ -199,6 +200,11 @@
 @import "views/unsubscribe.scss";
 @import "views/user-agreement.scss";
 @import "views/verification.scss";
+
+
+
+
+
 
 // Skoller Insights
 @import "si-insights/main.scss";

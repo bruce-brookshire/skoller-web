@@ -1,0 +1,108 @@
+
+
+.sborder-1{ border: 1px solid #ddd }
+.sborder-danger{ border-color: #EF193E; }
+.stext-danger{ color: #EF193E; }
+.sbg-danger{ background: #EF193E; }
+
+.stext-white{ color: #fff; }
+
+.sborder-purple{ border-color: #DE89F6; }
+.stext-purple{ color: #DE89F6; }
+.sbg-purple{ background: #DE89F6; }
+
+.sborder-green{ border-color: #61D8A0; }
+.stext-green{ color: #61D8A0; }
+.sbg-green{ background: #61D8A0; }
+
+.sborder-darkpink{ border-color: #D73E76; }
+.stext-darkpink{ color: #D73E76; }
+.sbg-darkpink{ background: #D73E76; }
+
+.sborder-orange{ border-color: #F1AA3A; }
+.stext-orange{ color: #F1AA3A; }
+.sbg-orange{ background: #F1AA3A; }
+
+.sborder-dark{ border-color: #555555; }
+.stext-dark{ color: #555555; }
+.sbg-dark{ background: #555555; }
+
+
+.sborder-light{ border-color: #C7C7CC; }
+.stext-light{ color: #C7C7CC; }
+.sbg-light{ background: #C7C7CC; }
+
+
+.card-wrap {
+    float: left;
+    width: 100%;   
+    padding: 5px 10px 5px 65px;
+    position: relative;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px; margin-bottom: 15px;
+}
+
+.card-wrap .card-icon {
+    position: absolute;
+    border-right: 1px solid #ddd;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    padding: 10px 5px;
+    min-width: 50px;
+    text-align: center;
+
+
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-align-content: center;
+    -ms-flex-line-pack: center;
+    align-content: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+
+}
+.card-wrap .card-title {
+    margin: 5px 0 5px 0;
+    line-height: 1;
+}
+.card-wrap .card-subtitle {
+    margin: 0 0 0 0;
+}
+.card-icon h3 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.card-wrap .card-ul{ list-style: none; padding: 0; margin: 0;}
+.card-wrap .card-ul li{ position: relative; padding-left: 24px; margin-right: 15px; font-size: 14px; display: inline;}
+
+
+.card-wrap .card-ul li > span {
+    position: absolute;
+    left: 0;
+    text-align: right;
+    min-width: 20px;
+}
+.card-wrap .card-ul li i { font-size: 13px}
+
+.sec-title {
+    font-size: 22px;
+    font-weight: 600;
+    position: relative; 
+    color: #555;
+    padding-left: 34px;
+}
+.sec-title > svg {
+    position: absolute;
+    left: 0;
+}
