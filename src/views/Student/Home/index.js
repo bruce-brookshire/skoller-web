@@ -55,6 +55,7 @@ class Home extends React.Component {
     let type
     let student = this.props.rootStore.userStore.user.student
 
+
     await actions.classes.getStudentClassesById(student.id)
       .then((classes) => {
         if (classes.length > 1) {
@@ -145,6 +146,9 @@ class Home extends React.Component {
   launchClassStatusModal (cl) {
     this.setState({classStatusModal: {show: true, cl: cl}})
   }
+  changePaymentPlan(){
+    this.setState({popUp: {type: 'PaymentPlans', show: true}})
+  }
 
   renderContent () {
     return (
@@ -159,6 +163,7 @@ class Home extends React.Component {
             cl={this.state.classStatusModal.cl}
           />
         }
+        <button onClick={()=> this.changePaymentPlan()}>Stripe Modal</button>
         <div className="home-container">
           <div className="home-column home-column-lg">
             <div className="home-shadow-box">
