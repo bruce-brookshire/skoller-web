@@ -50,6 +50,7 @@ class SyllabusTool extends React.Component {
     let { navbarStore } = this.props.rootStore
     navbarStore.cl = null
     navbarStore.isDIY = false
+    navbarStore.isSyllabusTool = false
     this.unlockClass()
   }
 
@@ -74,6 +75,7 @@ class SyllabusTool extends React.Component {
     navbarStore.isInsights = state.isInsights || false
     navbarStore.isDIY = state.isDIY || false
     navbarStore.weightId = state.weightId || false
+    navbarStore.isSyllabusTool = true
     return {
       currentDocumentIndex: 0,
       currentDocument: null,

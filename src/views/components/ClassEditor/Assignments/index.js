@@ -123,6 +123,15 @@ class Assignments extends React.Component {
         this.setState({ assignments: newAssignments, currentAssignment: null })
     }
 
+    onCopyAssignment(assignment) {
+        assignment.due ? this.updateLastAssignmentDate(moment(assignment.due).format('MM/DD/YYYY')) :
+            this.updateLastAssignmentDate(moment().format('MM/DD/YYYY'))
+
+        const newAssignments = this.state.assignments
+        newAssignments.push(assignment)
+        this.setState({ assignments: newAssignments, currentAssignment: assignment })
+    }
+
     /*
      * On update assignment, replace existing assignment with the new assignment.
      *
@@ -350,6 +359,7 @@ class Assignments extends React.Component {
                                 assignment={currentAssignment}
                                 cl={cl}
                                 onCreateAssignment={this.onCreateAssignment.bind(this)}
+                                onCopyAssignment={this.onCopyAssignment.bind(this)}
                                 onUpdateAssignment={this.onUpdateAssignment.bind(this)}
                                 onDeleteAssignment={this.onDeleteAssignment.bind(this)}
                                 currentWeight={currentWeight}

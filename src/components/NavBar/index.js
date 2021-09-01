@@ -94,7 +94,7 @@ class NavBar extends React.Component {
         <div>
           <img alt="Skoller" className='logo' src='/src/assets/images/logo-wide-blue@1x.png' />
           <div className='onboard-logo-text'>
-            {this.props.rootStore.userStore.isSW() ? '' : 'Class Setup Tool.'}
+            {this.props.rootStore.userStore.isSW() ? '' : isSyllabusTool ? 'Class Setup Tool.' : 'Keep up classes, together'}
           </div>
         </div>
         <div className='user-info'>
@@ -149,6 +149,8 @@ class NavBar extends React.Component {
 
   render() {
     let jobsMode = this.props.rootStore.navStore.jobsMode
+    const { navbarStore: { isSyllabusTool } } = this.props.rootStore
+
     if (this.props.onboard) {
       return (
         this.renderOnboardHeader()
@@ -174,7 +176,7 @@ class NavBar extends React.Component {
                 }
               }}
             />
-            <div className='cn-navbar-message'>{this.props.rootStore.userStore.isSW() ? '' : 'Class Setup Tool.'}</div>
+            <div className='cn-navbar-message'>{this.props.rootStore.userStore.isSW() ? '' : isSyllabusTool ? 'Class Setup Tool.' : 'Keep up classes, together'}</div>
           </div>
           <div className='class-info'>
             {this.props.rootStore.userStore.isSW() ?
