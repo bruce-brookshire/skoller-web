@@ -1,9 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import AssignmentCategories from './AssignmentCategories'
-import AssignmentForm from './AssignmentForm'
 import AssignmentTable from './AssignmentTable'
-import SkipCategoryModal from './SkipCategoryModal'
+// import SkipCategoryModal from './SkipCategoryModal'
 import actions from '../../../../actions'
 import SkLoader from '../../../../assets/sk-icons/SkLoader'
 import moment from 'moment'
@@ -13,7 +11,7 @@ import ProgressModal from '../progressModel'
 import { ProgressBar, Step } from "react-step-progress-bar";
 import ReactTooltip from "react-tooltip";
 
-class Assignments extends React.Component {
+class TagAssignments extends React.Component {
     constructor(props) {
         super(props)
         this.state = this.initializeState()
@@ -87,7 +85,7 @@ class Assignments extends React.Component {
             weights: [],
             currentWeightIndex: 0,
             currentWeight: null,
-            openSkipCategoryModal: false,
+            // openSkipCategoryModal: false,
             addAssignment: false,
             lastAssignmentDate: Date.now(),
             addingAssignment: false,
@@ -115,21 +113,11 @@ class Assignments extends React.Component {
      * @param [Object] assignment. Assignment.
      */
     onCreateAssignment(assignment) {
-        assignment.due ? this.updateLastAssignmentDate(moment(assignment.due).format('MM/DD/YYYY')) :
-            this.updateLastAssignmentDate(moment().format('MM/DD/YYYY'))
-
+        this.updateLastAssignmentDate(moment(assignment.due).format('MM/DD/YYYY'))
         const newAssignments = this.state.assignments
         newAssignments.push(assignment)
+        console.log(newAssignments)
         this.setState({ assignments: newAssignments, currentAssignment: null })
-    }
-
-    onCopyAssignment(assignment) {
-        assignment.due ? this.updateLastAssignmentDate(moment(assignment.due).format('MM/DD/YYYY')) :
-            this.updateLastAssignmentDate(moment().format('MM/DD/YYYY'))
-
-        const newAssignments = this.state.assignments
-        newAssignments.push(assignment)
-        this.setState({ assignments: newAssignments, currentAssignment: assignment })
     }
 
     /*
@@ -151,6 +139,12 @@ class Assignments extends React.Component {
         }
     }
 
+    onTagAssignment(assignment) {
+        const newAssignments = this.state.assignments
+        const index = this.state.assignments.findIndex(a => a.id === assignment.id)
+        newAssignments[index] = assignment
+        this.setState({ assignments: newAssignments })
+    }
     /*
      * Delete assignment.
      *
@@ -171,7 +165,6 @@ class Assignments extends React.Component {
         })
         if (assignment.id) {
             await actions.assignments.deleteAssignment(assignment).then(() => {
-                this.setState({ currentAssignment: null })
                 this.updateAssignments()
             }).catch(() => false)
         }
@@ -188,11 +181,9 @@ class Assignments extends React.Component {
         }
     }
 
-    /*
-     * Toggle the problems modal.
-     */
-    toggleSkipCategoryModal() {
-        this.setState({ openSkipCategoryModal: !this.state.openSkipCategoryModal })
+
+    async handleSubmit() {
+        this.props.onSubmit()
     }
 
     /*
@@ -202,9 +193,9 @@ class Assignments extends React.Component {
         this.setState({ addingAssignment: bool })
     }
 
-    /*
-     * Render the having issues modal.
-     */
+    toAssignmentForm(weight) {
+        this.setState({ addAssignment: true, currentWeight: weight, currentWeightIndex: this.state.weights.indexOf(weight) })
+    }
 
     onUpdateCurrentIndex(form) {
         this.props.onUpdateCurrentIndex(form)
@@ -220,20 +211,15 @@ class Assignments extends React.Component {
             <ProgressModal open={openProgressModal}
                 onClose={this.toggleProgressModal.bind(this)}
                 onConfirm={this.onUpdateCurrentIndex.bind(this)}
-                currentIndex={1}
+                currentIndex={2}
                 assignments={assignments}
                 weights={weights}
             />
         )
     }
 
-    toAssignmentForm(weight) {
-        this.setState({ addAssignment: true, currentWeight: weight, currentWeightIndex: this.state.weights.indexOf(weight) })
-    }
-
     updateLastAssignmentDate(date) {
-        if (date)
-            this.setState({ lastAssignmentDate: date })
+        this.setState({ lastAssignmentDate: date })
     }
 
     getSingleWeight() {
@@ -287,40 +273,32 @@ class Assignments extends React.Component {
         this.setState({ loading: false })
     }
 
-    async handleSubmit() {
-        this.props.onSubmit()
-    }
-
-    onSubmitSingleWeight() {
-        this.submitAssignments()
-        this.handleSubmit()
-        this.props.history.push('/student/class/' + this.props.cl.id.toString())
-    }
-
     renderProgressBar() {
         return <div className='cn-section-progress-outer' >
             <img alt="Skoller"
                 className='logo'
                 src='/src/assets/images/sammi/Smile.png'
                 height="40" />
-            <span className="cn-section-progress-title" > Add Assignment & Dates
+            <span className="cn-section-progress-title" > Tag Assignments
                 <div className="infodiv">
                     <i class="far fa-question-circle" data-tip data-for="infoTip"></i>
-
                     <ReactTooltip id="infoTip" place="right" effect="solid" type="light" border="true" textColor="white"
                         backgroundColor="white" arrowColor="transparent">
                         <div className="tooltipBox">
-                            Add all graded assignments for this class <br></br><br></br>
-                            Tip 1: If the due date is unknown but the assignment is sure to happen, go ahead and add it<br></br><br></br>
-                            Tip 2: You can always add and edit assignments during the semester
+                            Tag assignments to weight categories<br></br><br></br>
+                            why? This associates value for esach individual assignments<br></br><br></br>
+                            Example: 4 assignments tag to exams category worth 20% make each assignment worth 5%
                         </div>
                     </ReactTooltip>
                 </div>
             </span >
             <div className="cn-pull-right" >
-                <span> 2/3 </span> <span className='cn-section-progressbar' > < ProgressBar percent={(2 / 3) * 100} /></span>
-                <a className="cn-section-icons" onClick={() => this.onUpdateCurrentIndex({ currentIndex: 0 })}><i class="fas fa-angle-left"></i></a>
-                <a className="cn-section-icons" onClick={() => this.onUpdateCurrentIndex({ currentIndex: 2 })}><i className="fas fa-angle-right"></i></a>
+                <span>3/3 </span> <span className='cn-section-progressbar' > < ProgressBar percent={
+                    (3 / 3) * 100
+                }
+                /></span>
+                <a className="cn-section-icons" onClick={() => this.onUpdateCurrentIndex({ currentIndex: 1 })}><i class="fas fa-angle-left"></i></a>
+                <a className="cn-section-icons" onClick={() => this.onUpdateCurrentIndex({ currentIndex: 3 })}><i className="fas fa-angle-right"></i></a>
 
             </div>
         </div >
@@ -348,97 +326,46 @@ class Assignments extends React.Component {
         // console.log(this.state.assignments)
 
         return (<div id='cn-assignments' > {
-            loadingAssignments || loadingWeights ?
-                <SkLoader />
-                :
-                <div id='cn-assignment-window' >
-                    {!viewOnly &&
-                        <div id='class-editor-assignment-form' > {this.renderBackButton()}
-                            {this.renderProgressBar()}
-                            <AssignmentForm
-                                assignment={currentAssignment}
-                                cl={cl}
-                                onCreateAssignment={this.onCreateAssignment.bind(this)}
-                                onCopyAssignment={this.onCopyAssignment.bind(this)}
-                                onUpdateAssignment={this.onUpdateAssignment.bind(this)}
-                                onDeleteAssignment={this.onDeleteAssignment.bind(this)}
-                                currentWeight={currentWeight}
-                                updateLastAssignmentDate={
-                                    (date) => this.updateLastAssignmentDate(date)
-                                }
-                                lastAssignmentDate={this.state.lastAssignmentDate}
-                                toggleAddingAssignment={
-                                    (bool) => this.toggleAddingAssignment(bool)
-                                }
-                            />
-                        </div>
-                    }
-                    {
-                        assignments.length === 0 &&
-                        <div id='cn-assignment-table-new' >
-                            <div className="cn-assignment-notadded">
-                                <div className="center-text ">
-                                    <img alt="Skoller" className='logo' src='/src/assets/images/sammi/Smile.png' height="80" />
-                                    <h2>Add all assignments that will count towards your final grade in this class!</h2>
-                                    <h4>Note: leave due dates empty if assignments don't have specific due dates at this time.</h4>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                    {
-                        // (assignments.length !== 0 && !viewOnly && addAssignment) &&
-                        (assignments.length !== 0 && !viewOnly) &&
+            // loadingAssignments || loadingWeights ?
+            // <SkLoader />
+            // :
+            <div id='cn-assignment-window' >
+                {this.renderProgressBar()}
+                {
 
-                        <div id='cn-assignment-table-new' >
-                            <AssignmentTable
-                                viewOnly={viewOnly}
-                                addingAssignment={this.state.addingAssignment}
-                                assignments={assignments}
-                                currentAssignment={currentAssignment}
-                                onSelectAssignment={this.onSelectAssignment.bind(this)}
-                                weights={weights}
-                                cl={cl}
-                                currentWeight={weights[currentWeightIndex]}
-                                onEdit={
-                                    () => this.props.onEdit()
-                                }
-                                onSubmit={
-                                    () => {
-                                        this.setState({ addAssignment: false, currentAssignment: null })
-                                        this.updateAssignments()
-                                        this.submitAssignments()
-                                    }
-                                }
-                                onSubmitSingleWeight={
-                                    this.props.singleWeight ?
-                                        () => this.onSubmitSingleWeight() : null
-                                }
-                            />
-                        </div >
-                    }
-                    {
-                        assignments.length !== 0 && !viewOnly && !addAssignment &&
-                        <button
-                            onClick={
-                                () => this.handleSubmit()
-                            }
-                            className='button full-width margin-top margin-bottom' >
-                            Save Assignments ({assignments.length}) </button>
-                    } </div>}
-            {this.renderProgressModal()}
-        </div >
+                    <div id='cn-assignment-table-new' >
+                        <AssignmentTable
+                            viewOnly={viewOnly}
+                            addingAssignment={this.state.addingAssignment}
+                            assignments={assignments}
+                            currentAssignment={currentAssignment}
+                            onSelectAssignment={this.onSelectAssignment.bind(this)}
+                            onTagAssignment={this.onTagAssignment.bind(this)}
+                            weights={weights}
+                            cl={cl}
+                        />
+                    </div >
+                } {
+                    assignments.length !== 0 && !viewOnly && !addAssignment &&
+                    <button
+                        onClick={
+                            () => this.handleSubmit()
+                        }
+                        className='button full-width margin-top margin-bottom' >
+                        Submit Tags </button>
+                } {this.renderProgressModal()}</div>} </div >
         )
     }
 }
 
-Assignments.propTypes = {
+TagAssignments.propTypes = {
     cl: PropTypes.object,
     isReview: PropTypes.bool,
     onSubmit: PropTypes.func,
     onEdit: PropTypes.func,
     onBack: PropTypes.func,
-    singleWeight: PropTypes.number,
     onUpdateCurrentIndex: PropTypes.func,
+    singleWeight: PropTypes.number
 }
 
-export default withRouter(Assignments)
+export default withRouter(TagAssignments)

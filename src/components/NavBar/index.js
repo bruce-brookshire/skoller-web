@@ -1,14 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {inject, observer} from 'mobx-react'
+import { inject, observer } from 'mobx-react'
 import ClassInfo from './ClassInfo'
 import { withRouter } from 'react-router-dom'
 import JobsSwitch from './JobsSwitch'
 
 @inject('rootStore') @observer
 class NavBar extends React.Component {
-  getName () {
-    const {userStore: {user}} = this.props.rootStore
+  getName() {
+    const { userStore: { user } } = this.props.rootStore
     if (user.student) {
       return `${user.student.name_first} ${user.student.name_last}`
     } else {
@@ -16,8 +16,8 @@ class NavBar extends React.Component {
     }
   }
 
-  getDescription () {
-    const {userStore: {user}} = this.props.rootStore
+  getDescription() {
+    const { userStore: { user } } = this.props.rootStore
     const admin = this.props.rootStore.userStore.isAdmin()
     if (user.student) {
       return 'Student'
@@ -28,8 +28,8 @@ class NavBar extends React.Component {
     }
   }
 
-  getInitials () {
-    const {userStore: {user}} = this.props.rootStore
+  getInitials() {
+    const { userStore: { user } } = this.props.rootStore
     const admin = this.props.rootStore.userStore.isAdmin()
     if (user.student) {
       if (user.student.name_first && user.student.name_last) {
@@ -46,24 +46,55 @@ class NavBar extends React.Component {
     }
   }
 
-  renderClassInfo () {
-    const {navbarStore: {cl, isDIY, toggleRequestResolved}} = this.props.rootStore
+  renderClassInfo() {
+    const { navbarStore: { cl, isDIY, toggleRequestResolved } } = this.props.rootStore
     if (cl) {
       return (
         <ClassInfo cl={cl}
           isDIY={isDIY}
+          assignmentPage={false}
+          toggleRequestResolved={toggleRequestResolved} />
+      )
+    }
+  }
+  renderLeaveSetupbtn() {
+    const { userStore: { user } } = this.props.rootStore
+    const admin = this.props.rootStore.userStore.isAdmin()
+    const { navbarStore: { cl } } = this.props.rootStore
+    if (cl) {
+      return (
+        <button className="cn_back_hmpage_btn"
+          onClick={() => {
+            if (admin) {
+              this.props.history.push('/hub/landing')
+            } else {
+              this.props.history.push('/')
+            }
+          }}>
+          Leave Setup
+        </button>
+      )
+    }
+  }
+  renderAssignmentClassInfo() {
+    const { navbarStore: { cl, isDIY, toggleRequestResolved } } = this.props.rootStore
+    if (cl) {
+      return (
+        <ClassInfo cl={cl}
+          isDIY={isDIY}
+          assignmentPage={true}
           toggleRequestResolved={toggleRequestResolved} />
       )
     }
   }
 
-  renderOnboardHeader () {
+  renderOnboardHeader() {
     return (
       <div className='cn-navbar'>
         <div>
           <img alt="Skoller" className='logo' src='/src/assets/images/logo-wide-blue@1x.png' />
           <div className='onboard-logo-text'>
-            {this.props.rootStore.userStore.isSW() ? '' : 'Keep up with classes, together.'}
+            {this.props.rootStore.userStore.isSW() ? '' : isSyllabusTool ? 'Class Setup Tool.' : 'Keep up classes, together'}
           </div>
         </div>
         <div className='user-info'>
@@ -76,11 +107,11 @@ class NavBar extends React.Component {
     )
   }
 
-  renderJobsHeader () {
-    const {userStore: {user}} = this.props.rootStore
+  renderJobsHeader() {
+    const { userStore: { user } } = this.props.rootStore
     const admin = this.props.rootStore.userStore.isAdmin()
     return (
-      <div className={'cn-navbar cn-navbar-jobs'} style={{backgroundColor: '#4a4a4a', color: 'rgba(245, 245, 245, 1)'}}>
+      <div className={'cn-navbar cn-navbar-jobs'} style={{ backgroundColor: '#4a4a4a', color: 'rgba(245, 245, 245, 1)' }}>
         <div>
           <img
             alt="Skoller"
@@ -108,16 +139,18 @@ class NavBar extends React.Component {
           </div>
           <div className='right'>
             {user.pic_path
-              ? <img className='profile-img' src={user.pic_path}/>
-              : <div style={{backgroundColor: '#15A494'}} className='profile-img vertical-align profile-initials'>{this.getInitials()}</div>}
+              ? <img className='profile-img' src={user.pic_path} />
+              : <div style={{ backgroundColor: '#15A494' }} className='profile-img vertical-align profile-initials'>{this.getInitials()}</div>}
           </div>
         </div>
       </div>
     )
   }
 
-  render () {
+  render() {
     let jobsMode = this.props.rootStore.navStore.jobsMode
+    const { navbarStore: { isSyllabusTool } } = this.props.rootStore
+
     if (this.props.onboard) {
       return (
         this.renderOnboardHeader()
@@ -127,7 +160,7 @@ class NavBar extends React.Component {
         this.renderJobsHeader()
       )
     } else {
-      const {userStore: {user}} = this.props.rootStore
+      const { userStore: { user } } = this.props.rootStore
       const admin = this.props.rootStore.userStore.isAdmin()
       return (
         <div className={'cn-navbar'}>
@@ -143,11 +176,11 @@ class NavBar extends React.Component {
                 }
               }}
             />
-            <div className='cn-navbar-message'>{this.props.rootStore.userStore.isSW() ? '' : 'Keep up with classes, together.'}</div>
+            <div className='cn-navbar-message'>{this.props.rootStore.userStore.isSW() ? '' : isSyllabusTool ? 'Class Setup Tool.' : 'Keep up classes, together'}</div>
           </div>
           <div className='class-info'>
-            {this.props.rootStore.userStore.isSW() &&
-              this.renderClassInfo()
+            {this.props.rootStore.userStore.isSW() ?
+              this.renderClassInfo() : this.renderAssignmentClassInfo()
             }
           </div>
           <div className='user-info'>
@@ -155,13 +188,16 @@ class NavBar extends React.Component {
               <JobsSwitch />
             }
             <div className='left'>
-              <p>{this.getName()}</p>
-              <span>{this.getDescription()}</span>
+              {/* <p>{this.getName()}</p>
+              <span>{this.getDescription()}</span> */}
             </div>
             <div className='right'>
-              {user.pic_path
-                ? <img className='profile-img' src={user.pic_path}/>
-                : <div className='profile-img vertical-align profile-initials'>{this.getInitials()}</div>}
+
+              {this.renderLeaveSetupbtn()}
+
+              {/* {user.pic_path
+                ? <img className='profile-img' src={user.pic_path} />
+                : <div className='profile-img vertical-align profile-initials'>{this.getInitials()}</div>} */}
             </div>
           </div>
         </div>

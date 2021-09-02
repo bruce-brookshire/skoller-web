@@ -2,8 +2,65 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import actions from '../../../../actions'
+import { ProgressBar, Step } from "react-step-progress-bar";
+import { InputField, SelectField } from '../../../../components/Form'
+import { Form, ValidateForm } from 'react-form-library'
 
-class AssignmentTable extends React.Component {
+class ReviewTable extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = this.initializeState()
+  }
+
+  initializeState() {
+
+    const { assignment } = this.props
+    return {
+      form: this.initializeFormData(assignment),
+      loading: false,
+      copyweight: ''
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.assignments.length > 10) {
+      this.setState({ loading: true })
+    }
+  }
+  initializeFormData(data) {
+    let formData = data || {}
+    const { id, name, weight_id } = formData
+    return ({
+      id: id || null,
+      name: name || '',
+      weight_id: weight_id || '',
+    })
+  }
+
+  getWeightName(weight_id) {
+    const { weights } = this.props
+    console.log(weights)
+    let w = weights.find(v => v.id == weight_id)
+    return w ? w.name : ''
+  }
+
+
+  renderProgressBar() {
+    return <div className='cn-section-progress-outer' >
+      <img alt="Skoller"
+        className='logo'
+        src='/src/assets/images/sammi/Smile.png'
+        height="40" />
+      <span className="cn-section-progress-title" > Tag Assignments < i class="far fa-question-circle" > </i></span >
+      <div className="cn-pull-right" >
+        <span> 3 / 3 </span> <span className='cn-section-progressbar' > < ProgressBar percent={
+          (3 / 3) * 100
+        }
+        /></span>
+      </div>
+    </div >
+  }
+
   /*
   * Formats row data to be passed to the grid for display
   *
@@ -11,12 +68,16 @@ class AssignmentTable extends React.Component {
   * @param [Number] index. Index of row data.
   */
   getRow(item, index) {
-    const { id, name, due } = item
-    const { currentAssignment, viewOnly } = this.props
+    const { form } = this.state
+    const { id, name, weight_id, due } = item
+
+    const { currentAssignment, viewOnly, formErrors, updateProperty } = this.props
     const activeClass = (currentAssignment && currentAssignment.id) === id
       ? 'active' : ''
 
+
     return (
+
       <div
         className={`table-row ${activeClass}`}
         key={`assignment-${index}`}
@@ -26,63 +87,18 @@ class AssignmentTable extends React.Component {
         }}
       >
         <div className='col-xs-7 assignment-name-container'>
-          {/* {!viewOnly &&
-            <div className='col-xs-2'>
-              <div
-                className='button-delete-x-light center-content'
-                onClick={(event) => {
-                  event.stopPropagation()
-                  
-                  this.props.onDeleteAssignment(item)
-                }}><img src='/src/assets/images/syllabus_tool/circle_x.png' />
-              </div>
-            </div>
-          } */}
           <div className={`assignment-label col-xs-12}`}>
             <div>{name}</div>
-            {/* {!currentWeight && this.renderWeightName(weightId)} */}
           </div>
         </div>
-        <div className='col-xs-5 right-text'>
-          {due ? this.mapAssignmentDate(due) : ''}
+        <div className='col-xs-2 right-text' >
+          <div>{due ? moment(due).format('MM/DD') : ''}</div>
+        </div>
+        <div className='col-xs-3 right-text' >
+          <div>{this.getWeightName(weight_id)}</div>
         </div>
       </div>
     )
-  }
-
-  /* TODO: This is a bit bloated, but when it was unrolled into the rendering code
-      it was crashing as 'undefined' did not have name. Could be more trim.
-  */
-  // renderWeightName(id) {
-  //   const { weights } = this.props
-  //   if (weights) {
-  //     var weight = weights.find(w => w.id === id)
-  //     if (weight && weight !== undefined) {
-  //       return <div className='description'>
-  //         {weight.name}
-  //       </div>
-  //     } else {
-  //       return <div className='description'>
-  //         N/A
-  //       </div>
-  //     }
-  //   } else {
-  //     return null
-  //   }
-  // }
-
-  /*
-  * Map the assignment dateParts
-  *
-  * @param [String] date. YYYY-MM-DD
-  * @return [String]. MM/DD
-  */
-  mapAssignmentDate(date) {
-    const { cl } = this.props
-    const today = moment.tz(Date.now(), cl.school.timezone)
-    const due = moment.tz(date, cl.school.timezone)
-    return today.format('YYYY-MM-DD') === due.format('YYYY-MM-DD') ? 'Today'
-      : `${due.format('ddd')}, ${due.format('MMM')} ${due.format('Do')}`
   }
 
   /*
@@ -90,26 +106,16 @@ class AssignmentTable extends React.Component {
   */
   renderAssignments() {
     const { assignments } = this.props
-    // console.log(assignments, 'renderAssignments')
     // sort by due date.
     return assignments.sort((a, b) => {
       return new Date(b.due) - new Date(a.due)
     }).map((assignment, index) =>
       this.getRow(assignment, index)
     )
+
+
   }
 
-  handleSubmit() {
-    // if (this.props.cl.status.id !== 1400) {
-    //   actions.classes.updateClassStatus(this.props.cl, {class_status_id: 1400})
-    //     .then(r => console.log(r))
-    // }
-    if (this.props.onSubmitSingleWeight) {
-      this.props.onSubmitSingleWeight()
-    } else {
-      this.props.onSubmit()
-    }
-  }
 
   renderSubmit(addingAssignment = false) {
     const { assignments } = this.props
@@ -148,26 +154,24 @@ class AssignmentTable extends React.Component {
     }
 
     return (
+
       <div id='class-editor-assignments-table' className={`${viewOnly ? 'view-only' : ''}`} ref={(field) => { this.sectionControl = field }} >
+
         <div id='assignment-rows'>
           {this.renderAssignments()}
         </div>
-        {addingAssignment
-          ? this.renderSubmit(true)
-          : this.renderSubmit(false)
-        }
       </div>
     )
   }
 }
 
-AssignmentTable.propTypes = {
+ReviewTable.propTypes = {
   viewOnly: PropTypes.bool,
   assignments: PropTypes.array.isRequired,
   addingAssignment: PropTypes.bool,
   currentAssignment: PropTypes.object,
   onSelectAssignment: PropTypes.func,
-  onDeleteAssignment: PropTypes.func,
+  onTagAssignment: PropTypes.func,
   weights: PropTypes.array,
   cl: PropTypes.object,
   // currentWeight: PropTypes.object,
@@ -176,4 +180,4 @@ AssignmentTable.propTypes = {
   onSubmitSingleWeight: PropTypes
 }
 
-export default AssignmentTable
+export default ReviewTable

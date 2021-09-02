@@ -13,3 +13,22 @@
     }
   }
 }
+
+.cn-assignment-notadded {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 55vh;
+  h2 {
+    margin: 10px;
+    font-weight: 400;
+    font-size: 20px;
+  }
+  h4 {
+    font-weight: 400;
+  }
+  div {
+    opacity: 0.5;
+  }
+}
