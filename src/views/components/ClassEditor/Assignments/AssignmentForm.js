@@ -7,7 +7,6 @@ import actions from '../../../../actions'
 import { convertLocalDateToUTC, convertUTCDatetimeToDateString } from '../../../../utilities/time'
 import DatePicker from '../../../components/DatePicker/index'
 import moment from 'moment'
-import CopyAssignmentModal from './CopyAssignmentModal'
 
 const requiredFields = {
     'name': {
@@ -77,8 +76,7 @@ class AssignmentForm extends React.Component {
             form: this.initializeFormData(assignment),
             due_null: false,
             loading: false,
-            showDatePicker: false,
-            openCopyAssignmentModal: false,
+            showDatePicker: false
         }
     }
 
@@ -156,6 +154,18 @@ class AssignmentForm extends React.Component {
         this.props.onDeleteAssignment(assignment)
         this.setState({ form: this.initializeFormData(), loading: false, due_null: false })
     }
+
+    /*
+     * copy assignment
+     */
+    onCopyAssignment(form) {
+        this.setState({ loading: true })
+        actions.assignments.createAssignment(this.props.cl, form).then((assignment) => {
+            this.setState({ loading: false })
+            this.props.onCopyAssignment(assignment)
+        }).catch(() => { this.setState({ loading: false }) })
+    }
+
     /*
      * Map the form
      */
@@ -170,6 +180,22 @@ class AssignmentForm extends React.Component {
             return newForm
         } else {
             let newForm = { ...this.state.form }
+            newForm.due = null
+            return newForm
+        }
+    }
+
+    mapCopyForm(form) {
+        const { cl } = this.props
+        if (!this.state.due_null && this.state.form.due) {
+            let newForm = form
+            let d = newForm.due.slice(4)
+            let due = d.split('/')
+            due = `${newForm.year_due}-${due[0]}-${due[1]}`
+            newForm.due = convertLocalDateToUTC(due, cl.school.timezone)
+            return newForm
+        } else {
+            let newForm = form
             newForm.due = null
             return newForm
         }
@@ -205,20 +231,35 @@ class AssignmentForm extends React.Component {
         return nameCheck && (this.state.due_null ? true : dateCheck)
     }
 
+    copyFormData(data, name) {
+        let formData = data || {}
+        const { due, year_due } = formData
 
-    toggleCopyAssignmentModal() {
-        this.setState({ openCopyAssignmentModal: !this.state.openCopyAssignmentModal })
+        return ({
+            id: null,
+            name: name,
+            due: due,
+            year_due: year_due,
+            created_on: 'Web'
+        })
     }
 
-    renderCopyAssignmentModal() {
-        const { openCopyAssignmentModal, assignment } = this.state
-        return (
-            <CopyAssignmentModal open={openCopyAssignmentModal}
-                onClose={this.toggleCopyAssignmentModal.bind(this)}
-                onConfirm={this.onNext.bind(this)}
-                assignment={assignment}
-            />
-        )
+    copyAssignment() {
+        var regex = /\d+/g;
+        var matches = this.state.form.name.match(regex);
+        let newForm = { ...this.state.form }
+        if (matches && matches.length) {
+            let numb = matches[matches.length - 1]
+            let newnumb = Number(numb) + 1
+            let name = this.state.form.name.replace(numb, newnumb);
+            newForm.name = name
+            this.setState({ form: this.copyFormData(this.state.form, name) })
+            console.log(newForm)
+        } else {
+            newForm.name = newForm.name + ' 1'
+        }
+        const form = this.mapCopyForm(newForm)
+        this.onCopyAssignment(form)
     }
 
     onNext() {
@@ -298,7 +339,7 @@ class AssignmentForm extends React.Component {
                     </div>
                 } </div>
                 <div className="cn-files-icon" >
-                    <a onClick={() => this.toggleCopyAssignmentModal()}>
+                    <a onClick={() => this.copyAssignment()}>
                         <i class="far fa-clone" > </i>
                     </a>
                 </div >
@@ -309,7 +350,6 @@ class AssignmentForm extends React.Component {
                     onClick={this.onSubmit.bind(this)} > {this.props.assignment ? ' Update ' : ' Save '}
                     {this.state.loading ? < Loading /> : null} </a>
             </div>
-            {this.renderCopyAssignmentModal()}
         </div >
         )
     }
@@ -320,6 +360,7 @@ AssignmentForm.propTypes = {
     cl: PropTypes.object.isRequired,
     formErrors: PropTypes.object,
     onCreateAssignment: PropTypes.func,
+    onCopyAssignment: PropTypes.func,
     onUpdateAssignment: PropTypes.func.isRequired,
     updateProperty: PropTypes.func,
     validateForm: PropTypes.func,
