@@ -2,7 +2,9 @@ import React from 'react'
 import { inject, observer } from 'mobx-react'
 import PropTypes from 'prop-types'
 import FindAClass from '../../Onboard/FindAClass'
-import ChangeSchool from './ChangeSchool'
+import PremminiumPlans from './PreminiumPlans'
+import InfoModal from './InfoModal'
+import PaymentModel from './PaymentModel'
 import ClassStatusModal from '../../../components/ClassStatusModal'
 import moment from 'moment'
 import SkLoader from '../../../../assets/sk-icons/SkLoader'
@@ -88,7 +90,9 @@ class PaymentPlans extends React.Component {
               !this.state.classStatusModal.show && this.closeModal()
             }}
           >
-            <ChangeSchool backData={this.state.params} onSubmit={(data) => this.changeParams(data)} />
+            {/* <PremminiumPlans backData={this.state.params} onSubmit={(data) => this.changeParams(data)} /> */}
+            {/* <InfoModal backData={this.state.params} onSubmit={(data) => this.changeParams(data)} /> */}
+            <PaymentModel backData={this.state.params} onSubmit={(data) => this.changeParams(data)} />
           </ProgressModal>
         </div>
       </div>

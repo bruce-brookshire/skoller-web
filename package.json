@@ -11,6 +11,8 @@
     "lint": "./node_modules/.bin/eslint **/*.js src/**"
   },
   "dependencies": {
+    "@stripe/react-stripe-js": "^1.4.1",
+    "@stripe/stripe-js": "^1.17.1",
     "autoprefixer": "^7.2.3",
     "babel": "^6.23.0",
     "babel-core": "^6.26.3",

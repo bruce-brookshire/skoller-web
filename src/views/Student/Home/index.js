@@ -163,6 +163,8 @@ class Home extends React.Component {
             cl={this.state.classStatusModal.cl}
           />
         }
+        <button onClick={()=> this.changePaymentPlan()}>Info PLan Modal</button>
+        <button onClick={()=> this.changePaymentPlan()}>Stripe Modal</button>
         <button onClick={()=> this.changePaymentPlan()}>Stripe Modal</button>
         <div className="home-container">
           <div className="home-column home-column-lg">
