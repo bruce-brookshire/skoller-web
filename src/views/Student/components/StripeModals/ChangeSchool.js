@@ -34,7 +34,7 @@ class ChangeSchool extends React.Component {
       <div>
 
 
-    {/*}  
+   
 <div class="popup-wrap poup-md">
    <div class="popup-closetext">
       <div class="popup-msg">
@@ -59,34 +59,34 @@ class ChangeSchool extends React.Component {
                <form>
                   <div class="group-field inputfield">								
                      <label>Email</label>
-                     <input type="text">
+                     <input type="text"/>
                   </div>
                   <div class="group-field">
                      <label>Card Information</label>
                      <div class="cardinfo-form">
                         <div class="cardinfo-field cardimg">
                            <span>
-                           <input type="text" placeholder="Number">
+                           <input type="text" placeholder="Number"/>
     <img src="https://e7.pngegg.com/pngimages/805/227/png-clipart-paypal-the-next-level-service-payment-gateway-industry-paypal-text-payment.png" alt=""></img>
                            </span>												
                         </div>
                         <div class="cardinfo-field border-1 saround">
                            <div class="row">
                               <span  class="col-xs-6" style="padding-right:0">
-                              <input type="text" placeholder="MM/YY" class="border-right-1">													
+                              <input type="text" placeholder="MM/YY" class="border-right-1"/>													
                               </span>
                               <span class="col-xs-6" style="padding-left:0">
-                              <input type="text" placeholder="CVV" class="border-right-1">													
+                              <input type="text" placeholder="CVV" class="border-right-1"/>													
                               </span>
                            </div>
                         </div>
                         <div class="cardinfo-field cardimg">
                            <span>												
-                           <input type="text" placeholder="Zip Code">										
+                           <input type="text" placeholder="Zip Code"/>										
                            </span>												
                         </div>
                      </div>
-                     <br>
+                     <br></br>
                      <button class="btn full-width sbg-dark stext-while margin-top">Pay</button>
                   </div>
                </form>
@@ -94,13 +94,13 @@ class ChangeSchool extends React.Component {
          </div>
       </div>
    </div>
-</div>*/}
+</div>
 
 
 
 
 
-         <div className="popup-wrap poup-sm">
+         {/* <div className="popup-wrap poup-sm">
             <div className="popup-closetext"> 
                 <div className="popup-msg margin-bottom"> 
                     <img src="/src/assets/images/sammi/Wow2.png" className="opup-icon" alt=""></img>
@@ -108,7 +108,7 @@ class ChangeSchool extends React.Component {
                 </div>
                 <button type="button" class="btn btn-primary full-width margin-top"><strong>Close</strong></button>
             </div>
-         </div>
+</div>*/}
 
 
 
