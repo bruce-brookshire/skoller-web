@@ -35,7 +35,9 @@ class HomeClasses extends React.Component {
           <div className="row">
             <div className="center-block col-md-6">
               <div class="card-wrap sborder-danger sborder-1">
-                <span className="card-icon sbg-danger stext-white"><i className="fas fa-file-upload fa-2x"></i></span>
+                <span className="card-icon sbg-danger stext-white">
+                  <i className="fas fa-file-upload fa-2x"></i>
+                  </span>
                 <h3 className="card-title stext-dark">Intro to psychology</h3>
                 <p className="card-subtitle stext-danger">Upload syllabus</p>
               </div>

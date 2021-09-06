@@ -8,6 +8,7 @@ import PopUp from './PopUp'
 import ClassStatusModal from '../../components/ClassStatusModal'
 import {Cookies} from 'react-cookie'
 import HomeClasses from './HomeNewClasses'
+import HomeClasses1 from './HomeClasses'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import HomeTasks from './HomeTasks'
 import HomeShare from './HomeShare'
@@ -168,6 +169,7 @@ class Home extends React.Component {
               
               <div className="home-card-content">
                 <HomeClasses classes={this.props.rootStore.studentClassesStore.classes} onAddClass={() => this.closeAddClassModal()} onClassSelect={this.onClassSelect} launchClassStatusModal={(cl) => this.launchClassStatusModal(cl)} />
+                <HomeClasses1 classes={this.props.rootStore.studentClassesStore.classes} onAddClass={() => this.closeAddClassModal()} onClassSelect={this.onClassSelect} launchClassStatusModal={(cl) => this.launchClassStatusModal(cl)} />
               </div>
             </div>
             <HomeGraphImpact />

@@ -66,31 +66,31 @@ class ClassList extends React.Component {
 
     if (status >= 1400) {
       return (
-        <div className='cn-class-list-cell-extra'>
+        <div className='cn-class-list-cell-extra1 fas fa-file-upload fa-2x'>
           <p><i className='fas fa-users' /> {cl.enrollment}</p>
         </div>
       )
     } else if (status === 1100) {
       return (
-        <div className='cn-class-list-cell-extra'>
+        <div className='cn-class-list-cell-extra1 fas fa-file-upload fa-2x'>
           <p style={{color: '#ef183d', fontWeight: '600'}}>Send syllabus</p>
         </div>
       )
     } else if (syllabusOverload) {
       return (
-        <div className='cn-class-list-cell-extra'>
+        <div className='cn-class-list-cell-extra1 fas fa-file-upload fa-2x'>
           <p style={{color: '#ef4b0a', fontWeight: '600'}}>Set up this class</p>
         </div>
       )
     } else if (status === 1200) {
       return (
-        <div className='cn-class-list-cell-extra'>
+        <div className='cn-class-list-cell-extra1 fas fa-file-upload fa-2x'>
           <p style={{color: '#4a4a4a', fontWeight: '600'}}>Syllabus in review</p>
         </div>
       )
     } else if (status === 1300) {
       return (
-        <div className='cn-class-list-cell-extra'>
+        <div className='cn-class-list-cell-extra1 fas fa-file-upload fa-2x'>
           <p style={{color: '#ef4b0a', fontWeight: '600'}}>Set up this class</p>
         </div>
       )
@@ -112,20 +112,36 @@ class ClassList extends React.Component {
           }
 
           return (
-            <div
-              className='cn-class-list-cell'
-              key={classes.indexOf(cl)}
-              style={cl.status.id >= 1400 ? {border: '1px solid ' + color} : null}
-              onClick={() => this.onClassSelect(cl)}
-            >
-              <div className='cn-class-list-cell-title' style={cl.status.id < 1400 ? {backgroundColor: null, borderBottom: '1px solid #4a4a4a'} : {backgroundColor: color}}>
-                <h2 style={cl.status.id < 1400 ? {color: '#4a4a4a'} : {color: 'white'}}>{name}</h2>
-              </div>
-              <div className='cn-class-list-cell-grade'>
+            // <div
+            //   className='cn-class-list-cell1'
+            //   key={classes.indexOf(cl)}
+            //   style={cl.status.id >= 1400 ? {border: '1px solid ' + color} : null}
+            //   onClick={() => this.onClassSelect(cl)}
+            // >
+            //   <div className='cn-class-list-cell-title' style={cl.status.id < 1400 ? {backgroundColor: null, borderBottom: '1px solid #4a4a4a'} : {backgroundColor: color}}>
+            //     <h2 style={cl.status.id < 1400 ? {color: '#4a4a4a'} : {color: 'white'}}>{name}</h2>
+            //   </div>
+            //   <div className='cn-class-list-cell-grade'>
+            //     <span>Grade</span>
+            //     {this.renderGrade(cl)}
+            //   </div>
+            //   {this.renderExtra(cl)}
+            // </div>
+            
+            
+            <div className="center-block col-md-6">
+            <div class="card-wrap sborder-danger sborder-1">
+              <span className="card-icon sbg-danger stext-white">
+                {/* <i className="fas fa-file-upload fa-2x"></i> */}
                 {this.renderGrade(cl)}
-              </div>
-              {this.renderExtra(cl)}
+                </span>
+              <h3 className="card-title stext-dark">{name}</h3>
+              <p className="card-subtitle stext-danger">{this.renderExtra(cl)}</p>
             </div>
+          </div>
+              
+              
+           
           )
         })}
         <div className='cn-class-list-cell empty' />
