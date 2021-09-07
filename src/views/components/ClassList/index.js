@@ -129,7 +129,11 @@ class ClassList extends React.Component {
             // </div>
             
             
-            <div className="center-block col-md-6">
+            <div className="center-block col-md-6"
+            key={classes.indexOf(cl)}
+            style={cl.status.id >= 1400 ? {border: '1px solid ' + color} : null}
+            onClick={() => this.onClassSelect(cl)}
+            >
             <div class="card-wrap sborder-danger sborder-1">
               <span className="card-icon sbg-danger stext-white">
                 {/* <i className="fas fa-file-upload fa-2x"></i> */}
