@@ -66,33 +66,33 @@ class ClassList extends React.Component {
 
     if (status >= 1400) {
       return (
-        <div className='cn-class-list-cell-extra1 fas fa-file-upload fa-2x'>
+       
           <p><i className='fas fa-users' /> {cl.enrollment}</p>
-        </div>
+       
       )
     } else if (status === 1100) {
       return (
-        <div className='cn-class-list-cell-extra1 fas fa-file-upload fa-2x'>
-          <p style={{color: '#ef183d', fontWeight: '600'}}>Send syllabus</p>
-        </div>
+        
+          <p style={{color: '#ef183d'}}>Send syllabus</p>
+      
       )
     } else if (syllabusOverload) {
       return (
-        <div className='cn-class-list-cell-extra1 fas fa-file-upload fa-2x'>
-          <p style={{color: '#ef4b0a', fontWeight: '600'}}>Set up this class</p>
-        </div>
+        
+          <p style={{color: '#ef4b0a'}}>Set up this class</p>
+       
       )
     } else if (status === 1200) {
       return (
-        <div className='cn-class-list-cell-extra1 fas fa-file-upload fa-2x'>
-          <p style={{color: '#4a4a4a', fontWeight: '600'}}>Syllabus in review</p>
-        </div>
+        
+          <p style={{color: '#4a4a4a'}}>Syllabus in review</p>
+       
       )
     } else if (status === 1300) {
       return (
-        <div className='cn-class-list-cell-extra1 fas fa-file-upload fa-2x'>
-          <p style={{color: '#ef4b0a', fontWeight: '600'}}>Set up this class</p>
-        </div>
+        
+          <p style={{color: '#ef4b0a' }}>Set up this class</p>
+       
       )
     } else {
       return null

@@ -164,7 +164,7 @@ class Home extends React.Component {
           />
         }
         <div className="home-container">
-          <div className="home-column home-column-lg">
+          <div className="home-column col-md-8 col-lg-9">
             <div className="home-shadow-box">
               
               <div className="home-card-content">
@@ -174,14 +174,20 @@ class Home extends React.Component {
             </div>
             <HomeGraphImpact />
           </div>
-          <div className="home-column home-column-sm">
+          <div className="home-column col-md-4 col-lg-3">
+
             <div className="home-shadow-box">
-              <h1 className='home-heading' onClick={() => this.props.history.push('/student/tasks')}>Assignments</h1>
+             {/*} <h1 className='home-heading' onClick={() => this.props.history.push('/student/tasks')}>Assignments</h1>*/}
+
+              <div class="center-block title-icon"><h2 class="heading-assign"><i class="far fa-check-circle"></i>
+              Assignments</h2> <span>Next 7 Days</span></div>
+              
+
               
               <div className="home-card-content">
                 <HomeAssignments />
               </div>
-            </div>
+            </div> 
             
           </div>
         </div>
