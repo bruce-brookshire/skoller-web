@@ -1,6 +1,6 @@
 var _Environments = {
   development: {
-    SERVER_NAME: 'http://localhost:4000',
+    SERVER_NAME: 'https://api-staging.skoller.co',
     IS_DEV: true,
     NAME: 'dev'
   },
