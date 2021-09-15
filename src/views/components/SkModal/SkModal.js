@@ -120,6 +120,7 @@ class SkModal extends React.Component {
 
     return (
       <div className={'sk-modal-wrapper'} style={containerStyle}>        
+
         {/* <div className="sk-modal-container modal-sm" id="sk-modal-container" style={style}> */}
         {/* <div className="sk-modal-container modal-lg" id="sk-modal-container" style={style}> */}
         <div className="sk-modal-container modal-md" id="sk-modal-container" style={style}>
