@@ -15,6 +15,13 @@ import {
   getStudentAssignmentById,
   toggleCompleteAssignmentById
 } from './assignments'
+
+import {
+  getAllSubscription,
+  getMySubscription,
+  lastUpcomingPayment,
+  billingHistory
+} from './stripe'
 import { getAnalytics } from './analytics'
 import {
   authenticateUser,
@@ -221,6 +228,12 @@ const actions = {
     updateStudentAssignment,
     getStudentAssignmentById,
     toggleCompleteAssignmentById
+  },
+  stripe:{
+  getAllSubscription,
+  getMySubscription,
+  lastUpcomingPayment,
+  billingHistory
   },
   auth: {
     authenticateUser,

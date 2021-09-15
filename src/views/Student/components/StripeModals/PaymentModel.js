@@ -4,6 +4,8 @@ import { observer, inject } from 'mobx-react'
 import { Elements } from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js';
 import CheckoutForm from './CheckoutForm';
+import actions from '../../../../actions'
+import {Cookies} from 'react-cookie'
 
 const stripePromise = loadStripe('pk_test_51JV9OSSGLvMTa3qVnwhFxc03IiK5JOGO94YQufQumo21gTgUAdpvMtEGYH9dgH1BPFrrirHuNbiVbE49gPNHHxIU00WpzV3KLP');
 @inject('rootStore') @observer
@@ -14,20 +16,18 @@ class ChangeSchool extends React.Component {
     this.state = {
      
     }
-
+    this.cookie = new Cookies()
+    console.log(this.cookie, 'my cookie');
   }
 
   
-
-  
-
 
   componentDidMount () {
-    
-   
+        actions.stripe.getAllSubscription().catch((r) => console.log(r, 66));
+        actions.stripe.getMySubscription().catch((r) => console.log(r, 66));
+        actions.stripe.lastUpcomingPayment().catch((r) => console.log(r, 66));
+        actions.stripe.billingHistory().catch((r) => console.log(r, 66));
   }
-
-
 
   render () {
     let disableNext = false
@@ -67,7 +67,7 @@ class ChangeSchool extends React.Component {
                     <h4 className="divider-title"><span>Pay with Card</span></h4>
 
                     <Elements stripe={stripePromise}>
-              <CheckoutForm amount={2000}  />
+              {/* <CheckoutForm amount={2000}  /> */}
             </Elements>
                     
                     <form>

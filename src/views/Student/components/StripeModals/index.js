@@ -90,9 +90,9 @@ class PaymentPlans extends React.Component {
               !this.state.classStatusModal.show && this.closeModal()
             }}
           >
-            {/* <PremminiumPlans backData={this.state.params} onSubmit={(data) => this.changeParams(data)} /> */}
+            <PremminiumPlans backData={this.state.params} onSubmit={(data) => this.changeParams(data)} />
             {/* <InfoModal backData={this.state.params} onSubmit={(data) => this.changeParams(data)} /> */}
-            <PaymentModel backData={this.state.params} onSubmit={(data) => this.changeParams(data)} />
+            {/* <PaymentModel backData={this.state.params} onSubmit={(data) => this.changeParams(data)} /> */}
           </ProgressModal>
         </div>
       </div>
