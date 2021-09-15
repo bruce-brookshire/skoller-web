@@ -32,7 +32,7 @@ class AddAssignment extends Component {
       classes: [],
       selectedClass: {},
       selectedStudentClass: null,
-      studentId: this.props.insightsUserStudentId || this.props.insightsUserStudentId,
+      studentId: this.props.insightsUserStudentId || this.props.rootStore.userStore.user.student.id,
 
       // visibility stuff
       showClassField: true,
