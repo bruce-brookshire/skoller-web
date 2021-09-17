@@ -16,3 +16,74 @@
     z-index: 1;
   }
 }
+
+
+.table-wrap {
+  background: #fff;
+  border-radius: 10px;
+  padding: 15px;
+}
+
+.head-left {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.head-left h3 {
+    margin: 10px 30px 10px 0;
+}
+
+.head-left .badge {
+  display: inline;
+  margin-right: 15px;
+}
+
+.head-left .badge.badge-primary {
+  background: #57B9E4;
+  color: #fff;  
+}
+
+.head-left .badge.badge-light {
+  background:#eee;
+  color: #444;  
+}
+
+.head-left .badge {
+  display: inline;
+  margin-right: 15px;
+  padding: 7px 15px 3px 15px;
+  border-radius: 5px;
+  text-align: center;
+  line-height: 18px;
+}
+.clas-form .form-control {
+  border: 1px solid #eee;
+  width: 100%;
+  padding: 8px 15px;
+  border-radius: 5px;
+  background: #f5f5f5;
+}
+.tabledata-wrap table.table {
+  width: 100%;
+  margin: 20px 0 20px 0;
+}
+.tabledata-wrap table.table .thead-dark {
+  background: #444;
+  
+}
+.tabledata-wrap table.table .thead-dark th {
+  color: #fff;
+  text-align: left;
+  padding: 10px 15px 5px 15px;
+  line-height: 22px;
+  font-weight: normal;
+}
+
+.tabledata-wrap table.table .thead-dark {
+  background: #444;
+}
+.tabledata-wrap table.table td {
+  text-align: left;
+  padding: 10px 15px;
+  border: 1px solid #eee;
+}

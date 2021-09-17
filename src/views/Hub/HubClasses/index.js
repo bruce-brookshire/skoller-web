@@ -215,7 +215,7 @@ class HubClasses extends React.Component {
   render () {
     return (
       <div className='cn-classes-container'>
-        {this.renderHeader()}
+       {/* {this.renderHeader()}
         {this.state.loading
           ? <div className='center-text'><Loading /></div>
           : <Grid
@@ -228,7 +228,107 @@ class HubClasses extends React.Component {
             emptyMessage={'Search for classes using the controls above.'}
             onSelect={this.onEditClass.bind(this)}
           />
-        }
+        }*/}
+       
+
+        <div class="table-wrap">
+          <div class="table-inner">
+            <div class="table-head">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="head-left">
+                          <h3><i class="fas fa-book"></i> &nbsp; Class</h3>
+                          <span class="badge badge-primary">In Review (295)</span>  
+                          <span class="badge badge-light">Class Changes (31)</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <form className="clas-form">
+                          <input type="text" class="form-control" placeholder="Search Class, school or id" />
+                        </form>
+                    </div>                                   
+                </div>
+            </div>
+            <div class="tabledata-wrap">
+                <div class="table-inner">
+                <table class="table" cellpadding="0" cellspacing="0">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Class Name</th>
+                        <th scope="col">School</th>
+                        <th scope="col">Premium</th>
+                        <th scope="col">Trail</th>
+                        <th scope="col">Expired</th>
+                        <th scope="col">Recieved</th>
+                        <th scope="col">Day Left</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>1125</td>
+                        <td>Accounting</td>
+                        <td>PTU Universicy</td>
+                        <td>12</td>
+                        <td>1</td>
+                        <td>17</td>
+                        <td>54 Hours Ago</td>
+                        <td>98</td>
+                      </tr>
+                      <tr>
+                        <td>1125</td>
+                        <td>Accounting</td>
+                        <td>PTU Universicy</td>
+                        <td>12</td>
+                        <td>1</td>
+                        <td>17</td>
+                        <td>54 Hours Ago</td>
+                        <td>98</td>
+                      </tr>
+                      <tr>
+                        <td>1125</td>
+                        <td>Accounting</td>
+                        <td>PTU Universicy</td>
+                        <td>12</td>
+                        <td>1</td>
+                        <td>17</td>
+                        <td>54 Hours Ago</td>
+                        <td>98</td>
+                      </tr>
+                      <tr>
+                        <td>1125</td>
+                        <td>Accounting</td>
+                        <td>PTU Universicy</td>
+                        <td>12</td>
+                        <td>1</td>
+                        <td>17</td>
+                        <td>54 Hours Ago</td>
+                        <td>98</td>
+                      </tr>
+                      <tr>
+                        <td>1125</td>
+                        <td>Accounting</td>
+                        <td>PTU Universicy</td>
+                        <td>12</td>
+                        <td>1</td>
+                        <td>17</td>
+                        <td>54 Hours Ago</td>
+                        <td>98</td>
+                      </tr>
+                      
+                    </tbody>
+                  </table>
+
+
+                </div>
+            </div>
+
+
+          </div>
+
+
+        </div> 
+
       </div>
     )
   }
