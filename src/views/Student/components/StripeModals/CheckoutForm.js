@@ -1,145 +1,84 @@
-import React, { useState } from 'react';
-import {
-  useStripe, useElements,
-  CardNumberElement, CardExpiryElement, CardCvcElement
-} from '@stripe/react-stripe-js';
-// import { stripePaymentMethodHandler } from './script';
+import React from 'react';
+import {useStripe, useElements, CardElement} from '@stripe/react-stripe-js';
 
-const CARD_ELEMENT_OPTIONS = {
-  style: {
-    base: {
-      lineHeight: "27px",
-      color: "#212529",
-      fontSize: "1.1rem",
-      "::placeholder": {
-        color: "#aab7c4",
-      },
-    },
-    invalid: {
-      color: "#fa755a",
-      iconColor: "#fa755a",
-    },
-  },
-};
+import CardSection from './CardSection';
+import actions from '../../../../actions';
+import {showSnackbar} from '../../../../utilities/snackbar'
+
 
 export default function CheckoutForm(props) {
-  const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-
+  
   const stripe = useStripe();
   const elements = useElements();
+  
+  console.log(props, 'CheckoutForm');
+  console.log(props.selectedSubscription, 'CheckoutForm');
+  console.log(props.myprops.closeModal, 'CheckoutForm');
+
 
   const handleSubmit = async (event) => {
+    
+    
     // We don't want to let default form submission happen here,
     // which would refresh the page.
     event.preventDefault();
 
     if (!stripe || !elements) {
       // Stripe.js has not yet loaded.
-      // Make sure to disable form submission until Stripe.js has loaded.
+      // Make  sure to disable form submission until Stripe.js has loaded.
       return;
     }
 
-    setLoading(true);
-    setErrorMsg('');
+    const card = elements.getElement(CardElement);
+    const result = await stripe.createToken(card);
 
-    const paymentMethodObj = {
-      type: 'card',
-      card: elements.getElement(CardNumberElement),
-      billing_details: {
-        name,
-        email
-      },
+    if (result.error) {
+      // Show error to your customer.
+      console.log(result.error.message);
+    } else {
+      // Send the token to your server.
+      // This function does not exist yet; we will define it in the next step.
+      stripeTokenHandler(result.token);
+    }
+  };
+
+   function stripeTokenHandler(token){
+      const paymentData ={payment_method: {
+        token: token.id,
+        plan_id:props.selectedSubscription
+      }
     };
-    const cc = await stripe.createToken(paymentMethodObj)
-    // const paymentMethodResult = await stripe.createPaymentMethod(paymentMethodObj);
-    console.log(cc)
 
-    // stripePaymentMethodHandler({
-    //   result: paymentMethodResult,
-    //   amount: props.amount
-    // }, handleResponse);
-  };
+  
 
-  // callback method to handle the response
-  const handleResponse = response => {
-    setLoading(false);
-    if (response.error) {
-      setErrorMsg(typeof response.error === 'string' ? response.error : response.error.message);
+    if(props.selectedSubscription == ''){
+      alert('Please select Subscription plan.');
       return;
     }
-    // props.setPaymentCompleted(response.success ? true : false);
-  };
+      actions.stripe.createSubscription(paymentData)
+          .then((data) => {
+            
+      
+            if(data.status == 'ok'){
+              props.myprops.closeModal();
+              showSnackbar(data.message, 'success')
+            }else{
+              showSnackbar(data.message, 'error')
+            }
+            props.simplifiedFunction();
+          })
+          .catch((e) => {
+          console.log(e)
+      })
+  }
 
   return (
-    <React.Fragment>
-      <h4 className="d-flex justify-content-between align-items-center mb-3">
-        <span className="text-muted">Pay with card</span>
-      </h4>
-      <form onSubmit={handleSubmit}>
-
-        <div className="row">
-          <div className="col-md-6 mb-3">
-            <label htmlFor="cc-name">Name on card</label>
-            <input
-              id="cc-name"
-              type="text"
-              className="form-control"
-              value={name}
-              onChange={e => setName(e.target.value)}
-            />
-          </div>
-          <div className="col-md-6 mb-3">
-            <label htmlFor="cc-email">Email</label>
-            <input
-              id="cc-email"
-              type="text"
-              className="form-control"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-            />
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-md-12 mb-3">
-            <label htmlFor="cc-number">Card Number</label>
-            <CardNumberElement
-              id="cc-number"
-              className="form-control"
-              options={CARD_ELEMENT_OPTIONS}
-            />
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-md-6 mb-3">
-            <label htmlFor="expiry">Expiration Date</label>
-            <CardExpiryElement
-              id="expiry"
-              className="form-control"
-              options={CARD_ELEMENT_OPTIONS}
-            />
-          </div>
-          <div className="col-md-6 mb-3">
-            <label htmlFor="cvc">CVC</label>
-            <CardCvcElement
-              id="cvc"
-              className="form-control"
-              options={CARD_ELEMENT_OPTIONS}
-            />
-          </div>
-        </div>
-
-        <hr className="mb-4" />
-        <button className="btn btn-dark w-100" type="submit" disabled={loading}>
-          {loading ? <div className="spinner-border spinner-border-sm text-light" role="status"></div> : `PAY ₹${props.amount}`}
-        </button>
-        {errorMsg && <div className="text-danger mt-2">{errorMsg}</div>}
-      </form>
-    </React.Fragment>
+    <form onSubmit={handleSubmit}>
+      <CardSection />
+      {/* <button disabled={!stripe}>Confirm order</button>
+       */}
+       <button className="btn full-width sbg-dark stext-while margin-top" disabled={!stripe}>Pay</button>
+    </form>
   );
 }

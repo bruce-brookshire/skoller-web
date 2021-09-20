@@ -20,7 +20,10 @@ import {
   getAllSubscription,
   getMySubscription,
   lastUpcomingPayment,
-  billingHistory
+  billingHistory,
+  allProducts,
+  allPlans,
+  createSubscription
 } from './stripe'
 import { getAnalytics } from './analytics'
 import {
@@ -233,7 +236,10 @@ const actions = {
   getAllSubscription,
   getMySubscription,
   lastUpcomingPayment,
-  billingHistory
+  billingHistory,
+  allProducts,
+  allPlans,
+  createSubscription
   },
   auth: {
     authenticateUser,

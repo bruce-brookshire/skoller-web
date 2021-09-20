@@ -4,9 +4,16 @@ import {inject, observer} from 'mobx-react'
 import ClassInfo from './ClassInfo'
 import { withRouter } from 'react-router-dom'
 import JobsSwitch from './JobsSwitch'
+import actions from '../../actions';
 
 @inject('rootStore') @observer
 class NavBar extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      subscribed:''
+    }
+  }
   getName () {
     const {userStore: {user}} = this.props.rootStore
     if (user.student) {
@@ -26,6 +33,18 @@ class NavBar extends React.Component {
     } else {
       return 'Syllabi Worker'
     }
+  }
+  componentDidMount(){
+    actions.stripe.getMySubscription()
+    .then((data) => {
+      if(data.data.length > 0){
+        this.setState({subscribed:'Subscribed'});
+      } 
+    
+    })
+    .catch((e) => {
+    console.log(e)
+ })
   }
 
   getInitials () {
@@ -157,6 +176,7 @@ class NavBar extends React.Component {
             <div className='left'>
               <p>{this.getName()}</p>
               <span>{this.getDescription()}</span>
+              <span>{this.state.subscribed}</span>
             </div>
             <div className='right'>
               {user.pic_path

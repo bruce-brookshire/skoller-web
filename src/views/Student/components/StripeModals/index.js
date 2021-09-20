@@ -32,6 +32,26 @@ class PaymentPlans extends React.Component {
     this.checkForActiveTerm()
   }
 
+  componentDidMount () {
+    // actions.stripe.getMySubscription().catch((r) => console.log(r, 66));
+
+    actions.stripe.getMySubscription()
+        .then((data) => {
+          if(data.data.length > 0){
+            let len = data.data.length;
+            let latestplan = data.data.plan;
+          } else {
+
+          }
+        // this.setState({plans: data.data})
+        })
+        .catch((e) => {
+        console.log(e)
+     })
+
+    
+}
+
   checkForActiveTerm () {
     if (moment(this.props.rootStore.userStore.user.student.primary_period.end_date).isBefore(moment())) {
       this.setState({loading: true})
@@ -90,9 +110,9 @@ class PaymentPlans extends React.Component {
               !this.state.classStatusModal.show && this.closeModal()
             }}
           >
-            <PremminiumPlans backData={this.state.params} onSubmit={(data) => this.changeParams(data)} />
+            {/* <PremminiumPlans backData={this.state.params} onSubmit={(data) => this.changeParams(data)} /> */}
             {/* <InfoModal backData={this.state.params} onSubmit={(data) => this.changeParams(data)} /> */}
-            {/* <PaymentModel backData={this.state.params} onSubmit={(data) => this.changeParams(data)} /> */}
+            <PaymentModel backData={this.state.params} onSubmit={(data) => this.changeParams(data)} closeModal={() => this.props.closeModal()} />
           </ProgressModal>
         </div>
       </div>

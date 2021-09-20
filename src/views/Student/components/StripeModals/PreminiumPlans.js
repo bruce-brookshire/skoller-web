@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
+import actions from '../../../../actions'
+
 
 
 @inject('rootStore') @observer
@@ -9,13 +11,26 @@ class ChangeSchool extends React.Component {
     super(props)
 
     this.state = {
-     
+      selected_subscription:'',
+      plans:[],
     }
-
   }
 
 
   componentDidMount () {
+   actions.stripe.getAllSubscription().catch((r) => console.log(r, 66));
+   actions.stripe.getMySubscription().catch((r) => console.log(r, 66));
+   actions.stripe.lastUpcomingPayment().catch((r) => console.log(r, 66));
+   actions.stripe.billingHistory().catch((r) => console.log(r, 66));
+   actions.stripe.allProducts().catch((r) => console.log(r, 66));
+   actions.stripe.allPlans().catch((r) => console.log(r, 66));
+   actions.stripe.allPlans()
+       .then((data) => {
+       this.setState({plans: data.data})
+       })
+       .catch((e) => {
+       console.log(e)
+    })
    
   }
 
