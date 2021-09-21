@@ -100,7 +100,9 @@ class HubClasses extends React.Component {
   *
   * @return [Array]. Array of formatted row data.
   */
+
   getRows () {
+    console.log(this.state.classes, '----');
     return this.state.classes.map((item, index) =>
       this.mapRow(item, index)
     )
@@ -163,6 +165,44 @@ class HubClasses extends React.Component {
   onCreateClass () {
 
   }
+
+
+
+  getClassList(){
+    return (
+      <tbody>
+        {
+          this.state.classes.map((item, index) =>(
+          <tr>
+            <td>{item.code}</td>
+            <td>{item.name}</td>
+            <td>{item.school.name}</td>
+            <td>P</td>
+            <td>T</td>
+            <td>Expired</td>
+            <td>54 Hours Ago</td>
+            <td>{item.meet_days}</td>
+        </tr>))
+
+        }
+      </tbody>
+    );
+    // let myclasses = [];    
+    //   return this.state.classes.map((item, index) =>{
+    //   myclasses.push(
+    //     <tr>
+    //       <td>{item.code}</td>
+    //       <td>{item.name}</td>
+    //       <td>{item.school.name}</td>
+    //       <td>P</td>
+    //       <td>T</td>
+    //       <td>Expired</td>
+    //       <td>54 Hours Ago</td>
+    //       <td>{item.meet_days}</td>
+    //     </tr>
+    //   )  
+    //   })
+  }
   /*
   * On edit class.
   *
@@ -215,8 +255,8 @@ class HubClasses extends React.Component {
   render () {
     return (
       <div className='cn-classes-container'>
-       {/* {this.renderHeader()}
-        {this.state.loading
+       {this.renderHeader()}
+        {/* {this.state.loading
           ? <div className='center-text'><Loading /></div>
           : <Grid
             className='cn-classes-table'
@@ -228,7 +268,9 @@ class HubClasses extends React.Component {
             emptyMessage={'Search for classes using the controls above.'}
             onSelect={this.onEditClass.bind(this)}
           />
-        }*/}
+        } */}
+
+        
        
 
         <div class="table-wrap">
@@ -264,59 +306,13 @@ class HubClasses extends React.Component {
                         <th scope="col">Day Left</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      <tr>
-                        <td>1125</td>
-                        <td>Accounting</td>
-                        <td>PTU Universicy</td>
-                        <td>12</td>
-                        <td>1</td>
-                        <td>17</td>
-                        <td>54 Hours Ago</td>
-                        <td>98</td>
-                      </tr>
-                      <tr>
-                        <td>1125</td>
-                        <td>Accounting</td>
-                        <td>PTU Universicy</td>
-                        <td>12</td>
-                        <td>1</td>
-                        <td>17</td>
-                        <td>54 Hours Ago</td>
-                        <td>98</td>
-                      </tr>
-                      <tr>
-                        <td>1125</td>
-                        <td>Accounting</td>
-                        <td>PTU Universicy</td>
-                        <td>12</td>
-                        <td>1</td>
-                        <td>17</td>
-                        <td>54 Hours Ago</td>
-                        <td>98</td>
-                      </tr>
-                      <tr>
-                        <td>1125</td>
-                        <td>Accounting</td>
-                        <td>PTU Universicy</td>
-                        <td>12</td>
-                        <td>1</td>
-                        <td>17</td>
-                        <td>54 Hours Ago</td>
-                        <td>98</td>
-                      </tr>
-                      <tr>
-                        <td>1125</td>
-                        <td>Accounting</td>
-                        <td>PTU Universicy</td>
-                        <td>12</td>
-                        <td>1</td>
-                        <td>17</td>
-                        <td>54 Hours Ago</td>
-                        <td>98</td>
-                      </tr>
-                      
-                    </tbody>
+                    {
+                    this.state.loading
+                      ? <div className='center-text'><Loading /></div>
+                      : this.getClassList()
+                    }
+                    {/* {this.getClassList()} */}
+                    
                   </table>
 
 
