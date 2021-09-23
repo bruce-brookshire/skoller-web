@@ -177,9 +177,9 @@ class HubClasses extends React.Component {
             <td>{item.code}</td>
             <td>{item.name}</td>
             <td>{item.school.name}</td>
-            <td>P</td>
-            <td>T</td>
-            <td>Expired</td>
+            <td>{item.premium?premium:''}</td>
+            <td>{item.trial?trial:''}</td>
+            <td>{item.expired?expired:''}</td>
             <td>54 Hours Ago</td>
             <td>{item.meet_days}</td>
         </tr>))
@@ -187,21 +187,6 @@ class HubClasses extends React.Component {
         }
       </tbody>
     );
-    // let myclasses = [];    
-    //   return this.state.classes.map((item, index) =>{
-    //   myclasses.push(
-    //     <tr>
-    //       <td>{item.code}</td>
-    //       <td>{item.name}</td>
-    //       <td>{item.school.name}</td>
-    //       <td>P</td>
-    //       <td>T</td>
-    //       <td>Expired</td>
-    //       <td>54 Hours Ago</td>
-    //       <td>{item.meet_days}</td>
-    //     </tr>
-    //   )  
-    //   })
   }
   /*
   * On edit class.
@@ -222,7 +207,7 @@ class HubClasses extends React.Component {
     }
   }
 
-  renderHeader () {
+  renderHeader_bkp () {
     const {state} = this.props.location
     // If the class is in any of these states, don't show the search bar
     const boole = state && (state.needsChange || state.needsMaint)
@@ -252,10 +237,30 @@ class HubClasses extends React.Component {
     )
   }
 
+  renderHeader () {
+    const {state} = this.props.location
+    // If the class is in any of these states, don't show the search bar
+    const boole = state && (state.needsChange || state.needsMaint)
+    return boole ? (
+      <div>
+        <ClassSearch {...this.props} loading={this.state.loading}
+          onSearch={this.getClasses.bind(this)} hidden={true}/>
+        <div className='margin-top'>
+          <span className='total right'>Total results: {this.state.classes.length}</span>
+        </div>
+      </div>      
+    ) : (
+      <div>
+        <ClassSearch {...this.props} loading={this.state.loading}
+          onSearch={this.getClasses.bind(this)}/>
+      </div>
+    )
+  }
+
   render () {
     return (
       <div className='cn-classes-container'>
-       {this.renderHeader()}
+       {/* {this.renderHeader()} */}
         {/* {this.state.loading
           ? <div className='center-text'><Loading /></div>
           : <Grid
@@ -285,9 +290,7 @@ class HubClasses extends React.Component {
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <form className="clas-form">
-                          <input type="text" class="form-control" placeholder="Search Class, school or id" />
-                        </form>
+                    {this.renderHeader()}
                     </div>                                   
                 </div>
             </div>
