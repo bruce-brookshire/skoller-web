@@ -67,7 +67,7 @@ class ClassList extends React.Component {
     if (status >= 1400) {
       return (
        
-          <p><i className='fas fa-users' /> {cl.enrollment}</p>
+          <p><span><i className="fas fa-users"></i></span> {cl.enrollment}</p>
        
       )
     } else if (status === 1100) {
@@ -131,12 +131,10 @@ class ClassList extends React.Component {
             
             <div className="center-block col-md-6"
             key={classes.indexOf(cl)}
-            style={cl.status.id >= 1400 ? {border: '1px solid ' + color} : null}
             onClick={() => this.onClassSelect(cl)}
             >
             <div class="card-wrap sborder-danger sborder-1">
               <span className="card-icon sbg-danger stext-white">
-                {/* <i className="fas fa-file-upload fa-2x"></i> */}
                 {this.renderGrade(cl)}
                 </span>
               <h3 className="card-title stext-dark">{name}</h3>

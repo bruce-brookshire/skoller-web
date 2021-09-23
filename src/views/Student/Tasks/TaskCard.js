@@ -55,18 +55,29 @@ class TaskCard extends React.Component {
         </div>
       )
     } else {
+
+      
       return (
-        <div className="task-card-container" key={task.id} onClick={() => this.goToAssignment()} >
-          <div className="task-card" style={{border: '1px solid', borderColor: color, borderRadius: '5px'}}>
-            <div className="task-card-heading">
-              <h2 className="task-card-left" style={{color: color}}>{task.name}</h2>
-              <div className="task-card-right"><WeightIcon color={color} weight={task.weight} /></div>
-            </div>
-            <div className="task-card-content">
-              <p className="task-card-left">{'Due ' + this.formatDueDate(task.due)}</p>
-              <p className="task-card-left" style={{color: '#a9a9a9'}}>{this.props.clName}</p>
-            </div>
-          </div>
+        
+        // <div className="task-card-container" key={task.id} onClick={() => this.goToAssignment()} >
+        //   <div className="task-card" style={{border: '1px solid', borderColor: color, borderRadius: '5px'}}>
+        //     <div className="task-card-heading">
+        //       <h2 className="task-card-left" style={{color: color}}>{task.name}</h2>
+        //       <div className="task-card-right"><WeightIcon color={color} weight={task.weight} /></div>
+        //     </div>
+        //     <div className="task-card-content">
+        //       <p className="task-card-left">{'Due ' + this.formatDueDate(task.due)} 34</p>
+        //       <p className="task-card-left" style={{color: '#a9a9a9'}}>{this.props.clName}</p>
+        //     </div>
+        //   </div>
+        // </div>
+
+        
+
+        <div class="work-list-items first-child" key={task.id} onClick={() => this.goToAssignment()}>
+              
+            <div class="work-left-items"> <input type="radio" class="assign-radio" /><h4 class="stext-purple">{task.name}</h4><span class="stext-dark">{'Due ' + this.formatDueDate(task.due)}</span></div>  
+            <div class="work-right-items"><span><i class="fas fa-signal stext-purple"></i></span><span class="stext-light">{this.props.clName}</span></div>
         </div>
       )
     }
