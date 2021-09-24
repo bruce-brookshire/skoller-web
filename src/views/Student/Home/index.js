@@ -18,6 +18,8 @@ import HomeInsights from './HomeInsights'
 import HomeGraphImpact from './HomeGraphImpact'
 import HomeAssignments from './HomeAssignments'
 
+import HomeAssignmentGraph from '../Insights/HomeAssignmentGraph'
+
 @inject('rootStore') @observer
 class Home extends React.Component {
   constructor (props) {
@@ -172,7 +174,8 @@ class Home extends React.Component {
                 <HomeClasses1 classes={this.props.rootStore.studentClassesStore.classes} onAddClass={() => this.closeAddClassModal()} onClassSelect={this.onClassSelect} launchClassStatusModal={(cl) => this.launchClassStatusModal(cl)} />
               </div>
             </div>
-            <HomeGraphImpact />
+            <HomeGraphImpact assignments={this.props.rootStore.studentAssignmentsStore.assignments}/>
+            {/* <HomeAssignmentGraph/> */}
           </div>
           <div className="home-column col-md-4 col-lg-3">
 

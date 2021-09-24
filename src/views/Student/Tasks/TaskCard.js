@@ -4,6 +4,8 @@ import moment from 'moment'
 import { withRouter } from 'react-router-dom'
 import {inject, observer} from 'mobx-react'
 import WeightIcon from './WeightIcon'
+import ReactToolTip  from '../../components/ToolTip/CustomToolTip'
+
 
 @inject('rootStore') @observer
 class TaskCard extends React.Component {
@@ -77,7 +79,11 @@ class TaskCard extends React.Component {
         <div class="work-list-items first-child" key={task.id} onClick={() => this.goToAssignment()}>
               
             <div class="work-left-items"> <input type="radio" class="assign-radio" /><h4 class="stext-purple">{task.name}</h4><span class="stext-dark">{'Due ' + this.formatDueDate(task.due)}</span></div>  
-            <div class="work-right-items"><span><i class="fas fa-signal stext-purple"></i></span><span class="stext-light">{this.props.clName}</span></div>
+
+            <ReactToolTip theme="dark" position="top"   ttype="assifnment" >
+              <div class="work-right-items"><span><i class="fas fa-signal stext-purple"></i></span><span class="stext-light">{this.props.clName}</span></div>
+            </ReactToolTip>
+            
         </div>
       )
     }

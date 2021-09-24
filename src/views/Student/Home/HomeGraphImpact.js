@@ -10,6 +10,12 @@ import Sammi from '../../components/Sammi'
 import Progress from '../Insights/Progress'
 import SkSelect from '../../components/SkSelect'
 import ToolTip from '../../components/ToolTip'
+import { getAssignmentCountData } from '../Insights/DataUtils'
+
+import { VictoryBar, VictoryChart, VictoryAxis , VictoryTooltip, VictoryLabel, VictoryLine, VictoryScatter } from 'victory';
+import { getStyles } from '../Insights/styles'
+
+
 
 
 import {
@@ -18,65 +24,246 @@ import {
   Title,
   ArgumentAxis,
   ValueAxis,
+  
 } from '@devexpress/dx-react-chart-bootstrap4';
 import '@devexpress/dx-react-chart-bootstrap4/dist/dx-react-chart-bootstrap4.css';
 import { Animation } from '@devexpress/dx-react-chart';
 
 const data = [
-  { year: '1950', population: 2.525 },
-  { year: '1960', population: 3.018 },
-  { year: '1970', population: 3.682 },
-  { year: '1980', population: 4.440 },
-  { year: '1990', population: 5.310 },
-  { year: '2000', population: 6.127 },
-  { year: '2010', population: 6.930 },
+  {quarter: 1, earnings: 13000},
+  {quarter: 2, earnings: 16500},
+  {quarter: 3, earnings: 14250},
+  {quarter: 4, earnings: 19000}
 ];
 
+
+class CustomFlyout extends React.Component {
+  render() {
+    const {x, y, orientation, ji} = this.props;
+    const newY = orientation === "bottom" ? y - 35 : y + 35;
+    return (
+      <g transform={'translate(-100, -200)'} style={{pointerEvents: 'none', position: 'relative'}}>
+        <foreignObject x={x} y={y} width="200" height="200">
+          <div
+            className="graph-tooltip"
+            style={{
+              width: '96px',
+              backgroundColor: 'whibluete',
+              border: '1px solid #4a4a4a',
+              borderRadius: '5px',
+              padding: '8px',
+              position: 'absolute',
+              bottom: '12px',
+              left: 'calc(50% - 48px)'
+            }}
+          >
+            <div style={{textAlign: 'center'}}>
+             <p>All Assignment Details</p>
+             <p>Assignment 1</p>
+             <p>Assignment 2</p>
+            </div>
+          </div>
+        </foreignObject>
+      </g>
+    );
+  }
+}
 @inject('rootStore') @observer
 class HomeGraphImpact extends React.Component {
   constructor (props) {
     super(props)
+    // console.log(props.rootStore.studentAssignmentsStore.assignments, 'pp');
 
     this.state = {
       type: 'Distribution',
       data,
+      assignment:props.rootStore.studentAssignmentsStore.assignments
     }
   }
 
-  
+  getStyles () {
+    return getStyles(this.props.cl ? '#' + this.props.cl.color : false)
+  }
 
-
-
-
-  
-
-
+      // ass:this.props.rootStore.studentAssignmentsStore.assignments
 
 
   render () {
-      const { data: chartData } = this.state;
-    return (
-      <div className='home-shadow-box margin-top home-insights'>
-       
-           <div className="card">
-            <Chart
-          data={chartData}
-        >
-          <ArgumentAxis />
-          <ValueAxis max={7} />
+      const { data: chartData, assignment } = this.state;
+      let data = getAssignmentCountData(assignment, false, [], 'w');
+      console.log(data, 'un changes');
 
-          <BarSeries
-            valueField="population"
-            argumentField="year"
-          />
-          <Title text="Grade Impact" />
-          <Animation />
-        </Chart>
-          </div>
+      const styles = this.getStyles();
+
+      const today = parseInt(moment().format('X'))
+      const domain = {
+        x: [
+          data[0].x - 604800,
+          data[data.length - 1].x + 604800
+        ],
+        y: [
+          0,
+          Math.max.apply(Math, data.map(a => a.y)) + (Math.max.apply(Math, data.map(a => a.y)) * 0.25)
+        ]
+      }
+      let hideToday = false
+      if (moment(today, 'X').isAfter(moment(domain.x[1], 'X'))) {
+        hideToday = true
+      }
+      const tickValues = data.map(d => d.x)
+      const animate =  null
+
+      console.log(data, domain, 'assignments--');
+    return (
+      // <div className='home-shadow-box margin-top home-insights'>
+
+      //   <VictoryChart
+      //     domain={{ x: [0, 11], y: [0, 100] }}
           
-        
-        
-      </div>
+      //   >
+      //     <VictoryBar
+      //       labelComponent={
+      //         <VictoryTooltip
+      //           flyoutComponent={<CustomFlyout ji='098'/>}
+      //         />
+      //       }
+      //       data={[
+      //         {x: 2, y: 5, label: ""},
+      //         {x: 6, y: 4, label: ""},
+      //         {x: 10, y: 7, label: ""}
+      //       ]}
+      //       style={{
+      //         data: {fill: "tomato", width: 20},
+      //         labels: { fill: "tomato"}
+      //       }}
+      //     />
+      //   </VictoryChart>
+      // </div>
+      <div className='home-shadow-box margin-top home-insights'>
+          <svg  viewBox='0 0 450 260'>
+           
+
+            <g transform={'translate(16, -20)'}>
+              <VictoryAxis
+                tickValues={tickValues}
+                tickFormat={d => moment(d, 'X').format('M/DD')}
+                tickCount={5}
+                style={styles.axisDates}
+                domain={{x: domain.x}}
+                // scale='time'
+                standalone={false}
+                animate={animate}
+              />
+
+              <VictoryLabel x={6} y={154}
+                text={'Number of Assignments'}
+                style={styles.axisLabel}
+                angle={270}
+                textAnchor={'middle'}
+              />
+
+              <VictoryAxis
+                dependentAxis
+                // label='Assignments'
+                domain={{y: domain.y}}
+                offsetX={50}
+                orientation='left'
+                standalone={false}
+                domainPadding={200}
+                style={styles.axisOne}
+                tickFormat={d => d.toString()}
+                animate={animate}
+              />
+
+              {!hideToday && <g>
+                <VictoryLine
+                  x={() => today}
+                  domain={domain}
+                  scale={{x: 'time', y: 'linear'}}
+                  standalone={false}
+                  style={styles.todayLine.back}
+                  animate={animate}
+                />
+
+                <VictoryLine
+                  x={() => today}
+                  domain={domain}
+                  scale={{x: 'time', y: 'linear'}}
+                  standalone={false}
+                  style={styles.todayLine.front}
+                  animate={animate}
+                />
+
+                <VictoryScatter
+                  data={[{x: today, y: domain.y[1]}]}
+                  domain={domain}
+                  standalone={false}
+                  scale={{x: 'time', y: 'linear'}}
+                  size={4}
+                  style={styles.todayLine.dot}
+                  animate={animate}
+                />
+
+                <VictoryLabel x={(((today - domain.x[0]) / (domain.x[1] - domain.x[0])) * 336) + 35} y={34}
+                  text={'Today'}
+                  style={styles.label}
+                  animate={animate}
+                />
+              </g>}
+
+{/*               
+                <VictoryLine
+                  data={data}
+                  domain={domain}
+                  scale={{x: 'time', y: 'linear'}}
+                  standalone={false}
+                  interpolation='monotoneX'
+                  style={styles.lineOne}
+                  animate={animate}
+                /> */}
+              
+
+              
+                
+                  {/* <VictoryScatter
+                    data={data}
+                    size={5}
+                    domain={domain}
+                    scale={{x: 'time', y: 'linear'}}
+                    standalone={false}
+                    style={styles.scatter}
+                    labels={() => ''}
+                    labelComponent={
+                              <VictoryTooltip
+                                flyoutComponent={<CustomFlyout ji='098'/>}
+                              />
+                            }
+                    animate={animate}
+                  /> */}
+
+                <VictoryBar
+                  data={data}
+                  size={5}
+                  domain={domain}
+                  scale={{x: 'time', y: 'linear'}}
+                  standalone={false}
+                  style={styles.scatter}
+                  labels={() => ''}
+                  labelComponent={
+                    <VictoryTooltip
+                      flyoutComponent={<CustomFlyout ji='098'/>}
+                    />
+                  }
+                  animate={animate}
+                />
+
+                
+              
+
+              
+            </g>
+          </svg>
+        </div>
     )
   }
 }

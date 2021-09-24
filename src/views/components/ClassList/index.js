@@ -4,6 +4,7 @@ import sExclamation from '../../../assets/images/class_status/s-exclamation.png'
 import sInReview from '../../../assets/images/class_status/s-in-review.png'
 import uploadS from '../../../assets/images/class_status/upload-s.png'
 import {inject, observer} from 'mobx-react'
+import ReactToolTip  from '../ToolTip/CustomToolTip'
 
 @inject('rootStore') @observer
 class ClassList extends React.Component {
@@ -113,11 +114,10 @@ class ClassList extends React.Component {
 
           return (
             // <div
-            //   className='cn-class-list-cell1'
+            //   className='cn-class-list-cell'
             //   key={classes.indexOf(cl)}
             //   style={cl.status.id >= 1400 ? {border: '1px solid ' + color} : null}
-            //   onClick={() => this.onClassSelect(cl)}
-            // >
+            //   onClick={() => this.onClassSelect(cl)} >
             //   <div className='cn-class-list-cell-title' style={cl.status.id < 1400 ? {backgroundColor: null, borderBottom: '1px solid #4a4a4a'} : {backgroundColor: color}}>
             //     <h2 style={cl.status.id < 1400 ? {color: '#4a4a4a'} : {color: 'white'}}>{name}</h2>
             //   </div>
@@ -125,7 +125,9 @@ class ClassList extends React.Component {
             //     <span>Grade</span>
             //     {this.renderGrade(cl)}
             //   </div>
-            //   {this.renderExtra(cl)}
+            //   <ReactToolTip theme="dark" position="top" title="top tooltip">
+            //     <div>{this.renderExtra(cl)}</div>
+            //   </ReactToolTip>
             // </div>
             
             
@@ -138,7 +140,12 @@ class ClassList extends React.Component {
                 {this.renderGrade(cl)}
                 </span>
               <h3 className="card-title stext-dark">{name}</h3>
-              <p className="card-subtitle stext-danger">{this.renderExtra(cl)}</p>
+              <p className="card-subtitle stext-danger">
+                
+                <ReactToolTip theme="dark" position="top"  title={name} ttype="classes" studentCount={cl.enrollment} enrollment_link = { cl.enrollment_link}>
+                {this.renderExtra(cl)}
+              </ReactToolTip>
+                </p>
             </div>
           </div>
               
