@@ -10,7 +10,7 @@ import Sammi from '../../components/Sammi'
 import Progress from '../Insights/Progress'
 import SkSelect from '../../components/SkSelect'
 import ToolTip from '../../components/ToolTip'
-import { getAssignmentCountData } from '../Insights/DataUtils'
+import { getAssignmentCountDataHomeGraph } from '../Insights/DataUtils'
 
 import { VictoryBar, VictoryChart, VictoryAxis , VictoryTooltip, VictoryLabel, VictoryLine, VictoryScatter } from 'victory';
 import { getStyles } from '../Insights/styles'
@@ -44,7 +44,7 @@ class CustomFlyout extends React.Component {
     return (
       <g transform={'translate(-100, -200)'} style={{pointerEvents: 'none', position: 'relative'}}>
         <foreignObject x={x} y={y} width="200" height="200">
-          <div
+          {/* <div
             className="graph-tooltip"
             style={{
               width: '96px',
@@ -62,7 +62,25 @@ class CustomFlyout extends React.Component {
              <p>Assignment 1</p>
              <p>Assignment 2</p>
             </div>
+          </div> */}
+
+          <div class="tip-warp">
+              <h3 class="my-10 fs-16 text-center d-block">Week 7:9/29-10/14</h3>
+              <div class="flex  justify-between">
+                <span class="text-muted fs-12">{ji} Assignments</span>
+                <span class="text-muted fs-12">21.7% Overall</span>
+              </div> 
+                <div class="tip-list">
+                  <div class="listtip firsttl flex flex-row  justify-between border-top py-5">
+                      <div class="">
+                          <h6 class="fs-16 text-left stext-purple my-5">Exam 1</h6>
+                          <p class="text-muted fs-12 my-5 mt-0">Tue 9/30</p>
+                      </div>
+                      <div class=""><h5 class="text-right text-dark fs-20 my-5">25%</h5></div>                        
+                    </div>
+                </div> 
           </div>
+
         </foreignObject>
       </g>
     );
@@ -90,7 +108,8 @@ class HomeGraphImpact extends React.Component {
 
   render () {
       const { data: chartData, assignment } = this.state;
-      let data = getAssignmentCountData(assignment, false, [], 'w');
+      console.log(assignment, 'before changes');
+      let data = getAssignmentCountDataHomeGraph(assignment, false, [], 'w');
       console.log(data, 'un changes');
 
       const styles = this.getStyles();
@@ -156,7 +175,6 @@ class HomeGraphImpact extends React.Component {
               />
 
               <VictoryLabel x={6} y={154}
-                text={'Number of Assignments'}
                 style={styles.axisLabel}
                 angle={270}
                 textAnchor={'middle'}
@@ -210,36 +228,6 @@ class HomeGraphImpact extends React.Component {
                   animate={animate}
                 />
               </g>}
-
-{/*               
-                <VictoryLine
-                  data={data}
-                  domain={domain}
-                  scale={{x: 'time', y: 'linear'}}
-                  standalone={false}
-                  interpolation='monotoneX'
-                  style={styles.lineOne}
-                  animate={animate}
-                /> */}
-              
-
-              
-                
-                  {/* <VictoryScatter
-                    data={data}
-                    size={5}
-                    domain={domain}
-                    scale={{x: 'time', y: 'linear'}}
-                    standalone={false}
-                    style={styles.scatter}
-                    labels={() => ''}
-                    labelComponent={
-                              <VictoryTooltip
-                                flyoutComponent={<CustomFlyout ji='098'/>}
-                              />
-                            }
-                    animate={animate}
-                  /> */}
 
                 <VictoryBar
                   data={data}

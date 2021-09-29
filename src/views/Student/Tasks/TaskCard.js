@@ -80,7 +80,7 @@ class TaskCard extends React.Component {
               
             <div class="work-left-items"> <input type="radio" class="assign-radio" /><h4 class="stext-purple">{task.name}</h4><span class="stext-dark">{'Due ' + this.formatDueDate(task.due)}</span></div>  
 
-            <ReactToolTip theme="dark" position="top"   ttype="assifnment" >
+            <ReactToolTip theme="dark" position="top"   ttype="assifnment"  grade={task.grade} title={task.name}>
               <div class="work-right-items"><span><i class="fas fa-signal stext-purple"></i></span><span class="stext-light">{this.props.clName}</span></div>
             </ReactToolTip>
             

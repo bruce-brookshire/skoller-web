@@ -789,6 +789,25 @@ body {
   display: inline-block;
 }
 
+.assi-tootip-wrap {
+  width: 100%;
+  text-align: center;
+  padding: 14px;
+  background: #fff;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.tip-warp {
+  width: 100%;
+  display: block;
+  background: #fff;
+  padding: 5px 10px;
+  border-radius: 10px;
+  height: 250px;
+  overflow-y: auto;
+}
+
 
 
 

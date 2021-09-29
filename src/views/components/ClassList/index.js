@@ -27,7 +27,8 @@ class ClassList extends React.Component {
 
     if (status >= 1400) {
       return (
-        <h1 style={{color: cl.getColor()}} className='cn-class-list-row-grade-text cn-white'>{cl.grade > 0 ? Math.round(cl.grade) + '%' : '–'}</h1>
+        <h1  className='cn-class-list-row-grade-text cn-white'>{cl.grade > 0 ? Math.round(cl.grade) + '%' : '–'}</h1>
+        // <h1 style={{color: cl.getColor()}} className='cn-class-list-row-grade-text cn-white'>{cl.grade > 0 ? Math.round(cl.grade) + '%' : '–'}</h1>
       )
     } else if (status === 1100) {
       return (
@@ -135,16 +136,17 @@ class ClassList extends React.Component {
             key={classes.indexOf(cl)}
             onClick={() => this.onClassSelect(cl)}
             >
-            <div class="card-wrap sborder-danger sborder-1">
-              <span className="card-icon sbg-danger stext-white">
+            <div className="card-wrap sborder-1" style={cl.status.id >= 1400 ? {border: '1px solid ' + color} : null}>
+              <span className="card-icon  stext-white" style={cl.status.id < 1400 ? {backgroundColor: null, borderBottom: '1px solid #4a4a4a'} : {backgroundColor: color}}>
                 {this.renderGrade(cl)}
+                {cl.status.id}
                 </span>
               <h3 className="card-title stext-dark">{name}</h3>
-              <p className="card-subtitle stext-danger">
+              <p className="card-subtitle stext-normal">
                 
                 <ReactToolTip theme="dark" position="top"  title={name} ttype="classes" studentCount={cl.enrollment} enrollment_link = { cl.enrollment_link}>
-                {this.renderExtra(cl)}
-              </ReactToolTip>
+                  {this.renderExtra(cl)}
+                </ReactToolTip>
                 </p>
             </div>
           </div>
