@@ -100,7 +100,9 @@ class HubClasses extends React.Component {
   *
   * @return [Array]. Array of formatted row data.
   */
+
   getRows () {
+    console.log(this.state.classes, '----');
     return this.state.classes.map((item, index) =>
       this.mapRow(item, index)
     )
@@ -163,6 +165,29 @@ class HubClasses extends React.Component {
   onCreateClass () {
 
   }
+
+
+
+  getClassList(){
+    return (
+      <tbody>
+        {
+          this.state.classes.map((item, index) =>(
+          <tr>
+            <td>{item.code}</td>
+            <td>{item.name}</td>
+            <td>{item.school.name}</td>
+            <td>{item.premium?premium:''}</td>
+            <td>{item.trial?trial:''}</td>
+            <td>{item.expired?expired:''}</td>
+            <td>54 Hours Ago</td>
+            <td>{item.meet_days}</td>
+        </tr>))
+
+        }
+      </tbody>
+    );
+  }
   /*
   * On edit class.
   *
@@ -182,7 +207,7 @@ class HubClasses extends React.Component {
     }
   }
 
-  renderHeader () {
+  renderHeader_bkp () {
     const {state} = this.props.location
     // If the class is in any of these states, don't show the search bar
     const boole = state && (state.needsChange || state.needsMaint)
@@ -212,11 +237,31 @@ class HubClasses extends React.Component {
     )
   }
 
+  renderHeader () {
+    const {state} = this.props.location
+    // If the class is in any of these states, don't show the search bar
+    const boole = state && (state.needsChange || state.needsMaint)
+    return boole ? (
+      <div>
+        <ClassSearch {...this.props} loading={this.state.loading}
+          onSearch={this.getClasses.bind(this)} hidden={true}/>
+        <div className='margin-top'>
+          <span className='total right'>Total results: {this.state.classes.length}</span>
+        </div>
+      </div>      
+    ) : (
+      <div>
+        <ClassSearch {...this.props} loading={this.state.loading}
+          onSearch={this.getClasses.bind(this)}/>
+      </div>
+    )
+  }
+
   render () {
     return (
       <div className='cn-classes-container'>
-        {this.renderHeader()}
-        {this.state.loading
+       {/* {this.renderHeader()} */}
+        {/* {this.state.loading
           ? <div className='center-text'><Loading /></div>
           : <Grid
             className='cn-classes-table'
@@ -228,7 +273,61 @@ class HubClasses extends React.Component {
             emptyMessage={'Search for classes using the controls above.'}
             onSelect={this.onEditClass.bind(this)}
           />
-        }
+        } */}
+
+        
+       
+
+        <div class="table-wrap">
+          <div class="table-inner">
+            <div class="table-head">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="head-left">
+                          <h3><i class="fas fa-book"></i> &nbsp; Class</h3>
+                          <span class="badge badge-primary">In Review (295)</span>  
+                          <span class="badge badge-light">Class Changes (31)</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                    {this.renderHeader()}
+                    </div>                                   
+                </div>
+            </div>
+            <div class="tabledata-wrap">
+                <div class="table-inner">
+                <table class="table" cellpadding="0" cellspacing="0">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Class Name</th>
+                        <th scope="col">School</th>
+                        <th scope="col">Premium</th>
+                        <th scope="col">Trail</th>
+                        <th scope="col">Expired</th>
+                        <th scope="col">Recieved</th>
+                        <th scope="col">Day Left</th>
+                      </tr>
+                    </thead>
+                    {
+                    this.state.loading
+                      ? <div className='center-text'><Loading /></div>
+                      : this.getClassList()
+                    }
+                    {/* {this.getClassList()} */}
+                    
+                  </table>
+
+
+                </div>
+            </div>
+
+
+          </div>
+
+
+        </div> 
+
       </div>
     )
   }

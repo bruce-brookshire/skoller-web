@@ -51,6 +51,8 @@ import ReportList from './views/Hub/ReportList'
 import Enroll from './views/EnrollmentLink/Enroll'
 import DownloadApp from './views/components/DownloadApp'
 
+import AdminLayout from './views/components/AdminLayout'
+
 // skoller insights
 import InsightsLanding from './views/Insights/Landing'
 import Dashboard from './views/Insights/Dashboard'
@@ -167,6 +169,7 @@ class HubContainer extends React.Component {
   render () {
     return (
       <Switch>
+        <AdminLayout>
         <Route exact path='/hub' render={() => <Redirect to='/hub/landing' />} />
         <Route exact path='/hub/landing' component={HubLanding}/>
         <Route exact path='/hub/schools' component={HubSchools} />
@@ -178,6 +181,7 @@ class HubContainer extends React.Component {
         <Route exact path='/hub/switchboard' component={Switchboard} />
         <Route exact path='/hub/reports' component={ReportList} />
         <Route exact path='/hub/insights' component={HubInsights} />
+        </AdminLayout>
       </Switch>
     )
   }
