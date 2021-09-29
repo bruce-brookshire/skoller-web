@@ -668,7 +668,7 @@ body {
 .tooltipC-top {
   bottom: 125%;
   left: 50%;  
-  margin-left: -115px;
+  margin-left: -105px;
 }
 
 .tooltipC-top::after {
@@ -814,5 +814,15 @@ body {
 
 
 
+
+.tooltipC-top::after {  
+  top: -10px!important;  
+  border-color: transparent transparent #ddd transparent!important;
+}
+
+.tooltipC .tooltiptextC {  
+  top: auto;
+  bottom: auto; right: auto; left: auto;
+}
 
 
