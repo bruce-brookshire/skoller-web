@@ -668,7 +668,7 @@ body {
 .tooltipC-top {
   bottom: 125%;
   left: 50%;  
-  margin-left: -60px;
+  margin-left: -115px;
 }
 
 .tooltipC-top::after {
@@ -760,7 +760,7 @@ body {
 .d-block{ display: block; }
 
 .border-top{ border-top: 1px solid #ddd;}
-
+.break-all{word-break: break-all;}
 
 .tip-warp {
   width: 100%;
@@ -771,6 +771,9 @@ body {
   height: 250px;
   overflow-y: auto;
 }
+
+.tooltiptextC{ width:220px!important;}
+
 
 .class-tootip-wrap {
   display: block;

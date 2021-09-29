@@ -12,7 +12,7 @@ const ReactToolTip =  ({
   containerClass, 
   theme }) => {
     return (
-      <div className={`tooltipC ${containerClass}`}>
+      <div className={`tooltipC`}>
       {/* <div className="class-tootip-wrap"> */}
         {children}
         { ttype == 'classes' ? (
@@ -28,7 +28,7 @@ const ReactToolTip =  ({
           <h3 class="my-5 fs-18 text-center d-block">{title}</h3>
           <p class="fs-12 my-5">{studentCount + ' classmates are on skoller'}</p>
           <p class="fs-12 mt-10 mb-0 text-muted">Invite classmate using this link</p>
-          <p class="mt-0 mb-0"><a href="#" class="fs-13 text-primary p-5 linktip">{ enrollment_link }</a></p>
+          <p class="mt-0 mb-0"><a href="#" class="fs-13 text-primary p-5 linktip break-all">{ enrollment_link }</a></p>
         </div>
             
           </div>

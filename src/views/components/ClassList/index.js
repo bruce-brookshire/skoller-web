@@ -139,7 +139,7 @@ class ClassList extends React.Component {
             <div className="card-wrap sborder-1" style={cl.status.id >= 1400 ? {border: '1px solid ' + color} : null}>
               <span className="card-icon  stext-white" style={cl.status.id < 1400 ? {backgroundColor: null, borderBottom: '1px solid #4a4a4a'} : {backgroundColor: color}}>
                 {this.renderGrade(cl)}
-                {cl.status.id}
+                {/* {cl.status.id} */}
                 </span>
               <h3 className="card-title stext-dark">{name}</h3>
               <p className="card-subtitle stext-normal">
