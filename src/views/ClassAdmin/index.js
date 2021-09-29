@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {inject, observer} from 'mobx-react'
+import { inject, observer } from 'mobx-react'
 import { withRouter } from 'react-router-dom'
 
 import actions from '../../actions'
@@ -32,9 +32,9 @@ import RequestResolvedModal from './RequestResolvedModal'
 
 @inject('rootStore') @observer
 class ClassAdmin extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
-    let {navbarStore} = this.props.rootStore
+    let { navbarStore } = this.props.rootStore
     navbarStore.title = 'Class Admin'
     this.state = this.initializeState()
     this.tabSelect = this.tabSelect.bind(this)
@@ -44,8 +44,8 @@ class ClassAdmin extends React.Component {
   /*
   * Initialize state
   */
-  initializeState () {
-    let {navbarStore} = this.props.rootStore
+  initializeState() {
+    let { navbarStore } = this.props.rootStore
     navbarStore.isDIY = false
     return {
       cl: null,
@@ -71,14 +71,14 @@ class ClassAdmin extends React.Component {
   * Fetch the documents for a class.
   * Lock the class.
   */
-  componentWillMount () {
+  componentWillMount() {
     this.intializeComponent()
   }
 
   /*
   * Intialize the component
   */
-  intializeComponent () {
+  intializeComponent() {
     this.setState(this.initializeState())
     this.getClass()
     this.getDocuments()
@@ -115,29 +115,29 @@ class ClassAdmin extends React.Component {
   /*
   * Unlock the class on component will mount
   */
-  componentWillUnmount () {
-    let {navbarStore} = this.props.rootStore
+  componentWillUnmount() {
+    let { navbarStore } = this.props.rootStore
     navbarStore.title = null
   }
 
   /*
   * Toggle the tab stat
   */
-  tabSelect (tabName) {
-    this.setState({tabState: tabName})
+  tabSelect(tabName) {
+    this.setState({ tabState: tabName })
     this.props.history.push(`/class/${this.state.cl.id}/admin/${tabName}`)
   }
 
   /*
   * Fetch the class by id.
   */
-  async getClass () {
-    this.setState({loadingClass: true})
+  async getClass() {
+    this.setState({ loadingClass: true })
     let classId = this.props.match.params.classId
     await actions.classes.getClassByIdAdmin(classId).then((cl) => {
-      this.setState({cl, weights: cl.weights, assignments: cl.assignments})
-      this.setState({loadingClass: false})
-    }).catch(() => { this.setState({loadingClass: false}) })
+      this.setState({ cl, weights: cl.weights, assignments: cl.assignments })
+      this.setState({ loadingClass: false })
+    }).catch(() => { this.setState({ loadingClass: false }) })
     console.log(this.state.cl)
     return new Promise(resolve => resolve(this.state.cl))
   }
@@ -145,19 +145,19 @@ class ClassAdmin extends React.Component {
   /*
   * Fetch the documents for a class.
   */
-  getDocuments () {
+  getDocuments() {
     let classId = this.props.match.params.classId
     actions.documents.getClassDocuments(classId).then((documents) => {
       documents.sort((a, b) => b.is_syllabus)
-      this.setState({documents})
+      this.setState({ documents })
     }).catch(() => false)
   }
 
   /*
   * Gets array of all student requests yet to be completed
   */
-  openStudentRequests () {
-    let {cl} = this.state
+  openStudentRequests() {
+    let { cl } = this.state
     const sr = cl.student_requests.filter(c => !changeRequestIsComplete(c))
     const cr = cl.change_requests.filter(c => !changeRequestIsComplete(c))
     return sr.concat(cr)
@@ -168,10 +168,10 @@ class ClassAdmin extends React.Component {
   *
   * @param [Object] weight. Weight.
   */
-  onCreateWeight (weight) {
+  onCreateWeight(weight) {
     const newWeights = this.state.weights
     newWeights.push(weight)
-    this.setState({weights: newWeights, currentWeight: null, openWeightCreateModal: false})
+    this.setState({ weights: newWeights, currentWeight: null, openWeightCreateModal: false })
   }
 
   /*
@@ -179,8 +179,8 @@ class ClassAdmin extends React.Component {
   *
   * @param [Object] weight. Weight object to be edited.
   */
-  onSelectWeight (weight) {
-    this.setState({currentWeight: weight, openWeightCreateModal: true})
+  onSelectWeight(weight) {
+    this.setState({ currentWeight: weight, openWeightCreateModal: true })
   }
 
   /*
@@ -188,11 +188,11 @@ class ClassAdmin extends React.Component {
   *
   * @param [Object] weight. Weight.
   */
-  onUpdateWeight (weight) {
+  onUpdateWeight(weight) {
     const newWeights = this.state.weights
     const index = this.state.weights.findIndex(w => w.id === weight.id)
     newWeights[index] = weight
-    this.setState({weights: newWeights, currentWeight: null, openWeightCreateModal: false})
+    this.setState({ weights: newWeights, currentWeight: null, openWeightCreateModal: false })
   }
 
   /*
@@ -200,10 +200,10 @@ class ClassAdmin extends React.Component {
   *
   * @param [Object] weight. The weight to be deleted.
   */
-  onDeleteWeight (weight) {
+  onDeleteWeight(weight) {
     actions.weights.deleteWeight(weight).then(() => {
       const newWeights = this.state.weights.filter(w => w.id !== weight.id)
-      this.setState({weights: newWeights, currentWeight: null})
+      this.setState({ weights: newWeights, currentWeight: null })
     }).catch(() => false)
   }
 
@@ -212,10 +212,11 @@ class ClassAdmin extends React.Component {
   *
   * @param [Object] assignment. Assignment object to be edited.
   */
-  onSelectAssignment (assignment) {
+  onSelectAssignment(assignment) {
     this.props.history.push({
       pathname: `/assignment/${assignment.id}/admin`,
-      state: {assignment,
+      state: {
+        assignment,
         school: this.state.cl.school,
         weights: this.state.weights,
         cl: this.state.cl
@@ -228,10 +229,10 @@ class ClassAdmin extends React.Component {
   *
   * @param [Object] assignment. Assignment.
   */
-  onCreateAssignment (assignment) {
+  onCreateAssignment(assignment) {
     const newAssignments = this.state.assignments
     newAssignments.push(assignment)
-    this.setState({assignments: newAssignments, currentAssignment: null, openAssignmentModal: false})
+    this.setState({ assignments: newAssignments, currentAssignment: null, openAssignmentModal: false })
   }
 
   /*
@@ -239,12 +240,12 @@ class ClassAdmin extends React.Component {
   *
   * @param [Object] assignment. Assignment.
   */
-  onUpdateAssignment (assignment) {
-    const {assignments} = this.state
+  onUpdateAssignment(assignment) {
+    const { assignments } = this.state
     const newAssignments = assignments
     const index = assignments.findIndex(a => a.id === assignment.id)
     newAssignments[index] = assignment
-    this.setState({assignments: newAssignments, currentAssignment: null, openAssignmentModal: false})
+    this.setState({ assignments: newAssignments, currentAssignment: null, openAssignmentModal: false })
   }
 
   /*
@@ -252,83 +253,83 @@ class ClassAdmin extends React.Component {
   *
   * @param [Object] assignment. The assignment to be deleted.
   */
-  onDeleteAssignment (assignment) {
-    const {assignments} = this.state
+  onDeleteAssignment(assignment) {
+    const { assignments } = this.state
     actions.assignments.deleteAssignment(assignment).then(() => {
       const newAssignments = assignments.filter(a => a.id !== assignment.id)
-      this.setState({assignments: newAssignments})
+      this.setState({ assignments: newAssignments })
     }).catch(() => false)
   }
 
-  onDocDelete (doc) {
-    const {cl, documents} = this.state
+  onDocDelete(doc) {
+    const { cl, documents } = this.state
     actions.documents.deleteClassDocument(cl.id, doc.id).then(() => {
       const newDocs = documents.filter(d => d.id !== doc.id)
-      this.setState({documents: newDocs})
+      this.setState({ documents: newDocs })
       if (newDocs.length === 0 && !cl.status.is_complete) {
         this.toggleNoDocModal()
       }
     }).catch(() => false)
   }
 
-  onDocUpload (document) {
-    const {cl} = this.state
-    this.setState({uploadingDoc: true})
+  onDocUpload(document) {
+    const { cl } = this.state
+    this.setState({ uploadingDoc: true })
     actions.documents.uploadClassDocument(cl, document, false).then((document) => {
       const newDocs = this.state.documents.slice()
       newDocs.push(document)
-      this.setState({documents: newDocs, uploadingDoc: false})
+      this.setState({ documents: newDocs, uploadingDoc: false })
     })
   }
 
-  onWeightClose () {
-    this.setState({currentWeight: null, openWeightCreateModal: false})
+  onWeightClose() {
+    this.setState({ currentWeight: null, openWeightCreateModal: false })
   }
 
   /*
   * Toggle the edit class modal.
   */
-  toggleEditClassModal () {
-    this.setState({openEditClassModal: !this.state.openEditClassModal})
+  toggleEditClassModal() {
+    this.setState({ openEditClassModal: !this.state.openEditClassModal })
   }
 
   /*
   * Toggle the issues modal.
   */
-  toggleIssuesModal () {
-    this.setState({openIssuesModal: !this.state.openIssuesModal})
+  toggleIssuesModal() {
+    this.setState({ openIssuesModal: !this.state.openIssuesModal })
   }
 
   /*
   * Toggle the issues resolved modal.
   */
-  toggleRequestResolvedModal () {
-    this.setState({openRequestResolvedModal: !this.state.openRequestResolvedModal})
+  toggleRequestResolvedModal() {
+    this.setState({ openRequestResolvedModal: !this.state.openRequestResolvedModal })
   }
 
-  toggleWeightCreateModal () {
-    this.setState({openWeightCreateModal: !this.state.openWeightCreateModal})
+  toggleWeightCreateModal() {
+    this.setState({ openWeightCreateModal: !this.state.openWeightCreateModal })
   }
 
-  toggleAssignmentModal () {
-    this.setState({openAssignmentModal: !this.state.openAssignmentModal})
+  toggleAssignmentModal() {
+    this.setState({ openAssignmentModal: !this.state.openAssignmentModal })
   }
 
-  toggleNoDocModal () {
-    this.setState({openNoDocModal: !this.state.openNoDocModal})
+  toggleNoDocModal() {
+    this.setState({ openNoDocModal: !this.state.openNoDocModal })
   }
 
-  toggleChat () {
-    const {cl} = this.state
-    actions.classes.updateClass({id: cl.id, is_chat_enabled: !cl.is_chat_enabled}).then((cl) => {
-      this.setState({cl})
+  toggleChat() {
+    const { cl } = this.state
+    actions.classes.updateClass({ id: cl.id, is_chat_enabled: !cl.is_chat_enabled }).then((cl) => {
+      this.setState({ cl })
     }).catch(() => false)
   }
 
-  toggleWrench () {
-    const {cl} = this.state
-    actions.classes.updateClass({id: cl.id, is_editable: !cl.is_editable}).then((cl) => {
-      this.setState({cl})
+  toggleWrench() {
+    const { cl } = this.state
+    actions.classes.updateClass({ id: cl.id, is_editable: !cl.is_editable }).then((cl) => {
+      this.setState({ cl })
     }).catch(() => false)
   }
 
@@ -337,13 +338,13 @@ class ClassAdmin extends React.Component {
   *
   * @param [Object]. The class to update with
   */
-  updateClass () {
+  updateClass() {
     this.getClass()
   }
 
-  toggleIsPoints () {
-    const {cl} = this.state
-    actions.classes.updateClass({id: cl.id, is_points: !cl.is_points}).then((cl) => {
+  toggleIsPoints() {
+    const { cl } = this.state
+    actions.classes.updateClass({ id: cl.id, is_points: !cl.is_points }).then((cl) => {
       this.updateClass()
     }).catch(() => false)
   }
@@ -351,8 +352,8 @@ class ClassAdmin extends React.Component {
   /*
   * Render the having issues modal.
   */
-  renderIssuesModal () {
-    const {cl} = this.state
+  renderIssuesModal() {
+    const { cl } = this.state
     return (
       <IssuesModal
         cl={cl}
@@ -368,8 +369,8 @@ class ClassAdmin extends React.Component {
   /*
   * Render the issues resolved modal.
   */
-  renderRequestResolvedModal () {
-    const {cl} = this.state
+  renderRequestResolvedModal() {
+    const { cl } = this.state
     let openRequests = this.openStudentRequests()
     return (
       <RequestResolvedModal
@@ -384,8 +385,8 @@ class ClassAdmin extends React.Component {
     )
   }
 
-  renderWeightForm () {
-    const {cl, currentWeight} = this.state
+  renderWeightForm() {
+    const { cl, currentWeight } = this.state
     return (
       <AdminWeightForm
         cl={cl}
@@ -396,8 +397,8 @@ class ClassAdmin extends React.Component {
     )
   }
 
-  renderNoDocModal () {
-    const {cl} = this.state
+  renderNoDocModal() {
+    const { cl } = this.state
     return (
       <DocumentsDeletedModal
         cl={cl}
@@ -414,7 +415,7 @@ class ClassAdmin extends React.Component {
   /*
   * Render the list of weights
   */
-  renderWeights () {
+  renderWeights() {
     return (
       <Weights
         cl={this.state.cl}
@@ -427,8 +428,8 @@ class ClassAdmin extends React.Component {
   /*
   * Render the list of assignments.
   */
-  renderAssignments () {
-    const {cl, assignments, weights, currentAssignment} = this.state
+  renderAssignments() {
+    const { cl, assignments, weights, currentAssignment } = this.state
     return (
       <div id='cn-admin-assignment-table' className='class-card'>
         <div id='cn-admin-assignment-table-content'>
@@ -463,13 +464,13 @@ class ClassAdmin extends React.Component {
     )
   }
 
-  renderClassInfoEditPanel () {
-    const {cl} = this.state
+  renderClassInfoEditPanel() {
+    const { cl } = this.state
     return (
       <div className='cn-admin-edit-class'>
         <div className='cn-admin-edit-class-header'>
           <div className='cn-admin-edit-class-title'>
-            <i className='fas fa-times' style={{color: '#57B9E4', cursor: 'pointer'}} onClick={() => this.toggleEditClassModal()} />
+            <i className='fas fa-times' style={{ color: '#57B9E4', cursor: 'pointer' }} onClick={() => this.toggleEditClassModal()} />
             <div>
               <h2>Edit class: {cl.name}</h2>
               <h4>{cl.subject} {cl.code}.{cl.section}</h4>
@@ -491,8 +492,8 @@ class ClassAdmin extends React.Component {
     )
   }
 
-  renderClassInfoWithChangeRequests () {
-    const {cl} = this.state
+  renderClassInfoWithChangeRequests() {
+    const { cl } = this.state
     return (
       this.state.openEditClassModal
         ? this.renderClassInfoEditPanel()
@@ -513,8 +514,8 @@ class ClassAdmin extends React.Component {
     )
   }
 
-  renderClassInfoWithoutChangeRequests () {
-    const {cl} = this.state
+  renderClassInfoWithoutChangeRequests() {
+    const { cl } = this.state
     return (
       this.state.openEditClassModal
         ? this.renderClassInfoEditPanel()
@@ -534,8 +535,8 @@ class ClassAdmin extends React.Component {
     )
   }
 
-  renderClassInfo () {
-    const {cl} = this.state
+  renderClassInfo() {
+    const { cl } = this.state
     if (this.state.loadingClass) {
       return <SkLoader />
     } else {
@@ -547,8 +548,8 @@ class ClassAdmin extends React.Component {
     }
   }
 
-  renderGradeScale () {
-    const {cl} = this.state
+  renderGradeScale() {
+    const { cl } = this.state
     return (
       <GradeScale
         onChange={this.reloadComponent}
@@ -564,8 +565,8 @@ class ClassAdmin extends React.Component {
     )
   }
 
-  renderProfessor () {
-    const {cl} = this.state
+  renderProfessor() {
+    const { cl } = this.state
     return (
       <Professor
         cl={cl}
@@ -580,8 +581,8 @@ class ClassAdmin extends React.Component {
     )
   }
 
-  renderChat () {
-    const {cl} = this.state
+  renderChat() {
+    const { cl } = this.state
     return (
       <Chat
         cl={cl}
@@ -591,8 +592,8 @@ class ClassAdmin extends React.Component {
     )
   }
 
-  renderStudents () {
-    const {cl} = this.state
+  renderStudents() {
+    const { cl } = this.state
     return (
       <StudentList
         students={cl.students}
@@ -602,13 +603,13 @@ class ClassAdmin extends React.Component {
     )
   }
 
-  renderHistory () {
+  renderHistory() {
     return (
       <ChangeRequestHistory cl={this.state.cl} />
     )
   }
 
-  getIncompleteChangeRequestCount () {
+  getIncompleteChangeRequestCount() {
     let incompleteChangeRequestCount = 0
     this.state.cl.change_requests.forEach(cr => {
       if (!changeRequestIsComplete(cr)) {
@@ -618,8 +619,8 @@ class ClassAdmin extends React.Component {
     return incompleteChangeRequestCount
   }
 
-  renderClass () {
-    const {cl} = this.state
+  renderClass() {
+    const { cl } = this.state
     return (
       <div id='cn-class-admin-container'>
 
@@ -631,28 +632,28 @@ class ClassAdmin extends React.Component {
             <button className={'button admin-tab' + (this.state.tabState === 'class_info' ? ' active' : '')} onClick={() => this.tabSelect('class_info')}>
               {
                 cl.change_requests.filter((item) => item.change_type.id === 400 && !changeRequestIsComplete(item)).length > 0 &&
-                <i className='fas fa-exclamation-circle' style={{marginRight: '4px'}}/>
+                <i className='fas fa-exclamation-circle' style={{ marginRight: '4px' }} />
               }
               Class Info
             </button>
             <button className={'button admin-tab' + (this.state.tabState === 'grade_scale' ? ' active' : '')} onClick={() => this.tabSelect('grade_scale')}>
               {
                 cl.change_requests.filter((item) => item.change_type.id === 100 && !changeRequestIsComplete(item)).length > 0 &&
-                <i className='fas fa-exclamation-circle' style={{marginRight: '4px'}}/>
+                <i className='fas fa-exclamation-circle' style={{ marginRight: '4px' }} />
               }
               Grade Scale
             </button>
             <button className={'button admin-tab' + (this.state.tabState === 'professor' ? ' active' : '')} onClick={() => this.tabSelect('professor')}>
               {
                 cl.change_requests.filter((item) => item.change_type.id === 300 && !changeRequestIsComplete(item)).length > 0 &&
-                <i className='fas fa-exclamation-circle' style={{marginRight: '4px'}}/>
+                <i className='fas fa-exclamation-circle' style={{ marginRight: '4px' }} />
               }
               Professor
             </button>
             <button className={'button admin-tab' + (this.state.tabState === 'weights' ? ' active' : '')} onClick={() => this.tabSelect('weights')}>
               {
                 cl.change_requests.filter((item) => item.change_type.id === 200 && !changeRequestIsComplete(item)).length > 0 &&
-                <i className='fas fa-exclamation-circle' style={{marginRight: '4px'}}/>
+                <i className='fas fa-exclamation-circle' style={{ marginRight: '4px' }} />
               }
               Weights
             </button>
@@ -680,7 +681,7 @@ class ClassAdmin extends React.Component {
               cl={cl}
               boxClassName='cn-admin-footer-card'
               contentClassName='cn-admin-footer-card-content'
-              onCreateNote={(cl) => this.setState({cl})}
+              onCreateNote={(cl) => this.setState({ cl })}
             />
             <StudentRequestInfo
               cl={this.state.cl}
@@ -707,8 +708,8 @@ class ClassAdmin extends React.Component {
     )
   }
 
-  render () {
-    const {cl} = this.state
+  render() {
+    const { cl } = this.state
 
     return cl ? this.renderClass() : <Loading />
   }

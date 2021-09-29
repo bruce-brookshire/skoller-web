@@ -11,6 +11,9 @@
     "lint": "./node_modules/.bin/eslint **/*.js src/**"
   },
   "dependencies": {
+    "@devexpress/dx-react-chart": "^2.7.6",
+    "@devexpress/dx-react-chart-bootstrap4": "^2.7.6",
+    "@devexpress/dx-react-core": "^2.7.6",
     "autoprefixer": "^7.2.3",
     "babel": "^6.23.0",
     "babel-core": "^6.26.3",
@@ -60,9 +63,11 @@
     "react-resize-detector": "^5.0.3",
     "react-router-dom": "^5.1.2",
     "react-smartbanner": "^5.1.4",
-    "react-tooltip": "^3.11.2",
+    "react-step-progress-bar": "^1.0.3",
+    "react-tooltip": "^3.11.6",
     "react-transition-group": "^4.3.0",
     "react-visibility-sensor": "^5.1.1",
+    "reactjs-mappletooltip": "^1.4.63",
     "resolve-url-loader": "^2.1.1",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
