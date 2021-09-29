@@ -20,6 +20,7 @@ const ReactToolTip =  ({
             <div>Invite classmate using this link</div>
             <div><a>{ enrollment_link } </a></div>
             <span className="arrowC"></span>
+            
           </div>
         ) : (
             <div className={`tooltiptextC ${theme === "dark" ? `darkC` :`light`} tooltipC-${position}`} >
