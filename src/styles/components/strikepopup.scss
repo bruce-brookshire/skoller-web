@@ -1,0 +1,154 @@
+
+
+
+.popup-msg {
+    position: relative;
+    padding-left: 60px;    
+    width: 100%;
+}
+
+.popup-msg .opup-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    max-width: 40px;
+    width: 100%;
+}
+.popup-msg p {
+    font-size: 19px;
+}
+
+
+.sk-modal-container.modal-sm {
+    max-width: 360px;width: 100%;
+}
+
+.sk-modal-container.modal-lg {
+    max-width: 660px; width: 100%;
+}
+
+.sk-modal-container.modal-md {
+    max-width: 500px; width: 100%;
+}
+
+.rah-static{ overflow: unset!important; height: auto!important;}
+
+.sk-progress-modal .sk-pm{ min-width: 100%!important;}
+
+.popup-msg h2, .popup-msg p {
+    margin: 3px 0;
+}
+
+
+.group-list {
+    box-shadow: 0 3px 7px #aaa; border-radius: 10px; background: #fff;
+}
+.group-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.group-list ul li {
+    border: 1px solid #ddd;
+   
+    padding: 10px 15px;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+}
+.group-list ul li.first-item {
+    border-radius: 10px 10px 0 0;
+}
+.group-list ul li.last-item {
+    border-radius: 0px 0px 10px 10px;
+}
+.listgroup-wrap h4 {
+    font-weight: 600;
+    margin-bottom: 10px; font-size: 15px;
+}
+.listgroup-wrap {
+    margin-bottom: 30px;
+}
+
+.group-list a{ text-decoration: none}	 
+.group-list.mheight {
+    height: 285px;
+    overflow-y: auto;
+}
+.cardnumber {
+    margin: 0 8px;
+}
+.group-list ul li.highlight {
+    background: #EDFAFF;
+    border-color: #60BBE2;
+    
+}
+
+.group-list ul li.highlight > * {
+    color: #60BBE2;
+}
+ 
+.divider-title span {
+    background: #fff;
+    position: relative;
+    z-index: 1;
+    padding: 4px 10px;
+}
+.divider-title {
+    position: relative;
+    color: #555;
+    text-align: center; margin-bottom:20px!important;
+}
+.divider-title::before {
+    position: absolute;
+    content: "";
+    background: #555;
+    height: 2px;
+    width: 100%;
+    left: 0;
+    top: 9px;
+}
+	 .group-field.inputfield input[type="text"] {
+    width: 100%;
+    border: 0;
+    box-shadow: 0 0 6px #888;
+    border-radius: 7px;
+    padding: 13px 10px;
+    box-sizing: border-box;
+    height: 40px;
+    font-size: 14px;
+}
+	 .group-field {
+		display: block;
+		margin-bottom: 30px;
+	 }
+	 
+	.group-field label { margin-bottom: 8px; font-weight: 600; display: block}
+	
+	.cardinfo-form{ box-shadow: 0 0 6px #888; overflow: hidden; border-radius: 7px; }
+	
+	.cardinfo-form .cardinfo-field.cardimg input[type="text"] {
+		border: 0;
+		width: 100%;
+		padding: 10px 120px 10px 10px;
+		height: 40px;
+		box-sizing: border-box;
+	}
+	.cardinfo-field {
+		position: relative;
+	}
+	.cardinfo-form .cardinfo-field input[type="text"] {
+		border: 0;
+		width: 100%;
+		padding: 10px;
+		height: 40px;
+		box-sizing: border-box;
+	}
+	.cardinfo-form .cardinfo-field.cardimg img {
+		position: absolute;
+		right: 13px;
+		width: 95px;
+		top: 9px;
+	}
+	.border-1{ border: 1px solid #ddd;}
+	 .border-right-1{border-right: 1px solid #ddd!important;}

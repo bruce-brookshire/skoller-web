@@ -209,7 +209,7 @@ class SignUpForm extends React.Component {
                     {width: '100%', borderColor: this.state.emailError ? 'red' : 'null'}
                   }
                   className='cn-form-input'
-                  error={this.state.emailError}
+                 error={this.state.emailError}
                   id='sign-up.email'
                   autoComplete='email'
                   name='email'

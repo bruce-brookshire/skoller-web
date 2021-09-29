@@ -54,12 +54,15 @@ class Home extends React.Component {
       this.runPopUpLogic()
       this.showPrimarySchoolPopUp()
     }
+
+
   }
 
   async runPopUpLogic () {
     let showPopUp = false
     let type
     let student = this.props.rootStore.userStore.user.student
+
 
     await actions.classes.getStudentClassesById(student.id)
       .then((classes) => {
@@ -93,9 +96,22 @@ class Home extends React.Component {
         type = 'getResume'
       }
     }
-    if (showPopUp) {
-      this.setState({popUp: {type: type, show: true}})
-    }
+
+    await actions.stripe.getMySubscription()
+    .then((data) => {
+      if(data.data.length > 0){
+        if (showPopUp) {
+          this.setState({popUp: {type: type, show: true}})
+        }
+      } else {
+        this.setState({popUp: {type: 'PaymentPlans', show: true}});
+      }
+    
+    })
+    .catch((e) => {
+    console.log(e)
+ })
+    
   }
 
   async showPrimarySchoolPopUp () {
@@ -142,6 +158,7 @@ class Home extends React.Component {
     this.updateClasses()
   }
 
+
   closePopUp () {
     this.updateStudent()
     this.updateClasses()
@@ -150,6 +167,9 @@ class Home extends React.Component {
 
   launchClassStatusModal (cl) {
     this.setState({classStatusModal: {show: true, cl: cl}})
+  }
+  changePaymentPlan(){
+    this.setState({popUp: {type: 'PaymentPlans', show: true}})
   }
 
   renderContent () {
