@@ -21,8 +21,8 @@ class HomeClasses extends React.Component {
       return <SkLoader />
     } else {
       return (
-        <div className='home-classes'> 
-        <div className="row">
+        <div className='home-classes'>
+            <div className="row">
               <div className="center-block col-md-6">
                 <h2 className="sec-title"><svg fill="white" width="22px" height="22px" viewBox="0 0 22 22" version="1.1"><title>Classes</title>
                   <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -31,16 +31,70 @@ class HomeClasses extends React.Component {
 
               </div>
             </div>
-          <ClassList
-            classes={this.props.rootStore.studentClassesStore.classes}
-            emptyMessage='You are not enrolled in any classes.'
-            onSelect={this.props.onClassSelect}
-          />
-          <JoinFirstClassPrompt onAddClass={() => this.props.onAddClass()} show={this.props.classes.length === 0} launchClassStatusModal={(cl) => this.launchClassStatusModal(cl)} />
-          <SecondClassPrompt onAddClass={() => this.props.onAddClass()} show={this.props.classes.length === 1} launchClassStatusModal={(cl) => this.launchClassStatusModal(cl)} />
-          {this.props.classes.length < 2 &&
-            <br />
-          }
+
+          <div className="row">
+            <div className="center-block col-md-6">
+              <div class="card-wrap sborder-danger sborder-1">
+                <span className="card-icon sbg-danger stext-white">
+                  <i className="fas fa-file-upload fa-2x"></i>
+                  </span>
+                <h3 className="card-title stext-dark">Intro to psychology</h3>
+                <p className="card-subtitle stext-danger">Upload syllabus</p>
+              </div>
+            </div>
+            <div className="center-block col-md-6">
+            <div className="card-wrap sborder-purple sborder-1">
+                <span className="card-icon sbg-purple stext-white"><h3 className="stext-white">76%</h3></span>
+                <h3 className="card-title stext-purple">Sociology</h3>
+                <ul className="card-ul">  
+                 <li className="stext-light"><span><i className="fas fa-users"></i></span> 2</li>
+                 <li className="stext-light"><span><i className="fas fa-adjust"></i></span> 47%</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="center-block col-md-6">
+            <div className="card-wrap sborder-dark sborder-1">
+                <span className="card-icon sbg-dark stext-white"><i className="fas fa-clock fa-2x"></i></span>
+                <h3 className="card-title stext-dark">Ethics 101</h3>
+                <p className="card-subtitle stext-dark">Syllabus In Review</p>
+              </div>
+            </div>
+            <div className="center-block col-md-6">
+            <div className="card-wrap sborder-green sborder-1">
+                <span className="card-icon sbg-green stext-white"><h3 className="stext-white">89%</h3></span>
+                <h3 className="card-title stext-green">Intro to Psychology</h3>
+                <ul className="card-ul">  
+                 <li className="stext-light"><span><i className="fas fa-users"></i></span> 7</li>
+                 <li className="stext-light"><span><i className="fas fa-adjust"></i></span> 59%</li>
+                </ul>
+              </div>
+            </div>
+          </div>  
+          <div className="row">
+            <div className="center-block col-md-6">
+              <div className="card-wrap sborder-orange sborder-1">
+                <span className="card-icon sbg-orange stext-white"><h3 className="stext-white">85%</h3></span>
+                <h3 className="card-title stext-orange">Business Finance</h3>
+                <ul className="card-ul">  
+                 <li className="stext-light"><span><i className="fas fa-users"></i></span> 13</li>
+                 <li className="stext-light"><span><i className="fas fa-adjust"></i></span> 64%</li>
+                </ul>
+              </div>
+
+            </div>
+            <div className="center-block col-md-6">
+            <div className="card-wrap sborder-darkpink sborder-1">
+                <span className="card-icon sbg-darkpink stext-white"><h3 className="stext-white">91%</h3></span>
+                <h3 className="card-title stext-darkpink">Elementary Art</h3>  
+                <ul className="card-ul">  
+                 <li className="stext-light"><span><i className="fas fa-users"></i></span> 9</li>
+                 <li className="stext-light"><span><i className="fas fa-adjust"></i></span> 65%</li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
       )
     }
