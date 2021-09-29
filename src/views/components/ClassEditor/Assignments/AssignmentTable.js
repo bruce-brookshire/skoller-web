@@ -10,9 +10,9 @@ class AssignmentTable extends React.Component {
   * @param [Object] item. Row data to be formatted.
   * @param [Number] index. Index of row data.
   */
-  getRow (item, index) {
-    const {id, name, weight_id: weightId, due} = item
-    const {currentAssignment, viewOnly, currentWeight} = this.props
+  getRow(item, index) {
+    const { id, name, due } = item
+    const { currentAssignment, viewOnly } = this.props
     const activeClass = (currentAssignment && currentAssignment.id) === id
       ? 'active' : ''
 
@@ -26,21 +26,21 @@ class AssignmentTable extends React.Component {
         }}
       >
         <div className='col-xs-7 assignment-name-container'>
-          {!viewOnly &&
+          {/* {!viewOnly &&
             <div className='col-xs-2'>
               <div
                 className='button-delete-x-light center-content'
                 onClick={(event) => {
                   event.stopPropagation()
-                  /* if (disabled) return */
+                  
                   this.props.onDeleteAssignment(item)
                 }}><img src='/src/assets/images/syllabus_tool/circle_x.png' />
               </div>
             </div>
-          }
-          <div className={`assignment-label ${!viewOnly ? 'col-xs-9' : 'col-xs-10'}`}>
+          } */}
+          <div className={`assignment-label col-xs-12}`}>
             <div>{name}</div>
-            {!currentWeight && this.renderWeightName(weightId)}
+            {/* {!currentWeight && this.renderWeightName(weightId)} */}
           </div>
         </div>
         <div className='col-xs-5 right-text'>
@@ -53,23 +53,23 @@ class AssignmentTable extends React.Component {
   /* TODO: This is a bit bloated, but when it was unrolled into the rendering code
       it was crashing as 'undefined' did not have name. Could be more trim.
   */
-  renderWeightName (id) {
-    const {weights} = this.props
-    if (weights) {
-      var weight = weights.find(w => w.id === id)
-      if (weight && weight !== undefined) {
-        return <div className='description'>
-          {weight.name}
-        </div>
-      } else {
-        return <div className='description'>
-           N/A
-        </div>
-      }
-    } else {
-      return null
-    }
-  }
+  // renderWeightName(id) {
+  //   const { weights } = this.props
+  //   if (weights) {
+  //     var weight = weights.find(w => w.id === id)
+  //     if (weight && weight !== undefined) {
+  //       return <div className='description'>
+  //         {weight.name}
+  //       </div>
+  //     } else {
+  //       return <div className='description'>
+  //         N/A
+  //       </div>
+  //     }
+  //   } else {
+  //     return null
+  //   }
+  // }
 
   /*
   * Map the assignment dateParts
@@ -77,8 +77,8 @@ class AssignmentTable extends React.Component {
   * @param [String] date. YYYY-MM-DD
   * @return [String]. MM/DD
   */
-  mapAssignmentDate (date) {
-    const {cl} = this.props
+  mapAssignmentDate(date) {
+    const { cl } = this.props
     const today = moment.tz(Date.now(), cl.school.timezone)
     const due = moment.tz(date, cl.school.timezone)
     return today.format('YYYY-MM-DD') === due.format('YYYY-MM-DD') ? 'Today'
@@ -88,9 +88,9 @@ class AssignmentTable extends React.Component {
   /*
   * Render the assignments for a given class.
   */
-  renderAssignments () {
-    const {assignments} = this.props
-
+  renderAssignments() {
+    const { assignments } = this.props
+    // console.log(assignments, 'renderAssignments')
     // sort by due date.
     return assignments.sort((a, b) => {
       return new Date(b.due) - new Date(a.due)
@@ -99,7 +99,7 @@ class AssignmentTable extends React.Component {
     )
   }
 
-  handleSubmit () {
+  handleSubmit() {
     // if (this.props.cl.status.id !== 1400) {
     //   actions.classes.updateClassStatus(this.props.cl, {class_status_id: 1400})
     //     .then(r => console.log(r))
@@ -111,35 +111,35 @@ class AssignmentTable extends React.Component {
     }
   }
 
-  renderSubmit (addingAssignment = false) {
-    const {assignments} = this.props
+  renderSubmit(addingAssignment = false) {
+    const { assignments } = this.props
     const disableButton = assignments.length === 0
 
     if (!this.props.viewOnly) {
-      return (
-        <div id='submit-container'>
-          <div id='notification'>
-            Be sure to add all assignments for this category!
-          </div>
-          {addingAssignment
-            ? <small>Finish adding the current assignment before moving on</small>
-            : <button
-              onClick={() => this.handleSubmit()}
-              disabled={disableButton}
-              className={`submit-assignments button ${disableButton ? 'disabled' : ''}`}
-            >
-              Save{this.props.onSubmitSingleWeight && ' and Submit'}
-            </button>
-          }
-        </div>
-      )
+      // return (
+      //   // <div id='submit-container'>
+      //   //   {/* <div id='notification'>
+      //   //     Be sure to add all assignments for this category!
+      //   //   </div> */}
+      //   //   {addingAssignment
+      //   //     ? <small>Finish adding the current assignment before moving on</small>
+      //   //     : <button
+      //   //       onClick={() => this.handleSubmit()}
+      //   //       disabled={disableButton}
+      //   //       className={`submit-assignments button ${disableButton ? 'disabled' : ''}`}
+      //   //     >
+      //   //       Save{this.props.onSubmitSingleWeight && ' and Submit'}
+      //   //     </button>
+      //   //   }
+      //   // </div>
+      // )
     } else {
       return null
     }
   }
 
-  render () {
-    const {viewOnly} = this.props
+  render() {
+    const { viewOnly } = this.props
     let addingAssignment
     if (this.props.addingAssignment === null) {
       addingAssignment = false
@@ -170,7 +170,7 @@ AssignmentTable.propTypes = {
   onDeleteAssignment: PropTypes.func,
   weights: PropTypes.array,
   cl: PropTypes.object,
-  currentWeight: PropTypes.object,
+  // currentWeight: PropTypes.object,
   isAdmin: PropTypes.bool,
   onSubmit: PropTypes.func,
   onSubmitSingleWeight: PropTypes

@@ -2,8 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 class Modal extends React.Component {
-  renderModal () {
-    const {open, footer} = this.props
+  renderModal() {
+    const { open, footer } = this.props
     const bodyClass = footer ? 'account-for-footer' : ''
 
     if (open) {
@@ -21,17 +21,17 @@ class Modal extends React.Component {
     }
   }
 
-  renderHeader () {
+  renderHeader() {
     if (this.props.title) {
       return (
-        <div className='cn-modal-title-container margin-top margin-bottom'>
-          <h2>{this.props.title}</h2>
+        <div className='cn-modal-title-container'>
+          <h2><span onClick={this.props.onClose} className="closeicon">X</span> {this.props.title} </h2>
         </div>
       )
     }
   }
 
-  renderFooter () {
+  renderFooter() {
     if (this.props.footer) {
       return (
         <div className='cn-modal-footer'>
@@ -41,7 +41,7 @@ class Modal extends React.Component {
     }
   }
 
-  render () {
+  render() {
     return (
       <div>
         {this.renderModal()}

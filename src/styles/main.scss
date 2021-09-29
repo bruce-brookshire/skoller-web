@@ -1,33 +1,32 @@
-@import 'variables';            // Global variables
-@import 'mixins/breakpoint';    // Breakpoint utils lifted from Zurb
-@import 'mixins/zf-utils';
-@import 'mixins';               // Include global utility mixins
-@import 'animations';
+@import "variables"; // Global variables
+@import "mixins/breakpoint"; // Breakpoint utils lifted from Zurb
+@import "mixins/zf-utils";
+@import "mixins"; // Include global utility mixins
+@import "animations";
 
-@import 'mixins/button';
-@import 'mixins/layout';
-@import 'mixins/triangle';
-@import 'mixins/landing';
-@import 'mixins/shadow-box';
+@import "mixins/button";
+@import "mixins/layout";
+@import "mixins/triangle";
+@import "mixins/landing";
+@import "mixins/shadow-box";
 
-@import 'fonts';
+@import "fonts";
 
 // Assets ----------------------------------------------------------------------
-@import 'assets/sk-loader.scss';
-
+@import "assets/sk-loader.scss";
 
 // Forms ----------------------------------------------------------------------
-@import 'forms/mixins/input';
-@import 'forms/checkbox-field';
-@import 'forms/date-range-field';
-@import 'forms/input-field';
-@import 'forms/multiselect-field';
-@import 'forms/pill-field';
-@import 'forms/select-field';
-@import 'forms/textarea-field';
-@import 'forms/slider-field';
+@import "forms/mixins/input";
+@import "forms/checkbox-field";
+@import "forms/date-range-field";
+@import "forms/input-field";
+@import "forms/multiselect-field";
+@import "forms/pill-field";
+@import "forms/select-field";
+@import "forms/textarea-field";
+@import "forms/slider-field";
 
-// Components ----------------------------
+
 @import 'components/strikepopup.scss';
 @import 'components/add-assignment';
 @import 'components/enroll-link-splash';
@@ -143,67 +142,182 @@
 @import 'components/home-share';
 @import 'components/tasks';
 @import 'components/task-card';
+@import "components/add-assignment";
+@import "components/enroll-link-splash";
+@import "components/sk-modal.scss";
+@import "components/assignments";
+@import "components/assignment-categories.scss";
+@import "components/assignment-detail";
+@import "components/assignment-card";
+@import "components/assignment-form.scss";
+@import "components/assignment-table";
+@import "components/admin-assignment-table";
+@import "components/autocomplete";
+@import "components/autocomplete-detail";
+@import "components/calendar";
+@import "components/card";
+@import "components/chat";
+@import "components/chat-post";
+@import "components/checklist.scss";
+@import "components/class-card.scss";
+@import "components/class-cr-card.scss";
+@import "components/common-scale-modal.scss";
+@import "components/completion-circle";
+@import "components/copy-box";
+@import "components/datepicker.scss";
+@import "components/day-selector";
+@import "components/file-tab";
+@import "components/file-viewer";
+@import "components/tabbed-file-upload";
+@import "components/flex-table";
+@import "components/grade-scale";
+@import "components/grid";
+@import "components/hub-assignment-form";
+@import "components/hub-class-with-change-requests";
+@import "components/hub-change-request";
+@import "components/hub-change-request-history";
+@import "components/hub-panel-change-request";
+@import "components/hub-professor";
+@import "components/hub-weight-form";
+@import "components/hub-weights";
+@import "components/insights-semester";
+@import "components/insights-key";
+@import "components/insights-progress";
+@import "components/job-cell";
+@import "components/job-detail";
+@import "components/jobs-form.scss";
+@import "components/jobs-list";
+@import "components/jobs-experience.scss";
+@import "components/jobs-switch.scss";
+@import "components/jobs-avatar-modal.scss";
+@import "components/jobs-welcome-modal.scss";
+@import "components/landing-banner.scss";
+@import "components/login-verification.scss";
+@import "components/modal";
+@import "components/navbar";
+@import "components/nested-nav";
+@import "components/professor";
+@import "components/progress-bar.scss";
+@import "components/sammi.scss";
+@import "components/sammi-prompt.scss";
+@import "components/search";
+@import "components/see-more";
+@import "components/shadow-box";
+@import "components/share-classes";
+@import "components/share-no-classes";
+@import "components/share-scoreboard-modal";
+@import "components/sk-add-class-modal.scss";
+@import "components/sk-class-assignments.scss";
+@import "components/sk-assignment.scss";
+@import "components/sk-banner.scss";
+@import "components/sk-class-status-modal.scss";
+@import "components/sk-drag-and-drop.scss";
+@import "components/sk-drop-class-button.scss";
+@import "components/sk-enroll-download.scss";
+@import "components/sk-enroll-link.scss";
+@import "components/sk-enroll-login.scss";
+@import "components/sk-form";
+@import "components/sk-select.scss";
+@import "components/sk-select-school.scss";
+@import "components/sk-find-class-form.scss";
+@import "components/sk-major-form.scss";
+@import "components/sk-onboard-first-class.scss";
+@import "components/sk-onboard-share-partner.scss";
+@import "components/sk-onboard-sign-up.scss";
+@import "components/sk-onboard-sign-up-form.scss";
+@import "components/sk-org-invitation.scss";
+@import "components/sk-pop-up";
+@import "components/sk-progress-modal";
+@import "components/sk-select-dropdown";
+@import "components/sk-share-partner-link";
+@import "components/sk-tasks-list";
+@import "components/sk-upload-additional-docs.scss";
+@import "components/sk-upload-overload-docs.scss";
+@import "components/sign-up-form";
+@import "components/speculate-tool";
+@import "components/time-fields";
+@import "components/topnav";
+@import "components/tooltip";
+@import "components/snackbar";
+@import "components/student-request-modal";
+@import "components/upload-history";
+@import "components/upload-documents";
+@import "components/weight-converter.scss";
+@import "components/verification-code";
+@import "components/weights";
+@import "components/weight-form";
+@import "components/weight-table";
+@import "components/weight-type";
+@import "components/student-nav";
+@import "components/student-layout";
+@import "components/home";
+@import "components/home-classes";
+@import "components/home-jobs";
+@import "components/home-share";
+@import "components/tasks";
+@import "components/task-card";
+@import "components/home-new-class";
 
-// Composed Views ------------------------
-@import 'views/mixins/onboarding.scss';
-@import 'views/account-info.scss';
-@import 'views/analytics.scss';
-@import 'views/assignment-admin.scss';
-@import 'views/call-to-action.scss';
-@import 'views/class-admin.scss';
-@import 'views/class-detail.scss';
-@import 'views/class-assignments.scss';
-@import 'views/class-form.scss';
-@import 'views/class-link.scss';
-@import 'views/class-list.scss';
-@import 'views/class-invite-link.scss';
-@import 'views/create-professor-modal.scss';
-@import 'views/create-school-modal.scss';
-@import 'views/enrollment-link.scss';
-@import 'views/faq.scss';
-@import 'views/find-classes.scss';
-@import 'views/forgot-password.scss';
-@import 'views/hub-accounts.scss';
-@import 'views/hub-admin-login.scss';
-@import 'views/hub-classes.scss';
-@import 'views/hub-insights.scss';
-@import 'views/hub-landing.scss';
-@import 'views/hub-schools.scss';
-@import 'views/insights';
-@import 'views/jobs-home.scss';
-@import 'views/jobs-profile.scss';
-@import 'views/jobs-browse.scss';
-@import 'views/landing-footer.scss';
-@import 'views/landing-nav.scss';
-@import 'views/landing.scss';
-@import 'views/learn-more.scss';
-@import 'views/meeting-time-modal.scss';
-@import 'views/myclasses.scss';
-@import 'views/onboarding.scss';
-@import 'views/people-talking.scss';
-@import 'views/pitch-deck.scss';
-@import 'views/onboard.scss';
-@import 'views/our-team.scss';
-@import 'views/privacy-policy.scss';
-@import 'views/project-four-door.scss';
-@import 'views/school-info.scss';
-@import 'views/school-search.scss';
-@import 'views/share.scss';
-@import 'views/sign-up.scss';
-@import 'views/sk-class.scss';
-@import 'views/skip-category-modal.scss';
-@import 'views/student-list.scss';
-@import 'views/student-problems-modal.scss';
-@import 'views/student-request-info.scss';
-@import 'views/submit-syllabi.scss';
-@import 'views/switchboard.scss';
-@import 'views/syllabus-tool.scss';
-@import 'views/unsubscribe.scss';
-@import 'views/user-agreement.scss';
-@import 'views/verification.scss';
 
-// Skoller Insights
-@import 'si-insights/main.scss';
+@import "views/mixins/onboarding.scss";
+@import "views/account-info.scss";
+@import "views/analytics.scss";
+@import "views/assignment-admin.scss";
+@import "views/call-to-action.scss";
+@import "views/class-admin.scss";
+@import "views/class-detail.scss";
+@import "views/class-assignments.scss";
+@import "views/class-form.scss";
+@import "views/class-link.scss";
+@import "views/class-list.scss";
+@import "views/class-invite-link.scss";
+@import "views/create-professor-modal.scss";
+@import "views/create-school-modal.scss";
+@import "views/enrollment-link.scss";
+@import "views/faq.scss";
+@import "views/find-classes.scss";
+@import "views/forgot-password.scss";
+@import "views/hub-accounts.scss";
+@import "views/hub-admin-login.scss";
+@import "views/hub-classes.scss";
+@import "views/hub-insights.scss";
+@import "views/hub-landing.scss";
+@import "views/hub-schools.scss";
+@import "views/insights";
+@import "views/jobs-home.scss";
+@import "views/jobs-profile.scss";
+@import "views/jobs-browse.scss";
+@import "views/landing-footer.scss";
+@import "views/landing-nav.scss";
+@import "views/landing.scss";
+@import "views/learn-more.scss";
+@import "views/meeting-time-modal.scss";
+@import "views/myclasses.scss";
+@import "views/onboarding.scss";
+@import "views/people-talking.scss";
+@import "views/pitch-deck.scss";
+@import "views/onboard.scss";
+@import "views/our-team.scss";
+@import "views/privacy-policy.scss";
+@import "views/project-four-door.scss";
+@import "views/school-info.scss";
+@import "views/school-search.scss";
+@import "views/share.scss";
+@import "views/sign-up.scss";
+@import "views/sk-class.scss";
+@import "views/skip-category-modal.scss";
+@import "views/student-list.scss";
+@import "views/student-problems-modal.scss";
+@import "views/student-request-info.scss";
+@import "views/submit-syllabi.scss";
+@import "views/switchboard.scss";
+@import "views/syllabus-tool.scss";
+@import "views/unsubscribe.scss";
+@import "views/user-agreement.scss";
+@import "views/verification.scss";
+
+
+@import "si-insights/main.scss";
 
 html {
   box-sizing: border-box;
@@ -257,10 +371,12 @@ body {
 .app {
   padding-top: $unit-nav-height;
 
-  &.public { padding-top: 0; }
+  &.public {
+    padding-top: 0;
+  }
   .layout {
     position: fixed;
-    top: $unit-nav-height+$unit-top-nav-height;
+    top: $unit-nav-height + $unit-top-nav-height;
     bottom: 0;
     right: 0;
     left: 0;
@@ -269,7 +385,7 @@ body {
   }
 }
 
-.footer{
+.footer {
   border-top: 1px solid;
   border-top-color: $cn-color-grey;
   padding-left: 10px;
@@ -279,9 +395,13 @@ body {
 }
 //
 // Buttons -----------------------------------
-.button { @include primary-button; }
+.button {
+  @include primary-button;
+}
 
-.button-invert { @include button-invert; }
+.button-invert {
+  @include button-invert;
+}
 
 .button-delete-x {
   align-items: center;
@@ -313,7 +433,7 @@ body {
   display: flex;
   font-size: 12px;
   height: 17px;
-  width: 17px;  
+  width: 17px;
   justify-content: center;
   margin-left: auto;
   margin-right: auto;
@@ -328,7 +448,9 @@ body {
   max-width: 200px;
 }
 
-.full-width { width: 100%;}
+.full-width {
+  width: 100%;
+}
 
 .space-between-vertical {
   display: flex;
@@ -338,20 +460,20 @@ body {
 }
 
 // Links -------------------------------------
-.non-styled-link{
+.non-styled-link {
   text-decoration: none;
 
-  &:hover{
+  &:hover {
     text-decoration: none;
   }
-  &:visited{
+  &:visited {
     text-decoration: none;
   }
 }
 
 // Lists -------------------------------------
-.non-styled-list{
-  list-style:none;
+.non-styled-list {
+  list-style: none;
   padding: 0px;
 }
 // Cursor -----------------------------------
@@ -391,9 +513,9 @@ body {
 }
 
 .cn-green-background {
-  background-color: #00C000;
+  background-color: #00c000;
   &:hover {
-    background-color: lighten(#00C000, 5%);
+    background-color: lighten(#00c000, 5%);
   }
 }
 
@@ -413,7 +535,6 @@ body {
   background-color: $cn-color-orange;
 }
 
-
 // Margins -----------------------------------
 .margin-bottom {
   margin-bottom: $unit-space;
@@ -424,7 +545,7 @@ body {
 }
 
 .margin-right {
-  margin-right: $unit-space
+  margin-right: $unit-space;
 }
 
 .margin-top {
@@ -469,7 +590,7 @@ body {
 }
 
 .horizontal-align-row {
-  display:flex;
+  display: flex;
   flex-direction: row;
 }
 

@@ -44,8 +44,9 @@
       &.cn-control-panel {
         padding: 1rem;
         margin: 0 0.5rem 0.5rem 1rem;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
-        .cn-section-header{
+        .cn-section-header {
           position: absolute;
           margin-top: 4px;
           display: flex;
@@ -53,7 +54,7 @@
         }
 
         .cn-section-content {
-          background-color: #FFFFFF;
+          background-color: #ffffff;
           // border: 1px solid #4A4A4A;
           // box-shadow: 0px 2px 3px #888888;
           border-radius: 5px;
@@ -86,8 +87,9 @@
         // border: 1px solid #4A4A4A;
         // box-shadow: 0px 2px 3px #888888;
         margin: 0 1rem 0.5rem 0.5rem;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
-        .cn-section-header{
+        .cn-section-header {
           position: absolute;
           margin-top: 4px;
           display: flex;
@@ -95,7 +97,7 @@
           align-self: flex-end;
           padding: 8px;
         }
-        
+
         .cn-section-content {
           height: 300px;
           flex: 1;
@@ -153,7 +155,47 @@
 
   .cn-modal {
     min-width: 300px;
-    width: 300px;
     overflow-y: hidden;
+  }
+}
+
+.cn-section-progress-outer {
+  width: 100%;
+  img {
+    width: 25px;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  .infodiv {
+    width: 20px;
+    display: inline-block;
+  }
+  .cn-section-progress-title {
+    font-size: 20px;
+    font-weight: 600;
+    vertical-align: bottom;
+  }
+  .fa-question-circle {
+    color: #5ab9e4;
+  }
+  .cn-pull-right {
+    float: right;
+    width: 110px;
+    display: block;
+    margin-top: 20px;
+    span {
+      display: inline-block;
+    }
+    span.cn-section-progressbar {
+      width: 55px;
+      // float: right;
+      .RSPBprogressBar .RSPBprogression {
+        background: #57b9e4 !important;
+      }
+    }
+    .cn-section-icons {
+      color: #57b9e4 !important;
+      margin: 2px;
+    }
   }
 }

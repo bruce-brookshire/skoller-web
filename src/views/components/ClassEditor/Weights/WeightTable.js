@@ -8,9 +8,9 @@ class WeightTable extends React.Component {
   * @param [Object] item. Row data to be formatted.
   * @param [Number] index. Index of row data.
   */
-  getRow (item, index) {
-    const {id, name, weight} = item
-    const {currentWeight, viewOnly, cl} = this.props
+  getRow(item, index) {
+    const { id, name, weight } = item
+    const { currentWeight, viewOnly, cl } = this.props
 
     const activeClass = (currentWeight && currentWeight.id) === id
       ? 'active' : ''
@@ -24,23 +24,24 @@ class WeightTable extends React.Component {
           this.props.onSelectWeight(item)
         }}
       >
-        {!viewOnly &&
-          <div className='col-xs-1'>
-            <div
-              className='button-delete-x-light center-content'
-              onClick={(event) => {
-                event.stopPropagation()
-                /* if (disabled) return */
-                this.props.onDeleteWeight(item)
-              }}><img src='/src/assets/images/syllabus_tool/circle_x.png' />
-            </div>
-          </div>
+        {
+          // !viewOnly &&
+          //   <div className='col-xs-1'>
+          //     <div
+          //       className='button-delete-x-light center-content'
+          //       onClick={(event) => {
+          //         event.stopPropagation()
+          //         /* if (disabled) return */
+          //         this.props.onDeleteWeight(item)
+          //       }}><img src='/src/assets/images/syllabus_tool/circle_x.png' />
+          //     </div>
+          //   </div>
         }
-        <div className={`weight-label ${viewOnly ? 'col-xs-9' : 'col-xs-8'}`}>
+        <div className={`weight-label col-xs-9`}>
           <span>{name}</span>
         </div>
         <div className='col-xs-3 right-text'>
-          <span>{weight}{!cl.is_points ? '%' : ''}</span>
+          <span>{weight}{!cl.is_points ? '%' : ' pts'}</span>
         </div>
       </div>
     )
@@ -51,8 +52,8 @@ class WeightTable extends React.Component {
   *
   * @return [Number] totalWeight. The accumlated percentages.
   */
-  getTotalWeight () {
-    const {weights} = this.props
+  getTotalWeight() {
+    const { weights } = this.props
     let totalWeight = 0
     weights.forEach(item => {
       totalWeight += Number(item.weight)
@@ -63,8 +64,8 @@ class WeightTable extends React.Component {
   /*
   * Render the weights for a given class.
   */
-  renderWeights () {
-    const {weights} = this.props
+  renderWeights() {
+    const { weights } = this.props
     // sort weights by created at
     return weights.sort((a, b) => {
       return a.inserted_at > b.inserted_at
@@ -77,9 +78,9 @@ class WeightTable extends React.Component {
   * Render total percentage
   *
   */
-  renderTotalPercentage () {
+  renderTotalPercentage() {
     const total = this.getTotalWeight()
-    const {viewOnly, cl, totalPoints} = this.props
+    const { viewOnly, cl, totalPoints } = this.props
     const totalPointsRatio = (viewOnly || !totalPoints) ? total : `${total}/${totalPoints}`
 
     return (
@@ -99,8 +100,8 @@ class WeightTable extends React.Component {
     )
   }
 
-  render () {
-    const {viewOnly} = this.props
+  render() {
+    const { viewOnly } = this.props
 
     return (
       <div id='class-editor-weight-table' className={`${viewOnly ? 'view-only' : ''}`}>

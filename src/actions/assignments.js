@@ -1,4 +1,4 @@
-import {get, post, put, del} from '../utilities/api'
+import { get, post, put, del } from '../utilities/api'
 import stores from '../stores'
 
 /*
@@ -6,7 +6,7 @@ import stores from '../stores'
 *
 * @param [Object] cl. Class
 */
-export function getAllStudentAssignments (studentId) {
+export function getAllStudentAssignments(studentId) {
   return get(`/api/v1/students/${studentId}/assignments`)
     .then((assignments) => {
       stores.studentAssignmentsStore.setAssignments(assignments)
@@ -16,7 +16,7 @@ export function getAllStudentAssignments (studentId) {
     })
 }
 
-export function getClassAssignments (cl) {
+export function getClassAssignments(cl) {
   return get(`/api/v1/classes/${cl.id}/assignments`, '', 'Error fetching assignments. Try again.')
     .then(data => {
       return data
@@ -31,12 +31,13 @@ export function getClassAssignments (cl) {
 *
 * @params [Object] form. Assignment form.
 */
-export function createAssignment (cl, form) {
+export function createAssignment(cl, form) {
   return post(`/api/v1/classes/${cl.id}/assignments`, form, 'Error creating assignment. Try again.')
     .then(data => {
       return data
     })
     .catch(error => {
+      console.log(error, 'error')
       return Promise.reject(error)
     })
 }
@@ -46,7 +47,7 @@ export function createAssignment (cl, form) {
 *
 * @params [Object] form. Assignment form.
 */
-export function createAssignmentByClassId (classId, form) {
+export function createAssignmentByClassId(classId, form) {
   return post(`/api/v1/classes/${classId}/assignments`, form, 'Error creating assignment. Try again.')
     .then(data => {
       return data
@@ -61,7 +62,7 @@ export function createAssignmentByClassId (classId, form) {
 *
 * @params [Object] form. Assignment form.
 */
-export function createStudentAssignment (studentId, classId, form) {
+export function createStudentAssignment(studentId, classId, form) {
   return post(`/api/v1/students/${studentId}/classes/${classId}/assignments`, form, 'Error creating assignment. Try again.')
     .then(data => {
       return data
@@ -76,8 +77,8 @@ export function createStudentAssignment (studentId, classId, form) {
 *
 * @params [Object] grade. Assignment grade.
 */
-export function gradeAssignment (assignmentId, grade) {
-  return post(`/api/v1/assignments/${assignmentId}/grades`, {grade: grade}, 'Error grading assignment. Try again.')
+export function gradeAssignment(assignmentId, grade) {
+  return post(`/api/v1/assignments/${assignmentId}/grades`, { grade: grade }, 'Error grading assignment. Try again.')
     .then(data => {
       return data
     })
@@ -91,7 +92,7 @@ export function gradeAssignment (assignmentId, grade) {
 *
 * @params [Object] grade. Assignment grade.
 */
-export function removeGradeFromAssignment (assignmentId) {
+export function removeGradeFromAssignment(assignmentId) {
   return post(`/api/v1/assignments/${assignmentId}/grades`, { grade: null }, 'Error removing grade assignment. Try again.')
     .then(data => {
       return data
@@ -106,8 +107,23 @@ export function removeGradeFromAssignment (assignmentId) {
 *
 * @params [Object] form. Assignment form.
 */
-export function updateAssignment (cl, form) {
+export function updateAssignment(cl, form) {
   return put(`/api/v1/class/assignments/${form.id}`, form, 'Error updating assignment. Try again.')
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+/*
+* Update an assignment
+*
+* @params [Object] form. Assignment form.
+*/
+export function tagAssignment(cl, form) {
+  return put(`/api/v1/class/assignments/${form.id}?weight_id=${form.weight_id}`, {}, 'Error updating assignment. Try again.')
     .then(data => {
       return data
     })
@@ -122,7 +138,7 @@ export function updateAssignment (cl, form) {
 * @params [Object] form. Assignment form.
 * @params [Boolean] isPrivate. Update is private.
 */
-export function updateStudentAssignment (form, isPrivate = true) {
+export function updateStudentAssignment(form, isPrivate = true) {
   form.is_private = isPrivate
   return put(`/api/v1/assignments/${form.id}`, form, 'Error updating assignment. Try again.')
     .then(data => {
@@ -136,7 +152,7 @@ export function updateStudentAssignment (form, isPrivate = true) {
 /*
 * Delete an assignment
 */
-export function deleteAssignment (form) {
+export function deleteAssignment(form) {
   return del(`/api/v1/class/assignments/${form.id}`, 'Error deleting assignment. Try again.')
     .catch(error => {
       return Promise.reject(error)
@@ -146,7 +162,7 @@ export function deleteAssignment (form) {
 /*
 * Delete a student assignment
 */
-export function deleteStudentAssignment (assignmentId) {
+export function deleteStudentAssignment(assignmentId) {
   return del(`/api/v1/assignments/${assignmentId}`, 'Error deleting assignment. Try again.')
     .catch(error => {
       return Promise.reject(error)
@@ -167,26 +183,25 @@ export function deleteStudentAssignment (assignmentId) {
 /*
 * Delete an assignment post
 */
-export function deleteAssignmentPost (assignmentId, postId) {
+export function deleteAssignmentPost(assignmentId, postId) {
   return del(`/api/v1/assignments/${assignmentId}/posts/${postId}`, 'Error deleting assignment post. Try again.')
     .catch(error => {
       return Promise.reject(error)
     })
 }
 
-export function getTaskAssignments (studentId) {
+export function getTaskAssignments(studentId) {
   let date = new Date()
   let dateStr = new Date(date.getFullYear(), date.getMonth(), date.getDate()).toISOString()
 
   return get(`/api/v1/students/${studentId}/assignments?is_complete=false&date=${dateStr}`)
 }
 
-export function getStudentAssignmentById (studentId, taskId) {
-  console.log(studentId, taskId)
+export function getStudentAssignmentById(studentId, taskId) {
   return get(`/api/v1/students/${studentId}/assignments?id=${taskId}`)
 }
 
-export function toggleCompleteAssignmentById (studentId, taskId, isComplete = true) {
+export function toggleCompleteAssignmentById(studentId, taskId, isComplete = true) {
   let form = {
     is_completed: isComplete ? 'true' : 'false'
   }

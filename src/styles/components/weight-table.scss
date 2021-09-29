@@ -1,6 +1,6 @@
 #class-editor-weight-table {
   background-color: $cn-color-white;
-  border-top: 1px solid $cn-color-grey;
+  // border-top: 1px solid $cn-color-grey;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -14,7 +14,6 @@
         background-color: $cn-color-white;
       }
     }
-
   }
 
   .table-row {
@@ -52,15 +51,17 @@
     height: 100%;
 
     #weight-rows-only {
-      height: 83%;
+      min-height: 86%;
       padding-top: 0.4em;
       overflow-y: auto;
     }
 
     #class-weights-total {
       border-top: 1px solid $cn-color-grey;
-      padding: 0.8em 0.5em 0.5em 0.6em;
-
+      border-bottom: 1px solid $cn-color-grey;
+      padding: 0.5em 0.5em 0.3em;
+      font-weight: 600;
+      line-height: 17px;
       .total-label {
         font-size: 17px;
       }

@@ -9,7 +9,9 @@
   @include reset-box-model;
   list-style: none;
 
-  li {  @include reset-box-model; }
+  li {
+    @include reset-box-model;
+  }
 }
 
 @mixin reset-focus {
@@ -35,7 +37,7 @@
 @mixin fluid-width-embed {
   position: relative;
   padding-bottom: 56.25%; /*16:9*/
-  height: 0; 
+  height: 0;
   overflow: hidden;
 
   embed,
@@ -66,19 +68,23 @@
   }
 
   @include breakpoint(medium) {
-    li { flex: 1 0 50%; }
+    li {
+      flex: 1 0 50%;
+    }
   }
 
   @include breakpoint(large) {
-    li { flex: 1 0 33%; }
+    li {
+      flex: 1 0 33%;
+    }
   }
 }
 
 // standard box styling
 @mixin skoller-cell {
   background-color: white;
-  border-radius: $skoller-cell-border-radius;
-  box-shadow: 0px 8px 15px rgba(0,0,0,.05);
+  border-radius: $cn-border-radius;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.05);
 }
 
 // for forms, remove all the default styling
@@ -87,22 +93,20 @@
   label,
   select,
   button,
-  textarea
-  {
-    margin:0;
-    border:0;
-    padding:0;
-    display:inline-block;
-    vertical-align:middle;
-    white-space:normal;
-    background:none;
-    line-height:1;
+  textarea {
+    margin: 0;
+    border: 0;
+    padding: 0;
+    display: inline-block;
+    vertical-align: middle;
+    white-space: normal;
+    background: none;
+    line-height: 1;
   }
 
   /* Remove the stupid outer glow in Webkit */
-  input:focus
-  {
-    outline:0;
+  input:focus {
+    outline: 0;
   }
 
   /* Box Sizing Reset
@@ -110,51 +114,46 @@
 
   /* All of our custom controls should be what we expect them to be */
   input,
-  textarea
-  {
-    -webkit-box-sizing:content-box;
-    -moz-box-sizing:content-box;
-    box-sizing:content-box;
+  textarea {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
   }
 
   /* These elements are usually rendered a certain way by the browser */
   button,
-  input[type=reset],
-  input[type=button],
-  input[type=submit],
-  input[type=checkbox],
-  input[type=radio],
-  select
-  {
-    -webkit-box-sizing:border-box;
-    -moz-box-sizing:border-box;
-    box-sizing:border-box;
+  input[type="reset"],
+  input[type="button"],
+  input[type="submit"],
+  input[type="checkbox"],
+  input[type="radio"],
+  select {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
   }
 
   /* Button Controls
   -----------------------------------------------*/
 
-  input[type=checkbox],
-  input[type=radio]
-  {
-    width:13px;
-    height:13px;
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: 13px;
+    height: 13px;
   }
 
   /* Search Input
   -----------------------------------------------*/
 
   /* Make webkit render the search input like a normal text field */
-  input[type=search]
-  {
+  input[type="search"] {
     -webkit-appearance: textfield;
     -webkit-box-sizing: content-box;
   }
 
   /* Turn off the recent search for webkit. It adds about 15px padding on the left */
-  ::-webkit-search-decoration
-  {
-    display:none;
+  ::-webkit-search-decoration {
+    display: none;
   }
 
   /* Buttons
@@ -163,45 +162,39 @@
   button,
   input[type="reset"],
   input[type="button"],
-  input[type="submit"]
-  {
+  input[type="submit"] {
     /* Fix IE7 display bug */
-    overflow:visible;
-    width:auto;
+    overflow: visible;
+    width: auto;
   }
 
   /* IE8 and FF freak out if this rule is within another selector */
-  ::-webkit-file-upload-button
-  {	
-    padding:0;
-    border:0;
-    background:none;
+  ::-webkit-file-upload-button {
+    padding: 0;
+    border: 0;
+    background: none;
   }
 
   /* Textarea
   -----------------------------------------------*/
 
-  textarea 
-  {
+  textarea {
     /* Move the label to the top */
-    vertical-align:top;
-    
+    vertical-align: top;
+
     /* Turn off scroll bars in IE unless needed */
-    overflow:auto;
+    overflow: auto;
   }
 
   /* Selects
   -----------------------------------------------*/
 
-  select
-  {
-
+  select {
   }
 
-  select[multiple] 
-  {
+  select[multiple] {
     /* Move the label to the top */
-    vertical-align:top;
+    vertical-align: top;
   }
 }
 
@@ -211,7 +204,8 @@
   margin: 0 auto;
   // padding: 8px;
 
-  p, input {
+  p,
+  input {
     box-sizing: border-box;
     cursor: pointer;
     margin: 0 auto;
@@ -235,7 +229,8 @@
   text-transform: uppercase;
   // padding: 8px;
 
-  p, a {
+  p,
+  a {
     box-sizing: border-box;
     cursor: pointer;
     margin: 0 auto;
@@ -269,13 +264,13 @@
     font-weight: 600;
     padding: 8px 8px 4px 8px;
     border-radius: 5px;
-    background: rgba(0,0,0,0.12);
+    background: rgba(0, 0, 0, 0.12);
     border-color: $sk-charcoal;
     color: $sk-charcoal;
     width: 100%;
 
     &:hover {
-      background: rgba(0,0,0,0.12);
+      background: rgba(0, 0, 0, 0.12);
       color: $sk-charcoal;
     }
   }
@@ -293,12 +288,12 @@
     font-weight: 600;
     padding: 8px 8px 4px 8px;
     border-radius: 5px;
-    background: rgba(0,0,0,0.12);
+    background: rgba(0, 0, 0, 0.12);
     color: white;
     width: 100%;
 
     &:hover {
-      background: rgba(0,0,0,0.12);
+      background: rgba(0, 0, 0, 0.12);
     }
   }
 }
@@ -313,7 +308,7 @@
   border: 1px solid $cn-form-border;
   border-radius: 5px;
   margin: 0 8px 0 0;
-  display:flex;
+  display: flex;
   align-items: center;
 
   p {
@@ -349,7 +344,7 @@
   border: 1px solid $cn-form-border;
   border-radius: 5px;
   margin: 0 0 0 8px;
-  display:flex;
+  display: flex;
   align-items: center;
 
   p {
@@ -384,7 +379,7 @@
   box-sizing: border-box;
   margin: 0 0 0.5rem 0;
   padding: 8px 4px 6px 4px;
-  
+
   &:focus {
     outline: none;
   }
@@ -407,7 +402,7 @@
   box-sizing: border-box;
   margin: 0 0 0.5rem 0;
   padding: 8px 4px 6px 4px;
-  
+
   &:focus {
     outline: none;
   }
@@ -429,14 +424,14 @@
   box-sizing: border-box;
   margin: 0 0 0.5rem 0;
   padding: 8px 4px 6px 4px;
-  
+
   &:focus {
     outline: none;
   }
 }
 
 @mixin not-selectable {
-  -webkit-user-select: none; /* Safari */        
+  -webkit-user-select: none; /* Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+/Edge */
   user-select: none; /* Standard */
