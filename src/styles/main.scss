@@ -814,15 +814,40 @@ body {
 
 
 
-
+/*
 .tooltipC-top::after {  
   top: -10px!important;  
   border-color: transparent transparent #ddd transparent!important;
-}
+}*/
 
+/*
 .tooltipC .tooltiptextC {  
   top: auto;
   bottom: auto; right: auto; left: auto;
+}*/
+
+[role="presentation"] .tip-warp * {
+  font-size: 7px!important;
+  margin: 1px 0!important;
 }
 
+[role="presentation"] .tip-warp h3 {
+  margin: 2px 0 !important;
+  clear: both;
+}
+[role="presentation"] .tip-warp span {
+  font-size: 5px !important;
+}
 
+[role="presentation"] .tip-warp p {
+  font-size: 5px !important;
+}
+
+[role="presentation"] .tip-warp {
+  
+  background: red;
+}
+foreignObject {
+  width: 100px!important;
+  height: 100px!important;
+}

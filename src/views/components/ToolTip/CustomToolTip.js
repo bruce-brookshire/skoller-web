@@ -34,7 +34,7 @@ const ReactToolTip =  ({
           </div>
           
         ) : (
-            <div className={`tooltiptextC ${theme === "dark" ? `darkC` :`light`} tooltipC-${position}`} >
+            <div className={`tooltiptextC ${theme === "dark" ? `darkC` :`light`} tooltipC-left`} >
               <div class="assi-tootip-wrap">
                 <h3 class="my-5 fs-18 text-center d-block">Grade Impact: High</h3>
                 <p class="fs-13 mt-0 mb-0 text-muted">{grade}% of more</p>

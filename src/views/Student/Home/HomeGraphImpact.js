@@ -65,16 +65,16 @@ class CustomFlyout extends React.Component {
           </div> */}
 
           <div class="tip-warp">
-              <h3 class="my-10 fs-16 text-center d-block">Week 7:9/29-10/14</h3>
+              <h3 class="text-center d-block">Week 7:9/29-10/14</h3>
               <div class="flex  justify-between">
-                <span class="text-muted fs-12">{ji} Assignments</span>
-                <span class="text-muted fs-12">21.7% Overall</span>
+                <span class="text-muted ">{ji} Assignments</span>
+                <span class="text-muted ">21.7% Overall</span>
               </div> 
                 <div class="tip-list">
                   <div class="listtip firsttl flex flex-row  justify-between border-top py-5">
                       <div class="">
-                          <h6 class="fs-16 text-left stext-purple my-5">Exam 1</h6>
-                          <p class="text-muted fs-12 my-5 mt-0">Tue 9/30</p>
+                          <h6 class=" text-left stext-purple my-5">Exam 1</h6>
+                          <p class="text-muted mt-0">Tue 9/30</p>
                       </div>
                       <div class=""><h5 class="text-right text-dark fs-20 my-5">25%</h5></div>                        
                     </div>
