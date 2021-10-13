@@ -24,7 +24,7 @@ import {
   Title,
   ArgumentAxis,
   ValueAxis,
-  
+
 } from '@devexpress/dx-react-chart-bootstrap4';
 import '@devexpress/dx-react-chart-bootstrap4/dist/dx-react-chart-bootstrap4.css';
 import { Animation } from '@devexpress/dx-react-chart';
@@ -69,16 +69,16 @@ class CustomFlyout extends React.Component {
               <div class="flex  justify-between">
                 <span class="text-muted fs-12">{ji} Assignments</span>
                 <span class="text-muted fs-12">21.7% Overall</span>
-              </div> 
+              </div>
                 <div class="tip-list">
                   <div class="listtip firsttl flex flex-row  justify-between border-top py-5">
                       <div class="">
                           <h6 class="fs-16 text-left stext-purple my-5">Exam 1</h6>
                           <p class="text-muted fs-12 my-5 mt-0">Tue 9/30</p>
                       </div>
-                      <div class=""><h5 class="text-right text-dark fs-20 my-5">25%</h5></div>                        
+                      <div class=""><h5 class="text-right text-dark fs-20 my-5">25%</h5></div>
                     </div>
-                </div> 
+                </div>
           </div>
 
         </foreignObject>
@@ -108,6 +108,7 @@ class HomeGraphImpact extends React.Component {
 
   render () {
       const { data: chartData, assignment } = this.state;
+      console.log({assignment})
       console.log(assignment, 'before changes');
       let data = getAssignmentCountDataHomeGraph(assignment, false, [], 'w');
       console.log(data, 'un changes');
@@ -115,16 +116,20 @@ class HomeGraphImpact extends React.Component {
       const styles = this.getStyles();
 
       const today = parseInt(moment().format('X'))
-      const domain = {
-        x: [
-          data[0].x - 604800,
-          data[data.length - 1].x + 604800
-        ],
-        y: [
-          0,
-          Math.max.apply(Math, data.map(a => a.y)) + (Math.max.apply(Math, data.map(a => a.y)) * 0.25)
-        ]
+      let domain = {x: [0,0], y: [0,0]}
+      if(data.length > 0) {
+         domain = {
+            x: [
+              data[0].x - 604800,
+              data[data.length - 1].x + 604800
+            ],
+            y: [
+              0,
+              Math.max.apply(Math, data.map(a => a.y)) + (Math.max.apply(Math, data.map(a => a.y)) * 0.25)
+            ]
+          }
       }
+
       let hideToday = false
       if (moment(today, 'X').isAfter(moment(domain.x[1], 'X'))) {
         hideToday = true
@@ -138,7 +143,7 @@ class HomeGraphImpact extends React.Component {
 
       //   <VictoryChart
       //     domain={{ x: [0, 11], y: [0, 100] }}
-          
+
       //   >
       //     <VictoryBar
       //       labelComponent={
@@ -160,7 +165,7 @@ class HomeGraphImpact extends React.Component {
       // </div>
       <div className='home-shadow-box margin-top home-insights'>
           <svg  viewBox='0 0 450 260'>
-           
+
 
             <g transform={'translate(16, -20)'}>
               <VictoryAxis
@@ -245,10 +250,10 @@ class HomeGraphImpact extends React.Component {
                   animate={animate}
                 />
 
-                
-              
 
-              
+
+
+
             </g>
           </svg>
         </div>
