@@ -12,7 +12,7 @@ const stripePromise = loadStripe('pk_test_51JV9OSSGLvMTa3qVnwhFxc03IiK5JOGO94YQu
 class ChangeSchool extends React.Component {
   constructor (props) {
     super(props)
-    
+
 
     this.state = {
        selected_subscription:'',
@@ -37,16 +37,16 @@ class ChangeSchool extends React.Component {
           }
          }
 
-         
+
 
        }
       //  console.log(stripePromise.createToken(), 'stripe js');
-     
+
     this.cookie = new Cookies()
     console.log(this.cookie, 'my cookie');
   }
 
-  
+
 
   componentDidMount () {
         actions.stripe.getAllSubscription().catch((r) => console.log(r, 66));
@@ -63,7 +63,7 @@ class ChangeSchool extends React.Component {
             console.log(e)
          })
 
-        
+
   }
 
   closeModal = () => {
@@ -77,38 +77,38 @@ class ChangeSchool extends React.Component {
   }
 
   simplifiedFunction () {
-  
+
  }
   getPlans(){
    let plans = this.state.plans;
-  
+
     return (
       <ul>
         {plans.map((row, i) => (
-           (this.state.selected_subscription == row.id ) ?  
+           (this.state.selected_subscription == row.id ) ?
            <li  className="highlight {(i == 0) ? 'first-item':((i == (plans.length -1) ? 'last-item':'stext-lgray'))}" onClick={() => this.selectPlan(row.id)}><span>${row.amount} per {row.interval}</span></li> : <li  className="{(i == 0) ? 'first-item':((i == (plans.length -1) ? 'last-item':'stext-lgray'))}" onClick={() => this.selectPlan(row.id)}><span>${row.amount} per {row.interval}</span></li>
         ))}
       </ul>
     );
   }
 
- 
+
   render () {
     let disableNext = false
     if ((!this.state.termChoice || !this.state.activeTerm) && (!this.state.schoolChoice)) {
       disableNext = true
     }
-   
+
     // const [paymentCompleted, setPaymentCompleted] = useState(false);
     // const [paymentCompleted, setPaymentCompleted] = useState(false);
 
    //  const stripe = useStripe();
    // const elements = useElements();
 
-    
+
     return (
-        
-      
+
+
         <div className="popup-wrap poup-md">
         <div className="popup-closetext">
            <div className="popup-msg">
@@ -121,7 +121,7 @@ class ChangeSchool extends React.Component {
                  <div className="listgroup-wrap margin-bottom">
                     <h4 className="divider-title"><span>Select a Plan</span></h4>
                     <div className="group-list">
-                    
+
                        <ul>
                         { this.getPlans()}
                        </ul>
@@ -133,9 +133,9 @@ class ChangeSchool extends React.Component {
                     <Elements stripe={stripePromise}>
                      <CheckoutForm selectedSubscription = {this.state.selected_subscription}  simplifiedFunction = {this.simplifiedFunction} myprops={this.props} />
                   </Elements>
-                    
+
                     {/* <form>
-                       <div className="group-field inputfield">								
+                       <div className="group-field inputfield">
                           <label>Email</label>
                           <input type="text"/>
                        </div>
@@ -144,11 +144,11 @@ class ChangeSchool extends React.Component {
                           <div className="cardinfo-form">
                              <div className="cardinfo-field cardimg">
                                 <span>
-                                <input type="text" placeholder="Number" 
-                                   
+                                <input type="text" placeholder="Number"
+
                                  />
          <img src="https://e7.pngegg.com/pngimages/805/227/png-clipart-paypal-the-next-level-service-payment-gateway-industry-paypal-text-payment.png" alt=""></img>
-                                </span>												
+                                </span>
                              </div>
                              <div className="cardinfo-field border-1 saround">
                                 <div className="row">
@@ -156,19 +156,19 @@ class ChangeSchool extends React.Component {
                                    <input type="text" placeholder="MM/YY" className="border-right-1"
                                    format="##/##"
                                    mask=""
-                                    
-                                   
-                                   />													
+
+
+                                   />
                                    </span>
                                    <span className="col-xs-6" style={{paddingLeft: 0}}>
-                                   <input type="text" placeholder="CVV" className="border-right-1"/>													
+                                   <input type="text" placeholder="CVV" className="border-right-1"/>
                                    </span>
                                 </div>
                              </div>
                              <div className="cardinfo-field cardimg">
-                                <span>												
-                                <input type="text" placeholder="Zip Code"/>										
-                                </span>												
+                                <span>
+                                <input type="text" placeholder="Zip Code"/>
+                                </span>
                              </div>
                           </div>
                           <br></br>
