@@ -135,7 +135,7 @@ class HomeGraphImpact extends React.Component {
         hideToday = true
       }
       const tickValues = data.map(d => d.x)
-      const animate =  null
+      const animate = null
 
       console.log(data, domain, 'assignments--');
     return (

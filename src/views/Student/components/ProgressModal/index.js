@@ -94,10 +94,10 @@ export default class ProgressModal extends Component {
           className='sk-pm'
           closeModal={this.props.closeModal ? () => this.props.closeModal() : null}
         >
-          <div className='sk-pm-nav' style={this.props.closeModal ? {} : {transform: 'translate(-16px, -42px)', paddingLeft: '16px'}}>
+          {/* <div className='sk-pm-nav' style={this.props.closeModal ? {} : {transform: 'translate(-16px, -42px)', paddingLeft: '16px'}}>
             <h3>{this.props.title}</h3>
             {this.renderProgressStatus()}
-          </div>
+          </div> */}
           <AnimateHeight
             duration={ 200 }
             height={ this.state.contentHeight }

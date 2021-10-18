@@ -31,6 +31,7 @@ class AddClassModal extends React.Component {
   }
 
   checkForActiveTerm () {
+      if(this.props.rootStore.userStore.user.student.primary_period && this.props.rootStore.userStore.user.student.primary_school) {
     if (moment(this.props.rootStore.userStore.user.student.primary_period.end_date).isBefore(moment())) {
       this.setState({loading: true})
       let activeMainTerms = []
@@ -53,6 +54,7 @@ class AddClassModal extends React.Component {
         })
         .catch(e => console.log(e))
     }
+}
   }
 
   changeParams (data) {
