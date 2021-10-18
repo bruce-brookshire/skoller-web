@@ -83,11 +83,14 @@ class FindAClass extends React.Component {
     this.setState({loadingAutocompleteClasses: true})
     if (value) {
       this.setState({loadingAutocompleteClasses: true, searchClassesValue: value})
-      actions.classes.searchSchoolStudentClasses(this.state.termChoice.id, value).then((classes) => {
-        if (this.state.searchClassesValue === value) {
-          this.setState({classes, loadingAutocompleteClasses: false})
+      if(this.state.termChoice){
+
+          actions.classes.searchSchoolStudentClasses(this.state.termChoice.id, value).then((classes) => {
+              if (this.state.searchClassesValue === value) {
+                  this.setState({classes, loadingAutocompleteClasses: false})
+                }
+            }).catch(() => { this.setState({loadingAutocompleteClasses: false}) })
         }
-      }).catch(() => { this.setState({loadingAutocompleteClasses: false}) })
     } else {
       this.setState({classes: [], loadingAutocompleteClasses: false})
     }
@@ -749,15 +752,15 @@ class FindAClass extends React.Component {
             <h1
               className='sk-find-class-school'
               style={{
-                color: this.state.schoolChoice.color ? this.state.schoolChoice.color : null
+                color: this.state.schoolChoice ? this.state.schoolChoice.color : null
               }}
             >
-              {this.state.schoolChoice.name}
+              {this.state.schoolChoice ? this.state.schoolChoice.name : ''}
             </h1>
             <h3
               className='sk-find-class-term'
             >
-              {this.state.termChoice.name}
+              {this.state.termChoice ? this.state.termChoice.name : ''}
             </h3>
           </div>
           <p>

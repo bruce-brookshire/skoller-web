@@ -49,10 +49,11 @@ class PaymentPlans extends React.Component {
         console.log(e)
      })
 
-    
+
 }
 
   checkForActiveTerm () {
+    if(this.props.rootStore.userStore.user.student.primary_period && this.props.rootStore.userStore.user.student.primary_school){
     if (moment(this.props.rootStore.userStore.user.student.primary_period.end_date).isBefore(moment())) {
       this.setState({loading: true})
       let activeMainTerms = []
@@ -75,6 +76,7 @@ class PaymentPlans extends React.Component {
         })
         .catch(e => console.log(e))
     }
+}
   }
 
   changeParams (data) {
@@ -105,7 +107,7 @@ class PaymentPlans extends React.Component {
         }
         <div className='sk-add-class-modal-wrapper' style={this.state.classStatusModal.show ? {display: 'none'} : {}}>
           <ProgressModal
-            title="You are a preminium user"
+            // title=""
             closeModal={() => {
               !this.state.classStatusModal.show && this.closeModal()
             }}
