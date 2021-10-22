@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const ReactToolTip =  ({ 
-  title, 
+const ReactToolTip =  ({
+  title,
   studentCount,
   ttype,
   grade,
   enrollment_link,
-  children, 
-  position, 
-  containerClass, 
+  children,
+  position,
+  containerClass,
   theme }) => {
     return (
       <div className={`tooltipC`}>
@@ -24,17 +24,17 @@ const ReactToolTip =  ({
             <span className="arrowC"></span> */}
 
           <div className="class-tootip-wrap">
-          
-          <h3 class="my-5 fs-18 text-center d-block">{title}</h3>
-          <p class="fs-12 my-5">{studentCount + ' classmates are on skoller'}</p>
-          <p class="fs-12 mt-10 mb-0 text-muted">Invite classmate using this link</p>
+
+          <h3 class="my-5 fs-18 text-center d-block" style={{color: '#333'}}>{title}</h3>
+          <p class="fs-12 my-5" style={{color: '#333'}}>{studentCount + ' classmates are on skoller'}</p>
+          <p class="fs-12 mt-10 mb-0 text-muted" style={{color: '#333'}}>Invite classmate using this link</p>
           <p class="mt-0 mb-0"><a href="#" class="fs-13 text-primary p-5 linktip break-all">{ enrollment_link }</a></p>
         </div>
-            
+
           </div>
-          
+
         ) : (
-            <div className={`tooltiptextC ${theme === "dark" ? `darkC` :`light`} tooltipC-${position}`} >
+            <div className={`tooltiptextC ${theme === "dark" ? `darkC` :`light`} tooltipC-${position}`} style={{left: '-40px'}} >
               <div class="assi-tootip-wrap">
                 <h3 class="my-5 fs-18 text-center d-block">Grade Impact: High</h3>
                 <p class="fs-13 mt-0 mb-0 text-muted">{grade}% of more</p>
@@ -43,7 +43,7 @@ const ReactToolTip =  ({
           </div>
         )}
 
-          
+
       </div>
     );
 }

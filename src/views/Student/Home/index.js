@@ -19,6 +19,7 @@ import HomeGraphImpact from './HomeGraphImpact'
 import HomeAssignments from './HomeAssignments'
 
 import HomeAssignmentGraph from '../Insights/HomeAssignmentGraph'
+import { formatDate } from '../../../utilities/time'
 
 @inject('rootStore') @observer
 class Home extends React.Component {
@@ -224,6 +225,23 @@ class Home extends React.Component {
                                 <HomeTasks />
                             </div>
                         </div>
+                        {
+                            this.props.rootStore.userStore.user.trial &&
+                        <div className="home-shadow-box">
+                           <div className="home-shadow-box__expiresin-container">
+                               <div className="home-shadow-box__expiresin-title">
+                                    <img alt="Skoller" className='logo' src='/src/assets/images/sammi/Smile.png' height="60" />
+                                    <h1>Your free trial expires in {Math.ceil(+this.props.rootStore.userStore.user.trial_days_left)} days</h1>
+                               </div>
+                               <button
+                               onClick={() => {
+                                this.setState({ popUp: { type: 'PaymentPlans', show: true } });
+                               }}
+                               >Upgrade to Premium</button>
+                               <span>Trial ends {formatDate(new Date().getDate() + Math.ceil(+this.props.rootStore.userStore.user.trial_days_left))}</span>
+                           </div>
+                        </div>
+                        }
 
                     </div>
                 </div>
