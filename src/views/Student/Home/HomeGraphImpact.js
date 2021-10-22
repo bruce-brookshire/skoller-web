@@ -243,7 +243,7 @@ class HomeGraphImpact extends React.Component {
                   scale={{x: 'time', y: 'linear'}}
                   standalone={false}
                   style={styles.scatter}
-                  labels={() => "Week 7: 9/29-10/4 \n\n 12 assignments \n\n 21.6% of total grade"}
+                  labels={() => "Week 7: 9/29-10/4 \n 12 assignments \n 21.6% of total grade"}
                   labelComponent={
                     <VictoryTooltip
                      style={{ fill: "#4A4A4A" }}
