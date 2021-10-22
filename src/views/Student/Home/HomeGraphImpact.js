@@ -167,10 +167,10 @@ class HomeGraphImpact extends React.Component {
       //   </VictoryChart>
       // </div>
       <div className='home-shadow-box margin-top home-insights'>
-          <svg  viewBox='0 0 450 260'>
+          <svg  viewBox='0 0 450 300'>
 
 
-            <g transform={'translate(16, -20)'}>
+            <g transform={'translate(0, 0)'}>
               <VictoryAxis
                 tickValues={tickValues}
                 tickFormat={d => moment(d, 'X').format('M/DD')}
@@ -243,7 +243,7 @@ class HomeGraphImpact extends React.Component {
                   scale={{x: 'time', y: 'linear'}}
                   standalone={false}
                   style={styles.scatter}
-                  labels={() => "Week 7: 9/29-10/4 \n 12 assignments \n 21.6% of total grade"}
+                  labels={() => "Week 7: 9/29-10/4 \n\n 12 assignments \n\n 21.6% of total grade"}
                   labelComponent={
                     <VictoryTooltip
                      style={{ fill: "#4A4A4A" }}
