@@ -114,7 +114,7 @@ class ClassDetail extends React.Component {
             <ClassInfo cl={this.getCurrentClass()} />
             <ClassDocuments cl={this.getCurrentClass()} />
             {classmates ? <Classmates students={classmates} cl={cl}/> : <ShareClass cl={this.getCurrentClass()} />}
-            <ColorChanger cl={this.getCurrentClass()} updateClassColor={() => null} />
+            <ColorChanger cl={this.getCurrentClass()} updateClassColor={() => null}  updateClass = {this.props.updateClass}/>
             {this.renderDropClassButton()}
           </div>
         </div>
