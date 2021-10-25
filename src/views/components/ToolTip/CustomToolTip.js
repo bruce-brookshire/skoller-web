@@ -25,9 +25,9 @@ const ReactToolTip =  ({
 
           <div className="class-tootip-wrap">
 
-          <h3 class="my-5 fs-18 text-center d-block" style={{color: '#333'}}>{title}</h3>
-          <p class="fs-12 my-5" style={{color: '#333'}}>{studentCount + ' classmates are on skoller'}</p>
-          <p class="fs-12 mt-10 mb-0 text-muted" style={{color: '#333'}}>Invite classmate using this link</p>
+          <h3 class="my-5 fs-18 text-center d-block" style={{color: '##4A4A4A'}}>{title}</h3>
+          <p class="fs-12 my-5" style={{color: '#C7C7CC'}}>{studentCount + ' classmates are on skoller'}</p>
+          <p class="fs-12 mt-10 mb-0 text-muted" style={{color: '#C7C7CC'}}>Invite classmate using this link</p>
           <p class="mt-0 mb-0"><a href="#" class="fs-13 text-primary p-5 linktip break-all">{ enrollment_link }</a></p>
         </div>
 

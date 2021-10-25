@@ -58,9 +58,9 @@ class TaskCard extends React.Component {
       )
     } else {
 
-      
+
       return (
-        
+
         // <div className="task-card-container" key={task.id} onClick={() => this.goToAssignment()} >
         //   <div className="task-card" style={{border: '1px solid', borderColor: color, borderRadius: '5px'}}>
         //     <div className="task-card-heading">
@@ -74,16 +74,16 @@ class TaskCard extends React.Component {
         //   </div>
         // </div>
 
-        
 
-        <div class="work-list-items first-child" key={task.id} onClick={() => this.goToAssignment()}>
-              
-            <div class="work-left-items"> <input type="radio" class="assign-radio" /><h4 class="stext-purple">{task.name}</h4><span class="stext-dark">{'Due ' + this.formatDueDate(task.due)}</span></div>  
+
+        <div className="work-list-items first-child" key={task.id} onClick={() => this.goToAssignment()}>
+
+            <div className="work-left-items"> <input type="radio" className="assign-radio" /><h4 style={{color: `#${this.props.clColor}`}}>{task.name}</h4><span className="stext-dark">{'Due ' + this.formatDueDate(task.due)}</span></div>
 
             <ReactToolTip theme="dark" position="top"   ttype="assifnment"  grade={task.grade} title={task.name}>
-              <div class="work-right-items"><span><i class="fas fa-signal stext-purple"></i></span><span class="stext-light">{this.props.clName}</span></div>
+              <div className="work-right-items"><span><i className="fas fa-signal" style={{color: `#${this.props.clColor}`}}></i></span><span className="stext-light">{this.props.clName}</span></div>
             </ReactToolTip>
-            
+
         </div>
       )
     }

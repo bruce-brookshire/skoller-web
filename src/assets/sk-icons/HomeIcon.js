@@ -2,28 +2,21 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 class HomeIcon extends React.Component {
-  render () {
-    return (
-      <svg fill={this.props.fill} width={this.props.width} height={this.props.height} viewBox="0 0 24 24" version="1.1">
-        <title>Home</title>
-        <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" strokeLinecap="round" strokeLinejoin="round">
-          <g id="Sidebar" transform="translate(1.000000, 1.000000)" stroke="#FFFFFF" strokeWidth="1.5">
-            <g id="Group-4">
-              <g id="Group-22-Copy">
-                <polygon id="Page-1" points="0 11.0717697 2.3163682 11.0717697 2.3163682 22 9.14064532 22 9.14064532 18.2407838 12.8593547 18.2407838 12.8593547 22 19.6837568 22 19.6837568 11.0717697 22 11.0717697 11.0001874 0"></polygon>
-              </g>
-            </g>
-          </g>
-        </g>
-      </svg>
-    )
-  }
+    render() {
+        return (
+
+            <svg fill={this.props.fill} width={this.props.width} height={this.props.height} viewBox="0 0 16 14" version="1.1">
+                <path d="M7.78879 3.8849L2.68512 8.08836V12.6251C2.68512 12.8697 2.88342 13.068 3.12803 13.068L6.23003 13.06C6.47378 13.0588 6.67073 12.8608 6.67073 12.6171V9.96767C6.67073 9.72306 6.86902 9.52477 7.11363 9.52477H8.88526C9.12987 9.52477 9.32817 9.72306 9.32817 9.96767V12.6151C9.3278 12.7329 9.3743 12.8459 9.4574 12.9292C9.5405 13.0126 9.65337 13.0594 9.77107 13.0594L12.872 13.068C13.1166 13.068 13.3149 12.8697 13.3149 12.6251V8.08532L8.21232 3.8849C8.08872 3.78528 7.91239 3.78528 7.78879 3.8849ZM13.5091 4.29967V0.465481C13.5091 0.282023 13.3603 0.133301 13.1769 0.133301H11.6267C11.4433 0.133301 11.2945 0.282023 11.2945 0.465481V2.47545L8.81619 0.436415C8.3257 0.0327844 7.61811 0.0327844 7.12761 0.436415L0.120554 6.20721C0.0526214 6.26336 0.00978661 6.3442 0.00147975 6.43194C-0.00682711 6.51969 0.020075 6.60713 0.0762636 6.67503L0.782146 7.53316C0.838183 7.6013 0.919022 7.64435 1.00684 7.65281C1.09465 7.66128 1.18222 7.63446 1.25024 7.57828L7.76152 2.21524C7.88512 2.11561 8.06145 2.11561 8.18505 2.21524L14.6966 7.57828C14.7645 7.63447 14.852 7.66137 14.9397 7.65307C15.0274 7.64476 15.1083 7.60193 15.1644 7.53399L15.8703 6.67586C15.9264 6.60757 15.953 6.51971 15.9442 6.43175C15.9354 6.34379 15.8918 6.26298 15.8233 6.20721L13.5091 4.29967Z" fill={this.props.fill} />
+            </svg>
+
+        )
+    }
 }
 
 HomeIcon.propTypes = {
-  fill: PropTypes.string,
-  width: PropTypes.string,
-  height: PropTypes.string
+    fill: PropTypes.string,
+    width: PropTypes.string,
+    height: PropTypes.string
 }
 
 export default HomeIcon

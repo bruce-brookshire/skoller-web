@@ -129,7 +129,7 @@ class ClassList extends React.Component {
                 {this.renderGrade(cl)}
                 {/* {cl.status.id} */}
                 </span>
-              <h3 className="card-title stext-dark">{name}</h3>
+              <h3 className="card-title" style={{color}}>{name}</h3>
               <p className="card-subtitle stext-normal">
                 <ReactToolTip theme="dark" position="top"  title={name} ttype="classes" studentCount={cl.enrollment} enrollment_link = { cl.enrollment_link}>
                   {this.renderExtra(cl)}

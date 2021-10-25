@@ -1,19 +1,19 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import OutsideClickHandler from 'react-outside-click-handler'
-// import actions from '../../../../actions'
+import actions from '../../../../actions'
 
 function ColorChanger (props) {
   const [showPalette, setShowPalette] = React.useState()
 
   const updateColor = (color) => {
-    props.updateClassColor(props.cl, color)
-    // actions.studentClasses.updateClassColor(this.state.cl, color)
-    //   .then(data => {
-    //     this.setState({cl: data, showPalette: false})
-    //     this.props.rootStore.studentClassesStore.updateClasses()
-    //   })
+      actions.studentClasses.updateClassColor(props.cl, color)
+      .then(data => {
+          setShowPalette(false)
+          props.updateClass()
+      })
   }
+
 
   const renderPalette = () => {
     let colors = [
