@@ -22,7 +22,7 @@ class CalendarIcon extends React.Component {
           <g
             id="Sidebar"
             transform="translate(0.000000, -144.000000)"
-            fill="#FFFFFF"
+            fill={this.props.fill}
           >
             <g id="Group-4">
               <g id="Group-24" transform="translate(0.000000, 144.000000)">

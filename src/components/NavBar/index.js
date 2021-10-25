@@ -4,9 +4,17 @@ import { inject, observer } from 'mobx-react'
 import ClassInfo from './ClassInfo'
 import { withRouter } from 'react-router-dom'
 import JobsSwitch from './JobsSwitch'
+import actions from '../../actions';
 
 @inject('rootStore') @observer
 class NavBar extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      subscribed:''
+    }
+  }
+
   getName() {
     const { userStore: { user } } = this.props.rootStore
     if (user.student) {
@@ -26,6 +34,18 @@ class NavBar extends React.Component {
     } else {
       return 'Syllabi Worker'
     }
+  }
+  componentDidMount(){
+    actions.stripe.getMySubscription()
+    .then((data) => {
+      if(data.data.length > 0){
+        this.setState({subscribed:'Subscribed'});
+      }
+
+    })
+    .catch((e) => {
+    console.log(e)
+ })
   }
 
   getInitials() {
@@ -94,7 +114,7 @@ class NavBar extends React.Component {
         <div>
           <img alt="Skoller" className='logo' src='/src/assets/images/logo-wide-blue@1x.png' />
           <div className='onboard-logo-text'>
-            {this.props.rootStore.userStore.isSW() ? '' : isSyllabusTool ? 'Class Setup Tool.' : 'Keep up classes, together'}
+            {this.props.rootStore.userStore.isSW() ? '' : this.props.rootStore.navbarStore.isSyllabusTool ? 'Class Setup Tool.' : 'Keep up classes, together'}
           </div>
         </div>
         <div className='user-info'>
@@ -176,7 +196,7 @@ class NavBar extends React.Component {
                 }
               }}
             />
-            <div className='cn-navbar-message'>{this.props.rootStore.userStore.isSW() ? '' : isSyllabusTool ? 'Class Setup Tool.' : 'Keep up classes, together'}</div>
+            <div className='cn-navbar-message'>{this.props.rootStore.userStore.isSW() ? '' : this.props.rootStore.navbarStore.isSyllabusTool ? 'Class Setup Tool.' : 'Keep up classes, together'}</div>
           </div>
           <div className='class-info'>
             {this.props.rootStore.userStore.isSW() ?
@@ -188,8 +208,9 @@ class NavBar extends React.Component {
               <JobsSwitch />
             }
             <div className='left'>
-              {/* <p>{this.getName()}</p>
-              <span>{this.getDescription()}</span> */}
+              <p>{this.getName()}</p>
+              <span>{this.getDescription()}</span>
+              <span>{this.state.subscribed}</span>
             </div>
             <div className='right'>
 

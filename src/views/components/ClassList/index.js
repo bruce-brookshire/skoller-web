@@ -68,33 +68,23 @@ class ClassList extends React.Component {
 
     if (status >= 1400) {
       return (
-       
           <p><span><i className="fas fa-users"></i></span> {cl.enrollment}</p>
-       
       )
     } else if (status === 1100) {
       return (
-        
           <p style={{color: '#ef183d'}}>Send syllabus</p>
-      
       )
     } else if (syllabusOverload) {
       return (
-        
           <p style={{color: '#ef4b0a'}}>Set up this class</p>
-       
       )
     } else if (status === 1200) {
       return (
-        
           <p style={{color: '#4a4a4a'}}>Syllabus in review</p>
-       
       )
     } else if (status === 1300) {
       return (
-        
           <p style={{color: '#ef4b0a' }}>Set up this class</p>
-       
       )
     } else {
       return null
@@ -130,8 +120,6 @@ class ClassList extends React.Component {
             //     <div>{this.renderExtra(cl)}</div>
             //   </ReactToolTip>
             // </div>
-            
-            
             <div className="center-block col-md-6"
             key={classes.indexOf(cl)}
             onClick={() => this.onClassSelect(cl)}
@@ -141,18 +129,14 @@ class ClassList extends React.Component {
                 {this.renderGrade(cl)}
                 {/* {cl.status.id} */}
                 </span>
-              <h3 className="card-title stext-dark">{name}</h3>
+              <h3 className="card-title" style={{color}}>{name}</h3>
               <p className="card-subtitle stext-normal">
-                
                 <ReactToolTip theme="dark" position="top"  title={name} ttype="classes" studentCount={cl.enrollment} enrollment_link = { cl.enrollment_link}>
                   {this.renderExtra(cl)}
                 </ReactToolTip>
                 </p>
             </div>
           </div>
-              
-              
-           
           )
         })}
         <div className='cn-class-list-cell empty' />

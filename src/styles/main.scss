@@ -26,7 +26,122 @@
 @import "forms/textarea-field";
 @import "forms/slider-field";
 
-// Components ----------------------------
+
+@import 'components/strikepopup.scss';
+@import 'components/add-assignment';
+@import 'components/enroll-link-splash';
+@import 'components/sk-modal.scss';
+@import 'components/assignments';
+@import 'components/assignment-categories.scss';
+@import 'components/assignment-detail';
+@import 'components/assignment-card';
+@import 'components/assignment-form.scss';
+@import 'components/assignment-table';
+@import 'components/admin-assignment-table';
+@import 'components/autocomplete';
+@import 'components/autocomplete-detail';
+@import 'components/calendar';
+@import 'components/card';
+@import 'components/chat';
+@import 'components/chat-post';
+@import 'components/checklist.scss';
+@import 'components/class-card.scss';
+@import 'components/class-cr-card.scss';
+@import 'components/common-scale-modal.scss';
+@import 'components/completion-circle';
+@import 'components/copy-box';
+@import 'components/datepicker.scss';
+@import 'components/day-selector';
+@import 'components/file-tab';
+@import 'components/file-viewer';
+@import 'components/tabbed-file-upload';
+@import 'components/flex-table';
+@import 'components/grade-scale';
+@import 'components/grid';
+@import 'components/hub-assignment-form';
+@import 'components/hub-class-with-change-requests';
+@import 'components/hub-change-request';
+@import 'components/hub-change-request-history';
+@import 'components/hub-panel-change-request';
+@import 'components/hub-professor';
+@import 'components/hub-weight-form';
+@import 'components/hub-weights';
+@import 'components/insights-semester';
+@import 'components/insights-key';
+@import 'components/insights-progress';
+@import 'components/job-cell';
+@import 'components/job-detail';
+@import 'components/jobs-form.scss';
+@import 'components/jobs-list';
+@import 'components/jobs-experience.scss';
+@import 'components/jobs-switch.scss';
+@import 'components/jobs-avatar-modal.scss';
+@import 'components/jobs-welcome-modal.scss';
+@import 'components/landing-banner.scss';
+@import 'components/login-verification.scss';
+@import 'components/modal';
+@import 'components/navbar';
+@import 'components/nested-nav';
+@import 'components/professor';
+@import 'components/progress-bar.scss';
+@import 'components/sammi.scss';
+@import 'components/sammi-prompt.scss';
+@import 'components/search';
+@import 'components/see-more';
+@import 'components/shadow-box';
+@import 'components/share-classes';
+@import 'components/share-no-classes';
+@import 'components/share-scoreboard-modal';
+@import 'components/sk-add-class-modal.scss';
+@import 'components/sk-class-assignments.scss';
+@import 'components/sk-assignment.scss';
+@import 'components/sk-banner.scss';
+@import 'components/sk-class-status-modal.scss';
+@import 'components/sk-drag-and-drop.scss';
+@import 'components/sk-drop-class-button.scss';
+@import 'components/sk-enroll-download.scss';
+@import 'components/sk-enroll-link.scss';
+@import 'components/sk-enroll-login.scss';
+@import 'components/sk-form';
+@import 'components/sk-select.scss';
+@import 'components/sk-select-school.scss';
+@import 'components/sk-find-class-form.scss';
+@import 'components/sk-major-form.scss';
+@import 'components/sk-onboard-first-class.scss';
+@import 'components/sk-onboard-share-partner.scss';
+@import 'components/sk-onboard-sign-up.scss';
+@import 'components/sk-onboard-sign-up-form.scss';
+@import 'components/sk-org-invitation.scss';
+@import 'components/sk-pop-up';
+@import 'components/sk-progress-modal';
+@import 'components/sk-select-dropdown';
+@import 'components/sk-share-partner-link';
+@import 'components/sk-tasks-list';
+@import 'components/sk-upload-additional-docs.scss';
+@import 'components/sk-upload-overload-docs.scss';
+@import 'components/sign-up-form';
+@import 'components/speculate-tool';
+@import 'components/time-fields';
+@import 'components/topnav';
+@import 'components/tooltip';
+@import 'components/snackbar';
+@import 'components/student-request-modal';
+@import 'components/upload-history';
+@import 'components/upload-documents';
+@import 'components/weight-converter.scss';
+@import 'components/verification-code';
+@import 'components/weights';
+@import 'components/weight-form';
+@import 'components/weight-table';
+@import 'components/weight-type';
+@import 'components/student-nav';
+@import 'components/student-layout';
+@import 'components/home';
+@import 'components/home-classes';
+@import 'components/home-jobs';
+@import 'components/home-share';
+@import 'components/tasks';
+@import 'components/task-card';
 @import "components/add-assignment";
 @import "components/enroll-link-splash";
 @import "components/sk-modal.scss";
@@ -143,7 +258,7 @@
 @import "components/task-card";
 @import "components/home-new-class";
 
-// Composed Views ------------------------
+
 @import "views/mixins/onboarding.scss";
 @import "views/account-info.scss";
 @import "views/analytics.scss";
@@ -202,11 +317,6 @@
 @import "views/verification.scss";
 
 
-
-
-
-
-// Skoller Insights
 @import "si-insights/main.scss";
 
 html {
@@ -556,220 +666,211 @@ body {
   font-weight: 600;
 }
 
-.__react_component_tooltip:before,
-.__react_component_tooltip:after {
-  content: unset;
+
+.btn {
+  display: inline-block;
+  font-weight: 400;
+  color: #212529;
+  text-align: center;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: .25rem;
 }
 
-#infoTip {
-  margin-left: 0px;
-  margin-top: 30px;
-  max-width: 350px;
-  .tooltipBox {
-    font-size: 18px;
-    font-weight: 400;
-  }
-}
-#weightButtonTip {
-  margin-left: -50px;
-  margin-top: 0px;
-  max-width: 350px;
-  .tooltipBox {
-    font-size: 18px;
-    font-weight: 400;
-  }
+.btn-primary {
+  color: #fff;
+  background-color: #57B9E4;
+  border-color: #57B9E4;
 }
 
-// Tooltip start 24
-#root {
-  margin-top: 25px;
-  margin-bottom: 25px;
+
+.sborder-1{ border: 1px solid #ddd }
+.sborder-danger{ border-color: #EF193E; }
+.stext-danger{ color: #EF193E; }
+.sbg-danger{ background: #EF193E; }
+
+.stext-white{ color: #fff; }
+
+.sborder-purple{ border-color: #DE89F6; }
+.stext-purple{ color: #DE89F6; }
+.sbg-purple{ background: #DE89F6; }
+
+.sborder-green{ border-color: #61D8A0; }
+.stext-green{ color: #61D8A0; }
+.sbg-green{ background: #61D8A0; }
+
+.sborder-darkpink{ border-color: #D73E76; }
+.stext-darkpink{ color: #D73E76; }
+.sbg-darkpink{ background: #D73E76; }
+
+.sborder-orange{ border-color: #F1AA3A; }
+.stext-orange{ color: #F1AA3A; }
+.sbg-orange{ background: #F1AA3A; }
+
+.sborder-dark{ border-color: #555555; }
+.stext-dark{ color: #555555; }
+.sbg-dark{ background: #555555; }
+
+
+.sborder-light{ border-color: #C7C7CC; }
+.stext-light{ color: #C7C7CC; }
+.sbg-light{ background: #C7C7CC; }
+
+.sborder-lgray{ border-color: #A4A4A8; }
+.stext-lgray{ color: #A4A4A8; }
+.sbg-lgray{ background: #A4A4A8; }
+
+.text-center {
+  text-align: center;
 }
 
-.cont {
-  margin: 25px;
-}
-
-.tooltipStyleChange {
-  color: #006080
-}
+.group-list a{ color: #5CBBE5;}
 
 /**/
 
 .tooltipC {
-    position: relative;
-    display: inline-block;
-    /*border-bottom: 1px dotted #ccc;
-    color: #006080; */
+  position: relative;
+  display: inline-block;
+  /*border-bottom: 1px dotted #ccc;
+  color: #006080; */
 }
 
 .tooltipC .tooltiptextC.light {
-    background-color: #ffffff;
-    color: #333333;
-    border: 1px solid rgba(0,0,0,.2);
+  background-color: #ffffff;
+  color: #333333;
+  border: 1px solid rgba(0,0,0,.2);
 }
 
 .tooltipC .tooltiptextC.dark {
-    background-color: #555555;
-    color: #ffffff;
+  background-color: #555555;
+  color: #ffffff;
 }
 
 .tooltipC .tooltiptextC {
-    visibility: hidden;
-    position: absolute;
-    width: 120px;
-    text-align: center;
-    padding: 5px;
-    border-radius: 6px;
-    z-index: 1;
-    opacity: 0;
-    transition: opacity 0.3s;
-    box-shadow: 0 2px 6px rgba(0,0,0,.3);
+  visibility: hidden;
+  position: absolute;
+  width: 120px;
+  text-align: center;
+//   padding: 5px;
+  border-radius: 6px;
+//   border: 2px solid #C7C7CC;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.3s;
+  box-shadow: 0 2px 6px rgba(0,0,0,.3);
 }
 
 .tooltipC:hover .tooltiptextC {
-    visibility: visible;
-    opacity: 1;
+  visibility: visible;
+  opacity: 1;
 }
 
 .tooltipC-right {
-  top: -5px;
-  left: 125%;  
+top: -5px;
+left: 125%;
 }
 
 .tooltipC-right::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    right: 100%;
-    margin-top: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: transparent #555 transparent transparent;
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent #555 transparent transparent;
 }
 
 .tooltipC-bottom {
-  top: 135%;
-  left: 50%;  
-  margin-left: -60px;
+    top: 135%;
+    left: 50%;
+    margin-left: -60px;
 }
 
 .tooltipC-bottom::after {
-  content: "";
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 11px;
-  border-style: solid;
-  border-color: transparent transparent #55555530 transparent;
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 11px;
+    border-style: solid;
+    border-color: transparent transparent #55555530 transparent;
 }
 
 .tooltipC-top {
-  bottom: 125%;
-  left: 50%;  
-  margin-left: -105px;
+bottom: 125%;
+left: 50%;
+margin-left: -105px;
 }
 
 .tooltipC-top::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: #555 transparent transparent transparent;
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
 }
 
 .tooltipC-left {
-  top: -5px;
-  bottom:auto;
-  right: 128%;  
+    top: -5px;
+    bottom:auto;
+    right: 128%;
 }
+
 .tooltipC-left::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 100%;
-    margin-top: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: transparent transparent transparent #555;
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent transparent #555;
 }
 
 .arrowC{
-  position: absolute;
-  left: 48%;
-  top: -10px;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-bottom: 10px solid #fff;
-  z-index: 1;
+    position: absolute;
+    left: 48%;
+    top: -10px;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 10px solid #fff;
+    z-index: 1;
 }
 // Tooltip ebd 24
-
-// Common classes
-
-
-.text-center{ text-align: center;}
-
-.flex-center{ display: inline-flex; justify-content: center; align-items: center}
-
-.flex{ display: -ms-flexbox; display: -webkit-flex; display: flex; }
-.justify-between{ -webkit-justify-content: space-between; -ms-flex-pack: justify; justify-content: space-between; }
-.items-center { -webkit-align-items: center; -ms-flex-align: center; align-items: center; }
-.flex-col {-webkit-flex-direction: column;  -ms-flex-direction: column;  flex-direction: column;}
-
-.fs-12{ font-size: 12px;}
-.fs-14{ font-size: 14px;}
-.fs-16{ font-size: 16px;}
-.fs-20{ font-size: 20px;}
-.fs-24{ font-size: 24px;}
-.fs-26{ font-size: 26px;}
-
-.text-muted{ color: #C7C7CC;}
-
-.stext-purple {
-  color: #DE89F6;
-}
-.stext-orange {
-  color: #F1AA3A;
-}
-.stext-green {
-  color: #61D8A0;
-}
-.my-5{ margin-top: 5px; margin-bottom: 5px;}
-.my-10{ margin-top: 10px; margin-bottom: 10px;}
-.my-15{ margin-top: 15px; margin-bottom: 15px;}
-.my-20{ margin-top: 20px; margin-bottom: 20px;}
-.mb-0{ margin-bottom: 0px;}
-.mb-10{ margin-bottom: 10px;}
-.mb-15{ margin-bottom: 15px;}
-.mb-20{ margin-bottom: 20px;}
-.mt-0{ margin-top: 0px;}
-.mt-10{ margin-top: 10px;}
-.mt-15{ margin-top: 15px;}
-.mt-20{ margin-top: 20px;}
-
-.py-5{ padding-top: 5px; padding-bottom: 5px;}
-.py-10{ padding-top: 10px; padding-bottom: 10px;}
-.py-15{ padding-top: 15px; padding-bottom: 15px;}
-.py-20{ padding-top: 20px; padding-bottom: 20px;}
-
-.d-block{ display: block; }
 
 .border-top{ border-top: 1px solid #ddd;}
 .break-all{word-break: break-all;}
 
 .tip-warp {
-  width: 100%;
-  display: block;
-  background: #fff;
-  padding: 5px 10px;
-  border-radius: 10px;
-  height: 250px;
-  overflow-y: auto;
+    margin: 0;
+    padding: 0;
+    font-size: 10px;
+//   width: 100%;
+//   display: block;
+    background: #fff;
+//   padding: 5px 10px;
+//   border-radius: 10px;
+//   height: 150px;
+//   overflow-y: auto;
+.tip-warp__container{
+    border: 1px solid #868c97;
+  border-radius: 5px;
+  background-color: #ffffff;
+  padding: 1em 0.5em 0.5em 1em;
+}
 }
 
 .tooltiptextC{ width:220px!important;}
@@ -778,7 +879,7 @@ body {
 .class-tootip-wrap {
   display: block;
   width: 100%;
-  padding: 15px 10px;
+  padding: 5px 10px;
   text-align: center;
   background: #fff;
   border-radius: 5px;
@@ -801,28 +902,26 @@ body {
   border: 1px solid #ddd;
 }
 
-.tip-warp {
-  width: 100%;
-  display: block;
-  background: #fff;
-  padding: 5px 10px;
-  border-radius: 10px;
-  height: 250px;
-  overflow-y: auto;
-}
+// .tip-warp {
+//   width: 100%;
+//   display: block;
+//   background: #fff;
+//   padding: 5px 10px;
+//   border-radius: 10px;
+//   height: 250px;
+//   overflow-y: auto;
+// }
 
 
 
 
 
-.tooltipC-top::after {  
-  top: -10px!important;  
+.tooltipC-top::after {
+  top: -10px!important;
   border-color: transparent transparent #ddd transparent!important;
 }
 
-.tooltipC .tooltiptextC {  
+.tooltipC .tooltiptextC {
   top: auto;
   bottom: auto; right: auto; left: auto;
 }
-
-

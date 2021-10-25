@@ -24,7 +24,7 @@ import {
   Title,
   ArgumentAxis,
   ValueAxis,
-  
+
 } from '@devexpress/dx-react-chart-bootstrap4';
 import '@devexpress/dx-react-chart-bootstrap4/dist/dx-react-chart-bootstrap4.css';
 import { Animation } from '@devexpress/dx-react-chart';
@@ -42,8 +42,8 @@ class CustomFlyout extends React.Component {
     const {x, y, orientation, ji} = this.props;
     const newY = orientation === "bottom" ? y - 35 : y + 35;
     return (
-      <g transform={'translate(-100, -200)'} style={{pointerEvents: 'none', position: 'relative'}}>
-        <foreignObject x={x} y={y} width="200" height="200">
+      <g style={{pointerEvents: 'none'}}>
+        <foreignObject x={x-40} y={y-50} width="200" height="200">
           {/* <div
             className="graph-tooltip"
             style={{
@@ -64,21 +64,24 @@ class CustomFlyout extends React.Component {
             </div>
           </div> */}
 
-          <div class="tip-warp">
-              <h3 class="my-10 fs-16 text-center d-block">Week 7:9/29-10/14</h3>
-              <div class="flex  justify-between">
-                <span class="text-muted fs-12">{ji} Assignments</span>
-                <span class="text-muted fs-12">21.7% Overall</span>
-              </div> 
-                <div class="tip-list">
-                  <div class="listtip firsttl flex flex-row  justify-between border-top py-5">
-                      <div class="">
-                          <h6 class="fs-16 text-left stext-purple my-5">Exam 1</h6>
-                          <p class="text-muted fs-12 my-5 mt-0">Tue 9/30</p>
+          <div className="tip-warp">
+          <div className="tip-wrap__container">
+
+              <h3 className="my-2 text-center d-block">Week 7:9/29-10/14</h3>
+              <div className="flex justify-between">
+                <span className="text-muted">{ji} Assignments</span>
+                <span className="text-muted">21.7% Overall</span>
+              </div>
+                <div className="tip-list">
+                  <div className="listtip firsttl flex flex-row  justify-between border-top py-5">
+                      <div className="">
+                          <h6 className="fs-16 text-left stext-purple my-5">Exam 1</h6>
+                          <p className="text-muted fs-12 my-5 mt-0">Tue 9/30</p>
                       </div>
-                      <div class=""><h5 class="text-right text-dark fs-20 my-5">25%</h5></div>                        
+                      <div className=""><h5 className="text-right text-dark fs-20 my-5">25%</h5></div>
                     </div>
-                </div> 
+                </div>
+          </div>
           </div>
 
         </foreignObject>
@@ -108,6 +111,7 @@ class HomeGraphImpact extends React.Component {
 
   render () {
       const { data: chartData, assignment } = this.state;
+      console.log({assignment})
       console.log(assignment, 'before changes');
       let data = getAssignmentCountDataHomeGraph(assignment, false, [], 'w');
       console.log(data, 'un changes');
@@ -115,22 +119,26 @@ class HomeGraphImpact extends React.Component {
       const styles = this.getStyles();
 
       const today = parseInt(moment().format('X'))
-      const domain = {
-        x: [
-          data[0].x - 604800,
-          data[data.length - 1].x + 604800
-        ],
-        y: [
-          0,
-          Math.max.apply(Math, data.map(a => a.y)) + (Math.max.apply(Math, data.map(a => a.y)) * 0.25)
-        ]
+      let domain = {x: [0,0], y: [0,0]}
+      if(data.length > 0) {
+         domain = {
+            x: [
+              data[0].x - 604800,
+              data[data.length - 1].x + 604800
+            ],
+            y: [
+              0,
+              Math.max.apply(Math, data.map(a => a.y)) + (Math.max.apply(Math, data.map(a => a.y)) * 0.25)
+            ]
+          }
       }
+
       let hideToday = false
       if (moment(today, 'X').isAfter(moment(domain.x[1], 'X'))) {
         hideToday = true
       }
       const tickValues = data.map(d => d.x)
-      const animate =  null
+      const animate = null
 
       console.log(data, domain, 'assignments--');
     return (
@@ -138,7 +146,7 @@ class HomeGraphImpact extends React.Component {
 
       //   <VictoryChart
       //     domain={{ x: [0, 11], y: [0, 100] }}
-          
+
       //   >
       //     <VictoryBar
       //       labelComponent={
@@ -159,10 +167,10 @@ class HomeGraphImpact extends React.Component {
       //   </VictoryChart>
       // </div>
       <div className='home-shadow-box margin-top home-insights'>
-          <svg  viewBox='0 0 450 260'>
-           
+          <svg  viewBox='0 0 450 300'>
 
-            <g transform={'translate(16, -20)'}>
+
+            <g transform={'translate(0, 0)'}>
               <VictoryAxis
                 tickValues={tickValues}
                 tickFormat={d => moment(d, 'X').format('M/DD')}
@@ -231,24 +239,31 @@ class HomeGraphImpact extends React.Component {
 
                 <VictoryBar
                   data={data}
-                  size={5}
                   domain={domain}
                   scale={{x: 'time', y: 'linear'}}
                   standalone={false}
                   style={styles.scatter}
-                  labels={() => ''}
+                  labels={() => "Week 7: 9/29-10/4 \n 12 assignments \n 21.6% of total grade"}
                   labelComponent={
                     <VictoryTooltip
-                      flyoutComponent={<CustomFlyout ji='098'/>}
+                     style={{ fill: "#4A4A4A" }}
+                    // cornerRadius={0}
+                    // pointerLength={0}
+                    flyoutStyle={{
+                        stroke: "#979797",
+                        fill: '#FFFFFF'
+                    }}
+                    // flyoutHeight={60}
+                    //   flyoutComponent={<CustomFlyout ji='098'/>}
                     />
                   }
                   animate={animate}
                 />
 
-                
-              
 
-              
+
+
+
             </g>
           </svg>
         </div>

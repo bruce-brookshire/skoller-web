@@ -11,6 +11,8 @@
     "lint": "./node_modules/.bin/eslint **/*.js src/**"
   },
   "dependencies": {
+    "@stripe/react-stripe-js": "^1.4.1",
+    "@stripe/stripe-js": "^1.17.1",
     "@devexpress/dx-react-chart": "^2.7.6",
     "@devexpress/dx-react-chart-bootstrap4": "^2.7.6",
     "@devexpress/dx-react-core": "^2.7.6",
@@ -63,6 +65,7 @@
     "react-resize-detector": "^5.0.3",
     "react-router-dom": "^5.1.2",
     "react-smartbanner": "^5.1.4",
+    "react-stripe-checkout": "^2.6.3",
     "react-step-progress-bar": "^1.0.3",
     "react-tooltip": "^3.11.6",
     "react-transition-group": "^4.3.0",

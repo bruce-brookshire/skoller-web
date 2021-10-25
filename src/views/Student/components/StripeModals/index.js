@@ -2,7 +2,9 @@ import React from 'react'
 import { inject, observer } from 'mobx-react'
 import PropTypes from 'prop-types'
 import FindAClass from '../../Onboard/FindAClass'
-import ChangeSchool from './ChangeSchool'
+import PremminiumPlans from './PreminiumPlans'
+import InfoModal from './InfoModal'
+import PaymentModel from './PaymentModel'
 import ClassStatusModal from '../../../components/ClassStatusModal'
 import moment from 'moment'
 import SkLoader from '../../../../assets/sk-icons/SkLoader'
@@ -10,7 +12,7 @@ import actions from '../../../../actions'
 import ProgressModal from '../ProgressModal'
 
 @inject('rootStore') @observer
-class AddClassModal extends React.Component {
+class PaymentPlans extends React.Component {
   constructor (props) {
     super(props)
 
@@ -30,8 +32,28 @@ class AddClassModal extends React.Component {
     this.checkForActiveTerm()
   }
 
+  componentDidMount () {
+    // actions.stripe.getMySubscription().catch((r) => console.log(r, 66));
+
+    actions.stripe.getMySubscription()
+        .then((data) => {
+          if(data.data.length > 0){
+            let len = data.data.length;
+            let latestplan = data.data.plan;
+          } else {
+
+          }
+        // this.setState({plans: data.data})
+        })
+        .catch((e) => {
+        console.log(e)
+     })
+
+
+}
+
   checkForActiveTerm () {
-      if(this.props.rootStore.userStore.user.student.primary_period && this.props.rootStore.userStore.user.student.primary_school) {
+    if(this.props.rootStore.userStore.user.student.primary_period && this.props.rootStore.userStore.user.student.primary_school){
     if (moment(this.props.rootStore.userStore.user.student.primary_period.end_date).isBefore(moment())) {
       this.setState({loading: true})
       let activeMainTerms = []
@@ -77,7 +99,7 @@ class AddClassModal extends React.Component {
     return null
   }
 
-  renderAddClassModal () {
+  renderPaymentPlans () {
     return (
       <div className='sk-add-class-container'>
         {this.state.classStatusModal.show &&
@@ -85,25 +107,14 @@ class AddClassModal extends React.Component {
         }
         <div className='sk-add-class-modal-wrapper' style={this.state.classStatusModal.show ? {display: 'none'} : {}}>
           <ProgressModal
-            title={this.state.formState === 'editSchool' ? 'Join a School' : 'Join a Class'}
+            // title=""
             closeModal={() => {
               !this.state.classStatusModal.show && this.closeModal()
             }}
           >
-            <div className='sk-add-class-modal' style={{overflow: 'auto'}}>
-              {this.state.formState === 'findClass' &&
-                <FindAClass
-                  hideOnboard={true}
-                  onBack={() => this.setState({formState: 'editSchool'})}
-                  params={this.state.params}
-                  onSubmit={() => null}
-                  launchClassStatusModal={(cl) => this.launchClassStatusModal(cl)}
-                />
-              }
-              {this.state.formState === 'editSchool' &&
-                <ChangeSchool backData={this.state.params} onSubmit={(data) => this.changeParams(data)} />
-              }
-            </div>
+            {/* <PremminiumPlans backData={this.state.params} onSubmit={(data) => this.changeParams(data)} /> */}
+            {/* <InfoModal backData={this.state.params} onSubmit={(data) => this.changeParams(data)} /> */}
+            <PaymentModel backData={this.state.params} onSubmit={(data) => this.changeParams(data)} closeModal={() => this.props.closeModal()} />
           </ProgressModal>
         </div>
       </div>
@@ -114,14 +125,14 @@ class AddClassModal extends React.Component {
     return (
       this.state.loading
         ? <SkLoader />
-        : this.renderAddClassModal()
+        : this.renderPaymentPlans()
     )
   }
 }
 
-AddClassModal.propTypes = {
+PaymentPlans.propTypes = {
   closeModal: PropTypes.func,
   rootStore: PropTypes.object
 }
 
-export default AddClassModal
+export default PaymentPlans

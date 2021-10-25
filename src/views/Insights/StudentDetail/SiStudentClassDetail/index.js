@@ -18,7 +18,6 @@ class SiStudentClassDetail extends Component {
     } else {
       user = this.props.rootStore.insightsStore.students.find(s => s.id === parseInt(this.props.match.params.orgStudentId))
     }
-
     this.state = {
       activeAssignmentId: this.props.location.state ? this.props.location.state.activeAssignmentId : null,
       user
@@ -107,6 +106,7 @@ class SiStudentClassDetail extends Component {
           createAssignment={this.createAssignment}
           updateClass={() => this.refreshUser()}
           activeAssignmentId={this.state.activeAssignmentId}
+          // insightsUserStudentId={user.student_id}
           insightsUserStudentId={user.student_id}
           insightsStudents={students}
         />

@@ -8,6 +8,7 @@ import AddClassModal from '../../Student/components/AddClassModal'
 import MajorForm from '../MiscViews/MajorForm'
 import DocumentsForm from '../Jobs/components/DocumentsForm'
 import ClassStatusModal from '../../components/ClassStatusModal'
+import PaymentPlans from '../../Student/components/StripeModals'
 
 @inject('rootStore') @observer
 class PopUp extends React.Component {
@@ -40,6 +41,16 @@ class PopUp extends React.Component {
     return (
       <div className='sk-pop-up'>
         <AddClassModal closeModal={() => this.props.closeModal()} />
+      </div>
+    )
+  }
+  renderPaymentPlans () {
+    return (
+      <div className='sk-pop-up'>
+        <PaymentPlans
+        closeModal={() => this.props.closeModal()}
+
+        />
       </div>
     )
   }
@@ -84,6 +95,13 @@ class PopUp extends React.Component {
         {this.props.type === 'getResume' &&
           <SkModal closeModal={() => this.closeModal()}>
             {this.renderGetResume()}
+          </SkModal>
+        }
+        {this.props.type === 'PaymentPlans' &&
+          <SkModal
+           closeModal={() => this.closeModal()}
+           >
+            {this.renderPaymentPlans()}
           </SkModal>
         }
       </div>

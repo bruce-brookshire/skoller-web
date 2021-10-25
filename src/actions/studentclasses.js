@@ -87,14 +87,13 @@ export function deleteStudentAssignmentPost (assignmentId, postId) {
 * Update Class Color
 *
 */
-export function updateClassColor (cl, color) {
+export async function updateClassColor (cl, color) {
   const { user: { student } } = userStore
   console.log(cl, color)
-  return put(`/api/v1/students/${student.id}/classes/${cl.id}/`, { color: color }, 'Color not updated, try again.')
-    .then(data => {
-      return data
-    })
-    .catch(error => {
-      return Promise.reject(error)
-    })
+  try {
+        const data = await put(`/api/v1/students/${student.id}/classes/${cl.id}/`, { color: color }, 'Color not updated, try again.')
+        return data
+    } catch (error) {
+        return await Promise.reject(error)
+    }
 }
