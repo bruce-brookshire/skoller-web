@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom'
 import Grid from '../../../components/Grid'
 import actions from '../../../actions'
 import SchoolSearch from './SchoolSearch'
+import {inject, observer} from 'mobx-react'
 
 const headers = [
   {
@@ -27,6 +28,7 @@ const headers = [
   }
 ]
 
+@inject('rootStore') @observer
 class HubSchools extends React.Component {
   constructor (props) {
     super(props)
@@ -34,6 +36,8 @@ class HubSchools extends React.Component {
       schools: [],
       loading: false
     }
+    this.props.rootStore.navStore.setActivePage('hub/schools')
+
   }
 
   /*

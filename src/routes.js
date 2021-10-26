@@ -77,6 +77,7 @@ import GroupDetail from './views/Insights/GroupDetail'
 import InvitationDetail from './views/Insights/StudentDetail/InvitationDetail'
 import SiStudentClassDetail from './views/Insights/StudentDetail/SiStudentClassDetail'
 import SiStudentAssignmentDetail from './views/Insights/StudentDetail/SiStudentAssignmentDetail'
+import HubDashboard from './views/Hub/HubDashboard'
 
 const {userStore} = stores
 
@@ -175,6 +176,7 @@ class HubContainer extends React.Component {
         <Route exact path='/hub/schools' component={HubSchools} />
         <Route exact path='/hub/schools/school/info' component={SchoolInfo} />
         <Route exact path='/hub/classes' component={HubClasses} />
+        <Route exact path='/hub/dashboard' component={HubDashboard} />
         <Route exact path='/hub/accounts' component={Accounts} />
         <Route exact path='/hub/accounts/account/info' component={AccountInfo} />
         <Route exact path='/hub/analytics' component={Analytics} />

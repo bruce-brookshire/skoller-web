@@ -57,20 +57,21 @@ const headers = [
 ]
 
 @inject('rootStore') @observer
-class HubClasses extends React.Component {
+class HubDashboard extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       classes: [],
       loading: false
     }
-    this.props.rootStore.navStore.setActivePage('hub/classes')
+    this.props.rootStore.navStore.setActivePage('hub/dashboard')
 
   }
 
   componentDidMount() {
     this.getClasses('')
   }
+
   /*
 
   /*
@@ -301,7 +302,7 @@ class HubClasses extends React.Component {
             </div>
             <div class="tabledata-wrap">
                 <div class="table-inner">
-                <table class="table" cellpadding="0" cellSpacing="0">
+                <table class="table" cellpadding="0" cellspacing="0">
                     <thead class="thead-dark">
                       <tr>
                         <th scope="col">ID</th>
@@ -338,9 +339,9 @@ class HubClasses extends React.Component {
   }
 }
 
-HubClasses.propTypes = {
+HubDashboard.propTypes = {
   rootStore: PropTypes.object,
   location: PropTypes.object
 }
 
-export default withRouter(HubClasses)
+export default withRouter(HubDashboard)
