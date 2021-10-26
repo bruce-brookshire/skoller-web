@@ -15,6 +15,13 @@ export function getAllSubscription() {
     })
 }
 
+export function cancelSubscription(subId){
+    return get(`/api/v1/stripe/cancel-subscription?subscription_id=${subId}`)
+    .then(res => {})
+    .catch(err => Promise.reject(err))
+}
+
+
 export function getMySubscription() {
     return get(`/api/v1/stripe/my-subscriptions`)
       .then((mySubscription) => {
