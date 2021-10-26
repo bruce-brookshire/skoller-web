@@ -20,6 +20,7 @@ import {
 import {
   getAllSubscription,
   getMySubscription,
+  cancelSubscription,
   lastUpcomingPayment,
   billingHistory,
   allProducts,
@@ -237,6 +238,7 @@ const actions = {
   stripe:{
   getAllSubscription,
   getMySubscription,
+  cancelSubscription,
   lastUpcomingPayment,
   billingHistory,
   allProducts,

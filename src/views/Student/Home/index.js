@@ -26,6 +26,7 @@ class Home extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            subscribed:  false,
             classes: [],
             assignments: [],
             popUp: { show: false, type: null },
@@ -110,6 +111,7 @@ class Home extends React.Component {
         await actions.stripe.getMySubscription()
             .then((data) => {
                 if (data.data.length > 0) {
+                    this.setState({subscribed: true})
                     if (showPopUp) {
                         this.setState({ popUp: { type: type, show: true } })
                     }
@@ -239,6 +241,23 @@ class Home extends React.Component {
                                }}
                                >Upgrade to Premium</button>
                                <span>Trial ends {formatDate(new Date().getDate() + Math.ceil(+this.props.rootStore.userStore.user.trial_days_left))}</span>
+                           </div>
+                        </div>
+                        }
+                        {
+                            !this.props.rootStore.userStore.user.trial &&  this.state.subscribed &&
+                        <div className="home-shadow-box">
+                           <div className="home-shadow-box__expiresin-container">
+                               <div className="home-shadow-box__expiresin-title">
+                                    <img alt="Skoller" className='logo' src='/src/assets/images/sammi/Smile.png' height="60" />
+                                    <h1>Cancel subscription</h1>
+                               </div>
+                               <button
+                               onClick={() => {
+                                this.setState({ popUp: { type: 'CancelSubscription', show: true } });
+                               }}
+                               >Cancel Subscription</button>
+                               {/* <span>Trial ends {formatDate(new Date().getDate() + Math.ceil(+this.props.rootStore.userStore.user.trial_days_left))}</span> */}
                            </div>
                         </div>
                         }
