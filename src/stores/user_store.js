@@ -8,7 +8,9 @@ class UserStore {
       authToken: null,
       user: null,
       enrollmentLink: null,
-      showPopUps: true
+      showPopUps: true,
+      subscriptionStartedDate: null,
+      interval: null
     })
   }
 
@@ -42,6 +44,12 @@ class UserStore {
 
   @action setPopUpState (bool) {
     this.showPopUps = bool
+  }
+  @action setSubscriptionCreatedDate (val) {
+    this.subscriptionStartedDate = val
+  }
+  @action setInterval (val) {
+    this.interval = val
   }
 }
 

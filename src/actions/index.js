@@ -25,7 +25,8 @@ import {
   billingHistory,
   allProducts,
   allPlans,
-  createSubscription
+  createSubscription,
+  cancellationReason
 } from './stripe'
 import { getAnalytics } from './analytics'
 import {
@@ -243,7 +244,8 @@ const actions = {
   billingHistory,
   allProducts,
   allPlans,
-  createSubscription
+  createSubscription,
+  cancellationReason
   },
   auth: {
     authenticateUser,

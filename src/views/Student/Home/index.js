@@ -34,7 +34,7 @@ class Home extends React.Component {
             // has only one class, and that class is not yet set up.
             classStatusModal: { show: false, cl: null },
             loading: false,
-            shareWillDisplay: false
+            shareWillDisplay: false,
         }
 
         this.props.rootStore.navStore.setActivePage('home')
@@ -146,6 +146,31 @@ class Home extends React.Component {
         return this.props.rootStore.studentClassesStore.classes.find((cl) => cl.id === classId)
     }
 
+
+    getMonthAndYearInDays(val){
+        if(val === 'month') return 30
+        else if (val === 'year') return 365
+        return 0
+    }
+
+    getIntervalDate(){
+        let endDate = new Date()
+        console.log({
+            interval: this.props.rootStore.userStore.subscriptionStartedDate
+        })
+        console.log({
+            int: this.props.rootStore.userStore.interval
+        })
+        const interval = this.props.rootStore.userStore.interval
+        console.log({
+            str: this.getMonthAndYearInDays(interval)
+        })
+        let newDate = new Date(this.props.rootStore.userStore.subscriptionStartedDate*1000)
+        endDate.setDate(newDate.getDate() + this.getMonthAndYearInDays(interval))
+        console.log({endDate})
+        return endDate
+    }
+
     onClassSelect = (cl) => {
         // Need to get enrollment link from classes
         // because ClassList will not return it
@@ -191,7 +216,7 @@ class Home extends React.Component {
         return (
             <div>
                 {this.state.popUp.show &&
-                    <PopUp closeModal={() => this.closePopUp()} type={this.state.popUp.type} refreshClasses={() => this.updateClasses()}  />
+                    <PopUp closeModal={ (!this.props.rootStore.userStore.user.trial &&  !this.state.subscribed) ? () => null : () => this.closePopUp()} handleModalClose={() => this.closePopUp()}  type={this.state.popUp.type} refreshClasses={() => this.updateClasses()}  />
                 }
                 {this.state.classStatusModal.show &&
                     <ClassStatusModal
@@ -257,7 +282,7 @@ class Home extends React.Component {
                                 this.setState({ popUp: { type: 'CancelSubscription', show: true } });
                                }}
                                >Cancel Subscription</button>
-                               {/* <span>Trial ends {formatDate(new Date().getDate() + Math.ceil(+this.props.rootStore.userStore.user.trial_days_left))}</span> */}
+                               <span>Subscription ends {formatDate(this.getIntervalDate())}</span>
                            </div>
                         </div>
                         }

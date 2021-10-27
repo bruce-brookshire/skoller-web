@@ -62,7 +62,7 @@ export function convertLocalDateToUTC (dateString, tz) {
 }
 
 export function formatDate (dateString) {
-  return moment(dateString, 'YYYY-MM-DD').format('MMMM Do')
+  return moment(dateString, 'YYYY-MM-DD').format('MMMM Do YYYY')
 }
 
 export function wrapTimeHour (date, hour) {

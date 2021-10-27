@@ -59,8 +59,9 @@ export default function CheckoutForm(props) {
         actions.stripe.createSubscription(paymentData)
             .then((data) => {
                 if (data.status == 'ok') {
-                    props.myprops.closeModal();
                     showSnackbar(data.message, 'success')
+                    console.log(props)
+                    props.myprops.handleModalClose();
                 } else {
                     showSnackbar(data.message, 'error')
                 }
