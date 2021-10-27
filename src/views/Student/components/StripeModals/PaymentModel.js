@@ -7,8 +7,8 @@ import CheckoutForm from './CheckoutForm';
 import actions from '../../../../actions'
 import {Cookies} from 'react-cookie'
 const vm  = this;
-const stripePromise = loadStripe('pk_test_51JV9OSSGLvMTa3qVnwhFxc03IiK5JOGO94YQufQumo21gTgUAdpvMtEGYH9dgH1BPFrrirHuNbiVbE49gPNHHxIU00WpzV3KLP');
-// const stripePromise = loadStripe('pk_live_51JHvLoGtOURsTxunmypyAUNfbRF4jOahklknp1RTBHhxpy3qEveFU7lCWdrBt4YggE5ytlblCgYYHPPzsLC0Gf8K00NC7FWyoh');
+// const stripePromise = loadStripe('pk_test_51JV9OSSGLvMTa3qVnwhFxc03IiK5JOGO94YQufQumo21gTgUAdpvMtEGYH9dgH1BPFrrirHuNbiVbE49gPNHHxIU00WpzV3KLP');
+const stripePromise = loadStripe('pk_live_51JHvLoGtOURsTxunmypyAUNfbRF4jOahklknp1RTBHhxpy3qEveFU7lCWdrBt4YggE5ytlblCgYYHPPzsLC0Gf8K00NC7FWyoh');
 @inject('rootStore') @observer
 class ChangeSchool extends React.Component {
   constructor (props) {
@@ -129,7 +129,7 @@ class ChangeSchool extends React.Component {
                     </div>
                  </div>
                  <div className="listgroup-wrap margin-bottom margin-top">
-                    <h4 className="divider-title"><span onClick={() => this.closeModal()}>Pay with Card</span></h4>
+                    <h4 className="divider-title"><span>Pay with Card</span></h4>
 
                     <Elements stripe={stripePromise}>
                      <CheckoutForm selectedSubscription = {this.state.selected_subscription}  simplifiedFunction = {this.simplifiedFunction} myprops={this.props} />

@@ -40,6 +40,8 @@ class NavBar extends React.Component {
     .then((data) => {
       if(data.data.length > 0){
         this.setState({subscribed:'Subscribed'});
+        this.props.rootStore.userStore.setSubscriptionCreatedDate(data.data[0].created)
+        this.props.rootStore.userStore.setInterval(data.data[0].plan.interval)
       }
 
     })

@@ -12,20 +12,36 @@ class CancelSubscriptionModal extends React.Component {
 
         this.state = {
             showNextModal: false,
-            subId: ''
+            subId: '',
+            cancellingReason: ''
         }
 
     }
 
-    // componentDidMount(){
-    //     actions.stripe.getMySubscription().then(res => {
-
-    //     })
-    // }
+    componentDidMount(){
+        actions.stripe.getMySubscription().then(res => {
+            this.setState({
+                subId: res.data[0].id
+            })
+        }).catch(err => Promise.reject(err))
+    }
 
     handleCancelSubscription = () => {
-        // actions.stripe.cancelSubscription()
-        this.setState({showNextModal: true})
+        if(!this.state.cancellingReason) {
+            return alert('Please select any one reason')
+        }
+        actions.stripe.cancelSubscription(this.state.subId).then(res => {
+            this.setState({showNextModal: true})
+        }).then(() => {
+            actions.stripe.cancellationReason(this.state.cancellingReason).then(res => {}).catch(err => Promise.reject(err))
+        }).catch(err => Promise.reject(err))
+
+    }
+
+    handleRadioChange =e => {
+        this.setState({
+            cancellingReason: e.target.value
+        })
     }
 
     render() {
@@ -49,27 +65,27 @@ class CancelSubscriptionModal extends React.Component {
                         }}
                     >
                         <span style={{ margin: '6px' }}>
-                            <input type='radio' id="too_expensive" />
+                            <input type='radio' id="too_expensive" value="too_expensive" onChange={this.handleRadioChange} checked={this.state.cancellingReason === "too_expensive"}/>
                             <label htmlFor="too_expensive" style={{ marginLeft: '10px' }}>Too expensive</label>
                         </span>
 
                         <span style={{ margin: '6px' }}>
-                            <input type='radio' id="product_issues" />
+                            <input type='radio' id="product_issues" value="product_issues" onChange={this.handleRadioChange} checked={this.state.cancellingReason === "product_issues"}/>
                             <label htmlFor="product_issues" style={{ marginLeft: '10px' }}>Product issues</label>
                         </span>
 
                         <span style={{ margin: '6px' }}>
-                            <input type='radio' id="im_using_something_else" />
+                            <input type='radio' id="im_using_something_else" value="using_something_else" onChange={this.handleRadioChange} checked={this.state.cancellingReason === "im_using_something_else"}/>
                             <label htmlFor="im_using_something_else" style={{ marginLeft: '10px' }}>I'm using something else</label>
                         </span>
 
                         <span style={{ margin: '6px' }}>
-                            <input type='radio' id="not_helpful" />
+                            <input type='radio' id="not_helpful" value="not_helpful" onChange={this.handleRadioChange} checked={this.state.cancellingReason === "not_helpful"}/>
                             <label htmlFor="not_helpful" style={{ marginLeft: '10px'}}>Not helpful</label>
                         </span>
 
                         <span style={{ margin: '6px' }}>
-                            <input type='radio' id="none_of_the_above" />
+                            <input type='radio' id="none_of_the_above" value="none_of_the_above" onChange={this.handleRadioChange} checked={this.state.cancellingReason === "none_of_the_above"}/>
                             <label htmlFor="none_of_the_above" style={{ marginLeft: '10px' }}>None of the above</label>
                         </span>
                     </div>
@@ -81,7 +97,9 @@ class CancelSubscriptionModal extends React.Component {
                         justifyContent: 'space-around',
                         alignItems: 'center'
                     }}>
-                        <button type="button" className="btn margin-top" style={{
+                        <button
+                        onClick={() => this.props.closeModal()}
+                         type="button" className="btn margin-top" style={{
                             border: '2px solid #212529',
                             borderRadius: '5px',
                             width: '174px',
@@ -113,6 +131,7 @@ class CancelSubscriptionModal extends React.Component {
                         >If you change your mind, just log back in and select a plan to continue with Skoller!</p>
                     </div>
                         <button type="button" className="btn margin-top"
+                                                onClick={() => this.props.closeModal()}
                         style={{
                                 background: '#4a5a5a',
                                 color: 'white',
