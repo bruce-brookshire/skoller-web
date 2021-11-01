@@ -9,7 +9,6 @@ class UserStore {
       user: null,
       enrollmentLink: null,
       showPopUps: true.valueOf,
-      classes: null
     })
   }
 
@@ -43,9 +42,6 @@ class UserStore {
 
   @action setPopUpState (bool) {
     this.showPopUps = bool
-  }
-  @action setClasses (val){
-      this.classes = val
   }
 }
 
