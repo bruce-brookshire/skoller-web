@@ -7,8 +7,8 @@ import CheckoutForm from './CheckoutForm';
 import actions from '../../../../actions'
 import {Cookies} from 'react-cookie'
 const vm  = this;
-// const stripePromise = loadStripe('pk_test_51JV9OSSGLvMTa3qVnwhFxc03IiK5JOGO94YQufQumo21gTgUAdpvMtEGYH9dgH1BPFrrirHuNbiVbE49gPNHHxIU00WpzV3KLP');
-const stripePromise = loadStripe('pk_live_51JHvLoGtOURsTxunmypyAUNfbRF4jOahklknp1RTBHhxpy3qEveFU7lCWdrBt4YggE5ytlblCgYYHPPzsLC0Gf8K00NC7FWyoh');
+const stripePromise = loadStripe('pk_test_51JV9OSSGLvMTa3qVnwhFxc03IiK5JOGO94YQufQumo21gTgUAdpvMtEGYH9dgH1BPFrrirHuNbiVbE49gPNHHxIU00WpzV3KLP');
+// const stripePromise = loadStripe('pk_live_51JHvLoGtOURsTxunmypyAUNfbRF4jOahklknp1RTBHhxpy3qEveFU7lCWdrBt4YggE5ytlblCgYYHPPzsLC0Gf8K00NC7FWyoh');
 @inject('rootStore') @observer
 class ChangeSchool extends React.Component {
   constructor (props) {
@@ -87,7 +87,7 @@ class ChangeSchool extends React.Component {
       <ul>
         {plans.map((row, i) => (
            (this.state.selected_subscription == row.id ) ?
-           <li  className="highlight {(i == 0) ? 'first-item':((i == (plans.length -1) ? 'last-item':'stext-lgray'))}" onClick={() => this.selectPlan(row.id)}><span>${row.amount} per {row.interval}</span></li> : <li  className="{(i == 0) ? 'first-item':((i == (plans.length -1) ? 'last-item':'stext-lgray'))}" onClick={() => this.selectPlan(row.id)}><span>${row.amount} per {row.interval}</span></li>
+           <li  className="highlight {(i == 0) ? 'first-item':((i == (plans.length -1) ? 'last-item':'stext-lgray'))}" onClick={() => this.selectPlan(row.id)}><span>${row.price} per {row.interval}</span></li> : <li  className="{(i == 0) ? 'first-item':((i == (plans.length -1) ? 'last-item':'stext-lgray'))}" onClick={() => this.selectPlan(row.id)}><span>${row.price} per {row.interval}</span></li>
         ))}
       </ul>
     );

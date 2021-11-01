@@ -75,7 +75,7 @@ class CancelSubscriptionModal extends React.Component {
                         </span>
 
                         <span style={{ margin: '6px' }}>
-                            <input type='radio' id="im_using_something_else" value="using_something_else" onChange={this.handleRadioChange} checked={this.state.cancellingReason === "im_using_something_else"}/>
+                            <input type='radio' id="im_using_something_else" value="using_something_else" onChange={this.handleRadioChange} checked={this.state.cancellingReason === "using_something_else"}/>
                             <label htmlFor="im_using_something_else" style={{ marginLeft: '10px' }}>I'm using something else</label>
                         </span>
 

@@ -56,8 +56,6 @@ class Home extends React.Component {
             this.runPopUpLogic()
             this.showPrimarySchoolPopUp()
         }
-
-
     }
 
     async runPopUpLogic() {
@@ -265,7 +263,7 @@ class Home extends React.Component {
                                 this.setState({ popUp: { type: 'PaymentPlans', show: true } });
                                }}
                                >Upgrade to Premium</button>
-                               <span>Trial ends {formatDate(new Date().getDate() + Math.ceil(+this.props.rootStore.userStore.user.trial_days_left))}</span>
+                               <span>Trial ends {formatDate(new Date(new Date().setDate(new Date().getDate() + Math.ceil(+this.props.rootStore.userStore.user.trial_days_left))))}</span>
                            </div>
                         </div>
                         }
