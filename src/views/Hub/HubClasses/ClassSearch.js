@@ -120,13 +120,13 @@ class ClassSearch extends React.Component {
 
   onSearch () {
     let {schoolId, searchField, searchValue} = this.props.rootStore.searchStore
-    if (schoolId || (searchField && searchValue)) {
+    if (schoolId || (searchField )) {
       let params = ''
       if (schoolId && searchField) {
         params = `school=${schoolId}&${searchField}=${searchValue}`
       } else if (schoolId) {
         params = `school=${schoolId}`
-      } else if (searchField && searchValue) {
+      } else if (searchField ) {
         params = `${searchField}=${searchValue}`
       }
       this.props.onSearch(params)
