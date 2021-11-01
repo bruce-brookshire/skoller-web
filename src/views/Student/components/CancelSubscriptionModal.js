@@ -131,7 +131,7 @@ class CancelSubscriptionModal extends React.Component {
                         >If you change your mind, just log back in and select a plan to continue with Skoller!</p>
                     </div>
                         <button type="button" className="btn margin-top"
-                                                onClick={() => this.props.closeModal()}
+                                                onClick={() => {this.props.closeModal();window.location.reload(true)}}
                         style={{
                                 background: '#4a5a5a',
                                 color: 'white',

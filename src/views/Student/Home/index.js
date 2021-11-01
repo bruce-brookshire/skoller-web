@@ -26,7 +26,8 @@ class Home extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            subscribed:  false,
+            subscribed: false,
+            subscriptionCancelled: false,
             classes: [],
             assignments: [],
             popUp: { show: false, type: null },
@@ -56,7 +57,10 @@ class Home extends React.Component {
             this.runPopUpLogic()
             this.showPrimarySchoolPopUp()
         }
+
+
     }
+
 
     async runPopUpLogic() {
         let showPopUp = false
@@ -109,11 +113,12 @@ class Home extends React.Component {
         await actions.stripe.getMySubscription()
             .then((data) => {
                 if (data.data.length > 0) {
-                    this.setState({subscribed: true})
+                    this.setState({ subscribed: true })
+                    this.setState({ subscriptionCancelled: data.data[0].cancel_at_period_end })
                     if (showPopUp) {
                         this.setState({ popUp: { type: type, show: true } })
                     }
-                } else if(data.data.length === 0 && this.props.rootStore.userStore.user.trial === false) {
+                } else if (data.data.length === 0 && this.props.rootStore.userStore.user.trial === false) {
                     this.setState({ popUp: { type: 'PaymentPlans', show: true } });
                 }
                 // } else  {
@@ -145,13 +150,13 @@ class Home extends React.Component {
     }
 
 
-    getMonthAndYearInDays(val){
-        if(val === 'month') return 30
+    getMonthAndYearInDays(val) {
+        if (val === 'month') return 30
         else if (val === 'year') return 365
         return 0
     }
 
-    getIntervalDate(){
+    getIntervalDate() {
         let endDate = new Date()
         console.log({
             interval: this.props.rootStore.userStore.subscriptionStartedDate
@@ -163,9 +168,9 @@ class Home extends React.Component {
         console.log({
             str: this.getMonthAndYearInDays(interval)
         })
-        let newDate = new Date(this.props.rootStore.userStore.subscriptionStartedDate*1000)
+        let newDate = new Date(this.props.rootStore.userStore.subscriptionStartedDate * 1000)
         endDate.setDate(newDate.getDate() + this.getMonthAndYearInDays(interval))
-        console.log({endDate})
+        console.log({ endDate })
         return endDate
     }
 
@@ -214,7 +219,7 @@ class Home extends React.Component {
         return (
             <div>
                 {this.state.popUp.show &&
-                    <PopUp closeModal={ (!this.props.rootStore.userStore.user.trial &&  !this.state.subscribed) ? () => null : () => this.closePopUp()} handleModalClose={() => this.closePopUp()}  type={this.state.popUp.type} refreshClasses={() => this.updateClasses()}  />
+                    <PopUp closeModal={(!this.props.rootStore.userStore.user.trial && !this.state.subscribed) ? () => null : () => this.closePopUp()} handleModalClose={() => this.closePopUp()} type={this.state.popUp.type} refreshClasses={() => this.updateClasses()} />
                 }
                 {this.state.classStatusModal.show &&
                     <ClassStatusModal
@@ -250,39 +255,54 @@ class Home extends React.Component {
                                 <HomeTasks />
                             </div>
                         </div>
+
+
+
                         {
-                            this.props.rootStore.userStore.user.trial &&
-                        <div className="home-shadow-box">
-                           <div className="home-shadow-box__expiresin-container">
-                               <div className="home-shadow-box__expiresin-title">
-                                    <img alt="Skoller" className='logo' src='/src/assets/images/sammi/Smile.png' height="60" />
-                                    <h1>Your free trial expires in {Math.ceil(+this.props.rootStore.userStore.user.trial_days_left)} days</h1>
-                               </div>
-                               <button
-                               onClick={() => {
-                                this.setState({ popUp: { type: 'PaymentPlans', show: true } });
-                               }}
-                               >Upgrade to Premium</button>
-                               <span>Trial ends {formatDate(new Date(new Date().setDate(new Date().getDate() + Math.ceil(+this.props.rootStore.userStore.user.trial_days_left))))}</span>
-                           </div>
-                        </div>
+                            !this.props.rootStore.userStore.user.lifetime_subscription && this.props.rootStore.userStore.user.trial &&
+                            <div className="home-shadow-box">
+                                <div className="home-shadow-box__expiresin-container">
+                                    <div className="home-shadow-box__expiresin-title">
+                                        <img alt="Skoller" className='logo' src='/src/assets/images/sammi/Smile.png' height="60" />
+                                        <h1>Your free trial expires in {Math.ceil(+this.props.rootStore.userStore.user.trial_days_left)} days</h1>
+                                    </div>
+                                    <button
+                                        onClick={() => {
+                                            this.setState({ popUp: { type: 'PaymentPlans', show: true } });
+                                        }}
+                                    >Upgrade to Premium</button>
+                                    <span>Trial ends {formatDate(new Date(new Date().setDate(new Date().getDate() + Math.ceil(+this.props.rootStore.userStore.user.trial_days_left))))}</span>
+                                </div>
+                            </div>
                         }
                         {
-                            !this.props.rootStore.userStore.user.trial &&  this.state.subscribed &&
-                        <div className="home-shadow-box">
-                           <div className="home-shadow-box__expiresin-container">
-                               <div className="home-shadow-box__expiresin-title">
-                                    <img alt="Skoller" className='logo' src='/src/assets/images/sammi/Smile.png' height="60" />
-                                    <h1>Cancel subscription</h1>
-                               </div>
-                               <button
-                               onClick={() => {
-                                this.setState({ popUp: { type: 'CancelSubscription', show: true } });
-                               }}
-                               >Cancel Subscription</button>
-                               <span>Subscription ends {formatDate(this.getIntervalDate())}</span>
-                           </div>
-                        </div>
+                            !this.props.rootStore.userStore.user.lifetime_subscription && !this.props.rootStore.userStore.user.trial && this.state.subscribed &&
+                            <div className="home-shadow-box">
+                                <div className="home-shadow-box__expiresin-container">
+                                    <div className="home-shadow-box__expiresin-title">
+                                        <img alt="Skoller" className='logo' src='/src/assets/images/sammi/Smile.png' height="60" />
+                                        {(this.props.rootStore.userStore.mySubscription && this.props.rootStore.userStore.mySubscription.cancel_at_period_end) ? <h1>You cancelled your subscription</h1> : this.props.rootStore.userStore.mySubscription && !this.props.rootStore.userStore.mySubscription.cancel_at_period_end ? <h1>Cancel subscription</h1> : null}
+                                    </div>
+                                    {
+                                        (this.props.rootStore.userStore.mySubscription && this.props.rootStore.userStore.mySubscription.cancel_at_period_end) ?
+
+                                            <button
+                                                onClick={() => {
+                                                    this.setState({ popUp: { type: 'PaymentPlans', show: true } });
+                                                }}
+                                            >Upgrade to Premium</button>
+                                            :
+                                            this.props.rootStore.userStore.mySubscription && !this.props.rootStore.userStore.mySubscription.cancel_at_period_end ?
+                                            <button
+                                                onClick={() => {
+                                                    this.setState({ popUp: { type: 'CancelSubscription', show: true } });
+                                                }}
+                                            >Cancel Subscription</button> : null
+
+                                    }
+                                    <span>Subscription ends {formatDate(this.getIntervalDate())}</span>
+                                </div>
+                            </div>
                         }
 
                     </div>

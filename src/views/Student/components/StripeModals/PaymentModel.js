@@ -2,54 +2,54 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
 import { Elements } from '@stripe/react-stripe-js';
-import {loadStripe} from '@stripe/stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import CheckoutForm from './CheckoutForm';
 import actions from '../../../../actions'
-import {Cookies} from 'react-cookie'
-const vm  = this;
+import { Cookies } from 'react-cookie'
+const vm = this;
 const stripePromise = loadStripe('pk_test_51JV9OSSGLvMTa3qVnwhFxc03IiK5JOGO94YQufQumo21gTgUAdpvMtEGYH9dgH1BPFrrirHuNbiVbE49gPNHHxIU00WpzV3KLP');
 // const stripePromise = loadStripe('pk_live_51JHvLoGtOURsTxunmypyAUNfbRF4jOahklknp1RTBHhxpy3qEveFU7lCWdrBt4YggE5ytlblCgYYHPPzsLC0Gf8K00NC7FWyoh');
 @inject('rootStore') @observer
 class ChangeSchool extends React.Component {
-  constructor (props) {
-    super(props)
+    constructor(props) {
+        super(props)
 
 
-    this.state = {
-       selected_subscription:'',
-       plans:[],
-       payment_method:{
-          type:'card',
-          plan_id:'price_1JYF3sSGLvMTa3qVrsx7uADn',
-          card:{
-            number:'4242424242424242',
-            exp_month:'12',
-            exp_year:'23',
-            cvc:'123'
-         },
-          billing_details:{
-             email:'bijay@gmial.com',
-             name:'bijay',
-             phone:'9800186999',
-             address:{
-             city:'Nairobi',
-             line1:'line 1 example'
-             }
-          }
-         }
-
-
-
-       }
-      //  console.log(stripePromise.createToken(), 'stripe js');
-
-    this.cookie = new Cookies()
-    console.log(this.cookie, 'my cookie');
-  }
+        this.state = {
+            selected_subscription: '',
+            plans: [],
+            payment_method: {
+                type: 'card',
+                plan_id: 'price_1JYF3sSGLvMTa3qVrsx7uADn',
+                card: {
+                    number: '4242424242424242',
+                    exp_month: '12',
+                    exp_year: '23',
+                    cvc: '123'
+                },
+                billing_details: {
+                    email: 'bijay@gmial.com',
+                    name: 'bijay',
+                    phone: '9800186999',
+                    address: {
+                        city: 'Nairobi',
+                        line1: 'line 1 example'
+                    }
+                }
+            }
 
 
 
-  componentDidMount () {
+        }
+        //  console.log(stripePromise.createToken(), 'stripe js');
+
+        this.cookie = new Cookies()
+        console.log(this.cookie, 'my cookie');
+    }
+
+
+
+    componentDidMount() {
         actions.stripe.getAllSubscription().catch((r) => console.log(r, 66));
         actions.stripe.getMySubscription().catch((r) => console.log(r, 66));
         actions.stripe.lastUpcomingPayment().catch((r) => console.log(r, 66));
@@ -58,84 +58,113 @@ class ChangeSchool extends React.Component {
         actions.stripe.allPlans().catch((r) => console.log(r, 66));
         actions.stripe.allPlans()
             .then((data) => {
-            this.setState({plans: data.data})
+                this.setState({ plans: [...data.data, {
+                    active: true,
+                    amount: 800,
+                    amount_decimal: "800",
+                    // created: 1631300816,
+                    currency: "usd",
+                    id: "life_time",
+                    // interval: "month",
+                    // interval_count: 1,
+                    name: null,
+                    price: 80,
+                    product: "prod_K9UWGXZKuZSloY",
+                }] })
             })
             .catch((e) => {
-            console.log(e)
-         })
+                console.log(e)
+            })
 
 
-  }
-
-  closeModal = () => {
-    this.props.closeModal()
-    return null
-  }
-
-
-  selectPlan(plan_id){
-     this.setState({selected_subscription: plan_id});
-  }
-
-  simplifiedFunction () {
-
- }
-  getPlans(){
-   let plans = this.state.plans;
-
-    return (
-      <ul>
-        {plans.map((row, i) => (
-           (this.state.selected_subscription == row.id ) ?
-           <li  className="highlight {(i == 0) ? 'first-item':((i == (plans.length -1) ? 'last-item':'stext-lgray'))}" onClick={() => this.selectPlan(row.id)}><span>${row.price} per {row.interval}</span></li> : <li  className="{(i == 0) ? 'first-item':((i == (plans.length -1) ? 'last-item':'stext-lgray'))}" onClick={() => this.selectPlan(row.id)}><span>${row.price} per {row.interval}</span></li>
-        ))}
-      </ul>
-    );
-  }
-
-
-  render () {
-    let disableNext = false
-    if ((!this.state.termChoice || !this.state.activeTerm) && (!this.state.schoolChoice)) {
-      disableNext = true
     }
 
-    // const [paymentCompleted, setPaymentCompleted] = useState(false);
-    // const [paymentCompleted, setPaymentCompleted] = useState(false);
-
-   //  const stripe = useStripe();
-   // const elements = useElements();
-
-
-    return (
+    closeModal = () => {
+        this.props.closeModal()
+        return null
+    }
 
 
-        <div className="popup-wrap poup-md">
-        <div className="popup-closetext">
-           <div className="popup-msg">
-              <img src="/src/assets/images/sammi/Wow2.png" className="opup-icon" alt="" style={{maxWidth:'34px'}}></img>
-              <h2>Your 30-day trial has expired!</h2>
-              <p> Upgrade the premium</p>
-           </div>
-           <div className="row">
-              <div className="col-md-12">
-                 <div className="listgroup-wrap margin-bottom">
-                    <h4 className="divider-title"><span>Select a Plan</span></h4>
-                    <div className="group-list">
+    selectPlan(plan_id) {
+        this.setState({ selected_subscription: plan_id });
+    }
 
-                       <ul>
-                        { this.getPlans()}
-                       </ul>
+    simplifiedFunction() {
+
+    }
+    getPlans() {
+        let plans = this.state.plans
+
+        return (
+            <ul>
+                {plans.map((row, i) => (
+                    (this.state.selected_subscription == row.id) ?
+                        <li className="highlight {(i == 0) ? 'first-item':((i == (plans.length -1) ? 'last-item':'stext-lgray'))}" onClick={() => this.selectPlan(row.id)}>
+                        {
+                            row.interval ? <span>${row.price} per {row.interval}</span> : <span>${row.price} life time</span>
+                        }
+                        </li> : <li className="{(i == 0) ? 'first-item':((i == (plans.length -1) ? 'last-item':'stext-lgray'))}" onClick={() => this.selectPlan(row.id)}>
+                        {
+                            row.interval ? <span>${row.price} per {row.interval}</span> : <span>${row.price} life time</span>
+                        }
+                        </li>
+                ))}
+            </ul>
+        );
+    }
+
+
+    render() {
+        let disableNext = false
+        if ((!this.state.termChoice || !this.state.activeTerm) && (!this.state.schoolChoice)) {
+            disableNext = true
+        }
+
+        // const [paymentCompleted, setPaymentCompleted] = useState(false);
+        // const [paymentCompleted, setPaymentCompleted] = useState(false);
+
+        //  const stripe = useStripe();
+        // const elements = useElements();
+
+
+        return (
+
+
+            <div className="popup-wrap poup-md">
+                <div className="popup-closetext">
+                    <div className="popup-msg">
+                        <img src="/src/assets/images/sammi/Wow2.png" className="opup-icon" alt="" style={{ maxWidth: '34px' }}></img>
+                        {/* <h2>Your 30-day trial has expired!</h2> */}
+                        {
+                            this.props.rootStore.userStore.user.trial ?
+                            <h2>Your have 30-day trial</h2> :
+                            (!this.props.rootStore.userStore.user.trial && !this.props.rootStore.userStore.mySubscription) ?
+                            <h2>Your have 30-day trial have expired!</h2> :
+                            this.props.rootStore.userStore.mySubscription.cancel_at_period_end ?
+                            <h2>You recurring subscription was cancelled</h2> :
+                            <h2></h2>
+                        }
+                        <p> Upgrade the premium</p>
                     </div>
-                 </div>
-                 <div className="listgroup-wrap margin-bottom margin-top">
-                    <h4 className="divider-title"><span>Pay with Card</span></h4>
+                    <div className="row">
+                        <div className="col-md-12">
+                            <div className="listgroup-wrap margin-bottom">
+                                <h4 className="divider-title"><span>Select a Plan</span></h4>
+                                <div className="group-list">
 
-                    <Elements stripe={stripePromise}>
-                     <CheckoutForm selectedSubscription = {this.state.selected_subscription}  simplifiedFunction = {this.simplifiedFunction} myprops={this.props} />
-                  </Elements>
+                                    <ul>
+                                        {this.getPlans()}
+                                    </ul>
+                                </div>
+                            </div>
+                            <div className="listgroup-wrap margin-bottom margin-top">
+                                <h4 className="divider-title"><span>Pay with Card</span></h4>
 
-                    {/* <form>
+                                <Elements stripe={stripePromise}>
+                                    <CheckoutForm selectedSubscription={this.state.selected_subscription} simplifiedFunction={this.simplifiedFunction} myprops={this.props} />
+                                </Elements>
+
+                                {/* <form>
                        <div className="group-field inputfield">
                           <label>Email</label>
                           <input type="text"/>
@@ -176,20 +205,20 @@ class ChangeSchool extends React.Component {
                           <button className="btn full-width sbg-dark stext-while margin-top">Pay</button>
                        </div>
                     </form> */}
-                 </div>
-              </div>
-           </div>
-        </div>
-     </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    )
-  }
+        )
+    }
 }
 
 ChangeSchool.propTypes = {
-  onSubmit: PropTypes.func,
-  rootStore: PropTypes.object,
-  backData: PropTypes.object
+    onSubmit: PropTypes.func,
+    rootStore: PropTypes.object,
+    backData: PropTypes.object
 }
 
 export default ChangeSchool

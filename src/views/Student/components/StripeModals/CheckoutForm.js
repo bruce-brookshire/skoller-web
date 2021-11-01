@@ -1,4 +1,5 @@
 import React from 'react';
+import {useHistory} from 'react-router-dom'
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 
 import CardSection from './CardSection';
@@ -44,12 +45,21 @@ export default function CheckoutForm(props) {
     };
 
     function stripeTokenHandler(token) {
-        const paymentData = {
-            payment_method: {
-                token: token.id,
-                plan_id: props.selectedSubscription
+        let paymentData = {}
+        if(props.selectedSubscription === 'life_time'){
+            paymentData = {
+                payment_method: {
+                    token: token.id,
+                }
             }
-        };
+        }else{
+            paymentData = {
+                payment_method: {
+                    token: token.id,
+                    plan_id:  props.selectedSubscription
+                }
+            }
+        }
 
 
         if (props.selectedSubscription == '') {
@@ -62,6 +72,7 @@ export default function CheckoutForm(props) {
                     showSnackbar(data.message, 'success')
                     console.log(props)
                     props.myprops.handleModalClose();
+                    window.location.reload(true);
                 } else {
                     showSnackbar(data.message, 'error')
                 }
