@@ -8,6 +8,7 @@ import {mapProfessor} from '../../../utilities/display'
 import {mapTimeToDisplay} from '../../../utilities/time'
 import {inject, observer} from 'mobx-react'
 import PropTypes from 'prop-types'
+import { action } from 'mobx'
 
 const headers = [
   {
@@ -62,6 +63,7 @@ class HubClasses extends React.Component {
     super(props)
     this.state = {
       classes: [],
+      changeClasses: [],
       loading: false
     }
     this.props.rootStore.navStore.setActivePage('hub/classes')
@@ -70,6 +72,7 @@ class HubClasses extends React.Component {
 
   componentDidMount() {
     this.getClasses('')
+    this.getChangeClasses()
   }
   /*
 
@@ -80,9 +83,15 @@ class HubClasses extends React.Component {
   */
   getClasses (queryString) {
     this.setState({loading: true})
-    actions.classes.searchClasses(queryString).then(classes => {
+    actions.classes.getInReviewClasses(queryString).then(classes => {
       this.setState({classes, loading: false})
     }).catch(() => { this.setState({loading: false}) })
+  }
+
+  getChangeClasses () {
+      actions.classes.getChangeClasses().then(classes => {
+          this.setState({changeClasses: classes})
+      })
   }
 
   getCsv () {
@@ -182,10 +191,10 @@ class HubClasses extends React.Component {
             <td>{item.code}</td>
             <td>{item.name}</td>
             <td>{item.school.name}</td>
-            <td>{item.premium}</td>
+            {/* <td>{item.premium}</td>
             <td>{item.trial}</td>
-            <td>{item.expired}</td>
-            <td>54 Hours Ago</td>
+            <td>{item.expired}</td> */}
+            <td>{item.received ? item.received : '-'}</td>
             <td>{item.meet_days}</td>
         </tr>))
 
@@ -290,8 +299,8 @@ class HubClasses extends React.Component {
                     <div class="col-md-8">
                         <div class="head-left">
                           <h3><i class="fas fa-book"></i> &nbsp; Class</h3>
-                          <span class="badge badge-primary">In Review (295)</span>
-                          <span class="badge badge-light">Class Changes (31)</span>
+                          <span class="badge badge-primary">In Review ({this.state.classes.length + 1})</span>
+                          <span class="badge badge-light">Class Changes ({this.state.changeClasses.length + 1})</span>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -307,9 +316,9 @@ class HubClasses extends React.Component {
                         <th scope="col">ID</th>
                         <th scope="col">Class Name</th>
                         <th scope="col">School</th>
-                        <th scope="col">Premium</th>
+                        {/* <th scope="col">Premium</th>
                         <th scope="col">Trail</th>
-                        <th scope="col">Expired</th>
+                        <th scope="col">Expired</th> */}
                         <th scope="col">Recieved</th>
                         <th scope="col">Day Left</th>
                       </tr>
