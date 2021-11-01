@@ -94,10 +94,10 @@ class PaymentPlans extends React.Component {
     this.setState({classStatusModal: {show: true, cl: cl}})
   }
 
-  closeModal = () => {
-    this.props.closeModal()
-    return null
-  }
+//   closeModal = () => {
+//     this.props.closeModal()
+//     return null
+//   }
 
   renderPaymentPlans () {
     return (
@@ -109,12 +109,12 @@ class PaymentPlans extends React.Component {
           <ProgressModal
             // title=""
             closeModal={() => {
-              !this.state.classStatusModal.show && this.closeModal()
+              !this.state.classStatusModal.show && this.props.closeModal()
             }}
           >
             {/* <PremminiumPlans backData={this.state.params} onSubmit={(data) => this.changeParams(data)} /> */}
             {/* <InfoModal backData={this.state.params} onSubmit={(data) => this.changeParams(data)} /> */}
-            <PaymentModel backData={this.state.params} onSubmit={(data) => this.changeParams(data)} closeModal={() => this.props.closeModal()} />
+            <PaymentModel backData={this.state.params} onSubmit={(data) => this.changeParams(data)} closeModal={() => this.props.closeModal()} handleModalClose={() => this.props.handleModalClose()} />
           </ProgressModal>
         </div>
       </div>

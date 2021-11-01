@@ -9,6 +9,7 @@ import MajorForm from '../MiscViews/MajorForm'
 import DocumentsForm from '../Jobs/components/DocumentsForm'
 import ClassStatusModal from '../../components/ClassStatusModal'
 import PaymentPlans from '../../Student/components/StripeModals'
+import CancelSubscriptionModal from '../components/CancelSubscriptionModal'
 
 @inject('rootStore') @observer
 class PopUp extends React.Component {
@@ -49,6 +50,16 @@ class PopUp extends React.Component {
       <div className='sk-pop-up'>
         <PaymentPlans
         closeModal={() => this.props.closeModal()}
+        handleModalClose={() => this.props.handleModalClose()}
+        />
+      </div>
+    )
+  }
+  renderCancelSubscription () {
+    return (
+      <div style={{padding: '2rem'}}>
+        <CancelSubscriptionModal
+        closeModal={() => this.props.handleModalClose()}
 
         />
       </div>
@@ -85,6 +96,11 @@ class PopUp extends React.Component {
         {this.props.type === 'findClass' &&
           <SkModal>
             {this.renderFindClassPopUp()}
+          </SkModal>
+        }
+        {this.props.type === 'CancelSubscription' &&
+          <SkModal>
+            {this.renderCancelSubscription()}
           </SkModal>
         }
         {this.props.type === 'getMajor' &&

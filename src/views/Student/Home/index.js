@@ -26,6 +26,7 @@ class Home extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            subscribed:  false,
             classes: [],
             assignments: [],
             popUp: { show: false, type: null },
@@ -33,7 +34,7 @@ class Home extends React.Component {
             // has only one class, and that class is not yet set up.
             classStatusModal: { show: false, cl: null },
             loading: false,
-            shareWillDisplay: false
+            shareWillDisplay: false,
         }
 
         this.props.rootStore.navStore.setActivePage('home')
@@ -55,8 +56,6 @@ class Home extends React.Component {
             this.runPopUpLogic()
             this.showPrimarySchoolPopUp()
         }
-
-
     }
 
     async runPopUpLogic() {
@@ -110,6 +109,7 @@ class Home extends React.Component {
         await actions.stripe.getMySubscription()
             .then((data) => {
                 if (data.data.length > 0) {
+                    this.setState({subscribed: true})
                     if (showPopUp) {
                         this.setState({ popUp: { type: type, show: true } })
                     }
@@ -142,6 +142,31 @@ class Home extends React.Component {
 
     findFullClass(classId) {
         return this.props.rootStore.studentClassesStore.classes.find((cl) => cl.id === classId)
+    }
+
+
+    getMonthAndYearInDays(val){
+        if(val === 'month') return 30
+        else if (val === 'year') return 365
+        return 0
+    }
+
+    getIntervalDate(){
+        let endDate = new Date()
+        console.log({
+            interval: this.props.rootStore.userStore.subscriptionStartedDate
+        })
+        console.log({
+            int: this.props.rootStore.userStore.interval
+        })
+        const interval = this.props.rootStore.userStore.interval
+        console.log({
+            str: this.getMonthAndYearInDays(interval)
+        })
+        let newDate = new Date(this.props.rootStore.userStore.subscriptionStartedDate*1000)
+        endDate.setDate(newDate.getDate() + this.getMonthAndYearInDays(interval))
+        console.log({endDate})
+        return endDate
     }
 
     onClassSelect = (cl) => {
@@ -189,7 +214,7 @@ class Home extends React.Component {
         return (
             <div>
                 {this.state.popUp.show &&
-                    <PopUp closeModal={() => this.closePopUp()} type={this.state.popUp.type} refreshClasses={() => this.updateClasses()}  />
+                    <PopUp closeModal={ (!this.props.rootStore.userStore.user.trial &&  !this.state.subscribed) ? () => null : () => this.closePopUp()} handleModalClose={() => this.closePopUp()}  type={this.state.popUp.type} refreshClasses={() => this.updateClasses()}  />
                 }
                 {this.state.classStatusModal.show &&
                     <ClassStatusModal
@@ -238,7 +263,24 @@ class Home extends React.Component {
                                 this.setState({ popUp: { type: 'PaymentPlans', show: true } });
                                }}
                                >Upgrade to Premium</button>
-                               <span>Trial ends {formatDate(new Date().getDate() + Math.ceil(+this.props.rootStore.userStore.user.trial_days_left))}</span>
+                               <span>Trial ends {formatDate(new Date(new Date().setDate(new Date().getDate() + Math.ceil(+this.props.rootStore.userStore.user.trial_days_left))))}</span>
+                           </div>
+                        </div>
+                        }
+                        {
+                            !this.props.rootStore.userStore.user.trial &&  this.state.subscribed &&
+                        <div className="home-shadow-box">
+                           <div className="home-shadow-box__expiresin-container">
+                               <div className="home-shadow-box__expiresin-title">
+                                    <img alt="Skoller" className='logo' src='/src/assets/images/sammi/Smile.png' height="60" />
+                                    <h1>Cancel subscription</h1>
+                               </div>
+                               <button
+                               onClick={() => {
+                                this.setState({ popUp: { type: 'CancelSubscription', show: true } });
+                               }}
+                               >Cancel Subscription</button>
+                               <span>Subscription ends {formatDate(this.getIntervalDate())}</span>
                            </div>
                         </div>
                         }
