@@ -20,11 +20,13 @@ import {
 import {
   getAllSubscription,
   getMySubscription,
+  cancelSubscription,
   lastUpcomingPayment,
   billingHistory,
   allProducts,
   allPlans,
-  createSubscription
+  createSubscription,
+  cancellationReason
 } from './stripe'
 import { getAnalytics } from './analytics'
 import {
@@ -239,11 +241,13 @@ const actions = {
   stripe:{
   getAllSubscription,
   getMySubscription,
+  cancelSubscription,
   lastUpcomingPayment,
   billingHistory,
   allProducts,
   allPlans,
-  createSubscription
+  createSubscription,
+  cancellationReason
   },
   auth: {
     authenticateUser,
