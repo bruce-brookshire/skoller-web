@@ -8,7 +8,6 @@ class UserStore {
       authToken: null,
       user: null,
       enrollmentLink: null,
-      showPopUps: true.valueOf,
     })
   }
 
