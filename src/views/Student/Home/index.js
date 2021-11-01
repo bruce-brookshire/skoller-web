@@ -57,7 +57,10 @@ class Home extends React.Component {
             this.runPopUpLogic()
             this.showPrimarySchoolPopUp()
         }
+
+
     }
+
 
     async runPopUpLogic() {
         let showPopUp = false
