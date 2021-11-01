@@ -10,7 +10,8 @@ class UserStore {
       enrollmentLink: null,
       showPopUps: true,
       subscriptionStartedDate: null,
-      interval: null
+      interval: null,
+      mySubscription: null
     })
   }
 
@@ -50,6 +51,9 @@ class UserStore {
   }
   @action setInterval (val) {
     this.interval = val
+  }
+  @action setMySubscription (val) {
+    this.mySubscription = val
   }
 }
 

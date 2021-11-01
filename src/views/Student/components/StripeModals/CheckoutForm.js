@@ -44,12 +44,21 @@ export default function CheckoutForm(props) {
     };
 
     function stripeTokenHandler(token) {
-        const paymentData = {
-            payment_method: {
-                token: token.id,
-                plan_id: props.selectedSubscription
+        let paymentData = {}
+        if(props.selectedSubscription === 'life_time'){
+            paymentData = {
+                payment_method: {
+                    token: token.id,
+                }
             }
-        };
+        }else{
+            paymentData = {
+                payment_method: {
+                    token: token.id,
+                    plan_id:  props.selectedSubscription
+                }
+            }
+        }
 
 
         if (props.selectedSubscription == '') {
