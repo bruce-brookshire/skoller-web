@@ -195,7 +195,7 @@ class HubDashboard extends React.Component {
             <td>{item.trial}</td>
             <td>{item.expired}</td>
             <td>{item.received ? item.received : '-'}</td>
-            <td>{item.meet_days}</td>
+            <td>{item.days_left ? days_left : '-'}</td>
         </tr>))
 
         }
