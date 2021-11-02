@@ -317,7 +317,7 @@ class HubDashboard extends React.Component {
                         <th scope="col">Class Name</th>
                         <th scope="col">School</th>
                         <th scope="col">Premium</th>
-                        <th scope="col">Trail</th>
+                        <th scope="col">Trial</th>
                         <th scope="col">Expired</th>
                         <th scope="col">Recieved</th>
                         <th scope="col">Day Left</th>
