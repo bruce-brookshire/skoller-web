@@ -2,13 +2,13 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
 import { Elements } from '@stripe/react-stripe-js'
-import { loadStripe } from '@stripe/stripe-js'
+import { loadStripe } from '@stripe/stripe-js/pure'
 import CheckoutForm from './CheckoutForm'
 import actions from '../../../../actions'
 import { Cookies } from 'react-cookie'
 const vm = this
-// const stripePromise = loadStripe('pk_test_51JV9OSSGLvMTa3qVnwhFxc03IiK5JOGO94YQufQumo21gTgUAdpvMtEGYH9dgH1BPFrrirHuNbiVbE49gPNHHxIU00WpzV3KLP');
-const stripePromise = loadStripe('pk_live_51JHvLoGtOURsTxunmypyAUNfbRF4jOahklknp1RTBHhxpy3qEveFU7lCWdrBt4YggE5ytlblCgYYHPPzsLC0Gf8K00NC7FWyoh')
+const stripePromise = loadStripe('pk_test_51JV9OSSGLvMTa3qVnwhFxc03IiK5JOGO94YQufQumo21gTgUAdpvMtEGYH9dgH1BPFrrirHuNbiVbE49gPNHHxIU00WpzV3KLP')
+// const stripePromise = loadStripe('pk_live_51JHvLoGtOURsTxunmypyAUNfbRF4jOahklknp1RTBHhxpy3qEveFU7lCWdrBt4YggE5ytlblCgYYHPPzsLC0Gf8K00NC7FWyoh')
 @inject('rootStore') @observer
 class ChangeSchool extends React.Component {
   constructor (props) {
