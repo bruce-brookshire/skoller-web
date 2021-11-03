@@ -9,7 +9,7 @@ import EditAssignment from './EditAssignment'
 import CheckIcon from '../../../../assets/sk-icons/CheckIcon'
 import OutsideClickHandler from 'react-outside-click-handler'
 
-function Grade (props) {
+export function Grade (props) {
   const [editing, setEditing] = React.useState(false)
   const [grade, setGrade] = React.useState(props.assignment.grade)
   const color = '#' + props.color

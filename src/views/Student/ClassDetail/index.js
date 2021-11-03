@@ -11,7 +11,7 @@ import { toJS } from 'mobx'
 
 @inject('rootStore') @observer
 class StudentClassDetailView extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -22,7 +22,7 @@ class StudentClassDetailView extends React.Component {
     this.props.rootStore.navStore.location = this.props.location // set active page route location for access from assignment detail
   }
 
-  getClass() {
+  getClass () {
     return this.props.rootStore.studentClassesStore.classes.find(cl => cl.id === parseInt(this.props.match.params.classId))
   }
 
@@ -41,7 +41,7 @@ class StudentClassDetailView extends React.Component {
       })
   }
 
-  createAssignment() {
+  createAssignment () {
 
   }
 
@@ -60,7 +60,7 @@ class StudentClassDetailView extends React.Component {
     this.props.rootStore.studentClassesStore.updateClasses()
   }
 
-  render() {
+  render () {
     return (
       <StudentLayout>
         <NestedNav />

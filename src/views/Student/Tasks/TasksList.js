@@ -5,6 +5,8 @@ import TaskCard from './TaskCard'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import moment from 'moment'
 import SkSelect from '../../components/SkSelect'
+import Assignment from '../ClassDetail/ClassAssignments/Assignment'
+import actions from '../../../actions'
 
 @inject('rootStore') @observer
 class TasksList extends React.Component {
@@ -13,15 +15,34 @@ class TasksList extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
+      user: this.props.rootStore.insightsStore.students.find(s => s.id === parseInt(this.props.match.params.orgStudentId)),
       loading: false,
       seeMore: false,
-      filterSelection: 'All assignments'
+      filterSelection: 'All assignments',
+      visibleAssignments: []
     }
+    this.containerRef = React.createRef()
+  }
+
+  registerVisibleAssignments (id, isVisible) {
+    let visibleAssignments = this.state.visibleAssignments
+
+    if (isVisible) {
+      if (!visibleAssignments.includes(id)) {
+        visibleAssignments.push(id)
+      }
+    } else {
+      if (visibleAssignments.includes(id)) {
+        visibleAssignments.splice(visibleAssignments.indexOf(id), 1)
+      }
+    }
+
+    this.setState({visibleAssignments})
+    this.props.visibleAssignmentsCallback && this.props.visibleAssignmentsCallback(visibleAssignments)
   }
 
   assignments () {
     if (this.props.insightsUserData) {
-      console.log(this.props.insightsUserData.assignments)
       return this.props.insightsUserData.assignments
     } else {
       return this.props.rootStore.studentAssignmentsStore.assignments
@@ -37,14 +58,17 @@ class TasksList extends React.Component {
   }
 
   getClassForTask (task) {
-    let clName, clColor
+    // let clName, clColor
+    let newClass
     this.classes().forEach(cl => {
       if (cl.id === task.class_id) {
-        clName = cl.name
-        clColor = cl.color
+        // clName = cl.name
+        // clColor = cl.color
+        newClass = cl
       }
     })
-    return {clName, clColor}
+    // return {clName, clColor}
+    return newClass
   }
 
   renderNoTasks () {
@@ -126,6 +150,40 @@ class TasksList extends React.Component {
       return false
     }
   }
+  onCompleteAssignment = (assignmentId, isCompleted) => {
+    console.log({ assignmentId, isCompleted })
+    actions.assignments.toggleCompleteAssignmentById(this.props.rootStore.userStore.user.student.id, assignmentId, isCompleted)
+      .then(() => {
+        this.props.rootStore.studentClassesStore.updateClasses()
+      })
+  }
+
+  onDeleteAssignment = (assignmentId) => {
+    actions.assignments.deleteStudentAssignment(assignmentId)
+      .then(() => {
+        this.props.rootStore.studentClassesStore.updateClasses()
+      })
+  }
+  editAssignment = async (form, assignmentId, isPrivate = true) => {
+    if (form.grade || isNaN(form.grade)) {
+      if (isNaN(form.grade)) {
+        await actions.assignments.removeGradeFromAssignment(assignmentId)
+      } else {
+        await actions.assignments.gradeAssignment(assignmentId, form.grade)
+      }
+    } else {
+      form.id = assignmentId
+      await actions.assignments.updateStudentAssignment(form, isPrivate)
+    }
+
+    this.props.rootStore.studentClassesStore.updateClasses()
+    window.location.reload(false)
+    // this.setState({loading: true})
+    // setTimeout(() => {
+    //   window.location.reload()
+    // //   this.setState({loading: false})
+    // }, 400)
+  }
 
   renderTasks () {
     let i = 0
@@ -150,7 +208,25 @@ class TasksList extends React.Component {
               i += 1
               return (
                 <div key={task.id}>
-                  <TaskCard insightsUser={this.props.insightsUserData} task={task} clName={cl.clName} clColor={cl.clColor} classDetailView={this.props.cl} />
+                  {/* <TaskCard
+                    insightsUser={this.props.insightsUserData}
+                    task={task} clName={cl.clName}
+                    clColor={cl.clColor}
+                    classDetailView={this.props.cl} /> */}
+                  <Assignment
+                    onDeleteAssignment={this.onDeleteAssignment}
+                    onCompleteAssignment={this.onCompleteAssignment}
+                    editAssignment={this.editAssignment}
+                    registerVisibleAssignment={(id, isVisible) => this.registerVisibleAssignments(id, isVisible)}
+                    // registerVisibleAssignment={() => {}}
+                    active={true}
+                    // scrollTop={this.state.containerScrollTop}
+                    // key={a.id}
+                    assignment={task}
+                    color={cl.color}
+                    cl={cl}
+                    className={' focused-assignment'}
+                  />
                 </div>
               )
             }
@@ -184,7 +260,10 @@ class TasksList extends React.Component {
     return (
       <div className='sk-tasks-list'>
         {this.props.filter && this.renderFilter()}
-        {this.renderTasks()}
+        {
+          !this.state.loading ? this.renderTasks() : <SkLoader />
+        }
+        {/* {this.renderTasks()} */}
         {
           !this.state.seeMore &&
           this.props.maxTasks &&
@@ -220,7 +299,8 @@ TasksList.propTypes = {
   filter: PropTypes.bool,
   outlook: PropTypes.string,
   displayCountCallback: PropTypes.func,
-  insightsUserData: PropTypes.object
+  insightsUserData: PropTypes.object,
+  visibleAssignmentsCallback: PropTypes.func
 }
 
 export default TasksList
