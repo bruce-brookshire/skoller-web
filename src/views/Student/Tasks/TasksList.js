@@ -161,7 +161,9 @@ class TasksList extends React.Component {
   onDeleteAssignment = (assignmentId) => {
     actions.assignments.deleteStudentAssignment(assignmentId)
       .then(() => {
-        this.props.rootStore.studentClassesStore.updateClasses()
+        // this.props.rootStore.studentClassesStore.updateClasses()
+        this.props.rootStore.studentAssignmentsStore.updateAssignments()
+
       })
   }
   editAssignment = async (form, assignmentId, isPrivate = true) => {
@@ -176,13 +178,8 @@ class TasksList extends React.Component {
       await actions.assignments.updateStudentAssignment(form, isPrivate)
     }
 
-    this.props.rootStore.studentClassesStore.updateClasses()
-    window.location.reload(false)
-    // this.setState({loading: true})
-    // setTimeout(() => {
-    //   window.location.reload()
-    // //   this.setState({loading: false})
-    // }, 400)
+    this.props.rootStore.studentAssignmentsStore.updateAssignments()
+
   }
 
   renderTasks () {
@@ -206,14 +203,15 @@ class TasksList extends React.Component {
             let cl = this.getClassForTask(task)
             if (this.taskValidity(task, i)) {
               i += 1
+              {/*  return <TaskCard
+                insightsUser={this.props.insightsUserData}
+                task={task} clName={cl.clName}
+                clColor={cl.clColor}
+                classDetailView={this.props.cl} /> */}
               return (
-                <div key={task.id}>
-                  {/* <TaskCard
-                    insightsUser={this.props.insightsUserData}
-                    task={task} clName={cl.clName}
-                    clColor={cl.clColor}
-                    classDetailView={this.props.cl} /> */}
                   <Assignment
+                    key={task.id}
+                    isTask={true}
                     onDeleteAssignment={this.onDeleteAssignment}
                     onCompleteAssignment={this.onCompleteAssignment}
                     editAssignment={this.editAssignment}
@@ -227,7 +225,6 @@ class TasksList extends React.Component {
                     cl={cl}
                     className={' focused-assignment'}
                   />
-                </div>
               )
             }
           })
