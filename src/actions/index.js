@@ -44,7 +44,8 @@ import {
   updateAccount,
   verifyPhoneNumber,
   verifyStudentPhoneNumber,
-  setUserTrialToLifeTime
+  setUserTrialToLifeTime,
+  cancelUserTrial
 } from './auth'
 import {
   deleteClassPost,
@@ -256,6 +257,7 @@ const actions = {
     getRoles,
     getUserById,
     setUserTrialToLifeTime,
+    cancelUserTrial,
     getUserByToken,
     getUsers,
     forgotPassword,

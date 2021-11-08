@@ -39,7 +39,7 @@ class AccountInfo extends React.Component {
       classes: [],
       openAccountForm: false,
       openLifeTimeTrialForm: false,
-      lifeTimeTrial: false,
+      lifeTimeTrial: 'true',
       user: (state && state.user) || null,
       loading: true
     }
@@ -125,7 +125,10 @@ class AccountInfo extends React.Component {
   }
 
   toggleLifeTimeTrialModal () {
-    this.setState({openLifeTimeTrialForm: !this.state.openLifeTimeTrialForm})
+    this.setState({
+    //   lifeTimeTrial: (this.state.user.trial_ends && new Date(this.state.user.trial_ends).getFullYear() - new Date().getFullYear() >= 100),
+      openLifeTimeTrialForm: !this.state.openLifeTimeTrialForm
+    })
   }
 
   getUserRoles () {
@@ -219,10 +222,31 @@ class AccountInfo extends React.Component {
         {/* <AccountInfoForm user={this.state.user} onSubmit={this.onDetailsSumbit.bind(this)} onClose={this.toggleAccountForm.bind(this)} /> */}
         <div>
           <h3> Life Time Trial Status </h3>
-          <label id="life-time-trial">Life Time Trial</label>
-          <input type="radio" htmlFor='life-time-trial' checked={this.state.lifeTimeTrial} value={this.state.lifeTimeTrial} onChange={() => {
+          <label htmlFor="lifetimeselection">Life Time Trial</label>
+          <br />
+          <select
+            style={{
+              width: '100%',
+              minWidth: '15ch',
+              maxWidth: '30ch',
+              border: '1px solid #333',
+              borderRadius: '0.25em',
+              padding: '0.25em 0.5em',
+              fontSize: '1.25rem',
+              cursor: 'pointer',
+              lineHeight: 1.1,
+              backgroundColor: '#fff',
+              backgroundImage: 'linear-gradient(to top, #f9f9f9, #fff 33%)'
+            }}
+            name="onoff" id="lifetimeselection" defaultValue={true} onChange={e => {
+              this.setState({lifeTimeTrial: e.target.value})
+            }}>
+            <option value={true}>true</option>
+            <option value={false}>false</option>
+          </select>
+          {/* <input type="radio" htmlFor='life-time-trial' checked={this.state.lifeTimeTrial} value={this.state.lifeTimeTrial} onChange={() => {
             this.setState({lifeTimeTrial: !this.state.lifeTimeTrial})
-          }}/>
+          }}/> */}
 
           <button className='button full-width margin-top' onClick={this.handleLifeTimeTrialSubmit.bind(this)}>Submit</button>
           <button className='button-invert full-width margin-top margin-bottom' onClick={this.toggleLifeTimeTrialModal.bind(this)}>Close</button>
@@ -235,8 +259,13 @@ class AccountInfo extends React.Component {
   * Call back on school detail form submission.
   */
   handleLifeTimeTrialSubmit () {
-    if (this.state.lifeTimeTrial) {
+    if (this.state.lifeTimeTrial === 'true') {
       actions.auth.setUserTrialToLifeTime(this.state.user).then(user => {
+        this.setState({openLifeTimeTrialForm: false, loading: false})
+        window.location.reload(false)
+      }).catch(() => false)
+    } else {
+      actions.auth.cancelUserTrial(this.state.user).then(user => {
         this.setState({openLifeTimeTrialForm: false, loading: false})
         window.location.reload(false)
       }).catch(() => false)
@@ -317,7 +346,7 @@ class AccountInfo extends React.Component {
             user.student &&
                   <tr>
                     <th className='cn-flex-table-cell'>LifeTime Trial:</th>
-                    <td className='cn-flex-table-cell'>{user.lifetime_subscription ? 'true' : 'false'}</td>
+                    <td className='cn-flex-table-cell'>{(this.state.user.trial_ends && new Date(this.state.user.trial_ends).getFullYear() - new Date().getFullYear() >= 100) ? 'true' : 'false'}</td>
                   </tr>
           }
           {/* {this.state.user.reports && <Grid
@@ -357,16 +386,12 @@ class AccountInfo extends React.Component {
             </div>
           }
           {this.renderReports()}
-          {(this.state.user.trial_ends && new Date(this.state.user.trial_ends).getFullYear() - new Date().getFullYear() >= 100) ? null
-            : this.renderUserMemberShip()
-          }
+          {this.renderUserMemberShip()}
 
         </div>
         {this.renderAccountFormModal()}
 
-        {(this.state.user.trial_ends && new Date(this.state.user.trial_ends).getFullYear() - new Date().getFullYear() >= 100) ? null
-          : this.renderLifeTimeTrialFormModal()
-        }
+        {this.renderLifeTimeTrialFormModal()}
       </div>
     )
   }

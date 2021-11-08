@@ -3,6 +3,16 @@ import {showSnackbar} from '../utilities/snackbar'
 import stores from '../stores'
 const {userStore, studentClassesStore, studentJobsStore, studentAssignmentsStore} = stores
 
+export function cancelUserTrial (user) {
+  return get(`/api/v1/users/${user.id}/end-trial`)
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
 /*
 * Authenticate login credentials. Set the user.
 *
