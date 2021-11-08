@@ -253,11 +253,14 @@ class Home extends React.Component {
                                   <img alt="Skoller" className='logo' src='/src/assets/images/sammi/Smile.png' height="60" />
                                   <h1>Your free trial expires in {Math.ceil(+this.props.rootStore.userStore.user.trial_days_left)} days</h1>
                                 </div>
-                                <button
-                                  onClick={() => {
-                                    this.setState({ popUp: { type: 'PaymentPlans', show: true } })
-                                  }}
-                                >Upgrade to Premium</button>
+                                {
+                                  !(this.props.rootStore.userStore.user.trial_days_left >= (100 * 365)) &&
+                                    <button
+                                      onClick={() => {
+                                        this.setState({ popUp: { type: 'PaymentPlans', show: true } })
+                                      }}
+                                    >Upgrade to Premium</button>
+                                }
                                 <span>Trial ends {formatDate(new Date(new Date().setDate(new Date().getDate() + Math.ceil(+this.props.rootStore.userStore.user.trial_days_left))))}</span>
                               </div>
                             </div>
