@@ -38,12 +38,17 @@ class AccountInfo extends React.Component {
     this.state = {
       classes: [],
       openAccountForm: false,
+      openLifeTimeTrialForm: false,
+      lifeTimeTrial: false,
       user: (state && state.user) || null,
       loading: true
     }
 
     if (state && state.user) {
       this.getUser(state.user)
+      this.setState({
+        lifeTimeTrial: state.user.lifetime_subscription
+      })
     }
 
     if (this.state.user && this.state.user.student) {
@@ -70,12 +75,14 @@ class AccountInfo extends React.Component {
     return {
       classes: [],
       openAccountForm: false,
+      openLifeTimeTrialForm: false,
       user: (state && state.user) || null
     }
   }
 
   getUser (user) {
     actions.auth.getUserById(user).then(user => {
+      console.log('my user', user)
       this.setState({user, loading: false})
     }).catch(() => false)
   }
@@ -115,6 +122,10 @@ class AccountInfo extends React.Component {
     actions.auth.updateAccount(form).then(user => {
       this.setState({user})
     })
+  }
+
+  toggleLifeTimeTrialModal () {
+    this.setState({openLifeTimeTrialForm: !this.state.openLifeTimeTrialForm})
   }
 
   getUserRoles () {
@@ -174,6 +185,12 @@ class AccountInfo extends React.Component {
                     <td className='cn-flex-table-cell'>{user.student.primary_school ? user.student.primary_school.name : ''}</td>
                   </tr>
                 }
+                {user.student &&
+                  <tr>
+                    <th className='cn-flex-table-cell'>Life Time Trial:</th>
+                    <td className='cn-flex-table-cell'>{(this.state.user.trial_ends && new Date(this.state.user.trial_ends).getFullYear() - new Date().getFullYear() >= 100) ? 'true' : 'false' }</td>
+                  </tr>
+                }
               </tbody>
             </table> : <a onClick={this.toggleAccountForm.bind(this)}>Add details</a>
           }
@@ -193,9 +210,38 @@ class AccountInfo extends React.Component {
     )
   }
 
+  renderLifeTimeTrialFormModal () {
+    return (
+      <Modal
+        open={this.state.openLifeTimeTrialForm}
+        onClose={this.toggleLifeTimeTrialModal.bind(this)}
+      >
+        {/* <AccountInfoForm user={this.state.user} onSubmit={this.onDetailsSumbit.bind(this)} onClose={this.toggleAccountForm.bind(this)} /> */}
+        <div>
+          <h3> Life Time Trial Status </h3>
+          <label id="life-time-trial">Life Time Trial</label>
+          <input type="radio" htmlFor='life-time-trial' checked={this.state.lifeTimeTrial} value={this.state.lifeTimeTrial} onChange={() => {
+            this.setState({lifeTimeTrial: !this.state.lifeTimeTrial})
+          }}/>
+
+          <button className='button full-width margin-top' onClick={this.handleLifeTimeTrialSubmit.bind(this)}>Submit</button>
+          <button className='button-invert full-width margin-top margin-bottom' onClick={this.toggleLifeTimeTrialModal.bind(this)}>Close</button>
+        </div>
+      </Modal>
+    )
+  }
+
   /*
   * Call back on school detail form submission.
   */
+  handleLifeTimeTrialSubmit () {
+    if (this.state.lifeTimeTrial) {
+      actions.auth.setUserTrialToLifeTime(this.state.user).then(user => {
+        this.setState({openLifeTimeTrialForm: false, loading: false})
+        window.location.reload(false)
+      }).catch(() => false)
+    }
+  }
   onDetailsSumbit (user) {
     this.setState({ user, openAccountForm: false })
   }
@@ -256,6 +302,37 @@ class AccountInfo extends React.Component {
     )
   }
 
+  renderUserMemberShip () {
+    const {user} = this.state
+    return (
+      <div className="cn-account-info-box cn-accounts-min-width">
+        <div className='cn-shadow-box-content'>
+          <div className='cn-card-title edit-header'>
+            Life Time Trial Status
+            <i className='fas fa-pencil-alt cn-blue cursor margin-left' onClick={this.toggleLifeTimeTrialModal.bind(this)} />
+          </div>
+          <br />
+          <br />
+          {
+            user.student &&
+                  <tr>
+                    <th className='cn-flex-table-cell'>LifeTime Trial:</th>
+                    <td className='cn-flex-table-cell'>{user.lifetime_subscription ? 'true' : 'false'}</td>
+                  </tr>
+          }
+          {/* {this.state.user.reports && <Grid
+            headers={headers}
+            rows={this.getRows()}
+            disabled={true}
+            className="striped"
+            canSelect={true}
+            onSelect={this.onSelectReport.bind(this)}
+          />} */}
+        </div>
+      </div>
+    )
+  }
+
   renderContent () {
     return (
       <div>
@@ -280,8 +357,16 @@ class AccountInfo extends React.Component {
             </div>
           }
           {this.renderReports()}
+          {(this.state.user.trial_ends && new Date(this.state.user.trial_ends).getFullYear() - new Date().getFullYear() >= 100) ? null
+            : this.renderUserMemberShip()
+          }
+
         </div>
         {this.renderAccountFormModal()}
+
+        {(this.state.user.trial_ends && new Date(this.state.user.trial_ends).getFullYear() - new Date().getFullYear() >= 100) ? null
+          : this.renderLifeTimeTrialFormModal()
+        }
       </div>
     )
   }
