@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
-const ReactToolTip =  ({
+const ReactToolTip = ({
   title,
   studentCount,
   ttype,
@@ -11,13 +11,13 @@ const ReactToolTip =  ({
   position,
   containerClass,
   theme }) => {
-    return (
-      <div className={`tooltipC`}>
+  return (
+    <div className={`tooltipC`}>
       {/* <div className="class-tootip-wrap"> */}
-        {children}
-        { ttype == 'classes' ? (
-            <div className={`tooltiptextC ${theme === "dark" ? `darkC` :`light`} tooltipC-${position}`} >
-            {/* {title}
+      {children}
+      { ttype == 'classes' ? (
+        <div className={`tooltiptextC ${theme === 'dark' ? `darkC` : `light`} tooltipC-${position}`} >
+          {/* {title}
             <div>{studentCount + ' classmates are on skoller'}</div>
             <div>Invite classmate using this link</div>
             <div><a>{ enrollment_link } </a></div>
@@ -25,37 +25,36 @@ const ReactToolTip =  ({
 
           <div className="class-tootip-wrap">
 
-          <h3 class="my-5 fs-18 text-center d-block" style={{color: '##4A4A4A'}}>{title}</h3>
-          <p class="fs-12 my-5" style={{color: '#C7C7CC'}}>{studentCount + ' classmates are on skoller'}</p>
-          <p class="fs-12 mt-10 mb-0 text-muted" style={{color: '#C7C7CC'}}>Invite classmate using this link</p>
-          <p class="mt-0 mb-0"><a href="#" class="fs-13 text-primary p-5 linktip break-all">{ enrollment_link }</a></p>
+            <h3 className="my-5 fs-18 text-center d-block" style={{color: '##4A4A4A'}}>{title}</h3>
+            <p className="fs-12 my-5" style={{color: '#C7C7CC'}}>{studentCount + ' classmates are on skoller'}</p>
+            <p className="fs-12 mt-10 mb-0 text-muted" style={{color: '#C7C7CC'}}>Invite classmate using this link</p>
+            <p className="mt-0 mb-0"><a href="#" className="fs-13 text-primary p-5 linktip break-all">{ enrollment_link }</a></p>
+          </div>
+
         </div>
 
+      ) : (
+        <div className={`tooltiptextC ${theme === 'dark' ? `darkC` : `light`} tooltipC-${position}`} style={{left: '130px'}} >
+          <div className="assi-tootip-wrap">
+            <h3 className="my-5 fs-18 text-center d-block">Grade Impact: High</h3>
+            <p className="fs-13 mt-0 mb-0 text-muted">{grade}% of more</p>
+            <p className="fs-13 my-5">{title} is worth {grade}%  of your overall grade in the class.</p>
           </div>
+        </div>
+      )}
 
-        ) : (
-            <div className={`tooltiptextC ${theme === "dark" ? `darkC` :`light`} tooltipC-${position}`} style={{left: '-40px'}} >
-              <div class="assi-tootip-wrap">
-                <h3 class="my-5 fs-18 text-center d-block">Grade Impact: High</h3>
-                <p class="fs-13 mt-0 mb-0 text-muted">{grade}% of more</p>
-                <p class="fs-13 my-5">{title} is worth {grade}%  of your overall grade in the class.</p>
-              </div>
-          </div>
-        )}
-
-
-      </div>
-    );
+    </div>
+  )
 }
 
-export default ReactToolTip;
+export default ReactToolTip
 
 ReactToolTip.defaultProps = {
   title: 'sample',
-  studentCount:0,
-  grade:0,
-  enrollment_link:'',
-  ttype:'classes',
+  studentCount: 0,
+  grade: 0,
+  enrollment_link: '',
+  ttype: 'classes',
   children: React.createElement('div'),
   position: 'bottom',
   containerClass: '',
@@ -64,8 +63,8 @@ ReactToolTip.defaultProps = {
 
 ReactToolTip.propTypes = {
   title: PropTypes.string,
-  studentCount:PropTypes.string,
-  enrollment_link:PropTypes.string,
+  studentCount: PropTypes.string,
+  enrollment_link: PropTypes.string,
   children: PropTypes.element,
   ttype: PropTypes.string,
   grade: PropTypes.string,

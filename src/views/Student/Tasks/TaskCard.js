@@ -4,8 +4,7 @@ import moment from 'moment'
 import { withRouter } from 'react-router-dom'
 import {inject, observer} from 'mobx-react'
 import WeightIcon from './WeightIcon'
-import ReactToolTip  from '../../components/ToolTip/CustomToolTip'
-
+import ReactToolTip from '../../components/ToolTip/CustomToolTip'
 
 @inject('rootStore') @observer
 class TaskCard extends React.Component {
@@ -57,8 +56,6 @@ class TaskCard extends React.Component {
         </div>
       )
     } else {
-
-
       return (
 
         // <div className="task-card-container" key={task.id} onClick={() => this.goToAssignment()} >
@@ -74,13 +71,11 @@ class TaskCard extends React.Component {
         //   </div>
         // </div>
 
-
-
         <div className="work-list-items first-child" key={task.id} onClick={() => this.goToAssignment()}>
-            <div className="work-left-items"> <input type="radio" className="assign-radio" /><h4 style={{color: `#${this.props.clColor}`}}>{task.name}</h4><span className="stext-dark">{'Due ' + this.formatDueDate(task.due)}</span></div>
-            <ReactToolTip theme="dark" position="top"   ttype="assifnment"  grade={task.grade} title={task.name}>
-              <div className="work-right-items"><span><i className="fas fa-signal" style={{color: `#${this.props.clColor}`}}></i></span><span className="stext-light">{this.props.clName}</span></div>
-            </ReactToolTip>
+          <div className="work-left-items"> <input type="radio" className="assign-radio" /><h4 style={{color: `#${this.props.clColor}`}}>{task.name}</h4><span className="stext-dark">{'Due ' + this.formatDueDate(task.due)}</span></div>
+          <ReactToolTip theme="dark" position="top" ttype="assifnment" grade={task.grade} title={task.name}>
+            <div className="work-right-items"><span><i className="fas fa-signal" style={{color: `#${this.props.clColor}`}}></i></span><span className="stext-light">{this.props.clName}</span></div>
+          </ReactToolTip>
         </div>
       )
     }
