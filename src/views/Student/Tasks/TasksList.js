@@ -7,6 +7,7 @@ import moment from 'moment'
 import SkSelect from '../../components/SkSelect'
 import Assignment from '../ClassDetail/ClassAssignments/Assignment'
 import actions from '../../../actions'
+import ReactToolTip from '../../components/ToolTip/CustomToolTip'
 
 @inject('rootStore') @observer
 class TasksList extends React.Component {
@@ -163,7 +164,6 @@ class TasksList extends React.Component {
       .then(() => {
         // this.props.rootStore.studentClassesStore.updateClasses()
         this.props.rootStore.studentAssignmentsStore.updateAssignments()
-
       })
   }
   editAssignment = async (form, assignmentId, isPrivate = true) => {
@@ -179,7 +179,6 @@ class TasksList extends React.Component {
     }
 
     this.props.rootStore.studentAssignmentsStore.updateAssignments()
-
   }
 
   renderTasks () {
@@ -203,12 +202,13 @@ class TasksList extends React.Component {
             let cl = this.getClassForTask(task)
             if (this.taskValidity(task, i)) {
               i += 1
-              {/*  return <TaskCard
+              { /*  return <TaskCard
                 insightsUser={this.props.insightsUserData}
                 task={task} clName={cl.clName}
                 clColor={cl.clColor}
-                classDetailView={this.props.cl} /> */}
+                classDetailView={this.props.cl} /> */ }
               return (
+                <ReactToolTip theme="dark" position="top" ttype="assifnment" grade={task.grade} title={task.name}>
                   <Assignment
                     key={task.id}
                     isTask={true}
@@ -225,6 +225,7 @@ class TasksList extends React.Component {
                     cl={cl}
                     className={' focused-assignment'}
                   />
+                </ReactToolTip>
               )
             }
           })
