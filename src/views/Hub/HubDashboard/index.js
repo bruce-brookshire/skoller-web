@@ -191,11 +191,11 @@ class HubDashboard extends React.Component {
             <td>{item.code}</td>
             <td>{item.name}</td>
             <td>{item.school.name}</td>
-            {/* <td>{item.premium}</td>
+            <td>{item.premium}</td>
             <td>{item.trial}</td>
-            <td>{item.expired}</td> */}
+            <td>{item.expired}</td>
             <td>{item.received ? item.received : '-'}</td>
-            <td>{item.meet_days}</td>
+            <td>{item.days_left ? days_left : '-'}</td>
         </tr>))
 
         }
@@ -316,9 +316,9 @@ class HubDashboard extends React.Component {
                         <th scope="col">ID</th>
                         <th scope="col">Class Name</th>
                         <th scope="col">School</th>
-                        {/* <th scope="col">Premium</th>
-                        <th scope="col">Trail</th>
-                        <th scope="col">Expired</th> */}
+                        <th scope="col">Premium</th>
+                        <th scope="col">Trial</th>
+                        <th scope="col">Expired</th>
                         <th scope="col">Recieved</th>
                         <th scope="col">Day Left</th>
                       </tr>
