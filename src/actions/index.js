@@ -43,7 +43,8 @@ import {
   resendVerification,
   updateAccount,
   verifyPhoneNumber,
-  verifyStudentPhoneNumber
+  verifyStudentPhoneNumber,
+  setUserTrialToLifeTime
 } from './auth'
 import {
   deleteClassPost,
@@ -238,22 +239,23 @@ const actions = {
     getStudentAssignmentById,
     toggleCompleteAssignmentById
   },
-  stripe:{
-  getAllSubscription,
-  getMySubscription,
-  cancelSubscription,
-  lastUpcomingPayment,
-  billingHistory,
-  allProducts,
-  allPlans,
-  createSubscription,
-  cancellationReason
+  stripe: {
+    getAllSubscription,
+    getMySubscription,
+    cancelSubscription,
+    lastUpcomingPayment,
+    billingHistory,
+    allProducts,
+    allPlans,
+    createSubscription,
+    cancellationReason
   },
   auth: {
     authenticateUser,
     loginStudentWithPhone,
     getRoles,
     getUserById,
+    setUserTrialToLifeTime,
     getUserByToken,
     getUsers,
     forgotPassword,

@@ -266,6 +266,15 @@ export function getUserById (user) {
 }
 
 /*
+* Set User Trial to Life Time.
+*
+* @param [Object] user.
+*/
+export function setUserTrialToLifeTime (user) {
+  return get(`/api/v1/users/${user.id}/set_endless_trial`).then(data => data).catch(err => Promise.reject(err))
+}
+
+/*
 * Get user roles.
 */
 export function getRoles () {
