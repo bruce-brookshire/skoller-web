@@ -48,6 +48,7 @@ export const parseTextResponse = (response) => {
 }
 
 export function get (path, queryString, errMsg) {
+    console.log(`${Environment.SERVER_NAME}${path}${queryString ? '?' + queryString : ''}`)
   return fetch(`${Environment.SERVER_NAME}${path}${queryString ? '?' + queryString : ''}`, {
     method: 'GET',
     headers: {

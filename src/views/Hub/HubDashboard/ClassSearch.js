@@ -117,7 +117,6 @@ class ClassSearch extends React.Component {
     searchStore.searchValue = value
     this.onSearch();
   }
-
   onSearch () {
     let {schoolId, searchField, searchValue} = this.props.rootStore.searchStore
     if (schoolId || (searchField )) {

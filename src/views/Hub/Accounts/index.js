@@ -5,6 +5,7 @@ import Grid from '../../../components/Grid'
 import actions from '../../../actions'
 import Modal from '../../../components/Modal'
 import AdminSignUpForm from './AdminSignUpForm'
+import {inject, observer} from 'mobx-react'
 
 const headers = [
   {
@@ -33,6 +34,7 @@ const headers = [
   }
 ]
 
+@inject('rootStore') @observer
 class Accounts extends React.Component {
   constructor (props) {
     super(props)
@@ -41,6 +43,8 @@ class Accounts extends React.Component {
       users: [],
       openCreateModal: false
     }
+    this.props.rootStore.navStore.setActivePage('hub/accounts')
+
   }
 
   /*
