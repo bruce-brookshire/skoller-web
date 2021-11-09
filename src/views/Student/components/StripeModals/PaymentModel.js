@@ -7,8 +7,8 @@ import CheckoutForm from './CheckoutForm'
 import actions from '../../../../actions'
 import { Cookies } from 'react-cookie'
 const vm = this
-const stripePromise = loadStripe('pk_test_51JV9OSSGLvMTa3qVnwhFxc03IiK5JOGO94YQufQumo21gTgUAdpvMtEGYH9dgH1BPFrrirHuNbiVbE49gPNHHxIU00WpzV3KLP')
-// const stripePromise = loadStripe('pk_live_51JHvLoGtOURsTxunmypyAUNfbRF4jOahklknp1RTBHhxpy3qEveFU7lCWdrBt4YggE5ytlblCgYYHPPzsLC0Gf8K00NC7FWyoh')
+// const stripePromise = loadStripe('pk_test_51JV9OSSGLvMTa3qVnwhFxc03IiK5JOGO94YQufQumo21gTgUAdpvMtEGYH9dgH1BPFrrirHuNbiVbE49gPNHHxIU00WpzV3KLP')
+const stripePromise = loadStripe('pk_live_51JHvLoGtOURsTxunmypyAUNfbRF4jOahklknp1RTBHhxpy3qEveFU7lCWdrBt4YggE5ytlblCgYYHPPzsLC0Gf8K00NC7FWyoh')
 
 const InjectedCheckoutForm = (props) => (
   <ElementsConsumer>
@@ -73,7 +73,8 @@ class ChangeSchool extends React.Component {
           // interval_count: 1,
           name: null,
           price: 80,
-          product: 'prod_K9UWGXZKuZSloY'
+          //   product: 'prod_K9UWGXZKuZSloY'
+          product: 'prod_KRv2Bs7sRlUaRB'
         }] })
       })
       .catch((e) => {
