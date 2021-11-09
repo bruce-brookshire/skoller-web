@@ -10,6 +10,7 @@ import DocumentsForm from '../Jobs/components/DocumentsForm'
 import ClassStatusModal from '../../components/ClassStatusModal'
 import PaymentPlans from '../../Student/components/StripeModals'
 import CancelSubscriptionModal from '../components/CancelSubscriptionModal'
+import LifeTimeUserModal from '../components/LifeTimeUserModal'
 
 @inject('rootStore') @observer
 class PopUp extends React.Component {
@@ -61,6 +62,17 @@ class PopUp extends React.Component {
         <CancelSubscriptionModal
           closeModal={() => this.props.handleModalClose()}
 
+        />
+      </div>
+    )
+  }
+
+  renderLifeTimeTrialUserModal () {
+    return (
+      <div>
+        <LifeTimeUserModal
+          closeModal={() => this.props.closeModal()}
+          handleModalClose={() => this.props.handleModalClose()}
         />
       </div>
     )
@@ -119,6 +131,12 @@ class PopUp extends React.Component {
           >
             {this.renderPaymentPlans()}
           </SkModal>
+        }
+        {
+          this.props.type === 'LifeTimeTrialUser' &&
+            <SkModal closeModal={() => this.closeModal()}>
+              {this.renderLifeTimeTrialUserModal()}
+            </SkModal>
         }
       </div>
     )
