@@ -104,6 +104,10 @@ class Home extends React.Component {
         type = 'getResume'
       }
     }
+    if (this.props.rootStore.userStore.user.lifetime_trial) {
+      showPopUp = true
+      type = 'LifeTimeTrialUser'
+    }
 
     await actions.stripe.getMySubscription()
       .then((data) => {
@@ -246,7 +250,7 @@ class Home extends React.Component {
               </div>
 
               {
-                !(this.props.rootStore.userStore.user.trial_days_left >= (100 * 365)) && !this.props.rootStore.userStore.user.lifetime_subscription && this.props.rootStore.userStore.user.trial &&
+                !this.props.rootStore.userStore.user.lifetime_trial && !this.props.rootStore.userStore.user.lifetime_subscription && this.props.rootStore.userStore.user.trial &&
                             <div className="home-shadow-box">
                               <div className="home-shadow-box__expiresin-container">
                                 <div className="home-shadow-box__expiresin-title">
@@ -263,7 +267,7 @@ class Home extends React.Component {
                             </div>
               }
               {
-                !(this.props.rootStore.userStore.user.trial_days_left >= (100 * 365)) && !this.props.rootStore.userStore.user.lifetime_subscription && !this.props.rootStore.userStore.user.trial && this.state.subscribed &&
+                !this.props.rootStore.userStore.user.lifetime_trial && !this.props.rootStore.userStore.user.lifetime_subscription && !this.props.rootStore.userStore.user.trial && this.state.subscribed &&
                             <div className="home-shadow-box">
                               <div className="home-shadow-box__expiresin-container">
                                 <div className="home-shadow-box__expiresin-title">
