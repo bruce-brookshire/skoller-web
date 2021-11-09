@@ -43,7 +43,7 @@ class AdminNav extends React.Component {
         <div className="si-nav">
           {/* <AdminNavItem pageName="hub/classes" text="Dashboard" /> */}
           {isOrgOwner && <AdminNavItem pageName="hub/classes" text='Classes' />}
-          {isOrgOwner && <AdminNavItem pageName="hub/schools" text="Schools" />}          
+          {isOrgOwner && <AdminNavItem pageName="hub/schools" text="Schools" />}
           {isOrgOwner && <AdminNavItem pageName="hub/accounts" text="Accounts" />}
           {isOrgOwner && <AdminNavItem pageName="hub/switchboard" text="Switchboard" />}
           {isOrgOwner && <AdminNavItem pageName="hub/insights" text="Insights" />}

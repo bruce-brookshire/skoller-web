@@ -23,6 +23,9 @@ class StudentNav extends React.Component {
         onClick={() => {
           this.props.history.push('/logout')
         }}
+        style={{
+          color: '#333'
+        }}
       >
         <i className='fas fa-sign-out-alt fa-lg' />
         <a>Logout</a>
