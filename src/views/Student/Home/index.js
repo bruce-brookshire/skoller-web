@@ -246,27 +246,24 @@ class Home extends React.Component {
               </div>
 
               {
-                !this.props.rootStore.userStore.user.lifetime_subscription && this.props.rootStore.userStore.user.trial &&
+                !(this.props.rootStore.userStore.user.trial_days_left >= (100 * 365)) && !this.props.rootStore.userStore.user.lifetime_subscription && this.props.rootStore.userStore.user.trial &&
                             <div className="home-shadow-box">
                               <div className="home-shadow-box__expiresin-container">
                                 <div className="home-shadow-box__expiresin-title">
                                   <img alt="Skoller" className='logo' src='/src/assets/images/sammi/Smile.png' height="60" />
                                   <h1>Your free trial expires in {Math.ceil(+this.props.rootStore.userStore.user.trial_days_left)} days</h1>
                                 </div>
-                                {
-                                  !(this.props.rootStore.userStore.user.trial_days_left >= (100 * 365)) &&
-                                    <button
-                                      onClick={() => {
-                                        this.setState({ popUp: { type: 'PaymentPlans', show: true } })
-                                      }}
-                                    >Upgrade to Premium</button>
-                                }
+                                <button
+                                  onClick={() => {
+                                    this.setState({ popUp: { type: 'PaymentPlans', show: true } })
+                                  }}
+                                >Upgrade to Premium</button>
                                 <span>Trial ends {formatDate(new Date(new Date().setDate(new Date().getDate() + Math.ceil(+this.props.rootStore.userStore.user.trial_days_left))))}</span>
                               </div>
                             </div>
               }
               {
-                !this.props.rootStore.userStore.user.lifetime_subscription && !this.props.rootStore.userStore.user.trial && this.state.subscribed &&
+                !(this.props.rootStore.userStore.user.trial_days_left >= (100 * 365)) && !this.props.rootStore.userStore.user.lifetime_subscription && !this.props.rootStore.userStore.user.trial && this.state.subscribed &&
                             <div className="home-shadow-box">
                               <div className="home-shadow-box__expiresin-container">
                                 <div className="home-shadow-box__expiresin-title">
