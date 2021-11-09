@@ -126,7 +126,7 @@ class AccountInfo extends React.Component {
 
   toggleLifeTimeTrialModal () {
     this.setState({
-    //   lifeTimeTrial: (this.state.user.trial_ends && new Date(this.state.user.trial_ends).getFullYear() - new Date().getFullYear() >= 100),
+      lifeTimeTrial: this.state.user.lifetime_trial,
       openLifeTimeTrialForm: !this.state.openLifeTimeTrialForm
     })
   }
@@ -191,7 +191,7 @@ class AccountInfo extends React.Component {
                 {user.student &&
                   <tr>
                     <th className='cn-flex-table-cell'>Life Time Trial:</th>
-                    <td className='cn-flex-table-cell'>{(this.state.user.trial_ends && new Date(this.state.user.trial_ends).getFullYear() - new Date().getFullYear() >= 100) ? 'true' : 'false' }</td>
+                    <td className='cn-flex-table-cell'>{this.state.user.lifetime_trial ? 'true' : 'false' }</td>
                   </tr>
                 }
               </tbody>
@@ -238,7 +238,7 @@ class AccountInfo extends React.Component {
               backgroundColor: '#fff',
               backgroundImage: 'linear-gradient(to top, #f9f9f9, #fff 33%)'
             }}
-            name="onoff" id="lifetimeselection" defaultValue={true} onChange={e => {
+            name="onoff" id="lifetimeselection" defaultValue={this.state.lifeTimeTrial} onChange={e => {
               this.setState({lifeTimeTrial: e.target.value})
             }}>
             <option value={true}>true</option>
@@ -262,12 +262,18 @@ class AccountInfo extends React.Component {
     if (this.state.lifeTimeTrial === 'true') {
       actions.auth.setUserTrialToLifeTime(this.state.user).then(user => {
         this.setState({openLifeTimeTrialForm: false, loading: false})
-        window.location.reload(false)
+        // window.location.reload(false)
+        actions.auth.getUserById(this.state.user).then(user => {
+          this.setState({user})
+        })
       }).catch(() => false)
     } else {
       actions.auth.cancelUserTrial(this.state.user).then(user => {
         this.setState({openLifeTimeTrialForm: false, loading: false})
-        window.location.reload(false)
+        // window.location.reload(false)
+        actions.auth.getUserById(this.state.user).then(user => {
+          this.setState({user})
+        })
       }).catch(() => false)
     }
   }
@@ -346,7 +352,7 @@ class AccountInfo extends React.Component {
             user.student &&
                   <tr>
                     <th className='cn-flex-table-cell'>LifeTime Trial:</th>
-                    <td className='cn-flex-table-cell'>{(this.state.user.trial_ends && new Date(this.state.user.trial_ends).getFullYear() - new Date().getFullYear() >= 100) ? 'true' : 'false'}</td>
+                    <td className='cn-flex-table-cell'>{this.state.user.lifetime_trial ? 'true' : 'false'}</td>
                   </tr>
           }
           {/* {this.state.user.reports && <Grid
