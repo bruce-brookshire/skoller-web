@@ -105,8 +105,9 @@ class Home extends React.Component {
       }
     }
     if (this.props.rootStore.userStore.user.lifetime_trial) {
-      showPopUp = true
-      type = 'LifeTimeTrialUser'
+    //   showPopUp = true
+    //   type = 'LifeTimeTrialUser'
+      this.setState({ popUp: { type: 'LifeTimeTrialUser', show: true } })
     }
 
     await actions.stripe.getMySubscription()
