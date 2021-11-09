@@ -49,8 +49,8 @@ class PopUp extends React.Component {
     return (
       <div className='sk-pop-up'>
         <PaymentPlans
-        closeModal={() => this.props.closeModal()}
-        handleModalClose={() => this.props.handleModalClose()}
+          closeModal={() => this.props.closeModal()}
+          handleModalClose={() => this.props.handleModalClose()}
         />
       </div>
     )
@@ -59,7 +59,7 @@ class PopUp extends React.Component {
     return (
       <div style={{padding: '2rem'}}>
         <CancelSubscriptionModal
-        closeModal={() => this.props.handleModalClose()}
+          closeModal={() => this.props.handleModalClose()}
 
         />
       </div>
@@ -115,8 +115,8 @@ class PopUp extends React.Component {
         }
         {this.props.type === 'PaymentPlans' &&
           <SkModal
-           closeModal={() => this.closeModal()}
-           >
+            closeModal={() => this.closeModal()}
+          >
             {this.renderPaymentPlans()}
           </SkModal>
         }
