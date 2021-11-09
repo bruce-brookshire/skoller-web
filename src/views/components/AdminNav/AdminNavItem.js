@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { inject, observer } from 'mobx-react'
 import { withRouter } from 'react-router-dom'
+import ClassesIcon from '../../../assets/sk-icons/ClassesIcon'
 
 @inject('rootStore')
 @observer
@@ -15,9 +16,11 @@ class NavItem extends React.Component {
 
   getNavIcon () {
     if (this.props.pageName.includes('hub/classes')) {
-      return <i className='fas fa-tachometer-alt' />
+      return <ClassesIcon fill={this.getActivePage() === this.props.pageName ?  '#fcfcfc' : '#333'} width="22px" height="22px" />
     } else if (this.props.pageName.includes('hub/schools')) {
       return <i className='fas fa-school' />
+    } else if (this.props.pageName.includes('hub/dashboard')) {
+      return <i className='fas fa-tachometer-alt' />
     } else if (this.props.pageName.includes('hub/accounts')) {
       return <i className='fas fa-users' />
     } else if (this.props.pageName.includes('insights/organization')) {

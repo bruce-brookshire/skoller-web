@@ -171,9 +171,9 @@ class HubLanding extends React.Component {
             </button>
           </div>
 
-          <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 margin-top'>
+          {/* <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 margin-top'>
             <button className='nav-button admin button full-width' onClick={() =>
-              this.props.history.push({pathname: '/hub/reports', state: {reports: this.state.reports}})}>
+              this.prop s.history.push({pathname: '/hub/reports', state: {reports: this.state.reports}})}>
               <i className='fa fa-flag' style={{color: '#FEFEFE', fontSize: '1.4rem', paddingBottom: '4px'}}></i>
               <span>Reports (
                 {this.state.loadingReports ? <Loading style={{color: 'white'}}/>
@@ -181,7 +181,7 @@ class HubLanding extends React.Component {
                 }
               )</span>
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
     )
@@ -217,7 +217,7 @@ class HubLanding extends React.Component {
               )</span>
             </button>
           </div>}
-          {this.isAdminUser() && <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
+          {/* {this.isAdminUser() && <div className='col-xs-12 col-sm-3 col-md-3 col-lg-3 margin-top'>
             <button
               className={`nav-button maint button full-width ${disableMaint ? 'disabled' : ''}`}
               disabled={disableMaint}
@@ -230,7 +230,7 @@ class HubLanding extends React.Component {
                 }
               )</span>
             </button>
-          </div>}
+          </div>} */}
         </div>
       </div>
     )

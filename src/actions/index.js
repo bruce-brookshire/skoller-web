@@ -43,7 +43,9 @@ import {
   resendVerification,
   updateAccount,
   verifyPhoneNumber,
-  verifyStudentPhoneNumber
+  verifyStudentPhoneNumber,
+  setUserTrialToLifeTime,
+  cancelUserTrial
 } from './auth'
 import {
   deleteClassPost,
@@ -62,6 +64,8 @@ import {
   enrollByLink,
   enrollInClass,
   searchClasses,
+  getInReviewClasses,
+  getChangeClasses,
   searchStudentClasses,
   searchSchoolStudentClasses,
   updateClass,
@@ -236,22 +240,24 @@ const actions = {
     getStudentAssignmentById,
     toggleCompleteAssignmentById
   },
-  stripe:{
-  getAllSubscription,
-  getMySubscription,
-  cancelSubscription,
-  lastUpcomingPayment,
-  billingHistory,
-  allProducts,
-  allPlans,
-  createSubscription,
-  cancellationReason
+  stripe: {
+    getAllSubscription,
+    getMySubscription,
+    cancelSubscription,
+    lastUpcomingPayment,
+    billingHistory,
+    allProducts,
+    allPlans,
+    createSubscription,
+    cancellationReason
   },
   auth: {
     authenticateUser,
     loginStudentWithPhone,
     getRoles,
     getUserById,
+    setUserTrialToLifeTime,
+    cancelUserTrial,
     getUserByToken,
     getUsers,
     forgotPassword,
@@ -282,6 +288,8 @@ const actions = {
     getStudentClassesById,
     lockClass,
     lockClassWeight,
+    getInReviewClasses,
+    getChangeClasses,
     searchClasses,
     searchStudentClasses,
     searchSchoolStudentClasses,

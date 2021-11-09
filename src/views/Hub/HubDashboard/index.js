@@ -58,7 +58,7 @@ const headers = [
 ]
 
 @inject('rootStore') @observer
-class HubClasses extends React.Component {
+class HubDashboard extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -66,7 +66,7 @@ class HubClasses extends React.Component {
       changeClasses: [],
       loading: false
     }
-    this.props.rootStore.navStore.setActivePage('hub/classes')
+    this.props.rootStore.navStore.setActivePage('hub/dashboard')
 
   }
 
@@ -191,9 +191,9 @@ class HubClasses extends React.Component {
             <td>{item.code}</td>
             <td>{item.name}</td>
             <td>{item.school.name}</td>
-            {/* <td>{item.premium}</td>
+            <td>{item.premium}</td>
             <td>{item.trial}</td>
-            <td>{item.expired}</td> */}
+            <td>{item.expired}</td>
             <td>{item.received ? item.received : '-'}</td>
             <td>{item.days_left ? days_left : '-'}</td>
         </tr>))
@@ -316,9 +316,9 @@ class HubClasses extends React.Component {
                         <th scope="col">ID</th>
                         <th scope="col">Class Name</th>
                         <th scope="col">School</th>
-                        {/* <th scope="col">Premium</th>
-                        <th scope="col">Trail</th>
-                        <th scope="col">Expired</th> */}
+                        <th scope="col">Premium</th>
+                        <th scope="col">Trial</th>
+                        <th scope="col">Expired</th>
                         <th scope="col">Recieved</th>
                         <th scope="col">Day Left</th>
                       </tr>
@@ -347,9 +347,9 @@ class HubClasses extends React.Component {
   }
 }
 
-HubClasses.propTypes = {
+HubDashboard.propTypes = {
   rootStore: PropTypes.object,
   location: PropTypes.object
 }
 
-export default withRouter(HubClasses)
+export default withRouter(HubDashboard)
