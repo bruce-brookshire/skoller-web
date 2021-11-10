@@ -225,19 +225,19 @@ class AccountInfo extends React.Component {
           <label htmlFor="lifetimeselection">Life Time Trial</label>
           <br />
           <select
-            style={{
-              width: '100%',
-              minWidth: '15ch',
-              maxWidth: '30ch',
-              border: '1px solid #333',
-              borderRadius: '0.25em',
-              padding: '0.25em 0.5em',
-              fontSize: '1.25rem',
-              cursor: 'pointer',
-              lineHeight: 1.1,
-              backgroundColor: '#fff',
-              backgroundImage: 'linear-gradient(to top, #f9f9f9, #fff 33%)'
-            }}
+            // style={{
+            //   width: '100%',
+            //   minWidth: '15ch',
+            //   maxWidth: '30ch',
+            //   border: '1px solid #333',
+            //   borderRadius: '0.25em',
+            //   padding: '0.25em 0.5em',
+            //   fontSize: '1.25rem',
+            //   cursor: 'pointer',
+            //   lineHeight: 1.1,
+            //   backgroundColor: '#fff',
+            //   backgroundImage: 'linear-gradient(to top, #f9f9f9, #fff 33%)'
+            // }}
             name="onoff" id="lifetimeselection" defaultValue={this.state.lifeTimeTrial} onChange={e => {
               this.setState({lifeTimeTrial: e.target.value})
             }}>
