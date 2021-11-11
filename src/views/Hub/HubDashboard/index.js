@@ -9,6 +9,7 @@ import {mapTimeToDisplay} from '../../../utilities/time'
 import {inject, observer} from 'mobx-react'
 import PropTypes from 'prop-types'
 import { action } from 'mobx'
+import SkLoader from '../../../assets/sk-icons/SkLoader'
 
 const headers = [
   {
@@ -67,10 +68,9 @@ class HubDashboard extends React.Component {
       loading: false
     }
     this.props.rootStore.navStore.setActivePage('hub/dashboard')
-
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.getClasses('')
     this.getChangeClasses()
   }
@@ -89,19 +89,19 @@ class HubDashboard extends React.Component {
   }
 
   getChangeClasses () {
-      actions.classes.getChangeClasses().then(classes => {
-          this.setState({changeClasses: classes})
-      })
+    actions.classes.getChangeClasses().then(classes => {
+      this.setState({changeClasses: classes})
+    })
   }
 
   getCsv () {
     actions.classes.getClassesCsv().then(csv => {
       let blob = new Blob([csv], {type: 'text/csv'}) // eslint-disable-line no-undef
       let url = window.URL.createObjectURL(blob)
-      var downloadLink = document.createElement("a")
+      var downloadLink = document.createElement('a')
       downloadLink.href = url
       var today = new Date()
-      downloadLink.download = "Classes-" + today.getFullYear() + "_" + (today.getMonth() + 1) + "_" + today.getDate() + "_" + today.getHours() + "_" + today.getMinutes() + ".csv"
+      downloadLink.download = 'Classes-' + today.getFullYear() + '_' + (today.getMonth() + 1) + '_' + today.getDate() + '_' + today.getHours() + '_' + today.getMinutes() + '.csv'
 
       document.body.appendChild(downloadLink)
       downloadLink.click()
@@ -116,7 +116,7 @@ class HubDashboard extends React.Component {
   */
 
   getRows () {
-    console.log(this.state.classes, '----');
+    console.log(this.state.classes, '----')
     return this.state.classes.map((item, index) =>
       this.mapRow(item, index)
     )
@@ -180,27 +180,25 @@ class HubDashboard extends React.Component {
 
   }
 
-
-
-  getClassList(){
+  getClassList () {
     return (
       <tbody>
         {
-          this.state.classes.map((item, index) =>(
-          <tr>
-            <td>{item.code}</td>
-            <td>{item.name}</td>
-            <td>{item.school.name}</td>
-            <td>{item.premium}</td>
-            <td>{item.trial}</td>
-            <td>{item.expired}</td>
-            <td>{item.received ? item.received : '-'}</td>
-            <td>{item.days_left ? days_left : '-'}</td>
-        </tr>))
+          this.state.classes.map((item, index) => (
+            <tr>
+              <td>{item.code}</td>
+              <td>{item.name}</td>
+              <td>{item.school.name}</td>
+              <td>{item.premium}</td>
+              <td>{item.trial}</td>
+              <td>{item.expired}</td>
+              <td>{item.received ? item.received : '-'}</td>
+              <td>{item.days_left ? Math.ceil(item.days_left) : '-'}</td>
+            </tr>))
 
         }
       </tbody>
-    );
+    )
   }
   /*
   * On edit class.
@@ -274,7 +272,7 @@ class HubDashboard extends React.Component {
   render () {
     return (
       <div className='cn-classes-container'>
-       {/* {this.renderHeader()} */}
+        {/* {this.renderHeader()} */}
         {/* {this.state.loading
           ? <div className='center-text'><Loading /></div>
           : <Grid
@@ -289,56 +287,54 @@ class HubDashboard extends React.Component {
           />
         } */}
 
-
-
-
-        <div class="table-wrap">
-          <div class="table-inner">
-            <div class="table-head">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="head-left">
-                          <h3><i class="fas fa-book"></i> &nbsp; Class</h3>
-                          <span class="badge badge-primary">In Review ({this.state.classes.length + 1})</span>
-                          <span class="badge badge-light">Class Changes ({this.state.changeClasses.length + 1})</span>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                    {this.renderHeader()}
-                    </div>
+        <div className="table-wrap">
+          <div className="table-inner">
+            <div className="table-head">
+              <div className="row">
+                <div className="col-md-8">
+                  <div className="head-left">
+                    <h3><i className="fas fa-book"></i> &nbsp; Class</h3>
+                    <span className="badge badge-primary">In Review ({this.state.classes.length + 1})</span>
+                    <span className="badge badge-light">Class Changes ({this.state.changeClasses.length + 1})</span>
+                  </div>
                 </div>
+                <div className="col-md-4">
+                  {this.renderHeader()}
+                </div>
+              </div>
             </div>
-            <div class="tabledata-wrap">
-                <div class="table-inner">
-                <table class="table" cellpadding="0" cellSpacing="0">
-                    <thead class="thead-dark">
-                      <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Class Name</th>
-                        <th scope="col">School</th>
-                        <th scope="col">Premium</th>
-                        <th scope="col">Trial</th>
-                        <th scope="col">Expired</th>
-                        <th scope="col">Recieved</th>
-                        <th scope="col">Day Left</th>
-                      </tr>
-                    </thead>
-                    {
+            <div className="tabledata-wrap">
+              <div className="table-inner">
+                <table className="table" cellPadding="0" cellSpacing="0">
+                  <thead className="thead-dark">
+                    <tr>
+                      <th scope="col">ID</th>
+                      <th scope="col">Class Name</th>
+                      <th scope="col">School</th>
+                      <th scope="col">Premium</th>
+                      <th scope="col">Trial</th>
+                      <th scope="col">Expired</th>
+                      <th scope="col">Recieved</th>
+                      <th scope="col">Day Left</th>
+                    </tr>
+                  </thead>
+                  {
                     this.state.loading
-                      ? <div className='center-text'><Loading /></div>
+                      ? <div className={'sk-loader'} style={{marginLeft: '717%'}}>
+                        <div id='ball-1' className='circle'></div>
+                        <div id='ball-2' className='circle'></div>
+                        <div id='ball-3' className='circle'></div>
+                      </div>
                       : this.getClassList()
-                    }
-                    {/* {this.getClassList()} */}
+                  }
+                  {/* {this.getClassList()} */}
 
-                  </table>
+                </table>
 
-
-                </div>
+              </div>
             </div>
-
 
           </div>
-
 
         </div>
 
