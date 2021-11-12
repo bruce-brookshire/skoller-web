@@ -10,6 +10,7 @@ import {inject, observer} from 'mobx-react'
 import PropTypes from 'prop-types'
 import { action } from 'mobx'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
+import TH from './TH'
 
 const headers = [
   {
@@ -66,7 +67,17 @@ class HubDashboard extends React.Component {
       classes: [],
       changeClasses: [],
       loading: false,
-      activeTab: 'review'
+      activeTab: 'review',
+      activeSorter: null,
+      sortConfig: {
+        name: 'sort',
+        school: 'sort',
+        premium: 'sort',
+        trial: 'sort',
+        expired: 'sort',
+        received: 'sort',
+        days_left: 'sort'
+      }
     }
     this.props.rootStore.navStore.setActivePage('hub/dashboard')
   }
@@ -179,6 +190,64 @@ class HubDashboard extends React.Component {
 
   onCreateClass () {
 
+  }
+  onSort (key) {
+    if (this.state.sortConfig[`${key}`] === 'sort') {
+      this.setState({sortConfig: {...this.state.sortConfig, [key]: 'sort-up' }}, () => {
+        if (this.state.activeTab === 'review') {
+          this.setState({classes: this.state.classes.sort((a, b) => {
+            if (typeof a[`${key}`] === 'object') {
+              if (!a[`${key}`]) return 0
+              return a[`${key}`].name > b[`${key}`].name ? 1 : a[`${key}`].name < b[`${key}`].name ? -1 : 0
+            } else {
+              return a[`${key}`] > b[`${key}`] ? 1 : a[`${key}`] < b[`${key}`] ? -1 : 0
+            }
+          })})
+        } else if (this.state.activeTab === 'change') {
+          this.setState({changeClasses: this.state.changeClasses.sort((a, b) => {
+            if (typeof a[`${key}`] === 'object') {
+              if (!a[`${key}`]) return 0
+              return a[`${key}`].name > b[`${key}`].name ? 1 : a[`${key}`].name < b[`${key}`].name ? -1 : 0
+            } else {
+              return a[`${key}`] > b[`${key}`] ? 1 : a[`${key}`] < b[`${key}`] ? -1 : 0
+            }
+          })})
+        }
+      })
+    } else if (this.state.sortConfig[`${key}`] === 'sort-up') {
+      this.setState({sortConfig: {...this.state.sortConfig, [key]: 'sort-down' }}, () => {
+        if (this.state.activeTab === 'review') {
+        //   this.setState({classes: this.state.classes.sort((a, b) => b[`${key}`] > a[`${key}`] ? 1 : -1)})
+          this.setState({classes: this.state.classes.sort((a, b) => {
+            if (typeof a[`${key}`] === 'object') {
+              if (!a[`${key}`]) return 0
+              return b[`${key}`].name > a[`${key}`].name ? 1 : b[`${key}`].name < a[`${key}`].name ? -1 : 0
+            } else {
+              return b[`${key}`] > a[`${key}`] ? 1 : b[`${key}`] < a[`${key}`] ? -1 : 0
+            }
+          })})
+        } else if (this.state.activeTab === 'change') {
+          this.setState({changeClasses: this.state.changeClasses.sort((a, b) => {
+            if (typeof a[`${key}`] === 'object') {
+              if (!a[`${key}`]) return 0
+              return b[`${key}`].name > a[`${key}`].name ? 1 : b[`${key}`].name < a[`${key}`].name ? -1 : 0
+            } else {
+              return b[`${key}`] > a[`${key}`] ? 1 : b[`${key}`] < a[`${key}`] ? -1 : 0
+            }
+          })})
+        //   this.setState({changeClasses: this.state.classes.sort((a, b) => b[`${key}`] > a[`${key}`] ? 1 : -1)})
+        }
+      })
+    } else if (this.state.sortConfig[`${key}`] === 'sort-down') {
+      this.setState({sortConfig: {...this.state.sortConfig, [key]: 'sort' }}, () => {
+        if (this.state.activeTab === 'review') {
+          this.setState({classes: this.state.classes})
+        } else if (this.state.activeTab === 'change') {
+          this.setState({changeClasses: this.state.changeClasses})
+        }
+      })
+    }
+    this.setState({activeSorter: key})
   }
 
   getClassList () {
@@ -327,13 +396,13 @@ class HubDashboard extends React.Component {
                   <thead className="thead-dark">
                     <tr>
                       <th scope="col">ID</th>
-                      <th scope="col">Class Name</th>
-                      <th scope="col">School</th>
-                      <th scope="col">Premium</th>
-                      <th scope="col">Trial</th>
-                      <th scope="col">Expired</th>
-                      <th scope="col">Recieved</th>
-                      <th scope="col">Day Left</th>
+                      <TH title="Class Name" icon={`fa fa-${this.state.sortConfig.name}`}onClick={() => this.onSort('name')}/>
+                      <TH title="School" icon={`fa fa-${this.state.sortConfig.school}`} onClick={() => this.onSort('school')}/>
+                      <TH title="Premium" icon={`fa fa-${this.state.sortConfig.premium}`} onClick={() => this.onSort('premium')}/>
+                      <TH title="Trial" icon={`fa fa-${this.state.sortConfig.trial}`} onClick={() => this.onSort('trial')}/>
+                      <TH title="Expired" icon={`fa fa-${this.state.sortConfig.expired}`} onClick={() => this.onSort('expired')}/>
+                      <TH title="Received" icon={`fa fa-${this.state.sortConfig.received}`} onClick={() => this.onSort('received')}/>
+                      <TH title="Days Left" icon={`fa fa-${this.state.sortConfig.days_left}`} onClick={() => this.onSort('days_left')}/>
                     </tr>
                   </thead>
                   {
