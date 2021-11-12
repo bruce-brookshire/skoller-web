@@ -20,10 +20,7 @@ class ClassSearch extends React.Component {
   * Fetch data to poplate drop downs.
   */
   componentWillMount () {
-    const {state} = this.props.location;
-    let {searchStore} = this.props.rootStore
-    searchStore.searchField = 'class_name'
-    searchStore.searchValue = ''
+    const {state} = this.props.location
 
     actions.hub.getStatuses().then((statuses) => {
       this.setState({statuses: statuses.statuses})
@@ -81,15 +78,28 @@ class ClassSearch extends React.Component {
 
   renderValueInput () {
     const {searchField, searchValue} = this.props.rootStore.searchStore
-
+    switch (searchField) {
+      case 'class_status':
+        return (
+          <SelectField
+            name='searchValue'
+            label='Select status'
+            options={this.getStatusOptions()}
+            onChange={this.onChangeSearchValue.bind(this)}
+            value={searchValue}
+          />
+        )
+      default:
         return (
           <InputField
             name='searchValue'
+            label='Contains'
             onChange={this.onChangeSearchValue.bind(this)}
             placeholder='Search value'
             value={searchValue}
           />
         )
+    }
   }
 
   /*
@@ -115,18 +125,17 @@ class ClassSearch extends React.Component {
   onChangeSearchValue (name, value) {
     let {searchStore} = this.props.rootStore
     searchStore.searchValue = value
-    this.onSearch();
   }
 
   onSearch () {
     let {schoolId, searchField, searchValue} = this.props.rootStore.searchStore
-    if (schoolId || (searchField )) {
+    if (schoolId || (searchField && searchValue)) {
       let params = ''
       if (schoolId && searchField) {
         params = `school=${schoolId}&${searchField}=${searchValue}`
       } else if (schoolId) {
         params = `school=${schoolId}`
-      } else if (searchField ) {
+      } else if (searchField && searchValue) {
         params = `${searchField}=${searchValue}`
       }
       this.props.onSearch(params)
@@ -159,44 +168,6 @@ class ClassSearch extends React.Component {
     searchStore.schoolName = ''
   }
 
-  // render () {
-  //   let {schoolId, searchField, searchValue} = this.props.rootStore.searchStore
-  //   let disabled = !(schoolId || (searchField && searchValue))
-  //   if (searchField && !searchValue) disabled = true
-  //   const disabledClass = disabled ? 'disabled' : ''
-  //   return this.props.hidden ? null : (
-  //     <div>
-  //       <div className='row'>
-  //         <div className='col-xs-12 col-sm-3 margin-top'>
-  //           {schoolId ? this.renderSchoolName() : <SearchSchool
-  //             label='School'
-  //             onSchoolSelect={this.onSubmitSchool.bind(this)}
-  //           />}
-  //         </div>
-  //         <div className='col-xs-12 col-sm-3 margin-top'>
-  //           <SelectField
-  //             name='searchField'
-  //             label='Search by'
-  //             options={this.getSearchFieldOptions()}
-  //             onChange={this.onChangeSearchField.bind(this)}
-  //             value={searchField}
-  //           />
-  //         </div>
-  //         <div className='col-xs-12 col-sm-3 margin-top'>
-  //           {this.renderValueInput()}
-  //         </div>
-  //         <div className='col-xs-12 col-sm-3 margin-top vertical-align' style={{justifyContent: 'flex-end'}}>
-  //           <button
-  //             className={`button full-width ${disabledClass}`}
-  //             disabled={disabled}
-  //             onClick={this.onSearch.bind(this)}
-  //           > Search
-  //             {this.props.loading ? <Loading style={{color: 'white', marginLeft: '0.5em'}} /> : null}
-  //           </button>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   )
   render () {
     let {schoolId, searchField, searchValue} = this.props.rootStore.searchStore
     let disabled = !(schoolId || (searchField && searchValue))
@@ -204,9 +175,35 @@ class ClassSearch extends React.Component {
     const disabledClass = disabled ? 'disabled' : ''
     return this.props.hidden ? null : (
       <div>
+        <div className='row'>
+          <div className='col-xs-12 col-sm-3 margin-top'>
+            {schoolId ? this.renderSchoolName() : <SearchSchool
+              label='School'
+              onSchoolSelect={this.onSubmitSchool.bind(this)}
+            />}
+          </div>
+          <div className='col-xs-12 col-sm-3 margin-top'>
+            <SelectField
+              name='searchField'
+              label='Search by'
+              options={this.getSearchFieldOptions()}
+              onChange={this.onChangeSearchField.bind(this)}
+              value={searchField}
+            />
+          </div>
+          <div className='col-xs-12 col-sm-3 margin-top'>
             {this.renderValueInput()}
-            <Loading style={{color: 'black', marginLeft: '0.5em'}} />
-            {this.props.loading ? <Loading style={{color: 'red', marginLeft: '0.5em'}} /> : null}
+          </div>
+          <div className='col-xs-12 col-sm-3 margin-top vertical-align' style={{justifyContent: 'flex-end'}}>
+            <button
+              className={`button full-width ${disabledClass}`}
+              disabled={disabled}
+              onClick={this.onSearch.bind(this)}
+            > Search
+              {this.props.loading ? <Loading style={{color: 'white', marginLeft: '0.5em'}} /> : null}
+            </button>
+          </div>
+        </div>
       </div>
     )
   }

@@ -58,7 +58,7 @@ class AdminLayout extends React.Component {
         {/* <AdminTop /> */}
         <AdminNav />
         <ScrollToTop />
-        <main id='main'>
+        <main id='main' style={{marginTop: '0px'}}>
           {this.props.children}
         </main>
       </div>

@@ -65,7 +65,8 @@ class HubDashboard extends React.Component {
     this.state = {
       classes: [],
       changeClasses: [],
-      loading: false
+      loading: false,
+      activeTab: 'review'
     }
     this.props.rootStore.navStore.setActivePage('hub/dashboard')
   }
@@ -181,10 +182,11 @@ class HubDashboard extends React.Component {
   }
 
   getClassList () {
+    const data = this.state.activeTab === 'review' ? this.state.classes : this.state.changeClasses
     return (
       <tbody>
         {
-          this.state.classes.map((item, index) => (
+          data.map((item, index) => (
             <tr
               key={item.id}
               style={{cursor: 'pointer'}}
@@ -306,8 +308,12 @@ class HubDashboard extends React.Component {
                 <div className="col-md-8">
                   <div className="head-left">
                     <h3><i className="fas fa-book"></i> &nbsp; Class</h3>
-                    <span className="badge badge-primary">In Review ({this.state.classes.length + 1})</span>
-                    <span className="badge badge-light">Class Changes ({this.state.changeClasses.length + 1})</span>
+                    <span className={`badge ${this.state.activeTab === 'review' ? 'badge-primary' : 'badge-light'}`}
+                      onClick={() => this.setState({activeTab: 'review'})}
+                    >In Review ({this.state.classes.length + 1})</span>
+                    <span
+                      onClick={() => this.setState({activeTab: 'change'})}
+                      className={`badge ${this.state.activeTab === 'change' ? 'badge-primary' : 'badge-light'}`}>Class Changes ({this.state.changeClasses.length + 1})</span>
                   </div>
                 </div>
                 <div className="col-md-4">
