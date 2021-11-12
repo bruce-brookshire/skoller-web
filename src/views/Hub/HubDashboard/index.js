@@ -185,13 +185,25 @@ class HubDashboard extends React.Component {
       <tbody>
         {
           this.state.classes.map((item, index) => (
-            <tr>
-              <td>{item.code}</td>
+            <tr
+              key={item.id}
+              style={{cursor: 'pointer'}}
+              onClick={() => {
+                this.props.history.push({
+                  pathname: `/class/${item.id}/syllabus_tool/`,
+                  state: {
+                    isDIY: true
+                    // isInsights: this.props.isInsights
+                  }
+                })
+              }}
+            >
+              <td>{item.id}</td>
               <td>{item.name}</td>
               <td>{item.school.name}</td>
-              <td>{item.premium}</td>
-              <td>{item.trial}</td>
-              <td>{item.expired}</td>
+              <td>{item.premium ? item.premium : 0}</td>
+              <td>{item.trial ? item.premium : 0}</td>
+              <td>{item.expired ? item.premium : 0}</td>
               <td>{item.received ? item.received : '-'}</td>
               <td>{item.days_left ? Math.ceil(item.days_left) : '-'}</td>
             </tr>))

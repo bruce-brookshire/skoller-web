@@ -14,8 +14,8 @@ import IssuesModal from '../components/ClassEditor/IssuesModal'
 import ProblemsModal from './ProblemsModal'
 import { FileTabs, FileTab } from '../../components/FileTab'
 import { inject, observer } from 'mobx-react'
-import "react-step-progress-bar/styles.css";
-import { ProgressBar, Step } from "react-step-progress-bar";
+import 'react-step-progress-bar/styles.css'
+import { ProgressBar, Step } from 'react-step-progress-bar'
 
 // TODO: File upload here needs to be replaced with component at ../../components/TabbedFileUpload
 
@@ -30,7 +30,7 @@ const ContentEnum = {
 
 @inject('rootStore') @observer
 class SyllabusTool extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = this.initializeState()
   }
@@ -39,14 +39,14 @@ class SyllabusTool extends React.Component {
   * Fetch the documents for a class.
   * Lock the class.
   */
-  componentWillMount() {
+  componentWillMount () {
     this.intializeComponent()
   }
 
   /*
   * Unlock the class on component will mount
   */
-  componentWillUnmount() {
+  componentWillUnmount () {
     let { navbarStore } = this.props.rootStore
     navbarStore.cl = null
     navbarStore.isDIY = false
@@ -57,7 +57,7 @@ class SyllabusTool extends React.Component {
   /*
   * Intialize the component
   */
-  intializeComponent() {
+  intializeComponent () {
     this.setState(this.initializeState())
     this.getClass()
     this.getDocuments()
@@ -67,9 +67,9 @@ class SyllabusTool extends React.Component {
   /*
   * Initialize state
   */
-  initializeState() {
+  initializeState () {
     const { state } = this.props.location
-    // console.log({ state })
+    console.log({ state })
     let { navbarStore } = this.props.rootStore
     navbarStore.cl = null
     navbarStore.isInsights = state.isInsights || false
@@ -96,7 +96,7 @@ class SyllabusTool extends React.Component {
   /*
   * Fetch the class by id.
   */
-  getClass() {
+  getClass () {
     const classId = this.props.match.params.classId
     let { navbarStore } = this.props.rootStore
     actions.classes.getClassById(classId).then((cl) => {
@@ -108,7 +108,7 @@ class SyllabusTool extends React.Component {
   /*
   * Fetch the documents for a class.
   */
-  getDocuments() {
+  getDocuments () {
     const classId = this.props.match.params.classId
     actions.documents.getClassDocuments(classId).then((documents) => {
       documents.sort((a, b) => b.is_syllabus)
@@ -116,18 +116,17 @@ class SyllabusTool extends React.Component {
     }).catch(() => false)
   }
 
-  onUpdateClass(form) {
+  onUpdateClass (form) {
     let { navbarStore } = this.props.rootStore
     actions.classes.updateClass(form).then((cl) => {
       navbarStore.cl = cl
     }).catch(() => false)
   }
 
-
   /*
   * Lock the class for DIY or SW.
   */
-  lockClass() {
+  lockClass () {
     const { navbarStore } = this.props.rootStore
     const classId = this.props.match.params.classId
     const form = { is_class: true }
@@ -146,21 +145,21 @@ class SyllabusTool extends React.Component {
   /*
   * Toggle the issues modal.
   */
-  toggleIssuesModal() {
+  toggleIssuesModal () {
     this.setState({ openIssuesModal: !this.state.openIssuesModal })
   }
 
   /*
   * Toggle the problems modal.
   */
-  toggleStudentProblemsModal() {
+  toggleStudentProblemsModal () {
     this.setState({ openProblemsModal: !this.state.openProblemsModal })
   }
 
   /*
   * Unlock the the class when not complete.
   */
-  unlockClass() {
+  unlockClass () {
     const classId = this.props.match.params.classId
     const form = { is_class: true }
 
@@ -171,7 +170,7 @@ class SyllabusTool extends React.Component {
   /*
   * Unlock the class for syllabus worker.
   */
-  unlock(isCompleted) {
+  unlock (isCompleted) {
     const classId = this.props.match.params.classId
     const { navbarStore } = this.props.rootStore
     const form = { is_class: true, is_completed: isCompleted }
@@ -199,7 +198,7 @@ class SyllabusTool extends React.Component {
   * Fetch the next class for SW.
   *
   */
-  getNextClass() {
+  getNextClass () {
     this.setState({ gettingClass: true })
     actions.syllabusworkers.getNextClass().then((cl) => {
       const { state } = this.props.location
@@ -215,7 +214,7 @@ class SyllabusTool extends React.Component {
   /*
   * On syllabus section done.
   */
-  onNext() {
+  onNext () {
     const { currentIndex, stepCount } = this.state
     if (currentIndex !== (stepCount - 1)) {
       this.setState({ currentIndex: currentIndex + 1 })
@@ -228,20 +227,20 @@ class SyllabusTool extends React.Component {
   /*
   * Render a way to tab back for DIY.
   */
-  onPrevious() {
+  onPrevious () {
     if (this.state.currentIndex > ContentEnum.WEIGHTS) {
       this.setState({ currentIndex: this.state.currentIndex - 1 })
     }
   }
 
-  onUpdateCurrentIndex(form) {
+  onUpdateCurrentIndex (form) {
     this.setState({ currentIndex: form.currentIndex })
   }
 
   /*
   * Render the back button to tab between syllabus sections
   */
-  renderBackButton() {
+  renderBackButton () {
     const { currentIndex } = this.state
 
     if (currentIndex === ContentEnum.ASSIGNMENTS) {
@@ -256,7 +255,7 @@ class SyllabusTool extends React.Component {
   /*
   * Render the button text dependent on worker.
   */
-  renderButtonText() {
+  renderButtonText () {
     return (this.state.currentIndex === ContentEnum.ASSIGNMENTS)
       ? 'Everything looks good. Submit info and continue'
       : 'Next'
@@ -265,7 +264,7 @@ class SyllabusTool extends React.Component {
   /*
   * Render the syllabus section content.
   */
-  renderContent() {
+  renderContent () {
     const { navbarStore } = this.props.rootStore
     switch (this.state.currentIndex) {
       case ContentEnum.WEIGHTS:
@@ -306,7 +305,7 @@ class SyllabusTool extends React.Component {
   /*
   * Render the document tabs for the user to tab between documents.
   */
-  renderDocumentTabs() {
+  renderDocumentTabs () {
     return (
       <FileTabs currentIndex={this.state.currentDocumentIndex} addFileClick={this.addFileClick.bind(this)}>
         {
@@ -327,14 +326,14 @@ class SyllabusTool extends React.Component {
       </FileTabs>
     )
   }
-  addFileClick() {
+  addFileClick () {
     this.setState({ currentDocument: null, currentDocumentIndex: null })
   }
 
   /*
   * Render having issues
   */
-  renderHavingIssues() {
+  renderHavingIssues () {
     const { navbarStore } = this.props.rootStore
     return (
       <a
@@ -347,7 +346,7 @@ class SyllabusTool extends React.Component {
   /*
   * Render the having issues modal.
   */
-  renderIssuesModal() {
+  renderIssuesModal () {
     const { navbarStore } = this.props.rootStore
     const { openIssuesModal } = this.state
     return (
@@ -366,7 +365,7 @@ class SyllabusTool extends React.Component {
   /*
   * Render the having issues modal.
   */
-  renderProblemsModal() {
+  renderProblemsModal () {
     const { navbarStore } = this.props.rootStore
     const { openProblemsModal } = this.state
 
@@ -382,11 +381,11 @@ class SyllabusTool extends React.Component {
   /*
   * Render the progress bar for DIY.
   */
-  renderProgressBar() {
+  renderProgressBar () {
     if (!this.state.singleWeight) {
       return <div className='cn-section-progress-outer'>
         <img alt="Skoller" className='logo' src='/src/assets/images/sammi/Smile.png' height="40" />
-        <span className="cn-section-progress-title">Add Weights & Values <i class="far fa-question-circle"></i></span>
+        <span className="cn-section-progress-title">Add Weights & Values <i className="far fa-question-circle"></i></span>
         <div className="cn-pull-right">
           <span>{this.state.currentIndex + 1}/3</span>
           <span className='cn-section-progressbar'><ProgressBar percent={(this.state.currentIndex + 1 / 3) * 100} /></span>
@@ -405,7 +404,7 @@ class SyllabusTool extends React.Component {
   /*
   * Renders the document viewer/uploader
   */
-  renderDocumentViewer() {
+  renderDocumentViewer () {
     if (this.state.currentDocument) {
       return <div className='cn-section-content'>
         <FileViewer source={this.state.currentDocument} />
@@ -446,7 +445,7 @@ class SyllabusTool extends React.Component {
   /*
   * Upload the given file
   */
-  uploadFile(file, isSyllabus) {
+  uploadFile (file, isSyllabus) {
     let { navbarStore } = this.props.rootStore
     this.setState({ uploadingDoc: true })
     actions.documents.uploadClassDocument(navbarStore.cl, file, isSyllabus).then((document) => {
@@ -461,16 +460,16 @@ class SyllabusTool extends React.Component {
   *
   * @param [Object]. The class to update with
   */
-  updateClass(cl) {
+  updateClass (cl) {
     let { navbarStore } = this.props.rootStore
     navbarStore.cl = cl
   }
 
-  async onBackToClasses() {
-    await actions.weights.getClassWeightsByClassId(this.props.match.params.classId)
-      .then(async r => {
+  onBackToClasses () {
+    actions.weights.getClassWeightsByClassId(this.props.match.params.classId)
+      .then(r => {
         if (r ? r.length > 0 : false) {
-          await actions.assignments.getClassAssignments({ id: this.props.match.params.classId })
+          actions.assignments.getClassAssignments({ id: this.props.match.params.classId })
             .then(r => {
               if (r.length > 0) {
                 this.props.rootStore.studentClassesStore.updateClasses()
@@ -489,7 +488,7 @@ class SyllabusTool extends React.Component {
       })
   }
 
-  renderBackToClasses() {
+  renderBackToClasses () {
     const { navbarStore } = this.props.rootStore
     if (navbarStore.isDIY) {
       if (navbarStore.isInsights) {
@@ -507,7 +506,7 @@ class SyllabusTool extends React.Component {
     }
   }
 
-  render() {
+  render () {
     const { loadingClass } = this.state
     const { navbarStore } = this.props.rootStore
 
