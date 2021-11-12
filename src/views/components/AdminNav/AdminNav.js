@@ -23,7 +23,7 @@ class AdminNav extends React.Component {
         onClick={() => {
           this.props.history.push({
             pathname: '/logout',
-            redirect: '/insights'
+            redirect: '/admin-login'
           })
         }}
       >
@@ -49,7 +49,7 @@ class AdminNav extends React.Component {
           {isOrgOwner && <AdminNavItem pageName="hub/switchboard" text="Switchboard" />}
           {isOrgOwner && <AdminNavItem pageName="hub/insights" text="Insights" />}
           {/* <AdminNavItem pageName="insights/settings" text="Settings" /> */}
-          {/* {this.renderLogout()} */}
+          {this.renderLogout()}
         </div>
       </div>
     )

@@ -11,7 +11,7 @@ class TopNav extends React.Component {
     } else {
       return (
         <div className='cn-top-nav'>
-          <Menu {...this.props} />
+          {/* <Menu {...this.props} /> */}
         </div>
       )
     }

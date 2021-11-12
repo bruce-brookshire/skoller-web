@@ -16,7 +16,7 @@ class NavItem extends React.Component {
 
   getNavIcon () {
     if (this.props.pageName.includes('hub/classes')) {
-      return <ClassesIcon fill={this.getActivePage() === this.props.pageName ?  '#fcfcfc' : '#333'} width="22px" height="22px" />
+      return <ClassesIcon fill={this.getActivePage() === this.props.pageName ? '#fcfcfc' : '#333'} width="22px" height="22px" />
     } else if (this.props.pageName.includes('hub/schools')) {
       return <i className='fas fa-school' />
     } else if (this.props.pageName.includes('hub/dashboard')) {
@@ -27,6 +27,10 @@ class NavItem extends React.Component {
       return <i className='fas fa-globe' />
     } else if (this.props.pageName.includes('insights/settings')) {
       return <i className='fas fa-cog' />
+    } else if (this.props.pageName.includes('hub/switchboard')) {
+      return <i className='fa fa-toggle-on' />
+    } else if (this.props.pageName.includes('hub/insights')) {
+      return <i className='fas fa-eye' />
     } else {
       return null
     }
