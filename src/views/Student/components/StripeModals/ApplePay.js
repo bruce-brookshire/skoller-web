@@ -21,10 +21,11 @@ export default function ApplePay (props) {
       }
     })
     pr.canMakePayment().then(result => {
+      console.log(result)
       if (result) {
         setPaymentRequest(pr)
       }
-    })
+    }).catch(e => console.log(e))
     pr.on('paymentmethod', async (e) => {
       actions.stripe.createSubscription({
         payment_method: {
@@ -57,7 +58,7 @@ export default function ApplePay (props) {
       options={{
         paymentRequest
       }}
-      key={Math.random()}
+    //   key={Math.random()}
     />
   )
 }
