@@ -67,7 +67,7 @@ class ChangeSchool extends React.Component {
           name: null,
           price: 80,
           //   product: 'prod_K9UWGXZKuZSloY'
-          product: 'prod_KRv2Bs7sRlUaRB'
+          product: 'prod_KbbJe8E1FTsHSM'
         }] })
       })
       .catch((e) => {
