@@ -193,61 +193,67 @@ class HubDashboard extends React.Component {
   }
   onSort (key) {
     if (this.state.sortConfig[`${key}`] === 'sort') {
-      this.setState({sortConfig: {...this.state.sortConfig, [key]: 'sort-up' }}, () => {
+      this.setState({ sortConfig: { ...this.state.sortConfig, [key]: 'sort-up' } }, () => {
         if (this.state.activeTab === 'review') {
-          this.setState({classes: this.state.classes.sort((a, b) => {
-            if (typeof a[`${key}`] === 'object') {
-              if (!a[`${key}`]) return 0
-              return a[`${key}`].name > b[`${key}`].name ? 1 : a[`${key}`].name < b[`${key}`].name ? -1 : 0
-            } else {
-              return a[`${key}`] > b[`${key}`] ? 1 : a[`${key}`] < b[`${key}`] ? -1 : 0
-            }
-          })})
+          this.setState({
+            classes: this.state.classes.sort((a, b) => {
+              if (typeof a[`${key}`] === 'object') {
+                if (!a[`${key}`]) return 0
+                return a[`${key}`].name > b[`${key}`].name ? 1 : a[`${key}`].name < b[`${key}`].name ? -1 : 0
+              } else {
+                return a[`${key}`] > b[`${key}`] ? 1 : a[`${key}`] < b[`${key}`] ? -1 : 0
+              }
+            })
+          })
         } else if (this.state.activeTab === 'change') {
-          this.setState({changeClasses: this.state.changeClasses.sort((a, b) => {
-            if (typeof a[`${key}`] === 'object') {
-              if (!a[`${key}`]) return 0
-              return a[`${key}`].name > b[`${key}`].name ? 1 : a[`${key}`].name < b[`${key}`].name ? -1 : 0
-            } else {
-              return a[`${key}`] > b[`${key}`] ? 1 : a[`${key}`] < b[`${key}`] ? -1 : 0
-            }
-          })})
+          this.setState({
+            changeClasses: this.state.changeClasses.sort((a, b) => {
+              if (typeof a[`${key}`] === 'object') {
+                if (!a[`${key}`]) return 0
+                return a[`${key}`].name > b[`${key}`].name ? 1 : a[`${key}`].name < b[`${key}`].name ? -1 : 0
+              } else {
+                return a[`${key}`] > b[`${key}`] ? 1 : a[`${key}`] < b[`${key}`] ? -1 : 0
+              }
+            })
+          })
         }
       })
     } else if (this.state.sortConfig[`${key}`] === 'sort-up') {
-      this.setState({sortConfig: {...this.state.sortConfig, [key]: 'sort-down' }}, () => {
+      this.setState({ sortConfig: { ...this.state.sortConfig, [key]: 'sort-down' } }, () => {
         if (this.state.activeTab === 'review') {
-        //   this.setState({classes: this.state.classes.sort((a, b) => b[`${key}`] > a[`${key}`] ? 1 : -1)})
-          this.setState({classes: this.state.classes.sort((a, b) => {
-            if (typeof a[`${key}`] === 'object') {
-              if (!a[`${key}`]) return 0
-              return b[`${key}`].name > a[`${key}`].name ? 1 : b[`${key}`].name < a[`${key}`].name ? -1 : 0
-            } else {
-              return b[`${key}`] > a[`${key}`] ? 1 : b[`${key}`] < a[`${key}`] ? -1 : 0
-            }
-          })})
+          this.setState({
+            classes: this.state.classes.sort((a, b) => {
+              if (typeof a[`${key}`] === 'object') {
+                if (!a[`${key}`]) return 0
+                return b[`${key}`].name > a[`${key}`].name ? 1 : b[`${key}`].name < a[`${key}`].name ? -1 : 0
+              } else {
+                return b[`${key}`] > a[`${key}`] ? 1 : b[`${key}`] < a[`${key}`] ? -1 : 0
+              }
+            })
+          })
         } else if (this.state.activeTab === 'change') {
-          this.setState({changeClasses: this.state.changeClasses.sort((a, b) => {
-            if (typeof a[`${key}`] === 'object') {
-              if (!a[`${key}`]) return 0
-              return b[`${key}`].name > a[`${key}`].name ? 1 : b[`${key}`].name < a[`${key}`].name ? -1 : 0
-            } else {
-              return b[`${key}`] > a[`${key}`] ? 1 : b[`${key}`] < a[`${key}`] ? -1 : 0
-            }
-          })})
-        //   this.setState({changeClasses: this.state.classes.sort((a, b) => b[`${key}`] > a[`${key}`] ? 1 : -1)})
+          this.setState({
+            changeClasses: this.state.changeClasses.sort((a, b) => {
+              if (typeof a[`${key}`] === 'object') {
+                if (!a[`${key}`]) return 0
+                return b[`${key}`].name > a[`${key}`].name ? 1 : b[`${key}`].name < a[`${key}`].name ? -1 : 0
+              } else {
+                return b[`${key}`] > a[`${key}`] ? 1 : b[`${key}`] < a[`${key}`] ? -1 : 0
+              }
+            })
+          })
         }
       })
     } else if (this.state.sortConfig[`${key}`] === 'sort-down') {
-      this.setState({sortConfig: {...this.state.sortConfig, [key]: 'sort' }}, () => {
+      this.setState({ sortConfig: { ...this.state.sortConfig, [key]: 'sort' } }, () => {
         if (this.state.activeTab === 'review') {
-          this.setState({classes: this.state.classes})
+          this.setState({ classes: this.state.classes })
         } else if (this.state.activeTab === 'change') {
-          this.setState({changeClasses: this.state.changeClasses})
+          this.setState({ changeClasses: this.state.changeClasses })
         }
       })
     }
-    this.setState({activeSorter: key})
+    this.setState({ activeSorter: key })
   }
 
   getClassList () {
@@ -260,13 +266,16 @@ class HubDashboard extends React.Component {
               key={item.id}
               style={{cursor: 'pointer'}}
               onClick={() => {
-                this.props.history.push({
+                const option = this.state.activeTab === 'review' ? {
                   pathname: `/class/${item.id}/syllabus_tool/`,
                   state: {
-                    isDIY: true
-                    // isInsights: this.props.isInsights
+                    isDIY: true,
+                    isInsights: true
                   }
-                })
+                } : {
+                  pathname: `/class/${item.id}/admin`
+                }
+                this.props.history.push(option)
               }}
             >
               <td>{item.id}</td>
@@ -379,10 +388,10 @@ class HubDashboard extends React.Component {
                     <h3><i className="fas fa-book"></i> &nbsp; Class</h3>
                     <span className={`badge ${this.state.activeTab === 'review' ? 'badge-primary' : 'badge-light'}`}
                       onClick={() => this.setState({activeTab: 'review'})}
-                    >In Review ({this.state.classes.length + 1})</span>
+                    >In Review ({this.state.classes.length})</span>
                     <span
                       onClick={() => this.setState({activeTab: 'change'})}
-                      className={`badge ${this.state.activeTab === 'change' ? 'badge-primary' : 'badge-light'}`}>Class Changes ({this.state.changeClasses.length + 1})</span>
+                      className={`badge ${this.state.activeTab === 'change' ? 'badge-primary' : 'badge-light'}`}>Class Changes ({this.state.changeClasses.length})</span>
                   </div>
                 </div>
                 <div className="col-md-4">
