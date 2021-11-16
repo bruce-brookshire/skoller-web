@@ -18,6 +18,7 @@ class ChangeSchool extends React.Component {
 
     this.state = {
       selected_subscription: '',
+      selected_price: '',
       plans: [],
       payment_method: {
         type: 'card',
@@ -83,6 +84,9 @@ class ChangeSchool extends React.Component {
     selectPlan (plan_id) {
       this.setState({ selected_subscription: plan_id })
     }
+    setPrice (price) {
+      this.setState({selected_price: price })
+    }
 
     simplifiedFunction () {
 
@@ -94,11 +98,17 @@ class ChangeSchool extends React.Component {
         <ul>
           {plans.map((row, i) => (
             (this.state.selected_subscription == row.id)
-              ? <li className="highlight {(i == 0) ? 'first-item':((i == (plans.length -1) ? 'last-item':'stext-lgray'))}" onClick={() => this.selectPlan(row.id)}>
+              ? <li className="highlight {(i == 0) ? 'first-item':((i == (plans.length -1) ? 'last-item':'stext-lgray'))}" onClick={() => {
+                this.selectPlan(row.id)
+                this.setPrice(row.price)
+              }}>
                 {
                   row.interval ? <span>${row.price} per {row.interval}</span> : <span>${row.price} life time</span>
                 }
-              </li> : <li className="{(i == 0) ? 'first-item':((i == (plans.length -1) ? 'last-item':'stext-lgray'))}" onClick={() => this.selectPlan(row.id)}>
+              </li> : <li className="{(i == 0) ? 'first-item':((i == (plans.length -1) ? 'last-item':'stext-lgray'))}" onClick={() => {
+                this.selectPlan(row.id)
+                this.setPrice(row.price)
+              }}>
                 {
                   row.interval ? <span>${row.price} per {row.interval}</span> : <span>${row.price} life time</span>
                 }
@@ -149,19 +159,22 @@ class ChangeSchool extends React.Component {
                     </ul>
                   </div>
                 </div>
-                <div className="listgroup-wrap margin-bottom margin-top">
-                  <h4 className="divider-title"><span>Pay with Card</span></h4>
+                {
+                  this.state.selected_subscription && <div className="listgroup-wrap margin-bottom margin-top">
+                    <h4 className="divider-title"><span>Pay with Card</span></h4>
 
-                  <Elements stripe={stripePromise}>
-                    <CheckoutForm selectedSubscription={this.state.selected_subscription} simplifiedFunction={this.simplifiedFunction} myprops={this.props}/>
-                  </Elements>
+                    <Elements stripe={stripePromise}>
+                      <CheckoutForm selectedSubscription={this.state.selected_subscription} price={this.state} simplifiedFunction={this.simplifiedFunction} myprops={this.props}/>
+                    </Elements>
 
-                  {/* <StripeCheckout
+                  </div>
+                }
+                {/* <StripeCheckout
                     stripeKey="pk_test_51JV9OSSGLvMTa3qVnwhFxc03IiK5JOGO94YQufQumo21gTgUAdpvMtEGYH9dgH1BPFrrirHuNbiVbE49gPNHHxIU00WpzV3KLP"
                     token=""
                   /> */}
-                  {/* <Checkout selectedSubscription={this.state.selected_subscription} simplifiedFunction={this.simplifiedFunction} myprops={this.props}/> */}
-                  {/* <form>
+                {/* <Checkout selectedSubscription={this.state.selected_subscription} simplifiedFunction={this.simplifiedFunction} myprops={this.props}/> */}
+                {/* <form>
                        <div className="group-field inputfield">
                           <label>Email</label>
                           <input type="text"/>
@@ -201,13 +214,14 @@ class ChangeSchool extends React.Component {
                           <button className="btn full-width sbg-dark stext-while margin-top">Pay</button>
                        </div>
                     </form> */}
-                </div>
-                <div className="listgroup-wrap margin-bottom margin-top">
-                  <h4 className="divider-title"><span>Pay with ApplePay</span></h4>
-                  <Elements stripe={stripePromise}>
-                    <ApplePay selectedSubscription={this.state.selected_subscription} myprops={this.props}/>
-                  </Elements>
-                </div>
+                {
+                  this.state.selected_subscription && <div className="listgroup-wrap margin-bottom margin-top">
+                    <h4 className="divider-title"><span>Pay with ApplePay</span></h4>
+                    <Elements stripe={stripePromise}>
+                      <ApplePay price={this.state.selected_price} selectedSubscription={this.state.selected_subscription} myprops={this.props}/>
+                    </Elements>
+                  </div>
+                }
               </div>
             </div>
           </div>
