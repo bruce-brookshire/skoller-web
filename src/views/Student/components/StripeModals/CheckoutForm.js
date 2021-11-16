@@ -81,7 +81,7 @@ export default function CheckoutForm (props) {
       <CardSection />
       {/* <button disabled={!stripe}>Confirm order</button>
        */}
-      <button className="btn full-width sbg-dark stext-while margin-top" disabled={!stripe}>Pay</button>
+      <button className="btn full-width sbg-dark text-white margin-top" style={{color: 'white'}} disabled={!stripe}>Pay</button>
     </form>
   )
 }
