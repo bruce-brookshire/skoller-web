@@ -3,6 +3,7 @@ import { useStripe, useElements, CardElement, PaymentRequestButtonElement } from
 import actions from '../../../../actions'
 import { showSnackbar } from '../../../../utilities/snackbar'
 export default function ApplePay (props) {
+  console.log(props)
   const [paymentRequest, setPaymentRequest] = useState(null)
   const stripe = useStripe()
   const elements = useElements()
@@ -16,7 +17,7 @@ export default function ApplePay (props) {
       currency: 'usd',
       total: {
         label: 'Subscription',
-        amount: props.selectedSubscription.price
+        amount: props.price
       }
     })
     pr.canMakePayment().then(result => {
