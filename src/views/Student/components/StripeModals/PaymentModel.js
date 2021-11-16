@@ -6,9 +6,10 @@ import CheckoutForm from './CheckoutForm'
 import actions from '../../../../actions'
 import { Cookies } from 'react-cookie'
 import { loadStripe } from '@stripe/stripe-js'
+import ApplePay from './ApplePay'
 const vm = this
-// const stripePromise = loadStripe('pk_test_51JV9OSSGLvMTa3qVnwhFxc03IiK5JOGO94YQufQumo21gTgUAdpvMtEGYH9dgH1BPFrrirHuNbiVbE49gPNHHxIU00WpzV3KLP')
-const stripePromise = loadStripe('pk_live_51JHvLoGtOURsTxunmypyAUNfbRF4jOahklknp1RTBHhxpy3qEveFU7lCWdrBt4YggE5ytlblCgYYHPPzsLC0Gf8K00NC7FWyoh')
+const stripePromise = loadStripe('pk_test_51JV9OSSGLvMTa3qVnwhFxc03IiK5JOGO94YQufQumo21gTgUAdpvMtEGYH9dgH1BPFrrirHuNbiVbE49gPNHHxIU00WpzV3KLP')
+// const stripePromise = loadStripe('pk_live_51JHvLoGtOURsTxunmypyAUNfbRF4jOahklknp1RTBHhxpy3qEveFU7lCWdrBt4YggE5ytlblCgYYHPPzsLC0Gf8K00NC7FWyoh')
 
 @inject('rootStore') @observer
 class ChangeSchool extends React.Component {
@@ -200,6 +201,12 @@ class ChangeSchool extends React.Component {
                           <button className="btn full-width sbg-dark stext-while margin-top">Pay</button>
                        </div>
                     </form> */}
+                </div>
+                <div className="listgroup-wrap margin-bottom margin-top">
+                  <h4 className="divider-title"><span>Pay with ApplePay</span></h4>
+                  <Elements stripe={stripePromise}>
+                    <ApplePay selectedSubscription={this.state.selected_subscription} myprops={this.props}/>
+                  </Elements>
                 </div>
               </div>
             </div>
