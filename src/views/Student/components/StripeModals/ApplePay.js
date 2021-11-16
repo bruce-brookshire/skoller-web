@@ -17,11 +17,13 @@ export default function ApplePay (props) {
       currency: 'usd',
       total: {
         label: 'Subscription',
-        amount: props.price
-      }
+        amount: props.price * 100
+      },
+      requestPayerName: true,
+      requestPayerEmail: true
     })
     pr.canMakePayment().then(result => {
-      console.log(result)
+      console.log('result', result)
       if (result) {
         setPaymentRequest(pr)
       }
@@ -56,7 +58,21 @@ export default function ApplePay (props) {
   return paymentRequest && (
     <PaymentRequestButtonElement
       options={{
-        paymentRequest
+        paymentRequest,
+        style: {
+          paymentRequestButton: {
+            type: 'default',
+            // One of 'default', 'book', 'buy', or 'donate'
+            // Defaults to 'default'
+
+            theme: 'dark',
+            // One of 'dark', 'light', or 'light-outline'
+            // Defaults to 'dark'
+
+            height: '64px'
+            // Defaults to '40px'. The width is always '100%'.
+          }
+        }
       }}
     //   key={Math.random()}
     />
