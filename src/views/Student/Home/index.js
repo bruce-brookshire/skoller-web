@@ -20,6 +20,9 @@ import HomeAssignments from './HomeAssignments'
 
 import HomeAssignmentGraph from '../Insights/HomeAssignmentGraph'
 import { formatDate } from '../../../utilities/time'
+import PremiumClassModal from './PremiumClassModal'
+import TrialClassModal from './TrialClassModal'
+import ClassStatusPopUp from './ClassStatusPopUp'
 
 @inject('rootStore') @observer
 class Home extends React.Component {
@@ -35,7 +38,8 @@ class Home extends React.Component {
       // has only one class, and that class is not yet set up.
       classStatusModal: { show: false, cl: null },
       loading: false,
-      shareWillDisplay: false
+      shareWillDisplay: false,
+      classModal: true
     }
 
     this.props.rootStore.navStore.setActivePage('home')
@@ -210,6 +214,11 @@ class Home extends React.Component {
     changePaymentPlan () {
       this.setState({ popUp: { type: 'PaymentPlans', show: true } })
     }
+    handleClassModalClose () {
+      this.setState({
+        classModal: false
+      })
+    }
 
     renderContent () {
       return (
@@ -224,6 +233,9 @@ class Home extends React.Component {
                       cl={this.state.classStatusModal.cl}
                     />
           }
+          {/* {this.state.classModal && (this.state.subscribed ? <PremiumClassModal closeModal={this.handleClassModalClose.bind(this)} status={{state: false}} /> : <TrialClassModal closeModal={this.handleClassModalClose.bind(this)} status={{state: false}}/>)} */}
+          <ClassStatusPopUp subscribed={this.state.subscribed} />
+          {/* <PremiumClassModal closeModal={() => {}} status={{state: false}} /> */}
           <div className="home-container">
             <div className="home-column col-md-8 col-lg-9">
               <div className="home-shadow-box">
