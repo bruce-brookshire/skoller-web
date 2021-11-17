@@ -3,6 +3,8 @@ import { useStripe, useElements, CardElement, PaymentRequestButtonElement } from
 import actions from '../../../../actions'
 import { showSnackbar } from '../../../../utilities/snackbar'
 export default function AlternativePayment (props) {
+  console.log('alternative props', props)
+  const {price, selectedSubscription} = props
   const [paymentRequest, setPaymentRequest] = useState(null)
   const stripe = useStripe()
   const elements = useElements()
@@ -17,7 +19,7 @@ export default function AlternativePayment (props) {
       currency: 'usd',
       total: {
         label: 'Subscription',
-        amount: props.price * 100
+        amount: price * 100
       },
       requestPayerName: true,
       requestPayerEmail: true
@@ -35,14 +37,14 @@ export default function AlternativePayment (props) {
       //   const result = await stripe.createToken()
       const card = elements.getElement(CardElement)
       const result = await stripe.createToken(card)
-      if (props.selectedSubscription == '') {
+      if (selectedSubscription == '') {
         alert('Please select Subscription plan.')
         return
       }
       actions.stripe.createSubscription({
         payment_method: {
           token: result.token,
-          plan_id: props.selectedSubscription
+          plan_id: selectedSubscription
         }
       })
         .then((data) => {
@@ -60,7 +62,7 @@ export default function AlternativePayment (props) {
           console.log(e)
         })
     })
-  }, [stripe, elements, props.selectedSubscription])
+  }, [stripe, elements, price, selectedSubscription])
 
   return paymentRequest && (
     <PaymentRequestButtonElement
