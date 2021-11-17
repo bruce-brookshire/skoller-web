@@ -6,7 +6,7 @@ import CheckoutForm from './CheckoutForm'
 import actions from '../../../../actions'
 import { Cookies } from 'react-cookie'
 import { loadStripe } from '@stripe/stripe-js'
-import ApplePay from './ApplePay'
+import AlternativePayment from './AlternativePayment'
 const vm = this
 // const stripePromise = loadStripe('pk_test_51JHvLoGtOURsTxunH2YZl8bG4pvpTQUKRoTVXjqEtZUFR8SsgUIMps4qGBl9OrPYiAGEy8dlAiRATkrRnRUiHMMa00xYgr7qtu')
 const stripePromise = loadStripe('pk_live_51JHvLoGtOURsTxunmypyAUNfbRF4jOahklknp1RTBHhxpy3qEveFU7lCWdrBt4YggE5ytlblCgYYHPPzsLC0Gf8K00NC7FWyoh')
@@ -216,9 +216,8 @@ class ChangeSchool extends React.Component {
                     </form> */}
                 {
                   this.state.selected_subscription && <div className="listgroup-wrap margin-bottom margin-top">
-                    <h4 className="divider-title"><span>Pay with ApplePay</span></h4>
                     <Elements stripe={stripePromise}>
-                      <ApplePay price={this.state.selected_price} selectedSubscription={this.state.selected_subscription} myprops={this.props}/>
+                      <AlternativePayment price={this.state.selected_price} selectedSubscription={this.state.selected_subscription} myprops={this.props}/>
                     </Elements>
                   </div>
                 }

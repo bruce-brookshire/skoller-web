@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useStripe, useElements, CardElement, PaymentRequestButtonElement } from '@stripe/react-stripe-js'
 import actions from '../../../../actions'
 import { showSnackbar } from '../../../../utilities/snackbar'
-export default function ApplePay (props) {
+export default function AlternativePayment (props) {
   console.log(props)
   const [paymentRequest, setPaymentRequest] = useState(null)
   const stripe = useStripe()
@@ -22,6 +22,8 @@ export default function ApplePay (props) {
       requestPayerName: true,
       requestPayerEmail: true
     })
+
+    // Check the availability of the Payment Request API.
     pr.canMakePayment().then(result => {
       console.log('result', result)
       if (result) {
@@ -49,32 +51,14 @@ export default function ApplePay (props) {
         .catch((e) => {
           console.log(e)
         })
-      // create a payment intent on the server
-
-      // confirm the payment intent on the client
     })
   }, [stripe, elements, props.selectedSubscription])
 
   return paymentRequest && (
     <PaymentRequestButtonElement
       options={{
-        paymentRequest,
-        style: {
-          paymentRequestButton: {
-            type: 'default',
-            // One of 'default', 'book', 'buy', or 'donate'
-            // Defaults to 'default'
-
-            theme: 'dark',
-            // One of 'dark', 'light', or 'light-outline'
-            // Defaults to 'dark'
-
-            height: '64px'
-            // Defaults to '40px'. The width is always '100%'.
-          }
-        }
+        paymentRequest
       }}
-    //   key={Math.random()}
     />
   )
 }
