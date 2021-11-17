@@ -160,7 +160,7 @@ class ChangeSchool extends React.Component {
                   </div>
                 </div>
                 {
-                  this.state.selected_subscription && <div className="listgroup-wrap margin-bottom margin-top">
+                  <div className="listgroup-wrap margin-bottom margin-top">
                     <h4 className="divider-title"><span>Pay with Card</span></h4>
 
                     <Elements stripe={stripePromise}>
@@ -215,7 +215,7 @@ class ChangeSchool extends React.Component {
                        </div>
                     </form> */}
                 {
-                  this.state.selected_subscription && <div className="listgroup-wrap margin-bottom margin-top">
+                  <div className="listgroup-wrap margin-bottom margin-top">
                     <Elements stripe={stripePromise}>
                       <AlternativePayment price={this.state.selected_price} selectedSubscription={this.state.selected_subscription} myprops={this.props}/>
                     </Elements>

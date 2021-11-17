@@ -3,13 +3,12 @@ import { useStripe, useElements, CardElement, PaymentRequestButtonElement } from
 import actions from '../../../../actions'
 import { showSnackbar } from '../../../../utilities/snackbar'
 export default function AlternativePayment (props) {
-  console.log(props)
   const [paymentRequest, setPaymentRequest] = useState(null)
   const stripe = useStripe()
   const elements = useElements()
 
   useEffect(() => {
-    if (!stripe || !elements || !props.selectedSubscription) {
+    if (!stripe || !elements) {
       return
     }
     const pr = stripe.paymentRequest({
@@ -31,7 +30,13 @@ export default function AlternativePayment (props) {
       }
     }).catch(e => console.log(e))
     pr.on('paymentmethod', async (e) => {
-      const result = await stripe.createToken(e.paymentMethod)
+      if (!props.selectedSubscription) {
+        alert('Please select a plan')
+        return
+      }
+      //   const result = await stripe.createToken()
+      const card = elements.getElement(CardElement)
+      const result = await stripe.createToken(card)
       actions.stripe.createSubscription({
         payment_method: {
           token: result.token,
