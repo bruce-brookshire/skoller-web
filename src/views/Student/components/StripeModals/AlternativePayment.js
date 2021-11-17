@@ -11,7 +11,8 @@ export default function AlternativePayment (props) {
     if (!stripe || !elements) {
       return
     }
-    const pr = stripe.paymentRequest({
+
+    const paymentRequestOption = {
       country: 'US',
       currency: 'usd',
       total: {
@@ -20,7 +21,8 @@ export default function AlternativePayment (props) {
       },
       requestPayerName: true,
       requestPayerEmail: true
-    })
+    }
+    const pr = stripe.paymentRequest(paymentRequestOption)
 
     // Check the availability of the Payment Request API.
     pr.canMakePayment().then(result => {
@@ -30,13 +32,13 @@ export default function AlternativePayment (props) {
       }
     }).catch(e => console.log(e))
     pr.on('paymentmethod', async (e) => {
-      if (!props.selectedSubscription) {
-        alert('Please select a plan')
-        return
-      }
       //   const result = await stripe.createToken()
       const card = elements.getElement(CardElement)
       const result = await stripe.createToken(card)
+      if (props.selectedSubscription == '') {
+        alert('Please select Subscription plan.')
+        return
+      }
       actions.stripe.createSubscription({
         payment_method: {
           token: result.token,

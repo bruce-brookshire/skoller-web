@@ -119,6 +119,7 @@ class ChangeSchool extends React.Component {
     }
 
     render () {
+      console.log(this.state)
       let disableNext = false
       if ((!this.state.termChoice || !this.state.activeTerm) && (!this.state.schoolChoice)) {
         disableNext = true
