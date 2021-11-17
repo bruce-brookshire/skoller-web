@@ -31,9 +31,10 @@ export default function AlternativePayment (props) {
       }
     }).catch(e => console.log(e))
     pr.on('paymentmethod', async (e) => {
+      const result = await stripe.createToken(e.paymentMethod.card)
       actions.stripe.createSubscription({
         payment_method: {
-          token: e.paymentMethod.id,
+          token: result.token,
           plan_id: props.selectedSubscription
         }
       })
