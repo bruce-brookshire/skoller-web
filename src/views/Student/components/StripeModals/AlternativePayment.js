@@ -4,7 +4,7 @@ import actions from '../../../../actions'
 import { showSnackbar } from '../../../../utilities/snackbar'
 export default function AlternativePayment (props) {
   console.log('alternative props', props)
-  const {price, selectedSubscription} = props
+  const {title, price, selectedSubscription} = props
   const [paymentRequest, setPaymentRequest] = useState(null)
   const stripe = useStripe()
   const elements = useElements()
@@ -18,7 +18,7 @@ export default function AlternativePayment (props) {
       country: 'US',
       currency: 'usd',
       total: {
-        label: 'Subscription',
+        label: title,
         amount: price * 100
       },
       requestPayerName: true,
