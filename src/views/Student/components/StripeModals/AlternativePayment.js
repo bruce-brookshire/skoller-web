@@ -4,7 +4,7 @@ import actions from '../../../../actions'
 import { showSnackbar } from '../../../../utilities/snackbar'
 export default function AlternativePayment (props) {
   console.log('alternative props', props)
-  const {price, selectedSubscription} = props
+  const {title, price, selectedSubscription} = props
   const [paymentRequest, setPaymentRequest] = useState(null)
   const stripe = useStripe()
   const elements = useElements()
@@ -18,7 +18,7 @@ export default function AlternativePayment (props) {
       country: 'US',
       currency: 'usd',
       total: {
-        label: 'Subscription',
+        label: title,
         amount: price * 100
       },
       requestPayerName: true,
@@ -34,19 +34,21 @@ export default function AlternativePayment (props) {
       }
     }).catch(e => console.log(e))
     pr.on('paymentmethod', async (e) => {
-      //   const result = await stripe.createToken()
-      const card = elements.getElement(CardElement)
-      const result = await stripe.createToken(card)
       if (selectedSubscription == '') {
         alert('Please select Subscription plan.')
         return
       }
-      actions.stripe.createSubscription({
+      const option = selectedSubscription.id === 'life_time' ? {
         payment_method: {
-          token: result.token,
+          payment_method_id: e.paymentMethod.id
+        }
+      } : {
+        payment_method: {
+          payment_method_id: e.paymentMethod.id,
           plan_id: selectedSubscription
         }
-      })
+      }
+      actions.stripe.createSubscription(option)
         .then((data) => {
           if (data.status == 'ok') {
             showSnackbar(data.message, 'success')
