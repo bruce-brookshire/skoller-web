@@ -152,6 +152,7 @@ class Home extends React.Component {
   }
 
   getMonthAndYearInDays (val) {
+    if (val === 'week') return 7
     if (val === 'month') return 30
     else if (val === 'year') return 365
     return 0

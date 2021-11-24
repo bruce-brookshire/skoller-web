@@ -53,7 +53,12 @@ class ChangeSchool extends React.Component {
     actions.stripe.lastUpcomingPayment().catch((r) => console.log(r, 66))
     actions.stripe.billingHistory().catch((r) => console.log(r, 66))
     actions.stripe.allProducts().catch((r) => console.log(r, 66))
-    actions.stripe.allPlans().catch((r) => console.log(r, 66))
+    actions.stripe.allPlans().then(res => {
+    //   console.log('all plans')
+    //   console.log(res)
+      const defaultPlan = res.data[0]
+      this.setState({selected_subscription: defaultPlan.id})
+    }).catch((r) => console.log(r, 66))
     actions.stripe.allPlans()
       .then((data) => {
         this.setState({ plans: [...data.data, {
