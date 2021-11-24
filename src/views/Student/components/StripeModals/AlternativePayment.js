@@ -38,7 +38,8 @@ export default function AlternativePayment (props) {
         alert('Please select Subscription plan.')
         return
       }
-      const option = selectedSubscription.id === 'life_time' ? {
+
+      const option = selectedSubscription === 'life_time' ? {
         payment_method: {
           payment_method_id: e.paymentMethod.id
         }
