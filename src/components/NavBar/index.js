@@ -335,7 +335,7 @@ class NavBar extends React.Component {
               ? this.renderClassInfo() : this.renderAssignmentClassInfo()
             }
           </div>
-          <ReactTooltip id='soclose'
+          {this.props.rootStore.userStore.student && <ReactTooltip id='soclose'
             getContent={(dataTip) =>
               <div>
                 <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'}}>
@@ -360,7 +360,7 @@ class NavBar extends React.Component {
             clickable={true}
             delayHide={500}
             overridePosition={overridePosition}
-          />
+          />}
           {this.state.showMyAccount && this.props.rootStore.userStore.user.lifetime_trial && (
             <div className='sk-pop-up-container'>
               <SkModal
