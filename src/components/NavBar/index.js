@@ -381,10 +381,15 @@ class NavBar extends React.Component {
             {window.innerWidth > 1000 &&
               <JobsSwitch />
             }
-            <div className='left'>
-              <p>{this.getName()}</p>
-              <span>{this.getDescription()}</span>
-              <span>{this.state.subscribed}</span>
+            <div className='left' style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+              <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                <p>{this.getName()}</p>
+                <span>{this.getDescription()}</span>
+                <span>{this.state.subscribed}</span>
+              </div>
+              <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', filter: 'drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.5))', borderRadius: '50%', marginLeft: '10px', background: '#D8D8D8', width: '34px', height: '34px'}}>
+                <img src='/src/assets/images/four_door/skoller_on.png' width="15px" />
+              </div>
             </div>
             <div className='right'>
 
