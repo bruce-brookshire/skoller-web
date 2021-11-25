@@ -352,7 +352,7 @@ class AccountInfo extends React.Component {
             user.student &&
                   <tr>
                     <th className='cn-flex-table-cell'>User path:</th>
-                    <td className='cn-flex-table-cell'>{this.state.user.lifetime_trial ? 'Standard' : 'Premium - VIP'}</td>
+                    <td className='cn-flex-table-cell'>{this.state.user.lifetime_trial ? 'Premium - VIP' : 'Standard'}</td>
                   </tr>
           }
           {/* {this.state.user.reports && <Grid
