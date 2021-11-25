@@ -335,7 +335,7 @@ class NavBar extends React.Component {
               ? this.renderClassInfo() : this.renderAssignmentClassInfo()
             }
           </div>
-          {this.props.rootStore.userStore.student && <ReactTooltip id='soclose'
+          {!this.props.rootStore.userStore.isAdmin() && <ReactTooltip id='soclose'
             getContent={(dataTip) =>
               <div>
                 <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'}}>
@@ -388,7 +388,7 @@ class NavBar extends React.Component {
                 <span>{this.state.subscribed}</span>
               </div>
               <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', filter: 'drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.5))', borderRadius: '50%', marginLeft: '10px', background: '#D8D8D8', width: '34px', height: '34px'}}>
-                <img src='/src/assets/images/four_door/skoller_on.png' width="15px" />
+                <img src='/src/assets/images/four_door/diy_off.png' width="20px" />
               </div>
             </div>
             <div className='right'>
