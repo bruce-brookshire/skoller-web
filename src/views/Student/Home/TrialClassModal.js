@@ -9,6 +9,7 @@ import DropClassButton from '../../components/DropClassButton'
 import SiDropClass from '../../Insights/StudentDetail/SiStudentClassDetail/SiDropClass'
 import { mobileCheck } from '../../../utilities/display'
 import UpgradeToPremiumBtn from './UpgradeToPremium'
+import { toJS } from 'mobx'
 
 function ProgressOption (props) {
   const renderIconClassName = () => {
@@ -77,7 +78,7 @@ export default function TrialClassModal (props) {
         <p
           style={{margin: '6px 0 0 0', textAlign: 'center', cursor: 'pointer'}}
           onClick={() => {
-            this.props.onSubmit()
+            props.onSubmit()
           }}
         >
           <span style={{color: '#57B9E4'}}>Continue to Skoller</span>
@@ -100,7 +101,7 @@ export default function TrialClassModal (props) {
         style={{maxWidth: '700px'}}
       >
         <div className='sk-pm-nav' style={props.closeModal ? {} : {transform: 'translate(-16px, -42px)', paddingLeft: '16px'}}>
-          <h3>Architecture 101</h3>
+          <h3>{props.cl.name} {props.cl.code}</h3>
           {/* Progress status */}
           <div className='sk-pm-status'>
             {options.map((o, index) => {
@@ -147,7 +148,7 @@ export default function TrialClassModal (props) {
                           </div>
                           : <div className='sk-class-status-modal-action-detail'>
                             <h2>Move your syllabus to the front of the line by upgrading to premium!</h2>
-                            <UpgradeToPremiumBtn>Upgrade to Premium</UpgradeToPremiumBtn>
+                            <UpgradeToPremiumBtn onClick={props.onUpgradeToPremium}>Upgrade to Premium</UpgradeToPremiumBtn>
                           </div>
                         }
                       </div>

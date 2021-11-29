@@ -22,7 +22,7 @@ import HomeAssignmentGraph from '../Insights/HomeAssignmentGraph'
 import { formatDate } from '../../../utilities/time'
 import PremiumClassModal from './PremiumClassModal'
 import TrialClassModal from './TrialClassModal'
-import ClassStatusPopUp from './ClassStatusPopUp'
+import ClassStatusPopUp from './_ClassStatusPopUp'
 
 @inject('rootStore') @observer
 class Home extends React.Component {
@@ -39,7 +39,8 @@ class Home extends React.Component {
       classStatusModal: { show: false, cl: null },
       loading: false,
       shareWillDisplay: false,
-      classModal: true
+      classModal: true,
+      showTrialClassStatusModal: false
     }
 
     this.props.rootStore.navStore.setActivePage('home')
@@ -182,7 +183,12 @@ class Home extends React.Component {
 
       let fullClass = this.findFullClass(cl.id)
       if (fullClass.status.id < 1400) {
-        this.setState({ classStatusModal: { show: true, cl: fullClass } })
+        if (this.props.rootStore.userStore.user.trial && !this.props.rootStore.userStore.user.lifetime_trial) {
+          this.setState({showTrialClassStatusModal: true})
+          this.setState({ classStatusModal: { show: false, cl: fullClass } })
+        } else {
+          this.setState({ classStatusModal: { show: true, cl: fullClass } })
+        }
       } else {
         this.props.history.push({
           pathname: `/student/class/${cl.id}/`,
@@ -234,8 +240,14 @@ class Home extends React.Component {
                       cl={this.state.classStatusModal.cl}
                     />
           }
+          {this.state.showTrialClassStatusModal && <TrialClassModal
+            onUpgradeToPremium={() => {
+              this.setState({showTrialClassStatusModal: false})
+              this.setState({ popUp: { type: 'PaymentPlans', show: true } })
+            }}
+            cl={this.state.classStatusModal.cl} closeModal={() => this.setState({showTrialClassStatusModal: false})} status={{ options: ['Class', 'Syllabus', 'Review', 'Live'], state: 'Review'}}/>}
           {/* {this.state.classModal && (this.state.subscribed ? <PremiumClassModal closeModal={this.handleClassModalClose.bind(this)} status={{state: false}} /> : <TrialClassModal closeModal={this.handleClassModalClose.bind(this)} status={{state: false}}/>)} */}
-          <ClassStatusPopUp subscribed={this.state.subscribed} />
+          {/* <ClassStatusPopUp subscribed={this.state.subscribed} /> */}
           {/* <PremiumClassModal closeModal={() => {}} status={{state: false}} /> */}
           <div className="home-container">
             <div className="home-column col-md-8 col-lg-9">
