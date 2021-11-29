@@ -183,7 +183,7 @@ class Home extends React.Component {
 
       let fullClass = this.findFullClass(cl.id)
       if (fullClass.status.id < 1400) {
-        if (this.props.rootStore.userStore.user.trial) {
+        if (this.props.rootStore.userStore.user.trial && !this.props.rootStore.userStore.user.lifetime_trial) {
           this.setState({showTrialClassStatusModal: true})
           this.setState({ classStatusModal: { show: false, cl: fullClass } })
         } else {
