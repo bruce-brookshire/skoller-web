@@ -223,7 +223,8 @@ class ChangeSchool extends React.Component {
                 {
                   <div className="listgroup-wrap margin-bottom margin-top">
                     <Elements stripe={stripePromise}>
-                      {this.state.selected_price === 2 ? <AlternativePayment title="Weekly subscription" price={2} selectedSubscription={this.state.selected_subscription} myprops={this.props}/> : null}
+                      {/* Below are for live stripe products */}
+                      {this.state.selected_price === 30 ? <AlternativePayment title="Yearly subscription" price={30} selectedSubscription={this.state.selected_subscription} myprops={this.props}/> : null}
                       {this.state.selected_price === 3 ? <AlternativePayment title="Monthly subscription " price={3} selectedSubscription={this.state.selected_subscription} myprops={this.props}/> : null}
                       {this.state.selected_price === 80 ? <AlternativePayment title="Life time subscritpion" price={80} selectedSubscription={this.state.selected_subscription} myprops={this.props}/> : null}
                     </Elements>
