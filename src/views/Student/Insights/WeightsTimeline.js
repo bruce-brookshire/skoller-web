@@ -4,8 +4,9 @@ import { withRouter } from 'react-router-dom'
 import { VictoryTooltip, VictoryScatter, VictoryLine, VictoryLabel, VictoryAxis, VictoryArea, VictoryBar } from 'victory'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import { getAssignmentWeightData } from './DataUtils'
+import { getAssignmentWeightData, modifiedGetAssignmentWeightData } from './DataUtils'
 import { getStyles } from './styles'
+import { toJS } from 'mobx'
 
 export class DateTooltip extends React.Component {
   static propTypes = {
@@ -59,11 +60,13 @@ DateTooltip.propTypes = {
 @inject('rootStore') @observer
 class WeightsTimeline extends React.Component {
   getStyles () {
+    console.log(toJS(this.props.cl))
     return getStyles(this.props.cl ? '#' + this.props.cl.color : false)
   }
 
   render () {
-    let data = getAssignmentWeightData((this.props.cl ? this.props.cl.assignments : this.props.assignments), this.props.cl, this.props.ids, this.props.view)
+    let data = modifiedGetAssignmentWeightData((this.props.cl ? this.props.cl.assignments : this.props.assignments), this.props.cl, this.props.ids, this.props.view, this.props.rootStore.userStore.user.student.primary_period)
+    console.log('newdata', data)
     const styles = this.getStyles()
     if (data.length > 0) {
       const today = parseInt(moment().format('X'))

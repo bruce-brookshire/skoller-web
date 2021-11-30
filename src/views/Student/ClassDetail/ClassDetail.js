@@ -11,11 +11,13 @@ import ClassDocuments from './ClassDocuments'
 import ClassInsights from './ClassInsights'
 import ClassInfo from './ClassInfo'
 import actions from '../../../actions'
-import { toJS } from 'mobx'
+import { observable, toJS } from 'mobx'
 import Classmates from './Classmates'
+import { inject, observer } from 'mobx-react'
 
+@inject('rootStore') @observer
 class ClassDetail extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -26,7 +28,7 @@ class ClassDetail extends React.Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     const { insightsUser, cl, insightsStudents } = this.props
     if (insightsUser && insightsStudents) {
       actions.classes.getClassByIdAdmin(cl.id).then(({ students }) => {
@@ -41,11 +43,11 @@ class ClassDetail extends React.Component {
     }
   }
 
-  getCurrentClass() {
+  getCurrentClass () {
     return this.props.cl
   }
 
-  renderDropClassButton() {
+  renderDropClassButton () {
     if (this.props.insightsUser) {
       return (
         <SiDropClass icon={true} onDropClass={() => this.props.history.push('/insights/' + (this.props.match.params.invitationId ? ('invitations/' + this.props.match.params.invitationId) : ('students/' + this.props.match.params.orgStudentId)))} cl={this.props.cl} />
@@ -60,7 +62,7 @@ class ClassDetail extends React.Component {
   /*
   * Find class weight categories that don't have assignments
   */
-  getEmptyWeights() {
+  getEmptyWeights () {
     let cl = this.getCurrentClass()
     let weights = cl.weights
     let emptyWeights = []
@@ -79,7 +81,7 @@ class ClassDetail extends React.Component {
     return emptyWeights
   }
 
-  renderAddAssignmentButton() {
+  renderAddAssignmentButton () {
     let emptyWeights = this.getEmptyWeights()
     return (
       <div>
@@ -94,9 +96,9 @@ class ClassDetail extends React.Component {
     )
   }
 
-  renderHeader() {
+  renderHeader () {
     let cl = this.getCurrentClass()
-    let { classmates } = this.state;
+    let { classmates } = this.state
     return (
       <div className='sk-class-header'>
         <div className='sk-class-grade' style={{ backgroundColor: '#' + cl.color }}>
@@ -114,7 +116,7 @@ class ClassDetail extends React.Component {
             <ClassInfo cl={this.getCurrentClass()} />
             <ClassDocuments cl={this.getCurrentClass()} />
             {classmates ? <Classmates students={classmates} cl={cl}/> : <ShareClass cl={this.getCurrentClass()} />}
-            <ColorChanger cl={this.getCurrentClass()} updateClassColor={() => null}  updateClass = {this.props.updateClass}/>
+            <ColorChanger cl={this.getCurrentClass()} updateClassColor={() => null} updateClass = {this.props.updateClass}/>
             {this.renderDropClassButton()}
           </div>
         </div>
@@ -122,13 +124,13 @@ class ClassDetail extends React.Component {
     )
   }
 
-  renderInsights() {
+  renderInsights () {
     return (
-      <ClassInsights cl={this.getCurrentClass()} />
+      <ClassInsights cl={this.getCurrentClass()} primaryPeriod={this.props.rootStore.userStore.user.student.primary_period} />
     )
   }
 
-  renderAssignments() {
+  renderAssignments () {
     const cl = this.getCurrentClass()
     return (
       <div className='sk-class-assignments-cell'>
@@ -147,7 +149,7 @@ class ClassDetail extends React.Component {
     )
   }
 
-  renderLayout() {
+  renderLayout () {
     return (
       <div className='sk-class'>
         <div className='sk-class-column'>
@@ -161,7 +163,7 @@ class ClassDetail extends React.Component {
     )
   }
 
-  render() {
+  render () {
     return (
       <div>{this.renderLayout()}</div>
     )
