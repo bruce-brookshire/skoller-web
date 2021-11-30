@@ -7,6 +7,7 @@ import WeightsTimeline from '../../Insights/WeightsTimeline'
 import Distribution from '../../Insights/Distribution'
 import SpeculateTool from '../../Insights/SpeculateTool'
 import SkSelect from '../../../components/SkSelect'
+import { toJS } from 'mobx'
 
 export class DateTooltip extends React.Component {
   static propTypes = {
@@ -55,6 +56,7 @@ class ClassInsights extends React.Component {
   }
 
   renderContent () {
+    // console.log('primary', toJS(this.props.primaryPeriod))
     if (this.props.cl.assignments.length > 0) {
       if (this.state.type === 'Assignments') {
         return (
@@ -71,7 +73,7 @@ class ClassInsights extends React.Component {
       } else if (this.state.type === 'Distribution') {
         return (
           <div style={{margin: '2rem 1rem 1rem 1rem'}}>
-            <Distribution cl={this.props.cl} />
+            <Distribution cl={this.props.cl} primaryPeriod={this.props.primaryPeriod} />
           </div>
         )
       } else if (this.state.type === 'Speculate') {
