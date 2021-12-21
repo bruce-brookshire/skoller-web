@@ -274,7 +274,7 @@ class Home extends React.Component {
                   <HomeTasks />
                 </div>
               </div>
-              {/*
+
               {
                 !this.props.rootStore.userStore.user.lifetime_trial && !this.props.rootStore.userStore.user.lifetime_subscription && this.props.rootStore.userStore.user.trial &&
                             <div className="home-shadow-box">
@@ -319,7 +319,7 @@ class Home extends React.Component {
                                 <span>Subscription ends {formatDate(this.getIntervalDate())}</span>
                               </div>
                             </div>
-              } */}
+              }
 
             </div>
           </div>
