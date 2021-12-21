@@ -108,14 +108,30 @@ class ChangeSchool extends React.Component {
                 this.setPrice(row.price)
               }}>
                 {
-                  row.interval ? <span>${row.price} per {row.interval}</span> : <span>${row.price} life time</span>
+                  row.interval ? <span style={{display: 'flex', width: '100%', justifyContent: 'space-between'}}>${row.price} per {row.interval}
+                    {row.price === 3 ? <span style={{color: '#60BBE2'}}>
+                    Most popular - Save 20%
+
+                    </span> : null}
+                  </span> : <span style={{display: 'flex', width: '100%', justifyContent: 'space-between'}}>${row.price} life time <span style={{color: '#60BBE2'}}>
+                    Save 50%
+
+                  </span></span>
                 }
               </li> : <li className="{(i == 0) ? 'first-item':((i == (plans.length -1) ? 'last-item':'stext-lgray'))}" onClick={() => {
                 this.selectPlan(row.id)
                 this.setPrice(row.price)
               }}>
                 {
-                  row.interval ? <span>${row.price} per {row.interval}</span> : <span>${row.price} life time</span>
+                  row.interval ? <span style={{display: 'flex', width: '100%', justifyContent: 'space-between'}}>${row.price} per {row.interval}
+
+                    {row.price === 3 ? <span style={{color: '#60BBE2'}}>
+                    Most popular - Save 20%
+
+                    </span> : null}</span> : <span style={{display: 'flex', width: '100%', justifyContent: 'space-between'}}>${row.price} life time <span style={{color: '#60BBE2'}}>
+                    Save 50%
+
+                  </span></span>
                 }
               </li>
           ))}

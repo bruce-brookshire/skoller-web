@@ -36,47 +36,45 @@ class PaymentPlans extends React.Component {
     // actions.stripe.getMySubscription().catch((r) => console.log(r, 66));
 
     actions.stripe.getMySubscription()
-        .then((data) => {
-          if(data.data.length > 0){
-            let len = data.data.length;
-            let latestplan = data.data.plan;
-          } else {
+      .then((data) => {
+        if (data.data.length > 0) {
+          let len = data.data.length
+          let latestplan = data.data.plan
+        } else {
 
-          }
+        }
         // this.setState({plans: data.data})
-        })
-        .catch((e) => {
+      })
+      .catch((e) => {
         console.log(e)
-     })
-
-
-}
+      })
+  }
 
   checkForActiveTerm () {
-    if(this.props.rootStore.userStore.user.student.primary_period && this.props.rootStore.userStore.user.student.primary_school){
-    if (moment(this.props.rootStore.userStore.user.student.primary_period.end_date).isBefore(moment())) {
-      this.setState({loading: true})
-      let activeMainTerms = []
-      this.props.rootStore.userStore.user.student.primary_school.periods.forEach(term => {
-        if (term.is_main_period && moment(term.end_date).isAfter(moment())) {
-          activeMainTerms.push(term)
-        }
-      })
-
-      let terms = activeMainTerms.sort((a, b) => moment(a.start_date).isAfter(moment(b.start_date)) ? 0 : -1)
-      actions.students.setStudentPrimaryPeriod(this.props.rootStore.userStore.user.id, this.props.rootStore.userStore.user.student.id, terms[0].id)
-        .then((r) => {
-          this.setState({
-            params: {
-              schoolChoice: this.props.rootStore.userStore.user.student.primary_school,
-              termChoice: r
-            },
-            loading: false
-          })
+    if (this.props.rootStore.userStore.user.student.primary_period && this.props.rootStore.userStore.user.student.primary_school) {
+      if (moment(this.props.rootStore.userStore.user.student.primary_period.end_date).isBefore(moment())) {
+        this.setState({loading: true})
+        let activeMainTerms = []
+        this.props.rootStore.userStore.user.student.primary_school.periods.forEach(term => {
+          if (term.is_main_period && moment(term.end_date).isAfter(moment())) {
+            activeMainTerms.push(term)
+          }
         })
-        .catch(e => console.log(e))
+
+        let terms = activeMainTerms.sort((a, b) => moment(a.start_date).isAfter(moment(b.start_date)) ? 0 : -1)
+        actions.students.setStudentPrimaryPeriod(this.props.rootStore.userStore.user.id, this.props.rootStore.userStore.user.student.id, terms[0].id)
+          .then((r) => {
+            this.setState({
+              params: {
+                schoolChoice: this.props.rootStore.userStore.user.student.primary_school,
+                termChoice: r
+              },
+              loading: false
+            })
+          })
+          .catch(e => console.log(e))
+      }
     }
-}
   }
 
   changeParams (data) {
@@ -94,10 +92,10 @@ class PaymentPlans extends React.Component {
     this.setState({classStatusModal: {show: true, cl: cl}})
   }
 
-//   closeModal = () => {
-//     this.props.closeModal()
-//     return null
-//   }
+  //   closeModal = () => {
+  //     this.props.closeModal()
+  //     return null
+  //   }
 
   renderPaymentPlans () {
     return (
