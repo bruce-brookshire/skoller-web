@@ -61,7 +61,11 @@ class ChangeSchool extends React.Component {
     }).catch((r) => console.log(r, 66))
     actions.stripe.allPlans()
       .then((data) => {
-        this.setState({ plans: [...data.data, {
+        const plansIntervals = data.data.map(item => item.interval)
+        const yearlyPlan = data.data[plansIntervals.indexOf('year')]
+        const monthlyPlan = data.data[plansIntervals.indexOf('month')]
+        console.log({monthlyPlan})
+        const lifeTimePlan = {
           active: true,
           amount: 800,
           amount_decimal: '800',
@@ -74,7 +78,8 @@ class ChangeSchool extends React.Component {
           price: 80,
           //   product: 'prod_K9UWGXZKuZSloY'
           product: 'prod_KbbJe8E1FTsHSM'
-        }] })
+        }
+        this.setState({ plans: [monthlyPlan, yearlyPlan, lifeTimePlan ] })
       })
       .catch((e) => {
         console.log(e)
@@ -109,7 +114,7 @@ class ChangeSchool extends React.Component {
               }}>
                 {
                   row.interval ? <span style={{display: 'flex', width: '100%', justifyContent: 'space-between'}}>${row.price} per {row.interval}
-                    {row.price === 3 ? <span style={{color: '#60BBE2'}}>
+                    {row.price === 30 ? <span style={{color: '#60BBE2'}}>
                     Most popular - Save 20%
 
                     </span> : null}
@@ -125,7 +130,7 @@ class ChangeSchool extends React.Component {
                 {
                   row.interval ? <span style={{display: 'flex', width: '100%', justifyContent: 'space-between'}}>${row.price} per {row.interval}
 
-                    {row.price === 3 ? <span style={{color: '#60BBE2'}}>
+                    {row.price === 30 ? <span style={{color: '#60BBE2'}}>
                     Most popular - Save 20%
 
                     </span> : null}</span> : <span style={{display: 'flex', width: '100%', justifyContent: 'space-between'}}>${row.price} life time <span style={{color: '#60BBE2'}}>
