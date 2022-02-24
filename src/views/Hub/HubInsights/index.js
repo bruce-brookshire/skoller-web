@@ -13,7 +13,9 @@ import TeamsCell from '../../Insights/components/TeamsCell'
 import AddOrRemoveOrgStudents from './AddOrRemoveOrgStudents'
 import CreateOrgGroupOwner from './CreateOrgGroupOwner'
 import TagUserToOrgGroup from './TagUserToOrgGroup'
+import { inject, observer } from 'mobx-react'
 
+@inject('rootStore') @observer
 class HubInsights extends React.Component {
   constructor (props) {
     super(props)
@@ -32,6 +34,7 @@ class HubInsights extends React.Component {
     }
 
     this.getData()
+    this.props.rootStore.navStore.setActivePage('hub/insights')
   }
 
   async getData () {

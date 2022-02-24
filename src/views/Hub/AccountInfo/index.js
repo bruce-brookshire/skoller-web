@@ -190,8 +190,8 @@ class AccountInfo extends React.Component {
                 }
                 {user.student &&
                   <tr>
-                    <th className='cn-flex-table-cell'>Life Time Trial:</th>
-                    <td className='cn-flex-table-cell'>{this.state.user.lifetime_trial ? 'true' : 'false' }</td>
+                    <th className='cn-flex-table-cell'>User path:</th>
+                    <td className='cn-flex-table-cell'>{this.state.user.lifetime_trial ? 'Premium - VIP' : 'Standard' }</td>
                   </tr>
                 }
               </tbody>
@@ -221,8 +221,8 @@ class AccountInfo extends React.Component {
       >
         {/* <AccountInfoForm user={this.state.user} onSubmit={this.onDetailsSumbit.bind(this)} onClose={this.toggleAccountForm.bind(this)} /> */}
         <div>
-          <h3> Life Time Trial Status </h3>
-          <label htmlFor="lifetimeselection">Life Time Trial</label>
+          <h3> User path </h3>
+          <label htmlFor="lifetimeselection">User path</label>
           <br />
           <select
             style={{
@@ -241,8 +241,8 @@ class AccountInfo extends React.Component {
             name="onoff" id="lifetimeselection" defaultValue={this.state.lifeTimeTrial} onChange={e => {
               this.setState({lifeTimeTrial: e.target.value})
             }}>
-            <option value={true}>true</option>
-            <option value={false}>false</option>
+            <option value={true}>Premium - VIP</option>
+            <option value={false}>Standard</option>
           </select>
           {/* <input type="radio" htmlFor='life-time-trial' checked={this.state.lifeTimeTrial} value={this.state.lifeTimeTrial} onChange={() => {
             this.setState({lifeTimeTrial: !this.state.lifeTimeTrial})
@@ -343,7 +343,7 @@ class AccountInfo extends React.Component {
       <div className="cn-account-info-box cn-accounts-min-width">
         <div className='cn-shadow-box-content'>
           <div className='cn-card-title edit-header'>
-            Life Time Trial Status
+           User Path
             <i className='fas fa-pencil-alt cn-blue cursor margin-left' onClick={this.toggleLifeTimeTrialModal.bind(this)} />
           </div>
           <br />
@@ -351,8 +351,8 @@ class AccountInfo extends React.Component {
           {
             user.student &&
                   <tr>
-                    <th className='cn-flex-table-cell'>LifeTime Trial:</th>
-                    <td className='cn-flex-table-cell'>{this.state.user.lifetime_trial ? 'true' : 'false'}</td>
+                    <th className='cn-flex-table-cell'>User path:</th>
+                    <td className='cn-flex-table-cell'>{this.state.user.lifetime_trial ? 'Premium - VIP' : 'Standard'}</td>
                   </tr>
           }
           {/* {this.state.user.reports && <Grid

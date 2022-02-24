@@ -8,7 +8,6 @@ import {mapProfessor} from '../../../utilities/display'
 import {mapTimeToDisplay} from '../../../utilities/time'
 import {inject, observer} from 'mobx-react'
 import PropTypes from 'prop-types'
-import { action } from 'mobx'
 
 const headers = [
   {
@@ -63,16 +62,11 @@ class HubClasses extends React.Component {
     super(props)
     this.state = {
       classes: [],
-      changeClasses: [],
       loading: false
     }
     this.props.rootStore.navStore.setActivePage('hub/classes')
   }
 
-  componentDidMount () {
-    this.getClasses('')
-    this.getChangeClasses()
-  }
   /*
 
   /*
@@ -82,15 +76,9 @@ class HubClasses extends React.Component {
   */
   getClasses (queryString) {
     this.setState({loading: true})
-    actions.classes.getInReviewClasses(queryString).then(classes => {
+    actions.classes.searchClasses(queryString).then(classes => {
       this.setState({classes, loading: false})
     }).catch(() => { this.setState({loading: false}) })
-  }
-
-  getChangeClasses () {
-    actions.classes.getChangeClasses().then(classes => {
-      this.setState({changeClasses: classes})
-    })
   }
 
   getCsv () {
@@ -113,9 +101,7 @@ class HubClasses extends React.Component {
   *
   * @return [Array]. Array of formatted row data.
   */
-
   getRows () {
-    console.log(this.state.classes, '----')
     return this.state.classes.map((item, index) =>
       this.mapRow(item, index)
     )
@@ -178,27 +164,6 @@ class HubClasses extends React.Component {
   onCreateClass () {
 
   }
-
-  getClassList () {
-    return (
-      <tbody>
-        {
-          this.state.classes.map((item, index) => (
-            <tr>
-              <td>{item.code}</td>
-              <td>{item.name}</td>
-              <td>{item.school.name}</td>
-              {/* <td>{item.premium}</td>
-            <td>{item.trial}</td>
-            <td>{item.expired}</td> */}
-              <td>{item.received ? item.received : '-'}</td>
-              <td>{item.days_left ? Math.ceil(item.days_left) : '-'}</td>
-            </tr>))
-
-        }
-      </tbody>
-    )
-  }
   /*
   * On edit class.
   *
@@ -218,7 +183,7 @@ class HubClasses extends React.Component {
     }
   }
 
-  renderHeader_bkp () {
+  renderHeader () {
     const {state} = this.props.location
     // If the class is in any of these states, don't show the search bar
     const boole = state && (state.needsChange || state.needsMaint)
@@ -248,31 +213,11 @@ class HubClasses extends React.Component {
     )
   }
 
-  renderHeader () {
-    const {state} = this.props.location
-    // If the class is in any of these states, don't show the search bar
-    const boole = state && (state.needsChange || state.needsMaint)
-    return boole ? (
-      <div>
-        <ClassSearch {...this.props} loading={this.state.loading}
-          onSearch={this.getClasses.bind(this)} hidden={true}/>
-        <div className='margin-top'>
-          <span className='total right'>Total results: {this.state.classes.length}</span>
-        </div>
-      </div>
-    ) : (
-      <div>
-        <ClassSearch {...this.props} loading={this.state.loading}
-          onSearch={this.getClasses.bind(this)}/>
-      </div>
-    )
-  }
-
   render () {
     return (
       <div className='cn-classes-container'>
-        {/* {this.renderHeader()} */}
-        {/* {this.state.loading
+        {this.renderHeader()}
+        {this.state.loading
           ? <div className='center-text'><Loading /></div>
           : <Grid
             className='cn-classes-table'
@@ -284,59 +229,7 @@ class HubClasses extends React.Component {
             emptyMessage={'Search for classes using the controls above.'}
             onSelect={this.onEditClass.bind(this)}
           />
-        } */}
-
-        <div className="table-wrap">
-          <div className="table-inner">
-            <div className="table-head">
-              <div className="row">
-                <div className="col-md-8">
-                  <div className="head-left">
-                    <h3><i className="fas fa-book"></i> &nbsp; Class</h3>
-                    <span className="badge badge-primary">In Review ({this.state.classes.length + 1})</span>
-                    <span className="badge badge-light">Class Changes ({this.state.changeClasses.length + 1})</span>
-                  </div>
-                </div>
-                <div className="col-md-4">
-                  {this.renderHeader()}
-                </div>
-              </div>
-            </div>
-            <div className="tabledata-wrap">
-              <div className="table-inner">
-                <table className="table" cellPadding="0" cellSpacing="0">
-                  <thead className="thead-dark">
-                    <tr>
-                      <th scope="col">ID</th>
-                      <th scope="col">Class Name</th>
-                      <th scope="col">School</th>
-                      {/* <th scope="col">Premium</th>
-                        <th scope="col">Trail</th>
-                        <th scope="col">Expired</th> */}
-                      <th scope="col">Recieved</th>
-                      <th scope="col">Day Left</th>
-                    </tr>
-                  </thead>
-                  {
-                    this.state.loading
-                      ? <div className={'sk-loader'} style={{marginLeft: '417%'}}>
-                        <div id='ball-1' className='circle'></div>
-                        <div id='ball-2' className='circle'></div>
-                        <div id='ball-3' className='circle'></div>
-                      </div>
-                      : this.getClassList()
-                  }
-                  {/* {this.getClassList()} */}
-
-                </table>
-
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-
+        }
       </div>
     )
   }
