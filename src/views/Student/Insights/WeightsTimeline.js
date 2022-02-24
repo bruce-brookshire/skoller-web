@@ -56,6 +56,55 @@ export class DateTooltip extends React.Component {
 DateTooltip.propTypes = {
   view: PropTypes.string
 }
+export class ModifiedDateTooltip extends React.Component {
+  static propTypes = {
+    x: PropTypes.number,
+    y: PropTypes.number,
+    orientation: PropTypes.string,
+    datum: PropTypes.object
+  }
+
+  render () {
+    const { datum, x, y } = this.props
+    return (
+      <g transform={'translate(-100, -200)'} style={{pointerEvents: 'none', position: 'relative'}}>
+        <foreignObject x={x} y={y} width="200" height="200">
+          <div
+            className="graph-tooltip"
+            style={{
+              width: '120px',
+              backgroundColor: 'white',
+              border: '1px solid #4a4a4a',
+              borderRadius: '5px',
+              padding: '8px',
+              position: 'absolute',
+              bottom: '12px',
+              left: 'calc(50% - 48px)'
+            }}
+          >
+            <div style={{textAlign: 'center'}}>
+              {this.props.view === 'w' &&
+                <h2 style={{margin: 0, fontSize: '12px'}}>Week {datum.weekPosition}: {moment(datum.x, 'X').format('M/D')} - {moment(datum.x, 'X').add(7, 'days').format('M/D')}</h2>
+              }
+              {this.props.view === 'd' &&
+                <h3 style={{margin: 0, fontSize: '14px'}}>{moment(datum.x, 'X').format('M/D')}</h3>
+              }
+              {this.props.view === 'm' &&
+                <h3 style={{margin: 0, fontSize: '14px'}}>{moment(datum.x, 'X').format('M/D')} - {moment(datum.x, 'X').add(1, 'month').subtract(1, 'day').format('M/D')}</h3>
+              }
+              <p style={{margin: 0, fontSize: '12px'}}>{datum.assignments} {datum.assignments > 1 ? 'Assignments' : 'Assignment'}</p>
+              <p style={{margin: 0, fontSize: '12px'}}>{Math.round(datum.y * 1000) / 10}% of total grade</p>
+            </div>
+          </div>
+        </foreignObject>
+      </g>
+    )
+  }
+}
+
+ModifiedDateTooltip.propTypes = {
+  view: PropTypes.string
+}
 
 @inject('rootStore') @observer
 class WeightsTimeline extends React.Component {
