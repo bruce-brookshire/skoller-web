@@ -206,10 +206,12 @@ export function modifiedGetAssignmentWeightData (a, cl = false, ids = [], groupi
         totalWeekWeights += a.weight
       })
 
-      weeks.forEach(w => {
+      weeks.forEach((w, idx) => {
         data.push({
           x: parseInt(moment(w.week).format('X')),
-          y: getViewWeights(w, totalWeekWeights)
+          y: getViewWeights(w, totalWeekWeights),
+          weekPosition: idx + 1,
+          assignments: w.assignments.length
         })
       })
       break

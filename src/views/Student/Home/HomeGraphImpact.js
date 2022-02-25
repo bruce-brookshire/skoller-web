@@ -4,46 +4,42 @@ import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import AssignmentsTimeline from '../Insights/AssignmentsTimeline'
-import WeightsTimeline from '../Insights/WeightsTimeline'
+import WeightsTimeline, { DateTooltip, ModifiedDateTooltip } from '../Insights/WeightsTimeline'
 import Distribution from '../Insights/Distribution'
 import Sammi from '../../components/Sammi'
 import Progress from '../Insights/Progress'
 import SkSelect from '../../components/SkSelect'
 import ToolTip from '../../components/ToolTip'
-import { getAssignmentCountDataHomeGraph } from '../Insights/DataUtils'
+import { getAssignmentCountDataHomeGraph, modifiedGetAssignmentWeightData } from '../Insights/DataUtils'
 
-import { VictoryBar, VictoryChart, VictoryAxis , VictoryTooltip, VictoryLabel, VictoryLine, VictoryScatter } from 'victory';
+import { VictoryBar, VictoryChart, VictoryAxis, VictoryTooltip, VictoryLabel, VictoryLine, VictoryScatter, VictoryArea } from 'victory'
 import { getStyles } from '../Insights/styles'
-
-
-
 
 import {
   Chart,
   BarSeries,
   Title,
   ArgumentAxis,
-  ValueAxis,
+  ValueAxis
 
-} from '@devexpress/dx-react-chart-bootstrap4';
-import '@devexpress/dx-react-chart-bootstrap4/dist/dx-react-chart-bootstrap4.css';
-import { Animation } from '@devexpress/dx-react-chart';
+} from '@devexpress/dx-react-chart-bootstrap4'
+import '@devexpress/dx-react-chart-bootstrap4/dist/dx-react-chart-bootstrap4.css'
+import { Animation } from '@devexpress/dx-react-chart'
 
 const data = [
   {quarter: 1, earnings: 13000},
   {quarter: 2, earnings: 16500},
   {quarter: 3, earnings: 14250},
   {quarter: 4, earnings: 19000}
-];
-
+]
 
 class CustomFlyout extends React.Component {
-  render() {
-    const {x, y, orientation, ji} = this.props;
-    const newY = orientation === "bottom" ? y - 35 : y + 35;
+  render () {
+    const {x, y, orientation, ji} = this.props
+    const newY = orientation === 'bottom' ? y - 35 : y + 35
     return (
       <g style={{pointerEvents: 'none'}}>
-        <foreignObject x={x-40} y={y-50} width="200" height="200">
+        <foreignObject x={x - 40} y={y - 50} width="200" height="200">
           {/* <div
             className="graph-tooltip"
             style={{
@@ -65,28 +61,28 @@ class CustomFlyout extends React.Component {
           </div> */}
 
           <div className="tip-warp">
-          <div className="tip-wrap__container">
+            <div className="tip-wrap__container">
 
               <h3 className="my-2 text-center d-block">Week 7:9/29-10/14</h3>
               <div className="flex justify-between">
                 <span className="text-muted">{ji} Assignments</span>
                 <span className="text-muted">21.7% Overall</span>
               </div>
-                <div className="tip-list">
-                  <div className="listtip firsttl flex flex-row  justify-between border-top py-5">
-                      <div className="">
-                          <h6 className="fs-16 text-left stext-purple my-5">Exam 1</h6>
-                          <p className="text-muted fs-12 my-5 mt-0">Tue 9/30</p>
-                      </div>
-                      <div className=""><h5 className="text-right text-dark fs-20 my-5">25%</h5></div>
-                    </div>
+              <div className="tip-list">
+                <div className="listtip firsttl flex flex-row  justify-between border-top py-5">
+                  <div className="">
+                    <h6 className="fs-16 text-left stext-purple my-5">Exam 1</h6>
+                    <p className="text-muted fs-12 my-5 mt-0">Tue 9/30</p>
+                  </div>
+                  <div className=""><h5 className="text-right text-dark fs-20 my-5">25%</h5></div>
                 </div>
-          </div>
+              </div>
+            </div>
           </div>
 
         </foreignObject>
       </g>
-    );
+    )
   }
 }
 @inject('rootStore') @observer
@@ -98,7 +94,7 @@ class HomeGraphImpact extends React.Component {
     this.state = {
       type: 'Distribution',
       data,
-      assignment:props.rootStore.studentAssignmentsStore.assignments
+      assignment: props.rootStore.studentAssignmentsStore.assignments
     }
   }
 
@@ -106,41 +102,41 @@ class HomeGraphImpact extends React.Component {
     return getStyles(this.props.cl ? '#' + this.props.cl.color : false)
   }
 
-      // ass:this.props.rootStore.studentAssignmentsStore.assignments
-
+  // ass:this.props.rootStore.studentAssignmentsStore.assignments
 
   render () {
-      const { data: chartData, assignment } = this.state;
-      console.log({assignment})
-      console.log(assignment, 'before changes');
-      let data = getAssignmentCountDataHomeGraph(assignment, false, [], 'w');
-      console.log(data, 'un changes');
+    const { data: chartData, assignment } = this.state
+    console.log({assignment})
+    console.log(assignment, 'before changes')
+    // let data = getAssignmentCountDataHomeGraph(assignment, false, [], 'w')
+    let data = modifiedGetAssignmentWeightData((this.props.cl ? this.props.cl.assignments : this.props.assignments), this.props.cl, this.props.ids, 'w', this.props.rootStore.userStore.user.student.primary_period)
+    console.log(data, 'un changes')
 
-      const styles = this.getStyles();
+    const styles = this.getStyles()
 
-      const today = parseInt(moment().format('X'))
-      let domain = {x: [0,0], y: [0,0]}
-      if(data.length > 0) {
-         domain = {
-            x: [
-              data[0].x - 604800,
-              data[data.length - 1].x + 604800
-            ],
-            y: [
-              0,
-              Math.max.apply(Math, data.map(a => a.y)) + (Math.max.apply(Math, data.map(a => a.y)) * 0.25)
-            ]
-          }
+    const today = parseInt(moment().format('X'))
+    let domain = {x: [0, 0], y: [0, 0]}
+    if (data.length > 0) {
+      domain = {
+        x: [
+          data[0].x - 604800,
+          data[data.length - 1].x + 604800
+        ],
+        y: [
+          0,
+          Math.max.apply(Math, data.map(a => a.y)) + (Math.max.apply(Math, data.map(a => a.y)) * 0.25)
+        ]
       }
+    }
 
-      let hideToday = false
-      if (moment(today, 'X').isAfter(moment(domain.x[1], 'X'))) {
-        hideToday = true
-      }
-      const tickValues = data.map(d => d.x)
-      const animate = null
+    let hideToday = false
+    if (moment(today, 'X').isAfter(moment(domain.x[1], 'X'))) {
+      hideToday = true
+    }
+    const tickValues = data.map(d => d.x)
+    const animate = null
 
-      console.log(data, domain, 'assignments--');
+    console.log(data, domain, 'assignments--')
     return (
       // <div className='home-shadow-box margin-top home-insights'>
 
@@ -167,106 +163,118 @@ class HomeGraphImpact extends React.Component {
       //   </VictoryChart>
       // </div>
       <div className='home-shadow-box margin-top home-insights'>
-          <svg  viewBox='0 0 450 300'>
+        <svg viewBox='0 0 450 300'>
 
+          <g transform={'translate(0, 0)'}>
+            <VictoryAxis
+              tickValues={tickValues}
+              tickFormat={d => moment(d, 'X').format('M/DD')}
+              tickCount={5}
+              style={styles.axisDates}
+              domain={{x: domain.x}}
+              // scale='time'
+              standalone={false}
+              animate={animate}
+            />
 
-            <g transform={'translate(0, 0)'}>
-              <VictoryAxis
-                tickValues={tickValues}
-                tickFormat={d => moment(d, 'X').format('M/DD')}
-                tickCount={5}
-                style={styles.axisDates}
-                domain={{x: domain.x}}
-                // scale='time'
+            <VictoryLabel x={6} y={154}
+
+              style={styles.axisLabel}
+              angle={270}
+              textAnchor={'middle'}
+            />
+
+            <VictoryAxis
+              dependentAxis
+              // label='Assignments'
+              domain={{y: domain.y}}
+              offsetX={50}
+              orientation='left'
+              standalone={false}
+              domainPadding={200}
+              style={styles.axisOne}
+              tickFormat={d => d.toString()}
+              animate={animate}
+            />
+
+            {!hideToday && <g>
+              <VictoryLine
+                x={() => today}
+                domain={domain}
+                scale={{x: 'time', y: 'linear'}}
                 standalone={false}
+                style={styles.todayLine.back}
                 animate={animate}
               />
 
-              <VictoryLabel x={6} y={154}
-                style={styles.axisLabel}
-                angle={270}
-                textAnchor={'middle'}
-              />
-
-              <VictoryAxis
-                dependentAxis
-                // label='Assignments'
-                domain={{y: domain.y}}
-                offsetX={50}
-                orientation='left'
+              <VictoryLine
+                x={() => today}
+                domain={domain}
+                scale={{x: 'time', y: 'linear'}}
                 standalone={false}
-                domainPadding={200}
-                style={styles.axisOne}
-                tickFormat={d => d.toString()}
+                style={styles.todayLine.front}
                 animate={animate}
               />
 
-              {!hideToday && <g>
-                <VictoryLine
-                  x={() => today}
-                  domain={domain}
-                  scale={{x: 'time', y: 'linear'}}
-                  standalone={false}
-                  style={styles.todayLine.back}
-                  animate={animate}
+              <VictoryScatter
+                data={[{x: today, y: domain.y[1]}]}
+                domain={domain}
+                standalone={false}
+                scale={{x: 'time', y: 'linear'}}
+                size={4}
+                style={styles.todayLine.dot}
+                animate={animate}
+              />
+
+              <VictoryLabel x={(((today - domain.x[0]) / (domain.x[1] - domain.x[0])) * 336) + 35} y={34}
+                text={'Today'}
+                style={styles.label}
+                animate={animate}
+              />
+            </g>}
+
+            {/* <g>
+              <VictoryArea
+                data={data}
+                domain={domain}
+                scale={{x: 'time', y: 'linear'}}
+                standalone={false}
+                interpolation='monotoneX'
+                style={styles.area}
+                animate={animate}
+              />
+            </g> */}
+
+            <VictoryBar
+              data={data}
+              domain={domain}
+              scale={{x: 'time', y: 'linear'}}
+              size={5}
+              standalone={false}
+              style={styles.scatter}
+              //   labels={() => 'Week 7: 9/29-10/4 \n 12 assignments \n 21.6% of total grade'}
+              //   labels={({ datum }) => `Week 7: ${moment(datum.x, 'X').format('M/D') - moment(datum.x, 'X').add(7, 'days').format('M/D')} \n ${datum.allAssignment.length} assignments \n 21.6% of total grade`}
+              labels={() => ''}
+              labelComponent={
+                <VictoryTooltip
+                //   style={{ fill: '#4A4A4A' }}
+                  // cornerRadius={0}
+                  // pointerLength={0}
+                  renderInPortal={false}
+                  //   flyoutStyle={{
+                  //     stroke: '#979797',
+                  //     fill: '#FFFFFF'
+                  //   }}
+                  // flyoutHeight={60}
+                  flyoutComponent={<ModifiedDateTooltip view={'w'} />}
                 />
+              }
+              animate={animate}
+            />
 
-                <VictoryLine
-                  x={() => today}
-                  domain={domain}
-                  scale={{x: 'time', y: 'linear'}}
-                  standalone={false}
-                  style={styles.todayLine.front}
-                  animate={animate}
-                />
-
-                <VictoryScatter
-                  data={[{x: today, y: domain.y[1]}]}
-                  domain={domain}
-                  standalone={false}
-                  scale={{x: 'time', y: 'linear'}}
-                  size={4}
-                  style={styles.todayLine.dot}
-                  animate={animate}
-                />
-
-                <VictoryLabel x={(((today - domain.x[0]) / (domain.x[1] - domain.x[0])) * 336) + 35} y={34}
-                  text={'Today'}
-                  style={styles.label}
-                  animate={animate}
-                />
-              </g>}
-
-                <VictoryBar
-                  data={data}
-                  domain={domain}
-                  scale={{x: 'time', y: 'linear'}}
-                  standalone={false}
-                  style={styles.scatter}
-                  labels={() => "Week 7: 9/29-10/4 \n 12 assignments \n 21.6% of total grade"}
-                  labelComponent={
-                    <VictoryTooltip
-                     style={{ fill: "#4A4A4A" }}
-                    // cornerRadius={0}
-                    // pointerLength={0}
-                    flyoutStyle={{
-                        stroke: "#979797",
-                        fill: '#FFFFFF'
-                    }}
-                    // flyoutHeight={60}
-                    //   flyoutComponent={<CustomFlyout ji='098'/>}
-                    />
-                  }
-                  animate={animate}
-                />
-
-
-
-
-
-            </g>
-          </svg>
-        </div>
+          </g>
+        </svg>
+      </div>
     )
   }
 }
