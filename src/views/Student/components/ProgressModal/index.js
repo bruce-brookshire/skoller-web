@@ -93,6 +93,10 @@ export default class ProgressModal extends Component {
         <SkModal
           className='sk-pm'
           closeModal={this.props.closeModal ? () => this.props.closeModal() : null}
+          style={{
+            maxWidth: '600px',
+            width: '100%'
+          }}
         >
           <div className='sk-pm-nav' style={this.props.closeModal ? {} : {transform: 'translate(-16px, -42px)', paddingLeft: '16px'}}>
             <h3>{this.props.title}</h3>
