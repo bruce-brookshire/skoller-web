@@ -245,7 +245,10 @@ class SkBanner extends React.Component {
   renderInviteModal () {
     if (this.state.showInviteModal) {
       return (
-        <SkModal closeModal={() => this.setState({showInviteModal: false})}>
+        <SkModal closeModal={() => this.setState({showInviteModal: false})} style={{
+          maxWidth: '600px',
+          width: '100%'
+        }}>
           <InvitationTermsAgreement user={this.props.rootStore.userStore.user} invitation={this.state.invitation} onSubmit={() => {
             this.setState({showInviteModal: false})
             this.getBannerChoices()
