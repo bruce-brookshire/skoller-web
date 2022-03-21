@@ -4,7 +4,7 @@ import sExclamation from '../../../assets/images/class_status/s-exclamation.png'
 import sInReview from '../../../assets/images/class_status/s-in-review.png'
 import uploadS from '../../../assets/images/class_status/upload-s.png'
 import {inject, observer} from 'mobx-react'
-import ReactToolTip  from '../ToolTip/CustomToolTip'
+import ReactToolTip from '../ToolTip/CustomToolTip'
 
 @inject('rootStore') @observer
 class ClassList extends React.Component {
@@ -27,7 +27,7 @@ class ClassList extends React.Component {
 
     if (status >= 1400) {
       return (
-        <h1  className='cn-class-list-row-grade-text cn-white'>{cl.grade > 0 ? Math.round(cl.grade) + '%' : '–'}</h1>
+        <h1 className='cn-class-list-row-grade-text cn-white'>{cl.grade > 0 ? Math.round(cl.grade) + '%' : '–'}</h1>
         // <h1 style={{color: cl.getColor()}} className='cn-class-list-row-grade-text cn-white'>{cl.grade > 0 ? Math.round(cl.grade) + '%' : '–'}</h1>
       )
     } else if (status === 1100) {
@@ -68,23 +68,23 @@ class ClassList extends React.Component {
 
     if (status >= 1400) {
       return (
-          <p><span><i className="fas fa-users"></i></span> {cl.enrollment}</p>
+        <p><span><i className="fas fa-users"></i></span> {cl.enrollment}</p>
       )
     } else if (status === 1100) {
       return (
-          <p style={{color: '#ef183d'}}>Send syllabus</p>
+        <p style={{color: '#ef183d'}}>Send syllabus</p>
       )
     } else if (syllabusOverload) {
       return (
-          <p style={{color: '#ef4b0a'}}>Set up this class</p>
+        <p style={{color: '#ef4b0a'}}>Set up this class</p>
       )
     } else if (status === 1200) {
       return (
-          <p style={{color: '#4a4a4a'}}>Syllabus in review</p>
+        <p style={{color: '#4a4a4a'}}>Syllabus in review</p>
       )
     } else if (status === 1300) {
       return (
-          <p style={{color: '#ef4b0a' }}>Set up this class</p>
+        <p style={{color: '#ef4b0a' }}>Set up this class</p>
       )
     } else {
       return null
@@ -121,22 +121,22 @@ class ClassList extends React.Component {
             //   </ReactToolTip>
             // </div>
             <div className="center-block col-md-6"
-            key={classes.indexOf(cl)}
-            onClick={() => this.onClassSelect(cl)}
+              key={classes.indexOf(cl)}
+              onClick={() => this.onClassSelect(cl)}
             >
-            <div className="card-wrap sborder-1" style={cl.status.id >= 1400 ? {border: '1px solid ' + color} : null}>
-              <span className="card-icon  stext-white" style={cl.status.id < 1400 ? {backgroundColor: null, borderBottom: '1px solid #4a4a4a'} : {backgroundColor: color}}>
-                {this.renderGrade(cl)}
-                {/* {cl.status.id} */}
+              <div className="card-wrap sborder-1" style={cl.status.id >= 1400 ? {border: '1px solid ' + color} : null}>
+                <span className="card-icon  stext-white" style={cl.status.id < 1400 ? {backgroundColor: null, borderBottom: '1px solid #4a4a4a'} : {backgroundColor: color}}>
+                  {this.renderGrade(cl)}
+                  {/* {cl.status.id} */}
                 </span>
-              <h3 className="card-title" style={{color}}>{name}</h3>
-              <p className="card-subtitle stext-normal">
-                <ReactToolTip theme="dark" position="top"  title={name} ttype="classes" studentCount={cl.enrollment} enrollment_link = { cl.enrollment_link}>
-                  {this.renderExtra(cl)}
-                </ReactToolTip>
+                <h3 className="card-title" style={{color: cl.status.id === 1100 || cl.status.id === 1200 || cl.status.id === 1300 ? '#4a4a4a' : color}}>{name}</h3>
+                <p className="card-subtitle stext-normal">
+                  <ReactToolTip theme="dark" position="top" title={name} ttype="classes" studentCount={cl.enrollment} enrollment_link = { cl.enrollment_link}>
+                    {this.renderExtra(cl)}
+                  </ReactToolTip>
                 </p>
+              </div>
             </div>
-          </div>
           )
         })}
         <div className='cn-class-list-cell empty' />
