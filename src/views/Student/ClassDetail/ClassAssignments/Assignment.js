@@ -9,7 +9,7 @@ import EditAssignment from './EditAssignment'
 import CheckIcon from '../../../../assets/sk-icons/CheckIcon'
 import OutsideClickHandler from 'react-outside-click-handler'
 
-function Grade (props) {
+export function Grade (props) {
   const [editing, setEditing] = React.useState(false)
   const [grade, setGrade] = React.useState(props.assignment.grade)
   const color = '#' + props.color
@@ -79,6 +79,10 @@ Grade.propTypes = {
 }
 
 export default function Assignment (props) {
+  let isTask = false
+  if(props.isTask){
+      isTask = props.isTask
+  }
   const [showEdit, setShowEdit] = React.useState(false)
   const [showButton, setShowButton] = React.useState(false)
   const [showCheck, setShowCheck] = React.useState(false)
@@ -149,7 +153,8 @@ export default function Assignment (props) {
                   <div className='sk-assignment-name' style={color ? {color} : {}}>{props.assignment.name}</div>
                   <div className={props.assignment.due ? 'sk-assignment-due' : 'sk-assignment-missing'}>{formatDueDate(props.assignment.due)}</div>
                 </div>
-                <Flipper spring={'stiff'} flipKey={showButton + editExited} className='sk-assignment-controls'>
+                {
+                    !isTask && <Flipper spring={'stiff'} flipKey={showButton + editExited} className='sk-assignment-controls'>
                   <Flipped flipId={1}>
                     <CSSTransition
                       key={1}
@@ -193,6 +198,7 @@ export default function Assignment (props) {
                     </CSSTransition>
                   </Flipped>
                 </Flipper>
+                }
               </div>
               {/* </Link> */}
             </CSSTransition>

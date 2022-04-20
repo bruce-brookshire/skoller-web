@@ -8,6 +8,9 @@ import AddClassModal from '../../Student/components/AddClassModal'
 import MajorForm from '../MiscViews/MajorForm'
 import DocumentsForm from '../Jobs/components/DocumentsForm'
 import ClassStatusModal from '../../components/ClassStatusModal'
+import PaymentPlans from '../../Student/components/StripeModals'
+import CancelSubscriptionModal from '../components/CancelSubscriptionModal'
+import LifeTimeUserModal from '../components/LifeTimeUserModal'
 
 @inject('rootStore') @observer
 class PopUp extends React.Component {
@@ -40,6 +43,37 @@ class PopUp extends React.Component {
     return (
       <div className='sk-pop-up'>
         <AddClassModal closeModal={() => this.props.closeModal()} />
+      </div>
+    )
+  }
+  renderPaymentPlans () {
+    return (
+      <div className='sk-pop-up'>
+        <PaymentPlans
+          closeModal={() => this.props.closeModal()}
+          handleModalClose={() => this.props.handleModalClose()}
+        />
+      </div>
+    )
+  }
+  renderCancelSubscription () {
+    return (
+      <div style={{padding: '2rem'}}>
+        <CancelSubscriptionModal
+          closeModal={() => this.props.handleModalClose()}
+
+        />
+      </div>
+    )
+  }
+
+  renderLifeTimeTrialUserModal () {
+    return (
+      <div>
+        <LifeTimeUserModal
+          closeModal={() => this.props.closeModal()}
+          handleModalClose={() => this.props.handleModalClose()}
+        />
       </div>
     )
   }
@@ -76,6 +110,11 @@ class PopUp extends React.Component {
             {this.renderFindClassPopUp()}
           </SkModal>
         }
+        {this.props.type === 'CancelSubscription' &&
+          <SkModal>
+            {this.renderCancelSubscription()}
+          </SkModal>
+        }
         {this.props.type === 'getMajor' &&
           <SkModal closeModal={() => this.closeModal()}>
             {this.renderGetMajor()}
@@ -85,6 +124,19 @@ class PopUp extends React.Component {
           <SkModal closeModal={() => this.closeModal()}>
             {this.renderGetResume()}
           </SkModal>
+        }
+        {this.props.type === 'PaymentPlans' &&
+          <SkModal
+            closeModal={() => this.closeModal()}
+          >
+            {this.renderPaymentPlans()}
+          </SkModal>
+        }
+        {
+          this.props.type === 'LifeTimeTrialUser' &&
+            <SkModal closeModal={() => this.closeModal()}>
+              {this.renderLifeTimeTrialUserModal()}
+            </SkModal>
         }
       </div>
     )

@@ -16,6 +16,7 @@ import { withRouter } from 'react-router-dom'
 class AddAssignment extends Component {
   constructor (props) {
     super(props)
+    console.log(this.props, 'My Props');
 
     this.state = {
       // student info stuff

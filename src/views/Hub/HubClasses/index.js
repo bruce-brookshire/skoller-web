@@ -64,6 +64,7 @@ class HubClasses extends React.Component {
       classes: [],
       loading: false
     }
+    this.props.rootStore.navStore.setActivePage('hub/classes')
   }
 
   /*
@@ -84,10 +85,10 @@ class HubClasses extends React.Component {
     actions.classes.getClassesCsv().then(csv => {
       let blob = new Blob([csv], {type: 'text/csv'}) // eslint-disable-line no-undef
       let url = window.URL.createObjectURL(blob)
-      var downloadLink = document.createElement("a")
+      var downloadLink = document.createElement('a')
       downloadLink.href = url
       var today = new Date()
-      downloadLink.download = "Classes-" + today.getFullYear() + "_" + (today.getMonth() + 1) + "_" + today.getDate() + "_" + today.getHours() + "_" + today.getMinutes() + ".csv"
+      downloadLink.download = 'Classes-' + today.getFullYear() + '_' + (today.getMonth() + 1) + '_' + today.getDate() + '_' + today.getHours() + '_' + today.getMinutes() + '.csv'
 
       document.body.appendChild(downloadLink)
       downloadLink.click()

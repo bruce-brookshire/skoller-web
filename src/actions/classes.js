@@ -3,6 +3,25 @@ import { showSnackbar } from '../utilities/snackbar'
 import stores from '../stores'
 const { userStore } = stores
 
+
+export async function getInReviewClasses (queryString) {
+    try {
+        const data = await get('/api/v1/dashboard/classes/in_reviews',queryString, 'Error searching classes. Try again.')
+        return data
+    } catch (err) {
+        return await Promise.reject(err)
+    }
+}
+
+export async function getChangeClasses (queryString) {
+    try {
+        const data = await get('/api/v1/dashboard/classes/class_changes')
+        return data
+    } catch (err) {
+        return await Promise.reject(err)
+    }
+}
+
 /*
  * Search classes by param
  *

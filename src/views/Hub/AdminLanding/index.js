@@ -63,7 +63,8 @@ class AdminLanding extends React.Component {
         this.cookie.remove('skollerToken', { path: '/' })
         this.cookie.set('skollerToken', authToken, { maxAge: 86400 * 270, path: '/' })
 
-        this.props.history.push('/hub')
+        // this.props.history.push('/hub')
+        this.props.history.push('/hub/classes')
       }).catch((reason) => false)
     }
   }

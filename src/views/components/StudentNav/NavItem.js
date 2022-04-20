@@ -33,25 +33,25 @@ class NavItem extends React.Component {
     //   marginTop: '3px'
     // }
     if (this.props.pageName.includes('home') || this.props.pageName.includes('jobs/home')) {
-      return <HomeIcon fill="white" width="22px" height="22px" />
+      return <HomeIcon fill={this.getActivePage() === this.props.pageName ?  '#fcfcfc' : '#333'} width="22px" height="22px" />
     } else if (this.props.pageName.includes('tasks')) {
-      return <TasksIcon fill="white" width="22px" height="22px" />
+      return <TasksIcon fill={this.getActivePage() === this.props.pageName ?  '#fcfcfc' : '#333'} width="22px" height="22px" />
     } else if (this.props.pageName.includes('classes')) {
-      return <ClassesIcon fill="white" width="22px" height="22px" />
+      return <ClassesIcon fill={this.getActivePage() === this.props.pageName ?  '#fcfcfc' : '#333'} width="22px" height="22px" />
     } else if (this.props.pageName.includes('calendar')) {
-      return <CalendarIcon fill="white" width="22px" height="22px" />
+      return <CalendarIcon fill={this.getActivePage() === this.props.pageName ?  '#fcfcfc' : '#333'} width="22px" height="22px" />
     } else if (this.props.pageName.includes('chat')) {
-      return <ChatIcon fill="white" width="22px" height="22px" />
+      return <ChatIcon fill={this.getActivePage() === this.props.pageName ?  '#fcfcfc' : '#333'} width="22px" height="22px" />
     } else if (this.props.pageName.includes('activity')) {
-      return <ActivityIcon fill="white" width="22px" height="22px" />
+      return <ActivityIcon fill={this.getActivePage() === this.props.pageName ?  '#fcfcfc' : '#333'} width="22px" height="22px" />
     } else if (this.props.pageName.includes('share')) {
-      return <ShareIcon fill="white" width="22px" height="22px" />
+      return <ShareIcon fill={this.getActivePage() === this.props.pageName ?  '#fcfcfc' : '#333'} width="22px" height="22px" />
     } else if (this.props.pageName.includes('jobs/profile')) {
-      return <Profile fill="white" width="22px" height="22px" />
+      return <Profile fill={this.getActivePage() === this.props.pageName ?  '#fcfcfc' : '#333'} width="22px" height="22px" />
     } else if (this.props.pageName.includes('jobs/resume')) {
-      return <Resume fill="white" width="22px" height="22px" />
+      return <Resume fill={this.getActivePage() === this.props.pageName ?  '#fcfcfc' : '#333'} width="22px" height="22px" />
     } else if (this.props.pageName.includes('jobs/browse')) {
-      return <Browse fill="white" width="19px" height="18px" />
+      return <Browse fill={this.getActivePage() === this.props.pageName ?  '#fcfcfc' : '#333'} width="19px" height="18px" />
     } else if (this.props.pageName.includes('insights/dashboard')) {
       return null
     } else if (this.props.pageName.includes('insights/students')) {
@@ -59,7 +59,7 @@ class NavItem extends React.Component {
     } else if (this.props.pageName.includes('insights/teams')) {
       return null
     } else if (this.props.pageName.includes('insights')) {
-      return <InsightsIcon fill="white" width="22px" height="24px" />
+      return <InsightsIcon fill={this.getActivePage() === this.props.pageName ?  '#fcfcfc' : '#333'} width="22px" height="24px" />
     } else {
       return null
     }

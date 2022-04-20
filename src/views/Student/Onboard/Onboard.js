@@ -3,7 +3,7 @@ import partners from './partners'
 import PropTypes from 'prop-types'
 import { inject, observer } from 'mobx-react'
 import LoginVerificationModal from '../../components/LoginForm/LoginVerificationModal'
-import {Cookies} from 'react-cookie'
+import { Cookies } from 'react-cookie'
 import actions from '../../../actions'
 import SignUp from './SignUp'
 import SelectSchool from './SelectSchool'
@@ -52,13 +52,13 @@ class Onboard extends React.Component {
         let slug = r.link.replace(/(.+)(\/c\/)/g, '')
         if (this.props.params.partner && (this.props.params.partner !== slug)) {
           this.props.history.push(('/student/share/' + this.props.params.partner))
-          this.setState({redirect: true})
+          this.setState({ redirect: true })
         }
-        this.setState({partner: this.getPartner(slug)})
+        this.setState({ partner: this.getPartner(slug) })
       })
       .catch(r => {
         if (this.props.params.partner) {
-          this.setState({partner: null, redirect: true})
+          this.setState({ partner: null, redirect: true })
           this.props.history.push(('/student/share/' + this.props.params.partner))
           hasPartner = false
         }
@@ -72,15 +72,15 @@ class Onboard extends React.Component {
       await this.getPartnerByUser() // <-- sets onboard to partner state if user signed up through custom link
         .then(r => {
           if (r) {
-            this.setState({user: this.props.rootStore.userStore.user})
+            this.setState({ user: this.props.rootStore.userStore.user })
             this.getStep()
           }
         })
     } else {
       if (this.state.user) {
-        this.setState({step: 'verify', loading: false})
+        this.setState({ step: 'verify', loading: false })
       } else if (this.state.partner !== null) {
-        this.setState({step: 'sign-up', loading: false})
+        this.setState({ step: 'sign-up', loading: false })
       } else {
         this.props.history.push('/landing')
       }
@@ -108,11 +108,11 @@ class Onboard extends React.Component {
         this.props.history.push('/student')
       }
       if (!user.student.primary_school || !user.student.primary_period) {
-        this.setState({step: 'select-school'})
+        this.setState({ step: 'select-school' })
       } else if (classNumber === 1) {
-        this.setState({step: 'first-class'})
+        this.setState({ step: 'first-class' })
       } else if (user.student.primary_school && user.student.primary_period && (classNumber === 0)) {
-        this.setState({step: 'find-a-class'})
+        this.setState({ step: 'find-a-class' })
       } else {
         this.props.history.push('/student')
       }
@@ -123,11 +123,11 @@ class Onboard extends React.Component {
     await actions.insights.students.checkOrgInvites(this.props.rootStore.userStore.user.student.id)
       .then(r => {
         if (r.length > 0) {
-          this.setState({hasOutstandingInvite: r[0], step: 'acceptInvitation'})
+          this.setState({ hasOutstandingInvite: r[0], step: 'acceptInvitation' })
         }
       })
 
-    this.setState({loading: false})
+    this.setState({ loading: false })
   }
 
   getPartner (partnerSlug) {
@@ -140,193 +140,193 @@ class Onboard extends React.Component {
     return partner
   }
 
-  onVerificationSubmit = async () => {
-    await actions.insights.students.checkOrgInvites(this.props.rootStore.userStore.user.student.id)
-      .then(r => {
-        if (r.length > 0) {
-          this.setState({hasOutstandingInvite: r[0]})
-        }
-      })
+    onVerificationSubmit = async () => {
+      await actions.insights.students.checkOrgInvites(this.props.rootStore.userStore.user.student.id)
+        .then(r => {
+          if (r.length > 0) {
+            this.setState({ hasOutstandingInvite: r[0] })
+          }
+        })
 
-    if (this.state.hasOutstandingInvite) {
-      this.setState({step: 'acceptInvitation'})
-    } else {
-      this.setState({step: 'select-school'})
+      if (this.state.hasOutstandingInvite) {
+        this.setState({ step: 'acceptInvitation' })
+      } else {
+        this.setState({ step: 'select-school' })
+      }
     }
-  }
 
-  renderVerify () {
-    return (
-      <LoginVerificationModal closeModal={null} onSubmit={this.onVerificationSubmit} phone={this.props.rootStore.userStore.user.student.phone}/>
-    )
-  }
-
-  renderOnboardContent (children) {
-    return (
-      children
-    )
-  }
-
-  renderPartner = () => {
-    if (this.state.partner) {
+    renderVerify () {
       return (
-        <div className='onboard-partner'>
-          <p>in partnership with</p> <img src={this.state.partner.logo} alt={this.state.partner.name} />
-        </div>
+        <LoginVerificationModal closeModal={null} onSubmit={this.onVerificationSubmit} phone={this.props.rootStore.userStore.user.student.phone} />
       )
     }
-  }
 
-  renderSignUp () {
-    return (
-      <SignUp
-        onSubmit={() => {
-          this.setState({
-            step: 'verify'
-          })
-        }}
-        renderPartner={this.renderPartner}
-        partner={this.state.partner}
-      />
-    )
-  }
+    renderOnboardContent (children) {
+      return (
+        children
+      )
+    }
 
-  renderSelectSchool () {
-    return (
-      this.renderOnboardContent(
-        <SelectSchool
-          onSubmit={(data) => {
-            this.updateStudent()
+    renderPartner = () => {
+      if (this.state.partner) {
+        return (
+          <div className='onboard-partner'>
+            <p>in partnership with</p> <img src={this.state.partner.logo} alt={this.state.partner.name} />
+          </div>
+        )
+      }
+    }
+
+    renderSignUp () {
+      return (
+        <SignUp
+          onSubmit={() => {
             this.setState({
-              step: 'find-a-class',
-              selectSchoolData: data
+              step: 'verify'
             })
           }}
           renderPartner={this.renderPartner}
-          backData={this.state.backData}
-        />
-      )
-    )
-  }
-
-  renderFindAClass () {
-    return (
-      this.renderOnboardContent(
-        <FindAClass
-          onSubmit={() => {
-            this.updateStudent()
-            this.setState({step: 'first-class'})
-          }}
-          onBack={(school, term) => {
-            this.setState({
-              step: 'select-school',
-              backData: {
-                schoolChoice: school,
-                termChoice: term
-              }
-            })
-          }}
-          params={this.state.selectSchoolData}
-          renderPartner={this.renderPartner}
-          partner={this.state.partner}
-          onboard={true}
-        />
-      )
-    )
-  }
-
-  renderFirstClass () {
-    return (
-      this.renderOnboardContent(
-        <FirstClass
-          onSubmit={
-            (this.state.partner)
-              ? () => {
-                this.setState({step: 'share-partner'})
-              }
-              : () => {
-                this.updateStudent()
-                this.props.history.push('/student')
-              }
-          }
-          renderPartner={this.renderPartner}
           partner={this.state.partner}
         />
       )
-    )
-  }
+    }
 
-  renderSharePartner () {
-    return (
-      this.renderOnboardContent(
-        <SharePartner
-          onSubmit={() => {
-            this.props.history.push('/student')
-          }}
-          renderPartner={this.renderPartner}
-          partner={this.state.partner}
-        />
+    renderSelectSchool () {
+      return (
+        this.renderOnboardContent(
+          <SelectSchool
+            onSubmit={(data) => {
+              this.updateStudent()
+              this.setState({
+                step: 'find-a-class',
+                selectSchoolData: data
+              })
+            }}
+            renderPartner={this.renderPartner}
+            backData={this.state.backData}
+          />
+        )
       )
-    )
-  }
+    }
 
-  renderAcceptInvitation () {
-    return (
-      <InvitationTermsAgreement user={this.props.rootStore.userStore.user} invitation={this.state.hasOutstandingInvite} onSubmit={() => {
-        if (this.props.rootStore.navStore.mobile) {
-          this.setState({step: 'download'})
-        } else {
-          this.loginStudent(true)
-          // this.setState({step: 'select-school'})
-        }
-      }} />
-    )
-  }
+    renderFindAClass () {
+      return (
+        this.renderOnboardContent(
+          <FindAClass
+            onSubmit={() => {
+              this.updateStudent()
+              this.setState({ step: 'first-class' })
+            }}
+            onBack={(school, term) => {
+              this.setState({
+                step: 'select-school',
+                backData: {
+                  schoolChoice: school,
+                  termChoice: term
+                }
+              })
+            }}
+            params={this.state.selectSchoolData}
+            renderPartner={this.renderPartner}
+            partner={this.state.partner}
+            onboard={true}
+          />
+        )
+      )
+    }
 
-  renderDownload () {
-    return <EnrollDownload />
-  }
+    renderFirstClass () {
+      return (
+        this.renderOnboardContent(
+          <FirstClass
+            onSubmit={
+              (this.state.partner)
+                ? () => {
+                  this.setState({ step: 'share-partner' })
+                }
+                : () => {
+                  this.updateStudent()
+                  this.props.history.push('/student')
+                }
+            }
+            renderPartner={this.renderPartner}
+            partner={this.state.partner}
+          />
+        )
+      )
+    }
 
-  render () {
-    return (
-      (this.state.loading)
-        ? <div className='onboard-loading'>
-          <SkLoader />
-        </div>
-        : <Layout id='onboard-layout' hideModal={this.state.step === 'verify' || this.state.step === 'first-class'}>
-          {(this.state.step === 'acceptInvitation') &&
-            this.renderAcceptInvitation()
+    renderSharePartner () {
+      return (
+        this.renderOnboardContent(
+          <SharePartner
+            onSubmit={() => {
+              this.props.history.push('/student')
+            }}
+            renderPartner={this.renderPartner}
+            partner={this.state.partner}
+          />
+        )
+      )
+    }
+
+    renderAcceptInvitation () {
+      return (
+        <InvitationTermsAgreement user={this.props.rootStore.userStore.user} invitation={this.state.hasOutstandingInvite} onSubmit={() => {
+          if (this.props.rootStore.navStore.mobile) {
+            this.setState({ step: 'download' })
+          } else {
+            this.loginStudent(true)
+            // this.setState({step: 'select-school'})
           }
-          {(this.state.step === 'download') &&
-            this.renderDownload()
-          }
-          {(this.state.step === 'sign-up')
-            ? this.renderSignUp()
-            : null
-          }
-          {(this.state.step === 'verify')
-            ? this.renderVerify()
-            : null
-          }
-          {this.state.step === 'select-school'
-            ? this.renderSelectSchool()
-            : null
-          }
-          {this.state.step === 'find-a-class'
-            ? this.renderFindAClass()
-            : null
-          }
-          {this.state.step === 'first-class'
-            ? this.renderFirstClass()
-            : null
-          }
-          {this.state.step === 'share-partner'
-            ? this.renderSharePartner()
-            : null
-          }
-        </Layout>
-    )
-  }
+        }} />
+      )
+    }
+
+    renderDownload () {
+      return <EnrollDownload />
+    }
+
+    render () {
+      return (
+        (this.state.loading)
+          ? <div className='onboard-loading'>
+            <SkLoader />
+          </div>
+          : <Layout id='onboard-layout' hideModal={this.state.step === 'verify' || this.state.step === 'first-class'} isAcceptInvitation={this.state.step === 'acceptInvitation'}>
+            {(this.state.step === 'acceptInvitation') &&
+                        this.renderAcceptInvitation()
+            }
+            {(this.state.step === 'download') &&
+                        this.renderDownload()
+            }
+            {(this.state.step === 'sign-up')
+              ? this.renderSignUp()
+              : null
+            }
+            {(this.state.step === 'verify')
+              ? this.renderVerify()
+              : null
+            }
+            {this.state.step === 'select-school'
+              ? this.renderSelectSchool()
+              : null
+            }
+            {this.state.step === 'find-a-class'
+              ? this.renderFindAClass()
+              : null
+            }
+            {this.state.step === 'first-class'
+              ? this.renderFirstClass()
+              : null
+            }
+            {this.state.step === 'share-partner'
+              ? this.renderSharePartner()
+              : null
+            }
+          </Layout>
+      )
+    }
 }
 
 Onboard.propTypes = {

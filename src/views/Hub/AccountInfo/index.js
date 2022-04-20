@@ -38,12 +38,17 @@ class AccountInfo extends React.Component {
     this.state = {
       classes: [],
       openAccountForm: false,
+      openLifeTimeTrialForm: false,
+      lifeTimeTrial: 'true',
       user: (state && state.user) || null,
       loading: true
     }
 
     if (state && state.user) {
       this.getUser(state.user)
+      this.setState({
+        lifeTimeTrial: state.user.lifetime_subscription
+      })
     }
 
     if (this.state.user && this.state.user.student) {
@@ -70,12 +75,14 @@ class AccountInfo extends React.Component {
     return {
       classes: [],
       openAccountForm: false,
+      openLifeTimeTrialForm: false,
       user: (state && state.user) || null
     }
   }
 
   getUser (user) {
     actions.auth.getUserById(user).then(user => {
+      console.log('my user', user)
       this.setState({user, loading: false})
     }).catch(() => false)
   }
@@ -114,6 +121,13 @@ class AccountInfo extends React.Component {
     }
     actions.auth.updateAccount(form).then(user => {
       this.setState({user})
+    })
+  }
+
+  toggleLifeTimeTrialModal () {
+    this.setState({
+      lifeTimeTrial: this.state.user.lifetime_trial,
+      openLifeTimeTrialForm: !this.state.openLifeTimeTrialForm
     })
   }
 
@@ -174,6 +188,12 @@ class AccountInfo extends React.Component {
                     <td className='cn-flex-table-cell'>{user.student.primary_school ? user.student.primary_school.name : ''}</td>
                   </tr>
                 }
+                {user.student &&
+                  <tr>
+                    <th className='cn-flex-table-cell'>User path:</th>
+                    <td className='cn-flex-table-cell'>{this.state.user.lifetime_trial ? 'Premium - VIP' : 'Standard' }</td>
+                  </tr>
+                }
               </tbody>
             </table> : <a onClick={this.toggleAccountForm.bind(this)}>Add details</a>
           }
@@ -193,9 +213,70 @@ class AccountInfo extends React.Component {
     )
   }
 
+  renderLifeTimeTrialFormModal () {
+    return (
+      <Modal
+        open={this.state.openLifeTimeTrialForm}
+        onClose={this.toggleLifeTimeTrialModal.bind(this)}
+      >
+        {/* <AccountInfoForm user={this.state.user} onSubmit={this.onDetailsSumbit.bind(this)} onClose={this.toggleAccountForm.bind(this)} /> */}
+        <div>
+          <h3> User path </h3>
+          <label htmlFor="lifetimeselection">User path</label>
+          <br />
+          <select
+            style={{
+              width: '100%',
+              minWidth: '15ch',
+              maxWidth: '30ch',
+              border: '1px solid #333',
+              borderRadius: '0.25em',
+              padding: '0.25em 0.5em',
+              fontSize: '1.25rem',
+              cursor: 'pointer',
+              lineHeight: 1.1,
+              backgroundColor: '#fff',
+              backgroundImage: 'linear-gradient(to top, #f9f9f9, #fff 33%)'
+            }}
+            name="onoff" id="lifetimeselection" defaultValue={this.state.lifeTimeTrial} onChange={e => {
+              this.setState({lifeTimeTrial: e.target.value})
+            }}>
+            <option value={true}>Premium - VIP</option>
+            <option value={false}>Standard</option>
+          </select>
+          {/* <input type="radio" htmlFor='life-time-trial' checked={this.state.lifeTimeTrial} value={this.state.lifeTimeTrial} onChange={() => {
+            this.setState({lifeTimeTrial: !this.state.lifeTimeTrial})
+          }}/> */}
+
+          <button className='button full-width margin-top' onClick={this.handleLifeTimeTrialSubmit.bind(this)}>Submit</button>
+          <button className='button-invert full-width margin-top margin-bottom' onClick={this.toggleLifeTimeTrialModal.bind(this)}>Close</button>
+        </div>
+      </Modal>
+    )
+  }
+
   /*
   * Call back on school detail form submission.
   */
+  handleLifeTimeTrialSubmit () {
+    if (this.state.lifeTimeTrial === 'true') {
+      actions.auth.setUserTrialToLifeTime(this.state.user).then(user => {
+        this.setState({openLifeTimeTrialForm: false, loading: false})
+        // window.location.reload(false)
+        actions.auth.getUserById(this.state.user).then(user => {
+          this.setState({user})
+        })
+      }).catch(() => false)
+    } else {
+      actions.auth.cancelUserTrial(this.state.user).then(user => {
+        this.setState({openLifeTimeTrialForm: false, loading: false})
+        // window.location.reload(false)
+        actions.auth.getUserById(this.state.user).then(user => {
+          this.setState({user})
+        })
+      }).catch(() => false)
+    }
+  }
   onDetailsSumbit (user) {
     this.setState({ user, openAccountForm: false })
   }
@@ -256,6 +337,37 @@ class AccountInfo extends React.Component {
     )
   }
 
+  renderUserMemberShip () {
+    const {user} = this.state
+    return (
+      <div className="cn-account-info-box cn-accounts-min-width">
+        <div className='cn-shadow-box-content'>
+          <div className='cn-card-title edit-header'>
+           User Path
+            <i className='fas fa-pencil-alt cn-blue cursor margin-left' onClick={this.toggleLifeTimeTrialModal.bind(this)} />
+          </div>
+          <br />
+          <br />
+          {
+            user.student &&
+                  <tr>
+                    <th className='cn-flex-table-cell'>User path:</th>
+                    <td className='cn-flex-table-cell'>{this.state.user.lifetime_trial ? 'Premium - VIP' : 'Standard'}</td>
+                  </tr>
+          }
+          {/* {this.state.user.reports && <Grid
+            headers={headers}
+            rows={this.getRows()}
+            disabled={true}
+            className="striped"
+            canSelect={true}
+            onSelect={this.onSelectReport.bind(this)}
+          />} */}
+        </div>
+      </div>
+    )
+  }
+
   renderContent () {
     return (
       <div>
@@ -280,8 +392,12 @@ class AccountInfo extends React.Component {
             </div>
           }
           {this.renderReports()}
+          {this.renderUserMemberShip()}
+
         </div>
         {this.renderAccountFormModal()}
+
+        {this.renderLifeTimeTrialFormModal()}
       </div>
     )
   }

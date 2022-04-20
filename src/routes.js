@@ -51,6 +51,8 @@ import ReportList from './views/Hub/ReportList'
 import Enroll from './views/EnrollmentLink/Enroll'
 import DownloadApp from './views/components/DownloadApp'
 
+import AdminLayout from './views/components/AdminLayout'
+
 // skoller insights
 import InsightsLanding from './views/Insights/Landing'
 import Dashboard from './views/Insights/Dashboard'
@@ -75,6 +77,7 @@ import GroupDetail from './views/Insights/GroupDetail'
 import InvitationDetail from './views/Insights/StudentDetail/InvitationDetail'
 import SiStudentClassDetail from './views/Insights/StudentDetail/SiStudentClassDetail'
 import SiStudentAssignmentDetail from './views/Insights/StudentDetail/SiStudentAssignmentDetail'
+import HubDashboard from './views/Hub/HubDashboard'
 
 const {userStore} = stores
 
@@ -167,17 +170,20 @@ class HubContainer extends React.Component {
   render () {
     return (
       <Switch>
+        <AdminLayout>
         <Route exact path='/hub' render={() => <Redirect to='/hub/landing' />} />
         <Route exact path='/hub/landing' component={HubLanding}/>
         <Route exact path='/hub/schools' component={HubSchools} />
         <Route exact path='/hub/schools/school/info' component={SchoolInfo} />
         <Route exact path='/hub/classes' component={HubClasses} />
+        <Route exact path='/hub/dashboard' component={HubDashboard} />
         <Route exact path='/hub/accounts' component={Accounts} />
         <Route exact path='/hub/accounts/account/info' component={AccountInfo} />
         <Route exact path='/hub/analytics' component={Analytics} />
         <Route exact path='/hub/switchboard' component={Switchboard} />
         <Route exact path='/hub/reports' component={ReportList} />
         <Route exact path='/hub/insights' component={HubInsights} />
+        </AdminLayout>
       </Switch>
     )
   }

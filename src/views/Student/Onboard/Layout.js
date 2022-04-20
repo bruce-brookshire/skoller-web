@@ -52,7 +52,10 @@ class Layout extends React.Component {
           <NavBar onboard={true} />
           {this.props.hideModal
             ? this.renderContent()
-            : <SkModal>
+            : <SkModal style={this.props.isAcceptInvitation ? {
+              maxWidth: '600px',
+              width: '100%'
+            } : {}}>
               {this.renderContent()}
             </SkModal>
           }
@@ -65,11 +68,15 @@ class Layout extends React.Component {
   }
 }
 
+Layout.defaultProps = {
+  isAcceptInvitation: false
+}
 Layout.propTypes = {
   children: PropTypes.object,
   hideModal: PropTypes.bool,
   loggedIn: PropTypes.bool,
-  id: PropTypes.string
+  id: PropTypes.string,
+  isAcceptInvitation: PropTypes.bool
 }
 
 export default Layout

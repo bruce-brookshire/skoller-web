@@ -4,8 +4,9 @@ import { withRouter } from 'react-router-dom'
 import { VictoryTooltip, VictoryScatter, VictoryLine, VictoryLabel, VictoryAxis, VictoryArea, VictoryBar } from 'victory'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import { getAssignmentWeightData } from './DataUtils'
+import { getAssignmentWeightData, modifiedGetAssignmentWeightData } from './DataUtils'
 import { getStyles } from './styles'
+import { toJS } from 'mobx'
 
 export class DateTooltip extends React.Component {
   static propTypes = {
@@ -55,15 +56,66 @@ export class DateTooltip extends React.Component {
 DateTooltip.propTypes = {
   view: PropTypes.string
 }
+export class ModifiedDateTooltip extends React.Component {
+  static propTypes = {
+    x: PropTypes.number,
+    y: PropTypes.number,
+    orientation: PropTypes.string,
+    datum: PropTypes.object
+  }
+
+  render () {
+    const { datum, x, y } = this.props
+    return (
+      <g transform={'translate(-100, -200)'} style={{pointerEvents: 'none', position: 'relative'}}>
+        <foreignObject x={x} y={y} width="200" height="200">
+          <div
+            className="graph-tooltip"
+            style={{
+              width: '120px',
+              backgroundColor: 'white',
+              border: '1px solid #4a4a4a',
+              borderRadius: '5px',
+              padding: '8px',
+              position: 'absolute',
+              bottom: '12px',
+              left: 'calc(50% - 48px)'
+            }}
+          >
+            <div style={{textAlign: 'center'}}>
+              {this.props.view === 'w' &&
+                <h2 style={{margin: 0, fontSize: '12px'}}>Week {datum.weekPosition}: {moment(datum.x, 'X').format('M/D')} - {moment(datum.x, 'X').add(7, 'days').format('M/D')}</h2>
+              }
+              {this.props.view === 'd' &&
+                <h3 style={{margin: 0, fontSize: '14px'}}>{moment(datum.x, 'X').format('M/D')}</h3>
+              }
+              {this.props.view === 'm' &&
+                <h3 style={{margin: 0, fontSize: '14px'}}>{moment(datum.x, 'X').format('M/D')} - {moment(datum.x, 'X').add(1, 'month').subtract(1, 'day').format('M/D')}</h3>
+              }
+              <p style={{margin: 0, fontSize: '12px'}}>{datum.assignments} {datum.assignments > 1 ? 'Assignments' : 'Assignment'}</p>
+              <p style={{margin: 0, fontSize: '12px'}}>{Math.round(datum.y * 1000) / 10}% of total grade</p>
+            </div>
+          </div>
+        </foreignObject>
+      </g>
+    )
+  }
+}
+
+ModifiedDateTooltip.propTypes = {
+  view: PropTypes.string
+}
 
 @inject('rootStore') @observer
 class WeightsTimeline extends React.Component {
   getStyles () {
+    console.log(toJS(this.props.cl))
     return getStyles(this.props.cl ? '#' + this.props.cl.color : false)
   }
 
   render () {
-    let data = getAssignmentWeightData((this.props.cl ? this.props.cl.assignments : this.props.assignments), this.props.cl, this.props.ids, this.props.view)
+    let data = modifiedGetAssignmentWeightData((this.props.cl ? this.props.cl.assignments : this.props.assignments), this.props.cl, this.props.ids, this.props.view, this.props.rootStore.userStore.user.student.primary_period)
+    console.log('newdata', data)
     const styles = this.getStyles()
     if (data.length > 0) {
       const today = parseInt(moment().format('X'))

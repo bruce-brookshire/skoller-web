@@ -24,6 +24,7 @@ class Switchboard extends React.Component {
       logs: [],
       fourDoorOverrides: []
     }
+    this.props.rootStore.navStore.setActivePage('hub/switchboard')
   }
 
   initializeComponent () {
