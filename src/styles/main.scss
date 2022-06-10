@@ -410,6 +410,10 @@ body {
 // Buttons -----------------------------------
 .button {
   @include primary-button;
+  &:disabled {
+    background-color: $cn-form-border;
+    cursor: auto;
+  }
 }
 
 .button-invert {
