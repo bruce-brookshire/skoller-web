@@ -16,7 +16,8 @@ class Verification extends React.Component {
     super(props)
     this.cookie = new Cookies()
     this.state = {
-      code: ''
+      code: '',
+      buttonDisabled: false
     }
   }
 
@@ -27,6 +28,7 @@ class Verification extends React.Component {
   */
   onChange (code) {
     this.setState({code})
+    console.log(this.state, "STATE STATE")
   }
 
   /*
@@ -47,10 +49,19 @@ class Verification extends React.Component {
   }
 
   /*
+  * Disable button on click until response is received.
+  */
+ disableButton(shouldDisable) {
+  this.setState({buttonDisabled: shouldDisable});
+ }
+
+  /*
   * Sumbit the verification code for authorization.
   */
   onSubmit = () => {
+    this.setState({buttonDisabled: true})
     actions.auth.loginStudentWithPhone(this.getForm().phone, this.getForm().verification_code).then(() => {
+      this.setState({buttonDisabled: false})
       const { userStore: { authToken } } = this.props.rootStore
       this.cookie.remove('skollerToken', { path: '/' })
       this.cookie.set('skollerToken', authToken, { maxAge: 86400 * 270, path: '/' })
@@ -61,7 +72,10 @@ class Verification extends React.Component {
       } else {
         this.props.history.push('/onboard/select-school')
       }
-    }).catch((r) => console.log('error town', r))
+    }).catch((r) => {
+      console.log('error town', r)
+      this.setState({buttonDisabled: false})
+    })
   }
 
   /*
@@ -73,9 +87,10 @@ class Verification extends React.Component {
   }
 
   render () {
+    console.log(this.state.buttonDisabled)
     const phone = this.props.phone
     const disableButton = !this.isValid()
-    const disableClass = disableButton ? 'disabled' : ''
+    const disableClass = this.state.buttonDisabled ? 'disabled' : ''
 
     return (
       <SkModal closeModal={this.props.closeModal}>
@@ -91,7 +106,7 @@ class Verification extends React.Component {
               <button
                 className={`sk-verification-button ${disableClass}`}
                 onClick={() => this.onSubmit()}
-                disabled={disableButton}
+                disabled={this.state.buttonDisabled || disableButton}
               >Continue</button>
             </div>
           </div>
