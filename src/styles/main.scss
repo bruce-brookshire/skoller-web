@@ -352,6 +352,19 @@ a {
   cursor: pointer;
 }
 
+.button-link-type {
+  background: white;
+  padding: 0;
+  margin: 0;
+  color: $cn-color-blue;
+  cursor: pointer;
+
+  &:disabled {
+    color: $cn-form-border;
+    cursor: auto;
+  }
+}
+
 body {
   @include reset-box-model;
   background: $cn-primary-background-color;
