@@ -10,5 +10,5 @@ This project is react web with mobx.
 ## Deployment
 
   * Connect to appropriate ENV via ssh
-  * ``sudo -iu classnav``
+  *  `sudo su skoller`
   * ``bash scripts/update_client.sh``
