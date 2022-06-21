@@ -352,6 +352,19 @@ a {
   cursor: pointer;
 }
 
+.button-link-type {
+  background: white;
+  padding: 0;
+  margin: 0;
+  color: $cn-color-blue;
+  cursor: pointer;
+
+  &:disabled {
+    color: $cn-form-border;
+    cursor: auto;
+  }
+}
+
 body {
   @include reset-box-model;
   background: $cn-primary-background-color;
@@ -397,6 +410,10 @@ body {
 // Buttons -----------------------------------
 .button {
   @include primary-button;
+  &:disabled {
+    background-color: $cn-form-border;
+    cursor: auto;
+  }
 }
 
 .button-invert {
@@ -683,12 +700,27 @@ body {
   font-size: 1rem;
   line-height: 1.5;
   border-radius: .25rem;
+
+  &:disabled {
+    color: $cn-form-border;
+    cursor: auto;
+  }
 }
 
 .btn-primary {
   color: #fff;
   background-color: #57B9E4;
   border-color: #57B9E4;
+  cursor: pointer;
+
+  &.padding {
+    padding: .375rem .75rem;
+  }
+
+  &:disabled {
+    color: $cn-form-border;
+    cursor: auto;
+  }
 }
 
 

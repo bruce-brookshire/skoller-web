@@ -16,7 +16,9 @@ class Verification extends React.Component {
     super(props)
     this.cookie = new Cookies()
     this.state = {
-      code: ''
+      code: '',
+      continueButtonDisabled: false,
+      resendButtonDisabled: false
     }
   }
 
@@ -50,7 +52,9 @@ class Verification extends React.Component {
   * Sumbit the verification code for authorization.
   */
   onSubmit = () => {
+    this.setState({continueButtonDisabled: true})
     actions.auth.loginStudentWithPhone(this.getForm().phone, this.getForm().verification_code).then(() => {
+      this.setState({continueButtonDisabled: false})
       const { userStore: { authToken } } = this.props.rootStore
       this.cookie.remove('skollerToken', { path: '/' })
       this.cookie.set('skollerToken', authToken, { maxAge: 86400 * 270, path: '/' })
@@ -61,21 +65,30 @@ class Verification extends React.Component {
       } else {
         this.props.history.push('/onboard/select-school')
       }
-    }).catch((r) => console.log('error town', r))
+    }).catch((r) => {
+      console.log('On submit error', r)
+      this.setState({continueButtonDisabled: false})
+    })
   }
 
   /*
   * Resend verification code to the user.
   */
   onResendVerification () {
+    this.setState({resendButtonDisabled: true})
     actions.auth.resendVerification().then(() => {
-    }).catch(() => false)
+      this.setState({resendButtonDisabled: false})
+    }).catch((r) => {
+      console.log('Resend verification error:', r);
+      this.setState({resendButtonDisabled: false})
+    })
   }
 
   render () {
     const phone = this.props.phone
-    const disableButton = !this.isValid()
-    const disableClass = disableButton ? 'disabled' : ''
+    const disableContinueButton = !this.isValid()
+    const disableContinueButtonClass = this.state.continueButtonDisabled ? 'disabled' : ''
+    const disableResendButtonClass = this.state.resendButtonDisabled ? 'disabled' : ''
 
     return (
       <SkModal closeModal={this.props.closeModal}>
@@ -84,14 +97,22 @@ class Verification extends React.Component {
             <img src='/src/assets/images/letter2.png' />
             <div className='sk-verification-content-container'>
               <h1>Check your texts 🤓</h1>
-              <span>We sent a verification code to {formatPhone(phone)}. Enter it here!<br /> Didn’t get it? <a className='link-style' onClick={() => this.onResendVerification()}>Resend link</a>.</span>
+                We sent a verification code to {formatPhone(phone)}. Enter it here!
+                <br /> 
+                Didn’t get it? 
+                <button 
+                  className={`button-link-type ${disableResendButtonClass}`}
+                  style={{marginLeft: '8px'}} 
+                  onClick={() => this.onResendVerification()}
+                  disabled={this.state.resendButtonDisabled}
+                >Resend link.</button>
               <div className='sk-verification-code-container'>
                 <VerificationCode numberOfDigits={numberOfDigits} onChange={this.onChange.bind(this)} />
               </div>
               <button
-                className={`sk-verification-button ${disableClass}`}
+                className={`sk-verification-button ${disableContinueButtonClass}`}
                 onClick={() => this.onSubmit()}
-                disabled={disableButton}
+                disabled={this.state.continueButtonDisabled || disableContinueButton}
               >Continue</button>
             </div>
           </div>
