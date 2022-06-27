@@ -228,7 +228,6 @@ class Home extends React.Component {
     }
 
     renderContent () {
-      console.log("ASSIGNMENTS: ", this.props.rootStore.studentAssignmentsStore.assignments)
       return (
         <div>
           {this.state.popUp.show &&
