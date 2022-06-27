@@ -8,9 +8,9 @@ import TasksList from '../Tasks/TasksList'
 class HomeAssignments extends React.Component {
   render () {
     return (
-      <div class="home-tasks">
-          <div class="home-tasks-inner">
-            <div class="divider-spantext"><span>weekdays work</span> </div>
+      <div className="home-tasks">
+          <div className="home-tasks-inner">
+            <div className="divider-spantext"><span>weekdays work</span> </div>
             
         </div>
       </div>
