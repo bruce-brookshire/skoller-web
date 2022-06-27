@@ -62,17 +62,19 @@ class PaymentPlans extends React.Component {
         })
 
         let terms = activeMainTerms.sort((a, b) => moment(a.start_date).isAfter(moment(b.start_date)) ? 0 : -1)
-        actions.students.setStudentPrimaryPeriod(this.props.rootStore.userStore.user.id, this.props.rootStore.userStore.user.student.id, terms[0].id)
-          .then((r) => {
-            this.setState({
-              params: {
-                schoolChoice: this.props.rootStore.userStore.user.student.primary_school,
-                termChoice: r
-              },
-              loading: false
+          if (terms.length > 0) {
+          actions.students.setStudentPrimaryPeriod(this.props.rootStore.userStore.user.id, this.props.rootStore.userStore.user.student.id, terms[0].id)
+            .then((r) => {
+              this.setState({
+                params: {
+                  schoolChoice: this.props.rootStore.userStore.user.student.primary_school,
+                  termChoice: r
+                },
+                loading: false
+              })
             })
-          })
-          .catch(e => console.log(e))
+            .catch(e => console.log(e))
+          }
       }
     }
   }
