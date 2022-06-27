@@ -228,6 +228,7 @@ class Home extends React.Component {
     }
 
     renderContent () {
+      console.log("ASSIGNMENTS: ", this.props.rootStore.studentAssignmentsStore.assignments)
       return (
         <div>
           {this.state.popUp.show &&
@@ -258,7 +259,9 @@ class Home extends React.Component {
                   <HomeClasses1 classes={this.props.rootStore.studentClassesStore.classes} onAddClass={() => this.closeAddClassModal()} onClassSelect={this.onClassSelect} launchClassStatusModal={(cl) => this.launchClassStatusModal(cl)} />
                 </div>
               </div>
-              <HomeGraphImpact assignments={this.props.rootStore.studentAssignmentsStore.assignments} />
+              { this.props.rootStore.studentAssignmentsStore.assignments.length > 0 &&
+               <HomeGraphImpact assignments={this.props.rootStore.studentAssignmentsStore.assignments} />
+              }
               {/* <HomeAssignmentGraph/> */}
             </div>
             <div className="home-column col-md-4 col-lg-3">

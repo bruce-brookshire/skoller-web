@@ -35,7 +35,7 @@ class NavItem extends React.Component {
     if (this.props.pageName.includes('home') || this.props.pageName.includes('jobs/home')) {
       return <HomeIcon fill={this.getActivePage() === this.props.pageName ?  '#fcfcfc' : '#333'} width="22px" height="22px" />
     } else if (this.props.pageName.includes('tasks')) {
-      return <TasksIcon fill={this.getActivePage() === this.props.pageName ?  '#fcfcfc' : '#333'} width="22px" height="22px" />
+      return <TasksIcon fill={this.getActivePage() === this.props.pageName ?  '#fcfcfc' : '#333'} width="22" height="22" />
     } else if (this.props.pageName.includes('classes')) {
       return <ClassesIcon fill={this.getActivePage() === this.props.pageName ?  '#fcfcfc' : '#333'} width="22px" height="22px" />
     } else if (this.props.pageName.includes('calendar')) {

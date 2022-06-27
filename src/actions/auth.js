@@ -58,7 +58,8 @@ export function loginStudentWithPhone (phone, verificationCode) {
       studentClassesStore.getClasses()
       studentAssignmentsStore.getAssignments()
       studentJobsStore.getJobsProfile()
-    })
+    }
+    )
     .catch(error => {
       userStore.loading = false
       if (error.status !== 401 && error.status !== 404) {
