@@ -23,11 +23,11 @@ import { formatDate } from '../../../utilities/time'
 import PremiumClassModal from './PremiumClassModal'
 import TrialClassModal from './TrialClassModal'
 import ClassStatusPopUp from './_ClassStatusPopUp'
-
 @inject('rootStore') @observer
 class Home extends React.Component {
   constructor (props) {
     super(props)
+
     this.state = {
       subscribed: false,
       subscriptionCancelled: false,
