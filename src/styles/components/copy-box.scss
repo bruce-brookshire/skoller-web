@@ -2,62 +2,26 @@
   @include remove-form-styling;
   box-sizing: border-box;
   width: 100%;
-  padding: 20px 4px;
   background-color: #57B9E420;
   border-radius: 5px;
   margin-bottom: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   cursor: pointer;
+  height: 30px;
+  border: 2px solid $cn-form-border;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 5px;
+  padding-left: 4px;
+  padding-right: 4px;
 
-  form {
-    width: 100%;
-    margin: 0;
-    cursor: pointer;
-    padding: 4px;
-
-    .sk-copy-box-short {
-      cursor: pointer;
-      resize: none;
-      width: 100%;
-      text-align: center;
-      font-family: inherit;
-      font-weight: 600;
-      font-size: 20px;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      margin: 4px 0 0 0;
-      height: 20px;
-      cursor: default;
-      color: inherit;
-    }
-
-    .sk-copy-box-long {
-      cursor: pointer;
-      resize: none;
-      width: 100%;
-      text-align: center;
-      font-family: inherit;
-      margin: 4px 0 0 0;
-      cursor: default;
-      color: inherit;
-      font-size: 16px;
-      min-height: 110px;
-      white-space: pre-wrap;
-    }
-
-    .small-text {
-      font-size: 16px;
-      font-weight: 500;
-    }
+  .link-value {
+    color: black;
   }
 
-  p {
-    font-size: 12px;
-    margin: 0;
-    text-align: center;
+  .copied-text {
+    padding-left: 15px;
+    text-align: right;
   }
 }

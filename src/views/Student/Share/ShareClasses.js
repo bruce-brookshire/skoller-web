@@ -11,14 +11,22 @@ class ShareClasses extends React.Component {
     super(props)
 
     this.state = {
+      user: this.props.user,
       classSelection: this.props.classes[0],
       showClassDropDown: false,
-      showScoreboardModal: false
+      showScoreboardModal: false,
+      inviteMode: 'classmates'
     }
   }
 
   selectClassHandler (studentClass) {
     this.setState({classSelection: studentClass, showClassDropDown: false})
+  }
+
+  onInviteModeChanged = (e) => {
+    this.setState({inviteMode: e.currentTarget.value})
+    this.renderShareContent()
+    this.renderShareMessage()
   }
 
   renderClassOptions = () => {
@@ -63,67 +71,72 @@ class ShareClasses extends React.Component {
 
   renderShareMessage () {
     return (
-      this.state.classSelection.enrollment_link
+      this.state.inviteMode === 'classmates' ? 
+      this.state.classSelection.enrollment_link :
+      this.state.user.student.enrollment_link
     )
   }
 
-  renderShareContent () {
-    const name = this.state.classSelection.name
-    const cl = this.state.classSelection
-    if (cl.id % 2 === 0) {
-      return (
-        'Ditch your paper planner. Skoller unlocks academic organization and keeps you on track all year long. Our class ' +
-        name + " is already set up. Sign up through the link you'll automatically be enrolled in our class.\n" +
-        '\n' + this.state.classSelection.enrollment_link
-      )
-    } else {
-      return (
-        'This new app takes our syllabus and sends reminders about upcoming due dates, organizes assignments into a calendar, and much more. Our class ' +
-        name + " is already set up. Sign up through the link you'll automatically be enrolled in our class.\n" +
-        '\n' + this.state.classSelection.enrollment_link
-      )
-    }
+  renderShareContent =  () => {
+
+    const enrollmentLink = 
+      this.state.inviteMode === 'classmates' ? 
+      this.state.classSelection.enrollment_link :
+      this.state.user.student.enrollment_link
+
+    return (
+      'This new app takes our syllabus and sends reminders about upcoming due dates, organizes assignments into a calendar, and much more. Our class ' +
+      name + " is already set up. Sign up through the link you'll automatically be enrolled in our class.\n" +
+      '\n' + enrollmentLink
+    )
   }
 
-  renderIncentive () {
-    if (this.props.partner) {
-      return (
-        <div className='sk-share-form-incentive'>
-          <div className='sk-share-form-incentive-headline'>
-            <b>Raise THOUSANDS</b> by sharing with classmates!
-          </div>
-          <div className='sk-share-form-incentive-img' style={{backgroundImage: `url(${jar})`, height: '200px'}}>
-            <div className='sk-share-form-incentive-org' style={{fontSize: this.props.partner.slug.length > 4 ? '11px' : ''}}>{this.props.partner.slug}</div>
-          </div>
-        </div>
-      )
-    } else {
-      return (
-        // <div className='sk-share-form-incentive'>
-        //   <div className='sk-share-form-incentive-headline'>
-        //     Skoller works better when you and <b>all of your classmates</b> use it!
-        //   </div>
-        //   {/* <div className='sk-share-form-incentive-img' style={{backgroundImage: `url(${amazon})`}} /> */}
-        // </div>
-        <div>
-          Skoller works better when you and <b>all of your classmates</b> use it!
-        </div>
-      )
-    }
+  renderInvitingSelect () {
+    return(
+      <div className='sk-form-radio'>
+        <label>
+        <input 
+          type="radio" 
+          name="inviteSelect"
+          value="classmates"
+          checked={this.state.inviteMode === 'classmates'}
+          onChange={this.onInviteModeChanged}
+        />
+        <span>Classmates (recommended)</span>
+        </label>
+        <label>
+        <input 
+          type="radio" 
+          name="inviteSelect" 
+          value="all-students"
+          checked={this.state.inviteMode === 'all-students'}
+          onChange={this.onInviteModeChanged}
+        />
+        <span>Any Student</span>
+        </label>
+      </div>
+    )
   }
 
-  renderShareForm () {
+  renderShareCard () {
     return (
       <div className='sk-share-form'>
-        <h1>Share</h1>
-        {this.renderIncentive()}
-        {this.props.partner && <h2>Here&apos;s how:</h2>}
+        <h1>Invite Students</h1>
+        <div>Invite classmates or any student to Skoller!</div>
         <div className='sk-share-form-section'>
-          <h4>1. Select a class</h4>
-          {this.renderSelect()}
+          <h4>Who are you inviting?</h4>
+          {this.renderInvitingSelect()}
         </div>
+        {this.state.inviteMode === 'classmates' ?
+          <div className='sk-share-form-section'>
+            <h4>A. Select a class</h4>
+            {this.renderSelect()}
+          </div>
+          :
+          <div></div>
+        }
         <div className='sk-share-form-section'>
-          <h4>2. Click the box to copy the link</h4>
+          <h4>{this.state.inviteMode === 'classmates' ? 'B' : 'A'}. Click the box to copy the link</h4>
           <CopyBox
             longMessage={false}
             smallText={true}
@@ -132,8 +145,8 @@ class ShareClasses extends React.Component {
           />
         </div>
         <div className='sk-share-form-section'>
-          <h4>3. Paste and share with classmates!</h4>
-          <p>Send your link to classmates through Facebook, Canvas, Blackboard, GroupMe, email, etc.</p>
+          <h4>{this.state.inviteMode === 'classmates' ? 'C' : 'B'}. Send the link to {this.state.inviteMode ==='classmates' ? 'Classmates' : 'Students'}!</h4>
+          <p>Send YOUR share link to {this.state.inviteMode ==='classmates' ? 'classmates' : 'students'} or via text, email, or class chats!</p>
         </div>
       </div>
     )
@@ -188,7 +201,7 @@ class ShareClasses extends React.Component {
     return (
       <div className='sk-share-classes'>
         <div className='sk-share-classes-col'>
-          {this.renderShareForm()}
+          {this.renderShareCard()}
         </div>
         <div className='sk-share-classes-col'>
           <div className='sk-share-classes-cell'>

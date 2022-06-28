@@ -12,7 +12,7 @@ import partners from '../Onboard/partners'
 class Share extends React.Component {
   constructor (props) {
     super(props)
-
+    
     this.state = {
       user: this.props.rootStore.userStore.user,
       classes: [],
@@ -60,31 +60,9 @@ class Share extends React.Component {
       })
   }
 
-  renderHeader () {
-    return (
-      <div className='sk-share-header'>
-        <h1>Share with Your Community</h1>
-        <p>Inviting classmates to Skoller helps you keep up with classes and earn points!</p>
-        <div
-          className='sk-share-points'
-          style={{backgroundColor: this.state.partner ? '#' + this.state.partner.primaryColor : ''}}
-        >
-          {this.state.partner
-            ? <div>
-              <p>Your raise: ${this.state.user.student.raise_effort.personal_signups}</p>
-              <p>{this.state.partner.name} raise: ${this.state.user.student.raise_effort.org_signups}</p>
-            </div>
-            : <p>Your points: {this.state.user.student.points}</p>
-          }
-        </div>
-      </div>
-    )
-  }
-
   renderContent () {
     return (
       <div className='sk-share-container'>
-        {this.state.classes.length === 0 && this.renderHeader()}
         {this.state.classes.length > 0
           ? <ShareClasses
             classes={this.state.classes}
