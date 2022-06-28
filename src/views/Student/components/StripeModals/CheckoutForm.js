@@ -90,7 +90,7 @@ export default function CheckoutForm (props) {
       <CardSection />
       {/* <button disabled={!stripe}>Confirm order</button>
        */}
-      <button onClick={() => setPayButtonDisabled(true)} className={`btn-primary padding full-width text-white margin-top ${payButtonDisabledClass}`} style={{color: 'white'}} disabled={buttonDisabled()}>Pay</button>
+      <button onClick={() => setPayButtonDisabled(true)} className={`btn-primary padding full-width text-white margin-top ${payButtonDisabledClass}`} style={{color: 'white'}}>Pay</button>
     </form>
   )
 }
