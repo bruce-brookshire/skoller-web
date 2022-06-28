@@ -1,3 +1,31 @@
+.sk-form-radio {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  cursor: pointer;
+
+  input[type="radio"] {
+    border: 2px solid black;
+    padding: 0.5em;
+    -webkit-appearance: none;
+    cursor: pointer;
+  }
+
+  input[type=radio]:checked {
+    background-color: $cn-color-blue;
+    background-size: 9px 9px;
+  }
+  
+  input[type=radio]:focus {
+    outline-color: transparent;
+  }
+
+  span {
+    margin-left: 5px;
+  }
+}
+
 .sk-form-checkbox {
   margin-top: 0.5rem;
   display: flex;
