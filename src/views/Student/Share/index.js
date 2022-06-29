@@ -17,12 +17,17 @@ class Share extends React.Component {
       user: this.props.rootStore.userStore.user,
       classes: [],
       loading: true,
-      partner: null
+      partner: null,
+      response: null
     }
 
     this.getPartnerByUser()
     this.getClasses()
+    this.getUsersReferredByStudent()
+    
     this.props.rootStore.navStore.setActivePage('share')
+
+    console.log("STATE RESPONSE STATE RESPONSE", this.state.response)
   }
 
   getPartner (partnerSlug) {
@@ -48,6 +53,16 @@ class Share extends React.Component {
       .catch(r => {
         this.setState({partner: false})
       })
+  }
+
+  async getUsersReferredByStudent () {
+    await actions.students.getUsersReferredByStudent(this.props.rootStore.userStore.user.student.id)
+    .then((r) => {
+      console.log("RESPONSE RESPONSE RESPONSE", r)
+    })
+    .catch(r => {
+      console.log("RESPONSE ERROR REPONSE ERROR", r)
+    })
   }
 
   getClasses () {
