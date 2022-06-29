@@ -14,7 +14,6 @@ class ShareClasses extends React.Component {
       user: this.props.user,
       classSelection: this.props.classes[0],
       showClassDropDown: false,
-      showScoreboardModal: false,
       inviteMode: 'classmates'
     }
   }
@@ -188,100 +187,28 @@ class ShareClasses extends React.Component {
             </thead>
             <tbody>
               <tr>
-              <td colspan='2'>Jimmy Smith</td>
+              <td colSpan='2'>Jimmy Smith</td>
                 <td>Stuff 1</td>
                 <td>Stuff 2</td>
                 <td>{this.renderPremiumCheck()}</td>
               </tr>
               <tr>
-              <td colspan='2'>Jimmy Smith</td>
+              <td colSpan='2'>Jimmy Smith</td>
                 <td>Stuff 1</td>
                 <td>{this.renderTrialCheck()}</td>
                 <td>Stuff 3</td>
               </tr>
               <tr>
-              <td colspan='2'>Jimmy Smith</td>
+              <td colSpan='2'>Jimmy Smith</td>
                 <td>{this.renderTrialCheck()}</td>
                 <td>Stuff 2</td>
                 <td>Stuff 3</td>
               </tr>
               <tr>
-              <td colspan='2'>Jimmy Smith</td>
+              <td colSpan='2'>Jimmy Smith</td>
                 <td>Stuff 1</td>
                 <td>Stuff 2</td>
                 <td>{this.renderPremiumCheck()}</td>
-              </tr>
-              <tr>
-              <td colspan='2'>Jimmy Smith</td>
-                <td>Stuff 1</td>
-                <td>Stuff 2</td>
-                <td>Stuff 3</td>
-              </tr>
-              <tr>
-              <td colspan='2'>Jimmy Smith</td>
-                <td>Stuff 1</td>
-                <td>Stuff 2</td>
-                <td>Stuff 3</td>
-              </tr>
-              <tr>
-              <td colspan='2'>Jimmy Smith</td>
-                <td>Stuff 1</td>
-                <td>Stuff 2</td>
-                <td>Stuff 3</td>
-              </tr>
-              <tr>
-              <td colspan='2'>Jimmy Smith</td>
-                <td>Stuff 1</td>
-                <td>Stuff 2</td>
-                <td>Stuff 3</td>
-              </tr>
-              <tr>
-              <td colspan='2'>Jimmy Smith</td>
-                <td>Stuff 1</td>
-                <td>Stuff 2</td>
-                <td>Stuff 3</td>
-              </tr>
-              <tr>
-              <td colspan='2'>Jimmy Smith</td>
-                <td>Stuff 1</td>
-                <td>Stuff 2</td>
-                <td>Stuff 3</td>
-              </tr>
-              <tr>
-              <td colspan='2'>Jimmy Smith</td>
-                <td>Stuff 1</td>
-                <td>Stuff 2</td>
-                <td>Stuff 3</td>
-              </tr>
-              <tr>
-              <td colspan='2'>Jimmy Smith</td>
-                <td>Stuff 1</td>
-                <td>Stuff 2</td>
-                <td>Stuff 3</td>
-              </tr>
-              <tr>
-              <td colspan='2'>Jimmy Smith</td>
-                <td>Stuff 1</td>
-                <td>Stuff 2</td>
-                <td>Stuff 3</td>
-              </tr>
-              <tr>
-              <td colspan='2'>Jimmy Smith</td>
-                <td>Stuff 1</td>
-                <td>Stuff 2</td>
-                <td>Stuff 3</td>
-              </tr>
-              <tr>
-              <td colspan='2'>Jimmy Smith</td>
-                <td>Stuff 1</td>
-                <td>Stuff 2</td>
-                <td>Stuff 3</td>
-              </tr>
-                <tr>
-                <td colspan='2'>Jimmy Smith</td>
-                <td>Stuff 1</td>
-                <td>Stuff 2</td>
-                <td>Stuff 3</td>
               </tr>
             </tbody>
           </table>
@@ -290,25 +217,26 @@ class ShareClasses extends React.Component {
     )
   }
 
-  renderScoreboard () {
+  renderPayment () {
     return (
-      <div className='sk-share-classes-scoreboard'>
-        <h1>Scoreboard</h1>
-        {this.props.partner
-          ? <div className='sk-share-classes-raise-effort'>
-            <div className='raise-effort-headline'>
-              <b style={{color: '#' + this.props.partner.primaryColor}}>YOU&apos;VE RAISED ${this.props.user.student.raise_effort.personal_signups + 1}</b> for {this.props.partner.philanthropy}
-            </div>
-            <div className='raise-effort-button'>
-              <p onClick={() => this.setState({showScoreboardModal: true})}>See full scoreboard</p>
+      <div className='sk-payment'>
+        <h1>Build Passive Income</h1>
+        <div>Get paid everytime your referrers pay!</div>
+
+        <div className="payment-content">
+          <div className="amount-row">
+            <h2>June 2022 Income</h2>
+            <h1 className="amount">$42</h1>
+          </div>
+          <div className="venmo-container">
+            <div>Venmo Handle</div>
+            <div className="venmo-form">
+              <div>@</div>
+              <input className="margin-left" type="text" />
+              <button className="margin-left btn btn-primary" >Save</button>
             </div>
           </div>
-          : <div className='sk-share-classes-raise-effort'>
-            <div className='raise-effort-headline'>
-              <b>{this.props.user.student.raise_effort.personal_signups} students</b> have signed up using your invite links
-            </div>
-          </div>
-        }
+        </div>
       </div>
     )
   }
@@ -324,16 +252,9 @@ class ShareClasses extends React.Component {
             {this.renderTrackReferrals()}
           </div>
           <div className='sk-share-classes-cell'>
-            {this.renderScoreboard()}
+            {this.renderPayment()}
           </div>
         </div>
-        {this.state.showScoreboardModal &&
-          <ScoreboardModal
-            closeModal={() => this.setState({showScoreboardModal: false})}
-            user={this.props.user}
-            partner={this.props.partner}
-          />
-        }
       </div>
     )
   }
