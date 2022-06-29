@@ -721,6 +721,11 @@ body {
     color: $cn-form-border;
     cursor: auto;
   }
+
+  &:hover {
+    background-color: #57B9E480;
+    border-color: #57B9E480;
+  }
 }
 
 
