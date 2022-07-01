@@ -51,7 +51,6 @@ export function getStudentSignupOrganization (studentId) {
 }
 
 export function getUsersReferredByStudent (studentId) {
-  console.log("CALLED")
   return get(`/api/v1/students/${studentId}/referred-students`, null, null)
   .then(response => {
     return response

@@ -1,11 +1,14 @@
 import React from 'react'
+import {inject, observer} from 'mobx-react'
 import PropTypes from 'prop-types'
 import SkSelectDropDown from '../../components/SkSelectDropDown'
 import CopyBox from '../../components/CopyBox'
 import amazon from '../../../assets/images/share/amazon.png'
 import jar from '../../../assets/images/share/jar.png'
 import ScoreboardModal from './ScoreboardModal'
+import actions from '../../../actions'
 
+@inject('rootStore') @observer
 class ShareClasses extends React.Component {
   constructor (props) {
     super(props)
@@ -13,13 +16,25 @@ class ShareClasses extends React.Component {
     this.state = {
       user: this.props.user,
       classSelection: this.props.classes[0],
+      referredStudents: this.props.referredStudents,
       showClassDropDown: false,
-      inviteMode: 'classmates'
+      inviteMode: 'classmates',
+      referredStudents: null
     }
   }
 
   selectClassHandler (studentClass) {
     this.setState({classSelection: studentClass, showClassDropDown: false})
+  }
+
+  async componentDidMount () {
+    await actions.students.getUsersReferredByStudent(this.props.rootStore.userStore.user.student.id)
+    .then((r) => {
+      this.setState({referredStudents: r.referred_students})
+    })
+    .catch(r => {
+      this.setState({referredStudents: false})
+    })
   }
 
   onInviteModeChanged = (e) => {
@@ -180,40 +195,31 @@ class ShareClasses extends React.Component {
               <tr>
                 <th></th>
                 <th></th>
+                <th></th>
                 <th>In Trial</th>
                 <th>Trial Expired</th>
                 <th>Premium $</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-              <td colSpan='2'>Jimmy Smith</td>
-                <td>Stuff 1</td>
-                <td>Stuff 2</td>
-                <td>{this.renderPremiumCheck()}</td>
-              </tr>
-              <tr>
-              <td colSpan='2'>Jimmy Smith</td>
-                <td>Stuff 1</td>
-                <td>{this.renderTrialCheck()}</td>
-                <td>Stuff 3</td>
-              </tr>
-              <tr>
-              <td colSpan='2'>Jimmy Smith</td>
-                <td>{this.renderTrialCheck()}</td>
-                <td>Stuff 2</td>
-                <td>Stuff 3</td>
-              </tr>
-              <tr>
-              <td colSpan='2'>Jimmy Smith</td>
-                <td>Stuff 1</td>
-                <td>Stuff 2</td>
-                <td>{this.renderPremiumCheck()}</td>
-              </tr>
+              {this.state.referredStudents && this.state.referredStudents.map((studentData) => {
+                return this.renderTrackRow(studentData)
+              })}
             </tbody>
           </table>
         </div>
       </div>
+    )
+  }
+
+  renderTrackRow ({user, student, premium_active}) {
+    return (
+      <tr>
+        <td colSpan='3' style={{paddingLeft: "10px"}}>{student.name}</td>
+        <td class="name-td">{user.trial_status == "active" ? this.renderTrialCheck() : null}</td>
+        <td class="check-td">{user.trial_status == "inactive" ? this.renderTrialCheck() : null}</td>
+        <td class="check-td">{premium_active == true ? this.renderPremiumCheck() : null}</td>
+      </tr>
     )
   }
 
