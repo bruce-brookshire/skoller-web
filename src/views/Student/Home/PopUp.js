@@ -16,7 +16,9 @@ import LifeTimeUserModal from '../components/LifeTimeUserModal'
 class PopUp extends React.Component {
   closeModal = () => {
     this.props.rootStore.userStore.setPopUpState(false)
-    this.props.refreshClasses()
+    if (this.props.refreshClasses) {
+      this.props.refreshClasses()
+    }
     this.props.closeModal()
   }
 

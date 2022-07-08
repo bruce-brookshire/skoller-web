@@ -96,6 +96,10 @@
     }
   }
 
+  .cn-class-list-row-grade-text {
+    padding-top: 5px;
+  }
+
   .cn-class-list-row {
     display: flex;
     flex-direction: column;
@@ -140,6 +144,7 @@
       .cn-class-list-row-grade-text {
         font-size: 25px;
         color: white;
+        padding-top: 5px;
       }
     }
 

@@ -128,5 +128,53 @@
         font-weight: 400;
       }
     }
+
+    &--spacer {
+      flex-grow: 1;
+    }
+  }
+
+  .upgradeBox {
+    box-sizing: border-box;
+    width: calc(100% - 20px);
+    @include skoller-cell;
+    margin: 0 10px 2rem 10px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 10px;
+    text-align: center;
+
+    button {
+      border-radius: 3px;
+      background-color: #57B9E4;
+      outline: none;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      font-weight: 700;
+      margin: 5px 0;
+      padding: 10px 25px;
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.5));
+    }
+
+    &__subtext {
+      color: #B0B0B3
+    }
+
+    &__text {
+      display: flex;
+      align-items: center;
+      margin: 12px 0 7px;
+      font-size: 20px;
+      line-height: 20px;
+
+      h1 {
+        font-size: 22px;
+        margin-left: 10px;
+      }
+    }
   }
 }

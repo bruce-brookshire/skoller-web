@@ -5,6 +5,7 @@ import sInReview from '../../../assets/images/class_status/s-in-review.png'
 import uploadS from '../../../assets/images/class_status/upload-s.png'
 import {inject, observer} from 'mobx-react'
 import ReactToolTip from '../ToolTip/CustomToolTip'
+import People from '../../../assets/sk-icons/People'
 
 @inject('rootStore') @observer
 class ClassList extends React.Component {
@@ -68,7 +69,10 @@ class ClassList extends React.Component {
 
     if (status >= 1400) {
       return (
-        <p><span><i className="fas fa-users"></i></span> {cl.enrollment}</p>
+        <p>
+          <span><i className="fas fa-users" /></span>
+          <People /> {cl.enrollment}
+        </p>
       )
     } else if (status === 1100) {
       return (
@@ -84,7 +88,7 @@ class ClassList extends React.Component {
       )
     } else if (status === 1300) {
       return (
-        <p style={{color: '#ef4b0a' }}>Set up this class</p>
+        <p style={{color: '#ef4b0a'}}>Set up this class</p>
       )
     } else {
       return null
@@ -94,55 +98,33 @@ class ClassList extends React.Component {
   renderClassRows () {
     let classes = this.props.classes.slice().sort((a, b) => a.status.id < 1400 ? -1 : 1)
 
-    return (
-      <React.Fragment>
-        {classes.map(cl => {
-          let color = cl.getColor()
-          let name = cl.name
-          if (name.length > 35) {
-            name = name.slice(0, 35) + '...'
-          }
+    return classes.map(cl => {
+      let color = cl.getColor()
+      let name = cl.name
+      if (name.length > 35) {
+        name = name.slice(0, 35) + '...'
+      }
 
-          return (
-            // <div
-            //   className='cn-class-list-cell'
-            //   key={classes.indexOf(cl)}
-            //   style={cl.status.id >= 1400 ? {border: '1px solid ' + color} : null}
-            //   onClick={() => this.onClassSelect(cl)} >
-            //   <div className='cn-class-list-cell-title' style={cl.status.id < 1400 ? {backgroundColor: null, borderBottom: '1px solid #4a4a4a'} : {backgroundColor: color}}>
-            //     <h2 style={cl.status.id < 1400 ? {color: '#4a4a4a'} : {color: 'white'}}>{name}</h2>
-            //   </div>
-            //   <div className='cn-class-list-cell-grade'>
-            //     <span>Grade</span>
-            //     {this.renderGrade(cl)}
-            //   </div>
-            //   <ReactToolTip theme="dark" position="top" title="top tooltip">
-            //     <div>{this.renderExtra(cl)}</div>
-            //   </ReactToolTip>
-            // </div>
-            <div className="center-block col-md-6"
-              key={classes.indexOf(cl)}
-              onClick={() => this.onClassSelect(cl)}
-            >
-              <div className="card-wrap sborder-1" style={cl.status.id >= 1400 ? {border: '1px solid ' + color} : null}>
-                <span className="card-icon  stext-white" style={cl.status.id < 1400 ? {backgroundColor: null, borderBottom: '1px solid #4a4a4a'} : {backgroundColor: color}}>
-                  {this.renderGrade(cl)}
-                  {/* {cl.status.id} */}
-                </span>
-                <h3 className="card-title" style={{color: cl.status.id === 1100 || cl.status.id === 1200 || cl.status.id === 1300 ? '#4a4a4a' : color}}>{name}</h3>
-                <p className="card-subtitle stext-normal">
-                  <ReactToolTip theme="dark" position="top" title={name} ttype="classes" studentCount={cl.enrollment} enrollment_link = { cl.enrollment_link}>
-                    {this.renderExtra(cl)}
-                  </ReactToolTip>
-                </p>
-              </div>
-            </div>
-          )
-        })}
-        <div className='cn-class-list-cell empty' />
-        <div className='cn-class-list-cell empty' />
-      </React.Fragment>
-    )
+      return (
+        <div className="center-block col-md-6"
+          key={classes.indexOf(cl)}
+          onClick={() => this.onClassSelect(cl)}
+        >
+          <div className="card-wrap sborder-1" style={cl.status.id >= 1400 ? {border: '1px solid #4a4a4a'} : null}>
+            <span className="card-icon  stext-white" style={cl.status.id < 1400 ? {backgroundColor: null, borderBottom: '1px solid #4a4a4a'} : {backgroundColor: color}}>
+              {this.renderGrade(cl)}
+              {/* {cl.status.id} */}
+            </span>
+            <h3 className="card-title" style={{color: cl.status.id === 1100 || cl.status.id === 1200 || cl.status.id === 1300 ? '#4a4a4a' : color}}>{name}</h3>
+            <p className="card-subtitle stext-normal">
+              <ReactToolTip theme="dark" position="top" title={name} ttype="classes" studentCount={cl.enrollment} enrollment_link = { cl.enrollment_link}>
+                {this.renderExtra(cl)}
+              </ReactToolTip>
+            </p>
+          </div>
+        </div>
+      )
+    })
   }
 
   render () {

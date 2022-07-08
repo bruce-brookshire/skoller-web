@@ -3,28 +3,14 @@ import {inject, observer} from 'mobx-react'
 import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import AssignmentsTimeline from '../Insights/AssignmentsTimeline'
-import WeightsTimeline, { DateTooltip, ModifiedDateTooltip } from '../Insights/WeightsTimeline'
-import Distribution from '../Insights/Distribution'
-import Sammi from '../../components/Sammi'
-import Progress from '../Insights/Progress'
-import SkSelect from '../../components/SkSelect'
-import ToolTip from '../../components/ToolTip'
+import { ModifiedDateTooltip } from '../Insights/WeightsTimeline'
 import { getAssignmentCountDataHomeGraph, modifiedGetAssignmentWeightData } from '../Insights/DataUtils'
 
 import { VictoryBar, VictoryChart, VictoryAxis, VictoryTooltip, VictoryLabel, VictoryLine, VictoryScatter, VictoryArea } from 'victory'
 import { getStyles } from '../Insights/styles'
 
-import {
-  Chart,
-  BarSeries,
-  Title,
-  ArgumentAxis,
-  ValueAxis
-
-} from '@devexpress/dx-react-chart-bootstrap4'
 import '@devexpress/dx-react-chart-bootstrap4/dist/dx-react-chart-bootstrap4.css'
-import { Animation } from '@devexpress/dx-react-chart'
+import LineGraphSvg from '../../../assets/sk-icons/LineGraph'
 
 const data = [
   {quarter: 1, earnings: 13000},
@@ -105,12 +91,12 @@ class HomeGraphImpact extends React.Component {
   // ass:this.props.rootStore.studentAssignmentsStore.assignments
 
   render () {
-    const { data: chartData, assignment } = this.state
+    const { data: assignment } = this.state
     console.log({assignment})
-    console.log(assignment, 'before changes')
+    const { cl } = this.props
+
     // let data = getAssignmentCountDataHomeGraph(assignment, false, [], 'w')
-    let data = modifiedGetAssignmentWeightData((this.props.cl ? this.props.cl.assignments : this.props.assignments), this.props.cl, this.props.ids, 'w', this.props.rootStore.userStore.user.student.primary_period)
-    console.log(data, 'un changes')
+    let data = modifiedGetAssignmentWeightData((cl ? cl.assignments : this.props.assignments), cl, this.props.ids, 'w', this.props.rootStore.userStore.user.student.primary_period)
 
     const styles = this.getStyles()
 
@@ -136,7 +122,6 @@ class HomeGraphImpact extends React.Component {
     const tickValues = data.map(d => d.x)
     const animate = null
 
-    console.log(data, domain, 'assignments--')
     return (
       // <div className='home-shadow-box margin-top home-insights'>
 
@@ -163,9 +148,10 @@ class HomeGraphImpact extends React.Component {
       //   </VictoryChart>
       // </div>
       <div className='home-shadow-box margin-top home-insights'>
-        <svg viewBox='0 0 450 300'>
+        <h2 className="sec-title"><LineGraphSvg /> Grade Impact</h2>
+        <svg viewBox='0 0 450 250'>
 
-          <g transform={'translate(0, 0)'}>
+          <g transform={'translate(0, -40)'}>
             <VictoryAxis
               tickValues={tickValues}
               tickFormat={d => moment(d, 'X').format('M/DD')}
@@ -178,7 +164,6 @@ class HomeGraphImpact extends React.Component {
             />
 
             <VictoryLabel x={6} y={154}
-
               style={styles.axisLabel}
               angle={270}
               textAnchor={'middle'}
@@ -280,8 +265,11 @@ class HomeGraphImpact extends React.Component {
 }
 
 HomeGraphImpact.propTypes = {
+  ids: PropTypes.array,
+  assignments: PropTypes.object,
   history: PropTypes.object,
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  cl: PropTypes.object
 }
 
 export default withRouter(HomeGraphImpact)

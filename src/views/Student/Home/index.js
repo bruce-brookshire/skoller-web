@@ -218,9 +218,7 @@ class Home extends React.Component {
     launchClassStatusModal (cl) {
       this.setState({ classStatusModal: { show: true, cl: cl } })
     }
-    changePaymentPlan () {
-      this.setState({ popUp: { type: 'PaymentPlans', show: true } })
-    }
+
     handleClassModalClose () {
       this.setState({
         classModal: false
@@ -245,7 +243,7 @@ class Home extends React.Component {
               this.setState({showTrialClassStatusModal: false})
               this.setState({ popUp: { type: 'PaymentPlans', show: true } })
             }}
-            cl={this.state.classStatusModal.cl} closeModal={() => this.setState({showTrialClassStatusModal: false})} status={{ options: ['Class', 'Syllabus', 'Review', 'Live'], state: 'Review'}}/>}
+            cl={this.state.classStatusModal.cl} closeModal={() => this.setState({showTrialClassStatusModal: false})} status={{ options: ['Class', 'Syllabus', 'Review', 'Live'], state: 'Review' }}/>}
           {/* {this.state.classModal && (this.state.subscribed ? <PremiumClassModal closeModal={this.handleClassModalClose.bind(this)} status={{state: false}} /> : <TrialClassModal closeModal={this.handleClassModalClose.bind(this)} status={{state: false}}/>)} */}
           {/* <ClassStatusPopUp subscribed={this.state.subscribed} /> */}
           {/* <PremiumClassModal closeModal={() => {}} status={{state: false}} /> */}
@@ -254,7 +252,6 @@ class Home extends React.Component {
               <div className="home-shadow-box">
 
                 <div className="home-card-content">
-                  {/* <HomeClasses classes={this.props.rootStore.studentClassesStore.classes} onAddClass={() => this.closeAddClassModal()} onClassSelect={this.onClassSelect} launchClassStatusModal={(cl) => this.launchClassStatusModal(cl)} /> */}
                   <HomeClasses1 classes={this.props.rootStore.studentClassesStore.classes} onAddClass={() => this.closeAddClassModal()} onClassSelect={this.onClassSelect} launchClassStatusModal={(cl) => this.launchClassStatusModal(cl)} />
                 </div>
               </div>
@@ -268,61 +265,16 @@ class Home extends React.Component {
               <div className="home-shadow-box">
                 {/* } <h1 className='home-heading' onClick={() => this.props.history.push('/student/tasks')}>Assignments</h1> */}
 
-                <div className="center-block title-icon"><h2 className="heading-assign"><i className="far fa-check-circle"></i>
-                                Assignments</h2> <span>Next 7 Days</span></div>
+                <div className="center-block title-icon">
+                  <h2 className="heading-assign"><i className="far fa-check-circle"></i> Assignments</h2>
+                  <span>Next 7 Days</span>
+                </div>
 
                 <div className="home-card-content">
                   <HomeAssignments />
                   <HomeTasks />
                 </div>
               </div>
-
-              {
-                !this.props.rootStore.userStore.user.lifetime_trial && !this.props.rootStore.userStore.user.lifetime_subscription && this.props.rootStore.userStore.user.trial &&
-                            <div className="home-shadow-box">
-                              <div className="home-shadow-box__expiresin-container">
-                                <div className="home-shadow-box__expiresin-title">
-                                  <img alt="Skoller" className='logo' src='/src/assets/images/sammi/Smile.png' height="60" />
-                                  <h1>Your free trial expires in {Math.ceil(+this.props.rootStore.userStore.user.trial_days_left)} days</h1>
-                                </div>
-                                <button
-                                  onClick={() => {
-                                    this.setState({ popUp: { type: 'PaymentPlans', show: true } })
-                                  }}
-                                >Upgrade to Premium</button>
-                                <span>Trial ends {formatDate(new Date(new Date().setDate(new Date().getDate() + Math.ceil(+this.props.rootStore.userStore.user.trial_days_left))))}</span>
-                              </div>
-                            </div>
-              }
-              {
-                !this.props.rootStore.userStore.user.lifetime_trial && !this.props.rootStore.userStore.user.lifetime_subscription && !this.props.rootStore.userStore.user.trial && this.state.subscribed &&
-                            <div className="home-shadow-box">
-                              <div className="home-shadow-box__expiresin-container">
-                                <div className="home-shadow-box__expiresin-title">
-                                  <img alt="Skoller" className='logo' src='/src/assets/images/sammi/Smile.png' height="60" />
-                                  {(this.props.rootStore.userStore.mySubscription && this.props.rootStore.userStore.mySubscription.cancel_at_period_end) ? <h1>You cancelled your subscription</h1> : this.props.rootStore.userStore.mySubscription && !this.props.rootStore.userStore.mySubscription.cancel_at_period_end ? <h1>Cancel subscription</h1> : null}
-                                </div>
-                                {
-                                  (this.props.rootStore.userStore.mySubscription && this.props.rootStore.userStore.mySubscription.cancel_at_period_end)
-
-                                    ? <button
-                                      onClick={() => {
-                                        this.setState({ popUp: { type: 'PaymentPlans', show: true } })
-                                      }}
-                                    >Upgrade to Premium</button>
-                                    : this.props.rootStore.userStore.mySubscription && !this.props.rootStore.userStore.mySubscription.cancel_at_period_end
-                                      ? <button
-                                        onClick={() => {
-                                          this.setState({ popUp: { type: 'CancelSubscription', show: true } })
-                                        }}
-                                      >Cancel Subscription</button> : null
-
-                                }
-                                <span>Subscription ends {formatDate(this.getIntervalDate())}</span>
-                              </div>
-                            </div>
-              }
-
             </div>
           </div>
         </div>

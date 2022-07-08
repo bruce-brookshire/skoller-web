@@ -13,6 +13,8 @@ import ReactToolTip from '../../components/ToolTip/CustomToolTip'
 class TasksList extends React.Component {
   static studentClasses = {}
 
+  today = moment().add(1, 'months').add(2, 'weeks')
+
   constructor (props) {
     super(props)
     this.state = {
@@ -110,9 +112,9 @@ class TasksList extends React.Component {
       if (this.state.filterSelection === 'All assignments') {
         return true
       } else if (this.state.filterSelection === 'Upcoming') {
-        return moment(task.due).isSame(moment(), 'day') || moment(task.due).isAfter(moment())
+        return moment(task.due).isSame(this.today, 'day') || moment(task.due).isAfter(this.today)
       } else if (this.state.filterSelection === 'Past') {
-        return moment(task.due).isBefore(moment())
+        return moment(task.due).isBefore(this.today)
       }
     } else {
       return true
@@ -120,13 +122,15 @@ class TasksList extends React.Component {
   }
 
   outlookLogic (task) {
-    if (this.props.outlook) {
-      if (this.props.outlook === 'Rest of the semester') {
+    const { outlook } = this.props
+
+    if (outlook) {
+      if (outlook === 'Rest of the semester') {
         return true
-      } else if (this.props.outlook === 'Next 10 days') {
-        return moment(task.due).diff(moment(), 'day') <= 10
-      } else if (this.props.outlook === 'Next 30 days') {
-        return moment(task.due).diff(moment(), 'day') <= 30
+      } else if (outlook === 'Next 10 days') {
+        return moment(task.due).diff(this.today, 'day') <= 10
+      } else if (outlook === 'Next 30 days') {
+        return moment(task.due).diff(this.today, 'day') <= 30
       }
     } else {
       return true
@@ -134,7 +138,7 @@ class TasksList extends React.Component {
   }
 
   taskValidity (task, i = false) {
-    let daysAway = moment(task.due).diff(moment(), 'days')
+    let daysAway = moment(task.due).diff(this.today, 'days')
     let maxDays = this.props.maxDays ? this.props.maxDays - 1 : 10000
     let maxTasks = this.props.maxTasks ? this.props.maxTasks : 10000
 
@@ -167,15 +171,17 @@ class TasksList extends React.Component {
       })
   }
   editAssignment = async (form, assignmentId, isPrivate = true) => {
+    const { removeGradeFromAssignment, gradeAssignment, updateStudentAssignment } = actions.assignments
+
     if (form.grade || isNaN(form.grade)) {
       if (isNaN(form.grade)) {
-        await actions.assignments.removeGradeFromAssignment(assignmentId)
+        await removeGradeFromAssignment(assignmentId)
       } else {
-        await actions.assignments.gradeAssignment(assignmentId, form.grade)
+        await gradeAssignment(assignmentId, form.grade)
       }
     } else {
       form.id = assignmentId
-      await actions.assignments.updateStudentAssignment(form, isPrivate)
+      await updateStudentAssignment(form, isPrivate)
     }
 
     this.props.rootStore.studentAssignmentsStore.updateAssignments()

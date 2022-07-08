@@ -80,8 +80,8 @@ Grade.propTypes = {
 
 export default function Assignment (props) {
   let isTask = false
-  if(props.isTask){
-      isTask = props.isTask
+  if (props.isTask) {
+    isTask = props.isTask
   }
   const [showEdit, setShowEdit] = React.useState(false)
   const [showButton, setShowButton] = React.useState(false)
@@ -120,7 +120,6 @@ export default function Assignment (props) {
       }} {...props} />
     )
   } else {
-    let location = useLocation()
     return (
       <VisibilitySensor onChange={onChange}>
         <OutsideClickHandler onOutsideClick={() => setOutsideClick(true)}>
@@ -154,50 +153,50 @@ export default function Assignment (props) {
                   <div className={props.assignment.due ? 'sk-assignment-due' : 'sk-assignment-missing'}>{formatDueDate(props.assignment.due)}</div>
                 </div>
                 {
-                    !isTask && <Flipper spring={'stiff'} flipKey={showButton + editExited} className='sk-assignment-controls'>
-                  <Flipped flipId={1}>
-                    <CSSTransition
-                      key={1}
-                      in={showButton}
-                      timeout={90}
-                      mountOnEnter
-                      unmountOnExit
-                      onExited={() => setEditExited(true)}
-                      onEnter={() => setEditExited(false)}
-                      classNames="fade"
-                    >
-                      <div onClick={enableEdit} className='sk-assignment-edit-button'>
-                        <div>•••</div>
-                      </div>
-                    </CSSTransition>
-                  </Flipped>
-                  <Flipped flipId={2}>
-                    <CSSTransition
-                      key={2}
-                      in={showButton || props.assignment.is_completed}
-                      timeout={90}
-                      mountOnEnter
-                      unmountOnExit
-                      classNames="fade"
-                    >
-                      <div style={{
-                        transform: (props.assignment.is_completed
-                          ? showButton
-                            ? 'translateY(0)'
-                            : 'translateY(0)'
-                          : null),
-                        backgroundColor: (props.assignment.is_completed
-                          ? '#57B9E4'
-                          : null)
-                      }} onMouseEnter={() => setShowCheck(true)} onMouseLeave={() => setShowCheck(false)} onClick={onComplete} className='sk-assignment-complete-button'>
-                        <div className='sk-assignment-complete'>
-                          {(showCheck && !props.assignment.is_completed) && <CheckIcon fill={'#57B9E4'} />}
-                          {(props.assignment.is_completed) && <CheckIcon fill={'#FFFFFF'} />}
+                  !isTask && <Flipper spring={'stiff'} flipKey={showButton + editExited} className='sk-assignment-controls'>
+                    <Flipped flipId={1}>
+                      <CSSTransition
+                        key={1}
+                        in={showButton}
+                        timeout={90}
+                        mountOnEnter
+                        unmountOnExit
+                        onExited={() => setEditExited(true)}
+                        onEnter={() => setEditExited(false)}
+                        classNames="fade"
+                      >
+                        <div onClick={enableEdit} className='sk-assignment-edit-button'>
+                          <div>•••</div>
                         </div>
-                      </div>
-                    </CSSTransition>
-                  </Flipped>
-                </Flipper>
+                      </CSSTransition>
+                    </Flipped>
+                    <Flipped flipId={2}>
+                      <CSSTransition
+                        key={2}
+                        in={showButton || props.assignment.is_completed}
+                        timeout={90}
+                        mountOnEnter
+                        unmountOnExit
+                        classNames="fade"
+                      >
+                        <div style={{
+                          transform: (props.assignment.is_completed
+                            ? showButton
+                              ? 'translateY(0)'
+                              : 'translateY(0)'
+                            : null),
+                          backgroundColor: (props.assignment.is_completed
+                            ? '#57B9E4'
+                            : null)
+                        }} onMouseEnter={() => setShowCheck(true)} onMouseLeave={() => setShowCheck(false)} onClick={onComplete} className='sk-assignment-complete-button'>
+                          <div className='sk-assignment-complete'>
+                            {(showCheck && !props.assignment.is_completed) && <CheckIcon fill={'#57B9E4'} />}
+                            {(props.assignment.is_completed) && <CheckIcon fill={'#FFFFFF'} />}
+                          </div>
+                        </div>
+                      </CSSTransition>
+                    </Flipped>
+                  </Flipper>
                 }
               </div>
               {/* </Link> */}
@@ -214,5 +213,7 @@ Assignment.propTypes = {
   assignment: PropTypes.object,
   color: PropTypes.string,
   active: PropTypes.bool,
-  registerVisibleAssignment: PropTypes.func
+  registerVisibleAssignment: PropTypes.func,
+  isTask: PropTypes.boolean,
+  className: PropTypes.string
 }
