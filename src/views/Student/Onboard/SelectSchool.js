@@ -36,6 +36,8 @@ class SelectSchool extends React.Component {
         termChoice: this.props.backData.termChoice
       })
     }
+
+    this.searchTimeout = null
   }
 
   getMobileOperatingSystem () {
@@ -83,13 +85,20 @@ class SelectSchool extends React.Component {
 
   searchSchools (value) {
     this.setState({loadingAutocomplete: true})
+    if (this.searchTimeout) {
+      clearTimeout(this.searchTimeout)
+    }
+
     if (value) {
       this.setState({loadingAutocomplete: true, value})
-      actions.schools.searchSchools(value).then((schools) => {
-        if (value === this.state.value) {
-          this.setState({schools, loadingAutocomplete: false})
-        }
-      }).catch(() => { this.setState({loadingAutocomplete: false}) })
+
+      this.searchTimeout = setTimeout(() => {
+        actions.schools.searchSchools(value).then((schools) => {
+          if (value === this.state.value) {
+            this.setState({schools, loadingAutocomplete: false})
+          }
+        }).catch(() => { this.setState({loadingAutocomplete: false}) })
+      }, 800)
     } else {
       this.setState({schools: [], loadingAutocomplete: false})
     }
@@ -318,7 +327,6 @@ class SelectSchool extends React.Component {
         currentTerms.push(term)
       }
     })
-    console.log(currentTerms)
     let termFieldWidth = this.termField.offsetWidth
     return (
       <div

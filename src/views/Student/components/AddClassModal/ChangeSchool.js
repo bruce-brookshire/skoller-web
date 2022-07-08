@@ -32,6 +32,8 @@ class ChangeSchool extends React.Component {
         termChoice: this.props.backData.termChoice
       })
     }
+
+    this.searchTimeout = null
   }
 
   checkBackData () {
@@ -68,13 +70,20 @@ class ChangeSchool extends React.Component {
 
   searchSchools (value) {
     this.setState({loadingAutocomplete: true})
+    if (this.searchTimeout) {
+      clearTimeout(this.searchTimeout)
+    }
+
     if (value) {
       this.setState({loadingAutocomplete: true, value})
-      actions.schools.searchSchools(value).then((schools) => {
-        if (value === this.state.value) {
-          this.setState({schools, loadingAutocomplete: false})
-        }
-      }).catch(() => { this.setState({loadingAutocomplete: false}) })
+
+      this.searchTimeout = setTimeout(() => {
+        actions.schools.searchSchools(value).then((schools) => {
+          if (value === this.state.value) {
+            this.setState({schools, loadingAutocomplete: false})
+          }
+        }).catch(() => { this.setState({loadingAutocomplete: false}) })
+      }, 800)
     } else {
       this.setState({schools: [], loadingAutocomplete: false})
     }
