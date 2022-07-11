@@ -17,37 +17,11 @@ class Share extends React.Component {
       user: this.props.rootStore.userStore.user,
       classes: [],
       loading: true,
-      partner: null
+      partner: null,
     }
 
-    this.getPartnerByUser()
     this.getClasses()
     this.props.rootStore.navStore.setActivePage('share')
-  }
-
-  getPartner (partnerSlug) {
-    let partner = null
-    Object.keys(partners).forEach(partnerKey => {
-      if (partners[partnerKey].slug.toLowerCase() === partnerSlug.toLowerCase() || partners[partnerKey].altName.toLowerCase() === partnerSlug.toLowerCase()) {
-        partner = partners[partnerKey]
-      }
-    })
-    return partner
-  }
-
-  async getPartnerByUser () {
-    await actions.students.getStudentSignupOrganization(this.props.rootStore.userStore.user.student.id)
-      .then((r) => {
-        let slug = r.link.replace(/(.+)(\/c\/)/g, '')
-        if (this.props.rootStore.userStore.user.student.raise_effort) {
-          this.setState({partner: this.getPartner(slug)})
-        } else {
-          this.setState({partner: false})
-        }
-      })
-      .catch(r => {
-        this.setState({partner: false})
-      })
   }
 
   getClasses () {
@@ -67,7 +41,6 @@ class Share extends React.Component {
           ? <ShareClasses
             classes={this.state.classes}
             user={this.state.user}
-            partner={this.state.partner}
           />
           : <ShareNoClasses
             user={this.state.user}

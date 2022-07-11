@@ -185,6 +185,7 @@ import {
   setStudentPrimarySchool,
   setStudentPrimaryPeriod,
   getStudentSignupOrganization,
+  getUsersReferredByStudent,
   setStudentMajor,
   setStudentMajors,
   updateStudent
@@ -218,6 +219,7 @@ const actions = {
     setStudentPrimarySchool,
     setStudentPrimaryPeriod,
     getStudentSignupOrganization,
+    getUsersReferredByStudent,
     setStudentMajor,
     setStudentMajors,
     updateStudent
