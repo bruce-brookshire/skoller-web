@@ -186,6 +186,7 @@ import {
   setStudentPrimaryPeriod,
   getStudentSignupOrganization,
   getUsersReferredByStudent,
+  storeVenmoHandle,
   setStudentMajor,
   setStudentMajors,
   updateStudent
@@ -220,6 +221,7 @@ const actions = {
     setStudentPrimaryPeriod,
     getStudentSignupOrganization,
     getUsersReferredByStudent,
+    storeVenmoHandle,
     setStudentMajor,
     setStudentMajors,
     updateStudent

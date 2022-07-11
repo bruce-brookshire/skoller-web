@@ -19,7 +19,8 @@ class ShareClasses extends React.Component {
       referredStudents: this.props.referredStudents,
       showClassDropDown: false,
       inviteMode: 'classmates',
-      referredStudents: null
+      referredStudents: null,
+      venmoHandle: null
     }
   }
 
@@ -34,6 +35,21 @@ class ShareClasses extends React.Component {
     })
     .catch(r => {
       this.setState({referredStudents: false})
+    })
+  }
+
+  handleVenmoHandlerSubmit (event) {
+    event.preventDefault();
+    postVenmoHandle(event.target.venmoHandle.value).then(r => console.log("loggy log"))
+  }
+
+  async postVenmoHandle(handle) {
+    await actions.students.storeVenmoHandle(this.props.rootStore.userStore.user.student.id, handle)
+    .then((r) => {
+      console.log("STORE VENMO HANDLE IN COMPONENT: ", r)
+    })
+    .catch(r => {
+      console.log("VENMO HANDLE ERROR IN COMPONENT: ", r)
     })
   }
 
@@ -214,11 +230,11 @@ class ShareClasses extends React.Component {
 
   renderTrackRow ({user, student, premium_active}) {
     return (
-      <tr>
+      <tr key={student.id}>
         <td colSpan='3' style={{paddingLeft: "10px"}}>{student.name}</td>
-        <td class="name-td">{user.trial_status == "active" ? this.renderTrialCheck() : null}</td>
-        <td class="check-td">{user.trial_status == "inactive" ? this.renderTrialCheck() : null}</td>
-        <td class="check-td">{premium_active == true ? this.renderPremiumCheck() : null}</td>
+        <td className="name-td">{user.trial_status == "active" ? this.renderTrialCheck() : null}</td>
+        <td className="check-td">{user.trial_status == "inactive" ? this.renderTrialCheck() : null}</td>
+        <td className="check-td">{premium_active == true ? this.renderPremiumCheck() : null}</td>
       </tr>
     )
   }
@@ -238,8 +254,12 @@ class ShareClasses extends React.Component {
             <div>Venmo Handle</div>
             <div className="venmo-form">
               <div>@</div>
-              <input className="margin-left" type="text" />
-              <button className="margin-left btn btn-primary" >Save</button>
+              <form onSubmit={this.handleVenmoHandlerSubmit}>
+                <input className="margin-left" type="text" name="venmoHandle" />
+                <button 
+                  className="margin-left btn btn-primary"
+                  type="submit">Save</button>
+              </form>
             </div>
           </div>
         </div>

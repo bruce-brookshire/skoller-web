@@ -133,3 +133,20 @@ export function updateStudent (userId, studentId, form) {
       return Promise.reject(error)
     })
 }
+
+export function storeVenmoHandle(studentId, venmoHandle) {
+  let form ={'venmo_handle': venmoHandle}
+  return post(
+    `/api/v1/students/${studentId}/store-venmo-handle`,
+    form,
+    'Error storing venmo handle.'
+  )
+    .then(data => {
+      console.log("DATA FROM VENMO ROUTE: ", data)
+      return data
+    })
+    .catch(error => {
+      console.log("ERROR IN VENMO ROUTE: ", error)
+      return Promise.reject(error)
+    })
+}
