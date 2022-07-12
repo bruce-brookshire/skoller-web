@@ -7,6 +7,9 @@ import amazon from '../../../assets/images/share/amazon.png'
 import jar from '../../../assets/images/share/jar.png'
 import ScoreboardModal from './ScoreboardModal'
 import actions from '../../../actions'
+import stores from '../../../stores'
+
+const {userStore} = stores
 
 @inject('rootStore') @observer
 class ShareClasses extends React.Component {
@@ -31,22 +34,21 @@ class ShareClasses extends React.Component {
   async componentDidMount () {
     await actions.students.getUsersReferredByStudent(this.props.rootStore.userStore.user.student.id)
     .then((r) => {
-      this.setState({referredStudents: r.referred_students})
+      this.setState({referredStudents: r.student_data.referred_students})
+      this.setState({venmoHandle: r.student_data.student.venmo_handle})
     })
     .catch(r => {
       this.setState({referredStudents: false})
     })
   }
 
-  handleVenmoHandlerSubmit (event) {
+  postVenmoHandle = async (event) => {
     event.preventDefault();
-    postVenmoHandle(event.target.venmoHandle.value).then(r => console.log("loggy log"))
-  }
-
-  async postVenmoHandle(handle) {
+    const handle = event.target.venmoHandle.value;
     await actions.students.storeVenmoHandle(this.props.rootStore.userStore.user.student.id, handle)
     .then((r) => {
-      console.log("STORE VENMO HANDLE IN COMPONENT: ", r)
+      userStore.user.student = r.student
+      this.setState({venmoHandle: r.student.venmo_handle})
     })
     .catch(r => {
       console.log("VENMO HANDLE ERROR IN COMPONENT: ", r)
@@ -248,20 +250,31 @@ class ShareClasses extends React.Component {
         <div className="payment-content">
           <div className="amount-row">
             <h2>June 2022 Income</h2>
-            <h1 className="amount">$42</h1>
+            <h1 className="amount">$0</h1>
           </div>
-          <div className="venmo-container">
-            <div>Venmo Handle</div>
-            <div className="venmo-form">
-              <div>@</div>
-              <form onSubmit={this.handleVenmoHandlerSubmit}>
-                <input className="margin-left" type="text" name="venmoHandle" />
-                <button 
-                  className="margin-left btn btn-primary"
-                  type="submit">Save</button>
-              </form>
+          { !this.state.venmoHandle === null && this.state.venmoHandle != "" ?
+            <div className="venmo-container">
+              <div>Venmo Handle</div>
+
+                <div className="venmo-form">
+                  <div>@</div>
+                  <form onSubmit={this.postVenmoHandle}>
+                    <input className="margin-left" type="text" name="venmoHandle" />
+                    <button 
+                      className="margin-left btn btn-primary"
+                      type="submit">Save</button>
+                
+                  </form>
+                </div>
             </div>
-          </div>
+          :
+            <div className="venmo-container-inline">
+              <div>Venmo Handle</div>
+              <div style={{marginLeft: '10px', fontWeight: 'bold'}}>
+                <div>@<span>{this.state.venmoHandle}</span></div>
+              </div>
+            </div>
+          }
         </div>
       </div>
     )
