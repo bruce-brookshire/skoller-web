@@ -232,7 +232,7 @@ class ShareClasses extends React.Component {
 
   renderTrackRow ({user, student, premium_active}) {
     return (
-      <tr key={student.id}>
+      <tr key={student.name}>
         <td colSpan='3' style={{paddingLeft: "10px"}}>{student.name}</td>
         <td className="name-td">{user.trial_status == "active" ? this.renderTrialCheck() : null}</td>
         <td className="check-td">{user.trial_status == "inactive" ? this.renderTrialCheck() : null}</td>
