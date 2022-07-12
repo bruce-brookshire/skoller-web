@@ -60,16 +60,6 @@ export function getUsersReferredByStudent (studentId) {
   })
 }
 
-export function getStudentById(student_id) {
-  return get(
-    `/api/v1/students/${studentId}/get-student`, null, null
-  ).then(data => {
-    return data
-  }).catch(error => {
-    return Promise.reject(error)
-  })
-}
-
 /*
 * Set student primary period
 *
