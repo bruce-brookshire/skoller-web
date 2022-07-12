@@ -5,7 +5,6 @@ import sInReview from '../../../assets/images/class_status/s-in-review.png'
 import uploadS from '../../../assets/images/class_status/upload-s.png'
 import {inject, observer} from 'mobx-react'
 import ReactToolTip from '../ToolTip/CustomToolTip'
-import People from '../../../assets/sk-icons/People'
 
 @inject('rootStore') @observer
 class ClassList extends React.Component {
@@ -71,7 +70,7 @@ class ClassList extends React.Component {
       return (
         <p>
           <span><i className="fas fa-users" /></span>
-          <People /> {cl.enrollment}
+          &nbsp; {cl.enrollment}
         </p>
       )
     } else if (status === 1100) {

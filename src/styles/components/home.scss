@@ -111,5 +111,10 @@ $sk-home-break-point: 1000px;
         }
       }
     }
+
+    .home-insights-svg {
+      transform: translate(0, -70px);
+      margin-bottom: -60px;
+    }
   }
 }

@@ -65,6 +65,9 @@ class StudentNav extends React.Component {
         <div className="s-nav-wrapper">
           <div className="s-nav">
             <NavItem pageName="home" text="Home" />
+            <NavItem pageName="classes" text="Classes" />
+            <NavItem pageName="tasks" text="Assignments" />
+            <NavItem pageName="insights" text="Insights" />
             <NavItem pageName="calendar" text="Calendar" />
             {this.props.rootStore.studentClassesStore.classes.filter(cl => cl.status.id === 1400).length !== 0 &&
               <NavItem pageName="share" text="Share" />

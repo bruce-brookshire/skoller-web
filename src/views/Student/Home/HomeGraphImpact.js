@@ -149,9 +149,9 @@ class HomeGraphImpact extends React.Component {
       // </div>
       <div className='home-shadow-box margin-top home-insights'>
         <h2 className="sec-title"><LineGraphSvg /> Grade Impact</h2>
-        <svg viewBox='0 0 450 250'>
+        <svg viewBox='0 0 450 280' className="home-insights-svg">
 
-          <g transform={'translate(0, -40)'}>
+          <g>
             <VictoryAxis
               tickValues={tickValues}
               tickFormat={d => moment(d, 'X').format('M/DD')}
