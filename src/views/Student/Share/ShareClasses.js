@@ -7,6 +7,9 @@ import amazon from '../../../assets/images/share/amazon.png'
 import jar from '../../../assets/images/share/jar.png'
 import ScoreboardModal from './ScoreboardModal'
 import actions from '../../../actions'
+import stores from '../../../stores'
+
+const {userStore} = stores
 
 @inject('rootStore') @observer
 class ShareClasses extends React.Component {
@@ -19,7 +22,8 @@ class ShareClasses extends React.Component {
       referredStudents: this.props.referredStudents,
       showClassDropDown: false,
       inviteMode: 'classmates',
-      referredStudents: null
+      referredStudents: null,
+      venmoHandle: null
     }
   }
 
@@ -30,10 +34,24 @@ class ShareClasses extends React.Component {
   async componentDidMount () {
     await actions.students.getUsersReferredByStudent(this.props.rootStore.userStore.user.student.id)
     .then((r) => {
-      this.setState({referredStudents: r.referred_students})
+      this.setState({referredStudents: r.student_data.referred_students})
+      this.setState({venmoHandle: r.student_data.student.venmo_handle})
     })
     .catch(r => {
       this.setState({referredStudents: false})
+    })
+  }
+
+  postVenmoHandle = async (event) => {
+    event.preventDefault();
+    const handle = event.target.venmoHandle.value;
+    await actions.students.storeVenmoHandle(this.props.rootStore.userStore.user.student.id, handle)
+    .then((r) => {
+      userStore.user.student = r.student
+      this.setState({venmoHandle: r.student.venmo_handle})
+    })
+    .catch(r => {
+      console.log("VENMO HANDLE ERROR IN COMPONENT: ", r)
     })
   }
 
@@ -214,11 +232,11 @@ class ShareClasses extends React.Component {
 
   renderTrackRow ({user, student, premium_active}) {
     return (
-      <tr>
+      <tr key={student.name}>
         <td colSpan='3' style={{paddingLeft: "10px"}}>{student.name}</td>
-        <td class="name-td">{user.trial_status == "active" ? this.renderTrialCheck() : null}</td>
-        <td class="check-td">{user.trial_status == "inactive" ? this.renderTrialCheck() : null}</td>
-        <td class="check-td">{premium_active == true ? this.renderPremiumCheck() : null}</td>
+        <td className="name-td">{user.trial_status == "active" ? this.renderTrialCheck() : null}</td>
+        <td className="check-td">{user.trial_status == "inactive" ? this.renderTrialCheck() : null}</td>
+        <td className="check-td">{premium_active == true ? this.renderPremiumCheck() : null}</td>
       </tr>
     )
   }
@@ -232,16 +250,31 @@ class ShareClasses extends React.Component {
         <div className="payment-content">
           <div className="amount-row">
             <h2>June 2022 Income</h2>
-            <h1 className="amount">$42</h1>
+            <h1 className="amount">$0</h1>
           </div>
-          <div className="venmo-container">
-            <div>Venmo Handle</div>
-            <div className="venmo-form">
-              <div>@</div>
-              <input className="margin-left" type="text" />
-              <button className="margin-left btn btn-primary" >Save</button>
+          { !this.state.venmoHandle === null && this.state.venmoHandle != "" ?
+            <div className="venmo-container">
+              <div>Venmo Handle</div>
+
+                <div className="venmo-form">
+                  <div>@</div>
+                  <form onSubmit={this.postVenmoHandle}>
+                    <input className="margin-left" type="text" name="venmoHandle" />
+                    <button 
+                      className="margin-left btn btn-primary"
+                      type="submit">Save</button>
+                
+                  </form>
+                </div>
             </div>
-          </div>
+          :
+            <div className="venmo-container-inline">
+              <div>Venmo Handle</div>
+              <div style={{marginLeft: '10px', fontWeight: 'bold'}}>
+                <div>@<span>{this.state.venmoHandle}</span></div>
+              </div>
+            </div>
+          }
         </div>
       </div>
     )

@@ -178,6 +178,12 @@
               }
             }
           }
+
+          .venmo-container-inline {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+          }
         }
       }
     }
