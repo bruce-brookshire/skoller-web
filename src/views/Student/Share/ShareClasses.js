@@ -25,6 +25,8 @@ class ShareClasses extends React.Component {
       referredStudents: null,
       venmoHandle: null
     }
+
+    console.log("STATE", this.state.venmoHandle)
   }
 
   selectClassHandler (studentClass) {
@@ -252,7 +254,7 @@ class ShareClasses extends React.Component {
             <h2>June 2022 Income</h2>
             <h1 className="amount">$0</h1>
           </div>
-          { !this.state.venmoHandle === null && this.state.venmoHandle != "" ?
+          { this.state.venmoHandle == null && this.state.venmoHandle != "" ?
             <div className="venmo-container">
               <div>Venmo Handle</div>
 
