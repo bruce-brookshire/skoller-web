@@ -73,7 +73,7 @@ export function allPlans() {
 }
 
 export function createSubscription(requestObj) {
-  return post(`/api/v1/stripe/save-card-and-subscription`, requestObj, 'Error removing grade assignment. Try again.')
+  return post(`/api/v1/stripe/save-card-and-subscription`, requestObj, null)
     .then(data => {
       return data
     })
