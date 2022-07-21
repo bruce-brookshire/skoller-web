@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {useHistory} from 'react-router-dom'
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js'
 
@@ -9,6 +9,7 @@ import { showSnackbar } from '../../../../utilities/snackbar'
 export default function CheckoutForm (props) {
   const stripe = useStripe()
   const elements = useElements()
+  const [payButtonDisabled, setPayButtonDisabled] = useState(false);
 
   console.log(props, 'CheckoutForm')
   console.log(props.selectedSubscription, 'CheckoutForm')
@@ -18,7 +19,6 @@ export default function CheckoutForm (props) {
     // We don't want to let default form submission happen here,
     // which would refresh the page.
     event.preventDefault()
-
     if (!stripe || !elements) {
       // Stripe.js has not yet loaded.
       // Make  sure to disable form submission until Stripe.js has loaded.
@@ -31,10 +31,12 @@ export default function CheckoutForm (props) {
     if (result.error) {
       // Show error to your customer.
       console.log(result.error.message)
+      setPayButtonDisabled(false);
     } else {
       // Send the token to your server.
       // This function does not exist yet; we will define it in the next step.
       stripeTokenHandler(result.token)
+      setPayButtonDisabled(false);
     }
   }
 
@@ -72,16 +74,23 @@ export default function CheckoutForm (props) {
         props.simplifiedFunction()
       })
       .catch((e) => {
+        setPayButtonDisabled(false)
         console.log(e)
       })
   }
+
+  function buttonDisabled () {
+    return !stripe || payButtonDisabled;
+  }
+
+  const payButtonDisabledClass = payButtonDisabled ? 'disabled' : '';
 
   return (
     <form onSubmit={handleSubmit}>
       <CardSection />
       {/* <button disabled={!stripe}>Confirm order</button>
        */}
-      <button className="btn full-width sbg-dark text-white margin-top" style={{color: 'white'}} disabled={!stripe}>Pay</button>
+      <button onClick={() => setPayButtonDisabled(true)} className={`btn-primary padding full-width text-white margin-top ${payButtonDisabledClass}`} style={{color: 'white'}}>Pay</button>
     </form>
   )
 }

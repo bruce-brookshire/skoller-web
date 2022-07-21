@@ -54,7 +54,7 @@
       }
     
       .sk-share-form-section {
-        margin-top: 1rem;
+        margin-top: 2rem;
     
         h4 {
           margin: 0;
@@ -91,63 +91,101 @@
         margin: 0;
       }
 
-      .sk-share-classes-partnerships {
-        .partnerships-detail {
-          margin: 0;
-          a {
-            color: $cn-color-blue;
-            font-weight: 600;
-            text-decoration: none;
-          }
+      .sk-share-classes-track-referrals {
+        .table {
+          border-spacing: 0;
+          border-collapse: separate;
+          width: 100%;
         }
-  
-        .video {
-          iframe {
-            width: 100%;
-            height: 180px;
-            border-radius: 5px;
-          }
+
+        .table thead tr th {
+          position: sticky;
+          position: -webkit-sticky;
+          top: 0;
+          padding: 0.3rem;
+          border: 1px solid $cn-form-border;
+          background-color: $cn-form-border;
+          font-size: 0.8rem;
+        }
+
+        th {
+          margin-top: 2px;
+        }
+
+        td {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          height: 0.8rem;
+        }
+
+        .name-td {
+          text-align: start !important;
+          padding-left: 10px !important;
+        }
+
+        .check-td {
+          text-align: center;
+        }
+
+        .table-wrapper {
+          margin-top: 10px;
+          overflow-y: auto;
+          white-space: nowrap;
+          width: 100%;
+          height: 220px;
+          display: block;          
+          border: 1px solid $cn-form-border;
+          border-radius: 5px;
         }
       }
 
-      .sk-share-classes-scoreboard {
+      .sk-payment {
         height: 100%;
         display: flex;
         flex-direction: column;
 
-        .sk-share-classes-raise-effort {
-          flex-grow: 1;
+        .payment-content {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          align-items: center;
 
-          .raise-effort-headline {
-            text-align: center;
-            max-width: 240px;
-            margin: 3.5rem 0;
-            font-size: 24px;
-            font-weight: 200;
-  
-            b {
-              font-weight: 600;
+          .amount-row {
+            display: flex;
+            flex-direction : row;
+            justify-content: space-between;
+            
+            .amount {
+              align-self: center;
             }
           }
 
-          .raise-effort-detail {
-            color: rgba(0,0,0,0.5);
-            font-size: 12px;
-            text-align: center;
+          .venmo-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+
+            .venmo-form {
+              width: 100%;
+              display: flex;
+              flex-direction: row;
+              justify-content: flex-start;
+              align-items: center;
+
+              form {
+                display: flex;
+                input {
+                  padding: 0.5rem;
+                  width: 65%;
+                }
+              }
+            }
           }
 
-          .raise-effort-button {
-            @include sk-standard-button;
-            margin: 0;
-
-            p {
-              padding-left: 1.5rem;
-              padding-right: 1.5rem;
-            }
+          .venmo-container-inline {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
           }
         }
       }

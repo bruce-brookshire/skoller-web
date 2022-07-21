@@ -21,6 +21,7 @@ class Onboard extends React.Component {
   constructor (props) {
     super(props)
 
+    console.log(props)
     if (this.props.params.partner) {
       this.props.params.partner = this.props.params.partner.toLowerCase()
     }

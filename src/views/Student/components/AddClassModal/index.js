@@ -42,6 +42,7 @@ class AddClassModal extends React.Component {
       })
 
       let terms = activeMainTerms.sort((a, b) => moment(a.start_date).isAfter(moment(b.start_date)) ? 0 : -1)
+      if (terms.length > 0) {
       actions.students.setStudentPrimaryPeriod(this.props.rootStore.userStore.user.id, this.props.rootStore.userStore.user.student.id, terms[0].id)
         .then((r) => {
           this.setState({
@@ -53,6 +54,7 @@ class AddClassModal extends React.Component {
           })
         })
         .catch(e => console.log(e))
+      }
     }
 }
   }

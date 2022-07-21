@@ -20,7 +20,8 @@ class LoginForm extends React.Component {
       form: {
         phone: ''
       },
-      showLoginVerificationModal: false
+      showLoginVerificationModal: false,
+      loginButtonDisabled: false
     }
   }
 
@@ -39,12 +40,18 @@ class LoginForm extends React.Component {
 
   onSubmit = (event) => {
     event.preventDefault()
+    this.setState({loginButtonDisabled: true})
     actions.auth.verifyStudentPhoneNumber(this.state.form).then(() => {
+      this.setState({loginButtonDisabled: false})
       this.setState({showLoginVerificationModal: true})
-    }).catch(() => false)
+    }).catch(() => {
+      console.log("Error occurred LoginForm.onSubmit")
+      this.setState({loginButtonDisabled: false})
+    })
   }
 
   render () {
+    const loginButtonDisabled = this.state.loginButtonDisabled ? 'disabled' : '';
     return (
       <div>
         <form className="form-login" onSubmit={this.onSubmit}>
@@ -64,8 +71,11 @@ class LoginForm extends React.Component {
               type="tel"
             />
           </div>
-
-          <button type="submit" className="button">Login</button>
+          <button 
+            type="submit" 
+            className={`button ${loginButtonDisabled}`} 
+            disabled={this.state.loginButtonDisabled}
+          >Login</button>
         </form>
         {this.state.showLoginVerificationModal
           ? <LoginVerificationModal phone={this.state.form.phone} closeModal={this.closeModal}/>

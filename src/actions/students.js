@@ -50,6 +50,16 @@ export function getStudentSignupOrganization (studentId) {
     })
 }
 
+export function getUsersReferredByStudent (studentId) {
+  return get(`/api/v1/students/${studentId}/referred-students`, null, null)
+  .then(response => {
+    return response
+  })
+  .catch(error => {
+    return Promise.reject(error)
+  })
+}
+
 /*
 * Set student primary period
 *
@@ -118,6 +128,21 @@ export function updateStudent (userId, studentId, form) {
   return put(`/api/v1/users/${userId}`, userForm, 'Error setting major. Try again.')
     .then(response => {
       return response
+    })
+    .catch(error => {
+      return Promise.reject(error)
+    })
+}
+
+export function storeVenmoHandle(studentId, venmoHandle) {
+  let form ={'venmo_handle': venmoHandle}
+  return post(
+    `/api/v1/students/${studentId}/store-venmo-handle`,
+    form,
+    'Error storing venmo handle.'
+  )
+    .then(data => {
+      return data
     })
     .catch(error => {
       return Promise.reject(error)
