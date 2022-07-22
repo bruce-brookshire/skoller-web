@@ -25,8 +25,6 @@ class ShareClasses extends React.Component {
       referredStudents: null,
       venmoHandle: null
     }
-
-    console.log("STATE", this.state.venmoHandle)
   }
 
   selectClassHandler (studentClass) {
@@ -232,13 +230,13 @@ class ShareClasses extends React.Component {
     )
   }
 
-  renderTrackRow ({user, student, premium_active}) {
+  renderTrackRow ({name, trial, premium, expired}) {
     return (
-      <tr key={student.name}>
-        <td colSpan='3' style={{paddingLeft: "10px"}}>{student.name}</td>
-        <td className="name-td">{user.trial_status == "active" ? this.renderTrialCheck() : null}</td>
-        <td className="check-td">{user.trial_status == "inactive" ? this.renderTrialCheck() : null}</td>
-        <td className="check-td">{premium_active == true ? this.renderPremiumCheck() : null}</td>
+      <tr key={name}>
+        <td colSpan='3' style={{paddingLeft: "10px"}}>{name}</td>
+        <td className="check-td">{trial ? this.renderTrialCheck() : null}</td>
+        <td className="check-td">{expired ? this.renderTrialCheck() : null}</td>
+        <td className="check-td">{premium ? this.renderPremiumCheck() : null}</td>
       </tr>
     )
   }
