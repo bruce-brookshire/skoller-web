@@ -36,11 +36,11 @@ export default function CheckoutForm (props) {
       // Send the token to your server.
       // This function does not exist yet; we will define it in the next step.
       stripeTokenHandler(result.token)
-      setPayButtonDisabled(false);
     }
   }
 
   function stripeTokenHandler (token) {
+    setPayButtonDisabled(true)
     let paymentData = {}
     if (props.selectedSubscription === 'life_time') {
       paymentData = {
@@ -58,6 +58,7 @@ export default function CheckoutForm (props) {
     }
 
     if (props.selectedSubscription == '') {
+      setPayButtonDisabled(false)
       alert('Please select Subscription plan.')
       return
     }
@@ -65,11 +66,11 @@ export default function CheckoutForm (props) {
       .then((data) => {
         if (data.status == 'ok') {
           showSnackbar(data.message, 'success')
-          console.log(props)
           props.myprops.handleModalClose()
           window.location.reload(true)
         } else {
           showSnackbar(data.message, 'error')
+          setPayButtonDisabled(false)
         }
         props.simplifiedFunction()
       })
@@ -79,18 +80,10 @@ export default function CheckoutForm (props) {
       })
   }
 
-  function buttonDisabled () {
-    return !stripe || payButtonDisabled;
-  }
-
-  const payButtonDisabledClass = payButtonDisabled ? 'disabled' : '';
-
   return (
     <form onSubmit={handleSubmit}>
       <CardSection />
-      {/* <button disabled={!stripe}>Confirm order</button>
-       */}
-      <button onClick={() => setPayButtonDisabled(true)} className={`btn-primary padding full-width text-white margin-top ${payButtonDisabledClass}`} style={{color: 'white'}}>Pay</button>
+      <button className={`btn-primary padding full-width text-white margin-top ${payButtonDisabled ? 'disabled' : ''}`} disabled={payButtonDisabled} style={{color: 'white'}}>Pay</button>
     </form>
   )
 }
