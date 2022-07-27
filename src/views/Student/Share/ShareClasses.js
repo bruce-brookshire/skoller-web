@@ -276,6 +276,9 @@ class ShareClasses extends React.Component {
             </div>
           }
         </div>
+        <div class="sub-text">
+          <p>You will receive a venmo each month for any referred premium users!</p>
+        </div>
       </div>
     )
   }
