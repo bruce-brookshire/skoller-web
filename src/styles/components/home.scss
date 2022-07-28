@@ -7,7 +7,7 @@ $sk-home-break-point: 1000px;
   width: calc(100vw - 200px);
 
   box-sizing: border-box;
-  padding: 1rem 2rem 3.5rem 2rem;
+  padding: 1rem 1rem 3.5rem 0;
 
   @media only screen and (max-width: $sk-home-break-point) {
     flex-direction: column;
@@ -50,8 +50,8 @@ $sk-home-break-point: 1000px;
     .home-shadow-box {
       box-sizing: border-box;
       width: 100%;
-      @include skoller-cell;
-      margin: 0 0 2rem 0;
+      margin: 0;
+      height: 100%;
 
       @media only screen and (max-width: $sk-mobile-break-point) {
         margin: 0 1rem 1rem 1rem;
@@ -72,10 +72,11 @@ $sk-home-break-point: 1000px;
         float: right;
       }
 
-      .home-card-content {
-        margin: 0;
-        padding: 16px;
-      }
+    }
+
+    .home-card-content {
+      margin: 0;
+      padding: 0;
     }
 
     .home-jobs-shadow-box {
@@ -86,6 +87,7 @@ $sk-home-break-point: 1000px;
     .home-insights {
       position: relative;
       padding: 15px;
+      flex-basis: 65%;
 
       .home-insights-select {
         position: absolute;
@@ -115,6 +117,31 @@ $sk-home-break-point: 1000px;
     .home-insights-svg {
       transform: translate(0, -70px);
       margin-bottom: -60px;
+    }
+  }
+
+  .home-assignment-list {
+    border: 1px solid #E5E5E5;
+    border-radius: $cn-border-radius;
+    padding: 9px 0;
+  }
+
+  .home-section-header {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    margin: 8px 0;
+
+    &__header {
+      margin: 0;
+      display: flex;
+      font-size: 22px;
+    }
+
+    &__icon {
+      margin-right: 10px;
+      max-width: 20px;
     }
   }
 }

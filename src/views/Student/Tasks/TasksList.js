@@ -4,7 +4,7 @@ import {inject, observer} from 'mobx-react'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import moment from 'moment'
 import SkSelect from '../../components/SkSelect'
-import Assignment from '../ClassDetail/ClassAssignments/Assignment'
+import HomeAssignment from '../ClassDetail/ClassAssignments/HomeAssignment'
 import actions from '../../../actions'
 import ReactToolTip from '../../components/ToolTip/CustomToolTip'
 
@@ -12,7 +12,7 @@ import ReactToolTip from '../../components/ToolTip/CustomToolTip'
 class TasksList extends React.Component {
   static studentClasses = {}
 
-  today = moment()
+  today = moment();
 
   constructor (props) {
     super(props)
@@ -213,7 +213,7 @@ class TasksList extends React.Component {
               i += 1
               return (
                 <ReactToolTip theme="dark" position="top" ttype="assifnment" grade={task.grade} title={task.name}>
-                  <Assignment
+                  <HomeAssignment
                     key={task.id}
                     isTask={true}
                     onDeleteAssignment={this.onDeleteAssignment}
