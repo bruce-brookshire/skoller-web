@@ -10,6 +10,8 @@ import { Cookies } from 'react-cookie'
 import HomeClasses from './HomeNewClasses'
 import HomeClasses1 from './HomeClasses'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
+import Book from '../../../assets/sk-icons/Book'
+
 import HomeTasks from './HomeTasks'
 import HomeShare from './HomeShare'
 import HomeJobs from './HomeJobs'
@@ -46,7 +48,6 @@ class Home extends React.Component {
     this.props.rootStore.navStore.setActivePage('home')
     this.props.rootStore.navStore.location = this.props.location
     this.cookie = new Cookies()
-    console.log(this.props.rootStore)
   }
 
   async updateStudent () {
@@ -177,120 +178,123 @@ class Home extends React.Component {
     return endDate
   }
 
-    onClassSelect = (cl) => {
-      // Need to get enrollment link from classes
-      // because ClassList will not return it
+  onClassSelect = (cl) => {
+    // Need to get enrollment link from classes
+    // because ClassList will not return it
 
-      let fullClass = this.findFullClass(cl.id)
-      if (fullClass.status.id < 1400) {
-        if (this.props.rootStore.userStore.user.trial && !this.props.rootStore.userStore.user.lifetime_trial) {
-          this.setState({showTrialClassStatusModal: true})
-          this.setState({ classStatusModal: { show: false, cl: fullClass } })
-        } else {
-          this.setState({ classStatusModal: { show: true, cl: fullClass } })
-        }
+    let fullClass = this.findFullClass(cl.id)
+    if (fullClass.status.id < 1400) {
+      if (this.props.rootStore.userStore.user.trial && !this.props.rootStore.userStore.user.lifetime_trial) {
+        this.setState({showTrialClassStatusModal: true})
+        this.setState({ classStatusModal: { show: false, cl: fullClass } })
       } else {
-        this.props.history.push({
-          pathname: `/student/class/${cl.id}/`,
-          state: {
-            enrollmentLink: fullClass.enrollment_link,
-            enrollmentCount: fullClass.enrollment
-          }
-        })
+        this.setState({ classStatusModal: { show: true, cl: fullClass } })
       }
-    }
-
-    closeClassStatusModal () {
-      this.setState({ classStatusModal: { show: false, cl: null } })
-      this.updateClasses()
-    }
-
-    closeAddClassModal () {
-      this.updateClasses()
-    }
-
-    closePopUp () {
-      this.updateStudent()
-      this.updateClasses()
-      this.setState({ popUp: { show: false } })
-    }
-
-    launchClassStatusModal (cl) {
-      this.setState({ classStatusModal: { show: true, cl: cl } })
-    }
-
-    handleClassModalClose () {
-      this.setState({
-        classModal: false
+    } else {
+      this.props.history.push({
+        pathname: `/student/class/${cl.id}/`,
+        state: {
+          enrollmentLink: fullClass.enrollment_link,
+          enrollmentCount: fullClass.enrollment
+        }
       })
     }
+  }
 
-    renderContent () {
-      return (
-        <div>
-          {this.state.popUp.show &&
-                    <PopUp closeModal={(!this.props.rootStore.userStore.user.trial && !this.state.subscribed) ? () => null : () => this.closePopUp()} handleModalClose={() => this.closePopUp()} type={this.state.popUp.type} refreshClasses={() => this.updateClasses()} />
-          }
-          {this.state.classStatusModal.show &&
-                    <ClassStatusModal
-                      closeModal={() => this.closeClassStatusModal()}
-                      onSubmit={() => this.closeClassStatusModal()}
-                      cl={this.state.classStatusModal.cl}
-                    />
-          }
-          {this.state.showTrialClassStatusModal && <TrialClassModal
-            onUpgradeToPremium={() => {
-              this.setState({showTrialClassStatusModal: false})
-              this.setState({ popUp: { type: 'PaymentPlans', show: true } })
-            }}
-            cl={this.state.classStatusModal.cl} closeModal={() => this.setState({showTrialClassStatusModal: false})} status={{ options: ['Class', 'Syllabus', 'Review', 'Live'], state: 'Review' }}/>}
-          {/* {this.state.classModal && (this.state.subscribed ? <PremiumClassModal closeModal={this.handleClassModalClose.bind(this)} status={{state: false}} /> : <TrialClassModal closeModal={this.handleClassModalClose.bind(this)} status={{state: false}}/>)} */}
-          {/* <ClassStatusPopUp subscribed={this.state.subscribed} /> */}
-          {/* <PremiumClassModal closeModal={() => {}} status={{state: false}} /> */}
-          <div className="home-container">
-            <div className="home-column col-md-8 col-lg-9">
-              <div className="home-shadow-box">
+  closeClassStatusModal () {
+    this.setState({ classStatusModal: { show: false, cl: null } })
+    this.updateClasses()
+  }
 
-                <div className="home-card-content">
-                  <HomeClasses1 classes={this.props.rootStore.studentClassesStore.classes} onAddClass={() => this.closeAddClassModal()} onClassSelect={this.onClassSelect} launchClassStatusModal={(cl) => this.launchClassStatusModal(cl)} />
-                </div>
+  closeAddClassModal () {
+    this.updateClasses()
+  }
+
+  closePopUp () {
+    this.updateStudent()
+    this.updateClasses()
+    this.setState({ popUp: { show: false } })
+  }
+
+  launchClassStatusModal (cl) {
+    this.setState({ classStatusModal: { show: true, cl: cl } })
+  }
+
+  handleClassModalClose () {
+    this.setState({
+      classModal: false
+    })
+  }
+
+  renderContent () {
+    return (
+      <div>
+        {this.state.popUp.show &&
+                  <PopUp closeModal={(!this.props.rootStore.userStore.user.trial && !this.state.subscribed) ? () => null : () => this.closePopUp()} handleModalClose={() => this.closePopUp()} type={this.state.popUp.type} refreshClasses={() => this.updateClasses()} />
+        }
+        {this.state.classStatusModal.show &&
+                  <ClassStatusModal
+                    closeModal={() => this.closeClassStatusModal()}
+                    onSubmit={() => this.closeClassStatusModal()}
+                    cl={this.state.classStatusModal.cl}
+                  />
+        }
+        {this.state.showTrialClassStatusModal && <TrialClassModal
+          onUpgradeToPremium={() => {
+            this.setState({showTrialClassStatusModal: false})
+            this.setState({ popUp: { type: 'PaymentPlans', show: true } })
+          }}
+          cl={this.state.classStatusModal.cl} closeModal={() => this.setState({showTrialClassStatusModal: false})} status={{ options: ['Class', 'Syllabus', 'Review', 'Live'], state: 'Review' }}/>}
+        {/* {this.state.classModal && (this.state.subscribed ? <PremiumClassModal closeModal={this.handleClassModalClose.bind(this)} status={{state: false}} /> : <TrialClassModal closeModal={this.handleClassModalClose.bind(this)} status={{state: false}}/>)} */}
+        {/* <ClassStatusPopUp subscribed={this.state.subscribed} /> */}
+        {/* <PremiumClassModal closeModal={() => {}} status={{state: false}} /> */}
+        <div className="home-container">
+          <div className="home-column col-md-8 col-lg-8">
+            <div className="home-shadow-box">
+              <div className="home-section-header">
+                <h2 className="home-section-header__header">
+                  <Book className="home-section-header__icon" /> Classes
+                </h2>
               </div>
-              { this.props.rootStore.studentAssignmentsStore.assignments.length > 0 &&
-               <HomeGraphImpact assignments={this.props.rootStore.studentAssignmentsStore.assignments} />
-              }
-              {/* <HomeAssignmentGraph/> */}
+              <div className="home-card-content">
+                <HomeClasses1 classes={this.props.rootStore.studentClassesStore.classes} onAddClass={() => this.closeAddClassModal()} onClassSelect={this.onClassSelect} launchClassStatusModal={(cl) => this.launchClassStatusModal(cl)} />
+              </div>
             </div>
-            <div className="home-column col-md-4 col-lg-3">
+            { this.props.rootStore.studentAssignmentsStore.assignments.length > 0 &&
+              <HomeGraphImpact assignments={this.props.rootStore.studentAssignmentsStore.assignments} />
+            }
+            {/* <HomeAssignmentGraph/> */}
+          </div>
+          <div className="home-column col-md-4 col-lg-4">
 
-              <div className="home-shadow-box">
-                {/* } <h1 className='home-heading' onClick={() => this.props.history.push('/student/tasks')}>Assignments</h1> */}
+            <div className="home-shadow-box">
+              {/* } <h1 className='home-heading' onClick={() => this.props.history.push('/student/tasks')}>Assignments</h1> */}
 
-                <div className="center-block title-icon">
-                  <h2 className="heading-assign"><i className="far fa-check-circle"></i> Assignments</h2>
-                  <span>Next 7 Days</span>
-                </div>
+              <div className="home-section-header">
+                <h2 className="home-section-header__header"><i className="far fa-check-circle home-section-header__icon"></i> Assignments</h2>
+                <span>Next 7 Days</span>
+              </div>
 
-                <div className="home-card-content">
-                  <HomeAssignments />
-                  <HomeTasks />
-                </div>
+              <div className="home-assignment-list">
+                <HomeTasks />
               </div>
             </div>
           </div>
         </div>
-      )
-    }
+      </div>
+    )
+  }
 
-    render () {
-      return (
-        <StudentLayout>
-          {this.state.loading
-            ? <SkLoader />
-            : this.renderContent()
-          }
-        </StudentLayout>
-      )
-    }
+  render () {
+    return (
+      <StudentLayout>
+        {this.state.loading
+          ? <SkLoader />
+          : this.renderContent()
+        }
+      </StudentLayout>
+    )
+  }
 }
 
 Home.propTypes = {

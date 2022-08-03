@@ -27,24 +27,23 @@ class ClassList extends React.Component {
 
     if (status >= 1400) {
       return (
-        <h1 className='cn-class-list-row-grade-text cn-white'>{cl.grade > 0 ? Math.round(cl.grade) + '%' : '–'}</h1>
-        // <h1 style={{color: cl.getColor()}} className='cn-class-list-row-grade-text cn-white'>{cl.grade > 0 ? Math.round(cl.grade) + '%' : '–'}</h1>
+        <h1 className='classList__item__gradeBox__text cn-white'>{cl.grade > 0 ? Math.round(cl.grade) + '%' : '–'}</h1>
       )
     } else if (status === 1100) {
       return (
-        <img className='cn-class-list-row-icon-img' src={uploadS} />
+        <img className='classList__item__gradeBox__img' src={uploadS} />
       )
     } else if (syllabusOverload) {
       return (
-        <img className='cn-class-list-row-icon-img' src={sExclamation} />
+        <img className='classList__item__gradeBox__img' src={sExclamation} />
       )
     } else if (status === 1200) {
       return (
-        <img className='cn-class-list-row-icon-img' src={sInReview} />
+        <img className='classList__item__gradeBox__img' src={sInReview} />
       )
     } else if (status === 1300) {
       return (
-        <img className='cn-class-list-row-icon-img' src={sExclamation} />
+        <img className='classList__item__gradeBox__img' src={sExclamation} />
       )
     } else {
       return (
@@ -68,26 +67,26 @@ class ClassList extends React.Component {
 
     if (status >= 1400) {
       return (
-        <p>
+        <div>
           <span><i className="fas fa-users" /></span>
           &nbsp; {cl.enrollment}
-        </p>
+        </div>
       )
     } else if (status === 1100) {
       return (
-        <p style={{color: '#ef183d'}}>Send syllabus</p>
+        <div style={{color: '#ef183d'}}>Send syllabus</div>
       )
     } else if (syllabusOverload) {
       return (
-        <p style={{color: '#ef4b0a'}}>Set up this class</p>
+        <div style={{color: '#ef4b0a'}}>Set up this class</div>
       )
     } else if (status === 1200) {
       return (
-        <p style={{color: '#4a4a4a'}}>Syllabus in review</p>
+        <div style={{color: '#4a4a4a'}}>Syllabus in review</div>
       )
     } else if (status === 1300) {
       return (
-        <p style={{color: '#ef4b0a'}}>Set up this class</p>
+        <div style={{color: '#ef4b0a'}}>Set up this class</div>
       )
     } else {
       return null
@@ -105,21 +104,19 @@ class ClassList extends React.Component {
       }
 
       return (
-        <div className="center-block col-md-6"
+        <div className="classList__item"
           key={classes.indexOf(cl)}
           onClick={() => this.onClassSelect(cl)}
         >
-          <div className="card-wrap sborder-1" style={cl.status.id >= 1400 ? {border: '1px solid #4a4a4a'} : null}>
-            <span className="card-icon  stext-white" style={cl.status.id < 1400 ? {backgroundColor: null, borderBottom: '1px solid #4a4a4a'} : {backgroundColor: color}}>
-              {this.renderGrade(cl)}
-              {/* {cl.status.id} */}
-            </span>
-            <h3 className="card-title" style={{color: cl.status.id === 1100 || cl.status.id === 1200 || cl.status.id === 1300 ? '#4a4a4a' : color}}>{name}</h3>
-            <p className="card-subtitle stext-normal">
-              <ReactToolTip theme="dark" position="top" title={name} ttype="classes" studentCount={cl.enrollment} enrollment_link = { cl.enrollment_link}>
-                {this.renderExtra(cl)}
-              </ReactToolTip>
-            </p>
+          <span className="classList__item__gradeBox" style={{backgroundColor: cl.status.id < 1400 ? null : color}}>
+            {this.renderGrade(cl)}
+            {/* {cl.status.id} */}
+          </span>
+          <div className="classList__item__info">
+            <h3 className="classList__item__title" style={{color: cl.status.id === 1100 || cl.status.id === 1200 || cl.status.id === 1300 ? '#4a4a4a' : color}}>{name}</h3>
+            <div className="card-subtitle stext-normal">
+              {this.renderExtra(cl)}
+            </div>
           </div>
         </div>
       )
@@ -128,7 +125,7 @@ class ClassList extends React.Component {
 
   render () {
     return (
-      <div className={'cn-class-list-container ' + this.props.containerClassName}>
+      <div className={'classList cn-class-list-container ' + this.props.containerClassName}>
         {this.renderClassRows()}
         {this.props.classes.length === 0 &&
           <div className='cn-class-list-empty-message'>

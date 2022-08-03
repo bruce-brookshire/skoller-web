@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 class Book extends React.Component {
   render () {
@@ -9,6 +10,7 @@ class Book extends React.Component {
         height="22px"
         viewBox="0 0 22 22"
         version="1.1"
+        className={this.props.className}
       >
         <title>Classes</title>
         <g
@@ -42,6 +44,10 @@ class Book extends React.Component {
       </svg>
     )
   }
+}
+
+Book.propTypes = {
+  className: PropTypes.string
 }
 
 export default Book

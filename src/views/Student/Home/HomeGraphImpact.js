@@ -210,12 +210,6 @@ class HomeGraphImpact extends React.Component {
                 style={styles.todayLine.dot}
                 animate={animate}
               />
-
-              <VictoryLabel x={(((today - domain.x[0]) / (domain.x[1] - domain.x[0])) * 336) + 35} y={34}
-                text={'Today'}
-                style={styles.label}
-                animate={animate}
-              />
             </g>}
 
             {/* <g>

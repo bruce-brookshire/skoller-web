@@ -5,7 +5,6 @@ import ClassList from '../../components/ClassList'
 import JoinFirstClassPrompt from '../../components/Sammi/Prompts/JoinFirstClassPrompt'
 import SecondClassPrompt from '../../components/Sammi/Prompts/SecondClassPrompt'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
-import Book from '../../../assets/sk-icons/Book'
 
 @inject('rootStore') @observer
 class HomeClasses extends React.Component {
@@ -22,14 +21,7 @@ class HomeClasses extends React.Component {
       return <SkLoader />
     } else {
       return (
-        <div className='home-classes'>
-          <div className="row">
-            <div className="center-block col-md-6">
-              <h2 className="sec-title">
-                <Book /> Classes
-              </h2>
-            </div>
-          </div>
+        <React.Fragment>
           <ClassList
             classes={this.props.rootStore.studentClassesStore.classes}
             emptyMessage='You are not enrolled in any classes.'
@@ -40,7 +32,7 @@ class HomeClasses extends React.Component {
           {this.props.classes.length < 2 &&
             <br />
           }
-        </div>
+        </React.Fragment>
       )
     }
   }
