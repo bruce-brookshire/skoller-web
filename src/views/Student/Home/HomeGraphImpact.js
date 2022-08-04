@@ -91,8 +91,6 @@ class HomeGraphImpact extends React.Component {
   // ass:this.props.rootStore.studentAssignmentsStore.assignments
 
   render () {
-    const { data: assignment } = this.state
-    console.log({assignment})
     const { cl } = this.props
 
     // let data = getAssignmentCountDataHomeGraph(assignment, false, [], 'w')
@@ -178,7 +176,7 @@ class HomeGraphImpact extends React.Component {
               standalone={false}
               domainPadding={200}
               style={styles.axisOne}
-              tickFormat={d => d.toString()}
+              tickFormat={d => (d * 100) + '%'}
               animate={animate}
             />
 
@@ -208,6 +206,12 @@ class HomeGraphImpact extends React.Component {
                 scale={{x: 'time', y: 'linear'}}
                 size={4}
                 style={styles.todayLine.dot}
+                animate={animate}
+              />
+
+              <VictoryLabel x={(((today - domain.x[0]) / (domain.x[1] - domain.x[0])) * 336) + 35} y={34}
+                text={'Today'}
+                style={styles.label}
                 animate={animate}
               />
             </g>}

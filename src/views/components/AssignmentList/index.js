@@ -47,7 +47,7 @@ class AssignmentList extends React.Component {
 
   render () {
     return (
-      <div className={'cn-class-list-container'}>
+      <div className="cn-class-list-container assignmentList">
         {this.renderClassAssignments()}
       </div>
     )

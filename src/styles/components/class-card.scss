@@ -44,6 +44,8 @@
 }
 
 .classList {
+  overflow-y: auto;
+  max-height: 140px;
 
   &__item {
     flex-basis: 48%;
