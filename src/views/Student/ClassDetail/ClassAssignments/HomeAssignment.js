@@ -1,6 +1,5 @@
 import React from 'react'
 import VisibilitySensor from 'react-visibility-sensor'
-import { Link, useLocation } from 'react-router-dom'
 import { formatDueDate } from '../../../../utilities/display'
 import PropTypes from 'prop-types'
 import { Flipped, Flipper } from 'react-flip-toolkit'
@@ -29,6 +28,11 @@ export function Grade (props) {
     }
   }
 
+  const changeGrade = (grade) => {
+    let newGrade = grade.replace(/[^0-9]/, '').substring(0, 2)
+    setGrade(newGrade)
+  }
+
   const renderEditing = () => {
     return (
       <OutsideClickHandler
@@ -37,24 +41,27 @@ export function Grade (props) {
           setEditing(false)
         }}
       >
-        <div
-          className='sk-assignment-grade-editing'
-        >
-          <input onKeyDown={handleKeyDown} style={{color: props.assignment.grade === null ? color : null}} autoFocus value={grade} onChange={(e) => setGrade(e.target.value)} /><div className='percent'>%</div>
+        <div className="homeAssignment__grade-editing">
+          <input
+            className="homeAssignment__input"
+            onKeyDown={handleKeyDown}
+            autoFocus
+            value={grade}
+            onChange={(e) => changeGrade(e.target.value)}
+          />
+          <div className="homeAssignment__percent">%</div>
         </div>
       </OutsideClickHandler>
     )
   }
 
+  if (props.assignment.grade === undefined) {
+    return null
+  }
+
   return (
     <div
-      className='sk-assignment-grade'
-      style={color
-        ? {
-          borderColor: color, color: props.assignment.grade ? 'white' : color, backgroundColor: props.assignment.grade ? color : null
-        }
-        : {}
-      }
+      className="homeAssignment__grade"
       onClick={(e) => {
         e.preventDefault()
         if (!editing) {
@@ -65,20 +72,18 @@ export function Grade (props) {
       {editing
         ? renderEditing()
         : props.assignment.grade
-          ? (Math.round(props.assignment.grade * 10) / 10 + '%')
-          : '–'
-      }
+          ? Math.round(props.assignment.grade * 10) / 10 + '%'
+          : '-'}
     </div>
   )
 }
 
 Grade.propTypes = {
-  color: PropTypes.string,
   assignment: PropTypes.object,
   editAssignment: PropTypes.func
 }
 
-export default function Assignment (props) {
+export default function HomeAssignment (props) {
   let isTask = false
   if (props.isTask) {
     isTask = props.isTask
@@ -98,9 +103,10 @@ export default function Assignment (props) {
     setShowButton(true)
   }
 
-  const hideButton = () => setTimeout(() => {
-    setShowButton(false)
-  }, 0)
+  const hideButton = () =>
+    setTimeout(() => {
+      setShowButton(false)
+    }, 0)
 
   const enableEdit = (e) => {
     e.preventDefault()
@@ -109,15 +115,21 @@ export default function Assignment (props) {
 
   const onComplete = (e) => {
     e.preventDefault()
-    props.onCompleteAssignment(props.assignment.id, !props.assignment.is_completed)
+    props.onCompleteAssignment(
+      props.assignment.id,
+      !props.assignment.is_completed
+    )
   }
 
   if (showEdit) {
     return (
-      <EditAssignment close={() => {
-        setShowEdit(false)
-        setShowButton(false)
-      }} {...props} />
+      <EditAssignment
+        close={() => {
+          setShowEdit(false)
+          setShowButton(false)
+        }}
+        {...props}
+      />
     )
   } else {
     return (
@@ -132,28 +144,45 @@ export default function Assignment (props) {
               unmountOnExit
               classNames="fade"
             >
-              {/* <Link
-                to={location.pathname + (location.pathname.endsWith('/') ? '' : '/') + 'assignments/' + props.assignment.assignment_id}
-                onMouseEnter={() => enableButton()}
-                onMouseLeave={() => hideButton()}
-                className={'sk-assignment ' + (props.active ? 'active-assignment ' : '') + (props.assignment.is_completed ? 'completed-assignment ' : '')}
-                style={color ? {borderColor: color} : {}}
-              > */}
               <div
                 onMouseEnter={() => enableButton()}
                 onMouseLeave={() => hideButton()}
-                className={'sk-assignment ' + (props.active ? 'active-assignment ' : '') + (props.assignment.is_completed ? 'completed-assignment ' : '') + (props.className && !outsideClick ? props.className + ' ' : '')}
-                style={color ? {borderColor: color} : {}}
-              >
-                {props.assignment.grade !== undefined &&
-                  <Grade color={color} {...props} />
+                className={
+                  'homeAssignment ' +
+                  (props.active ? 'isActive ' : '') +
+                  (props.assignment.is_completed
+                    ? 'completed-assignment '
+                    : '') +
+                  (props.className && !outsideClick
+                    ? props.className + ' '
+                    : '')
                 }
-                <div className='sk-assignment-content'>
-                  <div className='sk-assignment-name' style={color ? {color} : {}}>{props.assignment.name}</div>
-                  <div className={props.assignment.due ? 'sk-assignment-due' : 'sk-assignment-missing'}>{formatDueDate(props.assignment.due)}</div>
+              >
+                <Grade {...props} />
+                <div className="homeAssignment__content">
+                  <div className="homeAssignment__border" style={{ borderColor: color }}/>
+                  <div className="homeAssignment__name">
+                    {props.assignment.name}
+                  </div>
+                  <div className="homeAssignment__subtext">
+                    <div
+                      className={
+                        props.assignment.due
+                          ? 'homeAssignment__due'
+                          : 'homeAssignment__missing'
+                      }
+                    >
+                      {formatDueDate(props.assignment.due)}
+                    </div>
+                    <div className="homeAssignment__className">{props.assignment.class_name}</div>
+                  </div>
                 </div>
-                {
-                  !isTask && <Flipper spring={'stiff'} flipKey={showButton + editExited} className='sk-assignment-controls'>
+                {!isTask && (
+                  <Flipper
+                    spring={'stiff'}
+                    flipKey={showButton + editExited}
+                    className="homeAssignment__controls"
+                  >
                     <Flipped flipId={1}>
                       <CSSTransition
                         key={1}
@@ -165,7 +194,10 @@ export default function Assignment (props) {
                         onEnter={() => setEditExited(false)}
                         classNames="fade"
                       >
-                        <div onClick={enableEdit} className='sk-assignment-edit-button'>
+                        <div
+                          onClick={enableEdit}
+                          className="homeAssignment__editBtn"
+                        >
                           <div>•••</div>
                         </div>
                       </CSSTransition>
@@ -179,25 +211,35 @@ export default function Assignment (props) {
                         unmountOnExit
                         classNames="fade"
                       >
-                        <div style={{
-                          transform: (props.assignment.is_completed
-                            ? showButton
-                              ? 'translateY(0)'
-                              : 'translateY(0)'
-                            : null),
-                          backgroundColor: (props.assignment.is_completed
-                            ? '#57B9E4'
-                            : null)
-                        }} onMouseEnter={() => setShowCheck(true)} onMouseLeave={() => setShowCheck(false)} onClick={onComplete} className='sk-assignment-complete-button'>
-                          <div className='sk-assignment-complete'>
-                            {(showCheck && !props.assignment.is_completed) && <CheckIcon fill={'#57B9E4'} />}
-                            {(props.assignment.is_completed) && <CheckIcon fill={'#FFFFFF'} />}
+                        <div
+                          style={{
+                            transform: props.assignment.is_completed
+                              ? showButton
+                                ? 'translateY(0)'
+                                : 'translateY(0)'
+                              : null,
+                            backgroundColor: props.assignment.is_completed
+                              ? '#57B9E4'
+                              : null
+                          }}
+                          onMouseEnter={() => setShowCheck(true)}
+                          onMouseLeave={() => setShowCheck(false)}
+                          onClick={onComplete}
+                          className="homeAssignment__completeBtn"
+                        >
+                          <div className="homeAssignment__complete">
+                            {showCheck && !props.assignment.is_completed && (
+                              <CheckIcon fill={'#57B9E4'} />
+                            )}
+                            {props.assignment.is_completed && (
+                              <CheckIcon fill={'#FFFFFF'} />
+                            )}
                           </div>
                         </div>
                       </CSSTransition>
                     </Flipped>
                   </Flipper>
-                }
+                )}
               </div>
               {/* </Link> */}
             </CSSTransition>
@@ -208,7 +250,7 @@ export default function Assignment (props) {
   }
 }
 
-Assignment.propTypes = {
+HomeAssignment.propTypes = {
   onCompleteAssignment: PropTypes.func,
   assignment: PropTypes.object,
   color: PropTypes.string,

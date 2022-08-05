@@ -61,22 +61,24 @@ class MyClasses extends React.Component {
   * @return [Array]. Array of formatted row data.
   */
   renderContent () {
+    const { classes } = this.props.rootStore.studentClassesStore
+
     return (
       <div>
         {this.renderNeedsSyllabusInfo()}
         <div className='cn-table-grid-container'>
           <ClassList
-            classes={this.props.rootStore.studentClassesStore.classes}
+            classes={classes}
             emptyMessage='You are not enrolled in any classes.'
             onSelect={this.onClassSelect.bind(this)}
           />
-          {this.props.rootStore.studentClassesStore.classes.length > 1 &&
+          {classes.length > 1 &&
             <button className='button add-button' onClick={() => this.setState({showAddClassModal: true})}>
               Join a Class
             </button>
           }
-          <JoinFirstClassPrompt onAddClass={() => this.updateClasses()} show={this.props.rootStore.studentClassesStore.classes.length === 0} />
-          <SecondClassPrompt onAddClass={() => this.updateClasses()} show={this.props.rootStore.studentClassesStore.classes.length === 1} />
+          <JoinFirstClassPrompt onAddClass={() => this.updateClasses()} show={!classes.length} />
+          <SecondClassPrompt onAddClass={() => this.updateClasses()} show={classes.length} />
         </div>
       </div>
     )
