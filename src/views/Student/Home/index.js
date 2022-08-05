@@ -25,6 +25,7 @@ import { formatDate } from '../../../utilities/time'
 import PremiumClassModal from './PremiumClassModal'
 import TrialClassModal from './TrialClassModal'
 import ClassStatusPopUp from './_ClassStatusPopUp'
+import AddAssignment from '../Assignments/AddAssignment'
 @inject('rootStore') @observer
 class Home extends React.Component {
   constructor (props) {
@@ -42,7 +43,8 @@ class Home extends React.Component {
       loading: false,
       shareWillDisplay: false,
       classModal: true,
-      showTrialClassStatusModal: false
+      showTrialClassStatusModal: false,
+      showAddAssignmentModal: false
     }
 
     this.props.rootStore.navStore.setActivePage('home')
@@ -226,6 +228,20 @@ class Home extends React.Component {
     })
   }
 
+  renderAddAssignmentModal () {
+    if (!this.state.showAddAssignmentModal) {
+      return null
+    }
+
+    return (
+      <AddAssignment
+        classes={this.props.rootStore.studentClassesStore.classes}
+        assignmentParams={{}}
+        closeModal={() => this.setState({showAddAssignmentModal: false})}
+      />
+    )
+  }
+
   renderContent () {
     return (
       <div>
@@ -256,7 +272,7 @@ class Home extends React.Component {
                   <Book className="home-section-header__icon" /> Classes
                 </h2>
               </div>
-              <div className="home-card-content">
+              <div className="home-card-content home-class-list">
                 <HomeClasses1 classes={this.props.rootStore.studentClassesStore.classes} onAddClass={() => this.closeAddClassModal()} onClassSelect={this.onClassSelect} launchClassStatusModal={(cl) => this.launchClassStatusModal(cl)} />
               </div>
             </div>
@@ -271,12 +287,19 @@ class Home extends React.Component {
               {/* } <h1 className='home-heading' onClick={() => this.props.history.push('/student/tasks')}>Assignments</h1> */}
 
               <div className="home-section-header">
-                <h2 className="home-section-header__header"><i className="far fa-check-circle home-section-header__icon"></i> Assignments</h2>
-                <span>Next 7 Days</span>
+                <h2 className="home-section-header__header">
+                  <i className="far fa-check-circle home-section-header__icon"></i>
+                  Assignments
+                  <div className='home-add-new' onClick={() => this.setState({showAddAssignmentModal: true})}><i className='fas fa-plus' /></div>
+                </h2>
+
+                <span>Current week</span>
               </div>
 
               <div className="home-assignment-list">
                 <HomeTasks />
+                {this.renderAddAssignmentModal()}
+
               </div>
             </div>
           </div>

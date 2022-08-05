@@ -252,28 +252,52 @@
 
   &__grade {
     width: 2.4em;
-  }
-
-  &__grade-editing {
-    margin-left: -2.5px;
-    margin-top: -1px;
-  }
-
-  &__grade {
     text-align: center;
-    margin-top: 0.6em;
+    margin: 0 0.2em;
+
+    &-editing {
+      margin-left: -2.5px;
+      margin-top: -1px;
+    }
+
+    &__number {
+      margin-top: 0.5em;
+      padding-top: 0.1em;
+      margin-bottom: 0.2em;
+    }
+
+    &__fill {
+      border: 1px solid #57B9E4;
+      background: #EDFAFF;
+      height: 100%;
+      border-radius: 3px;
+      text-align: right;
+      color: #57B9E4;
+
+      .homeAssignment__input {
+        margin-bottom: 0.15em;
+        margin-left: 0;
+        font-weight: 500;
+        color: #57B9E4;
+      }
+      .homeAssignment__grade__number {
+        margin-right: 2px;
+      }
+    }
   }
 
   &__input {
     border: none;
     outline: none;
     text-align: right;
+    margin-top: 0.6em;
+    margin-left: 0.2em;
     font-weight: 700;
     font-size: 18px;
     width: 1.5em;
-    text-align: right;
     font-family: $cn-font-family;
     color: #4a4a4a;
+    background: transparent;
   }
 
   &__percent {

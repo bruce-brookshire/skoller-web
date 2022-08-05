@@ -13,6 +13,8 @@ class TasksList extends React.Component {
   static studentClasses = {}
 
   today = moment();
+  firstOfWeek = moment().startOf('week');
+  endOfWeek = moment().endOf('week');
 
   constructor (props) {
     super(props)
@@ -110,6 +112,8 @@ class TasksList extends React.Component {
     if (this.props.filter) {
       if (this.state.filterSelection === 'All assignments') {
         return true
+      } else if (this.state.filterSelection === 'Current week') {
+        return moment(task.due).isBetween(this.firstOfWeek, this.endOfWeek)
       } else if (this.state.filterSelection === 'Upcoming') {
         return moment(task.due).isSame(this.today, 'day') || moment(task.due).isAfter(this.today)
       } else if (this.state.filterSelection === 'Past') {
@@ -126,6 +130,8 @@ class TasksList extends React.Component {
     if (outlook) {
       if (outlook === 'Rest of the semester') {
         return true
+      } else if (outlook === 'Current week') {
+        return moment(task.due).isBetween(this.firstOfWeek, this.endOfWeek)
       } else if (outlook === 'Next 10 days') {
         return moment(task.due).diff(this.today, 'day') <= 10
       } else if (outlook === 'Next 30 days') {
@@ -141,21 +147,40 @@ class TasksList extends React.Component {
     let maxDays = this.props.maxDays ? this.props.maxDays - 1 : 10000
     let maxTasks = this.props.maxTasks ? this.props.maxTasks : 10000
 
-    if (
-      (daysAway <= maxDays) && // if maxDays prop is given, check to make sure that task is within maxDays
-      (i === false ? !i : (i < maxTasks || this.state.seeMore)) && // if number of tasks already displayed is greater than limit given by prop maxTasks, don't display... unless user has clicked See More or unless i is not given
-      (daysAway >= 0 || this.props.cl) && // make sure task is in the future, unless it's within a class detail view
-      (this.props.cl ? task.class_id === this.props.cl.id : true) && // if class detail view, make sure assignment is for that class
-      (this.filterLogic(task)) && // if filter is on, check to see if task should be displayed
-      (this.outlookLogic(task)) // if outlook is on, check to see if task should be displayed
-    ) {
-      return true
-    } else {
+    // if maxDays prop is given, check to make sure that task is within maxDays
+    if (daysAway > maxDays) {
       return false
     }
+
+    // if number of tasks already displayed is greater than limit given by prop maxTasks, don't display... unless user has clicked See More or unless i is not given
+    if (i !== false && i >= maxTasks && !this.state.seeMore) {
+      return false
+    }
+
+    // make sure task is in the future, unless it's within a class detail view
+    if (daysAway < 0 && this.props.outlook !== 'Current week' && !this.props.cl) {
+      return false
+    }
+
+    // if class detail view, make sure assignment is for that class
+    if (this.props.cl && task.class_id !== this.props.cl.id) {
+      return false
+    }
+
+    // if filter is on, check to see if task should be displayed
+    if (!this.filterLogic(task)) {
+      return false
+    }
+
+    // if outlook is on, check to see if task should be displayed
+    if (!this.outlookLogic(task)) {
+      return false
+    }
+
+    return true
   }
+
   onCompleteAssignment = (assignmentId, isCompleted) => {
-    console.log({ assignmentId, isCompleted })
     actions.assignments.toggleCompleteAssignmentById(this.props.rootStore.userStore.user.student.id, assignmentId, isCompleted)
       .then(() => {
         this.props.rootStore.studentClassesStore.updateClasses()
@@ -169,6 +194,7 @@ class TasksList extends React.Component {
         this.props.rootStore.studentAssignmentsStore.updateAssignments()
       })
   }
+
   editAssignment = async (form, assignmentId, isPrivate = true) => {
     const { removeGradeFromAssignment, gradeAssignment, updateStudentAssignment } = actions.assignments
 

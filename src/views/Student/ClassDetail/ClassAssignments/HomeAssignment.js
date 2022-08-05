@@ -7,11 +7,13 @@ import { CSSTransition } from 'react-transition-group'
 import EditAssignment from './EditAssignment'
 import CheckIcon from '../../../../assets/sk-icons/CheckIcon'
 import OutsideClickHandler from 'react-outside-click-handler'
+import moment from 'moment'
 
 export function Grade (props) {
   const [editing, setEditing] = React.useState(false)
   const [grade, setGrade] = React.useState(props.assignment.grade)
   const color = '#' + props.color
+  const today = moment()
 
   const saveGrade = () => {
     let form = {
@@ -55,27 +57,42 @@ export function Grade (props) {
     )
   }
 
-  if (props.assignment.grade === undefined) {
-    return null
+  const renderGrade = () => {
+    if (props.assignment.grade === undefined) {
+      return null
+    }
+
+    const isPast = moment(props.assignment.due).isBefore(today)
+
+    let value
+    if (props.assignment.grade) {
+      value = (
+        <div className="homeAssignment__grade__number">
+          { Math.round(props.assignment.grade * 10) / 10 + '%' }
+        </div>
+      )
+    } else if (moment(props.assignment.due).isBefore(today)) {
+      value = (<div className="homeAssignment__grade__number">%</div>)
+    } else {
+      value = (<div className="homeAssignment__grade__number">-</div>)
+    }
+
+    return (
+      <div
+        className={`homeAssignment__grade ${isPast && !props.assignment.grade ? 'homeAssignment__grade__fill' : ''}`}
+        onClick={(e) => {
+          e.preventDefault()
+          if (!editing) {
+            setEditing(true)
+          }
+        }}
+      >
+        { editing ? renderEditing() : value}
+      </div>
+    )
   }
 
-  return (
-    <div
-      className="homeAssignment__grade"
-      onClick={(e) => {
-        e.preventDefault()
-        if (!editing) {
-          setEditing(true)
-        }
-      }}
-    >
-      {editing
-        ? renderEditing()
-        : props.assignment.grade
-          ? Math.round(props.assignment.grade * 10) / 10 + '%'
-          : '-'}
-    </div>
-  )
+  return renderGrade()
 }
 
 Grade.propTypes = {
