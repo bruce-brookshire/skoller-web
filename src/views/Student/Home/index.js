@@ -26,6 +26,7 @@ import PremiumClassModal from './PremiumClassModal'
 import TrialClassModal from './TrialClassModal'
 import ClassStatusPopUp from './_ClassStatusPopUp'
 import AddAssignment from '../Assignments/AddAssignment'
+import AddClassModal from '../components/AddClassModal'
 @inject('rootStore') @observer
 class Home extends React.Component {
   constructor (props) {
@@ -44,7 +45,8 @@ class Home extends React.Component {
       shareWillDisplay: false,
       classModal: true,
       showTrialClassStatusModal: false,
-      showAddAssignmentModal: false
+      showAddAssignmentModal: false,
+      showAddClassModal: false
     }
 
     this.props.rootStore.navStore.setActivePage('home')
@@ -228,6 +230,11 @@ class Home extends React.Component {
     })
   }
 
+  handleUpdateClasses () {
+    this.setState({showAddClassModal: false})
+    this.props.rootStore.studentClassesStore.updateClasses()
+  }
+
   renderAddAssignmentModal () {
     if (!this.state.showAddAssignmentModal) {
       return null
@@ -239,6 +246,16 @@ class Home extends React.Component {
         assignmentParams={{}}
         closeModal={() => this.setState({showAddAssignmentModal: false})}
       />
+    )
+  }
+
+  renderAddClasModal () {
+    if (!this.state.showAddClassModal) {
+      return null
+    }
+
+    return (
+      <AddClassModal closeModal={() => this.updateClasses()} />
     )
   }
 
@@ -270,6 +287,7 @@ class Home extends React.Component {
               <div className="home-section-header">
                 <h2 className="home-section-header__header">
                   <Book className="home-section-header__icon" /> Classes
+                  <div className='home-add-new' onClick={() => this.setState({showAddClassModal: true})}><i className='fas fa-plus' /></div>
                 </h2>
               </div>
               <div className="home-card-content home-class-list">
@@ -299,6 +317,7 @@ class Home extends React.Component {
               <div className="home-assignment-list">
                 <HomeTasks />
                 {this.renderAddAssignmentModal()}
+                {this.renderAddClasModal()}
 
               </div>
             </div>
