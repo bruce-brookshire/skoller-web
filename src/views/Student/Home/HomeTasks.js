@@ -15,7 +15,7 @@ class HomeTasks extends React.Component {
   render () {
     return (
       <div className='home-tasks'>
-        <TasksList maxDays={10} visibleAssignmentsCallback={(visibleAssignments) => this.setState({ visibleAssignments })} />
+        <TasksList outlook={'Current week'} visibleAssignmentsCallback={(visibleAssignments) => this.setState({ visibleAssignments })} />
         {/* <ClassAssignments /> */}
       </div>
     )
