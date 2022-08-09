@@ -114,9 +114,22 @@ $sk-home-break-point: 1000px;
       }
     }
 
-    .home-insights-svg {
-      transform: translate(0, -70px);
-      margin-bottom: -60px;
+    svg.home-insights-svg {
+      transform: translate(0, -90px);
+      margin-bottom: -80px;
+
+      // Not sure why this doesn't work. Probably because it's an element of an svg
+      .activeLabel {
+        transform: translateX(-6px);
+
+        tspan:first-child {
+          font-size: 18px !important;
+        }
+
+        &__rect {
+          transform: translateX(-6px);
+        }
+      }
     }
   }
 
@@ -125,7 +138,7 @@ $sk-home-break-point: 1000px;
     border-radius: $cn-border-radius;
     padding: 9px 0;
     background: #F8F8F8;
-    height: 100%;
+    height: calc(100vh - 150px);
   }
 
   .home-class-list {
