@@ -65,18 +65,26 @@ export function getStyles (c) {
       }
     },
 
+    homeAxisDates: {
+      axis: { stroke: '#000', strokeWidth: 2 },
+      ticks: { strokeWidth: 0 },
+      tickLabels: {
+        fill: '#C7C7CC',
+        fontFamily: 'inherit',
+        fontSize: '14px'
+      }
+    },
+    homeAxisGrade: {
+      axis: { strokeWidth: 0 },
+      ticks: { strokeWidth: 0 },
+      tickLabels: {
+        fill: '#C7C7CC',
+        fontFamily: 'inherit',
+        fontSize: '14px'
+      }
+    },
     // DATA SET ONE
     axisOne: {
-      grid: {
-        stroke: COLOR_25,
-        strokeWidth: (tick) => {
-          if (tick.tick === 0) {
-            return 0
-          } else {
-            return 2
-          }
-        }
-      },
       axis: { stroke: COLOR, strokeWidth: 2 },
       ticks: { strokeWidth: 0 },
       tickLabels: {

@@ -4,9 +4,9 @@ import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import { ModifiedDateTooltip } from '../Insights/WeightsTimeline'
-import { getAssignmentCountDataHomeGraph, modifiedGetAssignmentWeightData } from '../Insights/DataUtils'
+import { modifiedGetAssignmentWeightData } from '../Insights/DataUtils'
 
-import { VictoryBar, VictoryChart, VictoryAxis, VictoryTooltip, VictoryLabel, VictoryLine, VictoryScatter, VictoryArea } from 'victory'
+import { VictoryBar, VictoryAxis, VictoryTooltip, VictoryLabel } from 'victory'
 import { getStyles } from '../Insights/styles'
 
 import '@devexpress/dx-react-chart-bootstrap4/dist/dx-react-chart-bootstrap4.css'
@@ -71,6 +71,46 @@ class CustomFlyout extends React.Component {
     )
   }
 }
+
+class CustomGradeLabel extends React.Component {
+  render () {
+    const { index, activeIdx, text } = this.props
+
+    if (index === activeIdx) {
+      const newProps = { ...this.props }
+      delete newProps.text
+      newProps.style = { ...this.props.style, fill: '#4A4A4A', fontSize: 10 }
+
+      return (
+        <VictoryLabel
+          key={index}
+          dy={-7}
+          {...newProps}
+          text={[`${text}`, 'This', 'Week']}
+          className="activeLabel"
+          backgroundComponent={<rect className="activeLabel__rect" />}
+          backgroundPadding={{ left: 5, right: 5, top: 7, bottom: -1 }}
+          backgroundStyle={{
+            fill: '#D9D9D9',
+            stroke: '#000',
+            rx: 5
+          }}
+        />
+      )
+    }
+
+    return (
+      <VictoryLabel key={index} dy={-5} {...this.props}/>
+    )
+  }
+}
+CustomGradeLabel.propTypes = {
+  index: PropTypes.number,
+  activeIdx: PropTypes.number,
+  text: PropTypes.string,
+  style: PropTypes.object
+}
+
 @inject('rootStore') @observer
 class HomeGraphImpact extends React.Component {
   constructor (props) {
@@ -88,17 +128,7 @@ class HomeGraphImpact extends React.Component {
     return getStyles(this.props.cl ? '#' + this.props.cl.color : false)
   }
 
-  // ass:this.props.rootStore.studentAssignmentsStore.assignments
-
-  render () {
-    const { cl } = this.props
-
-    // let data = getAssignmentCountDataHomeGraph(assignment, false, [], 'w')
-    let data = modifiedGetAssignmentWeightData((cl ? cl.assignments : this.props.assignments), cl, this.props.ids, 'w', this.props.rootStore.userStore.user.student.primary_period)
-
-    const styles = this.getStyles()
-
-    const today = parseInt(moment().format('X'))
+  createDomain (data) {
     let domain = {x: [0, 0], y: [0, 0]}
     if (data.length > 0) {
       domain = {
@@ -113,60 +143,49 @@ class HomeGraphImpact extends React.Component {
       }
     }
 
-    let hideToday = false
-    if (moment(today, 'X').isAfter(moment(domain.x[1], 'X'))) {
-      hideToday = true
-    }
+    return domain
+  }
+
+  render () {
+    const { cl } = this.props
+
+    let data = modifiedGetAssignmentWeightData((cl ? cl.assignments : this.props.assignments), cl, this.props.ids, 'w', this.props.rootStore.userStore.user.student.primary_period)
+
+    const today = parseInt(moment().format('X'))
+    const styles = this.getStyles()
+    const domain = this.createDomain(data)
     const tickValues = data.map(d => d.x)
     const animate = null
 
+    let activeIdx
+    if (tickValues[0] > today) {
+      activeIdx = 0
+    } else if (tickValues[tickValues.length - 1] < today) {
+      activeIdx = tickValues.length - 1
+    } else {
+      activeIdx = tickValues.findIndex(week => { return today < week }) - 1
+    }
+
     return (
-      // <div className='home-shadow-box margin-top home-insights'>
-
-      //   <VictoryChart
-      //     domain={{ x: [0, 11], y: [0, 100] }}
-
-      //   >
-      //     <VictoryBar
-      //       labelComponent={
-      //         <VictoryTooltip
-      //           flyoutComponent={<CustomFlyout ji='098'/>}
-      //         />
-      //       }
-      //       data={[
-      //         {x: 2, y: 5, label: ""},
-      //         {x: 6, y: 4, label: ""},
-      //         {x: 10, y: 7, label: ""}
-      //       ]}
-      //       style={{
-      //         data: {fill: "tomato", width: 20},
-      //         labels: { fill: "tomato"}
-      //       }}
-      //     />
-      //   </VictoryChart>
-      // </div>
       <div className='home-shadow-box margin-top home-insights'>
         <h2 className="sec-title"><LineGraphSvg /> Grade Impact</h2>
-        <svg viewBox='0 0 450 280' className="home-insights-svg">
+        <svg viewBox='0 0 450 310' className="home-insights-svg">
 
           <g>
+            {/* Left axis */}
             <VictoryAxis
               tickValues={tickValues}
-              tickFormat={d => moment(d, 'X').format('M/DD')}
+              tickFormat={(d, idx) => idx + 1}
               tickCount={5}
-              style={styles.axisDates}
+              groupComponent={<g transform="translate(0, 1)" />}
+              tickLabelComponent={<CustomGradeLabel activeIdx={activeIdx} />}
+              style={styles.homeAxisDates}
               domain={{x: domain.x}}
-              // scale='time'
               standalone={false}
               animate={animate}
             />
 
-            <VictoryLabel x={6} y={154}
-              style={styles.axisLabel}
-              angle={270}
-              textAnchor={'middle'}
-            />
-
+            {/* Bottom axis */}
             <VictoryAxis
               dependentAxis
               // label='Assignments'
@@ -175,80 +194,30 @@ class HomeGraphImpact extends React.Component {
               orientation='left'
               standalone={false}
               domainPadding={200}
-              style={styles.axisOne}
+              style={styles.homeAxisGrade}
               tickFormat={d => (d * 100) + '%'}
               animate={animate}
             />
-
-            {!hideToday && <g>
-              <VictoryLine
-                x={() => today}
-                domain={domain}
-                scale={{x: 'time', y: 'linear'}}
-                standalone={false}
-                style={styles.todayLine.back}
-                animate={animate}
-              />
-
-              <VictoryLine
-                x={() => today}
-                domain={domain}
-                scale={{x: 'time', y: 'linear'}}
-                standalone={false}
-                style={styles.todayLine.front}
-                animate={animate}
-              />
-
-              <VictoryScatter
-                data={[{x: today, y: domain.y[1]}]}
-                domain={domain}
-                standalone={false}
-                scale={{x: 'time', y: 'linear'}}
-                size={4}
-                style={styles.todayLine.dot}
-                animate={animate}
-              />
-
-              <VictoryLabel x={(((today - domain.x[0]) / (domain.x[1] - domain.x[0])) * 336) + 35} y={34}
-                text={'Today'}
-                style={styles.label}
-                animate={animate}
-              />
-            </g>}
-
-            {/* <g>
-              <VictoryArea
-                data={data}
-                domain={domain}
-                scale={{x: 'time', y: 'linear'}}
-                standalone={false}
-                interpolation='monotoneX'
-                style={styles.area}
-                animate={animate}
-              />
-            </g> */}
 
             <VictoryBar
               data={data}
               domain={domain}
               scale={{x: 'time', y: 'linear'}}
-              size={5}
+              barWidth={30}
               standalone={false}
-              style={styles.scatter}
-              //   labels={() => 'Week 7: 9/29-10/4 \n 12 assignments \n 21.6% of total grade'}
-              //   labels={({ datum }) => `Week 7: ${moment(datum.x, 'X').format('M/D') - moment(datum.x, 'X').add(7, 'days').format('M/D')} \n ${datum.allAssignment.length} assignments \n 21.6% of total grade`}
+              cornerRadius={4}
+              style={{
+                data: {
+                  strokeWidth: 1,
+                  borderRadius: 3,
+                  stroke: (datum) => { return datum.index < activeIdx ? '#57B9E4' : '#000' },
+                  fill: (datum) => { return datum.index === activeIdx ? '#F1AA3A' : datum.index < activeIdx ? '#EDFAFF' : '#fff' }
+                }
+              }}
               labels={() => ''}
               labelComponent={
                 <VictoryTooltip
-                //   style={{ fill: '#4A4A4A' }}
-                  // cornerRadius={0}
-                  // pointerLength={0}
                   renderInPortal={false}
-                  //   flyoutStyle={{
-                  //     stroke: '#979797',
-                  //     fill: '#FFFFFF'
-                  //   }}
-                  // flyoutHeight={60}
                   flyoutComponent={<ModifiedDateTooltip view={'w'} />}
                 />
               }
