@@ -151,6 +151,7 @@ class Home extends React.Component {
     this.props.rootStore.studentAssignmentsStore.updateAssignments()
     this.props.rootStore.studentClassesStore.updateClasses()
     this.setState({ loading: false })
+    this.setState({ showAddClassModal: false})
   }
 
   findFullClass (classId) {
