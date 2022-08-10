@@ -89,11 +89,11 @@ class CustomGradeLabel extends React.Component {
           text={[`${text}`, 'This', 'Week']}
           className="activeLabel"
           backgroundComponent={<rect className="activeLabel__rect" />}
-          backgroundPadding={{ left: 5, right: 5, top: 7, bottom: -1 }}
+          backgroundPadding={{ left: 2, right: 2, top: 7, bottom: -1 }}
           backgroundStyle={{
-            fill: '#D9D9D9',
-            stroke: '#000',
-            rx: 5
+            fill: '#FFFFFF',
+            stroke: '#444',
+            rx: 3
           }}
         />
       )
@@ -204,11 +204,10 @@ class HomeGraphImpact extends React.Component {
               scale={{x: 'time', y: 'linear'}}
               size={5}
               standalone={false}
-              cornerRadius={4}
+              cornerRadius={2}
               style={{
                 data: {
                   strokeWidth: 1,
-                  borderRadius: 3,
                   stroke: (datum) => { return datum.index < activeIdx ? '#57B9E4' : '#000' },
                   fill: (datum) => { return datum.index === activeIdx ? '#E6AC51' : datum.index < activeIdx ? '#EDFAFF' : '#fff' }
                 }
