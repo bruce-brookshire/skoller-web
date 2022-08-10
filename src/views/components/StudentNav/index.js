@@ -3,10 +3,19 @@ import PropTypes from 'prop-types'
 import { inject, observer } from 'mobx-react'
 import NavItem from './NavItem'
 import { withRouter } from 'react-router-dom'
+import UpgradeBox from '../UpgradeBox'
 
 @inject('rootStore')
 @observer
 class StudentNav extends React.Component {
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      subscribed: false
+    }
+  }
+
   getActivePage () {
     const {
       navStore: { activePage }
@@ -35,6 +44,8 @@ class StudentNav extends React.Component {
   }
 
   render () {
+    const { userStore } = this.props.rootStore
+
     if (this.props.rootStore.navStore.jobsMode) {
       return (
         <div className="s-nav-wrapper">
@@ -54,13 +65,15 @@ class StudentNav extends React.Component {
         <div className="s-nav-wrapper">
           <div className="s-nav">
             <NavItem pageName="home" text="Home" />
-            <NavItem pageName="classes" text="Classes" />
+            {/* <NavItem pageName="classes" text="Classes" />
             <NavItem pageName="tasks" text="Assignments" />
-            <NavItem pageName="insights" text="Insights" />
+            <NavItem pageName="insights" text="Insights" /> */}
             <NavItem pageName="calendar" text="Calendar" />
             {this.props.rootStore.studentClassesStore.classes.filter(cl => cl.status.id === 1400).length !== 0 &&
               <NavItem pageName="share" text="Share" />
             }
+            <div className="s-nav--spacer" />
+            <UpgradeBox userStore={userStore} subscribed={this.state.subscribed} />
             {/* <NavItem pageName="activity" text="Activity" />
             <NavItem pageName="chat" text="Chat" /> */}
             {this.renderLogout()}

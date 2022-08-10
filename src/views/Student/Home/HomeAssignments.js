@@ -1,6 +1,5 @@
 import React from 'react'
 import {inject, observer} from 'mobx-react'
-import TasksList from '../Tasks/TasksList'
 
 // stext-purple, green, orange, danger
 
@@ -9,12 +8,11 @@ class HomeAssignments extends React.Component {
   render () {
     return (
       <div className="home-tasks">
-          <div className="home-tasks-inner">
-            <div className="divider-spantext"><span>weekdays work</span> </div>
-            
+        <div className="home-tasks-inner">
+          <div className="divider-spantext"><span>weekdays work</span> </div>
         </div>
       </div>
-      )
+    )
   }
 }
 

@@ -26,8 +26,6 @@ class App extends React.Component {
       )
     ) {
       body.style.backgroundColor = '#4a4a4a'
-    } else {
-      body.style.backgroundColor = '#EDFAFF'
     }
   }
 

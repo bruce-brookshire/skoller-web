@@ -66,6 +66,7 @@ class FindAClass extends React.Component {
     }
 
     this.animationTimeout = 600
+    this.searchTimeout = null
   }
 
   getMobileOperatingSystem () {
@@ -81,16 +82,22 @@ class FindAClass extends React.Component {
 
   searchClasses (value) {
     this.setState({loadingAutocompleteClasses: true})
+
+    if (this.searchTimeout) {
+      clearTimeout(this.searchTimeout)
+    }
+
     if (value) {
       this.setState({loadingAutocompleteClasses: true, searchClassesValue: value})
-      if(this.state.termChoice){
-
+      if (this.state.termChoice) {
+        this.searchTimeout = setTimeout(() => {
           actions.classes.searchSchoolStudentClasses(this.state.termChoice.id, value).then((classes) => {
-              if (this.state.searchClassesValue === value) {
-                  this.setState({classes, loadingAutocompleteClasses: false})
-                }
-            }).catch(() => { this.setState({loadingAutocompleteClasses: false}) })
-        }
+            if (this.state.searchClassesValue === value) {
+              this.setState({classes, loadingAutocompleteClasses: false})
+            }
+          }).catch(() => { this.setState({loadingAutocompleteClasses: false}) })
+        }, 800)
+      }
     } else {
       this.setState({classes: [], loadingAutocompleteClasses: false})
     }
