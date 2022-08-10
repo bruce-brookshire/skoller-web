@@ -79,7 +79,7 @@ class CustomGradeLabel extends React.Component {
     if (index === activeIdx) {
       const newProps = { ...this.props }
       delete newProps.text
-      newProps.style = { ...this.props.style, fill: '#4A4A4A', fontSize: 10 }
+      newProps.style = { ...this.props.style, fill: '#4A4A4A', fontSize: 8 }
 
       return (
         <VictoryLabel
@@ -151,7 +151,7 @@ class HomeGraphImpact extends React.Component {
 
     let data = modifiedGetAssignmentWeightData((cl ? cl.assignments : this.props.assignments), cl, this.props.ids, 'w', this.props.rootStore.userStore.user.student.primary_period)
 
-    const today = parseInt(moment().format('X'))
+    const today = parseInt(moment().add(3, 'weeks').format('X'))
     const styles = this.getStyles()
     const domain = this.createDomain(data)
     const tickValues = data.map(d => d.x)
@@ -209,7 +209,7 @@ class HomeGraphImpact extends React.Component {
                 data: {
                   strokeWidth: 1,
                   stroke: (datum) => { return datum.index < activeIdx ? '#57B9E4' : '#000' },
-                  fill: (datum) => { return datum.index === activeIdx ? '#E6AC51' : datum.index < activeIdx ? '#EDFAFF' : '#fff' }
+                  fill: (datum) => { return datum.index === activeIdx ? '#57B9E4' : datum.index < activeIdx ? '#EDFAFF' : '#fff' }
                 }
               }}
               labels={() => ''}
