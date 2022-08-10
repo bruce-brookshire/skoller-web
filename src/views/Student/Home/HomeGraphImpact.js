@@ -172,11 +172,10 @@ class HomeGraphImpact extends React.Component {
         <svg viewBox='0 0 450 310' className="home-insights-svg">
 
           <g>
-            {/* Left axis */}
+            {/* Bottom axis */}
             <VictoryAxis
               tickValues={tickValues}
               tickFormat={(d, idx) => idx + 1}
-              tickCount={5}
               groupComponent={<g transform="translate(0, 1)" />}
               tickLabelComponent={<CustomGradeLabel activeIdx={activeIdx} />}
               style={styles.homeAxisDates}
@@ -185,7 +184,7 @@ class HomeGraphImpact extends React.Component {
               animate={animate}
             />
 
-            {/* Bottom axis */}
+            {/* Left axis */}
             <VictoryAxis
               dependentAxis
               // label='Assignments'
@@ -203,7 +202,7 @@ class HomeGraphImpact extends React.Component {
               data={data}
               domain={domain}
               scale={{x: 'time', y: 'linear'}}
-              barWidth={30}
+              size={5}
               standalone={false}
               cornerRadius={4}
               style={{
@@ -211,7 +210,7 @@ class HomeGraphImpact extends React.Component {
                   strokeWidth: 1,
                   borderRadius: 3,
                   stroke: (datum) => { return datum.index < activeIdx ? '#57B9E4' : '#000' },
-                  fill: (datum) => { return datum.index === activeIdx ? '#F1AA3A' : datum.index < activeIdx ? '#EDFAFF' : '#fff' }
+                  fill: (datum) => { return datum.index === activeIdx ? '#E6AC51' : datum.index < activeIdx ? '#EDFAFF' : '#fff' }
                 }
               }}
               labels={() => ''}

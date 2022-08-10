@@ -1,5 +1,4 @@
 node_modules
-.env
 *.vim
 .DS_Store
 package-lock.json
@@ -7,3 +6,4 @@ bundle.js
 # ASDF version  management
 .tool-versions
 yarn.lock
+.env
