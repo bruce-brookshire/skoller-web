@@ -51,7 +51,6 @@ $sk-home-break-point: 1000px;
       box-sizing: border-box;
       width: 100%;
       margin: 0;
-      height: 100%;
 
       @media only screen and (max-width: $sk-mobile-break-point) {
         margin: 0 1rem 1rem 1rem;
@@ -143,7 +142,7 @@ $sk-home-break-point: 1000px;
 
   .home-class-list {
     .classList {
-      max-height: 140px;
+      max-height: 190px;
       overflow-y: auto;
     }
   }
