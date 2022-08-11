@@ -120,14 +120,14 @@ $sk-home-break-point: 1000px;
 
       // Not sure why this doesn't work. Probably because it's an element of an svg
       .activeLabel {
-        transform: translateX(-6px);
+        transform: translateX(-3px);
 
         tspan:first-child {
           font-size: 18px !important;
         }
 
         &__rect {
-          transform: translateX(-6px);
+          transform: translateX(-3px);
         }
       }
     }

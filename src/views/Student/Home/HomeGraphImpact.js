@@ -79,7 +79,7 @@ class CustomGradeLabel extends React.Component {
     if (index === activeIdx) {
       const newProps = { ...this.props }
       delete newProps.text
-      newProps.style = { ...this.props.style, fill: '#4A4A4A', fontSize: 10 }
+      newProps.style = { ...this.props.style, fill: '#4A4A4A', fontSize: 8 }
 
       return (
         <VictoryLabel
@@ -89,11 +89,11 @@ class CustomGradeLabel extends React.Component {
           text={[`${text}`, 'This', 'Week']}
           className="activeLabel"
           backgroundComponent={<rect className="activeLabel__rect" />}
-          backgroundPadding={{ left: 5, right: 5, top: 7, bottom: -1 }}
+          backgroundPadding={{ left: 2, right: 2, top: 7, bottom: -1 }}
           backgroundStyle={{
-            fill: '#D9D9D9',
-            stroke: '#000',
-            rx: 5
+            fill: '#FFFFFF',
+            stroke: '#444',
+            rx: 3
           }}
         />
       )
@@ -172,11 +172,10 @@ class HomeGraphImpact extends React.Component {
         <svg viewBox='0 0 450 310' className="home-insights-svg">
 
           <g>
-            {/* Left axis */}
+            {/* Bottom axis */}
             <VictoryAxis
               tickValues={tickValues}
               tickFormat={(d, idx) => idx + 1}
-              tickCount={5}
               groupComponent={<g transform="translate(0, 1)" />}
               tickLabelComponent={<CustomGradeLabel activeIdx={activeIdx} />}
               style={styles.homeAxisDates}
@@ -185,7 +184,7 @@ class HomeGraphImpact extends React.Component {
               animate={animate}
             />
 
-            {/* Bottom axis */}
+            {/* Left axis */}
             <VictoryAxis
               dependentAxis
               // label='Assignments'
@@ -203,15 +202,14 @@ class HomeGraphImpact extends React.Component {
               data={data}
               domain={domain}
               scale={{x: 'time', y: 'linear'}}
-              barWidth={30}
+              size={5}
               standalone={false}
-              cornerRadius={4}
+              cornerRadius={2}
               style={{
                 data: {
                   strokeWidth: 1,
-                  borderRadius: 3,
                   stroke: (datum) => { return datum.index < activeIdx ? '#57B9E4' : '#000' },
-                  fill: (datum) => { return datum.index === activeIdx ? '#F1AA3A' : datum.index < activeIdx ? '#EDFAFF' : '#fff' }
+                  fill: (datum) => { return datum.index === activeIdx ? '#57B9E4' : datum.index < activeIdx ? '#EDFAFF' : '#fff' }
                 }
               }}
               labels={() => ''}
