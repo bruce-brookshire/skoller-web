@@ -151,7 +151,7 @@ class HomeGraphImpact extends React.Component {
 
     let data = modifiedGetAssignmentWeightData((cl ? cl.assignments : this.props.assignments), cl, this.props.ids, 'w', this.props.rootStore.userStore.user.student.primary_period)
 
-    const today = parseInt(moment().add(3, 'weeks').format('X'))
+    const today = parseInt(moment().format('X'))
     const styles = this.getStyles()
     const domain = this.createDomain(data)
     const tickValues = data.map(d => d.x)
