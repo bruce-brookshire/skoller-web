@@ -1,6 +1,6 @@
 @mixin navbar {
   background-color: $cn-color-white;
-  border-bottom: 2px solid $cn-color-blue;
+  border-bottom: 1px solid $cn-color-light-gray;
   height: $unit-nav-height;
   padding: 10px 20px;
   width: 100%;
