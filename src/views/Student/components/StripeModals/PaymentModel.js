@@ -164,12 +164,11 @@ class ChangeSchool extends React.Component {
           <div className="popup-closetext">
             <div className="popup-msg">
               <img src="/src/assets/images/sammi/Wow2.png" className="opup-icon" alt="" style={{ maxWidth: '34px' }}></img>
-              {/* <h2>Your 30-day trial has expired!</h2> */}
               {
                 this.props.rootStore.userStore.user.trial
                   ? <h2>Your free trial expires in {Math.ceil(+this.props.rootStore.userStore.user.trial_days_left)} days</h2>
                   : (!this.props.rootStore.userStore.user.trial && !this.props.rootStore.userStore.mySubscription)
-                    ? <h2>Your have 30-day trial have expired!</h2>
+                    ? <h2>Your 30-day trial has expired!</h2>
                     : this.props.rootStore.userStore.mySubscription.cancel_at_period_end
                       ? <h2>You recurring subscription was cancelled</h2>
                       : <h2></h2>
