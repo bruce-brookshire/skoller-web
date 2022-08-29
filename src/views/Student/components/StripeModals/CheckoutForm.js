@@ -1,21 +1,17 @@
 import React, { useState } from 'react'
-import {useHistory} from 'react-router-dom'
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js'
 
 import CardSection from './CardSection'
 import actions from '../../../../actions'
 import { showSnackbar } from '../../../../utilities/snackbar'
+import { PropTypes } from 'mobx-react'
 
 export default function CheckoutForm (props) {
   const stripe = useStripe()
   const elements = useElements()
-  const [payButtonDisabled, setPayButtonDisabled] = useState(false);
+  const [payButtonDisabled, setPayButtonDisabled] = useState(false)
 
-  console.log(props, 'CheckoutForm')
-  console.log(props.selectedSubscription, 'CheckoutForm')
-  console.log(props.myprops.closeModal, 'CheckoutForm')
-
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     // We don't want to let default form submission happen here,
     // which would refresh the page.
     event.preventDefault()
@@ -25,18 +21,19 @@ export default function CheckoutForm (props) {
       return
     }
 
+    setPayButtonDisabled(true)
     const card = elements.getElement(CardElement)
-    const result = await stripe.createToken(card)
-
-    if (result.error) {
-      // Show error to your customer.
-      console.log(result.error.message)
-      setPayButtonDisabled(false);
-    } else {
-      // Send the token to your server.
-      // This function does not exist yet; we will define it in the next step.
-      stripeTokenHandler(result.token)
-    }
+    stripe.createToken(card).then(result => {
+      if (result.error) {
+        // Show error to your customer.
+        showSnackbar(result.error.message, 'error')
+        setPayButtonDisabled(false)
+      } else {
+        // Send the token to your server.
+        // This function does not exist yet; we will define it in the next step.
+        stripeTokenHandler(result.token)
+      }
+    })
   }
 
   function stripeTokenHandler (token) {
@@ -57,14 +54,14 @@ export default function CheckoutForm (props) {
       }
     }
 
-    if (props.selectedSubscription == '') {
+    if (props.selectedSubscription === '') {
       setPayButtonDisabled(false)
-      alert('Please select Subscription plan.')
+      window.alert('Please select Subscription plan.')
       return
     }
     actions.stripe.createSubscription(paymentData)
       .then((data) => {
-        if (data.status == 'ok') {
+        if (data.status === 'ok') {
           showSnackbar(data.message, 'success')
           props.myprops.handleModalClose()
           window.location.reload(true)
@@ -86,4 +83,10 @@ export default function CheckoutForm (props) {
       <button className={`btn-primary padding full-width text-white margin-top ${payButtonDisabled ? 'disabled' : ''}`} disabled={payButtonDisabled} style={{color: 'white'}}>Pay</button>
     </form>
   )
+}
+
+CheckoutForm.propTypes = {
+  selectedSubscription: PropTypes.string,
+  simplifiedFunction: PropTypes.func,
+  myprops: PropTypes.object
 }
