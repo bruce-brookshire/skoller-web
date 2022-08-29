@@ -312,7 +312,7 @@ class NavBar extends React.Component {
       const { userStore: { user } } = this.props.rootStore
       const admin = this.props.rootStore.userStore.isAdmin()
       return (
-        <div className={'cn-navbar'} style={{zIndex: 999}}>
+        <div className={'cn-navbar'}>
           {this.state.popUp.show &&
                     <PopUp closeModal={(!this.props.rootStore.userStore.user.trial && !this.state.subscribed) ? () => null : () => this.closePopUp()} handleModalClose={() => this.closePopUp()} type={this.state.popUp.type} refreshClasses={() => this.updateClasses()} />
           }
