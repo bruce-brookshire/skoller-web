@@ -720,7 +720,9 @@ body {
 
   &:disabled {
     color: $cn-form-border;
+    background-color: #57B9E480;
     cursor: auto;
+    pointer-events: none;
   }
 
   &:hover {
