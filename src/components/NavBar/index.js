@@ -119,13 +119,15 @@ class NavBar extends React.Component {
                       <img alt="Skoller" className='logo' src='/src/assets/images/sammi/Smile.png' height="60" />
                       <h1>Your free trial expires in {Math.ceil(+this.props.rootStore.userStore.user.trial_days_left)} days</h1>
                     </div>
-                    <button
+                    <div style={{display: 'flex', flexDirection: 'column'}}>
+                    <button className="btn btn-primary" style={{marginBottom: '10px'}}
                       onClick={() => {
                         this.setState({showMyAccount: false})
                         this.setState({ popUp: { type: 'PaymentPlans', show: true } })
                       }}
                     >Upgrade to Premium</button>
                     <span>Trial ends {formatDate(new Date(new Date().setDate(new Date().getDate() + Math.ceil(+this.props.rootStore.userStore.user.trial_days_left))))}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -139,17 +141,18 @@ class NavBar extends React.Component {
                       <img alt="Skoller" className='logo' src='/src/assets/images/sammi/Smile.png' height="60" />
                       {(this.props.rootStore.userStore.mySubscription && this.props.rootStore.userStore.mySubscription.cancel_at_period_end) ? <h1>You cancelled your subscription</h1> : this.props.rootStore.userStore.mySubscription && !this.props.rootStore.userStore.mySubscription.cancel_at_period_end ? <h1>Cancel subscription</h1> : null}
                     </div>
+                    <div style={{display: 'flex', flexDirection: 'column'}}>
                     {
                       (this.props.rootStore.userStore.mySubscription && this.props.rootStore.userStore.mySubscription.cancel_at_period_end)
 
-                        ? <button
+                        ? <button className="btn btn-primary" style={{marginBottom: '10px'}}
                           onClick={() => {
                             this.setState({showMyAccount: false})
                             this.setState({ popUp: { type: 'PaymentPlans', show: true } })
                           }}
                         >Upgrade to Premium</button>
                         : this.props.rootStore.userStore.mySubscription && !this.props.rootStore.userStore.mySubscription.cancel_at_period_end
-                          ? <button
+                          ? <button className="btn btn-primary" style={{marginBottom: '10px'}}
                             onClick={() => {
                               this.setState({showMyAccount: false})
                               this.setState({ popUp: { type: 'CancelSubscription', show: true } })
@@ -157,6 +160,7 @@ class NavBar extends React.Component {
                           >Cancel Subscription</button> : null
 
                     }
+                    </div>
                     <span>Subscription ends {formatDate(this.getIntervalDate())}</span>
                   </div>
                 </div>
@@ -312,7 +316,7 @@ class NavBar extends React.Component {
       const { userStore: { user } } = this.props.rootStore
       const admin = this.props.rootStore.userStore.isAdmin()
       return (
-        <div className={'cn-navbar'}>
+        <div className={'cn-navbar'} style={{zIndex: '100'}}>
           {this.state.popUp.show &&
                     <PopUp closeModal={(!this.props.rootStore.userStore.user.trial && !this.state.subscribed) ? () => null : () => this.closePopUp()} handleModalClose={() => this.closePopUp()} type={this.state.popUp.type} refreshClasses={() => this.updateClasses()} />
           }
