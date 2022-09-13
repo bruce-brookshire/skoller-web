@@ -8,7 +8,7 @@ import { Cookies } from 'react-cookie'
 import { loadStripe } from '@stripe/stripe-js'
 import AlternativePayment from './AlternativePayment'
 const vm = this
-//const stripePromise = loadStripe('pk_test_51JHvLoGtOURsTxunH2YZl8bG4pvpTQUKRoTVXjqEtZUFR8SsgUIMps4qGBl9OrPYiAGEy8dlAiRATkrRnRUiHMMa00xYgr7qtu')
+// const stripePromise = loadStripe('pk_test_51JHvLoGtOURsTxunH2YZl8bG4pvpTQUKRoTVXjqEtZUFR8SsgUIMps4qGBl9OrPYiAGEy8dlAiRATkrRnRUiHMMa00xYgr7qtu')
 const stripePromise = loadStripe('pk_live_51JHvLoGtOURsTxunmypyAUNfbRF4jOahklknp1RTBHhxpy3qEveFU7lCWdrBt4YggE5ytlblCgYYHPPzsLC0Gf8K00NC7FWyoh')
 
 @inject('rootStore') @observer
@@ -170,10 +170,10 @@ class ChangeSchool extends React.Component {
                   : (!this.props.rootStore.userStore.user.trial && !this.props.rootStore.userStore.mySubscription)
                     ? <h2>Your 30-day trial has expired!</h2>
                     : this.props.rootStore.userStore.mySubscription.cancel_at_period_end
-                      ? <h2>You recurring subscription was cancelled</h2>
+                      ? <h2>Your recurring subscription was cancelled</h2>
                       : <h2></h2>
               }
-              <p> Upgrade the premium</p>
+              <p> Upgrade to premium</p>
             </div>
             <div className="row">
               <div className="col-md-12">
