@@ -29,6 +29,7 @@ ReloadableGif.propTypes = {
 
 class ClassStatusImage extends React.Component {
   render () {
+
     let image = sendSyllabus
     if (this.props.status === 1200) {
       image = inReview
