@@ -242,6 +242,10 @@ class ShareClasses extends React.Component {
   }
 
   renderPayment () {
+    const date = new Date()
+    const month = date.toLocaleString('default', { month: 'long'});
+    const year = date.getFullYear();
+
     return (
       <div className='sk-payment'>
         <h1>Build Passive Income</h1>
@@ -249,7 +253,7 @@ class ShareClasses extends React.Component {
 
         <div className="payment-content">
           <div className="amount-row">
-            <h2>June 2022 Income</h2>
+            <h2>{`${month} ${year}`} Income</h2>
             <h1 className="amount">$0</h1>
           </div>
           { this.state.venmoHandle == null && this.state.venmoHandle != "" ?
