@@ -316,7 +316,7 @@ class NavBar extends React.Component {
       const { userStore: { user } } = this.props.rootStore
       const admin = this.props.rootStore.userStore.isAdmin()
       return (
-        <div className={'cn-navbar'} style={{zIndex: '100'}}>
+        <div className={'cn-navbar'}>
           {this.state.popUp.show &&
                     <PopUp closeModal={(!this.props.rootStore.userStore.user.trial && !this.state.subscribed) ? () => null : () => this.closePopUp()} handleModalClose={() => this.closePopUp()} type={this.state.popUp.type} refreshClasses={() => this.updateClasses()} />
           }
@@ -342,7 +342,7 @@ class NavBar extends React.Component {
           {!this.props.rootStore.userStore.isAdmin() && <ReactTooltip id='soclose'
             getContent={(dataTip) =>
               <div>
-                <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'}}>
+                <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', zIndex: 100}}>
                   <img src={UserIcon} style={{width: '20px'}}/>
                   <button
                     style={{
