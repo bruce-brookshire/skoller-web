@@ -77,7 +77,7 @@ class ClassStatusModal extends React.Component {
       status = 'needSyllabus'
       sammiMessage = <span>It&apos;s time to <b>send your syllabus!</b></span>
       mobileMessage = `Head over to skoller.co on your computer to login and upload your syllabus.`
-    } else if (id === 1200 && (!this.props.trial || this.props.trial) && this.props.isSubscribed) {
+    } else if (id === 1200 && ((!this.props.trial || this.props.trial) && this.props.isSubscribed) || this.props.onboard) {
       status = 'inReview'
       sammiMessage = <span>Your syllabus is <b>IN REVIEW!</b></span>
     } else if (id === 1200 && this.props.trial && !this.props.isSubscribed) {
@@ -268,6 +268,12 @@ class ClassStatusModal extends React.Component {
             onUpload={() => null}
             onSubmit={() => this.props.closeModal()}
           />
+        </div>
+      )
+    } else if (this.props.onboard) {
+      return(
+        <div className='sk-class-status-modal-action-detail'>
+          <h2>Check back soon to find this class already set up for you.</h2>
         </div>
       )
     } else {
@@ -521,14 +527,16 @@ class ClassStatusModal extends React.Component {
   }
 
   renderNextButton () {
+
     let buttonText
-    buttonText = this.state.cl.status.id === 1400 ? 'Check it out!' : 'Done'
+    buttonText = this.state.cl.status.id === 1400  && !this.props.onboard ? 'Check it out!' : 'Done'
     if (this.state.status === 'needSyllabus' || this.state.status === 'diy') {
       buttonText = 'Submit'
     } else if (this.state.status === 'syllabusOverload') {
       buttonText = `Use the DIY tool`
     }
     if ((!this.state.mobile || this.state.status === 'live') && this.state.status !== 'inReview' && this.state.status !== 'inTrialReview') {
+      console.log(this.state.status, "STATTUSUSUSUS")
       return (
         <div
           className={'onboard-next' + (
@@ -544,7 +552,7 @@ class ClassStatusModal extends React.Component {
           </p>
         </div>
       )
-    } else if (this.state.status === 'inReview' || this.state.status === 'syllabusOverload' || this.state.status === 'inTrialReview') {
+    } else if ((this.state.status === 'inReview' || this.state.status === 'syllabusOverload' || this.state.status === 'inTrialReview') && !this.props.onboard) {
       return (
         <div>
           <p style={{margin: '0', textAlign: 'center'}}>Don&apos;t want to wait?</p>
@@ -629,7 +637,7 @@ class ClassStatusModal extends React.Component {
           </p>
           : null
         }
-        {(this.state.status === 'inReview' || this.state.status == 'inTrialReview') && !mobileCheck()
+        {((this.state.status === 'inReview' || this.state.status == 'inTrialReview') && !this.props.onboard) && !mobileCheck()
           ? <p
             style={{margin: '6px 0 0 0', textAlign: 'center', cursor: 'pointer'}}
             onClick={() => {
