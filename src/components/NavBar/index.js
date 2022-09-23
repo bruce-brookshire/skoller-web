@@ -18,7 +18,6 @@ import { Cookies } from 'react-cookie'
 class NavBar extends React.Component {
   constructor (props) {
     super(props)
-    console.log(this.props, "PROPS PROPS PROPS")
     this.state = {
       subscribed: false,
       subscriptionCancelled: false,
@@ -219,9 +218,7 @@ class NavBar extends React.Component {
 
   renderOnboardHeader () {
     return (
-      <div className='cn-navbar' style={
-        !this.state.subscribed && !this.props.rootStore.userStore.user.trial === false ? '' : {zIndex: 100}}
-      >
+      <div className='cn-navbar' style={!this.props.rootStore.userStore.user.trial && !this.state.subscribed ? null : {zIndex: '100'}}>
         <div>
           <img alt="Skoller" className='logo' src='/src/assets/images/logo-wide-blue@1x.png' />
           <div className='onboard-logo-text'>
@@ -318,7 +315,6 @@ class NavBar extends React.Component {
         this.renderJobsHeader()
       )
     } else {
-      console.log(this.state.subscribed, "SUB")
       const { userStore: { user } } = this.props.rootStore
       const admin = this.props.rootStore.userStore.isAdmin()
       const style = !this.state.subscribed && user.trial ? '' : {zIndex: 100}
