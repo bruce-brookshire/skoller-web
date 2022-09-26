@@ -16,6 +16,7 @@ import GooglePlay from '../../../assets/images/app_download/google-play-badge.pn
 import ProgressModal from '../../Student/components/ProgressModal'
 import CopyBox from '../../components/CopyBox'
 import SiDropClass from '../../Insights/StudentDetail/SiStudentClassDetail/SiDropClass'
+import UpgradeToPremiumBtn from '../../Student/Home/UpgradeToPremium'
 
 class ClassStatusModal extends React.Component {
   constructor (props) {
@@ -76,9 +77,12 @@ class ClassStatusModal extends React.Component {
       status = 'needSyllabus'
       sammiMessage = <span>It&apos;s time to <b>send your syllabus!</b></span>
       mobileMessage = `Head over to skoller.co on your computer to login and upload your syllabus.`
-    } else if (id === 1200) {
+    } else if (id === 1200 && ((!this.props.trial || this.props.trial) && this.props.isSubscribed) || this.props.onboard) {
       status = 'inReview'
       sammiMessage = <span>Your syllabus is <b>IN REVIEW!</b></span>
+    } else if (id === 1200 && this.props.trial && !this.props.isSubscribed) {
+      status = 'inTrialReview'
+      sammiMessage = null;
     } else if (id === 1300) {
       status = 'diy'
       sammiMessage = <span>The document(s) submitted <b>don&apos;t have the info we need for setup.</b></span>
@@ -90,6 +94,7 @@ class ClassStatusModal extends React.Component {
       status = 'syllabusOverload'
       sammiMessage = <span>COVID has hit us hard.</span>
     }
+
     return ({
       cl: cl,
       status: status,
@@ -231,10 +236,26 @@ class ClassStatusModal extends React.Component {
     return (
       !this.state.uploadAdditionalDocumentsView &&
       <div className='sk-class-status-modal-checklist-container'>
-        <ClassStatusImage status={(this.state.fullClass.school.is_syllabus_overload && this.state.fullClass.status.id < 1400) ? 1500 : this.state.cl.status.id} />
+        <ClassStatusImage 
+          status={
+            (this.state.fullClass.school.is_syllabus_overload && this.state.fullClass.status.id < 1400 || this.state.status == 'inTrialReview') 
+            ? 1500 
+            : this.state.cl.status.id
+          }
+        />
         {this.renderDownloadCompleteDownload()}
       </div>
     )
+  }
+
+  getImageStatus () {
+    if (this.state.fullClass.school.is_syllabus_overload && this.state.fullClass.status.id < 1400) {
+      return 1500
+    } else if (this.state.status === 'inReviewTrial') {
+      return 1300
+    } else {
+      this.state.cl.status.id
+    }
   }
 
   renderInReview () {
@@ -247,6 +268,12 @@ class ClassStatusModal extends React.Component {
             onUpload={() => null}
             onSubmit={() => this.props.closeModal()}
           />
+        </div>
+      )
+    } else if (this.props.onboard) {
+      return(
+        <div className='sk-class-status-modal-action-detail'>
+          <h2>Check back soon to find this class already set up for you.</h2>
         </div>
       )
     } else {
@@ -270,6 +297,30 @@ class ClassStatusModal extends React.Component {
         </div>
       )
     }
+  }
+
+  renderInReviewTrial () {
+    return (
+      <div className='sk-pm-content-container'>
+      {/* Modal content */}
+      <div className='sk-class-status-modal'>
+        {/* Status Content */}
+        <div>
+          <div className='sk-class-status-modal-container'>
+            <div className='sk-class-status-modal-row'>
+              <div className='sk-class-status-modal-action-container'>
+                <h1 style={{textAlign: 'center', marginBottom: '1rem'}}><span><b>We are swamped...</b></span></h1>
+                <div className='sk-class-status-modal-action-detail'>
+                  <h2>Move your syllabus to the front of the line by upgrading to premium!</h2>
+                    <UpgradeToPremiumBtn onClick={this.props.onUpgradeToPremiumClicked}>Upgrade to Premium</UpgradeToPremiumBtn>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    )
   }
 
   renderDIYAction () {
@@ -349,6 +400,10 @@ class ClassStatusModal extends React.Component {
                 ? this.renderInReview()
                 : null
               }
+              {this.state.status ==='inTrialReview'
+                ? this.renderInReviewTrial()
+                : null
+              }
               {this.state.status === 'diy'
                 ? <div className='sk-class-status-modal-action-detail' style={{height: 'auto', maxHeight: '300px'}}>
                   {this.renderDIYAction()}
@@ -421,22 +476,10 @@ class ClassStatusModal extends React.Component {
           actions.documents.uploadClassDocument(this.state.cl, file, false)
         })
       }
-      this.setState(
-        this.state.fullClass.school.is_syllabus_overload
-          ? {
-            loading: false,
-            status: 'syllabusOverload',
-            sammiMessage: <span>COVID has hit us hard.</span>
-          }
-          : {
-            loading: false,
-            status: 'inReview',
-            sammiMessage: `Woohoo! You've submitted your syllabus.`
-          }
-      )
+      this.setState(this.getStatus())
     } else if (this.state.status === 'live') {
       this.props.onSubmit()
-    } else if (this.state.status === 'inReview' || this.state.status === 'syllabusOverload') {
+    } else if (this.state.status === 'inReview' || this.state.status === 'syllabusOverload' || this.state.status === 'inTrialReview') {
       this.sendToDiy()
     } else if (this.state.status === 'diy') {
       this.setState({loading: true})
@@ -455,15 +498,45 @@ class ClassStatusModal extends React.Component {
     }
   }
 
+  getStatus() {
+    if (this.props.trial && !this.props.isSubscribed) {
+      return {
+        loading: false,
+        status: 'inTrialReview',
+        sammiMessage: null
+      }
+    } else if ((!this.props.trial || this.props.trial) && this.props.isSubscribed) {
+      return {
+        loading: false,
+        status: 'inReview',
+        sammiMessage: `Woohoo! You've submitted your syllabus.`
+      }
+    } else if ((!this.props.trial || this.props.trial) && this.state.fullClass.school.is_syllabus_overload) {
+      return {
+        loading: false,
+        status: 'syllabusOverload',
+        sammiMessage: <span>COVID has hit us hard.</span>
+      }
+    } else {
+      return {
+        loading: false,
+        status: 'inReview',
+        sammiMessage: `Woohoo! You've submitted your syllabus.`
+      }
+    }
+  }
+
   renderNextButton () {
+
     let buttonText
-    buttonText = this.state.cl.status.id === 1400 ? 'Check it out!' : 'Done'
+    buttonText = this.state.cl.status.id === 1400  && !this.props.onboard ? 'Check it out!' : 'Done'
     if (this.state.status === 'needSyllabus' || this.state.status === 'diy') {
       buttonText = 'Submit'
     } else if (this.state.status === 'syllabusOverload') {
       buttonText = `Use the DIY tool`
     }
-    if ((!this.state.mobile || this.state.status === 'live') && this.state.status !== 'inReview') {
+    if ((!this.state.mobile || this.state.status === 'live') && this.state.status !== 'inReview' && this.state.status !== 'inTrialReview') {
+      console.log(this.state.status, "STATTUSUSUSUS")
       return (
         <div
           className={'onboard-next' + (
@@ -479,7 +552,7 @@ class ClassStatusModal extends React.Component {
           </p>
         </div>
       )
-    } else if (this.state.status === 'inReview' || this.state.status === 'syllabusOverload') {
+    } else if ((this.state.status === 'inReview' || this.state.status === 'syllabusOverload' || this.state.status === 'inTrialReview') && !this.props.onboard) {
       return (
         <div>
           <p style={{margin: '0', textAlign: 'center'}}>Don&apos;t want to wait?</p>
@@ -539,7 +612,7 @@ class ClassStatusModal extends React.Component {
   renderHeader () {
     return (
       <div className='sk-class-status-modal-header'>
-        {((this.props.onboard || this.props.firstOpen) && this.state.status !== 'live') ? <h1>Welcome to<br /><b>{this.state.cl.name}!</b></h1> : null}
+        {((this.props.onboard || this.props.firstOpen) && this.state.status !== 'live' && this.state.status !== 'inTrialReview') ? <h1>Welcome to<br /><b>{this.state.cl.name}!</b></h1> : null}
         {this.renderProgress()}
       </div>
     )
@@ -550,10 +623,21 @@ class ClassStatusModal extends React.Component {
       <div style={{
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: !(this.state.status === 'needSyllabus' || this.state.status === 'diy') && this.props.closeModal ? 'flex-end' : 'space-between',
+        justifyContent: !(this.state.status === 'needSyllabus' || this.state.status === 'diy' || this.state.status === 'inTrialReview') && this.props.closeModal ? 'flex-end' : 'space-between',
         margin: '0.5rem 0 -0.5rem 0'
       }}>
-        {this.state.status === 'inReview' && !mobileCheck() && this.props.onboard
+        {(this.state.status === 'inReview' || this.state.status == 'inTrialReview') && !mobileCheck() && this.props.onboard
+          ? <p
+            style={{margin: '6px 0 0 0', textAlign: 'center', cursor: 'pointer'}}
+            onClick={() => {
+              this.props.onSubmit()
+            }}
+          >
+            <span style={{color: '#57B9E4'}}>Continue to Skoller</span>
+          </p>
+          : null
+        }
+        {((this.state.status === 'inReview' || this.state.status == 'inTrialReview') && !this.props.onboard) && !mobileCheck()
           ? <p
             style={{margin: '6px 0 0 0', textAlign: 'center', cursor: 'pointer'}}
             onClick={() => {
@@ -640,7 +724,7 @@ class ClassStatusModal extends React.Component {
         status = 'Review'
       }
 
-      if (cl.school.is_syllabus_overload && id < 1400 && id !== 1100) {
+      if (cl.school.is_syllabus_overload && id < 1400 && id !== 1100 || this.state.status === 'inTrialReview') {
         status = 'Review'
       }
     }

@@ -7,24 +7,11 @@ import { withRouter } from 'react-router-dom'
 import PopUp from './PopUp'
 import ClassStatusModal from '../../components/ClassStatusModal'
 import { Cookies } from 'react-cookie'
-import HomeClasses from './HomeNewClasses'
 import HomeClasses1 from './HomeClasses'
 import SkLoader from '../../../assets/sk-icons/SkLoader'
 import Book from '../../../assets/sk-icons/Book'
-
 import HomeTasks from './HomeTasks'
-import HomeShare from './HomeShare'
-import HomeJobs from './HomeJobs'
-import HomeInsights from './HomeInsights'
-
 import HomeGraphImpact from './HomeGraphImpact'
-import HomeAssignments from './HomeAssignments'
-
-import HomeAssignmentGraph from '../Insights/HomeAssignmentGraph'
-import { formatDate } from '../../../utilities/time'
-import PremiumClassModal from './PremiumClassModal'
-import TrialClassModal from './TrialClassModal'
-import ClassStatusPopUp from './_ClassStatusPopUp'
 import AddAssignment from '../Assignments/AddAssignment'
 import AddClassModal from '../components/AddClassModal'
 @inject('rootStore') @observer
@@ -35,6 +22,7 @@ class Home extends React.Component {
     this.state = {
       subscribed: false,
       subscriptionCancelled: false,
+      trial: this.props.rootStore.userStore.user.trial,
       classes: [],
       assignments: [],
       popUp: { show: false, type: null },
@@ -74,14 +62,6 @@ class Home extends React.Component {
     let type
     let student = this.props.rootStore.userStore.user.student
 
-    /*
-
-            if (sub=[] and trial=false){ // 30 days trial has finished
-                show unremoveable pop up
-            }
-
-        */
-
     await actions.classes.getStudentClassesById(student.id)
       .then((classes) => {
         if (classes.length > 1) {
@@ -114,11 +94,6 @@ class Home extends React.Component {
         type = 'getResume'
       }
     }
-    // if (this.props.rootStore.userStore.user.lifetime_trial) {
-    // //   showPopUp = true
-    // //   type = 'LifeTimeTrialUser'
-    //   this.setState({ popUp: { type: 'LifeTimeTrialUser', show: true } })
-    // }
 
     await actions.stripe.getMySubscription()
       .then((data) => {
@@ -131,9 +106,6 @@ class Home extends React.Component {
         } else if (data.data.length === 0 && this.props.rootStore.userStore.user.trial === false) {
           this.setState({ popUp: { type: 'PaymentPlans', show: true } })
         }
-        // } else  {
-        //     this.setState({ popUp: { type: 'PaymentPlans', show: true } });
-        // }
       })
       .catch((e) => {
         console.log(e)
@@ -190,8 +162,7 @@ class Home extends React.Component {
     let fullClass = this.findFullClass(cl.id)
     if (fullClass.status.id < 1400) {
       if (this.props.rootStore.userStore.user.trial && !this.props.rootStore.userStore.user.lifetime_trial) {
-        this.setState({showTrialClassStatusModal: true})
-        this.setState({ classStatusModal: { show: false, cl: fullClass } })
+        this.setState({ classStatusModal: { show: true, cl: fullClass } })
       } else {
         this.setState({ classStatusModal: { show: true, cl: fullClass } })
       }
@@ -250,14 +221,24 @@ class Home extends React.Component {
     )
   }
 
-  renderAddClasModal () {
+  renderAddClassModal () {
     if (!this.state.showAddClassModal) {
       return null
     }
 
     return (
-      <AddClassModal closeModal={() => this.updateClasses()} />
+      <AddClassModal 
+        closeModal={() => this.updateClasses()}
+        trial={this.state.trial}
+        isSubscribed={this.state.subscribed}
+        subscribedCancelled={this.state.subscriptionCancelled}
+        onUpgradeToPremiumClicked={() => this.upgradeToPremium()} />
     )
+  }
+
+  upgradeToPremium = () => {
+    this.closeClassStatusModal()
+    this.setState({ popUp: { type: 'PaymentPlans', show: true }})
   }
 
   renderContent () {
@@ -271,17 +252,12 @@ class Home extends React.Component {
                     closeModal={() => this.closeClassStatusModal()}
                     onSubmit={() => this.closeClassStatusModal()}
                     cl={this.state.classStatusModal.cl}
+                    trial={this.state.trial}
+                    isSubscribed={this.state.subscribed}
+                    subscribedCancelled={this.state.subscriptionCancelled}
+                    onUpgradeToPremiumClicked={() => this.upgradeToPremium()}
                   />
         }
-        {this.state.showTrialClassStatusModal && <TrialClassModal
-          onUpgradeToPremium={() => {
-            this.setState({showTrialClassStatusModal: false})
-            this.setState({ popUp: { type: 'PaymentPlans', show: true } })
-          }}
-          cl={this.state.classStatusModal.cl} closeModal={() => this.setState({showTrialClassStatusModal: false})} status={{ options: ['Class', 'Syllabus', 'Review', 'Live'], state: 'Review' }}/>}
-        {/* {this.state.classModal && (this.state.subscribed ? <PremiumClassModal closeModal={this.handleClassModalClose.bind(this)} status={{state: false}} /> : <TrialClassModal closeModal={this.handleClassModalClose.bind(this)} status={{state: false}}/>)} */}
-        {/* <ClassStatusPopUp subscribed={this.state.subscribed} /> */}
-        {/* <PremiumClassModal closeModal={() => {}} status={{state: false}} /> */}
         <div className="home-container">
           <div className="home-column col-md-8 col-lg-8">
             <div className="home-shadow-box">
@@ -318,7 +294,7 @@ class Home extends React.Component {
               <div className="home-assignment-list">
                 <HomeTasks />
                 {this.renderAddAssignmentModal()}
-                {this.renderAddClasModal()}
+                {this.renderAddClassModal()}
 
               </div>
             </div>

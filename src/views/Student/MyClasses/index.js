@@ -1,4 +1,5 @@
 import React from 'react'
+import actions from '../../../actions'
 import PropTypes from 'prop-types'
 import {inject, observer} from 'mobx-react'
 import ClassList from '../../components/ClassList'
@@ -15,6 +16,9 @@ class MyClasses extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
+      subscribed: false,
+      subscriptionCancelled: false,
+      trial: this.props.rootStore.userStore.user.trial,
       classes: [],
       showAddClassModal: false,
       classStatusModal: {show: false, cl: null},
@@ -26,6 +30,70 @@ class MyClasses extends React.Component {
     this.props.rootStore.navStore.setActivePage('classes')
   }
 
+  async componentDidMount () {
+    if (this.props.rootStore.userStore.showPopUps) {
+      this.runPopUpLogic()
+    }
+  }
+
+  async runPopUpLogic () {
+    let showPopUp = false
+    let type
+    let student = this.props.rootStore.userStore.user.student
+
+    await actions.classes.getStudentClassesById(student.id)
+      .then((classes) => {
+        if (classes.length > 1) {
+          showPopUp = false
+          if (student.fields_of_study[0] === undefined) {
+            showPopUp = true
+            type = 'getMajor'
+          }
+        } else if (classes.length === 1) {
+          let cl = classes[0]
+          let id = cl.status.id
+          if (id === 1100) {
+            showPopUp = true
+            type = 'needSyllabus'
+          }
+        } else if (classes.length === 0) {
+          if (student.primary_school === null) {
+            showPopUp = true
+            type = 'needPrimarySchool'
+          } else {
+            showPopUp = true
+            type = 'findClass'
+          }
+        }
+      })
+      .catch(() => false)
+    if (this.props.rootStore.studentJobsStore.hasJobsProfile && !showPopUp) {
+      if (this.props.rootStore.studentJobsStore.profile.resume_url === null) {
+        showPopUp = true
+        type = 'getResume'
+      }
+    }
+
+    await actions.stripe.getMySubscription()
+    .then((data) => {
+      console.log(data, "DATA SDAS")
+      if (data.data.length > 0) {
+        this.setState({ subscribed: true })
+        this.setState({ subscriptionCancelled: data.data[0].cancel_at_period_end })
+        if (showPopUp) {
+          this.setState({ popUp: { type: type, show: true } })
+        }
+      } else if (data.data.length === 0 && this.props.rootStore.userStore.user.trial === false) {
+        this.setState({ popUp: { type: 'PaymentPlans', show: true } })
+      }
+    })
+    .catch((e) => {
+      console.log(e)
+    })
+  }
+
+  
+
   findFullClass (classId) {
     return this.props.rootStore.studentClassesStore.classes.find((cl) => cl.id === classId)
   }
@@ -33,6 +101,13 @@ class MyClasses extends React.Component {
   updateClasses () {
     this.props.rootStore.studentClassesStore.updateClasses()
     this.props.rootStore.studentAssignmentsStore.updateAssignments()
+    this.setState({ loading: false })
+    this.setState({ showAddClassModal: false})
+  }
+
+  upgradeToPremium = () => {
+    this.closeClassStatusModal()
+    this.setState({ popUp: { type: 'PaymentPlans', show: true }})
   }
 
   numberOfClassesNeedingSyllabus () {
@@ -123,10 +198,22 @@ class MyClasses extends React.Component {
           </div>
         </div>
         {this.state.showAddClassModal &&
-          <AddClassModal closeModal={() => this.closeAddClassModal()} />
+          <AddClassModal 
+            closeModal={() => this.closeAddClassModal()}
+            trial={this.state.trial}
+            isSubscribed={this.state.subscribed}
+            subscribedCancelled={this.state.subscriptionCancelled}
+            onUpgradeToPremiumClicked={() => this.upgradeToPremium()} />
         }
         {this.state.classStatusModal.show &&
-          <ClassStatusModal closeModal={() => this.closeClassStatusModal()} onSubmit={() => this.closeClassStatusModal()} cl={this.state.classStatusModal.cl} />
+          <ClassStatusModal 
+            closeModal={() => this.closeClassStatusModal()} 
+            onSubmit={() => this.closeClassStatusModal()} 
+            cl={this.state.classStatusModal.cl} 
+            trial={this.state.trial}
+            isSubscribed={this.state.subscribed}
+            subscribedCancelled={this.state.subscriptionCancelled}
+            onUpgradeToPremiumClicked={() => this.upgradeToPremium()} />
         }
       </div>
     )

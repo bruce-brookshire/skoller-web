@@ -19,7 +19,8 @@ class NavBar extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      subscribed: '',
+      subscribed: false,
+      subscriptionCancelled: false,
       showMyAccount: false,
       popUp: { show: false, type: null }
     }
@@ -50,7 +51,8 @@ class NavBar extends React.Component {
     actions.stripe.getMySubscription()
       .then((data) => {
         if (data.data.length > 0) {
-          this.setState({subscribed: 'Subscribed'})
+          this.setState({ subscribed: true})
+          this.setState({ subscriptionCancelled: data.data[0].cancel_at_period_end})
           this.props.rootStore.userStore.setMySubscription(data.data[0])
           this.props.rootStore.userStore.setSubscriptionCreatedDate(data.data[0].created)
           this.props.rootStore.userStore.setInterval(data.data[0].plan.interval)
@@ -216,7 +218,7 @@ class NavBar extends React.Component {
 
   renderOnboardHeader () {
     return (
-      <div className='cn-navbar'>
+      <div className='cn-navbar' style={!this.props.rootStore.userStore.user.trial && !this.state.subscribed ? null : {zIndex: '100'}}>
         <div>
           <img alt="Skoller" className='logo' src='/src/assets/images/logo-wide-blue@1x.png' />
           <div className='onboard-logo-text'>
@@ -315,8 +317,9 @@ class NavBar extends React.Component {
     } else {
       const { userStore: { user } } = this.props.rootStore
       const admin = this.props.rootStore.userStore.isAdmin()
+      const style = !this.state.subscribed && user.trial ? '' : {zIndex: 100}
       return (
-        <div className={'cn-navbar'} style={{zIndex: '100'}}>
+        <div className='cn-navbar' style={!this.props.rootStore.userStore.user.trial && !this.state.subscribed ? null : {zIndex: '100'}}>
           {this.state.popUp.show &&
                     <PopUp closeModal={(!this.props.rootStore.userStore.user.trial && !this.state.subscribed) ? () => null : () => this.closePopUp()} handleModalClose={() => this.closePopUp()} type={this.state.popUp.type} refreshClasses={() => this.updateClasses()} />
           }
