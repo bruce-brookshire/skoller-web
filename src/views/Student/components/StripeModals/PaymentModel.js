@@ -146,18 +146,6 @@ class ChangeSchool extends React.Component {
     }
 
     render () {
-      console.log(this.state)
-      let disableNext = false
-      if ((!this.state.termChoice || !this.state.activeTerm) && (!this.state.schoolChoice)) {
-        disableNext = true
-      }
-
-      // const [paymentCompleted, setPaymentCompleted] = useState(false);
-      // const [paymentCompleted, setPaymentCompleted] = useState(false);
-
-      //  const stripe = useStripe();
-      // const elements = useElements();
-
       return (
 
         <div className="popup-wrap poup-md">
@@ -169,7 +157,7 @@ class ChangeSchool extends React.Component {
                 this.props.rootStore.userStore.user.trial
                   ? <h2>Your free trial expires in {Math.ceil(+this.props.rootStore.userStore.user.trial_days_left)} days</h2>
                   : (!this.props.rootStore.userStore.user.trial && !this.props.rootStore.userStore.mySubscription)
-                    ? <h2>Your 30-day trial has expired!</h2>
+                    ? <h2>Your 7-day trial has expired!</h2>
                     : this.props.rootStore.userStore.mySubscription.cancel_at_period_end
                       ? <h2>Your recurring subscription was cancelled</h2>
                       : <h2></h2>
