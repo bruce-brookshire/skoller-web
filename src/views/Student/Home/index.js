@@ -122,8 +122,8 @@ class Home extends React.Component {
   async updateClasses () {
     this.props.rootStore.studentAssignmentsStore.updateAssignments()
     this.props.rootStore.studentClassesStore.updateClasses()
-    this.setState({ loading: false })
-    this.setState({ showAddClassModal: false})
+    this.setState({loading: false})
+    this.setState({showAddClassModal: false})
   }
 
   findFullClass (classId) {
