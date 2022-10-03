@@ -34,8 +34,8 @@ class FindAClass extends React.Component {
       loadingSubmit: false,
       name: null,
       showSubjectCodeSectionField: false,
-      showMeetTimesDaysField: false,
-      showProfessorField: false,
+      showMeetTimesDaysField: true,
+      showProfessorField: true,
       showProfessorAutocomplete: false,
       subject: null,
       code: null,
@@ -54,8 +54,8 @@ class FindAClass extends React.Component {
       professor: null,
       professorChoice: null,
       professors: null,
-      meetTimeHour: '9',
-      meetTimeMinute: '00',
+      meetTimeHour: '',
+      meetTimeMinute: '',
       isNewClass: false,
       termChoice: termChoice,
       schoolChoice: schoolChoice,
@@ -310,6 +310,7 @@ class FindAClass extends React.Component {
 
   renderMeetTimesDaysField () {
     let meetTimesHours = [
+      '00',
       '1',
       '2',
       '3',
@@ -660,22 +661,7 @@ class FindAClass extends React.Component {
 
   validateForm () {
     if (this.state.isNewClass) {
-      if (
-        this.state.name &&
-        (
-          this.state.subject &&
-          this.state.code &&
-          this.state.section
-        ) &&
-        (
-          (
-            this.state.meetTimeHour &&
-            this.state.meetTimeMinute
-          ) ||
-          this.state.isOnline
-        ) &&
-          this.state.professorChoice
-      ) {
+      if (this.state.name) {
         return true
       } else {
         return false
@@ -691,7 +677,7 @@ class FindAClass extends React.Component {
     if (this.state.isNewClass) {
       const form = {
         'name': this.state.name,
-        'subject': this.state.subject.toUpperCase(),
+        'subject': this.state.subject ? this.state.subject.toUpperCase() : null,
         'code': this.state.code,
         'section': this.state.section,
         'crn': null,
@@ -700,7 +686,7 @@ class FindAClass extends React.Component {
         'location': null,
         'type': null,
         'class_period_id': this.state.termChoice.id,
-        'professor_id': this.state.professorChoice.id
+        'professor_id': this.state.professorChoice ? this.state.professorChoice.id : null
       }
       if (this.validateForm()) {
         this.setState({loadingSubmit: true})
@@ -833,7 +819,7 @@ class FindAClass extends React.Component {
               <div className='sk-find-class-selected-class-row'>
                 <p>{this.state.professorChoice ? ((this.state.professorChoice.name_first ? this.state.professorChoice.name_first : '') + ' ' + (this.state.professorChoice.name_last ? this.state.professorChoice.name_last : '')) : '--'}</p>
                 <p>
-                  <i className="fas fa-user fa-xs" style={{marginRight: '2px'}} />1
+                  <i className="fas fa-user fa-xs" style={{marginRight: '2px'}} />
                 </p>
               </div>
               <div className='sk-find-class-selected-class-row'>
@@ -850,7 +836,7 @@ class FindAClass extends React.Component {
 
   renderNext () {
     return <div
-      className={'sk-csm-next' + ((this.validateForm()) ? '' : ' disabled')}
+      className={'sk-csm-next'}
       onClick={() => {
         if (this.validateForm() && !this.state.loadingSubmit) {
           this.handleSubmit()
