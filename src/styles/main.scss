@@ -12,10 +12,10 @@
 
 @import "fonts";
 
-// Assets ----------------------------------------------------------------------
+// Assets -----------------------------------------------------------------------
 @import "assets/sk-loader.scss";
 
-// Forms ----------------------------------------------------------------------
+// Forms ------------------------------------------------------------------------
 @import "forms/mixins/input";
 @import "forms/checkbox-field";
 @import "forms/date-range-field";
@@ -26,7 +26,10 @@
 @import "forms/textarea-field";
 @import "forms/slider-field";
 
+// AG-Grid -----------------------------------------------------------------------
+@import "ag-grid/ag-grid.scss";
 
+// Components --------------------------------------------------------------------
 @import 'components/strikepopup.scss';
 @import 'components/add-assignment';
 @import 'components/enroll-link-splash';

@@ -152,23 +152,33 @@
 
   .cn-form-section {
     display: inline-block;
+    width: 100%;
   }
 
-  .cn-section-name-header,
-  .cn-section-value-header {
-    width: 50%;
+  .cn-section-name-header {
+    width: 80%;
     display: inline-block;
-    line-height: 16px;
     margin-top: 10px;
+    border-bottom: 1px solid #c7c7cc;
+  }
+
+  .cn-section-value-header {
+    width: 20%;
+    display: inline-block;
+    margin-top: 10px;
+    padding-left: 10px;
+    border-bottom: 1px solid #c7c7cc;
+    text-align: start;
+
+  }
+  .border-left {
+    border-left: 1px solid #c7c7cc;
   }
   .txt-gray {
     color: #c7c7cc;
   }
   hr.txt-gray {
     background-color: #c7c7cc;
-  }
-  .cn-section-value-header {
-    text-align: end;
   }
   .cn-name-field {
     width: 65%;
@@ -178,6 +188,11 @@
   .cn-value-field {
     width: 20%;
     display: inline-block;
+  }
+
+  .weight-value-info-tip {
+    display: flex;
+    justify-content: start;
   }
 
   .cn-delete-icon {

@@ -15,11 +15,9 @@ import ProblemsModal from './ProblemsModal'
 import { FileTabs, FileTab } from '../../components/FileTab'
 import { inject, observer } from 'mobx-react'
 import 'react-step-progress-bar/styles.css'
-import { ProgressBar, Step } from 'react-step-progress-bar'
+import { ProgressBar } from 'react-step-progress-bar'
 
 // TODO: File upload here needs to be replaced with component at ../../components/TabbedFileUpload
-
-const steps = ['Weights', 'Assignments']
 
 const ContentEnum = {
   WEIGHTS: 0,

@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Form, ValidateForm } from 'react-form-library'
 import { InputField } from '../../../../components/Form'
-import { ProgressBar, Step } from "react-step-progress-bar";
+import { ProgressBar } from 'react-step-progress-bar'
 
 const pointField = {
   pointTotal: {
@@ -11,7 +11,7 @@ const pointField = {
 }
 
 class WeightType extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -22,17 +22,17 @@ class WeightType extends React.Component {
     }
   }
 
-  onSubmit() {
+  onSubmit () {
     if (this.props.validateForm(this.state.form, pointField)) {
       this.props.onSubmit(this.state.isPoints, this.state.form.pointTotal)
     }
   }
 
-  renderProgressBar() {
+  renderProgressBar () {
     if (!this.state.singleWeight) {
       return <div className='cn-section-progress-outer'>
         <img alt="Skoller" className='logo' src='/src/assets/images/sammi/Smile.png' height="40" />
-        <span className="cn-section-progress-title">Add Weights & Values <i class="far fa-question-circle"></i></span>
+        <span className="cn-section-progress-title">Add Weights & Values <i className="far fa-question-circle"></i></span>
         <div className="cn-pull-right">
           <span>1/3</span>
           <span className='cn-section-progressbar'><ProgressBar percent={(1 / 3) * 100} /></span>
@@ -43,7 +43,7 @@ class WeightType extends React.Component {
     }
   }
 
-  render() {
+  render () {
     const { form } = this.state
     const { formErrors, updateProperty } = this.props
 

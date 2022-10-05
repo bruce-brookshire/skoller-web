@@ -3,14 +3,14 @@ import PropTypes from 'prop-types'
 import WeightForm from './WeightForm'
 import WeightTable from './WeightTable'
 import actions from '../../../../actions'
-import ToolTip from '../../../../views/components/ToolTip'
 import SkipWeightModal from './SkipWeightModal'
-import { ProgressBar, Step } from "react-step-progress-bar";
+import { ProgressBar } from 'react-step-progress-bar'
 import ProgressModal from '../progressModel'
-import ReactTooltip from "react-tooltip";
+import ReactTooltip from 'react-tooltip'
+import WeightFormV2 from './WeightFormV2'
 
 class Weights extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = this.initializeState()
   }
@@ -18,7 +18,7 @@ class Weights extends React.Component {
   /*
   * Fetch the weights for a given class
   */
-  componentWillMount() {
+  componentWillMount () {
     const { cl } = this.props
     actions.assignments.getClassAssignments(cl).then((assignments) => {
       this.setState({ assignments })
@@ -34,7 +34,7 @@ class Weights extends React.Component {
   *
   * @return [Object]. State object.
   */
-  initializeState() {
+  initializeState () {
     return {
       currentWeight: null,
       noWeights: false,
@@ -49,29 +49,29 @@ class Weights extends React.Component {
     }
   }
 
-  onNext() {
+  onNext () {
     // const { currentWeightIndex } = this.state
     // this.setState({ currentWeightIndex: currentWeightIndex + 1 })
     this.props.onSubmit()
   }
 
-  onUpdateCurrentIndex(form) {
+  onUpdateCurrentIndex (form) {
     this.props.onUpdateCurrentIndex(form)
   }
 
-  toggleSkipWeightModal() {
+  toggleSkipWeightModal () {
     this.setState({ openSkipWeightModal: !this.state.openSkipWeightModal })
   }
 
-  toggleProgressModal() {
+  toggleProgressModal () {
     this.setState({ openProgressModal: !this.state.openProgressModal })
   }
 
-  toggleGradeModal() {
+  toggleGradeModal () {
     this.setState({ openGradeModal: !this.state.openGradeModal })
   }
 
-  renderSkipWeightModal() {
+  renderSkipWeightModal () {
     const { openSkipWeightModal } = this.state
     return (
       <SkipWeightModal open={openSkipWeightModal}
@@ -82,7 +82,7 @@ class Weights extends React.Component {
   }
 
 
-  renderProgressModal() {
+  renderProgressModal () {
     const { openProgressModal, assignments, weights } = this.state
     return (
       <ProgressModal open={openProgressModal}
@@ -95,7 +95,7 @@ class Weights extends React.Component {
     )
   }
 
-  renderGradeModal() {
+  renderGradeModal () {
     const { cl } = this.props
     const { openGradeModal, totalPoints } = this.state
     return (
@@ -109,7 +109,7 @@ class Weights extends React.Component {
     )
   }
 
-  renderExtraCredit() {
+  renderExtraCredit () {
     return (
       <div className='cn-info-container cn-blue'>Extra Credit?
         <div className='message-bubble triangle-bottom'>
@@ -121,7 +121,7 @@ class Weights extends React.Component {
     )
   }
 
-  renderWeightTotalWarning() {
+  renderWeightTotalWarning () {
     return (
       <div>
         <div className='cn-info-container cn-blue'>Weights &ne; 100%?
@@ -136,14 +136,13 @@ class Weights extends React.Component {
     )
   }
 
-
-  renderProgressBar() {
+  renderProgressBar () {
     return <div className='cn-section-progress-outer'>
       <img alt="Skoller" className='logo' src='/src/assets/images/sammi/Smile.png' height="40" />
       <span className="cn-section-progress-title">Add Weights & Values
         <div className="infodiv">
 
-          <i class="far fa-question-circle" data-tip data-for="infoTip"></i>
+          <i className="far fa-question-circle" data-tip data-for="infoTip"></i>
 
           <ReactTooltip id="infoTip" place="right" effect="solid" type="light" border="true" textColor="white"
             backgroundColor="white" arrowColor="transparent">
@@ -156,7 +155,7 @@ class Weights extends React.Component {
       </span>
       <div className="cn-pull-right">
         <span> 1/3 </span> <span className='cn-section-progressbar' > <ProgressBar percent={(1 / 3) * 100} /></span>
-        <a className="cn-section-icons"><i class="fas fa-angle-left"></i></a>
+        <a className="cn-section-icons"><i className="fas fa-angle-left"></i></a>
         <a className="cn-section-icons" onClick={() => this.onUpdateCurrentIndex({ currentIndex: 1 })}><i className="fas fa-angle-right"></i></a>
       </div>
     </div>
@@ -165,7 +164,7 @@ class Weights extends React.Component {
   /*
   * Render the weights and weight form.
   */
-  renderWeightsContent() {
+  renderWeightsContent () {
     const { weights, currentWeight, totalPoints, noWeights } = this.state
     const { cl, isReview } = this.props
 
@@ -271,7 +270,7 @@ class Weights extends React.Component {
   *
   * @return [Number] totalWeight. The accumlated percentages.
   */
-  getTotalWeight() {
+  getTotalWeight () {
     const { weights } = this.state
     let totalWeight = 0
 
@@ -287,7 +286,7 @@ class Weights extends React.Component {
   * @param [String] weight. Optional param to check weight
   * @return [Boolean]. Truth value if the total weight percentage is within range.
   */
-  isTotalWeightSecure() {
+  isTotalWeightSecure () {
     const { cl } = this.props
     const { totalPoints } = this.state
     let totalWeight = this.getTotalWeight()
@@ -304,14 +303,14 @@ class Weights extends React.Component {
   *
   * @param [Object] weight. Weight object to be edited.
   */
-  onSelectWeight(weight) {
+  onSelectWeight (weight) {
     this.setState({ currentWeight: weight })
   }
 
   /*
   * Toggle the weights from percentages to points or vice versa.
   */
-  onTypeSelection(isPoints, points) {
+  onTypeSelection (isPoints, points) {
     const { cl } = this.props
     if (typeof (points) === 'string') {
       points = parseInt(points, 10)
@@ -324,7 +323,7 @@ class Weights extends React.Component {
     this.props.onUpdateClass({ id: cl.id, is_points: isPoints })
   }
 
-  onChangeType(isPoints) {
+  onChangeType (isPoints) {
     const { cl } = this.props
     if (isPoints) {
       this.setState({ boolPoints: true })
@@ -339,7 +338,7 @@ class Weights extends React.Component {
   *
   * @param [Object] weight. Weight.
   */
-  onCreateWeight(weight) {
+  onCreateWeight (weight) {
     const newWeights = this.state.weights
     newWeights.push(weight)
     this.setState({ weights: newWeights, currentWeight: null, noWeights: false })
@@ -351,7 +350,7 @@ class Weights extends React.Component {
   *
   * @param [Object] weight. Weight.
   */
-  onUpdateWeight(weight) {
+  onUpdateWeight (weight) {
     const newWeights = this.state.weights
     const index = this.state.weights.findIndex(w => w.id === weight.id)
     newWeights[index] = weight
@@ -363,7 +362,7 @@ class Weights extends React.Component {
   *
   * @param [Object] weight. The weight to be deleted.
   */
-  onDeleteWeight(weight) {
+  onDeleteWeight (weight) {
     actions.weights.deleteWeight(weight).then(() => {
       const newWeights = this.state.weights.filter(w => w.id !== weight.id)
       this.setState({ weights: newWeights, currentWeight: null })
@@ -374,15 +373,15 @@ class Weights extends React.Component {
   * If weights are in points, update the total points.
   * Call back from WeightType.
   */
-  onChangeTotalPoints(totalPoints) {
+  onChangeTotalPoints (totalPoints) {
     this.setState({ totalPoints })
   } // unused
 
-  goBack() {
+  goBack () {
     this.setState({ reset: true })
   }
 
-  render() {
+  render () {
     return (
       <div id='cn-weights'>
         {this.renderWeightsContent()}

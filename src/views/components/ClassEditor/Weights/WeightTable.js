@@ -8,7 +8,7 @@ class WeightTable extends React.Component {
   * @param [Object] item. Row data to be formatted.
   * @param [Number] index. Index of row data.
   */
-  getRow(item, index) {
+  getRow (item, index) {
     const { id, name, weight } = item
     const { currentWeight, viewOnly, cl } = this.props
 
@@ -52,7 +52,7 @@ class WeightTable extends React.Component {
   *
   * @return [Number] totalWeight. The accumlated percentages.
   */
-  getTotalWeight() {
+  getTotalWeight () {
     const { weights } = this.props
     let totalWeight = 0
     weights.forEach(item => {
@@ -64,7 +64,7 @@ class WeightTable extends React.Component {
   /*
   * Render the weights for a given class.
   */
-  renderWeights() {
+  renderWeights () {
     const { weights } = this.props
     // sort weights by created at
     return weights.sort((a, b) => {
@@ -78,7 +78,7 @@ class WeightTable extends React.Component {
   * Render total percentage
   *
   */
-  renderTotalPercentage() {
+  renderTotalPercentage () {
     const total = this.getTotalWeight()
     const { viewOnly, cl, totalPoints } = this.props
     const totalPointsRatio = (viewOnly || !totalPoints) ? total : `${total}/${totalPoints}`
@@ -100,7 +100,7 @@ class WeightTable extends React.Component {
     )
   }
 
-  render() {
+  render () {
     const { viewOnly } = this.props
 
     return (

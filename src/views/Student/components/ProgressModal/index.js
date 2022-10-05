@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import PropTypes, { array, object } from 'prop-types'
 import SkModal from '../../../components/SkModal/SkModal'
 import AnimateHeight from 'react-animate-height'
 import ReactResizeDetector from 'react-resize-detector'
