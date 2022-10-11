@@ -91,6 +91,7 @@
   }
 
   .submit-container {
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -116,7 +117,7 @@
 }
 
 .cn-weights-notadded {
-  height: 100%;
+  height: 60%;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -72,3 +72,10 @@
     }
   }
 }
+
+.weights-total-container {
+  margin-top: 15px;
+  .total-label, .total-value {
+    font-weight: 600;
+  }
+}

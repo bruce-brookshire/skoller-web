@@ -1,3 +1,20 @@
-.ag-header-cell-text {
-  text-align: right;
+.ag-padding-top {
+  padding-top: 15px;
+}
+
+.ag-theme-alpine {
+  .ag-cell {
+    border-right: 1px solid #c7c7cc;
+    &:last-child {
+      border-right: none;
+    }
+  }
+
+  .ag-input-field-input {
+    margin-bottom: 10px;
+  }
+}
+
+#cn-weight-form button {
+  margin: 0;
 }

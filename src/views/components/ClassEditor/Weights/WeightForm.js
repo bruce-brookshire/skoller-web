@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import Loading from "../../../../components/Loading";
 import WeightGradeModal from "./WeightGradeModel";
 import ReactToolTip from "react-tooltip";
+import { AgGridReact } from "ag-grid-react";
 
 const requiredFields = {
   name: {
@@ -181,36 +182,9 @@ class WeightForm extends React.Component {
 
     return (
       <div className="cn-form-section">
-        <div className="cn-section-name-header txt-gray">Category</div>
-        <div className="cn-section-value-header border-left txt-gray">
-          <div className="weight-value-info-tip">
-            <div>
-              Value
-              <i
-                className="far fa-question-circle"
-                data-tip
-                data-for="valueInfoTip"
-                style={{marginLeft: '5px', color: '#5ab9e4'}}
-              ></i>
-
-              <ReactToolTip
-                id="valueInfoTip"
-                place="right"
-                effect="solid"
-                type="light"
-                border="true"
-                textColor="white"
-                backgroundColor="white"
-                arrowColor="transparent"
-              >
-                <div className="tooltipBox">
-                  The percentage the assignment category accounts for in the
-                  overall grading scale.
-                </div>
-              </ReactToolTip>
-            </div>
-          </div>
-        </div>
+        <AgGridReact>
+          
+        </AgGridReact>
 
         <div></div>
         <div className="addbtndiv">

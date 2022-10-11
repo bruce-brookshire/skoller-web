@@ -16,29 +16,34 @@ class Weights extends React.Component {
   }
 
   /*
-  * Fetch the weights for a given class
-  */
+   * Fetch the weights for a given class
+   */
   componentWillMount () {
-    const { cl } = this.props
-    actions.assignments.getClassAssignments(cl).then((assignments) => {
-      this.setState({ assignments })
-    }).then(() => false)
-
-    actions.weights.getClassWeights(cl).then((weights) => {
-      this.setState({ weights })
-    }).then(() => false)
+    // const { cl } = this.props
+    // actions.assignments
+    //   .getClassAssignments(cl)
+    //   .then((assignments) => {
+    //     this.setState({ assignments })
+    //   })
+    //   .then(() => false)
+    // actions.weights
+    //   .getClassWeights(cl)
+    //   .then((weights) => {
+    //     this.setState({ weights })
+    //   })
+    //   .then(() => false)
   }
 
   /*
-  * Method for intializing the state.
-  *
-  * @return [Object]. State object.
-  */
+   * Method for intializing the state.
+   *
+   * @return [Object]. State object.
+   */
   initializeState () {
     return {
       currentWeight: null,
       noWeights: false,
-      totalPoints: null,
+      totalPoints: 0,
       weights: [],
       assignments: [],
       reset: false,
@@ -74,18 +79,19 @@ class Weights extends React.Component {
   renderSkipWeightModal () {
     const { openSkipWeightModal } = this.state
     return (
-      <SkipWeightModal open={openSkipWeightModal}
+      <SkipWeightModal
+        open={openSkipWeightModal}
         onClose={this.toggleSkipWeightModal.bind(this)}
         onConfirm={this.onNext.bind(this)}
       />
     )
   }
 
-
   renderProgressModal () {
     const { openProgressModal, assignments, weights } = this.state
     return (
-      <ProgressModal open={openProgressModal}
+      <ProgressModal
+        open={openProgressModal}
         onClose={this.toggleProgressModal.bind(this)}
         onConfirm={this.onUpdateCurrentIndex.bind(this)}
         currentIndex={0}
@@ -99,7 +105,8 @@ class Weights extends React.Component {
     const { cl } = this.props
     const { openGradeModal, totalPoints } = this.state
     return (
-      <WeightGradeModal open={openGradeModal}
+      <WeightGradeModal
+        open={openGradeModal}
         onClose={this.toggleGradeModal.bind(this)}
         isPoints={cl.is_points}
         pointTotal={totalPoints || 100}
@@ -111,11 +118,17 @@ class Weights extends React.Component {
 
   renderExtraCredit () {
     return (
-      <div className='cn-info-container cn-blue'>Extra Credit?
-        <div className='message-bubble triangle-bottom'>
-          <b><u>Do not</u></b> worry about adding extra credit, as this is the grade calculator&apos;s
-          foundations for everyone in the class. You can add extra credit to assignments in the app as you enter grades throughout the semester.
-          <div className='triangle-inner' />
+      <div className="cn-info-container cn-blue">
+        Extra Credit?
+        <div className="message-bubble triangle-bottom">
+          <b>
+            <u>Do not</u>
+          </b>{' '}
+          worry about adding extra credit, as this is the grade
+          calculator&apos;s foundations for everyone in the class. You can add
+          extra credit to assignments in the app as you enter grades throughout
+          the semester.
+          <div className="triangle-inner" />
         </div>
       </div>
     )
@@ -124,12 +137,22 @@ class Weights extends React.Component {
   renderWeightTotalWarning () {
     return (
       <div>
-        <div className='cn-info-container cn-blue'>Weights &ne; 100%?
-          <div className='message-bubble triangle-bottom'>
-            There are two options here.<br /><br />
-            1. <b><u>Politely</u></b> approach the professor to reconcile the situation.<br /><br />
-            2. Add a weight named &quot;Additional x&#37;&quot; with the value needed to reach 100%
-            <div className='triangle-inner' />
+        <div className="cn-info-container cn-blue">
+          Weights &ne; 100%?
+          <div className="message-bubble triangle-bottom">
+            There are two options here.
+            <br />
+            <br />
+            1.{' '}
+            <b>
+              <u>Politely</u>
+            </b>{' '}
+            approach the professor to reconcile the situation.
+            <br />
+            <br />
+            2. Add a weight named &quot;Additional x&#37;&quot; with the value
+            needed to reach 100%
+            <div className="triangle-inner" />
           </div>
         </div>
       </div>
@@ -137,155 +160,168 @@ class Weights extends React.Component {
   }
 
   renderProgressBar () {
-    return <div className='cn-section-progress-outer'>
-      <img alt="Skoller" className='logo' src='/src/assets/images/sammi/Smile.png' height="40" />
-      <span className="cn-section-progress-title">Add Weights & Values
-        <div className="infodiv">
-
-          <i className="far fa-question-circle" data-tip data-for="infoTip"></i>
-
-          <ReactTooltip id="infoTip" place="right" effect="solid" type="light" border="true" textColor="white"
-            backgroundColor="white" arrowColor="transparent">
-            <div className="tooltipBox">
-              Weights are how assignments contribute to your final grade ie: Exams = 60%
-            </div>
-          </ReactTooltip>
-
+    return (
+      <div className="cn-section-progress-outer weights-and-values">
+        <img
+          alt="Skoller"
+          className="logo"
+          src="/src/assets/images/sammi/Smile.png"
+          height="40"
+        />
+        <span className="cn-section-progress-title">
+          Add Weights & Values
+          <div className="infodiv">
+            <i
+              className="far fa-question-circle"
+              data-tip
+              data-for="infoTip"
+            ></i>
+            <ReactTooltip
+              id="infoTip"
+              place="right"
+              effect="solid"
+              type="light"
+              border="true"
+              textColor="white"
+              backgroundColor="white"
+              arrowColor="transparent"
+            >
+              <div className="tooltipBox">
+                Weights are how assignments contribute to your final grade ie:
+                Exams = 60%
+              </div>
+            </ReactTooltip>
+          </div>
+        </span>
+        <div className="cn-pull-right">
+          <span> 1/3 </span>{' '}
+          <span className="cn-section-progressbar">
+            {' '}
+            <ProgressBar percent={(1 / 3) * 100} />
+          </span>
+          <a className="cn-section-icons">
+            <i className="fas fa-angle-left"></i>
+          </a>
+          <a
+            className="cn-section-icons"
+            onClick={() => this.onUpdateCurrentIndex({ currentIndex: 1 })}
+          >
+            <i className="fas fa-angle-right"></i>
+          </a>
         </div>
-      </span>
-      <div className="cn-pull-right">
-        <span> 1/3 </span> <span className='cn-section-progressbar' > <ProgressBar percent={(1 / 3) * 100} /></span>
-        <a className="cn-section-icons"><i className="fas fa-angle-left"></i></a>
-        <a className="cn-section-icons" onClick={() => this.onUpdateCurrentIndex({ currentIndex: 1 })}><i className="fas fa-angle-right"></i></a>
       </div>
-    </div>
+    )
+  }
+
+  onWeightsUpdated (rowData) {
+    this.setState({ weights: rowData })
+    this.setState({ totalPoints: rowData.map((data) => +data.weight).reduce((prevVal, acc) => prevVal + acc, 0) })
   }
 
   /*
-  * Render the weights and weight form.
-  */
+   * Render the weights and weight form.
+   */
   renderWeightsContent () {
-    const { weights, currentWeight, totalPoints, noWeights } = this.state
-    const { cl, isReview } = this.props
+    let weightsEmpty = this.state.weights.length === 0
 
-    let disableButton = !this.isTotalWeightSecure() && !noWeights
     return (
-      <div className='cn-weights-subcontainer'>
-        <div id='cn-weight-form' >
+      <div className="cn-weights-subcontainer">
+        <div id="cn-weight-form">
           {this.renderProgressBar()}
-          {!isReview &&
-            <WeightForm
-              cl={cl}
-              onCreateWeight={this.onCreateWeight.bind(this)}
-              onUpdateWeight={this.onUpdateWeight.bind(this)}
-              onDeleteWeight={this.onDeleteWeight.bind(this)}
-              onConfirm={this.onNext.bind(this)}
-              weight={currentWeight}
-              noWeights={noWeights}
-              numWeights={weights.length}
-              onNoWeightChecked={(checked) => {
-                this.setState({ noWeights: checked })
-              }}
-              boolPoints={this.state.boolPoints}
-              onClick={this.onChangeType.bind(this)}
-              reset={() => this.setState({ reset: true })}
-              onTypeSelection={this.onTypeSelection.bind(this)}
-              totalPoints={this.state.totalPoints}
-            />
-          }
+          <WeightFormV2
+            weights={this.state.weights}
+            onWeightsUpdatedCallback={this.onWeightsUpdated.bind(this)}
+          />
         </div>
-        <div id='cn-weight-table'>
-          {weights.length === 0 &&
-            <div className="cn-weights-notadded">
-              <div className="center-text ">
-                <img alt="Skoller" className='logo' src='/src/assets/images/sammi/Smile.png' height="80" />
-                <h2>Weights are how much a group of assignments contribute to your overall grade.</h2>
-                <h4>i.e Exams=60%</h4>
-              </div>
-            </div>
-          }
-          {weights.length !== 0 &&
-            <WeightTable
-              weights={weights}
-              viewOnly={isReview}
-              currentWeight={currentWeight}
-              cl={cl}
-              onSelectWeight={this.onSelectWeight.bind(this)}
-              onDeleteWeight={this.onDeleteWeight.bind(this)}
-              totalPoints={totalPoints}
-              onEdit={() => this.props.onEdit()}
-            />
-          }
-          {(weights.length !== 0 || noWeights) && !isReview &&
-
-            <div className='submit-container'>
-
-              {disableButton &&
-                <div>
-                  <button data-tip data-for="weightButtonTip"
-
-                    className={`submit-weights button ${disableButton ? 'disabled' : ''}`}
-                  >
-                    Save weights
-                  </button>
-                  <ReactTooltip id="weightButtonTip" place="right" effect="solid" type="light" border="true" textColor="white"
-                    backgroundColor="white" arrowColor="transparent">
-                    <div className="tooltipBox">
-                      Weights need to sum to 100% before submitting! Click here to swap grade style
-                    </div>
-                  </ReactTooltip>
-                </div>
-              }
-              {!disableButton &&
-                <button
-                  onClick={() => this.props.onSubmit()}
-                  disabled={disableButton}
-                  className={`submit-weights button ${disableButton ? 'disabled' : ''}`}
-                >
-                  Save weights
-                </button>
-              }
-            </div>
-          }
+        {this.renderTotalWeightsInfo()}
+        <div className="submit-container">
+          {!weightsEmpty && (
+            <button
+              onClick={() => this.props.onSubmit()}
+              disabled={weightsEmpty}
+              className={`submit-weights button ${
+                weightsEmpty ? 'disabled' : ''
+              }`}
+            >
+              Save weights
+            </button>
+          )}
         </div>
-        {weights.length === 0 &&
-          <div className='margin-top margin-bottom center-text cn-weights-skip'>
-            <div>
-              <a onClick={() => this.toggleSkipWeightModal()}>
-                Skip Weights
-              </a>
-            </div>
+        <div className="margin-top margin-bottom center-text cn-weights-skip">
+          <div>
+            <a onClick={() => this.toggleSkipWeightModal()}>Skip Weights</a>
           </div>
-        }
+        </div>
+
+        {this.renderSammiWeightsInfo()}
         {this.renderSkipWeightModal()}
         {this.renderProgressModal()}
+      </div>
+    )
+  }
 
-      </div >
+  renderTotalWeightsInfo () {
+    if (this.state.weights.length > 0) {
+      return (
+        <div className="weights-total-container">
+          <div className="row">
+            <div className="col-xs-4 total-label">
+              <span>Total</span>
+            </div>
+            <div className="col-xs-8 total-value right-text">
+              <span style={{color: this.state.totalPoints > 100 ? 'red' : 'black'}}>{this.state.totalPoints}% / 100%</span>
+            </div>
+          </div>
+        </div>
+      )
+    } else {
+      return <div></div>
+    }
+  }
 
+  renderSammiWeightsInfo () {
+    return (
+      <div id="cn-weight-table">
+        <div className="cn-weights-notadded">
+          <div className="center-text ">
+            <img
+              alt="Skoller"
+              className="logo"
+              src="/src/assets/images/sammi/Smile.png"
+              height="80"
+            />
+            <h2>
+              Weights are how much a group of assignments contribute to your
+              overall grade.
+            </h2>
+            <h4>i.e Exams=60%</h4>
+          </div>
+        </div>
+      </div>
     )
   }
 
   /*
-  * Get the total weight value.
-  *
-  * @return [Number] totalWeight. The accumlated percentages.
-  */
+   * Get the total weight value.
+   *
+   * @return [Number] totalWeight. The accumlated percentages.
+   */
   getTotalWeight () {
     const { weights } = this.state
     let totalWeight = 0
 
-    weights.forEach(item => {
+    weights.forEach((item) => {
       totalWeight += Number(item.weight)
     })
     return totalWeight
   }
 
   /*
-  * Get whether the total weight is completed.
-  *
-  * @param [String] weight. Optional param to check weight
-  * @return [Boolean]. Truth value if the total weight percentage is within range.
-  */
+   * Get whether the total weight is completed.
+   *
+   * @param [String] weight. Optional param to check weight
+   * @return [Boolean]. Truth value if the total weight percentage is within range.
+   */
   isTotalWeightSecure () {
     const { cl } = this.props
     const { totalPoints } = this.state
@@ -295,24 +331,24 @@ class Weights extends React.Component {
       if (!totalPoints) return false
       totalWeight = (totalWeight / totalPoints) * 100
     }
-    return (totalWeight < 101 && totalWeight > 99.9)
+    return totalWeight < 101 && totalWeight > 99.9
   }
 
   /*
-  * Set form value equal to weight in order to be edited.
-  *
-  * @param [Object] weight. Weight object to be edited.
-  */
+   * Set form value equal to weight in order to be edited.
+   *
+   * @param [Object] weight. Weight object to be edited.
+   */
   onSelectWeight (weight) {
     this.setState({ currentWeight: weight })
   }
 
   /*
-  * Toggle the weights from percentages to points or vice versa.
-  */
+   * Toggle the weights from percentages to points or vice versa.
+   */
   onTypeSelection (isPoints, points) {
     const { cl } = this.props
-    if (typeof (points) === 'string') {
+    if (typeof points === 'string') {
       points = parseInt(points, 10)
     }
     if (isPoints) {
@@ -334,45 +370,52 @@ class Weights extends React.Component {
   }
 
   /*
-  * On create weight, push weight onto array
-  *
-  * @param [Object] weight. Weight.
-  */
+   * On create weight, push weight onto array
+   *
+   * @param [Object] weight. Weight.
+   */
   onCreateWeight (weight) {
     const newWeights = this.state.weights
     newWeights.push(weight)
-    this.setState({ weights: newWeights, currentWeight: null, noWeights: false })
+    this.setState({
+      weights: newWeights,
+      currentWeight: null,
+      noWeights: false
+    })
     this.sectionControl.scrollTop = this.sectionControl.scrollHeight
   }
 
   /*
-  * On update weight, replace existing weight with the new weight.
-  *
-  * @param [Object] weight. Weight.
-  */
+   * On update weight, replace existing weight with the new weight.
+   *
+   * @param [Object] weight. Weight.
+   */
   onUpdateWeight (weight) {
     const newWeights = this.state.weights
-    const index = this.state.weights.findIndex(w => w.id === weight.id)
+    const index = this.state.weights.findIndex((w) => w.id === weight.id)
     newWeights[index] = weight
     this.setState({ weights: newWeights, currentWeight: null })
   }
 
   /*
-  * Delete weight.
-  *
-  * @param [Object] weight. The weight to be deleted.
-  */
+   * Delete weight.
+   *
+   * @param [Object] weight. The weight to be deleted.
+   */
   onDeleteWeight (weight) {
-    actions.weights.deleteWeight(weight).then(() => {
-      const newWeights = this.state.weights.filter(w => w.id !== weight.id)
-      this.setState({ weights: newWeights, currentWeight: null })
-    }).catch(() => false)
+    actions.weights
+      .deleteWeight(weight)
+      .then(() => {
+        const newWeights = this.state.weights.filter((w) => w.id !== weight.id)
+        this.setState({ weights: newWeights, currentWeight: null })
+      })
+      .catch(() => false)
   }
 
   /*
-  * If weights are in points, update the total points.
-  * Call back from WeightType.
-  */
+   * If weights are in points, update the total points.
+   * Call back from WeightType.
+   */
   onChangeTotalPoints (totalPoints) {
     this.setState({ totalPoints })
   } // unused
@@ -382,11 +425,7 @@ class Weights extends React.Component {
   }
 
   render () {
-    return (
-      <div id='cn-weights'>
-        {this.renderWeightsContent()}
-      </div>
-    )
+    return <div id="cn-weights">{this.renderWeightsContent()}</div>
   }
 }
 

@@ -16,6 +16,8 @@
     "@devexpress/dx-react-core": "^2.7.6",
     "@stripe/react-stripe-js": "^1.10.0",
     "@stripe/stripe-js": "^1.35.0",
+    "ag-grid-community": "^28.2.0",
+    "ag-grid-react": "^28.2.0",
     "autoprefixer": "^7.2.3",
     "babel": "^6.23.0",
     "babel-core": "^6.26.3",
