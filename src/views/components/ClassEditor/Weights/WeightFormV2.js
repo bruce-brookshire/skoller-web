@@ -6,18 +6,7 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 
-export const DeleteActionComponent = (params) => {
-  const onRemoveSelectedRow = useCallback(() => {
-    const selectedRow = params.api.getSelectedRows();
-    params.deleteRowCallback(selectedRow);
-  }, [])
 
-  return (
-    <div onClick={onRemoveSelectedRow}>
-      <i className="fa fa-trash cn-red" style={{ cursor: 'pointer' }}></i>
-    </div>
-  );
-};
 
 export const WeightHeaderComponent = (props) => {
   return (
@@ -44,7 +33,10 @@ WeightHeaderComponent.propTypes = {
 }
 function WeightFormV2 (props) {
   const weightsGridRef = useRef();
-  const [rowData, setRowData] = useState([]);
+  const [rowData, setRowData] = useState([
+    { assignmentCategory: 'Exam 1', weight: 35, action: null },
+    { assignmentCategory: 'Exam 2', weight: 35, action: null }
+  ]);
   const [inputRow, setInputRow] = useState({});
   const [weightModeIsPercent, setWeightModeIsPercent] = useState(true);
   const deleteRow = useCallback((params) => {
@@ -148,10 +140,10 @@ function WeightFormV2 (props) {
 
   const onGridReady = () => {
     setInputFocus();
-    setRowData([
-      { assignmentCategory: 'Exam 1', weight: 35, action: null },
-      { assignmentCategory: 'Exam 2', weight: 35, action: null }
-    ]);
+    // setRowData([
+    //   { assignmentCategory: 'Exam 1', weight: 35, action: null },
+    //   { assignmentCategory: 'Exam 2', weight: 35, action: null }
+    // ]);
   };
 
   const setInputFocus = () => {
@@ -184,9 +176,29 @@ function WeightFormV2 (props) {
     return columnDefs.slice(0, 2).every((def) => inputRow[def.field]);
   }
 
+
+  const onRemoveSelectedRow = (params) => {
+    const deletedRow = params[0]
+    setRowData(rowData.filter(row => row !== deletedRow))
+  }
+
+  const DeleteActionComponent = (params) => {
+    // const onRemoveSelectedRow = useCallback(() => {
+    //   const selectedRow = params.api.getSelectedRows();
+    //   params.deleteRowCallback(selectedRow);
+    // }, [])
+    
+    return (
+      <div onClick={() => onRemoveSelectedRow(params.api.getSelectedRows())}>
+        <i className="fa fa-trash cn-red" style={{ cursor: 'pointer' }}></i>
+      </div>
+    );
+  };
+
   return (
     <div className="cn-form-section" style={{ marginTop: '10px' }}>
       <div style={{ height: 300, width: 400 }} className="ag-theme-alpine">
+        <button onClick={() => console.log(rowData)}>press</button>
         <AgGridReact
           ref={weightsGridRef}
           defaultColDef={defaultColDef}
