@@ -198,7 +198,6 @@ function WeightFormV2 (props) {
   return (
     <div className="cn-form-section" style={{ marginTop: '10px' }}>
       <div style={{ height: 300, width: 400 }} className="ag-theme-alpine">
-        <button onClick={() => console.log(rowData)}>press</button>
         <AgGridReact
           ref={weightsGridRef}
           defaultColDef={defaultColDef}
