@@ -218,7 +218,7 @@ class NavBar extends React.Component {
 
   renderOnboardHeader () {
     return (
-      <div className='cn-navbar' style={!this.props.rootStore.userStore.user.trial && !this.state.subscribed ? null : {zIndex: '100'}}>
+      <div className='cn-navbar' style={this.props.rootStore.userStore.user !== null && !this.props.rootStore.userStore.user.trial && !this.state.subscribed ? null : {zIndex: '100'}}>
         <div>
           <img alt="Skoller" className='logo' src='/src/assets/images/logo-wide-blue@1x.png' />
           <div className='onboard-logo-text'>
