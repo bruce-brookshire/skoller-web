@@ -73,7 +73,9 @@ class StudentNav extends React.Component {
               <NavItem pageName="share" text="Share" />
             }
             <div className="s-nav--spacer" />
+            { userStore.user !== null &&
             <UpgradeBox userStore={userStore} subscribed={this.state.subscribed} />
+            }
             {/* <NavItem pageName="activity" text="Activity" />
             <NavItem pageName="chat" text="Chat" /> */}
             {this.renderLogout()}
