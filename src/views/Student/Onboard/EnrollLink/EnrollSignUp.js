@@ -13,7 +13,6 @@ class SignUpForm extends React.Component {
     this.state = {
       firstName: null,
       lastName: null,
-      email: null,
       phone: null,
       loading: false
     }
@@ -53,7 +52,6 @@ class SignUpForm extends React.Component {
   onSubmitSignUpForm () {
     this.setState({loading: true})
     let newUser = {
-      email: this.state.email,
       student: {
         name_first: this.state.firstName,
         name_last: this.state.lastName,
@@ -90,7 +88,6 @@ class SignUpForm extends React.Component {
     if (
       this.state.firstName !== null &&
       this.state.lastName !== null &&
-      this.state.email !== null &&
       this.checkPhone(this.state.phone)
     ) {
       disableNext = false
@@ -104,10 +101,6 @@ class SignUpForm extends React.Component {
         <div className='sk-onboard-sign-up-row'>
           <label>Last Name</label>
           <input type='string' onChange={(e) => this.setState({lastName: e.target.value})} />
-        </div>
-        <div className='sk-onboard-sign-up-row'>
-          <label>Email</label>
-          <input type='email' onChange={(e) => this.setState({email: e.target.value})} />
         </div>
         <div className='sk-onboard-sign-up-row'>
           <label>Phone</label>

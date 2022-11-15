@@ -25,7 +25,6 @@ class SelectSchool extends React.Component {
       foundSchools: null,
       showSchoolOptions: false,
       showTermOptions: false,
-      sammiMessage: null,
       activeTerm: null,
       ios: this.getMobileOperatingSystem() === 'iOS'
     }
@@ -61,26 +60,10 @@ class SelectSchool extends React.Component {
   }
 
   componentDidMount () {
-    const userEmailDomain = this.props.rootStore.userStore.user.email.split(`@`).slice(-1)[0]
-    actions.schools.getSchoolsByEmailDomain(userEmailDomain).then(response => {
-      let sammiMessage
-      if (response.length === 0) {
-        sammiMessage = 'Search for your school!'
-      } else if (response.length === 1) {
-        sammiMessage = 'I found your school!'
-      } else {
-        sammiMessage = 'Looks like you might be at one of these schools. Select the right one!'
-      }
-      this.setState({
-        foundSchools: response,
-        sammiMessage: sammiMessage,
-        loading: false,
-        schoolChoice: (response.length === 1) ? response[0] : null,
-        activeTerm: (response.length === 1) ? this.findActiveTerm(response[0]) : null,
-        showSchoolOptions: (response.length > 1)
-      })
-      this.checkBackData()
+    this.setState({
+      loading: false
     })
+    this.checkBackData()
   }
 
   searchSchools (value) {
@@ -393,7 +376,7 @@ class SelectSchool extends React.Component {
             <div className='onboard-select-school'>
               <h1>Meet Sammi 👋</h1>
               <Sammi
-                message={this.props.customMessage ? this.props.customMessage : this.state.sammiMessage}
+                message={this.props.customMessage ? this.props.customMessage : 'Search for your school!'}
                 emotion='happy'
                 position='right'
                 align='right'
