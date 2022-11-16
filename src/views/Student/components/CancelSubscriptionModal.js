@@ -17,11 +17,7 @@ class CancelSubscriptionModal extends React.Component {
   }
 
   componentDidMount () {
-    actions.stripe.getMySubscription().then(res => {
-      this.setState({
-        subId: res.data[0].id
-      })
-    }).catch(err => Promise.reject(err))
+      this.setState({subId: this.props.rootStore.userStore.mySubscription.id})
   }
 
     handleCancelSubscription = () => {
@@ -156,5 +152,7 @@ class CancelSubscriptionModal extends React.Component {
       )
     }
 }
-
+CancelSubscriptionModal.propTypes = {
+  rootStore: PropTypes.object
+}
 export default CancelSubscriptionModal

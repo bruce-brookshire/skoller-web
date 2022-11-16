@@ -185,51 +185,6 @@ class ChangeSchool extends React.Component {
 
                   </div>
                 }
-                {/* <StripeCheckout
-                    stripeKey="pk_test_51JV9OSSGLvMTa3qVnwhFxc03IiK5JOGO94YQufQumo21gTgUAdpvMtEGYH9dgH1BPFrrirHuNbiVbE49gPNHHxIU00WpzV3KLP"
-                    token=""
-                  /> */}
-                {/* <Checkout selectedSubscription={this.state.selected_subscription} simplifiedFunction={this.simplifiedFunction} myprops={this.props}/> */}
-                {/* <form>
-                       <div className="group-field inputfield">
-                          <label>Email</label>
-                          <input type="text"/>
-                       </div>
-                       <div className="group-field">
-                          <label>Card Information</label>
-                          <div className="cardinfo-form">
-                             <div className="cardinfo-field cardimg">
-                                <span>
-                                <input type="text" placeholder="Number"
-
-                                 />
-         <img src="https://e7.pngegg.com/pngimages/805/227/png-clipart-paypal-the-next-level-service-payment-gateway-industry-paypal-text-payment.png" alt=""></img>
-                                </span>
-                             </div>
-                             <div className="cardinfo-field border-1 saround">
-                                <div className="row">
-                                   <span  className="col-xs-6" style={{paddingRight: 0}}>
-                                   <input type="text" placeholder="MM/YY" className="border-right-1"
-                                   format="##/##"
-                                   mask=""
-
-                                   />
-                                   </span>
-                                   <span className="col-xs-6" style={{paddingLeft: 0}}>
-                                   <input type="text" placeholder="CVV" className="border-right-1"/>
-                                   </span>
-                                </div>
-                             </div>
-                             <div className="cardinfo-field cardimg">
-                                <span>
-                                <input type="text" placeholder="Zip Code"/>
-                                </span>
-                             </div>
-                          </div>
-                          <br></br>
-                          <button className="btn full-width sbg-dark stext-while margin-top">Pay</button>
-                       </div>
-                    </form> */}
                 {
                   <div className="listgroup-wrap margin-bottom margin-top">
                     <Elements stripe={stripePromise}>
