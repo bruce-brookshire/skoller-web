@@ -1,15 +1,13 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
-import { Elements, ElementsConsumer } from '@stripe/react-stripe-js'
+import { Elements } from '@stripe/react-stripe-js'
 import CheckoutForm from './CheckoutForm'
 import actions from '../../../../actions'
-import { Cookies } from 'react-cookie'
 import { loadStripe } from '@stripe/stripe-js'
 import AlternativePayment from './AlternativePayment'
-const vm = this
 const stripePromise = loadStripe('pk_test_51JHvLoGtOURsTxunH2YZl8bG4pvpTQUKRoTVXjqEtZUFR8SsgUIMps4qGBl9OrPYiAGEy8dlAiRATkrRnRUiHMMa00xYgr7qtu')
-//const stripePromise = loadStripe('pk_live_51JHvLoGtOURsTxunmypyAUNfbRF4jOahklknp1RTBHhxpy3qEveFU7lCWdrBt4YggE5ytlblCgYYHPPzsLC0Gf8K00NC7FWyoh')
+// const stripePromise = loadStripe('pk_live_51JHvLoGtOURsTxunmypyAUNfbRF4jOahklknp1RTBHhxpy3qEveFU7lCWdrBt4YggE5ytlblCgYYHPPzsLC0Gf8K00NC7FWyoh')
 
 @inject('rootStore') @observer
 class ChangeSchool extends React.Component {
@@ -17,70 +15,36 @@ class ChangeSchool extends React.Component {
     super(props)
 
     this.state = {
-      selected_subscription: '',
+      selectedSubscription: '',
       selected_price: '',
       plans: [],
-      payment_method: {
-        type: 'card',
-        plan_id: 'price_1JYF3sSGLvMTa3qVrsx7uADn',
-        card: {
-          number: '4242424242424242',
-          exp_month: '12',
-          exp_year: '23',
-          cvc: '123'
-        },
-        billing_details: {
-          email: 'bijay@gmial.com',
-          name: 'bijay',
-          phone: '9800186999',
-          address: {
-            city: 'Nairobi',
-            line1: 'line 1 example'
-          }
-        }
-      }
-
+      lifetimeProduct: null
     }
-    //  console.log(stripePromise.createToken(), 'stripe js');
-
-    this.cookie = new Cookies()
-    console.log(this.cookie, 'my cookie')
   }
 
   componentDidMount () {
-    actions.stripe.getAllSubscription().catch((r) => console.log(r, 66))
-    actions.stripe.getMySubscription().catch((r) => console.log(r, 66))
-    actions.stripe.lastUpcomingPayment().catch((r) => console.log(r, 66))
-    actions.stripe.billingHistory().catch((r) => console.log(r, 66))
-    actions.stripe.allProducts().catch((r) => console.log(r, 66))
-    actions.stripe.allPlans().then(res => {
-    //   console.log('all plans')
-    //   console.log(res)
-      const defaultPlan = res.data[0]
-      this.setState({selected_subscription: defaultPlan.id})
-    }).catch((r) => console.log(r, 66))
-    actions.stripe.allPlans()
-      .then((data) => {
-        const plansIntervals = data.data.map(item => item.interval)
-        const yearlyPlan = data.data[plansIntervals.indexOf('year')]
-        const monthlyPlan = data.data[plansIntervals.indexOf('month')]
-        console.log({monthlyPlan})
-        const lifeTimePlan = {
-          active: true,
-          amount: 800,
-          amount_decimal: '800',
-          // created: 1631300816,
-          currency: 'usd',
-          id: 'life_time',
-          // interval: "month",
-          // interval_count: 1,
-          name: null,
-          price: 80,
-          //   product: 'prod_K9UWGXZKuZSloY'
-          product: 'prod_KbbJe8E1FTsHSM'
-        }
-        //this.setState({ plans: [monthlyPlan, yearlyPlan, lifeTimePlan ] })
-        this.setState({ plans: [monthlyPlan, yearlyPlan ] })
+    actions.stripe.getAvailablePlansAndProducts()
+      .then((res) => {
+        console.log(res.data.plans[0])
+        const plansIntervals = res.data.plans.map(item => item.interval)
+        const yearlyPlan = res.data.plans[plansIntervals.indexOf('year')]
+        const monthlyPlan = res.data.plans[plansIntervals.indexOf('month')]
+        // Uncomment when lifetime product worked out on backend
+        // Have to create a PaymentIntent for it as it's a one-time deal, not a subscription
+        // const lifetimeProduct = {
+        //   active: res.data.products[0].product.active,
+        //   amount: res.data.products[0].price,
+        //   price: res.data.products[0].price / 100,
+        //   product: res.data.products[0].product.id,
+        //   id: res.data.products[0].product.default_price,
+        //   type: 'one-time'
+        // }
+
+        this.setState({selectedSubscription: res.data.plans[0]})
+        this.setState({ plans: [ monthlyPlan, yearlyPlan ] })
+        // Uncomment when lifetime product worked out on backend
+        // Have to create a PaymentIntent for it as it's a one-time deal, not a subscription
+        // this.setState({ plans: [ monthlyPlan, yearlyPlan, lifetimeProduct ] })
       })
       .catch((e) => {
         console.log(e)
@@ -92,11 +56,11 @@ class ChangeSchool extends React.Component {
       return null
     }
 
-    selectPlan (plan_id) {
-      this.setState({ selected_subscription: plan_id })
+    selectPlan (id) {
+      this.setState({ selectedSubscription: id })
     }
     setPrice (price) {
-      this.setState({selected_price: price })
+      this.setState({ selected_price: price })
     }
 
     simplifiedFunction () {
@@ -108,18 +72,18 @@ class ChangeSchool extends React.Component {
       return (
         <ul>
           {plans.map((row, i) => (
-            (this.state.selected_subscription == row.id)
+            (this.state.selectedSubscription === row.id)
               ? <li className="highlight {(i == 0) ? 'first-item':((i == (plans.length -1) ? 'last-item':'stext-lgray'))}" onClick={() => {
                 this.selectPlan(row.id)
                 this.setPrice(row.price)
               }}>
                 {
-                  row.interval ? <span style={{display: 'flex', width: '100%', justifyContent: 'space-between'}}>${row.price} per {row.interval}
+                  row.interval ? <span style={{display: 'flex', width: '100%', justifyContent: 'space-between'}}>${row.price} Per {row.interval}
                     {row.price === 30 ? <span style={{color: '#60BBE2'}}>
                     Most popular - Save 20%
 
                     </span> : null}
-                  </span> : <span style={{display: 'flex', width: '100%', justifyContent: 'space-between'}}>${row.price} life time <span style={{color: '#60BBE2'}}>
+                  </span> : <span style={{display: 'flex', width: '100%', justifyContent: 'space-between'}}>${row.price} Lifetime <span style={{color: '#60BBE2'}}>
                     Save 50%
 
                   </span></span>
@@ -129,12 +93,12 @@ class ChangeSchool extends React.Component {
                 this.setPrice(row.price)
               }}>
                 {
-                  row.interval ? <span style={{display: 'flex', width: '100%', justifyContent: 'space-between'}}>${row.price} per {row.interval}
+                  row.interval ? <span style={{display: 'flex', width: '100%', justifyContent: 'space-between'}}>${row.price} Per {row.interval}
 
                     {row.price === 30 ? <span style={{color: '#60BBE2'}}>
                     Most popular - Save 20%
 
-                    </span> : null}</span> : <span style={{display: 'flex', width: '100%', justifyContent: 'space-between'}}>${row.price} life time <span style={{color: '#60BBE2'}}>
+                    </span> : null}</span> : <span style={{display: 'flex', width: '100%', justifyContent: 'space-between'}}>${row.price} Lifetime <span style={{color: '#60BBE2'}}>
                     Save 50%
 
                   </span></span>
@@ -152,7 +116,6 @@ class ChangeSchool extends React.Component {
           <div className="popup-closetext">
             <div className="popup-msg">
               <img src="/src/assets/images/sammi/Wow2.png" className="opup-icon" alt="" style={{ maxWidth: '34px' }}></img>
-              {/* <h2>Your 30-day trial has expired!</h2> */}
               {
                 this.props.rootStore.userStore.user.trial
                   ? <h2>Your free trial expires in {Math.ceil(+this.props.rootStore.userStore.user.trial_days_left)} days</h2>
@@ -180,7 +143,7 @@ class ChangeSchool extends React.Component {
                     <h4 className="divider-title"><span>Pay with Card</span></h4>
 
                     <Elements stripe={stripePromise}>
-                      <CheckoutForm selectedSubscription={this.state.selected_subscription} price={this.state} simplifiedFunction={this.simplifiedFunction} myprops={this.props}/>
+                      <CheckoutForm selectedSubscription={this.state.selectedSubscription} price={this.state} simplifiedFunction={this.simplifiedFunction} myprops={this.props}/>
                     </Elements>
 
                   </div>
@@ -189,9 +152,9 @@ class ChangeSchool extends React.Component {
                   <div className="listgroup-wrap margin-bottom margin-top">
                     <Elements stripe={stripePromise}>
                       {/* Below are for live stripe products */}
-                      {this.state.selected_price === 30 ? <AlternativePayment title="Yearly subscription" price={30} selectedSubscription={this.state.selected_subscription} myprops={this.props}/> : null}
-                      {this.state.selected_price === 3 ? <AlternativePayment title="Monthly subscription " price={3} selectedSubscription={this.state.selected_subscription} myprops={this.props}/> : null}
-                      {this.state.selected_price === 80 ? <AlternativePayment title="Life time subscritpion" price={80} selectedSubscription={this.state.selected_subscription} myprops={this.props}/> : null}
+                      {this.state.selected_price === 30 ? <AlternativePayment title="Yearly subscription" price={30} selectedSubscription={this.state.selectedSubscription} myprops={this.props}/> : null}
+                      {this.state.selected_price === 3 ? <AlternativePayment title="Monthly subscription " price={3} selectedSubscription={this.state.selectedSubscription} myprops={this.props}/> : null}
+                      {this.state.selected_price === 80 ? <AlternativePayment title="Life time subscritpion" price={80} selectedSubscription={this.state.selectedSubscription} myprops={this.props}/> : null}
                     </Elements>
                   </div>
                 }
@@ -207,7 +170,8 @@ class ChangeSchool extends React.Component {
 ChangeSchool.propTypes = {
   onSubmit: PropTypes.func,
   rootStore: PropTypes.object,
-  backData: PropTypes.object
+  backData: PropTypes.object,
+  closeModal: PropTypes.func
 }
 
 export default ChangeSchool

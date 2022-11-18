@@ -17,7 +17,7 @@ class CancelSubscriptionModal extends React.Component {
   }
 
   componentDidMount () {
-      this.setState({subId: this.props.rootStore.userStore.mySubscription.id})
+    this.setState({subId: this.props.rootStore.userStore.mySubscription.id})
   }
 
     handleCancelSubscription = () => {

@@ -53,6 +53,22 @@ export function billingHistory () {
       return Promise.reject(error)
     })
 }
+export function getLifetimeProduct () {
+  return get(`/api/v1/stripe/lifetime-product`)
+    .then((product) => {
+      return product
+    }).catch(error => {
+      return Promise.reject(error)
+    })
+}
+export function getAvailablePlansAndProducts () {
+  return get(`/api/v1/stripe/available-plans-and-products`)
+    .then((data) => {
+      return data
+    }).catch(error => {
+      return Promise.reject(error)
+    })
+}
 export function allProducts () {
   return get(`/api/v1/stripe/all-products`)
     .then((products) => {
