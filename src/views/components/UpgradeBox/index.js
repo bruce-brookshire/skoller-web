@@ -13,6 +13,7 @@ class UpgradeBox extends React.Component {
   }
 
   closePopUp () {
+    console.log("I'm not closing")
     this.setState({ popUp: { show: false } })
   }
 
@@ -79,8 +80,9 @@ class UpgradeBox extends React.Component {
     }
 
     return <PopUp
-      closeModal={(!userStore.user.trial && !this.state.subscribed) ? () => null : () => this.closePopUp()}
+      closeModal={(userStore.user.trial || this.state.subscribed) ? () => this.closePopUp() : null}
       handleModalClose={() => this.closePopUp()}
+      shouldAllowClose={this.state.subscribed || userStore.user.trial}
       type={this.state.popUp.type}
     />
   }
