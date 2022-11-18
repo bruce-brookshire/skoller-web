@@ -22,7 +22,8 @@ class CancelSubscriptionModal extends React.Component {
 
     handleCancelSubscription = () => {
       if (!this.state.cancellingReason) {
-        return alert('Please select any one reason')
+        // eslint-disable-next-line no-undef
+        return alert('Please select a reason to help us improve!')
       }
       actions.stripe.cancelSubscription(this.state.subId).then(res => {
         this.setState({showNextModal: true})
@@ -62,7 +63,7 @@ class CancelSubscriptionModal extends React.Component {
             <div className="popup-msg margin-bottom">
               <img src="/src/assets/images/sammi/Wow2.png" className="opup-icon" alt=""></img>
               <h1 style={{ margin: 0 }}>One last step...</h1>
-              <p>Will you let use know why you're cancelling?</p>
+              <p>Will you let use know why you&apos;re cancelling?</p>
             </div>
             <div
               style={{
@@ -85,12 +86,12 @@ class CancelSubscriptionModal extends React.Component {
 
               <span style={{ margin: '6px' }}>
                 <input type='radio' id="im_using_something_else" value="using_something_else" onChange={this.handleRadioChange} checked={this.state.cancellingReason === 'using_something_else'}/>
-                <label htmlFor="im_using_something_else" style={{ marginLeft: '10px' }}>I'm using something else</label>
+                <label htmlFor="im_using_something_else" style={{ marginLeft: '10px' }}>I&apos;m using something else</label>
               </span>
 
               <span style={{ margin: '6px' }}>
                 <input type='radio' id="not_helpful" value="not_helpful" onChange={this.handleRadioChange} checked={this.state.cancellingReason === 'not_helpful'}/>
-                <label htmlFor="not_helpful" style={{ marginLeft: '10px'}}>Not helpful</label>
+                <label htmlFor="not_helpful" style={{ marginLeft: '10px' }}>Not helpful</label>
               </span>
 
               <span style={{ margin: '6px' }}>
@@ -153,6 +154,7 @@ class CancelSubscriptionModal extends React.Component {
     }
 }
 CancelSubscriptionModal.propTypes = {
-  rootStore: PropTypes.object
+  rootStore: PropTypes.object,
+  closeModal: PropTypes.func
 }
 export default CancelSubscriptionModal
