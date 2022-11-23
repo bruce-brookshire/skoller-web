@@ -1,26 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Form, ValidateForm} from 'react-form-library'
-import {InputField} from '../../../components/Form'
 import actions from '../../../actions'
 import {wrapTimeHour} from '../../../utilities/time'
 import { withRouter } from 'react-router-dom'
 import NumberFormat from 'react-number-format'
-
-const requiredFields = {
-  'email': {
-    type: 'email'
-  },
-  'student.name_first': {
-    type: 'required'
-  },
-  'student.name_last': {
-    type: 'required'
-  },
-  'student.phone': {
-    type: 'phone'
-  }
-}
 
 class SignUpForm extends React.Component {
   constructor (props) {
@@ -34,11 +17,9 @@ class SignUpForm extends React.Component {
       phoneFocus: false,
       nameFirstFocus: false,
       nameLastFocus: false,
-      emailFocus: false,
       phoneError: false,
       nameFirstError: false,
-      nameLastError: false,
-      emailError: false
+      nameLastError: false
     }
   }
 
@@ -46,7 +27,6 @@ class SignUpForm extends React.Component {
     const date = new Date()
 
     return {
-      email: '',
       student: {
         name_first: '',
         name_last: '',
@@ -72,8 +52,8 @@ class SignUpForm extends React.Component {
     if (
       (typeof this.state.form.student.name_first === 'string' || this.state.form.student.name_first === '') &&
       (typeof this.state.form.student.name_last === 'string' || this.state.form.student.name_last === '') &&
-      (this.state.form.student.phone ? this.state.form.student.phone.length === 10 : false) &&
-      this.validateEmail(this.state.form.email)
+      (this.state.form.student.phone ? this.state.form.student.phone.length === 10 : false)
+
     ) {
       return true
     } else {
@@ -85,9 +65,6 @@ class SignUpForm extends React.Component {
       }
       if (this.this.state.form.student.phone ? this.this.state.form.student.phone.length !== 10 : true) {
         this.setState({phoneError: true})
-      }
-      if (!this.validateEmail(this.state.form.email)) {
-        this.setState({emailError: true})
       }
       return false
     }
@@ -134,7 +111,7 @@ class SignUpForm extends React.Component {
 
   render () {
     const {form} = this.state
-    const {updateProperty, header, buttonText, isAdmin} = this.props
+    const {header, buttonText, isAdmin} = this.props
 
     return (
       <div className='cn-sign-up-form'>
@@ -201,32 +178,7 @@ class SignUpForm extends React.Component {
                 </div>
               </div>
             </div>
-            <div className='col-xs-12'>
-              <div className='cn-input-container margin-top'>
-                <label className={'cn-input-label' + (this.state.emailError ? ' error' : '') + (this.state.emailFocus ? ' active' : '')}>Email</label>
-                <input
-                  style={
-                    {width: '100%', borderColor: this.state.emailError ? 'red' : 'null'}
-                  }
-                  className='cn-form-input'
-                 error={this.state.emailError}
-                  id='sign-up.email'
-                  autoComplete='email'
-                  name='email'
-                  onFocus={() => this.setState({emailFocus: true})}
-                  onBlur={() => this.setState({emailFocus: false})}
-                  onChange={(e) => {
-                    let form = this.state.form
-                    form.email = e.target.value
-                    this.setState({
-                      form
-                    })
-                  }}
-                  placeholder='Email'
-                  value={form.email}
-                />
-              </div>
-            </div>
+
             <div className='col-xs-12 cn-sign-up-form-phone'>
               <label className={'cn-input-label' + (this.state.phoneError ? ' error' : '') + (this.state.phoneFocus ? ' active' : '')}>Phone</label>
               <NumberFormat
