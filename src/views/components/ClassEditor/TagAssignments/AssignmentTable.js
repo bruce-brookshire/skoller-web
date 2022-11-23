@@ -77,6 +77,12 @@ class AssignmentTable extends React.Component {
     const activeClass = (currentAssignment && currentAssignment.id) === id
       ? 'active' : ''
 
+      //this matchtes the weights and assignments in the 3rd step
+      for (let weight of weights) {
+        if (weight.name.substring(0, 3).toUpperCase() === name.substring(0, 3).toUpperCase()) {
+          form.weight_id = weight.id
+        }
+      }
 
     return (
 
@@ -101,7 +107,8 @@ class AssignmentTable extends React.Component {
             options={weights}
             onChange={(val) => { this.onChange({ id: id, weight_id: val.target.value }) }}
           >
-            <option key="" value="" className="option_no_weight" selected="selected">No Weight</option>
+            <option key="" value="" className="option_no_weight" selected="selected"></option>
+            <option key="" value="No Weight" className="option_no_weight">No Weight</option>
             {weights.map(weight => {
               return (
                 <option key={weight.id} value={weight.id}>{weight.name}</option>
