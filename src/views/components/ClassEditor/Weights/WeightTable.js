@@ -8,6 +8,13 @@ class WeightTable extends React.Component {
   * @param [Object] item. Row data to be formatted.
   * @param [Number] index. Index of row data.
   */
+
+  onDelete() {
+    const { form } = this.state
+    const { weight } = this.props
+    this.props.onDeleteWeight(weight)
+  }
+
   getRow(item, index) {
     const { id, name, weight } = item
     const { currentWeight, viewOnly, cl } = this.props
@@ -19,24 +26,18 @@ class WeightTable extends React.Component {
       <div
         className={`table-row ${activeClass}`}
         key={`weight-${index}`}
-        onClick={() => {
-          if (viewOnly) return
-          this.props.onSelectWeight(item)
-        }}
-      >
-        {
-          // !viewOnly &&
-          //   <div className='col-xs-1'>
-          //     <div
-          //       className='button-delete-x-light center-content'
-          //       onClick={(event) => {
-          //         event.stopPropagation()
-          //         /* if (disabled) return */
-          //         this.props.onDeleteWeight(item)
-          //       }}><img src='/src/assets/images/syllabus_tool/circle_x.png' />
-          //     </div>
-          //   </div>
-        }
+        // onClick={() => {
+        //   if (viewOnly) return
+        //   this.props.onSelectWeight(item)
+        // }}
+        >
+        <div className="cn-delete-icon">
+            <a onClick={this.onDelete.bind(this)}>
+              <i className="far fa-trash-alt"></i>
+            </a>
+        </div>    
+
+
         <div className={`weight-label col-xs-9`}>
           <span>{name}</span>
         </div>
@@ -107,7 +108,7 @@ class WeightTable extends React.Component {
       <div id='class-editor-weight-table' className={`${viewOnly ? 'view-only' : ''}`}>
         <div id='weight-table-container' ref={(field) => { this.sectionControl = field }}>
           <div id='weight-rows-only'>
-            {this.renderWeights()}
+            {/* {this.renderWeights()} */}
           </div>
           <div id='class-weights-total'>
             {this.renderTotalPercentage()}

@@ -192,6 +192,8 @@ class Weights extends React.Component {
               reset={() => this.setState({ reset: true })}
               onTypeSelection={this.onTypeSelection.bind(this)}
               totalPoints={this.state.totalPoints}
+              weights={weights}
+              onSelectWeight={this.onSelectWeight.bind(this)}
             />
           }
         </div>

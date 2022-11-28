@@ -5,6 +5,7 @@ import { InputField, CheckboxField } from '../../../../components/Form'
 import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
 import WeightGradeModal from './WeightGradeModel'
+import Weights from '.'
 
 const requiredFields = {
   'name': {
@@ -155,9 +156,23 @@ class WeightForm extends React.Component {
     this.props.onConfirm()
   }
 
+  onSelectItem(event, weight){
+    const { weights } = this.props
+    this.props.onSelectWeight(weight)
+    const item = weights.filter( x => x===weight)
+    // item.name = event.target.value
+    console.log(event)
+
+  }
+
+  onClickTrashCan(weight) {
+    this.props.onSelectWeight(weight)
+    this.onDelete.bind(weight)
+    }
+
   render() { // issue: renders before onUpdateClass finishes --solved
     const { form } = this.state
-    const { formErrors, updateProperty, numWeights, noWeights } = this.props
+    const { formErrors, updateProperty, numWeights, noWeights, weights } = this.props
 
     return (
       <div className="cn-form-section">
@@ -169,6 +184,52 @@ class WeightForm extends React.Component {
           Value
         </div>
         <hr className="txt-gray" />
+        <button onClick={() => console.log(this)}>click</button>
+
+        { weights.map((weight) => (
+          <div >
+          <div className="cn-delete-icon">
+            <a onClick={ () => this.onClickTrashCan(weight)}>
+              <i className="far fa-trash-alt"></i>
+            </a>
+          </div>
+
+          <div className="cn-name-field">
+            <form onSubmit={this.onSubmit.bind(this)}>
+              <InputField
+                containerClassName='margin-top'
+                inputClassName='input-box'
+                error={formErrors.name}
+                name="name"
+                onChange={() => this.onSelectItem(this, weight)}
+                value={weight.name ? weight.name :form.name}
+                key={`name${weight.id}`}
+              />
+            </form>
+          </div>
+          <div className="cn-value-field">
+            <form onSubmit={this.onSubmit.bind(this)}>
+              <InputField
+                containerClassName='margin-top hide-spinner'
+                inputClassName='input-box'
+                error={formErrors.weight}
+                name="weight"
+                onChange={updateProperty}
+                type="number"
+                value={weight.weight? weight.weight: form.weight}
+                key={`number${weight.id}`}
+
+              />
+            </form>
+          </div>
+
+          <div className="cn-percentage-icon">
+            <a onClick={() => this.toggleGradeModal()}>
+              {!this.props.boolPoints ? <i className="fa fa-percent"></i> : 'PTS'}
+            </a>
+          </div>
+        </div>
+        ))}
 
         <div >
           <div className="cn-delete-icon">
@@ -209,7 +270,7 @@ class WeightForm extends React.Component {
             </a>
           </div>
         </div>
-        <div className='addbtndiv'>
+        {/* <div className='addbtndiv'>
           <a
             className={'margin-top ' + (this.state.loading || noWeights ? 'disabled' : '')}
             disabled={this.state.loading || noWeights}
@@ -218,7 +279,7 @@ class WeightForm extends React.Component {
             {this.props.weight ? 'Update ' : 'Add '} Weight
             {this.state.loading ? <Loading /> : null}
           </a>
-        </div>
+        </div> */}
         {this.renderGradeModal()}
       </div>
     )
@@ -244,7 +305,9 @@ WeightForm.propTypes = {
   totalPoints: PropTypes.number,
   open: PropTypes.bool,
   onClose: PropTypes.func,
-  onConfirm: PropTypes.func
+  onConfirm: PropTypes.func,
+  weights: PropTypes.array,
+  onSelectWeight: PropTypes.func
 }
 
 export default ValidateForm(Form(WeightForm, 'form'))
