@@ -5,7 +5,6 @@ import { InputField, CheckboxField } from '../../../../components/Form'
 import Loading from '../../../../components/Loading'
 import actions from '../../../../actions'
 import WeightGradeModal from './WeightGradeModel'
-import Weights from '.'
 
 const requiredFields = {
   'name': {
@@ -72,6 +71,16 @@ class WeightForm extends React.Component {
   * Determine whether the user is submiting updated weight or a new weight.
   *
   */
+  onSubmitUpdatedWeight(weight){
+    const form = {
+      id: weight.id || null,
+      name: weight.name|| '',
+      weight: weight.weight || '',
+      created_on: 'Web'
+    }
+    weight.id ? this.onUpdateWeightFromUpdate(form) : this.onCreateWeightFromUpdate(form)
+  }
+
   onSubmit(e) {
     e.preventDefault();
     const { form } = this.state
@@ -89,6 +98,10 @@ class WeightForm extends React.Component {
     const { weight } = this.props
     this.props.onDeleteWeight(weight)
   }
+
+  onDeleteExisting(weight) {
+    this.props.onDeleteWeight(weight)
+  }
   /*
   * Create a new weight
   */
@@ -97,6 +110,13 @@ class WeightForm extends React.Component {
     actions.weights.createWeight(this.props.cl, this.state.form).then((weight) => {
       this.setState({ form: this.initializeFormData(), loading: false })
       this.props.onCreateWeight(weight)
+    }).catch(() => { this.setState({ loading: false }) })
+  }
+  onCreateWeightFromUpdate(weight) {
+    this.setState({ loading: true })
+    actions.weights.createWeight(this.props.cl, weight).then((w) => {
+      this.setState({ form: this.initializeFormData(), loading: false })
+      this.props.onCreateWeight(w)
     }).catch(() => { this.setState({ loading: false }) })
   }
 
@@ -108,6 +128,14 @@ class WeightForm extends React.Component {
     actions.weights.updateWeight(this.props.cl, this.state.form).then((weight) => {
       this.setState({ form: this.initializeFormData(), loading: false })
       this.props.onUpdateWeight(weight)
+    }).catch(() => { this.setState({ loading: false }) })
+  }
+
+  onUpdateWeightFromUpdate(weight) {
+    this.setState({ loading: true })
+    actions.weights.updateWeight(this.props.cl, weight).then((w) => {
+      this.setState({ form: this.initializeFormData(), loading: false })
+      this.props.onUpdateWeight(w)
     }).catch(() => { this.setState({ loading: false }) })
   }
 
@@ -156,18 +184,32 @@ class WeightForm extends React.Component {
     this.props.onConfirm()
   }
 
-  onSelectItem(event, weight){
+  onModifyNameField(event, weight){
     const { weights } = this.props
-    this.props.onSelectWeight(weight)
-    const item = weights.filter( x => x===weight)
-    // item.name = event.target.value
-    console.log(event)
 
+    const index = weights.findIndex( w => w.id === weight.id)
+    weights[index].name = event.target.value
+    this.setState({weights: weights})
+  }
+  onModifyWeightField(event, weight){
+    const { weights } = this.props
+
+    const index = weights.findIndex( w => w.id === weight.id)
+    weights[index].weight = event.target.value
+    this.setState({weights: weights})
   }
 
   onClickTrashCan(weight) {
     this.props.onSelectWeight(weight)
     this.onDelete.bind(weight)
+    }
+
+    handleKeyDown(event, weight) {
+      console.log(event.key)
+      console.log(weight)
+      if(event.key === 'Enter') {
+        this.onSubmitUpdatedWeight(weight)
+      }
     }
 
   render() { // issue: renders before onUpdateClass finishes --solved
@@ -184,19 +226,28 @@ class WeightForm extends React.Component {
           Value
         </div>
         <hr className="txt-gray" />
-        <button onClick={() => console.log(this)}>click</button>
+        {/* <button onClick={() => console.log(form)}>click</button> */}
 
         { weights.map((weight) => (
           <div >
           <div className="cn-delete-icon">
-            <a onClick={ () => this.onClickTrashCan(weight)}>
+            <a onClick={ () => this.onDeleteExisting(weight)}>
               <i className="far fa-trash-alt"></i>
             </a>
           </div>
 
           <div className="cn-name-field">
-            <form onSubmit={this.onSubmit.bind(this)}>
-              <InputField
+              <div className='form-element relative'>
+                <div className='cn-input-container margin-top'>
+                  <input className='cn-form-input input-box'
+                         key={`name${weight.id}`}
+                         value={weight.name}
+                         onChange={e => this.onModifyNameField(e, weight)}
+                         onKeyDown={e => this.handleKeyDown(e, weight)}
+                  />
+                </div>
+              </div>
+              {/* <InputField
                 containerClassName='margin-top'
                 inputClassName='input-box'
                 error={formErrors.name}
@@ -204,12 +255,21 @@ class WeightForm extends React.Component {
                 onChange={() => this.onSelectItem(this, weight)}
                 value={weight.name ? weight.name :form.name}
                 key={`name${weight.id}`}
-              />
-            </form>
+              /> */}
           </div>
           <div className="cn-value-field">
-            <form onSubmit={this.onSubmit.bind(this)}>
-              <InputField
+            <div className='form-element relative'>
+                <div className='cn-input-container margin-top hide-spinner'>
+                  <input className='cn-form-input input-box'
+                         key={`weight${weight.id}`}
+                         type='number'
+                         value={weight.weight}
+                         onChange={e => this.onModifyWeightField(e, weight)}
+                         onKeyDown={e => this.handleKeyDown(e, weight)}
+                  />
+                </div>
+              </div>
+              {/* <InputField
                 containerClassName='margin-top hide-spinner'
                 inputClassName='input-box'
                 error={formErrors.weight}
@@ -219,8 +279,7 @@ class WeightForm extends React.Component {
                 value={weight.weight? weight.weight: form.weight}
                 key={`number${weight.id}`}
 
-              />
-            </form>
+              /> */}
           </div>
 
           <div className="cn-percentage-icon">
