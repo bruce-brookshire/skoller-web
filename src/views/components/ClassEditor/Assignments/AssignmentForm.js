@@ -300,9 +300,10 @@ class AssignmentForm extends React.Component {
                 <div className='cn-section-name-header txt-gray' >
                     Name </div>
                 <div className='cn-section-value-header txt-gray' >
-                    Due Date </div>
-                <div className='cn-section-value-header txt-gray' >
                     Weight </div>
+                <div className='cn-section-value-header txt-gray' >
+                    Due Date </div>
+                
             </div> <hr className="txt-gray" />
             {/* <button onClick={() => console.log(assignments)}>click</button> */}
 
