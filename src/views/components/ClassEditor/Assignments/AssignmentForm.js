@@ -244,9 +244,16 @@ class AssignmentForm extends React.Component {
         })
     }
 
-    copyAssignment() {
+    copyAssignment(assignment) {
+
+        const assignmentForm = {
+            id: assignment.id,
+            name: assignment.name,
+            due: assignment.due
+        }
+
         var regex = /\d+/g;
-        var matches = this.state.form.name.match(regex);
+        var matches = assignment.name.match(regex);
         let newForm = { ...this.state.form }
         if (matches && matches.length) {
             let numb = matches[matches.length - 1]
@@ -266,18 +273,131 @@ class AssignmentForm extends React.Component {
 
     }
 
+    mapAssignmentDate(date) {
+        const { cl } = this.props
+        const today = moment.tz(Date.now(), cl.school.timezone)
+        const due = moment.tz(date, cl.school.timezone)
+        return today.format('YYYY-MM-DD') === due.format('YYYY-MM-DD') ? 'Today'
+          : `${due.format('ddd')}, ${due.format('MMM')} ${due.format('Do')}`
+      }
+
+      
 
     render() {
         const { form } = this.state
-        const { formErrors, updateProperty } = this.props
+        const { formErrors, updateProperty, weights, assignments } = this.props
         const disableButton = !this.verifyData(form)
+
+        //this matchtes the weights and assignments in the 3rd step
+      for (let weight of weights) {
+        if (weight.name.substring(0, 3).toUpperCase() === name.substring(0, 3).toUpperCase()) {
+          form.weight_id = weight.id
+        }
+      }
+
         return (<div id='cn-assignment-form' >
             <div>
                 <div className='cn-section-name-header txt-gray' >
                     Name </div>
                 <div className='cn-section-value-header txt-gray' >
                     Due Date </div>
+                <div className='cn-section-value-header txt-gray' >
+                    Weight </div>
             </div> <hr className="txt-gray" />
+            {/* <button onClick={() => console.log(assignments)}>click</button> */}
+
+            {
+                assignments.map(assignment => (
+                    <div className='row' >
+                <div className="cn-delete-icon" >
+                    <a onClick={this.onDelete.bind(this)}>
+                        <i class="far fa-trash-alt" > </i>
+                    </a>
+                </div>
+                <div className='cn-input-assignment-name' >
+                    <form onSubmit={this.onSubmit.bind(this)}>
+                        <div class="form-element relative" >
+                            <div className='cn-input-container margin-top' >
+                                <input className='cn-form-input'
+                                    autoFocus={true}
+                                    onChange={
+                                        (e) => {
+                                            form.name = e.target.value
+                                            this.toggleAddingAssignment()
+                                        }
+                                    }
+                                    value={assignment.name}
+                                />
+                            </div >
+                        </div>
+                    </form>
+                </div >
+                <div className='cn-input-assignment-date' > {!this.state.due_null &&
+                    <div >
+                        <form onSubmit={this.onSubmit.bind(this)}>
+                            <div onClick={
+                                () => this.setState({ showDatePicker: true })
+                            } >
+                                <InputField
+                                    containerClassName='margin-top'
+                                    error={formErrors.due}
+                                    name='due'
+                                    value={this.mapAssignmentDate(assignment.due)}
+                                    // disabled={true}
+                                    onFocus={() => this.setState({ showDatePicker: true })}
+                                />
+                            </div > {
+                                this.state.showDatePicker &&
+                                <DatePicker
+                                    givenDate={this.props.lastAssignmentDate ? moment(this.props.lastAssignmentDate) : Date.now()}
+                                    returnSelectedDay={
+                                        (day) => {
+                                            assignment.due = moment(day).format('ddd MM/DD')
+                                            this.setState({ showDatePicker: false })
+                                            this.toggleAddingAssignment()
+                                        }
+                                    }
+                                    close={
+                                        () => {
+                                            this.setState({ showDatePicker: false })
+                                            this.toggleAddingAssignment()
+                                        }
+                                    }
+                                />
+                            }
+                        </form>
+                    </div>
+                } </div>
+                <div className="cn-files-icon" >
+                    <a onClick={() => this.copyAssignment(assignment)}>
+                        <i class="far fa-clone" > </i>
+                    </a>
+                </div >
+                
+                <div className='form-element relative'>
+                    <div className='cn-input-container margin-top relative'>
+                        <select className="weightselect"
+                            name='weight_id'
+                            value={form.weight_id}
+                            options={weights}
+                            onChange={(val) => { this.onChange({ id: id, weight_id: val.target.value }) }}>
+                            <option key="option 0" value="" className="option_no_weight" selected="selected"></option>
+                            <option key="option 1" value="No Weight" className="option_no_weight">No Weight</option>
+                            {weights.map(weight => {
+                            return (
+                                <option key={`option${weight.id}`} value={weight.id}>{weight.name}</option>
+                            )
+                            })}
+                        </select>
+                    </div>
+                </div>
+            </div >
+
+            
+
+                ))
+            }
+
             <div className='' >
                 <div className="cn-delete-icon" >
                     <a onClick={this.onDelete.bind(this)}>
@@ -337,12 +457,34 @@ class AssignmentForm extends React.Component {
                             }
                         </form>
                     </div>
-                } </div>
-                <div className="cn-files-icon" >
+                }
+                </div>
+
+                <div className='form-element relative'>
+                    <div className='cn-input-container margin-top relative'>
+                        <select className="weightselect"
+                            name='weight_id'
+                            value={form.weight_id}
+                            options={weights}
+                            onChange={(val) => { this.onChange({ id: id, weight_id: val.target.value }) }}>
+                            <option key="option 0" value="" className="option_no_weight" selected="selected"></option>
+                            <option key="option 1" value="No Weight" className="option_no_weight">No Weight</option>
+                            {weights.map(weight => {
+                            return (
+                                <option key={`option${weight.id}`} value={weight.id}>{weight.name}</option>
+                            )
+                            })}
+                        </select>
+                    </div>
+                </div>
+
+                
+                
+                {/* <div className="cn-files-icon" >
                     <a onClick={() => this.copyAssignment()}>
                         <i class="far fa-clone" > </i>
                     </a>
-                </div >
+                </div > */}
             </div >
             <div className='addbtndiv'>
                 <a className={`${disableButton ? 'disabled' : ''}`}
@@ -368,6 +510,7 @@ AssignmentForm.propTypes = {
     resetValidation: PropTypes.func,
     isAdmin: PropTypes.bool,
     weights: PropTypes.array,
+    assignments: PropTypes.array,
     lastAssignmentDate: PropTypes.string,
     updateLastAssignmentDate: PropTypes.func,
     onDeleteAssignment: PropTypes.func,

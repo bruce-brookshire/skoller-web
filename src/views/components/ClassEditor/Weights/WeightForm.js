@@ -223,8 +223,15 @@ class WeightForm extends React.Component {
           Name
         </div>
         <div className='cn-section-value-header txt-gray'>
-          Value
+         <span>Value</span>
+          
+          <div className="cn-percentage-icon">
+            <a onClick={() => this.toggleGradeModal()}>
+              {!this.props.boolPoints ? <i className="fa fa-percent"></i> : 'PTS'}
+            </a>
+          </div>
         </div>
+        
         <hr className="txt-gray" />
         {/* <button onClick={() => console.log(form)}>click</button> */}
 
@@ -282,10 +289,10 @@ class WeightForm extends React.Component {
               /> */}
           </div>
 
-          <div className="cn-percentage-icon">
-            <a onClick={() => this.toggleGradeModal()}>
-              {!this.props.boolPoints ? <i className="fa fa-percent"></i> : 'PTS'}
-            </a>
+          <div className="cn-percentage-grey">
+            <span>
+              {!this.props.boolPoints ? '%' : 'PTS'}
+            </span>
           </div>
         </div>
         ))}
@@ -323,10 +330,10 @@ class WeightForm extends React.Component {
             </form>
           </div>
 
-          <div className="cn-percentage-icon">
-            <a onClick={() => this.toggleGradeModal()}>
-              {!this.props.boolPoints ? <i className="fa fa-percent"></i> : 'PTS'}
-            </a>
+          <div className="cn-percentage-grey">
+            <span>
+              {!this.props.boolPoints ? '%' : 'PTS'}
+            </span>
           </div>
         </div>
         {/* <div className='addbtndiv'>
