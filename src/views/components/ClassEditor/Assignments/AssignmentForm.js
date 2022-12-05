@@ -111,7 +111,6 @@ class AssignmentForm extends React.Component {
     onSubmit(e) {
         e.preventDefault();
         if (this.state.showDatePicker) this.setState({ showDatePicker: false })
-        // console.log('here', this.state.form)
         if (this.state.due_null) {
             requiredFields.due = {}
         }
@@ -379,7 +378,6 @@ class AssignmentForm extends React.Component {
 
       onFormMonthChange(event) {
         const { form } = this.state
-        // console.log(e.target.value - 1)
         form.due = form.due ? moment(form.due).set('month', +event.target.value - 1).format('ddd MM/DD') : moment().set('month', +event.target.value - 1).format('ddd MM/DD') 
       }
       onMonthChange(event, assignment) {
@@ -391,9 +389,7 @@ class AssignmentForm extends React.Component {
 
       onFormDayChange(event) {
         const { form } = this.state
-        console.log(form.due)
         form.due = form.due? moment(form.due).set('date', +event.target.value).format('ddd MM/DD')  : moment().set('date', +event.target.value).format('ddd MM/DD')  
-        console.log(form.due)
       }
       onDayChange(event, assignment) {
         const { assignments } = this.props
@@ -406,7 +402,49 @@ class AssignmentForm extends React.Component {
         this.setState({ datePickerId: pickerId})
         this.setState({ showDatePicker: true })
       }
-      
+
+      submitFormFromDatePicker(){
+          const { form } = this.state
+          if(form.name){
+            const sendForm = {
+                id: null,
+                name: form.name|| '',
+                due: moment(form.due) || '',
+                created_on: 'Web',
+                year_due: date.getFullYear() || '',
+              }
+            form.id ? this.onUpdateAssignmentFromUpdate(sendForm) : this.onCreateAssignmentFromUpdate(sendForm)
+          }
+      }
+
+      submitFormFromWeightTag(event){
+        event.persist()
+        const { form } = this.state
+        if(form.name){
+          const sendForm = {
+              id: null,
+              name: form.name|| '',
+              due: moment(form.due) || '',
+              created_on: 'Web',
+              year_due: date.getFullYear() || '',
+            }
+            actions.assignments.createAssignment(this.props.cl, sendForm).then((a) => {
+                const sendAssingment = {
+                    ...a,
+                    weight_id: event.target.value
+                }
+                this.setState({ form: this.initializeFormData(), loading: false })
+                this.props.onCreateAssignment(sendAssingment)
+                const tag = {
+                    id: sendAssingment.id || null,
+                    name: sendAssingment.name || '',
+                    weight_id: sendAssingment.weight_id || '',
+                }
+                this.onTagAssignment(tag)
+              }).catch(() => { this.setState({ loading: false }) })
+
+      }
+    }
 
     render() {
         const { form } = this.state
@@ -415,10 +453,16 @@ class AssignmentForm extends React.Component {
 
         //this matchtes the weights and assignments in the 3rd step
       for (let assignment of assignments) {
-          if (!assignment.weight){
+          if (!assignment.weight_id){
               for(let weight of weights) {
                   if (weight.name.substring(0, 3).toUpperCase() === assignment.name.substring(0, 3).toUpperCase()) {
                     assignment.weight_id = weight.id
+                    const tag = {
+                        id: assignment.id || null,
+                        name: assignment.name || '',
+                        weight_id: assignment.weight_id || '',
+                    }
+                    this.onTagAssignment(tag)
               }
           }
         }
@@ -437,7 +481,6 @@ class AssignmentForm extends React.Component {
                     Due Date </div>
                 
             </div> <hr className="txt-gray" />
-            {/* <button onClick={() => console.log(assignments)}>click</button> */}
 
             {
                 assignments.map(assignment => (
@@ -465,14 +508,6 @@ class AssignmentForm extends React.Component {
                 <div className='cn-input-assignment-date' > {!this.state.due_null &&
                     <div >
                             <div>
-                                {/* <InputField
-                                    containerClassName='margin-top'
-                                    error={formErrors.due}
-                                    name='due'
-                                    value={this.mapAssignmentDate(assignment.due)}
-                                    // disabled={true}
-                                    onFocus={() => this.setState({ showDatePicker: true })}
-                                /> */}
                                 <div className='cn-input-assignment-month'>
                                     <div className='cn-input-container margin-top hide-spinner'>
                                         <input className='cn-form-input'
@@ -582,14 +617,6 @@ class AssignmentForm extends React.Component {
                     <div >
                         <form onSubmit={this.onSubmit.bind(this)}>
                             <div>
-                                {/* <InputField
-                                    containerClassName='margin-top'
-                                    error={formErrors.due}
-                                    name='due'
-                                    value={form.due ? form.due : ''}
-                                    // disabled={true}
-                                    onFocus={() => this.setState({ showDatePicker: true })}
-                                /> */}
                                 <div className='cn-input-assignment-month'>
                                     <div className='cn-input-container margin-top hide-spinner'>
                                         <input className='cn-form-input'
@@ -637,7 +664,7 @@ class AssignmentForm extends React.Component {
                                     returnSelectedDay={
                                         (day) => {
                                             form.due = moment(day).format('ddd MM/DD')
-                                            this.submitForm(this)
+                                            this.submitFormFromDatePicker()
                                             this.setState({ showDatePicker: false })
                                             this.toggleAddingAssignment()
                                         }
@@ -659,11 +686,10 @@ class AssignmentForm extends React.Component {
                     <div className='cn-input-container margin-top'>
                         <select className="cn-form-input"
                             name='weight_id'
-                            value={form.weight_id}
                             options={weights}
-                            onChange={(val) => { this.onChange({ id: id, weight_id: val.target.value }) }}>
+                            onChange={(e) => { this.submitFormFromWeightTag(e) }}>
                             <option key="option 0" value="" className="option_no_weight" selected="selected"></option>
-                            <option key="option 1" value="No Weight" className="option_no_weight">No Weight</option>
+                            <option key="option 1" value="0" className="option_no_weight">No Weight</option>
                             {weights.map(weight => {
                             return (
                                 <option key={`option${weight.id}`} value={weight.id}>{weight.name}</option>
@@ -679,12 +705,6 @@ class AssignmentForm extends React.Component {
                     </a>
                 </div >
             </div >
-            {/* <div className='addbtndiv'>
-                <a className={`${disableButton ? 'disabled' : ''}`}
-                    disabled={this.state.loading || disableButton}
-                    onClick={this.onSubmit.bind(this)} > {this.props.assignment ? ' Update ' : ' Save '}
-                    {this.state.loading ? < Loading /> : null} </a>
-            </div> */}
         </div >
         )
     }
@@ -699,7 +719,6 @@ AssignmentForm.propTypes = {
     onUpdateAssignment: PropTypes.func.isRequired,
     updateProperty: PropTypes.func,
     validateForm: PropTypes.func,
-    // currentWeight: PropTypes.object,
     resetValidation: PropTypes.func,
     isAdmin: PropTypes.bool,
     weights: PropTypes.array,
