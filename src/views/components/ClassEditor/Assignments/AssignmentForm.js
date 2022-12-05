@@ -76,7 +76,8 @@ class AssignmentForm extends React.Component {
             form: this.initializeFormData(assignment),
             due_null: false,
             loading: false,
-            showDatePicker: false
+            showDatePicker: false,
+            datePickerId: 0
         }
     }
 
@@ -123,6 +124,12 @@ class AssignmentForm extends React.Component {
             this.props.updateLastAssignmentDate(date)
         }
         this.props.toggleAddingAssignment(false)
+    }
+
+    submitForm(event) {
+        if(event.key === 'Enter') {
+            this.onSubmit(event)
+        }
     }
 
     /*
@@ -248,6 +255,15 @@ class AssignmentForm extends React.Component {
         })
     }
 
+    copyExistingAssignment(assignment) {
+        const copy = {
+            ...assignment,
+            name: `${assignment.name} (Copy)`,
+            id:null
+        }
+        this.onCreateAssignmentFromUpdate(copy)
+    }
+
     copyAssignment(assignment) {
 
         const assignmentForm = {
@@ -361,17 +377,34 @@ class AssignmentForm extends React.Component {
         }).catch(() => { this.setState({ loading: false }) })
       }
 
+      onFormMonthChange(event) {
+        const { form } = this.state
+        // console.log(e.target.value - 1)
+        form.due = form.due ? moment(form.due).set('month', +event.target.value - 1).format('ddd MM/DD') : moment().set('month', +event.target.value - 1).format('ddd MM/DD') 
+      }
       onMonthChange(event, assignment) {
         const { assignments } = this.props
         const index = assignments.findIndex( a => a.id === assignment.id)
         assignments[index].due = moment(assignments[index].due).set('month', event.target.value)
         this.setState({assignments: assignments})
       }
+
+      onFormDayChange(event) {
+        const { form } = this.state
+        console.log(form.due)
+        form.due = form.due? moment(form.due).set('date', +event.target.value).format('ddd MM/DD')  : moment().set('date', +event.target.value).format('ddd MM/DD')  
+        console.log(form.due)
+      }
       onDayChange(event, assignment) {
         const { assignments } = this.props
         const index = assignments.findIndex( a => a.id === assignment.id)
         assignments[index].due = moment(assignments[index].due).set('date', event.target.value)
         this.setState({assignments: assignments})
+      }
+
+      openDatePicker(pickerId) {
+        this.setState({ datePickerId: pickerId})
+        this.setState({ showDatePicker: true })
       }
       
 
@@ -463,30 +496,30 @@ class AssignmentForm extends React.Component {
                                     </div>
                                 </div>
                                 <div className="cn-delete-icon" >
-                                    <a onClick={() => console.log(assignment)}>
+                                    <a onClick={() => this.openDatePicker(assignment.id)}>
                                         <i class="far fa-calendar" > </i>
                                     </a>
                                 </div>
                             </div > 
-                            {/* {
-                                this.state.showDatePicker &&
+                            {
+                                this.state.showDatePicker && this.state.datePickerId === assignment.id &&
                                 <DatePicker
-                                    givenDate={this.props.lastAssignmentDate ? moment(this.props.lastAssignmentDate) : Date.now()}
+                                    key={`datePicker-${assignment.id}`}
+                                    givenDate={assignment.due ? moment(assignment.due) : Date.now()}
                                     returnSelectedDay={
                                         (day) => {
-                                            assignment.due = moment(day).format('ddd MM/DD')
+                                            assignment.due = moment(day)
+                                            this.onSubmitUpdatedAssignment(assignment)
                                             this.setState({ showDatePicker: false })
-                                            this.toggleAddingAssignment()
                                         }
                                     }
                                     close={
                                         () => {
                                             this.setState({ showDatePicker: false })
-                                            this.toggleAddingAssignment()
                                         }
                                     }
                                 />
-                            } */}
+                            }
                     </div>
                 } </div>
                 
@@ -509,7 +542,7 @@ class AssignmentForm extends React.Component {
                 </div>
 
                 <div className="cn-files-icon" >
-                    <a onClick={() => this.copyAssignment(assignment)}>
+                    <a onClick={() => this.copyExistingAssignment(assignment)}>
                         <i class="far fa-clone" > </i>
                     </a>
                 </div >
@@ -558,44 +591,53 @@ class AssignmentForm extends React.Component {
                                     onFocus={() => this.setState({ showDatePicker: true })}
                                 /> */}
                                 <div className='cn-input-assignment-month'>
-                                    <div className='cn-input-container margin-top'>
+                                    <div className='cn-input-container margin-top hide-spinner'>
                                         <input className='cn-form-input'
+                                                type={'number'}
                                                 autoFocus={true}
                                                 onChange={
                                                     (e) => {
-                                                        form.name = e.target.value
+                                                        this.onFormMonthChange(e)
                                                         this.toggleAddingAssignment()
                                                     }
                                                 }
-                                                value={form.due ? this.showMonth(form.due) : ''}/>
+                                                value={form.due ? this.showMonth(form.due) : ''}
+                                                onKeyDown={(e) => this.submitForm(e)}
+                                                />
                                     </div>
                                 </div>
                                 <div className='cn-input-assignment-day'>
-                                    <div className='cn-input-container margin-top'>
+                                    <div className='cn-input-container margin-top hide-spinner'>
                                         <input className='cn-form-input'
+                                                type={'number'}
                                                 autoFocus={true}
                                                 onChange={
                                                     (e) => {
-                                                        form.name = e.target.value
+                                                        this.onFormDayChange(e)
                                                         this.toggleAddingAssignment()
                                                     }
                                                 }
-                                                value={form.due ? this.showDay(form.due): ''}/>
+                                                value={form.due ? this.showDay(form.due): ''}
+                                                onKeyDown={(e) => this.submitForm(e)}
+                                                />
                                     </div>
                                 </div>
                                 <div className="cn-delete-icon" >
-                                    <a onClick={() => this.setState({ showDatePicker: true })}>
+                                    <a onClick={() => this.openDatePicker(0)}>
                                         <i class="far fa-calendar" > </i>
                                     </a>
                                 </div>
                             </div > 
                             {
-                                this.state.showDatePicker &&
+                                this.state.showDatePicker && this.state.datePickerId === 0 &&
                                 <DatePicker
+                                    onChange={e => console.log('changed')}
+                                    key={'datePicker-0'}
                                     givenDate={this.props.lastAssignmentDate ? moment(this.props.lastAssignmentDate) : Date.now()}
                                     returnSelectedDay={
                                         (day) => {
                                             form.due = moment(day).format('ddd MM/DD')
+                                            this.submitForm(this)
                                             this.setState({ showDatePicker: false })
                                             this.toggleAddingAssignment()
                                         }
