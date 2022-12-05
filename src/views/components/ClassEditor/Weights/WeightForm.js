@@ -208,7 +208,9 @@ class WeightForm extends React.Component {
       console.log(event.key)
       console.log(weight)
       if(event.key === 'Enter') {
+        this.setState({ loading: true })
         this.onSubmitUpdatedWeight(weight)
+        this.setState({ loading: false })
       }
     }
 

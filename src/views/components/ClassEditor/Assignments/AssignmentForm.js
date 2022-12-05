@@ -155,6 +155,10 @@ class AssignmentForm extends React.Component {
         this.setState({ form: this.initializeFormData(), loading: false, due_null: false })
     }
 
+    onDeleteExisting(assignment) {
+        this.props.onDeleteAssignment(assignment)
+      }
+
     /*
      * copy assignment
      */
@@ -281,6 +285,11 @@ class AssignmentForm extends React.Component {
           : `${due.format('ddd')}, ${due.format('MMM')} ${due.format('Do')}`
       }
 
+      assignmentDate(date) {
+        const { cl } = this.props
+        return moment.tz(date, cl.school.timezone)
+      }
+
       
 
     render() {
@@ -289,9 +298,11 @@ class AssignmentForm extends React.Component {
         const disableButton = !this.verifyData(form)
 
         //this matchtes the weights and assignments in the 3rd step
-      for (let weight of weights) {
-        if (weight.name.substring(0, 3).toUpperCase() === name.substring(0, 3).toUpperCase()) {
-          form.weight_id = weight.id
+      for (let assignment of assignments) {
+          for(let weight of weights) {
+              if (weight.name.substring(0, 3).toUpperCase() === assignment.name.substring(0, 3).toUpperCase()) {
+                assignment.weight_id = weight.id
+          }
         }
       }
 
@@ -305,49 +316,83 @@ class AssignmentForm extends React.Component {
                     Due Date </div>
                 
             </div> <hr className="txt-gray" />
-            {/* <button onClick={() => console.log(assignments)}>click</button> */}
+            <button onClick={() => console.log(assignments)}>click</button>
 
             {
                 assignments.map(assignment => (
-                    <div className='row' >
-                <div className="cn-delete-icon" >
-                    <a onClick={this.onDelete.bind(this)}>
-                        <i class="far fa-trash-alt" > </i>
-                    </a>
-                </div>
-                <div className='cn-input-assignment-name' >
-                    <form onSubmit={this.onSubmit.bind(this)}>
-                        <div class="form-element relative" >
-                            <div className='cn-input-container margin-top' >
-                                <input className='cn-form-input'
-                                    autoFocus={true}
-                                    onChange={
-                                        (e) => {
-                                            form.name = e.target.value
-                                            this.toggleAddingAssignment()
-                                        }
-                                    }
-                                    value={assignment.name}
-                                />
-                            </div >
+                    <div className='' >
+                        <div className="cn-delete-icon" >
+                            <a onClick={() => this.onDeleteExisting(assignment)}>
+                                <i class="far fa-trash-alt"> </i>
+                            </a>
                         </div>
-                    </form>
+                        <div className='cn-input-assignment-name' >
+                            {/* <form onSubmit={this.onSubmit.bind(this)}> */}
+                            <div class="form-element relative" >
+                                <div className='cn-input-container margin-top' >
+                                    <input className='cn-form-input'
+                                        autoFocus={true}
+                                        onChange={
+                                            (e) => {
+                                                form.name = e.target.value
+                                                this.toggleAddingAssignment()
+                                            }
+                                        }
+                                        value={assignment.name}
+                                    />
+                                </div >
+                            </div>
+                    {/* </form> */}
                 </div >
                 <div className='cn-input-assignment-date' > {!this.state.due_null &&
                     <div >
-                        <form onSubmit={this.onSubmit.bind(this)}>
-                            <div onClick={
-                                () => this.setState({ showDatePicker: true })
-                            } >
-                                <InputField
+                        {/* <form onSubmit={this.onSubmit.bind(this)}> */}
+                            <div 
+                                // onClick={
+                                // () => this.setState({ showDatePicker: true })
+                            // } 
+                            >
+                                {/* <InputField
                                     containerClassName='margin-top'
                                     error={formErrors.due}
                                     name='due'
                                     value={this.mapAssignmentDate(assignment.due)}
                                     // disabled={true}
                                     onFocus={() => this.setState({ showDatePicker: true })}
-                                />
-                            </div > {
+                                /> */}
+                                <div className='cn-input-assignment-month'>
+                                    <div className='cn-input-container margin-top'>
+                                        <input className='cn-form-input'
+                                                autoFocus={true}
+                                                onChange={
+                                                    (e) => {
+                                                        form.name = e.target.value
+                                                        this.toggleAddingAssignment()
+                                                    }
+                                                }
+                                                value={this.assignmentDate(assignment.due).month()}/>
+                                    </div>
+                                </div>
+                                <div className='cn-input-assignment-day'>
+                                    <div className='cn-input-container margin-top'>
+                                        <input className='cn-form-input'
+                                                autoFocus={true}
+                                                onChange={
+                                                    (e) => {
+                                                        form.name = e.target.value
+                                                        this.toggleAddingAssignment()
+                                                    }
+                                                }
+                                                value={this.assignmentDate(assignment.due).day()}/>
+                                    </div>
+                                </div>
+                                <div className="cn-delete-icon" >
+                                    <a onClick={() => this.setState({ showDatePicker: true })}>
+                                        <i class="far fa-calendar" > </i>
+                                    </a>
+                                </div>
+                            </div > 
+                            {/* {
                                 this.state.showDatePicker &&
                                 <DatePicker
                                     givenDate={this.props.lastAssignmentDate ? moment(this.props.lastAssignmentDate) : Date.now()}
@@ -365,21 +410,16 @@ class AssignmentForm extends React.Component {
                                         }
                                     }
                                 />
-                            }
-                        </form>
+                            } */}
+                        {/* </form> */}
                     </div>
                 } </div>
-                <div className="cn-files-icon" >
-                    <a onClick={() => this.copyAssignment(assignment)}>
-                        <i class="far fa-clone" > </i>
-                    </a>
-                </div >
                 
-                <div className='form-element relative'>
-                    <div className='cn-input-container margin-top relative'>
-                        <select className="weightselect"
+                <div className='cn-input-assignment-weight'>
+                    <div className='cn-input-container margin-top'>
+                        <select className="cn-form-input"
                             name='weight_id'
-                            value={form.weight_id}
+                            value={assignment.weight_id}
                             options={weights}
                             onChange={(val) => { this.onChange({ id: id, weight_id: val.target.value }) }}>
                             <option key="option 0" value="" className="option_no_weight" selected="selected"></option>
@@ -392,6 +432,13 @@ class AssignmentForm extends React.Component {
                         </select>
                     </div>
                 </div>
+
+                <div className="cn-files-icon" >
+                    <a onClick={() => this.copyAssignment(assignment)}>
+                        <i class="far fa-clone" > </i>
+                    </a>
+                </div >
+
             </div >
 
             
@@ -426,18 +473,48 @@ class AssignmentForm extends React.Component {
                 <div className='cn-input-assignment-date' > {!this.state.due_null &&
                     <div >
                         <form onSubmit={this.onSubmit.bind(this)}>
-                            <div onClick={
-                                () => this.setState({ showDatePicker: true })
-                            } >
-                                <InputField
+                            <div>
+                                {/* <InputField
                                     containerClassName='margin-top'
                                     error={formErrors.due}
                                     name='due'
                                     value={form.due ? form.due : ''}
                                     // disabled={true}
                                     onFocus={() => this.setState({ showDatePicker: true })}
-                                />
-                            </div > {
+                                /> */}
+                                <div className='cn-input-assignment-month'>
+                                    <div className='cn-input-container margin-top'>
+                                        <input className='cn-form-input'
+                                                autoFocus={true}
+                                                onChange={
+                                                    (e) => {
+                                                        form.name = e.target.value
+                                                        this.toggleAddingAssignment()
+                                                    }
+                                                }
+                                                value={form.due ? this.assignmentDate(form.due).month() : ''}/>
+                                    </div>
+                                </div>
+                                <div className='cn-input-assignment-day'>
+                                    <div className='cn-input-container margin-top'>
+                                        <input className='cn-form-input'
+                                                autoFocus={true}
+                                                onChange={
+                                                    (e) => {
+                                                        form.name = e.target.value
+                                                        this.toggleAddingAssignment()
+                                                    }
+                                                }
+                                                value={form.due ? this.assignmentDate(form.due).day(): ''}/>
+                                    </div>
+                                </div>
+                                <div className="cn-delete-icon" >
+                                    <a onClick={() => this.setState({ showDatePicker: true })}>
+                                        <i class="far fa-calendar" > </i>
+                                    </a>
+                                </div>
+                            </div > 
+                            {
                                 this.state.showDatePicker &&
                                 <DatePicker
                                     givenDate={this.props.lastAssignmentDate ? moment(this.props.lastAssignmentDate) : Date.now()}
@@ -461,9 +538,9 @@ class AssignmentForm extends React.Component {
                 }
                 </div>
 
-                <div className='form-element relative'>
-                    <div className='cn-input-container margin-top relative'>
-                        <select className="weightselect"
+                <div className='cn-input-assignment-weight'>
+                    <div className='cn-input-container margin-top'>
+                        <select className="cn-form-input"
                             name='weight_id'
                             value={form.weight_id}
                             options={weights}
@@ -478,21 +555,19 @@ class AssignmentForm extends React.Component {
                         </select>
                     </div>
                 </div>
-
                 
-                
-                {/* <div className="cn-files-icon" >
+                <div className="cn-files-icon" >
                     <a onClick={() => this.copyAssignment()}>
                         <i class="far fa-clone" > </i>
                     </a>
-                </div > */}
+                </div >
             </div >
-            <div className='addbtndiv'>
+            {/* <div className='addbtndiv'>
                 <a className={`${disableButton ? 'disabled' : ''}`}
                     disabled={this.state.loading || disableButton}
                     onClick={this.onSubmit.bind(this)} > {this.props.assignment ? ' Update ' : ' Save '}
                     {this.state.loading ? < Loading /> : null} </a>
-            </div>
+            </div> */}
         </div >
         )
     }

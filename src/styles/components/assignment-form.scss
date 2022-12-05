@@ -118,12 +118,24 @@
   }
 
   .cn-input-assignment-name {
-    width: 60%;
+    width: 35%;
     display: inline-block;
   }
 
   .cn-input-assignment-date {
     width: 25%;
+    display: inline-block;
+  }
+  .cn-input-assignment-weight {
+    width: 25%;
+    display: inline-block;
+  }
+  .cn-input-assignment-month {
+    width: 35%;
+    display: inline-block;
+  }
+  .cn-input-assignment-day {
+    width: 35%;
     display: inline-block;
   }
   .cn-files-icon {
