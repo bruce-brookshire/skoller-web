@@ -318,9 +318,9 @@ class Assignments extends React.Component {
                 </div>
             </span >
             <div className="cn-pull-right" >
-                <span> 2/3 </span> <span className='cn-section-progressbar' > < ProgressBar percent={(2 / 3) * 100} /></span>
+                <span> 2/2 </span> <span className='cn-section-progressbar' > < ProgressBar percent={(2 / 2) * 100} /></span>
                 <a className="cn-section-icons" onClick={() => this.onUpdateCurrentIndex({ currentIndex: 0 })}><i class="fas fa-angle-left"></i></a>
-                <a className="cn-section-icons" onClick={() => this.onUpdateCurrentIndex({ currentIndex: 2 })}><i className="fas fa-angle-right"></i></a>
+                <a className="cn-section-icons" onClick={() => this.onUpdateCurrentIndex({ currentIndex: 0 })}><i className="fas fa-angle-right"></i></a>
 
             </div>
         </div >
@@ -370,6 +370,8 @@ class Assignments extends React.Component {
                                 toggleAddingAssignment={
                                     (bool) => this.toggleAddingAssignment(bool)
                                 }
+                                weights={weights}
+                                assignments={assignments}
                             />
                         </div>
                     }
@@ -385,7 +387,7 @@ class Assignments extends React.Component {
                             </div>
                         </div>
                     }
-                    {
+                    {/* {
                         // (assignments.length !== 0 && !viewOnly && addAssignment) &&
                         (assignments.length !== 0 && !viewOnly) &&
 
@@ -415,7 +417,7 @@ class Assignments extends React.Component {
                                 }
                             />
                         </div >
-                    }
+                    } */}
                     {
                         assignments.length !== 0 && !viewOnly && !addAssignment &&
                         <button

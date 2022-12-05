@@ -152,6 +152,7 @@
 
   .cn-form-section {
     display: inline-block;
+    width: 100%;
   }
 
   .cn-section-name-header,
@@ -192,6 +193,14 @@
     width: 7%;
     display: inline-block;
     color: #5ab9e4;
+    vertical-align: -webkit-baseline-middle;
+    font-size: 20px;
+    text-align: end;
+  }
+  .cn-percentage-grey {
+    width: 7%;
+    display: inline-block;
+    color: #aaaaaa;
     vertical-align: -webkit-baseline-middle;
     font-size: 20px;
     text-align: end;
