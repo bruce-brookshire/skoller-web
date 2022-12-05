@@ -265,7 +265,6 @@ class AssignmentForm extends React.Component {
             let name = this.state.form.name.replace(numb, newnumb);
             newForm.name = name
             this.setState({ form: this.copyFormData(this.state.form, name) })
-            console.log(newForm)
         } else {
             newForm.name = newForm.name + ' 1'
         }
@@ -285,8 +284,6 @@ class AssignmentForm extends React.Component {
       }
 
       handleKeyDown(event, assignment) {
-        console.log(event.key)
-        console.log(weight)
         if(event.key === 'Enter') {
           this.setState({ loading: true })
           this.onSubmitUpdatedAssignment(assignment)
@@ -329,9 +326,11 @@ class AssignmentForm extends React.Component {
           : `${due.format('ddd')}, ${due.format('MMM')} ${due.format('Do')}`
       }
 
-      assignmentDate(date) {
-        const { cl } = this.props
-        return moment.tz(date, cl.school.timezone)
+      showMonth(date) {
+          return moment(date).month() + 1
+      }
+      showDay(date) {
+        return moment(date).date()
       }
 
       handleKeyDown(event, assignment) {
@@ -343,7 +342,6 @@ class AssignmentForm extends React.Component {
       }
 
       onSelectUpdate(event, assignment) {
-        console.log(assignment)
         const { assignments } = this.props
         const index = assignments.findIndex( a => a.id === assignment.id)
         assignments[index].weight_id = event.target.value
@@ -361,6 +359,19 @@ class AssignmentForm extends React.Component {
         actions.assignments.tagAssignment(this.props.cl, form).then((assignment) => {
           this.props.onTagAssignment(assignment)
         }).catch(() => { this.setState({ loading: false }) })
+      }
+
+      onMonthChange(event, assignment) {
+        const { assignments } = this.props
+        const index = assignments.findIndex( a => a.id === assignment.id)
+        assignments[index].due = moment(assignments[index].due).set('month', event.target.value)
+        this.setState({assignments: assignments})
+      }
+      onDayChange(event, assignment) {
+        const { assignments } = this.props
+        const index = assignments.findIndex( a => a.id === assignment.id)
+        assignments[index].due = moment(assignments[index].due).set('date', event.target.value)
+        this.setState({assignments: assignments})
       }
       
 
@@ -393,7 +404,7 @@ class AssignmentForm extends React.Component {
                     Due Date </div>
                 
             </div> <hr className="txt-gray" />
-            <button onClick={() => console.log(assignments)}>click</button>
+            {/* <button onClick={() => console.log(assignments)}>click</button> */}
 
             {
                 assignments.map(assignment => (
@@ -420,12 +431,7 @@ class AssignmentForm extends React.Component {
                 </div >
                 <div className='cn-input-assignment-date' > {!this.state.due_null &&
                     <div >
-                        {/* <form onSubmit={this.onSubmit.bind(this)}> */}
-                            <div 
-                                // onClick={
-                                // () => this.setState({ showDatePicker: true })
-                            // } 
-                            >
+                            <div>
                                 {/* <InputField
                                     containerClassName='margin-top'
                                     error={formErrors.due}
@@ -435,30 +441,24 @@ class AssignmentForm extends React.Component {
                                     onFocus={() => this.setState({ showDatePicker: true })}
                                 /> */}
                                 <div className='cn-input-assignment-month'>
-                                    <div className='cn-input-container margin-top'>
+                                    <div className='cn-input-container margin-top hide-spinner'>
                                         <input className='cn-form-input'
+                                                type={'number'}
                                                 autoFocus={true}
-                                                onChange={
-                                                    (e) => {
-                                                        form.name = e.target.value
-                                                        this.toggleAddingAssignment()
-                                                    }
-                                                }
-                                                value={this.assignmentDate(assignment.due).month()}
+                                                onChange={(e) => this.onMonthChange(e, assignment)}
+                                                value={this.showMonth(assignment.due)}
+                                                onKeyDown={e => this.handleKeyDown(e, assignment)}
                                                 key={`month${assignment.id}`}/>
                                     </div>
                                 </div>
                                 <div className='cn-input-assignment-day'>
-                                    <div className='cn-input-container margin-top'>
+                                    <div className='cn-input-container margin-top hide-spinner'>
                                         <input className='cn-form-input'
+                                                type={'number'}
                                                 autoFocus={true}
-                                                onChange={
-                                                    (e) => {
-                                                        form.name = e.target.value
-                                                        this.toggleAddingAssignment()
-                                                    }
-                                                }
-                                                value={this.assignmentDate(assignment.due).day()}
+                                                onChange={(e) => this.onDayChange(e, assignment)}
+                                                value={this.showDay(assignment.due)}
+                                                onKeyDown={e => this.handleKeyDown(e, assignment)}
                                                 key={`day${assignment.id}`}/>
                                     </div>
                                 </div>
@@ -487,7 +487,6 @@ class AssignmentForm extends React.Component {
                                     }
                                 />
                             } */}
-                        {/* </form> */}
                     </div>
                 } </div>
                 
@@ -568,7 +567,7 @@ class AssignmentForm extends React.Component {
                                                         this.toggleAddingAssignment()
                                                     }
                                                 }
-                                                value={form.due ? this.assignmentDate(form.due).month() : ''}/>
+                                                value={form.due ? this.showMonth(form.due) : ''}/>
                                     </div>
                                 </div>
                                 <div className='cn-input-assignment-day'>
@@ -581,7 +580,7 @@ class AssignmentForm extends React.Component {
                                                         this.toggleAddingAssignment()
                                                     }
                                                 }
-                                                value={form.due ? this.assignmentDate(form.due).day(): ''}/>
+                                                value={form.due ? this.showDay(form.due): ''}/>
                                     </div>
                                 </div>
                                 <div className="cn-delete-icon" >
