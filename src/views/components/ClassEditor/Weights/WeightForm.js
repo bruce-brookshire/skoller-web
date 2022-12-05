@@ -207,7 +207,7 @@ class WeightForm extends React.Component {
     handleKeyDown(event, weight) {
       console.log(event.key)
       console.log(weight)
-      if(event.key === 'Enter') {
+      if(event.key === 'Enter' || event.key === 'Tab') {
         this.setState({ loading: true })
         this.onSubmitUpdatedWeight(weight)
         this.setState({ loading: false })
@@ -235,7 +235,6 @@ class WeightForm extends React.Component {
         </div>
         
         <hr className="txt-gray" />
-        {/* <button onClick={() => console.log(form)}>click</button> */}
 
         { weights.map((weight) => (
           <div >
@@ -256,15 +255,7 @@ class WeightForm extends React.Component {
                   />
                 </div>
               </div>
-              {/* <InputField
-                containerClassName='margin-top'
-                inputClassName='input-box'
-                error={formErrors.name}
-                name="name"
-                onChange={() => this.onSelectItem(this, weight)}
-                value={weight.name ? weight.name :form.name}
-                key={`name${weight.id}`}
-              /> */}
+              
           </div>
           <div className="cn-value-field">
             <div className='form-element relative'>
@@ -278,17 +269,6 @@ class WeightForm extends React.Component {
                   />
                 </div>
               </div>
-              {/* <InputField
-                containerClassName='margin-top hide-spinner'
-                inputClassName='input-box'
-                error={formErrors.weight}
-                name="weight"
-                onChange={updateProperty}
-                type="number"
-                value={weight.weight? weight.weight: form.weight}
-                key={`number${weight.id}`}
-
-              /> */}
           </div>
 
           <div className="cn-percentage-grey">
@@ -338,16 +318,6 @@ class WeightForm extends React.Component {
             </span>
           </div>
         </div>
-        {/* <div className='addbtndiv'>
-          <a
-            className={'margin-top ' + (this.state.loading || noWeights ? 'disabled' : '')}
-            disabled={this.state.loading || noWeights}
-            onClick={this.onSubmit.bind(this)}
-          >
-            {this.props.weight ? 'Update ' : 'Add '} Weight
-            {this.state.loading ? <Loading /> : null}
-          </a>
-        </div> */}
         {this.renderGradeModal()}
       </div>
     )

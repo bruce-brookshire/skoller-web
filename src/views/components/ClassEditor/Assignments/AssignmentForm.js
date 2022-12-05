@@ -298,14 +298,6 @@ class AssignmentForm extends React.Component {
         this.setState({assignments: assignments})
       }
 
-      handleKeyDown(event, assignment) {
-        if(event.key === 'Enter') {
-          this.setState({ loading: true })
-          this.onSubmitUpdatedAssignment(assignment)
-          this.setState({ loading: false })
-        }
-      }
-
       onSubmitUpdatedAssignment(assignment){
         const form = {
           id: assignment.id || null,
@@ -349,7 +341,7 @@ class AssignmentForm extends React.Component {
       }
 
       handleKeyDown(event, assignment) {
-        if(event.key === 'Enter') {
+        if(event.key === 'Enter' || event.key === 'Tab') {
           this.setState({ loading: true })
           this.onSubmitUpdatedAssignment(assignment)
           this.setState({ loading: false })
