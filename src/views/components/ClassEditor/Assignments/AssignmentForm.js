@@ -277,6 +277,50 @@ class AssignmentForm extends React.Component {
 
     }
 
+    onModifyNameField(event, assignment){
+        const { assignments } = this.props
+        const index = assignments.findIndex( a => a.id === assignment.id)
+        assignments[index].name = event.target.value
+        this.setState({assignments: assignments})
+      }
+
+      handleKeyDown(event, assignment) {
+        console.log(event.key)
+        console.log(weight)
+        if(event.key === 'Enter') {
+          this.setState({ loading: true })
+          this.onSubmitUpdatedAssignment(assignment)
+          this.setState({ loading: false })
+        }
+      }
+
+      onSubmitUpdatedAssignment(assignment){
+        const form = {
+          id: assignment.id || null,
+          name: assignment.name|| '',
+          due: assignment.due || '',
+          created_on: 'Web',
+          year_due: assignment.due || '',
+        }
+        assignment.id ? this.onUpdateAssignmentFromUpdate(form) : this.onCreateAssignmentFromUpdate(form)
+      }
+
+      onCreateAssignmentFromUpdate(assignment) {
+        this.setState({ loading: true })
+        actions.assignments.createAssignment(this.props.cl, assignment).then((a) => {
+          this.setState({ form: this.initializeFormData(), loading: false })
+          this.props.onCreateAssignment(a)
+        }).catch(() => { this.setState({ loading: false }) })
+      }
+
+      onUpdateAssignmentFromUpdate(assignment) {
+        this.setState({ loading: true })
+        actions.assignments.updateAssignment(this.props.cl, assignment).then((a) => {
+          this.setState({ form: this.initializeFormData(), loading: false })
+          this.props.onUpdateWeight(a)
+        }).catch(() => { this.setState({ loading: false }) })
+      }
+
     mapAssignmentDate(date) {
         const { cl } = this.props
         const today = moment.tz(Date.now(), cl.school.timezone)
@@ -290,6 +334,34 @@ class AssignmentForm extends React.Component {
         return moment.tz(date, cl.school.timezone)
       }
 
+      handleKeyDown(event, assignment) {
+        if(event.key === 'Enter') {
+          this.setState({ loading: true })
+          this.onSubmitUpdatedAssignment(assignment)
+          this.setState({ loading: false })
+        }
+      }
+
+      onSelectUpdate(event, assignment) {
+        console.log(assignment)
+        const { assignments } = this.props
+        const index = assignments.findIndex( a => a.id === assignment.id)
+        assignments[index].weight_id = event.target.value
+        this.setState({assignments: assignments})
+        const form = {
+            id: assignments[index].id || null,
+            name: assignments[index].name || '',
+            weight_id: assignments[index].weight_id || '',
+        }
+        this.onTagAssignment(form)
+      }
+
+      onTagAssignment(form) {
+        this.setState({ loading: true })
+        actions.assignments.tagAssignment(this.props.cl, form).then((assignment) => {
+          this.props.onTagAssignment(assignment)
+        }).catch(() => { this.setState({ loading: false }) })
+      }
       
 
     render() {
@@ -299,17 +371,22 @@ class AssignmentForm extends React.Component {
 
         //this matchtes the weights and assignments in the 3rd step
       for (let assignment of assignments) {
-          for(let weight of weights) {
-              if (weight.name.substring(0, 3).toUpperCase() === assignment.name.substring(0, 3).toUpperCase()) {
-                assignment.weight_id = weight.id
+          if (!assignment.weight){
+              for(let weight of weights) {
+                  if (weight.name.substring(0, 3).toUpperCase() === assignment.name.substring(0, 3).toUpperCase()) {
+                    assignment.weight_id = weight.id
+              }
           }
         }
       }
 
-        return (<div id='cn-assignment-form' >
+        return (
+        <div id='cn-assignment-form' >
             <div>
                 <div className='cn-section-name-header txt-gray' >
                     Name </div>
+                <div className='cn-section-value-header txt-gray' >
+                    {' '}</div>
                 <div className='cn-section-value-header txt-gray' >
                     Weight </div>
                 <div className='cn-section-value-header txt-gray' >
@@ -323,7 +400,7 @@ class AssignmentForm extends React.Component {
                     <div className='' >
                         <div className="cn-delete-icon" >
                             <a onClick={() => this.onDeleteExisting(assignment)}>
-                                <i class="far fa-trash-alt"> </i>
+                                <i class="far fa-trash-alt"></i>
                             </a>
                         </div>
                         <div className='cn-input-assignment-name' >
@@ -332,13 +409,10 @@ class AssignmentForm extends React.Component {
                                 <div className='cn-input-container margin-top' >
                                     <input className='cn-form-input'
                                         autoFocus={true}
-                                        onChange={
-                                            (e) => {
-                                                form.name = e.target.value
-                                                this.toggleAddingAssignment()
-                                            }
-                                        }
+                                        onChange={e => this.onModifyNameField(e, assignment)}
                                         value={assignment.name}
+                                        onKeyDown={e => this.handleKeyDown(e, assignment)}
+                                        key={`name${assignment.id}`}
                                     />
                                 </div >
                             </div>
@@ -370,7 +444,8 @@ class AssignmentForm extends React.Component {
                                                         this.toggleAddingAssignment()
                                                     }
                                                 }
-                                                value={this.assignmentDate(assignment.due).month()}/>
+                                                value={this.assignmentDate(assignment.due).month()}
+                                                key={`month${assignment.id}`}/>
                                     </div>
                                 </div>
                                 <div className='cn-input-assignment-day'>
@@ -383,11 +458,12 @@ class AssignmentForm extends React.Component {
                                                         this.toggleAddingAssignment()
                                                     }
                                                 }
-                                                value={this.assignmentDate(assignment.due).day()}/>
+                                                value={this.assignmentDate(assignment.due).day()}
+                                                key={`day${assignment.id}`}/>
                                     </div>
                                 </div>
                                 <div className="cn-delete-icon" >
-                                    <a onClick={() => this.setState({ showDatePicker: true })}>
+                                    <a onClick={() => console.log(assignment)}>
                                         <i class="far fa-calendar" > </i>
                                     </a>
                                 </div>
@@ -421,9 +497,9 @@ class AssignmentForm extends React.Component {
                             name='weight_id'
                             value={assignment.weight_id}
                             options={weights}
-                            onChange={(val) => { this.onChange({ id: id, weight_id: val.target.value }) }}>
+                            onChange={(e) => { this.onSelectUpdate(e, assignment) }}>
                             <option key="option 0" value="" className="option_no_weight" selected="selected"></option>
-                            <option key="option 1" value="No Weight" className="option_no_weight">No Weight</option>
+                            <option key="option 1" value="0" className="option_no_weight">No Weight</option>
                             {weights.map(weight => {
                             return (
                                 <option key={`option${weight.id}`} value={weight.id}>{weight.name}</option>
