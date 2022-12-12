@@ -504,7 +504,6 @@ class AssignmentForm extends React.Component {
                                     <div className='cn-input-container margin-top hide-spinner'>
                                         <input className='cn-form-input'
                                                 type={'number'}
-                                                autoFocus={true}
                                                 onChange={(e) => this.onMonthChange(e, assignment)}
                                                 value={this.showMonth(assignment.due)}
                                                 onKeyDown={e => this.handleKeyDown(e, assignment)}
@@ -515,7 +514,6 @@ class AssignmentForm extends React.Component {
                                     <div className='cn-input-container margin-top hide-spinner'>
                                         <input className='cn-form-input'
                                                 type={'number'}
-                                                autoFocus={true}
                                                 onChange={(e) => this.onDayChange(e, assignment)}
                                                 value={this.showDay(assignment.due)}
                                                 onKeyDown={e => this.handleKeyDown(e, assignment)}
@@ -613,7 +611,6 @@ class AssignmentForm extends React.Component {
                                     <div className='cn-input-container margin-top hide-spinner'>
                                         <input className='cn-form-input'
                                                 type={'number'}
-                                                autoFocus={true}
                                                 onChange={
                                                     (e) => {
                                                         this.onFormMonthChange(e)
@@ -629,7 +626,6 @@ class AssignmentForm extends React.Component {
                                     <div className='cn-input-container margin-top hide-spinner'>
                                         <input className='cn-form-input'
                                                 type={'number'}
-                                                autoFocus={true}
                                                 onChange={
                                                     (e) => {
                                                         this.onFormDayChange(e)

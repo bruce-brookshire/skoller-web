@@ -1,7 +1,7 @@
 #class-editor-weight-table {
   background-color: $cn-color-white;
   // border-top: 1px solid $cn-color-grey;
-  height: 100%;
+  height: 25%;
   display: flex;
   flex-direction: column;
   // min-width: 250px;
@@ -48,7 +48,7 @@
   }
 
   #weight-table-container {
-    height: 100%;
+    height: 50%;
 
     #weight-rows-only {
       min-height: 86%;
