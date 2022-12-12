@@ -254,10 +254,19 @@ class AssignmentForm extends React.Component {
         })
     }
 
+    copyName(name) {
+        return name.match(new RegExp(/\d$/))
+            ? `${name.slice(0, -1)}${parseInt(name.slice(-1)) + 1}`
+            : `${name} 1`
+    }
+
     copyExistingAssignment(assignment) {
+        console.log(assignment.name)
+        console.log(this.copyName(assignment.name))
+
         const copy = {
             ...assignment,
-            name: `${assignment.name} (Copy)`,
+            name: this.copyName(assignment.name),
             id:null
         }
         this.onCreateAssignmentFromUpdate(copy)
