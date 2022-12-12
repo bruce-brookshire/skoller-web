@@ -355,6 +355,14 @@ class AssignmentForm extends React.Component {
           this.onSubmitUpdatedAssignment(assignment)
           this.setState({ loading: false })
         }
+
+        if(event.keyCode === 8) {
+            const { assignments } = this.props
+            const index = assignments.findIndex( a => a.id === assignment.id)
+            assignments[index].due = null
+            this.setState({assignments: assignments})
+        }
+    
       }
 
       onSelectUpdate(event, assignment) {
@@ -384,7 +392,7 @@ class AssignmentForm extends React.Component {
       onMonthChange(event, assignment) {
         const { assignments } = this.props
         const index = assignments.findIndex( a => a.id === assignment.id)
-        assignments[index].due = moment(assignments[index].due).set('month', event.target.value)
+        assignments[index].due = assignments[index].due ? moment(assignments[index].due).set('month', +event.target.value - 1) : moment().set('month', +event.target.value - 1)
         this.setState({assignments: assignments})
       }
 
@@ -395,7 +403,7 @@ class AssignmentForm extends React.Component {
       onDayChange(event, assignment) {
         const { assignments } = this.props
         const index = assignments.findIndex( a => a.id === assignment.id)
-        assignments[index].due = moment(assignments[index].due).set('date', event.target.value)
+        assignments[index].due = assignments[index].due ? moment(assignments[index].due).set('date', event.target.value) : moment().set('date', event.target.value)
         this.setState({assignments: assignments})
       }
 
@@ -471,12 +479,12 @@ class AssignmentForm extends React.Component {
 
         return (
         <div id='cn-assignment-form' >
-            <div>
+            <div className='header'>
                 <div className='cn-section-name-header txt-gray' >
                     Name </div>
-                <div className='cn-section-value-header txt-gray' >
-                    {' '}</div>
-                <div className='cn-section-value-header txt-gray' >
+                {/* <div className='cn-section-value-header txt-gray' >
+                    {' '}</div> */}
+                <div className='cn-section-value-header txt-gray' style={{marginLeft: '50px'}} >
                     Weight </div>
                 <div className='cn-section-value-header txt-gray' >
                     Due Date </div>
@@ -564,8 +572,8 @@ class AssignmentForm extends React.Component {
                             value={assignment.weight_id}
                             options={weights}
                             onChange={(e) => { this.onSelectUpdate(e, assignment) }}>
-                            <option key="option 0" value="" className="option_no_weight" selected="selected"></option>
-                            <option key="option 1" value="0" className="option_no_weight">No Weight</option>
+                            <option key="option 0" value="" className="option_blank" selected="selected"></option>
+                            {/* <option key="option 1" value="" className="option_no_weight">No Weight</option> */}
                             {weights.map(weight => {
                             return (
                                 <option key={`option${weight.id}`} value={weight.id}>{weight.name}</option>
@@ -685,8 +693,8 @@ class AssignmentForm extends React.Component {
                             name='weight_id'
                             options={weights}
                             onChange={(e) => { this.submitFormFromWeightTag(e) }}>
-                            <option key="option 0" value="" className="option_no_weight" selected="selected"></option>
-                            <option key="option 1" value="0" className="option_no_weight">No Weight</option>
+                            <option key="option 0" value="" className="option_blank" selected="selected"></option>
+                            {/* <option key="option 1" value="" className="option_no_weight">No Weight</option> */}
                             {weights.map(weight => {
                             return (
                                 <option key={`option${weight.id}`} value={weight.id}>{weight.name}</option>
