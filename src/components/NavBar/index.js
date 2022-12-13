@@ -1,23 +1,23 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { inject, observer } from "mobx-react";
-import ClassInfo from "./ClassInfo";
-import { withRouter } from "react-router-dom";
-import JobsSwitch from "./JobsSwitch";
-import actions from "../../actions";
-import UserIcon from "../../assets/images/icons/user.svg";
-import ReactTooltip from "react-tooltip";
-import overridePosition from "./over";
-import SkModal from "../../views/components/SkModal/SkModal";
-import LifeTimeUserModal from "../../views/Student/components/LifeTimeUserModal";
-import PopUp from "../../views/Student/Home/PopUp";
-import { Cookies } from "react-cookie";
+import React from 'react'
+import PropTypes from 'prop-types'
+import { inject, observer } from 'mobx-react'
+import ClassInfo from './ClassInfo'
+import { withRouter } from 'react-router-dom'
+import JobsSwitch from './JobsSwitch'
+import actions from '../../actions'
+import UserIcon from '../../assets/images/icons/user.svg'
+import ReactTooltip from 'react-tooltip'
+import overridePosition from './over'
+import SkModal from '../../views/components/SkModal/SkModal'
+import LifeTimeUserModal from '../../views/Student/components/LifeTimeUserModal'
+import PopUp from '../../views/Student/Home/PopUp'
+import { Cookies } from 'react-cookie'
 
-@inject("rootStore")
+@inject('rootStore')
 @observer
 class NavBar extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       subscribed: false,
       isTrial: false,
@@ -25,36 +25,36 @@ class NavBar extends React.Component {
       subscriptionCancelled: false,
       showMyAccount: false,
       subscriptionEndsOrRenews: null,
-      popUp: { show: false, type: null },
-    };
-    this.cookie = new Cookies();
+      popUp: { show: false, type: null }
+    }
+    this.cookie = new Cookies()
   }
 
-  getName() {
+  getName () {
     const {
-      userStore: { user },
-    } = this.props.rootStore;
+      userStore: { user }
+    } = this.props.rootStore
     if (user.student) {
-      return `${user.student.name_first} ${user.student.name_last}`;
+      return `${user.student.name_first} ${user.student.name_last}`
     } else {
-      return user.email;
+      return user.email
     }
   }
 
-  getDescription() {
+  getDescription () {
     const {
-      userStore: { user },
-    } = this.props.rootStore;
-    const admin = this.props.rootStore.userStore.isAdmin();
+      userStore: { user }
+    } = this.props.rootStore
+    const admin = this.props.rootStore.userStore.isAdmin()
     if (user.student) {
-      return "Student";
+      return 'Student'
     } else if (admin) {
-      return "Admin";
+      return 'Admin'
     } else {
-      return "Syllabi Worker";
+      return 'Syllabi Worker'
     }
   }
-  componentDidMount() {
+  componentDidMount () {
     actions.stripe
       .getMySubscription()
       .then((data) => {
@@ -62,115 +62,123 @@ class NavBar extends React.Component {
           (Array.isArray(data.data) && data.data.length > 0) ||
           (!Array.isArray(data.data) && data.data != null)
         ) {
-          this.props.rootStore.userStore.setMySubscription(data.data);
+          this.props.rootStore.userStore.setMySubscription(data.data)
           this.props.rootStore.userStore.setSubscriptionCreatedDate(
             data.data.created
-          );
-          this.props.rootStore.userStore.setInterval(data.data.interval);
+          )
+          this.props.rootStore.userStore.setInterval(data.data.interval)
           this.setState({
-            subscriptionEndsOrRenews: this.setSubscriptionRenewal(data.data),
-          });
-          this.setState({ subscribed: this.isSubscribed(data.data) });
+            subscriptionEndsOrRenews: this.setSubscriptionRenewal(data.data)
+          })
+          this.setState({ subscribed: this.isSubscribed(data.data) })
           this.setState({
-            subscriptionCancelled: this.setCancellationStatus(data.data),
-          });
+            subscriptionCancelled: this.setCancellationStatus(data.data)
+          })
         }
-        this.setState({ isTrial: this.props.rootStore.userStore.user.trial });
+        this.setState({ isTrial: this.props.rootStore.userStore.user.trial })
         this.setState({
-          trialDaysLeft: this.props.rootStore.userStore.user.trial_days_left,
-        });
+          trialDaysLeft: this.props.rootStore.userStore.user.trial_days_left
+        })
         this.setState({
-          showMyAccount: !this.isSubscribed(data.data) && !this.state.isTrial,
-        });
+          showMyAccount: !this.isSubscribed(data.data) && !this.state.isTrial
+        })
       })
       .catch((e) => {
-        console.log(e);
-      });
+        console.log(e)
+      })
   }
 
-  setCancellationStatus({ expirationIntent, cancelAt }) {
+  setCancellationStatus ({ expirationIntent, cancelAt }) {
     if (expirationIntent == null && cancelAt == null) {
-      return false;
+      return false
     }
 
     if (expirationIntent != null) {
-      return true;
+      return true
     }
 
-    return false;
+    return false
   }
 
-  isSubscribed(data) {
-    if (data.expirationIntent == null && data.cancelAt == null) {
-      return true;
+  isSubscribed (data) {
+    if (data.expirationIntent === null && data.cancelAt === null) {
+      return true
     }
 
     if (
-      data.expirationIntent != null &&
-      data.cancelAt != null &&
-      data.cancelAt > Math.floor(new Date().getTime() / 1000)
+      data.expirationIntent !== null &&
+      data.cancelAt !== null &&
+      data.cancelAt > Math.floor(new Date().getTime())
     ) {
-      return true;
+      return true
     }
 
-    return false;
+    if (
+      data.expirationIntent === null &&
+      data.cancelAt !== null &&
+      data.cancelAt > Math.floor(new Date().getTime())
+    ) {
+      return true
+    }
+
+    return false
   }
 
-  setSubscriptionRenewal({ interval, cancelAt }) {
+  setSubscriptionRenewal ({ interval, cancelAt }) {
     if (cancelAt == null) {
       switch (interval) {
-        case "year":
+        case 'year':
           return new Date(
             new Date().setFullYear(new Date().getFullYear() + 1)
-          ).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          });
-        case "month":
+          ).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          })
+        case 'month':
           return new Date(
             new Date().setMonth(new Date().getMonth() + 1)
-          ).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          });
-        case "lifetime":
-          return "lifetime";
+          ).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          })
+        case 'lifetime':
+          return 'lifetime'
       }
     } else {
-      return new Date(cancelAt).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      });
+      return new Date(cancelAt).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      })
     }
   }
 
-  getInitials() {
+  getInitials () {
     const {
-      userStore: { user },
-    } = this.props.rootStore;
-    const admin = this.props.rootStore.userStore.isAdmin();
+      userStore: { user }
+    } = this.props.rootStore
+    const admin = this.props.rootStore.userStore.isAdmin()
     if (user.student) {
       if (user.student.name_first && user.student.name_last) {
         return (
           user.student.name_first[0].toUpperCase() +
           user.student.name_last[0].toUpperCase()
-        );
+        )
       } else if (user.student.name_first.length >= 2) {
-        return user.student.name_first.substring(0, 2).toUpperCase();
+        return user.student.name_first.substring(0, 2).toUpperCase()
       } else {
-        return "ST";
+        return 'ST'
       }
     } else if (admin) {
-      return "AD";
+      return 'AD'
     } else {
-      return "SW";
+      return 'SW'
     }
   }
 
-  renderMyAccountDetails() {
+  renderMyAccountDetails () {
     return (
       <div className="sk-pop-up-container">
         <SkModal
@@ -179,26 +187,26 @@ class NavBar extends React.Component {
               ? () => this.setState({ showMyAccount: false })
               : null
           }
-          style={{ width: "408px" }}
+          style={{ width: '408px' }}
         >
-          <div className="home-container" style={{ width: "100%", padding: 0 }}>
+          <div className="home-container" style={{ width: '100%', padding: 0 }}>
             {this.renderSubscriptionContent()}
           </div>
         </SkModal>
       </div>
-    );
+    )
   }
 
-  renderSubscriptionContent() {
+  renderSubscriptionContent () {
     return (
       <div className="home-column">
         <div
           className="home-shadow-box"
-          style={{ boxShadow: "none, margin: 0" }}
+          style={{ boxShadow: 'none, margin: 0' }}
         >
           <div
             className="home-shadow-box__expiresin-container"
-            style={{ padding: 0, textAlign: "center" }}
+            style={{ padding: 0, textAlign: 'center' }}
           >
             <div className="home-shadow-box__expiresin-title">
               <img
@@ -209,18 +217,18 @@ class NavBar extends React.Component {
               />
               {this.renderCancellationText()}
             </div>
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
               {this.renderSubscribeCancelButton()}
             </div>
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
               {this.renderSubscriptionEndText()}
               {!this.state.subscribed && !this.state.isTrial && (
                 <div
-                  onClick={() => this.props.history.push("/logout")}
+                  onClick={() => this.props.history.push('/logout')}
                   style={{
-                    color: "#333",
-                    marginTop: "10px",
-                    alignSelf: "flex-start",
+                    color: '#333',
+                    marginTop: '10px',
+                    alignSelf: 'flex-start'
                   }}
                 >
                   <i className="fas fa-sign-out-alt fa-lg" />
@@ -232,17 +240,17 @@ class NavBar extends React.Component {
           </div>
         </div>
       </div>
-    );
+    )
   }
 
-  renderCancellationText() {
-    const { mySubscription } = this.props.rootStore.userStore;
+  renderCancellationText () {
+    const { mySubscription } = this.props.rootStore.userStore
     if (
       this.state.subscribed &&
       mySubscription != null &&
       mySubscription.expirationIntent == null
     ) {
-      return <h1>Cancel Subscription</h1>;
+      return <h1>Cancel Subscription</h1>
     }
 
     if (!this.state.subscribed && this.state.isTrial) {
@@ -251,14 +259,14 @@ class NavBar extends React.Component {
           You have {Math.ceil(this.state.trialDaysLeft)} day left in your trial.
           Upgrade now!
         </h2>
-      );
+      )
     }
 
-    return <h1>You&apos;ve cancelled your subscription</h1>;
+    return <h1>You&apos;ve cancelled your subscription</h1>
   }
 
-  renderSubscribeCancelButton() {
-    const { mySubscription } = this.props.rootStore.userStore;
+  renderSubscribeCancelButton () {
+    const { mySubscription } = this.props.rootStore.userStore
     if (
       this.state.subscribed &&
       mySubscription &&
@@ -268,18 +276,18 @@ class NavBar extends React.Component {
         <div>
           <button
             className="btn btn-primary"
-            style={{ marginBottom: "10px" }}
+            style={{ marginBottom: '10px' }}
             onClick={() => {
-              this.setState({ showMyAccount: false });
+              this.setState({ showMyAccount: false })
               this.setState({
-                popUp: { type: "CancelSubscription", show: true },
-              });
+                popUp: { type: 'CancelSubscription', show: true }
+              })
             }}
           >
             Cancel Subscription
           </button>
         </div>
-      );
+      )
     }
 
     if (
@@ -295,21 +303,21 @@ class NavBar extends React.Component {
         <div>
           <button
             className="btn btn-primary"
-            style={{ marginBottom: "10px" }}
+            style={{ marginBottom: '10px' }}
             onClick={() => {
-              this.setState({ showMyAccount: false });
-              this.setState({ popUp: { type: "PaymentPlans", show: true } });
+              this.setState({ showMyAccount: false })
+              this.setState({ popUp: { type: 'PaymentPlans', show: true } })
             }}
           >
             Upgrade To Premium
           </button>
         </div>
-      );
+      )
     }
   }
 
-  renderSubscriptionEndText() {
-    const { mySubscription } = this.props.rootStore.userStore;
+  renderSubscriptionEndText () {
+    const { mySubscription } = this.props.rootStore.userStore
     if (
       mySubscription &&
       mySubscription.cancelAt == null &&
@@ -319,7 +327,7 @@ class NavBar extends React.Component {
         <span>
           Your subscription will renew on {this.state.subscriptionEndsOrRenews}
         </span>
-      );
+      )
     }
 
     if (
@@ -328,11 +336,11 @@ class NavBar extends React.Component {
       !this.state.subscribed &&
       this.state.isTrial
     ) {
-      return <span></span>;
+      return <span></span>
     }
 
     if (!mySubscription && !this.state.subscribed && this.state.isTrial) {
-      return <span></span>;
+      return <span></span>
     }
 
     if (
@@ -344,20 +352,20 @@ class NavBar extends React.Component {
         <span>
           Your subscription will end {this.state.subscriptionEndsOrRenews}
         </span>
-      );
+      )
     } else {
       return (
         <span>
           Your subscription ended {this.state.subscriptionEndsOrRenews}
         </span>
-      );
+      )
     }
   }
 
-  renderClassInfo() {
+  renderClassInfo () {
     const {
-      navbarStore: { cl, isDIY, toggleRequestResolved },
-    } = this.props.rootStore;
+      navbarStore: { cl, isDIY, toggleRequestResolved }
+    } = this.props.rootStore
     if (cl) {
       return (
         <ClassInfo
@@ -366,37 +374,37 @@ class NavBar extends React.Component {
           assignmentPage={false}
           toggleRequestResolved={toggleRequestResolved}
         />
-      );
+      )
     }
   }
 
-  renderLeaveSetupbtn() {
-    const admin = this.props.rootStore.userStore.isAdmin();
+  renderLeaveSetupbtn () {
+    const admin = this.props.rootStore.userStore.isAdmin()
     const {
-      navbarStore: { cl },
-    } = this.props.rootStore;
+      navbarStore: { cl }
+    } = this.props.rootStore
     if (cl) {
       return (
         <button
           className="cn_back_hmpage_btn"
           onClick={() => {
             if (admin) {
-              this.props.history.push("/hub/landing");
+              this.props.history.push('/hub/landing')
             } else {
-              this.props.history.push("/");
+              this.props.history.push('/')
             }
           }}
         >
           Leave Setup
         </button>
-      );
+      )
     }
   }
 
-  renderAssignmentClassInfo() {
+  renderAssignmentClassInfo () {
     const {
-      navbarStore: { cl, isDIY, toggleRequestResolved },
-    } = this.props.rootStore;
+      navbarStore: { cl, isDIY, toggleRequestResolved }
+    } = this.props.rootStore
     if (cl) {
       return (
         <ClassInfo
@@ -405,11 +413,11 @@ class NavBar extends React.Component {
           assignmentPage={true}
           toggleRequestResolved={toggleRequestResolved}
         />
-      );
+      )
     }
   }
 
-  renderOnboardHeader() {
+  renderOnboardHeader () {
     return (
       <div
         className="cn-navbar"
@@ -418,7 +426,7 @@ class NavBar extends React.Component {
           !this.props.rootStore.userStore.user.trial &&
           !this.state.subscribed
             ? null
-            : { zIndex: "100" }
+            : { zIndex: '100' }
         }
       >
         <div>
@@ -429,10 +437,10 @@ class NavBar extends React.Component {
           />
           <div className="onboard-logo-text">
             {this.props.rootStore.userStore.isSW()
-              ? ""
+              ? ''
               : this.props.rootStore.navbarStore.isSyllabusTool
-              ? "Class Setup Tool."
-              : "Keep up classes, together"}
+                ? 'Class Setup Tool.'
+                : 'Keep up classes, together'}
           </div>
         </div>
         <div className="user-info">
@@ -440,7 +448,7 @@ class NavBar extends React.Component {
           <div className="right"></div>
         </div>
       </div>
-    );
+    )
   }
 
   // Jobs features are not in use
@@ -483,7 +491,7 @@ class NavBar extends React.Component {
   //   )
   // }
 
-  renderLifeTimeTrialUserModal() {
+  renderLifeTimeTrialUserModal () {
     return (
       <div className="sk-pop-up-container">
         <SkModal closeModal={() => this.setState({ showMyAccount: false })}>
@@ -493,70 +501,70 @@ class NavBar extends React.Component {
           />
         </SkModal>
       </div>
-    );
+    )
   }
 
-  renderPopUp() {
+  renderPopUp () {
     return (
       <PopUp
         closeModal={
           this.state.subscribed || this.state.isTrial
             ? () => this.closePopUp()
             : () => {
-                return null;
-              }
+              return null
+            }
         }
         handleModalClose={() => this.closePopUp()}
         type={this.state.popUp.type}
         shouldAllowClose={this.state.subscribed || this.state.isTrial}
         refreshClasses={() => this.updateClasses()}
       />
-    );
+    )
   }
 
-  renderAccountContainer() {
+  renderAccountContainer () {
     if (
       this.state.showMyAccount &&
       this.props.rootStore.userStore.user.lifetime_trial
     ) {
-      return this.renderLifeTimeTrialUserModal();
+      return this.renderLifeTimeTrialUserModal()
     }
 
     if (
       !this.props.rootStore.userStore.user.lifetime_trial &&
       this.state.showMyAccount
     ) {
-      return this.renderMyAccountDetails();
+      return this.renderMyAccountDetails()
     }
   }
 
-  async updateStudent() {
+  async updateStudent () {
     if (this.cookie) {
-      if (this.cookie.get("skollerToken")) {
+      if (this.cookie.get('skollerToken')) {
         await actions.auth
-          .getUserByToken(this.cookie.get("skollerToken"))
-          .catch((r) => console.log(r));
+          .getUserByToken(this.cookie.get('skollerToken'))
+          .catch((r) => console.log(r))
       }
     }
   }
-  async updateClasses() {
-    this.props.rootStore.studentAssignmentsStore.updateAssignments();
-    this.props.rootStore.studentClassesStore.updateClasses();
+  async updateClasses () {
+    this.props.rootStore.studentAssignmentsStore.updateAssignments()
+    this.props.rootStore.studentClassesStore.updateClasses()
   }
 
-  closePopUp() {
-    this.updateStudent();
-    this.updateClasses();
-    this.setState({ popUp: { show: false } });
+  closePopUp () {
+    this.updateStudent()
+    this.updateClasses()
+    this.setState({ popUp: { show: false } })
   }
 
-  render() {
+  render () {
     if (this.props.onboard) {
-      return this.renderOnboardHeader();
+      return this.renderOnboardHeader()
     } else {
-      const admin = this.props.rootStore.userStore.isAdmin();
+      const admin = this.props.rootStore.userStore.isAdmin()
       return (
-        <div className="cn-navbar" style={{ zIndex: "100" }}>
+        <div className="cn-navbar" style={{ zIndex: '100' }}>
           {this.state.popUp.show && this.renderPopUp()}
           <div>
             <img
@@ -565,18 +573,18 @@ class NavBar extends React.Component {
               src="/src/assets/images/logo-wide-blue@1x.png"
               onClick={() => {
                 if (admin) {
-                  this.props.history.push("/hub/landing");
+                  this.props.history.push('/hub/landing')
                 } else {
-                  this.props.history.push("/");
+                  this.props.history.push('/')
                 }
               }}
             />
             <div className="cn-navbar-message">
               {this.props.rootStore.userStore.isSW()
-                ? ""
+                ? ''
                 : this.props.rootStore.navbarStore.isSyllabusTool
-                ? "Class Setup Tool."
-                : "Keep up classes, together"}
+                  ? 'Class Setup Tool.'
+                  : 'Keep up classes, together'}
             </div>
           </div>
 
@@ -595,19 +603,19 @@ class NavBar extends React.Component {
                   <div>
                     <div
                       style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        cursor: "pointer",
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer'
                       }}
                     >
-                      <img src={UserIcon} style={{ width: "20px" }} />
+                      <img src={UserIcon} style={{ width: '20px' }} />
                       <button
                         style={{
-                          cursor: "pointer",
-                          border: "none",
-                          outline: "none",
-                          background: "transparent",
+                          cursor: 'pointer',
+                          border: 'none',
+                          outline: 'none',
+                          background: 'transparent'
                         }}
                         onClick={() => this.setState({ showMyAccount: true })}
                       >
@@ -617,9 +625,9 @@ class NavBar extends React.Component {
                   </div>
                 )}
                 effect="solid"
-                place={"bottom"}
+                place={'bottom'}
                 border={true}
-                type={"light"}
+                type={'light'}
                 clickable={true}
                 delayHide={500}
                 overridePosition={overridePosition}
@@ -639,16 +647,16 @@ class NavBar extends React.Component {
             <div
               className="left"
               style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
               }}
             >
               <div
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "flex-end",
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-end'
                 }}
               >
                 <p>{this.getName()}</p>
@@ -657,15 +665,15 @@ class NavBar extends React.Component {
               </div>
               <div
                 style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  filter: "drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.5))",
-                  borderRadius: "50%",
-                  marginLeft: "10px",
-                  background: "#D8D8D8",
-                  width: "34px",
-                  height: "34px",
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  filter: 'drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.5))',
+                  borderRadius: '50%',
+                  marginLeft: '10px',
+                  background: '#D8D8D8',
+                  width: '34px',
+                  height: '34px'
                 }}
               >
                 <img
@@ -677,7 +685,7 @@ class NavBar extends React.Component {
             <div className="right">{this.renderLeaveSetupbtn()}</div>
           </div>
         </div>
-      );
+      )
     }
   }
 }
@@ -685,7 +693,7 @@ class NavBar extends React.Component {
 NavBar.propTypes = {
   rootStore: PropTypes.object,
   onboard: PropTypes.bool,
-  history: PropTypes.object,
-};
+  history: PropTypes.object
+}
 
-export default withRouter(NavBar);
+export default withRouter(NavBar)
