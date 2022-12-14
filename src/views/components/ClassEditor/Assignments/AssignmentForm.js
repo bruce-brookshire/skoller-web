@@ -43,6 +43,7 @@ class AssignmentForm extends React.Component {
     constructor(props) {
         super(props)
         this.state = this.initializeState()
+        this.textInput = React.createRef()
     }
 
     toggleAddingAssignment() {
@@ -123,6 +124,8 @@ class AssignmentForm extends React.Component {
             this.props.updateLastAssignmentDate(date)
         }
         this.props.toggleAddingAssignment(false)
+        this.textInput.current.focus()
+        this.props.handleEmptyForm(true)
     }
 
     submitForm(event) {
@@ -159,6 +162,7 @@ class AssignmentForm extends React.Component {
         const { assignment } = this.props
         this.props.onDeleteAssignment(assignment)
         this.setState({ form: this.initializeFormData(), loading: false, due_null: false })
+        this.props.handleEmptyForm(true)
     }
 
     onDeleteExisting(assignment) {
@@ -457,7 +461,7 @@ class AssignmentForm extends React.Component {
 
     render() {
         const { form } = this.state
-        const { formErrors, updateProperty, weights, assignments } = this.props
+        const { formErrors, updateProperty, weights, assignments, formIsEmpty } = this.props
         const disableButton = !this.verifyData(form)
 
         //this matchtes the weights and assignments in the 3rd step
@@ -490,8 +494,9 @@ class AssignmentForm extends React.Component {
                     Due Date </div>
                 
             </div> <hr className="txt-gray" />
-
+            <button onClick={() => console.log(formIsEmpty)}>click</button>
             {
+                
                 assignments.map(assignment => (
                     <div className='' >
                         <div className="cn-delete-icon" >
@@ -573,7 +578,7 @@ class AssignmentForm extends React.Component {
                             options={weights}
                             onChange={(e) => { this.onSelectUpdate(e, assignment) }}>
                             <option key="option 0" value="" className="option_blank" selected="selected"></option>
-                            {/* <option key="option 1" value="" className="option_no_weight">No Weight</option> */}
+                            <option key="option 1" value={null} className="option_no_weight">No Weight</option>
                             {weights.map(weight => {
                             return (
                                 <option key={`option${weight.id}`} value={weight.id}>{weight.name}</option>
@@ -596,6 +601,8 @@ class AssignmentForm extends React.Component {
                 ))
             }
 
+            {/* THIS IS THE FORM -> THE LAST ROW OF ASSIGNMENTS */}
+
             <div className='' >
                 <div className="cn-delete-icon" >
                     <a onClick={this.onDelete.bind(this)}>
@@ -606,15 +613,18 @@ class AssignmentForm extends React.Component {
                     <form onSubmit={this.onSubmit.bind(this)}>
                         <div class="form-element relative" >
                             <div className='cn-input-container margin-top' >
-                                <input className='cn-form-input'
+                                <input className='cn-form-input new-form'
+                                    ref={this.textInput}
                                     autoFocus={true}
                                     onChange={
                                         (e) => {
                                             form.name = e.target.value
+                                            !form.name ? this.props.handleEmptyForm(true) : this.props.handleEmptyForm(false)
                                             this.toggleAddingAssignment()
                                         }
                                     }
                                     value={form.name}
+                                    
                                 />
                             </div >
                         </div>
@@ -626,7 +636,7 @@ class AssignmentForm extends React.Component {
                             <div>
                                 <div className='cn-input-assignment-month'>
                                     <div className='cn-input-container margin-top hide-spinner'>
-                                        <input className='cn-form-input'
+                                        <input className='cn-form-input new-form'
                                                 type={'number'}
                                                 onChange={
                                                     (e) => {
@@ -641,7 +651,7 @@ class AssignmentForm extends React.Component {
                                 </div>
                                 <div className='cn-input-assignment-day'>
                                     <div className='cn-input-container margin-top hide-spinner'>
-                                        <input className='cn-form-input'
+                                        <input className='cn-form-input new-form'
                                                 type={'number'}
                                                 onChange={
                                                     (e) => {
@@ -689,12 +699,12 @@ class AssignmentForm extends React.Component {
 
                 <div className='cn-input-assignment-weight'>
                     <div className='cn-input-container margin-top'>
-                        <select className="cn-form-input"
+                        <select className="cn-form-input new-form"
                             name='weight_id'
                             options={weights}
                             onChange={(e) => { this.submitFormFromWeightTag(e) }}>
                             <option key="option 0" value="" className="option_blank" selected="selected"></option>
-                            {/* <option key="option 1" value="" className="option_no_weight">No Weight</option> */}
+                            <option key="option 1" value={null} className="option_no_weight">No Weight</option>
                             {weights.map(weight => {
                             return (
                                 <option key={`option${weight.id}`} value={weight.id}>{weight.name}</option>
@@ -731,7 +741,9 @@ AssignmentForm.propTypes = {
     lastAssignmentDate: PropTypes.string,
     updateLastAssignmentDate: PropTypes.func,
     onDeleteAssignment: PropTypes.func,
-    toggleAddingAssignment: PropTypes.function
+    toggleAddingAssignment: PropTypes.function,
+    formIsEmpty: PropTypes.bool,
+    handleEmptyForm:PropTypes.func,
 }
 
 export default ValidateForm(Form(AssignmentForm, 'form'))

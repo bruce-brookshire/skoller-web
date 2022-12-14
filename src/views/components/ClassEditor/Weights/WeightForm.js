@@ -294,17 +294,9 @@ class WeightForm extends React.Component {
 
           <div className="cn-name-field">
             <form onSubmit={this.onSubmit.bind(this)}>
-              {/* <InputField
-                containerClassName='margin-top'
-                inputClassName='input-box'
-                error={formErrors.name}
-                name="name"
-                onChange={updateProperty}
-                value={form.name}
-              /> */}
                 <div className='form-element relative'>
                   <div className='cn-input-container margin-top'>
-                    <input className='cn-form-input input-box'
+                    <input className='cn-form-input input-box new-form'
                          ref={this.textInput}
                          key={'formname'}
                          value={form.name}
@@ -318,18 +310,9 @@ class WeightForm extends React.Component {
           </div>
           <div className="cn-value-field">
             <form onSubmit={this.onSubmit.bind(this)}>
-              {/* <InputField
-                containerClassName='margin-top hide-spinner'
-                inputClassName='input-box'
-                error={formErrors.weight}
-                name="weight"
-                onChange={updateProperty}
-                type="number"
-                value={form.weight}
-              /> */}
             <div className='form-element relative'>
                 <div className='cn-input-container margin-top hide-spinner'>
-                  <input className='cn-form-input input-box'
+                  <input className='cn-form-input input-box new-form'
                          key={'formweight'}
                          type='number'
                          value={form.weight}

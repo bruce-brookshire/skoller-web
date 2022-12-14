@@ -42,6 +42,16 @@
     border-radius: 5px;
     height: 24px;
     padding: 0 5px;
+    background-color: #EDFAFF;
+  }
+
+  .cn-form-input:focus{
+    border: 1px solid #57b9e4 !important;
+    background-color: #ffffff !important;
+  }
+
+  .new-form {
+    background-color: white !important;
   }
 
   .cn-input-container {
@@ -114,11 +124,11 @@
   }
 
   .cn-delete-icon {
-    width: 7%;
+    width: 5%;
     display: inline-block;
     color: #5ab9e4;
     vertical-align: -webkit-baseline-middle;
-    font-size: 20px;
+    font-size: 15px;
   }
 
   .cn-input-assignment-name {
@@ -143,11 +153,11 @@
     display: inline-block;
   }
   .cn-files-icon {
-    width: 7%;
+    width: 5%;
     display: inline-block;
     color: #5ab9e4;
     vertical-align: -webkit-baseline-middle;
-    font-size: 20px;
+    font-size: 15px;
     text-align: end;
   }
 }
