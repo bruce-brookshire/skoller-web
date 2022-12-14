@@ -25,6 +25,7 @@ class NavBar extends React.Component {
       subscriptionCancelled: false,
       showMyAccount: false,
       subscriptionEndsOrRenews: null,
+      platform: null,
       popUp: { show: false, type: null }
     }
     this.cookie = new Cookies()
@@ -81,6 +82,9 @@ class NavBar extends React.Component {
         })
         this.setState({
           showMyAccount: !this.isSubscribed(data.data) && !this.state.isTrial
+        })
+        this.setState({
+          platform: data.data.platform
         })
       })
       .catch((e) => {
@@ -262,7 +266,13 @@ class NavBar extends React.Component {
       )
     }
 
-    return <h1>You&apos;ve cancelled your subscription</h1>
+    if (!this.state.subscribed && !this.state.isTrial) {
+      return (
+        <h2>
+          Your free trial has expired! Upgrade to Premium to continue using Skoller.
+        </h2>
+      )
+    }
   }
 
   renderSubscribeCancelButton () {
@@ -274,24 +284,26 @@ class NavBar extends React.Component {
     ) {
       return (
         <div>
-          <button
-            className="btn btn-primary"
-            style={{ marginBottom: '10px' }}
-            onClick={() => {
-              this.setState({ showMyAccount: false })
-              this.setState({
-                popUp: { type: 'CancelSubscription', show: true }
-              })
-            }}
-          >
+          { this.state.platform === 'stripe'
+            ? <button
+              className="btn btn-primary"
+              style={{ marginBottom: '10px' }}
+              onClick={() => {
+                this.setState({ showMyAccount: false })
+                this.setState({
+                  popUp: { type: 'CancelSubscription', show: true }
+                })
+              }}
+            >
             Cancel Subscription
-          </button>
+            </button>
+            : <span>You subscribed to premium through your mobile device&apos;s In-App-Purchasing. Manage your subscription through your device.</span>}
         </div>
       )
     }
 
     if (
-      !this.state.subscribed ||
+      (!this.state.subscribed && !this.state.isTrial) ||
       (this.state.subscribed &&
         mySubscription &&
         mySubscription.expirationIntent &&
@@ -313,6 +325,10 @@ class NavBar extends React.Component {
           </button>
         </div>
       )
+    } else {
+      return (
+        <div>Balls</div>
+      )
     }
   }
 
@@ -325,7 +341,9 @@ class NavBar extends React.Component {
     ) {
       return (
         <span>
-          Your subscription will renew on {this.state.subscriptionEndsOrRenews}
+          {this.state.subscriptionEndsOrRenews === 'lifetime' ? 'You have a lifetime subscription.'
+            : 'Your subscription will renew on {this.state.subscriptionEndsOrRenews'
+          }
         </span>
       )
     }
@@ -351,12 +369,6 @@ class NavBar extends React.Component {
       return (
         <span>
           Your subscription will end {this.state.subscriptionEndsOrRenews}
-        </span>
-      )
-    } else {
-      return (
-        <span>
-          Your subscription ended {this.state.subscriptionEndsOrRenews}
         </span>
       )
     }
