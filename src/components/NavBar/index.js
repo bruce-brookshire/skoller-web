@@ -647,7 +647,7 @@ class NavBar extends React.Component {
             )
           }
 
-          {this.renderAccountContainer()}
+          {!admin && this.renderAccountContainer()}
 
           <div
             className="user-info"
