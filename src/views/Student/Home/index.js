@@ -18,7 +18,7 @@ import AddClassModal from '../components/AddClassModal'
 class Home extends React.Component {
   constructor (props) {
     super(props)
-    console.log('here')
+
     this.state = {
       subscribed: false,
       subscriptionCancelled: false,

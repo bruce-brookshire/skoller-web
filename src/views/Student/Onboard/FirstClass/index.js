@@ -28,7 +28,7 @@ class FirstClass extends React.Component {
       mobile: false,
       mobileMessage: null
     }
-    console.log(this.props.rootStore.userStore.user, 'USER USER')
+
     this.getFirstClass()
   }
 
