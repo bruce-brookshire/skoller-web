@@ -83,13 +83,13 @@ class AddClassModal extends React.Component {
     return (
       <div className='sk-add-class-container'>
         {this.state.classStatusModal.show &&
-          <ClassStatusModal 
-            cl={this.state.classStatusModal.cl} 
-            firstOpen={true} 
-            closeModal={() => this.props.closeModal()} 
+          <ClassStatusModal
+            cl={this.state.classStatusModal.cl}
+            firstOpen={true}
+            closeModal={() => this.props.closeModal()}
             onSubmit={() => this.onSubmit()}
-            trial={this.props.trial}
-            isSubscribed={this.props.isSubscribed}
+            trial={this.props.rootStore.userStore.user.trial}
+            isSubscribed={!!this.props.rootStore.userStore.user.subscriptions}
             onUpgradeToPremiumClicked={this.props.onUpgradeToPremiumClicked} />
         }
         <div className='sk-add-class-modal-wrapper' style={this.state.classStatusModal.show ? {display: 'none'} : {}}>

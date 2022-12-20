@@ -128,7 +128,7 @@ class ChangeSchool extends React.Component {
               <p> Upgrade to premium</p>
             </div>
             <div className="row">
-              <div className="col-md-12">
+              <div className="col-md-12" style={{width: '100%'}}>
                 <div className="listgroup-wrap margin-bottom">
                   <h4 className="divider-title"><span>Select a Plan</span></h4>
                   <div className="group-list">
