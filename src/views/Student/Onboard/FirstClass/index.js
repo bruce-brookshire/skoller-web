@@ -102,7 +102,6 @@ class FirstClass extends React.Component {
             handleDrop={(file) => {
               let additionalFiles = this.state.additionalFiles
               additionalFiles.push(file[0])
-              console.log(additionalFiles)
               this.setState({additionalFiles: additionalFiles})
             }}
           >
@@ -242,7 +241,6 @@ class FirstClass extends React.Component {
       await actions.documents.uploadClassDocument(this.state.firstClass, this.state.syllabus[0], true)
       if (this.state.additionalFiles) {
         await this.state.additionalFiles.forEach(file => {
-          console.log(file)
           actions.documents.uploadClassDocument(this.state.firstClass, file, false)
         })
       }
@@ -254,7 +252,6 @@ class FirstClass extends React.Component {
     } else if (this.state.status === 'inReview' || this.state.status === 'live') {
       this.props.onSubmit()
     } else if (this.state.status === 'diy') {
-      console.log('TODO: this should send you to syllabus tool')
       this.sendToDiy()
     }
   }
@@ -357,6 +354,8 @@ class FirstClass extends React.Component {
             disableNext={false}
             cl={this.state.firstClass}
             onboard={true}
+            trial={this.props.rootStore.userStore.user.trial}
+            isSubscribed={!!this.props.rootStore.userStore.user.subscriptions}
           />
         }
       </div>

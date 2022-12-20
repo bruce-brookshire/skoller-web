@@ -82,7 +82,7 @@ class ClassStatusModal extends React.Component {
       sammiMessage = <span>Your syllabus is <b>IN REVIEW!</b></span>
     } else if (id === 1200 && this.props.trial && !this.props.isSubscribed) {
       status = 'inTrialReview'
-      sammiMessage = null;
+      sammiMessage = null
     } else if (id === 1300) {
       status = 'diy'
       sammiMessage = <span>The document(s) submitted <b>don&apos;t have the info we need for setup.</b></span>
@@ -236,11 +236,11 @@ class ClassStatusModal extends React.Component {
     return (
       !this.state.uploadAdditionalDocumentsView &&
       <div className='sk-class-status-modal-checklist-container'>
-        <ClassStatusImage 
+        <ClassStatusImage
           status={
-            (this.state.fullClass.school.is_syllabus_overload && this.state.fullClass.status.id < 1400 || this.state.status == 'inTrialReview') 
-            ? 1500 
-            : this.state.cl.status.id
+            (this.state.fullClass.school.is_syllabus_overload && this.state.fullClass.status.id < 1400 || this.state.status == 'inTrialReview')
+              ? 1500
+              : this.state.cl.status.id
           }
         />
         {this.renderDownloadCompleteDownload()}
@@ -271,7 +271,7 @@ class ClassStatusModal extends React.Component {
         </div>
       )
     } else if (this.props.onboard) {
-      return(
+      return (
         <div className='sk-class-status-modal-action-detail'>
           <h2>Check back soon to find this class already set up for you.</h2>
         </div>
@@ -302,24 +302,24 @@ class ClassStatusModal extends React.Component {
   renderInReviewTrial () {
     return (
       <div className='sk-pm-content-container'>
-      {/* Modal content */}
-      <div className='sk-class-status-modal'>
-        {/* Status Content */}
-        <div>
-          <div className='sk-class-status-modal-container'>
-            <div className='sk-class-status-modal-row'>
-              <div className='sk-class-status-modal-action-container'>
-                <h1 style={{textAlign: 'center', marginBottom: '1rem'}}><span><b>We are swamped...</b></span></h1>
-                <div className='sk-class-status-modal-action-detail'>
-                  <h2>Move your syllabus to the front of the line by upgrading to premium!</h2>
+        {/* Modal content */}
+        <div className='sk-class-status-modal'>
+          {/* Status Content */}
+          <div>
+            <div className='sk-class-status-modal-container'>
+              <div className='sk-class-status-modal-row'>
+                <div className='sk-class-status-modal-action-container'>
+                  <h1 style={{textAlign: 'center', marginBottom: '1rem'}}><span><b>We are swamped...</b></span></h1>
+                  <div className='sk-class-status-modal-action-detail'>
+                    <h2>Move your syllabus to the front of the line by upgrading to premium!</h2>
                     <UpgradeToPremiumBtn onClick={this.props.onUpgradeToPremiumClicked}>Upgrade to Premium</UpgradeToPremiumBtn>
                   </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
     )
   }
 
@@ -400,7 +400,7 @@ class ClassStatusModal extends React.Component {
                 ? this.renderInReview()
                 : null
               }
-              {this.state.status ==='inTrialReview'
+              {this.state.status === 'inTrialReview'
                 ? this.renderInReviewTrial()
                 : null
               }
@@ -498,7 +498,7 @@ class ClassStatusModal extends React.Component {
     }
   }
 
-  getStatus() {
+  getStatus () {
     if (this.props.trial && !this.props.isSubscribed) {
       return {
         loading: false,
@@ -527,16 +527,14 @@ class ClassStatusModal extends React.Component {
   }
 
   renderNextButton () {
-
     let buttonText
-    buttonText = this.state.cl.status.id === 1400  && !this.props.onboard ? 'Check it out!' : 'Done'
+    buttonText = this.state.cl.status.id === 1400 && !this.props.onboard ? 'Check it out!' : 'Done'
     if (this.state.status === 'needSyllabus' || this.state.status === 'diy') {
       buttonText = 'Submit'
     } else if (this.state.status === 'syllabusOverload') {
       buttonText = `Use the DIY tool`
     }
     if ((!this.state.mobile || this.state.status === 'live') && this.state.status !== 'inReview' && this.state.status !== 'inTrialReview') {
-      console.log(this.state.status, "STATTUSUSUSUS")
       return (
         <div
           className={'onboard-next' + (
