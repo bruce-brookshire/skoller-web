@@ -98,7 +98,7 @@ class Home extends React.Component {
     await actions.stripe.getMySubscription()
       .then((data) => {
         if (data.data) {
-          this.setState({ subscribed: true })
+          this.setState({ subscribed: this.isSubscribed(data.data) })
           this.setState({ subscriptionCancelled: this.setCancellationStatus(data.data) })
           if (showPopUp) {
             this.setState({ popUp: { type: type, show: true } })
@@ -110,6 +110,30 @@ class Home extends React.Component {
       .catch((e) => {
         console.log(e)
       })
+  }
+
+  isSubscribed (data) {
+    if (data.expirationIntent === null && data.cancelAt === null) {
+      return true
+    }
+
+    if (
+      data.expirationIntent !== null &&
+      data.cancelAt !== null &&
+      data.cancelAt > Math.floor(new Date().getTime())
+    ) {
+      return true
+    }
+
+    if (
+      data.expirationIntent === null &&
+      data.cancelAt !== null &&
+      data.cancelAt > Math.floor(new Date().getTime())
+    ) {
+      return true
+    }
+
+    return false
   }
 
   setCancellationStatus ({ expirationIntent, cancelAt }) {

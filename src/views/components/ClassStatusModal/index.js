@@ -77,7 +77,7 @@ class ClassStatusModal extends React.Component {
       status = 'needSyllabus'
       sammiMessage = <span>It&apos;s time to <b>send your syllabus!</b></span>
       mobileMessage = `Head over to skoller.co on your computer to login and upload your syllabus.`
-    } else if (id === 1200 && ((!this.props.trial || this.props.trial) && this.props.isSubscribed) || this.props.onboard) {
+    } else if (id === 1200 && !this.props.trial && this.props.isSubscribed && !this.props.onboard) {
       status = 'inReview'
       sammiMessage = <span>Your syllabus is <b>IN REVIEW!</b></span>
     } else if (id === 1200 && this.props.trial && !this.props.isSubscribed) {
@@ -624,7 +624,7 @@ class ClassStatusModal extends React.Component {
         justifyContent: !(this.state.status === 'needSyllabus' || this.state.status === 'diy' || this.state.status === 'inTrialReview') && this.props.closeModal ? 'flex-end' : 'space-between',
         margin: '0.5rem 0 -0.5rem 0'
       }}>
-        {(this.state.status === 'inReview' || this.state.status == 'inTrialReview') && !mobileCheck() && this.props.onboard
+        {(this.state.status === 'inReview' || this.state.status === 'inTrialReview') && !mobileCheck() && this.props.onboard
           ? <p
             style={{margin: '6px 0 0 0', textAlign: 'center', cursor: 'pointer'}}
             onClick={() => {

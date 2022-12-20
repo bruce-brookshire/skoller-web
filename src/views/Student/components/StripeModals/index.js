@@ -1,9 +1,6 @@
 import React from 'react'
 import { inject, observer } from 'mobx-react'
 import PropTypes from 'prop-types'
-import FindAClass from '../../Onboard/FindAClass'
-import PremminiumPlans from './PreminiumPlans'
-import InfoModal from './InfoModal'
 import PaymentModel from './PaymentModel'
 import ClassStatusModal from '../../../components/ClassStatusModal'
 import moment from 'moment'
@@ -62,7 +59,7 @@ class PaymentPlans extends React.Component {
         })
 
         let terms = activeMainTerms.sort((a, b) => moment(a.start_date).isAfter(moment(b.start_date)) ? 0 : -1)
-          if (terms.length > 0) {
+        if (terms.length > 0) {
           actions.students.setStudentPrimaryPeriod(this.props.rootStore.userStore.user.id, this.props.rootStore.userStore.user.student.id, terms[0].id)
             .then((r) => {
               this.setState({
@@ -74,7 +71,7 @@ class PaymentPlans extends React.Component {
               })
             })
             .catch(e => console.log(e))
-          }
+        }
       }
     }
   }
