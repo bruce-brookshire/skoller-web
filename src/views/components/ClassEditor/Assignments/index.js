@@ -294,7 +294,6 @@ class Assignments extends React.Component {
     }
 
     handleEmptyForm(isEmpty) {
-        console.log(`this function was called and the variable came as ${isEmpty}`)
         this.setState({formIsEmpty: isEmpty})
         if(isEmpty){
             this.handleSubmitClicked(false)

@@ -213,7 +213,7 @@ class WeightForm extends React.Component {
     handleKeyDown(event, weight) {
       console.log(event.key)
       console.log(weight)
-      if(event.key === 'Enter' || event.key === 'Tab') {
+      if(event.key === 'Enter') {
         this.setState({ loading: true })
         this.onSubmitUpdatedWeight(weight)
         this.setState({ loading: false })
@@ -258,6 +258,11 @@ class WeightForm extends React.Component {
                          value={weight.name}
                          onChange={e => this.onModifyNameField(e, weight)}
                          onKeyDown={e => this.handleKeyDown(e, weight)}
+                         onBlur={() => {
+                          this.setState({ loading: true })
+                          this.onSubmitUpdatedWeight(weight)
+                          this.setState({ loading: false })
+                         }}
                   />
                 </div>
               </div>
@@ -272,6 +277,11 @@ class WeightForm extends React.Component {
                          value={weight.weight}
                          onChange={e => this.onModifyWeightField(e, weight)}
                          onKeyDown={e => this.handleKeyDown(e, weight)}
+                         onBlur={() => {
+                          this.setState({ loading: true })
+                          this.onSubmitUpdatedWeight(weight)
+                          this.setState({ loading: false })
+                         }}
                   />
                 </div>
               </div>
