@@ -329,7 +329,6 @@ class WeightForm extends React.Component {
                          onChange={e => this.setState({form: {name: form.name, weight: e.target.value}})}
                          onBlur={e => {
                            if(form.weight && form.name){
-                             console.log('I am here')
                              this.onSubmit(e)
                            }
                          }}
