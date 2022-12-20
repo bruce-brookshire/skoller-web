@@ -91,7 +91,9 @@ class Assignments extends React.Component {
             addAssignment: false,
             lastAssignmentDate: Date.now(),
             addingAssignment: false,
-            openProgressModal: false
+            openProgressModal: false,
+            formIsEmpty: true,
+            submitClicked: false,
         }
     }
 
@@ -291,6 +293,17 @@ class Assignments extends React.Component {
         this.props.onSubmit()
     }
 
+    handleEmptyForm(isEmpty) {
+        this.setState({formIsEmpty: isEmpty})
+        if(isEmpty){
+            this.handleSubmitClicked(false)
+        }
+    }
+
+    handleSubmitClicked(clicked){
+        this.setState({submitClicked: clicked})
+    }
+
     onSubmitSingleWeight() {
         this.submitAssignments()
         this.handleSubmit()
@@ -372,9 +385,15 @@ class Assignments extends React.Component {
                                 }
                                 weights={weights}
                                 assignments={assignments}
+                                formIsEmpty={this.state.formIsEmpty}
+                                handleEmptyForm={this.handleEmptyForm.bind(this)}
                             />
+                            {!this.state.formIsEmpty && this.state.submitClicked &&
+                                <span>This assignment is not saved. Save or delete to continue.</span>
+                            }
                         </div>
                     }
+                    
                     {
                         assignments.length === 0 &&
                         <div id='cn-assignment-table-new' >
@@ -422,7 +441,12 @@ class Assignments extends React.Component {
                         assignments.length !== 0 && !viewOnly && !addAssignment &&
                         <button
                             onClick={
-                                () => this.handleSubmit()
+                                () => {
+                                    this.handleSubmitClicked(true)
+                                    if(this.state.formIsEmpty) {
+                                        this.handleSubmit()
+                                    }
+                                }
                             }
                             className='button full-width margin-top margin-bottom' >
                             Save Assignments ({assignments.length}) </button>

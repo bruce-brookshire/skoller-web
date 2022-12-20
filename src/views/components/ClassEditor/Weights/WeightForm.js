@@ -19,6 +19,7 @@ class WeightForm extends React.Component {
   constructor(props) {
     super(props)
     this.state = this.initializeState()
+    this.textInput = React.createRef()
   }
 
   /*
@@ -81,6 +82,10 @@ class WeightForm extends React.Component {
     weight.id ? this.onUpdateWeightFromUpdate(form) : this.onCreateWeightFromUpdate(form)
   }
 
+  // componentDidUpdate() {
+  //   this.textInput.current.focus()
+  // }
+
   onSubmit(e) {
     e.preventDefault();
     const { form } = this.state
@@ -91,6 +96,7 @@ class WeightForm extends React.Component {
         ? this.onUpdateWeight()
         : this.onCreateWeight()
     }
+    this.textInput.current.focus()
   }
 
   onDelete() {
@@ -207,7 +213,7 @@ class WeightForm extends React.Component {
     handleKeyDown(event, weight) {
       console.log(event.key)
       console.log(weight)
-      if(event.key === 'Enter' || event.key === 'Tab') {
+      if(event.key === 'Enter') {
         this.setState({ loading: true })
         this.onSubmitUpdatedWeight(weight)
         this.setState({ loading: false })
@@ -252,6 +258,11 @@ class WeightForm extends React.Component {
                          value={weight.name}
                          onChange={e => this.onModifyNameField(e, weight)}
                          onKeyDown={e => this.handleKeyDown(e, weight)}
+                         onBlur={() => {
+                          this.setState({ loading: true })
+                          this.onSubmitUpdatedWeight(weight)
+                          this.setState({ loading: false })
+                         }}
                   />
                 </div>
               </div>
@@ -266,6 +277,11 @@ class WeightForm extends React.Component {
                          value={weight.weight}
                          onChange={e => this.onModifyWeightField(e, weight)}
                          onKeyDown={e => this.handleKeyDown(e, weight)}
+                         onBlur={() => {
+                          this.setState({ loading: true })
+                          this.onSubmitUpdatedWeight(weight)
+                          this.setState({ loading: false })
+                         }}
                   />
                 </div>
               </div>
@@ -288,27 +304,33 @@ class WeightForm extends React.Component {
 
           <div className="cn-name-field">
             <form onSubmit={this.onSubmit.bind(this)}>
-              <InputField
-                containerClassName='margin-top'
-                inputClassName='input-box'
-                error={formErrors.name}
-                name="name"
-                onChange={updateProperty}
-                value={form.name}
-              />
+                <div className='form-element relative'>
+                  <div className='cn-input-container margin-top'>
+                    <input className='cn-form-input input-box new-form'
+                         ref={this.textInput}
+                         key={'formname'}
+                         value={form.name}
+                         onChange={e => this.setState({form: {name: e.target.value, weight: form.weight}})}
+                         autoFocus={true}
+                    />
+                  </div>
+              
+          </div>
             </form>
           </div>
           <div className="cn-value-field">
             <form onSubmit={this.onSubmit.bind(this)}>
-              <InputField
-                containerClassName='margin-top hide-spinner'
-                inputClassName='input-box'
-                error={formErrors.weight}
-                name="weight"
-                onChange={updateProperty}
-                type="number"
-                value={form.weight}
-              />
+            <div className='form-element relative'>
+                <div className='cn-input-container margin-top hide-spinner'>
+                  <input className='cn-form-input input-box new-form'
+                         key={'formweight'}
+                         type='number'
+                         value={form.weight}
+                         onChange={e => this.setState({form: {name: form.name, weight: e.target.value}})}
+                  />
+                </div>
+              
+          </div>
             </form>
           </div>
 

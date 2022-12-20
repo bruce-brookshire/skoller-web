@@ -43,6 +43,7 @@ class AssignmentForm extends React.Component {
     constructor(props) {
         super(props)
         this.state = this.initializeState()
+        this.textInput = React.createRef()
     }
 
     toggleAddingAssignment() {
@@ -63,6 +64,7 @@ class AssignmentForm extends React.Component {
         // // newForm.weight_id = nextProps.currentWeight.id
         // this.setState({ form: newForm })
         // }
+        this.setDatesInState()
     }
 
     /*
@@ -72,12 +74,18 @@ class AssignmentForm extends React.Component {
      */
     initializeState() {
         const { assignment } = this.props
+        const {assignments} = this.props
         return {
             form: this.initializeFormData(assignment),
             due_null: false,
             loading: false,
             showDatePicker: false,
-            datePickerId: 0
+            datePickerId: 0,
+            formDate: {
+                month:'',
+                date:''
+            },
+            assignmentDates: []
         }
     }
 
@@ -104,6 +112,24 @@ class AssignmentForm extends React.Component {
         })
     }
 
+    setDatesInState(){
+        const {assignments} = this.props
+        const dates = assignments.map(item => {
+            const month = item.due ? moment(item.due).format('MM') : ''
+            const date = item.due ? moment(item.due).format('DD') : ''
+
+            return {
+                id : item.id,
+                month: month,
+                date: date
+            }
+        })
+        this.setState({assignmentDates: dates})
+    }
+    componentDidMount() {
+        this.setDatesInState()
+    }
+
     /*
      * Determine whether the user is submitting updated assignment or a new assignment.
      *
@@ -123,6 +149,8 @@ class AssignmentForm extends React.Component {
             this.props.updateLastAssignmentDate(date)
         }
         this.props.toggleAddingAssignment(false)
+        this.textInput.current.focus()
+        this.props.handleEmptyForm(true)
     }
 
     submitForm(event) {
@@ -159,6 +187,7 @@ class AssignmentForm extends React.Component {
         const { assignment } = this.props
         this.props.onDeleteAssignment(assignment)
         this.setState({ form: this.initializeFormData(), loading: false, due_null: false })
+        this.props.handleEmptyForm(true)
     }
 
     onDeleteExisting(assignment) {
@@ -254,10 +283,19 @@ class AssignmentForm extends React.Component {
         })
     }
 
+    copyName(name) {
+        return name.match(new RegExp(/\d$/))
+            ? `${name.slice(0, -1)}${parseInt(name.slice(-1)) + 1}`
+            : `${name} 1`
+    }
+
     copyExistingAssignment(assignment) {
+        console.log(assignment.name)
+        console.log(this.copyName(assignment.name))
+
         const copy = {
             ...assignment,
-            name: `${assignment.name} (Copy)`,
+            name: this.copyName(assignment.name),
             id:null
         }
         this.onCreateAssignmentFromUpdate(copy)
@@ -333,18 +371,26 @@ class AssignmentForm extends React.Component {
           : `${due.format('ddd')}, ${due.format('MMM')} ${due.format('Do')}`
       }
 
-      showMonth(date) {
-          return moment(date).month() + 1
+      showMonth(id) {
+        const {assignmentDates} = this.state
+        const found = assignmentDates.find(item => item.id === id)
+        return found ? found.month : ''
       }
-      showDay(date) {
-        return moment(date).date()
+      showDay(id) {
+        const {assignmentDates} = this.state
+        const found = assignmentDates.find(item => item.id === id)
+        return found ? found.date : ''
+      }
+
+      submitUpdatedAssignment(assignment){
+        this.setState({ loading: true })
+        this.onSubmitUpdatedAssignment(assignment)
+        this.setState({ loading: false })
       }
 
       handleKeyDown(event, assignment) {
-        if(event.key === 'Enter' || event.key === 'Tab') {
-          this.setState({ loading: true })
-          this.onSubmitUpdatedAssignment(assignment)
-          this.setState({ loading: false })
+        if(event.key === 'Enter') {
+          this.submitUpdatedAssignment(assignment)
         }
       }
 
@@ -369,25 +415,66 @@ class AssignmentForm extends React.Component {
       }
 
       onFormMonthChange(event) {
-        const { form } = this.state
-        form.due = form.due ? moment(form.due).set('month', +event.target.value - 1).format('ddd MM/DD') : moment().set('month', +event.target.value - 1).format('ddd MM/DD') 
+        const { form, formDate } = this.state
+        formDate.month = event.target.value
+        form.due = formDate.date && formDate.month
+            ? moment(form.due).set('month', +event.target.value - 1).format('ddd MM/DD') 
+            : moment().set('month', +event.target.value - 1).format('ddd MM/DD') 
+        this.setState({formDate: formDate})
       }
       onMonthChange(event, assignment) {
         const { assignments } = this.props
+        const {assignmentDates} = this.state
+        this.setDatesInState()
+
+        let dateIndex = assignmentDates.findIndex(item => item.id === assignment.id)
+        assignmentDates[dateIndex].month = event.target.value 
+        this.setState({assignmentDates: assignmentDates})
+
         const index = assignments.findIndex( a => a.id === assignment.id)
-        assignments[index].due = moment(assignments[index].due).set('month', event.target.value)
+
+        assignments[index].due = assignmentDates[dateIndex].month && assignmentDates[dateIndex].date
+            ? moment(assignments[index].due).set('month', +event.target.value - 1) 
+            : moment().set('month', +event.target.value - 1)
+        
         this.setState({assignments: assignments})
       }
 
       onFormDayChange(event) {
-        const { form } = this.state
-        form.due = form.due? moment(form.due).set('date', +event.target.value).format('ddd MM/DD')  : moment().set('date', +event.target.value).format('ddd MM/DD')  
+        const { form, formDate } = this.state
+        formDate.date = event.target.value
+        form.due = formDate.date && formDate.month
+            ? moment(form.due).set('date', +event.target.value).format('ddd MM/DD')  
+            : moment().set('date', +event.target.value).format('ddd MM/DD')  
+        this.setState({formDate: formDate})
       }
       onDayChange(event, assignment) {
         const { assignments } = this.props
+        const {assignmentDates} = this.state
+        this.setDatesInState()
+
+        const dateIndex = assignmentDates.findIndex(item => item.id === assignment.id)
+        assignmentDates[dateIndex].date = event.target.value 
+        this.setState({assignmentDates: assignmentDates})
+
         const index = assignments.findIndex( a => a.id === assignment.id)
-        assignments[index].due = moment(assignments[index].due).set('date', event.target.value)
+
+        assignments[index].due = assignmentDates[dateIndex].date && assignmentDates[dateIndex].month
+            ? moment(assignments[index].due).set('date', event.target.value)
+            : moment().set('date', event.target.value)
+
         this.setState({assignments: assignments})
+      }
+
+      changeDatePickerDate(assignment, day){
+        const {assignmentDates} = this.state
+        console.log(day)
+        const date = moment(day)
+        const dateIndex = assignmentDates.findIndex(item => item.id === assignment.id)
+        assignmentDates[dateIndex].date = date.format('DD')
+        assignmentDates[dateIndex].month = date.format('MM')
+        console.log(`Month: ${assignmentDates[dateIndex].month} Date: ${assignmentDates[dateIndex].date}`)
+        this.setState({assignmentDates: assignmentDates})
       }
 
       openDatePicker(pickerId) {
@@ -439,8 +526,8 @@ class AssignmentForm extends React.Component {
     }
 
     render() {
-        const { form } = this.state
-        const { formErrors, updateProperty, weights, assignments } = this.props
+        const { form, assignmentDates } = this.state
+        const { formErrors, updateProperty, weights, assignments, formIsEmpty } = this.props
         const disableButton = !this.verifyData(form)
 
         //this matchtes the weights and assignments in the 3rd step
@@ -462,19 +549,19 @@ class AssignmentForm extends React.Component {
 
         return (
         <div id='cn-assignment-form' >
-            <div>
+            <div className='header'>
                 <div className='cn-section-name-header txt-gray' >
                     Name </div>
-                <div className='cn-section-value-header txt-gray' >
-                    {' '}</div>
-                <div className='cn-section-value-header txt-gray' >
+                {/* <div className='cn-section-value-header txt-gray' >
+                    {' '}</div> */}
+                <div className='cn-section-value-header txt-gray' style={{marginLeft: '50px'}} >
                     Weight </div>
                 <div className='cn-section-value-header txt-gray' >
                     Due Date </div>
                 
             </div> <hr className="txt-gray" />
-
             {
+                
                 assignments.map(assignment => (
                     <div className='' >
                         <div className="cn-delete-icon" >
@@ -483,7 +570,6 @@ class AssignmentForm extends React.Component {
                             </a>
                         </div>
                         <div className='cn-input-assignment-name' >
-                            {/* <form onSubmit={this.onSubmit.bind(this)}> */}
                             <div class="form-element relative" >
                                 <div className='cn-input-container margin-top' >
                                     <input className='cn-form-input'
@@ -492,10 +578,10 @@ class AssignmentForm extends React.Component {
                                         value={assignment.name}
                                         onKeyDown={e => this.handleKeyDown(e, assignment)}
                                         key={`name${assignment.id}`}
+                                        onBlur={() => this.submitUpdatedAssignment(assignment)}
                                     />
                                 </div >
                             </div>
-                    {/* </form> */}
                 </div >
                 <div className='cn-input-assignment-date' > {!this.state.due_null &&
                     <div >
@@ -504,22 +590,22 @@ class AssignmentForm extends React.Component {
                                     <div className='cn-input-container margin-top hide-spinner'>
                                         <input className='cn-form-input'
                                                 type={'number'}
-                                                autoFocus={true}
                                                 onChange={(e) => this.onMonthChange(e, assignment)}
-                                                value={this.showMonth(assignment.due)}
+                                                value={this.showMonth(assignment.id)}
                                                 onKeyDown={e => this.handleKeyDown(e, assignment)}
-                                                key={`month${assignment.id}`}/>
+                                                key={`month${assignment.id}`}
+                                                onBlur={() => this.submitUpdatedAssignment(assignment)}/>
                                     </div>
                                 </div>
                                 <div className='cn-input-assignment-day'>
                                     <div className='cn-input-container margin-top hide-spinner'>
                                         <input className='cn-form-input'
                                                 type={'number'}
-                                                autoFocus={true}
                                                 onChange={(e) => this.onDayChange(e, assignment)}
-                                                value={this.showDay(assignment.due)}
+                                                value={this.showDay(assignment.id)}
                                                 onKeyDown={e => this.handleKeyDown(e, assignment)}
-                                                key={`day${assignment.id}`}/>
+                                                key={`day${assignment.id}`}
+                                                onBlur={() => this.submitUpdatedAssignment(assignment)}/>
                                     </div>
                                 </div>
                                 <div className="cn-delete-icon" >
@@ -536,6 +622,7 @@ class AssignmentForm extends React.Component {
                                     returnSelectedDay={
                                         (day) => {
                                             assignment.due = moment(day)
+                                            this.changeDatePickerDate(assignment, day)
                                             this.onSubmitUpdatedAssignment(assignment)
                                             this.setState({ showDatePicker: false })
                                         }
@@ -557,8 +644,8 @@ class AssignmentForm extends React.Component {
                             value={assignment.weight_id}
                             options={weights}
                             onChange={(e) => { this.onSelectUpdate(e, assignment) }}>
-                            <option key="option 0" value="" className="option_no_weight" selected="selected"></option>
-                            <option key="option 1" value="0" className="option_no_weight">No Weight</option>
+                            <option key="option 0" value="" className="option_blank" selected="selected"></option>
+                            <option key="option 1" value={null} className="option_no_weight">No Weight</option>
                             {weights.map(weight => {
                             return (
                                 <option key={`option${weight.id}`} value={weight.id}>{weight.name}</option>
@@ -581,6 +668,8 @@ class AssignmentForm extends React.Component {
                 ))
             }
 
+            {/* THIS IS THE FORM -> THE LAST ROW OF ASSIGNMENTS */}
+
             <div className='' >
                 <div className="cn-delete-icon" >
                     <a onClick={this.onDelete.bind(this)}>
@@ -591,15 +680,22 @@ class AssignmentForm extends React.Component {
                     <form onSubmit={this.onSubmit.bind(this)}>
                         <div class="form-element relative" >
                             <div className='cn-input-container margin-top' >
-                                <input className='cn-form-input'
+                                <input className='cn-form-input new-form'
+                                    ref={this.textInput}
                                     autoFocus={true}
                                     onChange={
                                         (e) => {
                                             form.name = e.target.value
+                                            !form.name ? this.props.handleEmptyForm(true) : this.props.handleEmptyForm(false)
                                             this.toggleAddingAssignment()
                                         }
                                     }
                                     value={form.name}
+                                    onBlur={e => {
+                                        if(form.name){
+                                            this.onSubmit(e)
+                                        }
+                                    }}
                                 />
                             </div >
                         </div>
@@ -611,33 +707,33 @@ class AssignmentForm extends React.Component {
                             <div>
                                 <div className='cn-input-assignment-month'>
                                     <div className='cn-input-container margin-top hide-spinner'>
-                                        <input className='cn-form-input'
+                                        <input className='cn-form-input new-form'
                                                 type={'number'}
-                                                autoFocus={true}
                                                 onChange={
                                                     (e) => {
                                                         this.onFormMonthChange(e)
                                                         this.toggleAddingAssignment()
                                                     }
                                                 }
-                                                value={form.due ? this.showMonth(form.due) : ''}
+                                                value={this.state.formDate.month}
                                                 onKeyDown={(e) => this.submitForm(e)}
+                                                onBlur={e => this.onSubmit(e)}
                                                 />
                                     </div>
                                 </div>
                                 <div className='cn-input-assignment-day'>
                                     <div className='cn-input-container margin-top hide-spinner'>
-                                        <input className='cn-form-input'
+                                        <input className='cn-form-input new-form'
                                                 type={'number'}
-                                                autoFocus={true}
                                                 onChange={
                                                     (e) => {
                                                         this.onFormDayChange(e)
                                                         this.toggleAddingAssignment()
                                                     }
                                                 }
-                                                value={form.due ? this.showDay(form.due): ''}
+                                                value={this.state.formDate.date}
                                                 onKeyDown={(e) => this.submitForm(e)}
+                                                onBlur={e => this.onSubmit(e)}
                                                 />
                                     </div>
                                 </div>
@@ -676,12 +772,12 @@ class AssignmentForm extends React.Component {
 
                 <div className='cn-input-assignment-weight'>
                     <div className='cn-input-container margin-top'>
-                        <select className="cn-form-input"
+                        <select className="cn-form-input new-form"
                             name='weight_id'
                             options={weights}
                             onChange={(e) => { this.submitFormFromWeightTag(e) }}>
-                            <option key="option 0" value="" className="option_no_weight" selected="selected"></option>
-                            <option key="option 1" value="0" className="option_no_weight">No Weight</option>
+                            <option key="option 0" value="" className="option_blank" selected="selected"></option>
+                            <option key="option 1" value={null} className="option_no_weight">No Weight</option>
                             {weights.map(weight => {
                             return (
                                 <option key={`option${weight.id}`} value={weight.id}>{weight.name}</option>
@@ -718,7 +814,9 @@ AssignmentForm.propTypes = {
     lastAssignmentDate: PropTypes.string,
     updateLastAssignmentDate: PropTypes.func,
     onDeleteAssignment: PropTypes.func,
-    toggleAddingAssignment: PropTypes.function
+    toggleAddingAssignment: PropTypes.function,
+    formIsEmpty: PropTypes.bool,
+    handleEmptyForm:PropTypes.func,
 }
 
 export default ValidateForm(Form(AssignmentForm, 'form'))
