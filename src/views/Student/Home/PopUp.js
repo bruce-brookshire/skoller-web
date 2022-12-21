@@ -2,7 +2,6 @@ import React from 'react'
 import { inject, observer } from 'mobx-react'
 import SkModal from '../../components/SkModal/SkModal'
 import PropTypes from 'prop-types'
-import FirstClass from '../Onboard/FirstClass/index'
 import SelectSchool from '../Onboard/SelectSchool'
 import AddClassModal from '../../Student/components/AddClassModal'
 import MajorForm from '../MiscViews/MajorForm'
@@ -129,7 +128,8 @@ class PopUp extends React.Component {
         }
         {this.props.type === 'PaymentPlans' &&
           <SkModal
-            closeModal={() => this.closeModal()}
+            closeModal={this.props.shouldAllowClose ? () => this.props.closeModal() : null}
+            disableOutsideClick={this.props.shouldAllowClose}
           >
             {this.renderPaymentPlans()}
           </SkModal>
@@ -149,7 +149,9 @@ PopUp.propTypes = {
   closeModal: PropTypes.func,
   rootStore: PropTypes.obj,
   type: PropTypes.string,
-  refreshClasses: PropTypes.func
+  refreshClasses: PropTypes.func,
+  handleModalClose: PropTypes.func,
+  shouldAllowClose: PropTypes.bool
 }
 
 export default PopUp

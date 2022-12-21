@@ -10,6 +10,7 @@ export default function CheckoutForm (props) {
   const stripe = useStripe()
   const elements = useElements()
   const [payButtonDisabled, setPayButtonDisabled] = useState(false)
+  const [email, setEmail] = useState('')
 
   const handleSubmit = (event) => {
     // We don't want to let default form submission happen here,
@@ -36,21 +37,40 @@ export default function CheckoutForm (props) {
     })
   }
 
+  function updateEmail (email) {
+    setEmail(email)
+
+    if (!validateEmail(email)) {
+      setPayButtonDisabled(true)
+    } else {
+      setPayButtonDisabled(false)
+    }
+  }
+
+  function validateEmail (email) {
+    // eslint-disable-next-line no-useless-escape
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    return re.test(String(email).toLowerCase())
+  }
+
   function stripeTokenHandler (token) {
     setPayButtonDisabled(true)
     let paymentData = {}
     if (props.selectedSubscription === 'life_time') {
       paymentData = {
         payment_method: {
-          token: token.id
-        }
+          token: token.id,
+          plan_id: props.selectedSubscription
+        },
+        email: email
       }
     } else {
       paymentData = {
         payment_method: {
           token: token.id,
           plan_id: props.selectedSubscription
-        }
+        },
+        email: email
       }
     }
 
@@ -79,7 +99,7 @@ export default function CheckoutForm (props) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <CardSection />
+      <CardSection updateEmail={updateEmail}/>
       <button className={`btn-primary padding full-width text-white margin-top ${payButtonDisabled ? 'disabled' : ''}`} disabled={payButtonDisabled} style={{color: 'white'}}>Pay</button>
     </form>
   )

@@ -97,19 +97,55 @@ class Home extends React.Component {
 
     await actions.stripe.getMySubscription()
       .then((data) => {
-        if (data.data.length > 0) {
-          this.setState({ subscribed: true })
-          this.setState({ subscriptionCancelled: data.data[0].cancel_at_period_end })
+        if (data.data) {
+          this.setState({ subscribed: this.isSubscribed(data.data) })
+          this.setState({ subscriptionCancelled: this.setCancellationStatus(data.data) })
           if (showPopUp) {
             this.setState({ popUp: { type: type, show: true } })
           }
-        } else if (data.data.length === 0 && this.props.rootStore.userStore.user.trial === false) {
+        } else if (data.data && this.props.rootStore.userStore.user.trial === false) {
           this.setState({ popUp: { type: 'PaymentPlans', show: true } })
         }
       })
       .catch((e) => {
         console.log(e)
       })
+  }
+
+  isSubscribed (data) {
+    if (data.expirationIntent === null && data.cancelAt === null) {
+      return true
+    }
+
+    if (
+      data.expirationIntent !== null &&
+      data.cancelAt !== null &&
+      data.cancelAt > Math.floor(new Date().getTime())
+    ) {
+      return true
+    }
+
+    if (
+      data.expirationIntent === null &&
+      data.cancelAt !== null &&
+      data.cancelAt > Math.floor(new Date().getTime())
+    ) {
+      return true
+    }
+
+    return false
+  }
+
+  setCancellationStatus ({ expirationIntent, cancelAt }) {
+    if (expirationIntent == null && cancelAt == null) {
+      return false
+    }
+
+    if (expirationIntent != null) {
+      return true
+    }
+
+    return false
   }
 
   async showPrimarySchoolPopUp () {
@@ -122,8 +158,8 @@ class Home extends React.Component {
   async updateClasses () {
     this.props.rootStore.studentAssignmentsStore.updateAssignments()
     this.props.rootStore.studentClassesStore.updateClasses()
-    this.setState({ loading: false })
-    this.setState({ showAddClassModal: false})
+    this.setState({loading: false})
+    this.setState({showAddClassModal: false})
   }
 
   findFullClass (classId) {
@@ -227,7 +263,7 @@ class Home extends React.Component {
     }
 
     return (
-      <AddClassModal 
+      <AddClassModal
         closeModal={() => this.updateClasses()}
         trial={this.state.trial}
         isSubscribed={this.state.subscribed}
@@ -238,7 +274,7 @@ class Home extends React.Component {
 
   upgradeToPremium = () => {
     this.closeClassStatusModal()
-    this.setState({ popUp: { type: 'PaymentPlans', show: true }})
+    this.setState({ popUp: { type: 'PaymentPlans', show: true } })
   }
 
   renderContent () {

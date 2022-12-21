@@ -43,6 +43,7 @@ class AssignmentForm extends React.Component {
     constructor(props) {
         super(props)
         this.state = this.initializeState()
+        this.textInput = React.createRef()
     }
 
     toggleAddingAssignment() {
@@ -63,6 +64,7 @@ class AssignmentForm extends React.Component {
         // // newForm.weight_id = nextProps.currentWeight.id
         // this.setState({ form: newForm })
         // }
+        this.setDatesInState()
     }
 
     /*
@@ -72,11 +74,18 @@ class AssignmentForm extends React.Component {
      */
     initializeState() {
         const { assignment } = this.props
+        const {assignments} = this.props
         return {
             form: this.initializeFormData(assignment),
             due_null: false,
             loading: false,
-            showDatePicker: false
+            showDatePicker: false,
+            datePickerId: 0,
+            formDate: {
+                month:'',
+                date:''
+            },
+            assignmentDates: []
         }
     }
 
@@ -103,6 +112,24 @@ class AssignmentForm extends React.Component {
         })
     }
 
+    setDatesInState(){
+        const {assignments} = this.props
+        const dates = assignments.map(item => {
+            const month = item.due ? moment(item.due).format('MM') : ''
+            const date = item.due ? moment(item.due).format('DD') : ''
+
+            return {
+                id : item.id,
+                month: month,
+                date: date
+            }
+        })
+        this.setState({assignmentDates: dates})
+    }
+    componentDidMount() {
+        this.setDatesInState()
+    }
+
     /*
      * Determine whether the user is submitting updated assignment or a new assignment.
      *
@@ -110,7 +137,6 @@ class AssignmentForm extends React.Component {
     onSubmit(e) {
         e.preventDefault();
         if (this.state.showDatePicker) this.setState({ showDatePicker: false })
-        // console.log('here', this.state.form)
         if (this.state.due_null) {
             requiredFields.due = {}
         }
@@ -123,6 +149,14 @@ class AssignmentForm extends React.Component {
             this.props.updateLastAssignmentDate(date)
         }
         this.props.toggleAddingAssignment(false)
+        this.textInput.current.focus()
+        this.props.handleEmptyForm(true)
+    }
+
+    submitForm(event) {
+        if(event.key === 'Enter') {
+            this.onSubmit(event)
+        }
     }
 
     /*
@@ -153,7 +187,12 @@ class AssignmentForm extends React.Component {
         const { assignment } = this.props
         this.props.onDeleteAssignment(assignment)
         this.setState({ form: this.initializeFormData(), loading: false, due_null: false })
+        this.props.handleEmptyForm(true)
     }
+
+    onDeleteExisting(assignment) {
+        this.props.onDeleteAssignment(assignment)
+      }
 
     /*
      * copy assignment
@@ -244,9 +283,34 @@ class AssignmentForm extends React.Component {
         })
     }
 
-    copyAssignment() {
+    copyName(name) {
+        return name.match(new RegExp(/\d$/))
+            ? `${name.slice(0, -1)}${parseInt(name.slice(-1)) + 1}`
+            : `${name} 1`
+    }
+
+    copyExistingAssignment(assignment) {
+        console.log(assignment.name)
+        console.log(this.copyName(assignment.name))
+
+        const copy = {
+            ...assignment,
+            name: this.copyName(assignment.name),
+            id:null
+        }
+        this.onCreateAssignmentFromUpdate(copy)
+    }
+
+    copyAssignment(assignment) {
+
+        const assignmentForm = {
+            id: assignment.id,
+            name: assignment.name,
+            due: assignment.due
+        }
+
         var regex = /\d+/g;
-        var matches = this.state.form.name.match(regex);
+        var matches = assignment.name.match(regex);
         let newForm = { ...this.state.form }
         if (matches && matches.length) {
             let numb = matches[matches.length - 1]
@@ -254,7 +318,6 @@ class AssignmentForm extends React.Component {
             let name = this.state.form.name.replace(numb, newnumb);
             newForm.name = name
             this.setState({ form: this.copyFormData(this.state.form, name) })
-            console.log(newForm)
         } else {
             newForm.name = newForm.name + ' 1'
         }
@@ -266,18 +329,347 @@ class AssignmentForm extends React.Component {
 
     }
 
+    onModifyNameField(event, assignment){
+        const { assignments } = this.props
+        const index = assignments.findIndex( a => a.id === assignment.id)
+        assignments[index].name = event.target.value
+        this.setState({assignments: assignments})
+      }
+
+      onSubmitUpdatedAssignment(assignment){
+        const form = {
+          id: assignment.id || null,
+          name: assignment.name|| '',
+          due: assignment.due || '',
+          created_on: 'Web',
+          year_due: assignment.due || '',
+        }
+        assignment.id ? this.onUpdateAssignmentFromUpdate(form) : this.onCreateAssignmentFromUpdate(form)
+      }
+
+      onCreateAssignmentFromUpdate(assignment) {
+        this.setState({ loading: true })
+        actions.assignments.createAssignment(this.props.cl, assignment).then((a) => {
+          this.setState({ form: this.initializeFormData(), loading: false })
+          this.props.onCreateAssignment(a)
+        }).catch(() => { this.setState({ loading: false }) })
+      }
+
+      onUpdateAssignmentFromUpdate(assignment) {
+        this.setState({ loading: true })
+        actions.assignments.updateAssignment(this.props.cl, assignment).then((a) => {
+          this.setState({ form: this.initializeFormData(), loading: false })
+          this.props.onUpdateWeight(a)
+        }).catch(() => { this.setState({ loading: false }) })
+      }
+
+    mapAssignmentDate(date) {
+        const { cl } = this.props
+        const today = moment.tz(Date.now(), cl.school.timezone)
+        const due = moment.tz(date, cl.school.timezone)
+        return today.format('YYYY-MM-DD') === due.format('YYYY-MM-DD') ? 'Today'
+          : `${due.format('ddd')}, ${due.format('MMM')} ${due.format('Do')}`
+      }
+
+      showMonth(id) {
+        const {assignmentDates} = this.state
+        const found = assignmentDates.find(item => item.id === id)
+        return found ? found.month : ''
+      }
+      showDay(id) {
+        const {assignmentDates} = this.state
+        const found = assignmentDates.find(item => item.id === id)
+        return found ? found.date : ''
+      }
+
+      submitUpdatedAssignment(assignment){
+        this.setState({ loading: true })
+        this.onSubmitUpdatedAssignment(assignment)
+        this.setState({ loading: false })
+      }
+
+      handleKeyDown(event, assignment) {
+        if(event.key === 'Enter') {
+          this.submitUpdatedAssignment(assignment)
+        }
+      }
+
+      onSelectUpdate(event, assignment) {
+        const { assignments } = this.props
+        const index = assignments.findIndex( a => a.id === assignment.id)
+        assignments[index].weight_id = event.target.value
+        this.setState({assignments: assignments})
+        const form = {
+            id: assignments[index].id || null,
+            name: assignments[index].name || '',
+            weight_id: assignments[index].weight_id || '',
+        }
+        this.onTagAssignment(form)
+      }
+
+      onTagAssignment(form) {
+        this.setState({ loading: true })
+        actions.assignments.tagAssignment(this.props.cl, form).then((assignment) => {
+          this.props.onTagAssignment(assignment)
+        }).catch(() => { this.setState({ loading: false }) })
+      }
+
+      onFormMonthChange(event) {
+        const { form, formDate } = this.state
+        formDate.month = event.target.value
+        form.due = formDate.date && formDate.month
+            ? moment(form.due).set('month', +event.target.value - 1).format('ddd MM/DD') 
+            : moment().set('month', +event.target.value - 1).format('ddd MM/DD') 
+        this.setState({formDate: formDate})
+      }
+      onMonthChange(event, assignment) {
+        const { assignments } = this.props
+        const {assignmentDates} = this.state
+        this.setDatesInState()
+
+        let dateIndex = assignmentDates.findIndex(item => item.id === assignment.id)
+        assignmentDates[dateIndex].month = event.target.value 
+        this.setState({assignmentDates: assignmentDates})
+
+        const index = assignments.findIndex( a => a.id === assignment.id)
+
+        assignments[index].due = assignmentDates[dateIndex].month && assignmentDates[dateIndex].date
+            ? moment(assignments[index].due).set('month', +event.target.value - 1) 
+            : moment().set('month', +event.target.value - 1)
+        
+        this.setState({assignments: assignments})
+      }
+
+      onFormDayChange(event) {
+        const { form, formDate } = this.state
+        formDate.date = event.target.value
+        form.due = formDate.date && formDate.month
+            ? moment(form.due).set('date', +event.target.value).format('ddd MM/DD')  
+            : moment().set('date', +event.target.value).format('ddd MM/DD')  
+        this.setState({formDate: formDate})
+      }
+      onDayChange(event, assignment) {
+        const { assignments } = this.props
+        const {assignmentDates} = this.state
+        this.setDatesInState()
+
+        const dateIndex = assignmentDates.findIndex(item => item.id === assignment.id)
+        assignmentDates[dateIndex].date = event.target.value 
+        this.setState({assignmentDates: assignmentDates})
+
+        const index = assignments.findIndex( a => a.id === assignment.id)
+
+        assignments[index].due = assignmentDates[dateIndex].date && assignmentDates[dateIndex].month
+            ? moment(assignments[index].due).set('date', event.target.value)
+            : moment().set('date', event.target.value)
+
+        this.setState({assignments: assignments})
+      }
+
+      changeDatePickerDate(assignment, day){
+        const {assignmentDates} = this.state
+        console.log(day)
+        const date = moment(day)
+        const dateIndex = assignmentDates.findIndex(item => item.id === assignment.id)
+        assignmentDates[dateIndex].date = date.format('DD')
+        assignmentDates[dateIndex].month = date.format('MM')
+        console.log(`Month: ${assignmentDates[dateIndex].month} Date: ${assignmentDates[dateIndex].date}`)
+        this.setState({assignmentDates: assignmentDates})
+      }
+
+      openDatePicker(pickerId) {
+        this.setState({ datePickerId: pickerId})
+        this.setState({ showDatePicker: true })
+      }
+
+      submitFormFromDatePicker(){
+          const { form } = this.state
+          if(form.name){
+            const sendForm = {
+                id: null,
+                name: form.name|| '',
+                due: moment(form.due) || '',
+                created_on: 'Web',
+                year_due: date.getFullYear() || '',
+              }
+            form.id ? this.onUpdateAssignmentFromUpdate(sendForm) : this.onCreateAssignmentFromUpdate(sendForm)
+          }
+      }
+
+      submitFormFromWeightTag(event){
+        event.persist()
+        const { form } = this.state
+        if(form.name){
+          const sendForm = {
+              id: null,
+              name: form.name|| '',
+              due: moment(form.due) || '',
+              created_on: 'Web',
+              year_due: date.getFullYear() || '',
+            }
+            actions.assignments.createAssignment(this.props.cl, sendForm).then((a) => {
+                const sendAssingment = {
+                    ...a,
+                    weight_id: event.target.value
+                }
+                this.setState({ form: this.initializeFormData(), loading: false })
+                this.props.onCreateAssignment(sendAssingment)
+                const tag = {
+                    id: sendAssingment.id || null,
+                    name: sendAssingment.name || '',
+                    weight_id: sendAssingment.weight_id || '',
+                }
+                this.onTagAssignment(tag)
+              }).catch(() => { this.setState({ loading: false }) })
+
+      }
+    }
 
     render() {
-        const { form } = this.state
-        const { formErrors, updateProperty } = this.props
+        const { form, assignmentDates } = this.state
+        const { formErrors, updateProperty, weights, assignments, formIsEmpty } = this.props
         const disableButton = !this.verifyData(form)
-        return (<div id='cn-assignment-form' >
-            <div>
+
+        //this matchtes the weights and assignments in the 3rd step
+      for (let assignment of assignments) {
+          if (!assignment.weight_id){
+              for(let weight of weights) {
+                  if (weight.name.substring(0, 3).toUpperCase() === assignment.name.substring(0, 3).toUpperCase()) {
+                    assignment.weight_id = weight.id
+                    const tag = {
+                        id: assignment.id || null,
+                        name: assignment.name || '',
+                        weight_id: assignment.weight_id || '',
+                    }
+                    this.onTagAssignment(tag)
+              }
+          }
+        }
+      }
+
+        return (
+        <div id='cn-assignment-form' >
+            <div className='header'>
                 <div className='cn-section-name-header txt-gray' >
                     Name </div>
+                {/* <div className='cn-section-value-header txt-gray' >
+                    {' '}</div> */}
+                <div className='cn-section-value-header txt-gray' style={{marginLeft: '50px'}} >
+                    Weight </div>
                 <div className='cn-section-value-header txt-gray' >
                     Due Date </div>
+                
             </div> <hr className="txt-gray" />
+            {
+                
+                assignments.map(assignment => (
+                    <div className='' >
+                        <div className="cn-delete-icon" >
+                            <a onClick={() => this.onDeleteExisting(assignment)}>
+                                <i class="far fa-trash-alt"></i>
+                            </a>
+                        </div>
+                        <div className='cn-input-assignment-name' >
+                            <div class="form-element relative" >
+                                <div className='cn-input-container margin-top' >
+                                    <input className='cn-form-input'
+                                        autoFocus={true}
+                                        onChange={e => this.onModifyNameField(e, assignment)}
+                                        value={assignment.name}
+                                        onKeyDown={e => this.handleKeyDown(e, assignment)}
+                                        key={`name${assignment.id}`}
+                                        onBlur={() => this.submitUpdatedAssignment(assignment)}
+                                    />
+                                </div >
+                            </div>
+                </div >
+                <div className='cn-input-assignment-date' > {!this.state.due_null &&
+                    <div >
+                            <div>
+                                <div className='cn-input-assignment-month'>
+                                    <div className='cn-input-container margin-top hide-spinner'>
+                                        <input className='cn-form-input'
+                                                type={'number'}
+                                                onChange={(e) => this.onMonthChange(e, assignment)}
+                                                value={this.showMonth(assignment.id)}
+                                                onKeyDown={e => this.handleKeyDown(e, assignment)}
+                                                key={`month${assignment.id}`}
+                                                onBlur={() => this.submitUpdatedAssignment(assignment)}/>
+                                    </div>
+                                </div>
+                                <div className='cn-input-assignment-day'>
+                                    <div className='cn-input-container margin-top hide-spinner'>
+                                        <input className='cn-form-input'
+                                                type={'number'}
+                                                onChange={(e) => this.onDayChange(e, assignment)}
+                                                value={this.showDay(assignment.id)}
+                                                onKeyDown={e => this.handleKeyDown(e, assignment)}
+                                                key={`day${assignment.id}`}
+                                                onBlur={() => this.submitUpdatedAssignment(assignment)}/>
+                                    </div>
+                                </div>
+                                <div className="cn-delete-icon" >
+                                    <a onClick={() => this.openDatePicker(assignment.id)}>
+                                        <i class="far fa-calendar" > </i>
+                                    </a>
+                                </div>
+                            </div > 
+                            {
+                                this.state.showDatePicker && this.state.datePickerId === assignment.id &&
+                                <DatePicker
+                                    key={`datePicker-${assignment.id}`}
+                                    givenDate={assignment.due ? moment(assignment.due) : Date.now()}
+                                    returnSelectedDay={
+                                        (day) => {
+                                            assignment.due = moment(day)
+                                            this.changeDatePickerDate(assignment, day)
+                                            this.onSubmitUpdatedAssignment(assignment)
+                                            this.setState({ showDatePicker: false })
+                                        }
+                                    }
+                                    close={
+                                        () => {
+                                            this.setState({ showDatePicker: false })
+                                        }
+                                    }
+                                />
+                            }
+                    </div>
+                } </div>
+                
+                <div className='cn-input-assignment-weight'>
+                    <div className='cn-input-container margin-top'>
+                        <select className="cn-form-input"
+                            name='weight_id'
+                            value={assignment.weight_id}
+                            options={weights}
+                            onChange={(e) => { this.onSelectUpdate(e, assignment) }}>
+                            <option key="option 0" value="" className="option_blank" selected="selected"></option>
+                            <option key="option 1" value={null} className="option_no_weight">No Weight</option>
+                            {weights.map(weight => {
+                            return (
+                                <option key={`option${weight.id}`} value={weight.id}>{weight.name}</option>
+                            )
+                            })}
+                        </select>
+                    </div>
+                </div>
+
+                <div className="cn-files-icon" >
+                    <a onClick={() => this.copyExistingAssignment(assignment)}>
+                        <i class="far fa-clone" > </i>
+                    </a>
+                </div >
+
+            </div >
+
+            
+
+                ))
+            }
+
+            {/* THIS IS THE FORM -> THE LAST ROW OF ASSIGNMENTS */}
+
             <div className='' >
                 <div className="cn-delete-icon" >
                     <a onClick={this.onDelete.bind(this)}>
@@ -288,15 +680,22 @@ class AssignmentForm extends React.Component {
                     <form onSubmit={this.onSubmit.bind(this)}>
                         <div class="form-element relative" >
                             <div className='cn-input-container margin-top' >
-                                <input className='cn-form-input'
+                                <input className='cn-form-input new-form'
+                                    ref={this.textInput}
                                     autoFocus={true}
                                     onChange={
                                         (e) => {
                                             form.name = e.target.value
+                                            !form.name ? this.props.handleEmptyForm(true) : this.props.handleEmptyForm(false)
                                             this.toggleAddingAssignment()
                                         }
                                     }
                                     value={form.name}
+                                    onBlur={e => {
+                                        if(form.name){
+                                            this.onSubmit(e)
+                                        }
+                                    }}
                                 />
                             </div >
                         </div>
@@ -305,24 +704,55 @@ class AssignmentForm extends React.Component {
                 <div className='cn-input-assignment-date' > {!this.state.due_null &&
                     <div >
                         <form onSubmit={this.onSubmit.bind(this)}>
-                            <div onClick={
-                                () => this.setState({ showDatePicker: true })
-                            } >
-                                <InputField
-                                    containerClassName='margin-top'
-                                    error={formErrors.due}
-                                    name='due'
-                                    value={form.due ? form.due : ''}
-                                    // disabled={true}
-                                    onFocus={() => this.setState({ showDatePicker: true })}
-                                />
-                            </div > {
-                                this.state.showDatePicker &&
+                            <div>
+                                <div className='cn-input-assignment-month'>
+                                    <div className='cn-input-container margin-top hide-spinner'>
+                                        <input className='cn-form-input new-form'
+                                                type={'number'}
+                                                onChange={
+                                                    (e) => {
+                                                        this.onFormMonthChange(e)
+                                                        this.toggleAddingAssignment()
+                                                    }
+                                                }
+                                                value={this.state.formDate.month}
+                                                onKeyDown={(e) => this.submitForm(e)}
+                                                onBlur={e => this.onSubmit(e)}
+                                                />
+                                    </div>
+                                </div>
+                                <div className='cn-input-assignment-day'>
+                                    <div className='cn-input-container margin-top hide-spinner'>
+                                        <input className='cn-form-input new-form'
+                                                type={'number'}
+                                                onChange={
+                                                    (e) => {
+                                                        this.onFormDayChange(e)
+                                                        this.toggleAddingAssignment()
+                                                    }
+                                                }
+                                                value={this.state.formDate.date}
+                                                onKeyDown={(e) => this.submitForm(e)}
+                                                onBlur={e => this.onSubmit(e)}
+                                                />
+                                    </div>
+                                </div>
+                                <div className="cn-delete-icon" >
+                                    <a onClick={() => this.openDatePicker(0)}>
+                                        <i class="far fa-calendar" > </i>
+                                    </a>
+                                </div>
+                            </div > 
+                            {
+                                this.state.showDatePicker && this.state.datePickerId === 0 &&
                                 <DatePicker
+                                    onChange={e => console.log('changed')}
+                                    key={'datePicker-0'}
                                     givenDate={this.props.lastAssignmentDate ? moment(this.props.lastAssignmentDate) : Date.now()}
                                     returnSelectedDay={
                                         (day) => {
                                             form.due = moment(day).format('ddd MM/DD')
+                                            this.submitFormFromDatePicker()
                                             this.setState({ showDatePicker: false })
                                             this.toggleAddingAssignment()
                                         }
@@ -337,19 +767,32 @@ class AssignmentForm extends React.Component {
                             }
                         </form>
                     </div>
-                } </div>
+                }
+                </div>
+
+                <div className='cn-input-assignment-weight'>
+                    <div className='cn-input-container margin-top'>
+                        <select className="cn-form-input new-form"
+                            name='weight_id'
+                            options={weights}
+                            onChange={(e) => { this.submitFormFromWeightTag(e) }}>
+                            <option key="option 0" value="" className="option_blank" selected="selected"></option>
+                            <option key="option 1" value={null} className="option_no_weight">No Weight</option>
+                            {weights.map(weight => {
+                            return (
+                                <option key={`option${weight.id}`} value={weight.id}>{weight.name}</option>
+                            )
+                            })}
+                        </select>
+                    </div>
+                </div>
+                
                 <div className="cn-files-icon" >
                     <a onClick={() => this.copyAssignment()}>
                         <i class="far fa-clone" > </i>
                     </a>
                 </div >
             </div >
-            <div className='addbtndiv'>
-                <a className={`${disableButton ? 'disabled' : ''}`}
-                    disabled={this.state.loading || disableButton}
-                    onClick={this.onSubmit.bind(this)} > {this.props.assignment ? ' Update ' : ' Save '}
-                    {this.state.loading ? < Loading /> : null} </a>
-            </div>
         </div >
         )
     }
@@ -364,14 +807,16 @@ AssignmentForm.propTypes = {
     onUpdateAssignment: PropTypes.func.isRequired,
     updateProperty: PropTypes.func,
     validateForm: PropTypes.func,
-    // currentWeight: PropTypes.object,
     resetValidation: PropTypes.func,
     isAdmin: PropTypes.bool,
     weights: PropTypes.array,
+    assignments: PropTypes.array,
     lastAssignmentDate: PropTypes.string,
     updateLastAssignmentDate: PropTypes.func,
     onDeleteAssignment: PropTypes.func,
-    toggleAddingAssignment: PropTypes.function
+    toggleAddingAssignment: PropTypes.function,
+    formIsEmpty: PropTypes.bool,
+    handleEmptyForm:PropTypes.func,
 }
 
 export default ValidateForm(Form(AssignmentForm, 'form'))

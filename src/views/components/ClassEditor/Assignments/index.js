@@ -91,7 +91,9 @@ class Assignments extends React.Component {
             addAssignment: false,
             lastAssignmentDate: Date.now(),
             addingAssignment: false,
-            openProgressModal: false
+            openProgressModal: false,
+            formIsEmpty: true,
+            submitClicked: false,
         }
     }
 
@@ -291,6 +293,17 @@ class Assignments extends React.Component {
         this.props.onSubmit()
     }
 
+    handleEmptyForm(isEmpty) {
+        this.setState({formIsEmpty: isEmpty})
+        if(isEmpty){
+            this.handleSubmitClicked(false)
+        }
+    }
+
+    handleSubmitClicked(clicked){
+        this.setState({submitClicked: clicked})
+    }
+
     onSubmitSingleWeight() {
         this.submitAssignments()
         this.handleSubmit()
@@ -318,9 +331,9 @@ class Assignments extends React.Component {
                 </div>
             </span >
             <div className="cn-pull-right" >
-                <span> 2/3 </span> <span className='cn-section-progressbar' > < ProgressBar percent={(2 / 3) * 100} /></span>
+                <span> 2/2 </span> <span className='cn-section-progressbar' > < ProgressBar percent={(2 / 2) * 100} /></span>
                 <a className="cn-section-icons" onClick={() => this.onUpdateCurrentIndex({ currentIndex: 0 })}><i class="fas fa-angle-left"></i></a>
-                <a className="cn-section-icons" onClick={() => this.onUpdateCurrentIndex({ currentIndex: 2 })}><i className="fas fa-angle-right"></i></a>
+                <a className="cn-section-icons" onClick={() => this.onUpdateCurrentIndex({ currentIndex: 0 })}><i className="fas fa-angle-right"></i></a>
 
             </div>
         </div >
@@ -370,9 +383,17 @@ class Assignments extends React.Component {
                                 toggleAddingAssignment={
                                     (bool) => this.toggleAddingAssignment(bool)
                                 }
+                                weights={weights}
+                                assignments={assignments}
+                                formIsEmpty={this.state.formIsEmpty}
+                                handleEmptyForm={this.handleEmptyForm.bind(this)}
                             />
+                            {!this.state.formIsEmpty && this.state.submitClicked &&
+                                <span>This assignment is not saved. Save or delete to continue.</span>
+                            }
                         </div>
                     }
+                    
                     {
                         assignments.length === 0 &&
                         <div id='cn-assignment-table-new' >
@@ -385,7 +406,7 @@ class Assignments extends React.Component {
                             </div>
                         </div>
                     }
-                    {
+                    {/* {
                         // (assignments.length !== 0 && !viewOnly && addAssignment) &&
                         (assignments.length !== 0 && !viewOnly) &&
 
@@ -415,12 +436,17 @@ class Assignments extends React.Component {
                                 }
                             />
                         </div >
-                    }
+                    } */}
                     {
                         assignments.length !== 0 && !viewOnly && !addAssignment &&
                         <button
                             onClick={
-                                () => this.handleSubmit()
+                                () => {
+                                    this.handleSubmitClicked(true)
+                                    if(this.state.formIsEmpty) {
+                                        this.handleSubmit()
+                                    }
+                                }
                             }
                             className='button full-width margin-top margin-bottom' >
                             Save Assignments ({assignments.length}) </button>

@@ -19,6 +19,7 @@ class WeightForm extends React.Component {
   constructor(props) {
     super(props)
     this.state = this.initializeState()
+    this.textInput = React.createRef()
   }
 
   /*
@@ -71,6 +72,20 @@ class WeightForm extends React.Component {
   * Determine whether the user is submiting updated weight or a new weight.
   *
   */
+  onSubmitUpdatedWeight(weight){
+    const form = {
+      id: weight.id || null,
+      name: weight.name|| '',
+      weight: weight.weight || '',
+      created_on: 'Web'
+    }
+    weight.id ? this.onUpdateWeightFromUpdate(form) : this.onCreateWeightFromUpdate(form)
+  }
+
+  // componentDidUpdate() {
+  //   this.textInput.current.focus()
+  // }
+
   onSubmit(e) {
     e.preventDefault();
     const { form } = this.state
@@ -81,11 +96,16 @@ class WeightForm extends React.Component {
         ? this.onUpdateWeight()
         : this.onCreateWeight()
     }
+    this.textInput.current.focus()
   }
 
   onDelete() {
     const { form } = this.state
     const { weight } = this.props
+    this.props.onDeleteWeight(weight)
+  }
+
+  onDeleteExisting(weight) {
     this.props.onDeleteWeight(weight)
   }
   /*
@@ -98,6 +118,13 @@ class WeightForm extends React.Component {
       this.props.onCreateWeight(weight)
     }).catch(() => { this.setState({ loading: false }) })
   }
+  onCreateWeightFromUpdate(weight) {
+    this.setState({ loading: true })
+    actions.weights.createWeight(this.props.cl, weight).then((w) => {
+      this.setState({ form: this.initializeFormData(), loading: false })
+      this.props.onCreateWeight(w)
+    }).catch(() => { this.setState({ loading: false }) })
+  }
 
   /*
   * Update an existing weight
@@ -107,6 +134,14 @@ class WeightForm extends React.Component {
     actions.weights.updateWeight(this.props.cl, this.state.form).then((weight) => {
       this.setState({ form: this.initializeFormData(), loading: false })
       this.props.onUpdateWeight(weight)
+    }).catch(() => { this.setState({ loading: false }) })
+  }
+
+  onUpdateWeightFromUpdate(weight) {
+    this.setState({ loading: true })
+    actions.weights.updateWeight(this.props.cl, weight).then((w) => {
+      this.setState({ form: this.initializeFormData(), loading: false })
+      this.props.onUpdateWeight(w)
     }).catch(() => { this.setState({ loading: false }) })
   }
 
@@ -155,9 +190,39 @@ class WeightForm extends React.Component {
     this.props.onConfirm()
   }
 
+  onModifyNameField(event, weight){
+    const { weights } = this.props
+
+    const index = weights.findIndex( w => w.id === weight.id)
+    weights[index].name = event.target.value
+    this.setState({weights: weights})
+  }
+  onModifyWeightField(event, weight){
+    const { weights } = this.props
+
+    const index = weights.findIndex( w => w.id === weight.id)
+    weights[index].weight = event.target.value
+    this.setState({weights: weights})
+  }
+
+  onClickTrashCan(weight) {
+    this.props.onSelectWeight(weight)
+    this.onDelete.bind(weight)
+    }
+
+    handleKeyDown(event, weight) {
+      console.log(event.key)
+      console.log(weight)
+      if(event.key === 'Enter') {
+        this.setState({ loading: true })
+        this.onSubmitUpdatedWeight(weight)
+        this.setState({ loading: false })
+      }
+    }
+
   render() { // issue: renders before onUpdateClass finishes --solved
     const { form } = this.state
-    const { formErrors, updateProperty, numWeights, noWeights } = this.props
+    const { formErrors, updateProperty, numWeights, noWeights, weights } = this.props
 
     return (
       <div className="cn-form-section">
@@ -166,9 +231,69 @@ class WeightForm extends React.Component {
           Name
         </div>
         <div className='cn-section-value-header txt-gray'>
-          Value
+         <span>Value</span>
+          
+          <div className="cn-percentage-icon">
+            <a onClick={() => this.toggleGradeModal()}>
+              {!this.props.boolPoints ? <i className="fa fa-percent"></i> : 'PTS'}
+            </a>
+          </div>
         </div>
+        
         <hr className="txt-gray" />
+
+        { weights.map((weight) => (
+          <div >
+          <div className="cn-delete-icon">
+            <a onClick={ () => this.onDeleteExisting(weight)}>
+              <i className="far fa-trash-alt"></i>
+            </a>
+          </div>
+
+          <div className="cn-name-field">
+              <div className='form-element relative'>
+                <div className='cn-input-container margin-top'>
+                  <input className='cn-form-input input-box'
+                         key={`name${weight.id}`}
+                         value={weight.name}
+                         onChange={e => this.onModifyNameField(e, weight)}
+                         onKeyDown={e => this.handleKeyDown(e, weight)}
+                         onBlur={() => {
+                          this.setState({ loading: true })
+                          this.onSubmitUpdatedWeight(weight)
+                          this.setState({ loading: false })
+                         }}
+                  />
+                </div>
+              </div>
+              
+          </div>
+          <div className="cn-value-field">
+            <div className='form-element relative'>
+                <div className='cn-input-container margin-top hide-spinner'>
+                  <input className='cn-form-input input-box'
+                         key={`weight${weight.id}`}
+                         type='number'
+                         value={weight.weight}
+                         onChange={e => this.onModifyWeightField(e, weight)}
+                         onKeyDown={e => this.handleKeyDown(e, weight)}
+                         onBlur={() => {
+                          this.setState({ loading: true })
+                          this.onSubmitUpdatedWeight(weight)
+                          this.setState({ loading: false })
+                         }}
+                  />
+                </div>
+              </div>
+          </div>
+
+          <div className="cn-percentage-grey">
+            <span>
+              {!this.props.boolPoints ? '%' : 'PTS'}
+            </span>
+          </div>
+        </div>
+        ))}
 
         <div >
           <div className="cn-delete-icon">
@@ -179,45 +304,46 @@ class WeightForm extends React.Component {
 
           <div className="cn-name-field">
             <form onSubmit={this.onSubmit.bind(this)}>
-              <InputField
-                containerClassName='margin-top'
-                inputClassName='input-box'
-                error={formErrors.name}
-                name="name"
-                onChange={updateProperty}
-                value={form.name}
-              />
+                <div className='form-element relative'>
+                  <div className='cn-input-container margin-top'>
+                    <input className='cn-form-input input-box new-form'
+                         ref={this.textInput}
+                         key={'formname'}
+                         value={form.name}
+                         onChange={e => this.setState({form: {name: e.target.value, weight: form.weight}})}
+                         autoFocus={true}
+                    />
+                  </div>
+              
+          </div>
             </form>
           </div>
           <div className="cn-value-field">
             <form onSubmit={this.onSubmit.bind(this)}>
-              <InputField
-                containerClassName='margin-top hide-spinner'
-                inputClassName='input-box'
-                error={formErrors.weight}
-                name="weight"
-                onChange={updateProperty}
-                type="number"
-                value={form.weight}
-              />
+            <div className='form-element relative'>
+                <div className='cn-input-container margin-top hide-spinner'>
+                  <input className='cn-form-input input-box new-form'
+                         key={'formweight'}
+                         type='number'
+                         value={form.weight}
+                         onChange={e => this.setState({form: {name: form.name, weight: e.target.value}})}
+                         onBlur={e => {
+                           if(form.weight && form.name){
+                             this.onSubmit(e)
+                           }
+                         }}
+                  />
+                </div>
+              
+          </div>
             </form>
           </div>
 
-          <div className="cn-percentage-icon">
-            <a onClick={() => this.toggleGradeModal()}>
-              {!this.props.boolPoints ? <i className="fa fa-percent"></i> : 'PTS'}
-            </a>
+          <div className="cn-percentage-grey">
+            <span>
+              {!this.props.boolPoints ? '%' : 'PTS'}
+            </span>
           </div>
-        </div>
-        <div className='addbtndiv'>
-          <a
-            className={'margin-top ' + (this.state.loading || noWeights ? 'disabled' : '')}
-            disabled={this.state.loading || noWeights}
-            onClick={this.onSubmit.bind(this)}
-          >
-            {this.props.weight ? 'Update ' : 'Add '} Weight
-            {this.state.loading ? <Loading /> : null}
-          </a>
         </div>
         {this.renderGradeModal()}
       </div>
@@ -244,7 +370,9 @@ WeightForm.propTypes = {
   totalPoints: PropTypes.number,
   open: PropTypes.bool,
   onClose: PropTypes.func,
-  onConfirm: PropTypes.func
+  onConfirm: PropTypes.func,
+  weights: PropTypes.array,
+  onSelectWeight: PropTypes.func
 }
 
 export default ValidateForm(Form(WeightForm, 'form'))

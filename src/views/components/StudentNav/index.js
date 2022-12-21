@@ -53,9 +53,6 @@ class StudentNav extends React.Component {
             <NavItem pageName="jobs/home" text="Home" />
             <NavItem pageName="jobs/profile" text="Profile" />
             <NavItem pageName="jobs/browse" text="Browse" />
-            {/* <NavItem pageName="jobs/resume" text="Custom Resume (Coming Soon)" /> */}
-            {/* <NavItem pageName="activity" text="Activity" />
-            <NavItem pageName="chat" text="Chat" /> */}
             {this.renderLogout()}
           </div>
         </div>
@@ -65,17 +62,14 @@ class StudentNav extends React.Component {
         <div className="s-nav-wrapper">
           <div className="s-nav">
             <NavItem pageName="home" text="Home" />
-            {/* <NavItem pageName="classes" text="Classes" />
-            <NavItem pageName="tasks" text="Assignments" />
-            <NavItem pageName="insights" text="Insights" /> */}
             <NavItem pageName="calendar" text="Calendar" />
             {this.props.rootStore.studentClassesStore.classes.filter(cl => cl.status.id === 1400).length !== 0 &&
               <NavItem pageName="share" text="Share" />
             }
             <div className="s-nav--spacer" />
+            { userStore.user !== null &&
             <UpgradeBox userStore={userStore} subscribed={this.state.subscribed} />
-            {/* <NavItem pageName="activity" text="Activity" />
-            <NavItem pageName="chat" text="Chat" /> */}
+            }
             {this.renderLogout()}
           </div>
         </div>

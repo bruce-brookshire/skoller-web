@@ -8,27 +8,33 @@ import actions from '../../actions'
 import UserIcon from '../../assets/images/icons/user.svg'
 import ReactTooltip from 'react-tooltip'
 import overridePosition from './over'
-import { formatDate } from '../../utilities/time'
 import SkModal from '../../views/components/SkModal/SkModal'
 import LifeTimeUserModal from '../../views/Student/components/LifeTimeUserModal'
 import PopUp from '../../views/Student/Home/PopUp'
 import { Cookies } from 'react-cookie'
 
-@inject('rootStore') @observer
+@inject('rootStore')
+@observer
 class NavBar extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       subscribed: false,
+      isTrial: false,
+      trialDaysLeft: 0,
       subscriptionCancelled: false,
       showMyAccount: false,
+      subscriptionEndsOrRenews: null,
+      platform: null,
       popUp: { show: false, type: null }
     }
     this.cookie = new Cookies()
   }
 
   getName () {
-    const { userStore: { user } } = this.props.rootStore
+    const {
+      userStore: { user }
+    } = this.props.rootStore
     if (user.student) {
       return `${user.student.name_first} ${user.student.name_last}`
     } else {
@@ -37,7 +43,9 @@ class NavBar extends React.Component {
   }
 
   getDescription () {
-    const { userStore: { user } } = this.props.rootStore
+    const {
+      userStore: { user }
+    } = this.props.rootStore
     const admin = this.props.rootStore.userStore.isAdmin()
     if (user.student) {
       return 'Student'
@@ -48,27 +56,120 @@ class NavBar extends React.Component {
     }
   }
   componentDidMount () {
-    actions.stripe.getMySubscription()
+    actions.stripe
+      .getMySubscription()
       .then((data) => {
-        if (data.data.length > 0) {
-          this.setState({ subscribed: true})
-          this.setState({ subscriptionCancelled: data.data[0].cancel_at_period_end})
-          this.props.rootStore.userStore.setMySubscription(data.data[0])
-          this.props.rootStore.userStore.setSubscriptionCreatedDate(data.data[0].created)
-          this.props.rootStore.userStore.setInterval(data.data[0].plan.interval)
+        if (
+          (Array.isArray(data.data) && data.data.length > 0) ||
+          (!Array.isArray(data.data) && data.data != null)
+        ) {
+          this.props.rootStore.userStore.setMySubscription(data.data)
+          this.props.rootStore.userStore.setSubscriptionCreatedDate(
+            data.data.created
+          )
+          this.props.rootStore.userStore.setInterval(data.data.interval)
+          this.setState({
+            subscriptionEndsOrRenews: this.setSubscriptionRenewal(data.data)
+          })
+          this.setState({ subscribed: this.isSubscribed(data.data) })
+          this.setState({
+            subscriptionCancelled: this.setCancellationStatus(data.data)
+          })
         }
+        this.setState({ isTrial: this.props.rootStore.userStore.user.trial })
+        this.setState({
+          trialDaysLeft: this.props.rootStore.userStore.user.trial_days_left
+        })
+        this.setState({
+          showMyAccount: !this.isSubscribed(data.data) && !this.state.isTrial
+        })
+        this.setState({
+          platform: data.data.platform
+        })
       })
       .catch((e) => {
         console.log(e)
       })
   }
 
+  setCancellationStatus ({ expirationIntent, cancelAt }) {
+    if (expirationIntent == null && cancelAt == null) {
+      return false
+    }
+
+    if (expirationIntent != null) {
+      return true
+    }
+
+    return false
+  }
+
+  isSubscribed (data) {
+    if (data.expirationIntent === null && data.cancelAt === null) {
+      return true
+    }
+
+    if (
+      data.expirationIntent !== null &&
+      data.cancelAt !== null &&
+      data.cancelAt > Math.floor(new Date().getTime())
+    ) {
+      return true
+    }
+
+    if (
+      data.expirationIntent === null &&
+      data.cancelAt !== null &&
+      data.cancelAt > Math.floor(new Date().getTime())
+    ) {
+      return true
+    }
+
+    return false
+  }
+
+  setSubscriptionRenewal ({ interval, cancelAt }) {
+    if (cancelAt == null) {
+      switch (interval) {
+        case 'year':
+          return new Date(
+            new Date().setFullYear(new Date().getFullYear() + 1)
+          ).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          })
+        case 'month':
+          return new Date(
+            new Date().setMonth(new Date().getMonth() + 1)
+          ).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          })
+        case 'lifetime':
+          return 'lifetime'
+      }
+    } else {
+      return new Date(cancelAt).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      })
+    }
+  }
+
   getInitials () {
-    const { userStore: { user } } = this.props.rootStore
+    const {
+      userStore: { user }
+    } = this.props.rootStore
     const admin = this.props.rootStore.userStore.isAdmin()
     if (user.student) {
       if (user.student.name_first && user.student.name_last) {
-        return user.student.name_first[0].toUpperCase() + user.student.name_last[0].toUpperCase()
+        return (
+          user.student.name_first[0].toUpperCase() +
+          user.student.name_last[0].toUpperCase()
+        )
       } else if (user.student.name_first.length >= 2) {
         return user.student.name_first.substring(0, 2).toUpperCase()
       } else {
@@ -81,213 +182,380 @@ class NavBar extends React.Component {
     }
   }
 
-  getMonthAndYearInDays (val) {
-    if (val === 'week') return 7
-    if (val === 'month') return 30
-    else if (val === 'year') return 365
-    return 0
-  }
-
-  getIntervalDate () {
-    let endDate = new Date()
-    console.log({
-      interval: this.props.rootStore.userStore.subscriptionStartedDate
-    })
-    console.log({
-      int: this.props.rootStore.userStore.interval
-    })
-    const interval = this.props.rootStore.userStore.interval
-    console.log({
-      str: this.getMonthAndYearInDays(interval)
-    })
-    let newDate = new Date(this.props.rootStore.userStore.subscriptionStartedDate * 1000)
-    endDate.setDate(newDate.getDate() + this.getMonthAndYearInDays(interval))
-    console.log({ endDate })
-    return endDate
-  }
-
   renderMyAccountDetails () {
     return (
-      <div className='sk-pop-up-container'>
-        <SkModal closeModal={() => this.setState({showMyAccount: false})} style={{width: '408px'}}>
-          <div className='home-container' style={{width: '100%', padding: 0}}>
-            {
-              !this.props.rootStore.userStore.user.lifetime_trial && !this.props.rootStore.userStore.user.lifetime_subscription && this.props.rootStore.userStore.user.trial &&
-              <div className="home-column">
-
-                <div className="home-shadow-box" style={{boxShadow: 'none', margin: 0}}>
-                  <div className="home-shadow-box__expiresin-container" style={{padding: 0}}>
-                    <div className="home-shadow-box__expiresin-title">
-                      <img alt="Skoller" className='logo' src='/src/assets/images/sammi/Smile.png' height="60" />
-                      <h1>Your free trial expires in {Math.ceil(+this.props.rootStore.userStore.user.trial_days_left)} days</h1>
-                    </div>
-                    <div style={{display: 'flex', flexDirection: 'column'}}>
-                    <button className="btn btn-primary" style={{marginBottom: '10px'}}
-                      onClick={() => {
-                        this.setState({showMyAccount: false})
-                        this.setState({ popUp: { type: 'PaymentPlans', show: true } })
-                      }}
-                    >Upgrade to Premium</button>
-                    <span>Trial ends {formatDate(new Date(new Date().setDate(new Date().getDate() + Math.ceil(+this.props.rootStore.userStore.user.trial_days_left))))}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            }
-            {
-              !this.props.rootStore.userStore.user.lifetime_trial && !this.props.rootStore.userStore.user.lifetime_subscription && !this.props.rootStore.userStore.user.trial && this.state.subscribed &&
-              <div className="home-column">
-                <div className="home-shadow-box"style={{boxShadow: 'none', margin: 0}}>
-                  <div className="home-shadow-box__expiresin-container" style={{padding: 0}}>
-                    <div className="home-shadow-box__expiresin-title">
-                      <img alt="Skoller" className='logo' src='/src/assets/images/sammi/Smile.png' height="60" />
-                      {(this.props.rootStore.userStore.mySubscription && this.props.rootStore.userStore.mySubscription.cancel_at_period_end) ? <h1>You cancelled your subscription</h1> : this.props.rootStore.userStore.mySubscription && !this.props.rootStore.userStore.mySubscription.cancel_at_period_end ? <h1>Cancel subscription</h1> : null}
-                    </div>
-                    <div style={{display: 'flex', flexDirection: 'column'}}>
-                    {
-                      (this.props.rootStore.userStore.mySubscription && this.props.rootStore.userStore.mySubscription.cancel_at_period_end)
-
-                        ? <button className="btn btn-primary" style={{marginBottom: '10px'}}
-                          onClick={() => {
-                            this.setState({showMyAccount: false})
-                            this.setState({ popUp: { type: 'PaymentPlans', show: true } })
-                          }}
-                        >Upgrade to Premium</button>
-                        : this.props.rootStore.userStore.mySubscription && !this.props.rootStore.userStore.mySubscription.cancel_at_period_end
-                          ? <button className="btn btn-primary" style={{marginBottom: '10px'}}
-                            onClick={() => {
-                              this.setState({showMyAccount: false})
-                              this.setState({ popUp: { type: 'CancelSubscription', show: true } })
-                            }}
-                          >Cancel Subscription</button> : null
-
-                    }
-                    </div>
-                    <span>Subscription ends {formatDate(this.getIntervalDate())}</span>
-                  </div>
-                </div>
-              </div>
-            }
+      <div className="sk-pop-up-container">
+        <SkModal
+          closeModal={
+            this.state.subscribed || this.state.isTrial
+              ? () => this.setState({ showMyAccount: false })
+              : null
+          }
+          style={{ width: '408px' }}
+        >
+          <div className="home-container" style={{ width: '100%', padding: 0 }}>
+            {this.renderSubscriptionContent()}
           </div>
         </SkModal>
       </div>
     )
   }
 
-  renderClassInfo () {
-    const { navbarStore: { cl, isDIY, toggleRequestResolved } } = this.props.rootStore
-    if (cl) {
+  renderSubscriptionContent () {
+    return (
+      <div className="home-column">
+        <div
+          className="home-shadow-box"
+          style={{ boxShadow: 'none, margin: 0' }}
+        >
+          <div
+            className="home-shadow-box__expiresin-container"
+            style={{ padding: 0, textAlign: 'center' }}
+          >
+            <div className="home-shadow-box__expiresin-title">
+              <img
+                alt="Skoller"
+                className="logo"
+                src="/src/assets/images/sammi/Smile.png"
+                height="60"
+              />
+              {this.renderCancellationText()}
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              {this.renderSubscribeCancelButton()}
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              {this.renderSubscriptionEndText()}
+              {!this.state.subscribed && !this.state.isTrial && (
+                <div
+                  onClick={() => this.props.history.push('/logout')}
+                  style={{
+                    color: '#333',
+                    marginTop: '10px',
+                    alignSelf: 'flex-start'
+                  }}
+                >
+                  <i className="fas fa-sign-out-alt fa-lg" />
+                  <a>Logout</a>
+                  <span />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  renderCancellationText () {
+    const { mySubscription } = this.props.rootStore.userStore
+    if (
+      this.state.subscribed &&
+      mySubscription != null &&
+      mySubscription.expirationIntent == null
+    ) {
+      return <h1>Cancel Subscription</h1>
+    }
+
+    if (!this.state.subscribed && this.state.isTrial) {
       return (
-        <ClassInfo cl={cl}
-          isDIY={isDIY}
-          assignmentPage={false}
-          toggleRequestResolved={toggleRequestResolved} />
+        <h2>
+          You have {Math.ceil(this.state.trialDaysLeft)} day left in your trial.
+          Upgrade now!
+        </h2>
+      )
+    }
+
+    if (!this.state.subscribed && !this.state.isTrial) {
+      return (
+        <h2>
+          Your free trial has expired! Upgrade to Premium to continue using Skoller.
+        </h2>
       )
     }
   }
-  renderLeaveSetupbtn () {
-    const { userStore: { user } } = this.props.rootStore
-    const admin = this.props.rootStore.userStore.isAdmin()
-    const { navbarStore: { cl } } = this.props.rootStore
+
+  renderSubscribeCancelButton () {
+    const { mySubscription } = this.props.rootStore.userStore
+    if (
+      this.state.subscribed &&
+      mySubscription &&
+      !mySubscription.expirationIntent
+    ) {
+      return (
+        <div>
+          { this.state.platform === 'stripe'
+            ? <button
+              className="btn btn-primary"
+              style={{ marginBottom: '10px' }}
+              onClick={() => {
+                this.setState({ showMyAccount: false })
+                this.setState({
+                  popUp: { type: 'CancelSubscription', show: true }
+                })
+              }}
+            >
+            Cancel Subscription
+            </button>
+            : <span>You subscribed to premium through your mobile device&apos;s In-App-Purchasing. Manage your subscription through your device.</span>}
+        </div>
+      )
+    }
+
+    if (
+      (!this.state.subscribed && !this.state.isTrial) ||
+      (this.state.subscribed &&
+        mySubscription &&
+        mySubscription.expirationIntent &&
+        mySubscription.cancelAt &&
+        mySubscription.cancelAt < Math.floor(new Date().getTime() / 1000)) ||
+      this.state.isTrial
+    ) {
+      return (
+        <div>
+          <button
+            className="btn btn-primary"
+            style={{ marginBottom: '10px' }}
+            onClick={() => {
+              this.setState({ showMyAccount: false })
+              this.setState({ popUp: { type: 'PaymentPlans', show: true } })
+            }}
+          >
+            Upgrade To Premium
+          </button>
+        </div>
+      )
+    } else {
+      return (
+        <div>Balls</div>
+      )
+    }
+  }
+
+  renderSubscriptionEndText () {
+    const { mySubscription } = this.props.rootStore.userStore
+    if (
+      mySubscription &&
+      mySubscription.cancelAt == null &&
+      this.state.subscribed
+    ) {
+      return (
+        <span>
+          {this.state.subscriptionEndsOrRenews === 'lifetime' ? 'You have a lifetime subscription.'
+            : 'Your subscription will renew on {this.state.subscriptionEndsOrRenews'
+          }
+        </span>
+      )
+    }
+
+    if (
+      mySubscription &&
+      mySubscription.cancelAt == null &&
+      !this.state.subscribed &&
+      this.state.isTrial
+    ) {
+      return <span></span>
+    }
+
+    if (!mySubscription && !this.state.subscribed && this.state.isTrial) {
+      return <span></span>
+    }
+
+    if (
+      mySubscription &&
+      mySubscription.cancelAt > Math.floor(new Date().getTime() / 1000) &&
+      !this.state.isTrial
+    ) {
+      return (
+        <span>
+          Your subscription will end {this.state.subscriptionEndsOrRenews}
+        </span>
+      )
+    }
+  }
+
+  renderClassInfo () {
+    const {
+      navbarStore: { cl, isDIY, toggleRequestResolved }
+    } = this.props.rootStore
     if (cl) {
       return (
-        <button className="cn_back_hmpage_btn"
+        <ClassInfo
+          cl={cl}
+          isDIY={isDIY}
+          assignmentPage={false}
+          toggleRequestResolved={toggleRequestResolved}
+        />
+      )
+    }
+  }
+
+  renderLeaveSetupbtn () {
+    const admin = this.props.rootStore.userStore.isAdmin()
+    const {
+      navbarStore: { cl }
+    } = this.props.rootStore
+    if (cl) {
+      return (
+        <button
+          className="cn_back_hmpage_btn"
           onClick={() => {
             if (admin) {
               this.props.history.push('/hub/landing')
             } else {
               this.props.history.push('/')
             }
-          }}>
+          }}
+        >
           Leave Setup
         </button>
       )
     }
   }
+
   renderAssignmentClassInfo () {
-    const { navbarStore: { cl, isDIY, toggleRequestResolved } } = this.props.rootStore
+    const {
+      navbarStore: { cl, isDIY, toggleRequestResolved }
+    } = this.props.rootStore
     if (cl) {
       return (
-        <ClassInfo cl={cl}
+        <ClassInfo
+          cl={cl}
           isDIY={isDIY}
           assignmentPage={true}
-          toggleRequestResolved={toggleRequestResolved} />
+          toggleRequestResolved={toggleRequestResolved}
+        />
       )
     }
   }
 
   renderOnboardHeader () {
     return (
-      <div className='cn-navbar' style={!this.props.rootStore.userStore.user.trial && !this.state.subscribed ? null : {zIndex: '100'}}>
+      <div
+        className="cn-navbar"
+        style={
+          this.props.rootStore.userStore.user !== null &&
+          !this.props.rootStore.userStore.user.trial &&
+          !this.state.subscribed
+            ? null
+            : { zIndex: '100' }
+        }
+      >
         <div>
-          <img alt="Skoller" className='logo' src='/src/assets/images/logo-wide-blue@1x.png' />
-          <div className='onboard-logo-text'>
-            {this.props.rootStore.userStore.isSW() ? '' : this.props.rootStore.navbarStore.isSyllabusTool ? 'Class Setup Tool.' : 'Keep up classes, together'}
+          <img
+            alt="Skoller"
+            className="logo"
+            src="/src/assets/images/logo-wide-blue@1x.png"
+          />
+          <div className="onboard-logo-text">
+            {this.props.rootStore.userStore.isSW()
+              ? ''
+              : this.props.rootStore.navbarStore.isSyllabusTool
+                ? 'Class Setup Tool.'
+                : 'Keep up classes, together'}
           </div>
         </div>
-        <div className='user-info'>
-          <div className='left'>
-          </div>
-          <div className='right'>
-          </div>
+        <div className="user-info">
+          <div className="left"></div>
+          <div className="right"></div>
         </div>
       </div>
     )
   }
 
-  renderJobsHeader () {
-    const { userStore: { user } } = this.props.rootStore
-    const admin = this.props.rootStore.userStore.isAdmin()
-    return (
-      <div className={'cn-navbar cn-navbar-jobs'} style={{ backgroundColor: '#4a4a4a', color: 'rgba(245, 245, 245, 1)' }}>
-        <div>
-          <img
-            alt="Skoller"
-            className='logo' src='/src/assets/images/jobs/skoller-jobs-logo.png'
-            onClick={() => {
-              if (admin) {
-                this.props.history.push('/hub/landing')
-              } else {
-                this.props.history.push('/student/jobs')
-              }
-            }}
-          />
-          <div className='cn-navbar-message sk-jobs-navbar-message'>{'From the classroom to your dream career.'}</div>
-        </div>
-        <div className='class-info'>
-          {/* {this.renderClassInfo()} */}
-        </div>
-        <div className='user-info'>
-          {window.innerWidth > 1000 &&
-            <JobsSwitch />
-          }
-          <div className='left'>
-            <p>{this.getName()}</p>
-            <span>Job Candidate</span>
-          </div>
-          <div className='right'>
-            {user.pic_path
-              ? <img className='profile-img' src={user.pic_path} />
-              : <div style={{ backgroundColor: '#15A494' }} className='profile-img vertical-align profile-initials'>{this.getInitials()}</div>}
-          </div>
-        </div>
-      </div>
-    )
-  }
+  // Jobs features are not in use
+  //
+  // renderJobsHeader () {
+  //   const { userStore: { user } } = this.props.rootStore
+  //   const admin = this.props.rootStore.userStore.isAdmin()
+  //   return (
+  //     <div className={'cn-navbar cn-navbar-jobs'} style={{ backgroundColor: '#4a4a4a', color: 'rgba(245, 245, 245, 1)' }}>
+  //       <div>
+  //         <img
+  //           alt="Skoller"
+  //           className='logo' src='/src/assets/images/jobs/skoller-jobs-logo.png'
+  //           onClick={() => {
+  //             if (admin) {
+  //               this.props.history.push('/hub/landing')
+  //             } else {
+  //               this.props.history.push('/student/jobs')
+  //             }
+  //           }}
+  //         />
+  //         <div className='cn-navbar-message sk-jobs-navbar-message'>{'From the classroom to your dream career.'}</div>
+  //       </div>
+
+  //       <div className='user-info'>
+  //         {window.innerWidth > 1000 &&
+  //           <JobsSwitch />
+  //         }
+  //         <div className='left'>
+  //           <p>{this.getName()}</p>
+  //           <span>Job Candidate</span>
+  //         </div>
+  //         <div className='right'>
+  //           {user.pic_path
+  //             ? <img className='profile-img' src={user.pic_path} />
+  //             : <div style={{ backgroundColor: '#15A494' }} className='profile-img vertical-align profile-initials'>{this.getInitials()}</div>}
+  //         </div>
+  //       </div>
+  //     </div>
+  //   )
+  // }
+
   renderLifeTimeTrialUserModal () {
     return (
-      <div>
-        <LifeTimeUserModal
-          closeModal={() => this.setState({showMyAccount: false})}
-          handleModalClose={() => this.setState({showMyAccount: false})}
-        />
+      <div className="sk-pop-up-container">
+        <SkModal closeModal={() => this.setState({ showMyAccount: false })}>
+          <LifeTimeUserModal
+            closeModal={() => this.setState({ showMyAccount: false })}
+            handleModalClose={() => this.setState({ showMyAccount: false })}
+          />
+        </SkModal>
       </div>
     )
   }
+
+  renderPopUp () {
+    return (
+      <PopUp
+        closeModal={
+          this.state.subscribed || this.state.isTrial
+            ? () => this.closePopUp()
+            : () => {
+              return null
+            }
+        }
+        handleModalClose={() => this.closePopUp()}
+        type={this.state.popUp.type}
+        shouldAllowClose={this.state.subscribed || this.state.isTrial}
+        refreshClasses={() => this.updateClasses()}
+      />
+    )
+  }
+
+  renderAccountContainer () {
+    if (
+      this.state.showMyAccount &&
+      this.props.rootStore.userStore.user.lifetime_trial
+    ) {
+      return this.renderLifeTimeTrialUserModal()
+    }
+
+    if (
+      !this.props.rootStore.userStore.user.lifetime_trial &&
+      this.state.showMyAccount
+    ) {
+      return this.renderMyAccountDetails()
+    }
+  }
+
   async updateStudent () {
     if (this.cookie) {
       if (this.cookie.get('skollerToken')) {
-        await actions.auth.getUserByToken(this.cookie.get('skollerToken')).catch((r) => console.log(r))
+        await actions.auth
+          .getUserByToken(this.cookie.get('skollerToken'))
+          .catch((r) => console.log(r))
       }
     }
   }
@@ -303,30 +571,18 @@ class NavBar extends React.Component {
   }
 
   render () {
-    let jobsMode = this.props.rootStore.navStore.jobsMode
-    const { navbarStore: { isSyllabusTool } } = this.props.rootStore
-
     if (this.props.onboard) {
-      return (
-        this.renderOnboardHeader()
-      )
-    } else if (jobsMode) {
-      return (
-        this.renderJobsHeader()
-      )
+      return this.renderOnboardHeader()
     } else {
-      const { userStore: { user } } = this.props.rootStore
       const admin = this.props.rootStore.userStore.isAdmin()
-      const style = !this.state.subscribed && user.trial ? '' : {zIndex: 100}
       return (
-        <div className='cn-navbar' style={!this.props.rootStore.userStore.user.trial && !this.state.subscribed ? null : {zIndex: '100'}}>
-          {this.state.popUp.show &&
-                    <PopUp closeModal={(!this.props.rootStore.userStore.user.trial && !this.state.subscribed) ? () => null : () => this.closePopUp()} handleModalClose={() => this.closePopUp()} type={this.state.popUp.type} refreshClasses={() => this.updateClasses()} />
-          }
+        <div className="cn-navbar" style={{ zIndex: '100' }}>
+          {this.state.popUp.show && this.renderPopUp()}
           <div>
             <img
               alt="Skoller"
-              className='logo' src='/src/assets/images/logo-wide-blue@1x.png'
+              className="logo"
+              src="/src/assets/images/logo-wide-blue@1x.png"
               onClick={() => {
                 if (admin) {
                   this.props.history.push('/hub/landing')
@@ -335,77 +591,110 @@ class NavBar extends React.Component {
                 }
               }}
             />
-            <div className='cn-navbar-message'>{this.props.rootStore.userStore.isSW() ? '' : this.props.rootStore.navbarStore.isSyllabusTool ? 'Class Setup Tool.' : 'Keep up classes, together'}</div>
-          </div>
-          <div className='class-info'>
-            {this.props.rootStore.userStore.isSW()
-              ? this.renderClassInfo() : this.renderAssignmentClassInfo()
-            }
-          </div>
-          {!this.props.rootStore.userStore.isAdmin() && <ReactTooltip id='soclose'
-            getContent={(dataTip) =>
-              <div>
-                <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'}}>
-                  <img src={UserIcon} style={{width: '20px'}}/>
-                  <button
-                    style={{
-                      cursor: 'pointer',
-                      border: 'none',
-                      outline: 'none',
-                      background: 'transparent'
-                    }}
-                    onClick={() => this.setState({showMyAccount: true})}
-                  >
-                    My Account</button>
-                </div>
-              </div>
-            }
-            effect='solid'
-            place={'bottom'}
-            border={true}
-            type={'light'}
-            clickable={true}
-            delayHide={500}
-            overridePosition={overridePosition}
-          />}
-          {this.state.showMyAccount && this.props.rootStore.userStore.user.lifetime_trial && (
-            <div className='sk-pop-up-container'>
-              <SkModal
-
-                closeModal={() => this.setState({showMyAccount: false})}
-              >
-                {this.renderLifeTimeTrialUserModal()}
-              </SkModal>
+            <div className="cn-navbar-message">
+              {this.props.rootStore.userStore.isSW()
+                ? ''
+                : this.props.rootStore.navbarStore.isSyllabusTool
+                  ? 'Class Setup Tool.'
+                  : 'Keep up classes, together'}
             </div>
-          )}
-          {!this.props.rootStore.userStore.user.lifetime_trial && this.state.showMyAccount &&
-                this.renderMyAccountDetails()
+          </div>
+
+          <div className="class-info">
+            {this.props.rootStore.userStore.isSW()
+              ? this.renderClassInfo()
+              : this.renderAssignmentClassInfo()}
+          </div>
+
+          {
+            // Render the My Account button on hover.
+            !this.props.rootStore.userStore.isAdmin() && (
+              <ReactTooltip
+                id="soclose"
+                getContent={(dataTip) => (
+                  <div>
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <img src={UserIcon} style={{ width: '20px' }} />
+                      <button
+                        style={{
+                          cursor: 'pointer',
+                          border: 'none',
+                          outline: 'none',
+                          background: 'transparent'
+                        }}
+                        onClick={() => this.setState({ showMyAccount: true })}
+                      >
+                        My Account
+                      </button>
+                    </div>
+                  </div>
+                )}
+                effect="solid"
+                place={'bottom'}
+                border={true}
+                type={'light'}
+                clickable={true}
+                delayHide={500}
+                overridePosition={overridePosition}
+              />
+            )
           }
-          <div className='user-info' data-for="soclose" data-tip="soclose"
+
+          {!admin && this.renderAccountContainer()}
+
+          <div
+            className="user-info"
+            data-for="soclose"
+            data-tip="soclose"
             //   onMouseLeave={() => this.setState({showUserToolTip: false})} onMouseEnter={() => this.setState({showUserToolTip: true})}
           >
-
-            {window.innerWidth > 1000 &&
-              <JobsSwitch />
-            }
-            <div className='left' style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-              <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+            {window.innerWidth > 1000 && <JobsSwitch />}
+            <div
+              className="left"
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-end'
+                }}
+              >
                 <p>{this.getName()}</p>
                 <span>{this.getDescription()}</span>
                 <span>{this.state.subscribed}</span>
               </div>
-              <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', filter: 'drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.5))', borderRadius: '50%', marginLeft: '10px', background: '#D8D8D8', width: '34px', height: '34px'}}>
-                <img src='/src/assets/images/four_door/diy_off.png' width="20px" />
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  filter: 'drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.5))',
+                  borderRadius: '50%',
+                  marginLeft: '10px',
+                  background: '#D8D8D8',
+                  width: '34px',
+                  height: '34px'
+                }}
+              >
+                <img
+                  src="/src/assets/images/four_door/diy_off.png"
+                  width="20px"
+                />
               </div>
             </div>
-            <div className='right'>
-
-              {this.renderLeaveSetupbtn()}
-
-              {/* {user.pic_path
-                ? <img className='profile-img' src={user.pic_path} />
-                : <div className='profile-img vertical-align profile-initials'>{this.getInitials()}</div>} */}
-            </div>
+            <div className="right">{this.renderLeaveSetupbtn()}</div>
           </div>
         </div>
       )
