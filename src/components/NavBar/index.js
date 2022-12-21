@@ -327,7 +327,7 @@ class NavBar extends React.Component {
       )
     } else {
       return (
-        <div>Balls</div>
+        <div>Your subscription has been cancelled</div>
       )
     }
   }
