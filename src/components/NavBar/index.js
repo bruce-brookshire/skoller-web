@@ -574,7 +574,8 @@ class NavBar extends React.Component {
     if (this.props.onboard) {
       return this.renderOnboardHeader()
     } else {
-      const admin = this.props.rootStore.userStore.isAdmin()
+      const admin = this.props.rootStore.userStore.isAdmin
+      const isSw = this.props.rootStore.userStore.isSw
       return (
         <div className="cn-navbar" style={{ zIndex: '100' }}>
           {this.state.popUp.show && this.renderPopUp()}
@@ -647,7 +648,7 @@ class NavBar extends React.Component {
             )
           }
 
-          {!admin && this.renderAccountContainer()}
+          {!admin && !isSw && this.renderAccountContainer()}
 
           <div
             className="user-info"
