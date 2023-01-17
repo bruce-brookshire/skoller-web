@@ -325,10 +325,6 @@ class NavBar extends React.Component {
           </button>
         </div>
       )
-    } else {
-      return (
-        <div>Balls</div>
-      )
     }
   }
 
