@@ -80,7 +80,7 @@ class ClassStatusModal extends React.Component {
     } else if (id === 1200 && !this.props.trial && this.props.isSubscribed && !this.props.onboard) {
       status = 'inReview'
       sammiMessage = <span>Your syllabus is <b>IN REVIEW!</b></span>
-    } else if (id === 1200 && this.props.trial && !this.props.isSubscribed) {
+    } else if ((id === 1200 || id === 1300) && (this.props.trial && !this.props.isSubscribed)) {
       status = 'inTrialReview'
       sammiMessage = null
     } else if (id === 1300) {

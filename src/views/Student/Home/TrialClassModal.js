@@ -2,14 +2,10 @@ import React, { useState } from 'react'
 import AnimateHeight from 'react-animate-height'
 import SkModal from '../../components/SkModal/SkModal'
 import ReactResizeDetector from 'react-resize-detector'
-import UploadOverloadDocuments from '../../components/ClassStatusModal/UploadOverloadDocuments'
 import UploadAdditionalDocuments from '../../components/ClassStatusModal/UploadAdditionalDocuments'
 import ClassStatusImage from '../../components/ClassStatusModal/ClassStatusImage'
 import DropClassButton from '../../components/DropClassButton'
-import SiDropClass from '../../Insights/StudentDetail/SiStudentClassDetail/SiDropClass'
-import { mobileCheck } from '../../../utilities/display'
 import UpgradeToPremiumBtn from './UpgradeToPremium'
-import { toJS } from 'mobx'
 
 function ProgressOption (props) {
   const renderIconClassName = () => {
@@ -40,7 +36,6 @@ export default function TrialClassModal (props) {
     setContentHeight(h)
   }
   const renderNextButton = () => {
-    const buttonText = 'Use the DIY tool'
     return (
       <div>
         <p style={{margin: '0', textAlign: 'center'}}>Don&apos;t want to wait?</p>
@@ -55,6 +50,7 @@ export default function TrialClassModal (props) {
       </div>
     )
   }
+
   const renderControl = () => {
     if (uploadAdditionalDocumentsView) {
       return null
