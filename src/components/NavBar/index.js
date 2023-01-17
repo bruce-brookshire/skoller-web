@@ -535,18 +535,20 @@ class NavBar extends React.Component {
   }
 
   renderAccountContainer () {
-    if (
-      this.state.showMyAccount &&
-      this.props.rootStore.userStore.user.lifetime_trial
-    ) {
-      return this.renderLifeTimeTrialUserModal()
-    }
+    if (!this.props.rootStore.userStore.isAdmin() && !this.props.rootStore.userStore.isSw) {
+      if (
+        this.state.showMyAccount &&
+        this.props.rootStore.userStore.user.lifetime_trial
+      ) {
+        return this.renderLifeTimeTrialUserModal()
+      }
 
-    if (
-      !this.props.rootStore.userStore.user.lifetime_trial &&
-      this.state.showMyAccount
-    ) {
-      return this.renderMyAccountDetails()
+      if (
+        !this.props.rootStore.userStore.user.lifetime_trial &&
+        this.state.showMyAccount
+      ) {
+        return this.renderMyAccountDetails()
+      }
     }
   }
 
@@ -609,7 +611,7 @@ class NavBar extends React.Component {
 
           {
             // Render the My Account button on hover.
-            !this.props.rootStore.userStore.isAdmin() && (
+            !this.props.rootStore.userStore.isAdmin() && !this.props.rootStore.userStore.isSw && (
               <ReactTooltip
                 id="soclose"
                 getContent={(dataTip) => (
@@ -649,7 +651,7 @@ class NavBar extends React.Component {
               />
             )
           }
-          {(!admin && !isSw) || this.state.showMyAccount ? this.renderAccountContainer() : null}
+          {this.renderAccountContainer()}
 
           <div
             className="user-info"
