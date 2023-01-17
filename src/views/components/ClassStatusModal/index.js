@@ -309,9 +309,9 @@ class ClassStatusModal extends React.Component {
             <div className='sk-class-status-modal-container'>
               <div className='sk-class-status-modal-row'>
                 <div className='sk-class-status-modal-action-container'>
-                  <h1 style={{textAlign: 'center', marginBottom: '1rem'}}><span><b>We are swamped...</b></span></h1>
+                  <h1 style={{textAlign: 'center', marginBottom: '1rem'}}><span><b>Upgrade to Premium</b></span></h1>
                   <div className='sk-class-status-modal-action-detail'>
-                    <h2>Move your syllabus to the front of the line by upgrading to premium!</h2>
+                    <h2>Want Skoller&apos;s team to setup your syllabus?</h2>
                     <UpgradeToPremiumBtn onClick={this.props.onUpgradeToPremiumClicked}>Upgrade to Premium</UpgradeToPremiumBtn>
                   </div>
                 </div>
