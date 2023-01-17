@@ -570,14 +570,6 @@ class NavBar extends React.Component {
     this.setState({ popUp: { show: false } })
   }
 
-  openMyAccount = () => {
-    console.log(this)
-    console.log(this.state.showMyAccount)
-    console.log(this.setState)
-    this.setState({ showMyAccount: true })
-    console.log(this.state.showMyAccount)
-  }
-
   render () {
     if (this.props.onboard) {
       return this.renderOnboardHeader()
