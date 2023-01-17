@@ -325,6 +325,10 @@ class NavBar extends React.Component {
           </button>
         </div>
       )
+    } else {
+      return (
+        <div>Your subscription has been cancelled</div>
+      )
     }
   }
 
