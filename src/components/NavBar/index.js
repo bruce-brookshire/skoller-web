@@ -338,7 +338,7 @@ class NavBar extends React.Component {
       return (
         <span>
           {this.state.subscriptionEndsOrRenews === 'lifetime' ? 'You have a lifetime subscription.'
-            : 'Your subscription will renew on {this.state.subscriptionEndsOrRenews'
+            : `Your subscription will renew on ${this.state.subscriptionEndsOrRenews}`
           }
         </span>
       )
@@ -626,7 +626,9 @@ class NavBar extends React.Component {
                           outline: 'none',
                           background: 'transparent'
                         }}
-                        onClick={() => this.setState({ showMyAccount: true })}
+                        onClick={() => {
+                          this.setState({showMyAccount: true})
+                        }}
                       >
                         My Account
                       </button>
@@ -643,8 +645,7 @@ class NavBar extends React.Component {
               />
             )
           }
-
-          {!admin && !isSw && this.renderAccountContainer()}
+          {(!admin && !isSw) || this.state.showMyAccount ? this.renderAccountContainer() : null}
 
           <div
             className="user-info"
