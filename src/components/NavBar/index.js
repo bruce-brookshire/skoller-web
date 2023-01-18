@@ -535,7 +535,7 @@ class NavBar extends React.Component {
   }
 
   renderAccountContainer () {
-    if (!this.props.rootStore.userStore.isAdmin() && !this.props.rootStore.userStore.isSw) {
+    if (!this.props.rootStore.userStore.isAdmin() && !this.props.rootStore.userStore.isSW()) {
       if (
         this.state.showMyAccount &&
         this.props.rootStore.userStore.user.lifetime_trial
