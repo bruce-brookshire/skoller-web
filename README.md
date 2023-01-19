@@ -7,6 +7,9 @@ This project is react web with mobx.
     * npm install
     * npm run dev-server
 
+Requirements
+Node v14.19.3
+
 ## Deployment
 
   * Connect to appropriate ENV via ssh
