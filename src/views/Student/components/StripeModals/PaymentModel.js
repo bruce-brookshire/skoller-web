@@ -125,7 +125,7 @@ class ChangeSchool extends React.Component {
                       ? <h2>Your recurring subscription was cancelled</h2>
                       : <h2></h2>
               }
-              <p> Upgrade to premium</p>
+              <p> Upgrade to premium for Skoller&apos;s syllabus setup service and unlimited access to our platform.</p>
             </div>
             <div className="row">
               <div className="col-md-12" style={{width: '100%'}}>

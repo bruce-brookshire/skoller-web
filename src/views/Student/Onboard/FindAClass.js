@@ -188,7 +188,7 @@ class FindAClass extends React.Component {
             padding: '8px 4px 0 4px'
           }}
         >
-          Can&apos;t find your class? Click here to add <b style={{color: '#57B9E4'}}>{this.state.name}</b> to Skoller!
+          Add class <b style={{color: '#57B9E4'}}>{this.state.name}</b>
         </div>
       </div>
     )
@@ -260,48 +260,52 @@ class FindAClass extends React.Component {
 
   renderSubjectCodeSectionField () {
     return (
-      <div className='sk-find-class-scs-container'>
-        <div className='sk-find-class-scs-item'>
-          <div className='sk-find-class-scs-label'>
+      <div style={{display: 'flex', flexDirection: 'column', marginTop: '5px'}}>
+
+        <div><b>Class Details (Optional)</b></div>
+        <div className='sk-find-class-scs-container'>
+          <div className='sk-find-class-scs-item'>
+            <div className='sk-find-class-scs-label'>
             Subject
+            </div>
+            <div className='sk-find-class-scs-field'>
+              <input
+                autoFocus
+                type='string'
+                placeholder='e.g. MKT'
+                value={this.state.subject}
+                style={{textTransform: 'uppercase'}}
+                onChange={(event) => this.setState({subject: event.target.value.toUpperCase()})}
+              />
+            </div>
           </div>
-          <div className='sk-find-class-scs-field'>
-            <input
-              autoFocus
-              type='string'
-              placeholder='e.g. MKT'
-              value={this.state.subject}
-              style={{textTransform: 'uppercase'}}
-              onChange={(event) => this.setState({subject: event.target.value.toUpperCase()})}
-            />
-          </div>
-        </div>
-        <div className='sk-find-class-scs-item'>
-          <div className='sk-find-class-scs-label'>
+          <div className='sk-find-class-scs-item'>
+            <div className='sk-find-class-scs-label'>
             Code
+            </div>
+            <div className='sk-find-class-scs-field'>
+              <input
+                type='string'
+                placeholder='e.g. 101'
+                value={this.state.code}
+                style={{textTransform: 'uppercase'}}
+                onChange={(event) => this.setState({code: event.target.value.toUpperCase()})}
+              />
+            </div>
           </div>
-          <div className='sk-find-class-scs-field'>
-            <input
-              type='string'
-              placeholder='e.g. 101'
-              value={this.state.code}
-              style={{textTransform: 'uppercase'}}
-              onChange={(event) => this.setState({code: event.target.value.toUpperCase()})}
-            />
-          </div>
-        </div>
-        <div className='sk-find-class-scs-item'>
-          <div className='sk-find-class-scs-label'>
+          <div className='sk-find-class-scs-item'>
+            <div className='sk-find-class-scs-label'>
             Section
-          </div>
-          <div className='sk-find-class-scs-field'>
-            <input
-              type='string'
-              placeholder='e.g. 01'
-              value={this.state.section}
-              style={{textTransform: 'uppercase'}}
-              onChange={(event) => this.setState({section: event.target.value.toUpperCase()})}
-            />
+            </div>
+            <div className='sk-find-class-scs-field'>
+              <input
+                type='string'
+                placeholder='e.g. 01'
+                value={this.state.section}
+                style={{textTransform: 'uppercase'}}
+                onChange={(event) => this.setState({section: event.target.value.toUpperCase()})}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -799,16 +803,11 @@ class FindAClass extends React.Component {
       <CSSTransition
         in={this.state.isNewClass}
         timeout={this.animationTimeout}
-        classNames="zoom"
+        classNames=""
         unmountOnExit
       >
         <div className='sk-fc-preview'>
-          <div className='sk-fc-preview-block'>
-            <Sammi
-              message='Here&apos;s a preview of what your classmates will see when they search for this class!'
-              emotion='happy'
-              position='left' />
-          </div>
+
           <div className='sk-fc-preview-block'>
             <div
               className='sk-find-class-selected-class'
