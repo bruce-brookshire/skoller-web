@@ -46,10 +46,10 @@ class Landing extends React.Component {
                     backgroundPosition: 'center center'}}
                   src={skollerHome}
                 />
-                <div className='cn-learn-more'>
+                {/* <div className='cn-learn-more'>
                   <p>Want to learn more?</p>
                   <a className='button cn-landing-button' href='https://explore.skoller.co'>Explore</a>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
